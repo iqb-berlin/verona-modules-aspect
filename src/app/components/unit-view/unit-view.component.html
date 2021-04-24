@@ -1,0 +1,13 @@
+<div fxLayout="row">
+  <mat-tab-group mat-align-tabs="start" (selectedTabChange)="selectTab()">
+    <mat-tab *ngFor="let page of unit.pages; let i = index" label="Seite {{i+1}}">
+      <mat-toolbar>
+        <input matInput type="number" [(ngModel)]="page.width">
+        <input matInput type="number" [(ngModel)]="page.height">
+        <input matInput type="text" [(ngModel)]="page.backgroundColor">
+      </mat-toolbar>
+      <app-unit-view-canvas [page]="page"></app-unit-view-canvas>
+    </mat-tab>
+  </mat-tab-group>
+  <button mat-raised-button (click)="addPage()">+</button>
+</div>

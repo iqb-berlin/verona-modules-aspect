@@ -1,0 +1,37 @@
+<p>PROPERTIES</p>
+<div *ngIf="selectedElement">
+  <mat-tab-group mat-align-tabs="start">
+     <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">format_shapes</mat-icon>
+        Größe & Farbe
+      </ng-template>
+      <mat-form-field class="mdInput textsingleline">
+        <mat-label>Breite</mat-label>
+        <input matInput name="property" type="number" [(ngModel)]="selectedElement.width">
+      </mat-form-field>
+      <mat-form-field class="mdInput textsingleline">
+        <mat-label>Hoehe</mat-label>
+        <input matInput name="property" type="number" [(ngModel)]="selectedElement.height">
+      </mat-form-field>
+      <mat-form-field class="mdInput textsingleline">
+        <mat-label>X Position</mat-label>
+        <input matInput name="property" type="number" [(ngModel)]="selectedElement.xPosition">
+      </mat-form-field>
+      <mat-form-field class="mdInput textsingleline">
+        <mat-label>Y Position</mat-label>
+        <input matInput name="property" type="number" [(ngModel)]="selectedElement.yPosition">
+      </mat-form-field>
+      <mat-form-field class="mdInput textsingleline">
+        <mat-label>Hintergrundfarbe</mat-label>
+        <input matInput name="property" type="text" [(ngModel)]="selectedElement.backgroundColor">
+      </mat-form-field>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">create</mat-icon>
+        Schrift
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</div>

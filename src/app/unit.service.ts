@@ -13,7 +13,7 @@ export class UnitService {
   activePageIndex: number;
   newElement = new Subject<UnitUIElement>();
   elementSelected = new Subject<UnitUIElement>();
-  pageSelected = new Subject<number>();
+  pageSelected = new Subject<UnitPage>();
 
   constructor() {
     this.activeUnit = new Unit();
@@ -44,7 +44,7 @@ export class UnitService {
 
   switchPage(selectedIndex: number): void {
     this.activePageIndex = selectedIndex;
-    this.pageSelected.next(this.activePageIndex);
+    this.pageSelected.next(this.activeUnit.pages[this.activePageIndex]);
   }
 
   getActivePage(): UnitPage {

@@ -44,15 +44,16 @@ export class UnitCanvasComponent implements OnDestroy {
     this.newElementSubscription = this.unitService.newElement.subscribe(elementType => {
       this.addElement(elementType);
     });
-    this.pageSelectedSubscription = this.unitService.pageSelected.subscribe(() => {
+    this.pageSelectedSubscription = this.unitService.pageSelected.subscribe((page: UnitPage) => {
       this.clearElements();
-      this.renderPage(this.unitService.getActivePage());
+      this.page = page;
+      this.renderPage();
     });
     this.selectedElements = [];
   }
 
-  private renderPage(activePage: UnitPage) {
-    for (const element of activePage.elements) {
+  private renderPage() {
+    for (const element of this.page.elements) {
       this.addElement(element);
     }
   }

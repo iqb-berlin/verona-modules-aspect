@@ -13,14 +13,21 @@ import { TextFieldComponent } from './unit-view-components/text-field.component'
 @Component({
   selector: 'app-unit-view-canvas',
   template: `
-    <div #canvas
-         class="elementCanvas"
-         [style.width.px]="page.width"
-         [style.height.px]="page.height"
-         [style.background-color]="page.backgroundColor">
-      <template #elementContainer></template>
+    <app-canvas-toolbar></app-canvas-toolbar>
+    <div class="canvasFrame" fxLayoutAlign="center center">
+      <div #canvas
+           class="elementCanvas"
+           [style.width.px]="page.width"
+           [style.height.px]="page.height"
+           [style.background-color]="page.backgroundColor">
+        <template #elementContainer></template>
+      </div>
     </div>
-    `
+    `,
+  styles: [
+    '.canvasFrame {background-color: lightgrey; padding: 15px}',
+    '.elementCanvas {overflow: auto}'
+  ]
 })
 export class UnitCanvasComponent implements OnDestroy {
   @Input() page!: UnitPage;

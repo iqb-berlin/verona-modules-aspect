@@ -5,7 +5,8 @@ import { UnitService } from '../../unit.service';
   selector: 'app-ui-element-toolbox',
   templateUrl: './ui-element-toolbox.component.html',
   styles: [
-    ':host {background-color: red; border: 1px solid black;}'
+    ':host {background-color: #F9FBFB; border: 1px solid black;}',
+    ':host {text-align: center}'
   ]
 })
 export class UiElementToolboxComponent {

@@ -8,7 +8,10 @@ import { UnitService } from '../../unit.service';
 
 @Component({
   selector: 'app-unit-view',
-  templateUrl: './unit-view.component.html'
+  templateUrl: './unit-view.component.html',
+  styles: [
+    '.page-toolbar {margin: 8px}'
+  ]
 })
 export class UnitViewComponent {
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;

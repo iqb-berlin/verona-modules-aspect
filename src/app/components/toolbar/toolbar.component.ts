@@ -4,7 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styles: [
-    'mat-toolbar {background-color: lightblue}'
+    'mat-toolbar {background-color: #696969}',
+    'mat-toolbar button {margin: 15px}'
   ]
 })
 export class ToolbarComponent {

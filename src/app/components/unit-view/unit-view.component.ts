@@ -23,7 +23,7 @@ export class UnitViewComponent {
 
   addPage(): void {
     this.unitService.addPage();
-    this.tabGroup.selectedIndex = this.unit.pages.length;
+    this.tabGroup.selectedIndex = this.unit.pages.length - 1;
   }
 
   selectTab(): void {

@@ -5,7 +5,11 @@ import { UnitUIElement } from '../../model/unit';
 
 @Component({
   selector: 'app-properties',
-  templateUrl: './properties.component.html'
+  templateUrl: './properties.component.html',
+  styles: [
+    ':host {background-color: #F9FBFB; border: 1px solid black; text-align: center; padding: 0 15px}',
+    ':host {}'
+  ]
 })
 export class PropertiesComponent implements OnDestroy{
   private elementSelectedSubscription: Subscription;

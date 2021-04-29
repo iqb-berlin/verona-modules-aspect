@@ -11,6 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -21,6 +22,7 @@ import { UnitCanvasComponent } from './components/unit-view/canvas.component';
 import { ButtonComponent } from './components/unit-view/unit-view-components/button.component';
 import { LabelComponent } from './components/unit-view/unit-view-components/label.component';
 import { TextFieldComponent } from './components/unit-view/unit-view-components/text-field.component';
+import { CanvasToolbarComponent } from './components/unit-view/canvas.toolbar.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { TextFieldComponent } from './components/unit-view/unit-view-components/
     UnitCanvasComponent,
     ButtonComponent,
     LabelComponent,
-    TextFieldComponent
+    TextFieldComponent,
+    CanvasToolbarComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,8 @@ import { TextFieldComponent } from './components/unit-view/unit-view-components/
     MatInputModule,
     FormsModule,
     PortalModule,
-    DragDropModule
+    DragDropModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

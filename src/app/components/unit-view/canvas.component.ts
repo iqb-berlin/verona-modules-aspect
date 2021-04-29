@@ -9,6 +9,7 @@ import { ButtonComponent } from './unit-view-components/button.component';
 import { UnitService } from '../../unit.service';
 import { LabelComponent } from './unit-view-components/label.component';
 import { TextFieldComponent } from './unit-view-components/text-field.component';
+import { ElementComponent } from './element.component';
 
 @Component({
   selector: 'app-unit-view-canvas',
@@ -37,6 +38,7 @@ export class UnitCanvasComponent implements OnDestroy {
 
   newElementSubscription: Subscription;
   pageSelectedSubscription: Subscription;
+  selectedElements: ElementComponent[];
 
   constructor(public unitService: UnitService, private componentFactoryResolver: ComponentFactoryResolver) {
     this.newElementSubscription = this.unitService.newElement.subscribe(elementType => {
@@ -46,6 +48,7 @@ export class UnitCanvasComponent implements OnDestroy {
       this.clearElements();
       this.renderPage(this.unitService.getActivePage());
     });
+    this.selectedElements = [];
   }
 
   private renderPage(activePage: UnitPage) {
@@ -67,15 +70,27 @@ export class UnitCanvasComponent implements OnDestroy {
       return;
     }
     const componentRef = this.elementContainer.createComponent(componentFactory);
-    componentRef.instance.element = element;
+    componentRef.instance.elementModel = element;
     componentRef.instance.canvasSize = [this.page.width, this.page.height];
-    componentRef.instance.elementSelected.subscribe((event: { element: UnitUIElement | undefined; }) => {
-      this.unitService.elementSelected.next(event.element);
+    componentRef.instance.elementSelected.subscribe((event: { componentElement: ElementComponent, multiSelect: boolean }) => {
+      // console.log('ev', event);
+      if (!event.multiSelect) {
+        this.clearSelection();
+      }
+      this.selectedElements.push(event.componentElement);
+      event.componentElement.selected = true;
+      this.unitService.elementSelected.next(event.componentElement.elementModel);
     });
   }
 
   private clearElements() {
     this.elementContainer.clear();
+  }
+
+  private clearSelection() {
+    for (const element of this.selectedElements) {
+      element.selected = false;
+    }
   }
 
   ngOnDestroy(): void {

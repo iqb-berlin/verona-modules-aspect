@@ -16,9 +16,9 @@ export class UnitPage {
 
   constructor() {
     this.elements = [];
-    this.width = 600;
-    this.height = 350;
-    this.backgroundColor = 'yellow';
+    this.width = 1200;
+    this.height = 550;
+    this.backgroundColor = '#FFFAF0';
   }
 }
 
@@ -29,14 +29,26 @@ export class UnitUIElement {
   width: number;
   height: number;
   backgroundColor: string;
+  fontColor: string;
+  font: string;
+  fontSize: number;
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
 
   constructor(id: string) {
     this.id = id;
     this.xPosition = 0;
     this.yPosition = 0;
-    this.width = 50;
-    this.height = 30;
-    this.backgroundColor = 'green';
+    this.width = 75;
+    this.height = 36;
+    this.backgroundColor = 'grey';
+    this.fontColor = 'blue';
+    this.font = 'Arial';
+    this.fontSize = 18;
+    this.bold = true;
+    this.italic = false;
+    this.underline = false;
   }
 }
 

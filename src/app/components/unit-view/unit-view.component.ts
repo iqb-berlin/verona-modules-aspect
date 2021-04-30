@@ -21,14 +21,20 @@ export class UnitViewComponent {
     this.unit = this.unitService.activeUnit;
   }
 
+  selectTab(): void {
+    // this needs to be set, otherwise we want an error to happen
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.unitService.switchPage(this.tabGroup.selectedIndex!);
+  }
+
   addPage(): void {
     this.unitService.addPage();
     this.tabGroup.selectedIndex = this.unit.pages.length - 1;
   }
 
-  selectTab(): void {
-    // this needs to be set, otherwise we want an error to happen
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.unitService.switchPage(this.tabGroup.selectedIndex!);
+  deletePage(): void {
+    this.unitService.deleteActivePage();
+    this.tabGroup.selectedIndex! = 0;
+    this.selectTab();
   }
 }

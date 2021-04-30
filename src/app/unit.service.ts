@@ -26,6 +26,10 @@ export class UnitService {
     this.activeUnit.pages.push(new UnitPage());
   }
 
+  deleteActivePage():void {
+    this.activeUnit.pages.splice(this.activePageIndex, 1);
+  }
+
   addPageElement(elementType: string): void {
     let newElement: UnitUIElement;
     switch (elementType) {

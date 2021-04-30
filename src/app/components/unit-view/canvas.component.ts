@@ -38,6 +38,8 @@ export class UnitCanvasComponent implements OnDestroy {
 
   newElementSubscription: Subscription;
   pageSelectedSubscription: Subscription;
+  propertyChangeSubscription: Subscription;
+
   selectedElements: ElementComponent[];
 
   constructor(public unitService: UnitService, private componentFactoryResolver: ComponentFactoryResolver) {
@@ -48,6 +50,11 @@ export class UnitCanvasComponent implements OnDestroy {
       this.clearElements();
       this.page = page;
       this.renderPage();
+    });
+    this.propertyChangeSubscription = this.unitService.propertyChanged.subscribe(() => {
+      this.selectedElements.forEach(element => {
+        element.updateStyle();
+      });
     });
     this.selectedElements = [];
   }

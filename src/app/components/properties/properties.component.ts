@@ -17,12 +17,16 @@ export class PropertiesComponent implements OnDestroy{
   selectedElement: UnitUIElement | undefined;
 
   constructor(public unitService: UnitService) {
-    this.elementSelectedSubscription = this.unitService.elementSelected.subscribe((element: UnitUIElement) => {
+    this.elementSelectedSubscription = this.unitService.elementSelected.subscribe((element: UnitUIElement | undefined) => {
       this.selectedElement = element;
     });
   }
 
   ngOnDestroy(): void {
     this.elementSelectedSubscription.unsubscribe();
+  }
+
+  modelChange(): void {
+    this.unitService.propertyChange();
   }
 }

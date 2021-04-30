@@ -10,7 +10,8 @@ import { UnitService } from '../../unit.service';
   selector: 'app-unit-view',
   templateUrl: './unit-view.component.html',
   styles: [
-    '.page-toolbar {margin: 8px}'
+    '.page-toolbar {margin: 8px}',
+    '.delete-page-button {margin-right: 20px; vertical-align: top; height: 45px}'
   ]
 })
 export class UnitViewComponent {

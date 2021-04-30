@@ -20,9 +20,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
     </div>
     `,
   styles: [
-    '.canvas-toolbar {background-color: #696969; color: white}',
+    '.canvas-toolbar {background-color: #696969; color: white; padding-left: 10px}',
     '.canvas-toolbar button {margin: 5px;}',
-    '.canvas-toolbar button mat-icon {height: 15px; width: 25px; font-size: 17px}'
+    '.canvas-toolbar button mat-icon {height: 20px; width: 25px; font-size: 17px}'
   ]
 })
 export class CanvasToolbarComponent {

@@ -20,6 +20,22 @@ export abstract class ElementComponent {
     }
   }
 
+  updateStyle(): void {
+    this.style = {
+      border: this.selected ? '5px solid' : '',
+      position: 'absolute',
+      width: `${this.elementModel.width}px`,
+      height: `${this.elementModel.height}px`,
+      'background-color': this.elementModel.backgroundColor,
+      color: this.elementModel.fontColor,
+      'font-family': this.elementModel.font,
+      'font-size': `${this.elementModel.fontSize}px`,
+      'font-weight': this.elementModel.bold ? 'bold' : '',
+      'font-style': this.elementModel.italic ? 'italic' : '',
+      'text-decoration': this.elementModel.underline ? 'underline' : ''
+    };
+  }
+
   drop(event: CdkDragEnd): void {
     this.elementModel.xPosition += event.distance.x;
     if (this.elementModel.xPosition < 0) {

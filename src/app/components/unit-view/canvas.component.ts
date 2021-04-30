@@ -14,7 +14,7 @@ import { ElementComponent } from './element.component';
 @Component({
   selector: 'app-unit-view-canvas',
   template: `
-    <app-canvas-toolbar></app-canvas-toolbar>
+    <app-canvas-toolbar (alignElements)="alignElements($event)"></app-canvas-toolbar>
     <div class="canvasFrame" fxLayoutAlign="center center">
       <div class="elementCanvas"
            [style.width.px]="page.width"
@@ -93,6 +93,35 @@ export class UnitCanvasComponent implements OnDestroy {
     this.unitService.elementSelected.next(undefined);
   }
 
+  alignElements(event: 'left' | 'right' | 'top' | 'bottom'):void {
+    let newValue: number;
+    switch (event) {
+      case 'left':
+        newValue = Math.min(...this.selectedElements.map(el => el.elementModel.xPosition));
+        for (const element of this.selectedElements) {
+          element.elementModel.xPosition = newValue;
+        }
+        break;
+      case 'right':
+        newValue = Math.max(...this.selectedElements.map(el => el.elementModel.xPosition + el.elementModel.width));
+        for (const element of this.selectedElements) {
+          element.elementModel.xPosition = newValue - element.elementModel.width;
+        }
+        break;
+      case 'top':
+        newValue = Math.min(...this.selectedElements.map(el => el.elementModel.yPosition));
+        for (const element of this.selectedElements) {
+          element.elementModel.yPosition = newValue;
+        }
+        break;
+      case 'bottom':
+        newValue = Math.max(...this.selectedElements.map(el => el.elementModel.yPosition + el.elementModel.height));
+        for (const element of this.selectedElements) {
+          element.elementModel.yPosition = newValue - element.elementModel.height;
+        }
+        break;
+      // no default
+    }
   }
 
   ngOnDestroy(): void {

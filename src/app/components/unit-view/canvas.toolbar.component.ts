@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-canvas-toolbar',
   template: `
     <div class="canvas-toolbar">
       Ausrichtung
-      <button>
-        <mat-icon>format_align_left</mat-icon>
+      <button (click)="align('left')">
+        <mat-icon>align_horizontal_left</mat-icon>
       </button>
-      <button>
-        <mat-icon>format_align_right</mat-icon>
+      <button (click)="align('right')">
+        <mat-icon>align_horizontal_right</mat-icon>
       </button>
-      <button>
-        <mat-icon>vertical_align_top</mat-icon>
+      <button (click)="align('top')">
+        <mat-icon>align_vertical_top</mat-icon>
       </button>
-      <button>
-        <mat-icon>vertical_align_bottom</mat-icon>
+      <button (click)="align('bottom')">
+        <mat-icon>align_vertical_bottom</mat-icon>
       </button>
     </div>
     `,
@@ -26,5 +26,9 @@ import { Component } from '@angular/core';
   ]
 })
 export class CanvasToolbarComponent {
+  @Output() alignElements = new EventEmitter<'left' | 'right' | 'top' | 'bottom'>(); // TODO enum
 
+  align(direction: 'left' | 'right' | 'top' | 'bottom'): void {
+    this.alignElements.emit(direction);
+  }
 }

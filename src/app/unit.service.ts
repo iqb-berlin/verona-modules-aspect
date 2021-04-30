@@ -12,8 +12,9 @@ export class UnitService {
   activeUnit: Unit;
   activePageIndex: number;
   newElement = new Subject<UnitUIElement>();
-  elementSelected = new Subject<UnitUIElement>();
+  elementSelected = new Subject<UnitUIElement | undefined>();
   pageSelected = new Subject<UnitPage>();
+  propertyChanged = new Subject();
 
   constructor() {
     this.activeUnit = new Unit();
@@ -47,7 +48,7 @@ export class UnitService {
     this.pageSelected.next(this.activeUnit.pages[this.activePageIndex]);
   }
 
-  getActivePage(): UnitPage {
-    return this.activeUnit.pages[this.activePageIndex];
+  propertyChange(): void {
+    this.propertyChanged.next();
   }
 }

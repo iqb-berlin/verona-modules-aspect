@@ -1,5 +1,5 @@
 import {
-  Component, ComponentFactoryResolver, ElementRef, Input, OnDestroy, ViewChild, ViewContainerRef
+  Component, ComponentFactoryResolver, Input, OnDestroy, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
@@ -16,24 +16,20 @@ import { ElementComponent } from './element.component';
   template: `
     <app-canvas-toolbar></app-canvas-toolbar>
     <div class="canvasFrame" fxLayoutAlign="center center">
-      <div #canvas
-           class="elementCanvas"
+      <div class="elementCanvas"
            [style.width.px]="page.width"
            [style.height.px]="page.height"
            [style.background-color]="page.backgroundColor">
-        <template #elementContainer></template>
+        <ng-template #elementContainer></ng-template>
       </div>
     </div>
     `,
   styles: [
-    '.canvasFrame {background-color: lightgrey; padding: 15px}',
-    '.elementCanvas {overflow: auto}'
+    '.canvasFrame {background-color: lightgrey; padding: 15px}'
   ]
 })
 export class UnitCanvasComponent implements OnDestroy {
   @Input() page!: UnitPage;
-
-  @ViewChild('canvas') canvas!: ElementRef;
   @ViewChild('elementContainer', { read: ViewContainerRef }) elementContainer: any;
 
   newElementSubscription: Subscription;
@@ -47,7 +43,7 @@ export class UnitCanvasComponent implements OnDestroy {
       this.addElement(elementType);
     });
     this.pageSelectedSubscription = this.unitService.pageSelected.subscribe((page: UnitPage) => {
-      this.clearElements();
+      this.selectedElements = [];
       this.page = page;
       this.renderPage();
     });
@@ -60,49 +56,62 @@ export class UnitCanvasComponent implements OnDestroy {
   }
 
   private renderPage() {
+    this.elementContainer.clear();
     for (const element of this.page.elements) {
       this.addElement(element);
     }
   }
 
   addElement(element: UnitUIElement): void {
-    let componentFactory;
-    if (element instanceof LabelElement) {
-      componentFactory = this.componentFactoryResolver.resolveComponentFactory(LabelComponent);
-    } else if (element instanceof ButtonElement) {
-      componentFactory = this.componentFactoryResolver.resolveComponentFactory(ButtonComponent);
-    } else if (element instanceof TextFieldElement) {
-      componentFactory = this.componentFactoryResolver.resolveComponentFactory(TextFieldComponent);
-    } else {
-      console.error('unknown element: ', element);
-      return;
-    }
+    const componentFactory = this.getComponentFactory(element);
     const componentRef = this.elementContainer.createComponent(componentFactory);
     componentRef.instance.elementModel = element;
     componentRef.instance.canvasSize = [this.page.width, this.page.height];
+
+    this.clearSelection();
+    componentRef.instance.selected = true;
+    this.selectedElements.push(componentRef.instance);
+    this.unitService.elementSelected.next(componentRef.instance.elementModel);
+
     componentRef.instance.elementSelected.subscribe((event: { componentElement: ElementComponent, multiSelect: boolean }) => {
-      // console.log('ev', event);
-      if (!event.multiSelect) {
+      if (event.multiSelect) {
+        this.unitService.elementSelected.next(undefined); // clear properties panel, because selection is dubious
+      } else {
         this.clearSelection();
+        this.unitService.elementSelected.next(event.componentElement.elementModel);
       }
       this.selectedElements.push(event.componentElement);
       event.componentElement.selected = true;
-      this.unitService.elementSelected.next(event.componentElement.elementModel);
     });
-  }
-
-  private clearElements() {
-    this.elementContainer.clear();
   }
 
   private clearSelection() {
     for (const element of this.selectedElements) {
       element.selected = false;
     }
+    this.selectedElements = [];
+    this.unitService.elementSelected.next(undefined);
+  }
+
   }
 
   ngOnDestroy(): void {
     this.newElementSubscription.unsubscribe();
     this.pageSelectedSubscription.unsubscribe();
+    this.propertyChangeSubscription.unsubscribe();
+  }
+
+  private getComponentFactory(element: UnitUIElement) {
+    if (element instanceof LabelElement) {
+      return this.componentFactoryResolver.resolveComponentFactory(LabelComponent);
+    }
+    if (element instanceof ButtonElement) {
+      return this.componentFactoryResolver.resolveComponentFactory(ButtonComponent);
+    }
+    if (element instanceof TextFieldElement) {
+      return this.componentFactoryResolver.resolveComponentFactory(TextFieldComponent);
+    }
+    console.error('unknown element: ', element);
+    throw new Error('unknown element'); // TODO test
   }
 }

@@ -10,7 +10,17 @@ export abstract class ElementComponent {
   @Input() canvasSize!: [number, number];
   @Output() elementSelected = new EventEmitter<{ componentElement: ElementComponent, multiSelect: boolean }>();
 
-  @Input() selected = false;
+  style: Record<string, string> = {};
+  _selected = false;
+
+  set selected(newValue: boolean) {
+    this._selected = newValue;
+    this.updateStyle();
+  }
+
+  get selected(): boolean {
+    return this._selected;
+  }
 
   select(event: MouseEvent): void {
     if (event.shiftKey) {

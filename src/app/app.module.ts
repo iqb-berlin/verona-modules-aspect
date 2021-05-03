@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
+import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
-import { PortalModule } from '@angular/cdk/portal';
+import { createCustomElement } from '@angular/elements';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -46,12 +46,20 @@ import { CanvasToolbarComponent } from './components/unit-view/canvas.toolbar.co
     MatTabsModule,
     MatButtonModule,
     MatInputModule,
-    FormsModule,
-    PortalModule,
+    FormsModule, // TODO needed?
     DragDropModule,
     MatCheckboxModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  // bootstrap: [AppComponent],
+  entryComponents: [
+    AppComponent
+  ]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private injector: Injector) {}
+  ngDoBootstrap(): void {
+    const editorElement = createCustomElement(AppComponent, { injector: this.injector });
+    customElements.define('editor-aspect', editorElement);
+  }
+}

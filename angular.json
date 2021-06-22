@@ -27,6 +27,7 @@
               "projects/editor/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/editor/src/styles.css"
             ],
             "scripts": []
@@ -125,6 +126,7 @@
               "projects/player/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/player/src/styles.css"
             ],
             "scripts": []

@@ -1,0 +1,151 @@
+<h3>EIGENSCHAFTEN</h3>
+<div *ngIf="selectedElements.length === 0">Select an element</div>
+<div *ngIf="selectedElements.length > 0">
+  <mat-tab-group mat-stretch-tabs>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">build</mat-icon>
+      </ng-template>
+      <div fxLayout="column">
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('label')">
+          <mat-label>Label</mat-label>
+          <input matInput type="text" [value]="combinedProperties.label"
+                 (input)="updateModel('label', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('text')">
+          <mat-label>Text</mat-label>
+          <input matInput type="text" [value]="combinedProperties.text"
+                 (input)="updateModel('text', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
+          <div *ngIf="combinedProperties.options !== undefined">
+            <mat-label>Optionen</mat-label>
+            <mat-list *ngFor="let option of $any(combinedProperties.options)">
+              <mat-list-item>{{option}}</mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+          <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matPrefix
+                    (click)="updateModel('options', newOption.value)">
+              <mat-icon>add</mat-icon>
+            </button>
+            <input #newOption matInput type="text" placeholder="Optionstext">
+          </div>
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('alignment')">
+          <mat-label>Ausrichtung</mat-label>
+          <mat-select [value]="combinedProperties.alignment"
+                      (change)="$any($event.target).value">
+            <mat-option *ngFor="let option of ['row', 'column']" [value]="option">
+             {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('multiline')"
+                      [checked]="$any(combinedProperties.multiline)"
+                      (change)="updateModel('multiline', $event.checked)">
+          Mehrzeilig
+        </mat-checkbox>
+        <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('sentences')">
+          <div *ngIf="combinedProperties.sentences !== undefined">
+            <mat-label>Sätze</mat-label>
+            <mat-list *ngFor="let sentence of $any(combinedProperties.sentences)">
+              <mat-list-item>{{sentence}}</mat-list-item>
+              <mat-divider></mat-divider>
+            </mat-list>
+          </div>
+          <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matPrefix
+                    (click)="updateModel('sentences', newOption.value)">
+              <mat-icon>add</mat-icon>
+            </button>
+            <input #newOption matInput type="text" placeholder="Optionstext">
+          </div>
+        </mat-form-field>
+      </div>
+      <button mat-raised-button (click)="deleteElement()">
+        Element löschen
+      </button>
+      <button mat-raised-button>
+        Element duplizieren
+      </button>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">format_shapes</mat-icon>
+      </ng-template>
+      <div fxLayout="column">
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
+          <mat-label>Breite</mat-label>
+          <input matInput type="number" [value]="combinedProperties.width"
+                 (input)="updateModel('width', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')">
+          <mat-label>Hoehe</mat-label>
+          <input matInput type="number" [value]="combinedProperties.height"
+                 (input)="updateModel('height', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('xPosition')">
+          <mat-label>X Position</mat-label>
+          <input matInput type="number" [value]="combinedProperties.xPosition"
+                 (input)="updateModel('xPosition', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('yPosition')">
+          <mat-label>Y Position</mat-label>
+          <input matInput type="number" [value]="combinedProperties.yPosition"
+                 (input)="updateModel('yPosition', $any($event.target).value)">
+        </mat-form-field>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">palette</mat-icon>
+      </ng-template>
+      <div fxLayout="column">
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('backgroundColor')"
+                        class="mdInput textsingleline">
+          <mat-label>Hintergrundfarbe</mat-label>
+          <input matInput type="text" [value]="combinedProperties.backgroundColor"
+                 (input)="updateModel('backgroundColor', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontColor')"
+                        class="mdInput textsingleline">
+          <mat-label>Schriftfarbe</mat-label>
+          <input matInput type="text" [value]="combinedProperties.fontColor"
+                 (input)="updateModel('fontColor', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('font')"
+                        class="mdInput textsingleline">
+          <mat-label>Schriftart</mat-label>
+          <input matInput type="text" [value]="combinedProperties.font"
+                 (input)="updateModel('font', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontSize')"
+                        class="mdInput textsingleline">
+          <mat-label>Schriftgröße</mat-label>
+          <input matInput type="text" [value]="combinedProperties.fontSize"
+                 (input)="updateModel('fontSize', $any($event.target).value)">
+        </mat-form-field>
+
+        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('bold')"
+                      [checked]="$any(combinedProperties.bold)"
+                      (change)="updateModel('bold', $event.checked)">
+          Fett
+        </mat-checkbox>
+        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('italic')"
+                      [checked]="$any(combinedProperties.italic)"
+                      (change)="updateModel('italic', $event.checked)">
+          Kursiv
+        </mat-checkbox>
+        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('underline')"
+                      [checked]="$any(combinedProperties.underline)"
+                      (change)="updateModel('underline', $event.checked)">
+          Unterstrichen
+        </mat-checkbox>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

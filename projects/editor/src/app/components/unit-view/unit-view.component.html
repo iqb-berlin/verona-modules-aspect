@@ -1,0 +1,43 @@
+<mat-drawer-container>
+
+  <mat-drawer #toolbox_drawer class="toolbox_drawer" mode="side" opened>
+    <app-ui-element-toolbox></app-ui-element-toolbox>
+  </mat-drawer>
+
+  <mat-drawer-content>
+    <button mat-button
+            class="testtt"
+            (click)="toolbox_drawer.toggle()">
+      Elementauswahl ein-/ausblenden
+    </button>
+    <button mat-button class="show_properties_button" (click)="properties_drawer.toggle()">
+      Eigenschaften ein-/ausblenden
+    </button>
+
+    <div fxLayout="column">
+      <mat-tab-group mat-align-tabs="start" (selectedTabChange)="selectTab()">
+        <mat-tab *ngFor="let page of unit.pages; let i = index" label="Seite {{i+1}}">
+          <ng-template mat-tab-label>
+            Seite {{i+1}}
+            <button class="delete-page-button" mat-button (click)="deletePage()">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-template>
+          <app-page-view [pageObservable]="unitService.getPageObservable(i)"></app-page-view>
+        </mat-tab>
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <button mat-icon-button (click)="addPage()">
+              <mat-icon>add</mat-icon>
+            </button>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </mat-drawer-content>
+
+  <mat-drawer #properties_drawer class="properties_drawer" position="end" mode="side" opened>
+    <app-properties></app-properties>
+  </mat-drawer>
+
+</mat-drawer-container>

@@ -1,0 +1,71 @@
+<h3>ELEMENTE</h3>
+<mat-tab-group mat-stretch-tabs>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">highlight_alt</mat-icon>
+    </ng-template>
+    <div fxLayout="column">
+      <button mat-raised-button (click)="addUIElement('label')">
+        <mat-icon>label</mat-icon>
+        Label
+      </button>
+      <button mat-raised-button (click)="addUIElement('button')">
+        <mat-icon>smart_button</mat-icon>
+        Button
+      </button>
+      <button mat-raised-button (click)="addUIElement('text-field')">
+        <mat-icon>notes</mat-icon>
+        Textfeld
+      </button>
+      <button mat-raised-button (click)="addUIElement('checkbox')">
+        <mat-icon>check_box</mat-icon>
+        Checkbox
+      </button>
+      <button mat-raised-button (click)="addUIElement('dropdown')">
+        <mat-icon>menu_open</mat-icon>
+        Dropdown
+      </button>
+      <button mat-raised-button (click)="addUIElement('radio')">
+        <mat-icon>radio_button_checked</mat-icon>
+        Optionsfeld
+      </button>
+      <button mat-raised-button (click)="addUIElement('image')">
+        <mat-icon>image</mat-icon>
+        Bild
+      </button>
+      <button mat-raised-button (click)="addUIElement('audio')">
+        <mat-icon>volume_up</mat-icon>
+        Audio
+      </button>
+      <button mat-raised-button (click)="addUIElement('video')">
+        <mat-icon>ondemand_video</mat-icon>
+        Video
+      </button>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">widgets</mat-icon>
+    </ng-template>
+    <mat-accordion multi>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Korrekturaufgaben
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button>mit Bild</button>
+        <button mat-button (click)="addUIElement('correction')">ohne Bild</button>
+      </mat-expansion-panel>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Sortieraufgaben
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <button mat-button>mit Auswahlfeld</button>
+        <button mat-button>mit Textfeld</button>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-tab>
+</mat-tab-group>

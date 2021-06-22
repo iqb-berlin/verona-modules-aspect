@@ -1,0 +1,29 @@
+{
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [],
+          "width": 1200,
+          "height": 200,
+          "backgroundColor": "#FFFAF0"
+        },
+        {
+          "elements": [],
+          "width": 1200,
+          "height": 200,
+          "backgroundColor": "#FFFAF0"
+        },
+        {
+          "elements": [],
+          "width": 1200,
+          "height": 200,
+          "backgroundColor": "#FFFAF0"
+        }
+      ],
+      "width": 1200,
+      "height": 550,
+      "backgroundColor": "#FFFAF0"
+    }
+  ]
+}

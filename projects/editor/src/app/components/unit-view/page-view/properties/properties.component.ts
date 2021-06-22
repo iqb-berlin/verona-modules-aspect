@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UnitService } from '../../../../unit.service';
-import { UnitUIElement } from '../../../../model/unit';
+import { UnitUIElement } from '../../../../../../../common/unit';
 
 @Component({
   selector: 'app-properties',

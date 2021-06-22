@@ -4,7 +4,7 @@ import {
   ComponentFactoryResolver,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import { UnitPageSection, UnitUIElement } from '../../../../model/unit';
+import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
 import { CanvasElementComponent } from './canvas-element-component.directive';
 import { UnitService } from '../../../../unit.service';
 import { LabelComponent } from './canvas-element-components/label.component';

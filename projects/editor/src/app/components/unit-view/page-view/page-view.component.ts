@@ -2,7 +2,7 @@ import {
   Component, Input, OnDestroy, OnInit
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { UnitPage } from '../../../model/unit';
+import { UnitPage } from '../../../../../../common/unit';
 import { UnitService } from '../../../unit.service';
 
 @Component({

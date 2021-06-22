@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { UnitPage, UnitPageSection } from '../../../../model/unit';
+import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { CanvasSectionComponent } from './canvas-section.component';
 import { CanvasElementComponent } from './canvas-element-component.directive';

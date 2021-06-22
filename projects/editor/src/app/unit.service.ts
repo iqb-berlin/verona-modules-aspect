@@ -4,7 +4,7 @@ import {
 } from 'rxjs';
 import {
   Unit, UnitPage, UnitUIElement
-} from './model/unit';
+} from '../../../common/unit';
 import { FileService } from './file.service';
 import * as UnitFactory from './model/UnitFactory';
 
@@ -132,6 +132,7 @@ export class UnitService {
       case 'correction':
         newElement = UnitFactory.createCorrectionElement();
         break;
+      // no default
     }
     this._unit.value.pages[this._selectedPageIndex.value]
       .sections[this._selectedPageSectionIndex.value].elements.push(newElement!);

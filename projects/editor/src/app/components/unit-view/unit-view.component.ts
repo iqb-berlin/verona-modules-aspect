@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatDialog } from '@angular/material/dialog';
 import { UnitService } from '../../unit.service';
-import { Unit } from '../../model/unit';
+import { Unit } from '../../../../../common/unit';
 
 @Component({
   selector: 'app-unit-view',

@@ -4,7 +4,7 @@ import {
   ImageElement, LabelElement, RadioButtonGroupElement,
   TextFieldElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
   VideoElement
-} from './unit';
+} from '../../../../common/unit';
 
 export function createUnit(): Unit {
   return {

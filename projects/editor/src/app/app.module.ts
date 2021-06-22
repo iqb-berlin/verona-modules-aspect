@@ -84,15 +84,15 @@ import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/
     MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
-  // entryComponents: [
-  //   AppComponent
-  // ]
+  // bootstrap: [AppComponent]
+  entryComponents: [
+    AppComponent
+  ]
 })
 export class AppModule {
   constructor(private injector: Injector) {}
-  // ngDoBootstrap(): void {
-  //   const editorElement = createCustomElement(AppComponent, { injector: this.injector });
-  //   customElements.define('editor-aspect', editorElement);
-  // }
+  ngDoBootstrap(): void {
+    const editorElement = createCustomElement(AppComponent, { injector: this.injector });
+    customElements.define('editor-aspect', editorElement);
+  }
 }

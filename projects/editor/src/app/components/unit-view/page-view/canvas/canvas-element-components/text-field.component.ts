@@ -4,27 +4,27 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
 @Component({
   selector: 'app-text-field',
   template: `
-    <div *ngIf="!manualPositioning"
-         cdkDrag [cdkDragData]="this">
-      <input *ngIf="$any(elementModel).multiline === false" matInput (click)="click($event)"
-             [ngStyle]="style"
-             placeholder="{{$any(elementModel).placeholder}}">
-      <textarea *ngIf="$any(elementModel).multiline === true" matInput
-                (click)="click($event)"
-                [ngStyle]="style"
-                placeholder="{{$any(elementModel).placeholder}}">
+      <div *ngIf="!draggable"
+           cdkDrag [cdkDragData]="this">
+          <input *ngIf="$any(elementModel).multiline === false" matInput (click)="click($event)"
+                 [ngStyle]="style"
+                 placeholder="{{$any(elementModel).placeholder}}">
+          <textarea *ngIf="$any(elementModel).multiline === true" matInput
+                    (click)="click($event)"
+                    [ngStyle]="style"
+                    placeholder="{{$any(elementModel).placeholder}}">
       </textarea>
-    </div>
-    <div *ngIf="manualPositioning">
-      <input *ngIf="$any(elementModel).multiline === false" matInput (click)="click($event)"
-             [ngStyle]="style"
-             placeholder="{{$any(elementModel).placeholder}}">
-      <textarea *ngIf="$any(elementModel).multiline === true" matInput
-                (click)="click($event)"
-                [ngStyle]="style"
-                placeholder="{{$any(elementModel).placeholder}}">
+      </div>
+      <div *ngIf="draggable">
+          <input *ngIf="$any(elementModel).multiline === false" matInput (click)="click($event)"
+                 [ngStyle]="style"
+                 placeholder="{{$any(elementModel).placeholder}}">
+          <textarea *ngIf="$any(elementModel).multiline === true" matInput
+                    (click)="click($event)"
+                    [ngStyle]="style"
+                    placeholder="{{$any(elementModel).placeholder}}">
       </textarea>
-    </div>
+      </div>
   `,
   styles: [
     'div {position: absolute}'

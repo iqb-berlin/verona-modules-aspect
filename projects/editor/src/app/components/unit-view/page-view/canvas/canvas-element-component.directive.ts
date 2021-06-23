@@ -6,9 +6,7 @@ import { UnitUIElement } from '../../../../../../../common/unit';
 @Directive()
 export abstract class CanvasElementComponent {
   @Input() elementModel!: UnitUIElement;
-  @Input() canvasSize!: [number, number];
-  @Input() manualPositioning!: boolean;
-  @Input() sectionIndex!: number;
+  @Input() draggable!: boolean;
   @Output() elementSelected = new EventEmitter<{ componentElement: CanvasElementComponent, multiSelect: boolean }>();
 
   style: Record<string, string> = {};

@@ -72,8 +72,7 @@ export class CanvasSectionComponent implements OnInit {
     const componentFactory = this.getComponentFactory(element);
     const componentRef = this.elementContainer.createComponent(componentFactory);
     componentRef.instance.elementModel = element;
-    componentRef.instance.canvasSize = [this.section.width, this.section.height];
-    componentRef.instance.manualPositioning = this.manualPositioning;
+    componentRef.instance.draggable = this.manualPositioning;
     componentRef.instance.updateStyle();
 
     componentRef.instance.elementSelected.subscribe(

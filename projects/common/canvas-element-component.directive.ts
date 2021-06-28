@@ -6,7 +6,7 @@ import { UnitUIElement } from '../../../../../../../common/unit';
 @Directive()
 export abstract class CanvasElementComponent {
   @Input() elementModel!: UnitUIElement;
-  @Input() draggable!: boolean;
+  @Input() draggable: boolean = false;
   @Output() elementSelected = new EventEmitter<{ componentElement: CanvasElementComponent, multiSelect: boolean }>();
 
   style: Record<string, string> = {};
@@ -15,10 +15,6 @@ export abstract class CanvasElementComponent {
   set selected(newValue: boolean) {
     this._selected = newValue;
     this.updateStyle();
-  }
-
-  get selected(): boolean {
-    return this._selected;
   }
 
   click(event: MouseEvent): void {
@@ -31,7 +27,7 @@ export abstract class CanvasElementComponent {
 
   updateStyle(): void {
     this.style = {
-      border: this.selected ? '5px solid' : '',
+      border: this._selected ? '5px solid' : '',
       width: `${this.elementModel.width}px`,
       height: `${this.elementModel.height}px`,
       'background-color': this.elementModel.backgroundColor,

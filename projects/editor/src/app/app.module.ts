@@ -1,23 +1,8 @@
 import { Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
-
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatListModule } from '@angular/material/list';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -26,19 +11,11 @@ import { PropertiesComponent } from './components/unit-view/page-view/properties
 import { ConfirmationDialog, UnitViewComponent } from './components/unit-view/unit-view.component';
 import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
 import { PageCanvasComponent } from './components/unit-view/page-view/canvas/page-canvas.component';
-import { ButtonComponent } from '../../../common/element-components/button.component';
-import { LabelComponent } from '../../../common/element-components/label.component';
-import { TextFieldComponent } from '../../../common/element-components/text-field.component';
 import { CanvasToolbarComponent } from './components/unit-view/page-view/canvas/canvas.toolbar.component';
-import { ImageComponent } from '../../../common/element-components/image.component';
-import { AudioComponent } from '../../../common/element-components/audio.component';
-import { VideoComponent } from '../../../common/element-components/video.component';
-import { RadioButtonGroupComponent } from '../../../common/element-components/radio-button-group.component';
-import { CheckboxComponent } from '../../../common/element-components/checkbox.component';
-import { DropdownComponent } from '../../../common/element-components/dropdown.component';
-import { CorrectionComponent } from '../../../common/element-components/compound-components/correction.component';
 import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/canvas-section.component';
 import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/canvas/canvas-section-toolbar.component';
+
+import { SharedModule } from '../../../common/app.module';
 
 @NgModule({
   declarations: [
@@ -49,17 +26,7 @@ import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/
     UnitViewComponent,
     PageViewComponent,
     PageCanvasComponent,
-    ButtonComponent,
-    LabelComponent,
-    TextFieldComponent,
     CanvasToolbarComponent,
-    ImageComponent,
-    AudioComponent,
-    VideoComponent,
-    RadioButtonGroupComponent,
-    CheckboxComponent,
-    DropdownComponent,
-    CorrectionComponent,
     CanvasSectionComponent,
     CanvasSectionToolbarComponent,
     ConfirmationDialog
@@ -67,21 +34,8 @@ import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FlexLayoutModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatTabsModule,
-    MatButtonModule,
-    MatInputModule,
-    FormsModule, // TODO needed?
-    DragDropModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatListModule,
-    MatExpansionModule,
-    MatSidenavModule,
-    MatDialogModule
+    CommonModule,
+    SharedModule
   ],
   providers: [],
   // bootstrap: [AppComponent]

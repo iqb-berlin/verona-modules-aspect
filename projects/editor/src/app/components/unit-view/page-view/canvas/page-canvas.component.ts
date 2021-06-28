@@ -8,7 +8,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { CanvasSectionComponent } from './canvas-section.component';
-import { CanvasElementComponent } from './canvas-element-component.directive';
+import { CanvasElementComponent } from '../../../../../../../common/canvas-element-component.directive';
 
 @Component({
   selector: 'app-page-canvas',

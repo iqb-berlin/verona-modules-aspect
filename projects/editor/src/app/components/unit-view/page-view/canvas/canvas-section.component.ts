@@ -5,18 +5,17 @@ import {
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
-import { CanvasElementComponent } from './canvas-element-component.directive';
-import { UnitService } from '../../../../unit.service';
-import { LabelComponent } from './canvas-element-components/label.component';
-import { ButtonComponent } from './canvas-element-components/button.component';
-import { TextFieldComponent } from './canvas-element-components/text-field.component';
-import { CheckboxComponent } from './canvas-element-components/checkbox.component';
-import { DropdownComponent } from './canvas-element-components/dropdown.component';
-import { RadioButtonGroupComponent } from './canvas-element-components/radio-button-group.component';
-import { ImageComponent } from './canvas-element-components/image.component';
-import { AudioComponent } from './canvas-element-components/audio.component';
-import { VideoComponent } from './canvas-element-components/video.component';
-import { CorrectionComponent } from './canvas-element-components/compound-components/correction.component';
+import { CanvasElementComponent } from '../../../../../../../common/canvas-element-component.directive';
+import { LabelComponent } from '../../../../../../../common/element-components/label.component';
+import { ButtonComponent } from '../../../../../../../common/element-components/button.component';
+import { TextFieldComponent } from '../../../../../../../common/element-components/text-field.component';
+import { CheckboxComponent } from '../../../../../../../common/element-components/checkbox.component';
+import { DropdownComponent } from '../../../../../../../common/element-components/dropdown.component';
+import { RadioButtonGroupComponent } from '../../../../../../../common/element-components/radio-button-group.component';
+import { ImageComponent } from '../../../../../../../common/element-components/image.component';
+import { AudioComponent } from '../../../../../../../common/element-components/audio.component';
+import { VideoComponent } from '../../../../../../../common/element-components/video.component';
+import { CorrectionComponent } from '../../../../../../../common/element-components/compound-components/correction.component';
 
 @Component({
   selector: '[app-canvas-section]',

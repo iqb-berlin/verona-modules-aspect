@@ -26,17 +26,17 @@ import { PropertiesComponent } from './components/unit-view/page-view/properties
 import { ConfirmationDialog, UnitViewComponent } from './components/unit-view/unit-view.component';
 import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
 import { PageCanvasComponent } from './components/unit-view/page-view/canvas/page-canvas.component';
-import { ButtonComponent } from './components/unit-view/page-view/canvas/canvas-element-components/button.component';
-import { LabelComponent } from './components/unit-view/page-view/canvas/canvas-element-components/label.component';
-import { TextFieldComponent } from './components/unit-view/page-view/canvas/canvas-element-components/text-field.component';
+import { ButtonComponent } from '../../../common/element-components/button.component';
+import { LabelComponent } from '../../../common/element-components/label.component';
+import { TextFieldComponent } from '../../../common/element-components/text-field.component';
 import { CanvasToolbarComponent } from './components/unit-view/page-view/canvas/canvas.toolbar.component';
-import { ImageComponent } from './components/unit-view/page-view/canvas/canvas-element-components/image.component';
-import { AudioComponent } from './components/unit-view/page-view/canvas/canvas-element-components/audio.component';
-import { VideoComponent } from './components/unit-view/page-view/canvas/canvas-element-components/video.component';
-import { RadioButtonGroupComponent } from './components/unit-view/page-view/canvas/canvas-element-components/radio-button-group.component';
-import { CheckboxComponent } from './components/unit-view/page-view/canvas/canvas-element-components/checkbox.component';
-import { DropdownComponent } from './components/unit-view/page-view/canvas/canvas-element-components/dropdown.component';
-import { CorrectionComponent } from './components/unit-view/page-view/canvas/canvas-element-components/compound-components/correction.component';
+import { ImageComponent } from '../../../common/element-components/image.component';
+import { AudioComponent } from '../../../common/element-components/audio.component';
+import { VideoComponent } from '../../../common/element-components/video.component';
+import { RadioButtonGroupComponent } from '../../../common/element-components/radio-button-group.component';
+import { CheckboxComponent } from '../../../common/element-components/checkbox.component';
+import { DropdownComponent } from '../../../common/element-components/dropdown.component';
+import { CorrectionComponent } from '../../../common/element-components/compound-components/correction.component';
 import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/canvas-section.component';
 import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/canvas/canvas-section-toolbar.component';
 

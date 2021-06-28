@@ -5,7 +5,7 @@ import {
 import {
   Unit, UnitPage, UnitUIElement
 } from '../../../common/unit';
-import { FileService } from './file.service';
+import { FileService } from '../../../common/file.service';
 import * as UnitFactory from './model/UnitFactory';
 
 @Injectable({

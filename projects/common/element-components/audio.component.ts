@@ -4,13 +4,13 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
 @Component({
   selector: 'app-audio',
   template: `
-      <div *ngIf="!draggable"
+      <div *ngIf="draggable"
            cdkDrag [cdkDragData]="this"
            (click)="click($event)"
            [ngStyle]="style">
           <audio controls src="{{$any(elementModel).src}}"></audio>
       </div>
-      <div *ngIf="draggable"
+      <div *ngIf="!draggable"
            (click)="click($event)"
            [ngStyle]="style">
           <audio controls src="{{$any(elementModel).src}}"></audio>

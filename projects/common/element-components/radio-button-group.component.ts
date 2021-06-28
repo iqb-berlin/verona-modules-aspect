@@ -4,7 +4,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
 @Component({
   selector: 'app-radio-button-group',
   template: `
-      <div *ngIf="!draggable"
+      <div *ngIf="draggable"
            cdkDrag [cdkDragData]="this"
            (click)="click($event)"
            [ngStyle]="style">
@@ -15,7 +15,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
               </mat-radio-button>
           </mat-radio-group>
       </div>
-      <div *ngIf="draggable"
+      <div *ngIf="!draggable"
            (click)="click($event)"
            [ngStyle]="style">
           <label id="radio-group-label">{{$any(elementModel).text}}</label>

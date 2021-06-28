@@ -4,7 +4,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
 @Component({
   selector: 'app-dropdown',
   template: `
-      <mat-form-field *ngIf="!draggable"
+      <mat-form-field *ngIf="draggable"
                       cdkDrag [cdkDragData]="this"
                       appearance="fill"
                       (click)="click($event)"
@@ -16,7 +16,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
               </mat-option>
           </mat-select>
       </mat-form-field>
-      <mat-form-field *ngIf="draggable"
+      <mat-form-field *ngIf="!draggable"
                       appearance="fill"
                       (click)="click($event)"
                       [ngStyle]="style">

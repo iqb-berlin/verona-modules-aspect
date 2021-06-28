@@ -25,7 +25,7 @@ import { CorrectionComponent } from '../../../../../../../common/element-compone
 })
 export class CanvasSectionComponent implements OnInit {
   @Input() section!: UnitPageSection;
-  @Input() manualPositioning: boolean = false;
+  @Input() childrenDraggable: boolean = false;
   @Output() elementSelected = new EventEmitter<{ componentElement: CanvasElementComponent, multiSelect: boolean }>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   private canvasComponents: CanvasElementComponent[] = [];
@@ -71,8 +71,7 @@ export class CanvasSectionComponent implements OnInit {
     const componentFactory = this.getComponentFactory(element);
     const componentRef = this.elementContainer.createComponent(componentFactory);
     componentRef.instance.elementModel = element;
-    componentRef.instance.draggable = this.manualPositioning;
-    componentRef.instance.updateStyle();
+    componentRef.instance.draggable = this.childrenDraggable;
 
     componentRef.instance.elementSelected.subscribe(
       (event: { componentElement: CanvasElementComponent, multiSelect: boolean }) => {

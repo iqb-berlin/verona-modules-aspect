@@ -31,14 +31,14 @@ import { CanvasElementComponent } from '../../../../../../../common/canvas-eleme
         <div #section_component app-canvas-section class="section"
              *ngFor="let section of page.sections; let i = index"
              [section]="section"
-             cdkDrag [manualPositioning]="sectionEditMode"
+             cdkDrag [childrenDraggable]="!sectionEditMode"
              [ngStyle]="{border: '1px solid', width: '100%', 'height.px': section.height}">
         </div>
       </div>
       <div *ngIf="!sectionEditMode" cdkDropListGroup class="section-list">
         <div #section_component app-canvas-section class="section"
              *ngFor="let section of page.sections; let i = index"
-             [section]="section"
+             [section]="section" [childrenDraggable]="!sectionEditMode"
              (elementSelected)="elementSelected($event)" (click)="selectSection(i)"
              cdkDropList (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
              [ngStyle]="{

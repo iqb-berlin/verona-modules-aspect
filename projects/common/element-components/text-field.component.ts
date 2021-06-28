@@ -4,7 +4,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
 @Component({
   selector: 'app-text-field',
   template: `
-      <div *ngIf="!draggable"
+      <div *ngIf="draggable"
            cdkDrag [cdkDragData]="this">
           <input *ngIf="$any(elementModel).multiline === false" matInput (click)="click($event)"
                  [ngStyle]="style"
@@ -15,7 +15,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
                     placeholder="{{$any(elementModel).placeholder}}">
       </textarea>
       </div>
-      <div *ngIf="draggable">
+      <div *ngIf="!draggable">
           <input *ngIf="$any(elementModel).multiline === false" matInput (click)="click($event)"
                  [ngStyle]="style"
                  placeholder="{{$any(elementModel).placeholder}}">

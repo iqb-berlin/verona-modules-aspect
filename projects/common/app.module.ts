@@ -66,7 +66,17 @@ import { DropdownComponent } from './element-components/dropdown.component';
     MatExpansionModule,
     MatSidenavModule,
     MatDialogModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ButtonComponent,
+    LabelComponent,
+    TextFieldComponent,
+    ImageComponent,
+    AudioComponent,
+    VideoComponent,
+    RadioButtonGroupComponent,
+    CheckboxComponent,
+    DropdownComponent,
+    CorrectionComponent
   ]
 })
 export class SharedModule { }

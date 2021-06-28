@@ -30,8 +30,7 @@ export class CanvasSectionComponent implements OnInit {
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   private canvasComponents: CanvasElementComponent[] = [];
 
-  constructor(public unitService: UnitService,
-              private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     this.renderSection();

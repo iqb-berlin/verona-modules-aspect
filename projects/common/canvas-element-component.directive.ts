@@ -1,7 +1,7 @@
 import {
   Directive, Output, EventEmitter, Input
 } from '@angular/core';
-import { UnitUIElement } from '../../../../../../../common/unit';
+import { UnitUIElement } from './unit';
 
 @Directive()
 export abstract class CanvasElementComponent {

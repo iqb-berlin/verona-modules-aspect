@@ -8,7 +8,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { CanvasSectionComponent } from './canvas-section.component';
-import { CanvasElementComponent } from '../../../../../../../common/canvas-element-component.directive';
+import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
 
 @Component({
   selector: 'app-page-canvas',
@@ -63,7 +63,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   page!: UnitPage;
   sectionEditMode: boolean = false;
   selectedSectionIndex = 0;
-  selectedComponentElements: CanvasElementComponent[] = [];
+  selectedComponentElements: CanvasDragOverlayComponent[] = [];
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
@@ -107,12 +107,12 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     });
   }
 
-  elementSelected(event: { componentElement: CanvasElementComponent; multiSelect: boolean }): void {
+  elementSelected(event: { componentElement: CanvasDragOverlayComponent; multiSelect: boolean }): void {
     if (!event.multiSelect) {
       this.clearSelection();
     }
     this.selectedComponentElements.push(event.componentElement);
-    this.unitService.selectElement(event.componentElement.elementModel);
+    this.unitService.selectElement(event.componentElement.element);
     event.componentElement.selected = true;
   }
 
@@ -126,7 +126,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   // TODO use updateSelectedElementProperty
   elementDropped(event: CdkDragDrop<UnitPageSection>): void {
-    const sourceItemModel = event.item.data.elementModel;
+    const sourceItemModel = event.item.data;
 
     if (event.previousContainer !== event.container) {
       transferArrayItem(event.previousContainer.data.elements,
@@ -170,31 +170,31 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     let newValue: number;
     switch (event) {
       case 'left':
-        newValue = Math.min(...this.selectedComponentElements.map(el => el.elementModel.xPosition));
-        this.selectedComponentElements.forEach((element: CanvasElementComponent) => {
-          element.elementModel.xPosition = newValue;
+        newValue = Math.min(...this.selectedComponentElements.map(el => el.element.xPosition));
+        this.selectedComponentElements.forEach((element: CanvasDragOverlayComponent) => {
+          element.element.xPosition = newValue;
         });
         break;
       case 'right':
         newValue = Math.max(...this.selectedComponentElements.map(
-          el => el.elementModel.xPosition + el.elementModel.width
+          el => el.element.xPosition + el.element.width
         ));
-        this.selectedComponentElements.forEach((element: CanvasElementComponent) => {
-          element.elementModel.xPosition = newValue - element.elementModel.width;
+        this.selectedComponentElements.forEach((element: CanvasDragOverlayComponent) => {
+          element.element.xPosition = newValue - element.element.width;
         });
         break;
       case 'top':
-        newValue = Math.min(...this.selectedComponentElements.map(el => el.elementModel.yPosition));
-        this.selectedComponentElements.forEach((element: CanvasElementComponent) => {
-          element.elementModel.yPosition = newValue;
+        newValue = Math.min(...this.selectedComponentElements.map(el => el.element.yPosition));
+        this.selectedComponentElements.forEach((element: CanvasDragOverlayComponent) => {
+          element.element.yPosition = newValue;
         });
         break;
       case 'bottom':
         newValue = Math.max(...this.selectedComponentElements.map(
-          el => el.elementModel.yPosition + el.elementModel.height
+          el => el.element.yPosition + el.element.height
         ));
-        this.selectedComponentElements.forEach((element: CanvasElementComponent) => {
-          element.elementModel.yPosition = newValue - element.elementModel.height;
+        this.selectedComponentElements.forEach((element: CanvasDragOverlayComponent) => {
+          element.element.yPosition = newValue - element.element.height;
         });
         break;
       // no default

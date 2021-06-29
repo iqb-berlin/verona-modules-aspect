@@ -5,17 +5,7 @@ import {
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
-import { CanvasElementComponent } from '../../../../../../../common/canvas-element-component.directive';
-import { LabelComponent } from '../../../../../../../common/element-components/label.component';
-import { ButtonComponent } from '../../../../../../../common/element-components/button.component';
-import { TextFieldComponent } from '../../../../../../../common/element-components/text-field.component';
-import { CheckboxComponent } from '../../../../../../../common/element-components/checkbox.component';
-import { DropdownComponent } from '../../../../../../../common/element-components/dropdown.component';
-import { RadioButtonGroupComponent } from '../../../../../../../common/element-components/radio-button-group.component';
-import { ImageComponent } from '../../../../../../../common/element-components/image.component';
-import { AudioComponent } from '../../../../../../../common/element-components/audio.component';
-import { VideoComponent } from '../../../../../../../common/element-components/video.component';
-import { CorrectionComponent } from '../../../../../../../common/element-components/compound-components/correction.component';
+import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
 
 @Component({
   selector: '[app-canvas-section]',
@@ -26,9 +16,9 @@ import { CorrectionComponent } from '../../../../../../../common/element-compone
 export class CanvasSectionComponent implements OnInit {
   @Input() section!: UnitPageSection;
   @Input() childrenDraggable: boolean = false;
-  @Output() elementSelected = new EventEmitter<{ componentElement: CanvasElementComponent, multiSelect: boolean }>();
+  @Output() elementSelected = new EventEmitter<{ componentElement: CanvasDragOverlayComponent, multiSelect: boolean }>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
-  private canvasComponents: CanvasElementComponent[] = [];
+  private canvasComponents: CanvasDragOverlayComponent[] = [];
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
@@ -45,15 +35,15 @@ export class CanvasSectionComponent implements OnInit {
   }
 
   updateElementStyles(): void {
-    this.canvasComponents.forEach((component: CanvasElementComponent) => {
+    this.canvasComponents.forEach((component: CanvasDragOverlayComponent) => {
       component.updateStyle();
     });
   }
 
   updateSelection(selectedElements: UnitUIElement[]): void {
-    this.canvasComponents.forEach((component: CanvasElementComponent) => {
+    this.canvasComponents.forEach((component: CanvasDragOverlayComponent) => {
       selectedElements.forEach((selectedElement: UnitUIElement) => {
-        if (component.elementModel === selectedElement) {
+        if (component.element === selectedElement) {
           component.selected = true;
         }
       });
@@ -61,49 +51,21 @@ export class CanvasSectionComponent implements OnInit {
   }
 
   clearSelection(): void {
-    this.canvasComponents.forEach((canvasComponent: CanvasElementComponent) => {
+    this.canvasComponents.forEach((canvasComponent: CanvasDragOverlayComponent) => {
       canvasComponent.selected = false;
     });
   }
 
   private createCanvasElement(element: UnitUIElement): void {
-    const componentFactory = this.getComponentFactory(element);
-    const componentRef = this.elementContainer.createComponent(componentFactory);
-    componentRef.instance.elementModel = element;
-    componentRef.instance.draggable = this.childrenDraggable;
+    const overlayFactory = this.componentFactoryResolver.resolveComponentFactory(CanvasDragOverlayComponent);
+    const overlayRef = this.elementContainer.createComponent(overlayFactory);
+    overlayRef.instance.element = element;
 
-    componentRef.instance.elementSelected.subscribe(
-      (event: { componentElement: CanvasElementComponent, multiSelect: boolean }) => {
+    overlayRef.instance.elementSelected.subscribe(
+      (event: { componentElement: CanvasDragOverlayComponent, multiSelect: boolean }) => {
         this.elementSelected.emit(event);
       }
     );
-    this.canvasComponents.push(componentRef.instance);
-  }
-
-  private getComponentFactory(element: UnitUIElement) {
-    switch (element.type) {
-      case 'label':
-        return this.componentFactoryResolver.resolveComponentFactory(LabelComponent);
-      case 'button':
-        return this.componentFactoryResolver.resolveComponentFactory(ButtonComponent);
-      case 'text-field':
-        return this.componentFactoryResolver.resolveComponentFactory(TextFieldComponent);
-      case 'checkbox':
-        return this.componentFactoryResolver.resolveComponentFactory(CheckboxComponent);
-      case 'dropdown':
-        return this.componentFactoryResolver.resolveComponentFactory(DropdownComponent);
-      case 'radio':
-        return this.componentFactoryResolver.resolveComponentFactory(RadioButtonGroupComponent);
-      case 'image':
-        return this.componentFactoryResolver.resolveComponentFactory(ImageComponent);
-      case 'audio':
-        return this.componentFactoryResolver.resolveComponentFactory(AudioComponent);
-      case 'video':
-        return this.componentFactoryResolver.resolveComponentFactory(VideoComponent);
-      case 'correction':
-        return this.componentFactoryResolver.resolveComponentFactory(CorrectionComponent);
-      default:
-        throw new Error('unknown element');
-    }
+    this.canvasComponents.push(overlayRef.instance);
   }
 }

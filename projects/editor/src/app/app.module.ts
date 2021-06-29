@@ -16,6 +16,7 @@ import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/
 import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/canvas/canvas-section-toolbar.component';
 
 import { SharedModule } from '../../../common/app.module';
+import { CanvasDragOverlayComponent } from './components/unit-view/page-view/canvas/canvas-drag-overlay.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { SharedModule } from '../../../common/app.module';
     CanvasToolbarComponent,
     CanvasSectionComponent,
     CanvasSectionToolbarComponent,
-    ConfirmationDialog
+    ConfirmationDialog,
+    CanvasDragOverlayComponent
   ],
   imports: [
     BrowserModule,

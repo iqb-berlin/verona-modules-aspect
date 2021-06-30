@@ -3,7 +3,6 @@ import { FileService } from '../../../common/file.service';
 import { Unit } from '../../../common/unit';
 
 @Component({
-  selector: 'app-root',
   template: `
         PLAYER ALIVE
         <mat-tab-group mat-align-tabs="start">

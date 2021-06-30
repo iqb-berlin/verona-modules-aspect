@@ -1,4 +1,4 @@
-import { Injector, NgModule } from '@angular/core';
+import { DoBootstrap, Injector, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -14,9 +14,9 @@ import { PageCanvasComponent } from './components/unit-view/page-view/canvas/pag
 import { CanvasToolbarComponent } from './components/unit-view/page-view/canvas/canvas.toolbar.component';
 import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/canvas-section.component';
 import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/canvas/canvas-section-toolbar.component';
-
-import { SharedModule } from '../../../common/app.module';
 import { CanvasDragOverlayComponent } from './components/unit-view/page-view/canvas/canvas-drag-overlay.component';
+import { SharedModule } from '../../../common/app.module';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -39,16 +39,14 @@ import { CanvasDragOverlayComponent } from './components/unit-view/page-view/can
     CommonModule,
     SharedModule
   ],
-  providers: [],
-  // bootstrap: [AppComponent]
-  entryComponents: [
-    AppComponent
-  ]
+  providers: []
 })
-export class AppModule {
+
+export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {}
   ngDoBootstrap(): void {
+    const appSelector = (environment.local) ? 'app-root' : 'editor-aspect';
     const editorElement = createCustomElement(AppComponent, { injector: this.injector });
-    customElements.define('editor-aspect', editorElement);
+    customElements.define(appSelector, editorElement);
   }
 }

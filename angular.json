@@ -61,6 +61,20 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "local": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/editor/src/environments/environment.ts",
+                  "with": "projects/editor/src/environments/environment.local.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -73,6 +87,9 @@
             },
             "development": {
               "browserTarget": "editor:build:development"
+            },
+            "local": {
+              "browserTarget": "editor:build:local"
             }
           },
           "defaultConfiguration": "development"
@@ -160,6 +177,20 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "local": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/player/src/environments/environment.ts",
+                  "with": "projects/player/src/environments/environment.local.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -172,6 +203,9 @@
             },
             "development": {
               "browserTarget": "player:build:development"
+            },
+            "local": {
+              "browserTarget": "player:build:local"
             }
           },
           "defaultConfiguration": "development"

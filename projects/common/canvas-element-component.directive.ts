@@ -14,8 +14,8 @@ export abstract class CanvasElementComponent implements OnInit {
 
   updateStyle(): void {
     this.style = {
-      width: '100%',
-      height: '100%',
+      width: `${this.elementModel.width}px`,
+      height: `${this.elementModel.height}px`,
       'background-color': this.elementModel.backgroundColor,
       color: this.elementModel.fontColor,
       'font-family': this.elementModel.font,

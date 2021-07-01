@@ -8,7 +8,10 @@ import { UnitPage } from '../../../common/unit';
          [section]="section"
          [ngStyle]="{
                 width: '100%',
+                position: 'relative',
+                display: 'inline-block',
                 'height.px': section.height }">
+      {{section.height}}
     </app-section>
   `
 })

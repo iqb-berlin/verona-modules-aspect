@@ -12,8 +12,9 @@ export abstract class CanvasElementComponent implements OnInit {
     this.updateStyle();
   }
 
-  updateStyle(): void {
+  updateStyle(newProperties: Record<string, string> = {}): void {
     this.style = {
+      ...newProperties,
       width: `${this.elementModel.width}px`,
       height: `${this.elementModel.height}px`,
       'background-color': this.elementModel.backgroundColor,

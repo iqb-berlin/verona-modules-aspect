@@ -3,17 +3,62 @@
     {
       "sections": [
         {
-          "elements": [],
+          "elements": [
+            {
+              "label": "Label Dropdown",
+              "options": [
+                "op1",
+                "op2"
+              ],
+              "type": "dropdown",
+              "id": "dummyID",
+              "xPosition": 124,
+              "yPosition": 26,
+              "width": 180,
+              "height": 60,
+              "backgroundColor": "grey",
+              "fontColor": "blue",
+              "font": "Arial",
+              "fontSize": 18,
+              "bold": true,
+              "italic": false,
+              "underline": false
+            }
+          ],
           "width": 1200,
           "height": 200,
           "backgroundColor": "#FFFAF0"
         },
         {
-          "elements": [],
+          "elements": [
+            {
+              "label": "Button Text",
+              "type": "button",
+              "id": "dummyID",
+              "xPosition": 440,
+              "yPosition": 77,
+              "width": 180,
+              "height": 60,
+              "backgroundColor": "grey",
+              "fontColor": "blue",
+              "font": "Arial",
+              "fontSize": 18,
+              "bold": true,
+              "italic": false,
+              "underline": false
+            }
+          ],
           "width": 1200,
           "height": 200,
           "backgroundColor": "#FFFAF0"
-        },
+        }
+      ],
+      "width": 1200,
+      "height": 550,
+      "backgroundColor": "#FFFAF0"
+    },
+    {
+      "sections": [
         {
           "elements": [],
           "width": 1200,

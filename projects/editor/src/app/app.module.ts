@@ -16,7 +16,6 @@ import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/
 import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/canvas/canvas-section-toolbar.component';
 import { CanvasDragOverlayComponent } from './components/unit-view/page-view/canvas/canvas-drag-overlay.component';
 import { SharedModule } from '../../../common/app.module';
-import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -45,8 +44,7 @@ import { environment } from '../environments/environment';
 export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {}
   ngDoBootstrap(): void {
-    const appSelector = (environment.local) ? 'app-root' : 'editor-aspect';
     const editorElement = createCustomElement(AppComponent, { injector: this.injector });
-    customElements.define(appSelector, editorElement);
+    customElements.define('editor-aspect', editorElement);
   }
 }

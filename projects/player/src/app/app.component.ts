@@ -7,6 +7,7 @@ interface StartData {
 }
 
 @Component({
+  selector: 'player-aspect',
   template: `
         PLAYER ALIVE
         <mat-tab-group mat-align-tabs="start">

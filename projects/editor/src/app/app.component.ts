@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+  selector: 'editor-aspect',
   template: `
     <div fxLayout="column">
       <app-toolbar></app-toolbar>

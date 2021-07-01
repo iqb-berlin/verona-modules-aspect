@@ -7,9 +7,7 @@ import { createCustomElement } from '@angular/elements';
 import { AppComponent } from './app.component';
 import { PageComponent } from './page.component';
 import { SectionComponent } from './section.component';
-
 import { SharedModule } from '../../../common/app.module';
-import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,8 +27,7 @@ import { environment } from '../environments/environment';
 export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {}
   ngDoBootstrap(): void {
-    const appSelector = (environment.local) ? 'app-root' : 'player-aspect';
     const playerElement = createCustomElement(AppComponent, { injector: this.injector });
-    customElements.define(appSelector, playerElement);
+    customElements.define('player-aspect', playerElement);
   }
 }

@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FileService } from '../../../common/file.service';
+import { Component, Input } from '@angular/core';
 import { Unit } from '../../../common/unit';
+
+interface StartData {
+  unitDefinition: string;
+  unitStateData: string;
+}
 
 @Component({
   template: `
@@ -12,14 +16,14 @@ import { Unit } from '../../../common/unit';
         </mat-tab-group>
     `
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   unitJSON: Unit = {
     pages: []
   };
 
-  async ngOnInit(): Promise<void> {
-    // const rawUnit = await FileService.loadFile(['.json']);
-    this.unitJSON = this.exampleUnit;
+  @Input()
+  set startData(startData: StartData) {
+    this.unitJSON = JSON.parse(startData.unitDefinition);
   }
 
   exampleUnit = {

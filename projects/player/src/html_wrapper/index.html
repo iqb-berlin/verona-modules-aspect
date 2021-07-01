@@ -43,10 +43,10 @@
       "notSupportedFeatures": []
     }
   </script>
-  <link rel="stylesheet" href="verona-player-aspect.css">
+  <link rel="stylesheet" href="player.css">
 </head>
 <body>
-<script type="text/javascript" src="verona-player-aspect.js"></script>
+<script type="text/javascript" src="player.js"></script>
 <script>
   let sessionId;
   let playerMetadata = document.querySelectorAll("meta")[1].attributes;
@@ -79,7 +79,7 @@
     }, '*');
   }
 
-  const playerComponent = document.createElement('player-component',{ is : 'player-component' });
+  const playerComponent = document.createElement('player-aspect',{ is : 'player-aspect' });
   playerComponent.addEventListener('valueChanged', (event) => {
     elementValueChanged(event);
   });
@@ -110,7 +110,7 @@
           break;
         case 'vopNavigationDeniedNotification':
           console.info(['player: got vopNavigationDeniedNotification']);
-          playerComponent.tryLeaveNotify();
+          // playerComponent.tryLeaveNotify();
           break;
         default:
           console.warn(`player: got message of unknown type ${event.data.type}`);

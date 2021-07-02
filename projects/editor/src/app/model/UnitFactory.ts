@@ -15,9 +15,8 @@ export function createUnit(): Unit {
 export function createUnitPage(): UnitPage {
   return {
     sections: [],
-    width: 1200,
-    height: 550,
-    backgroundColor: '#FFFAF0'
+    width: 1100,
+    backgroundColor: 'white'
   };
 }
 
@@ -38,7 +37,7 @@ export function createUnitUIElement(type: string): UnitUIElement {
     yPosition: 0,
     width: 180,
     height: 60,
-    backgroundColor: 'grey',
+    backgroundColor: 'lightgrey',
     fontColor: 'blue',
     font: 'Arial',
     fontSize: 18,

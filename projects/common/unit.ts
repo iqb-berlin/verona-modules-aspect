@@ -5,7 +5,6 @@ export interface Unit {
 export interface UnitPage {
   sections: UnitPageSection[];
   width: number;
-  height: number;
   backgroundColor: string;
 }
 

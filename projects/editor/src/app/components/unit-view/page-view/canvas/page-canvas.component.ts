@@ -25,7 +25,6 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
 
     <div class="canvasFrame"
          [style.width.px]="page.width"
-         [style.height.px]="page.height"
          [style.background-color]="page.backgroundColor">
       <div *ngIf="sectionEditMode" cdkDropList (cdkDropListDropped)="dropSection($event)">
         <div #section_component app-canvas-section class="section"

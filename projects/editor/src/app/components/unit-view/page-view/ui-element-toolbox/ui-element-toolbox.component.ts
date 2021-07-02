@@ -5,7 +5,7 @@ import { UnitService } from '../../../../unit.service';
   selector: 'app-ui-element-toolbox',
   templateUrl: './ui-element-toolbox.component.html',
   styles: [
-    ':host {background-color: #F9FBFB; border: 1px solid black;}',
+    ':host {background-color: #F9FBFB;}',
     ':host {text-align: center; font-size: larger}',
     ':host button {text-align: left; font-size: large; margin: 5px}',
     ':host ::ng-deep .mat-tab-label {min-width: 0}'

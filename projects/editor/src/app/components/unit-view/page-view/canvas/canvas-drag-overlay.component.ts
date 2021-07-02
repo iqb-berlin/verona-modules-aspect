@@ -46,7 +46,7 @@ export class CanvasDragOverlayComponent implements OnInit {
 
   updateStyle(): void {
     this.style = {
-      border: this._selected ? '5px solid' : '',
+      border: this._selected ? '2px solid' : '',
       width: `${this.element.width}px`,
       height: `${this.element.height}px`,
       left: `${this.element.xPosition.toString()}px`,

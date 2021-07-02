@@ -8,6 +8,36 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <player-aspect></player-aspect>
+<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+  <fieldset>
+    <h4>Load Unit Definition</h4>
+    <input type='file' id='fileInput' accept='.json,application/json'>
+    <input type='button' value='Load' onclick='loadUnitDefinition();'>
+  </fieldset>
+</form>
+<player-aspect></player-aspect>
 </body>
+
+<script type="text/javascript">
+
+  const playerComponent = document.getElementsByTagName('player-aspect').item(0);
+
+  setStartData = (e) => {
+    playerComponent.startData = {
+      unitDefinition: e.target.result,
+      unitStateData: ''
+    };
+  }
+
+  loadUnitDefinition = () => {
+    let input = document.getElementById('fileInput');
+    if (!input['files'][0]) {
+      alert("Please choose a file before clicking 'Load'");
+    } else {
+      const fileReader = new FileReader();
+      fileReader.onload = setStartData;
+      fileReader.readAsText(input['files'][0]);
+    }
+  }
+</script>
 </html>

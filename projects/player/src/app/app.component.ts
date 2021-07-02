@@ -9,12 +9,11 @@ interface StartData {
 @Component({
   selector: 'player-aspect',
   template: `
-        PLAYER ALIVE
-        <mat-tab-group mat-align-tabs="start">
-          <mat-tab *ngFor="let page of unitJSON.pages; let i = index" label="Seite {{i+1}}">
-            <app-page [page]="page"></app-page>
-          </mat-tab>
-        </mat-tab-group>
+    <mat-tab-group mat-align-tabs="start">
+      <mat-tab *ngFor="let page of unitJSON.pages; let i = index" label="Seite {{i+1}}">
+        <app-page [page]="page"></app-page>
+      </mat-tab>
+    </mat-tab-group>
     `
 })
 export class AppComponent {

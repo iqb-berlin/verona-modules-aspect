@@ -7,6 +7,7 @@ import {
 } from '../../../common/unit';
 import { FileService } from '../../../common/file.service';
 import * as UnitFactory from './model/UnitFactory';
+import { MessageService } from '../../../common/message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class UnitService {
   pageSwitch = new Subject();
   elementUpdated = new Subject();
 
-  constructor() {
+  constructor(private messageService: MessageService) {
     this._unit = new BehaviorSubject(UnitFactory.createUnit());
     const initialPage = UnitFactory.createUnitPage();
     const initialSection = UnitFactory.createUnitPageSection();
@@ -85,8 +86,7 @@ export class UnitService {
 
   deleteSection(): void {
     if (this._unit.value.pages[this._selectedPageIndex.value].sections.length < 2) {
-      // TODO show toast
-      console.log('cant delete last section');
+      this.messageService.showWarning('cant delete last section');
     } else {
       const index = this._selectedPageSectionIndex.value;
       this._unit.value.pages[this._selectedPageIndex.value].sections.splice(index, 1);

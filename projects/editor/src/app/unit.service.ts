@@ -62,6 +62,7 @@ export class UnitService {
 
   addPage(): void {
     const newPage = UnitFactory.createUnitPage();
+    newPage.sections.push(UnitFactory.createUnitPageSection());
     this._unit.value.pages.push(newPage);
     this._pages.push(new BehaviorSubject(newPage as UnitPage));
     this._unit.next(this._unit.value);

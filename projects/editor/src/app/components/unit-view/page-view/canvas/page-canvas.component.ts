@@ -23,7 +23,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
       (alignElements)="alignElements($event)">
     </app-canvas-toolbar>
 
-    <div class="canvasFrame"
+    <div class="canvasFrame" fxLayout="row"
          [style.background-color]="page.backgroundColor">
       <div *ngIf="sectionEditMode" cdkDropList (cdkDropListDropped)="dropSection($event)">
         <div #section_component app-canvas-section class="section"
@@ -48,7 +48,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
     </div>
   `,
   styles: [
-    '.canvasFrame {background-color: lightgrey; padding: 15px; height: 65vh; overflow: auto; width: calc(100% - 30px)}',
+    '.canvasFrame {background-color: lightgrey; padding: 15px; height: 65vh; overflow: auto; width: 100%}',
     '.section {position: relative;}'
   ]
 })

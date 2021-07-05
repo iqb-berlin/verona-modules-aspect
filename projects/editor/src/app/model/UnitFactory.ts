@@ -16,6 +16,7 @@ export function createUnitPage(): UnitPage {
   return {
     sections: [],
     width: 1100,
+    margin: 15,
     backgroundColor: 'white'
   };
 }

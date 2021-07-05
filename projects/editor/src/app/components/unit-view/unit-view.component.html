@@ -12,7 +12,7 @@
       Eigenschaften ein-/ausblenden
     </button>
 
-    <div fxLayout="column">
+    <div>
       <mat-tab-group mat-align-tabs="start" (selectedTabChange)="selectTab()">
         <mat-tab *ngFor="let page of unit.pages; let i = index" label="Seite {{i+1}}">
           <ng-template mat-tab-label>

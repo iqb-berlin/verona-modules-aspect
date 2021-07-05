@@ -24,14 +24,13 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
     </app-canvas-toolbar>
 
     <div class="canvasFrame"
-         [style.width.px]="page.width"
          [style.background-color]="page.backgroundColor">
       <div *ngIf="sectionEditMode" cdkDropList (cdkDropListDropped)="dropSection($event)">
         <div #section_component app-canvas-section class="section"
              *ngFor="let section of page.sections; let i = index"
              [section]="section"
              cdkDrag [childrenDraggable]="!sectionEditMode"
-             [ngStyle]="{border: '1px solid', width: '100%', 'height.px': section.height}">
+             [ngStyle]="{border: '1px solid', 'width.px': page.width, 'height.px': section.height}">
         </div>
       </div>
       <div *ngIf="!sectionEditMode" cdkDropListGroup class="section-list">
@@ -42,17 +41,18 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
              cdkDropList (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
              [ngStyle]="{
                 border: i === selectedSectionIndex ? '1px solid': '1px dotted',
-                width: '100%',
+                'width.px': page.width,
                 'height.px': section.height }">
         </div>
       </div>
     </div>
   `,
   styles: [
-    '.canvasFrame {background-color: lightgrey; padding: 15px}',
+    '.canvasFrame {background-color: lightgrey; padding: 15px; height: 65vh; overflow: auto; width: calc(100% - 30px)}',
     '.section {position: relative;}'
   ]
 })
+// TODO canvas padding as page setting
 export class PageCanvasComponent implements OnInit, OnDestroy {
   @Input() pageObservable!: Observable<UnitPage>;
   @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;

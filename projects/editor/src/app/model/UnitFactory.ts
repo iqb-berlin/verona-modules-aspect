@@ -2,7 +2,7 @@ import {
   AudioElement, ButtonElement,
   CheckboxElement, CompoundElementCorrection, DropdownElement,
   ImageElement, LabelElement, RadioButtonGroupElement,
-  TextFieldElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
+  TextFieldElement, Unit, UnitPage, UnitPageSection, BasicUnitUIElement,
   VideoElement
 } from '../../../../common/unit';
 
@@ -30,9 +30,8 @@ export function createUnitPageSection(): UnitPageSection {
   };
 }
 
-export function createUnitUIElement(type: string): UnitUIElement {
+export function createUnitUIElement(): BasicUnitUIElement {
   return {
-    type,
     id: 'dummyID',
     xPosition: 0,
     yPosition: 0,
@@ -51,75 +50,85 @@ export function createUnitUIElement(type: string): UnitUIElement {
 export function createLabelElement(): LabelElement {
   return {
     label: 'Label Text',
-    ...createUnitUIElement('label')
+    type: 'label',
+    ...createUnitUIElement()
   };
 }
 
 export function createButtonElement(): ButtonElement {
   return {
     label: 'Button Text',
-    ...createUnitUIElement('button')
+    type: 'button',
+    ...createUnitUIElement()
   };
 }
 
 export function createTextfieldElement(): TextFieldElement {
   return {
+    type: 'text-field',
     placeholder: 'DUMMY',
     multiline: true,
-    ...createUnitUIElement('text-field')
+    ...createUnitUIElement()
   };
 }
 
 export function createCheckboxElement(): CheckboxElement {
   return {
+    type: 'checkbox',
     label: 'Label Checkbox',
-    ...createUnitUIElement('checkbox')
+    ...createUnitUIElement()
   };
 }
 
 export function createDropdownElement(): DropdownElement {
   return {
+    type: 'dropdown',
     label: 'Label Dropdown',
     options: [],
-    ...createUnitUIElement('dropdown')
+    ...createUnitUIElement()
   };
 }
 
 export function createRadioButtonGroupElement(): RadioButtonGroupElement {
   return {
+    type: 'radio',
     text: 'Label Optionsfeld',
     options: [],
     alignment: 'row',
-    ...createUnitUIElement('radio'),
+    ...createUnitUIElement(),
     height: 75
   };
 }
 
 export function createImageElement(imageSrc: string): ImageElement {
   return {
+    type: 'image',
     src: imageSrc,
-    ...createUnitUIElement('image')
+    ...createUnitUIElement()
   };
 }
 
 export function createAudioElement(audioSrc: string): AudioElement {
   return {
+    type: 'audio',
     src: audioSrc,
-    ...createUnitUIElement('audio')
+    ...createUnitUIElement()
   };
 }
 
 export function createVideoElement(videoSrc: string): VideoElement {
   return {
+    type: 'video',
     src: videoSrc,
-    ...createUnitUIElement('video')
+    ...createUnitUIElement()
   };
 }
 
 export function createCorrectionElement(): CompoundElementCorrection {
   return {
+    type: 'correction',
     text: 'dummy',
     sentences: [],
-    ...createUnitUIElement('correction')
+    ...createUnitUIElement()
   };
 }

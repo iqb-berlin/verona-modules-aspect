@@ -1,19 +1,17 @@
-<mat-drawer-container>
+<div fxLayout="row" [style.height.%]="100">
+  <button class="drawer-button show-elements-button" (click)="toolbox_drawer.toggle()">
+    <span>
+      ELEMENTE
+    </span>
+  </button>
 
-  <mat-drawer #toolbox_drawer class="toolbox_drawer" mode="side" opened>
-    <app-ui-element-toolbox></app-ui-element-toolbox>
-  </mat-drawer>
+  <mat-drawer-container fxFlex>
+    <mat-drawer #toolbox_drawer class="toolbox_drawer" mode="side" opened>
+      <app-ui-element-toolbox></app-ui-element-toolbox>
+    </mat-drawer>
 
-  <mat-drawer-content>
-    <button mat-button (click)="toolbox_drawer.toggle()">
-      Elementauswahl ein-/ausblenden
-    </button>
-    <button mat-button class="show_properties_button" (click)="properties_drawer.toggle()">
-      Eigenschaften ein-/ausblenden
-    </button>
-
-    <div>
-      <mat-tab-group mat-align-tabs="start" (selectedTabChange)="selectTab()">
+    <mat-drawer-content>
+      <mat-tab-group mat-align-tabs="start" (selectedTabChange)="selectTab()" class="mat-tab-fill-height">
         <mat-tab *ngFor="let page of unit.pages; let i = index" label="Seite {{i+1}}">
           <ng-template mat-tab-label>
             Seite {{i+1}}
@@ -31,11 +29,16 @@
           </ng-template>
         </mat-tab>
       </mat-tab-group>
-    </div>
-  </mat-drawer-content>
+    </mat-drawer-content>
 
-  <mat-drawer #properties_drawer class="properties_drawer" position="end" mode="side" opened>
-    <app-properties></app-properties>
-  </mat-drawer>
+    <mat-drawer #properties_drawer class="properties_drawer" position="end" mode="side" opened>
+      <app-properties></app-properties>
+    </mat-drawer>
+  </mat-drawer-container>
 
-</mat-drawer-container>
+  <button class="drawer-button show-properties-button" (click)="properties_drawer.toggle()">
+    <span>
+      EIGENSCHAFTEN
+    </span>
+  </button>
+</div>

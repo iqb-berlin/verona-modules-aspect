@@ -48,7 +48,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
     </div>
   `,
   styles: [
-    '.canvasFrame {background-color: lightgrey; height: 65vh; overflow: auto; width: 100%}',
+    '.canvasFrame {background-color: lightgrey; height: 73vh; overflow: auto; width: 100%}',
     '.section {position: relative;}'
   ]
 })

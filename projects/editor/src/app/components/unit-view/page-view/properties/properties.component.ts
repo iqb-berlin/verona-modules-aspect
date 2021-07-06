@@ -7,10 +7,11 @@ import { UnitUIElement } from '../../../../../../../common/unit';
   selector: 'app-properties',
   templateUrl: './properties.component.html',
   styles: [
-    ':host {text-align: center; font-size: larger}',
+    ':host {text-align: center; font-size: larger; margin-left: 1px}',
     ':host ::ng-deep .mat-tab-label {min-width: 0}',
     '.newOptionElement {margin-top: 20px}',
-    '.newOptionElement button {background-color: #696969; margin: 5px}'
+    '.newOptionElement button {background-color: #696969; margin: 5px}',
+    'mat-tab-group {padding: 10px;}'
   ]
 })
 export class PropertiesComponent {

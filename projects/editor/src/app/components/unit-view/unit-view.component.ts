@@ -13,9 +13,9 @@ import { Unit } from '../../../../../common/unit';
   templateUrl: './unit-view.component.html',
   styles: [
     '.toolbox_drawer {width: 280px}',
-    '.properties_drawer {width: 400px}',
+    '.properties_drawer {width: 320px}',
     '.delete-page-button {min-width: 0; padding: 0;position: absolute; left: 130px; bottom: 6px;}',
-    '.drawer-button {font-size: large; background-color: lightgray; min-width: 0; width: 2%; border: none}',
+    '.drawer-button {font-size: large;background-color: lightgray;min-width: 0;width: 2%;border: none;cursor: pointer}',
     '.show-elements-button span {transform: rotate(-90deg); display: inherit}',
     '.show-properties-button {padding-bottom: 140px}',
     '.show-properties-button span {transform: rotate(90deg); display: inherit;}'

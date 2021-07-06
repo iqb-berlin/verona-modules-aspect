@@ -1,6 +1,6 @@
 <div *ngIf="selectedElements.length === 0">Select an element</div>
 <div *ngIf="selectedElements.length > 0">
-  <mat-tab-group mat-stretch-tabs>
+  <mat-tab-group mat-stretch-tabs dynamicHeight>
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">build</mat-icon>

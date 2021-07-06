@@ -6,6 +6,11 @@
         <mat-icon class="example-tab-icon">build</mat-icon>
       </ng-template>
       <div fxLayout="column">
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('id')">
+          <mat-label>ID</mat-label>
+          <input matInput type="text" [value]="combinedProperties.id"
+                 (input)="updateModel('id', $any($event.target).value)">
+        </mat-form-field>
         <mat-form-field *ngIf="combinedProperties.hasOwnProperty('label')">
           <mat-label>Label</mat-label>
           <input matInput type="text" [value]="combinedProperties.label"

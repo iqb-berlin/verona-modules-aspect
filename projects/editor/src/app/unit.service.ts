@@ -3,11 +3,12 @@ import {
   BehaviorSubject, Observable, Subject
 } from 'rxjs';
 import {
-  Unit, UnitPage, UnitUIElement
+  Unit, UnitPage, UnitPageSection, UnitUIElement
 } from '../../../common/unit';
 import { FileService } from '../../../common/file.service';
 import * as UnitFactory from './model/UnitFactory';
 import { MessageService } from '../../../common/message.service';
+import { IdService } from './id.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class UnitService {
   pageSwitch = new Subject();
   elementUpdated = new Subject();
 
-  constructor(private messageService: MessageService) {
+  constructor(private messageService: MessageService, private idService: IdService) {
     this._unit = new BehaviorSubject(UnitFactory.createUnit());
     const initialPage = UnitFactory.createUnitPage();
     const initialSection = UnitFactory.createUnitPageSection();
@@ -133,8 +134,10 @@ export class UnitService {
       case 'correction':
         newElement = UnitFactory.createCorrectionElement();
         break;
-      // no default
+      default:
+        throw new Error(`ElementType ${elementType} not found!`);
     }
+    newElement.id = this.idService.getNewID(elementType);
     this._unit.value.pages[this._selectedPageIndex.value]
       .sections[this._selectedPageSectionIndex.value].elements.push(newElement!);
 
@@ -159,15 +162,24 @@ export class UnitService {
     this.elementUpdated.next();
   }
 
-  updateSelectedElementProperty(property: string, value: string | number | boolean): void {
-    this._selectedElements.value.forEach((element: UnitUIElement) => {
+  updateSelectedElementProperty(property: string, value: string | number | boolean): boolean {
+    for (const element of this._selectedElements.value) {
       if (['string', 'number', 'boolean'].indexOf(typeof element[property]) > -1) {
+        if (property === 'id') {
+          if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
+            this.messageService.showError('ID ist bereits vergeben');
+            return false;
+          }
+          this.idService.removeId(element[property]);
+          this.idService.addId(<string>value);
+        }
         element[property] = value;
       } else if (Array.isArray(element[property])) {
         (element[property] as string[]).push(value as string);
       }
-    });
+    }
     this.elementUpdated.next();
+    return true;
   }
 
   deleteSelectedElements(): void {
@@ -197,6 +209,8 @@ export class UnitService {
     this._unit.value.pages.forEach((page: UnitPage) => {
       this._pages.push(new BehaviorSubject(page));
     });
+
+    this.idService.readExistingIDs(this._unit.value);
   }
 
   selectPageSection(index: number): void {

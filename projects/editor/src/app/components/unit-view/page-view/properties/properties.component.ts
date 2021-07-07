@@ -52,8 +52,14 @@ export class PropertiesComponent {
     }
   }
 
-  updateModel(property: string, value: string | number | boolean): void {
-    this.unitService.updateSelectedElementProperty(property, value);
+  // event as optional parameter in case the input is invalid and the old value needs
+  // to be restored. This is for now only relevant for IDs. Might need rework for other properties.
+  updateModel(property: string, value: string | number | boolean, event?: Event): void {
+    if (!this.unitService.updateSelectedElementProperty(property, value)) {
+      if (event) {
+        (event.target as HTMLInputElement).value = <string> this.combinedProperties[property];
+      }
+    }
   }
 
   deleteElement(): void {

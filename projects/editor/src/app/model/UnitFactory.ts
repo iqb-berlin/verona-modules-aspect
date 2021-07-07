@@ -6,23 +6,6 @@ import {
   VideoElement
 } from '../../../../common/unit';
 
-const idCounter: Record<string, number> = {
-  label: 0,
-  button: 0,
-  'text-field': 0,
-  checkbox: 0,
-  dropdown: 0,
-  radio: 0,
-  image: 0,
-  audio: 0,
-  video: 0,
-  correction: 0
-};
-
-function getNewID(type: string): string {
-  idCounter[type] += 1;
-  return `${type}_${idCounter[type]}`;
-}
 
 export function createUnit(): Unit {
   return {
@@ -51,7 +34,7 @@ export function createUnitPageSection(): UnitPageSection {
 export function createUnitUIElement(type: string): UnitUIElement {
   return {
     type,
-    id: getNewID(type),
+    id: 'id_placeholder',
     xPosition: 0,
     yPosition: 0,
     width: 180,

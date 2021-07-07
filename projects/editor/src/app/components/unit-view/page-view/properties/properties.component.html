@@ -8,8 +8,9 @@
       <div fxLayout="column">
         <mat-form-field *ngIf="combinedProperties.hasOwnProperty('id')">
           <mat-label>ID</mat-label>
-          <input matInput type="text" [value]="combinedProperties.id"
-                 (input)="updateModel('id', $any($event.target).value)">
+          <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.id"
+                 (input)="updateModel('id', $any($event.target).value, $event)">
+          <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
         </mat-form-field>
         <mat-form-field *ngIf="combinedProperties.hasOwnProperty('label')">
           <mat-label>Label</mat-label>

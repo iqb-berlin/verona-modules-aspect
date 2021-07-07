@@ -7,13 +7,8 @@ import * as ComponentUtils from '../../../common/component-utils';
 @Component({
   selector: 'app-section',
   template: `
-    <div fxLayout="column">
-        <ng-template #elementContainer></ng-template>
-    </div>
-    `,
-  styles: [
-    'div {position: absolute}'
-  ]
+    <ng-template #elementContainer></ng-template>
+  `
 })
 export class SectionComponent implements OnInit {
   @Input() section!: UnitPageSection;

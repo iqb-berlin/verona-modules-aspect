@@ -7,10 +7,11 @@ import { UnitPage } from '../../../common/unit';
     <app-section *ngFor="let section of page.sections; let i = index"
          [section]="section"
          [ngStyle]="{
-                width: '100%',
                 position: 'relative',
                 display: 'inline-block',
-                'height.px': section.height }">
+                'background-color': section.backgroundColor,
+                'height.px': section.height,
+                'width.px': section.width }">
       {{section.height}}
     </app-section>
   `

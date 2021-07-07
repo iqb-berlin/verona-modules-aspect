@@ -49,6 +49,7 @@ export class CanvasDragOverlayComponent implements OnInit {
       border: this._selected ? '2px solid' : '',
       width: `${this.element.width}px`,
       height: `${this.element.height}px`,
+      'z-index': `${this.element.zIndex}`,
       left: `${this.element.xPosition.toString()}px`,
       top: `${this.element.yPosition.toString()}px`
     };

@@ -6,7 +6,6 @@ import {
   VideoElement
 } from '../../../../common/unit';
 
-
 export function createUnit(): Unit {
   return {
     pages: []
@@ -37,6 +36,7 @@ export function createUnitUIElement(type: string): UnitUIElement {
     id: 'id_placeholder',
     xPosition: 0,
     yPosition: 0,
+    zIndex: 0,
     width: 180,
     height: 60,
     backgroundColor: 'lightgrey',

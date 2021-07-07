@@ -102,6 +102,12 @@
           <input matInput type="number" [value]="combinedProperties.yPosition"
                  (input)="updateModel('yPosition', $any($event.target).value)">
         </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')">
+          <mat-label>Z-Index</mat-label>
+          <input matInput type="number" [value]="combinedProperties.zIndex"
+                 (input)="updateModel('zIndex', $any($event.target).value)"
+                 matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+        </mat-form-field>
       </div>
     </mat-tab>
 

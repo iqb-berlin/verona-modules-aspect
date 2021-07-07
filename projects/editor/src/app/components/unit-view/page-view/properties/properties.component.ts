@@ -11,7 +11,9 @@ import { UnitUIElement } from '../../../../../../../common/unit';
     ':host ::ng-deep .mat-tab-label {min-width: 0}',
     '.newOptionElement {margin-top: 20px}',
     '.newOptionElement button {background-color: #696969; margin: 5px}',
-    'mat-tab-group {padding: 10px;}'
+    'mat-tab-group {padding: 10px;}',
+    '.delete-element-button {margin-bottom: 5px; border: 1px solid red;}',
+    '.duplicate-element-button {margin-bottom: 5px}'
   ]
 })
 export class PropertiesComponent {

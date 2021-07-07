@@ -1,12 +1,12 @@
 import {
-  Directive, Input, OnInit
+  Directive, OnInit
 } from '@angular/core';
 import { UnitUIElement } from './unit';
 
 @Directive()
 export abstract class CanvasElementComponent implements OnInit {
-  @Input() elementModel: UnitUIElement = {} as UnitUIElement;
-  style: Record<string, string> = {};
+  elementModel!: UnitUIElement;
+  style!: Record<string, string>;
 
   ngOnInit(): void {
     this.updateStyle();

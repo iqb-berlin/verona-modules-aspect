@@ -19,8 +19,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
       (sectionEditMode)="sectionEditMode = $event">
     </app-canvas-section-toolbar>
 
-    <app-canvas-toolbar [hidden]="selectedComponentElements.length < 2"
-      (alignElements)="alignElements($event)">
+    <app-canvas-toolbar [disabled]="selectedComponentElements.length < 2" (alignElements)="alignElements($event)">
     </app-canvas-toolbar>
 
     <div class="canvasFrame" fxLayout="row" [style.padding.px]="page.margin"
@@ -38,7 +37,8 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
              *ngFor="let section of page.sections; let i = index"
              [section]="section" [childrenDraggable]="!sectionEditMode"
              (elementSelected)="elementSelected($event)" (click)="selectSection(i)"
-             cdkDropList (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
+             cdkDropList cdkDropListSortingDisabled
+             (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
              [ngStyle]="{
                 border: i === selectedSectionIndex ? '1px solid': '1px dotted',
                 'width.px': page.width,
@@ -48,7 +48,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
     </div>
   `,
   styles: [
-    '.canvasFrame {background-color: lightgrey; height: 65vh; overflow: auto; width: 100%}',
+    '.canvasFrame {background-color: lightgrey; height: 69vh; overflow: auto; width: 100%}',
     '.section {position: relative;}'
   ]
 })

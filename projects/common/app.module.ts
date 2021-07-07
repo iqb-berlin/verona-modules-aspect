@@ -18,6 +18,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ButtonComponent } from './element-components/button.component';
 import { CorrectionComponent } from './element-components/compound-components/correction.component';
@@ -78,7 +79,8 @@ import { DropdownComponent } from './element-components/dropdown.component';
     CheckboxComponent,
     DropdownComponent,
     CorrectionComponent,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule
   ]
 })
 export class SharedModule { }

@@ -22,6 +22,7 @@ export interface UnitUIElement {
   id: string;
   xPosition: number;
   yPosition: number;
+  zIndex: number
   width: number;
   height: number;
   backgroundColor: string;

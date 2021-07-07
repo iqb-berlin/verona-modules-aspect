@@ -10,4 +10,8 @@ export class MessageService {
   showWarning(text: string): void {
     this._snackBar.open(text, undefined, { duration: 2000, panelClass: 'snackbar-warning' });
   }
+
+  showError(text: string): void {
+    this._snackBar.open(text, undefined, { duration: 2000, panelClass: 'snackbar-error' });
+  }
 }

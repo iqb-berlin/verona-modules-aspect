@@ -33,9 +33,10 @@ export function createUnitPageSection(): UnitPageSection {
 export function createUnitUIElement(type: string): UnitUIElement {
   return {
     type,
-    id: 'dummyID',
+    id: 'id_placeholder',
     xPosition: 0,
     yPosition: 0,
+    zIndex: 0,
     width: 180,
     height: 60,
     backgroundColor: 'lightgrey',

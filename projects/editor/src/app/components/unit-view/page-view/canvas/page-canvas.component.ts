@@ -37,7 +37,8 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
              *ngFor="let section of page.sections; let i = index"
              [section]="section" [childrenDraggable]="!sectionEditMode"
              (elementSelected)="elementSelected($event)" (click)="selectSection(i)"
-             cdkDropList (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
+             cdkDropList cdkDropListSortingDisabled
+             (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
              [ngStyle]="{
                 border: i === selectedSectionIndex ? '1px solid': '1px dotted',
                 'width.px': page.width,

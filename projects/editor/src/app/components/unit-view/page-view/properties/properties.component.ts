@@ -28,15 +28,15 @@ export class PropertiesComponent {
     this.selectedElementsSubscription = this.unitService.selectedElements.subscribe(
       (selectedElements: UnitUIElement[]) => {
         this.selectedElements = selectedElements;
-        this.calculateCombinedProperties();
+        this.createCombinedProperties();
       }
     );
     this.elementUpdatedSubscription = this.unitService.elementUpdated.subscribe(() => {
-      this.calculateCombinedProperties();
+      this.createCombinedProperties();
     });
   }
 
-  calculateCombinedProperties(): void {
+  createCombinedProperties(): void {
     if (this.selectedElements.length === 0) {
       this.combinedProperties = {};
     } else {

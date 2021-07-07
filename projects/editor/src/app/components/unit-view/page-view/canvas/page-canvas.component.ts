@@ -19,8 +19,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
       (sectionEditMode)="sectionEditMode = $event">
     </app-canvas-section-toolbar>
 
-    <app-canvas-toolbar [hidden]="selectedComponentElements.length < 2"
-      (alignElements)="alignElements($event)">
+    <app-canvas-toolbar [disabled]="selectedComponentElements.length < 2" (alignElements)="alignElements($event)">
     </app-canvas-toolbar>
 
     <div class="canvasFrame" fxLayout="row" [style.padding.px]="page.margin"
@@ -48,7 +47,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
     </div>
   `,
   styles: [
-    '.canvasFrame {background-color: lightgrey; height: 73vh; overflow: auto; width: 100%}',
+    '.canvasFrame {background-color: lightgrey; height: 69vh; overflow: auto; width: 100%}',
     '.section {position: relative;}'
   ]
 })

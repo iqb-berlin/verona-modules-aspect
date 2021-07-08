@@ -11,9 +11,11 @@ import * as ComponentUtils from '../../../../../../../common/component-utils';
 @Component({
   selector: 'app-canvas-drag-overlay',
   template: `
-    <div cdkDrag [cdkDragData]="this.element" (click)="click($event)"
-         [ngStyle]="style">
-      <ng-template #elementContainer></ng-template>
+<!--    Needs extra div because styling can interfere with drag and drop-->
+    <div cdkDrag [cdkDragData]="this.element" (click)="click($event)">
+      <div [ngStyle]="style">
+        <ng-template #elementContainer></ng-template>
+      </div>
     </div>
     `,
   styles: [

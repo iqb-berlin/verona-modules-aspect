@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  AfterViewInit, Component, OnDestroy, OnInit, ViewChild
+  Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatTabGroup } from '@angular/material/tabs';
@@ -21,11 +21,10 @@ import { Unit } from '../../../../../common/unit';
     '.show-properties-button span {transform: rotate(90deg); display: inherit;}'
   ]
 })
-export class UnitViewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class UnitViewComponent implements OnInit, OnDestroy {
   @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
   unit!: Unit;
   unitSubscription!: Subscription;
-  selectedPageIndexSubscription!: Subscription;
 
   constructor(public unitService: UnitService, public dialog: MatDialog) { }
 
@@ -35,19 +34,13 @@ export class UnitViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    this.selectedPageIndexSubscription = this.unitService.selectedPageIndex.subscribe((index: number) => {
-      this.tabGroup.selectedIndex = index;
-    });
-  }
-
   selectTab(): void {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.unitService.switchPage(this.tabGroup.selectedIndex!);
   }
 
   addPage(): void {
-    this.unitService.addPage();
+    this.tabGroup.selectedIndex = this.unitService.addPage();
   }
 
   deletePage(): void {
@@ -59,14 +52,13 @@ export class UnitViewComponent implements OnInit, OnDestroy, AfterViewInit {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.unitService.deletePage(this.tabGroup.selectedIndex!);
+        this.tabGroup.selectedIndex = this.unitService.deletePage(this.tabGroup.selectedIndex!);
       }
     });
   }
 
   ngOnDestroy(): void {
     this.unitSubscription.unsubscribe();
-    this.selectedPageIndexSubscription.unsubscribe();
   }
 }
 

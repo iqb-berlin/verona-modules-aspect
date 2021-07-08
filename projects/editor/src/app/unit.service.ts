@@ -14,9 +14,10 @@ import { IdService } from './id.service';
   providedIn: 'root'
 })
 export class UnitService {
+  private selectedPageIndex: number = 0;
+
   private _unit: BehaviorSubject<Unit>;
   private _pages: BehaviorSubject<UnitPage>[];
-  private _selectedPageIndex: BehaviorSubject<number>;
   private _selectedPageSectionIndex: BehaviorSubject<number>;
 
   private _selectedElements: BehaviorSubject<UnitUIElement[]>;
@@ -30,7 +31,6 @@ export class UnitService {
     initialPage.sections.push(initialSection);
     this._unit.getValue().pages.push(initialPage);
     this._pages = [new BehaviorSubject(initialPage as UnitPage)];
-    this._selectedPageIndex = new BehaviorSubject<number>(0);
     this._selectedPageSectionIndex = new BehaviorSubject<number>(0);
 
     this._selectedElements = new BehaviorSubject<UnitUIElement[]>([]);
@@ -39,10 +39,6 @@ export class UnitService {
 
   get unit(): Observable<Unit> {
     return this._unit.asObservable();
-  }
-
-  get selectedPageIndex(): Observable<number> {
-    return this._selectedPageIndex.asObservable();
   }
 
   get selectedPageSectionIndex(): Observable<number> {
@@ -61,40 +57,47 @@ export class UnitService {
     return this._selectedElements.value;
   }
 
-  addPage(): void {
+  getSelectedPageSection(): UnitPageSection {
+    return this._unit.value.pages[this.selectedPageIndex].sections[this._selectedPageSectionIndex.value];
+  }
+
+  /** returns new last index */
+  addPage(): number {
     const newPage = UnitFactory.createUnitPage();
     newPage.sections.push(UnitFactory.createUnitPageSection());
     this._unit.value.pages.push(newPage);
     this._pages.push(new BehaviorSubject(newPage as UnitPage));
     this._unit.next(this._unit.value);
-    this._selectedPageIndex.next(this._unit.value.pages.length - 1);
+    return this._unit.value.pages.length - 1;
   }
 
-  deletePage(index: number):void {
+  /** returns active/new index */
+  deletePage(index: number): number {
     this._unit.value.pages.splice(index, 1);
     this._unit.next(this._unit.value);
     this._pages.splice(index, 1);
-    if (index === this._selectedPageIndex.value) {
-      this._selectedPageIndex.next(this._selectedPageIndex.value - 1);
+    if (index === this.selectedPageIndex) {
+      return this.selectedPageIndex - 1;
     }
+    return this.selectedPageIndex;
   }
 
   addSection(): void {
     const newSection = UnitFactory.createUnitPageSection();
-    this._unit.value.pages[this._selectedPageIndex.value].sections.push(newSection);
+    this._unit.value.pages[this.selectedPageIndex].sections.push(newSection);
     this._unit.next(this._unit.value);
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]); // TODO auslagern?
+    this._pages[this.selectedPageIndex].next(this._unit.value.pages[this.selectedPageIndex]); // TODO auslagern?
   }
 
   deleteSection(): void {
-    if (this._unit.value.pages[this._selectedPageIndex.value].sections.length < 2) {
+    if (this._unit.value.pages[this.selectedPageIndex].sections.length < 2) {
       this.messageService.showWarning('cant delete last section');
     } else {
       const index = this._selectedPageSectionIndex.value;
-      this._unit.value.pages[this._selectedPageIndex.value].sections.splice(index, 1);
+      this._unit.value.pages[this.selectedPageIndex].sections.splice(index, 1);
       this._unit.next(this._unit.value);
 
-      this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+      this._pages[this.selectedPageIndex].next(this._unit.value.pages[this.selectedPageIndex]);
       if (this._selectedPageSectionIndex.value > 0) {
         this._selectedPageSectionIndex.next(this._selectedPageSectionIndex.value - 1);
       }
@@ -138,14 +141,13 @@ export class UnitService {
         throw new Error(`ElementType ${elementType} not found!`);
     }
     newElement.id = this.idService.getNewID(elementType);
-    this._unit.value.pages[this._selectedPageIndex.value]
+    this._unit.value.pages[this.selectedPageIndex]
       .sections[this._selectedPageSectionIndex.value].elements.push(newElement!);
 
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+    this._pages[this.selectedPageIndex].next(this._unit.value.pages[this.selectedPageIndex]);
   }
 
   switchPage(selectedIndex: number): void {
-    this._selectedPageIndex.next(selectedIndex);
     this.clearSelectedElements();
     this.pageSwitch.next(selectedIndex);
   }
@@ -183,12 +185,12 @@ export class UnitService {
   }
 
   deleteSelectedElements(): void {
-    const oldElements = this._unit.value.pages[this._selectedPageIndex.value]
+    const oldElements = this._unit.value.pages[this.selectedPageIndex]
       .sections[this._selectedPageSectionIndex.value].elements;
-    this._unit.value.pages[this._selectedPageIndex.value]
+    this._unit.value.pages[this.selectedPageIndex]
       .sections[this._selectedPageSectionIndex.value].elements =
       oldElements.filter(element => !this._selectedElements.value.includes(element));
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+    this._pages[this.selectedPageIndex].next(this._unit.value.pages[this.selectedPageIndex]);
   }
 
   getUnitAsJSON(): string {
@@ -203,7 +205,7 @@ export class UnitService {
   async loadUnit(): Promise<void> {
     const unitJSON = await FileService.loadFile(['.json']);
     const newUnit = JSON.parse(unitJSON);
-    this._selectedPageIndex.next(0);
+    this.selectedPageIndex = 0;
     this._unit.next(newUnit);
     this._pages = [];
     this._unit.value.pages.forEach((page: UnitPage) => {

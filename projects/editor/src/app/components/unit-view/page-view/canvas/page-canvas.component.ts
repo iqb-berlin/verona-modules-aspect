@@ -140,14 +140,14 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
       if (sourceItemModel.xPosition < 0) {
         sourceItemModel.xPosition = 0;
       }
-      if (sourceItemModel.xPosition > event.container.data.width) {
+      if (sourceItemModel.xPosition > event.container.data.width - sourceItemModel.width) {
         sourceItemModel.xPosition = event.container.data.width - sourceItemModel.width;
       }
       sourceItemModel.yPosition += event.distance.y;
       if (sourceItemModel.yPosition < 0) {
         sourceItemModel.yPosition = 0;
       }
-      if (sourceItemModel.yPosition > this.getPageHeight()) {
+      if (sourceItemModel.yPosition > this.getPageHeight() - sourceItemModel.height) {
         sourceItemModel.yPosition = this.getPageHeight() - sourceItemModel.height;
       }
     }

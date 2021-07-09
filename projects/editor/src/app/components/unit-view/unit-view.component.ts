@@ -21,8 +21,6 @@ import { Unit } from '../../../../../common/unit';
   ]
 })
 export class UnitViewComponent {
-  unitObservable: Observable<Unit> = this.unitService.getUnitObservable();
-
   constructor(public unitService: UnitService, public dialog: MatDialog) { }
 
   addPage(): void {

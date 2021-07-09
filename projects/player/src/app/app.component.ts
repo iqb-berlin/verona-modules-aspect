@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Unit } from '../../../common/unit';
+import { FormService } from '../../../common/form.service';
 
 interface StartData {
   unitDefinition: string;
@@ -9,14 +11,21 @@ interface StartData {
 @Component({
   selector: 'player-aspect',
   template: `
-    <mat-tab-group mat-align-tabs="start">
-      <mat-tab *ngFor="let page of unitJSON.pages; let i = index" label="Seite {{i+1}}">
-        <app-page [page]="page"></app-page>
-      </mat-tab>
-    </mat-tab-group>
+      <form *ngIf="form" [formGroup]="form">
+          <mat-tab-group mat-align-tabs="start">
+              <mat-tab *ngFor="let page of unitJSON.pages; let i = index" label="Seite {{i+1}}">
+                  <app-page [page]="page"></app-page>
+              </mat-tab>
+          </mat-tab-group>
+          <button class="form-item" mat-flat-button color="primary" (click)="submit()" [disabled]="!form.valid">Print
+              form.value
+          </button>
+          <pre>{{unitJSON | json}}</pre>
+      </form>
     `
 })
 export class AppComponent {
+  form!: FormGroup;
   unitJSON: Unit = {
     pages: []
   };
@@ -24,7 +33,27 @@ export class AppComponent {
   @Input()
   set startData(startData: StartData) {
     this.unitJSON = JSON.parse(startData.unitDefinition);
+    this.initForm();
   }
+
+  constructor(private formService: FormService) {
+    formService.elementValueChanged$.subscribe(value => console.log(value));
+    formService.controlAdded$.subscribe((value: string) => this.addControl(value));
+  }
+
+  addControl(id: string): void {
+    this.form.addControl(id, new FormControl());
+  }
+
+  initForm(): void {
+    this.form = new FormGroup({});
+    this.formService.formRef = this.form;
+  }
+
+  submit(): void {
+    console.log('form.value', this.form.value);
+  }
+
 
   exampleUnit = {
     pages: [

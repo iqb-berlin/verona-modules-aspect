@@ -6,7 +6,8 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
   template: `
       <mat-form-field appearance="fill" [ngStyle]="style">
           <mat-label>{{$any(elementModel).label}}</mat-label>
-          <mat-select>
+          <mat-select (ngModelChange)="onModelChange($event)"
+                      [formControl]="formControl">
               <mat-option *ngFor="let option of $any(elementModel).options" [value]="option">
                   {{option}}
               </mat-option>

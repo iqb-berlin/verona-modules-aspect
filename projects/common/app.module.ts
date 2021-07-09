@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -37,7 +37,10 @@ import { DropdownComponent } from './element-components/dropdown.component';
     FlexLayoutModule,
     DragDropModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    MatCheckboxModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [
     ButtonComponent,
@@ -60,6 +63,7 @@ import { DropdownComponent } from './element-components/dropdown.component';
     MatButtonModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     DragDropModule,
     MatCheckboxModule,
     MatSelectModule,

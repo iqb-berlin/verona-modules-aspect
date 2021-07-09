@@ -1,9 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  Component, OnDestroy, OnInit, ViewChild
+  Component, OnDestroy, OnInit
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { MatTabGroup } from '@angular/material/tabs';
+import { Observable, Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { UnitService } from '../../unit.service';
 import { Unit } from '../../../../../common/unit';
@@ -21,26 +20,13 @@ import { Unit } from '../../../../../common/unit';
     '.show-properties-button span {transform: rotate(90deg); display: inherit;}'
   ]
 })
-export class UnitViewComponent implements OnInit, OnDestroy {
-  @ViewChild(MatTabGroup) tabGroup!: MatTabGroup;
-  unit!: Unit;
-  unitSubscription!: Subscription;
+export class UnitViewComponent {
+  unitObservable: Observable<Unit> = this.unitService.getUnitObservable();
 
   constructor(public unitService: UnitService, public dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    this.unitSubscription = this.unitService.unit.subscribe((unit: Unit) => {
-      this.unit = unit;
-    });
-  }
-
-  selectTab(): void {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.unitService.switchPage(this.tabGroup.selectedIndex!);
-  }
-
   addPage(): void {
-    this.tabGroup.selectedIndex = this.unitService.addPage();
+    this.unitService.addPage();
   }
 
   deletePage(): void {
@@ -51,14 +37,9 @@ export class UnitViewComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(ConfirmationDialog);
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.tabGroup.selectedIndex = this.unitService.deletePage(this.tabGroup.selectedIndex!);
+        this.unitService.deletePage();
       }
     });
-  }
-
-  ngOnDestroy(): void {
-    this.unitSubscription.unsubscribe();
   }
 }
 

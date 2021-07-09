@@ -14,8 +14,6 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
   selector: 'app-page-canvas',
   template: `
     <app-canvas-section-toolbar
-      (addSection)="unitService.addSection()"
-      (removeSection)="unitService.deleteSection()"
       (sectionEditMode)="sectionEditMode = $event">
     </app-canvas-section-toolbar>
 
@@ -41,8 +39,9 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
              (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
              [ngStyle]="{
                 border: i === selectedSectionIndex ? '1px solid': '1px dotted',
-                'width.px': page.width,
-                'height.px': section.height }">
+                'width.px': section.width,
+                'height.px': section.height,
+                'background-color': section.backgroundColor}">
         </div>
       </div>
     </div>

@@ -12,40 +12,7 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
 
 @Component({
   selector: 'app-page-canvas',
-  template: `
-    <app-canvas-section-toolbar
-      (sectionEditMode)="sectionEditMode = $event">
-    </app-canvas-section-toolbar>
-
-    <app-canvas-toolbar [disabled]="selectedComponentElements.length < 2" (alignElements)="alignElements($event)">
-    </app-canvas-toolbar>
-
-    <div class="canvasFrame" fxLayout="row" [style.padding.px]="page.margin"
-         [style.background-color]="page.backgroundColor">
-      <div *ngIf="sectionEditMode" cdkDropList (cdkDropListDropped)="dropSection($event)">
-        <div #section_component app-canvas-section class="section"
-             *ngFor="let section of page.sections; let i = index"
-             [section]="section"
-             cdkDrag [childrenDraggable]="!sectionEditMode"
-             [ngStyle]="{border: '1px solid', 'width.px': page.width, 'height.px': section.height}">
-        </div>
-      </div>
-      <div *ngIf="!sectionEditMode" cdkDropListGroup class="section-list">
-        <div #section_component app-canvas-section class="section"
-             *ngFor="let section of page.sections; let i = index"
-             [section]="section" [childrenDraggable]="!sectionEditMode"
-             (elementSelected)="elementSelected($event)" (click)="selectSection(i)"
-             cdkDropList cdkDropListSortingDisabled
-             (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
-             [ngStyle]="{
-                border: i === selectedSectionIndex ? '1px solid': '1px dotted',
-                'width.px': section.width,
-                'height.px': section.height,
-                'background-color': section.backgroundColor}">
-        </div>
-      </div>
-    </div>
-  `,
+  templateUrl: './page-canvas.component.html',
   styles: [
     '.canvasFrame {background-color: lightgrey; height: 69vh; overflow: auto; width: 100%}',
     '.section {position: relative;}'

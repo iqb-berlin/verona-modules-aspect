@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { UnitPage } from '../../../../../../common/unit';
-import { UnitService } from '../../../unit.service';
 
 @Component({
   selector: 'app-page-view',
@@ -17,8 +16,6 @@ export class PageViewComponent implements OnInit, OnDestroy {
   @Input() pageObservable!: Observable<UnitPage>;
   private pageSubscription!: Subscription;
   page!: UnitPage;
-
-  constructor(public unitService: UnitService) { }
 
   ngOnInit(): void {
     this.pageSubscription = this.pageObservable.subscribe((page: UnitPage) => {

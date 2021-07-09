@@ -49,7 +49,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     this.elementUpdatedSubscription = this.unitService.elementUpdated.subscribe(() => {
       this.updateSectionElementStyles();
     });
-    this.pageSwitchSubscription = this.unitService.pageSwitch.subscribe(
+    this.pageSwitchSubscription = this.unitService.selectedPageIndex.subscribe(
       () => {
         this.clearSelection();
       }

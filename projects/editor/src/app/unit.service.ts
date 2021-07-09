@@ -21,7 +21,6 @@ export class UnitService {
   private _selectedPageSectionIndex: BehaviorSubject<number>;
 
   private _selectedElements: BehaviorSubject<UnitUIElement[]>;
-  pageSwitch = new Subject();
   elementUpdated = new Subject();
 
   constructor(private messageService: MessageService, private idService: IdService) {
@@ -150,11 +149,6 @@ export class UnitService {
       .sections[this._selectedPageSectionIndex.value].elements.push(newElement!);
 
     this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
-  }
-
-  switchPage(selectedIndex: number): void {
-    this.clearSelectedElements();
-    this.pageSwitch.next(selectedIndex);
   }
 
   clearSelectedElements(): void {

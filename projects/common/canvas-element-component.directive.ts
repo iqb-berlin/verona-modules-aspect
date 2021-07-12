@@ -1,25 +1,32 @@
 import {
-  Directive, OnInit
+  Directive, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { UnitUIElement } from './unit';
 import { FormService } from './form.service';
 
 @Directive()
 export abstract class CanvasElementComponent implements OnInit {
+  @ViewChild('inputElement', { read: ViewContainerRef, static: true }) public inputElement!: ViewContainerRef;
   elementModel!: UnitUIElement;
   formControl!: FormControl;
   style!: Record<string, string>;
+  parentForm!: FormGroup;
 
-  constructor(public formService: FormService) { }
+  constructor(private formService: FormService) { }
 
   ngOnInit(): void {
     this.formService.controlAdded.next(this.elementModel.id);
-    this.formControl = this.formService.getFormControlPath(this.elementModel.id);
+    this.formControl = this.getFormControl(this.elementModel.id);
+    this.formControl.valueChanges.subscribe(v => this.onModelChange(v));
     this.updateStyle();
   }
 
-  onModelChange(value: any): void {
+  private getFormControl(id: string){
+    return (this.parentForm) ? this.parentForm.controls[id] as FormControl : new FormControl();
+  }
+
+  private onModelChange(value: any): void {
     const element = this.elementModel.id;
     this.formService.elementValueChanged.next({ element, value });
   }

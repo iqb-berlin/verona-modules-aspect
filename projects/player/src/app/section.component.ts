@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { UnitPageSection, UnitUIElement } from '../../../common/unit';
 import * as ComponentUtils from '../../../common/component-utils';
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-section',
@@ -11,6 +12,7 @@ import * as ComponentUtils from '../../../common/component-utils';
   `
 })
 export class SectionComponent implements OnInit {
+  @Input() parentForm!: FormGroup;
   @Input() section!: UnitPageSection;
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
 
@@ -30,6 +32,7 @@ export class SectionComponent implements OnInit {
     const componentFactory = ComponentUtils.getComponentFactory(element.type, this.componentFactoryResolver);
     const componentRef = this.elementContainer.createComponent(componentFactory);
     componentRef.instance.elementModel = element;
+    componentRef.instance.parentForm = this.parentForm;
     componentRef.instance.updateStyle({
       position: 'absolute',
       top: `${element.yPosition}px`,

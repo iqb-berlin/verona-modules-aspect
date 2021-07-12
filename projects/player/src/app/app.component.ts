@@ -14,7 +14,7 @@ interface StartData {
       <form *ngIf="form" [formGroup]="form">
           <mat-tab-group mat-align-tabs="start">
               <mat-tab *ngFor="let page of unitJSON.pages; let i = index" label="Seite {{i+1}}">
-                  <app-page [page]="page"></app-page>
+                  <app-page [parentForm]="form" [page]="page"></app-page>
               </mat-tab>
           </mat-tab-group>
           <button class="form-item" mat-flat-button color="primary" (click)="submit()" [disabled]="!form.valid">Print
@@ -47,7 +47,6 @@ export class AppComponent {
 
   initForm(): void {
     this.form = new FormGroup({});
-    this.formService.formRef = this.form;
   }
 
   submit(): void {

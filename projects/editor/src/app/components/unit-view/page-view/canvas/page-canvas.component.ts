@@ -78,7 +78,6 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     this.unitService.clearSelectedElements();
   }
 
-  // TODO use updateSelectedElementProperty
   elementDropped(event: CdkDragDrop<UnitPageSection>): void {
     const sourceItemModel = event.item.data;
 
@@ -92,20 +91,23 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
         sectionComponent.updateSelection(this.unitService.getSelectedElements());
       });
     } else {
-      sourceItemModel.xPosition += event.distance.x;
-      if (sourceItemModel.xPosition < 0) {
-        sourceItemModel.xPosition = 0;
+      let newXPosition = sourceItemModel.xPosition + event.distance.x;
+      if (newXPosition < 0) {
+        newXPosition = 0;
       }
-      if (sourceItemModel.xPosition > event.container.data.width - sourceItemModel.width) {
-        sourceItemModel.xPosition = event.container.data.width - sourceItemModel.width;
+      if (newXPosition > event.container.data.width - sourceItemModel.width) {
+        newXPosition = event.container.data.width - sourceItemModel.width;
       }
-      sourceItemModel.yPosition += event.distance.y;
-      if (sourceItemModel.yPosition < 0) {
-        sourceItemModel.yPosition = 0;
+      this.unitService.updateSelectedElementProperty('xPosition', newXPosition);
+
+      let newYPosition = sourceItemModel.yPosition + event.distance.y;
+      if (newYPosition < 0) {
+        newYPosition = 0;
       }
-      if (sourceItemModel.yPosition > this.getPageHeight() - sourceItemModel.height) {
-        sourceItemModel.yPosition = this.getPageHeight() - sourceItemModel.height;
+      if (newYPosition > this.getPageHeight() - sourceItemModel.height) {
+        newYPosition = this.getPageHeight() - sourceItemModel.height;
       }
+      this.unitService.updateSelectedElementProperty('yPosition', newYPosition);
     }
   }
 

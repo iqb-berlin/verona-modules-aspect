@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
-  BehaviorSubject, Observable, Subject
+  BehaviorSubject, Observable
 } from 'rxjs';
 import {
   Unit, UnitPage, UnitPageSection, UnitUIElement
@@ -175,6 +175,7 @@ export class UnitService {
         (element[property] as string[]).push(value as string);
       }
     }
+    this._selectedElements.next(this._selectedElements.value); // hack to notify properties panel about change
     return true;
   }
 

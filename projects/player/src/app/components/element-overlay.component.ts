@@ -2,9 +2,9 @@ import {
   Component, ComponentFactory, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { UnitUIElement } from '../../../common/unit';
-import { CanvasElementComponent } from '../../../common/canvas-element-component.directive';
-import * as ComponentUtils from '../../../common/component-utils';
+import { UnitUIElement } from '../../../../common/unit';
+import { CanvasElementComponent } from '../../../../common/canvas-element-component.directive';
+import * as ComponentUtils from '../../../../common/component-utils';
 
 @Component({
   selector: 'app-element-overlay',

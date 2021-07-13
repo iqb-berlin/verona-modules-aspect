@@ -6,22 +6,22 @@ import { ChangeElement } from './unit';
   providedIn: 'root'
 })
 export class FormService {
-  private elementValueChanged = new Subject<ChangeElement>();
-  private controlAdded = new Subject<string>();
+  private _elementValueChanged = new Subject<ChangeElement>();
+  private _controlAdded = new Subject<string>();
 
-  get elementValueChanged$(): Observable<ChangeElement> {
-    return this.elementValueChanged.asObservable();
+  get elementValueChanged(): Observable<ChangeElement> {
+    return this._elementValueChanged.asObservable();
   }
 
-  get controlAdded$(): Observable<string> {
-    return this.controlAdded.asObservable();
+  get controlAdded(): Observable<string> {
+    return this._controlAdded.asObservable();
   }
 
   changeElementValue(elementValues: ChangeElement): void {
-    this.elementValueChanged.next(elementValues);
+    this._elementValueChanged.next(elementValues);
   }
 
   registerFormControl(controlId: string): void {
-    this.controlAdded.next(controlId);
+    this._controlAdded.next(controlId);
   }
 }

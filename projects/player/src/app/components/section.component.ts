@@ -2,7 +2,7 @@ import {
   Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { UnitPageSection, UnitUIElement } from '../../../common/unit';
+import { UnitPageSection, UnitUIElement } from '../../../../common/unit';
 import { ElementOverlayComponent } from './element-overlay.component';
 
 @Component({

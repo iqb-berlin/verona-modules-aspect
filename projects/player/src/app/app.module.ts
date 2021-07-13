@@ -5,10 +5,10 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 
 import { AppComponent } from './app.component';
-import { PageComponent } from './page.component';
-import { SectionComponent } from './section.component';
+import { PageComponent } from './components/page.component';
+import { SectionComponent } from './components/section.component';
 import { SharedModule } from '../../../common/app.module';
-import { ElementOverlayComponent } from './element-overlay.component';
+import { ElementOverlayComponent } from './components/element-overlay.component';
 
 @NgModule({
   declarations: [

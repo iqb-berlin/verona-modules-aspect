@@ -15,34 +15,34 @@ interface StartData {
   template: `
       <form *ngIf="form" [formGroup]="form">
           <mat-tab-group mat-align-tabs="start">
-              <mat-tab *ngFor="let page of unitJSON.pages; let i = index" label="Seite {{i+1}}">
+              <mat-tab *ngFor="let page of unit.pages; let i = index" label="Seite {{i+1}}">
                   <app-page [parentForm]="form" [page]="page"></app-page>
               </mat-tab>
           </mat-tab-group>
           <button class="form-item" mat-flat-button color="primary" (click)="submit()" [disabled]="!form.valid">Print
               form.value
           </button>
-          <pre>{{unitJSON | json}}</pre>
+          <pre>{{unit | json}}</pre>
       </form>
-    `
+  `
 })
 export class AppComponent {
   form!: FormGroup;
-  unitJSON: Unit = {
+  unit: Unit = {
     pages: []
   };
 
   @Input()
   set startData(startData: StartData) {
-    this.unitJSON = JSON.parse(startData.unitDefinition);
+    this.unit = JSON.parse(startData.unitDefinition);
     this.initForm();
   }
 
   @Output() valueChanged = new EventEmitter<string>();
 
   constructor(private formService: FormService) {
-    formService.elementValueChanged$.subscribe((value: ChangeElement) :void => this.onElementValueChanges(value));
-    formService.controlAdded$.subscribe((value: string): void => this.addControl(value));
+    formService.elementValueChanged.subscribe((value: ChangeElement): void => this.onElementValueChanges(value));
+    formService.controlAdded.subscribe((value: string): void => this.addControl(value));
   }
 
   private initForm(): void {

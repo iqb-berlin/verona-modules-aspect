@@ -1,7 +1,6 @@
-import {
-  Directive, OnInit, ViewChild, ViewContainerRef
-} from '@angular/core';
+import { Directive, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { pairwise, startWith } from 'rxjs/operators';
 import { UnitUIElement } from './unit';
 import { FormService } from './form.service';
 
@@ -9,23 +8,27 @@ import { FormService } from './form.service';
 export abstract class CanvasElementComponent implements OnInit {
   elementModel!: UnitUIElement;
   formControl!: FormControl;
+  style!: Record<string, string>;
   parentForm!: FormGroup;
-  @ViewChild('inputElement', { read: ViewContainerRef, static: true }) inputElement!: ViewContainerRef;
 
   constructor(private formService: FormService) { }
 
   ngOnInit(): void {
-    this.formService.controlAdded.next(this.elementModel.id);
+    this.formService.registerFormControl(this.elementModel.id);
     this.formControl = this.getFormControl(this.elementModel.id);
-    this.formControl.valueChanges.subscribe(v => this.onModelChange(v)); // TODO besserer Variablenname
+    this.formControl.valueChanges
+      .pipe(startWith(null), pairwise())
+      .subscribe(
+        ([prevValue, nextValue] : [unknown, unknown]) => this.onValueChange([prevValue, nextValue])
+      );
   }
 
   private getFormControl(id: string): FormControl {
     return (this.parentForm) ? this.parentForm.controls[id] as FormControl : new FormControl();
   }
 
-  private onModelChange(value: any): void { // TODO any
+  private onValueChange(values: [unknown, unknown]): void {
     const element = this.elementModel.id;
-    this.formService.elementValueChanged.next({ element, value }); // TODO subjects nach außen geben ist bad practice
+    this.formService.changeElementValue({ element, values });
   }
 }

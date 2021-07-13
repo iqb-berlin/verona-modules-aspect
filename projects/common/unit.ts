@@ -84,3 +84,8 @@ export interface AudioElement extends UnitUIElement {
 export interface VideoElement extends UnitUIElement {
   src: string;
 }
+
+export interface ChangeElement {
+  element: string;
+  values: [unknown, unknown];
+}

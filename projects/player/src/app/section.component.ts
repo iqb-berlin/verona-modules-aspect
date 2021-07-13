@@ -1,9 +1,9 @@
 import {
   Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { UnitPageSection, UnitUIElement } from '../../../common/unit';
 import * as ComponentUtils from '../../../common/component-utils';
-import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: 'app-section',
@@ -33,10 +33,5 @@ export class SectionComponent implements OnInit {
     const componentRef = this.elementContainer.createComponent(componentFactory);
     componentRef.instance.elementModel = element;
     componentRef.instance.parentForm = this.parentForm;
-    componentRef.instance.updateStyle({
-      position: 'absolute',
-      top: `${element.yPosition}px`,
-      left: `${element.xPosition}px`
-    });
   }
 }

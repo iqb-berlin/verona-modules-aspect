@@ -1,6 +1,8 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Unit } from '../../../common/unit';
+import { ChangeElement, Unit } from '../../../common/unit';
 import { FormService } from '../../../common/form.service';
 
 interface StartData {
@@ -36,96 +38,108 @@ export class AppComponent {
     this.initForm();
   }
 
+  @Output() valueChanged = new EventEmitter<string>();
+
   constructor(private formService: FormService) {
-    formService.elementValueChanged$.subscribe(value => console.log(value));
-    formService.controlAdded$.subscribe((value: string) => this.addControl(value));
+    formService.elementValueChanged$.subscribe((value: ChangeElement) :void => this.onElementValueChanges(value));
+    formService.controlAdded$.subscribe((value: string): void => this.addControl(value));
   }
 
-  addControl(id: string): void {
+  private initForm(): void {
+    this.form = new FormGroup({});
+    this.form.valueChanges.subscribe(v => this.onFormChanges(v));
+  }
+
+  private addControl(id: string): void {
     this.form.addControl(id, new FormControl());
   }
 
-  initForm(): void {
-    this.form = new FormGroup({});
+  private onElementValueChanges = (value: ChangeElement): void => {
+    console.log(`Player: onElementValueChanges - ${value.element}: ${value.values[0]} -> ${value.values[1]}`);
+  };
+
+  private onFormChanges(value: unknown): void {
+    const allValues: string = JSON.stringify(value);
+    console.log('Player: emit valueChanged', allValues);
+    this.valueChanged.emit(allValues);
   }
 
   submit(): void {
-    console.log('form.value', this.form.value);
+    console.log('Player: form.value', this.form.value);
   }
 
-
-  exampleUnit = {
-    pages: [
-      {
-        sections: [
-          {
-            elements: [
-              {
-                label: 'Label Dropdown',
-                options: [
-                  'op1',
-                  'op2'
-                ],
-                type: 'dropdown',
-                id: 'dummyID',
-                xPosition: 124,
-                yPosition: 26,
-                width: 180,
-                height: 60,
-                backgroundColor: 'grey',
-                fontColor: 'blue',
-                font: 'Arial',
-                fontSize: 18,
-                bold: true,
-                italic: false,
-                underline: false
-              }
-            ],
-            width: 1200,
-            height: 200,
-            backgroundColor: '#FFFAF0'
-          },
-          {
-            elements: [
-              {
-                label: 'Button Text',
-                type: 'button',
-                id: 'dummyID',
-                xPosition: 440,
-                yPosition: 77,
-                width: 180,
-                height: 60,
-                backgroundColor: 'grey',
-                fontColor: 'blue',
-                font: 'Arial',
-                fontSize: 18,
-                bold: true,
-                italic: false,
-                underline: false
-              }
-            ],
-            width: 1200,
-            height: 200,
-            backgroundColor: '#FFFAF0'
-          }
-        ],
-        width: 1200,
-        height: 550,
-        backgroundColor: '#FFFAF0'
-      },
-      {
-        sections: [
-          {
-            elements: [],
-            width: 1200,
-            height: 200,
-            backgroundColor: '#FFFAF0'
-          }
-        ],
-        width: 1200,
-        height: 550,
-        backgroundColor: '#FFFAF0'
-      }
-    ]
-  };
+  // exampleUnit = {
+  //   pages: [
+  //     {
+  //       sections: [
+  //         {
+  //           elements: [
+  //             {
+  //               label: 'Label Dropdown',
+  //               options: [
+  //                 'op1',
+  //                 'op2'
+  //               ],
+  //               type: 'dropdown',
+  //               id: 'dummyID',
+  //               xPosition: 124,
+  //               yPosition: 26,
+  //               width: 180,
+  //               height: 60,
+  //               backgroundColor: 'grey',
+  //               fontColor: 'blue',
+  //               font: 'Arial',
+  //               fontSize: 18,
+  //               bold: true,
+  //               italic: false,
+  //               underline: false
+  //             }
+  //           ],
+  //           width: 1200,
+  //           height: 200,
+  //           backgroundColor: '#FFFAF0'
+  //         },
+  //         {
+  //           elements: [
+  //             {
+  //               label: 'Button Text',
+  //               type: 'button',
+  //               id: 'dummyID',
+  //               xPosition: 440,
+  //               yPosition: 77,
+  //               width: 180,
+  //               height: 60,
+  //               backgroundColor: 'grey',
+  //               fontColor: 'blue',
+  //               font: 'Arial',
+  //               fontSize: 18,
+  //               bold: true,
+  //               italic: false,
+  //               underline: false
+  //             }
+  //           ],
+  //           width: 1200,
+  //           height: 200,
+  //           backgroundColor: '#FFFAF0'
+  //         }
+  //       ],
+  //       width: 1200,
+  //       height: 550,
+  //       backgroundColor: '#FFFAF0'
+  //     },
+  //     {
+  //       sections: [
+  //         {
+  //           elements: [],
+  //           width: 1200,
+  //           height: 200,
+  //           backgroundColor: '#FFFAF0'
+  //         }
+  //       ],
+  //       width: 1200,
+  //       height: 550,
+  //       backgroundColor: '#FFFAF0'
+  //     }
+  //   ]
+  // };
 }

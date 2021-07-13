@@ -8,12 +8,14 @@ import { AppComponent } from './app.component';
 import { PageComponent } from './page.component';
 import { SectionComponent } from './section.component';
 import { SharedModule } from '../../../common/app.module';
+import { ElementOverlayComponent } from './element-overlay.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageComponent,
-    SectionComponent
+    SectionComponent,
+    ElementOverlayComponent
   ],
   imports: [
     BrowserModule,

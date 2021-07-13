@@ -1,9 +1,9 @@
 import {
-  Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef
+  Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UnitPageSection, UnitUIElement } from '../../../common/unit';
-import * as ComponentUtils from '../../../common/component-utils';
+import { ElementOverlayComponent } from './element-overlay.component';
 
 @Component({
   selector: 'app-section',
@@ -29,9 +29,11 @@ export class SectionComponent implements OnInit {
   }
 
   private createSectionElement(element: UnitUIElement): void {
-    const componentFactory = ComponentUtils.getComponentFactory(element.type, this.componentFactoryResolver);
-    const componentRef = this.elementContainer.createComponent(componentFactory);
-    componentRef.instance.elementModel = element;
-    componentRef.instance.parentForm = this.parentForm;
+    const overlayFactory: ComponentFactory<ElementOverlayComponent> =
+      this.componentFactoryResolver.resolveComponentFactory(ElementOverlayComponent);
+    const overlayRef: ComponentRef<ElementOverlayComponent> =
+      this.elementContainer.createComponent(overlayFactory);
+    overlayRef.instance.element = element;
+    overlayRef.instance.parentForm = this.parentForm;
   }
 }

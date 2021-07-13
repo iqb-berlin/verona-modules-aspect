@@ -1,11 +1,8 @@
 import {
-  Component, OnInit, Input, Output,
-  EventEmitter,
-  ComponentFactoryResolver,
-  ViewChild, ViewContainerRef
+  Component, OnInit, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { UnitUIElement } from '../../../../../../../common/unit';
-import { CanvasElementComponent } from '../../../../../../../common/canvas-element-component.directive';
+import { FormElementComponent } from '../../../../../../../common/canvas-element-component.directive';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 
 @Component({
@@ -34,8 +31,9 @@ export class CanvasDragOverlayComponent implements OnInit {
   @Output() elementSelected = new EventEmitter<{
     componentElement: CanvasDragOverlayComponent,
     multiSelect: boolean }>();
+
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
-  private childComponent!: CanvasElementComponent;
+  private childComponent!: FormElementComponent;
   _selected = false;
   style: Record<string, string> = {};
 

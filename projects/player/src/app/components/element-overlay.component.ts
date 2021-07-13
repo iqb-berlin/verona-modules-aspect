@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UnitUIElement } from '../../../../common/unit';
-import { CanvasElementComponent } from '../../../../common/canvas-element-component.directive';
+import { FormElementComponent } from '../../../../common/canvas-element-component.directive';
 import * as ComponentUtils from '../../../../common/component-utils';
 
 @Component({
@@ -24,9 +24,9 @@ export class ElementOverlayComponent implements OnInit {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-    const componentFactory: ComponentFactory<CanvasElementComponent> =
+    const componentFactory: ComponentFactory<FormElementComponent> =
       ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
-    const childComponent: CanvasElementComponent =
+    const childComponent: FormElementComponent =
       this.elementContainer.createComponent(componentFactory).instance;
     childComponent.elementModel = this.element;
     childComponent.parentForm = this.parentForm;

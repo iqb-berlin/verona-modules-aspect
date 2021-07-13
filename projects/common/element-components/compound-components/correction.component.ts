@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CanvasElementComponent } from '../../canvas-element-component.directive';
+import { FormElementComponent } from '../../canvas-element-component.directive';
 
 @Component({
   selector: 'app-correction',
@@ -28,4 +28,4 @@ import { CanvasElementComponent } from '../../canvas-element-component.directive
     'mat-form-field {margin: 5px}'
   ]
 })
-export class CorrectionComponent extends CanvasElementComponent { }
+export class CorrectionComponent extends FormElementComponent { }

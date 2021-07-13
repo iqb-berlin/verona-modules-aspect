@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CanvasElementComponent } from '../canvas-element-component.directive';
+import { FormElementComponent } from '../canvas-element-component.directive';
 
 @Component({
   selector: 'app-dropdown',
@@ -24,4 +24,4 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
       </mat-form-field>
   `
 })
-export class DropdownComponent extends CanvasElementComponent { }
+export class DropdownComponent extends FormElementComponent { }

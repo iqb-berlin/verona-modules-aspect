@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CanvasElementComponent } from '../canvas-element-component.directive';
+import { FormElementComponent } from '../canvas-element-component.directive';
 
 @Component({
   selector: 'app-checkbox',
@@ -19,4 +19,4 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
       </mat-checkbox>
   `
 })
-export class CheckboxComponent extends CanvasElementComponent { }
+export class CheckboxComponent extends FormElementComponent { }

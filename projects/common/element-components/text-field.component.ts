@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CanvasElementComponent } from '../canvas-element-component.directive';
+import { FormElementComponent } from '../canvas-element-component.directive';
 
 @Component({
   selector: 'app-text-field',
@@ -22,4 +22,4 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
     </textarea>
   `
 })
-export class TextFieldComponent extends CanvasElementComponent { }
+export class TextFieldComponent extends FormElementComponent { }

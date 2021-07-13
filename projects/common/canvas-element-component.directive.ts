@@ -5,7 +5,7 @@ import { UnitUIElement } from './unit';
 import { FormService } from './form.service';
 
 @Directive()
-export abstract class CanvasElementComponent implements OnInit {
+export abstract class FormElementComponent implements OnInit {
   elementModel!: UnitUIElement;
   formControl!: FormControl;
   style!: Record<string, string>;

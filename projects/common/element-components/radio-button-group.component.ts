@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CanvasElementComponent } from '../canvas-element-component.directive';
+import { FormElementComponent } from '../canvas-element-component.directive';
 
 @Component({
   selector: 'app-radio-button-group',
@@ -23,4 +23,4 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
       </div>
   `
 })
-export class RadioButtonGroupComponent extends CanvasElementComponent { }
+export class RadioButtonGroupComponent extends FormElementComponent { }

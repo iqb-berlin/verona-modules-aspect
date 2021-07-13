@@ -1,5 +1,5 @@
 import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
-import { CanvasElementComponent } from './canvas-element-component.directive';
+import { FormElementComponent } from './canvas-element-component.directive';
 import { LabelComponent } from './element-components/label.component';
 import { ButtonComponent } from './element-components/button.component';
 import { TextFieldComponent } from './element-components/text-field.component';
@@ -13,7 +13,7 @@ import { CorrectionComponent } from './element-components/compound-components/co
 
 export function getComponentFactory(
   elementType: string,
-  componentFactoryResolver: ComponentFactoryResolver): ComponentFactory<CanvasElementComponent> {
+  componentFactoryResolver: ComponentFactoryResolver): ComponentFactory<FormElementComponent> {
   switch (elementType) {
     case 'label':
       return componentFactoryResolver.resolveComponentFactory(LabelComponent);

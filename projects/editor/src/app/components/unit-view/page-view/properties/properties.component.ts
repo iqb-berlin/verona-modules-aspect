@@ -18,7 +18,6 @@ import { UnitUIElement } from '../../../../../../../common/unit';
 })
 export class PropertiesComponent {
   selectedElementsSubscription!: Subscription;
-  elementUpdatedSubscription!: Subscription;
   selectedElements!: UnitUIElement[];
   combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
 
@@ -31,9 +30,6 @@ export class PropertiesComponent {
         this.createCombinedProperties();
       }
     );
-    this.elementUpdatedSubscription = this.unitService.elementUpdated.subscribe(() => {
-      this.createCombinedProperties();
-    });
   }
 
   createCombinedProperties(): void {
@@ -70,6 +66,5 @@ export class PropertiesComponent {
 
   ngOnDestroy(): void {
     this.selectedElementsSubscription.unsubscribe();
-    this.elementUpdatedSubscription.unsubscribe();
   }
 }

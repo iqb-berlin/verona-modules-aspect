@@ -4,7 +4,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
 @Component({
   selector: 'app-audio',
   template: `
-      <div [ngStyle]="style">
+      <div>
           <audio controls src="{{$any(elementModel).src}}"></audio>
       </div>
   `,

@@ -4,7 +4,7 @@ import { CanvasElementComponent } from '../canvas-element-component.directive';
 @Component({
   selector: 'app-video',
   template: `
-      <div [ngStyle]="style">
+      <div>
           <video controls src="{{$any(elementModel).src}}"></video>
       </div>
   `,

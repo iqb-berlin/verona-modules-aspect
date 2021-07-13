@@ -22,7 +22,6 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   @Input() pageObservable!: Observable<UnitPage>;
   @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;
   private pageSubscription!: Subscription;
-  private elementUpdatedSubscription!: Subscription;
   private pageSwitchSubscription!: Subscription;
   page!: UnitPage;
   sectionEditMode: boolean = false;
@@ -46,10 +45,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
         sectionComponent.updateSelection(this.unitService.getSelectedElements());
       });
     });
-    this.elementUpdatedSubscription = this.unitService.elementUpdated.subscribe(() => {
-      this.updateSectionElementStyles();
-    });
-    this.pageSwitchSubscription = this.unitService.selectedPageIndex.subscribe(
+    this.pageSwitchSubscription = this.unitService.selectedPageIndex.subscribe( // TODO name properly
       () => {
         this.clearSelection();
       }
@@ -63,12 +59,6 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   selectSection(id: number): void {
     this.unitService.selectPageSection(Number(id));
-  }
-
-  updateSectionElementStyles(): void {
-    this.canvasSections?.toArray().forEach((sectionComponent: CanvasSectionComponent) => {
-      sectionComponent.updateElementStyles();
-    });
   }
 
   elementSelected(event: { componentElement: CanvasDragOverlayComponent; multiSelect: boolean }): void {
@@ -117,7 +107,6 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
         sourceItemModel.yPosition = this.getPageHeight() - sourceItemModel.height;
       }
     }
-    this.unitService.updateElement();
   }
 
   dropSection(event: CdkDragDrop<string[]>): void {
@@ -163,12 +152,10 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
         break;
       // no default
     }
-    this.updateSectionElementStyles();
   }
 
   ngOnDestroy(): void {
     this.pageSubscription.unsubscribe();
-    this.elementUpdatedSubscription.unsubscribe();
     this.pageSwitchSubscription.unsubscribe();
   }
 }

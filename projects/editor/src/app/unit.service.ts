@@ -21,7 +21,6 @@ export class UnitService {
   private _selectedPageSectionIndex: BehaviorSubject<number>;
 
   private _selectedElements: BehaviorSubject<UnitUIElement[]>;
-  elementUpdated = new Subject();
 
   constructor(private messageService: MessageService, private idService: IdService) {
     const initialUnit = UnitFactory.createUnit();
@@ -159,10 +158,6 @@ export class UnitService {
     this._selectedElements.next([...this._selectedElements.getValue(), elementModel]);
   }
 
-  updateElement(): void { // TODO weg damit
-    this.elementUpdated.next();
-  }
-
   updateSelectedElementProperty(property: string, value: string | number | boolean): boolean {
     // eslint-disable-next-line no-restricted-syntax
     for (const element of this._selectedElements.value) {
@@ -180,7 +175,6 @@ export class UnitService {
         (element[property] as string[]).push(value as string);
       }
     }
-    this.elementUpdated.next();
     return true;
   }
 

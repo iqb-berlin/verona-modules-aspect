@@ -34,12 +34,6 @@ export class CanvasSectionComponent implements OnInit {
     });
   }
 
-  updateElementStyles(): void {
-    this.canvasComponents.forEach((component: CanvasDragOverlayComponent) => {
-      component.updateStyle();
-    });
-  }
-
   updateSelection(selectedElements: UnitUIElement[]): void {
     this.canvasComponents.forEach((component: CanvasDragOverlayComponent) => {
       selectedElements.forEach((selectedElement: UnitUIElement) => {

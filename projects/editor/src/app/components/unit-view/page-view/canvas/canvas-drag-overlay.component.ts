@@ -13,7 +13,14 @@ import * as ComponentUtils from '../../../../../../../common/component-utils';
   template: `
 <!--    Needs extra div because styling can interfere with drag and drop-->
     <div cdkDrag [cdkDragData]="this.element" (click)="click($event)">
-      <div [ngStyle]="style">
+      <div [ngStyle]="style"
+           [style.position]="'absolute'"
+           [style.border]="_selected ? '2px solid' : ''"
+           [style.width.px]="element.width"
+           [style.height.px]="element.height"
+           [style.left.px]="element.xPosition"
+           [style.top.px]="element.yPosition"
+           [style.z-index]="element.zIndex">
         <ng-template #elementContainer></ng-template>
       </div>
     </div>
@@ -35,7 +42,6 @@ export class CanvasDragOverlayComponent implements OnInit {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-    this.updateStyle();
     const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
     this.childComponent = this.elementContainer.createComponent(componentFactory).instance;
     this.childComponent.elementModel = this.element;
@@ -43,19 +49,6 @@ export class CanvasDragOverlayComponent implements OnInit {
 
   set selected(newValue: boolean) {
     this._selected = newValue;
-    this.updateStyle();
-  }
-
-  updateStyle(): void {
-    this.style = {
-      border: this._selected ? '2px solid' : '',
-      width: `${this.element.width}px`,
-      height: `${this.element.height}px`,
-      'z-index': `${this.element.zIndex}`,
-      left: `${this.element.xPosition.toString()}px`,
-      top: `${this.element.yPosition.toString()}px`
-    };
-    this.childComponent?.updateStyle();
   }
 
   click(event: MouseEvent): void {

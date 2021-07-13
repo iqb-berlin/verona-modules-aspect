@@ -1,8 +1,8 @@
 import {
   AudioElement, ButtonElement,
   CheckboxElement, CompoundElementCorrection, DropdownElement,
-  ImageElement, LabelElement, RadioButtonGroupElement,
-  TextFieldElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
+  ImageElement, LabelElement, RadioButtonGroupElement, SurfaceUIElement,
+  TextFieldElement, TextUIElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
   VideoElement
 } from '../../../../common/unit';
 
@@ -38,28 +38,42 @@ export function createUnitUIElement(type: string): UnitUIElement {
     yPosition: 0,
     zIndex: 0,
     width: 180,
-    height: 60,
-    backgroundColor: 'lightgrey',
+    height: 60
+  };
+}
+
+export function createTextUIElement(type: string): TextUIElement {
+  return {
     fontColor: 'blue',
     font: 'Arial',
     fontSize: 18,
     bold: true,
     italic: false,
-    underline: false
+    underline: false,
+    ...createUnitUIElement(type)
+  };
+}
+
+export function createSurfaceUIElement(type: string): SurfaceUIElement {
+  return {
+    backgroundColor: 'lightgrey',
+    ...createUnitUIElement(type)
   };
 }
 
 export function createLabelElement(): LabelElement {
   return {
     label: 'Label Text',
-    ...createUnitUIElement('label')
+    ...createTextUIElement('label'),
+    ...createSurfaceUIElement('label')
   };
 }
 
 export function createButtonElement(): ButtonElement {
   return {
     label: 'Button Text',
-    ...createUnitUIElement('button')
+    ...createTextUIElement('button'),
+    ...createSurfaceUIElement('button')
   };
 }
 
@@ -67,14 +81,16 @@ export function createTextfieldElement(): TextFieldElement {
   return {
     placeholder: 'DUMMY',
     multiline: true,
-    ...createUnitUIElement('text-field')
+    ...createTextUIElement('text-field'),
+    ...createSurfaceUIElement('text-field')
   };
 }
 
 export function createCheckboxElement(): CheckboxElement {
   return {
     label: 'Label Checkbox',
-    ...createUnitUIElement('checkbox')
+    ...createTextUIElement('checkbox'),
+    ...createSurfaceUIElement('checkbox')
   };
 }
 
@@ -82,7 +98,8 @@ export function createDropdownElement(): DropdownElement {
   return {
     label: 'Label Dropdown',
     options: [],
-    ...createUnitUIElement('dropdown')
+    ...createTextUIElement('dropdown'),
+    ...createSurfaceUIElement('dropdown')
   };
 }
 
@@ -91,7 +108,8 @@ export function createRadioButtonGroupElement(): RadioButtonGroupElement {
     text: 'Label Optionsfeld',
     options: [],
     alignment: 'row',
-    ...createUnitUIElement('radio'),
+    ...createTextUIElement('radio'),
+    ...createSurfaceUIElement('radio'),
     height: 75
   };
 }

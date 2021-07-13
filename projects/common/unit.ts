@@ -25,7 +25,9 @@ export interface UnitUIElement {
   zIndex: number
   width: number;
   height: number;
-  backgroundColor: string;
+}
+
+export interface TextUIElement extends UnitUIElement {
   fontColor: string;
   font: string;
   fontSize: number;
@@ -34,34 +36,38 @@ export interface UnitUIElement {
   underline: boolean;
 }
 
+export interface SurfaceUIElement extends UnitUIElement {
+  backgroundColor: string;
+}
+
 export interface CompoundElementCorrection extends UnitUIElement {
   text: string;
   sentences : string[];
 }
 
-export interface LabelElement extends UnitUIElement {
+export interface LabelElement extends TextUIElement, SurfaceUIElement {
   label: string;
 }
 
-export interface ButtonElement extends UnitUIElement {
+export interface ButtonElement extends TextUIElement, SurfaceUIElement {
   label: string;
 }
 
-export interface TextFieldElement extends UnitUIElement {
+export interface TextFieldElement extends TextUIElement, SurfaceUIElement {
   placeholder: string;
   multiline: boolean;
 }
 
-export interface CheckboxElement extends UnitUIElement {
+export interface CheckboxElement extends TextUIElement, SurfaceUIElement {
   label: string;
 }
 
-export interface DropdownElement extends UnitUIElement {
+export interface DropdownElement extends TextUIElement, SurfaceUIElement {
   label: string;
   options: string[];
 }
 
-export interface RadioButtonGroupElement extends UnitUIElement {
+export interface RadioButtonGroupElement extends UnitUIElement, SurfaceUIElement {
   text: string;
   options: string[];
   alignment: 'row' | 'column';

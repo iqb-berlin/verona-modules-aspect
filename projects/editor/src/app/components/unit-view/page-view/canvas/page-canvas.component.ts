@@ -30,7 +30,9 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Delete') {
+    if (!(event.target as Element).tagName.includes('input'.toUpperCase()) &&
+      !(event.target as Element).tagName.includes('textarea'.toUpperCase()) &&
+      event.key === 'Delete') {
       this.unitService.deleteSelectedElements();
     }
   }

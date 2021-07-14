@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormElementComponent } from '../canvas-element-component.directive';
 
 @Component({
-  selector: 'app-label',
+  selector: 'app-text',
   template: `
       <div [style.width.px]="elementModel.width"
            [style.height.px]="elementModel.height"

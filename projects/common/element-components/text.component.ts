@@ -12,7 +12,8 @@ import { FormElementComponent } from '../canvas-element-component.directive';
            [style.font-size.px]="elementModel.fontSize"
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.underline ? 'underline' : ''">
+           [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+           [style.white-space]="'pre-wrap'">
           {{$any(elementModel).text}}
       </div>
   `

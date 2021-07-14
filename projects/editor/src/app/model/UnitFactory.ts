@@ -1,7 +1,7 @@
 import {
   AudioElement, ButtonElement,
   CheckboxElement, CompoundElementCorrection, DropdownElement,
-  ImageElement, LabelElement, RadioButtonGroupElement, SurfaceUIElement,
+  ImageElement, TextElement, RadioButtonGroupElement, SurfaceUIElement,
   TextFieldElement, TextUIElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
   VideoElement
 } from '../../../../common/unit';
@@ -61,11 +61,11 @@ export function createSurfaceUIElement(type: string): SurfaceUIElement {
   };
 }
 
-export function createLabelElement(): LabelElement {
+export function createTextElement(): TextElement {
   return {
-    label: 'Label Text',
-    ...createTextUIElement('label'),
-    ...createSurfaceUIElement('label')
+    text: 'Example Text',
+    ...createTextUIElement('text'),
+    ...createSurfaceUIElement('text')
   };
 }
 

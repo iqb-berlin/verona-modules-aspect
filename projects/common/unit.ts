@@ -45,8 +45,8 @@ export interface CompoundElementCorrection extends UnitUIElement {
   sentences : string[];
 }
 
-export interface LabelElement extends TextUIElement, SurfaceUIElement {
-  label: string;
+export interface TextElement extends TextUIElement, SurfaceUIElement {
+  text: string;
 }
 
 export interface ButtonElement extends TextUIElement, SurfaceUIElement {

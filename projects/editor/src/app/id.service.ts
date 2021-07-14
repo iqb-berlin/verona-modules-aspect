@@ -9,7 +9,7 @@ import {
 export class IdService {
   private givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
-    label: 0,
+    text: 0,
     button: 0,
     'text-field': 0,
     checkbox: 0,

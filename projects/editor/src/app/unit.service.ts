@@ -110,8 +110,8 @@ export class UnitService {
   async addPageElement(elementType: string): Promise<void> {
     let newElement: UnitUIElement;
     switch (elementType) {
-      case 'label':
-        newElement = UnitFactory.createLabelElement();
+      case 'text':
+        newElement = UnitFactory.createTextElement();
         break;
       case 'button':
         newElement = UnitFactory.createButtonElement();

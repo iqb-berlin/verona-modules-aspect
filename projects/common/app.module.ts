@@ -28,7 +28,7 @@ import { TextFieldComponent } from './element-components/text-field.component';
 import { ImageComponent } from './element-components/image.component';
 import { VideoComponent } from './element-components/video.component';
 import { AudioComponent } from './element-components/audio.component';
-import { LabelComponent } from './element-components/label.component';
+import { TextComponent } from './element-components/text.component';
 import { DropdownComponent } from './element-components/dropdown.component';
 
 @NgModule({
@@ -44,7 +44,7 @@ import { DropdownComponent } from './element-components/dropdown.component';
   ],
   declarations: [
     ButtonComponent,
-    LabelComponent,
+    TextComponent,
     TextFieldComponent,
     ImageComponent,
     AudioComponent,
@@ -74,7 +74,7 @@ import { DropdownComponent } from './element-components/dropdown.component';
     MatDialogModule,
     MatFormFieldModule,
     ButtonComponent,
-    LabelComponent,
+    TextComponent,
     TextFieldComponent,
     ImageComponent,
     AudioComponent,

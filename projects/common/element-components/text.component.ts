@@ -13,8 +13,8 @@ import { FormElementComponent } from '../canvas-element-component.directive';
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-          {{$any(elementModel).label}}
+          {{$any(elementModel).text}}
       </div>
   `
 })
-export class LabelComponent extends FormElementComponent { }
+export class TextComponent extends FormElementComponent { }

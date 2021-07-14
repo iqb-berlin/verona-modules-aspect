@@ -1,6 +1,6 @@
 import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
 import { FormElementComponent } from './canvas-element-component.directive';
-import { LabelComponent } from './element-components/label.component';
+import { TextComponent } from './element-components/text.component';
 import { ButtonComponent } from './element-components/button.component';
 import { TextFieldComponent } from './element-components/text-field.component';
 import { CheckboxComponent } from './element-components/checkbox.component';
@@ -13,10 +13,11 @@ import { CorrectionComponent } from './element-components/compound-components/co
 
 export function getComponentFactory(
   elementType: string,
-  componentFactoryResolver: ComponentFactoryResolver): ComponentFactory<FormElementComponent> {
+  componentFactoryResolver: ComponentFactoryResolver
+): ComponentFactory<FormElementComponent> {
   switch (elementType) {
-    case 'label':
-      return componentFactoryResolver.resolveComponentFactory(LabelComponent);
+    case 'text':
+      return componentFactoryResolver.resolveComponentFactory(TextComponent);
     case 'button':
       return componentFactoryResolver.resolveComponentFactory(ButtonComponent);
     case 'text-field':

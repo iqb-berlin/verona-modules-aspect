@@ -105,7 +105,7 @@ export function createDropdownElement(): DropdownElement {
 
 export function createRadioButtonGroupElement(): RadioButtonGroupElement {
   return {
-    text: 'Label Optionsfeld',
+    label: 'Label Optionsfeld',
     options: [],
     alignment: 'row',
     ...createTextUIElement('radio'),

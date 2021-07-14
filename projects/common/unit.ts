@@ -68,7 +68,7 @@ export interface DropdownElement extends TextUIElement, SurfaceUIElement {
 }
 
 export interface RadioButtonGroupElement extends UnitUIElement, SurfaceUIElement {
-  text: string;
+  label: string;
   options: string[];
   alignment: 'row' | 'column';
 }

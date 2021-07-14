@@ -13,7 +13,7 @@ import { FormElementComponent } from '../canvas-element-component.directive';
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-          <label id="radio-group-label">{{$any(elementModel).text}}</label>
+          <label id="radio-group-label">{{$any(elementModel).label}}</label>
           <mat-radio-group aria-labelledby="radio-group-label" fxLayout="{{elementModel.alignment}}"
                            [formControl]="formControl">
               <mat-radio-button *ngFor="let option of $any(elementModel).options" [value]="option">

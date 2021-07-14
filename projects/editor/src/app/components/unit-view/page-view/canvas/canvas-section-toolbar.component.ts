@@ -7,7 +7,7 @@ import { UnitPageSection } from '../../../../../../../common/unit';
 @Component({
   selector: 'app-canvas-section-toolbar',
   template: `
-    <div class="canvas-section-toolbar">
+    <div class="canvas-section-toolbar" fxLayout="row">
       Seitenabschnitt
       <button mat-raised-button [disabled]="editMode"
               (click)="unitService.addSection()">
@@ -23,24 +23,26 @@ import { UnitPageSection } from '../../../../../../../common/unit';
         Abschnitte verschieben
       </mat-checkbox>
 
-      <mat-form-field>
-        <mat-label>Breite</mat-label>
-        <input matInput type="number" [(ngModel)]="section.width">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Höhe</mat-label>
-        <input matInput type="number" [(ngModel)]="section.height">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Hintergrundfarbe</mat-label>
-        <input matInput type="text" [(ngModel)]="section.backgroundColor">
-      </mat-form-field>
+      <div fxLayout="column">
+        <label for="breite">Breite</label>
+        <input type="number" id="width" [(ngModel)]="section.width">
+      </div>
+      <div fxLayout="column">
+        <label>Höhe</label>
+        <input type="number" id="height" [(ngModel)]="section.height">
+      </div>
+      <div fxLayout="column">
+        <label for="bg-color">Hintergrundfarbe</label>
+        <input type="text" id="bg-color" [(ngModel)]="section.backgroundColor">
+      </div>
     </div>
     `,
   styles: [
     '.canvas-section-toolbar {background-color: #9c9c9c; color: white; padding-left: 10px; font-size: large}',
+    '.canvas-section-toolbar {align-items: center;}',
     '.canvas-section-toolbar button {margin: 5px;}',
-    '.canvas-section-toolbar mat-checkbox {margin-left: 15px}'
+    '.canvas-section-toolbar mat-checkbox {margin-left: 15px; margin-right: 60px}',
+    '.canvas-section-toolbar input {width: 150px}'
   ]
 })
 export class CanvasSectionToolbarComponent implements OnInit {

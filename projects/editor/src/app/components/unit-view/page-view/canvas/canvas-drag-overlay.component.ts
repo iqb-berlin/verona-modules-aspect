@@ -9,7 +9,9 @@ import * as ComponentUtils from '../../../../../../../common/component-utils';
   selector: 'app-canvas-drag-overlay',
   template: `
 <!--    Needs extra div because styling can interfere with drag and drop-->
-    <div cdkDrag [cdkDragData]="this.element" (click)="click($event)">
+    <div cdkDrag [cdkDragData]="this.element"
+         [cdkDragDisabled]="!_selected"
+         (click)="click($event)">
       <div [ngStyle]="style"
            [style.position]="'absolute'"
            [style.border]="_selected ? '2px solid' : ''"
@@ -18,6 +20,7 @@ import * as ComponentUtils from '../../../../../../../common/component-utils';
            [style.left.px]="element.xPosition"
            [style.top.px]="element.yPosition"
            [style.z-index]="element.zIndex">
+<!--        <button cdkDrag cdkDragHandle></button>-->
         <ng-template #elementContainer></ng-template>
       </div>
     </div>

@@ -15,6 +15,7 @@
                      [selectedIndex]="unitService.selectedPageIndex | async">
         <mat-tab *ngFor="let page of (unitService.unit | async)!.pages; let i = index" label="Seite {{i+1}}">
           <ng-template mat-tab-label>
+            <mat-icon *ngIf="page.alwaysVisible" class="page-alwaysVisible-icon">assignment</mat-icon>
             Seite {{i+1}}
             <button class="delete-page-button" mat-button (click)="deletePage()">
               <mat-icon>delete</mat-icon>

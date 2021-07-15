@@ -85,6 +85,17 @@ export class UnitService {
     }
   }
 
+  /** Checks if a page already has this setting. Return false if so.
+   * When newState is false it is always okay. */
+  setPageAlwaysVisible(newState: boolean): boolean {
+    if (!newState || !this._unit.value.pages.find(page => page.alwaysVisible)) {
+      this._unit.value.pages[this._selectedPageIndex.value].alwaysVisible = newState;
+      return true;
+    }
+    this.messageService.showError('Kann nur für eine Seite gesetzt werden');
+    return false;
+  }
+
   addSection(): void {
     const newSection = UnitFactory.createUnitPageSection();
     this._unit.value.pages[this._selectedPageIndex.value].sections.push(newSection);

@@ -7,6 +7,7 @@ export interface UnitPage {
   width: number;
   margin: number;
   backgroundColor: string;
+  alwaysVisible: boolean
 }
 
 export interface UnitPageSection {

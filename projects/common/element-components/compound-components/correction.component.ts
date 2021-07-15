@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../../canvas-element-component.directive';
+import { CompoundElementCorrection } from '../../unit';
+import { FormElementComponent } from '../../form-element-component.directive';
 
 @Component({
   selector: 'app-correction',
@@ -8,13 +9,14 @@ import { FormElementComponent } from '../../canvas-element-component.directive';
       <p>
         {{$any(elementModel).text}}
       </p>
-      <div *ngFor="let sentence of $any(elementModel).sentences"
+      <div *ngFor="let sentence of elementModel.sentences"
            fxLayout="column">
         <div fxLayout="row">
           <div *ngFor="let word of sentence.split(' ');"
                fxLayout="column">
               <mat-form-field>
-              <input matInput type="text">
+              <input matInput type="text"
+                     [formControl]="formControl">
               </mat-form-field>
               <div>
                   {{word}}
@@ -28,4 +30,6 @@ import { FormElementComponent } from '../../canvas-element-component.directive';
     'mat-form-field {margin: 5px}'
   ]
 })
-export class CorrectionComponent extends FormElementComponent { }
+export class CorrectionComponent extends FormElementComponent {
+  elementModel!: CompoundElementCorrection;
+}

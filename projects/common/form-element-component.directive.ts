@@ -7,9 +7,8 @@ import { FormService } from './form.service';
 @Directive()
 export abstract class FormElementComponent implements OnInit {
   elementModel!: UnitUIElement;
-  formControl!: FormControl;
-  style!: Record<string, string>;
   parentForm!: FormGroup;
+  formControl: FormControl = new FormControl();
 
   constructor(private formService: FormService) { }
 
@@ -24,6 +23,7 @@ export abstract class FormElementComponent implements OnInit {
   }
 
   private getFormControl(id: string): FormControl {
+    // workaround for editor
     return (this.parentForm) ? this.parentForm.controls[id] as FormControl : new FormControl();
   }
 

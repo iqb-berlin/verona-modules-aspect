@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../canvas-element-component.directive';
+import { TextFieldElement } from '../unit';
+import { FormElementComponent } from '../form-element-component.directive';
 
 @Component({
   selector: 'app-text-field',
   template: `
-    <input *ngIf="$any(elementModel).multiline === false" matInput
-           placeholder="{{$any(elementModel).placeholder}}"
+    <input *ngIf="elementModel.multiline === false" matInput
+           placeholder="{{elementModel.placeholder}}"
            [formControl]="formControl">
-    <textarea *ngIf="$any(elementModel).multiline === true" matInput
-              placeholder="{{$any(elementModel).placeholder}}"
+    <textarea *ngIf="elementModel.multiline === true" matInput
+              placeholder="{{elementModel.placeholder}}"
               [formControl]="formControl"
               [style.width.px]="elementModel.width"
               [style.height.px]="elementModel.height"
@@ -22,4 +23,6 @@ import { FormElementComponent } from '../canvas-element-component.directive';
     </textarea>
   `
 })
-export class TextFieldComponent extends FormElementComponent { }
+export class TextFieldComponent extends FormElementComponent {
+  elementModel!: TextFieldElement;
+}

@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../canvas-element-component.directive';
+import { VideoElement } from '../unit';
 
 @Component({
   selector: 'app-video',
   template: `
       <div>
-          <video controls src="{{$any(elementModel).src}}"></video>
+          <video controls src="{{elementModel.src}}"></video>
       </div>
   `,
   styles: [
     'div {display: inline-block;border: 5px solid; padding: 12px 9px 9px 9px}'
   ]
 })
-export class VideoComponent extends FormElementComponent { }
+export class VideoComponent {
+  elementModel!: VideoElement;
+}

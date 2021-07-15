@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../canvas-element-component.directive';
+import { RadioButtonGroupElement } from '../unit';
+import { FormElementComponent } from '../form-element-component.directive';
 
 @Component({
   selector: 'app-radio-button-group',
@@ -13,14 +14,16 @@ import { FormElementComponent } from '../canvas-element-component.directive';
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-          <label id="radio-group-label">{{$any(elementModel).label}}</label>
+          <label id="radio-group-label">{{elementModel.text}}</label>
           <mat-radio-group aria-labelledby="radio-group-label" fxLayout="{{elementModel.alignment}}"
                            [formControl]="formControl">
-              <mat-radio-button *ngFor="let option of $any(elementModel).options" [value]="option">
+              <mat-radio-button *ngFor="let option of elementModel.options" [value]="option">
                   {{option}}
               </mat-radio-button>
           </mat-radio-group>
       </div>
   `
 })
-export class RadioButtonGroupComponent extends FormElementComponent { }
+export class RadioButtonGroupComponent extends FormElementComponent {
+  elementModel!: RadioButtonGroupElement;
+}

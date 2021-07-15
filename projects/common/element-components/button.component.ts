@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../canvas-element-component.directive';
+import { ButtonElement } from '../unit';
 
 @Component({
   selector: 'app-button',
@@ -14,8 +14,10 @@ import { FormElementComponent } from '../canvas-element-component.directive';
             [style.font-weight]="elementModel.bold ? 'bold' : ''"
             [style.font-style]="elementModel.italic ? 'italic' : ''"
             [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      {{$any(elementModel).label}}
+      {{elementModel.label}}
     </button>
   `
 })
-export class ButtonComponent extends FormElementComponent { }
+export class ButtonComponent {
+  elementModel!: ButtonElement;
+}

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../canvas-element-component.directive';
+import { CheckboxElement } from '../unit';
+import { FormElementComponent } from '../form-element-component.directive';
 
 @Component({
   selector: 'app-checkbox',
@@ -15,8 +16,10 @@ import { FormElementComponent } from '../canvas-element-component.directive';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-          {{$any(elementModel).label}}
+          {{elementModel.label}}
       </mat-checkbox>
   `
 })
-export class CheckboxComponent extends FormElementComponent { }
+export class CheckboxComponent extends FormElementComponent {
+  elementModel!: CheckboxElement;
+}

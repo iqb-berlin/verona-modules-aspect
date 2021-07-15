@@ -1,10 +1,10 @@
 import {
-  Component, ComponentFactory, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef
+  Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { UnitUIElement } from '../../../../common/unit';
-import { FormElementComponent } from '../../../../common/canvas-element-component.directive';
 import * as ComponentUtils from '../../../../common/component-utils';
+import { FormElementComponent } from '../../../../common/form-element-component.directive';
 
 @Component({
   selector: 'app-element-overlay',
@@ -24,11 +24,12 @@ export class ElementOverlayComponent implements OnInit {
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-    const componentFactory: ComponentFactory<FormElementComponent> =
-      ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
-    const childComponent: FormElementComponent =
-      this.elementContainer.createComponent(componentFactory).instance;
+    const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
+    const childComponent = this.elementContainer.createComponent(componentFactory).instance;
     childComponent.elementModel = this.element;
-    childComponent.parentForm = this.parentForm;
+
+    if (childComponent instanceof FormElementComponent) {
+      childComponent.parentForm = this.parentForm;
+    }
   }
 }

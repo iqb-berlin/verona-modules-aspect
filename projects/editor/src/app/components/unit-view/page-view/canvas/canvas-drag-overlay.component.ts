@@ -2,7 +2,7 @@ import {
   Component, OnInit, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { UnitUIElement } from '../../../../../../../common/unit';
-import { FormElementComponent } from '../../../../../../../common/canvas-element-component.directive';
+import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 
 @Component({

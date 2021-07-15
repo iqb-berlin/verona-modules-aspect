@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../canvas-element-component.directive';
+import { ImageElement } from '../unit';
 
 @Component({
   selector: 'app-image',
   template: `
-      <img src="{{$any(elementModel).src}}" alt="Image Placeholder">
+      <img src="{{elementModel.src}}" alt="Image Placeholder">
   `
 })
-export class ImageComponent extends FormElementComponent { }
+export class ImageComponent {
+  elementModel!: ImageElement;
+}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormElementComponent } from '../canvas-element-component.directive';
+import { TextElement } from '../unit';
 
 @Component({
   selector: 'app-text',
@@ -14,8 +14,10 @@ import { FormElementComponent } from '../canvas-element-component.directive';
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''"
            [style.white-space]="'pre-wrap'">
-          {{$any(elementModel).text}}
+          {{elementModel.text}}
       </div>
   `
 })
-export class TextComponent extends FormElementComponent { }
+export class TextComponent {
+  elementModel!: TextElement;
+}

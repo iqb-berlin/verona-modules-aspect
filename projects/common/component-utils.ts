@@ -1,5 +1,4 @@
 import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
-import { FormElementComponent } from './canvas-element-component.directive';
 import { TextComponent } from './element-components/text.component';
 import { ButtonComponent } from './element-components/button.component';
 import { TextFieldComponent } from './element-components/text-field.component';
@@ -12,9 +11,9 @@ import { VideoComponent } from './element-components/video.component';
 import { CorrectionComponent } from './element-components/compound-components/correction.component';
 
 export function getComponentFactory(
-  elementType: string,
-  componentFactoryResolver: ComponentFactoryResolver
-): ComponentFactory<FormElementComponent> {
+  elementType: string, componentFactoryResolver: ComponentFactoryResolver
+): ComponentFactory<any> {
+  // TODO: Find better solution than any
   switch (elementType) {
     case 'text':
       return componentFactoryResolver.resolveComponentFactory(TextComponent);

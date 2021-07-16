@@ -1,26 +1,34 @@
 import { Directive, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { pairwise, startWith } from 'rxjs/operators';
+import {
+  FormControl, FormGroup, ValidatorFn
+} from '@angular/forms';
+import { pairwise } from 'rxjs/operators';
 import { UnitUIElement } from './unit';
 import { FormService } from './form.service';
 
 @Directive()
 export abstract class FormElementComponent implements OnInit {
-  elementModel!: UnitUIElement;
+  abstract elementModel: UnitUIElement;
   parentForm!: FormGroup;
-  formControl: FormControl = new FormControl();
+  defaultValue!: unknown;
+  formElementControl!: FormControl;
 
-  constructor(private formService: FormService) { }
+  constructor(private formService: FormService) {}
 
   ngOnInit(): void {
-    this.formService.registerFormControl(this.elementModel.id);
-    this.formControl = this.getFormControl(this.elementModel.id);
-    this.formControl.valueChanges
-      .pipe(startWith(null), pairwise())
+    const formControl = new FormControl(this.defaultValue, this.getValidations());
+    const id = this.elementModel.id;
+    this.formService.registerFormControl({ id, formControl });
+    this.formElementControl = this.getFormControl(id);
+    this.formElementControl.valueChanges
+      .pipe(pairwise())
       .subscribe(
         ([prevValue, nextValue] : [unknown, unknown]) => this.onValueChange([prevValue, nextValue])
       );
   }
+
+  // TODO: get from elementModel examples, example: [Validators.requiredTrue, Validators.required]
+  private getValidations = (): ValidatorFn[] => [];
 
   private getFormControl(id: string): FormControl {
     // workaround for editor
@@ -29,6 +37,6 @@ export abstract class FormElementComponent implements OnInit {
 
   private onValueChange(values: [unknown, unknown]): void {
     const element = this.elementModel.id;
-    this.formService.changeElementValue({ element, values });
+    this.formService.changeElementValue({ id: element, values });
   }
 }

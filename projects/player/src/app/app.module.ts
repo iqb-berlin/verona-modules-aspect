@@ -9,13 +9,15 @@ import { PageComponent } from './components/page.component';
 import { SectionComponent } from './components/section.component';
 import { SharedModule } from '../../../common/app.module';
 import { ElementOverlayComponent } from './components/element-overlay.component';
+import { ValidationMessageComponent } from './components/validation-message.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageComponent,
     SectionComponent,
-    ElementOverlayComponent
+    ElementOverlayComponent,
+    ValidationMessageComponent
   ],
   imports: [
     BrowserModule,

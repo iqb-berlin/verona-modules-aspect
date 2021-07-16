@@ -33,7 +33,7 @@ export class SectionComponent implements OnInit {
       this.componentFactoryResolver.resolveComponentFactory(ElementOverlayComponent);
     const overlayRef: ComponentRef<ElementOverlayComponent> =
       this.elementContainer.createComponent(overlayFactory);
-    overlayRef.instance.element = element;
+    overlayRef.instance.elementModel = element;
     overlayRef.instance.parentForm = this.parentForm;
   }
 }

@@ -1,27 +1,27 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { ChangeElement } from './unit';
+import { FormControlElement, ValueChangeElement } from './form';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
-  private _elementValueChanged = new Subject<ChangeElement>();
-  private _controlAdded = new Subject<string>();
+  private _elementValueChanged = new Subject<ValueChangeElement>();
+  private _controlAdded = new Subject<FormControlElement>();
 
-  get elementValueChanged(): Observable<ChangeElement> {
+  get elementValueChanged(): Observable<ValueChangeElement> {
     return this._elementValueChanged.asObservable();
   }
 
-  get controlAdded(): Observable<string> {
+  get controlAdded(): Observable<FormControlElement> {
     return this._controlAdded.asObservable();
   }
 
-  changeElementValue(elementValues: ChangeElement): void {
+  changeElementValue(elementValues: ValueChangeElement): void {
     this._elementValueChanged.next(elementValues);
   }
 
-  registerFormControl(controlId: string): void {
-    this._controlAdded.next(controlId);
+  registerFormControl(control: FormControlElement): void {
+    this._controlAdded.next(control);
   }
 }

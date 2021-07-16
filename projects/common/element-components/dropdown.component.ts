@@ -15,9 +15,9 @@ import { FormElementComponent } from '../form-element-component.directive';
                      [style.font-weight]="elementModel.bold ? 'bold' : ''"
                      [style.font-style]="elementModel.italic ? 'italic' : ''"
                      [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-            {{$any(elementModel).label}}
+              {{$any(elementModel).label}}
           </mat-label>
-          <mat-select [formControl]="formControl">
+          <mat-select [formControl]="formElementControl">
               <mat-option *ngFor="let option of elementModel.options" [value]="option">
                   {{option}}
               </mat-option>

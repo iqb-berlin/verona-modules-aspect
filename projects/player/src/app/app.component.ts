@@ -1,9 +1,10 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { ChangeElement, Unit } from '../../../common/unit';
+import { FormGroup } from '@angular/forms';
+import { Unit } from '../../../common/unit';
 import { FormService } from '../../../common/form.service';
+import { FormControlElement, ValueChangeElement } from '../../../common/form';
 
 interface StartData {
   unitDefinition: string;
@@ -13,21 +14,23 @@ interface StartData {
 @Component({
   selector: 'player-aspect',
   template: `
-      <form *ngIf="form" [formGroup]="form">
+      <form [formGroup]="form">
           <mat-tab-group mat-align-tabs="start">
               <mat-tab *ngFor="let page of unit.pages; let i = index" label="Seite {{i+1}}">
                   <app-page [parentForm]="form" [page]="page"></app-page>
               </mat-tab>
           </mat-tab-group>
-          <button class="form-item" mat-flat-button color="primary" (click)="submit()" [disabled]="!form.valid">Print
-              form.value
-          </button>
-          <pre>{{unit | json}}</pre>
       </form>
+      <button class="form-item" mat-flat-button color="primary" (click)="submit()">Print
+          form.value
+      </button>
+      <button class="form-item" mat-flat-button color="primary" (click)="markAsTouch()" >markAsTouch
+      </button>
+      <pre>{{unit | json}}</pre>
   `
 })
 export class AppComponent {
-  form!: FormGroup;
+  form: FormGroup = new FormGroup({});
   unit: Unit = {
     pages: []
   };
@@ -41,8 +44,10 @@ export class AppComponent {
   @Output() valueChanged = new EventEmitter<string>();
 
   constructor(private formService: FormService) {
-    formService.elementValueChanged.subscribe((value: ChangeElement): void => this.onElementValueChanges(value));
-    formService.controlAdded.subscribe((value: string): void => this.addControl(value));
+    formService.elementValueChanged
+      .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
+    formService.controlAdded
+      .subscribe((control: FormControlElement): void => this.addControl(control));
   }
 
   private initForm(): void {
@@ -50,22 +55,29 @@ export class AppComponent {
     this.form.valueChanges.subscribe(v => this.onFormChanges(v));
   }
 
-  private addControl(id: string): void {
-    this.form.addControl(id, new FormControl());
+  private addControl(control: FormControlElement): void {
+    this.form.addControl(control.id, control.formControl);
   }
 
-  private onElementValueChanges = (value: ChangeElement): void => {
-    console.log(`Player: onElementValueChanges - ${value.element}: ${value.values[0]} -> ${value.values[1]}`);
+  private onElementValueChanges = (value: ValueChangeElement): void => {
+    // eslint-disable-next-line no-console
+    console.log(`Player: onElementValueChanges - ${value.id}: ${value.values[0]} -> ${value.values[1]}`);
   };
 
   private onFormChanges(value: unknown): void {
     const allValues: string = JSON.stringify(value);
+    // eslint-disable-next-line no-console
     console.log('Player: emit valueChanged', allValues);
     this.valueChanged.emit(allValues);
   }
 
   submit(): void {
+    // eslint-disable-next-line no-console
     console.log('Player: form.value', this.form.value);
+  }
+
+  markAsTouch(): void {
+    this.form.markAllAsTouched();
   }
 
   // exampleUnit = {

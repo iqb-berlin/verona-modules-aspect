@@ -5,8 +5,8 @@ import { FormElementComponent } from '../form-element-component.directive';
 @Component({
   selector: 'app-checkbox',
   template: `
-      <mat-checkbox class="example-margin"
-                    [formControl]="formControl"
+      <mat-checkbox #checkbox class="example-margin"
+                    [formControl]="formElementControl"
                     [style.width.px]="elementModel.width"
                     [style.height.px]="elementModel.height"
                     [style.background-color]="elementModel.backgroundColor"
@@ -22,4 +22,6 @@ import { FormElementComponent } from '../form-element-component.directive';
 })
 export class CheckboxComponent extends FormElementComponent {
   elementModel!: CheckboxElement;
+  // TODO: get from elementModel
+  defaultValue: boolean = true;
 }

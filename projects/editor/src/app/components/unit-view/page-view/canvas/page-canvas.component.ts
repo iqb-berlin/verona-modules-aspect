@@ -69,7 +69,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     }
     this.selectedComponentElements.push(event.componentElement);
     this.unitService.selectElement(event.componentElement.element);
-    event.componentElement.selected = true;
+    event.componentElement.setSelected(true);
   }
 
   private clearSelection() {

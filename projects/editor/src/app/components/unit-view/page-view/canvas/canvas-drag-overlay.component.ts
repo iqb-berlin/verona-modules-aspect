@@ -66,8 +66,8 @@ export class CanvasDragOverlayComponent implements OnInit {
     childComponent.location.nativeElement.firstChild.style.cursor = 'inherit';
   }
 
-  set selected(newValue: boolean) {
-    this._selected = newValue;
+  setSelected(newValue: boolean): void {
+    this.selected = newValue;
   }
 
   click(event: MouseEvent): void {

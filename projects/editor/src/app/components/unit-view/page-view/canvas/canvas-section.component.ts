@@ -38,7 +38,7 @@ export class CanvasSectionComponent implements OnInit {
     this.canvasComponents.forEach((component: CanvasDragOverlayComponent) => {
       selectedElements.forEach((selectedElement: UnitUIElement) => {
         if (component.element === selectedElement) {
-          component.selected = true;
+          component.setSelected(true);
         }
       });
     });
@@ -46,7 +46,7 @@ export class CanvasSectionComponent implements OnInit {
 
   clearSelection(): void {
     this.canvasComponents.forEach((canvasComponent: CanvasDragOverlayComponent) => {
-      canvasComponent.selected = false;
+      canvasComponent.setSelected(false);
     });
   }
 

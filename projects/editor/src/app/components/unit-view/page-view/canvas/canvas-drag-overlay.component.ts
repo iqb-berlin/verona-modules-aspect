@@ -58,13 +58,13 @@ export class CanvasDragOverlayComponent implements OnInit {
   private oldX: number = 0;
   private oldY: number = 0;
 
-  constructor(private unitService: UnitService, private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private unitService: UnitService,
+              private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
     const childComponent = this.elementContainer.createComponent(componentFactory);
     childComponent.instance.elementModel = this.element;
-    childComponent.location.nativeElement.firstChild.style.cursor = 'inherit';
   }
 
   setSelected(newValue: boolean): void {

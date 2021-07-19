@@ -1,32 +1,48 @@
 import {
   Component, OnInit, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
+import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { UnitUIElement } from '../../../../../../../common/unit';
-import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
+import { UnitService } from '../../../../unit.service';
 
 @Component({
   selector: 'app-canvas-drag-overlay',
   template: `
-<!--    Needs extra div because styling can interfere with drag and drop-->
-    <div cdkDrag [cdkDragData]="this.element"
-         [cdkDragDisabled]="!_selected"
+    <!--    Needs extra div because styling can interfere with drag and drop-->
+    <div class="draggable-element" [class.draggable-element-selected]="selected"
+         cdkDrag [cdkDragData]="this.element" [cdkDragDisabled]="!selected"
          (click)="click($event)">
-      <div [ngStyle]="style"
-           [style.position]="'absolute'"
-           [style.border]="_selected ? '2px solid' : ''"
+      <div [style.position]="'absolute'"
+           [style.border]="selected ? '2px solid' : ''"
            [style.width.px]="element.width"
            [style.height.px]="element.height"
            [style.left.px]="element.xPosition"
            [style.top.px]="element.yPosition"
            [style.z-index]="element.zIndex">
-<!--        <button cdkDrag cdkDragHandle></button>-->
+        <!-- Element only for resizing   -->
+        <!-- Extra droplist is needed to keep parent component droplist from handling the drop event. -->
+        <!-- Also for cursor styling. -->
+        <div cdkDropList class="test" *ngIf="selected"
+             [style.width.%]="100"
+             [style.height.%]="100">
+          <div class="resizeHandle"
+               cdkDrag (cdkDragStarted)="dragStart()" (cdkDragMoved)="resizeElement($event)"
+               [style.right.px]="-1" [style.bottom.px]="-7">
+            <mat-icon>aspect_ratio</mat-icon>
+            <div *cdkDragPlaceholder></div>
+          </div>
+        </div>
         <ng-template #elementContainer></ng-template>
       </div>
     </div>
-    `,
+  `,
   styles: [
-    'div {position: absolute}'
+    'div {position: absolute}',
+    '.draggable-element-selected {cursor: grab}',
+    '.draggable-element-selected:active {cursor: grabbing}',
+    '.draggable-element-selected .resizeHandle {cursor: nwse-resize}',
+    '.test.cdk-drop-list-dragging {cursor: nwse-resize}'
   ]
 })
 export class CanvasDragOverlayComponent implements OnInit {
@@ -36,16 +52,18 @@ export class CanvasDragOverlayComponent implements OnInit {
     multiSelect: boolean }>();
 
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
-  private childComponent!: FormElementComponent;
-  _selected = false;
-  style: Record<string, string> = {};
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  selected = false;
+  private oldX: number = 0;
+  private oldY: number = 0;
+
+  constructor(private unitService: UnitService, private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
-    this.childComponent = this.elementContainer.createComponent(componentFactory).instance;
-    this.childComponent.elementModel = this.element;
+    const childComponent = this.elementContainer.createComponent(componentFactory);
+    childComponent.instance.elementModel = this.element;
+    childComponent.location.nativeElement.firstChild.style.cursor = 'inherit';
   }
 
   set selected(newValue: boolean) {
@@ -62,5 +80,15 @@ export class CanvasDragOverlayComponent implements OnInit {
         componentElement: this, multiSelect: false
       });
     }
+  }
+
+  dragStart(): void {
+    this.oldX = this.element.width;
+    this.oldY = this.element.height;
+  }
+
+  resizeElement(event: CdkDragMove): void {
+    this.unitService.updateSelectedElementProperty('width', Math.max(this.oldX + event.distance.x, 0));
+    this.unitService.updateSelectedElementProperty('height', Math.max(this.oldY + event.distance.y, 0));
   }
 }

@@ -14,7 +14,7 @@ import { ValidationMessageComponent } from './validation-message.component';
            [style.left.px]="elementModel.xPosition"
            [style.top.px]="elementModel.yPosition">
           <ng-template #elementComponentContainer></ng-template>
-          <ng-template #errorMessageComponentContainer></ng-template>
+          <ng-template #validationMessageComponentContainer></ng-template>
       </div>
   `
 })

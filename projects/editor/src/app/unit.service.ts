@@ -3,12 +3,14 @@ import {
   BehaviorSubject, Observable
 } from 'rxjs';
 import {
+  ButtonElement, TextElement,
   Unit, UnitPage, UnitPageSection, UnitUIElement
 } from '../../../common/unit';
 import { FileService } from '../../../common/file.service';
 import * as UnitFactory from './model/UnitFactory';
 import { MessageService } from '../../../common/message.service';
 import { IdService } from './id.service';
+import { DialogService } from './dialog.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,9 @@ export class UnitService {
 
   private _selectedElements: BehaviorSubject<UnitUIElement[]>;
 
-  constructor(private messageService: MessageService, private idService: IdService) {
+  constructor(private messageService: MessageService,
+              private idService: IdService,
+              private dialogService: DialogService) {
     const initialUnit = UnitFactory.createUnit();
     const initialPage = UnitFactory.createUnitPage();
     const initialSection = UnitFactory.createUnitPageSection();
@@ -218,5 +222,21 @@ export class UnitService {
 
   selectPageSection(index: number): void {
     this._selectedPageSectionIndex.next(index);
+  }
+
+  showDefaultEditDialog(element: UnitUIElement): void {
+    if (Object.prototype.hasOwnProperty.call(element, 'label')) {
+      this.dialogService.showTextEditDialog((element as any).label).subscribe((result: string) => {
+        if (result) {
+          this.updateSelectedElementProperty('label', result);
+        }
+      });
+    } else if (Object.prototype.hasOwnProperty.call(element, 'text')) {
+      this.dialogService.showTextEditDialog((element as any).text, true).subscribe((result: string) => {
+        if (result) {
+          this.updateSelectedElementProperty('text', result);
+        }
+      });
+    }
   }
 }

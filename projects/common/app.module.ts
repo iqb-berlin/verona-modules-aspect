@@ -14,7 +14,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -71,7 +70,6 @@ import { DropdownComponent } from './element-components/dropdown.component';
     MatListModule,
     MatExpansionModule,
     MatSidenavModule,
-    MatDialogModule,
     MatFormFieldModule,
     ButtonComponent,
     TextComponent,

@@ -12,7 +12,8 @@ import { UnitService } from '../../../../unit.service';
     <!--    Needs extra div because styling can interfere with drag and drop-->
     <div class="draggable-element" [class.draggable-element-selected]="selected"
          cdkDrag [cdkDragData]="this.element" [cdkDragDisabled]="!selected"
-         (click)="click($event)">
+         (click)="click($event)"
+         (dblclick)="openEditDialog()">
       <div [style.position]="'absolute'"
            [style.border]="selected ? '2px solid' : ''"
            [style.width.px]="element.width"
@@ -90,5 +91,9 @@ export class CanvasDragOverlayComponent implements OnInit {
   resizeElement(event: CdkDragMove): void {
     this.unitService.updateSelectedElementProperty('width', Math.max(this.oldX + event.distance.x, 0));
     this.unitService.updateSelectedElementProperty('height', Math.max(this.oldY + event.distance.y, 0));
+  }
+
+  openEditDialog(): void {
+    this.unitService.showDefaultEditDialog(this.element);
   }
 }

@@ -3,9 +3,9 @@ import {
   Component, OnDestroy, OnInit
 } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { UnitService } from '../../unit.service';
 import { Unit } from '../../../../../common/unit';
+import { DialogService } from '../../dialog.service';
 
 @Component({
   selector: 'app-unit-view',
@@ -22,7 +22,7 @@ import { Unit } from '../../../../../common/unit';
   ]
 })
 export class UnitViewComponent {
-  constructor(public unitService: UnitService, public dialog: MatDialog) { }
+  constructor(public unitService: UnitService, private dialogService: DialogService) { }
 
   addPage(): void {
     this.unitService.addPage();
@@ -33,25 +33,10 @@ export class UnitViewComponent {
   }
 
   showConfirmDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmationDialog);
-    dialogRef.afterClosed().subscribe((result: boolean) => {
+    this.dialogService.showConfirmDialog().subscribe((result: boolean) => {
       if (result) {
         this.unitService.deletePage();
       }
     });
   }
 }
-
-@Component({
-  selector: 'app-confirmation-dialog',
-  template: `
-    <mat-dialog-content>
-        Seite wirklich löschen?
-    </mat-dialog-content>
-    <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true">Okay</button>
-      <button mat-button mat-dialog-close>Abbruch</button>
-    </mat-dialog-actions>
-    `
-})
-export class ConfirmationDialog {}

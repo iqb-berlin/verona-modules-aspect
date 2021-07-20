@@ -64,6 +64,10 @@ export class PropertiesComponent {
     this.unitService.deleteSelectedElements();
   }
 
+  duplicateElement(): void {
+    this.unitService.duplicateSelectedElements();
+  }
+
   ngOnDestroy(): void {
     this.selectedElementsSubscription.unsubscribe();
   }

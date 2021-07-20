@@ -239,4 +239,17 @@ export class UnitService {
       });
     }
   }
+
+  duplicateSelectedElements(): void {
+    this._selectedElements.value.forEach((element: UnitUIElement) => {
+      const newElement: UnitUIElement = { ...element };
+      newElement.id = this.idService.getNewID(newElement.type);
+      newElement.xPosition += 10;
+      newElement.yPosition += 10;
+
+      this._unit.value.pages[this._selectedPageIndex.value]
+        .sections[this._selectedPageSectionIndex.value].elements.push(newElement);
+      this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+    });
+  }
 }

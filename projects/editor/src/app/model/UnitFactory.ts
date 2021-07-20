@@ -80,10 +80,20 @@ export function createButtonElement(): ButtonElement {
 
 export function createTextfieldElement(): TextFieldElement {
   return {
-    placeholder: 'DUMMY',
-    multiline: true,
+    label: 'Example Label',
+    text: '',
     ...createTextUIElement('text-field'),
     ...createSurfaceUIElement('text-field')
+  };
+}
+
+export function createTextareaElement(): TextFieldElement {
+  return {
+    label: 'Example Label',
+    text: '',
+    ...createTextUIElement('text-area'),
+    ...createSurfaceUIElement('text-area'),
+    height: 100
   };
 }
 

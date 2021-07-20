@@ -134,6 +134,9 @@ export class UnitService {
       case 'text-field':
         newElement = UnitFactory.createTextfieldElement();
         break;
+      case 'text-area':
+        newElement = UnitFactory.createTextareaElement();
+        break;
       case 'checkbox':
         newElement = UnitFactory.createCheckboxElement();
         break;

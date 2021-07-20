@@ -55,8 +55,14 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
 }
 
 export interface TextFieldElement extends TextUIElement, SurfaceUIElement {
-  placeholder: string;
-  multiline: boolean;
+  label: string;
+  text: string;
+}
+
+export interface TextAreaElement extends TextUIElement, SurfaceUIElement {
+  label: string;
+  text: string;
+  resizeEnabled: boolean;
 }
 
 export interface CheckboxElement extends TextUIElement, SurfaceUIElement {

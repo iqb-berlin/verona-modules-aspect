@@ -19,16 +19,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { TextComponent } from './element-components/text.component';
 import { ButtonComponent } from './element-components/button.component';
-import { CorrectionComponent } from './element-components/compound-components/correction.component';
-import { RadioButtonGroupComponent } from './element-components/radio-button-group.component';
-import { CheckboxComponent } from './element-components/checkbox.component';
 import { TextFieldComponent } from './element-components/text-field.component';
+import { TextAreaComponent } from './element-components/text-area.component';
+import { CheckboxComponent } from './element-components/checkbox.component';
+import { DropdownComponent } from './element-components/dropdown.component';
+import { RadioButtonGroupComponent } from './element-components/radio-button-group.component';
 import { ImageComponent } from './element-components/image.component';
 import { VideoComponent } from './element-components/video.component';
 import { AudioComponent } from './element-components/audio.component';
-import { TextComponent } from './element-components/text.component';
-import { DropdownComponent } from './element-components/dropdown.component';
+import { CorrectionComponent } from './element-components/compound-components/correction.component';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { DropdownComponent } from './element-components/dropdown.component';
     ButtonComponent,
     TextComponent,
     TextFieldComponent,
+    TextAreaComponent,
     ImageComponent,
     AudioComponent,
     VideoComponent,

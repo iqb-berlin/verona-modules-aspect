@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TextFieldElement } from '../unit';
+import { TextAreaElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
 @Component({
-  selector: 'app-text-field',
+  selector: 'app-text-area',
   template: `
     <mat-form-field [style.width.px]="elementModel.width"
                     [style.height.px]="elementModel.height"
@@ -14,12 +14,14 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      <input matInput [formControl]="formElementControl"
-             placeholder="{{elementModel.label}}"
-             [(ngModel)]="elementModel.text">
+      <textarea matInput [formControl]="formElementControl"
+                placeholder="{{elementModel.label}}"
+                [(ngModel)]="elementModel.text"
+                [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">
+        </textarea>
     </mat-form-field>
   `
 })
-export class TextFieldComponent extends FormElementComponent {
-  elementModel!: TextFieldElement;
+export class TextAreaComponent extends FormElementComponent {
+  elementModel!: TextAreaElement;
 }

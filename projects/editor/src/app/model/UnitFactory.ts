@@ -91,6 +91,7 @@ export function createTextareaElement(): TextFieldElement {
   return {
     label: 'Example Label',
     text: '',
+    resizeEnabled: false,
     ...createTextUIElement('text-area'),
     ...createSurfaceUIElement('text-area'),
     height: 100

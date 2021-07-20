@@ -54,10 +54,10 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('multiline')"
-                      [checked]="$any(combinedProperties.multiline)"
-                      (change)="updateModel('multiline', $event.checked)">
-          Mehrzeilig
+        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('resizeEnabled')"
+                      [checked]="$any(combinedProperties.resizeEnabled)"
+                      (change)="updateModel('resizeEnabled', $event.checked)">
+          größenverstellbar
         </mat-checkbox>
 
         <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('sentences')">

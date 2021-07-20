@@ -39,7 +39,9 @@ import { DropdownComponent } from './element-components/dropdown.component';
     MatRadioModule,
     MatCheckboxModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   declarations: [
     ButtonComponent,

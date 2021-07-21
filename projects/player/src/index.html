@@ -3,6 +3,15 @@
 <head>
   <meta charset="utf-8">
   <title>Player</title>
+  <meta name="application-name" content="iqb-player-aspect"
+        data-version="3.3.3"
+        data-repository-url="https://github.com/iqb-berlin/verona-modules-apect"
+        data-api-version="2.1.0"
+        data-not-supported-api-features=""
+        data-supported-unit-definition-types="iqb-scripted@1.0"
+        data-supported-unit-state-data-types="iqb-key-value@1.0.0"
+        data-supported-browsers='{"Firefox": 69, "Chrome": 72, "Edge": 79}'
+  />
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -15,22 +24,32 @@
     <input type='button' value='Load' onclick='loadUnitDefinition();'>
   </fieldset>
 </form>
+<button onclick='denyNavigation();'>Deny Navigation</button>
 <player-aspect></player-aspect>
 </body>
 
 <script type="text/javascript">
-
-  const playerComponent = document.getElementsByTagName('player-aspect').item(0);
-
-  setStartData = (e) => {
-    playerComponent.startData = {
-      unitDefinition: e.target.result,
-      unitStateData: ''
-    };
+  denyNavigation = () => {
+    window.postMessage({
+      type: 'vopNavigationDeniedNotification',
+      sessionId: 'dev',
+      reason: []
+    }, '*');
   }
 
   loadUnitDefinition = () => {
-    let input = document.getElementById('fileInput');
+    const setStartData = (e) => {
+      window.postMessage({
+        type: 'vopStartCommand',
+        sessionId: 'dev',
+        unitDefinition: e.target.result,
+        unitState: {
+          dataParts: {}
+        },
+        playerConfig: {}
+      }, '*');
+    }
+    const input = document.getElementById('fileInput');
     if (!input['files'][0]) {
       alert("Please choose a file before clicking 'Load'");
     } else {

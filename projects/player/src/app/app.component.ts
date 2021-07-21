@@ -1,15 +1,11 @@
-import {
-  Component, EventEmitter, Input, Output
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Unit } from '../../../common/unit';
 import { FormService } from '../../../common/form.service';
 import { FormControlElement, ValueChangeElement } from '../../../common/form';
-
-interface StartData {
-  unitDefinition: string;
-  unitStateData: string;
-}
+import { VeronaSubscriptionService } from './services/verona-subscription.service';
+import { VeronaPostService } from './services/verona-post.service';
+import { NativeEventService } from './services/native-event.service';
 
 @Component({
   selector: 'player-aspect',
@@ -24,9 +20,6 @@ interface StartData {
       <button class="form-item" mat-flat-button color="primary" (click)="submit()">Print
           form.value
       </button>
-      <button class="form-item" mat-flat-button color="primary" (click)="markAsTouch()" >markAsTouch
-      </button>
-      <pre>{{unit | json}}</pre>
   `
 })
 export class AppComponent {
@@ -35,24 +28,47 @@ export class AppComponent {
     pages: []
   };
 
-  @Input()
-  set startData(startData: StartData) {
-    this.unit = JSON.parse(startData.unitDefinition);
-    this.initForm();
+  constructor(private formService: FormService,
+              private veronaSubscriptionService: VeronaSubscriptionService,
+              private veronaPostService: VeronaPostService,
+              private nativeEventService: NativeEventService) {
+    this.subscribe();
+    veronaPostService.sendVopReadyNotification();
   }
 
-  @Output() valueChanged = new EventEmitter<string>();
-
-  constructor(private formService: FormService) {
-    formService.elementValueChanged
+  private subscribe(): void {
+    this.formService.elementValueChanged
       .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
-    formService.controlAdded
+    this.formService.controlAdded
       .subscribe((control: FormControlElement): void => this.addControl(control));
+
+    this.veronaSubscriptionService.vopStartCommand
+      .subscribe((data: any): void => this.onStart(data));
+    this.veronaSubscriptionService.vopNavigationDeniedNotification
+      .subscribe((data: any): void => this.onNavigationDenied(data));
+
+    this.nativeEventService.scrollY
+      .subscribe((y: number): void => this.onScrollY(y));
+    this.nativeEventService.focus
+      .subscribe((focused: boolean): void => this.onFocus(focused));
+  }
+
+  private onStart(data: any): void {
+    console.log('player: onStart', data);
+    this.veronaPostService.sessionId = data.sessionId;
+    this.unit = JSON.parse(data.unitDefinition);
+    // playerStartData.unitStateData = data.unitState?.dataParts?.all;
+    this.initForm();
   }
 
   private initForm(): void {
     this.form = new FormGroup({});
     this.form.valueChanges.subscribe(v => this.onFormChanges(v));
+  }
+
+  private onNavigationDenied(data: any): void {
+    console.log('player: onNavigationDenied', data);
+    this.form.markAllAsTouched();
   }
 
   private addControl(control: FormControlElement): void {
@@ -68,90 +84,22 @@ export class AppComponent {
     const allValues: string = JSON.stringify(value);
     // eslint-disable-next-line no-console
     console.log('Player: emit valueChanged', allValues);
-    this.valueChanged.emit(allValues);
+    this.veronaPostService.sendVopStateChangedNotification(allValues);
   }
 
+  private onScrollY = (y: number): void => {
+    console.log('player: onScrollY', y);
+  };
+
+  // TODO
+  private onFocus(focused: boolean): void {
+    console.log('player: onFocus', focused);
+    this.veronaPostService.sendVopWindowFocusChangedNotification(focused);
+  }
+
+  /// ////////////////////// only for dev
   submit(): void {
     // eslint-disable-next-line no-console
     console.log('Player: form.value', this.form.value);
   }
-
-  markAsTouch(): void {
-    this.form.markAllAsTouched();
-  }
-
-  // exampleUnit = {
-  //   pages: [
-  //     {
-  //       sections: [
-  //         {
-  //           elements: [
-  //             {
-  //               label: 'Label Dropdown',
-  //               options: [
-  //                 'op1',
-  //                 'op2'
-  //               ],
-  //               type: 'dropdown',
-  //               id: 'dummyID',
-  //               xPosition: 124,
-  //               yPosition: 26,
-  //               width: 180,
-  //               height: 60,
-  //               backgroundColor: 'grey',
-  //               fontColor: 'blue',
-  //               font: 'Arial',
-  //               fontSize: 18,
-  //               bold: true,
-  //               italic: false,
-  //               underline: false
-  //             }
-  //           ],
-  //           width: 1200,
-  //           height: 200,
-  //           backgroundColor: '#FFFAF0'
-  //         },
-  //         {
-  //           elements: [
-  //             {
-  //               label: 'Button Text',
-  //               type: 'button',
-  //               id: 'dummyID',
-  //               xPosition: 440,
-  //               yPosition: 77,
-  //               width: 180,
-  //               height: 60,
-  //               backgroundColor: 'grey',
-  //               fontColor: 'blue',
-  //               font: 'Arial',
-  //               fontSize: 18,
-  //               bold: true,
-  //               italic: false,
-  //               underline: false
-  //             }
-  //           ],
-  //           width: 1200,
-  //           height: 200,
-  //           backgroundColor: '#FFFAF0'
-  //         }
-  //       ],
-  //       width: 1200,
-  //       height: 550,
-  //       backgroundColor: '#FFFAF0'
-  //     },
-  //     {
-  //       sections: [
-  //         {
-  //           elements: [],
-  //           width: 1200,
-  //           height: 200,
-  //           backgroundColor: '#FFFAF0'
-  //         }
-  //       ],
-  //       width: 1200,
-  //       height: 550,
-  //       backgroundColor: '#FFFAF0'
-  //     }
-  //   ]
-  // };
 }

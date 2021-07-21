@@ -3,7 +3,6 @@ import {
   BehaviorSubject, Observable
 } from 'rxjs';
 import {
-  ButtonElement, TextElement,
   Unit, UnitPage, UnitPageSection, UnitUIElement
 } from '../../../common/unit';
 import { FileService } from '../../../common/file.service';
@@ -122,7 +121,7 @@ export class UnitService {
     }
   }
 
-  async addPageElement(elementType: string): Promise<void> {
+  async addElement(elementType: string): Promise<void> {
     let newElement: UnitUIElement;
     switch (elementType) {
       case 'text':
@@ -168,12 +167,34 @@ export class UnitService {
     this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
   }
 
-  clearSelectedElements(): void {
-    this._selectedElements.next([]);
+  deleteSelectedElements(): void {
+    const oldElements = this._unit.value.pages[this._selectedPageIndex.value]
+      .sections[this._selectedPageSectionIndex.value].elements;
+    this._unit.value.pages[this._selectedPageIndex.value]
+      .sections[this._selectedPageSectionIndex.value].elements =
+      oldElements.filter(element => !this._selectedElements.value.includes(element));
+    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
   }
 
-  selectElement(elementModel: UnitUIElement): void {
-    this._selectedElements.next([...this._selectedElements.getValue(), elementModel]);
+  duplicateSelectedElements(): void {
+    this._selectedElements.value.forEach((element: UnitUIElement) => {
+      const newElement: UnitUIElement = { ...element };
+      newElement.id = this.idService.getNewID(newElement.type);
+      newElement.xPosition += 10;
+      newElement.yPosition += 10;
+
+      this._unit.value.pages[this._selectedPageIndex.value]
+        .sections[this._selectedPageSectionIndex.value].elements.push(newElement);
+      this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+    });
+  }
+
+  updatePageSelection(newIndex: number): void {
+    this._selectedPageIndex.next(newIndex);
+  }
+
+  updatePageSectionSelection(newIndex: number): void {
+    this._selectedPageSectionIndex.next(newIndex);
   }
 
   updateSelectedElementProperty(property: string, value: string | number | boolean): boolean {
@@ -197,13 +218,12 @@ export class UnitService {
     return true;
   }
 
-  deleteSelectedElements(): void {
-    const oldElements = this._unit.value.pages[this._selectedPageIndex.value]
-      .sections[this._selectedPageSectionIndex.value].elements;
-    this._unit.value.pages[this._selectedPageIndex.value]
-      .sections[this._selectedPageSectionIndex.value].elements =
-      oldElements.filter(element => !this._selectedElements.value.includes(element));
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+  addElementSelection(elementModel: UnitUIElement): void {
+    this._selectedElements.next([...this._selectedElements.getValue(), elementModel]);
+  }
+
+  clearElementSelection(): void {
+    this._selectedElements.next([]);
   }
 
   saveUnit(): void {
@@ -223,10 +243,6 @@ export class UnitService {
     this.idService.readExistingIDs(this._unit.value);
   }
 
-  selectPageSection(index: number): void {
-    this._selectedPageSectionIndex.next(index);
-  }
-
   showDefaultEditDialog(element: UnitUIElement): void {
     if (Object.prototype.hasOwnProperty.call(element, 'label')) {
       this.dialogService.showTextEditDialog((element as any).label).subscribe((result: string) => {
@@ -241,18 +257,5 @@ export class UnitService {
         }
       });
     }
-  }
-
-  duplicateSelectedElements(): void {
-    this._selectedElements.value.forEach((element: UnitUIElement) => {
-      const newElement: UnitUIElement = { ...element };
-      newElement.id = this.idService.getNewID(newElement.type);
-      newElement.xPosition += 10;
-      newElement.yPosition += 10;
-
-      this._unit.value.pages[this._selectedPageIndex.value]
-        .sections[this._selectedPageSectionIndex.value].elements.push(newElement);
-      this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
-    });
   }
 }

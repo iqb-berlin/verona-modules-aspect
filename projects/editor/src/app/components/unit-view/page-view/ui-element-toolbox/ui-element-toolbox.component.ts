@@ -16,6 +16,6 @@ export class UiElementToolboxComponent {
   constructor(public unitService: UnitService) { }
 
   async addUIElement(elementType: string): Promise<void> {
-    await this.unitService.addPageElement(elementType);
+    await this.unitService.addElement(elementType);
   }
 }

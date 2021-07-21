@@ -22,7 +22,8 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   @Input() pageObservable!: Observable<UnitPage>;
   @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;
   private pageSubscription!: Subscription;
-  private pageSwitchSubscription!: Subscription;
+  private pageIndexSubscription!: Subscription;
+  private selectedPageSectionIndexSubscription!: Subscription;
   page!: UnitPage;
   sectionEditMode: boolean = false;
   selectedSectionIndex = 0;
@@ -47,12 +48,12 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
         sectionComponent.updateSelection(this.unitService.getSelectedElements());
       });
     });
-    this.pageSwitchSubscription = this.unitService.selectedPageIndex.subscribe( // TODO name properly
+    this.pageIndexSubscription = this.unitService.selectedPageIndex.subscribe(
       () => {
         this.clearSelection();
       }
     );
-    this.pageSwitchSubscription = this.unitService.selectedPageSectionIndex.subscribe(
+    this.selectedPageSectionIndexSubscription = this.unitService.selectedPageSectionIndex.subscribe(
       (index: number) => {
         this.selectedSectionIndex = index;
       }
@@ -60,7 +61,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   }
 
   selectSection(id: number): void {
-    this.unitService.selectPageSection(Number(id));
+    this.unitService.updatePageSectionSelection(Number(id));
   }
 
   elementSelected(event: { componentElement: CanvasDragOverlayComponent; multiSelect: boolean }): void {
@@ -68,7 +69,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
       this.clearSelection();
     }
     this.selectedComponentElements.push(event.componentElement);
-    this.unitService.selectElement(event.componentElement.element);
+    this.unitService.addElementSelection(event.componentElement.element);
     event.componentElement.setSelected(true);
   }
 
@@ -77,7 +78,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     this.canvasSections?.toArray().forEach((sectionComponent: CanvasSectionComponent) => {
       sectionComponent.clearSelection();
     });
-    this.unitService.clearSelectedElements();
+    this.unitService.clearElementSelection();
   }
 
   elementDropped(event: CdkDragDrop<UnitPageSection>): void {
@@ -115,7 +116,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   dropSection(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.page.sections, event.previousIndex, event.currentIndex);
-    this.unitService.selectPageSection(0);
+    this.unitService.updatePageSectionSelection(0);
   }
 
   getPageHeight(): number { // TODO weg
@@ -160,6 +161,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.pageSubscription.unsubscribe();
-    this.pageSwitchSubscription.unsubscribe();
+    this.pageIndexSubscription.unsubscribe();
+    this.selectedPageSectionIndexSubscription.unsubscribe();
   }
 }

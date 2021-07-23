@@ -3,7 +3,7 @@ import {
   CheckboxElement, CompoundElementCorrection, DropdownElement,
   ImageElement, TextElement, RadioButtonGroupElement, SurfaceUIElement,
   TextFieldElement, TextUIElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
-  VideoElement, InputUIElement
+  VideoElement, InputUIElement, TextAreaElement
 } from '../../../../common/unit';
 
 export function createUnit(): Unit {
@@ -55,8 +55,10 @@ export function createTextUIElement(type: string): TextUIElement {
   };
 }
 
-export function createInputUIElement(): InputUIElement {
+export function createInputUIElement(label: string, value: string | number | boolean | undefined): InputUIElement {
   return {
+    label: label,
+    value: value,
     required: false,
     validationWarnMessage: ''
   };
@@ -85,57 +87,47 @@ export function createButtonElement(): ButtonElement {
 }
 
 export function createTextfieldElement(): TextFieldElement {
-  return {
-    label: 'Example Label',
-    value: '',
+  return <TextFieldElement>{
     ...createTextUIElement('text-field'),
     ...createSurfaceUIElement(),
-    ...createInputUIElement()
+    ...createInputUIElement('Example Label', '')
   };
 }
 
-export function createTextareaElement(): TextFieldElement {
-  return {
-    label: 'Example Label',
-    value: '',
+export function createTextareaElement(): TextAreaElement {
+  return <TextAreaElement>{
     resizeEnabled: false,
     ...createTextUIElement('text-area'),
     ...createSurfaceUIElement(),
-    ...createInputUIElement(),
+    ...createInputUIElement('Example Label', ''),
     height: 100
   };
 }
 
 export function createCheckboxElement(): CheckboxElement {
-  return {
-    label: 'Label Checkbox',
-    value: undefined,
+  return <CheckboxElement>{
     ...createTextUIElement('checkbox'),
     ...createSurfaceUIElement(),
-    ...createInputUIElement()
+    ...createInputUIElement('Label Checkbox', undefined)
   };
 }
 
 export function createDropdownElement(): DropdownElement {
-  return {
-    label: 'Label Dropdown',
+  return <DropdownElement>{
     options: [],
-    value: undefined,
     ...createTextUIElement('dropdown'),
     ...createSurfaceUIElement(),
-    ...createInputUIElement()
+    ...createInputUIElement('Label Dropdown', undefined)
   };
 }
 
 export function createRadioButtonGroupElement(): RadioButtonGroupElement {
-  return {
-    label: 'Label Optionsfeld',
+  return <RadioButtonGroupElement>{
     options: [],
     alignment: 'row',
-    value: undefined,
     ...createTextUIElement('radio'),
     ...createSurfaceUIElement(),
-    ...createInputUIElement(),
+    ...createInputUIElement('Label Optionsfeld', undefined),
     height: 75
   };
 }

@@ -38,6 +38,8 @@ export interface TextUIElement extends UnitUIElement {
 }
 
 export interface InputUIElement {
+  label: string;
+  value: string | number | boolean | undefined;
   required: boolean;
   validationWarnMessage: string;
 }
@@ -59,19 +61,16 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
   label: string;
 }
 
-export interface TextFieldElement extends TextUIElement, SurfaceUIElement, InputUIElement {
-  label: string;
+export interface TextFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
 }
 
-export interface TextAreaElement extends TextUIElement, SurfaceUIElement {
-  label: string;
+export interface TextAreaElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
   resizeEnabled: boolean;
 }
 
-export interface CheckboxElement extends TextUIElement, SurfaceUIElement {
-  label: string;
+export interface CheckboxElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: boolean | undefined;
 }
 

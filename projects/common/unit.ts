@@ -37,7 +37,12 @@ export interface TextUIElement extends UnitUIElement {
   underline: boolean;
 }
 
-export interface SurfaceUIElement extends UnitUIElement {
+export interface InputUIElement {
+  required: boolean;
+  validationWarnMessage: string;
+}
+
+export interface SurfaceUIElement {
   backgroundColor: string;
 }
 
@@ -54,7 +59,7 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
   label: string;
 }
 
-export interface TextFieldElement extends TextUIElement, SurfaceUIElement {
+export interface TextFieldElement extends TextUIElement, SurfaceUIElement, InputUIElement {
   label: string;
   value: string;
 }

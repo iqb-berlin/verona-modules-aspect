@@ -52,6 +52,18 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('required')"
+                      [checked]="$any(combinedProperties.required)"
+                      (change)="updateModel('required', $event.checked)">
+          Pflichtfeld
+        </mat-checkbox>
+
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('validationWarnMessage')">
+          <mat-label>Warnmeldung</mat-label>
+          <input matInput type="text" [value]="combinedProperties.validationWarnMessage"
+                 (input)="updateModel('validationWarnMessage', $any($event.target).value)">
+        </mat-form-field>
+
         <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
           <div *ngIf="combinedProperties.options !== undefined">
             <mat-label>Optionen</mat-label>

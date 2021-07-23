@@ -10,6 +10,7 @@ import { SectionComponent } from './components/section.component';
 import { SharedModule } from '../../../common/app.module';
 import { ElementOverlayComponent } from './components/element-overlay.component';
 import { ValidationMessageComponent } from './components/validation-message.component';
+import { FormComponent } from './components/form.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ValidationMessageComponent } from './components/validation-message.comp
     PageComponent,
     SectionComponent,
     ElementOverlayComponent,
-    ValidationMessageComponent
+    ValidationMessageComponent,
+    FormComponent
   ],
   imports: [
     BrowserModule,

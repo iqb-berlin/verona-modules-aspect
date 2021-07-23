@@ -36,7 +36,9 @@ import { FormElementComponent } from '../../../../../../../common/form-element-c
              [style.height.%]="100">
           <div class="resizeHandle"
                cdkDrag (cdkDragStarted)="dragStart()" (cdkDragMoved)="resizeElement($event)"
-               [style.right.px]="-1" [style.bottom.px]="-7">
+               [style.right.px]="-1"
+               [style.bottom.px]="-7"
+               [style.z-index]="5">
             <mat-icon>aspect_ratio</mat-icon>
             <div *cdkDragPlaceholder></div>
           </div>

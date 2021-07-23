@@ -63,10 +63,14 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
 
 export interface TextFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
+  min: number | undefined;
+  max: number | undefined;
 }
 
 export interface NumberFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: number;
+  min: number | undefined;
+  max: number | undefined;
 }
 
 export interface TextAreaElement extends InputUIElement, TextUIElement, SurfaceUIElement {

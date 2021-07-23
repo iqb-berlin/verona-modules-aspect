@@ -64,6 +64,17 @@
                  (input)="updateModel('validationWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
+          <mat-label>Minimalwert</mat-label>
+          <input matInput type="number" [value]="combinedProperties.min"
+                 (input)="updateModel('min', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
+          <mat-label>Maximalwert</mat-label>
+          <input matInput type="number" [value]="combinedProperties.max"
+                 (input)="updateModel('max', $any($event.target).value)">
+        </mat-form-field>
+
         <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
           <div *ngIf="combinedProperties.options !== undefined">
             <mat-label>Optionen</mat-label>

@@ -88,6 +88,8 @@ export function createButtonElement(): ButtonElement {
 
 export function createTextfieldElement(): TextFieldElement {
   return <TextFieldElement>{
+    min: undefined,
+    max: undefined,
     ...createTextUIElement('text-field'),
     ...createSurfaceUIElement(),
     ...createInputUIElement('Example Label', '')
@@ -96,6 +98,8 @@ export function createTextfieldElement(): TextFieldElement {
 
 export function createNumberfieldElement(): NumberFieldElement {
   return <NumberFieldElement>{
+    min: undefined,
+    max: undefined,
     ...createTextUIElement('number-field'),
     ...createSurfaceUIElement(),
     ...createInputUIElement('Example Label', undefined)

@@ -16,7 +16,8 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       <input matInput type="text"
              [formControl]="elementFormControl"
-             placeholder="{{elementModel.label}}">
+             placeholder="{{elementModel.label}}"
+             minlength="{{elementModel.min}}" maxlength="{{elementModel.max}}">
     </mat-form-field>
   `
 })

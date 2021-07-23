@@ -3,7 +3,7 @@ import {
   CheckboxElement, CompoundElementCorrection, DropdownElement,
   ImageElement, TextElement, RadioButtonGroupElement, SurfaceUIElement,
   TextFieldElement, TextUIElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
-  VideoElement, InputUIElement, TextAreaElement
+  VideoElement, InputUIElement, TextAreaElement, NumberFieldElement
 } from '../../../../common/unit';
 
 export function createUnit(): Unit {
@@ -91,6 +91,14 @@ export function createTextfieldElement(): TextFieldElement {
     ...createTextUIElement('text-field'),
     ...createSurfaceUIElement(),
     ...createInputUIElement('Example Label', '')
+  };
+}
+
+export function createNumberfieldElement(): NumberFieldElement {
+  return <NumberFieldElement>{
+    ...createTextUIElement('number-field'),
+    ...createSurfaceUIElement(),
+    ...createInputUIElement('Example Label', undefined)
   };
 }
 

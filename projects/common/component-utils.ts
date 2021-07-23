@@ -2,6 +2,7 @@ import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
 import { TextComponent } from './element-components/text.component';
 import { ButtonComponent } from './element-components/button.component';
 import { TextFieldComponent } from './element-components/text-field.component';
+import { NumberFieldComponent } from './element-components/number-field.component';
 import { TextAreaComponent } from './element-components/text-area.component';
 import { CheckboxComponent } from './element-components/checkbox.component';
 import { DropdownComponent } from './element-components/dropdown.component';
@@ -22,6 +23,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(ButtonComponent);
     case 'text-field':
       return componentFactoryResolver.resolveComponentFactory(TextFieldComponent);
+    case 'number-field':
+      return componentFactoryResolver.resolveComponentFactory(NumberFieldComponent);
     case 'text-area':
       return componentFactoryResolver.resolveComponentFactory(TextAreaComponent);
     case 'checkbox':

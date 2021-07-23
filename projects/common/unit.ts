@@ -65,6 +65,10 @@ export interface TextFieldElement extends InputUIElement, TextUIElement, Surface
   value: string;
 }
 
+export interface NumberFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
+  value: number;
+}
+
 export interface TextAreaElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
   resizeEnabled: boolean;

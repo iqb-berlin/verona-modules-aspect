@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TextFieldElement } from '../unit';
+import { NumberFieldElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
 @Component({
-  selector: 'app-text-field',
+  selector: 'app-number-field',
   template: `
     <mat-form-field [style.width.px]="elementModel.width"
                     [style.height.px]="elementModel.height"
@@ -14,12 +14,11 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      <input matInput type="text"
-             [formControl]="elementFormControl"
+      <input matInput [formControl]="elementFormControl" type="number"
              placeholder="{{elementModel.label}}">
     </mat-form-field>
   `
 })
-export class TextFieldComponent extends FormElementComponent {
-  elementModel!: TextFieldElement;
+export class NumberFieldComponent extends FormElementComponent {
+  elementModel!: NumberFieldElement;
 }

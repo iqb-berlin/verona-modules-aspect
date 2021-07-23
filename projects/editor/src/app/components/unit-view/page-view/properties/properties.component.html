@@ -27,9 +27,35 @@
           </textarea>
         </mat-form-field>
 
+        <mat-form-field *ngIf="combinedProperties.type === 'text-field'">
+          <mat-label>Vorbelegung</mat-label>
+          <input matInput type="text"
+                [value]="combinedProperties.value"
+                (input)="updateModel('value', $any($event.target).value)">
+        </mat-form-field>
+        <section *ngIf="combinedProperties.type === 'checkbox'">
+          Vorbelegung
+          <mat-button-toggle-group (change)="transformToBoolAndUpdateModel('value', $event.value)">
+            <mat-button-toggle value="true">wahr</mat-button-toggle>
+            <mat-button-toggle value="false">falsch</mat-button-toggle>
+            <mat-button-toggle value="undefined">undefiniert</mat-button-toggle>
+          </mat-button-toggle-group>
+        </section>
+        <mat-form-field *ngIf="combinedProperties.type === 'dropdown' || combinedProperties.type === 'radio'"
+                        appearance="fill">
+          <mat-label>Vorbelegung</mat-label>
+          <mat-select (selectionChange)="updateModel('value', $event.value, $event)">
+            <mat-option>undefiniert</mat-option>
+            <mat-option *ngFor="let option of $any(combinedProperties).options; let i = index" [value]="i">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
           <div *ngIf="combinedProperties.options !== undefined">
             <mat-label>Optionen</mat-label>
+<!--            TODO reorder via droplist-->
             <mat-list *ngFor="let option of $any(combinedProperties.options)">
               <mat-list-item>{{option}}</mat-list-item>
               <mat-divider></mat-divider>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TextElement } from '../unit';
+import { ElementComponent } from '../element-component.directive';
 
 @Component({
   selector: 'app-text',
@@ -18,6 +19,6 @@ import { TextElement } from '../unit';
       </div>
   `
 })
-export class TextComponent {
+export class TextComponent extends ElementComponent {
   elementModel!: TextElement;
 }

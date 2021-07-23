@@ -16,7 +16,7 @@ import { FormElementComponent } from '../../form-element-component.directive';
                        fxLayout="column">
                       <mat-form-field>
                           <input matInput type="text"
-                                 [formControl]="formElementControl">
+                                 [formControl]="elementFormControl">
                       </mat-form-field>
                       <div>
                           {{word}}

@@ -52,10 +52,28 @@ export class PropertiesComponent {
 
   // event as optional parameter in case the input is invalid and the old value needs
   // to be restored. This is for now only relevant for IDs. Might need rework for other properties.
-  updateModel(property: string, value: string | number | boolean, event?: Event): void {
+  updateModel(property: string, value: string | number | boolean | undefined, event?: any): void {
     if (!this.unitService.updateSelectedElementProperty(property, value)) {
       if (event) {
         (event.target as HTMLInputElement).value = <string> this.combinedProperties[property];
+      }
+    }
+  }
+
+  /* button group always handles values as string and since we also want to handle undefined
+     we need to transform the value before passing it on. */
+  transformToBoolAndUpdateModel(property: string, value: string): void {
+    switch (value) {
+      case 'true': {
+        this.updateModel(property, true);
+        break;
+      }
+      case 'false': {
+        this.updateModel(property, false);
+        break;
+      }
+      default: {
+        this.updateModel(property, undefined);
       }
     }
   }

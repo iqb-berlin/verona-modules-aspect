@@ -1,10 +1,17 @@
 import {
-  Component, OnInit, Input, Output, EventEmitter, ComponentFactoryResolver, ViewChild, ViewContainerRef
+  Component, OnInit, OnDestroy, Input, Output,
+  EventEmitter,
+  ComponentFactoryResolver, ViewChild, ViewContainerRef
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { UnitUIElement } from '../../../../../../../common/unit';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 import { UnitService } from '../../../../unit.service';
+import { ValueChangeElement } from '../../../../../../../common/form';
+import { ElementComponent } from '../../../../../../../common/element-component.directive';
+import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
 
 @Component({
   selector: 'app-canvas-drag-overlay',
@@ -46,7 +53,7 @@ import { UnitService } from '../../../../unit.service';
     '.test.cdk-drop-list-dragging {cursor: nwse-resize}'
   ]
 })
-export class CanvasDragOverlayComponent implements OnInit {
+export class CanvasDragOverlayComponent implements OnInit, OnDestroy {
   @Input() element!: UnitUIElement;
   @Output() elementSelected = new EventEmitter<{
     componentElement: CanvasDragOverlayComponent,
@@ -57,14 +64,31 @@ export class CanvasDragOverlayComponent implements OnInit {
   selected = false;
   private oldX: number = 0;
   private oldY: number = 0;
+  private childComponent!: ElementComponent;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(private unitService: UnitService,
               private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
-    const childComponent = this.elementContainer.createComponent(componentFactory);
-    childComponent.instance.elementModel = this.element;
+    this.childComponent = this.elementContainer.createComponent(componentFactory).instance;
+    this.childComponent.elementModel = this.element;
+    if (this.childComponent instanceof FormElementComponent) {
+      this.childComponent.formValueChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((changeElement: ValueChangeElement) => {
+          this.unitService.updateSelectedElementProperty('value', changeElement.values[1]);
+        });
+
+      this.unitService.selectedElements
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => {
+          (this.childComponent as FormElementComponent).updateFormValue(
+            this.element.value as string | number | boolean
+          );
+        });
+    }
   }
 
   setSelected(newValue: boolean): void {
@@ -95,5 +119,10 @@ export class CanvasDragOverlayComponent implements OnInit {
 
   openEditDialog(): void {
     this.unitService.showDefaultEditDialog(this.element);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

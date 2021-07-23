@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { VideoElement } from '../unit';
+import { ElementComponent } from '../element-component.directive';
 
 @Component({
   selector: 'app-video',
@@ -12,6 +13,6 @@ import { VideoElement } from '../unit';
     'div {display: inline-block;border: 5px solid; padding: 12px 9px 9px 9px}'
   ]
 })
-export class VideoComponent {
+export class VideoComponent extends ElementComponent {
   elementModel!: VideoElement;
 }

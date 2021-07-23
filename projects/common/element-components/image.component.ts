@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ImageElement } from '../unit';
+import { ElementComponent } from '../element-component.directive';
 
 @Component({
   selector: 'app-image',
@@ -7,6 +8,6 @@ import { ImageElement } from '../unit';
       <img src="{{elementModel.src}}" alt="Image Placeholder">
   `
 })
-export class ImageComponent {
+export class ImageComponent extends ElementComponent {
   elementModel!: ImageElement;
 }

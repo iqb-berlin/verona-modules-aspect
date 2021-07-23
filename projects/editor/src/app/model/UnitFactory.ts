@@ -81,7 +81,7 @@ export function createButtonElement(): ButtonElement {
 export function createTextfieldElement(): TextFieldElement {
   return {
     label: 'Example Label',
-    text: '',
+    value: '',
     ...createTextUIElement('text-field'),
     ...createSurfaceUIElement('text-field')
   };
@@ -90,7 +90,7 @@ export function createTextfieldElement(): TextFieldElement {
 export function createTextareaElement(): TextFieldElement {
   return {
     label: 'Example Label',
-    text: '',
+    value: '',
     resizeEnabled: false,
     ...createTextUIElement('text-area'),
     ...createSurfaceUIElement('text-area'),
@@ -101,6 +101,7 @@ export function createTextareaElement(): TextFieldElement {
 export function createCheckboxElement(): CheckboxElement {
   return {
     label: 'Label Checkbox',
+    value: undefined,
     ...createTextUIElement('checkbox'),
     ...createSurfaceUIElement('checkbox')
   };
@@ -110,6 +111,7 @@ export function createDropdownElement(): DropdownElement {
   return {
     label: 'Label Dropdown',
     options: [],
+    value: undefined,
     ...createTextUIElement('dropdown'),
     ...createSurfaceUIElement('dropdown')
   };
@@ -120,6 +122,7 @@ export function createRadioButtonGroupElement(): RadioButtonGroupElement {
     label: 'Label Optionsfeld',
     options: [],
     alignment: 'row',
+    value: undefined,
     ...createTextUIElement('radio'),
     ...createSurfaceUIElement('radio'),
     height: 75

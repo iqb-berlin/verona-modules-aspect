@@ -17,7 +17,7 @@ import { FormElementComponent } from '../form-element-component.directive';
                      [style.text-decoration]="elementModel.underline ? 'underline' : ''">
               {{$any(elementModel).label}}
           </mat-label>
-          <mat-select [formControl]="formElementControl">
+          <mat-select [formControl]="elementFormControl">
               <mat-option *ngFor="let option of elementModel.options" [value]="option">
                   {{option}}
               </mat-option>

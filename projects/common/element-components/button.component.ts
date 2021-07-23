@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ElementComponent } from '../element-component.directive';
 import { ButtonElement } from '../unit';
 
 @Component({
@@ -18,6 +19,6 @@ import { ButtonElement } from '../unit';
     </button>
   `
 })
-export class ButtonComponent {
+export class ButtonComponent extends ElementComponent {
   elementModel!: ButtonElement;
 }

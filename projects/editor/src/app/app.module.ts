@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -42,7 +43,8 @@ import { ConfirmationDialog, MultilineTextEditDialog, TextEditDialog } from './d
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,
-    MatDialogModule
+    MatDialogModule,
+    MatButtonToggleModule
   ],
   providers: []
 })

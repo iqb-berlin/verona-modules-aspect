@@ -1,11 +1,17 @@
 import {
-  Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef
+  Component, OnInit, OnDestroy, Input,
+  ComponentFactory, ComponentFactoryResolver, ComponentRef,
+  ViewChild, ViewContainerRef
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UnitUIElement } from '../../../../common/unit';
 import * as ComponentUtils from '../../../../common/component-utils';
 import { FormElementComponent } from '../../../../common/form-element-component.directive';
 import { ValidationMessageComponent } from './validation-message.component';
+import { ValueChangeElement } from '../../../../common/form';
+import { FormService } from '../../../../common/form.service';
 
 @Component({
   selector: 'app-element-overlay',
@@ -18,8 +24,7 @@ import { ValidationMessageComponent } from './validation-message.component';
       </div>
   `
 })
-
-export class ElementOverlayComponent implements OnInit {
+export class ElementOverlayComponent implements OnInit, OnDestroy {
   @Input() elementModel!: UnitUIElement;
   @ViewChild('elementComponentContainer',
     { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
@@ -28,11 +33,12 @@ export class ElementOverlayComponent implements OnInit {
     { read: ViewContainerRef, static: true }) private validationMessageComponentContainer!: ViewContainerRef;
 
   parentForm!: FormGroup;
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private formService: FormService,
+              private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
-    // eslint-disable-next-line max-len
     const elementComponentFactory =
       ComponentUtils.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
@@ -40,6 +46,11 @@ export class ElementOverlayComponent implements OnInit {
 
     if (elementComponent instanceof FormElementComponent) {
       elementComponent.parentForm = this.parentForm;
+      elementComponent.formValueChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((changeElement: ValueChangeElement) => {
+          this.formService.changeElementValue(changeElement);
+        });
 
       const validationMessageComponentFactory: ComponentFactory<ValidationMessageComponent> =
         this.componentFactoryResolver.resolveComponentFactory(ValidationMessageComponent);
@@ -49,5 +60,10 @@ export class ElementOverlayComponent implements OnInit {
       validationMessageComponentRef.instance.parentForm = this.parentForm;
       validationMessageComponentRef.instance.elementModel = this.elementModel;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

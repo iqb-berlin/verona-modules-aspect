@@ -14,9 +14,8 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      <input matInput [formControl]="formElementControl"
-             placeholder="{{elementModel.label}}"
-             [(ngModel)]="elementModel.text">
+      <input matInput [formControl]="elementFormControl"
+             placeholder="{{elementModel.label}}">
     </mat-form-field>
   `
 })

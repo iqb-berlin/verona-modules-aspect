@@ -18,7 +18,7 @@ export interface UnitPageSection {
 }
 
 export interface UnitUIElement {
-  [index: string]: string | number | boolean | string[],
+  [index: string]: string | number | boolean | string[] | undefined,
   type: string; // TODO maybe use enum or manual enumeration, because possible values are known
   id: string;
   xPosition: number;
@@ -56,28 +56,31 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
 
 export interface TextFieldElement extends TextUIElement, SurfaceUIElement {
   label: string;
-  text: string;
+  value: string;
 }
 
 export interface TextAreaElement extends TextUIElement, SurfaceUIElement {
   label: string;
-  text: string;
+  value: string;
   resizeEnabled: boolean;
 }
 
 export interface CheckboxElement extends TextUIElement, SurfaceUIElement {
   label: string;
+  value: boolean | undefined;
 }
 
 export interface DropdownElement extends TextUIElement, SurfaceUIElement {
   label: string;
   options: string[];
+  value: number | undefined;
 }
 
 export interface RadioButtonGroupElement extends UnitUIElement, SurfaceUIElement {
   label: string;
   options: string[];
   alignment: 'row' | 'column';
+  value: number | undefined;
 }
 
 export interface ImageElement extends UnitUIElement {

@@ -1,30 +1,41 @@
-import { Directive, OnInit } from '@angular/core';
+import {
+  Directive, EventEmitter, OnDestroy, OnInit, Output
+} from '@angular/core';
 import {
   FormControl, FormGroup, ValidatorFn
 } from '@angular/forms';
-import { pairwise } from 'rxjs/operators';
-import { UnitUIElement } from './unit';
+import { Subject } from 'rxjs';
+import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { FormService } from './form.service';
+import { ValueChangeElement } from './form';
+import { ElementComponent } from './element-component.directive';
 
 @Directive()
-export abstract class FormElementComponent implements OnInit {
-  abstract elementModel: UnitUIElement;
+export abstract class FormElementComponent extends ElementComponent implements OnInit, OnDestroy {
+  @Output() formValueChanged = new EventEmitter<ValueChangeElement>();
   parentForm!: FormGroup;
-  defaultValue!: unknown;
-  formElementControl!: FormControl;
+  defaultValue!: string | number | boolean | undefined;
+  elementFormControl!: FormControl;
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private formService: FormService) {}
+  constructor(private formService: FormService) {
+    super();
+  }
 
   ngOnInit(): void {
-    const formControl = new FormControl(this.defaultValue, this.getValidations());
+    const formControl = new FormControl(this.elementModel.value, this.getValidations());
     const id = this.elementModel.id;
     this.formService.registerFormControl({ id, formControl });
-    this.formElementControl = this.getFormControl(id);
-    this.formElementControl.valueChanges
-      .pipe(pairwise())
-      .subscribe(
-        ([prevValue, nextValue] : [unknown, unknown]) => this.onValueChange([prevValue, nextValue])
-      );
+    this.elementFormControl = this.getFormControl(id);
+    this.elementFormControl.valueChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        startWith([this.elementModel.value, this.elementModel.value]),
+        pairwise()
+      )
+      .subscribe(([prevValue, nextValue] : [string | number | boolean | undefined, string | number | boolean]) => {
+        this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
+      });
   }
 
   // TODO: get from elementModel examples, example: [Validators.requiredTrue, Validators.required]
@@ -35,8 +46,12 @@ export abstract class FormElementComponent implements OnInit {
     return (this.parentForm) ? this.parentForm.controls[id] as FormControl : new FormControl();
   }
 
-  private onValueChange(values: [unknown, unknown]): void {
-    const element = this.elementModel.id;
-    this.formService.changeElementValue({ id: element, values });
+  updateFormValue(newValue: string | number | boolean): void {
+    this.elementFormControl?.setValue(newValue, { emitEvent: false });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

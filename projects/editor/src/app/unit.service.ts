@@ -197,10 +197,10 @@ export class UnitService {
     this._selectedPageSectionIndex.next(newIndex);
   }
 
-  updateSelectedElementProperty(property: string, value: string | number | boolean): boolean {
+  updateSelectedElementProperty(property: string, value: string | number | boolean | undefined): boolean {
     // eslint-disable-next-line no-restricted-syntax
     for (const element of this._selectedElements.value) {
-      if (['string', 'number', 'boolean'].indexOf(typeof element[property]) > -1) {
+      if (['string', 'number', 'boolean', 'undefined'].indexOf(typeof element[property]) > -1) {
         if (property === 'id') {
           if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
             this.messageService.showError('ID ist bereits vergeben');
@@ -212,6 +212,8 @@ export class UnitService {
         element[property] = value;
       } else if (Array.isArray(element[property])) {
         (element[property] as string[]).push(value as string);
+      } else {
+        console.error('ElementProperty not found!', element[property]);
       }
     }
     this._selectedElements.next(this._selectedElements.value); // hack to notify properties panel about change
@@ -244,18 +246,38 @@ export class UnitService {
   }
 
   showDefaultEditDialog(element: UnitUIElement): void {
-    if (Object.prototype.hasOwnProperty.call(element, 'label')) {
-      this.dialogService.showTextEditDialog((element as any).label).subscribe((result: string) => {
-        if (result) {
-          this.updateSelectedElementProperty('label', result);
-        }
-      });
-    } else if (Object.prototype.hasOwnProperty.call(element, 'text')) {
-      this.dialogService.showTextEditDialog((element as any).text, true).subscribe((result: string) => {
-        if (result) {
-          this.updateSelectedElementProperty('text', result);
-        }
-      });
+    switch (element.type) {
+      case 'button':
+      case 'checkbox':
+      case 'dropdown':
+      case 'radio':
+        this.dialogService.showTextEditDialog((element as any).label, false).subscribe((result: string) => {
+          if (result) {
+            this.updateSelectedElementProperty('label', result);
+          }
+        });
+        break;
+      case 'text':
+        this.dialogService.showTextEditDialog((element as any).text, true).subscribe((result: string) => {
+          if (result) {
+            this.updateSelectedElementProperty('text', result);
+          }
+        });
+        break;
+      case 'text-field':
+        this.dialogService.showTextEditDialog((element as any).value).subscribe((result: string) => {
+          if (result) {
+            this.updateSelectedElementProperty('value', result);
+          }
+        });
+        break;
+      case 'text-area':
+        this.dialogService.showTextEditDialog((element as any).value, true).subscribe((result: string) => {
+          if (result) {
+            this.updateSelectedElementProperty('value', result);
+          }
+        });
+      // no default
     }
   }
 }

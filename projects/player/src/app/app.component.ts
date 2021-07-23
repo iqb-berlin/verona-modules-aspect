@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Unit } from '../../../common/unit';
+import { Unit, UnitPage } from '../../../common/unit';
 import { FormService } from '../../../common/form.service';
 import { FormControlElement, ValueChangeElement } from '../../../common/form';
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
 import { VeronaPostService } from './services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
+import {
+  PlayerConfig, RunningState,
+  VopNavigationDeniedNotification,
+  VopStartCommand
+} from './models/verona';
 
 @Component({
   selector: 'player-aspect',
   template: `
       <form [formGroup]="form">
           <mat-tab-group mat-align-tabs="start">
-              <mat-tab *ngFor="let page of unit.pages; let i = index" label="Seite {{i+1}}">
+              <mat-tab *ngFor="let page of pages; let i = index" label="Seite {{i+1}}">
                   <app-page [parentForm]="form" [page]="page"></app-page>
               </mat-tab>
           </mat-tab-group>
@@ -24,28 +29,27 @@ import { NativeEventService } from './services/native-event.service';
 })
 export class AppComponent {
   form: FormGroup = new FormGroup({});
-  unit: Unit = {
-    pages: []
-  };
+  pages: UnitPage[] = [];
+  playerConfig!: PlayerConfig;
 
   constructor(private formService: FormService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private nativeEventService: NativeEventService) {
-    this.subscribe();
+    this.initSubscriptions();
     veronaPostService.sendVopReadyNotification();
   }
 
-  private subscribe(): void {
+  private initSubscriptions(): void {
     this.formService.elementValueChanged
       .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
     this.formService.controlAdded
       .subscribe((control: FormControlElement): void => this.addControl(control));
 
     this.veronaSubscriptionService.vopStartCommand
-      .subscribe((data: any): void => this.onStart(data));
+      .subscribe((message: VopStartCommand): void => this.onStart(message));
     this.veronaSubscriptionService.vopNavigationDeniedNotification
-      .subscribe((data: any): void => this.onNavigationDenied(data));
+      .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
 
     this.nativeEventService.scrollY
       .subscribe((y: number): void => this.onScrollY(y));
@@ -53,21 +57,46 @@ export class AppComponent {
       .subscribe((focused: boolean): void => this.onFocus(focused));
   }
 
-  private onStart(data: any): void {
-    console.log('player: onStart', data);
-    this.veronaPostService.sessionId = data.sessionId;
-    this.unit = JSON.parse(data.unitDefinition);
-    // playerStartData.unitStateData = data.unitState?.dataParts?.all;
+  private get validPages():Record<string, string>[] {
+    return this.pages.map((page:UnitPage, index:number) => {
+      const validPage: Record<string, string> = {};
+      validPage[`page${index}`] = `Seite ${index + 1}`;
+      return validPage;
+    });
+  }
+
+  private onStart(message: VopStartCommand): void {
+    // eslint-disable-next-line no-console
+    console.log('player: onStart', message);
     this.initForm();
+    this.initPlayer(message);
+    const values = {
+      playerState:
+        {
+          state: 'running' as RunningState,
+          validPages: this.validPages,
+          currentPage: 'page0'
+        }
+    };
+    this.veronaPostService.sendVopStateChangedNotification(values);
   }
 
   private initForm(): void {
     this.form = new FormGroup({});
-    this.form.valueChanges.subscribe(v => this.onFormChanges(v));
+    this.form.valueChanges
+      .subscribe((formValues: any): void => this.onFormChanges(formValues));
   }
 
-  private onNavigationDenied(data: any): void {
-    console.log('player: onNavigationDenied', data);
+  private initPlayer(message: VopStartCommand): void {
+    this.veronaPostService.sessionId = message.sessionId;
+    const unit: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : [];
+    this.pages = unit.pages;
+    this.playerConfig = message.playerConfig || {};
+  }
+
+  private onNavigationDenied(message: VopNavigationDeniedNotification): void {
+    // eslint-disable-next-line no-console
+    console.log('player: onNavigationDenied', message);
     this.form.markAllAsTouched();
   }
 
@@ -80,19 +109,27 @@ export class AppComponent {
     console.log(`Player: onElementValueChanges - ${value.id}: ${value.values[0]} -> ${value.values[1]}`);
   };
 
-  private onFormChanges(value: unknown): void {
-    const allValues: string = JSON.stringify(value);
+  private onFormChanges(formValues: unknown): void {
     // eslint-disable-next-line no-console
-    console.log('Player: emit valueChanged', allValues);
-    this.veronaPostService.sendVopStateChangedNotification(allValues);
+    console.log('player: onFormChanges', formValues);
+    // TODO: map by page and? section not all
+    const values = {
+      unitState: {
+        dataParts: {
+          all: JSON.stringify(formValues)
+        }
+      }
+    };
+    this.veronaPostService.sendVopStateChangedNotification(values);
   }
 
   private onScrollY = (y: number): void => {
+    // eslint-disable-next-line no-console
     console.log('player: onScrollY', y);
   };
 
-  // TODO
   private onFocus(focused: boolean): void {
+    // eslint-disable-next-line no-console
     console.log('player: onFocus', focused);
     this.veronaPostService.sendVopWindowFocusChangedNotification(focused);
   }

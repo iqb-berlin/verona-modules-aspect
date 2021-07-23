@@ -46,7 +46,13 @@
         unitState: {
           dataParts: {}
         },
-        playerConfig: {}
+        playerConfig: {
+          stateReportPolicy: 'eager',
+          pagingMode: 'separate',
+          logPolicy: 'rich',
+          startPage: 'page0',
+          enabledNavigationTargets: ['next']
+        }
       }, '*');
     }
     const input = document.getElementById('fileInput');

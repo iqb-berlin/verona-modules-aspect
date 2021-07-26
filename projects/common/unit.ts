@@ -7,7 +7,7 @@ export interface UnitPage {
   width: number;
   margin: number;
   backgroundColor: string;
-  alwaysVisible: boolean
+  alwaysVisible: boolean;
 }
 
 export interface UnitPageSection {
@@ -18,7 +18,7 @@ export interface UnitPageSection {
 }
 
 export interface UnitUIElement {
-  [index: string]: string | number | boolean | string[] | undefined,
+  [index: string]: string | number | boolean | string[] | undefined;
   type: string; // TODO maybe use enum or manual enumeration, because possible values are known
   id: string;
   xPosition: number;

@@ -30,7 +30,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
     this.elementFormControl.valueChanges
       .pipe(
         takeUntil(this.ngUnsubscribe),
-        startWith([this.elementModel.value, this.elementModel.value]),
+        startWith(this.elementModel.value),
         pairwise()
       )
       .subscribe(([prevValue, nextValue] : [string | number | boolean | undefined, string | number | boolean]) => {

@@ -11,6 +11,7 @@ import { SharedModule } from '../../../common/app.module';
 import { ElementOverlayComponent } from './components/element-overlay.component';
 import { ValidationMessageComponent } from './components/validation-message.component';
 import { FormComponent } from './components/form.component';
+import { PlayerStateComponent } from './components/player-state.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FormComponent } from './components/form.component';
     SectionComponent,
     ElementOverlayComponent,
     ValidationMessageComponent,
-    FormComponent
+    FormComponent,
+    PlayerStateComponent
   ],
   imports: [
     BrowserModule,

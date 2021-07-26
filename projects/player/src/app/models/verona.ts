@@ -21,7 +21,7 @@ export interface UnitState {
 }
 
 export interface PlayerState {
-  state: RunningState ;
+  state: RunningState;
   validPages?: Record<string, string>[];
   currentPage?: string;
 }

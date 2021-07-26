@@ -30,7 +30,6 @@ export class AppComponent {
   private initSubscriptions(): void {
     this.veronaSubscriptionService.vopStartCommand
       .subscribe((message: VopStartCommand): void => this.onStart(message));
-
     this.nativeEventService.scrollY
       .subscribe((y: number): void => this.onScrollY(y));
     this.nativeEventService.focus

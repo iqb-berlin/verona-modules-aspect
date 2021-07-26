@@ -34,7 +34,9 @@ export abstract class FormElementComponent extends ElementComponent implements O
         pairwise()
       )
       .subscribe(([prevValue, nextValue] : [string | number | boolean | undefined, string | number | boolean]) => {
-        this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
+        if (nextValue != null) { // invalid input on number fields generates event with null TODO find a better solution
+          this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
+        }
       });
   }
 

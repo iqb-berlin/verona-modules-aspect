@@ -12,8 +12,10 @@ export function createUnit(): Unit {
   };
 }
 
-export function createUnitPage(): UnitPage {
+export function createUnitPage(pageIndex: number): UnitPage {
   return {
+    id: `page${pageIndex}`,
+    label: `Seite ${pageIndex + 1}`,
     sections: [],
     width: 1100,
     margin: 15,

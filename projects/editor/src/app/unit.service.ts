@@ -27,7 +27,7 @@ export class UnitService {
               private idService: IdService,
               private dialogService: DialogService) {
     const initialUnit = UnitFactory.createUnit();
-    const initialPage = UnitFactory.createUnitPage();
+    const initialPage = UnitFactory.createUnitPage(0);
     const initialSection = UnitFactory.createUnitPageSection();
     initialPage.sections.push(initialSection);
     initialUnit.pages.push(initialPage);
@@ -69,7 +69,7 @@ export class UnitService {
   }
 
   addPage(): void {
-    const newPage = UnitFactory.createUnitPage();
+    const newPage = UnitFactory.createUnitPage(this._unit.value.pages.length);
     newPage.sections.push(UnitFactory.createUnitPageSection());
     this._unit.value.pages.push(newPage);
     this._pages.push(new BehaviorSubject(newPage as UnitPage));

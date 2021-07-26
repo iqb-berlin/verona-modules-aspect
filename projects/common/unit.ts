@@ -39,14 +39,14 @@ export interface TextUIElement extends UnitUIElement {
   underline: boolean;
 }
 
-export interface InputUIElement {
+export interface InputUIElement extends UnitUIElement {
   label: string;
   value: string | number | boolean | undefined;
   required: boolean;
   validationWarnMessage: string;
 }
 
-export interface SurfaceUIElement {
+export interface SurfaceUIElement extends UnitUIElement {
   backgroundColor: string;
 }
 
@@ -84,13 +84,13 @@ export interface CheckboxElement extends InputUIElement, TextUIElement, SurfaceU
   value: boolean | undefined;
 }
 
-export interface DropdownElement extends TextUIElement, SurfaceUIElement {
+export interface DropdownElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   label: string;
   options: string[];
   value: number | undefined;
 }
 
-export interface RadioButtonGroupElement extends UnitUIElement, SurfaceUIElement {
+export interface RadioButtonGroupElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   label: string;
   options: string[];
   alignment: 'row' | 'column';

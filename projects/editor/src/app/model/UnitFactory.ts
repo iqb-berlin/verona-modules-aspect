@@ -45,19 +45,20 @@ export function createUnitUIElement(type: string): UnitUIElement {
   };
 }
 
-export function createTextUIElement(type: string): TextUIElement {
+export function createTextUIElement(): Record<string, unknown> {
   return {
     fontColor: 'blue',
     font: 'Arial',
     fontSize: 18,
     bold: true,
     italic: false,
-    underline: false,
-    ...createUnitUIElement(type)
+    underline: false
   };
 }
 
-export function createInputUIElement(label: string, value: string | number | boolean | undefined): InputUIElement {
+export function createInputUIElement(
+  label: string, value: string | number | boolean | undefined
+): Record<string, unknown> {
   return {
     label: label,
     value: value,
@@ -66,24 +67,26 @@ export function createInputUIElement(label: string, value: string | number | boo
   };
 }
 
-export function createSurfaceUIElement(): SurfaceUIElement {
+export function createSurfaceUIElement(): Record<string, unknown> {
   return {
     backgroundColor: 'lightgrey'
   };
 }
 
 export function createTextElement(): TextElement {
-  return {
+  return <TextElement>{
     text: 'Example Text',
-    ...createTextUIElement('text'),
+    ...createUnitUIElement('text'),
+    ...createTextUIElement(),
     ...createSurfaceUIElement()
   };
 }
 
 export function createButtonElement(): ButtonElement {
-  return {
+  return <ButtonElement>{
     label: 'Button Text',
-    ...createTextUIElement('button'),
+    ...createUnitUIElement('button'),
+    ...createTextUIElement(),
     ...createSurfaceUIElement()
   };
 }
@@ -92,9 +95,10 @@ export function createTextfieldElement(): TextFieldElement {
   return <TextFieldElement>{
     min: undefined,
     max: undefined,
-    ...createTextUIElement('text-field'),
-    ...createSurfaceUIElement(),
-    ...createInputUIElement('Example Label', '')
+    ...createUnitUIElement('text-field'),
+    ...createInputUIElement('Example Label', ''),
+    ...createTextUIElement(),
+    ...createSurfaceUIElement()
   };
 }
 
@@ -102,7 +106,8 @@ export function createNumberfieldElement(): NumberFieldElement {
   return <NumberFieldElement>{
     min: undefined,
     max: undefined,
-    ...createTextUIElement('number-field'),
+    ...createUnitUIElement('number-field'),
+    ...createTextUIElement(),
     ...createSurfaceUIElement(),
     ...createInputUIElement('Example Label', undefined)
   };
@@ -111,37 +116,41 @@ export function createNumberfieldElement(): NumberFieldElement {
 export function createTextareaElement(): TextAreaElement {
   return <TextAreaElement>{
     resizeEnabled: false,
-    ...createTextUIElement('text-area'),
-    ...createSurfaceUIElement(),
+    ...createUnitUIElement('text-area'),
     ...createInputUIElement('Example Label', ''),
+    ...createTextUIElement(),
+    ...createSurfaceUIElement(),
     height: 100
   };
 }
 
 export function createCheckboxElement(): CheckboxElement {
   return <CheckboxElement>{
-    ...createTextUIElement('checkbox'),
-    ...createSurfaceUIElement(),
-    ...createInputUIElement('Label Checkbox', undefined)
+    ...createUnitUIElement('checkbox'),
+    ...createInputUIElement('Label Checkbox', undefined),
+    ...createTextUIElement(),
+    ...createSurfaceUIElement()
   };
 }
 
 export function createDropdownElement(): DropdownElement {
-  return <DropdownElement>{
+  return <DropdownElement><unknown>{
     options: [],
-    ...createTextUIElement('dropdown'),
-    ...createSurfaceUIElement(),
-    ...createInputUIElement('Label Dropdown', undefined)
+    ...createUnitUIElement('dropdown'),
+    ...createInputUIElement('Label Dropdown', undefined),
+    ...createTextUIElement(),
+    ...createSurfaceUIElement()
   };
 }
 
 export function createRadioButtonGroupElement(): RadioButtonGroupElement {
-  return <RadioButtonGroupElement>{
+  return <RadioButtonGroupElement><unknown>{
     options: [],
     alignment: 'row',
-    ...createTextUIElement('radio'),
-    ...createSurfaceUIElement(),
+    ...createUnitUIElement('radio'),
     ...createInputUIElement('Label Optionsfeld', undefined),
+    ...createTextUIElement(),
+    ...createSurfaceUIElement(),
     height: 75
   };
 }

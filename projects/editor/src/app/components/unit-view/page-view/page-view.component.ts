@@ -1,10 +1,11 @@
 import {
   Component, Input, OnDestroy, OnInit
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UnitPage } from '../../../../../../common/unit';
 import { UnitService } from '../../../unit.service';
-import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-page-view',
@@ -17,16 +18,18 @@ import { MatCheckbox, MatCheckboxChange } from '@angular/material/checkbox';
   ]
 })
 export class PageViewComponent implements OnInit, OnDestroy {
-  @Input() pageObservable!: Observable<UnitPage>;
-  private pageSubscription!: Subscription;
+  @Input() pageIndex!: number;
   page!: UnitPage;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService) { }
 
   ngOnInit(): void {
-    this.pageSubscription = this.pageObservable.subscribe((page: UnitPage) => {
-      this.page = page;
-    });
+    this.unitService.getPageObservable(this.pageIndex)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((page: UnitPage) => {
+        this.page = page;
+      });
   }
 
   setPageAlwaysVisible(event: MatCheckboxChange): void {
@@ -36,6 +39,7 @@ export class PageViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.pageSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

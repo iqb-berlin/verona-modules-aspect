@@ -3,7 +3,8 @@ import {
   Input, OnDestroy,
   OnInit, QueryList, ViewChildren
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
@@ -19,15 +20,15 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
   ]
 })
 export class PageCanvasComponent implements OnInit, OnDestroy {
-  @Input() pageObservable!: Observable<UnitPage>;
+  @Input() pageIndex!: number;
   @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;
-  private pageSubscription!: Subscription;
-  private pageIndexSubscription!: Subscription;
-  private selectedPageSectionIndexSubscription!: Subscription;
+
   page!: UnitPage;
   sectionEditMode: boolean = false;
   selectedSectionIndex = 0;
   selectedComponentElements: CanvasDragOverlayComponent[] = [];
+
+  private ngUnsubscribe = new Subject<void>();
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
@@ -41,23 +42,25 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   constructor(public unitService: UnitService) { }
 
   ngOnInit(): void {
-    this.pageSubscription = this.pageObservable.subscribe((page: UnitPage) => {
-      this.page = page;
-      this.canvasSections?.toArray().forEach((sectionComponent: CanvasSectionComponent) => {
-        sectionComponent.renderSection();
-        sectionComponent.updateSelection(this.unitService.getSelectedElements());
+    this.unitService.getPageObservable(this.pageIndex)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((page: UnitPage) => {
+        this.page = page;
+        this.canvasSections?.toArray().forEach((sectionComponent: CanvasSectionComponent) => {
+          sectionComponent.renderSection();
+          sectionComponent.updateSelection(this.unitService.getSelectedElements());
+        });
       });
-    });
-    this.pageIndexSubscription = this.unitService.selectedPageIndex.subscribe(
-      () => {
+    this.unitService.selectedPageIndex
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
         this.clearSelection();
-      }
-    );
-    this.selectedPageSectionIndexSubscription = this.unitService.selectedPageSectionIndex.subscribe(
-      (index: number) => {
+      });
+    this.unitService.selectedPageSectionIndex
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((index: number) => {
         this.selectedSectionIndex = index;
-      }
-    );
+      });
   }
 
   selectSection(id: number): void {
@@ -160,8 +163,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.pageSubscription.unsubscribe();
-    this.pageIndexSubscription.unsubscribe();
-    this.selectedPageSectionIndexSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

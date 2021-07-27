@@ -1,10 +1,7 @@
-// eslint-disable-next-line max-classes-per-file
-import {
-  Component, OnDestroy, OnInit
-} from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Component, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../unit.service';
-import { Unit } from '../../../../../common/unit';
 import { DialogService } from '../../dialog.service';
 
 @Component({
@@ -21,7 +18,9 @@ import { DialogService } from '../../dialog.service';
     '.show-properties-button span {transform: rotate(90deg); display: inherit;}'
   ]
 })
-export class UnitViewComponent {
+export class UnitViewComponent implements OnDestroy {
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(public unitService: UnitService, private dialogService: DialogService) { }
 
   addPage(): void {
@@ -33,10 +32,17 @@ export class UnitViewComponent {
   }
 
   showConfirmDialog(): void {
-    this.dialogService.showConfirmDialog().subscribe((result: boolean) => {
-      if (result) {
-        this.unitService.deletePage();
-      }
-    });
+    this.dialogService.showConfirmDialog()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result: boolean) => {
+        if (result) {
+          this.unitService.deletePage();
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

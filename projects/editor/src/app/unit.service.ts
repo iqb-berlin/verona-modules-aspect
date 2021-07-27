@@ -52,6 +52,10 @@ export class UnitService {
     return this._selectedPageSectionIndex.asObservable();
   }
 
+  getSelectedPageSection(): UnitPageSection {
+    return this._unit.value.pages[this._selectedPageIndex.value].sections[this._selectedPageSectionIndex.value];
+  }
+
   getPageObservable(index: number): Observable<UnitPage> {
     return this._pages[index].asObservable();
   }
@@ -62,10 +66,6 @@ export class UnitService {
 
   getSelectedElements(): UnitUIElement[] {
     return this._selectedElements.value;
-  }
-
-  getSelectedPageSection(): UnitPageSection {
-    return this._unit.value.pages[this._selectedPageIndex.value].sections[this._selectedPageSectionIndex.value];
   }
 
   addPage(): void {

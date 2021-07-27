@@ -1,6 +1,8 @@
 import {
-  Component, EventEmitter, OnInit, Output
+  Component, EventEmitter, OnDestroy, OnInit, Output
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { UnitPageSection } from '../../../../../../../common/unit';
 
@@ -45,19 +47,30 @@ import { UnitPageSection } from '../../../../../../../common/unit';
     '.canvas-section-toolbar input {width: 150px}'
   ]
 })
-export class CanvasSectionToolbarComponent implements OnInit {
+export class CanvasSectionToolbarComponent implements OnInit, OnDestroy {
   @Output() sectionEditMode = new EventEmitter<boolean>();
   section!: UnitPageSection;
   editMode: boolean = false;
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(public unitService: UnitService) { }
 
   ngOnInit(): void {
-    this.section = this.unitService.getSelectedPageSection();
+    this.unitService.selectedPageSectionIndex
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.section = this.unitService.getSelectedPageSection();
+      });
   }
 
   toggleEditMode(checked: boolean): void {
     this.editMode = checked;
     this.sectionEditMode.emit(checked);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

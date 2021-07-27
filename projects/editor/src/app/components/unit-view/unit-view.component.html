@@ -14,7 +14,7 @@
       <mat-tab-group mat-align-tabs="start" class="mat-tab-fill-height"
                      [selectedIndex]="unitService.selectedPageIndex | async"
                      (selectedIndexChange)="unitService.updatePageSelection($event)">
-        <mat-tab *ngFor="let page of (unitService.unit | async)!.pages; let i = index" label="Seite {{i+1}}">
+        <mat-tab *ngFor="let page of (unitService.unit | async)!.pages; let i = index">
           <ng-template mat-tab-label>
             <mat-icon *ngIf="page.alwaysVisible" class="page-alwaysVisible-icon">assignment</mat-icon>
             {{page.label}}

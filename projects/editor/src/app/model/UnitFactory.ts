@@ -63,7 +63,7 @@ export function createInputUIElement(
     label: label,
     value: value,
     required: false,
-    validationWarnMessage: ''
+    requiredWarnMessage: 'Eingabe erforderlich'
   };
 }
 
@@ -94,7 +94,9 @@ export function createButtonElement(): ButtonElement {
 export function createTextfieldElement(): TextFieldElement {
   return <TextFieldElement>{
     min: undefined,
+    minWarnMessage: 'Eingabe zu kurz',
     max: undefined,
+    maxWarnMessage: 'Eingabe zu lang',
     ...createUnitUIElement('text-field'),
     ...createInputUIElement('Example Label', ''),
     ...createTextUIElement(),
@@ -105,7 +107,9 @@ export function createTextfieldElement(): TextFieldElement {
 export function createNumberfieldElement(): NumberFieldElement {
   return <NumberFieldElement>{
     min: undefined,
+    minWarnMessage: 'Wert zu klein',
     max: undefined,
+    maxWarnMessage: 'Wert zu groß',
     ...createUnitUIElement('number-field'),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),

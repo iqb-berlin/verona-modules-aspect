@@ -43,7 +43,7 @@ export interface InputUIElement extends UnitUIElement {
   label: string;
   value: string | number | boolean | undefined;
   required: boolean;
-  validationWarnMessage: string;
+  requiredWarnMessage: string;
 }
 
 export interface SurfaceUIElement extends UnitUIElement {
@@ -66,13 +66,17 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
 export interface TextFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
   min: number | undefined;
+  minWarnMessage: string;
   max: number | undefined;
+  maxWarnMessage: string;
 }
 
 export interface NumberFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: number;
   min: number | undefined;
+  minWarnMessage: string;
   max: number | undefined;
+  maxWarnMessage: string;
 }
 
 export interface TextAreaElement extends InputUIElement, TextUIElement, SurfaceUIElement {

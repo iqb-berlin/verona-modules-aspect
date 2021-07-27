@@ -52,27 +52,45 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-divider></mat-divider>
+
         <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('required')"
                       [checked]="$any(combinedProperties.required)"
                       (change)="updateModel('required', $event.checked)">
           Pflichtfeld
         </mat-checkbox>
-
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('validationWarnMessage')">
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('requiredWarnMessage')">
           <mat-label>Warnmeldung</mat-label>
-          <input matInput type="text" [value]="combinedProperties.validationWarnMessage"
-                 (input)="updateModel('validationWarnMessage', $any($event.target).value)">
+          <input matInput type="text" [value]="combinedProperties.requiredWarnMessage"
+                 (input)="updateModel('requiredWarnMessage', $any($event.target).value)">
         </mat-form-field>
+
+        <mat-divider></mat-divider>
+
 
         <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
           <mat-label>Minimalwert</mat-label>
           <input matInput type="number" [value]="combinedProperties.min"
                  (input)="updateModel('min', $any($event.target).value)">
         </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
+          <mat-label>Warnmeldung</mat-label>
+          <input matInput type="text" [value]="combinedProperties.minWarnMessage"
+                 (input)="updateModel('minWarnMessage', $any($event.target).value)">
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+
+
         <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
           <mat-label>Maximalwert</mat-label>
           <input matInput type="number" [value]="combinedProperties.max"
                  (input)="updateModel('max', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
+          <mat-label>Warnmeldung</mat-label>
+          <input matInput type="text" [value]="combinedProperties.maxWarnMessage"
+                 (input)="updateModel('maxWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
         <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">

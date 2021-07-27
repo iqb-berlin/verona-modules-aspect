@@ -25,13 +25,13 @@ export abstract class FormElementComponent extends ElementComponent implements O
   ngOnInit(): void {
     const formControl = new FormControl(this.elementModel.value, this.getValidations());
     const id = this.elementModel.id;
-    this.formService.registerFormControl({ id, formControl });
+    this.formService.registerFormControl({ id, formControl, formGroup: this.parentForm });
     this.elementFormControl = this.getFormControl(id);
     this.elementFormControl.valueChanges
       .pipe(
-        takeUntil(this.ngUnsubscribe),
         startWith(this.elementModel.value),
-        pairwise()
+        pairwise(),
+        takeUntil(this.ngUnsubscribe)
       )
       .subscribe(([prevValue, nextValue] : [string | number | boolean | undefined, string | number | boolean]) => {
         if (nextValue != null) { // invalid input on number fields generates event with null TODO find a better solution

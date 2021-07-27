@@ -19,7 +19,7 @@ import { VeronaPostService } from '../services/verona-post.service';
       <mat-tab-group [(selectedIndex)]="currentIndex"
                      (selectedIndexChange)="onSelectedIndexChange()"
                      mat-align-tabs="start">
-          <mat-tab *ngFor="let page of pages; let i = index" label="{{validPages[i]['page'+i]}}">
+          <mat-tab *ngFor="let page of pages; let i = index" label="{{page.label}}">
               <app-page [parentForm]="parenForm" [page]="page"></app-page>
           </mat-tab>
       </mat-tab-group>
@@ -38,7 +38,6 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
 
   constructor(private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService) {
-    this.initSubscriptions();
   }
 
   private get state(): RunningState {
@@ -46,6 +45,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.initSubscriptions();
     this.sendVopStateChangedNotification();
   }
 

@@ -1,11 +1,11 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormService } from '../../../../common/form.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { VeronaPostService } from '../services/verona-post.service';
-import { FormControlElement, ValueChangeElement } from '../../../../common/form';
+import { FormGroupPage, ValueChangeElement } from '../../../../common/form';
 import {
   PlayerConfig, UnitState, VopNavigationDeniedNotification
 } from '../models/verona';
@@ -25,36 +25,37 @@ import { UnitPage } from '../../../../common/unit';
 export class FormComponent implements OnDestroy {
   @Input() pages: UnitPage[] = [];
   @Input() playerConfig!: PlayerConfig;
-  form = new FormGroup({});
+  form!: FormGroup;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private formService: FormService,
+  constructor(private formBuilder: FormBuilder,
+              private formService: FormService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService) {
+    this.form = this.formBuilder.group({
+      pages: this.formBuilder.array([])
+    });
     this.initSubscriptions();
   }
 
   get validPages():Record<string, string>[] {
-    return this.pages.map((page:UnitPage, index:number) => {
-      const validPage: Record<string, string> = {};
-      validPage[`page${index}`] = `Seite ${index + 1}`;
-      return validPage;
-    });
+    return this.pages.map((page:UnitPage): Record<string, string> => (
+      { [page.id]: page.label }));
   }
 
   private initSubscriptions(): void {
     this.formService.elementValueChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
-    this.formService.controlAdded
+    this.formService.groupAdded
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((control: FormControlElement): void => this.addControl(control));
+      .subscribe((group: FormGroupPage): void => this.addGroup(group));
     this.veronaSubscriptionService.vopNavigationDeniedNotification
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((formValues: any): void => this.onFormChanges(formValues));
+      .subscribe((formValues: { pages: Record<string, string>[] }): void => this.onFormChanges(formValues));
   }
 
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
@@ -63,8 +64,9 @@ export class FormComponent implements OnDestroy {
     this.form.markAllAsTouched();
   }
 
-  private addControl(control: FormControlElement): void {
-    this.form.addControl(control.id, control.formControl);
+  private addGroup(group: FormGroupPage): void {
+    const pages: FormArray = this.form.get('pages') as FormArray;
+    pages.push(new FormGroup({ [group.id]: group.formGroup }));
   }
 
   private onElementValueChanges = (value: ValueChangeElement): void => {
@@ -72,14 +74,15 @@ export class FormComponent implements OnDestroy {
     console.log(`player: onElementValueChanges - ${value.id}: ${value.values[0]} -> ${value.values[1]}`);
   };
 
-  private onFormChanges(formValues: unknown): void {
+  private onFormChanges(formValues: { pages: Record<string, string>[] }): void {
     // eslint-disable-next-line no-console
     console.log('player: onFormChanges', formValues);
-    // TODO: map by page and? section not all
     const unitState: UnitState = {
-      dataParts: {
-        all: JSON.stringify(formValues)
-      }
+      dataParts: formValues.pages
+        .reduce((obj, page): Record<string, string> => {
+          obj[Object.keys(page)[0]] = JSON.stringify(page[Object.keys(page)[0]]);
+          return obj;
+        }, {})
     };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }

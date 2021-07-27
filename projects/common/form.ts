@@ -1,4 +1,4 @@
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
 export interface ValueChangeElement {
   id: string;
@@ -8,6 +8,12 @@ export interface ValueChangeElement {
 export interface FormControlElement {
   id: string;
   formControl: FormControl;
+  formGroup: FormGroup;
+}
+
+export interface FormControlValidators {
+  id: string;
+  validators: ValidatorFn[];
   formGroup: FormGroup;
 }
 

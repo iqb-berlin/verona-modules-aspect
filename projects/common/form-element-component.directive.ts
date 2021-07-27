@@ -2,7 +2,7 @@ import {
   Directive, EventEmitter, OnDestroy, OnInit, Output
 } from '@angular/core';
 import {
-  FormControl, FormGroup, ValidatorFn
+  FormControl, FormGroup, ValidatorFn, Validators
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { pairwise, startWith, takeUntil } from 'rxjs/operators';
@@ -23,10 +23,12 @@ export abstract class FormElementComponent extends ElementComponent implements O
   }
 
   ngOnInit(): void {
-    const formControl = new FormControl(this.elementModel.value, this.getValidations());
-    const id = this.elementModel.id;
-    this.formService.registerFormControl({ id, formControl, formGroup: this.parentForm });
-    this.elementFormControl = this.getFormControl(id);
+    this.formService.registerFormControl({
+      id: this.elementModel.id,
+      formControl: new FormControl(this.elementModel.value),
+      formGroup: this.parentForm
+    });
+    this.elementFormControl = this.formControl;
     this.elementFormControl.valueChanges
       .pipe(
         startWith(this.elementModel.value),
@@ -38,14 +40,29 @@ export abstract class FormElementComponent extends ElementComponent implements O
           this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
         }
       });
+    // TODO: find better solution
+    setTimeout((): void => {
+      this.formService.setValidators({
+        id: this.elementModel.id,
+        validators: this.validators,
+        formGroup: this.parentForm
+      });
+    });
   }
 
-  // TODO: get from elementModel examples, example: [Validators.requiredTrue, Validators.required]
-  private getValidations = (): ValidatorFn[] => [];
+  private get validators(): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+    if (this.elementModel.required) {
+      validators.push(Validators.required);
+    }
+    return validators;
+  }
 
-  private getFormControl(id: string): FormControl {
+  private get formControl(): FormControl {
     // workaround for editor
-    return (this.parentForm) ? this.parentForm.controls[id] as FormControl : new FormControl();
+    return (this.parentForm) ?
+      this.parentForm.controls[this.elementModel.id] as FormControl :
+      new FormControl({});
   }
 
   updateFormValue(newValue: string | number | boolean): void {

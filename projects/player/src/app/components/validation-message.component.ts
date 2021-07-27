@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { UnitUIElement } from '../../../../common/unit';
+import { InputUIElement, UnitUIElement } from '../../../../common/unit';
 
 @Component({
   selector: 'app-error-message',
@@ -22,7 +22,6 @@ export class ValidationMessageComponent implements OnInit {
 
   // eslint-disable-next-line class-methods-use-this
   get requiredMessage(): string {
-    // TODO: get from elementModel
-    return 'Name is required';
+    return (this.elementModel as InputUIElement).validationWarnMessage || 'Wert muss angegeben werden';
   }
 }

@@ -11,14 +11,14 @@
     <div #section_component app-canvas-section class="section"
          *ngFor="let section of page.sections; let i = index"
          [section]="section"
-         cdkDrag [childrenDraggable]="!sectionEditMode"
+         cdkDrag
          [ngStyle]="{border: '1px solid', 'width.px': page.width, 'height.px': section.height}">
     </div>
   </div>
   <div *ngIf="!sectionEditMode" cdkDropListGroup class="section-list">
     <div #section_component app-canvas-section class="section"
          *ngFor="let section of page.sections; let i = index"
-         [section]="section" [childrenDraggable]="!sectionEditMode"
+         [section]="section"
          (elementSelected)="elementSelected($event)" (click)="selectSection(i)"
          cdkDropList cdkDropListSortingDisabled
          (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"

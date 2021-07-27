@@ -15,7 +15,6 @@ import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
 })
 export class CanvasSectionComponent implements OnInit {
   @Input() section!: UnitPageSection;
-  @Input() childrenDraggable: boolean = false;
   @Output() elementSelected = new EventEmitter<{ componentElement: CanvasDragOverlayComponent, multiSelect: boolean }>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   private canvasComponents: CanvasDragOverlayComponent[] = [];

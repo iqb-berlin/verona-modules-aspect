@@ -5,7 +5,9 @@ import { takeUntil } from 'rxjs/operators';
 import { FormService } from '../../../../common/form.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { VeronaPostService } from '../services/verona-post.service';
-import { FormGroupPage, ValueChangeElement } from '../../../../common/form';
+import {
+  FormControlElement, FormControlValidators, FormGroupPage, ValueChangeElement
+} from '../../../../common/form';
 import {
   PlayerConfig, UnitState, VopNavigationDeniedNotification
 } from '../models/verona';
@@ -50,6 +52,12 @@ export class FormComponent implements OnDestroy {
     this.formService.groupAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((group: FormGroupPage): void => this.addGroup(group));
+    this.formService.controlAdded.pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((control: FormControlElement): void => this.addControl(control));
+    this.formService.validationsAdded.pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((validations: FormControlValidators): void => this.setValidators(validations));
     this.veronaSubscriptionService.vopNavigationDeniedNotification
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
@@ -57,6 +65,15 @@ export class FormComponent implements OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((formValues: { pages: Record<string, string>[] }): void => this.onFormChanges(formValues));
   }
+
+  private addControl = (control: FormControlElement): void => {
+    control.formGroup.addControl(control.id, control.formControl);
+  };
+
+  private setValidators = (validators: FormControlValidators): void => {
+    validators.formGroup.controls[validators.id].setValidators(validators.validators);
+    validators.formGroup.controls[validators.id].updateValueAndValidity();
+  };
 
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
     // eslint-disable-next-line no-console

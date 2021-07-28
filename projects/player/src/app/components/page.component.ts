@@ -1,12 +1,9 @@
 import {
-  Component, Input, OnDestroy, OnInit
+  Component, Input, OnInit
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { UnitPage } from '../../../../common/unit';
 import { FormService } from '../../../../common/form.service';
-import { FormControlElement, FormControlValidators } from '../../../../common/form';
 
 @Component({
   selector: 'app-page',
@@ -25,46 +22,15 @@ import { FormControlElement, FormControlValidators } from '../../../../common/fo
   `
 })
 
-export class PageComponent implements OnInit, OnDestroy {
+export class PageComponent implements OnInit {
   @Input() page!: UnitPage;
   @Input() parentForm!: FormGroup;
   pageForm!: FormGroup;
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(private formService: FormService) {}
 
   ngOnInit(): void {
     this.pageForm = new FormGroup({});
     this.formService.registerFormGroup({ id: this.page.id, formGroup: this.pageForm });
-    this.initSubscriptions();
-  }
-
-  private initSubscriptions(): void {
-    this.formService.controlAdded.pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((control: FormControlElement): void => this.addControl(control));
-    this.formService.validationsAdded.pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((validations: FormControlValidators): void => this.setValidators(validations));
-  }
-
-  private addControl(control: FormControlElement): void {
-    // we need to check that the control belongs to the page
-    if (this.pageForm === control.formGroup) {
-      this.pageForm.addControl(control.id, control.formControl);
-    }
-  }
-
-  private setValidators(validators: FormControlValidators): void {
-    // we need to check that the control belongs to the page
-    if (this.pageForm === validators.formGroup) {
-      this.pageForm.controls[validators.id].setValidators(validators.validators);
-      this.pageForm.controls[validators.id].updateValueAndValidity();
-    }
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

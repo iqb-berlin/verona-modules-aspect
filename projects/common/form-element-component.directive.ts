@@ -2,7 +2,7 @@ import {
   Directive, EventEmitter, OnDestroy, OnInit, Output
 } from '@angular/core';
 import {
-  FormControl, FormGroup, ValidatorFn, Validators
+  FormControl, FormGroup
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { pairwise, startWith, takeUntil } from 'rxjs/operators';
@@ -40,22 +40,6 @@ export abstract class FormElementComponent extends ElementComponent implements O
           this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
         }
       });
-    // TODO: find better solution
-    setTimeout((): void => {
-      this.formService.setValidators({
-        id: this.elementModel.id,
-        validators: this.validators,
-        formGroup: this.parentForm
-      });
-    });
-  }
-
-  private get validators(): ValidatorFn[] {
-    const validators: ValidatorFn[] = [];
-    if (this.elementModel.required) {
-      validators.push(Validators.required);
-    }
-    return validators;
   }
 
   private get formControl(): FormControl {

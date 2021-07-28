@@ -42,6 +42,6 @@ export class FormService {
   }
 
   setValidators(validations: FormControlValidators): void {
-    this._validationsAdded.next(validations);
+    Promise.resolve().then(() => this._validationsAdded.next(validations));
   }
 }

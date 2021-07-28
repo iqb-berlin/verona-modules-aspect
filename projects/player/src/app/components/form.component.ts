@@ -55,7 +55,7 @@ export class FormComponent implements OnDestroy {
     this.formService.controlAdded.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe((control: FormControlElement): void => this.addControl(control));
-    this.formService.validationsAdded.pipe(
+    this.formService.validatorsAdded.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe((validations: FormControlValidators): void => this.setValidators(validations));
     this.veronaSubscriptionService.vopNavigationDeniedNotification

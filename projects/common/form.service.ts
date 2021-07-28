@@ -11,7 +11,7 @@ export class FormService {
   private _elementValueChanged = new Subject<ValueChangeElement>();
   private _controlAdded = new Subject<FormControlElement>();
   private _groupAdded = new Subject<FormGroupPage>();
-  private _validationsAdded = new Subject<FormControlValidators>();
+  private _validatorsAdded = new Subject<FormControlValidators>();
 
   get elementValueChanged(): Observable<ValueChangeElement> {
     return this._elementValueChanged.asObservable();
@@ -25,8 +25,8 @@ export class FormService {
     return this._groupAdded.asObservable();
   }
 
-  get validationsAdded(): Observable<FormControlValidators> {
-    return this._validationsAdded.asObservable();
+  get validatorsAdded(): Observable<FormControlValidators> {
+    return this._validatorsAdded.asObservable();
   }
 
   changeElementValue(elementValues: ValueChangeElement): void {
@@ -42,6 +42,6 @@ export class FormService {
   }
 
   setValidators(validations: FormControlValidators): void {
-    Promise.resolve().then(() => this._validationsAdded.next(validations));
+    Promise.resolve().then(() => this._validatorsAdded.next(validations));
   }
 }

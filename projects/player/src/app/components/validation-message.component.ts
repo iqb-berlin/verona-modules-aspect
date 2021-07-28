@@ -52,17 +52,17 @@ export class ValidationMessageComponent implements OnInit {
       validators.push(Validators.required);
     }
     if (this.elementModel.min) {
-      if (this.elementModel.type === 'number_field') {
+      if (this.elementModel.type === 'number-field') {
         validators.push(Validators.min(<number> this.elementModel.min));
       } else {
         validators.push(Validators.minLength(<number> this.elementModel.min));
       }
     }
     if (this.elementModel.max) {
-      if (this.elementModel.type === 'number_field') {
+      if (this.elementModel.type === 'number-field') {
         validators.push(Validators.max(<number> this.elementModel.max));
       } else {
-        validators.push(Validators.maxLength(<number> this.elementModel.maxLength));
+        validators.push(Validators.maxLength(<number> this.elementModel.max));
       }
     }
     return validators;

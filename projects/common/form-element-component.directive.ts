@@ -9,6 +9,7 @@ import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { FormService } from './form.service';
 import { ValueChangeElement } from './form';
 import { ElementComponent } from './element-component.directive';
+import { InputUIElement } from './unit';
 
 @Directive()
 export abstract class FormElementComponent extends ElementComponent implements OnInit, OnDestroy {
@@ -29,6 +30,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
       formGroup: this.parentForm
     });
     this.elementFormControl = this.formControl;
+    this.updateFormValue((this.elementModel as InputUIElement).value);
     this.elementFormControl.valueChanges
       .pipe(
         startWith(this.elementModel.value),
@@ -49,7 +51,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
       new FormControl({});
   }
 
-  updateFormValue(newValue: string | number | boolean): void {
+  updateFormValue(newValue: string | number | boolean | undefined): void {
     this.elementFormControl?.setValue(newValue, { emitEvent: false });
   }
 

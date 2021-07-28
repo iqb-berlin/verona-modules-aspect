@@ -12,6 +12,7 @@ import {
   PlayerConfig, UnitState, VopNavigationDeniedNotification
 } from '../models/verona';
 import { UnitPage } from '../../../../common/unit';
+import { MessageService } from '../../../../common/message.service';
 
 @Component({
   selector: 'app-form',
@@ -33,7 +34,8 @@ export class FormComponent implements OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private formService: FormService,
               private veronaSubscriptionService: VeronaSubscriptionService,
-              private veronaPostService: VeronaPostService) {
+              private veronaPostService: VeronaPostService,
+              private messageService: MessageService) {
     this.form = this.formBuilder.group({
       pages: this.formBuilder.array([])
     });
@@ -78,6 +80,10 @@ export class FormComponent implements OnDestroy {
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
     // eslint-disable-next-line no-console
     console.log('player: onNavigationDenied', message);
+    const warning = message.reason?.join(', ');
+    if (warning) {
+      this.messageService.showWarning(warning);
+    }
     this.form.markAllAsTouched();
   }
 

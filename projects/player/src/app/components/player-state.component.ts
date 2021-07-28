@@ -8,7 +8,7 @@ import { UnitPage } from '../../../../common/unit';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import {
   PlayerState,
-  RunningState, VopContinueCommand, VopPageNavigationCommand, VopStopCommand
+  RunningState, VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
 } from '../models/verona';
 import { VeronaPostService } from '../services/verona-post.service';
 
@@ -59,6 +59,9 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     this.veronaSubscriptionService.vopStopCommand
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopStopCommand): void => this.onStop(message));
+    this.veronaSubscriptionService.vopGetStateRequest
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((message: VopGetStateRequest): void => this.onGetStateRequest(message));
   }
 
   onSelectedIndexChange(): void {
@@ -76,6 +79,15 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     // eslint-disable-next-line no-console
     console.log('player: onStop', message);
     this.running = false;
+    this.sendVopStateChangedNotification();
+  }
+
+  private onGetStateRequest(message: VopGetStateRequest): void {
+    // eslint-disable-next-line no-console
+    console.log('player: onGetStateRequest', message);
+    if (message.stop) {
+      this.running = false;
+    }
     this.sendVopStateChangedNotification();
   }
 

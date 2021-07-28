@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import {
-  VopContinueCommand,
+  VopContinueCommand, VopGetStateRequest,
   VopMessage,
   VopNavigationDeniedNotification,
   VopPageNavigationCommand,
@@ -18,6 +18,7 @@ export class VeronaSubscriptionService {
   private _vopPageNavigationCommand = new Subject<VopPageNavigationCommand>();
   private _vopStopCommand = new Subject<VopStopCommand>();
   private _vopContinueCommand = new Subject<VopContinueCommand>();
+  private _vopGetStateRequest = new Subject<VopGetStateRequest>();
 
   constructor() {
     fromEvent(window, 'message')
@@ -39,7 +40,6 @@ export class VeronaSubscriptionService {
         console.log('player: _vopNavigationDeniedNotification ', messageData);
         this._vopNavigationDeniedNotification.next(messageData);
         break;
-      // TODO
       case 'vopPageNavigationCommand':
         // eslint-disable-next-line no-console
         console.log('player: _vopPageNavigationCommand ', messageData);
@@ -56,6 +56,10 @@ export class VeronaSubscriptionService {
         this._vopContinueCommand.next(messageData);
         break;
       case 'vopGetStateRequest':
+        // eslint-disable-next-line no-console
+        console.log('player: _vopGetStateRequest ', messageData);
+        this._vopGetStateRequest.next(messageData);
+        break;
       default:
         // eslint-disable-next-line no-console
         console.warn(`player: got message of unknown type ${messageData.type}`);
@@ -80,5 +84,9 @@ export class VeronaSubscriptionService {
 
   get vopContinueCommand(): Observable<VopContinueCommand> {
     return this._vopContinueCommand.asObservable();
+  }
+
+  get vopGetStateRequest(): Observable<VopGetStateRequest> {
+    return this._vopGetStateRequest.asObservable();
   }
 }

@@ -80,10 +80,7 @@ export class FormComponent implements OnDestroy {
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
     // eslint-disable-next-line no-console
     console.log('player: onNavigationDenied', message);
-    const warning = message.reason?.join(', ');
-    if (warning) {
-      this.messageService.showWarning(warning);
-    }
+    this.messageService.showWarning(message.reason?.join(', ') || 'noReason');
     this.form.markAllAsTouched();
   }
 

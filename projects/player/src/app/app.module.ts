@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
-
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page.component';
 import { SectionComponent } from './components/section.component';
@@ -12,6 +12,7 @@ import { ElementOverlayComponent } from './components/element-overlay.component'
 import { ValidationMessageComponent } from './components/validation-message.component';
 import { FormComponent } from './components/form.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
+import { WebpackTranslateLoader } from '../../../common/webpack-translate-loader';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,13 @@ import { PlayerStateComponent } from './components/player-state/player-state.com
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
-    SharedModule
+    SharedModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: WebpackTranslateLoader
+      }
+    })
   ],
   providers: []
 })

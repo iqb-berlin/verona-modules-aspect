@@ -19,6 +19,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+import { TranslateModule } from '@ngx-translate/core';
 import { TextComponent } from './element-components/text.component';
 import { ButtonComponent } from './element-components/button.component';
 import { TextFieldComponent } from './element-components/text-field.component';
@@ -43,7 +44,8 @@ import { NumberFieldComponent } from './element-components/number-field.componen
     ReactiveFormsModule,
     FormsModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    TranslateModule
   ],
   declarations: [
     ButtonComponent,
@@ -88,7 +90,8 @@ import { NumberFieldComponent } from './element-components/number-field.componen
     DropdownComponent,
     CorrectionComponent,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    TranslateModule
   ]
 })
 export class SharedModule { }

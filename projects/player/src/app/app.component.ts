@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { Unit, UnitPage } from '../../../common/unit';
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
 import { VeronaPostService } from './services/verona-post.service';
@@ -12,7 +13,7 @@ import {
 @Component({
   selector: 'player-aspect',
   template: `
-      <app-form *ngIf="playerConfig" [pages]=pages [playerConfig]=playerConfig></app-form>
+    <app-form *ngIf="playerConfig" [pages]=pages [playerConfig]=playerConfig></app-form>
   `
 })
 export class AppComponent {
@@ -20,11 +21,14 @@ export class AppComponent {
   pages!: UnitPage[];
   playerConfig!: PlayerConfig;
 
-  constructor(private veronaSubscriptionService: VeronaSubscriptionService,
+  constructor(public translateService: TranslateService,
+              private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private nativeEventService: NativeEventService) {
     this.initSubscriptions();
     veronaPostService.sendVopReadyNotification();
+    translateService.addLangs(['de']);
+    translateService.setDefaultLang('de');
   }
 
   private initSubscriptions(): void {

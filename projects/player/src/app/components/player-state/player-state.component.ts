@@ -4,34 +4,22 @@ import {
 import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { UnitPage } from '../../../../common/unit';
-import { VeronaSubscriptionService } from '../services/verona-subscription.service';
+import { UnitPage } from '../../../../../common/unit';
+import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import {
   PlayerState,
   RunningState, VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
-} from '../models/verona';
-import { VeronaPostService } from '../services/verona-post.service';
+} from '../../models/verona';
+import { VeronaPostService } from '../../services/verona-post.service';
 
 @Component({
   selector: 'app-player-state',
-  template: `
-      <div *ngIf="!running" class='stopped-overlay'></div>
-      <mat-tab-group [(selectedIndex)]="currentIndex"
-                     (selectedIndexChange)="onSelectedIndexChange()"
-                     mat-align-tabs="start">
-          <mat-tab *ngFor="let page of pages; let i = index" label="{{page.label}}">
-              <app-page [parentForm]="parenForm" [page]="page"></app-page>
-          </mat-tab>
-      </mat-tab-group>
-  `,
-  styles: [
-    '.stopped-overlay {position: fixed; width: 100%; height: 100%; background-color: rgba(0,0,0,0.3); z-index: 1000}'
-  ]
+  templateUrl: './player-state.component.html',
+  styleUrls: ['./player-state.component.css']
 })
 export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() parenForm!: FormGroup;
   @Input() pages!: UnitPage[];
-  @Input() validPages!: Record<string, string>[];
   currentIndex: number = 0;
   running: boolean = true;
   private ngUnsubscribe = new Subject<void>();
@@ -42,6 +30,23 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
 
   private get state(): RunningState {
     return this.running ? 'running' : 'stopped';
+  }
+
+  get pageWidth(): number {
+    return this.alwaysVisiblePage ? 50 : 100;
+  }
+
+  get validPages():Record<string, string>[] {
+    return this.pages.map((page:UnitPage): Record<string, string> => (
+      { [page.id]: page.label }));
+  }
+
+  get alwaysVisiblePage(): UnitPage | undefined {
+    return this.pages.find((page: UnitPage): boolean => page.alwaysVisible);
+  }
+
+  get scrollPages(): UnitPage[] {
+    return this.pages.filter((page: UnitPage): boolean => !page.alwaysVisible);
   }
 
   ngOnInit(): void {

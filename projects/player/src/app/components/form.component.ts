@@ -18,7 +18,7 @@ import { MessageService } from '../../../../common/message.service';
   selector: 'app-form',
   template: `
       <form [formGroup]="form">
-          <app-player-state [parenForm]="form" [pages]="pages" [validPages]="validPages"></app-player-state>
+          <app-player-state [parenForm]="form" [pages]="pages"></app-player-state>
       </form>
       <button class="form-item" mat-flat-button color="primary" (click)="submit()">Print
           form.value
@@ -40,11 +40,6 @@ export class FormComponent implements OnDestroy {
       pages: this.formBuilder.array([])
     });
     this.initSubscriptions();
-  }
-
-  get validPages():Record<string, string>[] {
-    return this.pages.map((page:UnitPage): Record<string, string> => (
-      { [page.id]: page.label }));
   }
 
   private initSubscriptions(): void {

@@ -12,22 +12,22 @@ import { FormService } from '../../../../common/form.service';
   template: `
       <ng-container *ngIf="formElementControl && formElementControl.touched">
           <mat-error *ngIf="formElementControl.errors?.required">
-              {{requiredMessage}}
+              {{requiredMessage | translate}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.requiredTrue">
-              {{requiredMessage}}
+              {{requiredMessage | translate}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.minlength">
-              {{minLengthMessage}}
+              {{minLengthMessage | translate}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.maxlength">
-              {{maxLengthMessage}}
+              {{maxLengthMessage | translate}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.min">
-              {{minMessage}}
+              {{minMessage | translate}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.max">
-              {{maxMessage}}
+              {{maxMessage | translate}}
           </mat-error>
       </ng-container>
   `
@@ -76,22 +76,22 @@ export class ValidationMessageComponent implements OnInit {
   }
 
   get requiredMessage(): string {
-    return (this.elementModel as InputUIElement).requiredWarnMessage || 'Eingabe erforderlich';
+    return (this.elementModel as InputUIElement).requiredWarnMessage || 'inputRequired';
   }
 
   get minLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).minWarnMessage || 'Eingabe zu kurz';
+    return (this.elementModel as TextFieldElement).minWarnMessage || 'inputTooShort';
   }
 
   get maxLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).maxWarnMessage || 'Eingabe zu lang';
+    return (this.elementModel as TextFieldElement).maxWarnMessage || 'inputTooLong';
   }
 
   get minMessage(): string {
-    return (this.elementModel as NumberFieldElement).minWarnMessage || 'Wert zu klein';
+    return (this.elementModel as NumberFieldElement).minWarnMessage || 'valueTooSmall';
   }
 
   get maxMessage(): string {
-    return (this.elementModel as NumberFieldElement).maxWarnMessage || 'Wert zu groß';
+    return (this.elementModel as NumberFieldElement).maxWarnMessage || 'valueTooBig';
   }
 }

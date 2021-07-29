@@ -4,6 +4,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { UnitPage } from '../../../../../common/unit';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import {
@@ -25,7 +26,8 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private veronaSubscriptionService: VeronaSubscriptionService,
-              private veronaPostService: VeronaPostService) {
+              private veronaPostService: VeronaPostService,
+              private translateService: TranslateService) {
   }
 
   private get state(): RunningState {
@@ -37,8 +39,8 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   }
 
   get validPages():Record<string, string>[] {
-    return this.pages.map((page:UnitPage): Record<string, string> => (
-      { [page.id]: page.label }));
+    return this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
+      { [page.id]: `${this.translateService.instant('page')} ${index}` }));
   }
 
   get alwaysVisiblePage(): UnitPage | undefined {

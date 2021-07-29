@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../../../common/form.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { VeronaPostService } from '../services/verona-post.service';
@@ -35,7 +36,8 @@ export class FormComponent implements OnDestroy {
               private formService: FormService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
-              private messageService: MessageService) {
+              private messageService: MessageService,
+              private translateService: TranslateService) {
     this.form = this.formBuilder.group({
       pages: this.formBuilder.array([])
     });
@@ -75,7 +77,8 @@ export class FormComponent implements OnDestroy {
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
     // eslint-disable-next-line no-console
     console.log('player: onNavigationDenied', message);
-    this.messageService.showWarning(message.reason?.join(', ') || 'noReason');
+    const reasons = message.reason?.map((reason: string) => this.translateService.instant(reason));
+    this.messageService.showWarning(reasons?.join(', ') || this.translateService.instant('noReason'));
     this.form.markAllAsTouched();
   }
 

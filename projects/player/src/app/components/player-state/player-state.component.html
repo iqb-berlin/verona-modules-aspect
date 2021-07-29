@@ -3,12 +3,12 @@
   <mat-tab-group [fxFlex]="pageWidth" [(selectedIndex)]="currentIndex"
                  (selectedIndexChange)="onSelectedIndexChange()"
                  mat-align-tabs="start">
-    <mat-tab *ngFor="let page of scrollPages; let i = index" label="{{page.label}}">
+    <mat-tab *ngFor="let page of scrollPages; let i = index" label="{{'page' | translate}} {{i + 1}}">
       <app-page class="page" [parentForm]="parenForm" [page]="page"></app-page>
     </mat-tab>
   </mat-tab-group>
   <div *ngIf="alwaysVisiblePage" fxFlex="50">
-    <div class="mat-tab-label">{{alwaysVisiblePage.label}}</div>
+    <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
     <app-page class="page" [parentForm]="parenForm" [page]="alwaysVisiblePage"></app-page>
   </div>
 </div>

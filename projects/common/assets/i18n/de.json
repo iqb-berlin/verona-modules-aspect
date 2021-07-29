@@ -1,1 +1,12 @@
-{}
+{
+  "page": "Seite",
+  "alwaysVisiblePage": "Seite immer sichtbar",
+  "presentationIncomplete": "Bearbeitung unvollständig",
+  "responsesIncomplete": "Antworten sind unvollständig",
+  "noReason": "Navigation ohne Angabe von Gründen verweigert",
+  "inputRequired": "Eingabe erforderlich",
+  "InputTooShort": "Eingabe zu kurz",
+  "InputTooLong": "Eingabe zu lang",
+  "ValueTooSmall": "Wert zu klein",
+  "ValueTooBig": "Wert zu groß"
+}

@@ -14,6 +14,9 @@ import { FormService } from '../../../../common/form.service';
           <mat-error *ngIf="formElementControl.errors?.required">
               {{requiredMessage}}
           </mat-error>
+          <mat-error *ngIf="formElementControl.errors?.requiredTrue">
+              {{requiredMessage}}
+          </mat-error>
           <mat-error *ngIf="formElementControl.errors?.minlength">
               {{minLengthMessage}}
           </mat-error>
@@ -49,7 +52,11 @@ export class ValidationMessageComponent implements OnInit {
   private get validators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
     if (this.elementModel.required) {
-      validators.push(Validators.required);
+      if (this.elementModel.type === 'checkbox') {
+        validators.push(Validators.requiredTrue);
+      } else {
+        validators.push(Validators.required);
+      }
     }
     if (this.elementModel.min) {
       if (this.elementModel.type === 'number-field') {

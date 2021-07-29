@@ -25,6 +25,9 @@ export class VeronaPostService {
     // prevent posts in local (dev) mode
     if (!this.isStandalone()) {
       window.parent.postMessage(message, '*');
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn('player: no host detected');
     }
   }
 

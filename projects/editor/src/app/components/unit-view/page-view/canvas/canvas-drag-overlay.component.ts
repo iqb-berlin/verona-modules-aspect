@@ -1,7 +1,7 @@
 import {
   Component, OnInit, OnDestroy, Input, Output,
   EventEmitter,
-  ComponentFactoryResolver, ViewChild, ViewContainerRef
+  ComponentFactoryResolver, ViewChild, ViewContainerRef, HostListener
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -80,16 +80,25 @@ export class CanvasDragOverlayComponent implements OnInit, OnDestroy {
       this.childComponent.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((changeElement: ValueChangeElement) => {
-          this.unitService.updateSelectedElementProperty('value', changeElement.values[1]);
+          this.unitService.updateElementProperty(this.element, 'value', changeElement.values[1]);
         });
 
-      this.unitService.selectedElements
+      this.unitService.elementPropertyUpdated
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           (this.childComponent as FormElementComponent).updateFormValue(
-            this.element.value as string | number | boolean
+            this.element.value as string | number | boolean | undefined
           );
         });
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyDown(event: KeyboardEvent): void {
+    if (!(event.target as Element).tagName.includes('input'.toUpperCase()) &&
+      !(event.target as Element).tagName.includes('textarea'.toUpperCase()) &&
+      event.key === 'Delete') {
+      this.unitService.deleteElement(this.element);
     }
   }
 
@@ -115,8 +124,8 @@ export class CanvasDragOverlayComponent implements OnInit, OnDestroy {
   }
 
   resizeElement(event: CdkDragMove): void {
-    this.unitService.updateSelectedElementProperty('width', Math.max(this.oldX + event.distance.x, 0));
-    this.unitService.updateSelectedElementProperty('height', Math.max(this.oldY + event.distance.y, 0));
+    this.unitService.updateElementProperty(this.element, 'width', Math.max(this.oldX + event.distance.x, 0));
+    this.unitService.updateElementProperty(this.element, 'height', Math.max(this.oldY + event.distance.y, 0));
   }
 
   openEditDialog(): void {

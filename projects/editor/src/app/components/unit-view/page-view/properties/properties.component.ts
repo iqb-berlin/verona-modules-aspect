@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { UnitUIElement } from '../../../../../../../common/unit';
+import { SelectionService } from '../canvas/selection.service';
 
 @Component({
   selector: 'app-properties',
@@ -17,19 +19,28 @@ import { UnitUIElement } from '../../../../../../../common/unit';
   ]
 })
 export class PropertiesComponent {
-  selectedElementsSubscription!: Subscription;
-  selectedElements!: UnitUIElement[];
+  selectedElements: UnitUIElement[] = [];
   combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private unitService: UnitService) { }
+  constructor(private unitService: UnitService, private selectionService: SelectionService) { }
 
   ngOnInit(): void {
-    this.selectedElementsSubscription = this.unitService.selectedElements.subscribe(
-      (selectedElements: UnitUIElement[]) => {
-        this.selectedElements = selectedElements;
-        this.createCombinedProperties();
-      }
-    );
+    this.unitService.elementPropertyUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        () => {
+          this.createCombinedProperties();
+        }
+      );
+    this.selectionService.elementSelected
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (selectedElements: UnitUIElement[]) => {
+          this.selectedElements = selectedElements;
+          this.createCombinedProperties();
+        }
+      );
   }
 
   createCombinedProperties(): void {
@@ -50,14 +61,10 @@ export class PropertiesComponent {
     }
   }
 
-  // event as optional parameter in case the input is invalid and the old value needs
-  // to be restored. This is for now only relevant for IDs. Might need rework for other properties.
-  updateModel(property: string, value: string | number | boolean | undefined, event?: any): void {
-    if (!this.unitService.updateSelectedElementProperty(property, value)) {
-      if (event) {
-        (event.target as HTMLInputElement).value = <string> this.combinedProperties[property];
-      }
-    }
+  updateModel(property: string, value: string | number | boolean | undefined): void {
+    this.selectedElements.forEach((element: UnitUIElement) => {
+      this.unitService.updateElementProperty(element, property, value);
+    });
   }
 
   /* button group always handles values as string and since we also want to handle undefined
@@ -79,14 +86,19 @@ export class PropertiesComponent {
   }
 
   deleteElement(): void {
-    this.unitService.deleteSelectedElements();
+    this.selectedElements.forEach((element: UnitUIElement) => {
+      this.unitService.deleteElement(element);
+    });
   }
 
   duplicateElement(): void {
-    this.unitService.duplicateSelectedElements();
+    this.selectedElements.forEach((element: UnitUIElement) => {
+      this.unitService.duplicateElement(element);
+    });
   }
 
   ngOnDestroy(): void {
-    this.selectedElementsSubscription.unsubscribe();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

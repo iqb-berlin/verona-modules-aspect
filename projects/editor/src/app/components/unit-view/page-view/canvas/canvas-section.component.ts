@@ -1,64 +1,21 @@
 import {
-  Component, OnInit,
-  EventEmitter, Input, Output,
-  ComponentFactoryResolver,
-  ViewChild, ViewContainerRef
+  Component, Input
 } from '@angular/core';
-import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
-import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
+import { UnitPageSection } from '../../../../../../../common/unit';
+import { SelectionService } from './selection.service';
 
 @Component({
   selector: '[app-canvas-section]',
   template: `
-    <ng-template #elementContainer></ng-template>
-    `
+    <app-canvas-drag-overlay
+      *ngFor="let element of section.elements"
+      [element]="element"
+      (elementSelected)="canvasService.selectElement($event)">
+    </app-canvas-drag-overlay>
+  `
 })
-export class CanvasSectionComponent implements OnInit {
+export class CanvasSectionComponent {
   @Input() section!: UnitPageSection;
-  @Output() elementSelected = new EventEmitter<{ componentElement: CanvasDragOverlayComponent, multiSelect: boolean }>();
-  @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
-  private canvasComponents: CanvasDragOverlayComponent[] = [];
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
-
-  ngOnInit(): void {
-    this.renderSection();
-  }
-
-  renderSection(): void {
-    this.canvasComponents = [];
-    this.elementContainer.clear();
-    this.section.elements.forEach((element: UnitUIElement) => {
-      this.createCanvasElement(element);
-    });
-  }
-
-  updateSelection(selectedElements: UnitUIElement[]): void {
-    this.canvasComponents.forEach((component: CanvasDragOverlayComponent) => {
-      selectedElements.forEach((selectedElement: UnitUIElement) => {
-        if (component.element === selectedElement) {
-          component.setSelected(true);
-        }
-      });
-    });
-  }
-
-  clearSelection(): void {
-    this.canvasComponents.forEach((canvasComponent: CanvasDragOverlayComponent) => {
-      canvasComponent.setSelected(false);
-    });
-  }
-
-  private createCanvasElement(element: UnitUIElement): void {
-    const overlayFactory = this.componentFactoryResolver.resolveComponentFactory(CanvasDragOverlayComponent);
-    const overlayRef = this.elementContainer.createComponent(overlayFactory);
-    overlayRef.instance.element = element;
-
-    overlayRef.instance.elementSelected.subscribe(
-      (event: { componentElement: CanvasDragOverlayComponent, multiSelect: boolean }) => {
-        this.elementSelected.emit(event);
-      }
-    );
-    this.canvasComponents.push(overlayRef.instance);
-  }
+  constructor(public canvasService: SelectionService) { }
 }

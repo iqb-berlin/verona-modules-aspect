@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject, Observable
-} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   Unit, UnitPage, UnitPageSection, UnitUIElement
 } from '../../../common/unit';
@@ -21,7 +19,7 @@ export class UnitService {
 
   private _selectedPageSectionIndex: BehaviorSubject<number>;
 
-  private _selectedElements: BehaviorSubject<UnitUIElement[]>;
+  elementPropertyUpdated: Subject<void> = new Subject<void>();
 
   constructor(private messageService: MessageService,
               private idService: IdService,
@@ -37,7 +35,6 @@ export class UnitService {
     this._selectedPageIndex = new BehaviorSubject(0);
 
     this._selectedPageSectionIndex = new BehaviorSubject<number>(0);
-    this._selectedElements = new BehaviorSubject<UnitUIElement[]>([]);
   }
 
   get unit(): Observable<Unit> {
@@ -58,14 +55,6 @@ export class UnitService {
 
   getPageObservable(index: number): Observable<UnitPage> {
     return this._pages[index].asObservable();
-  }
-
-  get selectedElements(): Observable<UnitUIElement[]> {
-    return this._selectedElements.asObservable();
-  }
-
-  getSelectedElements(): UnitUIElement[] {
-    return this._selectedElements.value;
   }
 
   addPage(): void {
@@ -170,26 +159,24 @@ export class UnitService {
     this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
   }
 
-  deleteSelectedElements(): void {
+  deleteElement(elementToDelete: UnitUIElement): void {
     const oldElements = this._unit.value.pages[this._selectedPageIndex.value]
       .sections[this._selectedPageSectionIndex.value].elements;
     this._unit.value.pages[this._selectedPageIndex.value]
       .sections[this._selectedPageSectionIndex.value].elements =
-      oldElements.filter(element => !this._selectedElements.value.includes(element));
+      oldElements.filter(element => element !== elementToDelete);
     this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
   }
 
-  duplicateSelectedElements(): void {
-    this._selectedElements.value.forEach((element: UnitUIElement) => {
-      const newElement: UnitUIElement = { ...element };
-      newElement.id = this.idService.getNewID(newElement.type);
-      newElement.xPosition += 10;
-      newElement.yPosition += 10;
+  duplicateElement(elementToDuplicate: UnitUIElement): void {
+    const newElement: UnitUIElement = { ...elementToDuplicate };
+    newElement.id = this.idService.getNewID(newElement.type);
+    newElement.xPosition += 10;
+    newElement.yPosition += 10;
 
-      this._unit.value.pages[this._selectedPageIndex.value]
-        .sections[this._selectedPageSectionIndex.value].elements.push(newElement);
-      this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
-    });
+    this._unit.value.pages[this._selectedPageIndex.value]
+      .sections[this._selectedPageSectionIndex.value].elements.push(newElement);
+    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
   }
 
   updatePageSelection(newIndex: number): void {
@@ -200,35 +187,58 @@ export class UnitService {
     this._selectedPageSectionIndex.next(newIndex);
   }
 
-  updateSelectedElementProperty(property: string, value: string | number | boolean | undefined): boolean {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const element of this._selectedElements.value) {
-      if (['string', 'number', 'boolean', 'undefined'].indexOf(typeof element[property]) > -1) {
-        if (property === 'id') {
-          if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
-            this.messageService.showError('ID ist bereits vergeben');
-            return false;
-          }
-          this.idService.removeId(element[property]);
-          this.idService.addId(<string>value);
+  updateElementProperty(
+    element: UnitUIElement, property: string, value: string | number | boolean | undefined
+  ): boolean {
+    if (['string', 'number', 'boolean', 'undefined'].indexOf(typeof element[property]) > -1) {
+      if (property === 'id') {
+        if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
+          this.messageService.showError('ID ist bereits vergeben');
+          return false;
         }
-        element[property] = value;
-      } else if (Array.isArray(element[property])) {
-        (element[property] as string[]).push(value as string);
-      } else {
-        console.error('ElementProperty not found!', element[property]);
+        this.idService.removeId(element[property]);
+        this.idService.addId(<string>value);
       }
+      element[property] = value;
+    } else if (Array.isArray(element[property])) {
+      (element[property] as string[]).push(value as string);
+    } else {
+      console.error('ElementProperty not found!', element[property]);
     }
-    this._selectedElements.next(this._selectedElements.value); // hack to notify properties panel about change
+    this.elementPropertyUpdated.next(); // notify properties panel/element about change
     return true;
   }
 
-  addElementSelection(elementModel: UnitUIElement): void {
-    this._selectedElements.next([...this._selectedElements.getValue(), elementModel]);
-  }
-
-  clearElementSelection(): void {
-    this._selectedElements.next([]);
+  alignElements(elements: UnitUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
+    let newValue: number;
+    switch (alignmentDirection) {
+      case 'left':
+        newValue = Math.min(...elements.map(element => element.xPosition));
+        elements.forEach((element: UnitUIElement) => {
+          element.xPosition = newValue;
+        });
+        break;
+      case 'right':
+        newValue = Math.max(...elements.map(element => element.xPosition + element.width));
+        elements.forEach((element: UnitUIElement) => {
+          element.xPosition = newValue - element.width;
+        });
+        break;
+      case 'top':
+        newValue = Math.min(...elements.map(element => element.yPosition));
+        elements.forEach((element: UnitUIElement) => {
+          element.yPosition = newValue;
+        });
+        break;
+      case 'bottom':
+        newValue = Math.max(...elements.map(element => element.yPosition + element.height));
+        elements.forEach((element: UnitUIElement) => {
+          element.yPosition = newValue - element.height;
+        });
+        break;
+      // no default
+    }
+    this.elementPropertyUpdated.next();
   }
 
   saveUnit(): void {
@@ -256,28 +266,28 @@ export class UnitService {
       case 'radio':
         this.dialogService.showTextEditDialog((element as any).label, false).subscribe((result: string) => {
           if (result) {
-            this.updateSelectedElementProperty('label', result);
+            this.updateElementProperty(element, 'label', result);
           }
         });
         break;
       case 'text':
         this.dialogService.showTextEditDialog((element as any).text, true).subscribe((result: string) => {
           if (result) {
-            this.updateSelectedElementProperty('text', result);
+            this.updateElementProperty(element, 'text', result);
           }
         });
         break;
       case 'text-field':
         this.dialogService.showTextEditDialog((element as any).value).subscribe((result: string) => {
           if (result) {
-            this.updateSelectedElementProperty('value', result);
+            this.updateElementProperty(element, 'value', result);
           }
         });
         break;
       case 'text-area':
         this.dialogService.showTextEditDialog((element as any).value, true).subscribe((result: string) => {
           if (result) {
-            this.updateSelectedElementProperty('value', result);
+            this.updateElementProperty(element, 'value', result);
           }
         });
       // no default

@@ -1,20 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { SelectionService } from './selection.service';
+import { UnitService } from '../../../../unit.service';
 
 @Component({
   selector: 'app-canvas-toolbar',
   template: `
     <div class="canvas-toolbar">
       Ausrichtung
-      <button [disabled]="disabled" (click)="align('left')">
+      <button (click)="align('left')">
         <mat-icon>align_horizontal_left</mat-icon>
       </button>
-      <button [disabled]="disabled" (click)="align('right')">
+      <button (click)="align('right')">
         <mat-icon>align_horizontal_right</mat-icon>
       </button>
-      <button [disabled]="disabled" (click)="align('top')">
+      <button (click)="align('top')">
         <mat-icon>align_vertical_top</mat-icon>
       </button>
-      <button [disabled]="disabled" (click)="align('bottom')">
+      <button (click)="align('bottom')">
         <mat-icon>align_vertical_bottom</mat-icon>
       </button>
     </div>
@@ -26,10 +28,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   ]
 })
 export class CanvasToolbarComponent {
-  @Input() disabled: boolean = false;
   @Output() alignElements = new EventEmitter<'left' | 'right' | 'top' | 'bottom'>();
 
+  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
+
   align(direction: 'left' | 'right' | 'top' | 'bottom'): void {
-    this.alignElements.emit(direction);
+    this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);
   }
 }

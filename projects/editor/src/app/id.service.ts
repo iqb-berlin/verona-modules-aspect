@@ -12,6 +12,7 @@ export class IdService {
     text: 0,
     button: 0,
     'text-field': 0,
+    'number-field': 0,
     'text-area': 0,
     checkbox: 0,
     dropdown: 0,

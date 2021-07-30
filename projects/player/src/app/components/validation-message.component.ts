@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormControl, FormGroup, ValidatorFn, Validators
 } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import {
   InputUIElement, NumberFieldElement, TextFieldElement, UnitUIElement
 } from '../../../../common/unit';
@@ -12,22 +13,22 @@ import { FormService } from '../../../../common/form.service';
   template: `
       <ng-container *ngIf="formElementControl && formElementControl.touched">
           <mat-error *ngIf="formElementControl.errors?.required">
-              {{requiredMessage | translate}}
+              {{requiredMessage}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.requiredTrue">
-              {{requiredMessage | translate}}
+              {{requiredMessage}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.minlength">
-              {{minLengthMessage | translate}}
+              {{minLengthMessage}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.maxlength">
-              {{maxLengthMessage | translate}}
+              {{maxLengthMessage}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.min">
-              {{minMessage | translate}}
+              {{minMessage}}
           </mat-error>
           <mat-error *ngIf="formElementControl.errors?.max">
-              {{maxMessage | translate}}
+              {{maxMessage}}
           </mat-error>
       </ng-container>
   `
@@ -38,7 +39,7 @@ export class ValidationMessageComponent implements OnInit {
   parentForm!: FormGroup;
   formElementControl!: FormControl;
 
-  constructor(private formService: FormService) {}
+  constructor(private formService: FormService, private translateService: TranslateService) {}
 
   ngOnInit(): void {
     this.formElementControl = this.parentForm.controls[this.elementModel.id] as FormControl;
@@ -76,22 +77,27 @@ export class ValidationMessageComponent implements OnInit {
   }
 
   get requiredMessage(): string {
-    return (this.elementModel as InputUIElement).requiredWarnMessage || 'validators.inputRequired';
+    return (this.elementModel as InputUIElement).requiredWarnMessage ||
+      this.translateService.instant('validators.inputRequired');
   }
 
   get minLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).minWarnMessage || 'validators.inputTooShort';
+    return (this.elementModel as TextFieldElement).minWarnMessage ||
+      this.translateService.instant('validators.inputTooShort');
   }
 
   get maxLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).maxWarnMessage || 'validators.inputTooLong';
+    return (this.elementModel as TextFieldElement).maxWarnMessage ||
+      this.translateService.instant('validators.inputTooLong');
   }
 
   get minMessage(): string {
-    return (this.elementModel as NumberFieldElement).minWarnMessage || 'validators.valueTooSmall';
+    return (this.elementModel as NumberFieldElement).minWarnMessage ||
+      this.translateService.instant('validators.valueTooSmall');
   }
 
   get maxMessage(): string {
-    return (this.elementModel as NumberFieldElement).maxWarnMessage || 'validators.valueTooBig';
+    return (this.elementModel as NumberFieldElement).maxWarnMessage ||
+      this.translateService.instant('validators.valueTooBig');
   }
 }

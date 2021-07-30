@@ -21,7 +21,7 @@ export class AppComponent {
   pages!: UnitPage[];
   playerConfig!: PlayerConfig;
 
-  constructor(public translateService: TranslateService,
+  constructor(private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private nativeEventService: NativeEventService) {

@@ -12,7 +12,7 @@ import { ElementOverlayComponent } from './components/element-overlay.component'
 import { ValidationMessageComponent } from './components/validation-message.component';
 import { FormComponent } from './components/form.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
-import { WebpackTranslateLoader } from '../../../common/webpack-translate-loader';
+import { PlayerTranslateLoader } from './classes/player-translate-loader';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { WebpackTranslateLoader } from '../../../common/webpack-translate-loader
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useClass: WebpackTranslateLoader
+        useClass: PlayerTranslateLoader
       }
     })
   ],

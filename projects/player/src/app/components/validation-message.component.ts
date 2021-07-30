@@ -76,22 +76,22 @@ export class ValidationMessageComponent implements OnInit {
   }
 
   get requiredMessage(): string {
-    return (this.elementModel as InputUIElement).requiredWarnMessage || 'inputRequired';
+    return (this.elementModel as InputUIElement).requiredWarnMessage || 'validators.inputRequired';
   }
 
   get minLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).minWarnMessage || 'inputTooShort';
+    return (this.elementModel as TextFieldElement).minWarnMessage || 'validators.inputTooShort';
   }
 
   get maxLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).maxWarnMessage || 'inputTooLong';
+    return (this.elementModel as TextFieldElement).maxWarnMessage || 'validators.inputTooLong';
   }
 
   get minMessage(): string {
-    return (this.elementModel as NumberFieldElement).minWarnMessage || 'valueTooSmall';
+    return (this.elementModel as NumberFieldElement).minWarnMessage || 'validators.valueTooSmall';
   }
 
   get maxMessage(): string {
-    return (this.elementModel as NumberFieldElement).maxWarnMessage || 'valueTooBig';
+    return (this.elementModel as NumberFieldElement).maxWarnMessage || 'validators.valueTooBig';
   }
 }

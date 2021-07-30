@@ -40,7 +40,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
 
   get validPages():Record<string, string>[] {
     return this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
-      { [page.id]: `${this.translateService.instant('page')} ${index}` }));
+      { [page.id]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` }));
   }
 
   get alwaysVisiblePage(): UnitPage | undefined {

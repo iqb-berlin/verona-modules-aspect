@@ -84,7 +84,7 @@ export class FormComponent implements OnDestroy {
 
   private addGroup = (group: ChildFormGroup): void => {
     const formArray: FormArray = group.parentForm.get(group.parentArray) as FormArray;
-    formArray.push(new FormGroup({ [group.id]: group.formGroup }));
+    formArray.push(group.formGroup);
   };
 
   private onElementValueChanges = (value: ValueChangeElement): void => {
@@ -96,11 +96,9 @@ export class FormComponent implements OnDestroy {
     // eslint-disable-next-line no-console
     console.log('player: onFormChanges', formValues);
     const unitState: UnitState = {
-      dataParts: formValues.pages
-        .reduce((obj, page): Record<string, string> => {
-          obj[Object.keys(page)[0]] = JSON.stringify(page[Object.keys(page)[0]]);
-          return obj;
-        }, {})
+      dataParts: {
+        pages: JSON.stringify(formValues.pages)
+      }
     };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }

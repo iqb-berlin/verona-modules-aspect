@@ -8,8 +8,7 @@ import { FormService } from '../../../../common/form.service';
 @Component({
   selector: 'app-page',
   template: `
-      <app-section *ngFor="let section of page.sections; let i = index"
-                   [id]="'section'+i"
+      <app-section *ngFor="let section of page.sections"
                    [parentForm]="pageForm"
                    [section]="section"
                    [ngStyle]="{
@@ -32,10 +31,10 @@ export class PageComponent implements OnInit {
 
   ngOnInit(): void {
     this.pageForm = this.formBuilder.group({
+      id: this.page.id,
       sections: this.formBuilder.array([])
     });
     this.formService.registerFormGroup({
-      id: this.page.id,
       formGroup: this.pageForm,
       parentForm: this.parentForm,
       parentArray: 'pages'

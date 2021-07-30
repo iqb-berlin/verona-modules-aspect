@@ -1,7 +1,7 @@
 import {
   Component, Input, OnInit
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { UnitPageSection } from '../../../../common/unit';
 import { FormService } from '../../../../common/form.service';
 
@@ -17,16 +17,16 @@ import { FormService } from '../../../../common/form.service';
 })
 export class SectionComponent implements OnInit {
   @Input() parentForm!: FormGroup;
-  @Input() id!: string;
   @Input() section!: UnitPageSection;
   @Input() sectionForm!: FormGroup;
 
-  constructor(private formService: FormService) {}
+  constructor(private formService: FormService, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.sectionForm = new FormGroup({});
+    this.sectionForm = new FormGroup({
+      elements: this.formBuilder.array([])
+    });
     this.formService.registerFormGroup({
-      id: this.id,
       formGroup: this.sectionForm,
       parentForm: this.parentForm,
       parentArray: 'sections'

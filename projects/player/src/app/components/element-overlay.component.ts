@@ -3,7 +3,7 @@ import {
   ComponentFactory, ComponentFactoryResolver, ComponentRef,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitUIElement } from '../../../../common/unit';
@@ -27,6 +27,7 @@ import { FormService } from '../../../../common/form.service';
 export class ElementOverlayComponent implements OnInit, OnDestroy {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
+  private elementForm!: FormGroup;
 
   @ViewChild('elementComponentContainer',
     { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
@@ -37,6 +38,7 @@ export class ElementOverlayComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private formService: FormService,
+              private formBuilder: FormBuilder,
               private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
@@ -46,7 +48,9 @@ export class ElementOverlayComponent implements OnInit, OnDestroy {
     elementComponent.elementModel = this.elementModel;
 
     if (elementComponent instanceof FormElementComponent) {
-      elementComponent.parentForm = this.parentForm;
+      this.registerFormGroup();
+
+      elementComponent.parentForm = this.elementForm;
       elementComponent.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((changeElement: ValueChangeElement) => {
@@ -58,9 +62,18 @@ export class ElementOverlayComponent implements OnInit, OnDestroy {
       const validationMessageComponentRef: ComponentRef<ValidationMessageComponent> =
         this.validationMessageComponentContainer.createComponent(validationMessageComponentFactory);
 
-      validationMessageComponentRef.instance.parentForm = this.parentForm;
+      validationMessageComponentRef.instance.parentForm = this.elementForm;
       validationMessageComponentRef.instance.elementModel = this.elementModel;
     }
+  }
+
+  private registerFormGroup() {
+    this.elementForm = this.formBuilder.group({});
+    this.formService.registerFormGroup({
+      formGroup: this.elementForm,
+      parentForm: this.parentForm,
+      parentArray: 'elements'
+    });
   }
 
   ngOnDestroy(): void {

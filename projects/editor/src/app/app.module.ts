@@ -7,6 +7,7 @@ import { createCustomElement } from '@angular/elements';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from './components/unit-view/page-view/ui-element-toolbox/ui-element-toolbox.component';
@@ -20,6 +21,7 @@ import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/
 import { CanvasDragOverlayComponent } from './components/unit-view/page-view/canvas/canvas-drag-overlay.component';
 import { SharedModule } from '../../../common/app.module';
 import { ConfirmationDialog, MultilineTextEditDialog, TextEditDialog } from './dialog.service';
+import { EditorTranslateLoader } from './editor-translate-loader';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,13 @@ import { ConfirmationDialog, MultilineTextEditDialog, TextEditDialog } from './d
     CommonModule,
     SharedModule,
     MatDialogModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useClass: EditorTranslateLoader
+      }
+    })
   ],
   providers: []
 })

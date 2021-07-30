@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'editor-aspect',
@@ -14,4 +15,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'verona-editor-aspect';
+  constructor(private translateService: TranslateService) {
+    translateService.addLangs(['de']);
+    translateService.setDefaultLang('de');
+  }
 }

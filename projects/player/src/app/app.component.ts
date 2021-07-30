@@ -49,9 +49,8 @@ export class AppComponent {
     this.veronaPostService.sessionId = message.sessionId;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onScrollY = (y: number): void => {
-    // eslint-disable-next-line no-console
-    console.log('player: onScrollY', y);
   };
 
   private onFocus(focused: boolean): void {

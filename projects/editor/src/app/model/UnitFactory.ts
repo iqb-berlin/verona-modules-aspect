@@ -1,9 +1,9 @@
 import {
   AudioElement, ButtonElement,
   CheckboxElement, CompoundElementCorrection, DropdownElement,
-  ImageElement, TextElement, RadioButtonGroupElement, SurfaceUIElement,
-  TextFieldElement, TextUIElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
-  VideoElement, InputUIElement, TextAreaElement, NumberFieldElement
+  ImageElement, TextElement, RadioButtonGroupElement,
+  TextFieldElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
+  VideoElement, TextAreaElement, NumberFieldElement
 } from '../../../../common/unit';
 
 export function createUnit(): Unit {
@@ -15,7 +15,6 @@ export function createUnit(): Unit {
 export function createUnitPage(pageIndex: number): UnitPage {
   return {
     id: `page${pageIndex}`,
-    label: `Seite ${pageIndex + 1}`,
     sections: [],
     width: 1100,
     margin: 15,

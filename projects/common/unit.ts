@@ -4,7 +4,6 @@ export interface Unit {
 
 export interface UnitPage {
   id: string;
-  label: string;
   sections: UnitPageSection[];
   width: number;
   margin: number;

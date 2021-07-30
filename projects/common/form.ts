@@ -17,7 +17,9 @@ export interface FormControlValidators {
   formGroup: FormGroup;
 }
 
-export interface FormGroupPage {
+export interface ChildFormGroup {
   id: string;
   formGroup: FormGroup;
+  parentForm: FormGroup;
+  parentArray: 'pages' | 'sections'
 }

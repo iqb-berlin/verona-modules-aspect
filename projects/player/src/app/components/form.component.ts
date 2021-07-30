@@ -7,7 +7,7 @@ import { FormService } from '../../../../common/form.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { VeronaPostService } from '../services/verona-post.service';
 import {
-  FormControlElement, FormControlValidators, FormGroupPage, ValueChangeElement
+  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement
 } from '../../../../common/form';
 import {
   PlayerConfig, UnitState, VopNavigationDeniedNotification
@@ -50,7 +50,7 @@ export class FormComponent implements OnDestroy {
       .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
     this.formService.groupAdded
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((group: FormGroupPage): void => this.addGroup(group));
+      .subscribe((group: ChildFormGroup): void => this.addGroup(group));
     this.formService.controlAdded.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe((control: FormControlElement): void => this.addControl(control));
@@ -82,10 +82,10 @@ export class FormComponent implements OnDestroy {
     this.form.markAllAsTouched();
   }
 
-  private addGroup(group: FormGroupPage): void {
-    const pages: FormArray = this.form.get('pages') as FormArray;
-    pages.push(new FormGroup({ [group.id]: group.formGroup }));
-  }
+  private addGroup = (group: ChildFormGroup): void => {
+    const formArray: FormArray = group.parentForm.get(group.parentArray) as FormArray;
+    formArray.push(new FormGroup({ [group.id]: group.formGroup }));
+  };
 
   private onElementValueChanges = (value: ValueChangeElement): void => {
     // eslint-disable-next-line no-console

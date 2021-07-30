@@ -26,13 +26,14 @@ import { FormService } from '../../../../common/form.service';
 })
 export class ElementOverlayComponent implements OnInit, OnDestroy {
   @Input() elementModel!: UnitUIElement;
+  @Input() parentForm!: FormGroup;
+
   @ViewChild('elementComponentContainer',
     { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
 
   @ViewChild('validationMessageComponentContainer',
     { read: ViewContainerRef, static: true }) private validationMessageComponentContainer!: ViewContainerRef;
 
-  parentForm!: FormGroup;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private formService: FormService,

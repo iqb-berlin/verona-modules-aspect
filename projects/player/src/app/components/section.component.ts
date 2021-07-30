@@ -1,39 +1,35 @@
 import {
-  Component, ComponentFactory, ComponentFactoryResolver, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef
+  Component, Input, OnInit
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { UnitPageSection, UnitUIElement } from '../../../../common/unit';
-import { ElementOverlayComponent } from './element-overlay.component';
+import { UnitPageSection } from '../../../../common/unit';
+import { FormService } from '../../../../common/form.service';
 
 @Component({
   selector: 'app-section',
   template: `
-    <ng-template #elementContainer></ng-template>
+    <app-element-overlay
+        *ngFor="let element of section.elements"
+        [elementModel]="element"
+        [parentForm]="sectionForm">
+    </app-element-overlay>
   `
 })
 export class SectionComponent implements OnInit {
   @Input() parentForm!: FormGroup;
+  @Input() id!: string;
   @Input() section!: UnitPageSection;
-  @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
+  @Input() sectionForm!: FormGroup;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private formService: FormService) {}
 
   ngOnInit(): void {
-    this.renderSection();
-  }
-
-  private renderSection() {
-    this.section.elements.forEach((element: UnitUIElement) => {
-      this.createSectionElement(element);
+    this.sectionForm = new FormGroup({});
+    this.formService.registerFormGroup({
+      id: this.id,
+      formGroup: this.sectionForm,
+      parentForm: this.parentForm,
+      parentArray: 'sections'
     });
-  }
-
-  private createSectionElement(element: UnitUIElement): void {
-    const overlayFactory: ComponentFactory<ElementOverlayComponent> =
-      this.componentFactoryResolver.resolveComponentFactory(ElementOverlayComponent);
-    const overlayRef: ComponentRef<ElementOverlayComponent> =
-      this.elementContainer.createComponent(overlayFactory);
-    overlayRef.instance.elementModel = element;
-    overlayRef.instance.parentForm = this.parentForm;
   }
 }

@@ -38,11 +38,17 @@ export class ValidationMessageComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
   formElementControl!: FormControl;
+  requiredMessage!: string;
+  minLengthMessage!: string;
+  maxLengthMessage!: string;
+  minMessage!: string;
+  maxMessage!: string;
 
   constructor(private formService: FormService, private translateService: TranslateService) {}
 
   ngOnInit(): void {
     this.formElementControl = this.parentForm.controls[this.elementModel.id] as FormControl;
+    this.setErrorMessages();
     this.formService.setValidators({
       id: this.elementModel.id,
       validators: this.validators,
@@ -76,28 +82,20 @@ export class ValidationMessageComponent implements OnInit {
     return validators;
   }
 
-  get requiredMessage(): string {
-    return (this.elementModel as InputUIElement).requiredWarnMessage ||
+  private setErrorMessages() {
+    this.requiredMessage = (this.elementModel as InputUIElement).requiredWarnMessage ||
       this.translateService.instant('validators.inputRequired');
-  }
 
-  get minLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).minWarnMessage ||
+    this.minLengthMessage = (this.elementModel as TextFieldElement).minWarnMessage ||
       this.translateService.instant('validators.inputTooShort');
-  }
 
-  get maxLengthMessage(): string {
-    return (this.elementModel as TextFieldElement).maxWarnMessage ||
+    this.maxLengthMessage = (this.elementModel as TextFieldElement).maxWarnMessage ||
       this.translateService.instant('validators.inputTooLong');
-  }
 
-  get minMessage(): string {
-    return (this.elementModel as NumberFieldElement).minWarnMessage ||
+    this.minMessage = (this.elementModel as NumberFieldElement).minWarnMessage ||
       this.translateService.instant('validators.valueTooSmall');
-  }
 
-  get maxMessage(): string {
-    return (this.elementModel as NumberFieldElement).maxWarnMessage ||
+    this.maxMessage = (this.elementModel as NumberFieldElement).maxWarnMessage ||
       this.translateService.instant('validators.valueTooBig');
   }
 }

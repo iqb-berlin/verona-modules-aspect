@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormControl, FormGroup, ValidatorFn, Validators
 } from '@angular/forms';
@@ -35,8 +35,8 @@ import { FormService } from '../../../../common/form.service';
 })
 
 export class ValidationMessageComponent implements OnInit {
-  elementModel!: UnitUIElement;
-  parentForm!: FormGroup;
+  @Input() elementModel!: UnitUIElement;
+  @Input() parentForm!: FormGroup;
   formElementControl!: FormControl;
 
   constructor(private formService: FormService, private translateService: TranslateService) {}

@@ -11,7 +11,8 @@ import { FormService } from '../../../../common/form.service';
     <app-element-overlay
         *ngFor="let element of section.elements"
         [elementModel]="element"
-        [parentForm]="sectionForm">
+        [parentForm]="sectionForm"
+        [parentArrayIndex]="parentArrayIndex">
     </app-element-overlay>
   `
 })
@@ -19,8 +20,10 @@ export class SectionComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() section!: UnitPageSection;
   @Input() sectionForm!: FormGroup;
+  @Input() parentArrayIndex!: number;
 
-  constructor(private formService: FormService, private formBuilder: FormBuilder) {}
+  constructor(private formService: FormService, private formBuilder: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.sectionForm = new FormGroup({
@@ -29,7 +32,8 @@ export class SectionComponent implements OnInit {
     this.formService.registerFormGroup({
       formGroup: this.sectionForm,
       parentForm: this.parentForm,
-      parentArray: 'sections'
+      parentArray: 'sections',
+      parentArrayIndex: this.parentArrayIndex
     });
   }
 }

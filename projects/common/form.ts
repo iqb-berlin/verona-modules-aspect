@@ -21,4 +21,5 @@ export interface ChildFormGroup {
   formGroup: FormGroup;
   parentForm: FormGroup;
   parentArray: 'pages' | 'sections' | 'elements'
+  parentArrayIndex: number;
 }

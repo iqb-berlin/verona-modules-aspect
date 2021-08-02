@@ -21,8 +21,17 @@ import { VeronaPostService } from '../../services/verona-post.service';
 export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() parenForm!: FormGroup;
   @Input() pages!: UnitPage[];
+
   currentIndex: number = 0;
+  pageIndices!: number[];
+  scrollPages!: UnitPage[];
+  hasScrollPages!: boolean;
+  pageWidth!: number;
+  validPages!: Record<string, string> [];
+  alwaysVisiblePage!: UnitPage | undefined;
+  alwaysVisiblePageIndex!: number;
   running: boolean = true;
+
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private veronaSubscriptionService: VeronaSubscriptionService,
@@ -30,29 +39,9 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
               private translateService: TranslateService) {
   }
 
-  private get state(): RunningState {
-    return this.running ? 'running' : 'stopped';
-  }
-
-  get pageWidth(): number {
-    return this.alwaysVisiblePage ? 50 : 100;
-  }
-
-  get validPages():Record<string, string>[] {
-    return this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
-      { [page.id]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` }));
-  }
-
-  get alwaysVisiblePage(): UnitPage | undefined {
-    return this.pages.find((page: UnitPage): boolean => page.alwaysVisible);
-  }
-
-  get scrollPages(): UnitPage[] {
-    return this.pages.filter((page: UnitPage): boolean => !page.alwaysVisible);
-  }
-
   ngOnInit(): void {
     this.initSubscriptions();
+    this.initPageState();
     this.sendVopStateChangedNotification();
   }
 
@@ -69,6 +58,28 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     this.veronaSubscriptionService.vopGetStateRequest
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopGetStateRequest): void => this.onGetStateRequest(message));
+  }
+
+  private initPageState() {
+    this.alwaysVisiblePageIndex = this.pages.findIndex((page: UnitPage): boolean => page.alwaysVisible);
+    this.alwaysVisiblePage = this.pages[this.alwaysVisiblePageIndex];
+    this.scrollPages = this.pages.filter((page: UnitPage): boolean => !page.alwaysVisible);
+    this.hasScrollPages = this.scrollPages && this.scrollPages.length > 0;
+    this.pageWidth = !this.alwaysVisiblePage || !this.hasScrollPages ? 100 : 50;
+    this.validPages = this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
+      { [page.id]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` }));
+    this.pageIndices = this.pages.map(
+      (page: UnitPage, index: number): number => {
+        if (index === this.alwaysVisiblePageIndex) {
+          return this.pages.length - 1;
+        }
+        return (this.alwaysVisiblePageIndex < 0 || index < this.alwaysVisiblePageIndex) ? index : index - 1;
+      }
+    );
+  }
+
+  private get state(): RunningState {
+    return this.running ? 'running' : 'stopped';
   }
 
   onSelectedIndexChange(): void {

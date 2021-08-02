@@ -1,14 +1,16 @@
 <div *ngIf="!running" class='stopped-overlay'></div>
 <div fxLayout="row">
-  <mat-tab-group [fxFlex]="pageWidth" [(selectedIndex)]="currentIndex"
+  <mat-tab-group *ngIf="hasScrollPages" [fxFlex]="pageWidth" [(selectedIndex)]="currentIndex"
                  (selectedIndexChange)="onSelectedIndexChange()"
                  mat-align-tabs="start">
-    <mat-tab *ngFor="let page of scrollPages; let i = index" label="{{'pageIndication' | translate: {index: i + 1} }}">
-      <app-page class="page" [parentForm]="parenForm" [page]="page"></app-page>
-    </mat-tab>
+    <ng-container *ngFor="let page of pages; let i = index">
+      <mat-tab *ngIf="!page.alwaysVisible" label="{{'pageIndication' | translate: {index: pageIndices[i] + 1} }}">
+        <app-page class="page" [parentArrayIndex]="i" [parentForm]="parenForm" [page]="page"></app-page>
+      </mat-tab>
+    </ng-container>
   </mat-tab-group>
-  <div *ngIf="alwaysVisiblePage" fxFlex="50">
+  <div *ngIf="alwaysVisiblePage" [fxFlex]="pageWidth">
     <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
-    <app-page class="page" [parentForm]="parenForm" [page]="alwaysVisiblePage"></app-page>
+    <app-page class="page" [parentArrayIndex]="alwaysVisiblePageIndex" [parentForm]="parenForm" [page]="alwaysVisiblePage"></app-page>
   </div>
 </div>

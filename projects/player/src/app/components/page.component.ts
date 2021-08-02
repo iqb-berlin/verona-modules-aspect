@@ -10,6 +10,7 @@ import { FormService } from '../../../../common/form.service';
   template: `
       <app-section *ngFor="let section of page.sections"
                    [parentForm]="pageForm"
+                   [parentArrayIndex]="parentArrayIndex"
                    [section]="section"
                    [ngStyle]="{
                 position: 'relative',
@@ -25,6 +26,7 @@ import { FormService } from '../../../../common/form.service';
 export class PageComponent implements OnInit {
   @Input() page!: UnitPage;
   @Input() parentForm!: FormGroup;
+  @Input() parentArrayIndex!: number;
   pageForm!: FormGroup;
 
   constructor(private formService: FormService, private formBuilder: FormBuilder) {}
@@ -37,7 +39,8 @@ export class PageComponent implements OnInit {
     this.formService.registerFormGroup({
       formGroup: this.pageForm,
       parentForm: this.parentForm,
-      parentArray: 'pages'
+      parentArray: 'pages',
+      parentArrayIndex: this.parentArrayIndex
     });
   }
 }

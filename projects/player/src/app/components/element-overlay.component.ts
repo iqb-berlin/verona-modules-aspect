@@ -27,6 +27,7 @@ import { FormService } from '../../../../common/form.service';
 export class ElementOverlayComponent implements OnInit, OnDestroy {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
+  @Input() parentArrayIndex!: number;
   private elementForm!: FormGroup;
 
   @ViewChild('elementComponentContainer',
@@ -72,7 +73,8 @@ export class ElementOverlayComponent implements OnInit, OnDestroy {
     this.formService.registerFormGroup({
       formGroup: this.elementForm,
       parentForm: this.parentForm,
-      parentArray: 'elements'
+      parentArray: 'elements',
+      parentArrayIndex: this.parentArrayIndex
     });
   }
 

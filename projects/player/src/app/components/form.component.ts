@@ -84,7 +84,11 @@ export class FormComponent implements OnDestroy {
 
   private addGroup = (group: ChildFormGroup): void => {
     const formArray: FormArray = group.parentForm.get(group.parentArray) as FormArray;
-    formArray.push(group.formGroup);
+    if (group.parentArrayIndex < formArray.length) {
+      formArray.insert(group.parentArrayIndex, group.formGroup);
+    } else {
+      formArray.push(group.formGroup);
+    }
   };
 
   private onElementValueChanges = (value: ValueChangeElement): void => {

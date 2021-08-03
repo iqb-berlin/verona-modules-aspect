@@ -153,6 +153,8 @@ export class UnitService {
         throw new Error(`ElementType ${elementType} not found!`);
     }
     newElement.id = this.idService.getNewID(elementType);
+    newElement.dynamicPositioning = this._unit.value.pages[this._selectedPageIndex.value]
+      .sections[this._selectedPageSectionIndex.value].dynamicPositioning;
     this._unit.value.pages[this._selectedPageIndex.value]
       .sections[this._selectedPageSectionIndex.value].elements.push(newElement!);
 
@@ -238,6 +240,14 @@ export class UnitService {
         break;
       // no default
     }
+    this.elementPropertyUpdated.next();
+  }
+
+  setSectionDynamicPositioning(section: UnitPageSection, value: boolean): void {
+    section.dynamicPositioning = value;
+    section.elements.forEach((element: UnitUIElement) => {
+      element.dynamicPositioning = value;
+    });
     this.elementPropertyUpdated.next();
   }
 

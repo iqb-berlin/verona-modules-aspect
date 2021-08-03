@@ -28,7 +28,9 @@ export function createUnitPageSection(): UnitPageSection {
     elements: [],
     width: 1200,
     height: 200,
-    backgroundColor: '#FFFAF0'
+    backgroundColor: '#FFFAF0',
+    dynamicPositioning: false,
+    gridColumnSizes: '1fr 1fr 1fr'
   };
 }
 
@@ -36,11 +38,16 @@ export function createUnitUIElement(type: string): UnitUIElement {
   return {
     type,
     id: 'id_placeholder',
-    xPosition: 0,
-    yPosition: 0,
     zIndex: 0,
     width: 180,
-    height: 60
+    height: 60,
+    dynamicPositioning: false,
+    xPosition: 0,
+    yPosition: 0,
+    gridColumnStart: 1,
+    gridColumnEnd: 1,
+    gridRowStart: 1,
+    gridRowEnd: 1
   };
 }
 

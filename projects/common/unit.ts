@@ -16,17 +16,24 @@ export interface UnitPageSection {
   width: number;
   height: number;
   backgroundColor: string;
+  dynamicPositioning: boolean;
+  gridColumnSizes: string;
 }
 
 export interface UnitUIElement {
   [index: string]: string | number | boolean | string[] | undefined;
   type: string; // TODO maybe use enum or manual enumeration, because possible values are known
   id: string;
-  xPosition: number;
-  yPosition: number;
   zIndex: number
   width: number;
   height: number;
+  dynamicPositioning: boolean;
+  xPosition: number;
+  yPosition: number;
+  gridColumnStart: number;
+  gridColumnEnd: number;
+  gridRowStart: number;
+  gridRowEnd: number;
 }
 
 export interface TextUIElement extends UnitUIElement {

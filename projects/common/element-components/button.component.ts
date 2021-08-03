@@ -6,8 +6,8 @@ import { ButtonElement } from '../unit';
   selector: 'app-button',
   template: `
     <button mat-button
-            [style.width.px]="elementModel.width"
-            [style.height.px]="elementModel.height"
+            [style.width.%]="100"
+            [style.height.%]="100"
             [style.background-color]="elementModel.backgroundColor"
             [style.color]="elementModel.fontColor"
             [style.font-family]="elementModel.font"

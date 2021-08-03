@@ -7,8 +7,8 @@ import { FormElementComponent } from '../form-element-component.directive';
   template: `
     <mat-checkbox #checkbox class="example-margin"
                   [formControl]="elementFormControl"
-                  [style.width.px]="elementModel.width"
-                  [style.height.px]="elementModel.height"
+                  [style.width.%]="100"
+                  [style.height.%]="100"
                   [style.background-color]="elementModel.backgroundColor"
                   [style.color]="elementModel.fontColor"
                   [style.font-family]="elementModel.font"

@@ -6,8 +6,8 @@ import { FormElementComponent } from '../form-element-component.directive';
   selector: 'app-dropdown',
   template: `
       <mat-form-field appearance="fill"
-                      [style.width.px]="elementModel.width"
-                      [style.height.px]="elementModel.height"
+                      [style.width.%]="100"
+                      [style.height.%]="100"
                       [style.background-color]="elementModel.backgroundColor">
           <mat-label [style.color]="elementModel.fontColor"
                      [style.font-family]="elementModel.font"

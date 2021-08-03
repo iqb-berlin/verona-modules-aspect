@@ -5,8 +5,8 @@ import { FormElementComponent } from '../form-element-component.directive';
 @Component({
   selector: 'app-text-field',
   template: `
-    <mat-form-field [style.width.px]="elementModel.width"
-                    [style.height.px]="elementModel.height"
+    <mat-form-field [style.width.%]="100"
+                    [style.height.%]="100"
                     [style.background-color]="elementModel.backgroundColor"
                     [style.color]="elementModel.fontColor"
                     [style.font-family]="elementModel.font"

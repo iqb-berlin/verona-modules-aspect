@@ -5,8 +5,8 @@ import { FormElementComponent } from '../form-element-component.directive';
 @Component({
   selector: 'app-radio-button-group',
   template: `
-      <div [style.width.px]="elementModel.width"
-           [style.height.px]="elementModel.height"
+      <div [style.width.%]="100"
+           [style.height.%]="100"
            [style.background-color]="elementModel.backgroundColor"
            [style.color]="elementModel.fontColor"
            [style.font-family]="elementModel.font"

@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnDestroy, OnInit
+  ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -39,7 +39,8 @@ export class FormComponent implements OnInit, OnDestroy {
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private messageService: MessageService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              protected changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -77,6 +78,7 @@ export class FormComponent implements OnInit, OnDestroy {
   private setValidators = (validators: FormControlValidators): void => {
     validators.formGroup.controls[validators.id].setValidators(validators.validators);
     validators.formGroup.controls[validators.id].updateValueAndValidity();
+    this.changeDetectorRef.detectChanges();
   };
 
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {

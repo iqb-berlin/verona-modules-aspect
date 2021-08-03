@@ -1,4 +1,6 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  Component, Input, OnDestroy, OnInit
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,7 +28,7 @@ import { MessageService } from '../../../../common/message.service';
       </button>
   `
 })
-export class FormComponent implements OnDestroy {
+export class FormComponent implements OnInit, OnDestroy {
   @Input() pages: UnitPage[] = [];
   @Input() playerConfig!: PlayerConfig;
   form!: FormGroup;
@@ -38,6 +40,9 @@ export class FormComponent implements OnDestroy {
               private veronaPostService: VeronaPostService,
               private messageService: MessageService,
               private translateService: TranslateService) {
+  }
+
+  ngOnInit(): void {
     this.form = this.formBuilder.group({
       pages: this.formBuilder.array([])
     });

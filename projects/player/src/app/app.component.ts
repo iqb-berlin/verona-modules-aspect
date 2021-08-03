@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Unit, UnitPage } from '../../../common/unit';
@@ -16,7 +16,7 @@ import {
     <app-form *ngIf="playerConfig" [pages]=pages [playerConfig]=playerConfig></app-form>
   `
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   form!: FormGroup;
   pages!: UnitPage[];
   playerConfig!: PlayerConfig;
@@ -25,10 +25,13 @@ export class AppComponent {
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private nativeEventService: NativeEventService) {
+  }
+
+  ngOnInit(): void {
     this.initSubscriptions();
-    veronaPostService.sendVopReadyNotification();
-    translateService.addLangs(['de']);
-    translateService.setDefaultLang('de');
+    this.veronaPostService.sendVopReadyNotification();
+    this.translateService.addLangs(['de']);
+    this.translateService.setDefaultLang('de');
   }
 
   private initSubscriptions(): void {

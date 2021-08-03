@@ -15,13 +15,15 @@ import { PropertiesComponent } from './components/unit-view/page-view/properties
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
 import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
 import { PageCanvasComponent } from './components/unit-view/page-view/canvas/page-canvas.component';
-import { CanvasToolbarComponent } from './components/unit-view/page-view/canvas/canvas.toolbar.component';
 import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/canvas-section.component';
-import { CanvasSectionToolbarComponent } from './components/unit-view/page-view/canvas/canvas-section-toolbar.component';
-import { CanvasDragOverlayComponent } from './components/unit-view/page-view/canvas/canvas-drag-overlay.component';
+import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/static-canvas-overlay.component';
+import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/app.module';
 import { ConfirmationDialog, MultilineTextEditDialog, TextEditDialog } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
+import { PagePropertiesComponent } from './components/unit-view/page-view/properties/page-properties.component';
+import { SectionPropertiesComponent } from './components/unit-view/page-view/properties/section-properties.component';
+import { ElementPropertiesComponent } from './components/unit-view/page-view/properties/element-properties.component';
 
 @NgModule({
   declarations: [
@@ -32,13 +34,15 @@ import { EditorTranslateLoader } from './editor-translate-loader';
     UnitViewComponent,
     PageViewComponent,
     PageCanvasComponent,
-    CanvasToolbarComponent,
     CanvasSectionComponent,
-    CanvasSectionToolbarComponent,
-    CanvasDragOverlayComponent,
+    StaticCanvasOverlayComponent,
+    DynamicCanvasOverlayComponent,
     ConfirmationDialog,
     TextEditDialog,
-    MultilineTextEditDialog
+    MultilineTextEditDialog,
+    PagePropertiesComponent,
+    SectionPropertiesComponent,
+    ElementPropertiesComponent
   ],
   imports: [
     BrowserModule,

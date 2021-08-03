@@ -4,25 +4,23 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { CanvasSectionComponent } from './canvas-section.component';
-import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
 
 @Component({
   selector: 'app-page-canvas',
   templateUrl: './page-canvas.component.html',
   styles: [
-    '.canvasFrame {background-color: lightgrey; height: 69vh; overflow: auto; width: 100%}',
-    '.section {position: relative;}'
+    '.section {position: relative}',
+    '.canvasBackground {background-color: lightgrey; padding:20px; height: 100%; overflow: auto;}'
   ]
 })
 export class PageCanvasComponent implements OnInit, OnDestroy {
   @Input() pageIndex!: number;
   @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;
   page!: UnitPage;
-  sectionEditMode: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService) { }
@@ -66,11 +64,6 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
       }
       this.unitService.updateElementProperty(sourceItemModel, 'yPosition', newYPosition);
     }
-  }
-
-  dropSection(event: CdkDragDrop<string[]>): void {
-    moveItemInArray(this.page.sections, event.previousIndex, event.currentIndex);
-    this.unitService.updatePageSectionSelection(0);
   }
 
   getPageHeight(): number { // TODO weg

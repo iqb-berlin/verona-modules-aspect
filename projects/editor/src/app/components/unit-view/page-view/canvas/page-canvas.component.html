@@ -1,31 +1,20 @@
-<app-canvas-section-toolbar
-  (sectionEditMode)="sectionEditMode = $event">
-</app-canvas-section-toolbar>
-
-<app-canvas-toolbar></app-canvas-toolbar>
-
-<div class="canvasFrame" fxLayout="row" [style.padding.px]="page.margin"
-     [style.background-color]="page.backgroundColor">
-  <div *ngIf="sectionEditMode" cdkDropList (cdkDropListDropped)="dropSection($event)">
-    <div #section_component app-canvas-section class="section"
-         *ngFor="let section of page.sections; let i = index"
-         [section]="section"
-         cdkDrag
-         [ngStyle]="{border: '1px solid', 'width.px': page.width, 'height.px': section.height}">
-    </div>
-  </div>
-  <div *ngIf="!sectionEditMode" cdkDropListGroup class="section-list">
-    <div #section_component app-canvas-section class="section"
-         *ngFor="let section of page.sections; let i = index"
-         [section]="section"
-          (click)="selectSection(i)"
-         cdkDropList cdkDropListSortingDisabled
-         (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
-         [ngStyle]="{
-                border: i === (unitService.selectedPageSectionIndex | async) ? '1px solid': '1px dotted',
-                'width.px': section.width,
-                'height.px': section.height,
-                'background-color': section.backgroundColor}">
+<div class="canvasBackground" fxFlex>
+  <div class="canvasFrame"
+       [style.padding.px]="page.margin"
+       [style.background-color]="page.backgroundColor">
+    <div cdkDropListGroup class="section-list">
+      <div #section_component app-canvas-section class="section"
+           *ngFor="let section of page.sections; let i = index"
+           [section]="section" [sectionIndex]="i"
+           (click)="selectSection(i)"
+           cdkDropList cdkDropListSortingDisabled
+           (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
+           [ngStyle]="{
+                  border: i === (unitService.selectedPageSectionIndex | async) ? '1px solid': '1px dotted',
+                  'width.px': section.width,
+                  'height.px': section.height,
+                  'background-color': section.backgroundColor}">
+      </div>
     </div>
   </div>
 </div>

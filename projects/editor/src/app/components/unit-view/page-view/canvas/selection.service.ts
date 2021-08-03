@@ -2,15 +2,15 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
-import { CanvasDragOverlayComponent } from './canvas-drag-overlay.component';
 import { UnitUIElement } from '../../../../../../../common/unit';
+import { CanvasElementOverlay } from './canvas-element-overlay';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SelectionService implements OnDestroy { // TODO selectionService
   private ngUnsubscribe = new Subject<void>();
-  selectedComponentElements: CanvasDragOverlayComponent[] = [];
+  selectedComponentElements: CanvasElementOverlay[] = [];
 
   elementSelected: Subject<UnitUIElement[]> = new Subject<UnitUIElement[]>();
 
@@ -26,7 +26,7 @@ export class SelectionService implements OnDestroy { // TODO selectionService
     return this.selectedComponentElements.map(element => element.element);
   }
 
-  selectElement(event: { componentElement: CanvasDragOverlayComponent; multiSelect: boolean }): void {
+  selectElement(event: { componentElement: CanvasElementOverlay; multiSelect: boolean }): void {
     if (!event.multiSelect) {
       this.clearSelection();
     }
@@ -37,7 +37,7 @@ export class SelectionService implements OnDestroy { // TODO selectionService
   }
 
   private clearSelection() {
-    this.selectedComponentElements.forEach((overlayComponent: CanvasDragOverlayComponent) => {
+    this.selectedComponentElements.forEach((overlayComponent: CanvasElementOverlay) => {
       overlayComponent.setSelected(false);
     });
     this.selectedComponentElements = [];

@@ -1,4 +1,4 @@
-<div fxLayout="row" [style.height.%]="100">
+<div [style.height.%]="100">
   <button class="drawer-button show-elements-button" (click)="toolbox_drawer.toggle()">
     <span>
       ELEMENTE
@@ -11,7 +11,7 @@
     </mat-drawer>
 
     <mat-drawer-content>
-      <mat-tab-group mat-align-tabs="start" class="mat-tab-fill-height"
+      <mat-tab-group [style.height.%]="100" mat-align-tabs="start"
                      [selectedIndex]="unitService.selectedPageIndex | async"
                      (selectedIndexChange)="unitService.updatePageSelection($event)">
         <mat-tab *ngFor="let page of (unitService.unit | async)!.pages; let i = index">

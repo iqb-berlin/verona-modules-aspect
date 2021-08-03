@@ -54,8 +54,13 @@
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">widgets</mat-icon>
     </ng-template>
+    <button mat-raised-button
+            (click)="unitService.addSection()">
+      leeren Abschnitt hinzu
+      <mat-icon>add</mat-icon>
+    </button>
     <mat-accordion multi>
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Korrekturaufgaben
@@ -64,7 +69,7 @@
         <button mat-button>mit Bild</button>
         <button mat-button (click)="addUIElement('correction')">ohne Bild</button>
       </mat-expansion-panel>
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title>
             Sortieraufgaben

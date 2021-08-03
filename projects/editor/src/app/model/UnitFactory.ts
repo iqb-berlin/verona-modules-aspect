@@ -17,7 +17,7 @@ export function createUnitPage(pageIndex: number): UnitPage {
     id: `page${pageIndex}`,
     sections: [],
     width: 1100,
-    margin: 15,
+    margin: 8,
     backgroundColor: 'white',
     alwaysVisible: false
   };
@@ -26,7 +26,7 @@ export function createUnitPage(pageIndex: number): UnitPage {
 export function createUnitPageSection(): UnitPageSection {
   return {
     elements: [],
-    width: 1200,
+    width: 1100,
     height: 200,
     backgroundColor: '#FFFAF0',
     dynamicPositioning: false,
@@ -34,7 +34,7 @@ export function createUnitPageSection(): UnitPageSection {
   };
 }
 
-export function createUnitUIElement(type: string): UnitUIElement {
+function createUnitUIElement(type: string): UnitUIElement {
   return {
     type,
     id: 'id_placeholder',

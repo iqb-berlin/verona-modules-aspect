@@ -23,27 +23,17 @@ export abstract class CanvasElementOverlay {
     componentElement: CanvasElementOverlay,
     multiSelect: boolean }>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
-
   selected = false;
-  // protected childComponent!: ElementComponent;
   protected childComponent!: ComponentRef<ElementComponent>;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(protected unitService: UnitService,
-              private componentFactoryResolver: ComponentFactoryResolver,
-              protected viewContainerRef: ViewContainerRef) { }
+              private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
     const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
-    // this.childComponent = this.elementContainer.createComponent(componentFactory).instance;
     this.childComponent = this.elementContainer.createComponent(componentFactory);
     this.childComponent.instance.elementModel = this.element;
-
-    // console.log('t0', this.childComponent.location.nativeElement.firstChild);
-    // console.log('t1', this.childComponent.location.nativeElement.firstChild.style);
-    // this.childComponent.location.nativeElement.firstChild.style.width = '100%';
-    // console.log('t2', this.childComponent.location.nativeElement.firstChild.style.width);
-    // console.log('t1', this.childComponent.nativeElement);
 
     if (this.childComponent.instance instanceof FormElementComponent) {
       this.childComponent.instance.formValueChanged

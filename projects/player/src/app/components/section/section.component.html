@@ -1,0 +1,34 @@
+<ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
+
+<ng-template #staticElements>
+  <div *ngFor="let element of section.elements; let i = index"
+       [style.position]="'absolute'"
+       [style.width.px]="element.width"
+       [style.height.px]="element.height"
+       [style.left.px]="element.xPosition"
+       [style.top.px]="element.yPosition">
+    <app-element-overlay
+        [elementModel]="element"
+        [parentForm]="sectionForm"
+        [parentArrayIndex]="i">
+    </app-element-overlay>
+  </div>
+</ng-template>
+
+<ng-template #dynamicElements>
+  <div [style.display]="'grid'"
+       [style.grid-template-columns]="section.gridColumnSizes"
+       [style.height.%]="100">
+    <div *ngFor="let element of section.elements; let i = index"
+         [style.min-width.px]="element.width"
+         [style.min-height.px]="element.height"
+         [style.grid-column-start]="element.gridColumnStart"
+         [style.grid-column-end]="element.gridColumnEnd">
+      <app-element-overlay
+          [elementModel]="element"
+          [parentForm]="sectionForm"
+          [parentArrayIndex]="i">
+      </app-element-overlay>
+    </div>
+  </div>
+</ng-template>

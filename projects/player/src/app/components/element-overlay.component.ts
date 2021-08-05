@@ -13,17 +13,11 @@ import { ValueChangeElement } from '../../../../common/form';
 @Component({
   selector: 'app-element-overlay',
   template: `
-    <div [style.position]="'absolute'"
-         [style.width.px]="elementModel.width"
-         [style.height.px]="elementModel.height"
-         [style.left.px]="elementModel.xPosition"
-         [style.top.px]="elementModel.yPosition">
-      <ng-template #elementComponentContainer></ng-template>
-      <app-error-message *ngIf="isInputElement"
-                         [parentForm]="elementForm"
-                         [elementModel]="elementModel">
-      </app-error-message>
-    </div>
+    <ng-template #elementComponentContainer></ng-template>
+    <app-error-message *ngIf="isInputElement"
+                       [parentForm]="elementForm"
+                       [elementModel]="elementModel">
+    </app-error-message>
   `
 })
 export class ElementOverlayComponent implements OnInit {

@@ -2,25 +2,18 @@ import {
   Component, Input, OnInit
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UnitPageSection } from '../../../../common/unit';
-import { FormService } from '../../../../common/form.service';
+import { UnitPageSection } from '../../../../../common/unit';
+import { FormService } from '../../../../../common/form.service';
 
 @Component({
   selector: 'app-section',
-  template: `
-    <app-element-overlay
-        *ngFor="let element of section.elements; let i = index"
-        [elementModel]="element"
-        [parentForm]="sectionForm"
-        [parentArrayIndex]="i">
-    </app-element-overlay>
-  `
+  templateUrl: './section.component.html'
 })
 export class SectionComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() section!: UnitPageSection;
-  @Input() sectionForm!: FormGroup;
   @Input() parentArrayIndex!: number;
+  sectionForm!: FormGroup;
 
   constructor(private formService: FormService, private formBuilder: FormBuilder) {
   }

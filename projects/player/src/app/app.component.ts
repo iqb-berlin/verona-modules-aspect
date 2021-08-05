@@ -48,8 +48,10 @@ export class AppComponent implements OnInit {
     console.log('player: onStart', message);
     const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : [];
     const storedPages: FormPage[] = message.unitState?.dataParts?.pages ?
-      JSON.parse(message.unitState.dataParts.pages) : {};
-    this.pages = this.addStoredValues(unitDefinition.pages, storedPages);
+      JSON.parse(message.unitState.dataParts.pages) : [];
+    this.pages = storedPages.length > 0 ?
+      this.addStoredValues(unitDefinition.pages, storedPages) :
+      unitDefinition.pages;
     this.playerConfig = message.playerConfig || {};
     this.veronaPostService.sessionId = message.sessionId;
   }
@@ -67,9 +69,10 @@ export class AppComponent implements OnInit {
                   (storedElement: Record<string, string | number | boolean | undefined>) => Object
                     .keys(storedElement)[0] === element.id
                 ) || {};
+              const value = storedValueElement[Object.keys(storedValueElement)[0]];
               return {
                 ...element,
-                ...{ value: storedValueElement[Object.keys(storedValueElement)[0]] }
+                ...{ value: (value !== undefined && value !== null) ? value : element.value }
               };
             })
         }))

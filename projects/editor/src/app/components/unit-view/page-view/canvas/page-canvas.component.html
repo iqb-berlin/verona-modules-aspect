@@ -6,14 +6,8 @@
       <div #section_component app-canvas-section class="section"
            *ngFor="let section of page.sections; let i = index"
            [section]="section" [sectionIndex]="i"
-           (click)="selectSection(i)"
            cdkDropList cdkDropListSortingDisabled
-           (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section"
-           [ngStyle]="{
-                  border: i === (unitService.selectedPageSectionIndex | async) ? '1px solid': '1px dotted',
-                  'width.px': section.width,
-                  'height.px': section.height,
-                  'background-color': section.backgroundColor}">
+           (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section">
       </div>
     </div>
   </div>

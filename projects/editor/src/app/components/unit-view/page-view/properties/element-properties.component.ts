@@ -5,307 +5,307 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
-import { SelectionService } from '../canvas/selection.service';
 
 @Component({
   selector: 'app-element-properties',
   template: `
-    <mat-tab-group mat-stretch-tabs dynamicHeight>
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">build</mat-icon>
-        </ng-template>
-        <div fxLayout="column">
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('id')">
-            <mat-label>ID</mat-label>
-            <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.id"
-                   (input)="updateModel('id', $any($event.target).value)">
-            <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
-          </mat-form-field>
-
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('label')">
-            <mat-label>Label</mat-label>
-            <input matInput type="text" [value]="combinedProperties.label"
-                   (input)="updateModel('label', $any($event.target).value)">
-          </mat-form-field>
-
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('text')">
-            <mat-label>Text</mat-label>
-            <textarea matInput type="text" cdkTextareaAutosize [value]="combinedProperties.text"
-                      (input)="updateModel('text', $any($event.target).value)">
-          </textarea>
-          </mat-form-field>
-
-          <mat-form-field *ngIf="combinedProperties.type === 'text-field'">
-            <mat-label>Vorbelegung</mat-label>
-            <input matInput type="text"
-                   [value]="combinedProperties.value"
-                   (input)="updateModel('value', $any($event.target).value)">
-          </mat-form-field>
-          <section *ngIf="combinedProperties.type === 'checkbox'">
-            Vorbelegung
-            <mat-button-toggle-group (change)="transformToBoolAndUpdateModel('value', $event.value)">
-              <mat-button-toggle value="true">wahr</mat-button-toggle>
-              <mat-button-toggle value="false">falsch</mat-button-toggle>
-              <mat-button-toggle value="undefined">undefiniert</mat-button-toggle>
-            </mat-button-toggle-group>
-          </section>
-          <mat-form-field *ngIf="combinedProperties.type === 'dropdown' || combinedProperties.type === 'radio'"
-                          appearance="fill">
-            <mat-label>Vorbelegung</mat-label>
-            <mat-select (selectionChange)="updateModel('value', $event.value)">
-              <mat-option>undefiniert</mat-option>
-              <mat-option *ngFor="let option of $any(combinedProperties).options; let i = index" [value]="i">
-                {{option}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-divider></mat-divider>
-
-          <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('required')"
-                        [checked]="$any(combinedProperties.required)"
-                        (change)="updateModel('required', $event.checked)">
-            Pflichtfeld
-          </mat-checkbox>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('requiredWarnMessage')">
-            <mat-label>Warnmeldung</mat-label>
-            <input matInput type="text" [value]="combinedProperties.requiredWarnMessage"
-                   (input)="updateModel('requiredWarnMessage', $any($event.target).value)">
-          </mat-form-field>
-
-          <mat-divider></mat-divider>
-
-
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
-            <mat-label>Minimalwert</mat-label>
-            <input matInput type="number" [value]="combinedProperties.min"
-                   (input)="updateModel('min', $any($event.target).value)">
-          </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
-            <mat-label>Warnmeldung</mat-label>
-            <input matInput type="text" [value]="combinedProperties.minWarnMessage"
-                   (input)="updateModel('minWarnMessage', $any($event.target).value)">
-          </mat-form-field>
-
-          <mat-divider></mat-divider>
-
-
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
-            <mat-label>Maximalwert</mat-label>
-            <input matInput type="number" [value]="combinedProperties.max"
-                   (input)="updateModel('max', $any($event.target).value)">
-          </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
-            <mat-label>Warnmeldung</mat-label>
-            <input matInput type="text" [value]="combinedProperties.maxWarnMessage"
-                   (input)="updateModel('maxWarnMessage', $any($event.target).value)">
-          </mat-form-field>
-
-          <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
-            <div *ngIf="combinedProperties.options !== undefined">
-              <mat-label>Optionen</mat-label>
-              <!--            TODO reorder via droplist-->
-              <mat-list *ngFor="let option of $any(combinedProperties.options)">
-                <mat-list-item>{{option}}</mat-list-item>
-                <mat-divider></mat-divider>
-              </mat-list>
-            </div>
-            <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
-              <button mat-icon-button matPrefix
-                      (click)="updateModel('options', newOption.value)">
-                <mat-icon>add</mat-icon>
-              </button>
-              <input #newOption matInput type="text" placeholder="Optionstext">
-            </div>
-          </mat-form-field>
-
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('alignment')">
-            <mat-label>Ausrichtung</mat-label>
-            <mat-select [value]="combinedProperties.alignment"
-                        (change)="$any($event.target).value">
-              <mat-option *ngFor="let option of ['row', 'column']" [value]="option">
-                {{option}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('resizeEnabled')"
-                        [checked]="$any(combinedProperties.resizeEnabled)"
-                        (change)="updateModel('resizeEnabled', $event.checked)">
-            größenverstellbar
-          </mat-checkbox>
-
-          <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('sentences')">
-            <div *ngIf="combinedProperties.sentences !== undefined">
-              <mat-label>Sätze</mat-label>
-              <mat-list *ngFor="let sentence of $any(combinedProperties.sentences)">
-                <mat-list-item>{{sentence}}</mat-list-item>
-                <mat-divider></mat-divider>
-              </mat-list>
-            </div>
-            <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
-              <button mat-icon-button matPrefix
-                      (click)="updateModel('sentences', newOption.value)">
-                <mat-icon>add</mat-icon>
-              </button>
-              <input #newOption matInput type="text" placeholder="Optionstext">
-            </div>
-          </mat-form-field>
-
-        </div>
-        <button mat-raised-button class="delete-element-button" (click)="deleteElement()">
-          Element löschen
-        </button>
-        <button mat-raised-button class="duplicate-element-button" (click)="duplicateElement()">
-          Element duplizieren
-        </button>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">format_shapes</mat-icon>
-        </ng-template>
-        <div fxLayout="column">
-
-          <ng-container *ngIf="!combinedProperties.dynamicPositioning; else elseBlock">
-            <!--        <ng-container>-->
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
-              <mat-label>Breite</mat-label>
-              <input matInput type="number" [value]="combinedProperties.width"
-                     (input)="updateModel('width', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')">
-              <mat-label>Hoehe</mat-label>
-              <input matInput type="number" [value]="combinedProperties.height"
-                     (input)="updateModel('height', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('xPosition')">
-              <mat-label>X Position</mat-label>
-              <input matInput type="number" [value]="combinedProperties.xPosition"
-                     (input)="updateModel('xPosition', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('yPosition')">
-              <mat-label>Y Position</mat-label>
-              <input matInput type="number" [value]="combinedProperties.yPosition"
-                     (input)="updateModel('yPosition', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')">
-              <mat-label>Z-Index</mat-label>
-              <input matInput type="number" [value]="combinedProperties.zIndex"
-                     (input)="updateModel('zIndex', $any($event.target).value)"
-                     matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
-            </mat-form-field>
-          </ng-container>
-          <ng-template #elseBlock>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
-              <mat-label>Mindestbreite</mat-label>
-              <input matInput type="number" [value]="combinedProperties.width"
-                     (input)="updateModel('width', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')">
-              <mat-label>Mindesthoehe</mat-label>
-              <input matInput type="number" [value]="combinedProperties.height"
-                     (input)="updateModel('height', $any($event.target).value)">
-            </mat-form-field>
-
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnStart')">
-              <mat-label>Startspalte</mat-label>
-              <input matInput type="number" [value]="combinedProperties.gridColumnStart"
-                     (input)="updateModel('gridColumnStart', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnEnd')">
-              <mat-label>Endspalte</mat-label>
-              <input matInput type="number" [value]="combinedProperties.gridColumnEnd"
-                     (input)="updateModel('gridColumnEnd', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowStart')">
-              <mat-label>Startzeile</mat-label>
-              <input matInput type="number" [value]="combinedProperties.gridRowStart"
-                     (input)="updateModel('gridRowStart', $any($event.target).value)">
-            </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowEnd')">
-              <mat-label>Endzeile</mat-label>
-              <input matInput type="number" [value]="combinedProperties.gridRowEnd"
-                     (input)="updateModel('gridRowEnd', $any($event.target).value)">
-            </mat-form-field>
+    <ng-container *ngIf="selectedElements">
+      <mat-tab-group mat-stretch-tabs dynamicHeight>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">build</mat-icon>
           </ng-template>
-          <ng-container *ngIf="selectedElements.length > 1">
-            Ausrichtung
-            <div class="alignment-button-group" fxLayout="row" fxLayoutAlign="center center" >
-              <button (click)="alignElements('left')">
-                <mat-icon>align_horizontal_left</mat-icon>
-              </button>
-              <button (click)="alignElements('right')">
-                <mat-icon>align_horizontal_right</mat-icon>
-              </button>
-              <button (click)="alignElements('top')">
-                <mat-icon>align_vertical_top</mat-icon>
-              </button>
-              <button (click)="alignElements('bottom')">
-                <mat-icon>align_vertical_bottom</mat-icon>
-              </button>
-            </div>
-          </ng-container>
-        </div>
-      </mat-tab>
+          <div fxLayout="column">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('id')">
+              <mat-label>ID</mat-label>
+              <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.id"
+                     (input)="updateModel('id', $any($event.target).value)">
+              <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
+            </mat-form-field>
 
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <mat-icon class="example-tab-icon">palette</mat-icon>
-        </ng-template>
-        <div fxLayout="column">
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('backgroundColor')"
-                          class="mdInput textsingleline">
-            <mat-label>Hintergrundfarbe</mat-label>
-            <input matInput type="text" [value]="combinedProperties.backgroundColor"
-                   (input)="updateModel('backgroundColor', $any($event.target).value)">
-          </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontColor')"
-                          class="mdInput textsingleline">
-            <mat-label>Schriftfarbe</mat-label>
-            <input matInput type="text" [value]="combinedProperties.fontColor"
-                   (input)="updateModel('fontColor', $any($event.target).value)">
-          </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('font')"
-                          class="mdInput textsingleline">
-            <mat-label>Schriftart</mat-label>
-            <input matInput type="text" [value]="combinedProperties.font"
-                   (input)="updateModel('font', $any($event.target).value)">
-          </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontSize')"
-                          class="mdInput textsingleline">
-            <mat-label>Schriftgröße</mat-label>
-            <input matInput type="text" [value]="combinedProperties.fontSize"
-                   (input)="updateModel('fontSize', $any($event.target).value)">
-          </mat-form-field>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('label')">
+              <mat-label>Label</mat-label>
+              <input matInput type="text" [value]="combinedProperties.label"
+                     (input)="updateModel('label', $any($event.target).value)">
+            </mat-form-field>
 
-          <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('bold')"
-                        [checked]="$any(combinedProperties.bold)"
-                        (change)="updateModel('bold', $event.checked)">
-            Fett
-          </mat-checkbox>
-          <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('italic')"
-                        [checked]="$any(combinedProperties.italic)"
-                        (change)="updateModel('italic', $event.checked)">
-            Kursiv
-          </mat-checkbox>
-          <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('underline')"
-                        [checked]="$any(combinedProperties.underline)"
-                        (change)="updateModel('underline', $event.checked)">
-            Unterstrichen
-          </mat-checkbox>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('text')">
+              <mat-label>Text</mat-label>
+              <textarea matInput type="text" cdkTextareaAutosize [value]="combinedProperties.text"
+                        (input)="updateModel('text', $any($event.target).value)">
+            </textarea>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="combinedProperties.type === 'text-field'">
+              <mat-label>Vorbelegung</mat-label>
+              <input matInput type="text"
+                     [value]="combinedProperties.value"
+                     (input)="updateModel('value', $any($event.target).value)">
+            </mat-form-field>
+            <section *ngIf="combinedProperties.type === 'checkbox'">
+              Vorbelegung
+              <mat-button-toggle-group (change)="transformToBoolAndUpdateModel('value', $event.value)">
+                <mat-button-toggle value="true">wahr</mat-button-toggle>
+                <mat-button-toggle value="false">falsch</mat-button-toggle>
+                <mat-button-toggle value="undefined">undefiniert</mat-button-toggle>
+              </mat-button-toggle-group>
+            </section>
+            <mat-form-field *ngIf="combinedProperties.type === 'dropdown' || combinedProperties.type === 'radio'"
+                            appearance="fill">
+              <mat-label>Vorbelegung</mat-label>
+              <mat-select (selectionChange)="updateModel('value', $event.value)">
+                <mat-option>undefiniert</mat-option>
+                <mat-option *ngFor="let option of $any(combinedProperties).options; let i = index" [value]="i">
+                  {{option}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+            <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('required')"
+                          [checked]="$any(combinedProperties.required)"
+                          (change)="updateModel('required', $event.checked)">
+              Pflichtfeld
+            </mat-checkbox>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('requiredWarnMessage')">
+              <mat-label>Warnmeldung</mat-label>
+              <input matInput type="text" [value]="combinedProperties.requiredWarnMessage"
+                     (input)="updateModel('requiredWarnMessage', $any($event.target).value)">
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
+              <mat-label>Minimalwert</mat-label>
+              <input matInput type="number" [value]="combinedProperties.min"
+                     (input)="updateModel('min', $any($event.target).value)">
+            </mat-form-field>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
+              <mat-label>Warnmeldung</mat-label>
+              <input matInput type="text" [value]="combinedProperties.minWarnMessage"
+                     (input)="updateModel('minWarnMessage', $any($event.target).value)">
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
+              <mat-label>Maximalwert</mat-label>
+              <input matInput type="number" [value]="combinedProperties.max"
+                     (input)="updateModel('max', $any($event.target).value)">
+            </mat-form-field>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
+              <mat-label>Warnmeldung</mat-label>
+              <input matInput type="text" [value]="combinedProperties.maxWarnMessage"
+                     (input)="updateModel('maxWarnMessage', $any($event.target).value)">
+            </mat-form-field>
+
+            <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
+              <div *ngIf="combinedProperties.options !== undefined">
+                <mat-label>Optionen</mat-label>
+                <!--            TODO reorder via droplist-->
+                <mat-list *ngFor="let option of $any(combinedProperties.options)">
+                  <mat-list-item>{{option}}</mat-list-item>
+                  <mat-divider></mat-divider>
+                </mat-list>
+              </div>
+              <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matPrefix
+                        (click)="updateModel('options', newOption.value)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <input #newOption matInput type="text" placeholder="Optionstext">
+              </div>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('alignment')">
+              <mat-label>Ausrichtung</mat-label>
+              <mat-select [value]="combinedProperties.alignment"
+                          (change)="$any($event.target).value">
+                <mat-option *ngFor="let option of ['row', 'column']" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('resizeEnabled')"
+                          [checked]="$any(combinedProperties.resizeEnabled)"
+                          (change)="updateModel('resizeEnabled', $event.checked)">
+              größenverstellbar
+            </mat-checkbox>
+
+            <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('sentences')">
+              <div *ngIf="combinedProperties.sentences !== undefined">
+                <mat-label>Sätze</mat-label>
+                <mat-list *ngFor="let sentence of $any(combinedProperties.sentences)">
+                  <mat-list-item>{{sentence}}</mat-list-item>
+                  <mat-divider></mat-divider>
+                </mat-list>
+              </div>
+              <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
+                <button mat-icon-button matPrefix
+                        (click)="updateModel('sentences', newOption.value)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <input #newOption matInput type="text" placeholder="Optionstext">
+              </div>
+            </mat-form-field>
+
+          </div>
+          <button mat-raised-button class="delete-element-button" (click)="deleteElement()">
+            Element löschen
+          </button>
+          <button mat-raised-button class="duplicate-element-button" (click)="duplicateElement()">
+            Element duplizieren
+          </button>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">format_shapes</mat-icon>
+          </ng-template>
+          <div fxLayout="column">
+
+            <ng-container *ngIf="!combinedProperties.dynamicPositioning; else elseBlock">
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
+                <mat-label>Breite</mat-label>
+                <input matInput type="number" [value]="combinedProperties.width"
+                       (input)="updateModel('width', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')">
+                <mat-label>Hoehe</mat-label>
+                <input matInput type="number" [value]="combinedProperties.height"
+                       (input)="updateModel('height', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('xPosition')">
+                <mat-label>X Position</mat-label>
+                <input matInput type="number" [value]="combinedProperties.xPosition"
+                       (input)="updateModel('xPosition', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('yPosition')">
+                <mat-label>Y Position</mat-label>
+                <input matInput type="number" [value]="combinedProperties.yPosition"
+                       (input)="updateModel('yPosition', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')">
+                <mat-label>Z-Index</mat-label>
+                <input matInput type="number" [value]="combinedProperties.zIndex"
+                       (input)="updateModel('zIndex', $any($event.target).value)"
+                       matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+              </mat-form-field>
+            </ng-container>
+            <ng-template #elseBlock>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
+                <mat-label>Mindestbreite</mat-label>
+                <input matInput type="number" [value]="combinedProperties.width"
+                       (input)="updateModel('width', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')">
+                <mat-label>Mindesthoehe</mat-label>
+                <input matInput type="number" [value]="combinedProperties.height"
+                       (input)="updateModel('height', $any($event.target).value)">
+              </mat-form-field>
+
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnStart')">
+                <mat-label>Startspalte</mat-label>
+                <input matInput type="number" [value]="combinedProperties.gridColumnStart"
+                       (input)="updateModel('gridColumnStart', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnEnd')">
+                <mat-label>Endspalte</mat-label>
+                <input matInput type="number" [value]="combinedProperties.gridColumnEnd"
+                       (input)="updateModel('gridColumnEnd', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowStart')">
+                <mat-label>Startzeile</mat-label>
+                <input matInput type="number" [value]="combinedProperties.gridRowStart"
+                       (input)="updateModel('gridRowStart', $any($event.target).value)">
+              </mat-form-field>
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowEnd')">
+                <mat-label>Endzeile</mat-label>
+                <input matInput type="number" [value]="combinedProperties.gridRowEnd"
+                       (input)="updateModel('gridRowEnd', $any($event.target).value)">
+              </mat-form-field>
+            </ng-template>
+            <ng-container *ngIf="selectedElements.length > 1">
+              Ausrichtung
+              <div class="alignment-button-group" fxLayout="row" fxLayoutAlign="center center" >
+                <button (click)="alignElements('left')">
+                  <mat-icon>align_horizontal_left</mat-icon>
+                </button>
+                <button (click)="alignElements('right')">
+                  <mat-icon>align_horizontal_right</mat-icon>
+                </button>
+                <button (click)="alignElements('top')">
+                  <mat-icon>align_vertical_top</mat-icon>
+                </button>
+                <button (click)="alignElements('bottom')">
+                  <mat-icon>align_vertical_bottom</mat-icon>
+                </button>
+              </div>
+            </ng-container>
+          </div>
+        </mat-tab>
+
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <mat-icon class="example-tab-icon">palette</mat-icon>
+          </ng-template>
+          <div fxLayout="column">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('backgroundColor')"
+                            class="mdInput textsingleline">
+              <mat-label>Hintergrundfarbe</mat-label>
+              <input matInput type="text" [value]="combinedProperties.backgroundColor"
+                     (input)="updateModel('backgroundColor', $any($event.target).value)">
+            </mat-form-field>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontColor')"
+                            class="mdInput textsingleline">
+              <mat-label>Schriftfarbe</mat-label>
+              <input matInput type="text" [value]="combinedProperties.fontColor"
+                     (input)="updateModel('fontColor', $any($event.target).value)">
+            </mat-form-field>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('font')"
+                            class="mdInput textsingleline">
+              <mat-label>Schriftart</mat-label>
+              <input matInput type="text" [value]="combinedProperties.font"
+                     (input)="updateModel('font', $any($event.target).value)">
+            </mat-form-field>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontSize')"
+                            class="mdInput textsingleline">
+              <mat-label>Schriftgröße</mat-label>
+              <input matInput type="text" [value]="combinedProperties.fontSize"
+                     (input)="updateModel('fontSize', $any($event.target).value)">
+            </mat-form-field>
+
+            <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('bold')"
+                          [checked]="$any(combinedProperties.bold)"
+                          (change)="updateModel('bold', $event.checked)">
+              Fett
+            </mat-checkbox>
+            <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('italic')"
+                          [checked]="$any(combinedProperties.italic)"
+                          (change)="updateModel('italic', $event.checked)">
+              Kursiv
+            </mat-checkbox>
+            <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('underline')"
+                          [checked]="$any(combinedProperties.underline)"
+                          (change)="updateModel('underline', $event.checked)">
+              Unterstrichen
+            </mat-checkbox>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
     `
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
-  @Input() selectedElements!: UnitUIElement[];
+  selectedElements!: UnitUIElement[];
   combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public unitService: UnitService, private selectionService: SelectionService) { }
+  constructor(public unitService: UnitService) { }
 
   ngOnInit(): void {
     this.unitService.elementPropertyUpdated
@@ -315,7 +315,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
           this.createCombinedProperties();
         }
       );
-    this.selectionService.elementSelected
+    this.unitService.elementSelected
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (selectedElements: UnitUIElement[]) => {
@@ -350,7 +350,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
-    this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);
+    this.unitService.alignSelectedElements(direction);
   }
 
   /* button group always handles values as string and since we also want to handle undefined
@@ -372,15 +372,11 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   deleteElement(): void {
-    this.selectedElements.forEach((element: UnitUIElement) => {
-      this.unitService.deleteElement(element);
-    });
+    this.unitService.deleteSelectedElements();
   }
 
   duplicateElement(): void {
-    this.selectedElements.forEach((element: UnitUIElement) => {
-      this.unitService.duplicateElement(element);
-    });
+    this.unitService.duplicateSelectedElements();
   }
 
   ngOnDestroy(): void {

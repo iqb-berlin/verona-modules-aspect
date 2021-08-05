@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { UnitPage, UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
-import { SelectionService } from '../canvas/selection.service';
 
 @Component({
   selector: 'app-properties',
@@ -21,26 +20,21 @@ export class PropertiesComponent {
   selectedElements: UnitUIElement[] = [];
   selectedPage!: UnitPage;
   selectedPageSection!: UnitPageSection;
-  expandElement: boolean = false;
+  expandElementView: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public unitService: UnitService, private selectionService: SelectionService) { }
+  constructor(public unitService: UnitService) { }
 
   ngOnInit(): void {
     this.unitService.selectedPage
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((page: UnitPage) => {
         this.selectedPage = page;
-        this.expandElement = false;
+        this.expandElementView = false;
       });
-    this.unitService.selectedPageSection
+    this.unitService.elementSelected
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((pageSection: UnitPageSection) => {
-        this.selectedPageSection = pageSection;
-      });
-    this.selectionService.elementSelected
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => { this.expandElement = true; });
+      .subscribe(() => { this.expandElementView = true; });
   }
 
   ngOnDestroy(): void {

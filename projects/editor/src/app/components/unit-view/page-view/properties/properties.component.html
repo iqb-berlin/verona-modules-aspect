@@ -1,20 +1,20 @@
 <mat-accordion multi>
-  <mat-expansion-panel [expanded]="!expandElement">
+  <mat-expansion-panel [expanded]="!expandElementView">
     <mat-expansion-panel-header>
       <mat-panel-title>Seite</mat-panel-title>
     </mat-expansion-panel-header>
-      <app-page-properties [selectedPage]="selectedPage"></app-page-properties>
+      <app-page-properties></app-page-properties>
   </mat-expansion-panel>
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>Seitenabschnitt</mat-panel-title>
     </mat-expansion-panel-header>
-      <app-section-properties [selectedPageSection]="selectedPageSection"></app-section-properties>
+      <app-section-properties></app-section-properties>
   </mat-expansion-panel>
-  <mat-expansion-panel [expanded]="expandElement">
+  <mat-expansion-panel [expanded]="expandElementView">
     <mat-expansion-panel-header>
       <mat-panel-title>Element</mat-panel-title>
     </mat-expansion-panel-header>
-      <app-element-properties [selectedElements]="selectedElements"></app-element-properties>
+      <app-element-properties></app-element-properties>
   </mat-expansion-panel>
 </mat-accordion>

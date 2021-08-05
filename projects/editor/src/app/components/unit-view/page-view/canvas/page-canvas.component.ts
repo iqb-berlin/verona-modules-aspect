@@ -1,9 +1,6 @@
 import {
-  Component, OnInit, OnDestroy,
-  Input, QueryList, ViewChildren
+  Component, Input, QueryList, ViewChildren
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
@@ -17,25 +14,11 @@ import { CanvasSectionComponent } from './canvas-section.component';
     '.canvasBackground {background-color: lightgrey; padding:20px; height: 100%; overflow: auto;}'
   ]
 })
-export class PageCanvasComponent implements OnInit, OnDestroy {
-  @Input() pageIndex!: number;
+export class PageCanvasComponent {
+  @Input() page!: UnitPage;
   @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;
-  page!: UnitPage;
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService) { }
-
-  ngOnInit(): void {
-    this.unitService.getPageObservable(this.pageIndex)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((page: UnitPage) => {
-        this.page = page;
-      });
-  }
-
-  selectSection(id: number): void {
-    this.unitService.updatePageSectionSelection(Number(id));
-  }
 
   elementDropped(event: CdkDragDrop<UnitPageSection>): void {
     const sourceItemModel = event.item.data;
@@ -69,10 +52,5 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   getPageHeight(): number { // TODO weg
     const reduceFct = (accumulator: number, currentValue: UnitPageSection) => accumulator + currentValue.height;
     return this.page.sections.reduce(reduceFct, 0);
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

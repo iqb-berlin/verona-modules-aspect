@@ -1,16 +1,14 @@
 import {
+  Directive, Input,
   ComponentFactoryResolver, ComponentRef,
-  Directive,
-  EventEmitter,
   HostListener,
-  Input,
-  Output,
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitUIElement } from '../../../../../../../common/unit';
+// eslint-disable-next-line import/no-cycle
 import { UnitService } from '../../../../unit.service';
+import { UnitUIElement } from '../../../../../../../common/unit';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
 import { ValueChangeElement } from '../../../../../../../common/form';
@@ -19,9 +17,6 @@ import { ElementComponent } from '../../../../../../../common/element-component.
 @Directive()
 export abstract class CanvasElementOverlay {
   @Input() element!: UnitUIElement;
-  @Output() elementSelected = new EventEmitter<{
-    componentElement: CanvasElementOverlay,
-    multiSelect: boolean }>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   selected = false;
   protected childComponent!: ComponentRef<ElementComponent>;
@@ -57,7 +52,7 @@ export abstract class CanvasElementOverlay {
     if (!(event.target as Element).tagName.includes('input'.toUpperCase()) &&
       !(event.target as Element).tagName.includes('textarea'.toUpperCase()) &&
       event.key === 'Delete') {
-      this.unitService.deleteElement(this.element);
+      this.unitService.deleteSelectedElements();
     }
   }
 
@@ -67,13 +62,9 @@ export abstract class CanvasElementOverlay {
 
   click(event: MouseEvent): void {
     if (event.shiftKey) {
-      this.elementSelected.emit({
-        componentElement: this, multiSelect: true
-      });
+      this.unitService.selectElement({ componentElement: this, multiSelect: true });
     } else {
-      this.elementSelected.emit({
-        componentElement: this, multiSelect: false
-      });
+      this.unitService.selectElement({ componentElement: this, multiSelect: false });
     }
   }
 

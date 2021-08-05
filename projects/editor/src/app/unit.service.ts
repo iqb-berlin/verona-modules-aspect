@@ -8,6 +8,10 @@ import * as UnitFactory from './model/UnitFactory';
 import { MessageService } from '../../../common/message.service';
 import { IdService } from './id.service';
 import { DialogService } from './dialog.service';
+// eslint-disable-next-line import/no-cycle
+import { CanvasElementOverlay } from './components/unit-view/page-view/canvas/canvas-element-overlay';
+// eslint-disable-next-line import/no-cycle
+import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/canvas-section.component';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +20,13 @@ export class UnitService {
   private _unit: BehaviorSubject<Unit>;
   private _selectedPage: BehaviorSubject<UnitPage>;
   private _selectedPageSection: BehaviorSubject<UnitPageSection>;
+  private selectedPageSectionComponent!: CanvasSectionComponent;
   private _selectedPageIndex: BehaviorSubject<number>; // TODO weg refactorn
-  private _pages: BehaviorSubject<UnitPage>[];
-
-  private _selectedPageSectionIndex: BehaviorSubject<number>;
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
+
+  selectedComponentElements: CanvasElementOverlay[] = [];
+  elementSelected: Subject<UnitUIElement[]> = new Subject<UnitUIElement[]>();
 
   constructor(private messageService: MessageService,
               private idService: IdService,
@@ -33,13 +38,37 @@ export class UnitService {
     initialUnit.pages.push(initialPage);
 
     this._unit = new BehaviorSubject(initialUnit);
-    this._pages = [new BehaviorSubject(initialPage as UnitPage)];
     this._selectedPageIndex = new BehaviorSubject(0);
     this._selectedPage = new BehaviorSubject(initialPage);
     this._selectedPageSection = new BehaviorSubject(initialPage.sections[0]);
-
-    this._selectedPageSectionIndex = new BehaviorSubject<number>(0);
   }
+
+  // == SELECTION ===============================
+  selectElement(event: { componentElement: CanvasElementOverlay; multiSelect: boolean }): void {
+    if (!event.multiSelect) {
+      this.clearSelection();
+    }
+    this.selectedComponentElements.push(event.componentElement);
+    event.componentElement.setSelected(true); // TODO direkt in der component?
+    this.elementSelected.next(this.selectedComponentElements.map(componentElement => componentElement.element));
+  }
+
+  private clearSelection() {
+    this.selectedComponentElements.forEach((overlayComponent: CanvasElementOverlay) => {
+      overlayComponent.setSelected(false);
+    });
+    this.selectedComponentElements = [];
+  }
+
+  selectSection(sectionComponent: CanvasSectionComponent): void {
+    if (this.selectedPageSectionComponent) {
+      this.selectedPageSectionComponent.selected = false;
+    }
+    this.selectedPageSectionComponent = sectionComponent;
+    this.selectedPageSectionComponent.selected = true;
+    this._selectedPageSection.next(sectionComponent.section);
+  }
+  // ===========================================
 
   get unit(): Observable<Unit> {
     return this._unit.asObservable();
@@ -57,23 +86,10 @@ export class UnitService {
     return this._selectedPageIndex.asObservable();
   }
 
-  get selectedPageSectionIndex(): Observable<number> {
-    return this._selectedPageSectionIndex.asObservable();
-  }
-
-  getSelectedPageSection(): UnitPageSection {
-    return this._unit.value.pages[this._selectedPageIndex.value].sections[this._selectedPageSectionIndex.value];
-  }
-
-  getPageObservable(index: number): Observable<UnitPage> {
-    return this._pages[index].asObservable();
-  }
-
   addPage(): void {
     const newPage = UnitFactory.createUnitPage(this._unit.value.pages.length);
     newPage.sections.push(UnitFactory.createUnitPageSection());
     this._unit.value.pages.push(newPage);
-    this._pages.push(new BehaviorSubject(newPage as UnitPage));
 
     this._unit.next(this._unit.value);
     this._selectedPageIndex.next(this._unit.value.pages.length - 1);
@@ -82,8 +98,6 @@ export class UnitService {
 
   deletePage(index: number = this._selectedPageIndex.value): void {
     this._unit.value.pages.splice(index, 1);
-    this._pages.splice(index, 1);
-
     this._unit.next(this._unit.value);
     if (index === this._selectedPageIndex.value) {
       this._selectedPageIndex.next(this._selectedPageIndex.value - 1);
@@ -102,24 +116,18 @@ export class UnitService {
   }
 
   addSection(): void {
-    const newSection = UnitFactory.createUnitPageSection();
-    this._unit.value.pages[this._selectedPageIndex.value].sections.push(newSection);
+    this._unit.value.pages[this._selectedPageIndex.value].sections.push(UnitFactory.createUnitPageSection());
     this._unit.next(this._unit.value);
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]); // TODO auslagern?
   }
 
-  deleteSection(): void {
+  deleteSelectedSection(): void {
     if (this._unit.value.pages[this._selectedPageIndex.value].sections.length < 2) {
       this.messageService.showWarning('cant delete last section');
     } else {
-      const index = this._selectedPageSectionIndex.value;
-      this._unit.value.pages[this._selectedPageIndex.value].sections.splice(index, 1);
+      this._unit.value.pages[this._selectedPageIndex.value].sections.splice(
+        this._unit.value.pages[this._selectedPageIndex.value].sections.indexOf(this._selectedPageSection.value), 1
+      );
       this._unit.next(this._unit.value);
-
-      this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
-      if (this._selectedPageSectionIndex.value > 0) {
-        this._selectedPageSectionIndex.next(this._selectedPageSectionIndex.value - 1);
-      }
     }
   }
 
@@ -176,42 +184,30 @@ export class UnitService {
         throw new Error(`ElementType ${elementType} not found!`);
     }
     newElement.id = this.idService.getNewID(elementType);
-    newElement.dynamicPositioning = this._unit.value.pages[this._selectedPageIndex.value]
-      .sections[this._selectedPageSectionIndex.value].dynamicPositioning;
-    this._unit.value.pages[this._selectedPageIndex.value]
-      .sections[this._selectedPageSectionIndex.value].elements.push(newElement!);
-
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+    newElement.dynamicPositioning = this._selectedPageSection.value.dynamicPositioning;
+    this._selectedPageSection.value.elements.push(newElement);
   }
 
-  deleteElement(elementToDelete: UnitUIElement): void {
-    const oldElements = this._unit.value.pages[this._selectedPageIndex.value]
-      .sections[this._selectedPageSectionIndex.value].elements;
-    this._unit.value.pages[this._selectedPageIndex.value]
-      .sections[this._selectedPageSectionIndex.value].elements =
-      oldElements.filter(element => element !== elementToDelete);
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+  deleteSelectedElements(): void {
+    const selectedElements = this.selectedComponentElements.map(componentElement => componentElement.element);
+    this._selectedPageSection.value.elements =
+      this._selectedPageSection.value.elements.filter(element => !selectedElements.includes(element));
   }
 
-  duplicateElement(elementToDuplicate: UnitUIElement): void {
-    const newElement: UnitUIElement = { ...elementToDuplicate };
-    newElement.id = this.idService.getNewID(newElement.type);
-    newElement.xPosition += 10;
-    newElement.yPosition += 10;
-
-    this._unit.value.pages[this._selectedPageIndex.value]
-      .sections[this._selectedPageSectionIndex.value].elements.push(newElement);
-    this._pages[this._selectedPageIndex.value].next(this._unit.value.pages[this._selectedPageIndex.value]);
+  duplicateSelectedElements(): void {
+    const selectedElements = this.selectedComponentElements.map(componentElement => componentElement.element);
+    selectedElements.forEach((element: UnitUIElement) => {
+      const newElement: UnitUIElement = { ...element };
+      newElement.id = this.idService.getNewID(newElement.type);
+      newElement.xPosition += 10;
+      newElement.yPosition += 10;
+      this._selectedPageSection.value.elements.push(newElement);
+    });
   }
 
   updatePageSelection(newIndex: number): void {
     this._selectedPageIndex.next(newIndex);
     this._selectedPage.next(this._unit.value.pages[newIndex]);
-  }
-
-  updatePageSectionSelection(newIndex: number): void {
-    this._selectedPageSectionIndex.next(newIndex);
-    this._selectedPageSection.next(this._unit.value.pages[this._selectedPageIndex.value].sections[newIndex]);
   }
 
   updateElementProperty(
@@ -236,7 +232,8 @@ export class UnitService {
     return true;
   }
 
-  alignElements(elements: UnitUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
+  alignSelectedElements(alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
+    const elements = this.selectedComponentElements.map(componentElement => componentElement.element);
     let newValue: number;
     switch (alignmentDirection) {
       case 'left':
@@ -268,7 +265,8 @@ export class UnitService {
     this.elementPropertyUpdated.next();
   }
 
-  setSectionDynamicPositioning(section: UnitPageSection, value: boolean): void {
+  setSectionDynamicPositioning(value: boolean): void {
+    const section = this._selectedPageSection.value;
     section.dynamicPositioning = value;
     section.elements.forEach((element: UnitUIElement) => {
       element.dynamicPositioning = value;
@@ -286,11 +284,6 @@ export class UnitService {
     this._selectedPageIndex.next(0);
     this._selectedPage.next(this._unit.value.pages[0]);
     this._unit.next(newUnit);
-    this._pages = [];
-    this._unit.value.pages.forEach((page: UnitPage) => {
-      this._pages.push(new BehaviorSubject(page));
-    });
-
     this.idService.readExistingIDs(this._unit.value);
   }
 

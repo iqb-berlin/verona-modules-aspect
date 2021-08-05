@@ -9,10 +9,10 @@ import { FormService } from '../../../../common/form.service';
   selector: 'app-section',
   template: `
     <app-element-overlay
-        *ngFor="let element of section.elements"
+        *ngFor="let element of section.elements; let i = index"
         [elementModel]="element"
         [parentForm]="sectionForm"
-        [parentArrayIndex]="parentArrayIndex">
+        [parentArrayIndex]="i">
     </app-element-overlay>
   `
 })

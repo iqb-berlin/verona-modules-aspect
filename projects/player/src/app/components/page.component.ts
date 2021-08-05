@@ -8,9 +8,9 @@ import { FormService } from '../../../../common/form.service';
 @Component({
   selector: 'app-page',
   template: `
-      <app-section *ngFor="let section of page.sections"
+      <app-section *ngFor="let section of page.sections; let i = index"
                    [parentForm]="pageForm"
-                   [parentArrayIndex]="parentArrayIndex"
+                   [parentArrayIndex]="i"
                    [section]="section"
                    [ngStyle]="{
                 position: 'relative',

@@ -3,6 +3,7 @@ export interface Unit {
 }
 
 export interface UnitPage {
+  [index: string]: string | number | boolean | undefined | UnitPageSection[];
   id: string;
   sections: UnitPageSection[];
   width: number;
@@ -12,6 +13,7 @@ export interface UnitPage {
 }
 
 export interface UnitPageSection {
+  [index: string]: string | number | boolean | undefined | UnitUIElement[];
   elements: UnitUIElement[];
   width: number;
   height: number;

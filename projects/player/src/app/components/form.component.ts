@@ -1,7 +1,9 @@
 import {
   ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormArray, FormBuilder, FormGroup
+} from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,7 +11,11 @@ import { FormService } from '../../../../common/form.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { VeronaPostService } from '../services/verona-post.service';
 import {
-  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement
+  FormControlElement,
+  FormControlValidators,
+  ChildFormGroup,
+  ValueChangeElement,
+  FormModel
 } from '../../../../common/form';
 import {
   PlayerConfig, UnitState, VopNavigationDeniedNotification
@@ -68,7 +74,7 @@ export class FormComponent implements OnInit, OnDestroy {
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((formValues: { pages: Record<string, string>[] }): void => this.onFormChanges(formValues));
+      .subscribe((formModel: FormModel): void => this.onFormChanges(formModel));
   }
 
   private addControl = (control: FormControlElement): void => {
@@ -103,12 +109,12 @@ export class FormComponent implements OnInit, OnDestroy {
     console.log(`player: onElementValueChanges - ${value.id}: ${value.values[0]} -> ${value.values[1]}`);
   };
 
-  private onFormChanges(formValues: { pages: Record<string, string>[] }): void {
+  private onFormChanges(formModel: FormModel): void {
     // eslint-disable-next-line no-console
-    console.log('player: onFormChanges', formValues);
+    console.log('player: onFormChanges', formModel);
     const unitState: UnitState = {
       dataParts: {
-        pages: JSON.stringify(formValues.pages)
+        pages: JSON.stringify(formModel.pages)
       }
     };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });

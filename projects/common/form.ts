@@ -20,6 +20,19 @@ export interface FormControlValidators {
 export interface ChildFormGroup {
   formGroup: FormGroup;
   parentForm: FormGroup;
-  parentArray: 'pages' | 'sections' | 'elements'
+  parentArray: 'pages' | 'sections' | 'elements';
   parentArrayIndex: number;
+}
+
+export interface FormModel {
+  pages: FormPage[];
+}
+
+export interface FormSection {
+  elements: Record<string, string | number | boolean | undefined>[];
+}
+
+export interface FormPage {
+  sections: FormSection[];
+  id?: string;
 }

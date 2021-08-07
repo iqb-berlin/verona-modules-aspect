@@ -10,6 +10,7 @@ export interface UnitPage {
   margin: number;
   backgroundColor: string;
   alwaysVisible: boolean;
+  alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom';
 }
 
 export interface UnitPageSection {

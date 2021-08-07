@@ -1,0 +1,9 @@
+.page-container{
+  overflow: auto;
+  margin-left: 1vw;
+  margin-top: 1vh;
+}
+
+.layout-container{
+  max-height: 100vh;
+}

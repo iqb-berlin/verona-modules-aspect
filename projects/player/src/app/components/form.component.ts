@@ -11,11 +11,7 @@ import { FormService } from '../../../../common/form.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { VeronaPostService } from '../services/verona-post.service';
 import {
-  FormControlElement,
-  FormControlValidators,
-  ChildFormGroup,
-  ValueChangeElement,
-  FormModel
+  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement, FormModel
 } from '../../../../common/form';
 import {
   PlayerConfig, UnitState, VopNavigationDeniedNotification
@@ -26,12 +22,12 @@ import { MessageService } from '../../../../common/message.service';
 @Component({
   selector: 'app-form',
   template: `
-      <form [formGroup]="form">
-          <app-player-state [parenForm]="form" [pages]="pages"></app-player-state>
-      </form>
-      <button class="form-item" mat-flat-button color="primary" (click)="submit()">Print
-          form.value
-      </button>
+    <form [formGroup]="form">
+      <app-player-state [parentForm]="form"
+                        [playerConfig]="playerConfig"
+                        [pages]="pages">
+      </app-player-state>
+    </form>
   `
 })
 export class FormComponent implements OnInit, OnDestroy {

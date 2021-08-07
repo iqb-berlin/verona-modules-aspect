@@ -4,12 +4,11 @@ import {
 import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
 import { UnitPage } from '../../../../../common/unit';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import {
-  PlayerState,
-  RunningState, VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
+  PlayerConfig, PlayerState, RunningState,
+  VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
 } from '../../models/verona';
 import { VeronaPostService } from '../../services/verona-post.service';
 
@@ -19,30 +18,22 @@ import { VeronaPostService } from '../../services/verona-post.service';
   styleUrls: ['./player-state.component.css']
 })
 export class PlayerStateComponent implements OnInit, OnDestroy {
-  @Input() parenForm!: FormGroup;
+  @Input() parentForm!: FormGroup;
   @Input() pages!: UnitPage[];
+  @Input() playerConfig!: PlayerConfig;
 
   currentPlayerPageIndex: number = 0;
-  playerPageIndices!: number[];
-  scrollPages!: UnitPage[];
-  hasScrollPages!: boolean;
-  pageWidth!: number;
-  validPages!: Record<string, string> [];
-  alwaysVisiblePage!: UnitPage | undefined;
-  alwaysVisibleUnitPageIndex!: number;
   running: boolean = true;
+  validPages!: Record<string, string> [];
 
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private veronaSubscriptionService: VeronaSubscriptionService,
-              private veronaPostService: VeronaPostService,
-              private translateService: TranslateService) {
+              private veronaPostService: VeronaPostService) {
   }
 
   ngOnInit(): void {
     this.initSubscriptions();
-    this.initPageState();
-    this.sendVopStateChangedNotification();
   }
 
   private initSubscriptions(): void {
@@ -60,29 +51,16 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
       .subscribe((message: VopGetStateRequest): void => this.onGetStateRequest(message));
   }
 
-  private initPageState() {
-    this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: UnitPage): boolean => page.alwaysVisible);
-    this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
-    this.scrollPages = this.pages.filter((page: UnitPage): boolean => !page.alwaysVisible);
-    this.hasScrollPages = this.scrollPages && this.scrollPages.length > 0;
-    this.pageWidth = !this.alwaysVisiblePage || !this.hasScrollPages ? 100 : 50;
-    this.validPages = this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
-      { [page.id]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` }));
-    this.playerPageIndices = this.pages.map(
-      (page: UnitPage, index: number): number => {
-        if (index === this.alwaysVisibleUnitPageIndex) {
-          return this.pages.length - 1;
-        }
-        return (this.alwaysVisibleUnitPageIndex < 0 || index < this.alwaysVisibleUnitPageIndex) ? index : index - 1;
-      }
-    );
-  }
-
   private get state(): RunningState {
     return this.running ? 'running' : 'stopped';
   }
 
   onSelectedIndexChange(): void {
+    this.sendVopStateChangedNotification();
+  }
+
+  onValidPagesDetermined(validPages: Record<string, string>[]): void {
+    this.validPages = validPages;
     this.sendVopStateChangedNotification();
   }
 

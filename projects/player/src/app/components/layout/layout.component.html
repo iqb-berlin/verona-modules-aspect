@@ -1,0 +1,72 @@
+<div class="layout-container" [fxLayout]="layoutAlignment">
+  <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
+    alwaysVisiblePageView :
+    scrollPagesView"></ng-container>
+  <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
+    alwaysVisiblePageView :
+    scrollPagesView"></ng-container>
+</div>
+
+<ng-template #alwaysVisiblePageView>
+  <div *ngIf="alwaysVisiblePage" class="page-container" [fxFlex]="pageExpansion">
+  <div appHideFirstChild [hideFirstChild]="hidePageLabels">
+    <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
+      <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
+                [parentForm]="parentForm"
+                [page]="alwaysVisiblePage">
+      </app-page>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #scrollPagesView>
+  <ng-container *ngIf="hasScrollPages">
+    <ng-container *ngTemplateOutlet="scrollPageMode === 'separate' ?
+      scrollPagesSeparatedView :
+      scrollPagesScrolledView"></ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #scrollPagesSeparatedView>
+  <mat-tab-group appHideFirstChild
+                 [hideFirstChild]="hidePageLabels"
+                 class="page-container"
+                 [fxFlex]="pageExpansion"
+                 mat-align-tabs="start"
+                 [(selectedIndex)]="currentPlayerPageIndex"
+                 (selectedIndexChange)="onSelectedIndexChange()">
+    <ng-container *ngFor="let page of pages; let i = index">
+      <mat-tab *ngIf="!page.alwaysVisible"
+               label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
+        <app-page [parentArrayIndex]="i"
+                  [parentForm]="parentForm"
+                  [page]="page">
+        </app-page>
+      </mat-tab>
+    </ng-container>
+  </mat-tab-group>
+</ng-template>
+
+<ng-template #scrollPagesScrolledView>
+  <div class="page-container" [fxFlex]="pageExpansion">
+    <div fxLayout="column">
+      <ng-container *ngFor="let page of pages; let i = index">
+        <div *ngIf="!page.alwaysVisible"
+             appHideFirstChild
+             [hideFirstChild]="hidePageLabels"
+             appScrollIndex
+             (selectedIndexChange)="onSelectedIndexChange()"
+             [selectedIndex]="currentPlayerPageIndex"
+             [index]="playerPageIndices[i]">
+          <div class="mat-tab-label">
+            {{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}
+          </div>
+          <app-page [parentArrayIndex]="i"
+                    [parentForm]="parentForm"
+                    [page]="page">
+          </app-page>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

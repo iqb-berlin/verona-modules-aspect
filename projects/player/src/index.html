@@ -17,15 +17,19 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-<form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
-  <fieldset>
-    <h4>Load Unit Definition</h4>
-    <input type='file' id='fileInput' accept='.json,application/json'>
-    <input type='button' value='Load' onclick='loadUnitDefinition();'>
-  </fieldset>
-</form>
-<button onclick='denyNavigation();'>Deny Navigation</button>
 <player-aspect></player-aspect>
+<div style="position: absolute; bottom: 20px; right: 20px">
+  <form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
+    <fieldset>
+      <h4>Load Unit Definition</h4>
+      <input type='file' id='fileInput' accept='.json,application/json'>
+      <input type='button' value='Load' onclick='loadUnitDefinition();'>
+    </fieldset>
+  </form>
+  <button onclick='denyNavigation();'>Deny Navigation</button>
+  <button onclick='toPage(0);'>Page 1</button>
+  <button onclick='toPage(1);'>Page 2</button>
+</div>
 </body>
 
 <script type="text/javascript">
@@ -36,6 +40,15 @@
       reason: ['presentationIncomplete', 'responsesIncomplete']
     }, '*');
   }
+
+  toPage = (page) => {
+    window.postMessage({
+      type: 'vopPageNavigationCommand',
+      sessionId: 'dev',
+      target: page
+    }, '*');
+  }
+
 
   loadUnitDefinition = () => {
     const setStartData = (e) => {
@@ -48,7 +61,7 @@
         },
         playerConfig: {
           stateReportPolicy: 'eager',
-          pagingMode: 'separate',
+          pagingMode: 'concat-scroll', //'concat-scroll', separate
           logPolicy: 'rich',
           startPage: 'page0',
           enabledNavigationTargets: ['next']

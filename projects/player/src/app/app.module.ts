@@ -13,6 +13,9 @@ import { ValidationMessageComponent } from './components/validation-message.comp
 import { FormComponent } from './components/form.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
+import { LayoutComponent } from './components/layout/layout.component';
+import { HideFirstChildDirective } from './directives/hide-first-child.directive';
+import { ScrollIndexDirective } from './directives/scroll-index.directive';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { PlayerTranslateLoader } from './classes/player-translate-loader';
     ElementOverlayComponent,
     ValidationMessageComponent,
     FormComponent,
-    PlayerStateComponent
+    PlayerStateComponent,
+    LayoutComponent,
+    HideFirstChildDirective,
+    ScrollIndexDirective
   ],
   imports: [
     BrowserModule,

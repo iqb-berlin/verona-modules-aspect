@@ -53,6 +53,10 @@ export class UnitService {
     this.elementSelected.next(this.selectedComponentElements.map(componentElement => componentElement.element));
   }
 
+  get selectedElements(): UnitUIElement[] {
+    return this.selectedComponentElements.map(componentElement => componentElement.element);
+  }
+
   private clearSelection() {
     this.selectedComponentElements.forEach((overlayComponent: CanvasElementOverlay) => {
       overlayComponent.setSelected(false);
@@ -189,7 +193,7 @@ export class UnitService {
   }
 
   deleteSelectedElements(): void {
-    const selectedElements = this.selectedComponentElements.map(componentElement => componentElement.element);
+    const selectedElements = this.selectedElements;
     this._selectedPageSection.value.elements =
       this._selectedPageSection.value.elements.filter(element => !selectedElements.includes(element));
   }
@@ -210,25 +214,27 @@ export class UnitService {
     this._selectedPage.next(this._unit.value.pages[newIndex]);
   }
 
-  updateElementProperty(
-    element: UnitUIElement, property: string, value: string | number | boolean | undefined
-  ): boolean {
-    if (['string', 'number', 'boolean', 'undefined'].indexOf(typeof element[property]) > -1) {
-      if (property === 'id') {
-        if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
-          this.messageService.showError('ID ist bereits vergeben');
-          return false;
+  updateSelectedElementProperty(property: string, value: string | number | boolean | undefined): boolean {
+    this.selectedElements.forEach((element: UnitUIElement) => {
+    // for (const element of this.selectedElements) {
+      if (['string', 'number', 'boolean', 'undefined'].indexOf(typeof element[property]) > -1) {
+        if (property === 'id') {
+          if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
+            this.messageService.showError('ID ist bereits vergeben');
+            return false;
+          }
+          this.idService.removeId(element[property]);
+          this.idService.addId(<string>value);
         }
-        this.idService.removeId(element[property]);
-        this.idService.addId(<string>value);
+        element[property] = value;
+      } else if (Array.isArray(element[property])) {
+        (element[property] as string[]).push(value as string);
+      } else {
+        console.error('ElementProperty not found!', element[property]);
       }
-      element[property] = value;
-    } else if (Array.isArray(element[property])) {
-      (element[property] as string[]).push(value as string);
-    } else {
-      console.error('ElementProperty not found!', element[property]);
-    }
-    this.elementPropertyUpdated.next(); // notify properties panel/element about change
+      this.elementPropertyUpdated.next(); // notify properties panel/element about change
+      return true;
+    });
     return true;
   }
 
@@ -271,7 +277,9 @@ export class UnitService {
     section.elements.forEach((element: UnitUIElement) => {
       element.dynamicPositioning = value;
     });
-    this.elementPropertyUpdated.next();
+    if (this.selectedComponentElements.length > 0) {
+      this.elementPropertyUpdated.next();
+    }
   }
 
   saveUnit(): void {
@@ -295,28 +303,28 @@ export class UnitService {
       case 'radio':
         this.dialogService.showTextEditDialog((element as any).label, false).subscribe((result: string) => {
           if (result) {
-            this.updateElementProperty(element, 'label', result);
+            this.updateSelectedElementProperty('label', result);
           }
         });
         break;
       case 'text':
         this.dialogService.showTextEditDialog((element as any).text, true).subscribe((result: string) => {
           if (result) {
-            this.updateElementProperty(element, 'text', result);
+            this.updateSelectedElementProperty('text', result);
           }
         });
         break;
       case 'text-field':
         this.dialogService.showTextEditDialog((element as any).value).subscribe((result: string) => {
           if (result) {
-            this.updateElementProperty(element, 'value', result);
+            this.updateSelectedElementProperty('value', result);
           }
         });
         break;
       case 'text-area':
         this.dialogService.showTextEditDialog((element as any).value, true).subscribe((result: string) => {
           if (result) {
-            this.updateElementProperty(element, 'value', result);
+            this.updateSelectedElementProperty('value', result);
           }
         });
       // no default

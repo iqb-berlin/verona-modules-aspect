@@ -34,7 +34,7 @@ export abstract class CanvasElementOverlay {
       this.childComponent.instance.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((changeElement: ValueChangeElement) => {
-          this.unitService.updateElementProperty(this.element, 'value', changeElement.values[1]);
+          this.unitService.updateSelectedElementProperty('value', changeElement.values[1]);
         });
 
       this.unitService.elementPropertyUpdated

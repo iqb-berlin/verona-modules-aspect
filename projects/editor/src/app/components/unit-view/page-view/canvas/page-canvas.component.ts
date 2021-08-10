@@ -36,7 +36,7 @@ export class PageCanvasComponent {
       if (newXPosition > event.container.data.width - sourceItemModel.width) {
         newXPosition = event.container.data.width - sourceItemModel.width;
       }
-      this.unitService.updateElementProperty(sourceItemModel, 'xPosition', newXPosition);
+      this.unitService.updateSelectedElementProperty('xPosition', newXPosition);
 
       let newYPosition = sourceItemModel.yPosition + event.distance.y;
       if (newYPosition < 0) {
@@ -45,7 +45,7 @@ export class PageCanvasComponent {
       if (newYPosition > this.getPageHeight() - sourceItemModel.height) {
         newYPosition = this.getPageHeight() - sourceItemModel.height;
       }
-      this.unitService.updateElementProperty(sourceItemModel, 'yPosition', newYPosition);
+      this.unitService.updateSelectedElementProperty('yPosition', newYPosition);
     }
   }
 

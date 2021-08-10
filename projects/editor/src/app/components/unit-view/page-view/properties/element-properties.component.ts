@@ -344,9 +344,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string, value: string | number | boolean | undefined): void {
-    this.selectedElements.forEach((element: UnitUIElement) => {
-      this.unitService.updateElementProperty(element, property, value);
-    });
+    this.unitService.updateSelectedElementProperty(property, value);
   }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {

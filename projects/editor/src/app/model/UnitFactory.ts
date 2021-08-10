@@ -49,7 +49,11 @@ function createUnitUIElement(type: string): UnitUIElement {
     gridColumnStart: 1,
     gridColumnEnd: 2,
     gridRowStart: 1,
-    gridRowEnd: 2
+    gridRowEnd: 2,
+    marginLeft: 0,
+    marginRight: 0,
+    marginTop: 0,
+    marginBottom: 0
   };
 }
 

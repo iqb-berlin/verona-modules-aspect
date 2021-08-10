@@ -227,6 +227,35 @@ import { UnitService } from '../../../../unit.service';
                 <mat-label>Endzeile</mat-label>
                 <input matInput type="number" [value]="combinedProperties.gridRowEnd"
                        (input)="updateModel('gridRowEnd', $any($event.target).value)">
+              Abstand
+              <div class="margin-properties" fxLayoutAlign="row">
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginLeft')">
+                  <mat-label>links</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.marginLeft"
+                         (input)="updateModel('marginLeft', $any($event.target).value)">
+                </mat-form-field>
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginRight')">
+                  <mat-label>rechts</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.marginRight"
+                         (input)="updateModel('marginRight', $any($event.target).value)">
+                </mat-form-field>
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginTop')">
+                  <mat-label>oben</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.marginTop"
+                         (input)="updateModel('marginTop', $any($event.target).value)">
+                </mat-form-field>
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginBottom')">
+                  <mat-label>unten</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.marginBottom"
+                         (input)="updateModel('marginBottom', $any($event.target).value)">
+                </mat-form-field>
+              </div>
+
+              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')">
+                <mat-label>Z-Index</mat-label>
+                <input matInput type="number" [value]="combinedProperties.zIndex"
+                       (input)="updateModel('zIndex', $any($event.target).value)"
+                       matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
               </mat-form-field>
             </ng-template>
             <ng-container *ngIf="selectedElements.length > 1">
@@ -298,7 +327,11 @@ import { UnitService } from '../../../../unit.service';
         </mat-tab>
       </mat-tab-group>
     </ng-container>
-    `
+    `,
+  styles: [
+    '::ng-deep app-element-properties .margin-properties .mat-form-field-infix {width: 55px; margin: 0 5px}',
+    '::ng-deep app-element-properties .mat-form-field-infix {width: 95px; margin: 0 5px}'
+  ]
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
   selectedElements!: UnitUIElement[];

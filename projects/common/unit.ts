@@ -38,6 +38,10 @@ export interface UnitUIElement {
   gridColumnEnd: number;
   gridRowStart: number;
   gridRowEnd: number;
+  marginLeft: number;
+  marginRight: number;
+  marginTop: number;
+  marginBottom: number;
 }
 
 export interface TextUIElement extends UnitUIElement {

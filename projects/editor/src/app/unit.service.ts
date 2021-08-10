@@ -17,6 +17,8 @@ import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/
   providedIn: 'root'
 })
 export class UnitService {
+  EXPORTED_MODULE_VERSION = '0.0.1';
+
   private _unit: BehaviorSubject<Unit>;
   private _selectedPage: BehaviorSubject<UnitPage>;
   private _selectedPageSection: BehaviorSubject<UnitPageSection>;
@@ -283,7 +285,11 @@ export class UnitService {
   }
 
   saveUnit(): void {
-    const unitJSON = JSON.stringify(this._unit.value);
+    const unitJSON = JSON.stringify({
+      'verona-module': 'aspect',
+      'verona-module-version': this.EXPORTED_MODULE_VERSION,
+      ...this._unit.value
+    });
     FileService.saveUnitToFile(unitJSON);
   }
 

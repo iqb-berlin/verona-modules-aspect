@@ -9,12 +9,12 @@ import { UnitUIElement } from '../../../../../../../common/unit';
   selector: 'app-dynamic-canvas-overlay',
   template: `
     <div #draggableElement class="draggable-element" [class.draggable-element-selected]="selected"
-         cdkDrag [cdkDragData]="{dragType: 'move', element: this.element}" [cdkDragDisabled]="!selected"
+         cdkDrag [cdkDragData]="{dragType: 'move', element: element}" [cdkDragDisabled]="!selected"
          (click)="click($event)" (dblclick)="openEditDialog()"
          [style.height.%]="100"
          [style.border]="selected ? '1px solid' : ''">
         <div *ngIf="selected" class="resizeHandle"
-             cdkDrag [cdkDragData]="{dragType: 'resize', element: this.element}"
+             cdkDrag [cdkDragData]="{dragType: 'resize', element: element}"
              (cdkDragStarted)="dragStart()" (cdkDragEnded)="dragEnd()" (cdkDragMoved)="resizeElement($event)"
              [style.right.px]="2" [style.bottom.px]="-3">
           <mat-icon>south_east</mat-icon>

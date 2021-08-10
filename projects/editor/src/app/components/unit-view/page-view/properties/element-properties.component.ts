@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnDestroy, OnInit
+  Component, OnDestroy, OnInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -189,12 +189,6 @@ import { UnitService } from '../../../../unit.service';
                 <input matInput type="number" [value]="combinedProperties.yPosition"
                        (input)="updateModel('yPosition', $any($event.target).value)">
               </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')">
-                <mat-label>Z-Index</mat-label>
-                <input matInput type="number" [value]="combinedProperties.zIndex"
-                       (input)="updateModel('zIndex', $any($event.target).value)"
-                       matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
-              </mat-form-field>
             </ng-container>
             <ng-template #elseBlock>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
@@ -207,26 +201,33 @@ import { UnitService } from '../../../../unit.service';
                 <input matInput type="number" [value]="combinedProperties.height"
                        (input)="updateModel('height', $any($event.target).value)">
               </mat-form-field>
+              Grid-Spalte
+              <div fxLayoutAlign="row">
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnStart')">
+                  <mat-label>Start</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.gridColumnStart"
+                         (input)="updateModel('gridColumnStart', $any($event.target).value)">
+                </mat-form-field>
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnEnd')">
+                  <mat-label>Ende</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.gridColumnEnd"
+                         (input)="updateModel('gridColumnEnd', $any($event.target).value)">
+                </mat-form-field>
+              </div>
+              Grid-Zeile
+              <div fxLayoutAlign="row">
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowStart')">
+                  <mat-label>Start</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.gridRowStart"
+                         (input)="updateModel('gridRowStart', $any($event.target).value)">
+                </mat-form-field>
+                <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowEnd')">
+                  <mat-label>Ende</mat-label>
+                  <input matInput type="number" [value]="combinedProperties.gridRowEnd"
+                         (input)="updateModel('gridRowEnd', $any($event.target).value)">
+                </mat-form-field>
+              </div>
 
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnStart')">
-                <mat-label>Startspalte</mat-label>
-                <input matInput type="number" [value]="combinedProperties.gridColumnStart"
-                       (input)="updateModel('gridColumnStart', $any($event.target).value)">
-              </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnEnd')">
-                <mat-label>Endspalte</mat-label>
-                <input matInput type="number" [value]="combinedProperties.gridColumnEnd"
-                       (input)="updateModel('gridColumnEnd', $any($event.target).value)">
-              </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowStart')">
-                <mat-label>Startzeile</mat-label>
-                <input matInput type="number" [value]="combinedProperties.gridRowStart"
-                       (input)="updateModel('gridRowStart', $any($event.target).value)">
-              </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowEnd')">
-                <mat-label>Endzeile</mat-label>
-                <input matInput type="number" [value]="combinedProperties.gridRowEnd"
-                       (input)="updateModel('gridRowEnd', $any($event.target).value)">
               Abstand
               <div class="margin-properties" fxLayoutAlign="row">
                 <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginLeft')">

@@ -28,11 +28,11 @@ import { UnitService } from '../../../../unit.service';
 
         <ng-container *ngFor="let column of this.section.gridColumnSizes.split(' '); let x = index">
           <ng-container *ngFor="let row of this.section.gridRowSizes.split(' '); let y = index">
-            <div [style.grid-column-start]="x + 1"
+            <div class="grid-placeholder"
+                 [style.grid-column-start]="x + 1"
                  [style.grid-column-end]="x + 1"
                  [style.grid-row-start]="y + 1"
                  [style.grid-row-end]="y + 1"
-                 [style.border]="'25px inset'"
                  cdkDropList [cdkDropListData]="[x + 1, y + 1]" (cdkDropListDropped)="drop($event)">
               {{x + 1}} / {{y + 1}}
             </div>
@@ -78,7 +78,8 @@ import { UnitService } from '../../../../unit.service';
     '.sectionMenu {position: absolute; left: -29px; top: 0}',
     '.sectionMenu button {width: 28px; height: 28px}',
     '.sectionMenu .mat-mini-fab {line-height: 0;}',
-    '::ng-deep .sectionMenu .mat-mini-fab .mat-button-wrapper {line-height: 0;}'
+    '::ng-deep .sectionMenu .mat-mini-fab .mat-button-wrapper {line-height: 0;}',
+    '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}'
   ]
 })
 export class CanvasSectionComponent implements OnInit {

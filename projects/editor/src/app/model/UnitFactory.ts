@@ -28,7 +28,7 @@ export function createUnitPageSection(): UnitPageSection {
   return {
     elements: [],
     width: 1100,
-    height: 200,
+    height: 400,
     backgroundColor: '#FFFAF0',
     dynamicPositioning: true,
     gridColumnSizes: '1fr 1fr',

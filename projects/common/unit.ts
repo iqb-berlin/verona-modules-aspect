@@ -21,6 +21,7 @@ export interface UnitPageSection {
   backgroundColor: string;
   dynamicPositioning: boolean;
   gridColumnSizes: string;
+  gridRowSizes: string;
 }
 
 export interface UnitUIElement {

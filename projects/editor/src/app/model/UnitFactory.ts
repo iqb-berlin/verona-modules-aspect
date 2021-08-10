@@ -30,8 +30,9 @@ export function createUnitPageSection(): UnitPageSection {
     width: 1100,
     height: 200,
     backgroundColor: '#FFFAF0',
-    dynamicPositioning: false,
-    gridColumnSizes: '1fr 1fr 1fr'
+    dynamicPositioning: true,
+    gridColumnSizes: '1fr 1fr',
+    gridRowSizes: '1fr'
   };
 }
 
@@ -42,13 +43,13 @@ function createUnitUIElement(type: string): UnitUIElement {
     zIndex: 0,
     width: 180,
     height: 60,
-    dynamicPositioning: false,
+    dynamicPositioning: true,
     xPosition: 0,
     yPosition: 0,
     gridColumnStart: 1,
-    gridColumnEnd: 1,
+    gridColumnEnd: 2,
     gridRowStart: 1,
-    gridRowEnd: 1
+    gridRowEnd: 2
   };
 }
 

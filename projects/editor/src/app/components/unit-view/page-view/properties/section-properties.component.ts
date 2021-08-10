@@ -30,6 +30,10 @@ import { UnitService } from '../../../../unit.service';
         <mat-label>Grid-Spalten</mat-label>
         <input matInput [(ngModel)]="selectedPageSection.gridColumnSizes">
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>Grid-Zeilen</mat-label>
+        <input matInput [(ngModel)]="selectedPageSection.gridRowSizes">
+      </mat-form-field>
     </div>
     <button mat-raised-button
             (click)="unitService.deleteSelectedSection()">

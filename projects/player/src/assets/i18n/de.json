@@ -5,6 +5,7 @@
   "noReason": "Navigation ohne Angabe von Gründen verweigert",
   "validators": {
     "inputRequired": "Eingabe erforderlich",
+    "inputRequiredTrue": "Ankreuzen erforderlich",
     "InputTooShort": "Eingabe zu kurz",
     "InputTooLong": "Eingabe zu lang",
     "ValueTooSmall": "Wert zu klein",

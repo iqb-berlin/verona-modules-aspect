@@ -1,11 +1,11 @@
 <ng-container *ngIf="formElementControl && formElementControl.touched">
-  <mat-error *ngIf="formElementControl.errors?.required"
+  <mat-error *ngIf="formElementControl.errors?.required && elementModel.type !== 'checkbox'"
              [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
     {{requiredMessage}}
   </mat-error>
-  <mat-error *ngIf="formElementControl.errors?.requiredTrue"
+  <mat-error *ngIf="formElementControl.errors?.required && elementModel.type === 'checkbox'"
              [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
-    {{requiredMessage}}
+    {{requiredTrueMessage}}
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.minlength"
              [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >

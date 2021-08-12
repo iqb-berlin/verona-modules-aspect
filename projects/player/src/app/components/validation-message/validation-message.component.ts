@@ -4,6 +4,7 @@ import {
 } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import {
+  CheckboxElement,
   InputUIElement, NumberFieldElement, TextFieldElement, UnitUIElement
 } from '../../../../../common/unit';
 import { FormService } from '../../../../../common/form.service';
@@ -19,6 +20,7 @@ export class ValidationMessageComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   formElementControl!: FormControl;
   requiredMessage!: string;
+  requiredTrueMessage!: string;
   minLengthMessage!: string;
   maxLengthMessage!: string;
   minMessage!: string;
@@ -65,6 +67,9 @@ export class ValidationMessageComponent implements OnInit {
   private setErrorMessages() {
     this.requiredMessage = (this.elementModel as InputUIElement).requiredWarnMessage ||
       this.translateService.instant('validators.inputRequired');
+
+    this.requiredTrueMessage = (this.elementModel as CheckboxElement).requiredWarnMessage ||
+      this.translateService.instant('validators.inputRequiredTrue');
 
     this.minLengthMessage = (this.elementModel as TextFieldElement).minWarnMessage ||
       this.translateService.instant('validators.inputTooShort');

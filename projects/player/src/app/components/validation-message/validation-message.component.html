@@ -1,0 +1,26 @@
+<ng-container *ngIf="formElementControl && formElementControl.touched">
+  <mat-error *ngIf="formElementControl.errors?.required"
+             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+    {{requiredMessage}}
+  </mat-error>
+  <mat-error *ngIf="formElementControl.errors?.requiredTrue"
+             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+    {{requiredMessage}}
+  </mat-error>
+  <mat-error *ngIf="formElementControl.errors?.minlength"
+             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+    {{minLengthMessage}}
+  </mat-error>
+  <mat-error *ngIf="formElementControl.errors?.maxlength"
+             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+    {{maxLengthMessage}}
+  </mat-error>
+  <mat-error *ngIf="formElementControl.errors?.min"
+             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+    {{minMessage}}
+  </mat-error>
+  <mat-error *ngIf="formElementControl.errors?.max"
+             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+    {{maxMessage}}
+  </mat-error>
+</ng-container>

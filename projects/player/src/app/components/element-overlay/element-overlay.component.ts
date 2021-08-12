@@ -5,20 +5,15 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { UnitUIElement } from '../../../../common/unit';
-import * as ComponentUtils from '../../../../common/component-utils';
-import { FormService } from '../../../../common/form.service';
-import { ValueChangeElement } from '../../../../common/form';
+import { UnitUIElement } from '../../../../../common/unit';
+import * as ComponentUtils from '../../../../../common/component-utils';
+import { FormService } from '../../../../../common/form.service';
+import { ValueChangeElement } from '../../../../../common/form';
 
 @Component({
   selector: 'app-element-overlay',
-  template: `
-    <ng-template #elementComponentContainer></ng-template>
-    <app-error-message *ngIf="isInputElement"
-                       [parentForm]="elementForm"
-                       [elementModel]="elementModel">
-    </app-error-message>
-  `
+  templateUrl: './element-overlay.component.html',
+  styleUrls: ['./element-overlay.component.css']
 })
 export class ElementOverlayComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;

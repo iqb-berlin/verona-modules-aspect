@@ -5,33 +5,13 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import {
   InputUIElement, NumberFieldElement, TextFieldElement, UnitUIElement
-} from '../../../../common/unit';
-import { FormService } from '../../../../common/form.service';
+} from '../../../../../common/unit';
+import { FormService } from '../../../../../common/form.service';
 
 @Component({
-  selector: 'app-error-message',
-  template: `
-      <ng-container *ngIf="formElementControl && formElementControl.touched">
-          <mat-error *ngIf="formElementControl.errors?.required">
-              {{requiredMessage}}
-          </mat-error>
-          <mat-error *ngIf="formElementControl.errors?.requiredTrue">
-              {{requiredMessage}}
-          </mat-error>
-          <mat-error *ngIf="formElementControl.errors?.minlength">
-              {{minLengthMessage}}
-          </mat-error>
-          <mat-error *ngIf="formElementControl.errors?.maxlength">
-              {{maxLengthMessage}}
-          </mat-error>
-          <mat-error *ngIf="formElementControl.errors?.min">
-              {{minMessage}}
-          </mat-error>
-          <mat-error *ngIf="formElementControl.errors?.max">
-              {{maxMessage}}
-          </mat-error>
-      </ng-container>
-  `
+  selector: 'app-validation-message',
+  templateUrl: './validation-message.component.html',
+  styleUrls: ['./validation-message.component.css']
 })
 
 export class ValidationMessageComponent implements OnInit {

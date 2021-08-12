@@ -17,7 +17,7 @@ import { UnitUIElement } from '../../../../../../../common/unit';
              cdkDrag [cdkDragData]="{dragType: 'resize', element: element}"
              (cdkDragStarted)="dragStart()" (cdkDragEnded)="dragEnd()" (cdkDragMoved)="resizeElement($event)"
              [style.right.px]="2" [style.bottom.px]="-3">
-          <mat-icon>south_east</mat-icon>
+          <mat-icon>aspect_ratio</mat-icon>
           <div *cdkDragPlaceholder></div>
       </div>
       <ng-template #elementContainer></ng-template>

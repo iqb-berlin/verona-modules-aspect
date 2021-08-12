@@ -2,7 +2,7 @@
 <app-layout [parentForm]="parentForm"
             [pages]="pages"
             [playerConfig]="playerConfig"
-            [currentPlayerPageIndex]="currentPlayerPageIndex"
+            [(selectedIndex)]="currentPlayerPageIndex"
             (validPagesDetermined)="onValidPagesDetermined($event)"
             (selectedIndexChange)="onSelectedIndexChange()">
 </app-layout>

@@ -14,10 +14,10 @@ import { PlayerConfig } from '../../models/verona';
 export class LayoutComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() pages!: UnitPage[];
-  @Input() currentPlayerPageIndex!: number;
+  @Input() selectedIndex!: number;
   @Input() playerConfig!: PlayerConfig;
 
-  @Output() selectedIndexChange = new EventEmitter();
+  @Output() selectedIndexChange = new EventEmitter<number>();
   @Output() validPagesDetermined = new EventEmitter<Record<string, string>[]>();
 
   playerPageIndices!: number[];
@@ -66,7 +66,7 @@ export class LayoutComponent implements OnInit {
     this.hidePageLabels = false;
   }
 
-  onSelectedIndexChange(): void {
-    this.selectedIndexChange.emit();
+  onSelectedIndexChange(selectedIndex: number): void {
+    this.selectedIndexChange.emit(selectedIndex);
   }
 }

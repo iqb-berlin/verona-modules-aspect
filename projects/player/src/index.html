@@ -18,7 +18,7 @@
 </head>
 <body>
 <player-aspect></player-aspect>
-<div style="position: absolute; bottom: 20px; right: 20px">
+<div style="position: absolute; bottom: 20px; right: 20px; z-index: 100">
   <form id="jsonFile" name="jsonFile" enctype="multipart/form-data" method="post">
     <fieldset>
       <h4>Load Unit Definition</h4>
@@ -29,6 +29,7 @@
   <button onclick='denyNavigation();'>Deny Navigation</button>
   <button onclick='toPage(0);'>Page 1</button>
   <button onclick='toPage(1);'>Page 2</button>
+  <button onclick='toPage(2);'>Page 3</button>
 </div>
 </body>
 

@@ -33,8 +33,8 @@
                  class="page-container"
                  [fxFlex]="pageExpansion"
                  mat-align-tabs="start"
-                 [(selectedIndex)]="currentPlayerPageIndex"
-                 (selectedIndexChange)="onSelectedIndexChange()">
+                 [(selectedIndex)]="selectedIndex"
+                 (selectedIndexChange)="onSelectedIndexChange($event)">
     <ng-container *ngFor="let page of pages; let i = index">
       <mat-tab *ngIf="!page.alwaysVisible"
                label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
@@ -48,16 +48,17 @@
 </ng-template>
 
 <ng-template #scrollPagesScrolledView>
-  <div class="page-container" [fxFlex]="pageExpansion">
+  <div class="page-container" #scrollPagesContainer [fxFlex]="pageExpansion">
     <div fxLayout="column">
       <ng-container *ngFor="let page of pages; let i = index">
         <div *ngIf="!page.alwaysVisible"
              appHideFirstChild
              [hideFirstChild]="hidePageLabels"
              appScrollIndex
-             (selectedIndexChange)="onSelectedIndexChange()"
-             [selectedIndex]="currentPlayerPageIndex"
-             [index]="playerPageIndices[i]">
+             [scrollPagesContainer]="scrollPagesContainer"
+             [(selectedIndex)]="selectedIndex"
+             [index]="playerPageIndices[i]"
+             (selectedIndexChange)="onSelectedIndexChange($event)">
           <div class="mat-tab-label">
             {{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}
           </div>

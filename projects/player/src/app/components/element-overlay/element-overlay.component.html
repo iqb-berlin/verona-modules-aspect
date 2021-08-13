@@ -1,6 +1,6 @@
 <ng-template #elementComponentContainer></ng-template>
 <app-validation-message *ngIf="isInputElement"
-                        [className]="elementModel.dynamicPositioning ? 'dynamic-validation-messages' : ''"
+                        [ngClass]="{'dynamic-validation-messages' : elementModel.dynamicPositioning}"
                         [parentForm]="elementForm"
                         [elementModel]="elementModel">
 </app-validation-message>

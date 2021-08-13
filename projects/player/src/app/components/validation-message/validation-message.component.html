@@ -1,26 +1,26 @@
 <ng-container *ngIf="formElementControl && formElementControl.touched">
   <mat-error *ngIf="formElementControl.errors?.required && elementModel.type !== 'checkbox'"
-             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{requiredMessage}}
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.required && elementModel.type === 'checkbox'"
-             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{requiredTrueMessage}}
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.minlength"
-             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{minLengthMessage}}
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.maxlength"
-             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{maxLengthMessage}}
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.min"
-             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{minMessage}}
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.max"
-             [ngClass]="elementModel.dynamicPositioning ? 'dynamic-validation-message' : ''" >
+             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{maxMessage}}
   </mat-error>
 </ng-container>

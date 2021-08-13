@@ -1,4 +1,5 @@
 export interface Unit {
+  veronaModuleVersion: string;
   pages: UnitPage[];
 }
 

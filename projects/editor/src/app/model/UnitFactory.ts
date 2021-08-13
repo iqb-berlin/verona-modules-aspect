@@ -6,8 +6,9 @@ import {
   VideoElement, TextAreaElement, NumberFieldElement
 } from '../../../../common/unit';
 
-export function createUnit(): Unit {
+export function createUnit(veronaModuleVersion: string): Unit {
   return {
+    veronaModuleVersion: veronaModuleVersion,
     pages: []
   };
 }

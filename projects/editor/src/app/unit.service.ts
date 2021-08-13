@@ -17,7 +17,7 @@ import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/
   providedIn: 'root'
 })
 export class UnitService {
-  EXPORTED_MODULE_VERSION = '0.0.1';
+  EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.0.1';
 
   private _unit: BehaviorSubject<Unit>;
   private _selectedPage: BehaviorSubject<UnitPage>;
@@ -33,7 +33,7 @@ export class UnitService {
   constructor(private messageService: MessageService,
               private idService: IdService,
               private dialogService: DialogService) {
-    const initialUnit = UnitFactory.createUnit();
+    const initialUnit = UnitFactory.createUnit(this.EXPORTED_MODULE_VERSION);
     const initialPage = UnitFactory.createUnitPage(0);
     const initialSection = UnitFactory.createUnitPageSection();
     initialPage.sections.push(initialSection);
@@ -286,8 +286,6 @@ export class UnitService {
 
   saveUnit(): void {
     const unitJSON = JSON.stringify({
-      'verona-module': 'aspect',
-      'verona-module-version': this.EXPORTED_MODULE_VERSION,
       ...this._unit.value
     });
     FileService.saveUnitToFile(unitJSON);

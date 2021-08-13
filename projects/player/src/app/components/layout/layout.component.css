@@ -1,3 +1,11 @@
+.concat-scroll-snap-align {
+  scroll-snap-align: start;
+}
+
+.concat-scroll-snap {
+  scroll-snap-type: y proximity;
+}
+
 .page-container{
   overflow: scroll;
   margin-left: 1vw;

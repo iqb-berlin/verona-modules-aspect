@@ -48,10 +48,14 @@
 </ng-template>
 
 <ng-template #scrollPagesScrolledView>
-  <div class="page-container" #scrollPagesContainer [fxFlex]="pageExpansion">
+  <div class="page-container"
+       [ngClass]="{'concat-scroll-snap' : playerConfig.pagingMode === 'concat-scroll-snap'}"
+       #scrollPagesContainer
+       [fxFlex]="pageExpansion">
     <div fxLayout="column">
       <ng-container *ngFor="let page of pages; let i = index">
         <div *ngIf="!page.alwaysVisible"
+             [ngClass]="{'concat-scroll-snap-align' : playerConfig.pagingMode === 'concat-scroll-snap'}"
              appHideFirstChild
              [hideFirstChild]="hidePageLabels"
              appScrollIndex

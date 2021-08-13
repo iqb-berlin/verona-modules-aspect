@@ -10,6 +10,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../../../common/form.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { VeronaPostService } from '../services/verona-post.service';
+import { MessageService } from '../../../../common/message.service';
+import { MetaDataService } from '../services/meta-data.service';
 import {
   FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement, FormModel
 } from '../../../../common/form';
@@ -17,7 +19,6 @@ import {
   PlayerConfig, UnitState, VopNavigationDeniedNotification
 } from '../models/verona';
 import { UnitPage } from '../../../../common/unit';
-import { MessageService } from '../../../../common/message.service';
 
 @Component({
   selector: 'app-form',
@@ -41,6 +42,7 @@ export class FormComponent implements OnInit, OnDestroy {
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private messageService: MessageService,
+              private metaDataService: MetaDataService,
               private translateService: TranslateService,
               protected changeDetectorRef: ChangeDetectorRef) {
   }
@@ -111,7 +113,8 @@ export class FormComponent implements OnInit, OnDestroy {
     const unitState: UnitState = {
       dataParts: {
         pages: JSON.stringify(formModel.pages)
-      }
+      },
+      unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
     };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }
@@ -119,11 +122,5 @@ export class FormComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  /// ////////////////////// only for dev
-  submit(): void {
-    // eslint-disable-next-line no-console
-    console.log('player: form.value', this.form.value);
   }
 }

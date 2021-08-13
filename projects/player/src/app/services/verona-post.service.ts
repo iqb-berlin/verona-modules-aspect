@@ -1,21 +1,15 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Injectable } from '@angular/core';
 import {
-  LogData, NavigationTarget, PlayerState, UnitState, VopMessage
+  LogData, NavigationTarget, PlayerState, UnitState, VopMessage, VopMetaData
 } from '../models/verona';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VeronaPostService {
-  private readonly playerMetadata!: NamedNodeMap;
   private _sessionId!: string;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {
-    this.playerMetadata = document.querySelectorAll('meta')[1].attributes;
-  }
-
-  set sessionId(sessionId:string) {
+  set sessionId(sessionId: string) {
     this._sessionId = sessionId;
   }
 
@@ -44,18 +38,11 @@ export class VeronaPostService {
     });
   }
 
-  sendVopReadyNotification(): void {
-    if (this.playerMetadata) {
+  sendVopReadyNotification(playerMetadata: VopMetaData): void {
+    if (playerMetadata) {
       this.send({
         type: 'vopReadyNotification',
-        apiVersion:
-          this.playerMetadata.getNamedItem('data-api-version')?.value || '',
-        notSupportedApiFeatures:
-          this.playerMetadata.getNamedItem('data-not-supported-api-features')?.value,
-        supportedUnitDefinitionTypes:
-          this.playerMetadata.getNamedItem('data-supported-unit-definition-types')?.value,
-        supportedUnitStateDataTypes:
-          this.playerMetadata.getNamedItem('data-supported-unit-state-data-types')?.value
+        ...playerMetadata
       });
     } else {
       // eslint-disable-next-line no-console

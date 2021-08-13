@@ -69,8 +69,11 @@ export interface VopContinueCommand {
   sessionId: string;
 }
 
-export interface VopReadyNotification {
+export interface VopReadyNotification extends VopMetaData{
   type: 'vopReadyNotification';
+}
+
+export interface VopMetaData {
   apiVersion: string;
   notSupportedApiFeatures?: string;
   supportedUnitDefinitionTypes?: string;

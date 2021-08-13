@@ -7,7 +7,8 @@ import {
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
 import { VeronaPostService } from './services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
-import { PlayerConfig, VopStartCommand } from './models/verona';
+import { MetaDataService } from './services/meta-data.service';
+import { PlayerConfig, UnitState, VopStartCommand } from './models/verona';
 import { FormPage } from '../../../common/form';
 
 @Component({
@@ -24,12 +25,13 @@ export class AppComponent implements OnInit {
   constructor(private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
+              private metaDataService: MetaDataService,
               private nativeEventService: NativeEventService) {
   }
 
   ngOnInit(): void {
     this.initSubscriptions();
-    this.veronaPostService.sendVopReadyNotification();
+    this.veronaPostService.sendVopReadyNotification(this.metaDataService.playerMetadata);
     this.translateService.addLangs(['de']);
     this.translateService.setDefaultLang('de');
   }
@@ -43,17 +45,36 @@ export class AppComponent implements OnInit {
       .subscribe((focused: boolean): void => this.onFocus(focused));
   }
 
+  private initUnit(pages: UnitPage[], unitState: UnitState | undefined): void {
+    const storedPages: FormPage[] = unitState?.dataParts?.pages ?
+      JSON.parse(unitState.dataParts.pages) : [];
+    if (storedPages.length > 0) {
+      if (unitState?.unitStateDataType &&
+        this.metaDataService.verifyUnitStateDataType(unitState.unitStateDataType)) {
+        this.pages = this.addStoredValues(pages, storedPages);
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('player: wrong unitStateDataType');
+        this.pages = pages;
+      }
+    } else {
+      this.pages = pages;
+    }
+  }
+
   private onStart(message: VopStartCommand): void {
     // eslint-disable-next-line no-console
     console.log('player: onStart', message);
-    const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : [];
-    const storedPages: FormPage[] = message.unitState?.dataParts?.pages ?
-      JSON.parse(message.unitState.dataParts.pages) : [];
-    this.pages = storedPages.length > 0 ?
-      this.addStoredValues(unitDefinition.pages, storedPages) :
-      unitDefinition.pages;
-    this.playerConfig = message.playerConfig || {};
-    this.veronaPostService.sessionId = message.sessionId;
+    const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : {};
+    if (unitDefinition.veronaModuleVersion &&
+      this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
+      this.veronaPostService.sessionId = message.sessionId;
+      this.playerConfig = message.playerConfig || {};
+      this.initUnit(unitDefinition.pages, message.unitState);
+    } else {
+      // eslint-disable-next-line no-console
+      console.warn('player: wrong unitDefinitionType');
+    }
   }
 
   private addStoredValues = (unitPages: UnitPage[], storedPages: FormPage[]): UnitPage[] => unitPages

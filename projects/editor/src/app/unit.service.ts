@@ -208,7 +208,7 @@ export class UnitService {
     this.elementPropertyUpdated.next();
   }
 
-  setSectionDynamicPositioning(section: UnitPageSection, value: boolean): void {
+  private setSectionDynamicPositioning(section: UnitPageSection, value: boolean): void {
     section.dynamicPositioning = value;
     section.elements.forEach((element: UnitUIElement) => {
       element.dynamicPositioning = value;

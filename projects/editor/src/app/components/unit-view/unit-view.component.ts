@@ -51,7 +51,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
   }
 
   deletePage(): void {
-    this.showConfirmDialog().subscribe((result: boolean) => {
+    this.showConfirmDialog().pipe(takeUntil(this.ngUnsubscribe)).subscribe((result: boolean) => {
       if (result) {
         this.unitService.deletePage(this.selectedPageIndex);
         this.selectedPageIndex -= 1;

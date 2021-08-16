@@ -15,18 +15,24 @@ import { SelectionService } from '../../../../selection.service';
     <div *ngIf="selectedPageSection" fxLayout="column">
       <mat-form-field appearance="fill">
         <mat-label>Breite</mat-label>
-        <input matInput type="number" [(ngModel)]="selectedPageSection.width">
+        <input matInput type="number"
+               [value]="$any(selectedPageSection.width)"
+               (change)="updateModel('width', $any($event.target).value)">
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Höhe</mat-label>
-        <input matInput type="number" [(ngModel)]="selectedPageSection.height">
+        <input matInput type="number"
+               [value]="$any(selectedPageSection.height)"
+               (change)="updateModel('height', $any($event.target).value)">
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Hintergrundfarbe</mat-label>
-        <input matInput type="text" [(ngModel)]="selectedPageSection.backgroundColor">
+        <input matInput type="text"
+               [value]="$any(selectedPageSection.backgroundColor)"
+               (change)="updateModel('backgroundColor', $any($event.target).value)">
       </mat-form-field>
       <mat-checkbox [checked]="selectedPageSection.dynamicPositioning"
-                    (change)="unitService.setSectionDynamicPositioning(selectedPageSection, $event.checked)">
+                    (change)="updateModel('dynamicPositioning', $event.checked)">
         dynamisches Layout
       </mat-checkbox>
 

@@ -2,10 +2,11 @@ import {
   Component, OnDestroy, OnInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { UnitPageSection } from '../../../../../../../common/unit';
+import { take, takeUntil } from 'rxjs/operators';
+import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
+import { MessageService } from '../../../../../../../common/message.service';
 
 // TODO besseres Layout for grid Spalten und Zeilen. Versuch auskommentiert, weil buggy.
 
@@ -118,7 +119,9 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
   selectedPageSection!: UnitPageSection;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public selectionService: SelectionService, public unitService: UnitService) { }
+  constructor(public selectionService: SelectionService,
+              public unitService: UnitService,
+              protected messageService: MessageService) { }
 
   ngOnInit(): void {
     this.selectionService.selectedPageSection
@@ -126,6 +129,22 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
       .subscribe((pageSection: UnitPageSection) => {
         this.selectedPageSection = pageSection;
       });
+  }
+
+  updateModel(property: string, value: string | number | boolean): void {
+    let selectedPage: UnitPage;
+    this.selectionService.selectedPage
+      .pipe(take(1))
+      .subscribe(_selectedPage => {
+        selectedPage = _selectedPage;
+      })
+      .unsubscribe();
+
+    if (property === 'width' && value > selectedPage!.width) {
+      this.messageService.showError('Darf nicht breiter als die Seite sein.');
+    } else {
+      this.unitService.updateSectionProperty(this.selectedPageSection, property, value);
+    }
   }
 
   ngOnDestroy(): void {

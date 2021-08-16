@@ -218,11 +218,14 @@ export class UnitService {
     });
   }
 
-  saveUnit(): void {
-    const unitJSON = JSON.stringify({
+  getUnitAsJSON(): string {
+    return JSON.stringify({
       ...this._unit.value
     });
-    FileService.saveUnitToFile(unitJSON);
+  }
+
+  saveUnit(): void {
+    FileService.saveUnitToFile(this.getUnitAsJSON());
   }
 
   async loadUnit(): Promise<void> {

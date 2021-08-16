@@ -18,17 +18,18 @@ export class ScrollIndexDirective implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.intersectionObserver = new IntersectionObserver((entries: IntersectionObserverEntry[]): void => {
-      if (entries[0].isIntersecting) {
-        this.selectedIndex = this.index;
-        this.useScrollIntoView = false;
-        this.selectedIndexChange.emit(this.selectedIndex);
+    this.intersectionObserver = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]): void => entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.selectedIndex = this.index;
+          this.useScrollIntoView = false;
+          this.selectedIndexChange.emit(this.selectedIndex);
+        }
+      }), {
+        root: this.scrollPagesContainer,
+        rootMargin: '-1% 0px -99% 0px'
       }
-    }, {
-      root: this.scrollPagesContainer,
-      rootMargin: '-80% 0px -20% 0px'
-    });
-    // TODO: find solution for pages which are smaller than 80%
+    );
     this.intersectionObserver.observe(this.elementRef.nativeElement);
   }
 

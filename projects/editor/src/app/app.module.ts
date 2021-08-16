@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { AppComponent } from './app.component';
@@ -49,7 +48,6 @@ import { ElementPropertiesComponent } from './components/unit-view/page-view/pro
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,
-    MatDialogModule,
     MatButtonToggleModule,
     TranslateModule.forRoot({
       loader: {

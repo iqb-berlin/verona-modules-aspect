@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
 import {
   Unit, UnitPage, UnitPageSection, UnitUIElement
 } from '../../../common/unit';
@@ -10,6 +11,7 @@ import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
 import { PlayerConfig, UnitState, VopStartCommand } from './models/verona';
 import { FormPage } from '../../../common/form';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'player-aspect',
@@ -26,7 +28,8 @@ export class AppComponent implements OnInit {
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private metaDataService: MetaDataService,
-              private nativeEventService: NativeEventService) {
+              private nativeEventService: NativeEventService,
+              private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -53,7 +56,13 @@ export class AppComponent implements OnInit {
         this.pages = this.addStoredValues(pages, storedPages);
       } else {
         // eslint-disable-next-line no-console
-        console.warn('player: wrong unitStateDataType');
+        this.dialog.open(AlertDialogComponent, {
+          data: {
+            title: this.translateService.instant('dialogTitle.wrongUnitStateDataType'),
+            content: this.translateService.instant('dialogContent.wrongUnitStateDataType',
+              { version: this.metaDataService.playerMetadata.supportedUnitStateDataTypes })
+          }
+        });
         this.pages = pages;
       }
     } else {
@@ -70,8 +79,13 @@ export class AppComponent implements OnInit {
       this.playerConfig = message.playerConfig || {};
       this.initUnitPages(unitDefinition.pages, message.unitState);
     } else {
-      // eslint-disable-next-line no-console
-      console.warn('player: wrong unitDefinitionType');
+      this.dialog.open(AlertDialogComponent, {
+        data: {
+          title: this.translateService.instant('dialogTitle.wrongUnitDefinitionType'),
+          content: this.translateService.instant('dialogContent.wrongUnitDefinitionType',
+            { version: this.metaDataService.playerMetadata.supportedUnitDefinitionTypes })
+        }
+      });
     }
   }
 

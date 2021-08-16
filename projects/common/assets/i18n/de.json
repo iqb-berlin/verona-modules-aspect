@@ -1,3 +1,4 @@
 {
-  "pageIndication": "Seite {{index}}"
+  "pageIndication": "Seite {{index}}",
+  "close": "Schließen"
 }

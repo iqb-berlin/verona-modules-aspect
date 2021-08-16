@@ -20,6 +20,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
 import { TextComponent } from './element-components/text.component';
 import { ButtonComponent } from './element-components/button.component';
 import { TextFieldComponent } from './element-components/text-field.component';
@@ -45,6 +46,7 @@ import { NumberFieldComponent } from './element-components/number-field.componen
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatDialogModule,
     TranslateModule
   ],
   declarations: [
@@ -91,6 +93,7 @@ import { NumberFieldComponent } from './element-components/number-field.componen
     CorrectionComponent,
     MatSnackBarModule,
     MatTooltipModule,
+    MatDialogModule,
     TranslateModule
   ]
 })

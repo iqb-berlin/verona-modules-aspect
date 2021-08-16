@@ -16,6 +16,7 @@ import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HideFirstChildDirective } from './directives/hide-first-child.directive';
 import { ScrollIndexDirective } from './directives/scroll-index.directive';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ScrollIndexDirective } from './directives/scroll-index.directive';
     FormComponent,
     PlayerStateComponent,
     LayoutComponent,
+    AlertDialogComponent,
     HideFirstChildDirective,
     ScrollIndexDirective
   ],

@@ -10,5 +10,13 @@
     "InputTooLong": "Eingabe zu lang",
     "ValueTooSmall": "Wert zu klein",
     "ValueTooBig": "Wert zu groß"
+  },
+  "dialogTitle": {
+    "wrongUnitDefinitionType": "Falscher Unit-Definition-Type",
+    "wrongUnitStateDataType": "Falscher Unit-State-Data-Type"
+  },
+  "dialogContent": {
+    "wrongUnitDefinitionType": "Der Player benötigt einen Unit-Definition-Type in der Version {{version}}.",
+    "wrongUnitStateDataType": "Der Player benötigt einen Unit-State-Data-Type in der Version {{version}}."
   }
 }

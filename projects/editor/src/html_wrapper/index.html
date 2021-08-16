@@ -1,143 +1,16 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Verona Player Aspect</title>
+  <head>
+    <meta charset="UTF-8">
+    <title>Verona Editor Aspect</title>
 
-  <meta name="application-name" content="iqb-player-aspect"
-        data-version="3.3.3"
-        data-repository-url="https://github.com/iqb-berlin/verona-modules-apect"
-        data-api-version="2.1.0"
-        data-not-supported-api-features=""
-        data-supported-unit-definition-types="iqb-scripted@1.0"
-        data-supported-unit-state-data-types="iqb-key-value@1.0.0"
-        data-supported-browsers='{"Firefox": 69, "Chrome": 72, "Edge": 79}'
-  />
-  <script type="application/ld+json">
-    {
-      "@context": "https://w3id.org/iqb/verona-modules",
-      "@type": "player",
-      "@id": "iqb-player-abi",
-      "name": {
-        "de": "IQB-Player für Skripte (Abi)",
-        "en": "IQB player for script language"
-      },
-      "maintainer": {
-        "name": {
-          "de": "IQB - Institut zur Qualitätsentwicklung im Bildungswesen",
-          "en": "IQB - Institute for Educational Quality Improvement"
-        },
-        "url": "https://www.iqb.hu-berlin.de",
-        "email": "iqb-tbadev@hu-berlin.de"
-      },
-      "description": {
-        "de": "Dieser Player interpretiert eine Script-Sprache, die speziell für die effiziente Erstellung umfangreicher Befragungen entwickelt wurde. Über die gängigen Frageformate hinaus werden bedingte Formularblöcke, dynamische Wiederholungen von Blöcken und Likert-skalen unterstützt.",
-        "en": "You can use this Verona Player for surveys where you need a large number of questions. By interpreting it's own script language, the player just need one line per control definition. You can setup conditional blocks, repeating blocks or likert scale tables."
-      },
-      "version": "3.3.3",
-      "apiVersion": "2.1",
-      "repository": {
-        "type": "git",
-        "url": "https://github.com/iqb-berlin/verona-player-abi"
-      },
-      "notSupportedFeatures": []
-    }
-  </script>
-  <link rel="stylesheet" href="verona-player-aspect.css">
-</head>
-<body>
-<script type="text/javascript" src="verona-player-aspect.js"></script>
-<script>
-  let sessionId;
-  let playerMetadata = document.querySelectorAll("meta")[1].attributes;
-  let tempResponses = {};
-  let playerStartData = {
-    unitDefinition: '',
-    unitStateData: ''
-  };
-
-  function elementValueChanged(event) {
-    window.parent.postMessage({
-      type: 'vopStateChangedNotification',
-      sessionId: sessionId,
-      timeStamp: Date.now(),
-      unitState: {
-        dataParts: {
-          all: event.detail
-        },
-        unitStateType: playerMetadata.getNamedItem('data-supported-unit-state-data-types').value,
-      }
-    }, '*');
-  }
-
-  function navigationRequested(event) {
-    window.parent.postMessage({
-      type: 'vopUnitNavigationRequestedNotification',
-      sessionId: sessionId,
-      targetRelative: '#' + event.detail,
-      target: event.detail,
-    }, '*');
-  }
-
-  const playerComponent = document.createElement('player-component',{ is : 'player-component' });
-  playerComponent.addEventListener('valueChanged', (event) => {
-    elementValueChanged(event);
-  });
-  playerComponent.addEventListener('navigationRequested', (event) => {
-    console.log(navigationRequested, event);
-    navigationRequested(event);
-  });
-  document.body.appendChild(playerComponent)
-
-  window.addEventListener('message', (event) => {
-    if ('data' in event && 'type' in event.data) {
-      switch (event.data.type) {
-        case 'vopStartCommand':
-          if (event.data.sessionId) {
-            sessionId = event.data.sessionId;
-            playerStartData.unitDefinition = event.data.unitDefinition;
-            playerStartData.unitStateData = event.data.unitState?.dataParts?.all;
-            playerComponent.startData = playerStartData;
-          } else {
-            console.error('player: (vopStartCommand) no sessionId is given');
-          }
-          break;
-        case 'vopPageNavigationCommand':
-        case 'vopGetStateRequest':
-        case 'vopStopCommand':
-        case 'vopContinueCommand':
-          console.warn(`player: message of type ${event.data.type} not processed yet`);
-          break;
-        case 'vopNavigationDeniedNotification':
-          console.info(['player: got vopNavigationDeniedNotification']);
-          playerComponent.tryLeaveNotify();
-          break;
-        default:
-          console.warn(`player: got message of unknown type ${event.data.type}`);
-      }
-    }
-  });
-  window.addEventListener('blur', () => {
-    window.parent.postMessage({
-      type: 'vopWindowFocusChangedNotification',
-      sessionId: sessionId,
-      hasFocus: document.hasFocus()
-    }, '*');
-  });
-  window.addEventListener('focus', () => {
-    window.parent.postMessage({
-      type: 'vopWindowFocusChangedNotification',
-      sessionId: sessionId,
-      hasFocus: document.hasFocus()
-    }, '*');
-  });
-  window.parent.postMessage({
-    type: 'vopReadyNotification',
-    apiVersion: playerMetadata.getNamedItem('data-api-version').value,
-    notSupportedApiFeatures: playerMetadata.getNamedItem('data-not-supported-api-features').value,
-    supportedUnitDefinitionTypes: playerMetadata.getNamedItem('data-supported-unit-definition-types').value,
-    supportedUnitStateDataTypes: playerMetadata.getNamedItem('data-supported-unit-state-data-types').value,
-  }, '*');
-</script>
-</body>
+    <meta name="application-name" content="iqb-editor-aspect"
+          data-repository-url="https://github.com/iqb-berlin/verona-modules-apect"
+          data-supported-unit-definition-types="iqb-aspect-module@0.0.1"/>
+    <link rel="stylesheet" href="editor.css">
+  </head>
+  <body>
+    <script type="text/javascript" src="editor.js"></script>
+    <editor-aspect></editor-aspect>
+  </body>
 </html>

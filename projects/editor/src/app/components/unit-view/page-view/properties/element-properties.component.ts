@@ -10,7 +10,7 @@ import { SelectionService } from '../../../../selection.service';
 @Component({
   selector: 'app-element-properties',
   template: `
-    <ng-container *ngIf="selectedElements">
+    <ng-container *ngIf="selectedElements.length > 0">
       <mat-tab-group mat-stretch-tabs dynamicHeight>
         <mat-tab>
           <ng-template mat-tab-label>

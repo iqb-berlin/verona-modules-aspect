@@ -3,8 +3,8 @@ import {
   CheckboxElement, CompoundElementCorrection, DropdownElement,
   ImageElement, TextElement, RadioButtonGroupElement,
   TextFieldElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
-  VideoElement, TextAreaElement, NumberFieldElement
-} from '../../../../common/unit';
+  VideoElement, TextAreaElement
+} from '../../../common/unit';
 
 export function createUnit(veronaModuleVersion: string): Unit {
   return {
@@ -106,27 +106,16 @@ export function createButtonElement(): ButtonElement {
 
 export function createTextfieldElement(): TextFieldElement {
   return <TextFieldElement>{
-    min: undefined,
+    minLength: undefined,
     minWarnMessage: 'Eingabe zu kurz',
-    max: undefined,
+    maxLength: undefined,
     maxWarnMessage: 'Eingabe zu lang',
+    pattern: '',
+    patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
     ...createUnitUIElement('text-field'),
     ...createInputUIElement('Example Label', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement()
-  };
-}
-
-export function createNumberfieldElement(): NumberFieldElement {
-  return <NumberFieldElement>{
-    min: undefined,
-    minWarnMessage: 'Wert zu klein',
-    max: undefined,
-    maxWarnMessage: 'Wert zu groß',
-    ...createUnitUIElement('number-field'),
-    ...createTextUIElement(),
-    ...createSurfaceUIElement(),
-    ...createInputUIElement('Example Label', undefined)
   };
 }
 

@@ -14,7 +14,7 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      <input matInput type="text"
+      <input matInput type="text" [pattern]="elementModel.pattern"
              [formControl]="elementFormControl"
              placeholder="{{elementModel.label}}">
     </mat-form-field>

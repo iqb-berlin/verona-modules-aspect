@@ -80,18 +80,12 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
 
 export interface TextFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
-  min: number | undefined;
+  minLength: number | undefined;
   minWarnMessage: string;
-  max: number | undefined;
+  maxLength: number | undefined;
   maxWarnMessage: string;
-}
-
-export interface NumberFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
-  value: number;
-  min: number | undefined;
-  minWarnMessage: string;
-  max: number | undefined;
-  maxWarnMessage: string;
+  pattern: string;
+  patternWarnMessage: string;
 }
 
 export interface TextAreaElement extends InputUIElement, TextUIElement, SurfaceUIElement {

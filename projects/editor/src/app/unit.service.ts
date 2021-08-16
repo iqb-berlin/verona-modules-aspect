@@ -4,7 +4,7 @@ import {
   Unit, UnitPageSection, UnitUIElement
 } from '../../../common/unit';
 import { FileService } from '../../../common/file.service';
-import * as UnitFactory from './model/UnitFactory';
+import * as UnitFactory from './UnitFactory';
 import { MessageService } from '../../../common/message.service';
 import { IdService } from './id.service';
 import { DialogService } from './dialog.service';
@@ -97,9 +97,6 @@ export class UnitService {
         break;
       case 'text-field':
         newElement = UnitFactory.createTextfieldElement();
-        break;
-      case 'number-field':
-        newElement = UnitFactory.createNumberfieldElement();
         break;
       case 'text-area':
         newElement = UnitFactory.createTextareaElement();

@@ -22,11 +22,11 @@ export class MetaDataService {
     };
   }
 
-  verifyUnitDefinitionVersion(unitDefinition: string): boolean {
-    return (this.playerMetadata.supportedUnitDefinitionTypes === unitDefinition);
+  verifyUnitDefinitionVersion(unitDefinition: string | undefined): boolean {
+    return (!!unitDefinition && unitDefinition === this.playerMetadata.supportedUnitDefinitionTypes);
   }
 
-  verifyUnitStateDataType(unitStateDataType: string): boolean {
-    return (this.playerMetadata.supportedUnitStateDataTypes === unitStateDataType);
+  verifyUnitStateDataType(unitStateDataType: string | undefined): boolean {
+    return (!!unitStateDataType && unitStateDataType === this.playerMetadata.supportedUnitStateDataTypes);
   }
 }

@@ -5,6 +5,7 @@ import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { CanvasSectionComponent } from './canvas-section.component';
+import { SelectionService } from '../../../../selection.service';
 
 @Component({
   selector: 'app-page-canvas',
@@ -18,7 +19,7 @@ export class PageCanvasComponent {
   @Input() page!: UnitPage;
   @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;
 
-  constructor(public unitService: UnitService) { }
+  constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 
   elementDropped(event: CdkDragDrop<UnitPageSection>): void {
     const sourceItemModel = event.item.data;
@@ -36,7 +37,7 @@ export class PageCanvasComponent {
       if (newXPosition > event.container.data.width - sourceItemModel.width) {
         newXPosition = event.container.data.width - sourceItemModel.width;
       }
-      this.unitService.updateSelectedElementProperty('xPosition', newXPosition);
+      this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'xPosition', newXPosition);
 
       let newYPosition = sourceItemModel.yPosition + event.distance.y;
       if (newYPosition < 0) {
@@ -45,7 +46,7 @@ export class PageCanvasComponent {
       if (newYPosition > this.getPageHeight() - sourceItemModel.height) {
         newYPosition = this.getPageHeight() - sourceItemModel.height;
       }
-      this.unitService.updateSelectedElementProperty('yPosition', newYPosition);
+      this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'yPosition', newYPosition);
     }
   }
 

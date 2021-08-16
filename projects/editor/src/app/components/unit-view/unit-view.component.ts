@@ -1,8 +1,10 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../unit.service';
 import { DialogService } from '../../dialog.service';
+import { SelectionService } from '../../selection.service';
+import { Unit } from '../../../../../common/unit';
 
 @Component({
   selector: 'app-unit-view',
@@ -20,27 +22,46 @@ import { DialogService } from '../../dialog.service';
     '::ng-deep .mat-drawer-content .mat-tab-body-wrapper {height: 100%}'
   ]
 })
-export class UnitViewComponent implements OnDestroy {
+export class UnitViewComponent implements OnInit, OnDestroy {
+  unit!: Unit;
+  selectedPageIndex: number = 0;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public unitService: UnitService, private dialogService: DialogService) { }
+  constructor(public selectionService: SelectionService,
+              public unitService: UnitService,
+              private dialogService: DialogService) { }
+
+  ngOnInit(): void {
+    this.unitService.unit
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((unit: Unit) => {
+        this.unit = unit;
+      });
+  }
+
+  selectPage(newIndex: number): void {
+    this.selectedPageIndex = newIndex;
+    this.selectionService.selectPage(this.unit.pages[this.selectedPageIndex]);
+  }
 
   addPage(): void {
     this.unitService.addPage();
+    this.selectionService.selectPage(this.unit.pages[this.unit.pages.length - 1]);
+    this.selectedPageIndex = this.unit.pages.length - 1;
   }
 
   deletePage(): void {
-    this.showConfirmDialog();
+    this.showConfirmDialog().subscribe((result: boolean) => {
+      if (result) {
+        this.unitService.deletePage(this.selectedPageIndex);
+        this.selectedPageIndex -= 1;
+        this.selectionService.selectPage(this.unit.pages[this.selectedPageIndex]);
+      }
+    });
   }
 
-  showConfirmDialog(): void {
-    this.dialogService.showConfirmDialog()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((result: boolean) => {
-        if (result) {
-          this.unitService.deletePage();
-        }
-      });
+  showConfirmDialog(): Observable<boolean> {
+    return this.dialogService.showConfirmDialog();
   }
 
   ngOnDestroy(): void {

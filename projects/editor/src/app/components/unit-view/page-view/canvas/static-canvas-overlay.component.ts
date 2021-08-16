@@ -55,7 +55,7 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
   }
 
   resizeElement(event: CdkDragMove): void {
-    this.unitService.updateSelectedElementProperty('width', Math.max(this.oldX + event.distance.x, 0));
-    this.unitService.updateSelectedElementProperty('height', Math.max(this.oldY + event.distance.y, 0));
+    this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'width', Math.max(this.oldX + event.distance.x, 0));
+    this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'height', Math.max(this.oldY + event.distance.y, 0));
   }
 }

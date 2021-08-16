@@ -31,7 +31,7 @@ export function createUnitPageSection(): UnitPageSection {
     width: 1100,
     height: 400,
     backgroundColor: '#FFFAF0',
-    dynamicPositioning: true,
+    dynamicPositioning: false,
     gridColumnSizes: '1fr 1fr',
     gridRowSizes: '1fr'
   };
@@ -44,7 +44,7 @@ function createUnitUIElement(type: string): UnitUIElement {
     zIndex: 0,
     width: 180,
     height: 60,
-    dynamicPositioning: true,
+    dynamicPositioning: false,
     xPosition: 0,
     yPosition: 0,
     gridColumnStart: 1,

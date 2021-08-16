@@ -1,9 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UnitPage } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { SelectionService } from '../../../../selection.service';
 
 @Component({
   selector: 'app-page-properties',
@@ -32,10 +33,10 @@ export class PagePropertiesComponent implements OnInit, OnDestroy {
   selectedPage!: UnitPage;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private unitService: UnitService) { }
+  constructor(public selectionService: SelectionService, private unitService: UnitService) { }
 
   ngOnInit(): void {
-    this.unitService.selectedPage
+    this.selectionService.selectedPage
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((page: UnitPage) => {
         this.selectedPage = page;

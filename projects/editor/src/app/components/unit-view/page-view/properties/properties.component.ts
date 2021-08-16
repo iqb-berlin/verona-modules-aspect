@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { UnitPage, UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
+import { SelectionService } from '../../../../selection.service';
 
 @Component({
   selector: 'app-properties',
@@ -23,16 +24,16 @@ export class PropertiesComponent {
   expandElementView: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public unitService: UnitService) { }
+  constructor(public selectionService: SelectionService) { }
 
   ngOnInit(): void {
-    this.unitService.selectedPage
+    this.selectionService.selectedPage
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((page: UnitPage) => {
         this.selectedPage = page;
         this.expandElementView = false;
       });
-    this.unitService.elementSelected
+    this.selectionService.selectedElements
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => { this.expandElementView = true; });
   }

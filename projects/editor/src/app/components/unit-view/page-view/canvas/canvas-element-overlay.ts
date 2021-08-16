@@ -4,15 +4,17 @@ import {
   HostListener,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { forkJoin, Subject } from 'rxjs';
+import { flatMap, mergeMap, take, takeUntil } from 'rxjs/operators';
 // eslint-disable-next-line import/no-cycle
 import { UnitService } from '../../../../unit.service';
-import { UnitUIElement } from '../../../../../../../common/unit';
+import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
 import { ValueChangeElement } from '../../../../../../../common/form';
 import { ElementComponent } from '../../../../../../../common/element-component.directive';
+import { SelectionService } from '../../../../selection.service';
+import { setClassMetadata } from '@angular/core/src/r3_symbols';
 
 @Directive()
 export abstract class CanvasElementOverlay {
@@ -22,7 +24,8 @@ export abstract class CanvasElementOverlay {
   protected childComponent!: ComponentRef<ElementComponent>;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(protected unitService: UnitService,
+  constructor(public selectionService: SelectionService,
+              protected unitService: UnitService,
               private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit(): void {
@@ -34,7 +37,7 @@ export abstract class CanvasElementOverlay {
       this.childComponent.instance.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((changeElement: ValueChangeElement) => {
-          this.unitService.updateSelectedElementProperty('value', changeElement.values[1]);
+          this.unitService.updateElementProperty([this.element], 'value', changeElement.values[1]);
         });
 
       this.unitService.elementPropertyUpdated
@@ -50,9 +53,16 @@ export abstract class CanvasElementOverlay {
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
     if (!(event.target as Element).tagName.includes('input'.toUpperCase()) &&
-      !(event.target as Element).tagName.includes('textarea'.toUpperCase()) &&
-      event.key === 'Delete') {
-      this.unitService.deleteSelectedElements();
+        !(event.target as Element).tagName.includes('textarea'.toUpperCase()) &&
+        event.key === 'Delete') {
+      forkJoin([
+        this.selectionService.selectedElements.pipe(take(1)),
+        this.selectionService.selectedPageSection.pipe(take(1))
+      ])
+        .subscribe((results: [UnitUIElement[], UnitPageSection]) => {
+          this.unitService.deleteElementsFromSection(results[0], results[1]);
+        })
+        .unsubscribe();
     }
   }
 
@@ -62,9 +72,9 @@ export abstract class CanvasElementOverlay {
 
   click(event: MouseEvent): void {
     if (event.shiftKey) {
-      this.unitService.selectElement({ componentElement: this, multiSelect: true });
+      this.selectionService.selectElement({ componentElement: this, multiSelect: true });
     } else {
-      this.unitService.selectElement({ componentElement: this, multiSelect: false });
+      this.selectionService.selectElement({ componentElement: this, multiSelect: false });
     }
   }
 

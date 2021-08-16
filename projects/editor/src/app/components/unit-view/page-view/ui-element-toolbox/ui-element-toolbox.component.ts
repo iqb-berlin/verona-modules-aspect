@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
+import { SelectionService } from '../../../../selection.service';
 
 @Component({
   selector: 'app-ui-element-toolbox',
@@ -13,9 +15,11 @@ import { UnitService } from '../../../../unit.service';
   ]
 })
 export class UiElementToolboxComponent {
-  constructor(public unitService: UnitService) { }
+  constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 
   async addUIElement(elementType: string): Promise<void> {
-    await this.unitService.addElement(elementType);
+    this.selectionService.selectedPageSection
+      .pipe(take(1))
+      .subscribe(value => this.unitService.addElementToSection(elementType, value)).unsubscribe();
   }
 }

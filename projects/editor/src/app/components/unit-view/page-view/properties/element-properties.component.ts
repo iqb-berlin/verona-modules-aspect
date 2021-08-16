@@ -2,9 +2,10 @@ import {
   Component, OnDestroy, OnInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
+import { SelectionService } from '../../../../selection.service';
 
 @Component({
   selector: 'app-element-properties',
@@ -339,7 +340,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public unitService: UnitService) { }
+  constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 
   ngOnInit(): void {
     this.unitService.elementPropertyUpdated
@@ -349,7 +350,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
           this.createCombinedProperties();
         }
       );
-    this.unitService.elementSelected
+    this.selectionService.selectedElements
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (selectedElements: UnitUIElement[]) => {
@@ -378,11 +379,11 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string, value: string | number | boolean | undefined): void {
-    this.unitService.updateSelectedElementProperty(property, value);
+    this.unitService.updateElementProperty(this.selectedElements, property, value);
   }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
-    this.unitService.alignSelectedElements(direction);
+    this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);
   }
 
   /* button group always handles values as string and since we also want to handle undefined
@@ -404,11 +405,21 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   deleteElement(): void {
-    this.unitService.deleteSelectedElements();
+    this.selectionService.selectedPageSection
+      .pipe(take(1))
+      .subscribe(selectedPageSection => {
+        this.unitService.deleteElementsFromSection(this.selectedElements, selectedPageSection);
+      })
+      .unsubscribe();
   }
 
   duplicateElement(): void {
-    this.unitService.duplicateSelectedElements();
+    this.selectionService.selectedPageSection
+      .pipe(take(1))
+      .subscribe(selectedPageSection => {
+        this.unitService.duplicateElementsInSection(this.selectedElements, selectedPageSection);
+      })
+      .unsubscribe();
   }
 
   ngOnDestroy(): void {

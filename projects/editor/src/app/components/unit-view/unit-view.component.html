@@ -12,9 +12,9 @@
 
     <mat-drawer-content>
       <mat-tab-group [style.height.%]="100" mat-align-tabs="start"
-                     [selectedIndex]="unitService.selectedPageIndex | async"
-                     (selectedIndexChange)="unitService.updatePageSelection($event)">
-        <mat-tab *ngFor="let page of (unitService.unit | async)!.pages; let i = index">
+                     [selectedIndex]="selectedPageIndex"
+                     (selectedIndexChange)="selectPage($event)">
+        <mat-tab *ngFor="let page of unit.pages; let i = index">
           <ng-template mat-tab-label>
             <mat-icon *ngIf="page.alwaysVisible" class="page-alwaysVisible-icon">assignment</mat-icon>
             {{'pageIndication' | translate: {index: i + 1} }}

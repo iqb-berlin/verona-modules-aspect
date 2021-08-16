@@ -1,7 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
+import { SelectionService } from '../../../../selection.service';
 
 @Component({
   selector: '[app-canvas-section]',
@@ -11,7 +12,7 @@ import { UnitService } from '../../../../unit.service';
          [style.width.px]="section.width"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
-         (click)="this.unitService.selectSection(this)">
+         (click)="selectionService.selectSection(this)">
       <div *ngIf="!section.dynamicPositioning">
         <app-static-canvas-overlay
           *ngFor="let element of section.elements"
@@ -82,7 +83,7 @@ import { UnitService } from '../../../../unit.service';
     '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}'
   ]
 })
-export class CanvasSectionComponent implements OnInit {
+export class CanvasSectionComponent {
   @Input() section!: UnitPageSection;
   @Input() sectionIndex!: number;
   selected = true;
@@ -90,28 +91,36 @@ export class CanvasSectionComponent implements OnInit {
   draggingElementWidth: number | undefined = 0;
   draggingElementHeight: number | undefined = 0;
 
-  constructor(public unitService: UnitService) {
-    this.unitService.selectSection(this);
-  }
-
-  ngOnInit(): void {
-    this.unitService.selectSection(this);
-  }
+  constructor(public selectionService: SelectionService, public unitService: UnitService) { }
 
   drop(event: CdkDragDrop<number[]>): void {
     if (event.item.data.dragType === 'move') {
-      this.unitService.updateSelectedElementProperty('gridColumnStart', event.container.data[0]);
+      this.unitService.updateElementProperty(
+        this.selectionService.getSelectedElements(),
+        'gridColumnStart', event.container.data[0]
+      );
       // Ensure the end value is at least the same as the start, otherwise the grid breaks
-      this.unitService.updateSelectedElementProperty(
+      this.unitService.updateElementProperty(
+        this.selectionService.getSelectedElements(),
         'gridColumnEnd', Math.max(event.item.data.element.gridColumnEnd, event.container.data[0])
       );
-      this.unitService.updateSelectedElementProperty('gridRowStart', event.container.data[1]);
-      this.unitService.updateSelectedElementProperty(
+      this.unitService.updateElementProperty(
+        this.selectionService.getSelectedElements(),
+        'gridRowStart', event.container.data[1]
+      );
+      this.unitService.updateElementProperty(
+        this.selectionService.getSelectedElements(),
         'gridRowEnd', Math.max(event.item.data.element.gridRowEnd, event.container.data[1])
       );
     } else { // resize
-      this.unitService.updateSelectedElementProperty('gridColumnEnd', event.container.data[0] + 1);
-      this.unitService.updateSelectedElementProperty('gridRowEnd', event.container.data[1] + 1);
+      this.unitService.updateElementProperty(
+        this.selectionService.getSelectedElements(),
+        'gridColumnEnd', event.container.data[0] + 1
+      );
+      this.unitService.updateElementProperty(
+        this.selectionService.getSelectedElements(),
+        'gridRowEnd', event.container.data[1] + 1
+      );
     }
   }
 

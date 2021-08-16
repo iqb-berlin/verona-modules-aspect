@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { VeronaAPIService } from './verona-api.service';
 
 @Component({
   selector: 'editor-aspect',
@@ -13,9 +14,14 @@ import { TranslateService } from '@ngx-translate/core';
     '.mainView {height: 100%;}'
   ]
 })
-export class AppComponent {
-  constructor(private translateService: TranslateService) {
+export class AppComponent implements OnInit {
+  constructor(private translateService: TranslateService,
+              private veronaApiService: VeronaAPIService) {
     translateService.addLangs(['de']);
     translateService.setDefaultLang('de');
+  }
+
+  ngOnInit(): void {
+    this.veronaApiService.sendVoeReadyNotification();
   }
 }

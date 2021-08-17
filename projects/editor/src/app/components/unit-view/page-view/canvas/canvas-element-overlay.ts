@@ -61,6 +61,7 @@ export abstract class CanvasElementOverlay {
       ])
         .subscribe((results: [UnitUIElement[], UnitPageSection]) => {
           this.unitService.deleteElementsFromSection(results[0], results[1]);
+          this.selectionService.clearElementSelection();
         })
         .unsubscribe();
     }

@@ -74,10 +74,11 @@ export class SelectionService {
     this._selectedElements.next(this.selectedElementComponents.map(componentElement => componentElement.element));
   }
 
-  private clearElementSelection() {
+  clearElementSelection(): void {
     this.selectedElementComponents.forEach((overlayComponent: any) => {
       overlayComponent.setSelected(false);
     });
     this.selectedElementComponents = [];
+    this._selectedElements.next([]);
   }
 }

@@ -412,6 +412,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(selectedPageSection => {
         this.unitService.deleteElementsFromSection(this.selectedElements, selectedPageSection);
+        this.selectionService.clearElementSelection();
       })
       .unsubscribe();
   }

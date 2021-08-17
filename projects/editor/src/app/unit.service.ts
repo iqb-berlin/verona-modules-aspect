@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
-  Unit, UnitPageSection, UnitUIElement
+  Unit, UnitPage, UnitPageSection, UnitUIElement
 } from '../../../common/unit';
 import { FileService } from '../../../common/file.service';
 import * as UnitFactory from './UnitFactory';
@@ -59,16 +59,18 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  /** Checks if a page already has this setting. Return false if so.
-   * When newState is false it is always okay. */
-  setPageAlwaysVisible(newState: boolean): boolean { // TODO make private
-    if (!newState || !this._unit.value.pages.find(page => page.alwaysVisible)) {
-      this._unit.value.pages[this.selectedPageIndex].alwaysVisible = newState;
-      this.veronaApiService.sendVoeDefinitionChangedNotification();
-      return true;
+  updatePageProperty(page: UnitPage, property: string, value: number | boolean): void {
+    if (property === 'alwaysVisible' && value === true && this.isPageAlwaysVisibleSet()) {
+      this.messageService.showError('Kann nur für eine Seite gesetzt werden');
+    } else {
+      page[property] = value;
     }
-    this.messageService.showError('Kann nur für eine Seite gesetzt werden');
-    return false;
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
+  }
+
+  /** Check if a page already has this setting. */
+  isPageAlwaysVisibleSet(): boolean {
+    return this._unit.value.pages.find(page => page.alwaysVisible) !== undefined;
   }
 
   addSection(): void {

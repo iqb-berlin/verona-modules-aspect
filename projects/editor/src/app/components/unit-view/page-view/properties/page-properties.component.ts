@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component, OnInit, OnDestroy
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MatCheckboxChange } from '@angular/material/checkbox';
 import { UnitPage } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
@@ -12,18 +13,24 @@ import { SelectionService } from '../../../../selection.service';
     <div fxLayout="column">
       <mat-form-field>
         <mat-label>Breite</mat-label>
-        <input matInput type="number" [(ngModel)]="selectedPage.width">
+        <input matInput type="number"
+               [value]="selectedPage.width"
+               (change)="updateModel('width', $any($event.target).value)">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Randbreite</mat-label>
-        <input matInput type="number" [(ngModel)]="selectedPage.margin">
+        <input matInput type="number"
+               [value]="selectedPage.margin"
+               (change)="updateModel('margin', $any($event.target).value)">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Hintergrundfarbe</mat-label>
-        <input matInput type="text" [(ngModel)]="selectedPage.backgroundColor">
+        <input matInput type="text"
+               [value]="selectedPage.backgroundColor"
+               (change)="updateModel('backgroundColor', $any($event.target).value)">
       </mat-form-field>
-      <mat-checkbox [checked]="selectedPage.alwaysVisible"
-                    (change)="setPageAlwaysVisible($event)">
+      <mat-checkbox [disabled]="alwaysVisibleDisabled" [ngModel]="selectedPage.alwaysVisible"
+                    (change)="updateModel('alwaysVisible', $any($event.source).checked)">
         Immer angezeigt
       </mat-checkbox>
     </div>
@@ -31,22 +38,23 @@ import { SelectionService } from '../../../../selection.service';
 })
 export class PagePropertiesComponent implements OnInit, OnDestroy {
   selectedPage!: UnitPage;
+  alwaysVisibleDisabled: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public selectionService: SelectionService, private unitService: UnitService) { }
+  constructor(public selectionService: SelectionService,
+              private unitService: UnitService) { }
 
   ngOnInit(): void {
     this.selectionService.selectedPage
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((page: UnitPage) => {
         this.selectedPage = page;
+        this.alwaysVisibleDisabled = this.unitService.isPageAlwaysVisibleSet() && !page.alwaysVisible;
       });
   }
 
-  setPageAlwaysVisible(event: MatCheckboxChange): void {
-    if (!this.unitService.setPageAlwaysVisible(event.checked)) {
-      event.source.checked = false;
-    }
+  updateModel(property: string, value: number | boolean): void {
+    this.unitService.updatePageProperty(this.selectedPage, property, value);
   }
 
   ngOnDestroy(): void {

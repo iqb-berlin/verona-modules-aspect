@@ -33,6 +33,7 @@ export class SelectionService {
   // === PAGE =======
   selectPage(page: UnitPage): void {
     this._selectedPage.next(page);
+    this._selectedPageSection.next(page.sections[0]);
   }
 
   get selectedPage(): Observable<UnitPage> {

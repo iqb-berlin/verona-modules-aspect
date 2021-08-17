@@ -8,6 +8,7 @@ import * as UnitFactory from './UnitFactory';
 import { MessageService } from '../../../common/message.service';
 import { IdService } from './id.service';
 import { DialogService } from './dialog.service';
+import { VeronaAPIService } from './verona-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class UnitService {
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   selectedPageIndex: number = 0;
 
-  constructor(private messageService: MessageService,
+  constructor(private veronaApiService: VeronaAPIService,
+              private messageService: MessageService,
               private idService: IdService,
               private dialogService: DialogService) {
     const initialUnit = UnitFactory.createUnit(this.EXPORTED_MODULE_VERSION);
@@ -32,6 +34,13 @@ export class UnitService {
     this._unit = new BehaviorSubject(initialUnit);
   }
 
+  loadUnitDefinition(unitDefinition: string): void {
+    if (unitDefinition) {
+      this._unit.next(JSON.parse(unitDefinition));
+      this.idService.readExistingIDs(this._unit.value);
+    }
+  }
+
   get unit(): Observable<Unit> {
     return this._unit.asObservable();
   }
@@ -41,18 +50,21 @@ export class UnitService {
     newPage.sections.push(UnitFactory.createUnitPageSection());
     this._unit.value.pages.push(newPage);
     this._unit.next(this._unit.value);
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deletePage(index: number): void {
     this._unit.value.pages.splice(index, 1);
     this._unit.next(this._unit.value);
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   /** Checks if a page already has this setting. Return false if so.
    * When newState is false it is always okay. */
-  setPageAlwaysVisible(newState: boolean): boolean {
+  setPageAlwaysVisible(newState: boolean): boolean { // TODO make private
     if (!newState || !this._unit.value.pages.find(page => page.alwaysVisible)) {
       this._unit.value.pages[this.selectedPageIndex].alwaysVisible = newState;
+      this.veronaApiService.sendVoeDefinitionChangedNotification();
       return true;
     }
     this.messageService.showError('Kann nur für eine Seite gesetzt werden');
@@ -62,6 +74,7 @@ export class UnitService {
   addSection(): void {
     this._unit.value.pages[this.selectedPageIndex].sections.push(UnitFactory.createUnitPageSection());
     this._unit.next(this._unit.value);
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deleteSection(section: UnitPageSection): void {
@@ -73,6 +86,7 @@ export class UnitService {
         1
       );
       this._unit.next(this._unit.value);
+      this.veronaApiService.sendVoeDefinitionChangedNotification();
     }
   }
 
@@ -84,6 +98,7 @@ export class UnitService {
     } else {
       this._unit.value.pages[this.selectedPageIndex].sections.splice(sectionIndex + 1, 0, movedElement);
     }
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   async addElementToSection(elementType: string, section: UnitPageSection): Promise<void> {
@@ -128,10 +143,12 @@ export class UnitService {
     newElement.id = this.idService.getNewID(elementType);
     newElement.dynamicPositioning = section.dynamicPositioning;
     section.elements.push(newElement);
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deleteElementsFromSection(elements: UnitUIElement[], section: UnitPageSection): void {
     section.elements = section.elements.filter(element => !elements.includes(element));
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   duplicateElementsInSection(elements: UnitUIElement[], section: UnitPageSection): void {
@@ -142,6 +159,7 @@ export class UnitService {
       newElement.yPosition += 10;
       section.elements.push(newElement);
     });
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   updateElementProperty(elements: UnitUIElement[], property: string, value: string | number | boolean | undefined): boolean {
@@ -164,6 +182,7 @@ export class UnitService {
       this.elementPropertyUpdated.next(); // notify properties panel/element about change
       return true;
     });
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
     return true;
   }
 
@@ -197,6 +216,7 @@ export class UnitService {
       // no default
     }
     this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   updateSectionProperty(section: UnitPageSection, property: string, value: string | number | boolean): void {
@@ -206,6 +226,7 @@ export class UnitService {
       section[property] = value;
     }
     this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   private setSectionDynamicPositioning(section: UnitPageSection, value: boolean): void {
@@ -225,10 +246,8 @@ export class UnitService {
     FileService.saveUnitToFile(this.getUnitAsJSON());
   }
 
-  async loadUnit(): Promise<void> {
-    const newUnit = JSON.parse(await FileService.loadFile(['.json']));
-    this._unit.next(newUnit);
-    this.idService.readExistingIDs(this._unit.value);
+  async loadUnitFromFile(): Promise<void> {
+    this.loadUnitDefinition(await FileService.loadFile(['.json']));
   }
 
   showDefaultEditDialog(element: UnitUIElement): void {

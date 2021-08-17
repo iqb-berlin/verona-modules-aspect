@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { VeronaAPIService } from './verona-api.service';
+import { UnitService } from './unit.service';
 
 @Component({
   selector: 'editor-aspect',
@@ -15,13 +16,26 @@ import { VeronaAPIService } from './verona-api.service';
   ]
 })
 export class AppComponent implements OnInit {
-  constructor(private translateService: TranslateService,
+  editorConfig!: Record<string, any>;
+
+  constructor(private unitService: UnitService,
+              private translateService: TranslateService,
               private veronaApiService: VeronaAPIService) {
     translateService.addLangs(['de']);
     translateService.setDefaultLang('de');
   }
 
   ngOnInit(): void {
+    this.veronaApiService.voeStartCommand
+      .subscribe((message: Record<string, any>): void => {
+        this.unitService.loadUnitDefinition(message.unitDefinition);
+      });
+    this.veronaApiService.voeGetDefinitionRequest
+      .subscribe(() => {
+        console.log('unit:', this.unitService.getUnitAsJSON());
+        this.veronaApiService.sendVoeDefinitionChangedNotification(this.unitService.getUnitAsJSON());
+      });
+
     this.veronaApiService.sendVoeReadyNotification();
   }
 }

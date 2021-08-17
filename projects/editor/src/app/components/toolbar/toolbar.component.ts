@@ -17,6 +17,6 @@ export class ToolbarComponent {
   }
 
   async load(): Promise<void> {
-    await this.unitService.loadUnit();
+    await this.unitService.loadUnitFromFile();
   }
 }

@@ -8,6 +8,15 @@
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script>
+    window.postMessage({
+      type: 'voeStartCommand',
+      sessionId: 'dev',
+      unitDefinition: null,
+      unitDefinitionType: 'iqb-aspect-module@0.0.1',
+      editorConfig: {}
+    }, '*');
+  </script>
 </head>
 <body>
   <editor-aspect></editor-aspect>

@@ -19,7 +19,7 @@ export class UnitService {
   private _unit: BehaviorSubject<Unit>;
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
-  selectedPageIndex: number = 0;
+  selectedPageIndex: number = 0; // TODO weg refactorn
 
   constructor(private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
@@ -73,8 +73,8 @@ export class UnitService {
     return this._unit.value.pages.find(page => page.alwaysVisible) !== undefined;
   }
 
-  addSection(): void {
-    this._unit.value.pages[this.selectedPageIndex].sections.push(UnitFactory.createUnitPageSection());
+  addSection(page: UnitPage): void {
+    page.sections.push(UnitFactory.createUnitPageSection());
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }

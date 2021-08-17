@@ -13,6 +13,6 @@ childProcess.fork('node_modules/iqb-dev-components/src/js_css_packer.js',
 const fileContent = fs.readFileSync(wrapperPath, 'utf8').toString();
 fs.writeFileSync('dist/index.html', fileContent, 'utf8');
 
-const targetFileName = `${packageName}-${packageVersion}.html`;
+const targetFileName = `verona-${packageName}-aspect-${packageVersion}.html`;
 childProcess.fork('node_modules/iqb-dev-components/src/distpacker.js',
   ['dist', targetFileName]);

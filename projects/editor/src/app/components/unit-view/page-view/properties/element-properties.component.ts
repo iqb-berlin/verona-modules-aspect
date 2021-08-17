@@ -329,6 +329,9 @@ import { SelectionService } from '../../../../selection.service';
         </mat-tab>
       </mat-tab-group>
     </ng-container>
+    <ng-container *ngIf="selectedElements.length === 0">
+      Kein Element ausgewählt
+    </ng-container>
     `,
   styles: [
     '::ng-deep app-element-properties .margin-properties .mat-form-field-infix {width: 55px; margin: 0 5px}',

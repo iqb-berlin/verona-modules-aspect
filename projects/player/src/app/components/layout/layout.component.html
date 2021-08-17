@@ -8,11 +8,15 @@
 </div>
 
 <ng-template #alwaysVisiblePageView>
-  <div *ngIf="alwaysVisiblePage" class="page-container" [fxFlex]="pageExpansion">
+  <div *ngIf="alwaysVisiblePage"
+       #alwaysVisiblePagesContainer
+       class="page-container"
+       [fxFlex]="pageExpansion">
   <div appHideFirstChild [hideFirstChild]="hidePageLabels">
     <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
       <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
                 [parentForm]="parentForm"
+                [pagesContainer]="alwaysVisiblePagesContainer"
                 [page]="alwaysVisiblePage">
       </app-page>
     </div>
@@ -28,23 +32,23 @@
 </ng-template>
 
 <ng-template #scrollPagesSeparatedView>
-  <mat-tab-group appHideFirstChild
-                 [hideFirstChild]="hidePageLabels"
-                 class="page-container"
-                 [fxFlex]="pageExpansion"
-                 mat-align-tabs="start"
-                 [(selectedIndex)]="selectedIndex"
-                 (selectedIndexChange)="onSelectedIndexChange($event)">
-    <ng-container *ngFor="let page of pages; let i = index">
-      <mat-tab *ngIf="!page.alwaysVisible"
-               label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
-        <app-page [parentArrayIndex]="i"
-                  [parentForm]="parentForm"
-                  [page]="page">
-        </app-page>
-      </mat-tab>
-    </ng-container>
-  </mat-tab-group>
+    <mat-tab-group appHideFirstChild
+                   [hideFirstChild]="hidePageLabels"
+                   class="page-container"
+                   [fxFlex]="pageExpansion"
+                   mat-align-tabs="start"
+                   [(selectedIndex)]="selectedIndex"
+                   (selectedIndexChange)="onSelectedIndexChange($event)">
+      <ng-container *ngFor="let page of pages; let i = index">
+        <mat-tab *ngIf="!page.alwaysVisible"
+                 label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
+          <app-page [parentArrayIndex]="i"
+                    [parentForm]="parentForm"
+                    [page]="page">
+          </app-page>
+        </mat-tab>
+      </ng-container>
+    </mat-tab-group>
 </ng-template>
 
 <ng-template #scrollPagesScrolledView>
@@ -68,6 +72,7 @@
           </div>
           <app-page [parentArrayIndex]="i"
                     [parentForm]="parentForm"
+                    [pagesContainer]="scrollPagesContainer"
                     [page]="page">
           </app-page>
         </div>

@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnInit
+  Component, ElementRef, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UnitPageSection } from '../../../../../common/unit';
@@ -13,9 +13,16 @@ export class SectionComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() section!: UnitPageSection;
   @Input() parentArrayIndex!: number;
-  sectionForm!: FormGroup;
+  @Input() lastSection!: boolean;
+  @Output() pagePresented = new EventEmitter<number>();
+  @Input() pagesContainer!: HTMLElement;
 
-  constructor(private formService: FormService, private formBuilder: FormBuilder) {
+  sectionForm!: FormGroup;
+  intersectionObserver!: IntersectionObserver;
+
+  constructor(private formService: FormService,
+              private formBuilder: FormBuilder,
+              private elementRef: ElementRef) {
   }
 
   ngOnInit(): void {
@@ -28,5 +35,22 @@ export class SectionComponent implements OnInit {
       parentArray: 'sections',
       parentArrayIndex: this.parentArrayIndex
     });
+    if (this.lastSection) {
+      this.initIntersectionObserver();
+    }
+  }
+
+  initIntersectionObserver(): void {
+    this.intersectionObserver = new IntersectionObserver(
+      (entries: IntersectionObserverEntry[]): void => entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          this.pagePresented.emit(this.parentArrayIndex);
+        }
+      }), {
+        root: this.pagesContainer,
+        rootMargin: '-90% 0px -10% 0px'
+      }
+    );
+    this.intersectionObserver.observe(this.elementRef.nativeElement);
   }
 }

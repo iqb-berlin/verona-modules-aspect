@@ -35,6 +35,7 @@ export class FormComponent implements OnInit, OnDestroy {
   @Input() pages: UnitPage[] = [];
   @Input() playerConfig!: PlayerConfig;
   form!: FormGroup;
+  presentedPages: number[] = [];
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private formBuilder: FormBuilder,
@@ -67,6 +68,8 @@ export class FormComponent implements OnInit, OnDestroy {
     this.formService.validatorsAdded.pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe((validations: FormControlValidators): void => this.setValidators(validations));
+    this.formService.presentedPage.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((presentedPage: number): void => this.onPresentedPage(presentedPage));
     this.veronaSubscriptionService.vopNavigationDeniedNotification
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
@@ -116,6 +119,23 @@ export class FormComponent implements OnInit, OnDestroy {
       },
       unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
     };
+    this.veronaPostService.sendVopStateChangedNotification({ unitState });
+  }
+
+  onPresentedPage(pagePresented: number): void {
+    if (this.presentedPages.includes(pagePresented)) {
+      this.presentedPages.push(pagePresented);
+    }
+    let unitState: UnitState;
+    if (this.pages.length === 0) {
+      unitState = {
+        presentationProgress: 'none'
+      };
+    } else {
+      unitState = {
+        presentationProgress: (this.pages.length === this.presentedPages.length) ? 'complete' : 'some'
+      };
+    }
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }
 

@@ -18,12 +18,18 @@
 <ng-template #dynamicElements>
   <div [style.display]="'grid'"
        [style.grid-template-columns]="section.gridColumnSizes"
+       [style.grid-template-rows]="section.gridRowSizes"
        [style.height.%]="100">
     <div *ngFor="let element of section.elements; let i = index"
          [style.min-width.px]="element.width"
          [style.min-height.px]="element.height"
+         [style.margin-left.px]="element.marginLeft"
+         [style.margin-right.px]="element.marginRight"
+         [style.margin-top.px]="element.marginTop"
+         [style.margin-bottom.px]="element.marginBottom"
          [style.grid-column-start]="element.gridColumnStart"
-         [style.grid-column-end]="element.gridColumnEnd">
+         [style.grid-column-end]="element.gridColumnEnd"
+         [style.grid-row-end]="element.gridRowEnd">
       <app-element-overlay
           [elementModel]="element"
           [parentForm]="sectionForm"

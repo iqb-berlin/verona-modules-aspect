@@ -7,7 +7,7 @@ import { UnitService } from './unit.service';
   selector: 'editor-aspect',
   template: `
     <div fxLayout="column" class="mainView">
-      <app-toolbar></app-toolbar>
+      <app-toolbar *ngIf="isStandalone()"></app-toolbar>
       <app-unit-view fxFlex></app-unit-view>
     </div>
     `,
@@ -17,6 +17,7 @@ import { UnitService } from './unit.service';
 })
 export class AppComponent implements OnInit {
   editorConfig!: Record<string, any>;
+  isStandalone = (): boolean => window === window.parent;
 
   constructor(private unitService: UnitService,
               private translateService: TranslateService,

@@ -15,12 +15,4 @@
              [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{maxLengthMessage}}
   </mat-error>
-  <mat-error *ngIf="formElementControl.errors?.min"
-             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
-    {{minMessage}}
-  </mat-error>
-  <mat-error *ngIf="formElementControl.errors?.max"
-             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
-    {{maxMessage}}
-  </mat-error>
 </ng-container>

@@ -5,7 +5,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import {
   CheckboxElement,
-  InputUIElement, NumberFieldElement, TextFieldElement, UnitUIElement
+  InputUIElement, TextFieldElement, UnitUIElement
 } from '../../../../../common/unit';
 import { FormService } from '../../../../../common/form.service';
 
@@ -48,18 +48,10 @@ export class ValidationMessageComponent implements OnInit {
       }
     }
     if (this.elementModel.min) {
-      if (this.elementModel.type === 'number-field') {
-        validators.push(Validators.min(<number> this.elementModel.min));
-      } else {
-        validators.push(Validators.minLength(<number> this.elementModel.min));
-      }
+      validators.push(Validators.minLength(<number> this.elementModel.min));
     }
     if (this.elementModel.max) {
-      if (this.elementModel.type === 'number-field') {
-        validators.push(Validators.max(<number> this.elementModel.max));
-      } else {
-        validators.push(Validators.maxLength(<number> this.elementModel.max));
-      }
+      validators.push(Validators.maxLength(<number> this.elementModel.max));
     }
     return validators;
   }
@@ -76,11 +68,5 @@ export class ValidationMessageComponent implements OnInit {
 
     this.maxLengthMessage = (this.elementModel as TextFieldElement).maxWarnMessage ||
       this.translateService.instant('validators.inputTooLong');
-
-    this.minMessage = (this.elementModel as NumberFieldElement).minWarnMessage ||
-      this.translateService.instant('validators.valueTooSmall');
-
-    this.maxMessage = (this.elementModel as NumberFieldElement).maxWarnMessage ||
-      this.translateService.instant('validators.valueTooBig');
   }
 }

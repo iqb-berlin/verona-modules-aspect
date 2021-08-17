@@ -62,14 +62,15 @@ export class FormComponent implements OnInit, OnDestroy {
     this.formService.groupAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((group: ChildFormGroup): void => this.addGroup(group));
-    this.formService.controlAdded.pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((control: FormControlElement): void => this.addControl(control));
-    this.formService.validatorsAdded.pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((validations: FormControlValidators): void => this.setValidators(validations));
-    this.formService.presentedPage.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((presentedPage: number): void => this.onPresentedPage(presentedPage));
+    this.formService.controlAdded
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((control: FormControlElement): void => this.addControl(control));
+    this.formService.validatorsAdded
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
+    this.formService.presentedPageAdded
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
     this.veronaSubscriptionService.vopNavigationDeniedNotification
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
@@ -122,8 +123,8 @@ export class FormComponent implements OnInit, OnDestroy {
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }
 
-  onPresentedPage(pagePresented: number): void {
-    if (this.presentedPages.includes(pagePresented)) {
+  onPresentedPageAdded(pagePresented: number): void {
+    if (!this.presentedPages.includes(pagePresented)) {
       this.presentedPages.push(pagePresented);
     }
     let unitState: UnitState;
@@ -136,6 +137,8 @@ export class FormComponent implements OnInit, OnDestroy {
         presentationProgress: (this.pages.length === this.presentedPages.length) ? 'complete' : 'some'
       };
     }
+    // eslint-disable-next-line no-console
+    console.log('player: onPresentedPageAdded', this.presentedPages);
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }
 

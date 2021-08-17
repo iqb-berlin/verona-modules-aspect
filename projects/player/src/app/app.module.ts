@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { AppComponent } from './app.component';
-import { PageComponent } from './components/page.component';
+import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from '../../../common/app.module';
 import { ElementOverlayComponent } from './components/element-overlay/element-overlay.component';

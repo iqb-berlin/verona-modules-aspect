@@ -44,11 +44,10 @@ export class SectionComponent implements OnInit {
     this.intersectionObserver = new IntersectionObserver(
       (entries: IntersectionObserverEntry[]): void => entries.forEach(entry => {
         if (entry.isIntersecting) {
-          this.pagePresented.emit(this.parentArrayIndex);
+          this.pagePresented.emit();
         }
       }), {
-        root: this.pagesContainer,
-        rootMargin: '-90% 0px -10% 0px'
+        root: this.pagesContainer
       }
     );
     this.intersectionObserver.observe(this.elementRef.nativeElement);

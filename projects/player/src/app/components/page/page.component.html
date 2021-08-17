@@ -1,0 +1,14 @@
+<app-section *ngFor="let section of page.sections; let i = index; let last = last"
+             [parentForm]="pageForm"
+             [pagesContainer]="pagesContainer"
+             [lastSection]="last"
+             (pagePresented)="onPagePresented()"
+             [parentArrayIndex]="i"
+             [section]="section"
+             [ngStyle]="{
+                position: 'relative',
+                display: 'inline-block',
+                'background-color': section.backgroundColor,
+                'height.px': section.height,
+                'width.px': section.width }">
+</app-section>

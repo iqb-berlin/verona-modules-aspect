@@ -1,4 +1,4 @@
-<div class="layout-container" [fxLayout]="layoutAlignment">
+<div class="layout-container" #layoutContainer [fxLayout]="layoutAlignment">
   <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
     alwaysVisiblePageView :
     scrollPagesView"></ng-container>
@@ -9,14 +9,13 @@
 
 <ng-template #alwaysVisiblePageView>
   <div *ngIf="alwaysVisiblePage"
-       #alwaysVisiblePagesContainer
        class="page-container"
        [fxFlex]="pageExpansion">
   <div appHideFirstChild [hideFirstChild]="hidePageLabels">
     <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
       <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
                 [parentForm]="parentForm"
-                [pagesContainer]="alwaysVisiblePagesContainer"
+                [pagesContainer]="layoutContainer"
                 [page]="alwaysVisiblePage">
       </app-page>
     </div>
@@ -44,6 +43,7 @@
                  label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
           <app-page [parentArrayIndex]="i"
                     [parentForm]="parentForm"
+                    [pagesContainer]="layoutContainer"
                     [page]="page">
           </app-page>
         </mat-tab>
@@ -54,7 +54,6 @@
 <ng-template #scrollPagesScrolledView>
   <div class="page-container"
        [ngClass]="{'concat-scroll-snap' : playerConfig.pagingMode === 'concat-scroll-snap'}"
-       #scrollPagesContainer
        [fxFlex]="pageExpansion">
     <div fxLayout="column">
       <ng-container *ngFor="let page of pages; let i = index">
@@ -63,7 +62,7 @@
              appHideFirstChild
              [hideFirstChild]="hidePageLabels"
              appScrollIndex
-             [scrollPagesContainer]="scrollPagesContainer"
+             [scrollPagesContainer]="layoutContainer"
              [(selectedIndex)]="selectedIndex"
              [index]="playerPageIndices[i]"
              (selectedIndexChange)="onSelectedIndexChange($event)">
@@ -72,7 +71,7 @@
           </div>
           <app-page [parentArrayIndex]="i"
                     [parentForm]="parentForm"
-                    [pagesContainer]="scrollPagesContainer"
+                    [pagesContainer]="layoutContainer"
                     [page]="page">
           </app-page>
         </div>

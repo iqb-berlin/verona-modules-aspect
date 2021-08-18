@@ -15,3 +15,9 @@
 .layout-container{
   max-height: 100vh;
 }
+
+.tab-page-container{
+  overflow: hidden;
+  margin-left: 1vw;
+  margin-top: 1vh;
+}

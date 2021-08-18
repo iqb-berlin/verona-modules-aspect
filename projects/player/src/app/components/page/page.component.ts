@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnInit
+  Component, Input, OnInit, Output, EventEmitter
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UnitPage } from '../../../../../common/unit';
@@ -15,6 +15,7 @@ export class PageComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
   @Input() pagesContainer!: HTMLElement;
+  @Output() selectedIndexChange = new EventEmitter<number>();
   pageForm!: FormGroup;
 
   constructor(private formService: FormService,
@@ -33,7 +34,12 @@ export class PageComponent implements OnInit {
     });
   }
 
-  onPagePresented(): void {
-    this.formService.addPresentedPage(this.parentArrayIndex);
+  onIntersection(detectionType: 'top' | 'bottom'): void {
+    if (detectionType === 'bottom') {
+      this.formService.addPresentedPage(this.parentArrayIndex);
+    }
+    if (detectionType === 'top') {
+      this.selectedIndexChange.emit(this.parentArrayIndex);
+    }
   }
 }

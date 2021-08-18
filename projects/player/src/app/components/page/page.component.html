@@ -1,8 +1,10 @@
+<div appIntersectionDetection
+     detectionType="top"
+     [intersectionContainer]="pagesContainer"
+     (intersecting)="onIntersection($event)"
+></div>
 <app-section *ngFor="let section of page.sections; let i = index; let last = last"
              [parentForm]="pageForm"
-             [pagesContainer]="pagesContainer"
-             [lastSection]="last"
-             (pagePresented)="onPagePresented()"
              [parentArrayIndex]="i"
              [section]="section"
              [ngStyle]="{
@@ -12,3 +14,8 @@
                 'height.px': section.height,
                 'width.px': section.width }">
 </app-section>
+<div appIntersectionDetection
+     detectionType="bottom"
+     [intersectionContainer]="pagesContainer"
+     (intersecting)="onIntersection($event)"
+></div>

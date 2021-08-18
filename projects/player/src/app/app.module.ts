@@ -17,6 +17,7 @@ import { LayoutComponent } from './components/layout/layout.component';
 import { HideFirstChildDirective } from './directives/hide-first-child.directive';
 import { ScrollIndexDirective } from './directives/scroll-index.directive';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
     LayoutComponent,
     AlertDialogComponent,
     HideFirstChildDirective,
-    ScrollIndexDirective
+    ScrollIndexDirective,
+    IntersectionDetectionDirective
   ],
   imports: [
     BrowserModule,

@@ -8,8 +8,6 @@ import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 import { MessageService } from '../../../../../../../common/message.service';
 
-// TODO besseres Layout for grid Spalten und Zeilen. Versuch auskommentiert, weil buggy.
-
 @Component({
   selector: 'app-section-properties',
   template: `
@@ -38,71 +36,52 @@ import { MessageService } from '../../../../../../../common/message.service';
       </mat-checkbox>
 
       <ng-container *ngIf="selectedPageSection.dynamicPositioning">
-<!--        <div class="size-group">-->
-<!--          <mat-form-field>-->
-<!--            <mat-label>Anzahl Spalten</mat-label>-->
-<!--            <input matInput type="number"-->
-<!--                   [value]="$any(selectedPageSection.gridColumnSizes.split(' ').length)"-->
-<!--                   (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">-->
-<!--          </mat-form-field>-->
-<!--          <div *ngFor="let size of selectedPageSection.gridColumnSizes.split(' ') ; let i = index" fxLayout="row">-->
-<!--            <mat-form-field>-->
-<!--              <mat-label>Breite {{i + 1}}</mat-label>-->
-<!--              {{size}}-->
-<!--              {{size.slice(0, -2)}}-->
-<!--              <input matInput type="number"-->
-<!--                     [value]="size.slice(0, -2)"-->
-<!--                     (change)="changeGridSize('gridColumnSizes', i, $any($event).target.value)">-->
-<!--            </mat-form-field>-->
-<!--            <mat-select [value]="selectedPageSection.gridColumnSizes.split(' ')[i].slice(-2)">-->
-<!--              <mat-option value="fr">Bruchteile</mat-option>-->
-<!--              <mat-option value="px">Bildpunkte</mat-option>-->
-<!--            </mat-select>-->
-<!--          </div>-->
-<!--        </div>-->
-
+        Spalten
         <div class="size-group">
           <mat-form-field>
-            <mat-label>Anzahl Spalten</mat-label>
+            <mat-label>Anzahl</mat-label>
             <input matInput type="number"
                    [value]="$any(selectedPageSection.gridColumnSizes.split(' ').length)"
                    (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">
           </mat-form-field>
-          <div class="grid-sizes">
-            <mat-form-field *ngFor="let size of selectedPageSection.gridColumnSizes.split(' '); let i = index">
+          <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs" fxLayout="row">
+            <mat-form-field>
               <mat-label>Breite {{i + 1}}</mat-label>
-              <input matInput
-                     [value]="size">
+              <input matInput type="number"
+                     [value]="size.value"
+                     (change)="changeGridSize('gridColumnSizes', i, false, $any($event).target.value)">
             </mat-form-field>
+            <mat-select [value]="size.unit"
+                        (selectionChange)="changeGridSize('gridColumnSizes', i, true, $event.value)">
+              <mat-option value="fr">Bruchteile</mat-option>
+              <mat-option value="px">Bildpunkte</mat-option>
+            </mat-select>
           </div>
         </div>
 
+        Zeilen
         <div class="size-group">
           <mat-form-field>
-            <mat-label>Anzahl Zeilen</mat-label>
+            <mat-label>Anzahl</mat-label>
             <input matInput type="number"
                    [value]="$any(selectedPageSection.gridRowSizes.split(' ').length)"
                    (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
           </mat-form-field>
-          <div class="grid-sizes">
-            <mat-form-field *ngFor="let size of selectedPageSection.gridRowSizes.split(' '); let i = index">
+          <div *ngFor="let size of rowSizes ; let i = index" fxLayout="row">
+            <mat-form-field>
               <mat-label>Höhe {{i + 1}}</mat-label>
-              <input matInput
-                     [value]="size">
+              <input matInput type="number"
+                     [value]="size.value"
+                     (change)="changeGridSize('gridRowSizes', i, false, $any($event).target.value)">
             </mat-form-field>
+            <mat-select [value]="size.unit"
+                        (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
+              <mat-option value="fr">Bruchteile</mat-option>
+              <mat-option value="px">Bildpunkte</mat-option>
+            </mat-select>
           </div>
         </div>
-
-<!--        <mat-form-field appearance="fill">-->
-<!--          <mat-label>Grid-Spalten</mat-label>-->
-<!--          <input matInput [(ngModel)]="selectedPageSection.gridColumnSizes">-->
-<!--        </mat-form-field>-->
-<!--        <mat-form-field appearance="fill">-->
-<!--          <mat-label>Grid-Zeilen</mat-label>-->
-<!--          <input matInput [(ngModel)]="selectedPageSection.gridRowSizes">-->
-<!--        </mat-form-field>-->
       </ng-container>
-
     </div>
     <button mat-raised-button
             (click)="unitService.deleteSection(selectedPageSection)">
@@ -111,13 +90,17 @@ import { MessageService } from '../../../../../../../common/message.service';
     </button>
   `,
   styles: [
-    '::ng-deep app-section-properties .grid-sizes .mat-form-field-infix {width: 80px}',
-    '.size-group {background-color: #f5f5f5; margin: 15px 0}'
+    '::ng-deep app-section-properties .size-inputs .mat-form-field-infix {width: 100px}',
+    '.size-group {background-color: #f5f5f5; margin: 0 0 15px 0}',
+    '::ng-deep app-section-properties .size-group mat-select {padding-top: 24px; padding-left: 15px;}'
   ]
 })
 export class SectionPropertiesComponent implements OnInit, OnDestroy {
   selectedPageSection!: UnitPageSection;
   private ngUnsubscribe = new Subject<void>();
+
+  columnSizes: { value: string, unit: string }[] = [];
+  rowSizes: { value: string, unit: string }[] = [];
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
@@ -128,7 +111,20 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((pageSection: UnitPageSection) => {
         this.selectedPageSection = pageSection;
+        this.updateGridSizes();
       });
+  }
+
+  /* Initialize internal array of grid sizes. Where value and unit are put, split up, in an array. */
+  private updateGridSizes(): void {
+    this.columnSizes = [];
+    this.selectedPageSection.gridColumnSizes.split(' ').forEach((size: string) => {
+      this.columnSizes.push({ value: size.slice(0, -2), unit: size.slice(-2) });
+    });
+    this.rowSizes = [];
+    this.selectedPageSection.gridRowSizes.split(' ').forEach((size: string) => {
+      this.rowSizes.push({ value: size.slice(0, -2), unit: size.slice(-2) });
+    });
   }
 
   updateModel(property: string, value: string | number | boolean): void {
@@ -152,6 +148,7 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  /* Add elements to size array. Default value 1fr. */
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
     const oldSizesAsArray = property === 'gridColumnSizes' ?
       this.selectedPageSection.gridColumnSizes.split(' ') :
@@ -166,17 +163,23 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
         ...Array(newLength - oldSizesAsArray.length).fill('1fr')
       );
     }
-    this.selectedPageSection[property] = newArray.join(' ');
+    this.updateModel(property, newArray.join(' '));
+    this.updateGridSizes();
   }
 
-  // changeGridSize(property: string, index: number, newSize: string): void {
-  //   // console.log('changeGridSize', property, index, newSize);
-  //   const oldSizesAsArray = property === 'gridColumnSizes' ?
-  //     this.selectedPageSection.gridColumnSizes.split(' ') :
-  //     this.selectedPageSection.gridRowSizes.split(' ');
-  //
-  //   oldSizesAsArray[index] = newSize + oldSizesAsArray[index].slice(-2);
-  //
-  //   this.unitService.updateSectionProperty(this.selectedPageSection, property, oldSizesAsArray.join(' '));
-  // }
+  /* Replace number or unit is size string. '2fr 1fr' -> '2px 3fr' */
+  changeGridSize(property: string, index: number, unit: boolean = false, newValue: string): void {
+    const oldSizesAsArray = property === 'gridColumnSizes' ?
+      this.selectedPageSection.gridColumnSizes.split(' ') :
+      this.selectedPageSection.gridRowSizes.split(' ');
+
+    if (unit) {
+      oldSizesAsArray[index] = oldSizesAsArray[index].slice(0, -2) + newValue;
+    } else {
+      oldSizesAsArray[index] = newValue + oldSizesAsArray[index].slice(-2);
+    }
+
+    this.updateModel(property, oldSizesAsArray.join(' '));
+    this.updateGridSizes();
+  }
 }

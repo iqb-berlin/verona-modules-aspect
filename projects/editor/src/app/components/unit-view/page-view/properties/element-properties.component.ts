@@ -78,29 +78,37 @@ import { SelectionService } from '../../../../selection.service';
             <mat-divider></mat-divider>
 
 
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength')">
               <mat-label>Minimalwert</mat-label>
-              <input matInput type="number" [value]="combinedProperties.min"
-                     (input)="updateModel('min', $any($event.target).value)">
+              <input matInput type="number" [value]="combinedProperties.minLength"
+                     (input)="updateModel('minLength', $any($event.target).value)">
             </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('min')">
-              <mat-label>Warnmeldung</mat-label>
-              <input matInput type="text" [value]="combinedProperties.minWarnMessage"
-                     (input)="updateModel('minWarnMessage', $any($event.target).value)">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength')">
+              <mat-label>MInimalwert Warnmeldung</mat-label>
+              <input matInput type="text" [value]="combinedProperties.minLengthWarnMessage"
+                     (input)="updateModel('minLengthWarnMessage', $any($event.target).value)">
             </mat-form-field>
-
             <mat-divider></mat-divider>
-
-
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')">
               <mat-label>Maximalwert</mat-label>
-              <input matInput type="number" [value]="combinedProperties.max"
-                     (input)="updateModel('max', $any($event.target).value)">
+              <input matInput type="number" [value]="combinedProperties.maxLength"
+                     (input)="updateModel('maxLength', $any($event.target).value)">
             </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('max')">
-              <mat-label>Warnmeldung</mat-label>
-              <input matInput type="text" [value]="combinedProperties.maxWarnMessage"
-                     (input)="updateModel('maxWarnMessage', $any($event.target).value)">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')">
+              <mat-label>Maximalwert Warnmeldung</mat-label>
+              <input matInput type="text" [value]="combinedProperties.maxLengthWarnMessage"
+                     (input)="updateModel('maxLengthWarnMessage', $any($event.target).value)">
+            </mat-form-field>
+
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('pattern')">
+              <mat-label>Muster</mat-label>
+              <input matInput type="number" [value]="combinedProperties.pattern"
+                     (input)="updateModel('pattern', $any($event.target).value)">
+            </mat-form-field>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('pattern')">
+              <mat-label>Muster Warnmeldung</mat-label>
+              <input matInput type="text" [value]="combinedProperties.patternWarnMessage"
+                     (input)="updateModel('patternWarnMessage', $any($event.target).value)">
             </mat-form-field>
 
             <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">

@@ -21,8 +21,8 @@ export class ValidationMessageComponent implements OnInit {
   formElementControl!: FormControl;
   requiredMessage!: string;
   requiredTrueMessage!: string;
-  minLengthMessage!: string;
-  maxLengthMessage!: string;
+  minLengthWarnMessage!: string;
+  maxLengthWarnMessage!: string;
   minMessage!: string;
   maxMessage!: string;
 
@@ -63,10 +63,10 @@ export class ValidationMessageComponent implements OnInit {
     this.requiredTrueMessage = (this.elementModel as CheckboxElement).requiredWarnMessage ||
       this.translateService.instant('validators.inputRequiredTrue');
 
-    this.minLengthMessage = (this.elementModel as TextFieldElement).minWarnMessage ||
+    this.minLengthWarnMessage = (this.elementModel as TextFieldElement).minWarnMessage ||
       this.translateService.instant('validators.inputTooShort');
 
-    this.maxLengthMessage = (this.elementModel as TextFieldElement).maxWarnMessage ||
+    this.maxLengthWarnMessage = (this.elementModel as TextFieldElement).maxWarnMessage ||
       this.translateService.instant('validators.inputTooLong');
   }
 }

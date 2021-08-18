@@ -81,9 +81,9 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
 export interface TextFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
   minLength: number | undefined;
-  minWarnMessage: string;
+  minLengthWarnMessage: string;
   maxLength: number | undefined;
-  maxWarnMessage: string;
+  maxLengthWarnMessage: string;
   pattern: string;
   patternWarnMessage: string;
 }

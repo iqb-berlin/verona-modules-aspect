@@ -9,10 +9,10 @@
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.minlength"
              [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
-    {{minLengthMessage}}
+    {{minLengthWarnMessage}}
   </mat-error>
   <mat-error *ngIf="formElementControl.errors?.maxlength"
              [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
-    {{maxLengthMessage}}
+    {{maxLengthWarnMessage}}
   </mat-error>
 </ng-container>

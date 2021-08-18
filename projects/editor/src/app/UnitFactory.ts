@@ -107,9 +107,9 @@ export function createButtonElement(): ButtonElement {
 export function createTextfieldElement(): TextFieldElement {
   return <TextFieldElement>{
     minLength: undefined,
-    minWarnMessage: 'Eingabe zu kurz',
+    minLengthWarnMessage: 'Eingabe zu kurz',
     maxLength: undefined,
-    maxWarnMessage: 'Eingabe zu lang',
+    maxLengthWarnMessage: 'Eingabe zu lang',
     pattern: '',
     patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
     ...createUnitUIElement('text-field'),

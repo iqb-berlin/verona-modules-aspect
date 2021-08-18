@@ -24,7 +24,7 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
              [style.width.%]="100"
              [style.height.%]="100">
           <div class="resizeHandle"
-               cdkDrag (cdkDragStarted)="dragStart()" (cdkDragMoved)="resizeElement($event)"
+               cdkDrag (cdkDragStarted)="resizeDragStart()" (cdkDragMoved)="resizeElement($event)"
                [style.right.px]="-1"
                [style.bottom.px]="-7"
                [style.z-index]="5">
@@ -49,13 +49,21 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
   private oldX: number = 0;
   private oldY: number = 0;
 
-  dragStart(): void {
+  resizeDragStart(): void {
     this.oldX = this.element.width;
     this.oldY = this.element.height;
   }
 
   resizeElement(event: CdkDragMove): void {
-    this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'width', Math.max(this.oldX + event.distance.x, 0));
-    this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'height', Math.max(this.oldY + event.distance.y, 0));
+    this.unitService.updateElementProperty(
+      this.selectionService.getSelectedElements(),
+      'width',
+      Math.max(this.oldX + event.distance.x, 0)
+    );
+    this.unitService.updateElementProperty(
+      this.selectionService.getSelectedElements(),
+      'height',
+      Math.max(this.oldY + event.distance.y, 0)
+    );
   }
 }

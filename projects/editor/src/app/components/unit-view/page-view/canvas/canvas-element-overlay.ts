@@ -5,8 +5,7 @@ import {
   ViewChild, ViewContainerRef
 } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
-import { flatMap, mergeMap, take, takeUntil } from 'rxjs/operators';
-// eslint-disable-next-line import/no-cycle
+import { take, takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
@@ -14,7 +13,6 @@ import { FormElementComponent } from '../../../../../../../common/form-element-c
 import { ValueChangeElement } from '../../../../../../../common/form';
 import { ElementComponent } from '../../../../../../../common/element-component.directive';
 import { SelectionService } from '../../../../selection.service';
-import { setClassMetadata } from '@angular/core/src/r3_symbols';
 
 @Directive()
 export abstract class CanvasElementOverlay {

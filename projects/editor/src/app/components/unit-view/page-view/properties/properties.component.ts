@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../../../unit.service';
-import { UnitPage, UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
+import { UnitPage } from '../../../../../../../common/unit';
 import { SelectionService } from '../../../../selection.service';
 
 @Component({
@@ -18,9 +17,7 @@ import { SelectionService } from '../../../../selection.service';
   ]
 })
 export class PropertiesComponent {
-  selectedElements: UnitUIElement[] = [];
   selectedPage!: UnitPage;
-  selectedPageSection!: UnitPageSection;
   expandElementView: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 

@@ -124,7 +124,7 @@ import { SelectionService } from '../../../../selection.service';
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('alignment')">
               <mat-label>Ausrichtung</mat-label>
               <mat-select [value]="combinedProperties.alignment"
-                          (change)="$any($event.target).value">
+                          (selectionChange)="updateModel('alignment', $event.value)">
                 <mat-option *ngFor="let option of ['row', 'column']" [value]="option">
                   {{option}}
                 </mat-option>

@@ -60,10 +60,10 @@ function createUnitUIElement(type: string): UnitUIElement {
 
 export function createTextUIElement(): Record<string, unknown> {
   return {
-    fontColor: 'blue',
+    fontColor: 'black',
     font: 'Arial',
     fontSize: 18,
-    bold: true,
+    bold: false,
     italic: false,
     underline: false
   };
@@ -82,7 +82,7 @@ export function createInputUIElement(
 
 export function createSurfaceUIElement(): Record<string, unknown> {
   return {
-    backgroundColor: 'lightgrey'
+    backgroundColor: 'transparent'
   };
 }
 

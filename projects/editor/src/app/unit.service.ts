@@ -60,7 +60,7 @@ export class UnitService {
   }
 
   updatePageProperty(page: UnitPage, property: string, value: number | boolean): void {
-    if (property === 'alwaysVisible' && value === true && this.isPageAlwaysVisibleSet()) {
+    if (property === 'alwaysVisible' && value === true && !this.isSetPageAlwaysVisibleAllowed()) {
       this.messageService.showError('Kann nur für eine Seite gesetzt werden');
     } else {
       page[property] = value;
@@ -68,9 +68,9 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  /** Check if a page already has this setting. */
-  isPageAlwaysVisibleSet(): boolean {
-    return this._unit.value.pages.find(page => page.alwaysVisible) !== undefined;
+  /* Disallow when not more than 1 page or when is already set. */
+  isSetPageAlwaysVisibleAllowed(): boolean {
+    return this._unit.value.pages.length > 1 && this._unit.value.pages.find(page => page.alwaysVisible) === undefined;
   }
 
   addSection(page: UnitPage): void {

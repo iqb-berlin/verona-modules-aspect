@@ -49,7 +49,7 @@ export class PagePropertiesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((page: UnitPage) => {
         this.selectedPage = page;
-        this.alwaysVisibleDisabled = this.unitService.isPageAlwaysVisibleSet() && !page.alwaysVisible;
+        this.alwaysVisibleDisabled = (!this.unitService.isSetPageAlwaysVisibleAllowed() && !page.alwaysVisible);
       });
   }
 

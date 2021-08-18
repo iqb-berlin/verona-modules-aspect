@@ -173,34 +173,34 @@ import { SelectionService } from '../../../../selection.service';
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
                 <mat-label>Breite</mat-label>
                 <input matInput type="number" [value]="combinedProperties.width"
-                       (input)="updateModel('width', $any($event.target).value)">
+                       (input)="updateModel('width', toNumber($any($event.target).value))">
               </mat-form-field>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')">
                 <mat-label>Hoehe</mat-label>
                 <input matInput type="number" [value]="combinedProperties.height"
-                       (input)="updateModel('height', $any($event.target).value)">
+                       (input)="updateModel('height', toNumber($any($event.target).value))">
               </mat-form-field>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('xPosition')">
                 <mat-label>X Position</mat-label>
                 <input matInput type="number" [value]="combinedProperties.xPosition"
-                       (input)="updateModel('xPosition', $any($event.target).value)">
+                       (input)="updateModel('xPosition', toNumber($any($event.target).value))">
               </mat-form-field>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('yPosition')">
                 <mat-label>Y Position</mat-label>
                 <input matInput type="number" [value]="combinedProperties.yPosition"
-                       (input)="updateModel('yPosition', $any($event.target).value)">
+                       (input)="updateModel('yPosition', toNumber($any($event.target).value))">
               </mat-form-field>
             </ng-container>
             <ng-template #elseBlock>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')">
                 <mat-label>Mindestbreite</mat-label>
                 <input matInput type="number" [value]="combinedProperties.width"
-                       (input)="updateModel('width', $any($event.target).value)">
+                       (input)="updateModel('width', toNumber($any($event.target).value))">
               </mat-form-field>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')">
                 <mat-label>Mindesthoehe</mat-label>
                 <input matInput type="number" [value]="combinedProperties.height"
-                       (input)="updateModel('height', $any($event.target).value)">
+                       (input)="updateModel('height', toNumber($any($event.target).value))">
               </mat-form-field>
               Grid-Spalte
               <div fxLayoutAlign="row">
@@ -384,6 +384,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   updateModel(property: string, value: string | number | boolean | undefined): void {
     this.unitService.updateElementProperty(this.selectedElements, property, value);
   }
+
+  toNumber = (value: string):number => Number(value);
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
     this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);

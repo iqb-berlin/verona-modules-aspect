@@ -71,8 +71,8 @@ export abstract class CanvasElementOverlay {
     this.selected = newValue;
   }
 
-  click(event: MouseEvent): void {
-    if (event.shiftKey) {
+  selectElement(multiSelect: boolean = false): void {
+    if (multiSelect) {
       this.selectionService.selectElement({ componentElement: this, multiSelect: true });
     } else {
       this.selectionService.selectElement({ componentElement: this, multiSelect: false });

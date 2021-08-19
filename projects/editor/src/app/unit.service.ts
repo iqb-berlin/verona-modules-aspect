@@ -164,28 +164,22 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  updateElementProperty(elements: UnitUIElement[], property: string, value: string | number | boolean | undefined): boolean {
+  updateElementProperty(elements: UnitUIElement[], property: string,
+                        value: string | number | boolean | string[] | undefined): void {
     elements.forEach((element: UnitUIElement) => {
-      if (['string', 'number', 'boolean', 'undefined'].indexOf(typeof element[property]) > -1) {
-        if (property === 'id') {
-          if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
-            this.messageService.showError('ID ist bereits vergeben');
-            return false;
-          }
-          this.idService.removeId(element[property]);
-          this.idService.addId(<string>value);
+      if (property === 'id') {
+        if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
+          this.messageService.showError('ID ist bereits vergeben');
+          return false;
         }
-        element[property] = value;
-      } else if (Array.isArray(element[property])) {
-        (element[property] as string[]).push(value as string);
-      } else {
-        console.error('ElementProperty not found!', element[property]);
+        this.idService.removeId(element[property]);
+        this.idService.addId(<string>value);
       }
-      this.elementPropertyUpdated.next(); // notify properties panel/element about change
+      element[property] = value;
+      this.elementPropertyUpdated.next();
       return true;
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification();
-    return true;
   }
 
   alignElements(elements: UnitUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {

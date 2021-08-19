@@ -3,6 +3,8 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
+import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
@@ -112,17 +114,23 @@ import { SelectionService } from '../../../../selection.service';
             </mat-form-field>
 
             <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
-              <div *ngIf="combinedProperties.options !== undefined">
+              <ng-container *ngIf="combinedProperties.options !== undefined">
                 <mat-label>Optionen</mat-label>
-                <!--            TODO reorder via droplist-->
-                <mat-list *ngFor="let option of $any(combinedProperties.options)">
-                  <mat-list-item>{{option}}</mat-list-item>
-                  <mat-divider></mat-divider>
-                </mat-list>
-              </div>
+                <div cdkDropList [cdkDropListData]="combinedProperties.options"
+                     (cdkDropListDropped)="reorderOptions('options', $any($event))">
+                  <div *ngFor="let option of $any(combinedProperties.options)" cdkDrag
+                       class="list-items">
+                    {{option}}
+                    <button mat-icon-button color="warn"
+                            (click)="removeOption('options', option)">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
               <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
                 <button mat-icon-button matPrefix
-                        (click)="updateModel('options', newOption.value)">
+                        (click)="addOption('options', newOption.value); newOption.select()">
                   <mat-icon>add</mat-icon>
                 </button>
                 <input #newOption matInput type="text" placeholder="Optionstext">
@@ -343,7 +351,9 @@ import { SelectionService } from '../../../../selection.service';
     `,
   styles: [
     '::ng-deep app-element-properties .margin-properties .mat-form-field-infix {width: 55px; margin: 0 5px}',
-    '::ng-deep app-element-properties .mat-form-field-infix {width: 95px; margin: 0 5px}'
+    '::ng-deep app-element-properties .mat-form-field-infix {width: 95px; margin: 0 5px}',
+    '.list-items {padding: 5px 10px; border-bottom: solid 1px #ccc; cursor: move;' +
+                  'display: flex;flex-direction: row; align-items: center; justify-content: space-between;}'
   ]
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
@@ -389,7 +399,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateModel(property: string, value: string | number | boolean | undefined): void {
+  updateModel(property: string, value: string | number | boolean | string[] | undefined): void {
     this.unitService.updateElementProperty(this.selectedElements, property, value);
   }
 
@@ -421,5 +431,21 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  addOption(property: string, value: string): void {
+    (this.combinedProperties[property] as string[]).push(value);
+    this.updateModel(property, this.combinedProperties[property]);
+  }
+
+  reorderOptions(property: string, event: CdkDragDrop<string[]>): void {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    this.updateModel(property, event.container.data);
+  }
+
+  removeOption(property: string, option: string): void {
+    const valueList: string[] = this.combinedProperties[property] as [];
+    valueList.splice(valueList.indexOf(option), 1);
+    this.updateModel(property, valueList);
   }
 }

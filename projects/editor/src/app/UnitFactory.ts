@@ -82,7 +82,7 @@ export function createInputUIElement(
 
 export function createSurfaceUIElement(): Record<string, unknown> {
   return {
-    backgroundColor: 'transparent'
+    backgroundColor: 'lightgrey'
   };
 }
 
@@ -91,7 +91,8 @@ export function createTextElement(): TextElement {
     text: 'Example Text',
     ...createUnitUIElement('text'),
     ...createTextUIElement(),
-    ...createSurfaceUIElement()
+    ...createSurfaceUIElement(),
+    backgroundColor: 'transparent'
   };
 }
 
@@ -135,7 +136,8 @@ export function createCheckboxElement(): CheckboxElement {
     ...createUnitUIElement('checkbox'),
     ...createInputUIElement('Label Checkbox', undefined),
     ...createTextUIElement(),
-    ...createSurfaceUIElement()
+    ...createSurfaceUIElement(),
+    backgroundColor: 'transparent'
   };
 }
 
@@ -157,7 +159,8 @@ export function createRadioButtonGroupElement(): RadioButtonGroupElement {
     ...createInputUIElement('Label Optionsfeld', undefined),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
-    height: 75
+    height: 75,
+    backgroundColor: 'transparent'
   };
 }
 

@@ -99,14 +99,14 @@ export interface CheckboxElement extends InputUIElement, TextUIElement, SurfaceU
 export interface DropdownElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   label: string;
   options: string[];
-  value: number | undefined;
+  value: string | undefined;
 }
 
 export interface RadioButtonGroupElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   label: string;
   options: string[];
   alignment: 'row' | 'column';
-  value: number | undefined;
+  value: string | undefined;
 }
 
 export interface ImageElement extends UnitUIElement {

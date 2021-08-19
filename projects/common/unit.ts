@@ -17,7 +17,6 @@ export interface UnitPage {
 export interface UnitPageSection {
   [index: string]: string | number | boolean | undefined | UnitUIElement[];
   elements: UnitUIElement[];
-  width: number;
   height: number;
   backgroundColor: string;
   dynamicPositioning: boolean;

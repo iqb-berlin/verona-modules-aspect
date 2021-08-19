@@ -28,7 +28,6 @@ export function createUnitPage(pageIndex: number): UnitPage {
 export function createUnitPageSection(): UnitPageSection {
   return {
     elements: [],
-    width: 1100,
     height: 400,
     backgroundColor: '#FFFAF0',
     dynamicPositioning: false,

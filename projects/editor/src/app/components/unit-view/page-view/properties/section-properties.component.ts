@@ -67,7 +67,7 @@ import { MessageService } from '../../../../../../../common/message.service';
                    [value]="$any(selectedPageSection.gridRowSizes.split(' ').length)"
                    (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
           </mat-form-field>
-          <div *ngFor="let size of rowSizes ; let i = index" fxLayout="row">
+          <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
             <mat-form-field>
               <mat-label>Höhe {{i + 1}}</mat-label>
               <input matInput type="number"

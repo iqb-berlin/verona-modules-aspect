@@ -56,9 +56,10 @@ import { SelectionService } from '../../../../selection.service';
             <mat-form-field *ngIf="combinedProperties.type === 'dropdown' || combinedProperties.type === 'radio'"
                             appearance="fill">
               <mat-label>Vorbelegung</mat-label>
-              <mat-select (selectionChange)="updateModel('value', $event.value)">
+              <mat-select [value]="combinedProperties.value"
+                          (selectionChange)="updateModel('value', $event.value)">
                 <mat-option>undefiniert</mat-option>
-                <mat-option *ngFor="let option of $any(combinedProperties).options; let i = index" [value]="i">
+                <mat-option *ngFor="let option of $any(combinedProperties).options" [value]="option">
                   {{option}}
                 </mat-option>
               </mat-select>

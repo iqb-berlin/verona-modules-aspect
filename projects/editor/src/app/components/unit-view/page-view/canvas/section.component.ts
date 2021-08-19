@@ -9,7 +9,6 @@ import { SelectionService } from '../../../../selection.service';
   template: `
     <div class="section-wrapper"
          [style.border]="selected ? '1px solid': '1px dotted'"
-         [style.width.px]="section.width"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
          (click)="selectionService.selectSection(this)">
@@ -75,6 +74,7 @@ import { SelectionService } from '../../../../selection.service';
   `,
   styles: [
     '.sectionMenu {visibility: hidden; transition: 0.2s 0.7s;}',
+    '.section-wrapper {width: 100%}',
     '.section-wrapper:hover .sectionMenu {visibility: visible; transition-delay: 0s;}',
     '.sectionMenu {position: absolute; left: -29px; top: 0}',
     '.sectionMenu button {width: 28px; height: 28px}',
@@ -83,7 +83,7 @@ import { SelectionService } from '../../../../selection.service';
     '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}'
   ]
 })
-export class CanvasSectionComponent {
+export class SectionComponent {
   @Input() section!: UnitPageSection;
   @Input() sectionIndex!: number;
   selected = true;

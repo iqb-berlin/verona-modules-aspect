@@ -14,7 +14,7 @@ import { PropertiesComponent } from './components/unit-view/page-view/properties
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
 import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
 import { PageCanvasComponent } from './components/unit-view/page-view/canvas/page-canvas.component';
-import { CanvasSectionComponent } from './components/unit-view/page-view/canvas/canvas-section.component';
+import { SectionComponent } from './components/unit-view/page-view/canvas/section.component';
 import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/app.module';
@@ -33,7 +33,7 @@ import { ElementPropertiesComponent } from './components/unit-view/page-view/pro
     UnitViewComponent,
     PageViewComponent,
     PageCanvasComponent,
-    CanvasSectionComponent,
+    SectionComponent,
     StaticCanvasOverlayComponent,
     DynamicCanvasOverlayComponent,
     ConfirmationDialog,

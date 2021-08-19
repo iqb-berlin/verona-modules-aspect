@@ -4,7 +4,7 @@ import {
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
-import { CanvasSectionComponent } from './canvas-section.component';
+import { SectionComponent } from './section.component';
 import { SelectionService } from '../../../../selection.service';
 
 @Component({
@@ -17,7 +17,7 @@ import { SelectionService } from '../../../../selection.service';
 })
 export class PageCanvasComponent {
   @Input() page!: UnitPage;
-  @ViewChildren('section_component') canvasSections!: QueryList<CanvasSectionComponent>;
+  @ViewChildren('section_component') canvasSections!: QueryList<SectionComponent>;
 
   constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 

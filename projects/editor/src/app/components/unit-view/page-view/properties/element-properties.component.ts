@@ -152,24 +152,6 @@ import { SelectionService } from '../../../../selection.service';
                           (change)="updateModel('resizeEnabled', $event.checked)">
               größenverstellbar
             </mat-checkbox>
-
-            <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('sentences')">
-              <div *ngIf="combinedProperties.sentences !== undefined">
-                <mat-label>Sätze</mat-label>
-                <mat-list *ngFor="let sentence of $any(combinedProperties.sentences)">
-                  <mat-list-item>{{sentence}}</mat-list-item>
-                  <mat-divider></mat-divider>
-                </mat-list>
-              </div>
-              <div class="newOptionElement" fxLayout="row" fxLayoutAlign="center center">
-                <button mat-icon-button matPrefix
-                        (click)="updateModel('sentences', newOption.value)">
-                  <mat-icon>add</mat-icon>
-                </button>
-                <input #newOption matInput type="text" placeholder="Optionstext">
-              </div>
-            </mat-form-field>
-
           </div>
           <button mat-raised-button class="delete-element-button" (click)="deleteElement()">
             Element löschen
@@ -381,6 +363,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
       );
   }
 
+  /* Create new object with properties of all selected elements. When values differ set prop to undefined. */
   createCombinedProperties(): void {
     if (this.selectedElements.length === 0) {
       this.combinedProperties = {};

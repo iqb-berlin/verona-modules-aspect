@@ -134,7 +134,7 @@ export function createTextareaElement(): TextAreaElement {
 export function createCheckboxElement(): CheckboxElement {
   return <CheckboxElement>{
     ...createUnitUIElement('checkbox'),
-    ...createInputUIElement('Label Checkbox', undefined),
+    ...createInputUIElement('Label Checkbox', false),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
     backgroundColor: 'transparent'

@@ -94,7 +94,7 @@ export interface TextAreaElement extends InputUIElement, TextUIElement, SurfaceU
 }
 
 export interface CheckboxElement extends InputUIElement, TextUIElement, SurfaceUIElement {
-  value: boolean | undefined;
+  value: boolean;
 }
 
 export interface DropdownElement extends InputUIElement, TextUIElement, SurfaceUIElement {

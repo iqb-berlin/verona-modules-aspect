@@ -45,10 +45,10 @@ import { SelectionService } from '../../../../selection.service';
             </mat-form-field>
             <section *ngIf="combinedProperties.type === 'checkbox'">
               Vorbelegung
-              <mat-button-toggle-group (change)="transformToBoolAndUpdateModel('value', $event.value)">
-                <mat-button-toggle value="true">wahr</mat-button-toggle>
-                <mat-button-toggle value="false">falsch</mat-button-toggle>
-                <mat-button-toggle value="undefined">undefiniert</mat-button-toggle>
+              <mat-button-toggle-group [value]="combinedProperties.value"
+                                       (change)="updateModel('value', $event.value)">
+                <mat-button-toggle [value]="true">wahr</mat-button-toggle>
+                <mat-button-toggle [value]="false">falsch</mat-button-toggle>
               </mat-button-toggle-group>
             </section>
             <mat-form-field *ngIf="combinedProperties.type === 'dropdown' || combinedProperties.type === 'radio'"
@@ -397,24 +397,6 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
     this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);
-  }
-
-  /* button group always handles values as string and since we also want to handle undefined
-   we need to transform the value before passing it on. */
-  transformToBoolAndUpdateModel(property: string, value: string): void { // TODO weg refactorn
-    switch (value) {
-      case 'true': {
-        this.updateModel(property, true);
-        break;
-      }
-      case 'false': {
-        this.updateModel(property, false);
-        break;
-      }
-      default: {
-        this.updateModel(property, undefined);
-      }
-    }
   }
 
   deleteElement(): void {

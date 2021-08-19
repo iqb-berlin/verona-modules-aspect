@@ -65,6 +65,12 @@ import { SelectionService } from '../../../../selection.service';
               </mat-select>
             </mat-form-field>
 
+            <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('allowUnset')"
+                          [checked]="$any(combinedProperties.allowUnset)"
+                          (change)="updateModel('allowUnset', $event.checked)">
+              Deselektion erlauben
+            </mat-checkbox>
+
             <mat-divider></mat-divider>
 
             <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('required')"

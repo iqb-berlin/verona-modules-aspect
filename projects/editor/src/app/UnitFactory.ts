@@ -143,6 +143,7 @@ export function createCheckboxElement(): CheckboxElement {
 export function createDropdownElement(): DropdownElement {
   return <DropdownElement><unknown>{
     options: [],
+    allowUnset: false,
     ...createUnitUIElement('dropdown'),
     ...createInputUIElement('Label Dropdown', undefined),
     ...createTextUIElement(),

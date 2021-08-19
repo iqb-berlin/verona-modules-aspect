@@ -100,6 +100,7 @@ export interface DropdownElement extends InputUIElement, TextUIElement, SurfaceU
   label: string;
   options: string[];
   value: string | undefined;
+  allowUnset: boolean;
 }
 
 export interface RadioButtonGroupElement extends InputUIElement, TextUIElement, SurfaceUIElement {

@@ -9,10 +9,11 @@
              [section]="section"
              [ngStyle]="{
                 position: 'relative',
-                display: 'inline-block',
+                display: 'block',
+                overflow: 'auto',
+                width: '100%',
                 'background-color': section.backgroundColor,
-                'height.px': section.height,
-                'width.px': section.width }">
+                'min-height.px': section.height}">
 </app-section>
 <div appIntersectionDetection
      detectionType="bottom"

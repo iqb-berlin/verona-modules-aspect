@@ -23,7 +23,9 @@
     <fieldset>
       <h4>Load Unit Definition</h4>
       <input type='file' id='fileInput' accept='.json,application/json'>
-      <input type='button' value='Load' onclick='loadUnitDefinition();'>
+      <input type='button' value='Load separate' onclick='loadUnitDefinition("separate");'>
+      <input type='button' value='Load snap' onclick='loadUnitDefinition("concat-scroll-snap");'>
+      <input type='button' value='Load scroll' onclick='loadUnitDefinition("concat-scroll");'>
     </fieldset>
   </form>
   <button onclick='denyNavigation();'>Deny Navigation</button>
@@ -50,7 +52,7 @@
     }, '*');
   }
 
-  loadUnitDefinition = () => {
+  loadUnitDefinition = (pagingMode) => {
     const setStartData = (e) => {
       window.postMessage({
         type: 'vopStartCommand',
@@ -61,7 +63,7 @@
         },
         playerConfig: {
           stateReportPolicy: 'eager',
-          pagingMode: 'separate', //concat-scroll, separate, concat-scroll-snap
+          pagingMode: pagingMode, //concat-scroll, separate, concat-scroll-snap
           logPolicy: 'rich',
           startPage: 'page0',
           enabledNavigationTargets: ['next']

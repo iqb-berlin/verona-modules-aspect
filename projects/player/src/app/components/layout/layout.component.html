@@ -1,21 +1,28 @@
-<div class="layout-container" #layoutContainer [fxLayout]="layoutAlignment">
-  <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
-    alwaysVisiblePageView :
-    scrollPagesView"></ng-container>
-  <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
-    alwaysVisiblePageView :
-    scrollPagesView"></ng-container>
+<div class="layout-container" [style.max-width.px]="layoutWidth">
+  <div class="layout-flex-container"
+       [fxLayout]="layoutAlignment">
+    <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
+      alwaysVisiblePageView :
+      scrollPagesView"></ng-container>
+    <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
+      alwaysVisiblePageView :
+      scrollPagesView"></ng-container>
+  </div>
 </div>
 
 <ng-template #alwaysVisiblePageView>
   <div *ngIf="alwaysVisiblePage"
+       #alwaysVisiblePageContainer
        class="page-container"
-       [fxFlex]="pageExpansion">
-  <div appHideFirstChild [hideFirstChild]="hidePageLabels">
-    <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
+       [style.max-width.px]="layoutAlignment === 'row' ? alwaysVisiblePageWidth : layoutWidth">
+    <div appHideFirstChild
+         [hideFirstChild]="hidePageLabels"
+         [style.max-width.px]="alwaysVisiblePage.width"
+         [style.margin.px]="alwaysVisiblePage.margin">
+      <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
       <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
                 [parentForm]="parentForm"
-                [pagesContainer]="layoutContainer"
+                [pagesContainer]="alwaysVisiblePageContainer"
                 [page]="alwaysVisiblePage">
       </app-page>
     </div>
@@ -31,45 +38,52 @@
 </ng-template>
 
 <ng-template #scrollPagesSeparatedView>
+  <div #pagesSeparatedContainer
+       class="page-container"
+       [style.max-width.px]="layoutAlignment === 'row' ? scrollPageWidth : layoutWidth">
     <mat-tab-group appHideFirstChild
                    [hideFirstChild]="hidePageLabels"
-                   class="tab-page-container"
-                   [fxFlex]="pageExpansion"
                    mat-align-tabs="start"
                    [(selectedIndex)]="selectedIndex"
                    (selectedIndexChange)="onSelectedIndexChange($event)">
       <ng-container *ngFor="let page of pages; let i = index">
         <mat-tab *ngIf="!page.alwaysVisible"
                  label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
-          <app-page [parentArrayIndex]="i"
-                    [parentForm]="parentForm"
-                    [pagesContainer]="layoutContainer"
-                    [page]="page">
-          </app-page>
+          <div [style.margin.px]="page.margin" [style.max-width.px]="page.width">
+            <app-page [parentArrayIndex]="i"
+                      [parentForm]="parentForm"
+                      [pagesContainer]="pagesSeparatedContainer"
+                      [page]="page">
+            </app-page>
+          </div>
         </mat-tab>
       </ng-container>
     </mat-tab-group>
+  </div>
 </ng-template>
 
 <ng-template #scrollPagesScrolledView>
-  <div class="page-container"
-       [ngClass]="{'concat-scroll-snap' : playerConfig.pagingMode === 'concat-scroll-snap'}"
-       [fxFlex]="pageExpansion">
+  <div  #pagesScrolledContainer
+        class="page-container"
+        [class.concat-scroll-snap]="playerConfig.pagingMode === 'concat-scroll-snap'"
+        [style.max-width.px]="layoutAlignment === 'row' ? scrollPageWidth : layoutWidth">
     <div fxLayout="column">
       <ng-container *ngFor="let page of pages; let i = index">
         <div *ngIf="!page.alwaysVisible"
-             [ngClass]="{'concat-scroll-snap-align' : playerConfig.pagingMode === 'concat-scroll-snap'}"
+             [class.concat-scroll-snap-align]="playerConfig.pagingMode === 'concat-scroll-snap'"
              appHideFirstChild
              [hideFirstChild]="hidePageLabels"
              appScrollIndex
              [selectedIndex]="selectedIndex"
-             [index]="playerPageIndices[i]">
+             [index]="playerPageIndices[i]"
+             [style.max-width.px]="page.width"
+             [style.margin.px]="page.margin">
           <div class="mat-tab-label">
             {{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}
           </div>
           <app-page [parentArrayIndex]="i"
                     [parentForm]="parentForm"
-                    [pagesContainer]="layoutContainer"
+                    [pagesContainer]="pagesScrolledContainer"
                     [page]="page"
                     (selectedIndexChange)="onSelectedIndexChange($event)">
           </app-page>

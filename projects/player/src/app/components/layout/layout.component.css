@@ -7,17 +7,14 @@
 }
 
 .page-container{
-  overflow: scroll;
-  margin-left: 1vw;
-  margin-top: 1vh;
+  flex: 1 1 100%;
+  overflow: auto;
 }
 
 .layout-container{
-  max-height: 100vh;
+  margin: auto;
 }
 
-.tab-page-container{
-  overflow: hidden;
-  margin-left: 1vw;
-  margin-top: 1vh;
+.layout-flex-container{
+  height: 100vh;
 }

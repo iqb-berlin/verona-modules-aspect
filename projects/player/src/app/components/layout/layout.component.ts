@@ -31,6 +31,9 @@ export class LayoutComponent implements OnInit {
   layoutAlignment!: 'row' | 'column';
   scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
   hidePageLabels!: boolean;
+  layoutWidth!: number;
+  alwaysVisiblePageWidth!: number;
+  scrollPageWidth!: number;
 
   constructor(private translateService: TranslateService) { }
 
@@ -64,7 +67,20 @@ export class LayoutComponent implements OnInit {
     this.pageExpansion = !this.alwaysVisiblePage || !this.hasScrollPages ? 100 : 50;
     this.scrollPageMode = this.playerConfig.pagingMode ? this.playerConfig.pagingMode : 'separate';
     this.hidePageLabels = false;
+
+    this.alwaysVisiblePageWidth = this.getAbsolutePageWidth(this.alwaysVisiblePage);
+    this.scrollPageWidth = this.calculateScrollPagesWidth();
+
+    this.layoutWidth = this.layoutAlignment === 'row' ?
+      this.alwaysVisiblePageWidth + this.scrollPageWidth : Math.max(this.alwaysVisiblePageWidth, this.scrollPageWidth);
   }
+
+  private calculateScrollPagesWidth(): number {
+    return this.hasScrollPages ?
+      Math.max(...this.scrollPages.map((page: UnitPage): number => this.getAbsolutePageWidth(page))) : 0;
+  }
+
+  private getAbsolutePageWidth = (page: UnitPage | undefined): number => ((page) ? 2 * page.margin + page.width : 0);
 
   onSelectedIndexChange(selectedIndex: number): void {
     this.selectedIndexChange.emit(selectedIndex);

@@ -19,7 +19,7 @@
   <div [style.display]="'grid'"
        [style.grid-template-columns]="section.gridColumnSizes"
        [style.grid-template-rows]="section.gridRowSizes"
-       [style.height.%]="100">
+       [style.min-height.px]="section.height">
     <div *ngFor="let element of section.elements; let i = index"
          [style.min-width.px]="element.width"
          [style.min-height.px]="element.height"

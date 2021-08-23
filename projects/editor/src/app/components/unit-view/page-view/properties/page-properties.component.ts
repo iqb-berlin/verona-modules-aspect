@@ -25,7 +25,7 @@ import { SelectionService } from '../../../../selection.service';
       </mat-form-field>
       <mat-form-field>
         <mat-label>Hintergrundfarbe</mat-label>
-        <input matInput type="text"
+        <input matInput type="color"
                [value]="selectedPage.backgroundColor"
                (change)="updateModel('backgroundColor', $any($event.target).value)">
       </mat-form-field>

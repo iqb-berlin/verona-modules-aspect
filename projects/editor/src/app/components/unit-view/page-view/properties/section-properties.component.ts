@@ -26,7 +26,7 @@ import { MessageService } from '../../../../../../../common/message.service';
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Hintergrundfarbe</mat-label>
-        <input matInput type="text"
+        <input matInput type="color"
                [value]="$any(selectedPageSection.backgroundColor)"
                (change)="updateModel('backgroundColor', $any($event.target).value)">
       </mat-form-field>

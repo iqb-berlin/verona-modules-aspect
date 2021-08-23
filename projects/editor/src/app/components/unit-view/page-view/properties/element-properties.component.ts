@@ -300,13 +300,13 @@ import { SelectionService } from '../../../../selection.service';
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('backgroundColor')"
                             appearance="fill" class="mdInput textsingleline">
               <mat-label>Hintergrundfarbe</mat-label>
-              <input matInput type="text" [value]="combinedProperties.backgroundColor"
+              <input matInput type="color" [value]="combinedProperties.backgroundColor"
                      (input)="updateModel('backgroundColor', $any($event.target).value)">
             </mat-form-field>
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontColor')"
                             appearance="fill" class="mdInput textsingleline">
               <mat-label>Schriftfarbe</mat-label>
-              <input matInput type="text" [value]="combinedProperties.fontColor"
+              <input matInput type="color" [value]="combinedProperties.fontColor"
                      (input)="updateModel('fontColor', $any($event.target).value)">
             </mat-form-field>
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('font')"

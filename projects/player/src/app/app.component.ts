@@ -42,8 +42,6 @@ export class AppComponent implements OnInit {
   private initSubscriptions(): void {
     this.veronaSubscriptionService.vopStartCommand
       .subscribe((message: VopStartCommand): void => this.onStart(message));
-    this.nativeEventService.scrollY
-      .subscribe((y: number): void => this.onScrollY(y));
     this.nativeEventService.focus
       .subscribe((focused: boolean): void => this.onFocus(focused));
   }
@@ -110,10 +108,6 @@ export class AppComponent implements OnInit {
             })
         }))
     }));
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private onScrollY = (y: number): void => {
-  };
 
   private onFocus(focused: boolean): void {
     // eslint-disable-next-line no-console

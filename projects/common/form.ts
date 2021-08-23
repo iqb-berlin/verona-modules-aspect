@@ -24,10 +24,6 @@ export interface ChildFormGroup {
   parentArrayIndex: number;
 }
 
-export interface FormModel {
-  pages: FormPage[];
-}
-
 export interface FormSection {
   elements: Record<string, string | number | boolean | undefined>[];
 }

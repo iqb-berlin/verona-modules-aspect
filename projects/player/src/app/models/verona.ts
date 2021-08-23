@@ -2,6 +2,8 @@ export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 
 export type RunningState = 'running' | 'stopped';
 
+export type Progress = 'none' | 'some' | 'complete';
+
 export interface PlayerConfig {
   unitNumber?: number;
   unitTitle?: number;
@@ -15,8 +17,8 @@ export interface PlayerConfig {
 
 export interface UnitState {
   dataParts?: Record<string, string>;
-  presentationProgress?: 'none' | 'some' | 'complete';
-  responseProgress?: 'none' | 'some' | 'complete';
+  presentationProgress?: Progress;
+  responseProgress?: Progress;
   unitStateDataType?: string;
 }
 

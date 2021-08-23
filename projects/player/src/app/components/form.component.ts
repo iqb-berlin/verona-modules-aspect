@@ -2,6 +2,7 @@ import {
   ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
 import {
+  AbstractControl,
   FormArray, FormBuilder, FormGroup
 } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -13,10 +14,10 @@ import { VeronaPostService } from '../services/verona-post.service';
 import { MessageService } from '../../../../common/message.service';
 import { MetaDataService } from '../services/meta-data.service';
 import {
-  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement, FormModel
+  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement
 } from '../../../../common/form';
 import {
-  PlayerConfig, UnitState, VopNavigationDeniedNotification
+  PlayerConfig, Progress, UnitState, VopNavigationDeniedNotification
 } from '../models/verona';
 import { UnitPage } from '../../../../common/unit';
 
@@ -36,6 +37,7 @@ export class FormComponent implements OnInit, OnDestroy {
   @Input() playerConfig!: PlayerConfig;
   form!: FormGroup;
   presentedPages: number[] = [];
+
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private formBuilder: FormBuilder,
@@ -76,7 +78,7 @@ export class FormComponent implements OnInit, OnDestroy {
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((formModel: FormModel): void => this.onFormChanges(formModel));
+      .subscribe((): void => this.onFormChanges());
   }
 
   private addControl = (control: FormControlElement): void => {
@@ -111,43 +113,45 @@ export class FormComponent implements OnInit, OnDestroy {
     console.log(`player: onElementValueChanges - ${value.id}: ${value.values[0]} -> ${value.values[1]}`);
   };
 
-  private onFormChanges(formModel: FormModel): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onFormChanges', formModel);
-    const unitState: UnitState = {
-      dataParts: {
-        pages: JSON.stringify(formModel.pages)
-      },
-      responseProgress: this.calculateResponseProgress(),
-      unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
-    };
-    this.veronaPostService.sendVopStateChangedNotification({ unitState });
-  }
-
-  private calculateResponseProgress(): 'complete' | 'some' | 'none' {
+  private get responseProgress(): Progress {
     if (this.form.valid) {
       return 'complete';
     }
     const pages: FormArray = this.form.get('pages') as FormArray;
-    return (pages.controls.some(p => p.value)) ? 'some' : 'none';
+    return (pages.controls.some((control: AbstractControl): boolean => control.value)) ? 'some' : 'none';
+  }
+
+  private onFormChanges(): void {
+    // eslint-disable-next-line no-console
+    console.log('player: onFormChanges', this.form.value);
+    this.sendVopStateChangedNotification();
   }
 
   onPresentedPageAdded(pagePresented: number): void {
     if (!this.presentedPages.includes(pagePresented)) {
       this.presentedPages.push(pagePresented);
     }
-    let unitState: UnitState;
-    if (this.pages.length === 0) {
-      unitState = {
-        presentationProgress: 'none'
-      };
-    } else {
-      unitState = {
-        presentationProgress: (this.pages.length === this.presentedPages.length) ? 'complete' : 'some'
-      };
-    }
     // eslint-disable-next-line no-console
     console.log('player: onPresentedPageAdded', this.presentedPages);
+    this.sendVopStateChangedNotification();
+  }
+
+  private get presentationProgress(): Progress {
+    if (this.presentedPages.length === 0) {
+      return 'none';
+    }
+    return (this.pages.length === this.presentedPages.length) ? 'complete' : 'some';
+  }
+
+  private sendVopStateChangedNotification(): void {
+    const unitState: UnitState = {
+      dataParts: {
+        pages: JSON.stringify(this.form.value.pages)
+      },
+      responseProgress: this.presentationProgress,
+      presentationProgress: this.responseProgress,
+      unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
+    };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }
 

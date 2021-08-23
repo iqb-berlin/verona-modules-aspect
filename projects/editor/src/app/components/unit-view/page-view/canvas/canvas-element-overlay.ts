@@ -2,7 +2,7 @@ import {
   Directive, Input,
   ComponentFactoryResolver, ComponentRef,
   HostListener,
-  ViewChild, ViewContainerRef, OnInit, AfterViewInit, OnDestroy
+  ViewChild, ViewContainerRef, OnInit, OnDestroy
 } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -25,12 +25,18 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   constructor(public selectionService: SelectionService,
               protected unitService: UnitService,
-              private componentFactoryResolver: ComponentFactoryResolver) { }
+              private componentFactoryResolver: ComponentFactoryResolver) {
+    // Needs to be  run before change detection to set 'selected' and avoid
+    // NG0100: Expression has changed after it was checked
+    this.selectionService.selectElement({ componentElement: this, multiSelect: false });
+  }
 
   ngOnInit(): void {
     const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
     this.childComponent = this.elementContainer.createComponent(componentFactory);
     this.childComponent.instance.elementModel = this.element;
+
+    this.selectionService.selectElement({ componentElement: this, multiSelect: false });
 
     if (this.childComponent.instance instanceof FormElementComponent) {
       this.childComponent.instance.formValueChanged

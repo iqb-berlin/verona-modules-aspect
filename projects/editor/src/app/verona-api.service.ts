@@ -22,16 +22,16 @@ export class VeronaAPIService {
   private handleMessage(messageData: Record<string, string>): void {
     switch (messageData.type) {
       case 'voeStartCommand':
-        console.log('editor: voeStartCommand ', messageData);
+        // console.log('editor: voeStartCommand ', messageData);
         this.sessionID = messageData.sessionId;
         this._voeStartCommand.next(messageData);
         break;
       case 'voeGetDefinitionRequest':
-        console.log('editor: voeGetDefinitionRequest ', messageData);
+        // console.log('editor: voeGetDefinitionRequest ', messageData);
         this._voeGetDefinitionRequest.next(messageData);
         break;
       default:
-        console.warn(`editor: got message of unknown type ${messageData.type}`);
+        // console.warn(`editor: got message of unknown type ${messageData.type}`);
     }
   }
 
@@ -40,7 +40,7 @@ export class VeronaAPIService {
     if (!this.isStandalone()) {
       window.parent.postMessage(message, '*');
     } else {
-      console.log(`player: ${message.type}`);
+      // console.log(`player: ${message.type}`);
     }
   }
 

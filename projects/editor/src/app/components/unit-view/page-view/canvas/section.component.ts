@@ -69,7 +69,6 @@ import { SelectionService } from '../../../../selection.service';
          [style.border]="selected ? '1px solid': '1px dotted'"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
-         [style.cursor]="'move'"
          (click)="selectionService.selectSection(this)">
       <button mat-mini-fab class="delete-section-button"
       (click)="deleteSection.emit(sectionIndex)">

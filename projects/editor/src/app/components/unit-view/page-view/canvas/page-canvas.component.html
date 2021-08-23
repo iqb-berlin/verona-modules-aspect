@@ -9,7 +9,7 @@
        [style.padding.px]="page.margin"
        [style.background-color]="page.backgroundColor">
     <div cdkDropListGroup>
-      <div app-canvas-section class="section"
+      <div app-canvas-section class="section drop-list"
            *ngFor="let section of page.sections; let i = index"
            [section]="section" [sectionIndex]="i"
            cdkDropList cdkDropListSortingDisabled
@@ -19,7 +19,7 @@
   </div>
 
 
-  <div *ngIf="sectionEditMode"
+  <div *ngIf="sectionEditMode" class="drop-list"
        [style.width.px]="page.width" [style.padding.px]="page.margin"
        cdkDropList (cdkDropListDropped)="sectionDrop($event)" [cdkDropListData]="page.sections">
     <ng-container *ngFor="let section of page.sections; let i = index">

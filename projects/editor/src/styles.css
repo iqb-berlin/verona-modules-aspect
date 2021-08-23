@@ -11,4 +11,5 @@ body {
 .snackbar-error {background-color: #ff4d4d}
 
 
-.cdk-drop-list-dragging {cursor: grabbing}
+.drop-list {cursor: grab}
+.drop-list.cdk-drop-list-dragging {cursor: grabbing}

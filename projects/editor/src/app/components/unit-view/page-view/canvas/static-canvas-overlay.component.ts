@@ -39,8 +39,6 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
   styles: [
     '.resizeHandle {position: absolute}',
     '.resize-droplist {position: absolute}',
-    '.draggable-element-selected {cursor: grab}',
-    '.draggable-element-selected:active {cursor: grabbing}',
     '.draggable-element-selected .resizeHandle {cursor: nwse-resize}',
     '.resize-droplist.cdk-drop-list-dragging {cursor: nwse-resize}'
   ]

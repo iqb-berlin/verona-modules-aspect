@@ -342,8 +342,8 @@ import { SelectionService } from '../../../../selection.service';
   styles: [
     '::ng-deep app-element-properties .margin-properties .mat-form-field-infix {width: 55px; margin: 0 5px}',
     '::ng-deep app-element-properties .mat-form-field-infix {width: 95px; margin: 0 5px}',
-    '.list-items {padding: 5px 10px; border-bottom: solid 1px #ccc; cursor: move;' +
-                  'display: flex;flex-direction: row; align-items: center; justify-content: space-between;}'
+    '.list-items {padding: 5px 10px; border-bottom: solid 1px #ccc}',
+    '.list-items {display: flex;flex-direction: row; align-items: center; justify-content: space-between;}'
   ]
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {

@@ -2,7 +2,7 @@ import {
   Directive, Input,
   ComponentFactoryResolver, ComponentRef,
   HostListener,
-  ViewChild, ViewContainerRef
+  ViewChild, ViewContainerRef, OnInit, AfterViewInit, OnDestroy
 } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { ElementComponent } from '../../../../../../../common/element-component.
 import { SelectionService } from '../../../../selection.service';
 
 @Directive()
-export abstract class CanvasElementOverlay {
+export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   @Input() element!: UnitUIElement;
   @Input() viewMode: boolean = false;
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;

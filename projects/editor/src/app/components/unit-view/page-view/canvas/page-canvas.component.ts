@@ -70,6 +70,6 @@ export class PageCanvasComponent {
 
   sectionDrop(event: CdkDragDrop<UnitPageSection[]>): void {
     moveItemInArray(this.page.sections, event.previousIndex, event.currentIndex);
-    this.unitService.setSections(this.page, this.page.sections);
+    this.unitService.setPageSections(this.page, this.page.sections);
   }
 }

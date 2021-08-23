@@ -17,6 +17,7 @@ import { SelectionService } from '../../../../selection.service';
 @Directive()
 export abstract class CanvasElementOverlay {
   @Input() element!: UnitUIElement;
+  @Input() viewMode: boolean = false;
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   selected = false;
   protected childComponent!: ComponentRef<ElementComponent>;

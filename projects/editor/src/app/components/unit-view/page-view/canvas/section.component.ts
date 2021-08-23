@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
@@ -7,7 +9,8 @@ import { SelectionService } from '../../../../selection.service';
 @Component({
   selector: '[app-canvas-section]',
   template: `
-    <div class="section-wrapper"
+    <div *ngIf="!sectionEditMode"
+         #sectionElement class="section-wrapper"
          [style.border]="selected ? '1px solid': '1px dotted'"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
@@ -59,33 +62,57 @@ import { SelectionService } from '../../../../selection.service';
                                     [style.height.px]="dragging ? draggingElementHeight : null">
         </app-dynamic-canvas-overlay>
       </div>
+    </div>
 
-      <div class="sectionMenu" fxLayout="column">
-        <button mat-mini-fab color="accent"
-                (click)="unitService.moveSection(sectionIndex, 'up')">
-          <mat-icon inline>arrow_upward</mat-icon>
-        </button>
-        <button mat-mini-fab color="accent"
-                (click)="unitService.moveSection(sectionIndex, 'down')">
-          <mat-icon inline>arrow_downward</mat-icon>
-        </button>
+    <div *ngIf="sectionEditMode"
+         #sectionElement class="section-wrapper"
+         [style.border]="selected ? '1px solid': '1px dotted'"
+         [style.height.px]="section.height"
+         [style.background-color]="section.backgroundColor"
+         [style.cursor]="'move'"
+         (click)="selectionService.selectSection(this)">
+      <button mat-mini-fab class="delete-section-button"
+      (click)="deleteSection.emit(sectionIndex)">
+        <mat-icon>clear</mat-icon>
+      </button>
+      <div *ngIf="!section.dynamicPositioning">
+        <app-view-only-element-overlay *ngFor="let element of section.elements" [element]="$any(element)">
+        </app-view-only-element-overlay>
       </div>
+
+      <div *ngIf="section.dynamicPositioning"
+           [style.display]="'grid'"
+           [style.grid-template-columns]="section.gridColumnSizes"
+           [style.grid-template-rows]="section.gridRowSizes"
+           [style.height.%]="100">
+        <app-dynamic-view-only-element-overlay *ngFor="let element of section.elements"
+                                               [element]="$any(element)"
+                                               [style.min-width.px]="element.width"
+                                               [style.min-height.px]="element.height"
+                                               [style.margin-left.px]="element.marginLeft"
+                                               [style.margin-right.px]="element.marginRight"
+                                               [style.margin-top.px]="element.marginTop"
+                                               [style.margin-bottom.px]="element.marginBottom"
+                                               [style.grid-column-start]="element.gridColumnStart"
+                                               [style.grid-column-end]="element.gridColumnEnd"
+                                               [style.grid-row-start]="element.gridRowStart"
+                                               [style.grid-row-end]="element.gridRowEnd">
+        </app-dynamic-view-only-element-overlay>
+      </div>
+
     </div>
   `,
   styles: [
-    '.sectionMenu {visibility: hidden; transition: 0.2s 0.7s;}',
     '.section-wrapper {width: 100%}',
-    '.section-wrapper:hover .sectionMenu {visibility: visible; transition-delay: 0s;}',
-    '.sectionMenu {position: absolute; left: -29px; top: 0}',
-    '.sectionMenu button {width: 28px; height: 28px}',
-    '.sectionMenu .mat-mini-fab {line-height: 0;}',
-    '::ng-deep .sectionMenu .mat-mini-fab .mat-button-wrapper {line-height: 0;}',
-    '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}'
+    '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}',
+    '.delete-section-button {position: absolute; right: -18px; top: -18px}'
   ]
 })
 export class SectionComponent {
   @Input() section!: UnitPageSection;
   @Input() sectionIndex!: number;
+  @Input() sectionEditMode: boolean = false;
+  @Output() deleteSection = new EventEmitter<number>();
   selected = true;
   dragging = false;
   draggingElementWidth: number | undefined = 0;

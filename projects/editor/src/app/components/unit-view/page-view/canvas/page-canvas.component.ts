@@ -1,10 +1,8 @@
-import {
-  Component, Input, QueryList, ViewChildren
-} from '@angular/core';
-import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Component, Input } from '@angular/core';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
-import { SectionComponent } from './section.component';
 import { SelectionService } from '../../../../selection.service';
 
 @Component({
@@ -12,12 +10,15 @@ import { SelectionService } from '../../../../selection.service';
   templateUrl: './page-canvas.component.html',
   styles: [
     '.section {position: relative}',
-    '.canvasBackground {background-color: lightgrey; padding:20px; height: 100%; overflow: auto;}'
+    '.canvasBackground {background-color: lightgrey; padding: 20px; height: 100%; overflow: auto;}',
+    '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin: 15px 0; border-radius: 10%}',
+    '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
+    '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}'
   ]
 })
 export class PageCanvasComponent {
   @Input() page!: UnitPage;
-  @ViewChildren('section_component') canvasSections!: QueryList<SectionComponent>;
+  sectionEditMode: boolean = false;
 
   constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 
@@ -53,5 +54,22 @@ export class PageCanvasComponent {
   getPageHeight(): number { // TODO weg
     const reduceFct = (accumulator: number, currentValue: UnitPageSection) => accumulator + currentValue.height;
     return this.page.sections.reduce(reduceFct, 0);
+  }
+
+  toggleSectionEditMode(event: MatSlideToggleChange): void {
+    this.sectionEditMode = event.checked;
+  }
+
+  addSection(index: number | null = null): void {
+    this.unitService.addSection(this.page, index);
+  }
+
+  deleteSection(index: number): void {
+    this.unitService.deleteSection(this.page.sections[index]);
+  }
+
+  sectionDrop(event: CdkDragDrop<UnitPageSection[]>): void {
+    moveItemInArray(this.page.sections, event.previousIndex, event.currentIndex);
+    this.unitService.setSections(this.page, this.page.sections);
   }
 }

@@ -6,6 +6,7 @@ import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -23,6 +24,8 @@ import { EditorTranslateLoader } from './editor-translate-loader';
 import { PagePropertiesComponent } from './components/unit-view/page-view/properties/page-properties.component';
 import { SectionPropertiesComponent } from './components/unit-view/page-view/properties/section-properties.component';
 import { ElementPropertiesComponent } from './components/unit-view/page-view/properties/element-properties.component';
+import { StaticViewOnlyElementOverlayComponent } from './components/unit-view/page-view/canvas/static-view-only-element-overlay.component';
+import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-view-only-element-overlay.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,9 @@ import { ElementPropertiesComponent } from './components/unit-view/page-view/pro
     MultilineTextEditDialog,
     PagePropertiesComponent,
     SectionPropertiesComponent,
-    ElementPropertiesComponent
+    ElementPropertiesComponent,
+    StaticViewOnlyElementOverlayComponent,
+    DynamicViewOnlyElementOverlayComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +54,7 @@ import { ElementPropertiesComponent } from './components/unit-view/page-view/pro
     CommonModule,
     SharedModule,
     MatButtonToggleModule,
+    MatSlideToggleModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

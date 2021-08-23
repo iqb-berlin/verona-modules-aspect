@@ -1,9 +1,15 @@
+<mat-slide-toggle (change)="toggleSectionEditMode($event)">
+  Abschnitte verwalten
+</mat-slide-toggle>
+
 <div class="canvasBackground" fxFlex>
-  <div class="canvasFrame" [style.width.px]="page.width"
+  <div *ngIf="!sectionEditMode"
+       class="canvasFrame"
+       [style.width.px]="page.width"
        [style.padding.px]="page.margin"
        [style.background-color]="page.backgroundColor">
-    <div cdkDropListGroup class="section-list">
-      <div #section_component app-canvas-section class="section"
+    <div cdkDropListGroup>
+      <div app-canvas-section class="section"
            *ngFor="let section of page.sections; let i = index"
            [section]="section" [sectionIndex]="i"
            cdkDropList cdkDropListSortingDisabled
@@ -11,4 +17,26 @@
       </div>
     </div>
   </div>
+
+
+  <div *ngIf="sectionEditMode"
+       [style.width.px]="page.width" [style.padding.px]="page.margin"
+       cdkDropList (cdkDropListDropped)="sectionDrop($event)" [cdkDropListData]="page.sections">
+    <ng-container *ngFor="let section of page.sections; let i = index">
+      <button mat-fab class="add-section-button"
+              (click)="addSection(i)">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div app-canvas-section class="section"
+           [section]="section" [sectionEditMode]="sectionEditMode"
+           (deleteSection)="deleteSection($event)"
+           cdkDrag>
+      </div>
+    </ng-container>
+  </div>
+
+  <button mat-fab class="add-section-button" [style.width.px]="page.width" [style.margin.px]="page.margin"
+          (click)="addSection()">
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

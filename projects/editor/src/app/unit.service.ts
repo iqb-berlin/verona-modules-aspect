@@ -73,8 +73,12 @@ export class UnitService {
     return this._unit.value.pages.length > 1 && this._unit.value.pages.find(page => page.alwaysVisible) === undefined;
   }
 
-  addSection(page: UnitPage): void {
-    page.sections.push(UnitFactory.createUnitPageSection());
+  addSection(page: UnitPage, index: number | null = null): void {
+    if (index != null) {
+      page.sections.splice(index, 0, UnitFactory.createUnitPageSection());
+    } else {
+      page.sections.push(UnitFactory.createUnitPageSection());
+    }
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -92,14 +96,8 @@ export class UnitService {
     }
   }
 
-  moveSection(sectionIndex: number, direction: 'up' | 'down'): void {
-    const movedElement = this._unit.value.pages[this.selectedPageIndex].sections[sectionIndex];
-    this._unit.value.pages[this.selectedPageIndex].sections.splice(sectionIndex, 1);
-    if (direction === 'up') {
-      this._unit.value.pages[this.selectedPageIndex].sections.splice(sectionIndex - 1, 0, movedElement);
-    } else {
-      this._unit.value.pages[this.selectedPageIndex].sections.splice(sectionIndex + 1, 0, movedElement);
-    }
+  setPageSections(page: UnitPage, sections: UnitPageSection[]): void {
+    this._unit.value.pages[this.selectedPageIndex].sections = sections;
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 

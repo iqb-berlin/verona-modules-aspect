@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitPage } from '../../../../../../../common/unit';
+import { UnitPage, UnitUIElement } from '../../../../../../../common/unit';
 import { SelectionService } from '../../../../selection.service';
 
 @Component({
@@ -32,7 +32,11 @@ export class PropertiesComponent {
       });
     this.selectionService.selectedElements
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => { this.expandElementView = true; });
+      .subscribe((elements: UnitUIElement[]) => {
+        if (elements.length > 0) {
+          this.expandElementView = true;
+        }
+      });
   }
 
   ngOnDestroy(): void {

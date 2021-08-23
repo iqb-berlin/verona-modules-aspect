@@ -118,9 +118,18 @@ export class FormComponent implements OnInit, OnDestroy {
       dataParts: {
         pages: JSON.stringify(formModel.pages)
       },
+      responseProgress: this.calculateResponseProgress(),
       unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
     };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
+  }
+
+  private calculateResponseProgress(): 'complete' | 'some' | 'none' {
+    if (this.form.valid) {
+      return 'complete';
+    }
+    const pages: FormArray = this.form.get('pages') as FormArray;
+    return (pages.controls.some(p => p.value)) ? 'some' : 'none';
   }
 
   onPresentedPageAdded(pagePresented: number): void {

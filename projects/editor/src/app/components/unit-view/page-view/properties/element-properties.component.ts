@@ -257,14 +257,15 @@ import { SelectionService } from '../../../../selection.service';
                          (input)="updateModel('marginBottom', $any($event.target).value)">
                 </mat-form-field>
               </div>
-
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')">
-                <mat-label>Z-Index</mat-label>
-                <input matInput type="number" [value]="combinedProperties.zIndex"
-                       (input)="updateModel('zIndex', $any($event.target).value)"
-                       matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
-              </mat-form-field>
             </ng-template>
+
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')">
+              <mat-label>Z-Index</mat-label>
+              <input matInput type="number" [value]="combinedProperties.zIndex"
+                     (input)="updateModel('zIndex', $any($event.target).value)"
+                     matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+            </mat-form-field>
+
             <ng-container *ngIf="selectedElements.length > 1">
               Ausrichtung
               <div class="alignment-button-group" fxLayout="row" fxLayoutAlign="center center" >

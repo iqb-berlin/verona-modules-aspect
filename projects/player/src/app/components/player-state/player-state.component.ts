@@ -23,6 +23,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() playerConfig!: PlayerConfig;
 
   currentPlayerPageIndex: number = 0;
+  selectIndex: Subject<number> = new Subject();
   running: boolean = true;
   validPages!: Record<string, string> [];
 
@@ -90,7 +91,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   private onPageNavigation(message: VopPageNavigationCommand): void {
     // eslint-disable-next-line no-console
     console.log('player: onPageNavigation', message);
-    this.currentPlayerPageIndex = parseInt(message.target, 10);
+    this.selectIndex.next(parseInt(message.target, 10));
   }
 
   private sendVopStateChangedNotification(): void {

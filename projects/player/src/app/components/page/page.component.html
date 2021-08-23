@@ -1,20 +1,20 @@
 <div appIntersectionDetection
      detectionType="top"
      [intersectionContainer]="pagesContainer"
-     (intersecting)="onIntersection($event)"
-></div>
-<app-section *ngFor="let section of page.sections; let i = index; let last = last"
-             [parentForm]="pageForm"
-             [parentArrayIndex]="i"
-             [section]="section"
-             [ngStyle]="{
-                position: 'relative',
-                display: 'block',
-                overflow: 'auto',
-                width: '100%',
-                'background-color': section.backgroundColor,
-                'min-height.px': section.height}">
-</app-section>
+     (intersecting)="onIntersection($event)">
+  <app-section *ngFor="let section of page.sections; let i = index"
+               [parentForm]="pageForm"
+               [parentArrayIndex]="i"
+               [section]="section"
+               [ngStyle]="{
+                  position: 'relative',
+                  display: 'block',
+                  overflow: 'auto',
+                  width: '100%',
+                  'background-color': section.backgroundColor,
+                  'min-height.px': section.height}">
+  </app-section>
+</div>
 <div appIntersectionDetection
      detectionType="bottom"
      [intersectionContainer]="pagesContainer"

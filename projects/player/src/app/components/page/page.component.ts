@@ -12,8 +12,10 @@ import { FormService } from '../../../../../common/form.service';
 
 export class PageComponent implements OnInit {
   @Input() page!: UnitPage;
+  @Input() isLastPage!: boolean;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
+  @Input() index!: number;
   @Input() pagesContainer!: HTMLElement;
   @Output() selectedIndexChange = new EventEmitter<number>();
   pageForm!: FormGroup;
@@ -36,10 +38,10 @@ export class PageComponent implements OnInit {
 
   onIntersection(detectionType: 'top' | 'bottom'): void {
     if (detectionType === 'bottom') {
-      this.formService.addPresentedPage(this.parentArrayIndex);
+      this.formService.addPresentedPage(this.index);
     }
-    if (detectionType === 'top') {
-      this.selectedIndexChange.emit(this.parentArrayIndex);
+    if (detectionType === 'top' || this.isLastPage) {
+      this.selectedIndexChange.emit(this.index);
     }
   }
 }

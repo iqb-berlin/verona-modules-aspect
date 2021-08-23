@@ -26,7 +26,7 @@ export class IntersectionDetectionDirective implements OnInit, OnDestroy {
         }
       }), {
         root: this.intersectionContainer,
-        rootMargin: this.detectionType === 'top' ? '0% 0px -95% 0px' : '0px 0px 0px 0px'
+        rootMargin: this.detectionType === 'top' ? '0px 0px -95% 0px' : '-95% 0px 0px 0px'
       }
     );
     this.intersectionObserver.observe(this.elementRef.nativeElement);

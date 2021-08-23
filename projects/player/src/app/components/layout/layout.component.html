@@ -19,9 +19,11 @@
          [hideFirstChild]="hidePageLabels"
          [style.max-width.px]="alwaysVisiblePage.width"
          [style.margin.px]="alwaysVisiblePage.margin">
-      <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
+      <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}} {{selectedIndex}}</div>
       <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
+                [index]="playerPageIndices[alwaysVisibleUnitPageIndex]"
                 [parentForm]="parentForm"
+                [isLastPage]="false"
                 [pagesContainer]="alwaysVisiblePageContainer"
                 [page]="alwaysVisiblePage">
       </app-page>
@@ -51,7 +53,9 @@
                  label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
           <div [style.margin.px]="page.margin" [style.max-width.px]="page.width">
             <app-page [parentArrayIndex]="i"
+                      [index]="playerPageIndices[i]"
                       [parentForm]="parentForm"
+                      [isLastPage]="i === lastScrollPageIndex"
                       [pagesContainer]="pagesSeparatedContainer"
                       [page]="page">
             </app-page>
@@ -74,7 +78,8 @@
              appHideFirstChild
              [hideFirstChild]="hidePageLabels"
              appScrollIndex
-             [selectedIndex]="selectedIndex"
+             [pagesContainer]="pagesScrolledContainer"
+             [selectIndex]="selectIndex"
              [index]="playerPageIndices[i]"
              [style.max-width.px]="page.width"
              [style.margin.px]="page.margin">
@@ -82,9 +87,11 @@
             {{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}
           </div>
           <app-page [parentArrayIndex]="i"
+                    [index]="playerPageIndices[i]"
                     [parentForm]="parentForm"
                     [pagesContainer]="pagesScrolledContainer"
                     [page]="page"
+                    [isLastPage]="i === lastScrollPageIndex"
                     (selectedIndexChange)="onSelectedIndexChange($event)">
           </app-page>
         </div>

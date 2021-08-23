@@ -1,20 +1,23 @@
 import {
-  Directive, ElementRef, Input, OnChanges, SimpleChanges
+  Directive, ElementRef, Input, OnInit
 } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Directive({
   selector: '[appScrollIndex]'
 })
-export class ScrollIndexDirective implements OnChanges {
-  @Input() selectedIndex!: number;
+export class ScrollIndexDirective implements OnInit {
+  @Input() selectIndex!: Subject<number>;
   @Input() index!: number;
+  @Input() pagesContainer!: HTMLElement;
 
-  constructor(private elementRef: ElementRef) {
-  }
+  constructor(private elementRef: ElementRef) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.selectedIndex?.currentValue === this.index) {
-      this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth' });
-    }
+  ngOnInit(): void {
+    this.selectIndex.subscribe((selectedIndex: number): void => {
+      if (selectedIndex === this.index) {
+        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
   }
 }

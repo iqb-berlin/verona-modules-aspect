@@ -66,7 +66,7 @@ export class LayoutComponent implements OnInit {
       }
     );
     this.validPagesDetermined.emit(this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
-      { [index]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` })));
+      { [index.toString(10)]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` })));
   }
 
   private initLayout(): void {

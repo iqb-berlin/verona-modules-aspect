@@ -173,6 +173,10 @@ export class UnitService {
         this.idService.removeId(element[property]);
         this.idService.addId(<string>value);
       }
+      // undefined values can always be set. For others check that the types match.
+      if (typeof element[property] !== 'undefined' && typeof element[property] !== typeof value) {
+        return false;
+      }
       element[property] = value;
       this.elementPropertyUpdated.next();
       return true;

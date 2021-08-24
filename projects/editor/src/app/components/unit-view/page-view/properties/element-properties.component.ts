@@ -8,6 +8,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
+import { MessageService } from '../../../../../../../common/message.service';
 
 @Component({
   selector: 'app-element-properties',
@@ -86,8 +87,9 @@ import { SelectionService } from '../../../../selection.service';
 
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength')" appearance="fill">
               <mat-label>Minimalwert</mat-label>
-              <input matInput type="number" [value]="combinedProperties.minLength"
-                     (input)="updateModel('minLength', $any($event.target).value)">
+              <input matInput type="number" #minLength="ngModel" min="0"
+                     [ngModel]="combinedProperties.minLength"
+                     (ngModelChange)="updateModel('minLength', $event, minLength.valid)">
             </mat-form-field>
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength')" appearance="fill">
               <mat-label>MInimalwert Warnmeldung</mat-label>
@@ -97,8 +99,9 @@ import { SelectionService } from '../../../../selection.service';
             <mat-divider></mat-divider>
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')" appearance="fill">
               <mat-label>Maximalwert</mat-label>
-              <input matInput type="number" [value]="combinedProperties.maxLength"
-                     (input)="updateModel('maxLength', $any($event.target).value)">
+              <input matInput type="number" #maxLength="ngModel" min="0"
+                     [ngModel]="combinedProperties.maxLength"
+                     (ngModelChange)="updateModel('maxLength', $event, maxLength.valid)">
             </mat-form-field>
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')" appearance="fill">
               <mat-label>Maximalwert Warnmeldung</mat-label>
@@ -177,35 +180,43 @@ import { SelectionService } from '../../../../selection.service';
             <ng-container *ngIf="!combinedProperties.dynamicPositioning; else elseBlock">
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')" appearance="fill">
                 <mat-label>Breite</mat-label>
-                <input matInput type="number" [value]="combinedProperties.width"
-                       (input)="updateModel('width', toNumber($any($event.target).value))">
+                <input matInput type="number" #width="ngModel" min="0"
+                       [ngModel]="combinedProperties.width"
+                       (ngModelChange)="updateModel('width', $event, width.valid)">
               </mat-form-field>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')" appearance="fill">
                 <mat-label>Hoehe</mat-label>
-                <input matInput type="number" [value]="combinedProperties.height"
-                       (input)="updateModel('height', toNumber($any($event.target).value))">
+                <input matInput type="number" #height="ngModel" min="0"
+                       [ngModel]="combinedProperties.height"
+                       (ngModelChange)="updateModel('height', $event, height.valid)">
               </mat-form-field>
+
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('xPosition')" appearance="fill">
                 <mat-label>X Position</mat-label>
-                <input matInput type="number" [value]="combinedProperties.xPosition"
-                       (input)="updateModel('xPosition', toNumber($any($event.target).value))">
+                <input matInput type="number" #xPosition="ngModel" min="0"
+                       [ngModel]="combinedProperties.xPosition"
+                       (ngModelChange)="updateModel('xPosition', $event, xPosition.valid)">
               </mat-form-field>
+
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('yPosition')" appearance="fill">
                 <mat-label>Y Position</mat-label>
-                <input matInput type="number" [value]="combinedProperties.yPosition"
-                       (input)="updateModel('yPosition', toNumber($any($event.target).value))">
+                <input matInput type="number" #yPosition="ngModel" min="0"
+                       [ngModel]="combinedProperties.xPosition"
+                       (ngModelChange)="updateModel('yPosition', $event, yPosition.valid)">
               </mat-form-field>
             </ng-container>
             <ng-template #elseBlock>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')" appearance="fill">
                 <mat-label>Mindestbreite</mat-label>
-                <input matInput type="number" [value]="combinedProperties.width"
-                       (input)="updateModel('width', toNumber($any($event.target).value))">
+                <input matInput type="number" #width="ngModel" min="0"
+                       [ngModel]="combinedProperties.width"
+                       (ngModelChange)="updateModel('width', $event, width.valid)">
               </mat-form-field>
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')" appearance="fill">
-                <mat-label>Mindesthoehe</mat-label>
-                <input matInput type="number" [value]="combinedProperties.height"
-                       (input)="updateModel('height', toNumber($any($event.target).value))">
+                <mat-label>Mindesthöhe</mat-label>
+                <input matInput type="number" #height="ngModel" min="0"
+                       [ngModel]="combinedProperties.height"
+                       (ngModelChange)="updateModel('height', $event, height.valid)">
               </mat-form-field>
               Grid
               <div class="input-group">
@@ -267,11 +278,11 @@ import { SelectionService } from '../../../../selection.service';
 
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')" appearance="fill">
               <mat-label>Z-Index</mat-label>
-              <input matInput type="number" [value]="combinedProperties.zIndex"
-                     (input)="updateModel('zIndex', $any($event.target).value)"
+              <input matInput type="number" #zIndex="ngModel" min="0"
+                     [ngModel]="combinedProperties.zIndex"
+                     (ngModelChange)="updateModel('zIndex', $event, zIndex.valid)"
                      matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
             </mat-form-field>
-
             <ng-container *ngIf="selectedElements.length > 1">
               Ausrichtung
               <div class="alignment-button-group" fxLayout="row" fxLayoutAlign="center center">
@@ -361,7 +372,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private selectionService: SelectionService, public unitService: UnitService) { }
+  constructor(private selectionService: SelectionService, public unitService: UnitService,
+              private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.unitService.elementPropertyUpdated
@@ -400,11 +412,15 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateModel(property: string, value: string | number | boolean | string[] | undefined): void {
-    this.unitService.updateElementProperty(this.selectedElements, property, value);
+  updateModel(property: string,
+              value: string | number | boolean | string[] | undefined,
+              isInputValid: boolean | null = true): void {
+    if (isInputValid && value != null) {
+      this.unitService.updateElementProperty(this.selectedElements, property, value);
+    } else {
+      this.messageService.showWarning('Eingabe ungültig');
+    }
   }
-
-  toNumber = (value: string):number => Number(value);
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
     this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);

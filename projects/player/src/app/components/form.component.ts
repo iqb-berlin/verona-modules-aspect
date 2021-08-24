@@ -149,8 +149,8 @@ export class FormComponent implements OnInit, OnDestroy {
       dataParts: {
         pages: JSON.stringify(this.form.value.pages)
       },
-      responseProgress: this.presentationProgress,
-      presentationProgress: this.responseProgress,
+      presentationProgress: this.presentationProgress,
+      responseProgress: this.responseProgress,
       unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
     };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });

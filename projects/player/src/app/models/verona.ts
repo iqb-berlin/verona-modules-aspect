@@ -4,11 +4,13 @@ export type RunningState = 'running' | 'stopped';
 
 export type Progress = 'none' | 'some' | 'complete';
 
+export type StateReportPolicy = 'none' | 'eager' | 'on-demand';
+
 export interface PlayerConfig {
   unitNumber?: number;
   unitTitle?: number;
   unitId?: number;
-  stateReportPolicy?: 'none' | 'eager' | 'on-demand';
+  stateReportPolicy?: StateReportPolicy;
   pagingMode?: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
   logPolicy?: 'lean' | 'rich' | 'debug' | 'disabled';
   startPage?: string;

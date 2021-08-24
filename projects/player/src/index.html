@@ -33,6 +33,11 @@
   <button onclick='toPage(1);'>2</button>
   <button onclick='toPage(2);'>3</button>
   <button onclick='toPage(3);'>4</button>
+  <select name="stateReportPolicy" id="stateReportPolicy">
+    <option value="none">none</option>
+    <option value="eager">eager</option>
+    <option value="on-demmand">on-demmand</option>
+  </select>
 </div>
 </body>
 
@@ -63,7 +68,7 @@
           dataParts: {}
         },
         playerConfig: {
-          stateReportPolicy: 'eager',
+          stateReportPolicy: document.getElementById('stateReportPolicy').value,
           pagingMode: pagingMode, //concat-scroll, separate, concat-scroll-snap
           logPolicy: 'rich',
           startPage: 'page0',

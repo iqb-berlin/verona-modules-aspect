@@ -58,9 +58,6 @@ export class FormComponent implements OnInit, OnDestroy {
   }
 
   private initSubscriptions(): void {
-    this.formService.elementValueChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
     this.formService.groupAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((group: ChildFormGroup): void => this.addGroup(group));
@@ -70,15 +67,34 @@ export class FormComponent implements OnInit, OnDestroy {
     this.formService.validatorsAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
-    this.formService.presentedPageAdded
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
     this.veronaSubscriptionService.vopNavigationDeniedNotification
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
+
+    this.formService.elementValueChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
+    this.formService.presentedPageAdded
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => this.onFormChanges());
+  }
+
+  private get responseProgress(): Progress {
+    if (this.form.valid) {
+      return 'complete';
+    }
+    const pages: FormArray = this.form.get('pages') as FormArray;
+    return (pages.controls.some((control: AbstractControl): boolean => control.value)) ? 'some' : 'none';
+  }
+
+  private get presentationProgress(): Progress {
+    if (this.presentedPages.length === 0) {
+      return 'none';
+    }
+    return (this.pages.length === this.presentedPages.length) ? 'complete' : 'some';
   }
 
   private addControl = (control: FormControlElement): void => {
@@ -113,34 +129,19 @@ export class FormComponent implements OnInit, OnDestroy {
     console.log(`player: onElementValueChanges - ${value.id}: ${value.values[0]} -> ${value.values[1]}`);
   };
 
-  private get responseProgress(): Progress {
-    if (this.form.valid) {
-      return 'complete';
-    }
-    const pages: FormArray = this.form.get('pages') as FormArray;
-    return (pages.controls.some((control: AbstractControl): boolean => control.value)) ? 'some' : 'none';
-  }
-
   private onFormChanges(): void {
     // eslint-disable-next-line no-console
     console.log('player: onFormChanges', this.form.value);
     this.sendVopStateChangedNotification();
   }
 
-  onPresentedPageAdded(pagePresented: number): void {
+  private onPresentedPageAdded(pagePresented: number): void {
     if (!this.presentedPages.includes(pagePresented)) {
       this.presentedPages.push(pagePresented);
     }
     // eslint-disable-next-line no-console
     console.log('player: onPresentedPageAdded', this.presentedPages);
     this.sendVopStateChangedNotification();
-  }
-
-  private get presentationProgress(): Progress {
-    if (this.presentedPages.length === 0) {
-      return 'none';
-    }
-    return (this.pages.length === this.presentedPages.length) ? 'complete' : 'some';
   }
 
   private sendVopStateChangedNotification(): void {

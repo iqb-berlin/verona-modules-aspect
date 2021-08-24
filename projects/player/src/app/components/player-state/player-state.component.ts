@@ -85,7 +85,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     if (message.stop) {
       this.running = false;
     }
-    this.sendVopStateChangedNotification();
+    this.sendVopStateChangedNotification(true);
   }
 
   private onPageNavigation(message: VopPageNavigationCommand): void {
@@ -94,13 +94,13 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     this.selectIndex.next(parseInt(message.target, 10));
   }
 
-  private sendVopStateChangedNotification(): void {
+  private sendVopStateChangedNotification(requested:boolean = false): void {
     const playerState: PlayerState = {
       state: this.state,
       currentPage: this.currentPlayerPageIndex.toString(10),
       validPages: this.validPages
     };
-    this.veronaPostService.sendVopStateChangedNotification({ playerState });
+    this.veronaPostService.sendVopStateChangedNotification({ playerState }, requested);
   }
 
   ngOnDestroy(): void {

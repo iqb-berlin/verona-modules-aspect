@@ -73,8 +73,9 @@ export class AppComponent implements OnInit {
     console.log('player: onStart', message);
     const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : {};
     if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
-      this.veronaPostService.sessionId = message.sessionId;
       this.playerConfig = message.playerConfig || {};
+      this.veronaPostService.sessionId = message.sessionId;
+      this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
       this.initUnitPages(unitDefinition.pages, message.unitState);
     } else {
       this.dialog.open(AlertDialogComponent, {
@@ -87,6 +88,12 @@ export class AppComponent implements OnInit {
     }
   }
 
+  // structure of a unitPage:   {sections: [{elements: [{id: ..., value: ...}]}]}
+  // structure of a storedPage: {sections: [{elements: [{[id]: [value]}]}]}
+  // the array of unitPages contains all pages, all sections and all elements
+  // the array of storedPages contains all pages, all sections but only form elements
+  // to add the values of the elements of storedPages to the elements of unitPages
+  // we need to find the elements in storedPages that match the elements of unitPages
   private addStoredValues = (unitPages: UnitPage[], storedPages: FormPage[]): UnitPage[] => unitPages
     .map((page: UnitPage, pageIndex: number): UnitPage => ({
       ...page,

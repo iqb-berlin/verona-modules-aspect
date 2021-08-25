@@ -79,20 +79,23 @@ import { MessageService } from '../../../../../../../common/message.service';
                           (change)="updateModel('required', $event.checked)">
               Pflichtfeld
             </mat-checkbox>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('requiredWarnMessage')" appearance="fill">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('required') && combinedProperties.required"
+                            appearance="fill">
               <mat-label>Warnmeldung</mat-label>
               <input matInput type="text" [value]="combinedProperties.requiredWarnMessage"
                      (input)="updateModel('requiredWarnMessage', $any($event.target).value)">
             </mat-form-field>
 
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength')" appearance="fill">
-              <mat-label>Minimalwert</mat-label>
+              <mat-label>Minimallänge</mat-label>
               <input matInput type="number" #minLength="ngModel" min="0"
                      [ngModel]="combinedProperties.minLength"
                      (ngModelChange)="updateModel('minLength', $event, minLength.valid)">
             </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength')" appearance="fill">
-              <mat-label>MInimalwert Warnmeldung</mat-label>
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength') &&
+                                   $any(combinedProperties.minLength) > 0"
+                            appearance="fill">
+              <mat-label>Minimalwert Warnmeldung</mat-label>
               <input matInput type="text" [value]="combinedProperties.minLengthWarnMessage"
                      (input)="updateModel('minLengthWarnMessage', $any($event.target).value)">
             </mat-form-field>
@@ -103,7 +106,9 @@ import { MessageService } from '../../../../../../../common/message.service';
                      [ngModel]="combinedProperties.maxLength"
                      (ngModelChange)="updateModel('maxLength', $event, maxLength.valid)">
             </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')" appearance="fill">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')&&
+                                   $any(combinedProperties.maxLength) > 0"
+                            appearance="fill">
               <mat-label>Maximalwert Warnmeldung</mat-label>
               <input matInput type="text" [value]="combinedProperties.maxLengthWarnMessage"
                      (input)="updateModel('maxLengthWarnMessage', $any($event.target).value)">
@@ -114,7 +119,9 @@ import { MessageService } from '../../../../../../../common/message.service';
               <input matInput [value]="combinedProperties.pattern"
                      (input)="updateModel('pattern', $any($event.target).value)">
             </mat-form-field>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('pattern')" appearance="fill">
+            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('pattern') &&
+                                   $any(combinedProperties.pattern) != ''"
+                                   appearance="fill">
               <mat-label>Muster Warnmeldung</mat-label>
               <input matInput type="text" [value]="combinedProperties.patternWarnMessage"
                      (input)="updateModel('patternWarnMessage', $any($event.target).value)">

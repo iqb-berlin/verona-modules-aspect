@@ -12,6 +12,7 @@ export interface UnitPage {
   backgroundColor: string;
   alwaysVisible: boolean;
   alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom';
+  alwaysVisibleAspectRatio: number;
 }
 
 export interface UnitPageSection {

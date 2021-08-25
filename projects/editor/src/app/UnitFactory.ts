@@ -21,7 +21,8 @@ export function createUnitPage(pageIndex: number): UnitPage {
     margin: 8,
     backgroundColor: 'white',
     alwaysVisible: false,
-    alwaysVisiblePagePosition: 'left'
+    alwaysVisiblePagePosition: 'left',
+    alwaysVisibleAspectRatio: 50
   };
 }
 

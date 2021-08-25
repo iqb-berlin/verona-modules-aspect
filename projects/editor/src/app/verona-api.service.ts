@@ -49,7 +49,7 @@ export class VeronaAPIService {
       type: 'voeReadyNotification',
       apiVersion: '1.1.0',
       notSupportedApiFeatures: '',
-      supportedUnitDefinitionTypes: 'iqb-aspect-module@0.0.1'
+      supportedUnitDefinitionTypes: 'iqb-aspect-module@0.1.0'
     });
   }
 
@@ -59,7 +59,7 @@ export class VeronaAPIService {
       sessionId: this.sessionID,
       timeStamp: String(Date.now()),
       unitDefinition: unitDefinition,
-      unitDefinitionType: 'iqb-aspect-module@0.0.1'
+      unitDefinitionType: 'iqb-aspect-module@0.1.0'
     });
   }
 

@@ -14,7 +14,7 @@ import { VeronaAPIService } from './verona-api.service';
   providedIn: 'root'
 })
 export class UnitService {
-  EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.0.1';
+  EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.1.0';
 
   private _unit: BehaviorSubject<Unit>;
 

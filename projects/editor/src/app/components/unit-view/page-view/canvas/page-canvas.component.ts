@@ -35,8 +35,8 @@ export class PageCanvasComponent {
       if (newXPosition < 0) {
         newXPosition = 0;
       }
-      if (newXPosition > this.page.width - sourceItemModel.width) {
-        newXPosition = this.page.width - sourceItemModel.width;
+      if (newXPosition > this.page.maxWidth - sourceItemModel.width) {
+        newXPosition = this.page.maxWidth - sourceItemModel.width;
       }
       this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'xPosition', newXPosition);
 

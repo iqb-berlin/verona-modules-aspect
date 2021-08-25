@@ -7,7 +7,8 @@ export interface UnitPage {
   [index: string]: string | number | boolean | undefined | UnitPageSection[];
   id: string;
   sections: UnitPageSection[];
-  width: number;
+  hasMaxWidth: boolean;
+  maxWidth: number;
   margin: number;
   backgroundColor: string;
   alwaysVisible: boolean;

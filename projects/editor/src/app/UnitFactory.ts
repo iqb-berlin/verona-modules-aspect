@@ -17,7 +17,8 @@ export function createUnitPage(pageIndex: number): UnitPage {
   return {
     id: `page${pageIndex}`,
     sections: [],
-    width: 1100,
+    hasMaxWidth: false,
+    maxWidth: 1100,
     margin: 8,
     backgroundColor: 'white',
     alwaysVisible: false,

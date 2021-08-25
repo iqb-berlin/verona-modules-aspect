@@ -17,7 +17,7 @@
        [style.max-width.px]="layoutAlignment === 'row' ? alwaysVisiblePageWidth : layoutWidth">
     <div appHideFirstChild
          [hideFirstChild]="hidePageLabels"
-         [style.max-width.px]="alwaysVisiblePage.width"
+         [style.max-width.px]="alwaysVisiblePage.maxWidth"
          [style.margin.px]="alwaysVisiblePage.margin">
       <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}} {{selectedIndex}}</div>
       <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
@@ -51,7 +51,7 @@
       <ng-container *ngFor="let page of pages; let i = index">
         <mat-tab *ngIf="!page.alwaysVisible"
                  label="{{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}">
-          <div [style.margin.px]="page.margin" [style.max-width.px]="page.width">
+          <div [style.margin.px]="page.margin" [style.max-width.px]="page.maxWidth">
             <app-page [parentArrayIndex]="i"
                       [index]="playerPageIndices[i]"
                       [parentForm]="parentForm"
@@ -81,7 +81,7 @@
              [pagesContainer]="pagesScrolledContainer"
              [selectIndex]="selectIndex"
              [index]="playerPageIndices[i]"
-             [style.max-width.px]="page.width"
+             [style.max-width.px]="page.maxWidth"
              [style.margin.px]="page.margin">
           <div class="mat-tab-label">
             {{'pageIndication' | translate: {index: playerPageIndices[i] + 1} }}

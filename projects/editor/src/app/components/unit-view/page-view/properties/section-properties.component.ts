@@ -136,7 +136,7 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
       })
       .unsubscribe();
 
-    if (property === 'width' && value > selectedPage!.width) {
+    if (property === 'width' && value > selectedPage!.maxWidth) {
       this.messageService.showError('Darf nicht breiter als die Seite sein.');
     } else {
       this.unitService.updateSectionProperty(this.selectedPageSection, property, value);

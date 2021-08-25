@@ -87,7 +87,7 @@ export class LayoutComponent implements OnInit {
       Math.max(...this.scrollPages.map((page: UnitPage): number => this.getAbsolutePageWidth(page))) : 0;
   }
 
-  private getAbsolutePageWidth = (page: UnitPage | undefined): number => ((page) ? 2 * page.margin + page.width : 0);
+  private getAbsolutePageWidth = (page: UnitPage | undefined): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
 
   onSelectedIndexChange(selectedIndex: number): void {
     this.selectedIndexChange.emit(selectedIndex);

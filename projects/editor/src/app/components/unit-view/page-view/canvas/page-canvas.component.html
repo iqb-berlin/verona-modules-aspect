@@ -5,7 +5,7 @@
 <div class="canvasBackground" fxFlex>
   <div *ngIf="!sectionEditMode"
        class="canvasFrame"
-       [style.width.px]="page.width"
+       [style.width.px]="page.maxWidth"
        [style.padding.px]="page.margin"
        [style.background-color]="page.backgroundColor">
     <div cdkDropListGroup>
@@ -20,7 +20,7 @@
 
 
   <div *ngIf="sectionEditMode" class="drop-list"
-       [style.width.px]="page.width" [style.padding.px]="page.margin"
+       [style.width.px]="page.maxWidth" [style.padding.px]="page.margin"
        cdkDropList (cdkDropListDropped)="sectionDrop($event)" [cdkDropListData]="page.sections">
     <ng-container *ngFor="let section of page.sections; let i = index">
       <button mat-fab class="add-section-button"
@@ -35,7 +35,7 @@
     </ng-container>
   </div>
 
-  <button mat-fab class="add-section-button" [style.width.px]="page.width" [style.margin.px]="page.margin"
+  <button mat-fab class="add-section-button" [style.width.px]="page.maxWidth" [style.margin.px]="page.margin"
           (click)="addSection()">
     <mat-icon>add</mat-icon>
   </button>

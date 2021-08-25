@@ -11,11 +11,15 @@ import { SelectionService } from '../../../../selection.service';
   selector: 'app-page-properties',
   template: `
     <div fxLayout="column">
-      <mat-form-field>
-        <mat-label>Breite</mat-label>
+      <mat-checkbox [checked]="selectedPage.hasMaxWidth"
+                    (change)="updateModel('hasMaxWidth', $any($event.source).checked)">
+        Maximalbreite setzen
+      </mat-checkbox>
+      <mat-form-field *ngIf="selectedPage.hasMaxWidth">
+        <mat-label>Maximalbreite</mat-label>
         <input matInput type="number"
-               [value]="selectedPage.width"
-               (change)="updateModel('width', $any($event.target).value)">
+               [value]="selectedPage.maxWidth"
+               (change)="updateModel('maxWidth', $any($event.target).value)">
       </mat-form-field>
       <mat-form-field>
         <mat-label>Randbreite</mat-label>
@@ -33,6 +37,12 @@ import { SelectionService } from '../../../../selection.service';
                     (change)="updateModel('alwaysVisible', $any($event.source).checked)">
         Immer angezeigt
       </mat-checkbox>
+      <mat-form-field *ngIf="selectedPage.alwaysVisible">
+        <mat-label>Seitenverhältnis (in Prozent)</mat-label>
+        <input matInput type="number" min="0" max="100"
+               [value]="selectedPage.alwaysVisibleAspectRatio"
+               (change)="updateModel('alwaysVisibleAspectRatio', $any($event.target).value)">
+      </mat-form-field>
     </div>
     `
 })

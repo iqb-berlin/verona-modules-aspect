@@ -5,9 +5,9 @@ import { ElementComponent } from '../element-component.directive';
 @Component({
   selector: 'app-audio',
   template: `
-      <div>
-          <audio controls src="{{elementModel.src}}"></audio>
-      </div>
+        <audio controls src="{{elementModel.src}}"
+               [style.width.%]="100">
+        </audio>
   `,
   styles: [
     'div {display: inline-block; border: 5px solid; padding: 12px 9px 9px 9px;}'

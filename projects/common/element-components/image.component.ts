@@ -5,7 +5,9 @@ import { ElementComponent } from '../element-component.directive';
 @Component({
   selector: 'app-image',
   template: `
-      <img src="{{elementModel.src}}" alt="Image Placeholder">
+      <img src="{{elementModel.src}}"
+           alt="Image Placeholder"
+           [style.width.%]="100">
   `
 })
 export class ImageComponent extends ElementComponent {

@@ -32,9 +32,18 @@ export class LayoutComponent implements OnInit {
   layoutAlignment!: 'row' | 'column';
   scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
   hidePageLabels!: boolean;
-  layoutWidth!: number;
-  alwaysVisiblePageWidth!: number;
-  scrollPageWidth!: number;
+
+  maxWidth: { alwaysVisiblePage: number, scrollPages: number, allPages: number } =
+  { alwaysVisiblePage: 0, scrollPages: 0, allPages: 0 };
+
+  aspectRatioRow: { alwaysVisiblePage: number, scrollPages: number } =
+  { alwaysVisiblePage: 0, scrollPages: 0 };
+
+  aspectRatioColumn: { alwaysVisiblePage: number, scrollPages: number } =
+  { alwaysVisiblePage: 0, scrollPages: 0 };
+
+  containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
+  { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
   constructor(private translateService: TranslateService) { }
 
@@ -76,13 +85,39 @@ export class LayoutComponent implements OnInit {
       'row' : 'column';
     this.scrollPageMode = this.playerConfig.pagingMode ? this.playerConfig.pagingMode : 'separate';
     this.hidePageLabels = false;
-    this.alwaysVisiblePageWidth = this.getAbsolutePageWidth(this.alwaysVisiblePage);
-    this.scrollPageWidth = this.calculateScrollPagesWidth();
-    this.layoutWidth = this.layoutAlignment === 'row' ?
-      this.alwaysVisiblePageWidth + this.scrollPageWidth : Math.max(this.alwaysVisiblePageWidth, this.scrollPageWidth);
+
+    this.maxWidth.alwaysVisiblePage = this.getAbsolutePageWidth(this.alwaysVisiblePage);
+    this.maxWidth.scrollPages = this.getScrollPagesWidth();
+    this.maxWidth.allPages = Math.max(this.maxWidth.alwaysVisiblePage, this.maxWidth.scrollPages);
+
+    this.aspectRatioRow.alwaysVisiblePage = this.getAspectRatio('row', 0);
+    this.aspectRatioRow.scrollPages = this.getAspectRatio('row', -100);
+    this.aspectRatioColumn.alwaysVisiblePage = this.getAspectRatio('column', 0);
+    this.aspectRatioColumn.scrollPages = this.getAspectRatio('column', -100);
+
+    this.containerMaxWidth.alwaysVisiblePage = this.getContainerMaxWidth(
+      !(this.alwaysVisiblePage && this.alwaysVisiblePage.hasMaxWidth),
+      this.maxWidth.alwaysVisiblePage
+    );
+    this.containerMaxWidth.scrollPages = this.getContainerMaxWidth(
+      this.scrollPages.findIndex((page: UnitPage): boolean => !page.hasMaxWidth) > -1,
+      this.maxWidth.scrollPages
+    );
   }
 
-  private calculateScrollPagesWidth(): number {
+  private getContainerMaxWidth(condition: boolean, maxWidth: number): string {
+    if (condition) {
+      return '100%';
+    }
+    return this.layoutAlignment === 'row' ? `${maxWidth}px` : `${this.maxWidth.allPages}px`;
+  }
+
+  private getAspectRatio(alignment: string, offset: number) : number {
+    return this.alwaysVisiblePage && this.layoutAlignment === alignment ?
+      Math.abs(this.alwaysVisiblePage.alwaysVisibleAspectRatio - offset) : 100;
+  }
+
+  private getScrollPagesWidth(): number {
     return this.hasScrollPages ?
       Math.max(...this.scrollPages.map((page: UnitPage): number => this.getAbsolutePageWidth(page))) : 0;
   }

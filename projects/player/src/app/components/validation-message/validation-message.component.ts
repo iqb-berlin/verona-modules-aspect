@@ -23,8 +23,6 @@ export class ValidationMessageComponent implements OnInit {
   requiredTrueMessage!: string;
   minLengthWarnMessage!: string;
   maxLengthWarnMessage!: string;
-  minMessage!: string;
-  maxMessage!: string;
 
   constructor(private formService: FormService, private translateService: TranslateService) {}
 
@@ -47,11 +45,11 @@ export class ValidationMessageComponent implements OnInit {
         validators.push(Validators.required);
       }
     }
-    if (this.elementModel.min) {
-      validators.push(Validators.minLength(<number> this.elementModel.min));
+    if (this.elementModel.minLength) {
+      validators.push(Validators.minLength(<number> this.elementModel.minLength));
     }
-    if (this.elementModel.max) {
-      validators.push(Validators.maxLength(<number> this.elementModel.max));
+    if (this.elementModel.maxLength) {
+      validators.push(Validators.maxLength(<number> this.elementModel.maxLength));
     }
     return validators;
   }

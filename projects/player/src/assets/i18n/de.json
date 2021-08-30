@@ -6,10 +6,8 @@
   "validators": {
     "inputRequired": "Eingabe erforderlich",
     "inputRequiredTrue": "Ankreuzen erforderlich",
-    "InputTooShort": "Eingabe zu kurz",
-    "InputTooLong": "Eingabe zu lang",
-    "ValueTooSmall": "Wert zu klein",
-    "ValueTooBig": "Wert zu groß"
+    "inputTooShort": "Eingabe zu kurz",
+    "inputTooLong": "Eingabe zu lang"
   },
   "dialogTitle": {
     "wrongUnitDefinitionType": "Falscher Unit-Definition-Type",

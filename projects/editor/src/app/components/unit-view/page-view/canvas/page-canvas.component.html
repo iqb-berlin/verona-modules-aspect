@@ -11,28 +11,34 @@
     <div cdkDropListGroup>
       <div app-canvas-section class="section drop-list"
            *ngFor="let section of page.sections; let i = index"
-           [section]="section" [sectionIndex]="i"
+           [section]="section"
            cdkDropList cdkDropListSortingDisabled
            (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section">
       </div>
     </div>
   </div>
 
-
   <div *ngIf="sectionEditMode" class="drop-list"
        [style.width.px]="page.maxWidth" [style.padding.px]="page.margin"
        cdkDropList (cdkDropListDropped)="sectionDrop($event)" [cdkDropListData]="page.sections">
-    <ng-container *ngFor="let section of page.sections; let i = index">
+    <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
       <button mat-fab class="add-section-button"
               (click)="addSection(i)">
         <mat-icon>add</mat-icon>
       </button>
       <div app-canvas-section class="section"
            [section]="section" [sectionEditMode]="sectionEditMode"
-           (deleteSection)="deleteSection($event)"
            cdkDrag>
       </div>
-    </ng-container>
+      <!-- 18 is button size. 55 Is the above add button's height (with margins). -->
+      <button *ngIf="page.sections.length > 1"
+              mat-mini-fab class="delete-section-button"
+              [style.right.px]="-18" [style.top.px]="55 - 18"
+              [style.position]="'absolute'"
+              (click)="deleteSection(i)">
+        <mat-icon>clear</mat-icon>
+      </button>
+    </div>
   </div>
 
   <button mat-fab class="add-section-button" [style.width.px]="page.maxWidth" [style.margin.px]="page.margin"

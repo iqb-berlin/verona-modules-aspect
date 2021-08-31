@@ -1,6 +1,4 @@
-import {
-  Component, EventEmitter, Input, Output
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
@@ -70,10 +68,6 @@ import { SelectionService } from '../../../../selection.service';
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
          (click)="selectionService.selectSection(this)">
-      <button mat-mini-fab class="delete-section-button"
-      (click)="deleteSection.emit(sectionIndex)">
-        <mat-icon>clear</mat-icon>
-      </button>
       <div *ngIf="!section.dynamicPositioning">
         <app-view-only-element-overlay *ngFor="let element of section.elements" [element]="$any(element)">
         </app-view-only-element-overlay>
@@ -103,15 +97,12 @@ import { SelectionService } from '../../../../selection.service';
   `,
   styles: [
     '.section-wrapper {width: 100%}',
-    '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}',
-    '.delete-section-button {position: absolute; right: -18px; top: -18px}'
+    '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}'
   ]
 })
 export class SectionComponent {
   @Input() section!: UnitPageSection;
-  @Input() sectionIndex!: number;
   @Input() sectionEditMode: boolean = false;
-  @Output() deleteSection = new EventEmitter<number>();
   selected = true;
   dragging = false;
   draggingElementWidth: number | undefined = 0;

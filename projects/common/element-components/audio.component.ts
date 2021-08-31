@@ -5,13 +5,10 @@ import { ElementComponent } from '../element-component.directive';
 @Component({
   selector: 'app-audio',
   template: `
-        <audio controls src="{{elementModel.src}}"
-               [style.width.%]="100">
-        </audio>
-  `,
-  styles: [
-    'div {display: inline-block; border: 5px solid; padding: 12px 9px 9px 9px;}'
-  ]
+    <audio controls [src]="elementModel.src | safeResourceUrl"
+           [style.width.%]="100">
+    </audio>
+  `
 })
 export class AudioComponent extends ElementComponent {
   elementModel!: AudioElement;

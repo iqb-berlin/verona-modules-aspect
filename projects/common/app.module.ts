@@ -32,6 +32,7 @@ import { ImageComponent } from './element-components/image.component';
 import { VideoComponent } from './element-components/video.component';
 import { AudioComponent } from './element-components/audio.component';
 import { CorrectionComponent } from './element-components/compound-components/correction.component';
+import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { CorrectionComponent } from './element-components/compound-components/co
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
-    CorrectionComponent
+    CorrectionComponent,
+    SafeResourceUrlPipe
   ],
   exports: [
     CommonModule,

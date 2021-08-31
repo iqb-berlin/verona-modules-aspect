@@ -5,13 +5,10 @@ import { ElementComponent } from '../element-component.directive';
 @Component({
   selector: 'app-video',
   template: `
-      <video controls src="{{elementModel.src}}"
+      <video controls [src]="elementModel.src | safeResourceUrl"
              [style.width.%]="100">
       </video>
-  `,
-  styles: [
-    'div {display: inline-block;border: 5px solid; padding: 12px 9px 9px 9px}'
-  ]
+  `
 })
 export class VideoComponent extends ElementComponent {
   elementModel!: VideoElement;

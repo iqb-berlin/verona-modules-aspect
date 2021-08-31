@@ -3,6 +3,7 @@
 <ng-template #staticElements>
   <div *ngFor="let element of section.elements; let i = index"
        [style.position]="'absolute'"
+       [style.overflow]="'auto'"
        [style.width.px]="element.width"
        [style.height.px]="element.height"
        [style.left.px]="element.xPosition"

@@ -141,7 +141,7 @@ export class SectionComponent {
         [event.item.data.element],
         'gridColumnStart', event.container.data.gridCoordinates![0]
       );
-      // Ensure the end value is at least the same as the start, otherwise the grid breaks
+      // Ensure the end value is at least the same as the start, otherwise the grid breaks.
       this.unitService.updateElementProperty(
         [dragItemData.element],
         'gridColumnEnd', Math.max(event.item.data.element.gridColumnEnd, event.container.data.gridCoordinates![0])
@@ -154,7 +154,7 @@ export class SectionComponent {
         [dragItemData.element],
         'gridRowEnd', Math.max(event.item.data.element.gridRowEnd, event.container.data.gridCoordinates![1])
       );
-    } else if (event.item.data.dragType === 'resize') { // resize
+    } else if (event.item.data.dragType === 'resize') {
       this.unitService.updateElementProperty(
         [dragItemData.element],
         'gridColumnEnd', event.container.data.gridCoordinates![0] + 1

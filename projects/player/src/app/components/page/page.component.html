@@ -12,7 +12,7 @@
                   overflow: 'auto',
                   width: '100%',
                   'background-color': section.backgroundColor,
-                  'min-height.px': section.height}">
+                  'min-height': section.dynamicPositioning ? 'auto' : section.height + 'px'}">
   </app-section>
 </div>
 <div appIntersectionDetection

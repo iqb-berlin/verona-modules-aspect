@@ -7,7 +7,7 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
   template: `
     <!--    Needs extra div because styling can interfere with drag and drop-->
     <div class="draggable-element" [class.draggable-element-selected]="selected"
-         cdkDrag [cdkDragData]="this.element"
+         cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
          (click)="selectElement($event.shiftKey)" (cdkDragStarted)="selectElement()"
          (dblclick)="openEditDialog()">
       <div [style.position]="'absolute'"

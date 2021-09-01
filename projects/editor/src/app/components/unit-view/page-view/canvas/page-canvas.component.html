@@ -9,12 +9,25 @@
        [style.padding.px]="page.margin"
        [style.background-color]="page.backgroundColor">
     <div cdkDropListGroup>
-      <div app-canvas-section class="section drop-list"
-           *ngFor="let section of page.sections; let i = index"
-           [section]="section"
-           cdkDropList cdkDropListSortingDisabled
-           (cdkDropListDropped)="elementDropped($event)" [cdkDropListData]="section">
-      </div>
+      <ng-container *ngFor="let section of page.sections; let i = index">
+        <!-- TODO split section into static and dynamic-->
+        <div *ngIf="!section.dynamicPositioning"
+             app-canvas-section class="section drop-list" id="section-{{i}}"
+             [section]="section"
+             cdkDropList cdkDropListSortingDisabled
+             [cdkDropListData]="{ sectionIndex: i }"
+             [dropListList]="dropListList"
+             (cdkDropListDropped)="elementDropped($event)"
+             [cdkDropListConnectedTo]="dropListList">
+        </div>
+        <div *ngIf="section.dynamicPositioning"
+             app-canvas-section class="section drop-list"
+             [section]="section" [sectionIndex]="i"
+             (transferElement)="moveElementBetweenSections($event.element,
+                                                           $event.previousSectionIndex,
+                                                           $event.newSectionIndex)">
+        </div>
+      </ng-container>
     </div>
   </div>
 

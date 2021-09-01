@@ -151,6 +151,14 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
+  /* Move element between sections */
+  transferElement(elements: UnitUIElement[], previousSection: UnitPageSection, newSection: UnitPageSection): void {
+    previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
+    elements.forEach(element => newSection.elements.push(element));
+    this._unit.next(this._unit.value);
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
+  }
+
   duplicateElementsInSection(elements: UnitUIElement[], section: UnitPageSection): void {
     elements.forEach((element: UnitUIElement) => {
       const newElement: UnitUIElement = { ...element };
@@ -224,6 +232,7 @@ export class UnitService {
       section[property] = value;
     }
     this.elementPropertyUpdated.next();
+    this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 

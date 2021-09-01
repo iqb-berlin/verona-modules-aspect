@@ -1,8 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, Input, Output, EventEmitter
+} from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { UnitPageSection } from '../../../../../../../common/unit';
+import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
+import { DragItemData, DropListData } from './page-canvas.component';
 
 @Component({
   selector: '[app-canvas-section]',
@@ -27,6 +30,8 @@ import { SelectionService } from '../../../../selection.service';
            [style.height.%]="100"
            cdkDropListGroup>
 
+        <!-- Dynamic sections have the droplists for the grid cells next to the actual elements. Elements can not
+             be children of the grid cells because they can span over multiple cells. -->
         <ng-container *ngFor="let column of this.section.gridColumnSizes.split(' '); let x = index">
           <ng-container *ngFor="let row of this.section.gridRowSizes.split(' '); let y = index">
             <div class="grid-placeholder"
@@ -34,7 +39,9 @@ import { SelectionService } from '../../../../selection.service';
                  [style.grid-column-end]="x + 1"
                  [style.grid-row-start]="y + 1"
                  [style.grid-row-end]="y + 1"
-                 cdkDropList [cdkDropListData]="[x + 1, y + 1]" (cdkDropListDropped)="drop($event)">
+                 cdkDropList [cdkDropListData]="{ sectionIndex: sectionIndex, gridCoordinates: [x + 1, y + 1] }"
+                 (cdkDropListDropped)="drop($any($event))"
+                 id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}">
               {{x + 1}} / {{y + 1}}
             </div>
           </ng-container>
@@ -53,6 +60,8 @@ import { SelectionService } from '../../../../selection.service';
                                     [style.grid-row-start]="element.gridRowStart"
                                     [style.grid-row-end]="element.gridRowEnd"
                                     cdkDropList cdkDropListSortingDisabled
+                                    [cdkDropListData]="{ sectionIndex: sectionIndex }"
+                                    [cdkDropListConnectedTo]="dropListList"
                                     (resize)="resizeOverlay($event)"
                                     [style.pointer-events]="dragging ? 'none' : 'auto'"
                                     [style.position]="dragging ? 'absolute' : null"
@@ -103,6 +112,12 @@ import { SelectionService } from '../../../../selection.service';
 export class SectionComponent {
   @Input() section!: UnitPageSection;
   @Input() sectionEditMode: boolean = false;
+  @Input() sectionIndex!: number;
+  @Input() dropListList!: string[];
+  @Output() transferElement = new EventEmitter<{ element: UnitUIElement,
+    previousSectionIndex: number,
+    newSectionIndex: number }>();
+
   selected = true;
   dragging = false;
   draggingElementWidth: number | undefined = 0;
@@ -110,34 +125,46 @@ export class SectionComponent {
 
   constructor(public selectionService: SelectionService, public unitService: UnitService) { }
 
-  drop(event: CdkDragDrop<number[]>): void {
-    if (event.item.data.dragType === 'move') {
+  drop(event: CdkDragDrop<DropListData>): void {
+    const dragItemData: DragItemData = event.item.data;
+
+    // Move element to other section - handled by parent (page-canvas).
+    if (event.previousContainer.data.sectionIndex !== event.container.data.sectionIndex) {
+      this.transferElement.emit({
+        element: event.item.data.element,
+        previousSectionIndex: event.previousContainer.data.sectionIndex,
+        newSectionIndex: event.container.data.sectionIndex
+      });
+    }
+    if (dragItemData.dragType === 'move') {
       this.unitService.updateElementProperty(
-        this.selectionService.getSelectedElements(),
-        'gridColumnStart', event.container.data[0]
+        [event.item.data.element],
+        'gridColumnStart', event.container.data.gridCoordinates![0]
       );
       // Ensure the end value is at least the same as the start, otherwise the grid breaks
       this.unitService.updateElementProperty(
-        this.selectionService.getSelectedElements(),
-        'gridColumnEnd', Math.max(event.item.data.element.gridColumnEnd, event.container.data[0])
+        [dragItemData.element],
+        'gridColumnEnd', Math.max(event.item.data.element.gridColumnEnd, event.container.data.gridCoordinates![0])
       );
       this.unitService.updateElementProperty(
-        this.selectionService.getSelectedElements(),
-        'gridRowStart', event.container.data[1]
+        [dragItemData.element],
+        'gridRowStart', event.container.data.gridCoordinates![1]
       );
       this.unitService.updateElementProperty(
-        this.selectionService.getSelectedElements(),
-        'gridRowEnd', Math.max(event.item.data.element.gridRowEnd, event.container.data[1])
+        [dragItemData.element],
+        'gridRowEnd', Math.max(event.item.data.element.gridRowEnd, event.container.data.gridCoordinates![1])
       );
-    } else { // resize
+    } else if (event.item.data.dragType === 'resize') { // resize
       this.unitService.updateElementProperty(
-        this.selectionService.getSelectedElements(),
-        'gridColumnEnd', event.container.data[0] + 1
+        [dragItemData.element],
+        'gridColumnEnd', event.container.data.gridCoordinates![0] + 1
       );
       this.unitService.updateElementProperty(
-        this.selectionService.getSelectedElements(),
-        'gridRowEnd', event.container.data[1] + 1
+        [dragItemData.element],
+        'gridRowEnd', event.container.data.gridCoordinates![1] + 1
       );
+    } else {
+      throw new Error('Unknown drop event');
     }
   }
 

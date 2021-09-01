@@ -16,13 +16,13 @@
              [section]="section"
              cdkDropList cdkDropListSortingDisabled
              [cdkDropListData]="{ sectionIndex: i }"
-             [dropListList]="dropListList"
              (cdkDropListDropped)="elementDropped($event)"
              [cdkDropListConnectedTo]="dropListList">
         </div>
         <div *ngIf="section.dynamicPositioning"
              app-canvas-section class="section drop-list"
              [section]="section" [sectionIndex]="i"
+             [dropListList]="dropListList"
              (transferElement)="moveElementBetweenSections($event.element,
                                                            $event.previousSectionIndex,
                                                            $event.newSectionIndex)">

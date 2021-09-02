@@ -37,7 +37,11 @@ import { MessageService } from '../../../../../../../common/message.service';
               <mat-label>Text</mat-label>
               <textarea matInput type="text" cdkTextareaAutosize [value]="combinedProperties.text"
                         (input)="updateModel('text', $any($event.target).value)">
-            </textarea>
+              </textarea>
+              <button mat-icon-button matSuffix
+                      (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+                <mat-icon>edit</mat-icon>
+              </button>
             </mat-form-field>
 
             <mat-form-field *ngIf="combinedProperties.type === 'text-field'">

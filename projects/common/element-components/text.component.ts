@@ -14,8 +14,8 @@ import { ElementComponent } from '../element-component.directive';
          [style.font-weight]="elementModel.bold ? 'bold' : ''"
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''"
-         [style.white-space]="'pre-wrap'">
-        {{elementModel.text}}
+         [style.white-space]="'pre-wrap'"
+         [innerHTML]="elementModel.text">
     </div>
   `
 })

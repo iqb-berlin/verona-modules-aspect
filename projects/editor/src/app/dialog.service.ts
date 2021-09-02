@@ -2,6 +2,7 @@
 import { Component, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,22 @@ export class DialogService {
         }
       });
     }
+    return dialogRef.afterClosed();
+  }
+
+  showRichTextEditDialog(text: string): Observable<string> {
+    const dialogRef = this.dialog.open(RichTextEditDialog, {
+      width: '700px',
+      height: '600px',
+      data: {
+        text: text,
+        editorConfig: {
+          editable: true,
+          minHeight: '350px',
+          toolbarHiddenButtons: [[], ['insertImage', 'insertVideo']]
+        }
+      }
+    });
     return dialogRef.afterClosed();
   }
 }
@@ -85,4 +102,20 @@ export class TextEditDialog {
 })
 export class MultilineTextEditDialog {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { oldText: string }) { }
+}
+
+@Component({
+  selector: 'app-rich-text-edit-dialog',
+  template: `
+    <mat-dialog-content>
+      <angular-editor [(ngModel)]="data.text" [config]="data.editorConfig"></angular-editor>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-button [mat-dialog-close]="data.text">Okay</button>
+      <button mat-button mat-dialog-close>Abbruch</button>
+    </mat-dialog-actions>
+    `
+})
+export class RichTextEditDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, editorConfig: AngularEditorConfig }) { }
 }

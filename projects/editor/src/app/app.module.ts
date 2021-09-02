@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+import { HttpClientModule } from '@angular/common/http';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
@@ -19,7 +22,9 @@ import { SectionComponent } from './components/unit-view/page-view/canvas/sectio
 import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/app.module';
-import { ConfirmationDialog, MultilineTextEditDialog, TextEditDialog } from './dialog.service';
+import {
+  ConfirmationDialog, MultilineTextEditDialog, RichTextEditDialog, TextEditDialog
+} from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { PagePropertiesComponent } from './components/unit-view/page-view/properties/page-properties.component';
 import { SectionPropertiesComponent } from './components/unit-view/page-view/properties/section-properties.component';
@@ -42,6 +47,7 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     ConfirmationDialog,
     TextEditDialog,
     MultilineTextEditDialog,
+    RichTextEditDialog,
     PagePropertiesComponent,
     SectionPropertiesComponent,
     ElementPropertiesComponent,
@@ -55,6 +61,8 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     SharedModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
+    HttpClientModule,
+    AngularEditorModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

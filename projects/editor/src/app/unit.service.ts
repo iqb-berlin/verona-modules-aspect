@@ -270,7 +270,7 @@ export class UnitService {
         });
         break;
       case 'text':
-        this.dialogService.showTextEditDialog((element as any).text, true).subscribe((result: string) => {
+        this.dialogService.showRichTextEditDialog((element as any).text).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'text', result);
           }

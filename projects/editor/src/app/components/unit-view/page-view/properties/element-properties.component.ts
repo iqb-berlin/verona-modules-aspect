@@ -230,25 +230,25 @@ import { MessageService } from '../../../../../../../common/message.service';
                 <div fxLayoutAlign="row">
                   <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnStart')">
                     <mat-label>Start-Spalte</mat-label>
-                    <input matInput type="number" [value]="combinedProperties.gridColumnStart"
-                           (input)="updateModel('gridColumnStart', $any($event.target).value)">
+                    <input matInput type="number" [ngModel]="combinedProperties.gridColumnStart"
+                           (ngModelChange)="updateModel('gridColumnStart', $event)">
                   </mat-form-field>
                   <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnEnd')">
                     <mat-label>End-Spalte</mat-label>
-                    <input matInput type="number" [value]="combinedProperties.gridColumnEnd"
-                           (input)="updateModel('gridColumnEnd', $any($event.target).value)">
+                    <input matInput type="number" [ngModel]="combinedProperties.gridColumnEnd"
+                           (ngModelChange)="updateModel('gridColumnEnd', $event)">
                   </mat-form-field>
                 </div>
                 <div fxLayoutAlign="row">
                   <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowStart')">
                     <mat-label>Start-Zeile</mat-label>
-                    <input matInput type="number" [value]="combinedProperties.gridRowStart"
-                           (input)="updateModel('gridRowStart', $any($event.target).value)">
+                    <input matInput type="number" [ngModel]="combinedProperties.gridRowStart"
+                           (ngModelChange)="updateModel('gridRowStart', $event)">
                   </mat-form-field>
                   <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowEnd')">
                     <mat-label>End-Zeile</mat-label>
-                    <input matInput type="number" [value]="combinedProperties.gridRowEnd"
-                           (input)="updateModel('gridRowEnd', $any($event.target).value)">
+                    <input matInput type="number" [ngModel]="combinedProperties.gridRowEnd"
+                           (ngModelChange)="updateModel('gridRowEnd', $event)">
                   </mat-form-field>
                 </div>
               </div>
@@ -258,27 +258,31 @@ import { MessageService } from '../../../../../../../common/message.service';
                 <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginTop')"
                                 class="centered-form-field">
                   <mat-label>oben</mat-label>
-                  <input matInput type="number" [value]="combinedProperties.marginTop"
-                         (input)="updateModel('marginTop', $any($event.target).value)">
+                  <input matInput type="number" #marginTop="ngModel" min="0"
+                         [ngModel]="combinedProperties.marginTop"
+                         (ngModelChange)="updateModel('marginTop', $event, marginTop.valid)">
                 </mat-form-field>
                 <div fxLayoutAlign="row">
                   <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginLeft')">
                     <mat-label>links</mat-label>
-                    <input matInput type="number" [value]="combinedProperties.marginLeft"
-                           (input)="updateModel('marginLeft', $any($event.target).value)">
+                    <input matInput type="number" #marginLeft="ngModel" min="0"
+                           [ngModel]="combinedProperties.marginLeft"
+                           (ngModelChange)="updateModel('marginLeft', $event, marginLeft.valid)">
                   </mat-form-field>
                   <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginRight')"
                                   class="right-form-field">
                     <mat-label>rechts</mat-label>
-                    <input matInput type="number" [value]="combinedProperties.marginRight"
-                           (input)="updateModel('marginRight', $any($event.target).value)">
+                    <input matInput type="number" #marginRight="ngModel" min="0"
+                           [ngModel]="combinedProperties.marginRight"
+                           (ngModelChange)="updateModel('marginRight', $event, marginRight.valid)">
                   </mat-form-field>
                 </div>
                 <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginBottom')"
                                 class="centered-form-field">
                   <mat-label>unten</mat-label>
-                  <input matInput type="number" [value]="combinedProperties.marginBottom"
-                         (input)="updateModel('marginBottom', $any($event.target).value)">
+                  <input matInput type="number" #marginBottom="ngModel" min="0"
+                         [ngModel]="combinedProperties.marginBottom"
+                         (ngModelChange)="updateModel('marginBottom', $event, marginBottom.valid)">
                 </mat-form-field>
               </div>
             </ng-template>

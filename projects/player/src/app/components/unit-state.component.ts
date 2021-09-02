@@ -22,7 +22,7 @@ import {
 import { UnitPage } from '../../../../common/unit';
 
 @Component({
-  selector: 'app-form',
+  selector: 'app-unit-state',
   template: `
     <form [formGroup]="form">
       <app-player-state [parentForm]="form"
@@ -32,7 +32,7 @@ import { UnitPage } from '../../../../common/unit';
     </form>
   `
 })
-export class FormComponent implements OnInit, OnDestroy {
+export class UnitStateComponent implements OnInit, OnDestroy {
   @Input() pages: UnitPage[] = [];
   @Input() playerConfig!: PlayerConfig;
   form!: FormGroup;

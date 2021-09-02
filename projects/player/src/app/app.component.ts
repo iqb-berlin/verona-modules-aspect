@@ -16,7 +16,7 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
 @Component({
   selector: 'player-aspect',
   template: `
-    <app-form *ngIf="playerConfig" [pages]=pages [playerConfig]=playerConfig></app-form>
+    <app-unit-state *ngIf="playerConfig" [pages]=pages [playerConfig]=playerConfig></app-unit-state>
   `
 })
 export class AppComponent implements OnInit {

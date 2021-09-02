@@ -8,29 +8,22 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '../../../../common/form.service';
-import { VeronaSubscriptionService } from '../services/verona-subscription.service';
-import { VeronaPostService } from '../services/verona-post.service';
-import { MessageService } from '../../../../common/message.service';
-import { MetaDataService } from '../services/meta-data.service';
+import { FormService } from '../../../../../common/form.service';
+import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
+import { VeronaPostService } from '../../services/verona-post.service';
+import { MessageService } from '../../../../../common/message.service';
+import { MetaDataService } from '../../services/meta-data.service';
 import {
   FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement
-} from '../../../../common/form';
+} from '../../../../../common/form';
 import {
   PlayerConfig, Progress, UnitState, VopNavigationDeniedNotification
-} from '../models/verona';
-import { UnitPage } from '../../../../common/unit';
+} from '../../models/verona';
+import { UnitPage } from '../../../../../common/unit';
 
 @Component({
   selector: 'app-unit-state',
-  template: `
-    <form [formGroup]="form">
-      <app-player-state [parentForm]="form"
-                        [playerConfig]="playerConfig"
-                        [pages]="pages">
-      </app-player-state>
-    </form>
-  `
+  templateUrl: './unit-state.component.html'
 })
 export class UnitStateComponent implements OnInit, OnDestroy {
   @Input() pages: UnitPage[] = [];
@@ -67,10 +60,6 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.formService.validatorsAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
-    this.veronaSubscriptionService.vopNavigationDeniedNotification
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
-
     this.formService.elementValueChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
@@ -80,6 +69,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.form.valueChanges
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => this.onFormChanges());
+    this.veronaSubscriptionService.vopNavigationDeniedNotification
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
   }
 
   private get responseProgress(): Progress {

@@ -10,7 +10,7 @@ import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from '../../../common/app.module';
 import { ElementOverlayComponent } from './components/element-overlay/element-overlay.component';
 import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
-import { UnitStateComponent } from './components/unit-state.component';
+import { UnitStateComponent } from './components/unit-state/unit-state.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { LayoutComponent } from './components/layout/layout.component';

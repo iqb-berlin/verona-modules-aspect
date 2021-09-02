@@ -208,7 +208,7 @@ import { MessageService } from '../../../../../../../common/message.service';
               <mat-form-field *ngIf="combinedProperties.hasOwnProperty('yPosition')" appearance="fill">
                 <mat-label>Y Position</mat-label>
                 <input matInput type="number" #yPosition="ngModel" min="0"
-                       [ngModel]="combinedProperties.xPosition"
+                       [ngModel]="combinedProperties.yPosition"
                        (ngModelChange)="updateModel('yPosition', $event, yPosition.valid)">
               </mat-form-field>
             </ng-container>

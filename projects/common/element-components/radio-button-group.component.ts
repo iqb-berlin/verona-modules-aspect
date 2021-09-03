@@ -14,7 +14,7 @@ import { FormElementComponent } from '../form-element-component.directive';
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-          <label id="radio-group-label">{{elementModel.label}}</label>
+          <label [innerHTML]="elementModel.label" id="radio-group-label"></label>
           <mat-radio-group aria-labelledby="radio-group-label" fxLayout="{{elementModel.alignment}}"
                            [formControl]="elementFormControl">
               <mat-radio-button *ngFor="let option of elementModel.options" [value]="option">

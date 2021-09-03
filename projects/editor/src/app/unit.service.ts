@@ -260,9 +260,7 @@ export class UnitService {
   showDefaultEditDialog(element: UnitUIElement): void {
     switch (element.type) {
       case 'button':
-      case 'checkbox':
       case 'dropdown':
-      case 'radio':
         this.dialogService.showTextEditDialog((element as any).label, false).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'label', result);
@@ -289,6 +287,15 @@ export class UnitService {
             this.updateElementProperty([element], 'value', result);
           }
         });
+        break;
+      case 'checkbox':
+      case 'radio':
+        this.dialogService.showRichTextEditDialog((element as any).label).subscribe((result: string) => {
+          if (result) {
+            this.updateElementProperty([element], 'label', result);
+          }
+        });
+        break;
       // no default
     }
   }

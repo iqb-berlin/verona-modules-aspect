@@ -16,7 +16,7 @@ import { FormElementComponent } from '../form-element-component.directive';
                   [style.font-weight]="elementModel.bold ? 'bold' : ''"
                   [style.font-style]="elementModel.italic ? 'italic' : ''"
                   [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      {{elementModel.label}}
+      <div [innerHTML]="elementModel.label"></div>
     </mat-checkbox>
   `
 })

@@ -5,8 +5,7 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-import { HttpClientModule } from '@angular/common/http';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -48,6 +47,7 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     TextEditDialog,
     MultilineTextEditDialog,
     RichTextEditDialog,
+    RichTextEditDialogTinyMCE,
     PagePropertiesComponent,
     SectionPropertiesComponent,
     ElementPropertiesComponent,
@@ -61,8 +61,7 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     SharedModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
-    HttpClientModule,
-    AngularEditorModule,
+    EditorModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

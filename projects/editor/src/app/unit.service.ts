@@ -261,38 +261,32 @@ export class UnitService {
     switch (element.type) {
       case 'button':
       case 'dropdown':
-        this.dialogService.showTextEditDialog((element as any).label, false).subscribe((result: string) => {
+      case 'checkbox':
+      case 'radio':
+        this.dialogService.showTextEditDialog(element.label as string).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'label', result);
           }
         });
         break;
       case 'text':
-        this.dialogService.showRichTextEditDialog((element as any).text).subscribe((result: string) => {
+        this.dialogService.showRichTextEditDialog(element.text as string).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'text', result);
           }
         });
         break;
       case 'text-field':
-        this.dialogService.showTextEditDialog((element as any).value).subscribe((result: string) => {
+        this.dialogService.showTextEditDialog(element.value as string).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'value', result);
           }
         });
         break;
       case 'text-area':
-        this.dialogService.showTextEditDialog((element as any).value, true).subscribe((result: string) => {
+        this.dialogService.showTextEditDialog(element.value as string).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'value', result);
-          }
-        });
-        break;
-      case 'checkbox':
-      case 'radio':
-        this.dialogService.showRichTextEditDialog((element as any).label).subscribe((result: string) => {
-          if (result) {
-            this.updateElementProperty([element], 'label', result);
           }
         });
         break;

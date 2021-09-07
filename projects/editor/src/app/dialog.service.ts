@@ -2,7 +2,6 @@
 import { Component, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
 
 @Injectable({
   providedIn: 'root'
@@ -15,36 +14,31 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showTextEditDialog(oldText: string, multiline: boolean = false): Observable<string> {
-    let dialogRef = null;
-    if (multiline) {
-      dialogRef = this.dialog.open(MultilineTextEditDialog, {
-        width: '600px',
-        data: {
-          oldText: oldText
-        }
-      });
-    } else {
-      dialogRef = this.dialog.open(TextEditDialog, {
-        data: {
-          oldText: oldText
-        }
-      });
-    }
+  showTextEditDialog(text: string): Observable<string> {
+    const dialogRef = this.dialog.open(TextEditDialog, {
+      data: {
+        text: text
+      }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showMultilineTextEditDialog(text: string): Observable<string> {
+    const dialogRef = this.dialog.open(MultilineTextEditDialog, {
+      width: '600px',
+      data: {
+        text: text
+      }
+    });
     return dialogRef.afterClosed();
   }
 
   showRichTextEditDialog(text: string): Observable<string> {
-    const dialogRef = this.dialog.open(RichTextEditDialog, {
-      width: '700px',
-      height: '600px',
+    const dialogRef = this.dialog.open(RichTextEditDialogTinyMCE, {
+      width: '800px',
+      height: '700px',
       data: {
-        text: text,
-        editorConfig: {
-          editable: true,
-          minHeight: '350px',
-          toolbarHiddenButtons: [[], ['insertImage', 'insertVideo']]
-        }
+        text: text
       }
     });
     return dialogRef.afterClosed();
@@ -71,7 +65,7 @@ export class ConfirmationDialog {}
     <mat-dialog-content>
       <mat-form-field>
         <mat-label>Text</mat-label>
-        <input #inputElement matInput type="text" [value]="data.oldText">
+        <input #inputElement matInput type="text" [value]="data.text">
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
@@ -81,7 +75,7 @@ export class ConfirmationDialog {}
     `
 })
 export class TextEditDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { oldText: string }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string }) { }
 }
 
 @Component({
@@ -90,7 +84,7 @@ export class TextEditDialog {
     <mat-dialog-content>
       <mat-form-field [style.width.%]="100">
         <mat-label>Text</mat-label>
-        <textarea #inputElement matInput type="text" [value]="data.oldText">
+        <textarea #inputElement matInput type="text" [value]="data.text">
         </textarea>
       </mat-form-field>
     </mat-dialog-content>
@@ -101,14 +95,30 @@ export class TextEditDialog {
     `
 })
 export class MultilineTextEditDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { oldText: string }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string }) { }
 }
 
 @Component({
-  selector: 'app-rich-text-edit-dialog',
+  selector: 'app-rich-text-edit-dialog-tinymce',
   template: `
     <mat-dialog-content>
-      <angular-editor [(ngModel)]="data.text" [config]="data.editorConfig"></angular-editor>
+      <editor
+        [(ngModel)]="data.text"
+        [init]="{
+           height: 400,
+           menubar: false,
+           statusbar: false,
+           plugins: [
+             'charmap paste help lists'
+           ],
+          toolbar: [
+            'newdocument | undo redo | selectall | removeformat | charmap | help',
+            'bold italic underline strikethrough forecolor backcolor | formatselect | fontselect fontsizeselect |' +
+            'alignleft aligncenter alignright alignjustify bullist numlist outdent indent',
+          ]
+         }"
+      ></editor>
+
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="data.text">Okay</button>
@@ -116,6 +126,6 @@ export class MultilineTextEditDialog {
     </mat-dialog-actions>
     `
 })
-export class RichTextEditDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, editorConfig: AngularEditorConfig }) { }
+export class RichTextEditDialogTinyMCE {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string }) { }
 }

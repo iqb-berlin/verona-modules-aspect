@@ -22,7 +22,7 @@ import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/c
 import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/app.module';
 import {
-  ConfirmationDialog, MultilineTextEditDialog, RichTextEditDialog, TextEditDialog
+  ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialogTinyMCE
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { PagePropertiesComponent } from './components/unit-view/page-view/properties/page-properties.component';
@@ -46,7 +46,6 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     ConfirmationDialog,
     TextEditDialog,
     MultilineTextEditDialog,
-    RichTextEditDialog,
     RichTextEditDialogTinyMCE,
     PagePropertiesComponent,
     SectionPropertiesComponent,

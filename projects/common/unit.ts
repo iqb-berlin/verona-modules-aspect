@@ -73,6 +73,7 @@ export interface CompoundElementCorrection extends UnitUIElement {
 
 export interface TextElement extends TextUIElement, SurfaceUIElement {
   text: string;
+  highlightable: boolean
 }
 
 export interface ButtonElement extends TextUIElement, SurfaceUIElement {

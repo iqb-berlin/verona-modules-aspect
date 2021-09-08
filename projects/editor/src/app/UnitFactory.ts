@@ -89,7 +89,8 @@ export function createSurfaceUIElement(): Record<string, unknown> {
 
 export function createTextElement(): TextElement {
   return <TextElement>{
-    text: 'Example Text',
+    text: 'Example Text with more words',
+    highlightable: true,
     ...createUnitUIElement('text'),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),

@@ -44,6 +44,12 @@ import { MessageService } from '../../../../../../../common/message.service';
               </button>
             </mat-form-field>
 
+            <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('highlightable')"
+                          [checked]="$any(combinedProperties.highlightable)"
+                          (change)="updateModel('highlightable', $event.checked)">
+              Farbmarkierungen erlauben
+            </mat-checkbox>
+
             <mat-form-field *ngIf="combinedProperties.type === 'text-field'">
               <mat-label>Vorbelegung</mat-label>
               <input matInput type="text"

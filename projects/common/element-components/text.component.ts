@@ -1,10 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TextElement } from '../unit';
 import { ElementComponent } from '../element-component.directive';
 
 @Component({
   selector: 'app-text',
   template: `
+    <div *ngIf="elementModel.highlightable">
+      <button mat-button [style.background-color]="'yellow'"
+              (click)="highlightSelection('yellow')">Gelb</button>
+      <button mat-button [style.background-color]="'turquoise'"
+              (click)="highlightSelection('turquoise')">Türkis</button>
+      <button mat-button (click)="clearHighlight()">X</button>
+    </div>
     <div [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.backgroundColor"
@@ -15,10 +22,39 @@ import { ElementComponent } from '../element-component.directive';
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''"
          [style.white-space]="'pre-wrap'"
-         [innerHTML]="elementModel.text">
+         [innerHTML]="elementModel.text"
+         #container>
     </div>
   `
 })
 export class TextComponent extends ElementComponent {
   elementModel!: TextElement;
+  @ViewChild('container') containerDiv!: ElementRef;
+
+  highlightedNodes: Node[] = [];
+
+  // TODO double click selection does not work and adds more and more nested spans
+  highlightSelection(color: string): void {
+    const selection = window.getSelection();
+    if (selection) {
+      this.clearHighlight(selection.anchorNode?.parentElement as HTMLElement);
+
+      const newNode = document.createElement('SPAN');
+      newNode.classList.add('markedText');
+      newNode.style.backgroundColor = color;
+      this.highlightedNodes.push(newNode as Node);
+      const range = selection.getRangeAt(0);
+      range.surroundContents(newNode);
+    } else {
+      console.warn('No selection to highlight');
+    }
+  }
+
+  clearHighlight(container: HTMLElement = this.containerDiv.nativeElement): void {
+    (Array.from(container.children) as HTMLElement[]).forEach((child: HTMLElement) => {
+      if (child.classList.contains('markedText')) {
+        container.replaceChild(document.createTextNode(child.innerHTML), child);
+      }
+    });
+  }
 }

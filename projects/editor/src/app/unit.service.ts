@@ -14,8 +14,6 @@ import { VeronaAPIService } from './verona-api.service';
   providedIn: 'root'
 })
 export class UnitService {
-  EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.1.0';
-
   private _unit: BehaviorSubject<Unit>;
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
@@ -25,7 +23,7 @@ export class UnitService {
               private messageService: MessageService,
               private idService: IdService,
               private dialogService: DialogService) {
-    const initialUnit = UnitFactory.createUnit(this.EXPORTED_MODULE_VERSION);
+    const initialUnit = UnitFactory.createUnit();
     const initialPage = UnitFactory.createUnitPage(0);
     const initialSection = UnitFactory.createUnitPageSection();
     initialPage.sections.push(initialSection);

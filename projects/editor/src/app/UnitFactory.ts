@@ -6,9 +6,11 @@ import {
   VideoElement, TextAreaElement
 } from '../../../common/unit';
 
-export function createUnit(veronaModuleVersion: string): Unit {
+const EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.1.0';
+
+export function createUnit(): Unit {
   return {
-    veronaModuleVersion: veronaModuleVersion,
+    veronaModuleVersion: EXPORTED_MODULE_VERSION,
     pages: []
   };
 }

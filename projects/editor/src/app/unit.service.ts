@@ -99,7 +99,9 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  async addElementToSection(elementType: string, section: UnitPageSection): Promise<void> {
+  async addElementToSection(elementType: string,
+                            section: UnitPageSection,
+                            elementCoordinates?: Record<string, number>): Promise<void> {
     let newElement: UnitUIElement;
     switch (elementType) {
       case 'text':
@@ -140,6 +142,10 @@ export class UnitService {
     }
     newElement.id = this.idService.getNewID(elementType);
     newElement.dynamicPositioning = section.dynamicPositioning;
+    if (elementCoordinates) {
+      newElement.xPosition = elementCoordinates.x;
+      newElement.yPosition = elementCoordinates.y;
+    }
     section.elements.push(newElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }

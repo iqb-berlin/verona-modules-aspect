@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter
+  Component, Input, Output, EventEmitter, ViewChild, ElementRef
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
@@ -15,7 +15,8 @@ import { DragItemData, DropListData } from './page-canvas.component';
          [style.border]="selected ? '1px solid': '1px dotted'"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
-         (click)="selectionService.selectSection(this)">
+         (click)="selectionService.selectSection(this)"
+         (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
       <div *ngIf="!section.dynamicPositioning">
         <app-static-canvas-overlay
           *ngFor="let element of section.elements"
@@ -118,6 +119,7 @@ export class SectionComponent {
     previousSectionIndex: number,
     newSectionIndex: number }>();
 
+  @ViewChild('sectionElement') sectionElement!: ElementRef;
   selected = true;
   dragging = false;
   draggingElementWidth: number | undefined = 0;
@@ -172,5 +174,15 @@ export class SectionComponent {
     this.dragging = event.dragging;
     this.draggingElementWidth = event.elementWidth;
     this.draggingElementHeight = event.elementHeight;
+  }
+
+  newElementDropped(event: DragEvent): void {
+    event.preventDefault();
+    const sectionRect = this.sectionElement.nativeElement.getBoundingClientRect();
+    this.unitService.addElementToSection(
+      event.dataTransfer?.getData('elementType') as string,
+      this.section,
+      { x: event.clientX - Math.round(sectionRect.left), y: event.clientY - Math.round(sectionRect.top) }
+    );
   }
 }

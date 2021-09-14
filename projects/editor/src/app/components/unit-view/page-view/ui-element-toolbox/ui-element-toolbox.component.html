@@ -4,43 +4,53 @@
       <mat-icon class="example-tab-icon">highlight_alt</mat-icon>
     </ng-template>
     <div fxLayout="column">
-      <button mat-raised-button (click)="addUIElement('text')">
+      <button mat-raised-button (click)="addUIElement('text')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text');">
         <mat-icon>text_snippet</mat-icon>
         Text
       </button>
-      <button mat-raised-button (click)="addUIElement('button')">
+      <button mat-raised-button (click)="addUIElement('button')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','button')">
         <mat-icon>smart_button</mat-icon>
         Button
       </button>
-      <button mat-raised-button (click)="addUIElement('text-field')">
+      <button mat-raised-button (click)="addUIElement('text-field')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
         <mat-icon>text_fields</mat-icon>
         Eingabefeld
       </button>
-      <button mat-raised-button (click)="addUIElement('text-area')">
+      <button mat-raised-button (click)="addUIElement('text-area')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area')">
         <mat-icon>notes</mat-icon>
         Eingabefeld (mehrzeilig)
       </button>
-      <button mat-raised-button (click)="addUIElement('checkbox')">
+      <button mat-raised-button (click)="addUIElement('checkbox')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','checkbox')">
         <mat-icon>check_box</mat-icon>
         Checkbox
       </button>
-      <button mat-raised-button (click)="addUIElement('dropdown')">
+      <button mat-raised-button (click)="addUIElement('dropdown')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','dropdown')">
         <mat-icon>menu_open</mat-icon>
         Dropdown
       </button>
-      <button mat-raised-button (click)="addUIElement('radio')">
+      <button mat-raised-button (click)="addUIElement('radio')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
         <mat-icon>radio_button_checked</mat-icon>
         Optionsfeld
       </button>
-      <button mat-raised-button (click)="addUIElement('image')">
+      <button mat-raised-button (click)="addUIElement('image')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
         <mat-icon>image</mat-icon>
         Bild
       </button>
-      <button mat-raised-button (click)="addUIElement('audio')">
+      <button mat-raised-button (click)="addUIElement('audio')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','audio')">
         <mat-icon>volume_up</mat-icon>
         Audio
       </button>
-      <button mat-raised-button (click)="addUIElement('video')">
+      <button mat-raised-button (click)="addUIElement('video')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','video')">
         <mat-icon>ondemand_video</mat-icon>
         Video
       </button>

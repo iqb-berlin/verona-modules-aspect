@@ -50,7 +50,7 @@ import { MessageService } from '../../../../../../../common/message.service';
               Farbmarkierungen erlauben
             </mat-checkbox>
 
-            <mat-form-field *ngIf="combinedProperties.type === 'text-field'">
+            <mat-form-field *ngIf="combinedProperties.type === 'text-field'" appearance="fill">
               <mat-label>Vorbelegung</mat-label>
               <input matInput type="text"
                      [value]="combinedProperties.value"
@@ -82,8 +82,6 @@ import { MessageService } from '../../../../../../../common/message.service';
               Deselektion erlauben
             </mat-checkbox>
 
-            <mat-divider></mat-divider>
-
             <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('required')"
                           [checked]="$any(combinedProperties.required)"
                           (change)="updateModel('required', $event.checked)">
@@ -109,7 +107,6 @@ import { MessageService } from '../../../../../../../common/message.service';
               <input matInput type="text" [value]="combinedProperties.minLengthWarnMessage"
                      (input)="updateModel('minLengthWarnMessage', $any($event.target).value)">
             </mat-form-field>
-            <mat-divider></mat-divider>
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')" appearance="fill">
               <mat-label>Maximalwert</mat-label>
               <input matInput type="number" #maxLength="ngModel" min="0"
@@ -131,7 +128,8 @@ import { MessageService } from '../../../../../../../common/message.service';
             </mat-form-field>
             <mat-form-field *ngIf="combinedProperties.hasOwnProperty('pattern') &&
                                    $any(combinedProperties.pattern) != ''"
-                                   appearance="fill">
+                            appearance="fill"
+                            matTooltip="Angabe als regulärer Ausdruck.">
               <mat-label>Muster Warnmeldung</mat-label>
               <input matInput type="text" [value]="combinedProperties.patternWarnMessage"
                      (input)="updateModel('patternWarnMessage', $any($event.target).value)">
@@ -177,7 +175,9 @@ import { MessageService } from '../../../../../../../common/message.service';
               größenverstellbar
             </mat-checkbox>
           </div>
+
           <mat-divider></mat-divider>
+
           <button mat-raised-button class="element-button"
                   (click)="duplicateElement()">
             Element duplizieren

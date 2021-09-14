@@ -2,7 +2,7 @@ import {
   Directive, Input,
   ComponentFactoryResolver, ComponentRef,
   HostListener,
-  ViewChild, ViewContainerRef, OnInit, OnDestroy
+  ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef
 } from '@angular/core';
 import { forkJoin, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -25,11 +25,8 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   constructor(public selectionService: SelectionService,
               protected unitService: UnitService,
-              private componentFactoryResolver: ComponentFactoryResolver) {
-    // Needs to be  run before change detection to set 'selected' and avoid
-    // NG0100: Expression has changed after it was checked
-    this.selectionService.selectElement({ componentElement: this, multiSelect: false });
-  }
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
@@ -74,6 +71,10 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   setSelected(newValue: boolean): void {
     this.selected = newValue;
+    // This avoids: "NG0100: Expression has changed after it was checked"
+    // The selection service may change the "selected" variable after onInit has run.
+    // Therefore we need to run it again after this.
+    this.changeDetectorRef.detectChanges();
   }
 
   selectElement(multiSelect: boolean = false): void {

@@ -17,6 +17,7 @@ export class UnitService {
   private _unit: BehaviorSubject<Unit>;
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
+  pageMoved: Subject<void> = new Subject<void>();
   selectedPageIndex: number = 0; // TODO weg refactorn
 
   constructor(private veronaApiService: VeronaAPIService,
@@ -55,6 +56,20 @@ export class UnitService {
     this._unit.value.pages.splice(index, 1);
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
+  }
+
+  /* reorder page in page array */
+  movePage(selectedPage: UnitPage, direction: 'up' | 'down'): void {
+    const oldPageIndex = this._unit.value.pages.indexOf(selectedPage);
+    if ((this._unit.value.pages.length > 1) &&
+        !(direction === 'down' && oldPageIndex + 1 === this._unit.value.pages.length) &&
+        !(direction === 'up' && oldPageIndex === 0)) {
+      const newPageIndex = direction === 'up' ? oldPageIndex - 1 : oldPageIndex + 1;
+      const page = this._unit.value.pages.splice(oldPageIndex, 1);
+      this._unit.value.pages.splice(newPageIndex, 0, page[0]);
+      this._unit.next(this._unit.value);
+      this.pageMoved.next();
+    }
   }
 
   updatePageProperty(page: UnitPage, property: string, value: number | boolean): void {

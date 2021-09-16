@@ -12,6 +12,7 @@ export class SelectionService {
   private unit!: Unit;
 
   private _selectedPage!: Subject<UnitPage>;
+  private _selectedPageIndex: BehaviorSubject<number>;
 
   private _selectedPageSection!: BehaviorSubject<UnitPageSection>;
   private selectedPageSectionComponent!: any;
@@ -26,18 +27,24 @@ export class SelectionService {
       this.unit = unit;
     });
     this._selectedPage = new BehaviorSubject(this.unit.pages[0]);
+    this._selectedPageIndex = new BehaviorSubject(0);
     this._selectedPageSection = new BehaviorSubject(this.unit.pages[0].sections[0]);
     this._selectedElements = new BehaviorSubject([] as UnitUIElement[]);
   }
 
   // === PAGE =======
-  selectPage(page: UnitPage): void {
-    this._selectedPage.next(page);
-    this._selectedPageSection.next(page.sections[0]);
+  selectPageIndex(index: number): void {
+    this._selectedPage.next(this.unit.pages[index]);
+    this._selectedPageSection.next(this.unit.pages[index].sections[0]);
+    this._selectedPageIndex.next(index);
   }
 
   get selectedPage(): Observable<UnitPage> {
     return this._selectedPage.asObservable();
+  }
+
+  get selectedPageIndex(): Observable<number> {
+    return this._selectedPageIndex.asObservable();
   }
   // ### PAGE ######
 

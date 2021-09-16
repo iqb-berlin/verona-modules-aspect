@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../unit.service';
 import { DialogService } from '../../dialog.service';
 import { SelectionService } from '../../selection.service';
@@ -24,8 +24,8 @@ import { Unit } from '../../../../../common/unit';
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
   unit!: Unit;
-  selectedPageIndex: number = 0;
   private ngUnsubscribe = new Subject<void>();
+  pagesLoaded = true;
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
@@ -37,25 +37,36 @@ export class UnitViewComponent implements OnInit, OnDestroy {
       .subscribe((unit: Unit) => {
         this.unit = unit;
       });
+    // The following is a hack. The tab element gets bugged when changing the underlying array.
+    // With this we can temporarily remove it from the DOM and then add it again, re-initializing it.
+    this.unitService.pageMoved
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.pagesLoaded = false;
+        setTimeout(() => {
+          this.pagesLoaded = true;
+        });
+      });
   }
 
   selectPage(newIndex: number): void {
-    this.selectedPageIndex = newIndex;
-    this.selectionService.selectPage(this.unit.pages[this.selectedPageIndex]);
+    this.selectionService.selectPageIndex(newIndex);
   }
 
   addPage(): void {
     this.unitService.addPage();
-    this.selectionService.selectPage(this.unit.pages[this.unit.pages.length - 1]);
-    this.selectedPageIndex = this.unit.pages.length - 1;
+    this.selectionService.selectPageIndex(this.unit.pages.length - 1);
   }
 
   deletePage(): void {
     this.showConfirmDialog().pipe(takeUntil(this.ngUnsubscribe)).subscribe((result: boolean) => {
       if (result) {
-        this.unitService.deletePage(this.selectedPageIndex);
-        this.selectedPageIndex -= 1;
-        this.selectionService.selectPage(this.unit.pages[this.selectedPageIndex]);
+        this.selectionService.selectedPageIndex
+          .pipe(take(1))
+          .subscribe(index => {
+            this.unitService.deletePage(index);
+            this.selectionService.selectPageIndex(index - 1);
+          }).unsubscribe();
       }
     });
   }

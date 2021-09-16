@@ -11,8 +11,9 @@
     </mat-drawer>
 
     <mat-drawer-content>
-      <mat-tab-group [style.height.%]="100" mat-align-tabs="start"
-                     [selectedIndex]="selectedPageIndex"
+      <mat-tab-group *ngIf="pagesLoaded"
+                     [style.height.%]="100" mat-align-tabs="start"
+                     [selectedIndex]="selectionService.selectedPageIndex | async"
                      (selectedIndexChange)="selectPage($event)">
         <mat-tab *ngFor="let page of unit.pages; let i = index">
           <ng-template mat-tab-label>

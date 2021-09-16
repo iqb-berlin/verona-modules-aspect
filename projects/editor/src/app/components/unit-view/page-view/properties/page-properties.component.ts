@@ -15,11 +15,13 @@ import { MessageService } from '../../../../../../../common/message.service';
       <div class="input-group" fxLayoutAlign="space-between center">
         Reihenfolge
         <button mat-icon-button matSuffix color="accent"
-                [style.margin-left.px]="50">
+                [style.margin-left.px]="50"
+                (click)="movePage('up')">
           <mat-icon>north</mat-icon>
         </button>
         <button mat-icon-button color="accent"
-                [style.margin-right.px]="20">
+                [style.margin-right.px]="20"
+                (click)="movePage('down')">
           <mat-icon>south</mat-icon>
         </button>
       </div>
@@ -83,6 +85,10 @@ export class PagePropertiesComponent implements OnInit, OnDestroy {
         this.selectedPage = page;
         this.alwaysVisibleDisabled = (!this.unitService.isSetPageAlwaysVisibleAllowed() && !page.alwaysVisible);
       });
+  }
+
+  movePage(direction: 'up' | 'down'): void {
+    this.unitService.movePage(this.selectedPage, direction);
   }
 
   updateModel(property: string, value: number | boolean, isInputValid: boolean | null = true): void {

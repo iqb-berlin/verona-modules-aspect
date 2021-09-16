@@ -12,7 +12,7 @@
       <button mat-raised-button (click)="addUIElement('button')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','button')">
         <mat-icon>smart_button</mat-icon>
-        Button
+        Knopf
       </button>
       <button mat-raised-button (click)="addUIElement('text-field')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
@@ -22,22 +22,22 @@
       <button mat-raised-button (click)="addUIElement('text-area')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area')">
         <mat-icon>notes</mat-icon>
-        Eingabefeld (mehrzeilig)
+        Eingabebereich
       </button>
       <button mat-raised-button (click)="addUIElement('checkbox')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','checkbox')">
         <mat-icon>check_box</mat-icon>
-        Checkbox
+        Kontrollkästchen
       </button>
       <button mat-raised-button (click)="addUIElement('dropdown')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','dropdown')">
         <mat-icon>menu_open</mat-icon>
-        Dropdown
+        Klappliste
       </button>
       <button mat-raised-button (click)="addUIElement('radio')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
         <mat-icon>radio_button_checked</mat-icon>
-        Optionsfeld
+        Optionsfelder
       </button>
       <button mat-raised-button (click)="addUIElement('image')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
@@ -60,30 +60,6 @@
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">widgets</mat-icon>
     </ng-template>
-    <button mat-raised-button
-            (click)="addSection()">
-      leeren Abschnitt hinzu
-      <mat-icon>add</mat-icon>
-    </button>
-    <mat-accordion multi>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Korrekturaufgaben
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <button mat-button>mit Bild</button>
-        <button mat-button (click)="addUIElement('correction')">ohne Bild</button>
-      </mat-expansion-panel>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Sortieraufgaben
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <button mat-button>mit Auswahlfeld</button>
-        <button mat-button>mit Textfeld</button>
-      </mat-expansion-panel>
-    </mat-accordion>
+    Hier entstehen kombinierte Elementgruppen
   </mat-tab>
 </mat-tab-group>

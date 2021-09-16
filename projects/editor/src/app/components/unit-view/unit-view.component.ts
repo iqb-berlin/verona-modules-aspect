@@ -10,7 +10,7 @@ import { Unit } from '../../../../../common/unit';
   selector: 'app-unit-view',
   templateUrl: './unit-view.component.html',
   styles: [
-    '.toolbox_drawer {width: 280px}',
+    '.toolbox_drawer {width: 230px}',
     '.properties_drawer {width: 320px}',
     '.delete-page-button {min-width: 0; padding: 0;position: absolute; left: 130px; bottom: 6px; visibility: hidden}',
     '::ng-deep .mat-tab-label:hover .delete-page-button {visibility: visible;}',

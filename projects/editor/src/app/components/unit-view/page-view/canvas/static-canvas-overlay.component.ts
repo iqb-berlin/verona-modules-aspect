@@ -5,11 +5,13 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
 @Component({
   selector: 'app-static-canvas-overlay',
   template: `
+    <!-- Is also a droplist to catch the resize drop and not let it bubble up to the canvas drop handler. -->
     <div class="draggable-element" [class.draggable-element-selected]="selected"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
          (click)="selectElement($event.shiftKey)" (cdkDragStarted)="selectElement()"
-         (dblclick)="openEditDialog()">
-    <!--    Needs extra div because styling can interfere with drag and drop-->
+         (dblclick)="openEditDialog()"
+         cdkDropList>
+      <!-- Needs extra div because styling can interfere with drag and drop-->
       <div [style.position]="'absolute'"
            [style.border]="selected ? '2px solid' : ''"
            [style.width.px]="element.width"
@@ -17,12 +19,6 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
            [style.left.px]="element.xPosition"
            [style.top.px]="element.yPosition"
            [style.z-index]="element.zIndex">
-        <!-- Element only for resizing   -->
-        <!-- Extra droplist is needed to keep parent component droplist from handling the drop event. -->
-        <!-- Also for cursor styling. -->
-        <div *ngIf="selected" cdkDropList class="resize-droplist"
-             [style.width.%]="100"
-             [style.height.%]="100">
           <div class="resizeHandle"
                cdkDrag (cdkDragStarted)="resizeDragStart()" (cdkDragMoved)="resizeElement($event)"
                cdkDragBoundary=".section-wrapper"
@@ -32,7 +28,6 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
             <mat-icon>aspect_ratio</mat-icon>
             <div *cdkDragPlaceholder></div>
           </div>
-        </div>
         <ng-template #elementContainer></ng-template>
       </div>
     </div>

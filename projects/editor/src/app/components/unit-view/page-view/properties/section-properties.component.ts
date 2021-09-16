@@ -13,12 +13,6 @@ import { MessageService } from '../../../../../../../common/message.service';
   template: `
     <div *ngIf="selectedPageSection" fxLayout="column">
       <mat-form-field appearance="fill">
-        <mat-label>Breite</mat-label>
-        <input matInput type="number"
-               [value]="$any(selectedPageSection.width)"
-               (change)="updateModel('width', $any($event.target).value)">
-      </mat-form-field>
-      <mat-form-field appearance="fill">
         <mat-label>Höhe</mat-label>
         <input matInput type="number"
                [value]="$any(selectedPageSection.height)"

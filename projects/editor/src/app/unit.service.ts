@@ -73,12 +73,27 @@ export class UnitService {
   }
 
   updatePageProperty(page: UnitPage, property: string, value: number | boolean): void {
-    if (property === 'alwaysVisible' && value === true && !this.isSetPageAlwaysVisibleAllowed()) {
-      this.messageService.showError('Kann nur für eine Seite gesetzt werden');
+    if (property === 'alwaysVisible' && value === true) {
+      this.handlePageAlwaysVisiblePropertyChange(page);
     } else {
       page[property] = value;
     }
     this.veronaApiService.sendVoeDefinitionChangedNotification();
+  }
+
+  private handlePageAlwaysVisiblePropertyChange(page: UnitPage): void {
+    if (!this.isSetPageAlwaysVisibleAllowed()) {
+      this.messageService.showError('Kann nur für eine Seite gesetzt werden');
+    } else {
+      const pageIndex = this._unit.value.pages.indexOf(page);
+      if (pageIndex !== 0) { // Make page first element in page array
+        this._unit.value.pages.splice(pageIndex, 1);
+        this._unit.value.pages.splice(0, 0, page);
+        this._unit.next(this._unit.value);
+        this.pageMoved.next();
+      }
+      page.alwaysVisible = true;
+    }
   }
 
   /* Disallow when not more than 1 page or when is already set. */

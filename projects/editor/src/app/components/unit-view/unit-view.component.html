@@ -17,8 +17,15 @@
                      (selectedIndexChange)="selectPage($event)">
         <mat-tab *ngFor="let page of unit.pages; let i = index">
           <ng-template mat-tab-label>
-            <mat-icon *ngIf="page.alwaysVisible" class="page-alwaysVisible-icon">assignment</mat-icon>
-            {{'pageIndication' | translate: {index: i + 1} }}
+            <ng-container *ngIf="page.alwaysVisible">
+            <mat-icon class="page-alwaysVisible-icon">assignment</mat-icon>
+            </ng-container>
+            <ng-container *ngIf="!page.alwaysVisible && unit.pages[0].alwaysVisible === false">
+              Seite {{i + 1}}
+            </ng-container>
+            <ng-container *ngIf="!page.alwaysVisible && unit.pages[0].alwaysVisible === true">
+              Seite {{i}}
+            </ng-container>
             <button class="delete-page-button" mat-button (click)="deletePage()">
               <mat-icon>delete</mat-icon>
             </button>

@@ -23,11 +23,4 @@ export class UiElementToolboxComponent {
       .subscribe(pageSection => this.unitService.addElementToSection(elementType, pageSection))
       .unsubscribe();
   }
-
-  addSection(): void {
-    this.selectionService.selectedPage
-      .pipe(take(1))
-      .subscribe(section => this.unitService.addSection(section))
-      .unsubscribe();
-  }
 }

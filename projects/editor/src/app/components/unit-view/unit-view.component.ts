@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../unit.service';
 import { DialogService } from '../../dialog.service';
 import { SelectionService } from '../../selection.service';
-import { Unit } from '../../../../../common/unit';
+import { Unit, UnitPage } from '../../../../../common/unit';
+import { MessageService } from '../../../../../common/message.service';
 
 @Component({
   selector: 'app-unit-view',
@@ -12,23 +13,28 @@ import { Unit } from '../../../../../common/unit';
   styles: [
     '.toolbox_drawer {width: 230px}',
     '.properties_drawer {width: 320px}',
-    '.delete-page-button {min-width: 0; padding: 0;position: absolute; left: 130px; bottom: 6px; visibility: hidden}',
-    '::ng-deep .mat-tab-label:hover .delete-page-button {visibility: visible;}',
     '.drawer-button {font-size: large;background-color: lightgray; min-width: 0; width: 2%; border: none; cursor: pointer}',
     '.show-elements-button span {transform: rotate(-90deg); display: inherit}',
     '.show-properties-button {padding-bottom: 140px}',
     '.show-properties-button span {transform: rotate(90deg); display: inherit;}',
-    '::ng-deep .mat-drawer-content .mat-tab-body-wrapper {height: 100%}'
+    '::ng-deep .mat-drawer-content .mat-tab-body-wrapper {height: 100%}',
+    '.menuItem {padding: 0 16px}',
+    'mat-checkbox.menuItem {padding: 0 16px 10px 16px}',
+    'mat-divider {margin-bottom: 10px}',
+    '::ng-deep .mat-tab-label:hover .menu-button {visibility: visible}',
+    '.menu-button {position: absolute; left: 130px; bottom: 6px; visibility: hidden}'
   ]
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
   unit!: Unit;
-  private ngUnsubscribe = new Subject<void>();
+  selectedPageIndex: number = 0;
   pagesLoaded = true;
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
-              private dialogService: DialogService) { }
+              private dialogService: DialogService,
+              private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.unitService.unit
@@ -49,25 +55,36 @@ export class UnitViewComponent implements OnInit, OnDestroy {
   }
 
   selectPage(newIndex: number): void {
-    this.selectionService.selectPageIndex(newIndex);
+    this.selectedPageIndex = newIndex;
   }
 
   addPage(): void {
     this.unitService.addPage();
-    this.selectionService.selectPageIndex(this.unit.pages.length - 1);
+    this.selectedPageIndex -= 1;
   }
 
-  deletePage(): void {
+  movePage(page: UnitPage, direction: 'up' | 'down'): void {
+    this.unitService.movePage(page, direction);
+  }
+
+  deletePage(page: UnitPage): void {
     this.showConfirmDialog().pipe(takeUntil(this.ngUnsubscribe)).subscribe((result: boolean) => {
       if (result) {
-        this.selectionService.selectedPageIndex
-          .pipe(take(1))
-          .subscribe(index => {
-            this.unitService.deletePage(index);
-            this.selectionService.selectPageIndex(index - 1);
-          }).unsubscribe();
+        this.unitService.deletePage(page);
+        this.selectedPageIndex -= 1;
       }
     });
+  }
+
+  updateModel(page: UnitPage, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
+    if (isInputValid && value != null) {
+      this.unitService.updatePageProperty(page, property, value);
+      if (property === 'alwaysVisible') {
+        this.selectedPageIndex = 0;
+      }
+    } else {
+      this.messageService.showWarning('Eingabe ungültig');
+    }
   }
 
   showConfirmDialog(): Observable<boolean> {

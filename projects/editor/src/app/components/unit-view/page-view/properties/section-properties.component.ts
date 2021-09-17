@@ -122,19 +122,7 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string, value: string | number | boolean): void {
-    let selectedPage: UnitPage;
-    this.selectionService.selectedPage
-      .pipe(take(1))
-      .subscribe(_selectedPage => {
-        selectedPage = _selectedPage;
-      })
-      .unsubscribe();
-
-    if (property === 'width' && value > selectedPage!.maxWidth) {
-      this.messageService.showError('Darf nicht breiter als die Seite sein.');
-    } else {
-      this.unitService.updateSectionProperty(this.selectedPageSection, property, value);
-    }
+    this.unitService.updateSectionProperty(this.selectedPageSection, property, value);
   }
 
   ngOnDestroy(): void {

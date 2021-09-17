@@ -13,7 +13,7 @@
     <mat-drawer-content>
       <mat-tab-group *ngIf="pagesLoaded"
                      [style.height.%]="100" mat-align-tabs="start"
-                     [selectedIndex]="selectionService.selectedPageIndex | async"
+                     [selectedIndex]="selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)">
         <mat-tab *ngFor="let page of unit.pages; let i = index">
           <ng-template mat-tab-label>
@@ -26,9 +26,67 @@
             <ng-container *ngIf="!page.alwaysVisible && unit.pages[0].alwaysVisible === true">
               Seite {{i}}
             </ng-container>
-            <button class="delete-page-button" mat-button (click)="deletePage()">
-              <mat-icon>delete</mat-icon>
+
+            <button mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu">
+              <mat-icon>more_vert</mat-icon>
             </button>
+            <mat-menu #pageMenu="matMenu">
+              <button *ngIf="!page.alwaysVisible"
+                      mat-menu-item (click)="movePage(page,'up')">
+                <mat-icon>west</mat-icon>
+                <span>nach vorn</span>
+              </button>
+              <button *ngIf="!page.alwaysVisible"
+                      mat-menu-item (click)="movePage(page, 'down')">
+                <mat-icon>east</mat-icon>
+                <span>nach hinten</span>
+              </button>
+              <button mat-menu-item (click)="deletePage(page)">
+                <mat-icon>delete</mat-icon>
+                <span>Löschen</span>
+              </button>
+              <mat-divider></mat-divider>
+              <mat-checkbox class="menuItem" [checked]="page.hasMaxWidth"
+                            (click)="$any($event).stopPropagation()"
+                            (change)="updateModel(page, 'hasMaxWidth', $any($event.source).checked)">
+                Maximalbreite
+              </mat-checkbox>
+              <mat-form-field *ngIf="page.hasMaxWidth" class="menuItem" appearance="fill">
+                <mat-label>Maximalbreite</mat-label>
+                <input matInput type="number" min="0" #maxWidth="ngModel"
+                       [ngModel]="page.maxWidth"
+                       (click)="$any($event).stopPropagation()">
+              </mat-form-field>
+              <mat-form-field class="menuItem" appearance="fill">
+                <mat-label>Randbreite</mat-label>
+                <input matInput type="number" min="0" #margin="ngModel"
+                       [ngModel]="page.margin"
+                       (click)="$any($event).stopPropagation()"
+                       (ngModelChange)="updateModel(page,'margin', $event, margin.valid)">
+              </mat-form-field>
+              <mat-form-field class="menuItem" appearance="fill">
+                <mat-label>Hintergrundfarbe</mat-label>
+                <input matInput type="color"
+                       [value]="page.backgroundColor"
+                       (change)="updateModel(page,'backgroundColor', $any($event.target).value)">
+              </mat-form-field>
+              <mat-checkbox class="menuItem"
+                            [disabled]="unit.pages.length < 2 || unit.pages[0].alwaysVisible && i != 0"
+                            [ngModel]="page.alwaysVisible"
+                            (click)="$any($event).stopPropagation()"
+                            (change)="updateModel(page, 'alwaysVisible', $any($event.source).checked)">
+                Immer angezeigt
+              </mat-checkbox>
+              <mat-form-field class="menuItem" appearance="fill"
+                              *ngIf="page.alwaysVisible">
+                <mat-label>Seitenverhältnis (in Prozent)</mat-label>
+                <input matInput type="number" min="0" max="100"
+                       [ngModel]="page.alwaysVisibleAspectRatio"
+                       (click)="$any($event).stopPropagation()"
+                       (ngModelChange)="updateModel(page, 'alwaysVisibleAspectRatio', $event)">
+              </mat-form-field>
+            </mat-menu>
+
           </ng-template>
           <app-page-view [page]="page"></app-page-view>
         </mat-tab>

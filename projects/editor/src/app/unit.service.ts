@@ -52,8 +52,8 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  deletePage(index: number): void {
-    this._unit.value.pages.splice(index, 1);
+  deletePage(page: UnitPage): void {
+    this._unit.value.pages.splice(this._unit.value.pages.indexOf(page), 1);
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -62,8 +62,11 @@ export class UnitService {
   movePage(selectedPage: UnitPage, direction: 'up' | 'down'): void {
     const oldPageIndex = this._unit.value.pages.indexOf(selectedPage);
     if ((this._unit.value.pages.length > 1) &&
-        !(direction === 'down' && oldPageIndex + 1 === this._unit.value.pages.length) &&
-        !(direction === 'up' && oldPageIndex === 0)) {
+        !(direction === 'down' && oldPageIndex + 1 === this._unit.value.pages.length) && // dont allow last page down
+        !(direction === 'up' && oldPageIndex === 0) && // dotn allow first page up
+        // dont allow second page to go before always shown page
+        !(direction === 'up' && oldPageIndex === 1 && this._unit.value.pages[0].alwaysVisible) &&
+        !(selectedPage.alwaysVisible)) {
       const newPageIndex = direction === 'up' ? oldPageIndex - 1 : oldPageIndex + 1;
       const page = this._unit.value.pages.splice(oldPageIndex, 1);
       this._unit.value.pages.splice(newPageIndex, 0, page[0]);
@@ -83,23 +86,14 @@ export class UnitService {
   }
 
   private handlePageAlwaysVisiblePropertyChange(page: UnitPage): void {
-    if (!this.isSetPageAlwaysVisibleAllowed()) {
-      this.messageService.showError('Kann nur für eine Seite gesetzt werden');
-    } else {
-      const pageIndex = this._unit.value.pages.indexOf(page);
-      if (pageIndex !== 0) { // Make page first element in page array
-        this._unit.value.pages.splice(pageIndex, 1);
-        this._unit.value.pages.splice(0, 0, page);
-        this._unit.next(this._unit.value);
-        this.pageMoved.next();
-      }
-      page.alwaysVisible = true;
+    const pageIndex = this._unit.value.pages.indexOf(page);
+    if (pageIndex !== 0) { // Make page first element in page array
+      this._unit.value.pages.splice(pageIndex, 1);
+      this._unit.value.pages.splice(0, 0, page);
+      this._unit.next(this._unit.value);
+      this.pageMoved.next();
     }
-  }
-
-  /* Disallow when not more than 1 page or when is already set. */
-  isSetPageAlwaysVisibleAllowed(): boolean {
-    return this._unit.value.pages.length > 1 && this._unit.value.pages.find(page => page.alwaysVisible) === undefined;
+    page.alwaysVisible = true;
   }
 
   addSection(page: UnitPage, index: number | null = null): void {

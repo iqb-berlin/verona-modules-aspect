@@ -9,6 +9,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -25,7 +26,6 @@ import {
   ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialogTinyMCE
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import { PagePropertiesComponent } from './components/unit-view/page-view/properties/page-properties.component';
 import { SectionPropertiesComponent } from './components/unit-view/page-view/properties/section-properties.component';
 import { ElementPropertiesComponent } from './components/unit-view/page-view/properties/element-properties.component';
 import { StaticViewOnlyElementOverlayComponent } from './components/unit-view/page-view/canvas/static-view-only-element-overlay.component';
@@ -47,7 +47,6 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     TextEditDialog,
     MultilineTextEditDialog,
     RichTextEditDialogTinyMCE,
-    PagePropertiesComponent,
     SectionPropertiesComponent,
     ElementPropertiesComponent,
     StaticViewOnlyElementOverlayComponent,
@@ -61,6 +60,7 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     MatButtonToggleModule,
     MatSlideToggleModule,
     EditorModule,
+    MatMenuModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

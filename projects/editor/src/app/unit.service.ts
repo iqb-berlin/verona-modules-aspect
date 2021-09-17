@@ -183,7 +183,10 @@ export class UnitService {
   /* Move element between sections */
   transferElement(elements: UnitUIElement[], previousSection: UnitPageSection, newSection: UnitPageSection): void {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
-    elements.forEach(element => newSection.elements.push(element));
+    elements.forEach(element => {
+      newSection.elements.push(element);
+      element.dynamicPositioning = newSection.dynamicPositioning;
+    });
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }

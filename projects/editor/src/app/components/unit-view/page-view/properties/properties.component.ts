@@ -20,7 +20,8 @@ import { Component } from '@angular/core';
   `,
   styles: [
     'mat-expansion-panel-header {font-size: larger}',
-    'mat-expansion-panel {font-size: large;}'
+    'mat-expansion-panel {font-size: large;}',
+    '::ng-deep app-properties .mat-tab-label {min-width: 0 !important;}'
   ]
 })
 export class PropertiesComponent { }

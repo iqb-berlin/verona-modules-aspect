@@ -69,6 +69,7 @@ export class UnitService {
       this._unit.value.pages.splice(newPageIndex, 0, page[0]);
       this._unit.next(this._unit.value);
       this.pageMoved.next();
+      this.veronaApiService.sendVoeDefinitionChangedNotification();
     }
   }
 

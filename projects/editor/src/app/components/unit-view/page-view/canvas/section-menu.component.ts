@@ -1,41 +1,50 @@
 import {
-  Component, OnDestroy, OnInit
+  Component, OnInit, Input,
+  ViewChild, ElementRef
 } from '@angular/core';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
-import { UnitPage, UnitPageSection } from '../../../../../../../common/unit';
+import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
-import { SelectionService } from '../../../../selection.service';
-import { MessageService } from '../../../../../../../common/message.service';
 
 @Component({
-  selector: 'app-section-properties',
+  selector: 'app-section-menu',
   template: `
-    <div *ngIf="selectedPageSection" fxLayout="column">
+    <button mat-mini-fab [matMenuTriggerFor]="heightMenu">
+      <mat-icon>height</mat-icon>
+    </button>
+    <mat-menu #heightMenu="matMenu" class="layoutMenu" xPosition="before">
       <mat-form-field appearance="fill">
         <mat-label>Höhe</mat-label>
         <input matInput type="number"
-               [value]="$any(selectedPageSection.height)"
+               [value]="$any(section.height)"
+               (click)="$any($event).stopPropagation()"
                (change)="updateModel('height', $any($event.target).value)">
       </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Hintergrundfarbe</mat-label>
-        <input matInput type="color"
-               [value]="$any(selectedPageSection.backgroundColor)"
-               (change)="updateModel('backgroundColor', $any($event.target).value)">
-      </mat-form-field>
-      <mat-checkbox [checked]="selectedPageSection.dynamicPositioning"
+    </mat-menu>
+    <button mat-mini-fab
+            (click)="openColorPicker()">
+      <mat-icon>palette</mat-icon>
+    </button>
+    <input #colorPicker type="color" [style.display]="'none'"
+           [value]="$any(section.backgroundColor)"
+           (change)="updateModel('backgroundColor', $any($event.target).value)">
+
+    <button mat-mini-fab [matMenuTriggerFor]="layoutMenu">
+      <mat-icon>space_dashboard</mat-icon>
+    </button>
+    <mat-menu #layoutMenu="matMenu" class="layoutMenu" xPosition="before">
+      <mat-checkbox class="menuItem" [checked]="section.dynamicPositioning"
+                    (click)="$any($event).stopPropagation()"
                     (change)="updateModel('dynamicPositioning', $event.checked)">
         dynamisches Layout
       </mat-checkbox>
-
-      <ng-container *ngIf="selectedPageSection.dynamicPositioning">
+      <div *ngIf="section.dynamicPositioning">
         Spalten
         <div class="size-group">
           <mat-form-field>
             <mat-label>Anzahl</mat-label>
             <input matInput type="number"
-                   [value]="$any(selectedPageSection.gridColumnSizes.split(' ').length)"
+                   [value]="$any(section.gridColumnSizes.split(' ').length)"
+                   (click)="$any($event).stopPropagation()"
                    (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">
           </mat-form-field>
           <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs" fxLayout="row">
@@ -43,22 +52,24 @@ import { MessageService } from '../../../../../../../common/message.service';
               <mat-label>Breite {{i + 1}}</mat-label>
               <input matInput type="number"
                      [value]="size.value"
+                     (click)="$any($event).stopPropagation()"
                      (change)="changeGridSize('gridColumnSizes', i, false, $any($event).target.value)">
             </mat-form-field>
             <mat-select [value]="size.unit"
+                        (click)="$any($event).stopPropagation()"
                         (selectionChange)="changeGridSize('gridColumnSizes', i, true, $event.value)">
-              <mat-option value="fr">Bruchteile</mat-option>
+              <mat-option value="fr">Anteile</mat-option>
               <mat-option value="px">Bildpunkte</mat-option>
             </mat-select>
           </div>
         </div>
-
         Zeilen
         <div class="size-group">
           <mat-form-field>
             <mat-label>Anzahl</mat-label>
             <input matInput type="number"
-                   [value]="$any(selectedPageSection.gridRowSizes.split(' ').length)"
+                   [value]="$any(section.gridRowSizes.split(' ').length)"
+                   (click)="$any($event).stopPropagation()"
                    (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
           </mat-form-field>
           <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
@@ -66,75 +77,72 @@ import { MessageService } from '../../../../../../../common/message.service';
               <mat-label>Höhe {{i + 1}}</mat-label>
               <input matInput type="number"
                      [value]="size.value"
+                     (click)="$any($event).stopPropagation()"
                      (change)="changeGridSize('gridRowSizes', i, false, $any($event).target.value)">
             </mat-form-field>
             <mat-select [value]="size.unit"
+                        (click)="$any($event).stopPropagation()"
                         (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
-              <mat-option value="fr">Bruchteile</mat-option>
+              <mat-option value="fr">Anteile</mat-option>
               <mat-option value="px">Bildpunkte</mat-option>
             </mat-select>
           </div>
         </div>
-      </ng-container>
-    </div>
-    <button mat-raised-button
-            (click)="unitService.deleteSection(selectedPageSection)">
-      Entfernen
-      <mat-icon>remove</mat-icon>
+      </div>
+    </mat-menu>
+
+    <button *ngIf="allowDelete" mat-mini-fab
+            (click)="deleteSection()">
+      <mat-icon>clear</mat-icon>
     </button>
   `,
   styles: [
-    '::ng-deep app-section-properties .size-inputs .mat-form-field-infix {width: 100px}',
+    '::ng-deep .layoutMenu .size-inputs .mat-form-field-infix {width: 65px}',
     '.size-group {background-color: #f5f5f5; margin: 0 0 15px 0}',
-    '::ng-deep app-section-properties .size-group mat-select {padding-top: 24px; padding-left: 15px;}'
+    '::ng-deep .layoutMenu .size-group mat-select {padding-top: 24px; padding-left: 15px;}',
+    '::ng-deep .layoutMenu {width: 200px; padding: 0 15px}'
   ]
 })
-export class SectionPropertiesComponent implements OnInit, OnDestroy {
-  selectedPageSection!: UnitPageSection;
-  private ngUnsubscribe = new Subject<void>();
+export class SectionMenuComponent implements OnInit {
+  @Input() section!: UnitPageSection;
+  @Input() allowDelete!: boolean;
+
+  @ViewChild('colorPicker') colorPicker!: ElementRef;
 
   columnSizes: { value: string, unit: string }[] = [];
   rowSizes: { value: string, unit: string }[] = [];
 
-  constructor(public selectionService: SelectionService,
-              public unitService: UnitService,
-              protected messageService: MessageService) { }
+  constructor(private unitService: UnitService) { }
 
   ngOnInit(): void {
-    this.selectionService.selectedPageSection
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((pageSection: UnitPageSection) => {
-        this.selectedPageSection = pageSection;
-        this.updateGridSizes();
-      });
+    this.updateGridSizes();
+  }
+
+  updateModel(property: string, value: string | number | boolean): void {
+    this.unitService.updateSectionProperty(this.section, property, value);
+  }
+
+  deleteSection(): void {
+    this.unitService.deleteSection(this.section);
   }
 
   /* Initialize internal array of grid sizes. Where value and unit are put, split up, in an array. */
   private updateGridSizes(): void {
     this.columnSizes = [];
-    this.selectedPageSection.gridColumnSizes.split(' ').forEach((size: string) => {
+    this.section.gridColumnSizes.split(' ').forEach((size: string) => {
       this.columnSizes.push({ value: size.slice(0, -2), unit: size.slice(-2) });
     });
     this.rowSizes = [];
-    this.selectedPageSection.gridRowSizes.split(' ').forEach((size: string) => {
+    this.section.gridRowSizes.split(' ').forEach((size: string) => {
       this.rowSizes.push({ value: size.slice(0, -2), unit: size.slice(-2) });
     });
-  }
-
-  updateModel(property: string, value: string | number | boolean): void {
-    this.unitService.updateSectionProperty(this.selectedPageSection, property, value);
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   /* Add elements to size array. Default value 1fr. */
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
     const oldSizesAsArray = property === 'gridColumnSizes' ?
-      this.selectedPageSection.gridColumnSizes.split(' ') :
-      this.selectedPageSection.gridRowSizes.split(' ');
+      this.section.gridColumnSizes.split(' ') :
+      this.section.gridRowSizes.split(' ');
 
     let newArray = [];
     if (newLength < oldSizesAsArray.length) {
@@ -152,8 +160,8 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
   /* Replace number or unit is size string. '2fr 1fr' -> '2px 3fr' */
   changeGridSize(property: string, index: number, unit: boolean = false, newValue: string): void {
     const oldSizesAsArray = property === 'gridColumnSizes' ?
-      this.selectedPageSection.gridColumnSizes.split(' ') :
-      this.selectedPageSection.gridRowSizes.split(' ');
+      this.section.gridColumnSizes.split(' ') :
+      this.section.gridRowSizes.split(' ');
 
     if (unit) {
       oldSizesAsArray[index] = oldSizesAsArray[index].slice(0, -2) + newValue;
@@ -163,5 +171,9 @@ export class SectionPropertiesComponent implements OnInit, OnDestroy {
 
     this.updateModel(property, oldSizesAsArray.join(' '));
     this.updateGridSizes();
+  }
+
+  openColorPicker() {
+    this.colorPicker.nativeElement.click();
   }
 }

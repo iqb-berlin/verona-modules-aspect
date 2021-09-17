@@ -14,7 +14,7 @@ import { SelectionService } from '../../../../selection.service';
   templateUrl: './page-canvas.component.html',
   styles: [
     '.section {position: relative}',
-    '.canvasBackground {background-color: lightgrey; padding: 20px; height: 100%; overflow: auto;}',
+    '.canvasBackground {background-color: lightgrey; padding: 20px 50px; height: 100%; overflow: auto;}',
     '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin: 15px 0; border-radius: 10%}',
     '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
     '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}'
@@ -110,10 +110,6 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   addSection(index: number | null = null): void {
     this.unitService.addSection(this.page, index);
-  }
-
-  deleteSection(index: number): void {
-    this.unitService.deleteSection(this.page.sections[index]);
   }
 
   sectionDrop(event: CdkDragDrop<UnitPageSection[]>): void {

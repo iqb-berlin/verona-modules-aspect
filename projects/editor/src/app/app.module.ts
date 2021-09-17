@@ -14,7 +14,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from './components/unit-view/page-view/ui-element-toolbox/ui-element-toolbox.component';
-import { PropertiesComponent } from './components/unit-view/page-view/properties/properties.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
 import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
 import { PageCanvasComponent } from './components/unit-view/page-view/canvas/page-canvas.component';
@@ -26,17 +25,16 @@ import {
   ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialogTinyMCE
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import { SectionPropertiesComponent } from './components/unit-view/page-view/properties/section-properties.component';
 import { ElementPropertiesComponent } from './components/unit-view/page-view/properties/element-properties.component';
 import { StaticViewOnlyElementOverlayComponent } from './components/unit-view/page-view/canvas/static-view-only-element-overlay.component';
 import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-view-only-element-overlay.component';
+import { SectionMenuComponent } from './components/unit-view/page-view/canvas/section-menu.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     UiElementToolboxComponent,
-    PropertiesComponent,
     UnitViewComponent,
     PageViewComponent,
     PageCanvasComponent,
@@ -47,10 +45,10 @@ import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/p
     TextEditDialog,
     MultilineTextEditDialog,
     RichTextEditDialogTinyMCE,
-    SectionPropertiesComponent,
     ElementPropertiesComponent,
     StaticViewOnlyElementOverlayComponent,
-    DynamicViewOnlyElementOverlayComponent
+    DynamicViewOnlyElementOverlayComponent,
+    SectionMenuComponent
   ],
   imports: [
     BrowserModule,

@@ -13,3 +13,5 @@ body {
 
 .drop-list {cursor: grab}
 .drop-list.cdk-drop-list-dragging {cursor: grabbing}
+
+.mat-menu-panel {border: 2px solid red}

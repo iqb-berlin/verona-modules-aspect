@@ -88,6 +88,20 @@ import { DragItemData, DropListData } from './page-canvas.component';
            [style.grid-template-columns]="section.gridColumnSizes"
            [style.grid-template-rows]="section.gridRowSizes"
            [style.height.%]="100">
+        <!-- Dynamic sections have the droplists for the grid cells next to the actual elements. Elements can not
+             be children of the grid cells because they can span over multiple cells. -->
+        <ng-container *ngFor="let column of this.section.gridColumnSizes.split(' '); let x = index">
+          <ng-container *ngFor="let row of this.section.gridRowSizes.split(' '); let y = index">
+            <div class="grid-placeholder"
+                 [style.grid-column-start]="x + 1"
+                 [style.grid-column-end]="x + 1"
+                 [style.grid-row-start]="y + 1"
+                 [style.grid-row-end]="y + 1">
+              {{x + 1}} / {{y + 1}}
+            </div>
+          </ng-container>
+        </ng-container>
+
         <app-dynamic-view-only-element-overlay *ngFor="let element of section.elements"
                                                [element]="$any(element)"
                                                [style.min-width.px]="element.width"

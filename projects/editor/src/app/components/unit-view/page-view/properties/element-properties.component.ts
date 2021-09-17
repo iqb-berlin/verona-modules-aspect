@@ -385,7 +385,9 @@ import { MessageService } from '../../../../../../../common/message.service';
     '.element-button {margin-top: 10px}',
     '.input-group {background-color: rgba(0,0,0,.04); margin-bottom: 10px}',
     '.centered-form-field {margin-left: 25%}',
-    '.right-form-field {margin-left: 15%}'
+    '.right-form-field {margin-left: 15%}',
+    '::ng-deep app-element-properties .mat-tab-label {min-width: 0 !important;}',
+    '::ng-deep app-element-properties .mat-tab-group {padding: 15px}'
   ]
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {

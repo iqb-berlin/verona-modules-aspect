@@ -39,18 +39,16 @@
               (click)="addSection(i)">
         <mat-icon>add</mat-icon>
       </button>
-      <div app-canvas-section class="section"
-           [section]="section" [sectionEditMode]="sectionEditMode"
-           cdkDrag>
+      <div>
+        <app-section-menu class="button-panel" fxLayout="column"
+                          [style.left.px]="-42" [style.z-index]="1" [style.position]="'absolute'"
+                          [section]="section" [allowDelete]="page.sections.length > 1">
+        </app-section-menu>
+        <div app-canvas-section class="section"
+             [section]="section" [sectionEditMode]="sectionEditMode"
+             cdkDrag cdkDragLockAxis="y">
+        </div>
       </div>
-      <!-- 18 is button size. 55 Is the above add button's height (with margins). -->
-      <button *ngIf="page.sections.length > 1"
-              mat-mini-fab class="delete-section-button"
-              [style.right.px]="-18" [style.top.px]="55 - 18"
-              [style.position]="'absolute'"
-              (click)="deleteSection(i)">
-        <mat-icon>clear</mat-icon>
-      </button>
     </div>
   </div>
 

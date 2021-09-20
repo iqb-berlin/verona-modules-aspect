@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../unit.service';
 import { DialogService } from '../../dialog.service';
@@ -68,12 +68,14 @@ export class UnitViewComponent implements OnInit, OnDestroy {
   }
 
   deletePage(page: UnitPage): void {
-    this.showConfirmDialog().pipe(takeUntil(this.ngUnsubscribe)).subscribe((result: boolean) => {
-      if (result) {
-        this.unitService.deletePage(page);
-        this.selectedPageIndex -= 1;
-      }
-    });
+    this.dialogService.showConfirmDialog('Seite löschen?')
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result: boolean) => {
+        if (result) {
+          this.unitService.deletePage(page);
+          this.selectedPageIndex -= 1;
+        }
+      });
   }
 
   updateModel(page: UnitPage, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
@@ -85,10 +87,6 @@ export class UnitViewComponent implements OnInit, OnDestroy {
     } else {
       this.messageService.showWarning('Eingabe ungültig');
     }
-  }
-
-  showConfirmDialog(): Observable<boolean> {
-    return this.dialogService.showConfirmDialog();
   }
 
   ngOnDestroy(): void {

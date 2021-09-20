@@ -328,6 +328,7 @@ export class UnitService {
     }
   }
 
+  /* Silently ignores nonsense reorders! */
   private static moveArrayItem(item: unknown, array: unknown[], direction: 'up' | 'down'): void {
     const oldIndex = array.indexOf(item);
 

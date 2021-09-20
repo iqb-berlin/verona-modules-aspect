@@ -175,7 +175,8 @@ export function createRadioButtonGroupElement(): RadioButtonGroupElement {
 export function createImageElement(imageSrc: string): ImageElement {
   return {
     src: imageSrc,
-    ...createUnitUIElement('image')
+    ...createUnitUIElement('image'),
+    height: 100
   };
 }
 
@@ -189,7 +190,8 @@ export function createAudioElement(audioSrc: string): AudioElement {
 export function createVideoElement(videoSrc: string): VideoElement {
   return {
     src: videoSrc,
-    ...createUnitUIElement('video')
+    ...createUnitUIElement('video'),
+    height: 100
   };
 }
 

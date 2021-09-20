@@ -6,6 +6,8 @@ import { ElementComponent } from '../element-component.directive';
   selector: 'app-video',
   template: `
       <video controls [src]="elementModel.src | safeResourceUrl"
+             [style.object-fit]="'contain'"
+             [style.height.%]="100"
              [style.width.%]="100">
       </video>
   `

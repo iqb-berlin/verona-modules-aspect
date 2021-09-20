@@ -7,6 +7,8 @@ import { ElementComponent } from '../element-component.directive';
   template: `
       <img [src]="elementModel.src | safeResourceUrl"
            alt="Image Placeholder"
+           [style.object-fit]="'contain'"
+           [style.height.%]="100"
            [style.width.%]="100">
   `
 })

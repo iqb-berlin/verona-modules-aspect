@@ -163,8 +163,10 @@ import { MessageService } from '../../../../../../../common/message.service';
               <mat-label>Ausrichtung</mat-label>
               <mat-select [value]="combinedProperties.alignment"
                           (selectionChange)="updateModel('alignment', $event.value)">
-                <mat-option *ngFor="let option of ['row', 'column']" [value]="option">
-                  {{option}}
+                <mat-option *ngFor="let option of [{displayValue: 'horizontal', value: 'row'},
+                                                   {displayValue: 'vertikal', value: 'column'}]"
+                            [value]="option.value">
+                  {{option.displayValue}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

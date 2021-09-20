@@ -84,7 +84,7 @@ export class LayoutComponent implements OnInit {
     this.layoutAlignment = (this.alwaysVisiblePagePosition === 'left' || this.alwaysVisiblePagePosition === 'right') ?
       'row' : 'column';
     this.scrollPageMode = this.playerConfig.pagingMode ? this.playerConfig.pagingMode : 'separate';
-    this.hidePageLabels = false;
+    this.hidePageLabels = true;
 
     this.maxWidth.alwaysVisiblePage = this.getAbsolutePageWidth(this.alwaysVisiblePage);
     this.maxWidth.scrollPages = this.getScrollPagesWidth();

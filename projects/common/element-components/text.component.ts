@@ -5,25 +5,26 @@ import { ElementComponent } from '../element-component.directive';
 @Component({
   selector: 'app-text',
   template: `
-    <div *ngIf="elementModel.highlightable">
-      <button mat-button [style.background-color]="'yellow'"
-              (click)="highlightSelection('yellow')">Gelb</button>
-      <button mat-button [style.background-color]="'turquoise'"
-              (click)="highlightSelection('turquoise')">Türkis</button>
-      <button mat-button (click)="clearHighlight()">X</button>
-    </div>
     <div [style.width.%]="100"
-         [style.height.%]="100"
-         [style.background-color]="elementModel.backgroundColor"
-         [style.color]="elementModel.fontColor"
-         [style.font-family]="elementModel.font"
-         [style.font-size.px]="elementModel.fontSize"
-         [style.font-weight]="elementModel.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.underline ? 'underline' : ''"
-         [style.white-space]="'pre-wrap'"
-         [innerHTML]="elementModel.text"
-         #container>
+         [style.height.%]="100">
+      <div *ngIf="elementModel.highlightable">
+        <button mat-button [style.background-color]="'yellow'"
+                (click)="highlightSelection('yellow')">Gelb</button>
+        <button mat-button [style.background-color]="'turquoise'"
+                (click)="highlightSelection('turquoise')">Türkis</button>
+        <button mat-button (click)="clearHighlight()">X</button>
+      </div>
+      <div [style.background-color]="elementModel.backgroundColor"
+           [style.color]="elementModel.fontColor"
+           [style.font-family]="elementModel.font"
+           [style.font-size.px]="elementModel.fontSize"
+           [style.font-weight]="elementModel.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+           [style.white-space]="'pre-wrap'"
+           [innerHTML]="elementModel.text"
+           #container>
+      </div>
     </div>
   `
 })

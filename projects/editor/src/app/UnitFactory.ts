@@ -96,7 +96,8 @@ export function createTextElement(): TextElement {
     ...createUnitUIElement('text'),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    height: 74
   };
 }
 
@@ -120,7 +121,8 @@ export function createTextfieldElement(): TextFieldElement {
     ...createUnitUIElement('text-field'),
     ...createInputUIElement('Example Label', ''),
     ...createTextUIElement(),
-    ...createSurfaceUIElement()
+    ...createSurfaceUIElement(),
+    height: 74
   };
 }
 
@@ -152,7 +154,8 @@ export function createDropdownElement(): DropdownElement {
     ...createUnitUIElement('dropdown'),
     ...createInputUIElement('Label Dropdown', undefined),
     ...createTextUIElement(),
-    ...createSurfaceUIElement()
+    ...createSurfaceUIElement(),
+    height: 83
   };
 }
 

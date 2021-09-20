@@ -19,7 +19,7 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
            [style.left.px]="element.xPosition"
            [style.top.px]="element.yPosition"
            [style.z-index]="element.zIndex">
-          <div class="resizeHandle"
+          <div *ngIf="selected" class="resizeHandle"
                cdkDrag (cdkDragStarted)="resizeDragStart()" (cdkDragMoved)="resizeElement($event)"
                cdkDragBoundary=".section-wrapper"
                [style.right.px]="-1"

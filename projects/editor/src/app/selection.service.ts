@@ -41,6 +41,10 @@ export class SelectionService {
   get selectedPageSection(): Observable<UnitPageSection> {
     return this._selectedPageSection.asObservable();
   }
+
+  setSelectedPageSection(section: UnitPageSection): void {
+    this._selectedPageSection.next(section);
+  }
   // ### SECTION ######
 
   get selectedElements(): Observable<UnitUIElement[]> {

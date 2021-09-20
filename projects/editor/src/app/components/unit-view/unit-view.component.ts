@@ -56,11 +56,13 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   selectPage(newIndex: number): void {
     this.selectedPageIndex = newIndex;
+    this.selectionService.setSelectedPageSection(this.unit.pages[this.selectedPageIndex].sections[0]);
   }
 
   addPage(): void {
     this.unitService.addPage();
-    this.selectedPageIndex -= 1;
+    this.selectedPageIndex += 1;
+    this.selectionService.setSelectedPageSection(this.unit.pages[this.selectedPageIndex].sections[0]);
   }
 
   movePage(page: UnitPage, direction: 'up' | 'down'): void {
@@ -76,6 +78,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
           this.selectedPageIndex -= 1;
         }
       });
+    this.selectionService.setSelectedPageSection(this.unit.pages[this.selectedPageIndex].sections[0]);
   }
 
   updateModel(page: UnitPage, property: string, value: number | boolean, isInputValid: boolean | null = true): void {

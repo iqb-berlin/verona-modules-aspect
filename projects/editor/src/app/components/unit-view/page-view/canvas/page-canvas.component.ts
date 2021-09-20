@@ -107,6 +107,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   addSection(index: number | null = null): void {
     this.unitService.addSection(this.page, index);
+    this.selectionService.setSelectedPageSection(this.page.sections[this.page.sections.length - 1]);
   }
 
   sectionDrop(event: CdkDragDrop<UnitPageSection[]>): void {

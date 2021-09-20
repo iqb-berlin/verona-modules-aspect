@@ -1,15 +1,19 @@
-<mat-slide-toggle (change)="toggleSectionEditMode($event)">
-  Abschnitte verwalten
-</mat-slide-toggle>
-
 <div class="canvasBackground" fxFlex>
-  <div *ngIf="!sectionEditMode"
-       class="canvasFrame"
+  <div class="canvasFrame"
        [style.width.px]="page.maxWidth"
        [style.padding.px]="page.margin"
        [style.background-color]="page.backgroundColor">
     <div cdkDropListGroup>
-      <ng-container *ngFor="let section of page.sections; let i = index">
+      <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
+        <app-section-menu [class.open]="hoveredSection === i" class="section-menu" fxLayout="column"
+                          [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
+                          [section]="section"
+                          [allowMoveUp]="i != 0"
+                          [allowMoveDown]="i < page.sections.length - 1"
+                          [allowDelete]="page.sections.length > 1"
+                          (moveSection)="unitService.moveSection(section, page, $event)"
+                          (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"> <!-- keep menu open-->
+        </app-section-menu>
         <!-- TODO split section into static and dynamic-->
         <div *ngIf="!section.dynamicPositioning"
              app-canvas-section class="section drop-list" id="section-{{i}}"
@@ -17,7 +21,8 @@
              cdkDropList cdkDropListSortingDisabled
              [cdkDropListData]="{ sectionIndex: i }"
              (cdkDropListDropped)="elementDropped($event)"
-             [cdkDropListConnectedTo]="dropListList">
+             [cdkDropListConnectedTo]="dropListList"
+             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1">
         </div>
         <div *ngIf="section.dynamicPositioning"
              app-canvas-section class="section drop-list"
@@ -25,28 +30,8 @@
              [dropListList]="dropListList"
              (transferElement)="moveElementBetweenSections($event.element,
                                                            $event.previousSectionIndex,
-                                                           $event.newSectionIndex)">
-        </div>
-      </ng-container>
-    </div>
-  </div>
-
-  <div *ngIf="sectionEditMode" class="drop-list"
-       [style.width.px]="page.maxWidth" [style.padding.px]="page.margin"
-       cdkDropList (cdkDropListDropped)="sectionDrop($event)" [cdkDropListData]="page.sections">
-    <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
-      <button mat-fab class="add-section-button"
-              (click)="addSection(i)">
-        <mat-icon>add</mat-icon>
-      </button>
-      <div>
-        <app-section-menu class="button-panel" fxLayout="column"
-                          [style.left.px]="-42" [style.z-index]="1" [style.position]="'absolute'"
-                          [section]="section" [allowDelete]="page.sections.length > 1">
-        </app-section-menu>
-        <div app-canvas-section class="section"
-             [section]="section" [sectionEditMode]="sectionEditMode"
-             cdkDrag cdkDragLockAxis="y">
+                                                           $event.newSectionIndex)"
+             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1">
         </div>
       </div>
     </div>

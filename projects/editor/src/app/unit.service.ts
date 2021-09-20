@@ -58,22 +58,18 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  /* reorder page in page array */
+  /* Reorder page in page array.
+  * Checks first that the page can not be moved in front of the always visible page. */
   movePage(selectedPage: UnitPage, direction: 'up' | 'down'): void {
-    const oldPageIndex = this._unit.value.pages.indexOf(selectedPage);
-    if ((this._unit.value.pages.length > 1) &&
-        !(direction === 'down' && oldPageIndex + 1 === this._unit.value.pages.length) && // dont allow last page down
-        !(direction === 'up' && oldPageIndex === 0) && // dotn allow first page up
-        // dont allow second page to go before always shown page
-        !(direction === 'up' && oldPageIndex === 1 && this._unit.value.pages[0].alwaysVisible) &&
-        !(selectedPage.alwaysVisible)) {
-      const newPageIndex = direction === 'up' ? oldPageIndex - 1 : oldPageIndex + 1;
-      const page = this._unit.value.pages.splice(oldPageIndex, 1);
-      this._unit.value.pages.splice(newPageIndex, 0, page[0]);
-      this._unit.next(this._unit.value);
-      this.pageMoved.next();
-      this.veronaApiService.sendVoeDefinitionChangedNotification();
+    if (direction === 'up' &&
+        this._unit.value.pages.indexOf(selectedPage) === 1 &&
+        this._unit.value.pages[0].alwaysVisible) {
+      return;
     }
+    UnitService.moveArrayItem(selectedPage, this._unit.value.pages, direction);
+    this._unit.next(this._unit.value);
+    this.pageMoved.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   updatePageProperty(page: UnitPage, property: string, value: number | boolean): void {
@@ -117,6 +113,12 @@ export class UnitService {
       this._unit.next(this._unit.value);
       this.veronaApiService.sendVoeDefinitionChangedNotification();
     }
+  }
+
+  moveSection(section: UnitPageSection, page: UnitPage, direction: 'up' | 'down'): void {
+    UnitService.moveArrayItem(section, page.sections, direction);
+    this._unit.next(this._unit.value);
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   setPageSections(page: UnitPage, sections: UnitPageSection[]): void {
@@ -323,6 +325,18 @@ export class UnitService {
         });
         break;
       // no default
+    }
+  }
+
+  private static moveArrayItem(item: unknown, array: unknown[], direction: 'up' | 'down'): void {
+    const oldIndex = array.indexOf(item);
+
+    if ((array.length > 1) &&
+      !(direction === 'down' && oldIndex + 1 === array.length) && // dont allow last element down
+      !(direction === 'up' && oldIndex === 0)) { // dont allow first element up
+      const newIndex = direction === 'up' ? oldIndex - 1 : oldIndex + 1;
+      const elements = array.splice(oldIndex, 1);
+      array.splice(newIndex, 0, elements[0]);
     }
   }
 }

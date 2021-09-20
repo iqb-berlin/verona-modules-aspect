@@ -9,8 +9,12 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 export class DialogService {
   constructor(private dialog: MatDialog) { }
 
-  showConfirmDialog(): Observable<boolean> {
-    const dialogRef = this.dialog.open(ConfirmationDialog);
+  showConfirmDialog(text: string): Observable<boolean> {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
+        text: text
+      }
+    });
     return dialogRef.afterClosed();
   }
 
@@ -49,7 +53,7 @@ export class DialogService {
   selector: 'app-confirmation-dialog',
   template: `
     <mat-dialog-content>
-        Seite wirklich löschen?
+        {{data.text}}
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="true">Okay</button>
@@ -57,7 +61,9 @@ export class DialogService {
     </mat-dialog-actions>
     `
 })
-export class ConfirmationDialog {}
+export class ConfirmationDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string }) { }
+}
 
 @Component({
   selector: 'app-text-edit-dialog',

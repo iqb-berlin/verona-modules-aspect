@@ -26,8 +26,6 @@ import {
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { ElementPropertiesComponent } from './components/unit-view/page-view/properties/element-properties.component';
-import { StaticViewOnlyElementOverlayComponent } from './components/unit-view/page-view/canvas/static-view-only-element-overlay.component';
-import { DynamicViewOnlyElementOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-view-only-element-overlay.component';
 import { SectionMenuComponent } from './components/unit-view/page-view/canvas/section-menu.component';
 
 @NgModule({
@@ -46,8 +44,6 @@ import { SectionMenuComponent } from './components/unit-view/page-view/canvas/se
     MultilineTextEditDialog,
     RichTextEditDialogTinyMCE,
     ElementPropertiesComponent,
-    StaticViewOnlyElementOverlayComponent,
-    DynamicViewOnlyElementOverlayComponent,
     SectionMenuComponent
   ],
   imports: [

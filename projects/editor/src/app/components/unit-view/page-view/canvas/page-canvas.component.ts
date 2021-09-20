@@ -4,7 +4,6 @@ import {
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { UnitPage, UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
@@ -17,13 +16,15 @@ import { SelectionService } from '../../../../selection.service';
     '.canvasBackground {background-color: lightgrey; padding: 20px 50px; height: 100%; overflow: auto;}',
     '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin: 15px 0; border-radius: 10%}',
     '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
-    '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}'
+    '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}',
+    '.section-menu {opacity:0; transition: opacity 0.5s linear; transition-delay:1s;}',
+    '.section-menu.open {opacity:1; transition-delay:0s;}'
   ]
 })
 export class PageCanvasComponent implements OnInit, OnDestroy {
   @Input() page!: UnitPage;
-  sectionEditMode: boolean = false;
   dropListList: string[] = [];
+  hoveredSection: number = -1;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService, public unitService: UnitService) { }
@@ -102,10 +103,6 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   getPageHeight(): number { // TODO weg
     const reduceFct = (accumulator: number, currentValue: UnitPageSection) => accumulator + currentValue.height;
     return this.page.sections.reduce(reduceFct, 0);
-  }
-
-  toggleSectionEditMode(event: MatSlideToggleChange): void {
-    this.sectionEditMode = event.checked;
   }
 
   addSection(index: number | null = null): void {

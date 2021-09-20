@@ -1,9 +1,12 @@
 import {
-  Component, OnInit, Input,
+  Component, OnInit, OnDestroy, Input, Output, EventEmitter,
   ViewChild, ElementRef
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
+import { DialogService } from '../../../../dialog.service';
 
 @Component({
   selector: 'app-section-menu',
@@ -91,6 +94,14 @@ import { UnitService } from '../../../../unit.service';
       </div>
     </mat-menu>
 
+    <button *ngIf="allowMoveUp" mat-mini-fab
+            (click)="this.moveSection.emit('up')">
+      <mat-icon>north</mat-icon>
+    </button>
+    <button *ngIf="allowMoveDown" mat-mini-fab
+            (click)="this.moveSection.emit('down')">
+      <mat-icon>south</mat-icon>
+    </button>
     <button *ngIf="allowDelete" mat-mini-fab
             (click)="deleteSection()">
       <mat-icon>clear</mat-icon>
@@ -103,16 +114,20 @@ import { UnitService } from '../../../../unit.service';
     '::ng-deep .layoutMenu {width: 200px; padding: 0 15px}'
   ]
 })
-export class SectionMenuComponent implements OnInit {
+export class SectionMenuComponent implements OnInit, OnDestroy {
   @Input() section!: UnitPageSection;
+  @Input() allowMoveUp!: boolean;
+  @Input() allowMoveDown!: boolean;
   @Input() allowDelete!: boolean;
+  @Output() moveSection = new EventEmitter<'up' | 'down'>();
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
-
   columnSizes: { value: string, unit: string }[] = [];
   rowSizes: { value: string, unit: string }[] = [];
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private unitService: UnitService) { }
+  constructor(public unitService: UnitService,
+              private dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.updateGridSizes();
@@ -123,7 +138,13 @@ export class SectionMenuComponent implements OnInit {
   }
 
   deleteSection(): void {
-    this.unitService.deleteSection(this.section);
+    this.dialogService.showConfirmDialog('Abschnitt löschen?')
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result: boolean) => {
+        if (result) {
+          this.unitService.deleteSection(this.section);
+        }
+      });
   }
 
   /* Initialize internal array of grid sizes. Where value and unit are put, split up, in an array. */
@@ -175,5 +196,10 @@ export class SectionMenuComponent implements OnInit {
 
   openColorPicker() {
     this.colorPicker.nativeElement.click();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

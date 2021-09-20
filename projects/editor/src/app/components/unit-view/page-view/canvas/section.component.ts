@@ -10,8 +10,7 @@ import { DragItemData, DropListData } from './page-canvas.component';
 @Component({
   selector: '[app-canvas-section]',
   template: `
-    <div *ngIf="!sectionEditMode"
-         #sectionElement class="section-wrapper"
+    <div #sectionElement class="section-wrapper"
          [style.border]="selected ? '1px solid': '1px dotted'"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
@@ -71,53 +70,6 @@ import { DragItemData, DropListData } from './page-canvas.component';
         </app-dynamic-canvas-overlay>
       </div>
     </div>
-
-    <div *ngIf="sectionEditMode"
-         #sectionElement class="section-wrapper"
-         [style.border]="selected ? '1px solid': '1px dotted'"
-         [style.height.px]="section.height"
-         [style.background-color]="section.backgroundColor"
-         (click)="selectionService.selectSection(this)">
-      <div *ngIf="!section.dynamicPositioning">
-        <app-view-only-element-overlay *ngFor="let element of section.elements" [element]="$any(element)">
-        </app-view-only-element-overlay>
-      </div>
-
-      <div *ngIf="section.dynamicPositioning"
-           [style.display]="'grid'"
-           [style.grid-template-columns]="section.gridColumnSizes"
-           [style.grid-template-rows]="section.gridRowSizes"
-           [style.height.%]="100">
-        <!-- Dynamic sections have the droplists for the grid cells next to the actual elements. Elements can not
-             be children of the grid cells because they can span over multiple cells. -->
-        <ng-container *ngFor="let column of this.section.gridColumnSizes.split(' '); let x = index">
-          <ng-container *ngFor="let row of this.section.gridRowSizes.split(' '); let y = index">
-            <div class="grid-placeholder"
-                 [style.grid-column-start]="x + 1"
-                 [style.grid-column-end]="x + 1"
-                 [style.grid-row-start]="y + 1"
-                 [style.grid-row-end]="y + 1">
-              {{x + 1}} / {{y + 1}}
-            </div>
-          </ng-container>
-        </ng-container>
-
-        <app-dynamic-view-only-element-overlay *ngFor="let element of section.elements"
-                                               [element]="$any(element)"
-                                               [style.min-width.px]="element.width"
-                                               [style.min-height.px]="element.height"
-                                               [style.margin-left.px]="element.marginLeft"
-                                               [style.margin-right.px]="element.marginRight"
-                                               [style.margin-top.px]="element.marginTop"
-                                               [style.margin-bottom.px]="element.marginBottom"
-                                               [style.grid-column-start]="element.gridColumnStart"
-                                               [style.grid-column-end]="element.gridColumnEnd"
-                                               [style.grid-row-start]="element.gridRowStart"
-                                               [style.grid-row-end]="element.gridRowEnd">
-        </app-dynamic-view-only-element-overlay>
-      </div>
-
-    </div>
   `,
   styles: [
     '.section-wrapper {width: 100%}',
@@ -126,7 +78,6 @@ import { DragItemData, DropListData } from './page-canvas.component';
 })
 export class SectionComponent {
   @Input() section!: UnitPageSection;
-  @Input() sectionEditMode: boolean = false;
   @Input() sectionIndex!: number;
   @Input() dropListList!: string[];
   @Output() transferElement = new EventEmitter<{ element: UnitUIElement,

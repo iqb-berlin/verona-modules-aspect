@@ -19,8 +19,8 @@
         </mat-form-field>
 
         Text
-        <div class="text-text" [innerHTML]="combinedProperties.text"
-             (click)="unitService.showDefaultEditDialog(selectedElements[0])" >
+        <div class="text-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml($any(combinedProperties.text))"
+             (click)="unitService.showDefaultEditDialog(selectedElements[0])">
         </div>
 
         <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('highlightable')"

@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { TextElement } from '../unit';
 import { ElementComponent } from '../element-component.directive';
 
@@ -22,7 +23,7 @@ import { ElementComponent } from '../element-component.directive';
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''"
            [style.white-space]="'pre-wrap'"
-           [innerHTML]="elementModel.text"
+           [innerHTML]="sanitizer.bypassSecurityTrustHtml(elementModel.text)"
            #container>
       </div>
     </div>
@@ -33,6 +34,10 @@ export class TextComponent extends ElementComponent {
   @ViewChild('container') containerDiv!: ElementRef;
 
   highlightedNodes: Node[] = [];
+
+  constructor(public sanitizer: DomSanitizer) {
+    super();
+  }
 
   // TODO double click selection does not work and adds more and more nested spans
   highlightSelection(color: string): void {

@@ -9,6 +9,7 @@ import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 import { MessageService } from '../../../../../../../common/message.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-element-properties',
@@ -34,7 +35,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
-              private messageService: MessageService) { }
+              private messageService: MessageService,
+              public sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.unitService.elementPropertyUpdated

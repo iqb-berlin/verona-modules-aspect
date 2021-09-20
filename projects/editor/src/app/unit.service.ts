@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   Unit, UnitPage, UnitPageSection, UnitUIElement
@@ -23,7 +24,8 @@ export class UnitService {
   constructor(private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private idService: IdService,
-              private dialogService: DialogService) {
+              private dialogService: DialogService,
+              private sanitizer: DomSanitizer) {
     const initialUnit = UnitFactory.createUnit();
     const initialPage = UnitFactory.createUnitPage(0);
     const initialSection = UnitFactory.createUnitPageSection();
@@ -306,7 +308,12 @@ export class UnitService {
       case 'text':
         this.dialogService.showRichTextEditDialog(element.text as string).subscribe((result: string) => {
           if (result) {
-            this.updateElementProperty([element], 'text', result);
+            // TODO add proper sanitization
+            this.updateElementProperty(
+              [element],
+              'text',
+              (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
+            );
           }
         });
         break;

@@ -91,7 +91,7 @@ export function createSurfaceUIElement(): Record<string, unknown> {
 
 export function createTextElement(): TextElement {
   return <TextElement>{
-    text: 'Example Text with more words',
+    text: 'Lorem ipsum dolor sit amet',
     highlightable: false,
     ...createUnitUIElement('text'),
     ...createTextUIElement(),
@@ -103,7 +103,7 @@ export function createTextElement(): TextElement {
 
 export function createButtonElement(): ButtonElement {
   return <ButtonElement>{
-    label: 'Button Text',
+    label: 'Knopf Beschriftung',
     ...createUnitUIElement('button'),
     ...createTextUIElement(),
     ...createSurfaceUIElement()
@@ -119,7 +119,7 @@ export function createTextfieldElement(): TextFieldElement {
     pattern: '',
     patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
     ...createUnitUIElement('text-field'),
-    ...createInputUIElement('Example Label', ''),
+    ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
     height: 74
@@ -130,7 +130,7 @@ export function createTextareaElement(): TextAreaElement {
   return <TextAreaElement>{
     resizeEnabled: false,
     ...createUnitUIElement('text-area'),
-    ...createInputUIElement('Example Label', ''),
+    ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
     height: 100
@@ -140,7 +140,7 @@ export function createTextareaElement(): TextAreaElement {
 export function createCheckboxElement(): CheckboxElement {
   return <CheckboxElement>{
     ...createUnitUIElement('checkbox'),
-    ...createInputUIElement('Label Checkbox', false),
+    ...createInputUIElement('Beschriftung', false),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
     backgroundColor: 'transparent'
@@ -152,7 +152,7 @@ export function createDropdownElement(): DropdownElement {
     options: [],
     allowUnset: false,
     ...createUnitUIElement('dropdown'),
-    ...createInputUIElement('Label Dropdown', undefined),
+    ...createInputUIElement('Beschriftung', undefined),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
     height: 83
@@ -164,7 +164,7 @@ export function createRadioButtonGroupElement(): RadioButtonGroupElement {
     options: [],
     alignment: 'row',
     ...createUnitUIElement('radio'),
-    ...createInputUIElement('Label Optionsfeld', undefined),
+    ...createInputUIElement('Beschriftung Optionsfeld', undefined),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
     height: 75,

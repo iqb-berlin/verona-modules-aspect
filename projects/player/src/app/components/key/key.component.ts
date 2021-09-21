@@ -11,7 +11,7 @@ export class KeyComponent {
 
   constructor(private specialCharacterService: SpecialCharacterService) { }
 
-  onClick(event: MouseEvent): void {
+  onMouseDown(event: MouseEvent): void {
     this.specialCharacterService.inputCharacter(this.character);
     event.preventDefault();
   }

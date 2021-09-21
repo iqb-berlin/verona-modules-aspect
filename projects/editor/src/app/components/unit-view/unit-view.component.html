@@ -55,7 +55,8 @@
                 <mat-label>Maximalbreite</mat-label>
                 <input matInput type="number" min="0" #maxWidth="ngModel"
                        [ngModel]="page.maxWidth"
-                       (click)="$any($event).stopPropagation()">
+                       (click)="$any($event).stopPropagation()"
+                       (ngModelChange)="updateModel(page,'maxWidth', $event, maxWidth.valid)">
               </mat-form-field>
               <mat-form-field class="menuItem" appearance="fill">
                 <mat-label>Randbreite</mat-label>

@@ -114,6 +114,7 @@ export class MultilineTextEditDialog {
            height: 400,
            menubar: false,
            statusbar: false,
+           paste_as_text: true,
            plugins: [
              'charmap paste help lists'
            ],

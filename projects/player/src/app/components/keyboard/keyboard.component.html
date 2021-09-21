@@ -1,0 +1,12 @@
+<div class="keyboard-container">
+  <div class="character-row">
+    <ng-container *ngFor="let upperCharacter of upperCharacters">
+      <app-key class="character-key" [character]="upperCharacter"></app-key>
+    </ng-container>
+  </div>
+  <div class="character-row">
+    <ng-container *ngFor="let lowerCharacter of lowerCharacters">
+      <app-key class="character-key" [character]="lowerCharacter"></app-key>
+    </ng-container>
+  </div>
+</div>

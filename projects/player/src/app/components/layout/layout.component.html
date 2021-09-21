@@ -1,5 +1,6 @@
 <div class="layout-container">
   <div class="layout-flex-container"
+       cdkOverlayOrigin #trigger="cdkOverlayOrigin"
        [fxLayout]="layoutAlignment">
     <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
       alwaysVisiblePageView :
@@ -8,6 +9,14 @@
       alwaysVisiblePageView :
       scrollPagesView"></ng-container>
   </div>
+
+  <ng-template
+      cdk-connected-overlay
+      [cdkConnectedOverlayOrigin]="trigger"
+      [cdkConnectedOverlayOpen]="isKeyboardOpen"
+  >
+    <app-keyboard class="keyboard"></app-keyboard>
+  </ng-template>
 </div>
 
 <ng-template #alwaysVisiblePageView>

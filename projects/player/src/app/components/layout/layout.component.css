@@ -26,3 +26,9 @@
 .layout-flex-container{
   height: 100vh;
 }
+
+.keyboard {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+}

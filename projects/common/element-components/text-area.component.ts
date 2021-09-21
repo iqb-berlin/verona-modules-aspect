@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { TextAreaElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -14,7 +14,9 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-    <textarea matInput [formControl]="elementFormControl"
+    <textarea matInput [formControl]="elementFormControl" #input
+              (focus)="onFocus.emit(input)"
+              (blur)="onBlur.emit(input)"
               placeholder="{{elementModel.label}}"
               [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">
       </textarea>
@@ -22,5 +24,7 @@ import { FormElementComponent } from '../form-element-component.directive';
   `
 })
 export class TextAreaComponent extends FormElementComponent {
+  @Output() onFocus = new EventEmitter<HTMLElement>();
+  @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextAreaElement;
 }

@@ -12,6 +12,7 @@ import { MetaDataService } from './services/meta-data.service';
 import { PlayerConfig, UnitState, VopStartCommand } from './models/verona';
 import { FormPage } from '../../../common/form';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
+import { SpecialCharacterService } from './services/special-character.service';
 
 @Component({
   selector: 'player-aspect',
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
               private veronaPostService: VeronaPostService,
               private metaDataService: MetaDataService,
               private nativeEventService: NativeEventService,
+              private specialCharacterService: SpecialCharacterService,
               private dialog: MatDialog) {
   }
 
@@ -77,6 +79,7 @@ export class AppComponent implements OnInit {
       this.veronaPostService.sessionId = message.sessionId;
       this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
       this.initUnitPages(unitDefinition.pages, message.unitState);
+      this.specialCharacterService.useKeyboard(false);
     } else {
       this.dialog.open(AlertDialogComponent, {
         data: {

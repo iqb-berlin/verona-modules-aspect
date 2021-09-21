@@ -84,6 +84,7 @@ import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
     ButtonComponent,
     TextComponent,
     TextFieldComponent,
+    TextAreaComponent,
     ImageComponent,
     AudioComponent,
     VideoComponent,

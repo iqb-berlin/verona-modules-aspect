@@ -1,0 +1,16 @@
+.keyboard-container{
+  background-color: lightgray;
+  padding: 10px 10px 0 10px;
+}
+
+.character-key{
+  flex-grow: 1;
+  margin-bottom: 10px;
+}
+
+.character-row{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+}

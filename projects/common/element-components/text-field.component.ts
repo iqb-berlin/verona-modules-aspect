@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { TextFieldElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -14,12 +14,16 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      <input matInput type="text" [pattern]="elementModel.pattern"
+      <input matInput type="text" [pattern]="elementModel.pattern" #input
+             (focus)="onFocus.emit(input)"
+             (blur)="onBlur.emit(input)"
              [formControl]="elementFormControl"
              placeholder="{{elementModel.label}}">
     </mat-form-field>
   `
 })
 export class TextFieldComponent extends FormElementComponent {
+  @Output() onFocus = new EventEmitter<HTMLElement>();
+  @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextFieldElement;
 }

@@ -1,18 +1,20 @@
 import {
-  Component, EventEmitter, Input, OnInit, Output
+  Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { UnitPage } from '../../../../../common/unit';
 import { PlayerConfig } from '../../models/verona';
+import { SpecialCharacterService } from '../../services/special-character.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent implements OnInit, OnDestroy {
   @Input() parentForm!: FormGroup;
   @Input() pages!: UnitPage[];
   @Input() selectedIndex!: number;
@@ -21,6 +23,10 @@ export class LayoutComponent implements OnInit {
 
   @Output() selectedIndexChange = new EventEmitter<number>();
   @Output() validPagesDetermined = new EventEmitter<Record<string, string>[]>();
+
+  private ngUnsubscribe = new Subject<void>();
+
+  isKeyboardOpen!: boolean;
 
   playerPageIndices!: number[];
   lastScrollPageIndex!: number;
@@ -45,12 +51,18 @@ export class LayoutComponent implements OnInit {
   containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
   { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
-  constructor(private translateService: TranslateService) { }
+  constructor(private translateService: TranslateService,
+              private specialCharacterService: SpecialCharacterService) { }
 
   ngOnInit(): void {
     this.initPages();
     this.initLayout();
-    this.selectIndex.subscribe((selectedIndex: number): void => { this.selectedIndex = selectedIndex; });
+    this.selectIndex
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((selectedIndex: number): void => { this.selectedIndex = selectedIndex; });
+    this.specialCharacterService.isOpen
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isOpen: boolean): void => { this.isKeyboardOpen = isOpen; });
   }
 
   private getLastScrollPageIndex(): number {
@@ -126,5 +138,10 @@ export class LayoutComponent implements OnInit {
 
   onSelectedIndexChange(selectedIndex: number): void {
     this.selectedIndexChange.emit(selectedIndex);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

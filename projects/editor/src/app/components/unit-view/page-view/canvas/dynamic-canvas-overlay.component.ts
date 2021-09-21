@@ -11,7 +11,6 @@ import { UnitUIElement } from '../../../../../../../common/unit';
       <div #draggableElement class="draggable-element" [class.draggable-element-selected]="selected"
            cdkDrag [cdkDragData]="{dragType: 'move', element: element}" [cdkDragDisabled]="!selected"
            (click)="selectElement($event.shiftKey)" (dblclick)="openEditDialog()" (cdkDragStarted)="selectElement()"
-           cdkDragBoundary=".canvasFrame"
            [style.height.%]="100"
            [style.border]="selected ? '1px solid' : ''">
           <div *ngIf="selected" class="resizeHandle"

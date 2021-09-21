@@ -20,7 +20,7 @@ export function createUnitPage(pageIndex: number): UnitPage {
     id: `page${pageIndex}`,
     sections: [],
     hasMaxWidth: false,
-    maxWidth: 1100,
+    maxWidth: 900,
     margin: 8,
     backgroundColor: 'white',
     alwaysVisible: false,
@@ -33,7 +33,7 @@ export function createUnitPageSection(): UnitPageSection {
   return {
     elements: [],
     height: 400,
-    backgroundColor: '#FFFAF0',
+    backgroundColor: 'white',
     dynamicPositioning: false,
     gridColumnSizes: '1fr 1fr',
     gridRowSizes: '1fr'
@@ -91,7 +91,7 @@ export function createSurfaceUIElement(): Record<string, unknown> {
 
 export function createTextElement(): TextElement {
   return <TextElement>{
-    text: 'Lorem ipsum dolor sit amet',
+    text: '<p>Lorem ipsum dolor sit amet</p>',
     highlightable: false,
     ...createUnitUIElement('text'),
     ...createTextUIElement(),

@@ -135,7 +135,7 @@ export function createTextareaElement(): TextAreaElement {
     ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
-    height: 112
+    height: 120
   };
 }
 

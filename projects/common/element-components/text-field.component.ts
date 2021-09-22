@@ -13,7 +13,8 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-size.px]="elementModel.fontSize"
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.underline ? 'underline' : ''">
+                    [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+                    [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" [pattern]="elementModel.pattern" #input
              (focus)="onFocus.emit(input)"
              (blur)="onBlur.emit(input)"

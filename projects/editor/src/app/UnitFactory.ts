@@ -112,6 +112,7 @@ export function createButtonElement(): ButtonElement {
 
 export function createTextfieldElement(): TextFieldElement {
   return <TextFieldElement>{
+    appearance: 'outline',
     minLength: undefined,
     minLengthWarnMessage: 'Eingabe zu kurz',
     maxLength: undefined,
@@ -129,6 +130,7 @@ export function createTextfieldElement(): TextFieldElement {
 export function createTextareaElement(): TextAreaElement {
   return <TextAreaElement>{
     resizeEnabled: false,
+    appearance: 'outline',
     ...createUnitUIElement('text-area'),
     ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),

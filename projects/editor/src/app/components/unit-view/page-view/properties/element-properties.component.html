@@ -23,6 +23,22 @@
              (click)="unitService.showDefaultEditDialog(selectedElements[0])">
         </div>
 
+
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('appearance')" appearance="fill">
+          <mat-label>Aussehen</mat-label>
+          <mat-select [value]="combinedProperties.appearance"
+                      (selectionChange)="updateModel('appearance', $event.value)">
+            <mat-option *ngFor="let option of [{displayValue: 'standard', value: 'standard'},
+                                               {displayValue: 'legacy', value: 'legacy'},
+                                               {displayValue: 'fill', value: 'fill'},
+                                               {displayValue: 'outline', value: 'outline'}]"
+                        [value]="option.value">
+              {{option.displayValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+
         <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('highlightable')"
                       [checked]="$any(combinedProperties.highlightable)"
                       (change)="updateModel('highlightable', $event.checked)">

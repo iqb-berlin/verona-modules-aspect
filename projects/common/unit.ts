@@ -82,6 +82,7 @@ export interface ButtonElement extends TextUIElement, SurfaceUIElement {
 
 export interface TextFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
+  appearance: 'standard' | 'legacy' | 'fill' | 'outline';
   minLength: number | undefined;
   minLengthWarnMessage: string;
   maxLength: number | undefined;
@@ -92,6 +93,7 @@ export interface TextFieldElement extends InputUIElement, TextUIElement, Surface
 
 export interface TextAreaElement extends InputUIElement, TextUIElement, SurfaceUIElement {
   value: string;
+  appearance: 'standard' | 'legacy' | 'fill' | 'outline';
   resizeEnabled: boolean;
 }
 

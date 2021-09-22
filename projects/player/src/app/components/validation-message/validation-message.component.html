@@ -15,4 +15,8 @@
              [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{maxLengthWarnMessage}}
   </mat-error>
+  <mat-error *ngIf="formElementControl.errors?.pattern"
+             [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
+    {{patternMessage}}
+  </mat-error>
 </ng-container>

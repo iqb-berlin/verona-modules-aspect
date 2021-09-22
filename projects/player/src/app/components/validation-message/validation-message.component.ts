@@ -23,6 +23,7 @@ export class ValidationMessageComponent implements OnInit {
   requiredTrueMessage!: string;
   minLengthWarnMessage!: string;
   maxLengthWarnMessage!: string;
+  patternMessage!: string;
 
   constructor(private formService: FormService, private translateService: TranslateService) {}
 
@@ -51,6 +52,9 @@ export class ValidationMessageComponent implements OnInit {
     if (this.elementModel.maxLength) {
       validators.push(Validators.maxLength(<number> this.elementModel.maxLength));
     }
+    if (this.elementModel.pattern) {
+      validators.push(Validators.pattern(<string> this.elementModel.pattern));
+    }
     return validators;
   }
 
@@ -66,5 +70,8 @@ export class ValidationMessageComponent implements OnInit {
 
     this.maxLengthWarnMessage = (this.elementModel as TextFieldElement).maxWarnMessage ||
       this.translateService.instant('validators.inputTooLong');
+
+    this.patternMessage = (this.elementModel as TextFieldElement).patternWarnMessage ||
+      this.translateService.instant('validators.wrongPattern');
   }
 }

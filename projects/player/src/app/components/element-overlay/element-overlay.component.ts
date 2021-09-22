@@ -41,7 +41,12 @@ export class ElementOverlayComponent implements OnInit {
   ngOnInit(): void {
     const elementComponentFactory =
       ComponentUtils.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
-    const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
+
+    const element = this.elementComponentContainer.createComponent(elementComponentFactory);
+    element.location.nativeElement.style.display = 'block';
+    element.location.nativeElement.style.height = '100%';
+
+    const elementComponent = element.instance;
     elementComponent.elementModel = this.elementModel;
     this.isInputElement = Object.prototype.hasOwnProperty.call(this.elementModel, 'required');
 

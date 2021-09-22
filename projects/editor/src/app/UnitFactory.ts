@@ -123,7 +123,7 @@ export function createTextfieldElement(): TextFieldElement {
     ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
-    height: 74
+    height: 100
   };
 }
 
@@ -135,7 +135,7 @@ export function createTextareaElement(): TextAreaElement {
     ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
-    height: 100
+    height: 112
   };
 }
 

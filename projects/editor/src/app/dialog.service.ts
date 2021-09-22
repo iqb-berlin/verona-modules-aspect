@@ -40,7 +40,7 @@ export class DialogService {
   showRichTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogTinyMCE, {
       width: '800px',
-      height: '700px',
+      height: '600px',
       data: {
         text: text
       }
@@ -56,8 +56,8 @@ export class DialogService {
         {{data.text}}
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true">Okay</button>
-      <button mat-button mat-dialog-close>Abbruch</button>
+      <button mat-button [mat-dialog-close]="true">Speichern</button>
+      <button mat-button mat-dialog-close>Abbrechen</button>
     </mat-dialog-actions>
     `
 })
@@ -75,8 +75,8 @@ export class ConfirmationDialog {
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="inputElement.value">Okay</button>
-      <button mat-button mat-dialog-close>Abbruch</button>
+      <button mat-button [mat-dialog-close]="inputElement.value">Speichern</button>
+      <button mat-button mat-dialog-close>Abbrechen</button>
     </mat-dialog-actions>
     `
 })
@@ -95,8 +95,8 @@ export class TextEditDialog {
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="inputElement.value">Okay</button>
-      <button mat-button mat-dialog-close>Abbruch</button>
+      <button mat-button [mat-dialog-close]="inputElement.value">Speichern</button>
+      <button mat-button mat-dialog-close>Abbrechen</button>
     </mat-dialog-actions>
     `
 })
@@ -111,7 +111,7 @@ export class MultilineTextEditDialog {
       <editor
         [(ngModel)]="data.text"
         [init]="{
-           height: 400,
+           height: 500,
            menubar: false,
            statusbar: false,
            paste_as_text: true,
@@ -128,8 +128,8 @@ export class MultilineTextEditDialog {
 
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="data.text">Okay</button>
-      <button mat-button mat-dialog-close>Abbruch</button>
+      <button mat-button [mat-dialog-close]="data.text">Speichern</button>
+      <button mat-button mat-dialog-close>Abbrechen</button>
     </mat-dialog-actions>
     `
 })

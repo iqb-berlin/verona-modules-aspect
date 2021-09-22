@@ -164,7 +164,7 @@ export function createDropdownElement(): DropdownElement {
 export function createRadioButtonGroupElement(): RadioButtonGroupElement {
   return <RadioButtonGroupElement><unknown>{
     options: [],
-    alignment: 'row',
+    alignment: 'column',
     ...createUnitUIElement('radio'),
     ...createInputUIElement('Beschriftung Optionsfeld', undefined),
     ...createTextUIElement(),

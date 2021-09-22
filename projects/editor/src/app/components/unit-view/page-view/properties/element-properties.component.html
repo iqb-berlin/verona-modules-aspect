@@ -18,11 +18,12 @@
                  (input)="updateModel('label', $any($event.target).value)">
         </mat-form-field>
 
-        Text
-        <div class="text-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml($any(combinedProperties.text))"
-             (click)="unitService.showDefaultEditDialog(selectedElements[0])">
-        </div>
-
+        <ng-container *ngIf="combinedProperties.hasOwnProperty('text')">
+          Text
+          <div class="text-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml($any(combinedProperties.text))"
+               (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+          </div>
+        </ng-container>
 
         <mat-form-field *ngIf="combinedProperties.hasOwnProperty('appearance')" appearance="fill">
           <mat-label>Aussehen</mat-label>

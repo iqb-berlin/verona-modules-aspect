@@ -9,6 +9,7 @@
        [style.left.px]="element.xPosition"
        [style.top.px]="element.yPosition">
     <app-element-overlay
+        [style.display]="'block'"
         [elementModel]="element"
         [parentForm]="sectionForm"
         [parentArrayIndex]="i">
@@ -32,6 +33,7 @@
          [style.grid-row-start]="element.gridRowStart"
          [style.grid-row-end]="element.gridRowEnd">
       <app-element-overlay
+          [style.display]="'block'"
           [elementModel]="element"
           [parentForm]="sectionForm"
           [parentArrayIndex]="i">

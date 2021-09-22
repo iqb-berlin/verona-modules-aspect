@@ -97,7 +97,7 @@ export function createTextElement(): TextElement {
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
     backgroundColor: 'transparent',
-    height: 74
+    height: 78
   };
 }
 

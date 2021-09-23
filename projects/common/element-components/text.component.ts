@@ -6,8 +6,7 @@ import { ElementComponent } from '../element-component.directive';
 @Component({
   selector: 'app-text',
   template: `
-    <div [style.width.%]="100"
-         [style.height.%]="100">
+    <div>
       <div *ngIf="elementModel.highlightable">
         <button mat-button [style.background-color]="'yellow'"
                 (click)="highlightSelection('yellow')">Gelb</button>

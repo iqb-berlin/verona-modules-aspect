@@ -15,24 +15,24 @@
                           (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"> <!-- keep menu open-->
         </app-section-menu>
         <!-- TODO split section into static and dynamic-->
-        <div *ngIf="!section.dynamicPositioning"
-             app-canvas-section class="section drop-list" id="section-{{i}}"
+        <app-section-static *ngIf="!section.dynamicPositioning"
+             class="section drop-list" id="section-{{i}}"
              [section]="section"
              cdkDropList cdkDropListSortingDisabled
              [cdkDropListData]="{ sectionIndex: i }"
              (cdkDropListDropped)="elementDropped($event)"
              [cdkDropListConnectedTo]="dropListList"
              (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1">
-        </div>
-        <div *ngIf="section.dynamicPositioning"
-             app-canvas-section class="section drop-list"
+        </app-section-static>
+        <app-section-dynamic *ngIf="section.dynamicPositioning"
+             class="section drop-list"
              [section]="section" [sectionIndex]="i"
              [dropListList]="dropListList"
              (transferElement)="moveElementBetweenSections($event.element,
                                                            $event.previousSectionIndex,
                                                            $event.newSectionIndex)"
              (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1">
-        </div>
+        </app-section-dynamic>
       </div>
     </div>
   </div>

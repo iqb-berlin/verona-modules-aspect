@@ -130,7 +130,7 @@ export class UnitService {
 
   async addElementToSection(elementType: string,
                             section: UnitPageSection,
-                            elementCoordinates?: Record<string, number>): Promise<void> {
+                            coordinates?: { x: number, y: number }): Promise<void> {
     let newElement: UnitUIElement;
     switch (elementType) {
       case 'text':
@@ -171,9 +171,14 @@ export class UnitService {
     }
     newElement.id = this.idService.getNewID(elementType);
     newElement.dynamicPositioning = section.dynamicPositioning;
-    if (elementCoordinates) {
-      newElement.xPosition = elementCoordinates.x;
-      newElement.yPosition = elementCoordinates.y;
+    if (coordinates && section.dynamicPositioning) {
+      newElement.gridColumnStart = coordinates.x;
+      newElement.gridColumnEnd = coordinates.x + 1;
+      newElement.gridRowStart = coordinates.y;
+      newElement.gridRowEnd = coordinates.y + 1;
+    } else if (coordinates && !section.dynamicPositioning) {
+      newElement.xPosition = coordinates.x;
+      newElement.yPosition = coordinates.y;
     }
     section.elements.push(newElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification();

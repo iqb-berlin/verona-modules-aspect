@@ -1,0 +1,15 @@
+<app-element-overlay
+    [style.overflow]="'auto'"
+    [style.display]="'block'"
+    [style.width]="elementModel.dynamicPositioning ? '100%': elementModel.width + 'px'"
+    [style.height]="elementModel.dynamicPositioning ? '100%' : elementModel.height + 'px'"
+    [elementModel]="elementModel"
+    [parentForm]="elementForm"
+    [parentArrayIndex]="parentArrayIndex"
+    [isInputElement]="isInputElement">
+</app-element-overlay>
+<app-validation-message *ngIf="isInputElement && elementForm"
+                        [ngClass]="{'dynamic-validation-messages' : elementModel.dynamicPositioning}"
+                        [parentForm]="elementForm"
+                        [elementModel]="elementModel">
+</app-validation-message>

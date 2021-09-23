@@ -1,44 +1,41 @@
 <ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
 
 <ng-template #staticElements>
-  <div *ngFor="let element of section.elements; let i = index"
-       [style.position]="'absolute'"
-       [style.overflow]="'auto'"
-       [style.width.px]="element.width"
-       [style.height.px]="element.height"
-       [style.left.px]="element.xPosition"
-       [style.top.px]="element.yPosition">
-    <app-element-overlay
+  <ng-container *ngFor="let element of section.elements; let i = index">
+    <app-element
+        [style.position]="'absolute'"
+        [style.left.px]="element.xPosition"
+        [style.top.px]="element.yPosition"
         [style.display]="'block'"
         [elementModel]="element"
         [parentForm]="sectionForm"
         [parentArrayIndex]="i">
-    </app-element-overlay>
-  </div>
+    </app-element>
+  </ng-container>
 </ng-template>
 
 <ng-template #dynamicElements>
   <div [style.display]="'grid'"
        [style.grid-template-columns]="section.gridColumnSizes"
        [style.grid-template-rows]="section.gridRowSizes">
-    <div *ngFor="let element of section.elements; let i = index"
-         [style.min-width.px]="element.width"
-         [style.min-height.px]="element.height"
-         [style.margin-left.px]="element.marginLeft"
-         [style.margin-right.px]="element.marginRight"
-         [style.margin-top.px]="element.marginTop"
-         [style.margin-bottom.px]="element.marginBottom"
-         [style.grid-column-start]="element.gridColumnStart"
-         [style.grid-column-end]="element.gridColumnEnd"
-         [style.grid-row-start]="element.gridRowStart"
-         [style.grid-row-end]="element.gridRowEnd">
-      <app-element-overlay
+    <ng-container *ngFor="let element of section.elements; let i = index">
+      <app-element
+          [style.min-width.px]="element.width"
+          [style.min-height.px]="element.height"
+          [style.margin-left.px]="element.marginLeft"
+          [style.margin-right.px]="element.marginRight"
+          [style.margin-top.px]="element.marginTop"
+          [style.margin-bottom.px]="element.marginBottom"
+          [style.grid-column-start]="element.gridColumnStart"
+          [style.grid-column-end]="element.gridColumnEnd"
+          [style.grid-row-start]="element.gridRowStart"
+          [style.grid-row-end]="element.gridRowEnd"
           [style.display]="'block'"
           [style.height.%]="100"
           [elementModel]="element"
           [parentForm]="sectionForm"
           [parentArrayIndex]="i">
-      </app-element-overlay>
-    </div>
+      </app-element>
+    </ng-container>
   </div>
 </ng-template>

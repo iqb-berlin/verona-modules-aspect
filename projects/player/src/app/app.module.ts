@@ -21,6 +21,7 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
 import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { KeyComponent } from './components/key/key.component';
+import { ElementComponent } from './components/element/element.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { KeyComponent } from './components/key/key.component';
     ScrollIndexDirective,
     IntersectionDetectionDirective,
     KeyboardComponent,
-    KeyComponent
+    KeyComponent,
+    ElementComponent
   ],
   imports: [
     BrowserModule,

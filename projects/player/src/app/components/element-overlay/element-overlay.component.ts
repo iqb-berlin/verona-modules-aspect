@@ -12,7 +12,6 @@ import { ValueChangeElement } from '../../../../../common/form';
 import { SpecialCharacterService } from '../../services/special-character.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
-import { FormElementComponent } from '../../../../../common/form-element-component.directive';
 
 @Component({
   selector: 'app-element-overlay',
@@ -23,10 +22,9 @@ export class ElementOverlayComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
+  @Input() isInputElement!: boolean;
 
-  isInputElement!: boolean;
   focussedInputSubscription!: Subscription;
-  elementForm!: FormGroup;
   private ngUnsubscribe = new Subject<void>();
 
   @ViewChild('elementComponentContainer',
@@ -43,15 +41,16 @@ export class ElementOverlayComponent implements OnInit {
       ComponentUtils.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
 
     const element = this.elementComponentContainer.createComponent(elementComponentFactory);
-    element.location.nativeElement.style.display = 'block';
-    element.location.nativeElement.style.height = '100%';
+    if (this.elementModel.type !== 'text') {
+      element.location.nativeElement.style.display = 'block';
+      element.location.nativeElement.style.height = '100%';
+    }
 
     const elementComponent = element.instance;
     elementComponent.elementModel = this.elementModel;
-    this.isInputElement = Object.prototype.hasOwnProperty.call(this.elementModel, 'required');
 
     if (this.isInputElement) {
-      this.registerFormGroup(elementComponent);
+      elementComponent.parentForm = this.parentForm;
 
       elementComponent.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -91,17 +90,6 @@ export class ElementOverlayComponent implements OnInit {
         this.specialCharacterService.closeKeyboard();
         this.focussedInputSubscription.unsubscribe();
       });
-  }
-
-  private registerFormGroup(elementComponent: FormElementComponent): void {
-    this.elementForm = this.formBuilder.group({});
-    this.formService.registerFormGroup({
-      formGroup: this.elementForm,
-      parentForm: this.parentForm,
-      parentArray: 'elements',
-      parentArrayIndex: this.parentArrayIndex
-    });
-    elementComponent.parentForm = this.elementForm;
   }
 
   ngOnDestroy(): void {

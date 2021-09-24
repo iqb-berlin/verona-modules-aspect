@@ -61,7 +61,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   addPage(): void {
     this.unitService.addPage();
-    this.selectedPageIndex += this.unit.pages.length - 1;
+    this.selectedPageIndex = this.unit.pages.length - 1;
     this.selectionService.setSelectedPageSection(this.unit.pages[this.selectedPageIndex].sections[0]);
   }
 

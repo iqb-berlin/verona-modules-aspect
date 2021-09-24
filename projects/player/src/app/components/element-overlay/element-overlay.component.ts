@@ -8,7 +8,6 @@ import { Subject, Subscription } from 'rxjs';
 import { UnitUIElement } from '../../../../../common/unit';
 import * as ComponentUtils from '../../../../../common/component-utils';
 import { FormService } from '../../../../../common/form.service';
-import { ValueChangeElement } from '../../../../../common/form';
 import { SpecialCharacterService } from '../../services/special-character.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
@@ -49,12 +48,6 @@ export class ElementOverlayComponent implements OnInit {
 
     if (this.isInputElement) {
       elementComponent.parentForm = this.parentForm;
-
-      elementComponent.formValueChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((changeElement: ValueChangeElement) => {
-          this.formService.changeElementValue(changeElement);
-        });
 
       if (this.specialCharacterService.isActive &&
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {

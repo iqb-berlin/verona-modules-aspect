@@ -14,7 +14,7 @@ import { VeronaPostService } from '../../services/verona-post.service';
 import { MessageService } from '../../../../../common/message.service';
 import { MetaDataService } from '../../services/meta-data.service';
 import {
-  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement
+  FormControlElement, FormControlValidators, ChildFormGroup
 } from '../../../../../common/form';
 import {
   PlayerConfig, Progress, UnitState, VopNavigationDeniedNotification
@@ -60,9 +60,6 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.formService.validatorsAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
-    this.formService.elementValueChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
     this.formService.presentedPageAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
@@ -114,11 +111,6 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     } else {
       formArray.push(group.formGroup);
     }
-  };
-
-  private onElementValueChanges = (value: ValueChangeElement): void => {
-    // eslint-disable-next-line no-console
-    console.log(`player: onElementValueChanges - ${value.id}: ${value.values[0]} -> ${value.values[1]}`);
   };
 
   private onFormChanges(): void {

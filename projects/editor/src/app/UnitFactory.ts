@@ -64,7 +64,7 @@ function createUnitUIElement(type: string): UnitUIElement {
 export function createTextUIElement(): Record<string, unknown> {
   return {
     fontColor: 'black',
-    font: 'Arial',
+    font: 'Roboto',
     fontSize: 18,
     bold: false,
     italic: false,

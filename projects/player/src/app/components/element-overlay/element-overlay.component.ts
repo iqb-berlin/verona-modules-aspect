@@ -2,12 +2,11 @@ import {
   Component, OnInit, Input, ComponentFactoryResolver,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { UnitUIElement } from '../../../../../common/unit';
 import * as ComponentUtils from '../../../../../common/component-utils';
-import { FormService } from '../../../../../common/form.service';
 import { SpecialCharacterService } from '../../services/special-character.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
@@ -29,9 +28,7 @@ export class ElementOverlayComponent implements OnInit {
   @ViewChild('elementComponentContainer',
     { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
 
-  constructor(private formService: FormService,
-              private specialCharacterService: SpecialCharacterService,
-              private formBuilder: FormBuilder,
+  constructor(private specialCharacterService: SpecialCharacterService,
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
@@ -60,28 +57,40 @@ export class ElementOverlayComponent implements OnInit {
     elementComponent.onFocus
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((focussedInputControl: HTMLElement): void => {
-        this.specialCharacterService.openKeyboard();
-        this.focussedInputSubscription = this.specialCharacterService.characterInput
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((character: string): void => {
-            const inputElement = focussedInputControl as HTMLInputElement;
-            const selectionStart = inputElement.selectionStart || 0;
-            const selectionEnd = inputElement.selectionEnd || inputElement.value.length;
-            const startText = inputElement.value.substring(0, selectionStart);
-            const endText = inputElement.value.substring(selectionEnd);
-            inputElement.value = startText + character + endText;
-            const selection = selectionStart ? selectionStart + 1 : 1;
-            inputElement.setSelectionRange(selection, selection);
-          });
+        this.openKeyboard(focussedInputControl);
       });
 
     elementComponent.onBlur
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => {
-        this.specialCharacterService.closeKeyboard();
-        this.focussedInputSubscription.unsubscribe();
+        this.closeKeyboard();
       });
   }
+
+  private closeKeyboard(): void {
+    this.specialCharacterService.closeKeyboard();
+    this.focussedInputSubscription.unsubscribe();
+  }
+
+  private openKeyboard(focussedInputControl: HTMLElement): void {
+    this.specialCharacterService.openKeyboard();
+    this.focussedInputSubscription = this.specialCharacterService.characterInput
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((character: string): void => {
+        this.onKeyboardInput(character, focussedInputControl);
+      });
+  }
+
+  private onKeyboardInput = (character: string, focussedInputControl: HTMLElement): void => {
+    const inputElement = focussedInputControl as HTMLInputElement;
+    const selectionStart = inputElement.selectionStart || 0;
+    const selectionEnd = inputElement.selectionEnd || inputElement.value.length;
+    const startText = inputElement.value.substring(0, selectionStart);
+    const endText = inputElement.value.substring(selectionEnd);
+    inputElement.value = startText + character + endText;
+    const selection = selectionStart ? selectionStart + 1 : 1;
+    inputElement.setSelectionRange(selection, selection);
+  };
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

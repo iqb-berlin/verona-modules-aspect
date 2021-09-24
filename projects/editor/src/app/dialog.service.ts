@@ -116,10 +116,10 @@ export class MultilineTextEditDialog {
            statusbar: false,
            paste_as_text: true,
            plugins: [
-             'charmap paste help lists'
+             'charmap paste lists'
            ],
           toolbar: [
-            'newdocument | undo redo | selectall | removeformat | charmap | help',
+            'newdocument | undo redo | selectall | removeformat | charmap',
             'bold italic underline strikethrough forecolor backcolor | formatselect | fontselect fontsizeselect |' +
             'alignleft aligncenter alignright alignjustify bullist numlist outdent indent',
           ]

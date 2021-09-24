@@ -1,6 +1,6 @@
 <div class="canvasBackground" fxFlex>
   <div class="canvasFrame"
-       [style.width.px]="page.maxWidth"
+       [style.width.px]="page.hasMaxWidth ? page.maxWidth : 900"
        [style.padding.px]="page.margin"
        [style.background-color]="page.backgroundColor">
     <div cdkDropListGroup>
@@ -37,7 +37,9 @@
     </div>
   </div>
 
-  <button mat-fab class="add-section-button" [style.width.px]="page.maxWidth" [style.margin.px]="page.margin"
+  <button mat-fab class="add-section-button"
+          [style.width.px]="page.hasMaxWidth ? page.maxWidth : 900"
+          [style.margin.px]="page.margin"
           (click)="addSection()">
     <mat-icon>add</mat-icon>
   </button>

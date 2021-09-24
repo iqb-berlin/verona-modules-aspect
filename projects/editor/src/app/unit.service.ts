@@ -222,10 +222,11 @@ export class UnitService {
         this.idService.removeId(element[property]);
         this.idService.addId(<string>value);
       }
-      // undefined values can always be set. For others check that the types match.
-      if (typeof element[property] !== 'undefined' && typeof element[property] !== typeof value) {
-        return false;
-      }
+      // TODO commented out for now.Might be useful later. Can be deleted otherwise.
+      // undefined values can always be overwritten. For others check that the types match.
+      // if (typeof element[property] !== 'undefined' && typeof element[property] !== typeof value) {
+      //   console.warn('Wrong property type. Old:', typeof element[property], 'New: ', typeof value);
+      // }
       element[property] = value;
       this.elementPropertyUpdated.next();
       return true;

@@ -1,4 +1,4 @@
-<ng-container *ngIf="formElementControl && formElementControl.touched">
+<div *ngIf="formElementControl?.touched" class="mat-typography">
   <mat-error *ngIf="formElementControl.errors?.required && elementModel.type !== 'checkbox'"
              [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{requiredMessage}}
@@ -19,4 +19,4 @@
              [ngClass]="{'dynamic-validation-message' : elementModel.dynamicPositioning}" >
     {{patternMessage}}
   </mat-error>
-</ng-container>
+</div>

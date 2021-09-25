@@ -3,9 +3,6 @@
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">
     <app-element
-        [style.overflow]="'auto'"
-        [style.width.px]="element.width"
-        [style.height.px]="element.height"
         [style.position]="'absolute'"
         [style.left.px]="element.xPosition"
         [style.top.px]="element.yPosition"

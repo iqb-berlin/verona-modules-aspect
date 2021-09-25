@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, Input, OnInit
+  Component, Input, OnInit
 } from '@angular/core';
 import {
   FormControl, FormGroup, ValidatorFn, Validators
@@ -17,7 +17,7 @@ import { FormService } from '../../../../../common/form.service';
   styleUrls: ['./validation-message.component.css']
 })
 
-export class ValidationMessageComponent implements OnInit, AfterViewInit {
+export class ValidationMessageComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
   formElementControl!: FormControl;
@@ -32,6 +32,12 @@ export class ValidationMessageComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.setErrorMessages();
+    this.formElementControl = this.parentForm.controls[this.elementModel.id] as FormControl;
+    this.formService.setValidators({
+      id: this.elementModel.id,
+      validators: this.validators,
+      formGroup: this.parentForm
+    });
   }
 
   private get validators(): ValidatorFn[] {
@@ -70,17 +76,5 @@ export class ValidationMessageComponent implements OnInit, AfterViewInit {
 
     this.patternMessage = (this.elementModel as TextFieldElement).patternWarnMessage ||
       this.translateService.instant('validators.wrongPattern');
-  }
-
-  ngAfterViewInit(): void {
-    // TODO: Remove timeout
-    setTimeout(() => {
-      this.formElementControl = this.parentForm.controls[this.elementModel.id] as FormControl;
-      this.formService.setValidators({
-        id: this.elementModel.id,
-        validators: this.validators,
-        formGroup: this.parentForm
-      });
-    });
   }
 }

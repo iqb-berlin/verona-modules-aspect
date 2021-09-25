@@ -1,10 +1,28 @@
-<app-element-overlay
-    [elementModel]="elementModel"
-    [parentForm]="elementForm"
-    [parentArrayIndex]="parentArrayIndex"
-    [isInputElement]="isInputElement">
-</app-element-overlay>
-<app-validation-message *ngIf="isInputElement && elementForm"
+<ng-container *ngTemplateOutlet="elementModel.dynamicPositioning ? dynamicElement : staticElement"></ng-container>
+
+<ng-template #staticElement>
+  <app-element-overlay
+      [style.display]="'block'"
+      [style.overflow]="'auto'"
+      [style.width.px]="elementModel.width"
+      [style.height.px]="elementModel.height"
+      [elementModel]="elementModel"
+      [parentForm]="elementForm"
+      [parentArrayIndex]="parentArrayIndex"
+      [isInputElement]="isInputElement">
+  </app-element-overlay>
+</ng-template>
+
+<ng-template #dynamicElement>
+  <app-element-overlay
+      [elementModel]="elementModel"
+      [parentForm]="elementForm"
+      [parentArrayIndex]="parentArrayIndex"
+      [isInputElement]="isInputElement">
+  </app-element-overlay>
+</ng-template>
+
+<app-validation-message *ngIf="isInputElement"
                         [ngClass]="{'dynamic-validation-messages' : elementModel.dynamicPositioning}"
                         [parentForm]="elementForm"
                         [elementModel]="elementModel">

@@ -5,25 +5,25 @@ import { FormElementComponent } from '../form-element-component.directive';
 @Component({
   selector: 'app-radio-button-group',
   template: `
-      <div [style.width.%]="100"
-           [style.height.%]="100"
-           [style.background-color]="elementModel.backgroundColor"
-           [style.color]="elementModel.fontColor"
-           [style.font-family]="elementModel.font"
-           [style.font-size.px]="elementModel.fontSize"
-           [style.font-weight]="elementModel.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-          <label [innerHTML]="elementModel.label" id="radio-group-label"></label>
-          <mat-radio-group aria-labelledby="radio-group-label"
-                           [style.margin-bottom.px]="10"
-                           fxLayout="{{elementModel.alignment}}"
-                           [formControl]="elementFormControl">
-              <mat-radio-button *ngFor="let option of elementModel.options" [value]="option">
-                  {{option}}
-              </mat-radio-button>
-          </mat-radio-group>
-      </div>
+    <div [style.width.%]="100"
+         [style.height.%]="100"
+         [style.background-color]="elementModel.backgroundColor"
+         [style.color]="elementModel.fontColor"
+         [style.font-family]="elementModel.font"
+         [style.font-size.px]="elementModel.fontSize"
+         [style.font-weight]="elementModel.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.underline ? 'underline' : ''">
+      <label [innerHTML]="elementModel.label" id="radio-group-label"></label>
+      <mat-radio-group aria-labelledby="radio-group-label"
+                       [style.margin-bottom.px]="20"
+                       [fxLayout]="elementModel.alignment"
+                       [formControl]="elementFormControl">
+        <mat-radio-button *ngFor="let option of elementModel.options" [value]="option">
+          {{option}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
   `
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

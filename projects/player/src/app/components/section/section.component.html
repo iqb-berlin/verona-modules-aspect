@@ -3,10 +3,12 @@
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">
     <app-element
+        [style.overflow]="'auto'"
+        [style.width.px]="element.width"
+        [style.height.px]="element.height"
         [style.position]="'absolute'"
         [style.left.px]="element.xPosition"
         [style.top.px]="element.yPosition"
-        [style.display]="'block'"
         [elementModel]="element"
         [parentForm]="sectionForm"
         [parentArrayIndex]="i">
@@ -30,7 +32,6 @@
           [style.grid-column-end]="element.gridColumnEnd"
           [style.grid-row-start]="element.gridRowStart"
           [style.grid-row-end]="element.gridRowEnd"
-          [style.display]="element.dynamicPositioning ? (element.type === 'radio') ? 'contents' : 'inline' : 'block'"
           [elementModel]="element"
           [parentForm]="sectionForm"
           [parentArrayIndex]="i">

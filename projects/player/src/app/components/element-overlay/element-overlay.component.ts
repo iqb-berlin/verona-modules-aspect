@@ -36,11 +36,7 @@ export class ElementOverlayComponent implements OnInit {
     const elementComponentFactory =
       ComponentUtils.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
 
-    const elementComponentRef = this.elementComponentContainer.createComponent(elementComponentFactory);
-    elementComponentRef.location.nativeElement.style.display = 'block';
-    elementComponentRef.location.nativeElement.style.height = '100%';
-
-    const elementComponent = elementComponentRef.instance;
+    const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     elementComponent.elementModel = this.elementModel;
 
     if (this.isInputElement) {

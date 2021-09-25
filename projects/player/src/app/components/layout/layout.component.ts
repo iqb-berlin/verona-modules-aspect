@@ -27,9 +27,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   isKeyboardOpen!: boolean;
-
-  playerPageIndices!: number[];
-  lastScrollPageIndex!: number;
+  scrollPagesIndices!: number[];
   scrollPages!: UnitPage[];
   hasScrollPages!: boolean;
   alwaysVisiblePage!: UnitPage | undefined;
@@ -65,26 +63,13 @@ export class LayoutComponent implements OnInit, OnDestroy {
       .subscribe((isOpen: boolean): void => { this.isKeyboardOpen = isOpen; });
   }
 
-  private getLastScrollPageIndex(): number {
-    if (this.alwaysVisibleUnitPageIndex < 0 || this.alwaysVisibleUnitPageIndex < this.pages.length - 1) {
-      return this.pages.length - 1;
-    }
-    return this.pages.length - 2;
-  }
-
   private initPages(): void {
     this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: UnitPage): boolean => page.alwaysVisible);
     this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
     this.scrollPages = this.pages.filter((page: UnitPage): boolean => !page.alwaysVisible);
-    this.hasScrollPages = this.scrollPages && this.scrollPages.length > 0;
-    this.lastScrollPageIndex = this.getLastScrollPageIndex();
-    this.playerPageIndices = this.pages.map(
-      (page: UnitPage, index: number): number => {
-        if (index === this.alwaysVisibleUnitPageIndex) {
-          return this.pages.length - 1;
-        }
-        return (this.alwaysVisibleUnitPageIndex < 0 || index < this.alwaysVisibleUnitPageIndex) ? index : index - 1;
-      }
+    this.hasScrollPages = this.scrollPages?.length > 0;
+    this.scrollPagesIndices = this.scrollPages.map(
+      (scrollPage: UnitPage): number => this.pages.indexOf(scrollPage)
     );
     this.validPagesDetermined.emit(this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
       { [index.toString(10)]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` })));
@@ -108,7 +93,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.aspectRatioColumn.scrollPages = this.getAspectRatio('column', -100);
 
     this.containerMaxWidth.alwaysVisiblePage = this.getContainerMaxWidth(
-      !(this.alwaysVisiblePage && this.alwaysVisiblePage.hasMaxWidth),
+      !(this.alwaysVisiblePage?.hasMaxWidth),
       this.maxWidth.alwaysVisiblePage
     );
     this.containerMaxWidth.scrollPages = this.getContainerMaxWidth(

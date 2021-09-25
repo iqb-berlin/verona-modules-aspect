@@ -30,8 +30,7 @@
           [style.grid-column-end]="element.gridColumnEnd"
           [style.grid-row-start]="element.gridRowStart"
           [style.grid-row-end]="element.gridRowEnd"
-          [style.display]=" element.type === 'radio' ? 'inherit' : 'block'"
-          [style.height.%]="100"
+          [style.display]="element.dynamicPositioning ? (element.type === 'radio') ? 'contents' : 'inline' : 'block'"
           [elementModel]="element"
           [parentForm]="sectionForm"
           [parentArrayIndex]="i">

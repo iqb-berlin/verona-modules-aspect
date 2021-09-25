@@ -1,7 +1,7 @@
 <app-element-overlay
     [style.overflow]="'auto'"
-    [style.display]="'block'"
-    [style.width]="elementModel.dynamicPositioning ? '100%': elementModel.width + 'px'"
+    [style.display]="elementModel.dynamicPositioning ?'contents' : 'block'"
+    [style.width]="elementModel.dynamicPositioning  ? '100%': elementModel.width + 'px'"
     [style.height]="elementModel.dynamicPositioning ? '100%' : elementModel.height + 'px'"
     [elementModel]="elementModel"
     [parentForm]="elementForm"

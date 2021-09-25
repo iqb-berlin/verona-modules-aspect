@@ -38,7 +38,7 @@ export class ElementOverlayComponent implements OnInit {
 
     const elementComponentRef = this.elementComponentContainer.createComponent(elementComponentFactory);
     elementComponentRef.location.nativeElement.style.display = 'block';
-    elementComponentRef.location.nativeElement.style.height = this.elementModel.type === 'text' ? 'auto' : '100%';
+    elementComponentRef.location.nativeElement.style.height = '100%';
 
     const elementComponent = elementComponentRef.instance;
     elementComponent.elementModel = this.elementModel;

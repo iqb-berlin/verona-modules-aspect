@@ -6,7 +6,7 @@ import { FormElementComponent } from '../form-element-component.directive';
   selector: 'app-text-area',
   template: `
     <mat-form-field [style.width.%]="100"
-                    [style.height.%]="100"
+                    [style.min-height.%]="100"
                     [style.background-color]="elementModel.backgroundColor"
                     [style.color]="elementModel.fontColor"
                     [style.font-family]="elementModel.font"
@@ -19,8 +19,9 @@ import { FormElementComponent } from '../form-element-component.directive';
               (focus)="onFocus.emit(input)"
               (blur)="onBlur.emit(input)"
               placeholder="{{elementModel.label}}"
+              [style.min-width.%]="100"
               [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">
-      </textarea>
+    </textarea>
     </mat-form-field>
   `
 })

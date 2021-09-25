@@ -8,7 +8,7 @@
                [section]="section"
                [ngStyle]="{
                   position: 'relative',
-                  display: 'block',
+                  display: section.dynamicPositioning ? 'contents' : 'block',
                   overflow: 'auto',
                   width: '100%',
                   'background-color': section.backgroundColor,

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { DragItemData, DropListData } from './page-canvas.component';
-import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
+import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 
 @Component({

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { take } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 

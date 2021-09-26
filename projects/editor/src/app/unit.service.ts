@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import {
   Unit, UnitPage, UnitPageSection, UnitUIElement

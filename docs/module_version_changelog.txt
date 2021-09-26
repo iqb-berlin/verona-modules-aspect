@@ -1,0 +1,3 @@
+iqb-aspect-module@0.1.0 -> iqb-aspect-module@0.1.1:
+  new:
+    - ButtonElement.action: undefined | 'previous' | 'next' | 'end';

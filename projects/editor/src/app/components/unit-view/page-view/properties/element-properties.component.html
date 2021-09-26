@@ -39,6 +39,19 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('action')" appearance="fill">
+          <mat-label>Aktion</mat-label>
+          <mat-select [value]="combinedProperties.action"
+                      (selectionChange)="updateModel('action', $event.value)">
+            <mat-option *ngFor="let option of [{displayValue: 'keine', value: undefined},
+                                               {displayValue: 'Vorherige Seite', value: 'previous'},
+                                               {displayValue: 'Nächste Seite', value: 'next'},
+                                               {displayValue: 'Letzte Seite', value: 'end'}]"
+                        [value]="option.value">
+              {{option.displayValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('highlightable')"
                       [checked]="$any(combinedProperties.highlightable)"

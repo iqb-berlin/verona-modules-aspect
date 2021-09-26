@@ -6,7 +6,7 @@ import {
   VideoElement, TextAreaElement
 } from '../../../common/unit';
 
-const EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.1.0';
+const EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.1.1';
 
 export function createUnit(): Unit {
   return {
@@ -104,6 +104,7 @@ export function createTextElement(): TextElement {
 export function createButtonElement(): ButtonElement {
   return <ButtonElement>{
     label: 'Knopf Beschriftung',
+    action: undefined,
     ...createUnitUIElement('button'),
     ...createTextUIElement(),
     ...createSurfaceUIElement()

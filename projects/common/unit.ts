@@ -78,6 +78,7 @@ export interface TextElement extends TextUIElement, SurfaceUIElement {
 
 export interface ButtonElement extends TextUIElement, SurfaceUIElement {
   label: string;
+  action: undefined | 'previous' | 'next' | 'end';
 }
 
 export interface TextFieldElement extends InputUIElement, TextUIElement, SurfaceUIElement {

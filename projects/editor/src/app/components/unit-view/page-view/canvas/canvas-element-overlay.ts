@@ -19,7 +19,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   @Input() element!: UnitUIElement;
   @Input() viewMode: boolean = false;
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
-  selected = false;
+  isSelected = false;
   protected childComponent!: ComponentRef<ElementComponent>;
   private ngUnsubscribe = new Subject<void>();
 
@@ -72,7 +72,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   }
 
   setSelected(newValue: boolean): void {
-    this.selected = newValue;
+    this.isSelected = newValue;
     // This avoids: "NG0100: Expression has changed after it was checked"
     // The selection service may change the "selected" variable after onInit has run.
     // Therefore we need to run it again after this.

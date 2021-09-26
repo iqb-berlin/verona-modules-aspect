@@ -65,37 +65,39 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     });
   }
 
-  moveElementBetweenSections(element: UnitUIElement, previousSectionIndex: number, newSectionIndex: number): void {
-    this.unitService.transferElement([element],
+  moveElementsBetweenSections(elements: UnitUIElement[], previousSectionIndex: number, newSectionIndex: number): void {
+    this.unitService.transferElement(elements,
       this.page.sections[previousSectionIndex],
       this.page.sections[newSectionIndex]);
   }
 
   elementDropped(event: CdkDragDrop<DropListData>): void {
-    const sourceItemModel = (event.item.data as DragItemData).element;
+    const selectedElements = this.selectionService.getSelectedElements();
 
     if (event.previousContainer !== event.container) {
-      this.moveElementBetweenSections(event.item.data.element,
+      this.moveElementsBetweenSections(selectedElements,
         event.previousContainer.data.sectionIndex,
         event.container.data.sectionIndex);
     } else {
-      let newXPosition = sourceItemModel.xPosition + event.distance.x;
-      if (newXPosition < 0) {
-        newXPosition = 0;
-      }
-      if (newXPosition > this.page.maxWidth - sourceItemModel.width) {
-        newXPosition = this.page.maxWidth - sourceItemModel.width;
-      }
-      this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'xPosition', newXPosition);
+      selectedElements.forEach((element: UnitUIElement) => {
+        let newXPosition = element.xPosition + event.distance.x;
+        if (newXPosition < 0) {
+          newXPosition = 0;
+        }
+        if (newXPosition > this.page.maxWidth - element.width) {
+          newXPosition = this.page.maxWidth - element.width;
+        }
+        this.unitService.updateElementProperty([element], 'xPosition', newXPosition);
 
-      let newYPosition = sourceItemModel.yPosition + event.distance.y;
-      if (newYPosition < 0) {
-        newYPosition = 0;
-      }
-      if (newYPosition > this.getPageHeight() - sourceItemModel.height) {
-        newYPosition = this.getPageHeight() - sourceItemModel.height;
-      }
-      this.unitService.updateElementProperty(this.selectionService.getSelectedElements(), 'yPosition', newYPosition);
+        let newYPosition = element.yPosition + event.distance.y;
+        if (newYPosition < 0) {
+          newYPosition = 0;
+        }
+        if (newYPosition > this.getPageHeight() - element.height) {
+          newYPosition = this.getPageHeight() - element.height;
+        }
+        this.unitService.updateElementProperty([element], 'yPosition', newYPosition);
+      });
     }
   }
 

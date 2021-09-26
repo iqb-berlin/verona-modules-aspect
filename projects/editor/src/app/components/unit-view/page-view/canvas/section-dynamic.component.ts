@@ -68,9 +68,7 @@ export class SectionDynamicComponent {
   @Input() sectionIndex!: number;
   @Input() dropListList!: string[];
   @Input() isSelected!: boolean;
-  @Output() transferElement = new EventEmitter<{ element: UnitUIElement,
-    previousSectionIndex: number,
-    newSectionIndex: number }>();
+  @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
 
   dragging = false;
   draggingElementWidth: number | undefined = 0;
@@ -84,7 +82,6 @@ export class SectionDynamicComponent {
     // Move element to other section - handled by parent (page-canvas).
     if (event.previousContainer.data.sectionIndex !== event.container.data.sectionIndex) {
       this.transferElement.emit({
-        element: event.item.data.element,
         previousSectionIndex: event.previousContainer.data.sectionIndex,
         newSectionIndex: event.container.data.sectionIndex
       });

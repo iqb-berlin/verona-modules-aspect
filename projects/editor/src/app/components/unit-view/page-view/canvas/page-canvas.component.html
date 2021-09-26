@@ -31,7 +31,7 @@
              [section]="section" [sectionIndex]="i"
              [isSelected]="selectionService.selectedPageSectionIndex === i"
              [dropListList]="dropListList"
-             (transferElement)="moveElementBetweenSections($event.element,
+             (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
                                                            $event.previousSectionIndex,
                                                            $event.newSectionIndex)"
              (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"

@@ -8,7 +8,7 @@ import { UnitService } from '../../../../unit.service';
   selector: 'app-section-static',
   template: `
     <div #sectionElement class="section-wrapper"
-         [style.border]="isSelected ? '1px solid': '1px dotted'"
+         [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
          (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">

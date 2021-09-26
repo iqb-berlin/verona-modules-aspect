@@ -14,7 +14,7 @@ import { UnitService } from '../../../../unit.service';
          [style.grid-template-rows]="section.gridRowSizes"
          [style.height.%]="100"
          cdkDropListGroup
-         [style.border]="isSelected ? '1px solid': '1px dotted'"
+         [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor">
 

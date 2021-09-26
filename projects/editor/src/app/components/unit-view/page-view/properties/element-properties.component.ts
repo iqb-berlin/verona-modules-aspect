@@ -69,6 +69,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
             if (this.selectedElements[i][property] !== this.combinedProperties[property]) {
               this.combinedProperties[property] = undefined;
             }
+          } else {
+            delete this.combinedProperties[property];
           }
         });
       }

@@ -128,6 +128,13 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
+  async addElementToSectionByIndex(elementType: string,
+                                   pageIndex: number,
+                                   sectionIndex: number,
+                                   coordinates?: { x: number, y: number }): Promise<void> {
+    this.addElementToSection(elementType, this._unit.value.pages[pageIndex].sections[sectionIndex], coordinates);
+  }
+
   async addElementToSection(elementType: string,
                             section: UnitPageSection,
                             coordinates?: { x: number, y: number }): Promise<void> {
@@ -184,6 +191,10 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
+  deleteElementsFromSectionByIndex(elements: UnitUIElement[], pageIndex: number, sectionIndex: number): void {
+    this.deleteElementsFromSection(elements, this._unit.value.pages[pageIndex].sections[sectionIndex]);
+  }
+
   deleteElementsFromSection(elements: UnitUIElement[], section: UnitPageSection): void {
     section.elements = section.elements.filter(element => !elements.includes(element));
     this.veronaApiService.sendVoeDefinitionChangedNotification();
@@ -198,6 +209,12 @@ export class UnitService {
     });
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
+  }
+
+  duplicateElementsInSectionByIndex(elements: UnitUIElement[],
+                                    pageIndex: number,
+                                    sectionIndex: number): void {
+    this.duplicateElementsInSection(elements, this._unit.value.pages[pageIndex].sections[sectionIndex]);
   }
 
   duplicateElementsInSection(elements: UnitUIElement[], section: UnitPageSection): void {

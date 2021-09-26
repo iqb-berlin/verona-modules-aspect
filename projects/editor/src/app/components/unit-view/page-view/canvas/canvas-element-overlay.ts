@@ -4,10 +4,10 @@ import {
   HostListener,
   ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef
 } from '@angular/core';
-import { forkJoin, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
-import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
+import { UnitUIElement } from '../../../../../../../common/unit';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
 import { ValueChangeElement } from '../../../../../../../common/form';
@@ -57,12 +57,14 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     if (!(event.target as Element).tagName.includes('input'.toUpperCase()) &&
         !(event.target as Element).tagName.includes('textarea'.toUpperCase()) &&
         event.key === 'Delete') {
-      forkJoin([
-        this.selectionService.selectedElements.pipe(take(1)),
-        this.selectionService.selectedPageSection.pipe(take(1))
-      ])
-        .subscribe((results: [UnitUIElement[], UnitPageSection]) => {
-          this.unitService.deleteElementsFromSection(results[0], results[1]);
+      this.selectionService.selectedElements
+        .pipe(take(1))
+        .subscribe((selectedElements: UnitUIElement[]) => {
+          this.unitService.deleteElementsFromSectionByIndex(
+            selectedElements,
+            this.selectionService.selectedPageIndex,
+            this.selectionService.selectedPageSectionIndex
+          );
           this.selectionService.clearElementSelection();
         })
         .unsubscribe();

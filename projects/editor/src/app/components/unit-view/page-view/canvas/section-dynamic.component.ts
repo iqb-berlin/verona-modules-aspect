@@ -4,7 +4,6 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { DragItemData, DropListData } from './page-canvas.component';
 import { UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
-import { SelectionService } from '../../../../selection.service';
 import { UnitService } from '../../../../unit.service';
 
 @Component({
@@ -15,7 +14,7 @@ import { UnitService } from '../../../../unit.service';
          [style.grid-template-rows]="section.gridRowSizes"
          [style.height.%]="100"
          cdkDropListGroup
-         [style.border]="selected ? '1px solid': '1px dotted'"
+         [style.border]="isSelected ? '1px solid': '1px dotted'"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor">
 
@@ -68,16 +67,16 @@ export class SectionDynamicComponent {
   @Input() section!: UnitPageSection;
   @Input() sectionIndex!: number;
   @Input() dropListList!: string[];
+  @Input() isSelected!: boolean;
   @Output() transferElement = new EventEmitter<{ element: UnitUIElement,
     previousSectionIndex: number,
     newSectionIndex: number }>();
 
-  selected = true;
   dragging = false;
   draggingElementWidth: number | undefined = 0;
   draggingElementHeight: number | undefined = 0;
 
-  constructor(public selectionService: SelectionService, public unitService: UnitService) { }
+  constructor(public unitService: UnitService) { }
 
   drop(event: CdkDragDrop<DropListData>): void {
     const dragItemData: DragItemData = event.item.data;

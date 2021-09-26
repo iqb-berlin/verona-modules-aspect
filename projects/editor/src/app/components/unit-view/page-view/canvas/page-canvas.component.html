@@ -18,20 +18,24 @@
         <app-section-static *ngIf="!section.dynamicPositioning"
              class="section drop-list" id="section-{{i}}"
              [section]="section"
+             [isSelected]="selectionService.selectedPageSectionIndex === i"
              cdkDropList cdkDropListSortingDisabled
              [cdkDropListData]="{ sectionIndex: i }"
              (cdkDropListDropped)="elementDropped($event)"
              [cdkDropListConnectedTo]="dropListList"
-             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1">
+             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"
+             (click)="selectionService.selectedPageSectionIndex = i">
         </app-section-static>
         <app-section-dynamic *ngIf="section.dynamicPositioning"
              class="section drop-list"
              [section]="section" [sectionIndex]="i"
+             [isSelected]="selectionService.selectedPageSectionIndex === i"
              [dropListList]="dropListList"
              (transferElement)="moveElementBetweenSections($event.element,
                                                            $event.previousSectionIndex,
                                                            $event.newSectionIndex)"
-             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1">
+             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"
+             (click)="selectionService.selectedPageSectionIndex = i">
         </app-section-dynamic>
       </div>
     </div>

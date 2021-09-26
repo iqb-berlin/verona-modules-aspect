@@ -12,7 +12,6 @@ import { SelectionService } from '../../../../selection.service';
   selector: 'app-page-canvas',
   templateUrl: './page-canvas.component.html',
   styles: [
-    '.section {position: relative}',
     '.canvasBackground {background-color: lightgrey; padding: 20px 50px; height: 100%; overflow: auto;}',
     '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin: 15px 0; border-radius: 10%}',
     '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
@@ -27,7 +26,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   hoveredSection: number = -1;
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private selectionService: SelectionService, public unitService: UnitService) { }
+  constructor(public selectionService: SelectionService, public unitService: UnitService) { }
 
   ngOnInit(): void {
     this.unitService.unit
@@ -107,7 +106,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
   addSection(index: number | null = null): void {
     this.unitService.addSection(this.page, index);
-    this.selectionService.setSelectedPageSection(this.page.sections[this.page.sections.length - 1]);
+    this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
   }
 
   sectionDrop(event: CdkDragDrop<UnitPageSection[]>): void {

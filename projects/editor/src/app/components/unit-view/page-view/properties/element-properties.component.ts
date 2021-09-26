@@ -1,15 +1,15 @@
 import {
   Component, OnDestroy, OnInit
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 import { MessageService } from '../../../../../../../common/message.service';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-element-properties',
@@ -90,22 +90,19 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   deleteElement(): void {
-    this.selectionService.selectedPageSection
-      .pipe(take(1))
-      .subscribe(selectedPageSection => {
-        this.unitService.deleteElementsFromSection(this.selectedElements, selectedPageSection);
-        this.selectionService.clearElementSelection();
-      })
-      .unsubscribe();
+    this.unitService.deleteElementsFromSectionByIndex(
+      this.selectedElements,
+      this.selectionService.selectedPageIndex,
+      this.selectionService.selectedPageSectionIndex
+    );
   }
 
   duplicateElement(): void {
-    this.selectionService.selectedPageSection
-      .pipe(take(1))
-      .subscribe(selectedPageSection => {
-        this.unitService.duplicateElementsInSection(this.selectedElements, selectedPageSection);
-      })
-      .unsubscribe();
+    this.unitService.duplicateElementsInSectionByIndex(
+      this.selectedElements,
+      this.selectionService.selectedPageIndex,
+      this.selectionService.selectedPageSectionIndex
+    );
   }
 
   ngOnDestroy(): void {

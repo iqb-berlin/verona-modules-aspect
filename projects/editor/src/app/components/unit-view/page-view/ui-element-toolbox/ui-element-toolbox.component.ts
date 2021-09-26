@@ -17,9 +17,8 @@ export class UiElementToolboxComponent {
   constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 
   async addUIElement(elementType: string): Promise<void> {
-    this.selectionService.selectedPageSection
-      .pipe(take(1))
-      .subscribe(pageSection => this.unitService.addElementToSection(elementType, pageSection))
-      .unsubscribe();
+    this.unitService.addElementToSectionByIndex(elementType,
+      this.selectionService.selectedPageIndex,
+      this.selectionService.selectedPageSectionIndex);
   }
 }

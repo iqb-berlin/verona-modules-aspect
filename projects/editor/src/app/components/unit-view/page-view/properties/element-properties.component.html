@@ -151,7 +151,8 @@
                     (click)="addOption('options', newOption.value); newOption.select()">
               <mat-icon>add</mat-icon>
             </button>
-            <input #newOption matInput type="text" placeholder="Optionstext">
+            <input #newOption matInput type="text" placeholder="Optionstext"
+                   (keyup.enter)="addOption('options', newOption.value); newOption.select()">
           </div>
         </mat-form-field>
 

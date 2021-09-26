@@ -7,11 +7,12 @@
       <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
         <app-section-menu [class.open]="hoveredSection === i" class="section-menu" fxLayout="column"
                           [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
-                          [section]="section"
+                          [section]="section" [sectionIndex]="i"
                           [allowMoveUp]="i != 0"
                           [allowMoveDown]="i < page.sections.length - 1"
                           [allowDelete]="page.sections.length > 1"
                           (moveSection)="unitService.moveSection(section, page, $event)"
+                          (duplicateSection)="unitService.duplicateSection(section, page, i)"
                           (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"> <!-- keep menu open-->
         </app-section-menu>
         <!-- TODO split section into static and dynamic-->

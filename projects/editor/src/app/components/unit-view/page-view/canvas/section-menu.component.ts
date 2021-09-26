@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { DialogService } from '../../../../dialog.service';
+import { SelectionService } from '../../../../selection.service';
 
 @Component({
   selector: 'app-section-menu',
@@ -102,6 +103,10 @@ import { DialogService } from '../../../../dialog.service';
             (click)="this.moveSection.emit('down')">
       <mat-icon>south</mat-icon>
     </button>
+    <button mat-mini-fab
+            (click)="duplicateSection.emit()">
+      <mat-icon>content_copy</mat-icon>
+    </button>
     <button *ngIf="allowDelete" mat-mini-fab
             (click)="deleteSection()">
       <mat-icon>clear</mat-icon>
@@ -116,10 +121,12 @@ import { DialogService } from '../../../../dialog.service';
 })
 export class SectionMenuComponent implements OnInit, OnDestroy {
   @Input() section!: UnitPageSection;
+  @Input() sectionIndex!: number;
   @Input() allowMoveUp!: boolean;
   @Input() allowMoveDown!: boolean;
   @Input() allowDelete!: boolean;
   @Output() moveSection = new EventEmitter<'up' | 'down'>();
+  @Output() duplicateSection = new EventEmitter();
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
   columnSizes: { value: string, unit: string }[] = [];
@@ -127,6 +134,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
+              private selectionService: SelectionService,
               private dialogService: DialogService) { }
 
   ngOnInit(): void {
@@ -143,6 +151,10 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
       .subscribe((result: boolean) => {
         if (result) {
           this.unitService.deleteSection(this.section);
+          if (this.sectionIndex === this.selectionService.selectedPageSectionIndex &&
+            this.selectionService.selectedPageSectionIndex > 0) {
+            this.selectionService.selectedPageSectionIndex -= 1;
+          }
         }
       });
   }

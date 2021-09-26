@@ -40,7 +40,7 @@ export function createUnitPageSection(): UnitPageSection {
   };
 }
 
-function createUnitUIElement(type: string): UnitUIElement {
+export function createUnitUIElement(type: string): UnitUIElement {
   return {
     type,
     id: 'id_placeholder',

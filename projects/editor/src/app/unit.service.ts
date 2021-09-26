@@ -117,6 +117,18 @@ export class UnitService {
     }
   }
 
+  duplicateSection(section: UnitPageSection, page: UnitPage, sectionIndex: number): void {
+    const newSection = { ...section };
+    newSection.elements = [];
+    section.elements.forEach((element: UnitUIElement) => {
+      const newElement = UnitFactory.createUnitUIElement(element.type);
+      newSection.elements.push({ ...newElement, ...element, id: this.idService.getNewID(element.type) });
+    });
+    page.sections.splice(sectionIndex + 1, 0, newSection);
+    this._unit.next(this._unit.value);
+    this.veronaApiService.sendVoeDefinitionChangedNotification();
+  }
+
   moveSection(section: UnitPageSection, page: UnitPage, direction: 'up' | 'down'): void {
     UnitService.moveArrayItem(section, page.sections, direction);
     this._unit.next(this._unit.value);

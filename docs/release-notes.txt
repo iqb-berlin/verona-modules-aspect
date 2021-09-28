@@ -15,6 +15,9 @@ Editor
 
 Player
 ======
+next
+- [bug] Reset pages when loading a new unit definition
+
 1.0.8
 - [bug] Don't show needless scrollbars for radio button group and validation messages
 - [bug] Fix/Allow resizing of text area

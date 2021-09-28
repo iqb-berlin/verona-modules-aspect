@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
@@ -17,13 +16,15 @@ import { SpecialCharacterService } from './services/special-character.service';
 @Component({
   selector: 'player-aspect',
   template: `
-    <app-unit-state *ngIf="playerConfig" [pages]=pages [playerConfig]=playerConfig></app-unit-state>
+    <app-unit-state *ngIf="playerConfig && pages?.length"
+                    [pages]=pages
+                    [playerConfig]=playerConfig>
+    </app-unit-state>
   `
 })
 export class AppComponent implements OnInit {
-  form!: FormGroup;
   pages!: UnitPage[];
-  playerConfig!: PlayerConfig;
+  playerConfig!: PlayerConfig | undefined;
 
   constructor(private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
@@ -71,24 +72,27 @@ export class AppComponent implements OnInit {
   }
 
   private onStart(message: VopStartCommand): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onStart', message);
-    const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : {};
-    if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
-      this.playerConfig = message.playerConfig || {};
-      this.veronaPostService.sessionId = message.sessionId;
-      this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
-      this.initUnitPages(unitDefinition.pages, message.unitState);
-      this.specialCharacterService.useKeyboard(false);
-    } else {
-      this.dialog.open(AlertDialogComponent, {
-        data: {
-          title: this.translateService.instant('dialogTitle.wrongUnitDefinitionType'),
-          content: this.translateService.instant('dialogContent.wrongUnitDefinitionType',
-            { version: this.metaDataService.playerMetadata.supportedUnitDefinitionTypes })
-        }
-      });
-    }
+    this.reset();
+    setTimeout(() => {
+      // eslint-disable-next-line no-console
+      console.log('player: onStart', message);
+      const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : {};
+      if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
+        this.playerConfig = message.playerConfig || {};
+        this.veronaPostService.sessionId = message.sessionId;
+        this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
+        this.initUnitPages(unitDefinition.pages, message.unitState);
+        this.specialCharacterService.useKeyboard(false);
+      } else {
+        this.dialog.open(AlertDialogComponent, {
+          data: {
+            title: this.translateService.instant('dialogTitle.wrongUnitDefinitionType'),
+            content: this.translateService.instant('dialogContent.wrongUnitDefinitionType',
+              { version: this.metaDataService.playerMetadata.supportedUnitDefinitionTypes })
+          }
+        });
+      }
+    });
   }
 
   // structure of a unitPage:   {sections: [{elements: [{id: ..., value: ...}]}]}
@@ -123,5 +127,12 @@ export class AppComponent implements OnInit {
     // eslint-disable-next-line no-console
     console.log('player: onFocus', focused);
     this.veronaPostService.sendVopWindowFocusChangedNotification(focused);
+  }
+
+  private reset(): void {
+    // eslint-disable-next-line no-console
+    console.log('player: reset');
+    this.pages = [];
+    this.playerConfig = {};
   }
 }

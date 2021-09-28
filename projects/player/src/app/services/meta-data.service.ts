@@ -22,11 +22,15 @@ export class MetaDataService {
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
   verifyUnitDefinitionVersion(unitDefinition: string | undefined): boolean {
-    return (!!unitDefinition && unitDefinition === this.playerMetadata.supportedUnitDefinitionTypes);
+    return true;
+    // return (!!unitDefinition && unitDefinition === this.playerMetadata.supportedUnitDefinitionTypes);
   }
 
+  // eslint-disable-next-line class-methods-use-this
   verifyUnitStateDataType(unitStateDataType: string | undefined): boolean {
-    return (!!unitStateDataType && unitStateDataType === this.playerMetadata.supportedUnitStateDataTypes);
+    return true;
+    // return (!!unitStateDataType && unitStateDataType === this.playerMetadata.supportedUnitStateDataTypes);
   }
 }

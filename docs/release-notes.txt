@@ -19,3 +19,6 @@ Player
 - [bug] Fix/Allow resizing of text area
 - Support Roboto font
 - [bug] Reset pages when loading a new unit definition
+
+1.0.9
+- Allow loading of all aspect module unit definitions

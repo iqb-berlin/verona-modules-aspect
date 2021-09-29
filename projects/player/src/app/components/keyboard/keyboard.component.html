@@ -1,4 +1,4 @@
-<div class="keyboard-container">
+<div class="keyboard-container" (mousedown)="onMouseDown($event)">
   <div class="character-row">
     <ng-container *ngFor="let upperCharacter of upperCharacters">
       <app-key class="character-key" [character]="upperCharacter"></app-key>

@@ -16,4 +16,9 @@ export class KeyboardComponent implements OnInit {
     this.upperCharacters = this.specialCharacterService.upperCharacters;
     this.lowerCharacters = this.specialCharacterService.lowerCharacters;
   }
+
+  onMouseDown = (event: MouseEvent): void => {
+    event.stopPropagation();
+    event.preventDefault();
+  };
 }

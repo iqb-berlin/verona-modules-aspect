@@ -128,6 +128,7 @@ export function createTextfieldElement(): TextFieldElement {
     ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
+    backgroundColor: 'transparent',
     height: 100
   };
 }
@@ -140,6 +141,7 @@ export function createTextareaElement(): TextAreaElement {
     ...createInputUIElement('Beispiel Beschriftung', ''),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
+    backgroundColor: 'transparent',
     height: 120
   };
 }

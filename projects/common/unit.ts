@@ -71,8 +71,13 @@ export interface CompoundElementCorrection extends UnitUIElement {
   sentences : string[];
 }
 
-export interface TextElement extends TextUIElement, SurfaceUIElement {
+export interface TextElement extends SurfaceUIElement {
   text: string;
+  fontColor: string;
+  font: string;
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
   highlightable: boolean
 }
 

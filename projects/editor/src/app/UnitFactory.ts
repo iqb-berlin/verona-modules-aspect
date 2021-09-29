@@ -92,9 +92,13 @@ export function createSurfaceUIElement(): Record<string, unknown> {
 export function createTextElement(): TextElement {
   return <TextElement>{
     text: '<p>Lorem ipsum dolor sit amet</p>',
+    fontColor: 'black',
+    font: 'Roboto',
+    bold: false,
+    italic: false,
+    underline: false,
     highlightable: false,
     ...createUnitUIElement('text'),
-    ...createTextUIElement(),
     ...createSurfaceUIElement(),
     backgroundColor: 'transparent',
     height: 78

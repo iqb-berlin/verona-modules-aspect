@@ -1,0 +1,14 @@
+Player
+======
+next
+- [bug] Center single column pages
+- [bug] Allow aspect ratio for always visible side over 50%
+
+1.0.9
+- Allow loading of all aspect module unit definitions
+
+1.0.8
+- [bug] Don't show needless scrollbars for radio button group and validation messages
+- [bug] Fix/Allow resizing of text area
+- Support Roboto font
+- [bug] Reset pages when loading a new unit definition

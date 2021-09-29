@@ -7,7 +7,7 @@ import { FormElementComponent } from '../form-element-component.directive';
   template: `
     <mat-form-field [style.width.%]="100"
                     [style.min-height.%]="100"
-                    [style.background-color]="elementModel.backgroundColor"
+                    appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
                     [style.color]="elementModel.fontColor"
                     [style.font-family]="elementModel.font"
                     [style.font-size.px]="elementModel.fontSize"

@@ -33,6 +33,7 @@ import { VideoComponent } from './element-components/video.component';
 import { AudioComponent } from './element-components/audio.component';
 import { CorrectionComponent } from './element-components/compound-components/correction.component';
 import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
+import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
 
 @NgModule({
   imports: [
@@ -61,7 +62,8 @@ import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
     CheckboxComponent,
     DropdownComponent,
     CorrectionComponent,
-    SafeResourceUrlPipe
+    SafeResourceUrlPipe,
+    InputBackgroundColorDirective
   ],
   exports: [
     CommonModule,

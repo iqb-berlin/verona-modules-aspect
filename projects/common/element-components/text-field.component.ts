@@ -7,13 +7,13 @@ import { FormElementComponent } from '../form-element-component.directive';
   template: `
     <mat-form-field [style.width.%]="100"
                     [style.height.%]="100"
-                    [style.background-color]="elementModel.backgroundColor"
                     [style.color]="elementModel.fontColor"
                     [style.font-family]="elementModel.font"
                     [style.font-size.px]="elementModel.fontSize"
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+                    appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" [pattern]="elementModel.pattern" #input
              (focus)="onFocus.emit(input)"

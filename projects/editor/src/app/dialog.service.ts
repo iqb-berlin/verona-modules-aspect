@@ -115,6 +115,7 @@ export class MultilineTextEditDialog {
            menubar: false,
            statusbar: false,
            paste_as_text: true,
+           fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt',
            plugins: [
              'charmap paste lists'
            ],

@@ -1,22 +1,16 @@
 <div class="layout-container">
-  <div class="layout-flex-container"
-       cdkOverlayOrigin #trigger="cdkOverlayOrigin"
-       [fxLayout]="layoutAlignment">
-    <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
-      alwaysVisiblePageView :
-      scrollPagesView"></ng-container>
-    <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
-      alwaysVisiblePageView :
-      scrollPagesView"></ng-container>
+  <div class="layout-flex-container">
+    <div class="pages-container"
+         [fxLayout]="layoutAlignment">
+      <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
+        alwaysVisiblePageView :
+        scrollPagesView"></ng-container>
+      <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
+        alwaysVisiblePageView :
+        scrollPagesView"></ng-container>
+    </div>
+    <app-keyboard *ngIf="isKeyboardOpen" class="keyboard"></app-keyboard>
   </div>
-
-  <ng-template
-      cdk-connected-overlay
-      [cdkConnectedOverlayOrigin]="trigger"
-      [cdkConnectedOverlayOpen]="isKeyboardOpen"
-  >
-    <app-keyboard class="keyboard"></app-keyboard>
-  </ng-template>
 </div>
 
 <ng-template #alwaysVisiblePageView>
@@ -25,7 +19,7 @@
        [style.max-height.%]="aspectRatioColumn.alwaysVisiblePage"
        [style.max-width.%]="aspectRatioRow.alwaysVisiblePage">
     <div #alwaysVisiblePageContainer
-         [class.center-pages]="layoutAlignment === 'column'"
+         [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
          [class.left-container]="alwaysVisiblePagePosition === 'left'"
          [style.max-width]="containerMaxWidth.alwaysVisiblePage">
       <div appHideFirstChild
@@ -52,7 +46,7 @@
          [style.max-width.%]="aspectRatioRow.scrollPages"
          [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'">
       <div #pagesScrolledContainer
-           [class.center-pages]="layoutAlignment === 'column'"
+           [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
            [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
            [style.max-width]="containerMaxWidth.scrollPages">
         <ng-container

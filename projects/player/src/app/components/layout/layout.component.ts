@@ -72,7 +72,11 @@ export class LayoutComponent implements OnInit, OnDestroy {
       (scrollPage: UnitPage): number => this.pages.indexOf(scrollPage)
     );
     this.validPagesDetermined.emit(this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
-      { [index.toString(10)]: `${this.translateService.instant('pageIndication', { index: index + 1 })}` })));
+      {
+        [index.toString(10)]: `${this.translateService.instant('pageIndication', {
+          index: index + 1
+        })}`
+      })));
   }
 
   private initLayout(): void {
@@ -88,9 +92,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.maxWidth.allPages = Math.max(this.maxWidth.alwaysVisiblePage, this.maxWidth.scrollPages);
 
     this.aspectRatioRow.alwaysVisiblePage = this.getAspectRatio('row', 0);
-    this.aspectRatioRow.scrollPages = this.getAspectRatio('row', -100);
+    this.aspectRatioRow.scrollPages = this.getAspectRatio('row', 100);
     this.aspectRatioColumn.alwaysVisiblePage = this.getAspectRatio('column', 0);
-    this.aspectRatioColumn.scrollPages = this.getAspectRatio('column', -100);
+    this.aspectRatioColumn.scrollPages = this.getAspectRatio('column', 100);
 
     this.containerMaxWidth.alwaysVisiblePage = this.getContainerMaxWidth(
       !(this.alwaysVisiblePage?.hasMaxWidth),
@@ -110,7 +114,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   private getAspectRatio(alignment: string, offset: number) : number {
-    return this.alwaysVisiblePage && this.layoutAlignment === alignment ?
+    return this.alwaysVisiblePage && this.hasScrollPages && this.layoutAlignment === alignment ?
       Math.abs(this.alwaysVisiblePage.alwaysVisibleAspectRatio - offset) : 100;
   }
 

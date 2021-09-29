@@ -25,10 +25,17 @@
 
 .layout-flex-container{
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.pages-container{
+  height: 100%;
+  overflow: auto;
 }
 
 .keyboard {
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
+
+  width: 100%;
 }

@@ -32,8 +32,9 @@ import { ImageComponent } from './element-components/image.component';
 import { VideoComponent } from './element-components/video.component';
 import { AudioComponent } from './element-components/audio.component';
 import { CorrectionComponent } from './element-components/compound-components/correction.component';
-import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
+import { SafeResourceUrlPipe } from './element-components/pipes/safe-resource-url.pipe';
 import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
+import { ErrorTransformPipe } from './element-components/pipes/error-transform.pipe';
 
 @NgModule({
   imports: [
@@ -63,7 +64,8 @@ import { InputBackgroundColorDirective } from './element-components/directives/i
     DropdownComponent,
     CorrectionComponent,
     SafeResourceUrlPipe,
-    InputBackgroundColorDirective
+    InputBackgroundColorDirective,
+    ErrorTransformPipe
   ],
   exports: [
     CommonModule,

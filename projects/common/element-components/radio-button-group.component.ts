@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
+import { ValidatorFn, Validators } from '@angular/forms';
 import { RadioButtonGroupElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
 @Component({
   selector: 'app-radio-button-group',
   template: `
-    <div [style.width.%]="100"
+    <div class="mat-form-field"
+         [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.backgroundColor"
          [style.color]="elementModel.fontColor"
@@ -22,10 +24,22 @@ import { FormElementComponent } from '../form-element-component.directive';
         <mat-radio-button *ngFor="let option of elementModel.options" [value]="option">
           {{option}}
         </mat-radio-button>
+        <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+                   [style.font-size.%]="75">
+          {{elementFormControl.errors | errorTransform: elementModel}}
+        </mat-error>
       </mat-radio-group>
     </div>
   `
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
   elementModel!: RadioButtonGroupElement;
+
+  get validators(): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+    if (this.elementModel.required) {
+      validators.push(Validators.required);
+    }
+    return validators;
+  }
 }

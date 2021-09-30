@@ -2,7 +2,7 @@ import {
   Directive, EventEmitter, OnDestroy, OnInit, Output
 } from '@angular/core';
 import {
-  FormControl, FormGroup
+  FormControl, FormGroup, ValidatorFn
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { pairwise, startWith, takeUntil } from 'rxjs/operators';
@@ -17,6 +17,8 @@ export abstract class FormElementComponent extends ElementComponent implements O
   parentForm!: FormGroup;
   defaultValue!: string | number | boolean | undefined;
   elementFormControl!: FormControl;
+  abstract validators: ValidatorFn[];
+
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private formService: FormService) {
@@ -31,6 +33,11 @@ export abstract class FormElementComponent extends ElementComponent implements O
     });
     this.elementFormControl = this.formControl;
     this.updateFormValue((this.elementModel as InputUIElement).value);
+    this.formService.setValidators({
+      id: this.elementModel.id,
+      validators: this.validators,
+      formGroup: this.parentForm
+    });
     this.elementFormControl.valueChanges
       .pipe(
         startWith(this.elementModel.value),

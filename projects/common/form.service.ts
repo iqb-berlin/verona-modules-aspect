@@ -37,8 +37,8 @@ export class FormService {
     this._groupAdded.next(group);
   }
 
-  setValidators(validations: FormControlValidators): void {
-    this._validatorsAdded.next(validations);
+  setValidators(validators: FormControlValidators): void {
+    this._validatorsAdded.next(validators);
   }
 
   addPresentedPage(presentedPage: number): void {

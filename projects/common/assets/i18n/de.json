@@ -1,4 +1,11 @@
 {
   "pageIndication": "Seite {{index}}",
-  "close": "Schließen"
+  "close": "Schließen",
+  "validators": {
+    "inputRequired": "Eingabe erforderlich",
+    "inputRequiredTrue": "Ankreuzen erforderlich",
+    "inputTooShort": "Eingabe zu kurz",
+    "inputTooLong": "Eingabe zu lang",
+    "wrongPattern": "Eingabe enthält falsche Zeichen"
+  }
 }

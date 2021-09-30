@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { ValidatorFn, Validators } from '@angular/forms';
 import { TextFieldElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -20,6 +21,9 @@ import { FormElementComponent } from '../form-element-component.directive';
              (blur)="onBlur.emit(input)"
              [formControl]="elementFormControl"
              placeholder="{{elementModel.label}}">
+      <mat-error *ngIf="elementFormControl.errors">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
     </mat-form-field>
   `
 })
@@ -27,4 +31,21 @@ export class TextFieldComponent extends FormElementComponent {
   @Output() onFocus = new EventEmitter<HTMLElement>();
   @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextFieldElement;
+
+  get validators(): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+    if (this.elementModel.required) {
+      validators.push(Validators.required);
+    }
+    if (this.elementModel.minLength) {
+      validators.push(Validators.minLength(<number> this.elementModel.minLength));
+    }
+    if (this.elementModel.maxLength) {
+      validators.push(Validators.maxLength(<number> this.elementModel.maxLength));
+    }
+    if (this.elementModel.pattern) {
+      validators.push(Validators.pattern(<string> this.elementModel.pattern));
+    }
+    return validators;
+  }
 }

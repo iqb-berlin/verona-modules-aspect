@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ValidatorFn, Validators } from '@angular/forms';
 import { CompoundElementCorrection } from '../../unit';
 import { FormElementComponent } from '../../form-element-component.directive';
 
@@ -32,4 +33,12 @@ import { FormElementComponent } from '../../form-element-component.directive';
 })
 export class CorrectionComponent extends FormElementComponent {
   elementModel!: CompoundElementCorrection;
+
+  get validators(): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+    if (this.elementModel.required) {
+      validators.push(Validators.required);
+    }
+    return validators;
+  }
 }

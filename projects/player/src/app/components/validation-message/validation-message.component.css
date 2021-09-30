@@ -1,9 +1,0 @@
-.dynamic-validation-message{
-  display: contents;
-}
-
-.dynamic-validation-message:not(:empty):not(:last-child):after {
-  content: ", ";
-}
-
-

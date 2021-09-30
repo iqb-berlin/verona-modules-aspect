@@ -3,13 +3,6 @@
   "presentationIncomplete": "Bearbeitung unvollständig",
   "responsesIncomplete": "Antworten sind unvollständig",
   "noReason": "Navigation ohne Angabe von Gründen verweigert",
-  "validators": {
-    "inputRequired": "Eingabe erforderlich",
-    "inputRequiredTrue": "Ankreuzen erforderlich",
-    "inputTooShort": "Eingabe zu kurz",
-    "inputTooLong": "Eingabe zu lang",
-    "wrongPattern": "Eingabe enthält falsche Zeichen"
-  },
   "dialogTitle": {
     "wrongUnitDefinitionType": "Falscher Unit-Definition-Type",
     "wrongUnitStateDataType": "Falscher Unit-State-Data-Type"

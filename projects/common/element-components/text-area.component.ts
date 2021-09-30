@@ -1,4 +1,5 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { ValidatorFn, Validators } from '@angular/forms';
 import { TextAreaElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -15,13 +16,16 @@ import { FormElementComponent } from '../form-element-component.directive';
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''"
                     [appearance]="$any(elementModel.appearance)">
-    <textarea matInput [formControl]="elementFormControl" #input
-              (focus)="onFocus.emit(input)"
-              (blur)="onBlur.emit(input)"
-              placeholder="{{elementModel.label}}"
-              [style.min-width.%]="100"
-              [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">
-    </textarea>
+      <textarea matInput [formControl]="elementFormControl" #input
+                (focus)="onFocus.emit(input)"
+                (blur)="onBlur.emit(input)"
+                placeholder="{{elementModel.label}}"
+                [style.min-width.%]="100"
+                [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">
+      </textarea>
+      <mat-error *ngIf="elementFormControl.errors">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
     </mat-form-field>
   `
 })
@@ -29,4 +33,12 @@ export class TextAreaComponent extends FormElementComponent {
   @Output() onFocus = new EventEmitter<HTMLElement>();
   @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextAreaElement;
+
+  get validators(): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+    if (this.elementModel.required) {
+      validators.push(Validators.required);
+    }
+    return validators;
+  }
 }

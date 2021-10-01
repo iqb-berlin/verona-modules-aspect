@@ -5,7 +5,7 @@ import { FormElementComponent } from '../form-element-component.directive';
 @Component({
   selector: 'app-radio-button-group',
   template: `
-    <div class="mmatd"
+    <div class="mat-form-field"
          [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.backgroundColor"

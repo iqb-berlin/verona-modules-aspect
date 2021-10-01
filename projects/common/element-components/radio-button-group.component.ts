@@ -5,7 +5,7 @@ import { FormElementComponent } from '../form-element-component.directive';
 @Component({
   selector: 'app-radio-button-group',
   template: `
-    <div class="mat-form-field"
+    <div class="mmatd"
          [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.backgroundColor"
@@ -17,14 +17,16 @@ import { FormElementComponent } from '../form-element-component.directive';
          [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       <label [innerHTML]="elementModel.label" id="radio-group-label"></label>
       <mat-radio-group aria-labelledby="radio-group-label"
-                       [style.margin-bottom.px]="20"
+                       [style.margin-bottom.px]="25"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
         <mat-radio-button *ngFor="let option of elementModel.options" [value]="option">
           {{option}}
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-                   [style.font-size.%]="75">
+                   [style.font-size.%]="75"
+                   [style.margin-top.px]="25"
+                   [style.position]="'absolute'">
           {{elementFormControl.errors | errorTransform: elementModel}}
         </mat-error>
       </mat-radio-group>

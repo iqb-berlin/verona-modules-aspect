@@ -176,7 +176,7 @@ export function createRadioButtonGroupElement(): RadioButtonGroupElement {
     ...createInputUIElement('Beschriftung Optionsfeld', undefined),
     ...createTextUIElement(),
     ...createSurfaceUIElement(),
-    height: 75,
+    height: 85,
     backgroundColor: 'transparent'
   };
 }

@@ -2,7 +2,7 @@ import {
   Component, OnInit, Input, ComponentFactoryResolver,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { UnitUIElement } from '../../../../../common/unit';
@@ -10,6 +10,7 @@ import * as ComponentUtils from '../../../../../common/component-utils';
 import { SpecialCharacterService } from '../../services/special-character.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
+import { FormService } from '../../../../../common/form.service';
 
 @Component({
   selector: 'app-element-overlay',
@@ -20,16 +21,18 @@ export class ElementOverlayComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
-  @Input() isInputElement!: boolean;
 
-  focussedInputSubscription!: Subscription;
+  private isInputElement!: boolean;
+  private focussedInputSubscription!: Subscription;
   private ngUnsubscribe = new Subject<void>();
 
   @ViewChild('elementComponentContainer',
     { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
 
   constructor(private specialCharacterService: SpecialCharacterService,
-              private componentFactoryResolver: ComponentFactoryResolver) {
+              private componentFactoryResolver: ComponentFactoryResolver,
+              private formService: FormService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -38,15 +41,25 @@ export class ElementOverlayComponent implements OnInit {
 
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     elementComponent.elementModel = this.elementModel;
-
+    this.isInputElement = Object.prototype.hasOwnProperty.call(this.elementModel, 'required');
     if (this.isInputElement) {
-      elementComponent.parentForm = this.parentForm;
-
+      const elementForm = this.formBuilder.group({});
+      elementComponent.parentForm = elementForm;
+      this.registerFormGroup(elementForm);
       if (this.specialCharacterService.isActive &&
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
         this.initEventsForKeyboard(elementComponent);
       }
     }
+  }
+
+  private registerFormGroup(elementForm: FormGroup): void {
+    this.formService.registerFormGroup({
+      formGroup: elementForm,
+      parentForm: this.parentForm,
+      parentArray: 'elements',
+      parentArrayIndex: this.parentArrayIndex
+    });
   }
 
   private initEventsForKeyboard(elementComponent: TextFieldComponent | TextAreaComponent): void {

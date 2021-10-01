@@ -3,6 +3,7 @@ Player
 next
 - [bug] Center single column pages
 - [bug] Allow aspect ratio for always visible side over 50%
+- Display validation messages in small font size directly below the input line
 
 1.0.9
 - Allow loading of all aspect module unit definitions

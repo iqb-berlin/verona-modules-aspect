@@ -2,7 +2,7 @@
 
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">
-    <app-element-overlay
+    <app-element
         [style.display]="'block'"
         [style.overflow]="'auto'"
         [style.width.px]="element.width"
@@ -13,7 +13,7 @@
         [elementModel]="element"
         [parentForm]="sectionForm"
         [parentArrayIndex]="i">
-    </app-element-overlay>
+    </app-element>
   </ng-container>
 </ng-template>
 
@@ -22,7 +22,7 @@
        [style.grid-template-columns]="section.gridColumnSizes"
        [style.grid-template-rows]="section.gridRowSizes">
     <ng-container *ngFor="let element of section.elements; let i = index">
-      <app-element-overlay
+      <app-element
           [style.min-width.px]="element.width"
           [style.min-height.px]="element.height"
           [style.margin-left.px]="element.marginLeft"
@@ -36,7 +36,7 @@
           [elementModel]="element"
           [parentForm]="sectionForm"
           [parentArrayIndex]="i">
-      </app-element-overlay>
+      </app-element>
     </ng-container>
   </div>
 </ng-template>

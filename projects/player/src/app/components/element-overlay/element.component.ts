@@ -13,11 +13,11 @@ import { TextAreaComponent } from '../../../../../common/element-components/text
 import { FormService } from '../../../../../common/form.service';
 
 @Component({
-  selector: 'app-element-overlay',
-  templateUrl: './element-overlay.component.html',
-  styleUrls: ['./element-overlay.component.css']
+  selector: 'app-element',
+  templateUrl: './element.component.html',
+  styleUrls: ['./element.component.css']
 })
-export class ElementOverlayComponent implements OnInit {
+export class ElementComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;

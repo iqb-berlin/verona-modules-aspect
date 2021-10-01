@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from '../../../common/app.module';
-import { ElementComponent } from './components/element-overlay/element.component';
+import { ElementComponent } from './components/element/element.component';
 import { UnitStateComponent } from './components/unit-state/unit-state.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';

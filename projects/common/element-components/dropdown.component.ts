@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ValidatorFn, Validators } from '@angular/forms';
 import { DropdownElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -32,12 +31,4 @@ import { FormElementComponent } from '../form-element-component.directive';
 })
 export class DropdownComponent extends FormElementComponent {
   elementModel!: DropdownElement;
-
-  get validators(): ValidatorFn[] {
-    const validators: ValidatorFn[] = [];
-    if (this.elementModel.required) {
-      validators.push(Validators.required);
-    }
-    return validators;
-  }
 }

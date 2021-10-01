@@ -2,7 +2,7 @@ import {
   Directive, EventEmitter, OnDestroy, OnInit, Output
 } from '@angular/core';
 import {
-  FormControl, FormGroup, ValidatorFn
+  FormControl, FormGroup, ValidatorFn, Validators
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { pairwise, startWith, takeUntil } from 'rxjs/operators';
@@ -17,7 +17,6 @@ export abstract class FormElementComponent extends ElementComponent implements O
   parentForm!: FormGroup;
   defaultValue!: string | number | boolean | undefined;
   elementFormControl!: FormControl;
-  abstract validators: ValidatorFn[];
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -49,6 +48,14 @@ export abstract class FormElementComponent extends ElementComponent implements O
           this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
         }
       });
+  }
+
+  get validators(): ValidatorFn[] {
+    const validators: ValidatorFn[] = [];
+    if (this.elementModel.required) {
+      validators.push(Validators.required);
+    }
+    return validators;
   }
 
   private get formControl(): FormControl {

@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { ValidatorFn, Validators } from '@angular/forms';
 import { TextAreaElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -33,12 +32,4 @@ export class TextAreaComponent extends FormElementComponent {
   @Output() onFocus = new EventEmitter<HTMLElement>();
   @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextAreaElement;
-
-  get validators(): ValidatorFn[] {
-    const validators: ValidatorFn[] = [];
-    if (this.elementModel.required) {
-      validators.push(Validators.required);
-    }
-    return validators;
-  }
 }

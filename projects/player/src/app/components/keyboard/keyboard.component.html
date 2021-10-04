@@ -1,12 +1,7 @@
 <div class="keyboard-container" (mousedown)="onMouseDown($event)">
-  <div class="character-row">
-    <ng-container *ngFor="let upperCharacter of upperCharacters">
-      <app-key class="character-key" [character]="upperCharacter"></app-key>
-    </ng-container>
-  </div>
-  <div class="character-row">
-    <ng-container *ngFor="let lowerCharacter of lowerCharacters">
-      <app-key class="character-key" [character]="lowerCharacter"></app-key>
+  <div *ngFor="let row of rows" class="keyboard-row">
+    <ng-container *ngFor="let key of row">
+      <app-key class="key" [key]="key"></app-key>
     </ng-container>
   </div>
 </div>

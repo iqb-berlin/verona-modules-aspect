@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SpecialCharacterService } from '../../services/special-character.service';
+import { KeyboardService } from '../../services/keyboard.service';
 
 @Component({
   selector: 'app-key',
@@ -7,12 +7,12 @@ import { SpecialCharacterService } from '../../services/special-character.servic
   styleUrls: ['./key.component.css']
 })
 export class KeyComponent {
-  @Input() character!: string;
+  @Input() key!: string;
 
-  constructor(private specialCharacterService: SpecialCharacterService) { }
+  constructor(private keyboardService: KeyboardService) { }
 
   onMouseDown(event: MouseEvent): void {
-    this.specialCharacterService.inputCharacter(this.character);
+    this.keyboardService.enterKey(this.key);
     event.preventDefault();
   }
 }

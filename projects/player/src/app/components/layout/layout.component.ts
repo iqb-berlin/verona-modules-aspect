@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitPage } from '../../../../../common/unit';
 import { PlayerConfig } from '../../models/verona';
-import { SpecialCharacterService } from '../../services/special-character.service';
+import { KeyboardService } from '../../services/keyboard.service';
 
 @Component({
   selector: 'app-layout',
@@ -50,7 +50,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
   constructor(private translateService: TranslateService,
-              private specialCharacterService: SpecialCharacterService) { }
+              private keyboardService: KeyboardService) { }
 
   ngOnInit(): void {
     this.initPages();
@@ -58,7 +58,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.selectIndex
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((selectedIndex: number): void => { this.selectedIndex = selectedIndex; });
-    this.specialCharacterService.isOpen
+    this.keyboardService.isOpen
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isOpen: boolean): void => { this.isKeyboardOpen = isOpen; });
   }

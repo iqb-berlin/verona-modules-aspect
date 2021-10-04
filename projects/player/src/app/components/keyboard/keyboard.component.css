@@ -3,12 +3,13 @@
   padding: 10px 10px 0 10px;
 }
 
-.character-key{
+.key{
   flex-grow: 1;
   margin-bottom: 10px;
+  margin-right: 10px;
 }
 
-.character-row{
+.keyboard-row{
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;

@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { UnitUIElement } from '../../../../../common/unit';
 import * as ComponentUtils from '../../../../../common/component-utils';
-import { SpecialCharacterService } from '../../services/special-character.service';
+import { KeyboardService } from '../../services/keyboard.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
 import { FormService } from '../../../../../common/form.service';
@@ -29,7 +29,7 @@ export class ElementComponent implements OnInit {
   @ViewChild('elementComponentContainer',
     { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
 
-  constructor(private specialCharacterService: SpecialCharacterService,
+  constructor(private keyboardService: KeyboardService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private formService: FormService,
               private formBuilder: FormBuilder) {
@@ -46,7 +46,7 @@ export class ElementComponent implements OnInit {
       const elementForm = this.formBuilder.group({});
       elementComponent.parentForm = elementForm;
       this.registerFormGroup(elementForm);
-      if (this.specialCharacterService.isActive &&
+      if (this.keyboardService.isActive &&
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
         this.initEventsForKeyboard(elementComponent);
       }
@@ -77,13 +77,13 @@ export class ElementComponent implements OnInit {
   }
 
   private closeKeyboard(): void {
-    this.specialCharacterService.closeKeyboard();
+    this.keyboardService.closeKeyboard();
     this.focussedInputSubscription.unsubscribe();
   }
 
   private openKeyboard(focussedInputControl: HTMLElement): void {
-    this.specialCharacterService.openKeyboard();
-    this.focussedInputSubscription = this.specialCharacterService.characterInput
+    this.keyboardService.openKeyboard();
+    this.focussedInputSubscription = this.keyboardService.keyEntered
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((character: string): void => {
         this.onKeyboardInput(character, focussedInputControl);

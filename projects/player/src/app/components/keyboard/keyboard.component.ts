@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SpecialCharacterService } from '../../services/special-character.service';
+import { KeyboardService } from '../../services/keyboard.service';
 
 @Component({
   selector: 'app-keyboard',
@@ -7,14 +7,12 @@ import { SpecialCharacterService } from '../../services/special-character.servic
   styleUrls: ['./keyboard.component.css']
 })
 export class KeyboardComponent implements OnInit {
-  upperCharacters!: string[];
-  lowerCharacters!: string[];
+  rows!: string[][];
 
-  constructor(private specialCharacterService: SpecialCharacterService) { }
+  constructor(private keyboardService: KeyboardService) { }
 
   ngOnInit(): void {
-    this.upperCharacters = this.specialCharacterService.upperCharacters;
-    this.lowerCharacters = this.specialCharacterService.lowerCharacters;
+    this.rows = this.keyboardService.rows;
   }
 
   onMouseDown = (event: MouseEvent): void => {

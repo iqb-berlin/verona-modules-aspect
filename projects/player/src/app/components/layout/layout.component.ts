@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitPage } from '../../../../../common/unit';
-import { PlayerConfig } from '../../models/verona';
+import { PlayerConfig, UnitStateElementCode } from '../../models/verona';
 import { KeyboardService } from '../../services/keyboard.service';
 
 @Component({
@@ -20,6 +20,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   @Input() selectedIndex!: number;
   @Input() selectIndex!: Subject<number>;
   @Input() playerConfig!: PlayerConfig;
+  @Input() unitStateElementCodes!: UnitStateElementCode[];
 
   @Output() selectedIndexChange = new EventEmitter<number>();
   @Output() validPagesDetermined = new EventEmitter<Record<string, string>[]>();

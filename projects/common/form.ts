@@ -23,12 +23,3 @@ export interface ChildFormGroup {
   parentArray: 'pages' | 'sections' | 'elements';
   parentArrayIndex: number;
 }
-
-export interface FormSection {
-  elements: Record<string, string | number | boolean | undefined>[];
-}
-
-export interface FormPage {
-  sections: FormSection[];
-  id?: string;
-}

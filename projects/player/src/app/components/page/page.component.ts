@@ -4,6 +4,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UnitPage } from '../../../../../common/unit';
 import { FormService } from '../../../../../common/form.service';
+import { UnitStateElementCode } from '../../models/verona';
 
 @Component({
   selector: 'app-page',
@@ -16,8 +17,11 @@ export class PageComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
   @Input() index!: number;
+  @Input() unitStateElementCodes!: UnitStateElementCode[];
+
   @Input() pagesContainer!: HTMLElement;
   @Output() selectedIndexChange = new EventEmitter<number>();
+
   pageForm!: FormGroup;
 
   constructor(private formService: FormService,

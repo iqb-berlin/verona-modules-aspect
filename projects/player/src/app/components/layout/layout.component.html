@@ -32,7 +32,8 @@
                   [parentForm]="parentForm"
                   [isLastPage]="false"
                   [pagesContainer]="alwaysVisiblePageContainer"
-                  [page]="alwaysVisiblePage">
+                  [page]="alwaysVisiblePage"
+                  [unitStateElementCodes]="unitStateElementCodes">
         </app-page>
       </div>
     </div>
@@ -73,7 +74,8 @@
                     [parentForm]="parentForm"
                     [isLastPage]="last"
                     [pagesContainer]="pagesContainer"
-                    [page]="page">
+                    [page]="page"
+                    [unitStateElementCodes]="unitStateElementCodes">
           </app-page>
         </div>
       </mat-tab>
@@ -101,7 +103,8 @@
                 [pagesContainer]="pagesContainer"
                 [page]="page"
                 [isLastPage]="last"
-                (selectedIndexChange)="onSelectedIndexChange($event)">
+                (selectedIndexChange)="onSelectedIndexChange($event)"
+                [unitStateElementCodes]="unitStateElementCodes">
       </app-page>
     </div>
   </ng-container>

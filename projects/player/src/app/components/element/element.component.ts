@@ -11,6 +11,8 @@ import { KeyboardService } from '../../services/keyboard.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
 import { FormService } from '../../../../../common/form.service';
+import { ValueChangeElement } from '../../../../../common/form';
+import { UnitStateElementCode } from '../../models/verona';
 
 @Component({
   selector: 'app-element',
@@ -21,6 +23,7 @@ export class ElementComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
+  @Input() unitStateElementCodes!: UnitStateElementCode[];
 
   private isInputElement!: boolean;
   private focussedInputSubscription!: Subscription;
@@ -38,14 +41,27 @@ export class ElementComponent implements OnInit {
   ngOnInit(): void {
     const elementComponentFactory =
       ComponentUtils.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
-
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     elementComponent.elementModel = this.elementModel;
+
     this.isInputElement = Object.prototype.hasOwnProperty.call(this.elementModel, 'required');
     if (this.isInputElement) {
+      const unitStateElementCode = this.unitStateElementCodes
+        .find((element: UnitStateElementCode): boolean => element.id === this.elementModel.id);
+      if (unitStateElementCode) {
+        elementComponent.elementModel.value = unitStateElementCode.value;
+      }
+
       const elementForm = this.formBuilder.group({});
       elementComponent.parentForm = elementForm;
       this.registerFormGroup(elementForm);
+
+      elementComponent.formValueChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((changeElement: ValueChangeElement) => {
+          this.formService.changeElementValue(changeElement);
+        });
+
       if (this.keyboardService.isActive &&
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
         this.initEventsForKeyboard(elementComponent);

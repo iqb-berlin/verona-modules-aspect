@@ -14,10 +14,10 @@ import { VeronaPostService } from '../../services/verona-post.service';
 import { MessageService } from '../../../../../common/message.service';
 import { MetaDataService } from '../../services/meta-data.service';
 import {
-  FormControlElement, FormControlValidators, ChildFormGroup
+  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement
 } from '../../../../../common/form';
 import {
-  PlayerConfig, Progress, UnitState, VopNavigationDeniedNotification
+  PlayerConfig, Progress, UnitState, UnitStateElementCode, UnitStateElementCodeStatus, VopNavigationDeniedNotification
 } from '../../models/verona';
 import { UnitPage } from '../../../../../common/unit';
 
@@ -28,6 +28,8 @@ import { UnitPage } from '../../../../../common/unit';
 export class UnitStateComponent implements OnInit, OnDestroy {
   @Input() pages: UnitPage[] = [];
   @Input() playerConfig!: PlayerConfig;
+  @Input() unitStateElementCodes!: UnitStateElementCode[];
+
   form!: FormGroup;
   presentedPages: number[] = [];
 
@@ -60,6 +62,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.formService.validatorsAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
+    this.formService.elementValueChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
     this.formService.presentedPageAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
@@ -88,6 +93,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private addControl = (control: FormControlElement): void => {
     control.formGroup.addControl(control.id, control.formControl);
+    this.registerUnitStateElementCode(control.id, control.formControl.value);
   };
 
   private setValidators = (validators: FormControlValidators): void => {
@@ -113,6 +119,12 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     }
   };
 
+  private onElementValueChanges = (value: ValueChangeElement): void => {
+    // eslint-disable-next-line no-console
+    console.log(`player: onElementValueChanges ${value.id}: old: ${value.values[0]}, new: ${value.values[1]}`);
+    this.setUnitStateElementCodeValue(value.id, value.values[1]);
+  };
+
   private onFormChanges(): void {
     // eslint-disable-next-line no-console
     console.log('player: onFormChanges', this.form.value);
@@ -131,13 +143,37 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   private sendVopStateChangedNotification(): void {
     const unitState: UnitState = {
       dataParts: {
-        pages: JSON.stringify(this.form.value.pages)
+        elementCodes: JSON.stringify(this.unitStateElementCodes)
       },
       presentationProgress: this.presentationProgress,
       responseProgress: this.responseProgress,
       unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
     };
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
+  }
+
+  private setUnitStateElementCodeValue(id: string, value: string | number | boolean | undefined) {
+    const unitStateElementCode = this.unitStateElementCodes
+      .find((element: UnitStateElementCode): boolean => element.id === id);
+    if (unitStateElementCode) {
+      unitStateElementCode.value = value;
+    }
+  }
+
+  private setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus) {
+    const unitStateElementCode = this.unitStateElementCodes
+      .find((element: UnitStateElementCode): boolean => element.id === id);
+    if (unitStateElementCode) {
+      unitStateElementCode.status = status;
+    }
+  }
+
+  private registerUnitStateElementCode(id: string, value: string | number | boolean | undefined) {
+    const unitStateElementCode = this.unitStateElementCodes
+      .find((element: UnitStateElementCode): boolean => element.id === id);
+    if (!unitStateElementCode) {
+      this.unitStateElementCodes.push({ id: id, value: value, status: 'NOT_REACHED' });
+    }
   }
 
   ngOnDestroy(): void {

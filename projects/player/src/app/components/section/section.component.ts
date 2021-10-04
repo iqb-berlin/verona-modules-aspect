@@ -4,6 +4,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { UnitPageSection } from '../../../../../common/unit';
 import { FormService } from '../../../../../common/form.service';
+import { UnitStateElementCode } from '../../models/verona';
 
 @Component({
   selector: 'app-section',
@@ -13,6 +14,7 @@ export class SectionComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() section!: UnitPageSection;
   @Input() parentArrayIndex!: number;
+  @Input() unitStateElementCodes!: UnitStateElementCode[];
 
   sectionForm!: FormGroup;
 

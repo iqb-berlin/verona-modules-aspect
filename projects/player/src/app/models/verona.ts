@@ -6,6 +6,8 @@ export type Progress = 'none' | 'some' | 'complete';
 
 export type StateReportPolicy = 'none' | 'eager' | 'on-demand';
 
+export type UnitStateElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'TOUCHED' | 'VALUE_CHANGED';
+
 export interface PlayerConfig {
   unitNumber?: number;
   unitTitle?: number;
@@ -15,6 +17,12 @@ export interface PlayerConfig {
   logPolicy?: 'lean' | 'rich' | 'debug' | 'disabled';
   startPage?: string;
   enabledNavigationTargets?: NavigationTarget[]
+}
+
+export interface UnitStateElementCode {
+  id: string;
+  status: UnitStateElementCodeStatus;
+  value: string | number | boolean | undefined;
 }
 
 export interface UnitState {

@@ -12,7 +12,8 @@
         [style.top.px]="element.yPosition"
         [elementModel]="element"
         [parentForm]="sectionForm"
-        [parentArrayIndex]="i">
+        [parentArrayIndex]="i"
+        [unitStateElementCodes]="unitStateElementCodes">
     </app-element>
   </ng-container>
 </ng-template>
@@ -35,7 +36,8 @@
           [style.grid-row-end]="element.gridRowEnd"
           [elementModel]="element"
           [parentForm]="sectionForm"
-          [parentArrayIndex]="i">
+          [parentArrayIndex]="i"
+          [unitStateElementCodes]="unitStateElementCodes">
       </app-element>
     </ng-container>
   </div>

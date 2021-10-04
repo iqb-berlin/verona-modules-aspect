@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  Unit, UnitPage, UnitPageSection, UnitUIElement
+  Unit, UnitPage
 } from '../../../common/unit';
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
 import { VeronaPostService } from './services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
-import { PlayerConfig, UnitState, VopStartCommand } from './models/verona';
-import { FormPage } from '../../../common/form';
+import { PlayerConfig, UnitStateElementCode, VopStartCommand } from './models/verona';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { KeyboardService } from './services/keyboard.service';
 
@@ -17,14 +16,16 @@ import { KeyboardService } from './services/keyboard.service';
   selector: 'player-aspect',
   template: `
     <app-unit-state *ngIf="playerConfig && pages?.length"
-                    [pages]=pages
-                    [playerConfig]=playerConfig>
+                    [pages]="pages"
+                    [playerConfig]="playerConfig"
+                    [unitStateElementCodes]="unitStateElementCodes">
     </app-unit-state>
   `
 })
 export class AppComponent implements OnInit {
   pages!: UnitPage[];
   playerConfig!: PlayerConfig | undefined;
+  unitStateElementCodes!: UnitStateElementCode[];
 
   constructor(private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
@@ -49,28 +50,6 @@ export class AppComponent implements OnInit {
       .subscribe((focused: boolean): void => this.onFocus(focused));
   }
 
-  private initUnitPages(pages: UnitPage[], unitState: UnitState | undefined): void {
-    const storedPages: FormPage[] = unitState?.dataParts?.pages ?
-      JSON.parse(unitState.dataParts.pages) : [];
-    if (storedPages.length > 0) {
-      if (this.metaDataService.verifyUnitStateDataType(unitState?.unitStateDataType)) {
-        this.pages = this.addStoredValues(pages, storedPages);
-      } else {
-        // eslint-disable-next-line no-console
-        this.dialog.open(AlertDialogComponent, {
-          data: {
-            title: this.translateService.instant('dialogTitle.wrongUnitStateDataType'),
-            content: this.translateService.instant('dialogContent.wrongUnitStateDataType',
-              { version: this.metaDataService.playerMetadata.supportedUnitStateDataTypes })
-          }
-        });
-        this.pages = pages;
-      }
-    } else {
-      this.pages = pages;
-    }
-  }
-
   private onStart(message: VopStartCommand): void {
     this.reset();
     setTimeout(() => {
@@ -81,7 +60,9 @@ export class AppComponent implements OnInit {
         this.playerConfig = message.playerConfig || {};
         this.veronaPostService.sessionId = message.sessionId;
         this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
-        this.initUnitPages(unitDefinition.pages, message.unitState);
+        this.pages = unitDefinition.pages;
+        this.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
+          JSON.parse(message.unitState.dataParts.elementCodes) : [];
         this.keyboardService.useKeyboard(false);
       } else {
         this.dialog.open(AlertDialogComponent, {
@@ -95,34 +76,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  // structure of a unitPage:   {sections: [{elements: [{id: ..., value: ...}]}]}
-  // structure of a storedPage: {sections: [{elements: [{[id]: [value]}]}]}
-  // the array of unitPages contains all pages, all sections and all elements
-  // the array of storedPages contains all pages, all sections but only form elements
-  // to add the values of the elements of storedPages to the elements of unitPages
-  // we need to find the elements in storedPages that match the elements of unitPages
-  private addStoredValues = (unitPages: UnitPage[], storedPages: FormPage[]): UnitPage[] => unitPages
-    .map((page: UnitPage, pageIndex: number): UnitPage => ({
-      ...page,
-      sections: page.sections.map((section: UnitPageSection, sectionIndex: number): UnitPageSection => (
-        {
-          ...section,
-          elements: section.elements
-            .map((element: UnitUIElement): UnitUIElement => {
-              const storedValueElement: Record<string, string | number | boolean | undefined> =
-                storedPages?.[pageIndex]?.sections?.[sectionIndex]?.elements?.find(
-                  (storedElement: Record<string, string | number | boolean | undefined>) => Object
-                    .keys(storedElement)[0] === element.id
-                ) || {};
-              const value = storedValueElement[Object.keys(storedValueElement)[0]];
-              return {
-                ...element,
-                ...{ value: (value !== undefined && value !== null) ? value : element.value }
-              };
-            })
-        }))
-    }));
-
   private onFocus(focused: boolean): void {
     // eslint-disable-next-line no-console
     console.log('player: onFocus', focused);
@@ -134,5 +87,6 @@ export class AppComponent implements OnInit {
     console.log('player: reset');
     this.pages = [];
     this.playerConfig = {};
+    this.unitStateElementCodes = [];
   }
 }

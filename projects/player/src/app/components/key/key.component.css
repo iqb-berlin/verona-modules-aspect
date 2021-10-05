@@ -2,3 +2,14 @@
   width: 100%;
   min-width: 20px;
 }
+
+.mini-key{
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 25px;
+}
+.mini-key:hover{
+  background-color: #f1f1f1;
+}

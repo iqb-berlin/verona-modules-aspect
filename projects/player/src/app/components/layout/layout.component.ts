@@ -51,7 +51,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
   constructor(private translateService: TranslateService,
-              private keyboardService: KeyboardService) { }
+              public keyboardService: KeyboardService) { }
 
   ngOnInit(): void {
     this.initPages();

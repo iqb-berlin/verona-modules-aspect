@@ -9,7 +9,7 @@ import { KeyboardService } from '../../services/keyboard.service';
 export class KeyComponent {
   @Input() key!: string;
 
-  constructor(private keyboardService: KeyboardService) { }
+  constructor(public keyboardService: KeyboardService) { }
 
   onMouseDown(event: MouseEvent): void {
     this.keyboardService.enterKey(this.key);

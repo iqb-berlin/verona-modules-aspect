@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -46,7 +47,8 @@ import { KeyComponent } from './components/key/key.component';
         provide: TranslateLoader,
         useClass: PlayerTranslateLoader
       }
-    })
+    }),
+    OverlayModule
   ],
   providers: []
 })

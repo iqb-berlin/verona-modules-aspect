@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
         this.pages = unitDefinition.pages;
         this.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
           JSON.parse(message.unitState.dataParts.elementCodes) : [];
-        this.keyboardService.useKeyboard(false);
+        this.keyboardService.useKeyboard(true, 'mini');
       } else {
         this.dialog.open(AlertDialogComponent, {
           data: {

@@ -9,7 +9,7 @@
         alwaysVisiblePageView :
         scrollPagesView"></ng-container>
     </div>
-    <app-keyboard *ngIf="isKeyboardOpen" class="keyboard"></app-keyboard>
+    <app-keyboard *ngIf="isKeyboardOpen && keyboardService.type === 'full'" class="keyboard"></app-keyboard>
   </div>
 </div>
 

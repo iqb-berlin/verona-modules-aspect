@@ -15,3 +15,27 @@
   flex-direction: row;
   justify-content: center;
 }
+
+
+.keypad-container{
+  margin-top: 30px;
+  background-color: white;
+  border: lightgray solid 1px;
+  max-width: 220px;
+  overflow-wrap: break-word;
+}
+
+.keypad-header{
+  height: 30px;
+  background-color: #f1f1f1;
+  text-align: center;
+  border-bottom: lightgray;
+}
+
+.keypad-inner-container{
+  padding: 10px;
+}
+
+.keypad-row{
+  overflow-wrap: break-word;
+}

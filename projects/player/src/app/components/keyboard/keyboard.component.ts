@@ -9,14 +9,13 @@ import { KeyboardService } from '../../services/keyboard.service';
 export class KeyboardComponent implements OnInit {
   rows!: string[][];
 
-  constructor(private keyboardService: KeyboardService) { }
+  constructor(public keyboardService: KeyboardService) { }
 
   ngOnInit(): void {
     this.rows = this.keyboardService.rows;
   }
 
   onMouseDown = (event: MouseEvent): void => {
-    event.stopPropagation();
     event.preventDefault();
   };
 }

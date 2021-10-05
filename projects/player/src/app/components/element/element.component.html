@@ -1,1 +1,11 @@
-<ng-template #elementComponentContainer></ng-template>
+<div class="element-container"
+     cdkOverlayOrigin #overlayOrigin="cdkOverlayOrigin">
+  <ng-template #elementComponentContainer></ng-template>
+</div>
+
+<ng-template *ngIf="keyboardService.type==='mini'"
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="overlayOrigin"
+    [cdkConnectedOverlayOpen]="isKeyboardOpen">
+  <app-keyboard cdkDrag></app-keyboard>
+</ng-template>

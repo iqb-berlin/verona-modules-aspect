@@ -12,7 +12,6 @@ export class FormService {
   private _controlAdded = new Subject<FormControlElement>();
   private _groupAdded = new Subject<ChildFormGroup>();
   private _validatorsAdded = new Subject<FormControlValidators>();
-  private _presentedPageAdded = new Subject<number>();
 
   get controlAdded(): Observable<FormControlElement> {
     return this._controlAdded.asObservable();
@@ -24,10 +23,6 @@ export class FormService {
 
   get validatorsAdded(): Observable<FormControlValidators> {
     return this._validatorsAdded.asObservable();
-  }
-
-  get presentedPageAdded(): Observable<number> {
-    return this._presentedPageAdded.asObservable();
   }
 
   get elementValueChanged(): Observable<ValueChangeElement> {
@@ -48,9 +43,5 @@ export class FormService {
 
   setValidators(validators: FormControlValidators): void {
     this._validatorsAdded.next(validators);
-  }
-
-  addPresentedPage(presentedPage: number): void {
-    this._presentedPageAdded.next(presentedPage);
   }
 }

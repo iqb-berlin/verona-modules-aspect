@@ -13,6 +13,7 @@ import { TextAreaComponent } from '../../../../../common/element-components/text
 import { FormService } from '../../../../../common/form.service';
 import { ValueChangeElement } from '../../../../../common/form';
 import { UnitStateElementCode } from '../../models/verona';
+import { UnitStateService } from '../../services/unit-state.service';
 
 @Component({
   selector: 'app-element',
@@ -25,7 +26,6 @@ export class ElementComponent implements OnInit {
   @Input() parentArrayIndex!: number;
   @Input() unitStateElementCodes!: UnitStateElementCode[];
 
-  private isInputElement!: boolean;
   private focussedInputSubscription!: Subscription;
   private ngUnsubscribe = new Subject<void>();
 
@@ -35,6 +35,7 @@ export class ElementComponent implements OnInit {
   constructor(private keyboardService: KeyboardService,
               private componentFactoryResolver: ComponentFactoryResolver,
               private formService: FormService,
+              private unitStateService: UnitStateService,
               private formBuilder: FormBuilder) {
   }
 
@@ -44,14 +45,15 @@ export class ElementComponent implements OnInit {
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     elementComponent.elementModel = this.elementModel;
 
-    this.isInputElement = Object.prototype.hasOwnProperty.call(this.elementModel, 'required');
-    if (this.isInputElement) {
-      const unitStateElementCode = this.unitStateElementCodes
-        .find((element: UnitStateElementCode): boolean => element.id === this.elementModel.id);
-      if (unitStateElementCode) {
-        elementComponent.elementModel.value = unitStateElementCode.value;
-      }
+    const unitStateElementCode = this.unitStateElementCodes
+      .find((elementCode: UnitStateElementCode): boolean => elementCode.id === this.elementModel.id);
+    if (unitStateElementCode) {
+      elementComponent.elementModel.value = unitStateElementCode.value;
+    }
 
+    this.unitStateService.registerElement(elementComponent.elementModel);
+
+    if (Object.prototype.hasOwnProperty.call(this.elementModel, 'required')) {
       const elementForm = this.formBuilder.group({});
       elementComponent.parentForm = elementForm;
       this.registerFormGroup(elementForm);
@@ -66,7 +68,7 @@ export class ElementComponent implements OnInit {
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
         this.initEventsForKeyboard(elementComponent);
       }
-    }
+    } // no else
   }
 
   private registerFormGroup(elementForm: FormGroup): void {

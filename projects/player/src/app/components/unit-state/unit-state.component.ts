@@ -19,7 +19,8 @@ import {
 import {
   PlayerConfig, Progress, UnitState, UnitStateElementCode, UnitStateElementCodeStatus, VopNavigationDeniedNotification
 } from '../../models/verona';
-import { UnitPage } from '../../../../../common/unit';
+import { UnitPage, UnitUIElement } from '../../../../../common/unit';
+import { UnitStateService } from '../../services/unit-state.service';
 
 @Component({
   selector: 'app-unit-state',
@@ -37,6 +38,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   constructor(private formBuilder: FormBuilder,
               private formService: FormService,
+              private unitStateService: UnitStateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private messageService: MessageService,
@@ -65,7 +67,10 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.formService.elementValueChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value: ValueChangeElement): void => this.onElementValueChanges(value));
-    this.formService.presentedPageAdded
+    this.unitStateService.elementAdded
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((element: UnitUIElement): void => this.addUnitStateElementCode(element));
+    this.unitStateService.presentedPageAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
     this.form.valueChanges
@@ -93,7 +98,6 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private addControl = (control: FormControlElement): void => {
     control.formGroup.addControl(control.id, control.formControl);
-    this.registerUnitStateElementCode(control.id, control.formControl.value);
   };
 
   private setValidators = (validators: FormControlValidators): void => {
@@ -127,7 +131,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private onFormChanges(): void {
     // eslint-disable-next-line no-console
-    console.log('player: onFormChanges', this.form.value);
+    console.log('player: onFormChanges', this.unitStateElementCodes);
     this.sendVopStateChangedNotification();
   }
 
@@ -154,7 +158,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private setUnitStateElementCodeValue(id: string, value: string | number | boolean | undefined) {
     const unitStateElementCode = this.unitStateElementCodes
-      .find((element: UnitStateElementCode): boolean => element.id === id);
+      .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;
     }
@@ -162,17 +166,17 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus) {
     const unitStateElementCode = this.unitStateElementCodes
-      .find((element: UnitStateElementCode): boolean => element.id === id);
+      .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
     if (unitStateElementCode) {
       unitStateElementCode.status = status;
     }
   }
 
-  private registerUnitStateElementCode(id: string, value: string | number | boolean | undefined) {
+  private addUnitStateElementCode(element: UnitUIElement) {
     const unitStateElementCode = this.unitStateElementCodes
-      .find((element: UnitStateElementCode): boolean => element.id === id);
+      .find((elementCode: UnitStateElementCode): boolean => elementCode.id === element.id);
     if (!unitStateElementCode) {
-      this.unitStateElementCodes.push({ id: id, value: value, status: 'NOT_REACHED' });
+      this.unitStateElementCodes.push({ id: element.id, value: element.value, status: 'NOT_REACHED' });
     }
   }
 

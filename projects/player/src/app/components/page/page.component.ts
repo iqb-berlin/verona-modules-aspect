@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { UnitPage } from '../../../../../common/unit';
 import { FormService } from '../../../../../common/form.service';
 import { UnitStateElementCode } from '../../models/verona';
+import { UnitStateService } from '../../services/unit-state.service';
 
 @Component({
   selector: 'app-page',
@@ -25,6 +26,7 @@ export class PageComponent implements OnInit {
   pageForm!: FormGroup;
 
   constructor(private formService: FormService,
+              private unitStateService: UnitStateService,
               private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -42,7 +44,7 @@ export class PageComponent implements OnInit {
 
   onIntersection(detectionType: 'top' | 'bottom'): void {
     if (detectionType === 'bottom') {
-      this.formService.addPresentedPage(this.index);
+      this.unitStateService.addPresentedPage(this.index);
     }
     if (detectionType === 'top' || this.isLastPage) {
       this.selectedIndexChange.emit(this.index);

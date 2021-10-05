@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
     this.reset();
     setTimeout(() => {
       // eslint-disable-next-line no-console
-      console.log('player: onStart', message);
+      // console.log('player: onStart', message);
       const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : {};
       if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
         this.playerConfig = message.playerConfig || {};
@@ -78,13 +78,13 @@ export class AppComponent implements OnInit {
 
   private onFocus(focused: boolean): void {
     // eslint-disable-next-line no-console
-    console.log('player: onFocus', focused);
+    // console.log('player: onFocus', focused);
     this.veronaPostService.sendVopWindowFocusChangedNotification(focused);
   }
 
   private reset(): void {
     // eslint-disable-next-line no-console
-    console.log('player: reset');
+    // console.log('player: reset');
     this.pages = [];
     this.playerConfig = {};
     this.unitStateElementCodes = [];

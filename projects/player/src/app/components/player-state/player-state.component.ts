@@ -68,21 +68,21 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
 
   private onContinue(message: VopContinueCommand): void {
     // eslint-disable-next-line no-console
-    console.log('player: onContinue', message);
+    // console.log('player: onContinue', message);
     this.running = true;
     this.sendVopStateChangedNotification();
   }
 
   private onStop(message: VopStopCommand): void {
     // eslint-disable-next-line no-console
-    console.log('player: onStop', message);
+    // console.log('player: onStop', message);
     this.running = false;
     this.sendVopStateChangedNotification();
   }
 
   private onGetStateRequest(message: VopGetStateRequest): void {
     // eslint-disable-next-line no-console
-    console.log('player: onGetStateRequest', message);
+    // console.log('player: onGetStateRequest', message);
     if (message.stop) {
       this.running = false;
     }
@@ -91,7 +91,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
 
   private onPageNavigation(message: VopPageNavigationCommand): void {
     // eslint-disable-next-line no-console
-    console.log('player: onPageNavigation', message);
+    // console.log('player: onPageNavigation', message);
     this.selectIndex.next(parseInt(message.target, 10));
   }
 

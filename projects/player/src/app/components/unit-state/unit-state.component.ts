@@ -126,6 +126,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   private onElementValueChanges = (value: ValueChangeElement): void => {
     // eslint-disable-next-line no-console
     console.log(`player: onElementValueChanges ${value.id}: old: ${value.values[0]}, new: ${value.values[1]}`);
+    this.setUnitStateElementCodeStatus(value.id, 'VALUE_CHANGED');
     this.setUnitStateElementCodeValue(value.id, value.values[1]);
   };
 

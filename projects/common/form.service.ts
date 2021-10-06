@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import {
-  FormControlElement, FormControlValidators, ChildFormGroup, ValueChangeElement
+  FormControlElement, FormControlValidators, ChildFormGroup
 } from './form';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
-  private _elementValueChanged = new Subject<ValueChangeElement>();
   private _controlAdded = new Subject<FormControlElement>();
   private _groupAdded = new Subject<ChildFormGroup>();
   private _validatorsAdded = new Subject<FormControlValidators>();
@@ -23,14 +22,6 @@ export class FormService {
 
   get validatorsAdded(): Observable<FormControlValidators> {
     return this._validatorsAdded.asObservable();
-  }
-
-  get elementValueChanged(): Observable<ValueChangeElement> {
-    return this._elementValueChanged.asObservable();
-  }
-
-  changeElementValue(elementValues: ValueChangeElement): void {
-    this._elementValueChanged.next(elementValues);
   }
 
   registerFormControl(control: FormControlElement): void {

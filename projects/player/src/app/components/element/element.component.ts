@@ -12,7 +12,6 @@ import { TextFieldComponent } from '../../../../../common/element-components/tex
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
 import { FormService } from '../../../../../common/form.service';
 import { ValueChangeElement } from '../../../../../common/form';
-import { UnitStateElementCode } from '../../models/verona';
 import { UnitStateService } from '../../services/unit-state.service';
 
 @Component({
@@ -24,7 +23,6 @@ export class ElementComponent implements OnInit {
   @Input() elementModel!: UnitUIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
-  @Input() unitStateElementCodes!: UnitStateElementCode[];
 
   isKeyboardOpen!: boolean;
 
@@ -46,8 +44,7 @@ export class ElementComponent implements OnInit {
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     elementComponent.elementModel = this.elementModel;
 
-    const unitStateElementCode = this.unitStateElementCodes
-      .find((elementCode: UnitStateElementCode): boolean => elementCode.id === this.elementModel.id);
+    const unitStateElementCode = this.unitStateService.getUnitStateElement(this.elementModel.id);
     if (unitStateElementCode) {
       elementComponent.elementModel.value = unitStateElementCode.value;
     }
@@ -62,7 +59,7 @@ export class ElementComponent implements OnInit {
       elementComponent.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((changeElement: ValueChangeElement) => {
-          this.formService.changeElementValue(changeElement);
+          this.unitStateService.changeElementValue(changeElement);
         });
 
       if (this.keyboardService.isActive &&

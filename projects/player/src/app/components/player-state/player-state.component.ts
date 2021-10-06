@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { UnitPage } from '../../../../../common/unit';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import {
-  PlayerConfig, PlayerState, RunningState, UnitStateElementCode,
+  PlayerConfig, PlayerState, RunningState,
   VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
 } from '../../models/verona';
 import { VeronaPostService } from '../../services/verona-post.service';
@@ -21,7 +21,6 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() parentForm!: FormGroup;
   @Input() pages!: UnitPage[];
   @Input() playerConfig!: PlayerConfig;
-  @Input() unitStateElementCodes!: UnitStateElementCode[];
 
   currentPlayerPageIndex: number = 0;
   selectIndex: Subject<number> = new Subject();

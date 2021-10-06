@@ -8,24 +8,23 @@ import { VeronaSubscriptionService } from './services/verona-subscription.servic
 import { VeronaPostService } from './services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
-import { PlayerConfig, UnitStateElementCode, VopStartCommand } from './models/verona';
+import { PlayerConfig, VopStartCommand } from './models/verona';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { KeyboardService } from './services/keyboard.service';
+import { UnitStateService } from './services/unit-state.service';
 
 @Component({
   selector: 'player-aspect',
   template: `
     <app-unit-state *ngIf="playerConfig && pages?.length"
                     [pages]="pages"
-                    [playerConfig]="playerConfig"
-                    [unitStateElementCodes]="unitStateElementCodes">
+                    [playerConfig]="playerConfig">
     </app-unit-state>
   `
 })
 export class AppComponent implements OnInit {
   pages!: UnitPage[];
   playerConfig!: PlayerConfig | undefined;
-  unitStateElementCodes!: UnitStateElementCode[];
 
   constructor(private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
@@ -33,6 +32,7 @@ export class AppComponent implements OnInit {
               private metaDataService: MetaDataService,
               private nativeEventService: NativeEventService,
               private keyboardService: KeyboardService,
+              private unitStateService: UnitStateService,
               private dialog: MatDialog) {
   }
 
@@ -61,7 +61,7 @@ export class AppComponent implements OnInit {
         this.veronaPostService.sessionId = message.sessionId;
         this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
         this.pages = unitDefinition.pages;
-        this.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
+        this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
           JSON.parse(message.unitState.dataParts.elementCodes) : [];
         this.keyboardService.useKeyboard(false, 'mini');
       } else {
@@ -87,6 +87,6 @@ export class AppComponent implements OnInit {
     console.log('player: reset');
     this.pages = [];
     this.playerConfig = {};
-    this.unitStateElementCodes = [];
+    this.unitStateService.unitStateElementCodes = [];
   }
 }

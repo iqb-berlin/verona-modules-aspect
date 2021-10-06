@@ -38,7 +38,7 @@ export class VeronaPostService {
       window.parent.postMessage(message, '*');
     } else {
       // eslint-disable-next-line no-console
-      // console.warn('player: no host detected');
+      console.warn('player: no host detected');
     }
   }
 
@@ -77,7 +77,7 @@ export class VeronaPostService {
       });
     } else {
       // eslint-disable-next-line no-console
-      // console.warn('player: no playerMetadata defined');
+      console.warn('player: no playerMetadata defined');
     }
   }
 

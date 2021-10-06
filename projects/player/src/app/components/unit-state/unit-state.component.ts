@@ -108,7 +108,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
     // eslint-disable-next-line no-console
-    // console.log('player: onNavigationDenied', message);
+    console.log('player: onNavigationDenied', message);
     const reasons = message.reason?.map((reason: string) => this.translateService.instant(reason));
     this.messageService.showWarning(reasons?.join(', ') || this.translateService.instant('noReason'));
     this.form.markAllAsTouched();
@@ -125,13 +125,13 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private onElementValueChanges = (value: ValueChangeElement): void => {
     // eslint-disable-next-line no-console
-    // console.log(`player: onElementValueChanges ${value.id}: old: ${value.values[0]}, new: ${value.values[1]}`);
+    console.log(`player: onElementValueChanges ${value.id}: old: ${value.values[0]}, new: ${value.values[1]}`);
     this.setUnitStateElementCodeValue(value.id, value.values[1]);
   };
 
   private onFormChanges(): void {
     // eslint-disable-next-line no-console
-    // console.log('player: onFormChanges', this.unitStateElementCodes);
+    console.log('player: onFormChanges', this.unitStateElementCodes);
     this.sendVopStateChangedNotification();
   }
 
@@ -140,7 +140,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
       this.presentedPages.push(pagePresented);
     }
     // eslint-disable-next-line no-console
-    // console.log('player: onPresentedPageAdded', this.presentedPages);
+    console.log('player: onPresentedPageAdded', this.presentedPages);
     this.sendVopStateChangedNotification();
   }
 

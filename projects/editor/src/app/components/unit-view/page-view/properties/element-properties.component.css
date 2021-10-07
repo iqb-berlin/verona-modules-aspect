@@ -54,3 +54,8 @@
 .text-text {
   background-color: rgba(0,0,0,.04);
 }
+
+::ng-deep app-element-properties p {
+  text-align: center;
+  font-weight: bold;
+}

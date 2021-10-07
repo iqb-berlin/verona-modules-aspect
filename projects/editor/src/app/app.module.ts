@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
-import { EditorModule } from '@tinymce/tinymce-angular';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -55,7 +54,6 @@ import { SectionDynamicComponent } from './components/unit-view/page-view/canvas
     SharedModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
-    EditorModule,
     MatMenuModule,
     TranslateModule.forRoot({
       loader: {

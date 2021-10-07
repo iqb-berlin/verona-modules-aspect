@@ -1,31 +1,31 @@
 <div class="editor-control-line" fxLayout="row">
   <div class="editor-button-formfield-align">
-    <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'"
+    <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('bold')"
             (click)="toggleBold()">
       <mat-icon>format_bold</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Kursiv" [matTooltipPosition]="'above'"
+    <button mat-icon-button matTooltip="Kursiv" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('italic')"
             (click)="toggleItalic()">
       <mat-icon>format_italic</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Unterstrichen" [matTooltipPosition]="'above'"
+    <button mat-icon-button matTooltip="Unterstrichen" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('underline')"
             (click)="toggleUnderline()" style="text-decoration: underline">
       <mat-icon>format_underlined</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Hochgestellt" [matTooltipPosition]="'above'"
+    <button mat-icon-button matTooltip="Hochgestellt" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('superscript')"
             (click)="toggleSuperscript()">
       <mat-icon>superscript</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Tiefgestellt" [matTooltipPosition]="'above'"
+    <button mat-icon-button matTooltip="Tiefgestellt" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('subscript')"
             (click)="toggleSubscript()">
       <mat-icon>subscript</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Durchgestrichen" [matTooltipPosition]="'above'"
+    <button mat-icon-button matTooltip="Durchgestrichen" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('strike')"
             (click)="toggleStrike()">
       <mat-icon>strikethrough_s</mat-icon>
@@ -59,48 +59,51 @@
 </div>
 <div class="editor-button-formfield-align" fxLayout="row" fxLayoutAlign="space-between">
   <div>
-    <button mat-icon-button matTooltip="Linksbündig"
+    <button mat-icon-button matTooltip="Linksbündig" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'left' })"
             (click)="alignText('left')">
       <mat-icon>format_align_left</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Rechtsbündig"
+    <button mat-icon-button matTooltip="Rechtsbündig" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'right' })"
             (click)="alignText('right')">
       <mat-icon>format_align_right</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Zentriert"
+    <button mat-icon-button matTooltip="Zentriert" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'center' })"
             (click)="alignText('center')">
       <mat-icon>format_align_center</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Blocksatz"
+    <button mat-icon-button matTooltip="Blocksatz" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'justify' })"
             (click)="alignText('justify')">
       <mat-icon>format_align_justify</mat-icon>
     </button>
   </div>
   <div>
-    <button mat-icon-button matTooltip="Einrücken" (click)="indent()">
+    <button mat-icon-button matTooltip="Einrücken" [matTooltipShowDelay]="300"
+            (click)="indent()">
       <mat-icon>format_indent_increase</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Einrückung verringern" (click)="outdent()">
+    <button mat-icon-button matTooltip="Einrückung verringern" [matTooltipShowDelay]="300"
+            (click)="outdent()">
       <mat-icon>format_indent_decrease</mat-icon>
     </button>
   </div>
   <div>
-    <button mat-icon-button matTooltip="Aufzählung"
+    <button mat-icon-button matTooltip="Aufzählung" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('bulletList')"
             (click)="toggleBulletList()">
       <mat-icon>format_list_bulleted</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Aufzählung (nummeriert)"
+    <button mat-icon-button matTooltip="Aufzählung (nummeriert)" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('orderedList')"
             (click)="togleOrderedList()">
       <mat-icon>format_list_numbered</mat-icon>
     </button>
   </div>
-  <button mat-icon-button matTooltip="Sonderzeichen" [matMenuTriggerFor]="specialCharsMenu">
+  <button mat-icon-button matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
+          [matMenuTriggerFor]="specialCharsMenu">
     <mat-icon>emoji_symbols</mat-icon>
   </button>
   <mat-menu #specialCharsMenu="matMenu" yPosition="above">

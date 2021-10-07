@@ -29,6 +29,8 @@ import { SectionMenuComponent } from './components/unit-view/page-view/canvas/se
 import { SectionStaticComponent } from './components/unit-view/page-view/canvas/section-static.component';
 import { SectionDynamicComponent } from './components/unit-view/page-view/canvas/section-dynamic.component';
 import { RichTextEditorComponent } from './components/unit-view/page-view/rich-text-editor.component';
+import { ElementStylePropertiesComponent } from './components/unit-view/page-view/properties/element-style-properties.component';
+import { ElementSizingPropertiesComponent } from './components/unit-view/page-view/properties/element-sizing-properties.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { RichTextEditorComponent } from './components/unit-view/page-view/rich-t
     SectionMenuComponent,
     SectionStaticComponent,
     SectionDynamicComponent,
-    RichTextEditorComponent
+    RichTextEditorComponent,
+    ElementStylePropertiesComponent,
+    ElementSizingPropertiesComponent
   ],
   imports: [
     BrowserModule,

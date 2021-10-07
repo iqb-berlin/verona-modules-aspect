@@ -75,10 +75,6 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     }
   }
 
-  alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
-    this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);
-  }
-
   deleteElement(): void {
     this.unitService.deleteElementsFromSectionByIndex(
       this.selectedElements,

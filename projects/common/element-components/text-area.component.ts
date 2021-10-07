@@ -19,6 +19,7 @@ import { FormElementComponent } from '../form-element-component.directive';
                 (focusin)="onFocusin.emit()"
                 (focus)="onFocus.emit(input)"
                 (blur)="onBlur.emit(input)"
+                autocomplete="off"
                 placeholder="{{elementModel.label}}"
                 [style.min-width.%]="100"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">

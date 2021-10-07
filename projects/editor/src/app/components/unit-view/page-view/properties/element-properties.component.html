@@ -5,27 +5,27 @@
         <mat-icon class="example-tab-icon">build</mat-icon>
       </ng-template>
       <div fxLayout="column">
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('id')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.id" appearance="fill">
           <mat-label>ID</mat-label>
           <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.id"
                  (input)="updateModel('id', $any($event.target).value)">
           <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('label')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.label" appearance="fill">
           <mat-label>Label</mat-label>
           <input matInput type="text" [value]="combinedProperties.label"
                  (input)="updateModel('label', $any($event.target).value)">
         </mat-form-field>
 
-        <ng-container *ngIf="combinedProperties.hasOwnProperty('text')">
+        <ng-container *ngIf="combinedProperties.text">
           Text
           <div class="text-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml($any(combinedProperties.text))"
                (click)="unitService.showDefaultEditDialog(selectedElements[0])">
           </div>
         </ng-container>
 
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('appearance')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.appearance" appearance="fill">
           <mat-label>Aussehen</mat-label>
           <mat-select [value]="combinedProperties.appearance"
                       (selectionChange)="updateModel('appearance', $event.value)">
@@ -39,7 +39,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('action')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.action" appearance="fill">
           <mat-label>Aktion</mat-label>
           <mat-select [value]="combinedProperties.action"
                       (selectionChange)="updateModel('action', $event.value)">
@@ -53,7 +53,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('highlightable')"
+        <mat-checkbox *ngIf="combinedProperties.highlightable"
                       [checked]="$any(combinedProperties.highlightable)"
                       (change)="updateModel('highlightable', $event.checked)">
           Farbmarkierungen erlauben
@@ -85,44 +85,44 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('allowUnset')"
+        <mat-checkbox *ngIf="combinedProperties.allowUnset"
                       [checked]="$any(combinedProperties.allowUnset)"
                       (change)="updateModel('allowUnset', $event.checked)">
           Deselektion erlauben
         </mat-checkbox>
 
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('required')"
+        <mat-checkbox *ngIf="combinedProperties.required"
                       [checked]="$any(combinedProperties.required)"
                       (change)="updateModel('required', $event.checked)">
           Pflichtfeld
         </mat-checkbox>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('required') && combinedProperties.required"
+        <mat-form-field *ngIf="combinedProperties.required && combinedProperties.required"
                         appearance="fill">
           <mat-label>Warnmeldung</mat-label>
           <input matInput type="text" [value]="combinedProperties.requiredWarnMessage"
                  (input)="updateModel('requiredWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.minLength" appearance="fill">
           <mat-label>Minimallänge</mat-label>
           <input matInput type="number" #minLength="ngModel" min="0"
                  [ngModel]="combinedProperties.minLength"
                  (ngModelChange)="updateModel('minLength', $event, minLength.valid)">
         </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('minLength') &&
+        <mat-form-field *ngIf="combinedProperties.minLength &&
                                    $any(combinedProperties.minLength) > 0"
                         appearance="fill">
           <mat-label>Minimalwert Warnmeldung</mat-label>
           <input matInput type="text" [value]="combinedProperties.minLengthWarnMessage"
                  (input)="updateModel('minLengthWarnMessage', $any($event.target).value)">
         </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.maxLength" appearance="fill">
           <mat-label>Maximalwert</mat-label>
           <input matInput type="number" #maxLength="ngModel" min="0"
                  [ngModel]="combinedProperties.maxLength"
                  (ngModelChange)="updateModel('maxLength', $event, maxLength.valid)">
         </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('maxLength')&&
+        <mat-form-field *ngIf="combinedProperties.maxLength &&
                                    $any(combinedProperties.maxLength) > 0"
                         appearance="fill">
           <mat-label>Maximalwert Warnmeldung</mat-label>
@@ -130,12 +130,12 @@
                  (input)="updateModel('maxLengthWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('pattern')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.pattern" appearance="fill">
           <mat-label>Muster</mat-label>
           <input matInput [value]="combinedProperties.pattern"
                  (input)="updateModel('pattern', $any($event.target).value)">
         </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('pattern') &&
+        <mat-form-field *ngIf="combinedProperties.pattern &&
                                    $any(combinedProperties.pattern) != ''"
                         appearance="fill"
                         matTooltip="Angabe als regulärer Ausdruck.">
@@ -144,7 +144,7 @@
                  (input)="updateModel('patternWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
-        <mat-form-field disabled="true" *ngIf="combinedProperties.hasOwnProperty('options')">
+        <mat-form-field disabled="true" *ngIf="combinedProperties.options">
           <ng-container *ngIf="combinedProperties.options !== undefined">
             <mat-label>Optionen</mat-label>
             <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.options"
@@ -169,7 +169,7 @@
           </div>
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('alignment')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.alignment" appearance="fill">
           <mat-label>Ausrichtung</mat-label>
           <mat-select [value]="combinedProperties.alignment"
                       (selectionChange)="updateModel('alignment', $event.value)">
@@ -181,7 +181,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('resizeEnabled')"
+        <mat-checkbox *ngIf="combinedProperties.resizeEnabled"
                       [checked]="$any(combinedProperties.resizeEnabled)"
                       (change)="updateModel('resizeEnabled', $event.checked)">
           größenverstellbar
@@ -207,27 +207,27 @@
       <div fxLayout="column">
 
         <ng-container *ngIf="!combinedProperties.dynamicPositioning; else elseBlock">
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')" appearance="fill">
+          <mat-form-field *ngIf="combinedProperties.width" appearance="fill">
             <mat-label>Breite</mat-label>
             <input matInput type="number" #width="ngModel" min="0"
                    [ngModel]="combinedProperties.width"
                    (ngModelChange)="updateModel('width', $event, width.valid)">
           </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')" appearance="fill">
+          <mat-form-field *ngIf="combinedProperties.height" appearance="fill">
             <mat-label>Hoehe</mat-label>
             <input matInput type="number" #height="ngModel" min="0"
                    [ngModel]="combinedProperties.height"
                    (ngModelChange)="updateModel('height', $event, height.valid)">
           </mat-form-field>
 
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('xPosition')" appearance="fill">
+          <mat-form-field *ngIf="combinedProperties.xPosition" appearance="fill">
             <mat-label>X Position</mat-label>
             <input matInput type="number" #xPosition="ngModel" min="0"
                    [ngModel]="combinedProperties.xPosition"
                    (ngModelChange)="updateModel('xPosition', $event, xPosition.valid)">
           </mat-form-field>
 
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('yPosition')" appearance="fill">
+          <mat-form-field *ngIf="combinedProperties.yPosition" appearance="fill">
             <mat-label>Y Position</mat-label>
             <input matInput type="number" #yPosition="ngModel" min="0"
                    [ngModel]="combinedProperties.yPosition"
@@ -235,13 +235,13 @@
           </mat-form-field>
         </ng-container>
         <ng-template #elseBlock>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('width')" appearance="fill">
+          <mat-form-field *ngIf="combinedProperties.width" appearance="fill">
             <mat-label>Mindestbreite</mat-label>
             <input matInput type="number" #width="ngModel" min="0"
                    [ngModel]="combinedProperties.width"
                    (ngModelChange)="updateModel('width', $event, width.valid)">
           </mat-form-field>
-          <mat-form-field *ngIf="combinedProperties.hasOwnProperty('height')" appearance="fill">
+          <mat-form-field *ngIf="combinedProperties.height" appearance="fill">
             <mat-label>Mindesthöhe</mat-label>
             <input matInput type="number" #height="ngModel" min="0"
                    [ngModel]="combinedProperties.height"
@@ -250,24 +250,24 @@
           Grid
           <div class="input-group">
             <div fxLayoutAlign="row">
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnStart')">
+              <mat-form-field *ngIf="combinedProperties.gridColumnStart">
                 <mat-label>Start-Spalte</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridColumnStart"
                        (ngModelChange)="updateModel('gridColumnStart', $event)">
               </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridColumnEnd')">
+              <mat-form-field *ngIf="combinedProperties.gridColumnEnd">
                 <mat-label>End-Spalte</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridColumnEnd"
                        (ngModelChange)="updateModel('gridColumnEnd', $event)">
               </mat-form-field>
             </div>
             <div fxLayoutAlign="row">
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowStart')">
+              <mat-form-field *ngIf="combinedProperties.gridRowStart">
                 <mat-label>Start-Zeile</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridRowStart"
                        (ngModelChange)="updateModel('gridRowStart', $event)">
               </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('gridRowEnd')">
+              <mat-form-field *ngIf="combinedProperties.gridRowEnd">
                 <mat-label>End-Zeile</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridRowEnd"
                        (ngModelChange)="updateModel('gridRowEnd', $event)">
@@ -277,7 +277,7 @@
 
           Abstand
           <div class="input-group">
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginTop')"
+            <mat-form-field *ngIf="combinedProperties.marginTop"
                             class="centered-form-field">
               <mat-label>oben</mat-label>
               <input matInput type="number" #marginTop="ngModel" min="0"
@@ -285,13 +285,13 @@
                      (ngModelChange)="updateModel('marginTop', $event, marginTop.valid)">
             </mat-form-field>
             <div fxLayoutAlign="row">
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginLeft')">
+              <mat-form-field *ngIf="combinedProperties.marginLeft">
                 <mat-label>links</mat-label>
                 <input matInput type="number" #marginLeft="ngModel" min="0"
                        [ngModel]="combinedProperties.marginLeft"
                        (ngModelChange)="updateModel('marginLeft', $event, marginLeft.valid)">
               </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginRight')"
+              <mat-form-field *ngIf="combinedProperties.marginRight"
                               class="right-form-field">
                 <mat-label>rechts</mat-label>
                 <input matInput type="number" #marginRight="ngModel" min="0"
@@ -299,7 +299,7 @@
                        (ngModelChange)="updateModel('marginRight', $event, marginRight.valid)">
               </mat-form-field>
             </div>
-            <mat-form-field *ngIf="combinedProperties.hasOwnProperty('marginBottom')"
+            <mat-form-field *ngIf="combinedProperties.marginBottom"
                             class="centered-form-field">
               <mat-label>unten</mat-label>
               <input matInput type="number" #marginBottom="ngModel" min="0"
@@ -309,7 +309,7 @@
           </div>
         </ng-template>
 
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('zIndex')" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.zIndex" appearance="fill">
           <mat-label>Z-Index</mat-label>
           <input matInput type="number" #zIndex="ngModel" min="0"
                  [ngModel]="combinedProperties.zIndex"
@@ -341,42 +341,42 @@
         <mat-icon class="example-tab-icon">palette</mat-icon>
       </ng-template>
       <div fxLayout="column">
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('backgroundColor')"
+        <mat-form-field *ngIf="combinedProperties.backgroundColor"
                         appearance="fill" class="mdInput textsingleline">
           <mat-label>Hintergrundfarbe</mat-label>
           <input matInput type="color" [value]="combinedProperties.backgroundColor"
                  (input)="updateModel('backgroundColor', $any($event.target).value)">
         </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontColor')"
+        <mat-form-field *ngIf="combinedProperties.fontColor"
                         appearance="fill" class="mdInput textsingleline">
           <mat-label>Schriftfarbe</mat-label>
           <input matInput type="color" [value]="combinedProperties.fontColor"
                  (input)="updateModel('fontColor', $any($event.target).value)">
         </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('font')"
+        <mat-form-field *ngIf="combinedProperties.font"
                         appearance="fill" class="mdInput textsingleline">
           <mat-label>Schriftart</mat-label>
           <input matInput type="text" [value]="combinedProperties.font"
                  (input)="updateModel('font', $any($event.target).value)">
         </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.hasOwnProperty('fontSize')"
+        <mat-form-field *ngIf="combinedProperties.fontSize"
                         appearance="fill" class="mdInput textsingleline">
           <mat-label>Schriftgröße</mat-label>
           <input matInput type="text" [value]="combinedProperties.fontSize"
                  (input)="updateModel('fontSize', $any($event.target).value)">
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('bold')"
+        <mat-checkbox *ngIf="combinedProperties.bold"
                       [checked]="$any(combinedProperties.bold)"
                       (change)="updateModel('bold', $event.checked)">
           Fett
         </mat-checkbox>
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('italic')"
+        <mat-checkbox *ngIf="combinedProperties.italic"
                       [checked]="$any(combinedProperties.italic)"
                       (change)="updateModel('italic', $event.checked)">
           Kursiv
         </mat-checkbox>
-        <mat-checkbox *ngIf="combinedProperties.hasOwnProperty('underline')"
+        <mat-checkbox *ngIf="combinedProperties.underline"
                       [checked]="$any(combinedProperties.underline)"
                       (change)="updateModel('underline', $event.checked)">
           Unterstrichen

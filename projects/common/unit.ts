@@ -28,7 +28,8 @@ export interface UnitPageSection {
 
 export interface UnitUIElement {
   [index: string]: string | number | boolean | string[] | undefined;
-  type: string; // TODO maybe use enum or manual enumeration, because possible values are known
+  type: 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
+  | 'dropdown' | 'radio' | 'image' | 'audio' | 'video';
   id: string;
   zIndex: number
   width: number;

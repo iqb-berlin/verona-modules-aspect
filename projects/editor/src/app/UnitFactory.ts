@@ -40,7 +40,8 @@ export function createUnitPageSection(): UnitPageSection {
   };
 }
 
-export function createUnitUIElement(type: string): UnitUIElement {
+export function createUnitUIElement(type: 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
+| 'dropdown' | 'radio' | 'image' | 'audio' | 'video'): UnitUIElement {
   return {
     type,
     id: 'id_placeholder',

@@ -203,11 +203,3 @@ export function createVideoElement(videoSrc: string): VideoElement {
     height: 100
   };
 }
-
-export function createCorrectionElement(): CompoundElementCorrection {
-  return {
-    text: 'dummy',
-    sentences: [],
-    ...createUnitUIElement('correction')
-  };
-}

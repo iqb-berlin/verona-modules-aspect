@@ -182,9 +182,6 @@ export class UnitService {
       case 'video':
         newElement = UnitFactory.createVideoElement(await FileService.loadVideo());
         break;
-      case 'correction':
-        newElement = UnitFactory.createCorrectionElement();
-        break;
       default:
         throw new Error(`ElementType ${elementType} not found!`);
     }

@@ -9,7 +9,6 @@ import { RadioButtonGroupComponent } from './element-components/radio-button-gro
 import { ImageComponent } from './element-components/image.component';
 import { AudioComponent } from './element-components/audio.component';
 import { VideoComponent } from './element-components/video.component';
-import { CorrectionComponent } from './element-components/compound-components/correction.component';
 
 export function getComponentFactory(
   elementType: string, componentFactoryResolver: ComponentFactoryResolver
@@ -36,8 +35,6 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(AudioComponent);
     case 'video':
       return componentFactoryResolver.resolveComponentFactory(VideoComponent);
-    case 'correction':
-      return componentFactoryResolver.resolveComponentFactory(CorrectionComponent);
     default:
       throw new Error('unknown element');
   }

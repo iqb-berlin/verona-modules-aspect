@@ -31,7 +31,6 @@ import { RadioButtonGroupComponent } from './element-components/radio-button-gro
 import { ImageComponent } from './element-components/image.component';
 import { VideoComponent } from './element-components/video.component';
 import { AudioComponent } from './element-components/audio.component';
-import { CorrectionComponent } from './element-components/compound-components/correction.component';
 import { SafeResourceUrlPipe } from './element-components/pipes/safe-resource-url.pipe';
 import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
 import { ErrorTransformPipe } from './element-components/pipes/error-transform.pipe';
@@ -62,7 +61,6 @@ import { ErrorTransformPipe } from './element-components/pipes/error-transform.p
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
-    CorrectionComponent,
     SafeResourceUrlPipe,
     InputBackgroundColorDirective,
     ErrorTransformPipe
@@ -95,7 +93,6 @@ import { ErrorTransformPipe } from './element-components/pipes/error-transform.p
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
-    CorrectionComponent,
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,

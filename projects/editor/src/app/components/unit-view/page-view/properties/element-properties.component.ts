@@ -127,4 +127,12 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel(property, valueList);
   }
+
+  async loadImage(): Promise<void> {
+    this.updateModel('imageSrc', await FileService.loadImage());
+  }
+
+  removeImage(): void {
+    this.updateModel('imageSrc', undefined);
+  }
 }

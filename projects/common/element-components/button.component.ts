@@ -5,7 +5,7 @@ import { ButtonElement } from '../unit';
 @Component({
   selector: 'app-button',
   template: `
-    <button mat-button
+    <button *ngIf="!elementModel.imageSrc" mat-button
             (focusin)="onFocusin.emit()"
             [style.width.%]="100"
             [style.height.%]="100"
@@ -18,6 +18,9 @@ import { ButtonElement } from '../unit';
             [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       {{elementModel.label}}
     </button>
+    <input *ngIf="elementModel.imageSrc" type="image" [src]="elementModel.imageSrc"
+           [width]="elementModel.width" [height]="elementModel.height"
+           [style.object-fit]="'scale-down'" alt="Bild nicht gefunden">
   `
 })
 export class ButtonComponent extends ElementComponent {

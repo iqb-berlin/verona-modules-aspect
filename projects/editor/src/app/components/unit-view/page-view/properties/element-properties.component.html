@@ -25,6 +25,15 @@
           </div>
         </ng-container>
 
+        <div *ngIf="combinedProperties.type === 'button'">
+          <input #imageUpload type="file" hidden (click)="loadImage()">
+          <button mat-raised-button (click)="imageUpload.click()">Bild laden</button>
+          <button mat-raised-button (click)="removeImage()">Bild entfernen</button>
+          <img [src]="combinedProperties.imageSrc"
+               [style.object-fit]="'scale-down'"
+          [width]="200">
+        </div>
+
         <mat-form-field *ngIf="combinedProperties.appearance" appearance="fill">
           <mat-label>Aussehen</mat-label>
           <mat-select [value]="combinedProperties.appearance"

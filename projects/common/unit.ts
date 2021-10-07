@@ -83,6 +83,7 @@ export interface TextElement extends SurfaceUIElement {
 
 export interface ButtonElement extends TextUIElement, SurfaceUIElement {
   label: string;
+  imageSrc?: string;
   action: undefined | 'previous' | 'next' | 'end';
 }
 

@@ -177,7 +177,9 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Absatzabstand</mat-label>
-      <mat-select [value]="'10'" (valueChange)="applyParagraphStyle($event)">
+      <mat-select matTooltip="Achtung: Gilt nur für zukünftig angelegte Absätze" [matTooltipShowDelay]="300"
+                  [value]="'10'"
+                  (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
         <mat-option value="10">10px</mat-option>
         <mat-option value="20">20px</mat-option>
       </mat-select>

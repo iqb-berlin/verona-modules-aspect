@@ -15,7 +15,8 @@ import { ButtonElement } from '../unit';
             [style.font-size.px]="elementModel.fontSize"
             [style.font-weight]="elementModel.bold ? 'bold' : ''"
             [style.font-style]="elementModel.italic ? 'italic' : ''"
-            [style.text-decoration]="elementModel.underline ? 'underline' : ''">
+            [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+            [style.border-radius.px]="elementModel.borderRadius">
       {{elementModel.label}}
     </button>
     <input *ngIf="elementModel.imageSrc" type="image" [src]="elementModel.imageSrc"

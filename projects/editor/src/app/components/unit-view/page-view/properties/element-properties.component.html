@@ -32,6 +32,11 @@
           <img [src]="combinedProperties.imageSrc"
                [style.object-fit]="'scale-down'"
           [width]="200">
+          <mat-form-field appearance="fill">
+            <mat-label>Kantenradius</mat-label>
+            <input matInput type="number" [value]="combinedProperties.borderRadius"
+                   (input)="updateModel('borderRadius', $any($event.target).value)">
+          </mat-form-field>
         </div>
 
         <mat-form-field *ngIf="combinedProperties.appearance" appearance="fill">

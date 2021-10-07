@@ -14,8 +14,6 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
       <!-- Needs extra div because styling can interfere with drag and drop-->
       <div [style.position]="'absolute'"
            [style.border]="isSelected ? '2px solid' : ''"
-           [style.width.px]="element.width"
-           [style.height.px]="element.height"
            [style.left.px]="element.xPosition"
            [style.top.px]="element.yPosition"
            [style.z-index]="element.zIndex">
@@ -28,7 +26,11 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
           <mat-icon>aspect_ratio</mat-icon>
           <div *cdkDragPlaceholder></div>
         </div>
-        <ng-template #elementContainer></ng-template>
+        <div [style.width.px]="element.width"
+             [style.overflow]="'auto'"
+             [style.height.px]="element.height">
+          <ng-template #elementContainer></ng-template>
+        </div>
       </div>
     </div>
   `,

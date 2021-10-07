@@ -14,4 +14,19 @@ body {
 .drop-list {cursor: grab}
 .drop-list.cdk-drop-list-dragging {cursor: grabbing}
 
-.mat-menu-panel {border: 2px solid red}
+h1 {
+  font-weight: bold;
+  font-size: 20px;
+}
+h2 {
+  font-weight: bold;
+  font-size: 18px;
+}
+h3 {
+  font-weight: bold;
+  font-size: 16px;
+}
+h4 {
+  font-weight: normal;
+  font-size: 16px;
+}

@@ -1,5 +1,8 @@
 Player
 ======
+1.0.11
+- Disable autocomplete for text field and text area
+
 1.0.10
 - [bug] Center single column pages
 - [bug] Allow aspect ratio for always visible side over 50%

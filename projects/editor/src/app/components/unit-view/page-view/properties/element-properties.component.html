@@ -264,24 +264,24 @@
           Grid
           <div class="input-group">
             <div fxLayoutAlign="row">
-              <mat-form-field *ngIf="combinedProperties.gridColumnStart">
+              <mat-form-field *ngIf="combinedProperties.gridColumnStart" class="small-input">
                 <mat-label>Start-Spalte</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridColumnStart"
                        (ngModelChange)="updateModel('gridColumnStart', $event)">
               </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.gridColumnEnd">
+              <mat-form-field *ngIf="combinedProperties.gridColumnEnd" class="small-input">
                 <mat-label>End-Spalte</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridColumnEnd"
                        (ngModelChange)="updateModel('gridColumnEnd', $event)">
               </mat-form-field>
             </div>
             <div fxLayoutAlign="row">
-              <mat-form-field *ngIf="combinedProperties.gridRowStart">
+              <mat-form-field *ngIf="combinedProperties.gridRowStart" class="small-input">
                 <mat-label>Start-Zeile</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridRowStart"
                        (ngModelChange)="updateModel('gridRowStart', $event)">
               </mat-form-field>
-              <mat-form-field *ngIf="combinedProperties.gridRowEnd">
+              <mat-form-field *ngIf="combinedProperties.gridRowEnd" class="small-input">
                 <mat-label>End-Zeile</mat-label>
                 <input matInput type="number" [ngModel]="combinedProperties.gridRowEnd"
                        (ngModelChange)="updateModel('gridRowEnd', $event)">

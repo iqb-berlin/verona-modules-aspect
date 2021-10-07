@@ -10,24 +10,12 @@ import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 import { MessageService } from '../../../../../../../common/message.service';
+import { FileService } from '../../../../../../../common/file.service';
 
 @Component({
   selector: 'app-element-properties',
   templateUrl: './element-properties.component.html',
-  styles: [
-    '::ng-deep app-element-properties .margin-properties .mat-form-field-infix {width: 55px}',
-    '::ng-deep app-element-properties .mat-form-field-infix {width: 95px; margin: 0 5px}',
-    '.list-items {padding: 5px 10px; border-bottom: solid 1px #ccc}',
-    '.list-items {display: flex;flex-direction: row; align-items: center; justify-content: space-between;}',
-    '.element-button {margin-top: 10px}',
-    '.input-group {background-color: rgba(0,0,0,.04); margin-bottom: 10px}',
-    '.centered-form-field {margin-left: 25%}',
-    '.right-form-field {margin-left: 15%}',
-    '::ng-deep app-element-properties .mat-tab-label {min-width: 0 !important;}',
-    '::ng-deep app-element-properties .mat-tab-group {padding: 15px}',
-    '.text-text {min-height: 125px; max-height: 500px; overflow: auto; margin-bottom: 10px}',
-    '.text-text {background-color: rgba(0,0,0,.04)}'
-  ]
+  styleUrls: ['./element-properties.component.css']
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
   selectedElements!: UnitUIElement[];

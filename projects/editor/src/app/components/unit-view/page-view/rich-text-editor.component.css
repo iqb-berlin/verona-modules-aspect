@@ -1,0 +1,29 @@
+div.ProseMirror {
+  height: 450px;
+  border: 1px solid;
+  overflow: auto;
+}
+
+app-rich-text-editor button {
+  min-width: unset !important;
+  width: 50px;
+}
+
+app-rich-text-editor .editor-button-formfield-align button {
+  vertical-align: top !important;
+  margin-top: 10px !important;
+}
+
+app-rich-text-editor button.active {
+  background-color: lightgrey;
+}
+
+app-rich-text-editor mat-form-field {
+  width: 120px;
+  margin: 0 10px;
+}
+
+app-rich-text-editor .editor-control-line {
+  height: 50px;
+  margin-bottom: 5px;
+}

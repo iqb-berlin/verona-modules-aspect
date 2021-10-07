@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+import { NgxTiptapModule } from 'ngx-tiptap';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -20,13 +21,14 @@ import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/c
 import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/app.module';
 import {
-  ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialogTinyMCE
+  ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialog
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { ElementPropertiesComponent } from './components/unit-view/page-view/properties/element-properties.component';
 import { SectionMenuComponent } from './components/unit-view/page-view/canvas/section-menu.component';
 import { SectionStaticComponent } from './components/unit-view/page-view/canvas/section-static.component';
 import { SectionDynamicComponent } from './components/unit-view/page-view/canvas/section-dynamic.component';
+import { RichTextEditorComponent } from './components/unit-view/page-view/rich-text-editor.component';
 
 @NgModule({
   declarations: [
@@ -41,11 +43,12 @@ import { SectionDynamicComponent } from './components/unit-view/page-view/canvas
     ConfirmationDialog,
     TextEditDialog,
     MultilineTextEditDialog,
-    RichTextEditDialogTinyMCE,
+    RichTextEditDialog,
     ElementPropertiesComponent,
     SectionMenuComponent,
     SectionStaticComponent,
-    SectionDynamicComponent
+    SectionDynamicComponent,
+    RichTextEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { SectionDynamicComponent } from './components/unit-view/page-view/canvas
     MatButtonToggleModule,
     MatSlideToggleModule,
     MatMenuModule,
+    NgxTiptapModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

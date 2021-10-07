@@ -38,12 +38,13 @@ export class DialogService {
   }
 
   showRichTextEditDialog(text: string): Observable<string> {
-    const dialogRef = this.dialog.open(RichTextEditDialogTinyMCE, {
+    const dialogRef = this.dialog.open(RichTextEditDialog, {
       width: '800px',
-      height: '600px',
+      height: '700px',
       data: {
         text: text
-      }
+      },
+      autoFocus: false
     });
     return dialogRef.afterClosed();
   }
@@ -108,25 +109,7 @@ export class MultilineTextEditDialog {
   selector: 'app-rich-text-edit-dialog-tinymce',
   template: `
     <mat-dialog-content>
-      <editor
-        [(ngModel)]="data.text"
-        [init]="{
-           height: 500,
-           menubar: false,
-           statusbar: false,
-           paste_as_text: true,
-           fontsize_formats: '8pt 10pt 12pt 14pt 16pt 18pt 24pt 36pt',
-           plugins: [
-             'charmap paste lists'
-           ],
-          toolbar: [
-            'newdocument | undo redo | selectall | removeformat | charmap',
-            'bold italic underline strikethrough forecolor backcolor | formatselect | fontselect fontsizeselect |' +
-            'alignleft aligncenter alignright alignjustify bullist numlist outdent indent',
-          ]
-         }"
-      ></editor>
-
+      <app-rich-text-editor [(text)]="data.text"></app-rich-text-editor>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="data.text">Speichern</button>
@@ -134,6 +117,6 @@ export class MultilineTextEditDialog {
     </mat-dialog-actions>
     `
 })
-export class RichTextEditDialogTinyMCE {
+export class RichTextEditDialog {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string }) { }
 }

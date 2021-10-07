@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RadioButtonGroupElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -17,10 +17,12 @@ import { FormElementComponent } from '../form-element-component.directive';
          [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       <label [innerHTML]="elementModel.label" id="radio-group-label"></label>
       <mat-radio-group aria-labelledby="radio-group-label"
+                       (focusin)="onFocusin.emit()"
                        [style.margin-bottom.px]="25"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
-        <mat-radio-button *ngFor="let option of elementModel.options" [value]="option">
+        <mat-radio-button *ngFor="let option of elementModel.options"
+                          [value]="option">
           {{option}}
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
@@ -34,5 +36,6 @@ import { FormElementComponent } from '../form-element-component.directive';
   `
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
+  @Output() onFocusin = new EventEmitter();
   elementModel!: RadioButtonGroupElement;
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { CheckboxElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
@@ -11,6 +11,7 @@ import { FormElementComponent } from '../form-element-component.directive';
          [style.height.%]="100"
          [style.background-color]="elementModel.backgroundColor">
       <mat-checkbox #checkbox class="example-margin"
+                    (focusin)="onFocusin.emit()"
                     [formControl]="elementFormControl"
                     [style.color]="elementModel.fontColor"
                     [style.font-family]="elementModel.font"
@@ -31,6 +32,7 @@ import { FormElementComponent } from '../form-element-component.directive';
   `
 })
 export class CheckboxComponent extends FormElementComponent {
+  @Output() onFocusin = new EventEmitter();
   elementModel!: CheckboxElement;
 
   get validators(): ValidatorFn[] {

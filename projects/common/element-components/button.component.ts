@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { ButtonElement } from '../unit';
 
@@ -6,6 +6,7 @@ import { ButtonElement } from '../unit';
   selector: 'app-button',
   template: `
     <button mat-button
+            (focusin)="onFocusin.emit()"
             [style.width.%]="100"
             [style.height.%]="100"
             [style.background-color]="elementModel.backgroundColor"
@@ -20,5 +21,6 @@ import { ButtonElement } from '../unit';
   `
 })
 export class ButtonComponent extends ElementComponent {
+  @Output() onFocusin = new EventEmitter();
   elementModel!: ButtonElement;
 }

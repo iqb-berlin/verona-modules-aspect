@@ -51,6 +51,12 @@ export class ElementComponent implements OnInit {
 
     this.unitStateService.registerElement(elementComponent.elementModel);
 
+    elementComponent.onFocusin
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.unitStateService.changeElementStatus({ id: this.elementModel.id, status: 'TOUCHED' });
+      });
+
     if (Object.prototype.hasOwnProperty.call(this.elementModel, 'required')) {
       const elementForm = this.formBuilder.group({});
       elementComponent.parentForm = elementForm;

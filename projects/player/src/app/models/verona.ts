@@ -8,6 +8,13 @@ export type StateReportPolicy = 'none' | 'eager' | 'on-demand';
 
 export type UnitStateElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'TOUCHED' | 'VALUE_CHANGED';
 
+export enum UnitStateElementCodeStatusValue { NOT_REACHED = 0, DISPLAYED = 1, TOUCHED = 2, VALUE_CHANGED = 3}
+
+export interface StatusChangeElement {
+  id: string;
+  status: UnitStateElementCodeStatus;
+}
+
 export interface PlayerConfig {
   unitNumber?: number;
   unitTitle?: number;

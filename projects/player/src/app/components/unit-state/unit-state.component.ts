@@ -66,9 +66,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.unitStateService.presentedPageAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
-    this.form.valueChanges
+    this.unitStateService.unitStateElementCodeChanged
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((): void => this.onFormChanges());
+      .subscribe((): void => this.onUnitStateElementCodeChanged());
     this.veronaSubscriptionService.vopNavigationDeniedNotification
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopNavigationDeniedNotification): void => this.onNavigationDenied(message));
@@ -116,9 +116,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     }
   };
 
-  private onFormChanges(): void {
+  private onUnitStateElementCodeChanged(): void {
     // eslint-disable-next-line no-console
-    console.log('player: onFormChanges', this.unitStateService.unitStateElementCodes);
+    console.log('player: onUnitStateElementCodeChanged', this.unitStateService.unitStateElementCodes);
     this.sendVopStateChangedNotification();
   }
 

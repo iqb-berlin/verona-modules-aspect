@@ -1,5 +1,8 @@
 Editor
 ======
+next
+- Show scrollbars for elements if necessary
+
 1.4.0
 - New Text-Editor (based on TipTap/ProseMirror)
 

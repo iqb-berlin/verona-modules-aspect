@@ -1,6 +1,6 @@
 import {
   AudioElement, ButtonElement,
-  CheckboxElement, CompoundElementCorrection, DropdownElement,
+  CheckboxElement, DropdownElement,
   ImageElement, TextElement, RadioButtonGroupElement,
   TextFieldElement, Unit, UnitPage, UnitPageSection, UnitUIElement,
   VideoElement, TextAreaElement

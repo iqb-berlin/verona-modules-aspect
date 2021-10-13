@@ -74,7 +74,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
   }
 
   elementDropped(event: CdkDragDrop<DropListData>): void {
-    console.log('elementDropped');
     const selectedElements = this.selectionService.getSelectedElements();
 
     if (event.previousContainer !== event.container) {
@@ -112,11 +111,6 @@ export class CanvasComponent implements OnInit, OnDestroy {
   addSection(index: number | null = null): void {
     this.unitService.addSection(this.page, index);
     this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
-  }
-
-  sectionDrop(event: CdkDragDrop<UnitPageSection[]>): void {
-    moveItemInArray(this.page.sections, event.previousIndex, event.currentIndex);
-    this.unitService.setPageSections(this.page, this.page.sections);
   }
 
   ngOnDestroy(): void {

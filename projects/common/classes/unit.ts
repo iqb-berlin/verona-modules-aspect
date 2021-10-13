@@ -8,7 +8,6 @@ export class Unit {
   pages: Page[] = [];
 
   constructor(serializedUnit?: Unit) {
-    console.log('newUNIT', serializedUnit);
     this.veronaModuleVersion = EXPORTED_MODULE_VERSION;
     if (serializedUnit && serializedUnit.pages.length > 0) {
       serializedUnit?.pages.forEach((page: Page) => {

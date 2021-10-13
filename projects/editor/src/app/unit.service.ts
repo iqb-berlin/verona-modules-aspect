@@ -167,7 +167,11 @@ export class UnitService {
         IdService.getInstance().removeId(element[property]);
         IdService.getInstance().addId(<string>value);
       }
-      element[property] = value;
+      if (Array.isArray(value)) {
+        element[property] = [...value];
+      } else {
+        element[property] = value;
+      }
       this.elementPropertyUpdated.next();
       return true;
     });

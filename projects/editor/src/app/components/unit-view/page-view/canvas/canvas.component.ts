@@ -12,7 +12,7 @@ import { Section } from '../../../../../../../common/classes/section';
 
 @Component({
   selector: 'app-page-canvas',
-  templateUrl: './page-canvas.component.html',
+  templateUrl: './canvas.component.html',
   styles: [
     '.canvasBackground {background-color: lightgrey; padding: 20px 50px; height: 100%; overflow: auto;}',
     '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin: 15px 0; border-radius: 10%}',
@@ -22,7 +22,7 @@ import { Section } from '../../../../../../../common/classes/section';
     '.section-menu.open {opacity:1; transition-delay:0s;}'
   ]
 })
-export class PageCanvasComponent implements OnInit, OnDestroy {
+export class CanvasComponent implements OnInit, OnDestroy {
   @Input() page!: Page;
   dropListList: string[] = [];
   hoveredSection: number = -1;

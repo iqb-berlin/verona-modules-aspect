@@ -3,7 +3,7 @@ import { initSurfaceElement, initFontElement, UIElement } from './uIElement';
 
 export class ButtonElement extends UIElement implements FontElement, SurfaceUIElement {
   label: string = 'Knopf';
-  imageSrc: string = '';
+  imageSrc: string | undefined;
   borderRadius: number = 0;
   action: undefined | 'previous' | 'next' | 'end';
 

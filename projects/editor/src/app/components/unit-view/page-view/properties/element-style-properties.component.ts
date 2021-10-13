@@ -1,18 +1,19 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { UIElement } from '../../../../../../../common/classes/uIElement';
 
 @Component({
   selector: 'app-element-style-properties',
   template: `
     <div fxLayout="column">
-      <mat-form-field *ngIf="combinedProperties.backgroundColor != null"
+      <mat-form-field *ngIf="combinedProperties.backgroundColor"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>Hintergrundfarbe</mat-label>
         <input matInput type="color" [value]="combinedProperties.backgroundColor"
                (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
       </mat-form-field>
-      <mat-form-field *ngIf="combinedProperties.fontColor != null"
+      <mat-form-field *ngIf="combinedProperties.fontColor"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>Schriftfarbe</mat-label>
         <input matInput type="color" [value]="combinedProperties.fontColor"
@@ -50,6 +51,6 @@ import {
   `
 })
 export class ElementStylePropertiesComponent {
-  @Input() combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
+  @Input() combinedProperties: UIElement = {} as UIElement;
   @Output() updateModel = new EventEmitter<{ property: string; value: string | boolean }>();
 }

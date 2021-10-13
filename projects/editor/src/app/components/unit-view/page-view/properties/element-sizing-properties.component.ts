@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
+import { UIElement } from '../../../../../../../common/classes/uIElement';
 
 @Component({
   selector: 'app-element-sizing-properties',
@@ -149,7 +150,7 @@ import { SelectionService } from '../../../../selection.service';
   ]
 })
 export class ElementSizingPropertiesComponent {
-  @Input() combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
+  @Input() combinedProperties: UIElement = {} as UIElement;
   @Output() updateModel =
   new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
 

@@ -4,6 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class MarkingService {
+  private static readonly MARKING_TAG = 'MARKED';
+
   applySelection(range: Range, selection: Selection, clear: boolean, color: string):void {
     if (range.startContainer === range.endContainer) {
       if (clear) {
@@ -24,7 +26,7 @@ export class MarkingService {
   }
 
   private clearMarkingFromNode(range: Range): void {
-    if (range.startContainer.parentElement?.tagName?.toUpperCase() === 'MARKED') {
+    if (range.startContainer.parentElement?.tagName?.toUpperCase() === MarkingService.MARKING_TAG) {
       const previousText = range.startContainer.nodeValue?.substring(0, range.startOffset) || '';
       const text = range.startContainer.nodeValue?.substring(range.startOffset, range.endOffset) || '';
       const nextText = range.startContainer.nodeValue?.substring(range.endOffset) || '';
@@ -36,7 +38,7 @@ export class MarkingService {
 
   private clearMarkingFromNodes(nodes: Node[], range: Range): void {
     nodes.forEach((node, index) => {
-      if (node.parentElement?.tagName === 'MARKED') {
+      if (node.parentElement?.tagName === MarkingService.MARKING_TAG) {
         const nodeValues = this.getNodeValues(node, nodes, index, range);
         if (nodeValues.text) {
           this.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, range);
@@ -100,14 +102,14 @@ export class MarkingService {
   private markNodes(nodes: Node[], range: Range, color: string): void {
     nodes.forEach((node, index) => {
       const nodeValues = this.getNodeValues(node, nodes, index, range);
-      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== 'MARKED') {
+      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG) {
         this.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
       }
     });
   }
 
   private createMarkedElement = (color: string): HTMLElement => {
-    const markedElement = document.createElement('MARKED');
+    const markedElement = document.createElement(MarkingService.MARKING_TAG);
     markedElement.style.backgroundColor = color;
     return markedElement;
   };

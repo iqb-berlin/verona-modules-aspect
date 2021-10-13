@@ -4,10 +4,10 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { DialogService } from '../../../../dialog.service';
 import { SelectionService } from '../../../../selection.service';
+import { Section } from '../../../../../../../common/classes/section';
 
 @Component({
   selector: 'app-section-menu',
@@ -120,7 +120,7 @@ import { SelectionService } from '../../../../selection.service';
   ]
 })
 export class SectionMenuComponent implements OnInit, OnDestroy {
-  @Input() section!: UnitPageSection;
+  @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() allowMoveUp!: boolean;
   @Input() allowMoveDown!: boolean;

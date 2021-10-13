@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UnitUIElement } from '../../../common/unit';
+import { UIElement } from '../../../common/classes/uIElement';
 
 @Injectable({
   providedIn: 'root'
@@ -8,18 +8,18 @@ import { UnitUIElement } from '../../../common/unit';
 export class SelectionService {
   selectedPageIndex: number = 0;
   selectedPageSectionIndex: number = 0;
-  private _selectedElements!: BehaviorSubject<UnitUIElement[]>;
+  private _selectedElements!: BehaviorSubject<UIElement[]>;
   selectedElementComponents: any[] = [];
 
   constructor() {
-    this._selectedElements = new BehaviorSubject([] as UnitUIElement[]);
+    this._selectedElements = new BehaviorSubject([] as UIElement[]);
   }
 
-  get selectedElements(): Observable<UnitUIElement[]> {
+  get selectedElements(): Observable<UIElement[]> {
     return this._selectedElements.asObservable();
   }
 
-  getSelectedElements(): UnitUIElement[] {
+  getSelectedElements(): UIElement[] {
     return this._selectedElements.value;
   }
 

@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { DragItemData, DropListData } from './page-canvas.component';
-import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
+import { Section } from '../../../../../../../common/classes/section';
 
 @Component({
   selector: 'app-section-dynamic',
@@ -64,7 +64,7 @@ import { UnitService } from '../../../../unit.service';
   ]
 })
 export class SectionDynamicComponent {
-  @Input() section!: UnitPageSection;
+  @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() dropListList!: string[];
   @Input() isSelected!: boolean;

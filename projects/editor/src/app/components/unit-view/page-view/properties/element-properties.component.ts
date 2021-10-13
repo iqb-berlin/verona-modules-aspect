@@ -18,7 +18,7 @@ import { FileService } from '../../../../../../../common/file.service';
   styleUrls: ['./element-properties.component.css']
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
-  selectedElements!: UnitUIElement[];
+  selectedElements!: UIElement[];
   combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
   private ngUnsubscribe = new Subject<void>();
 
@@ -37,7 +37,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     this.selectionService.selectedElements
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
-        (selectedElements: UnitUIElement[]) => {
+        (selectedElements: UIElement[]) => {
           this.selectedElements = selectedElements;
           this.createCombinedProperties();
         }

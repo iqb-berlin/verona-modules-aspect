@@ -7,16 +7,16 @@ import {
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
-import { UnitUIElement } from '../../../../../../../common/unit';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
 import { ValueChangeElement } from '../../../../../../../common/form';
 import { ElementComponent } from '../../../../../../../common/element-component.directive';
 import { SelectionService } from '../../../../selection.service';
+import { InputElement, UIElement } from '../../../../../../../common/classes/uIElement';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
-  @Input() element!: UnitUIElement;
+  @Input() element!: UIElement;
   @Input() viewMode: boolean = false;
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;
@@ -46,7 +46,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           (this.childComponent.instance as FormElementComponent).updateFormValue(
-            this.element.value as string | number | boolean | undefined
+            (this.element as InputElement).value as string | number | boolean | undefined
           );
         });
     }
@@ -59,7 +59,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
         event.key === 'Delete') {
       this.selectionService.selectedElements
         .pipe(take(1))
-        .subscribe((selectedElements: UnitUIElement[]) => {
+        .subscribe((selectedElements: UIElement[]) => {
           this.unitService.deleteElementsFromSectionByIndex(
             selectedElements,
             this.selectionService.selectedPageIndex,

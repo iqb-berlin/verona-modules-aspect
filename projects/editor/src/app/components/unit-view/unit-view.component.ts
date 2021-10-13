@@ -4,8 +4,9 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../unit.service';
 import { DialogService } from '../../dialog.service';
 import { SelectionService } from '../../selection.service';
-import { Unit, UnitPage } from '../../../../../common/unit';
 import { MessageService } from '../../../../../common/message.service';
+import { Page } from '../../../../../common/classes/page';
+import { Unit } from '../../../../../common/classes/unit';
 
 @Component({
   selector: 'app-unit-view',
@@ -68,11 +69,11 @@ export class UnitViewComponent implements OnInit, OnDestroy {
     this.selectionService.selectedPageSectionIndex = 0;
   }
 
-  movePage(page: UnitPage, direction: 'up' | 'down'): void {
+  movePage(page: Page, direction: 'up' | 'down'): void {
     this.unitService.movePage(page, direction);
   }
 
-  deletePage(page: UnitPage): void {
+  deletePage(page: Page): void {
     this.dialogService.showConfirmDialog('Seite löschen?')
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result: boolean) => {
@@ -85,7 +86,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
     this.selectionService.selectedPageSectionIndex = 0;
   }
 
-  updateModel(page: UnitPage, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
+  updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
     if (isInputValid && value != null) {
       this.unitService.updatePageProperty(page, property, value);
       if (property === 'alwaysVisible') {

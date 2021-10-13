@@ -34,6 +34,7 @@ import { AudioComponent } from './element-components/audio.component';
 import { SafeResourceUrlPipe } from './element-components/pipes/safe-resource-url.pipe';
 import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
 import { ErrorTransformPipe } from './element-components/pipes/error-transform.pipe';
+import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-html.pipe';
 
 @NgModule({
   imports: [
@@ -64,7 +65,8 @@ import { ErrorTransformPipe } from './element-components/pipes/error-transform.p
     DropdownComponent,
     SafeResourceUrlPipe,
     InputBackgroundColorDirective,
-    ErrorTransformPipe
+    ErrorTransformPipe,
+    SafeResourceHTMLPipe
   ],
   exports: [
     CommonModule,
@@ -97,7 +99,8 @@ import { ErrorTransformPipe } from './element-components/pipes/error-transform.p
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,
-    TranslateModule
+    TranslateModule,
+    SafeResourceHTMLPipe
   ]
 })
 export class SharedModule { }

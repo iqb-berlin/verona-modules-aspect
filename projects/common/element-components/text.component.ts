@@ -34,7 +34,7 @@ import { ElementComponent } from '../element-component.directive';
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''"
-           [innerHTML]="sanitizer.bypassSecurityTrustHtml(elementModel.text)"
+           [innerHTML]="elementModel.text | safeResourceHTML"
            #container>
       </div>
     </div>

@@ -20,7 +20,7 @@
 
         <ng-container *ngIf="combinedProperties.text">
           Text
-          <div class="text-text" [innerHTML]="sanitizer.bypassSecurityTrustHtml($any(combinedProperties.text))"
+          <div class="text-text" [innerHTML]="combinedProperties.text | safeResourceHTML"
                (click)="unitService.showDefaultEditDialog(selectedElements[0])">
           </div>
         </ng-container>

@@ -1,12 +1,11 @@
-import { Injectable } from '@angular/core';
-import {
-  Unit, UnitPage, UnitPageSection, UnitUIElement
-} from '../../../common/unit';
+import { Unit } from './classes/unit';
+import { Page } from './classes/page';
+import { Section } from './classes/section';
+import { UIElement } from './classes/uIElement';
 
-@Injectable({
-  providedIn: 'root'
-})
 export class IdService {
+  private static instance: IdService;
+
   private givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,
@@ -23,6 +22,13 @@ export class IdService {
     correction: 0
   };
 
+  static getInstance(): IdService {
+    if (!IdService.instance) {
+      IdService.instance = new IdService();
+    }
+    return IdService.instance;
+  }
+
   getNewID(type: string): string {
     do {
       this.idCounter[type] += 1;
@@ -33,9 +39,9 @@ export class IdService {
   }
 
   readExistingIDs(unit: Unit): void {
-    unit.pages.forEach((page: UnitPage) => {
-      page.sections.forEach((section: UnitPageSection) => {
-        section.elements.forEach((element: UnitUIElement) => {
+    unit.pages.forEach((page: Page) => {
+      page.sections.forEach((section: Section) => {
+        section.elements.forEach((element: UIElement) => {
           this.givenIDs.push(element.id);
         });
       });

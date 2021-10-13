@@ -1,13 +1,11 @@
-import { initSurfaceElement, initFontElement, UIElement } from './uIElement';
-import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
+import { initSurfaceElement, UIElement } from './uIElement';
+import { SurfaceUIElement } from '../interfaces/UIElementInterfaces';
 
-export class TextElement extends UIElement implements FontElement, SurfaceUIElement {
+export class TextElement extends UIElement implements SurfaceUIElement {
   text: string = '<p>Lorem ipsum dolor sit amet</p>';
   highlightable: boolean = false;
-
   fontColor: string = 'black';
   font: string = 'Roboto';
-  fontSize: number = 18;
   bold: boolean = false;
   italic: boolean = false;
   underline: boolean = false;
@@ -17,8 +15,12 @@ export class TextElement extends UIElement implements FontElement, SurfaceUIElem
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
-    Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
+    this.fontColor = serializedElement.fontColor as string || 'black';
+    this.font = serializedElement.font as string || 'Roboto';
+    this.bold = serializedElement.bold as boolean || false;
+    this.italic = serializedElement.italic as boolean || false;
+    this.underline = serializedElement.underline as boolean || false;
 
     this.height = 78;
     this.backgroundColor = 'transparent';

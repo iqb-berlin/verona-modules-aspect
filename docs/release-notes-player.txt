@@ -1,5 +1,8 @@
 Player
 ======
+- new
+- make texts markable
+
 1.0.11
 - Disable autocomplete for text field and text area
 

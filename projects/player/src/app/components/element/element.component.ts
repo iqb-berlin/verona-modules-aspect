@@ -13,6 +13,7 @@ import { TextAreaComponent } from '../../../../../common/element-components/text
 import { FormService } from '../../../../../common/form.service';
 import { ValueChangeElement } from '../../../../../common/form';
 import { UnitStateService } from '../../services/unit-state.service';
+import { MarkingService } from '../../services/marking.service';
 
 @Component({
   selector: 'app-element',
@@ -35,7 +36,8 @@ export class ElementComponent implements OnInit {
               private componentFactoryResolver: ComponentFactoryResolver,
               private formService: FormService,
               private unitStateService: UnitStateService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private markingService: MarkingService) {
   }
 
   ngOnInit(): void {
@@ -46,7 +48,11 @@ export class ElementComponent implements OnInit {
 
     const unitStateElementCode = this.unitStateService.getUnitStateElement(this.elementModel.id);
     if (unitStateElementCode) {
-      elementComponent.elementModel.value = unitStateElementCode.value;
+      if (this.elementModel.type === 'text') {
+        elementComponent.elementModel.text = unitStateElementCode.value;
+      } else {
+        elementComponent.elementModel.value = unitStateElementCode.value;
+      }
     }
 
     this.unitStateService.registerElement(elementComponent.elementModel);
@@ -56,6 +62,15 @@ export class ElementComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           this.unitStateService.changeElementStatus({ id: this.elementModel.id, status: 'TOUCHED' });
+        });
+    }
+
+    if (elementComponent.applySelection) {
+      elementComponent.applySelection
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((selection: { color: string; element: HTMLElement; clear: boolean }) => {
+          this.unitStateService.changeElementStatus({ id: this.elementModel.id, status: 'TOUCHED' });
+          this.applySelection(selection.color, selection.element, selection.clear);
         });
     }
 
@@ -101,6 +116,33 @@ export class ElementComponent implements OnInit {
       .subscribe((): void => {
         this.isKeyboardOpen = this.keyboardService.closeKeyboard();
       });
+  }
+
+  private applySelection(color: string, element: HTMLElement, clear: boolean): void {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      if (this.isDescendantOf(range.startContainer, element) &&
+        this.isDescendantOf(range.endContainer, element)) {
+        this.markingService.applySelection(range, selection, clear, color);
+        this.unitStateService.changeElementValue({
+          id: this.elementModel.id,
+          values: [this.elementModel.text as string, element.innerHTML]
+        });
+        this.elementModel.text = element.innerHTML;
+      }
+      selection.removeRange(range);
+    } // nothing to do!
+  }
+
+  private isDescendantOf(node: Node | null, element: HTMLElement): boolean {
+    if (!node || node === document) {
+      return false;
+    }
+    if (node.parentElement === element) {
+      return true;
+    }
+    return this.isDescendantOf(node.parentNode, element);
   }
 
   ngOnDestroy(): void {

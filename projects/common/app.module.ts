@@ -45,6 +45,7 @@ import { ErrorTransformPipe } from './element-components/pipes/error-transform.p
     MatCheckboxModule,
     ReactiveFormsModule,
     FormsModule,
+    MatIconModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,

@@ -22,7 +22,7 @@ export class UnitStateService {
       .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
   }
 
-  setUnitStateElementCodeValue(id: string, value: string | number | boolean | undefined): void {
+  private setUnitStateElementCodeValue(id: string, value: string | number | boolean | undefined): void {
     const unitStateElementCode = this.getUnitStateElement(id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;
@@ -30,7 +30,7 @@ export class UnitStateService {
     }
   }
 
-  setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus): void {
+  private setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus): void {
     const unitStateElementCode = this.getUnitStateElement(id);
     if (unitStateElementCode) {
       // Set status only if it is higher than the old status

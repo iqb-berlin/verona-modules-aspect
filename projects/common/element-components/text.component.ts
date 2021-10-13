@@ -1,4 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component, ElementRef, EventEmitter, Output, ViewChild
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextElement } from '../unit';
 import { ElementComponent } from '../element-component.directive';
@@ -10,10 +12,21 @@ import { ElementComponent } from '../element-component.directive';
          [style.height]="'auto'">
       <div *ngIf="elementModel.highlightable">
         <button mat-button [style.background-color]="'yellow'"
-                (click)="highlightSelection('yellow')">Gelb</button>
+                (click)="applySelection.emit({color:'yellow', element: container, clear: false})">
+          <mat-icon>border_color</mat-icon>
+        </button>
         <button mat-button [style.background-color]="'turquoise'"
-                (click)="highlightSelection('turquoise')">Türkis</button>
-        <button mat-button (click)="clearHighlight()">X</button>
+                (click)="applySelection.emit({color: 'turquoise', element: container, clear: false})">
+          <mat-icon>border_color</mat-icon>
+        </button>
+        <button mat-button [style.background-color]="'orange'"
+                (click)="applySelection.emit({color: 'orange', element: container, clear: false})">
+          <mat-icon>border_color</mat-icon>
+        </button>
+        <button mat-button
+                (click)="applySelection.emit({color: 'none', element: container, clear: true})">
+          <mat-icon>clear</mat-icon>
+        </button>
       </div>
       <div [style.background-color]="elementModel.backgroundColor"
            [style.color]="elementModel.fontColor"
@@ -29,36 +42,10 @@ import { ElementComponent } from '../element-component.directive';
 })
 export class TextComponent extends ElementComponent {
   elementModel!: TextElement;
+  @Output()applySelection = new EventEmitter<{ color: string, element: HTMLElement, clear: boolean }>();
   @ViewChild('container') containerDiv!: ElementRef;
-
-  highlightedNodes: Node[] = [];
 
   constructor(public sanitizer: DomSanitizer) {
     super();
-  }
-
-  // TODO double click selection does not work and adds more and more nested spans
-  highlightSelection(color: string): void {
-    const selection = window.getSelection();
-    if (selection) {
-      this.clearHighlight(selection.anchorNode?.parentElement as HTMLElement);
-
-      const newNode = document.createElement('SPAN');
-      newNode.classList.add('markedText');
-      newNode.style.backgroundColor = color;
-      this.highlightedNodes.push(newNode as Node);
-      const range = selection.getRangeAt(0);
-      range.surroundContents(newNode);
-    } else {
-      console.warn('No selection to highlight');
-    }
-  }
-
-  clearHighlight(container: HTMLElement = this.containerDiv.nativeElement): void {
-    (Array.from(container.children) as HTMLElement[]).forEach((child: HTMLElement) => {
-      if (child.classList.contains('markedText')) {
-        container.replaceChild(document.createTextNode(child.innerHTML), child);
-      }
-    });
   }
 }

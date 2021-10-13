@@ -1,9 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  CheckboxElement, InputUIElement, TextFieldElement, UnitUIElement
-} from '../../unit';
+import { UIElement } from '../../classes/uIElement';
 
 @Pipe({
   name: 'errorTransform'
@@ -11,7 +9,7 @@ import {
 export class ErrorTransformPipe implements PipeTransform {
   constructor(private translateService: TranslateService) {}
 
-  transform(validationErrors: ValidationErrors, elementModel: UnitUIElement): string {
+  transform(validationErrors: ValidationErrors, elementModel: UIElement): string {
     const validationMessages = this.getValidationMessages(elementModel);
     let returnMessage = '';
 
@@ -25,21 +23,17 @@ export class ErrorTransformPipe implements PipeTransform {
     return returnMessage;
   }
 
-  private getValidationMessages(elementModel: UnitUIElement): Record<string, string> {
+  private getValidationMessages(elementModel: UIElement): Record<string, string> {
     return {
-      required: (elementModel as InputUIElement).requiredWarnMessage ||
+      required: elementModel.requiredWarnMessage ||
         this.translateService.instant('validators.inputRequired'),
-
-      requiredTrue: (elementModel as CheckboxElement).requiredWarnMessage ||
+      requiredTrue: elementModel.requiredWarnMessage ||
         this.translateService.instant('validators.inputRequiredTrue'),
-
-      minlength: (elementModel as TextFieldElement).minWarnMessage ||
+      minlength: elementModel.minWarnMessage ||
         this.translateService.instant('validators.inputTooShort'),
-
-      maxlength: (elementModel as TextFieldElement).maxWarnMessage ||
+      maxlength: elementModel.maxWarnMessage ||
         this.translateService.instant('validators.inputTooLong'),
-
-      pattern: (elementModel as TextFieldElement).patternWarnMessage ||
+      pattern: elementModel.patternWarnMessage ||
         this.translateService.instant('validators.wrongPattern')
     };
   }

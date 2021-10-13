@@ -1,9 +1,9 @@
 import {
   Directive
 } from '@angular/core';
-import { UnitUIElement } from './unit';
+import { UIElement } from './classes/uIElement';
 
 @Directive()
 export abstract class ElementComponent {
-  abstract elementModel: UnitUIElement;
+  abstract elementModel: UIElement;
 }

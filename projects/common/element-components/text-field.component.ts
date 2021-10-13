@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
-import { TextFieldElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
+import { TextFieldElement } from '../classes/textFieldElement';
 
 @Component({
   selector: 'app-text-field',

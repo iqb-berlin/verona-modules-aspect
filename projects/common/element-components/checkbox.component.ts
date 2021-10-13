@@ -29,7 +29,8 @@ import { FormElementComponent } from '../form-element-component.directive';
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
     </div>
-  `
+  `,
+  styles: ['::ng-deep .mat-checkbox-layout {white-space: normal !important}']
 })
 export class CheckboxComponent extends FormElementComponent {
   @Output() onFocusin = new EventEmitter();

@@ -15,7 +15,9 @@ import { FormElementComponent } from '../form-element-component.directive';
          [style.font-weight]="elementModel.bold ? 'bold' : ''"
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      <label [innerHTML]="elementModel.label" id="radio-group-label"></label>
+      <label [innerHTML]="elementModel.label"
+             class="white-space-break"
+             id="radio-group-label"></label>
       <mat-radio-group aria-labelledby="radio-group-label"
                        (focusin)="onFocusin.emit()"
                        [style.margin-bottom.px]="25"
@@ -33,7 +35,11 @@ import { FormElementComponent } from '../form-element-component.directive';
         </mat-error>
       </mat-radio-group>
     </div>
-  `
+  `,
+  styles: [
+    '::ng-deep .mat-radio-label {white-space: normal !important}',
+    '.white-space-break {white-space: normal}'
+  ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
   @Output() onFocusin = new EventEmitter();

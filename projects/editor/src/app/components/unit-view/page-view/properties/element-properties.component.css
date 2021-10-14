@@ -31,3 +31,9 @@
   text-align: center;
   font-weight: bold;
 }
+
+mat-divider {
+  margin: 20px;
+  border-top-width: 9px;
+  border-top-style: dotted;
+}

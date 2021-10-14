@@ -11,8 +11,7 @@ export class MarkingService {
       if (clear) {
         this.clearMarkingFromNode(range);
       } else {
-        const markedElement: HTMLElement = this.createMarkedElement(color);
-        range.surroundContents(markedElement);
+        this.markNode(range, color);
       }
     } else {
       const nodes: Node[] = [];
@@ -98,6 +97,13 @@ export class MarkingService {
     }
     return { text, previousText, nextText };
   };
+
+  private markNode(range: Range, color: string): void {
+    if (range.startContainer.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG) {
+      const markedElement: HTMLElement = this.createMarkedElement(color);
+      range.surroundContents(markedElement);
+    }
+  }
 
   private markNodes(nodes: Node[], range: Range, color: string): void {
     nodes.forEach((node, index) => {

@@ -26,7 +26,7 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
           <mat-icon>aspect_ratio</mat-icon>
           <div *cdkDragPlaceholder></div>
         </div>
-        <div [style.width.px]="element.width"
+        <div class="aspect-inserted-element" [style.width.px]="element.width"
              [style.overflow]="'auto'"
              [style.height.px]="element.height">
           <ng-template #elementContainer></ng-template>

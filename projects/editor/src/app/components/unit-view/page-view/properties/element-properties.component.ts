@@ -19,7 +19,6 @@ import { UIElement } from '../../../../../../../common/classes/uIElement';
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
   selectedElements!: UIElement[];
-  // combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
   combinedProperties: UIElement = {} as UIElement;
   private ngUnsubscribe = new Subject<void>();
 
@@ -69,7 +68,6 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
         });
       }
     }
-    console.log('combined:', this.combinedProperties);
   }
 
   updateModel(property: string,

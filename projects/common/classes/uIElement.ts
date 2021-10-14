@@ -1,10 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
 import { IdService } from '../id.service';
 
+export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
+| 'dropdown' | 'radio' | 'image' | 'audio' | 'video';
+export type InputElementValue = string | number | boolean | null;
+
 export abstract class UIElement {
   [index: string]: string | number | boolean | string[] | null | ((...args: any) => any);
-  type!: 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
-  | 'dropdown' | 'radio' | 'image' | 'audio' | 'video';
+  type!: UIElementType;
 
   id: string = 'id_placeholder';
   zIndex: number = 0;
@@ -41,7 +44,7 @@ export abstract class UIElement {
 
 export abstract class InputElement extends UIElement {
   label: string;
-  value: string | number | boolean | null;
+  value: InputElementValue;
   required: boolean;
   requiredWarnMessage: string;
 

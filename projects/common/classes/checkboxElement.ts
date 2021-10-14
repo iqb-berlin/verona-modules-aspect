@@ -17,6 +17,8 @@ export class CheckboxElement extends InputElement implements FontElement, Surfac
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
 
+    this.value = serializedElement.value as boolean || false; // booleans are always initialized false
+
     this.backgroundColor = 'transparent';
   }
 }

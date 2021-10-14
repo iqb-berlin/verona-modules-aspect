@@ -18,7 +18,7 @@ import { Section } from '../../../../../../../common/classes/section';
     '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin: 15px 0; border-radius: 10%}',
     '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
     '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}',
-    '.section-menu {opacity:0; transition: opacity 0.5s linear; transition-delay:1s;}',
+    '.section-menu {opacity:0; transition: opacity 0.5s linear; transition-delay:0.3s;}',
     '.section-menu.open {opacity:1; transition-delay:0s;}'
   ]
 })

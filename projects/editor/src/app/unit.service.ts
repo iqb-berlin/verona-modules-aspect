@@ -34,7 +34,13 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     if (unitDefinition) {
       this.unitModel = new Unit(JSON.parse(unitDefinition));
-      IdService.getInstance().readExistingIDs(this.unitModel);
+      this.unitModel.pages.forEach((page: Page) => {
+        page.sections.forEach((section: Section) => {
+          section.elements.forEach((element: UIElement) => {
+            IdService.getInstance().addID(element.id);
+          });
+        });
+      });
       this._unit.next(this.unitModel);
     }
   }

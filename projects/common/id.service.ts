@@ -1,8 +1,3 @@
-import { Unit } from './classes/unit';
-import { Page } from './classes/page';
-import { Section } from './classes/section';
-import { UIElement } from './classes/uIElement';
-
 export class IdService {
   private static instance: IdService;
 
@@ -38,14 +33,8 @@ export class IdService {
     return `${type}_${this.idCounter[type]}`;
   }
 
-  readExistingIDs(unit: Unit): void {
-    unit.pages.forEach((page: Page) => {
-      page.sections.forEach((section: Section) => {
-        section.elements.forEach((element: UIElement) => {
-          this.givenIDs.push(element.id);
-        });
-      });
-    });
+  addID(id: string): void {
+    this.givenIDs.push(id);
   }
 
   isIdAvailable(value: string): boolean {

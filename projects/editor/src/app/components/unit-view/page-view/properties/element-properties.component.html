@@ -12,7 +12,7 @@
           <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.label !== null" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.label !== undefined" appearance="fill">
           <mat-label>Label</mat-label>
           <input matInput type="text" [value]="combinedProperties.label"
                  (input)="updateModel('label', $any($event.target).value)">
@@ -25,25 +25,25 @@
           </div>
         </ng-container>
 
-        <mat-form-field *ngIf="combinedProperties.borderRadius != null" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.borderRadius !== undefined" appearance="fill">
           <mat-label>Kantenradius</mat-label>
           <input matInput type="number" [value]="combinedProperties.borderRadius"
                  (input)="updateModel('borderRadius', $any($event.target).value)">
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.highlightable != null"
+        <mat-checkbox *ngIf="combinedProperties.highlightable !== undefined"
                       [checked]="$any(combinedProperties.highlightable)"
                       (change)="updateModel('highlightable', $event.checked)">
           Farbmarkierungen erlauben
         </mat-checkbox>
 
-        <mat-checkbox *ngIf="combinedProperties.allowUnset != null"
+        <mat-checkbox *ngIf="combinedProperties.allowUnset !== undefined"
                       [checked]="$any(combinedProperties.allowUnset)"
                       (change)="updateModel('allowUnset', $event.checked)">
           Deselektion erlauben
         </mat-checkbox>
 
-        <mat-checkbox *ngIf="combinedProperties.required != null"
+        <mat-checkbox *ngIf="combinedProperties.required !== undefined"
                       [checked]="$any(combinedProperties.required)"
                       (change)="updateModel('required', $event.checked)">
           Pflichtfeld
@@ -55,7 +55,7 @@
                  (input)="updateModel('requiredWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
-        <mat-form-field disabled="true" *ngIf="combinedProperties.options != null">
+        <mat-form-field disabled="true" *ngIf="combinedProperties.options !== undefined">
           <ng-container>
             <mat-label>Optionen</mat-label>
             <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.options"
@@ -92,29 +92,28 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.resizeEnabled != null"
+        <mat-checkbox *ngIf="combinedProperties.resizeEnabled !== undefined"
                       [checked]="$any(combinedProperties.resizeEnabled)"
                       (change)="updateModel('resizeEnabled', $event.checked)">
           größenverstellbar
         </mat-checkbox>
       </div>
 
-      <!-- Some type specific fields which may be undefined but need to show up regardless -->
-      <ng-container *ngIf="combinedProperties.type == 'button'">
-        <mat-form-field appearance="fill">
-          <mat-label>Aktion</mat-label>
-          <mat-select [value]="combinedProperties.action"
-                      (selectionChange)="updateModel('action', $event.value)">
-            <mat-option *ngFor="let option of [{displayValue: 'keine', value: undefined},
-                                               {displayValue: 'Vorherige Seite', value: 'previous'},
-                                               {displayValue: 'Nächste Seite', value: 'next'},
-                                               {displayValue: 'Letzte Seite', value: 'end'}]"
-                        [value]="option.value">
-              {{option.displayValue}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">
+        <mat-label>Aktion</mat-label>
+        <mat-select [value]="combinedProperties.action"
+                    (selectionChange)="updateModel('action', $event.value)">
+          <mat-option *ngFor="let option of [{displayValue: 'keine', value: undefined},
+                                             {displayValue: 'Vorherige Seite', value: 'previous'},
+                                             {displayValue: 'Nächste Seite', value: 'next'},
+                                             {displayValue: 'Letzte Seite', value: 'end'}]"
+                      [value]="option.value">
+            {{option.displayValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
+      <ng-container *ngIf="combinedProperties.imageSrc !== undefined">
         <input #imageUpload type="file" hidden (click)="loadImage()">
         <button mat-raised-button (click)="imageUpload.click()">Bild laden</button>
         <button mat-raised-button (click)="removeImage()">Bild entfernen</button>
@@ -123,16 +122,7 @@
              [width]="200">
       </ng-container>
 
-      <ng-container *ngIf="combinedProperties.type === 'checkbox'">
-        Vorbelegung
-        <mat-button-toggle-group [value]="combinedProperties.value"
-                                 (change)="updateModel('value', $event.value)">
-          <mat-button-toggle [value]="true">wahr</mat-button-toggle>
-          <mat-button-toggle [value]="false">falsch</mat-button-toggle>
-        </mat-button-toggle-group>
-      </ng-container>
-
-      <mat-form-field *ngIf="combinedProperties.type === 'dropdown' || combinedProperties.type === 'radio'"
+      <mat-form-field *ngIf="combinedProperties.options !== undefined"
                       appearance="fill">
         <mat-label>Vorbelegung</mat-label>
         <mat-select [value]="combinedProperties.value"
@@ -144,67 +134,81 @@
         </mat-select>
       </mat-form-field>
 
-      <ng-container *ngIf="combinedProperties.type === 'text-field' || combinedProperties.type === 'text-area'">
-        <mat-form-field appearance="fill">
-          <mat-label>Vorbelegung</mat-label>
-          <input matInput type="text"
-                 [value]="combinedProperties.value"
-                 (input)="updateModel('value', $any($event.target).value)">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Aussehen</mat-label>
-          <mat-select [value]="combinedProperties.appearance"
-                      (selectionChange)="updateModel('appearance', $event.value)">
-            <mat-option *ngFor="let option of [{displayValue: 'standard', value: 'standard'},
-                                               {displayValue: 'legacy', value: 'legacy'},
-                                               {displayValue: 'fill', value: 'fill'},
-                                               {displayValue: 'outline', value: 'outline'}]"
-                        [value]="option.value">
-              {{option.displayValue}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Minimallänge</mat-label>
-          <input matInput type="number" #minLength="ngModel" min="0"
-                 [ngModel]="combinedProperties.minLength"
-                 (ngModelChange)="updateModel('minLength', $event, minLength.valid)">
-        </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.minLength &&
-                                   $any(combinedProperties.minLength) > 0"
-                        appearance="fill">
-          <mat-label>Minimalwert Warnmeldung</mat-label>
-          <input matInput type="text" [value]="combinedProperties.minLengthWarnMessage"
-                 (input)="updateModel('minLengthWarnMessage', $any($event.target).value)">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>Maximalwert</mat-label>
-          <input matInput type="number" #maxLength="ngModel" min="0"
-                 [ngModel]="combinedProperties.maxLength"
-                 (ngModelChange)="updateModel('maxLength', $event, maxLength.valid)">
-        </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.maxLength &&
-                                   $any(combinedProperties.maxLength) > 0"
-                        appearance="fill">
-          <mat-label>Maximalwert Warnmeldung</mat-label>
-          <input matInput type="text" [value]="combinedProperties.maxLengthWarnMessage"
-                 (input)="updateModel('maxLengthWarnMessage', $any($event.target).value)">
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Muster</mat-label>
-          <input matInput [value]="combinedProperties.pattern"
-                 (input)="updateModel('pattern', $any($event.target).value)">
-        </mat-form-field>
-        <mat-form-field *ngIf="combinedProperties.pattern &&
-                                   $any(combinedProperties.pattern) != ''"
-                        appearance="fill"
-                        matTooltip="Angabe als regulärer Ausdruck.">
-          <mat-label>Muster Warnmeldung</mat-label>
-          <input matInput type="text" [value]="combinedProperties.patternWarnMessage"
-                 (input)="updateModel('patternWarnMessage', $any($event.target).value)">
-        </mat-form-field>
+      <ng-container *ngIf="combinedProperties.value === true || combinedProperties.value === false">
+        Vorbelegung
+        <mat-button-toggle-group [value]="combinedProperties.value"
+                                 (change)="updateModel('value', $event.value)">
+          <mat-button-toggle [value]="true">wahr</mat-button-toggle>
+          <mat-button-toggle [value]="false">falsch</mat-button-toggle>
+        </mat-button-toggle-group>
       </ng-container>
+
+<!--      <ng-container *ngIf="combinedProperties.type === 'text-field' || combinedProperties.type === 'text-area'">-->
+<!--      <ng-container *ngIf="combinedProperties.value !== undefined &&-->
+                           <!--combinedProperties.value !== true || combinedProperties.value !== false">-->
+      <mat-form-field *ngIf="combinedProperties.value !== undefined &&
+                         combinedProperties.value !== true && combinedProperties.value !== false"
+                      appearance="fill">
+        <mat-label>Vorbelegung</mat-label>
+        <input matInput type="text"
+               [value]="combinedProperties.value"
+               (input)="updateModel('value', $any($event.target).value)">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="combinedProperties.appearance !== undefined" appearance="fill">
+        <mat-label>Aussehen</mat-label>
+        <mat-select [value]="combinedProperties.appearance"
+                    (selectionChange)="updateModel('appearance', $event.value)">
+          <mat-option *ngFor="let option of [{displayValue: 'standard', value: 'standard'},
+                                             {displayValue: 'legacy', value: 'legacy'},
+                                             {displayValue: 'fill', value: 'fill'},
+                                             {displayValue: 'outline', value: 'outline'}]"
+                      [value]="option.value">
+            {{option.displayValue}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="combinedProperties.minLength !== undefined" appearance="fill">
+        <mat-label>Minimallänge</mat-label>
+        <input matInput type="number" #minLength="ngModel" min="0"
+               [ngModel]="combinedProperties.minLength"
+               (ngModelChange)="updateModel('minLength', $event, minLength.valid)">
+      </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.minLength &&
+                                 $any(combinedProperties.minLength) > 0"
+                      appearance="fill">
+        <mat-label>Minimalwert Warnmeldung</mat-label>
+        <input matInput type="text" [value]="combinedProperties.minLengthWarnMessage"
+               (input)="updateModel('minLengthWarnMessage', $any($event.target).value)">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="combinedProperties.maxLength !== undefined" appearance="fill">
+        <mat-label>Maximalwert</mat-label>
+        <input matInput type="number" #maxLength="ngModel" min="0"
+               [ngModel]="combinedProperties.maxLength"
+               (ngModelChange)="updateModel('maxLength', $event, maxLength.valid)">
+      </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.maxLength &&
+                                 $any(combinedProperties.maxLength) > 0"
+                      appearance="fill">
+        <mat-label>Maximalwert Warnmeldung</mat-label>
+        <input matInput type="text" [value]="combinedProperties.maxLengthWarnMessage"
+               (input)="updateModel('maxLengthWarnMessage', $any($event.target).value)">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="combinedProperties.pattern !== undefined" appearance="fill">
+        <mat-label>Muster</mat-label>
+        <input matInput [value]="combinedProperties.pattern"
+               (input)="updateModel('pattern', $any($event.target).value)">
+      </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.pattern && $any(combinedProperties.pattern) !== ''"
+                      appearance="fill"
+                      matTooltip="Angabe als regulärer Ausdruck.">
+        <mat-label>Muster Warnmeldung</mat-label>
+        <input matInput type="text" [value]="combinedProperties.patternWarnMessage"
+               (input)="updateModel('patternWarnMessage', $any($event.target).value)">
+      </mat-form-field>
 
       <mat-divider></mat-divider>
 

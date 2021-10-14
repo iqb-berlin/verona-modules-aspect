@@ -65,7 +65,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
       new FormControl({});
   }
 
-  updateFormValue(newValue: string | number | boolean | undefined): void {
+  updateFormValue(newValue: string | number | boolean | null): void {
     this.elementFormControl?.setValue(newValue, { emitEvent: false });
   }
 

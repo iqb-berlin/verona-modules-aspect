@@ -3,9 +3,9 @@ import { initSurfaceElement, initFontElement, UIElement } from './uIElement';
 
 export class ButtonElement extends UIElement implements FontElement, SurfaceUIElement {
   label: string = 'Knopf';
-  imageSrc: string | undefined;
+  imageSrc: string | null = null;
   borderRadius: number = 0;
-  action: undefined | 'previous' | 'next' | 'end';
+  action: null | 'previous' | 'next' | 'end' = null;
 
   fontColor: string = 'black';
   font: string = 'Roboto';

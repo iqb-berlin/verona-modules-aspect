@@ -46,7 +46,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(() => {
           (this.childComponent.instance as FormElementComponent).updateFormValue(
-            (this.element as InputElement).value as string | number | boolean | undefined
+            (this.element as InputElement).value as string | number | boolean | null
           );
         });
     }

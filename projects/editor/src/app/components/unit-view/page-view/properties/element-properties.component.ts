@@ -61,7 +61,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
               }
             }
             if (this.selectedElements[i][property] !== this.combinedProperties[property]) {
-              this.combinedProperties[property] = undefined;
+              this.combinedProperties[property] = null;
             }
           } else {
             delete this.combinedProperties[property];
@@ -73,7 +73,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] | undefined,
+              value: string | number | boolean | string[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid && value !== null) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);
@@ -124,6 +124,6 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   removeImage(): void {
-    this.updateModel('imageSrc', undefined);
+    this.updateModel('imageSrc', null);
   }
 }

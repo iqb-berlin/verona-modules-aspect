@@ -157,7 +157,7 @@ export class UnitService {
   }
 
   updateElementProperty(elements: UIElement[], property: string,
-                        value: string | number | boolean | string[] | undefined): void {
+                        value: string | number | boolean | string[] | null): void {
     elements.forEach((element: UIElement) => {
       if (property === 'id') {
         if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs

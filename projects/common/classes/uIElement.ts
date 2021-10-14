@@ -3,7 +3,7 @@ import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces
 import { IdService } from '../id.service';
 
 export abstract class UIElement {
-  [index: string]: string | number | boolean | string[] | undefined | ((...args: any) => any);
+  [index: string]: string | number | boolean | string[] | null | ((...args: any) => any);
   type!: 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
   | 'dropdown' | 'radio' | 'image' | 'audio' | 'video';
 
@@ -42,14 +42,14 @@ export abstract class UIElement {
 
 export abstract class InputElement extends UIElement {
   label: string;
-  value: string | number | boolean | undefined;
+  value: string | number | boolean | null;
   required: boolean;
   requiredWarnMessage: string;
 
   protected constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     this.label = serializedElement.label as string || 'Dummylabel';
-    this.value = serializedElement.value as string | number | boolean | undefined || undefined;
+    this.value = serializedElement.value as string | number | boolean | null || null;
     this.required = serializedElement.required as boolean || false;
     this.requiredWarnMessage = serializedElement.requiredWarnMessage as string || 'Eingabe erforderlich';
   }

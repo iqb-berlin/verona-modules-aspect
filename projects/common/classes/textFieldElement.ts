@@ -3,9 +3,9 @@ import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces
 
 export class TextFieldElement extends InputElement implements FontElement, SurfaceUIElement {
   appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';
-  minLength: number | undefined;
+  minLength: number = 0;
   minLengthWarnMessage: string = 'Eingabe zu kurz';
-  maxLength: number | undefined;
+  maxLength: number = 0;
   maxLengthWarnMessage: string = 'Eingabe zu lang';
   pattern: string = '';
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';

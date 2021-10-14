@@ -22,7 +22,7 @@ export class UnitStateService {
       .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
   }
 
-  setUnitStateElementCodeValue(id: string, value: string | number | boolean | undefined): void {
+  setUnitStateElementCodeValue(id: string, value: string | number | boolean | null): void {
     const unitStateElementCode = this.getUnitStateElement(id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;
@@ -71,7 +71,7 @@ export class UnitStateService {
     this.setUnitStateElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
-  private addUnitStateElementCode(id: string, value: string | number | boolean | string[] | undefined): void {
+  private addUnitStateElementCode(id: string, value: string | number | boolean | null): void {
     if (!this.getUnitStateElement(id)) {
       const unitStateElementCode: UnitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.unitStateElementCodes.push(unitStateElementCode);

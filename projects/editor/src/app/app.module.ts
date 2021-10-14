@@ -19,7 +19,7 @@ import { PageViewComponent } from './components/unit-view/page-view/page-view.co
 import { CanvasComponent } from './components/unit-view/page-view/canvas/canvas.component';
 import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
-import { SharedModule } from '../../../common/app.module';
+import { SharedModule } from '../../../common/shared.module';
 import {
   ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialog
 } from './dialog.service';

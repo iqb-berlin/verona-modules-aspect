@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  Unit, UnitPage
-} from '../../../common/unit';
+  Unit
+} from '../../../common/classes/unit';
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
 import { VeronaPostService } from './services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
@@ -12,6 +12,7 @@ import { PlayerConfig, VopStartCommand } from './models/verona';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { KeyboardService } from './services/keyboard.service';
 import { UnitStateService } from './services/unit-state.service';
+import { Page } from '../../../common/classes/page';
 
 @Component({
   selector: 'player-aspect',
@@ -23,7 +24,7 @@ import { UnitStateService } from './services/unit-state.service';
   `
 })
 export class AppComponent implements OnInit {
-  pages!: UnitPage[];
+  pages!: Page[];
   playerConfig!: PlayerConfig | undefined;
 
   constructor(private translateService: TranslateService,
@@ -63,7 +64,7 @@ export class AppComponent implements OnInit {
         this.pages = unitDefinition.pages;
         this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
           JSON.parse(message.unitState.dataParts.elementCodes) : [];
-        this.keyboardService.useKeyboard(false, 'full');
+        this.keyboardService.useKeyboard(true, 'mini');
       } else {
         this.dialog.open(AlertDialogComponent, {
           data: {

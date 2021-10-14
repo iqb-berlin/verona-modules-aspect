@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { UnitUIElement } from '../../../../common/unit';
 import {
   StatusChangeElement,
   UnitStateElementCode,
@@ -8,6 +7,7 @@ import {
   UnitStateElementCodeStatusValue
 } from '../models/verona';
 import { ValueChangeElement } from '../../../../common/form';
+import { InputElement } from '../../../../common/classes/uIElement';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,7 @@ export class UnitStateService {
     return this._presentedPageAdded.asObservable();
   }
 
-  registerElement(element: UnitUIElement): void {
+  registerElement(element: InputElement): void {
     this.addUnitStateElementCode(element.id, element.value);
   }
 

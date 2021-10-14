@@ -19,15 +19,15 @@ import {
 import {
   PlayerConfig, Progress, UnitState, VopNavigationDeniedNotification
 } from '../../models/verona';
-import { UnitPage } from '../../../../../common/unit';
 import { UnitStateService } from '../../services/unit-state.service';
+import { Page } from '../../../../../common/classes/page';
 
 @Component({
   selector: 'app-unit-state',
   templateUrl: './unit-state.component.html'
 })
 export class UnitStateComponent implements OnInit, OnDestroy {
-  @Input() pages: UnitPage[] = [];
+  @Input() pages: Page[] = [];
   @Input() playerConfig!: PlayerConfig;
 
   form!: FormGroup;

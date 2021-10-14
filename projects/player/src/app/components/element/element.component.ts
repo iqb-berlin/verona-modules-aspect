@@ -5,7 +5,6 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { UnitUIElement } from '../../../../../common/unit';
 import * as ComponentUtils from '../../../../../common/component-utils';
 import { KeyboardService } from '../../services/keyboard.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
@@ -13,6 +12,7 @@ import { TextAreaComponent } from '../../../../../common/element-components/text
 import { FormService } from '../../../../../common/form.service';
 import { ValueChangeElement } from '../../../../../common/form';
 import { UnitStateService } from '../../services/unit-state.service';
+import { UIElement } from '../../../../../common/classes/uIElement';
 
 @Component({
   selector: 'app-element',
@@ -20,7 +20,7 @@ import { UnitStateService } from '../../services/unit-state.service';
   styleUrls: ['./element.component.css']
 })
 export class ElementComponent implements OnInit {
-  @Input() elementModel!: UnitUIElement;
+  @Input() elementModel!: UIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
 

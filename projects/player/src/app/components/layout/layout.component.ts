@@ -5,9 +5,9 @@ import { FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitPage } from '../../../../../common/unit';
 import { PlayerConfig } from '../../models/verona';
 import { KeyboardService } from '../../services/keyboard.service';
+import { Page } from '../../../../../common/classes/page';
 
 @Component({
   selector: 'app-layout',
@@ -16,7 +16,7 @@ import { KeyboardService } from '../../services/keyboard.service';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   @Input() parentForm!: FormGroup;
-  @Input() pages!: UnitPage[];
+  @Input() pages!: Page[];
   @Input() selectedIndex!: number;
   @Input() selectIndex!: Subject<number>;
   @Input() playerConfig!: PlayerConfig;
@@ -28,9 +28,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   isKeyboardOpen!: boolean;
   scrollPagesIndices!: number[];
-  scrollPages!: UnitPage[];
+  scrollPages!: Page[];
   hasScrollPages!: boolean;
-  alwaysVisiblePage!: UnitPage | undefined;
+  alwaysVisiblePage!: Page | undefined;
   alwaysVisibleUnitPageIndex!: number;
   alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right' ;
   layoutAlignment!: 'row' | 'column';
@@ -64,14 +64,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   private initPages(): void {
-    this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: UnitPage): boolean => page.alwaysVisible);
+    this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
     this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
-    this.scrollPages = this.pages.filter((page: UnitPage): boolean => !page.alwaysVisible);
+    this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
     this.hasScrollPages = this.scrollPages?.length > 0;
     this.scrollPagesIndices = this.scrollPages.map(
-      (scrollPage: UnitPage): number => this.pages.indexOf(scrollPage)
+      (scrollPage: Page): number => this.pages.indexOf(scrollPage)
     );
-    this.validPagesDetermined.emit(this.scrollPages.map((page: UnitPage, index: number): Record<string, string> => (
+    this.validPagesDetermined.emit(this.scrollPages.map((page: Page, index: number): Record<string, string> => (
       {
         [index.toString(10)]: `${this.translateService.instant('pageIndication', {
           index: index + 1
@@ -101,7 +101,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       this.maxWidth.alwaysVisiblePage
     );
     this.containerMaxWidth.scrollPages = this.getContainerMaxWidth(
-      this.scrollPages.findIndex((page: UnitPage): boolean => !page.hasMaxWidth) > -1,
+      this.scrollPages.findIndex((page: Page): boolean => !page.hasMaxWidth) > -1,
       this.maxWidth.scrollPages
     );
   }
@@ -120,10 +120,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   private getScrollPagesWidth(): number {
     return this.hasScrollPages ?
-      Math.max(...this.scrollPages.map((page: UnitPage): number => this.getAbsolutePageWidth(page))) : 0;
+      Math.max(...this.scrollPages.map((page: Page): number => this.getAbsolutePageWidth(page))) : 0;
   }
 
-  private getAbsolutePageWidth = (page: UnitPage | undefined): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
+  private getAbsolutePageWidth = (page: Page | undefined): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
 
   onSelectedIndexChange(selectedIndex: number): void {
     this.selectedIndexChange.emit(selectedIndex);

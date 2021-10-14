@@ -1,27 +1,29 @@
 import {
   Component, Input, OnDestroy, OnInit
 } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitPage, UnitPageSection, UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
+import { Page } from '../../../../../../../common/classes/page';
+import { UIElement } from '../../../../../../../common/classes/uIElement';
+import { Section } from '../../../../../../../common/classes/section';
 
 @Component({
   selector: 'app-page-canvas',
-  templateUrl: './page-canvas.component.html',
+  templateUrl: './canvas.component.html',
   styles: [
     '.canvasBackground {background-color: lightgrey; padding: 20px 50px; height: 100%; overflow: auto;}',
     '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin: 15px 0; border-radius: 10%}',
     '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
     '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}',
-    '.section-menu {opacity:0; transition: opacity 0.5s linear; transition-delay:1s;}',
+    '.section-menu {opacity:0; transition: opacity 0.5s linear; transition-delay:0.3s;}',
     '.section-menu.open {opacity:1; transition-delay:0s;}'
   ]
 })
-export class PageCanvasComponent implements OnInit, OnDestroy {
-  @Input() page!: UnitPage;
+export class CanvasComponent implements OnInit, OnDestroy {
+  @Input() page!: Page;
   dropListList: string[] = [];
   hoveredSection: number = -1;
   private ngUnsubscribe = new Subject<void>();
@@ -52,7 +54,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
    */
   generateDropListList(): void {
     this.dropListList = [];
-    this.page.sections.forEach((section: UnitPageSection, index: number) => {
+    this.page.sections.forEach((section: Section, index: number) => {
       if (!section.dynamicPositioning) {
         this.dropListList.push(`section-${index}`);
       } else {
@@ -65,7 +67,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
     });
   }
 
-  moveElementsBetweenSections(elements: UnitUIElement[], previousSectionIndex: number, newSectionIndex: number): void {
+  moveElementsBetweenSections(elements: UIElement[], previousSectionIndex: number, newSectionIndex: number): void {
     this.unitService.transferElement(elements,
       this.page.sections[previousSectionIndex],
       this.page.sections[newSectionIndex]);
@@ -79,7 +81,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
         event.previousContainer.data.sectionIndex,
         event.container.data.sectionIndex);
     } else {
-      selectedElements.forEach((element: UnitUIElement) => {
+      selectedElements.forEach((element: UIElement) => {
         let newXPosition = element.xPosition + event.distance.x;
         if (newXPosition < 0) {
           newXPosition = 0;
@@ -102,18 +104,13 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
   }
 
   getPageHeight(): number { // TODO weg
-    const reduceFct = (accumulator: number, currentValue: UnitPageSection) => accumulator + currentValue.height;
+    const reduceFct = (accumulator: number, currentValue: Section) => accumulator + currentValue.height;
     return this.page.sections.reduce(reduceFct, 0);
   }
 
   addSection(index: number | null = null): void {
     this.unitService.addSection(this.page, index);
     this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
-  }
-
-  sectionDrop(event: CdkDragDrop<UnitPageSection[]>): void {
-    moveItemInArray(this.page.sections, event.previousIndex, event.currentIndex);
-    this.unitService.setPageSections(this.page, this.page.sections);
   }
 
   ngOnDestroy(): void {
@@ -124,7 +121,7 @@ export class PageCanvasComponent implements OnInit, OnDestroy {
 
 export interface DragItemData {
   dragType: string;
-  element: UnitUIElement;
+  element: UIElement;
 }
 
 export interface DropListData {

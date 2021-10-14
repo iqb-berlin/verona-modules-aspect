@@ -16,10 +16,10 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from './components/unit-view/page-view/ui-element-toolbox/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
 import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
-import { PageCanvasComponent } from './components/unit-view/page-view/canvas/page-canvas.component';
+import { CanvasComponent } from './components/unit-view/page-view/canvas/canvas.component';
 import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
-import { SharedModule } from '../../../common/app.module';
+import { SharedModule } from '../../../common/shared.module';
 import {
   ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialog
 } from './dialog.service';
@@ -39,7 +39,7 @@ import { ElementSizingPropertiesComponent } from './components/unit-view/page-vi
     UiElementToolboxComponent,
     UnitViewComponent,
     PageViewComponent,
-    PageCanvasComponent,
+    CanvasComponent,
     StaticCanvasOverlayComponent,
     DynamicCanvasOverlayComponent,
     ConfirmationDialog,

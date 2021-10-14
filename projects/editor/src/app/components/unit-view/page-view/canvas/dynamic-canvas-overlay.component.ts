@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { CanvasElementOverlay } from './canvas-element-overlay';
-import { UnitUIElement } from '../../../../../../../common/unit';
+import { UIElement } from '../../../../../../../common/classes/uIElement';
 
 @Component({
   selector: 'app-dynamic-canvas-overlay',
@@ -49,7 +49,7 @@ export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {
     });
   }
 
-  resizeElement(event: CdkDragMove<{ dragType: string; element: UnitUIElement }>): void {
+  resizeElement(event: CdkDragMove<{ dragType: string; element: UIElement }>): void {
     this.resize.emit({
       dragging: true,
       elementWidth: this.gridElementWidth + event.distance.x,

@@ -9,7 +9,7 @@ import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { FormService } from './form.service';
 import { ValueChangeElement } from './form';
 import { ElementComponent } from './element-component.directive';
-import { InputUIElement } from './unit';
+import { InputElement } from './classes/uIElement';
 
 @Directive()
 export abstract class FormElementComponent extends ElementComponent implements OnInit, OnDestroy {
@@ -27,11 +27,11 @@ export abstract class FormElementComponent extends ElementComponent implements O
   ngOnInit(): void {
     this.formService.registerFormControl({
       id: this.elementModel.id,
-      formControl: new FormControl(this.elementModel.value),
+      formControl: new FormControl((this.elementModel as InputElement).value),
       formGroup: this.parentForm
     });
     this.elementFormControl = this.formControl;
-    this.updateFormValue((this.elementModel as InputUIElement).value);
+    this.updateFormValue((this.elementModel as InputElement).value);
     this.formService.setValidators({
       id: this.elementModel.id,
       validators: this.validators,
@@ -39,7 +39,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
     });
     this.elementFormControl.valueChanges
       .pipe(
-        startWith(this.elementModel.value),
+        startWith((this.elementModel as InputElement).value),
         pairwise(),
         takeUntil(this.ngUnsubscribe)
       )
@@ -52,7 +52,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
 
   get validators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
-    if (this.elementModel.required) {
+    if ((this.elementModel as InputElement).required) {
       validators.push(Validators.required);
     }
     return validators;
@@ -65,7 +65,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
       new FormControl({});
   }
 
-  updateFormValue(newValue: string | number | boolean | undefined): void {
+  updateFormValue(newValue: string | number | boolean | null): void {
     this.elementFormControl?.setValue(newValue, { emitEvent: false });
   }
 

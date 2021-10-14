@@ -29,7 +29,7 @@ export interface PlayerConfig {
 export interface UnitStateElementCode {
   id: string;
   status: UnitStateElementCodeStatus;
-  value: string | string[] | number | boolean | undefined;
+  value: string | number | boolean | null;
 }
 
 export interface UnitState {

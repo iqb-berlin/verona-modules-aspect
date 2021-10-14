@@ -1,7 +1,7 @@
 import {
   Component, Input
 } from '@angular/core';
-import { UnitPage } from '../../../../../../common/unit';
+import { Page } from '../../../../../../common/classes/page';
 
 @Component({
   selector: 'app-page-view',
@@ -13,5 +13,5 @@ import { UnitPage } from '../../../../../../common/unit';
   ]
 })
 export class PageViewComponent {
-  @Input() page!: UnitPage;
+  @Input() page!: Page;
 }

@@ -1,8 +1,8 @@
 import {
   Component, ElementRef, Input, ViewChild
 } from '@angular/core';
-import { UnitPageSection } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
+import { Section } from '../../../../../../../common/classes/section';
 
 @Component({
   selector: 'app-section-static',
@@ -23,7 +23,7 @@ import { UnitService } from '../../../../unit.service';
   ]
 })
 export class SectionStaticComponent {
-  @Input() section!: UnitPageSection;
+  @Input() section!: Section;
   @Input() isSelected!: boolean;
   @ViewChild('sectionElement') sectionElement!: ElementRef;
 

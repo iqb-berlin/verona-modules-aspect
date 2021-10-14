@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { VideoElement } from '../unit';
 import { ElementComponent } from '../element-component.directive';
+import { VideoElement } from '../classes/videoElement';
 
 @Component({
   selector: 'app-video',

@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { TextAreaElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
+import { TextAreaElement } from '../classes/textAreaElement';
 
 @Component({
   selector: 'app-text-area',

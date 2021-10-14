@@ -1,7 +1,13 @@
 Editor
 ======
-next
-- Show scrollbars for elements if necessary
+next:
+- Show scroll bars on element overflow
+- Allow images for buttons
+- Add border-radius setting to buttons
+- [bug] Fix properties panel not always showing the appropriate inputs
+  (especially when selecting multiple elements)
+- Allow editing of options list for multiple (selected) elements in case they
+  contain the same elements
 
 1.4.0
 - New Text-Editor (based on TipTap/ProseMirror)

@@ -4,13 +4,13 @@ import {
 import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { UnitPage } from '../../../../../common/unit';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import {
   PlayerConfig, PlayerState, RunningState,
   VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
 } from '../../models/verona';
 import { VeronaPostService } from '../../services/verona-post.service';
+import { Page } from '../../../../../common/classes/page';
 
 @Component({
   selector: 'app-player-state',
@@ -19,7 +19,7 @@ import { VeronaPostService } from '../../services/verona-post.service';
 })
 export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() parentForm!: FormGroup;
-  @Input() pages!: UnitPage[];
+  @Input() pages!: Page[];
   @Input() playerConfig!: PlayerConfig;
 
   currentPlayerPageIndex: number = 0;

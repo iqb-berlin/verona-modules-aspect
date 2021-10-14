@@ -2,8 +2,8 @@ import {
   Component, ElementRef, EventEmitter, Output, ViewChild
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { TextElement } from '../unit';
 import { ElementComponent } from '../element-component.directive';
+import { TextElement } from '../classes/textElement';
 
 @Component({
   selector: 'app-text',

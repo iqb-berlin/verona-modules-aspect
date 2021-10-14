@@ -8,7 +8,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
-import { SharedModule } from '../../../common/app.module';
+import { SharedModule } from '../../../common/shared.module';
 import { ElementComponent } from './components/element/element.component';
 import { UnitStateComponent } from './components/unit-state/unit-state.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';

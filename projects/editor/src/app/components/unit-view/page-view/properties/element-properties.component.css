@@ -1,18 +1,6 @@
-::ng-deep app-element-properties .margin-properties .mat-form-field-infix {
-  width: 55px;
-}
-
-::ng-deep app-element-properties .small-input .mat-form-field-infix {
-  width: 95px;
-  margin: 0 5px;
-}
-
 .list-items {
   padding: 5px 10px;
   border-bottom: solid 1px #ccc;
-}
-
-.list-items {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -21,19 +9,6 @@
 
 .element-button {
   margin-top: 10px
-}
-
-.input-group {
-  background-color: rgba(0,0,0,.04);
-  margin-bottom: 10px;
-}
-
-.centered-form-field {
-  margin-left: 25%;
-}
-
-.right-form-field {
-  margin-left: 15%;
 }
 
 ::ng-deep app-element-properties .mat-tab-label {
@@ -49,13 +24,16 @@
   max-height: 500px;
   overflow: auto;
   margin-bottom: 10px;
-}
-
-.text-text {
   background-color: rgba(0,0,0,.04);
 }
 
-::ng-deep app-element-properties p {
+::ng-deep app-element-properties>p {
   text-align: center;
   font-weight: bold;
+}
+
+mat-divider {
+  margin: 20px;
+  border-top-width: 9px;
+  border-top-style: dotted;
 }

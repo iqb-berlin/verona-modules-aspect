@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { UnitUIElement } from '../../../../common/unit';
 import {
   StatusChangeElement,
   UnitStateElementCode,
@@ -8,6 +7,7 @@ import {
   UnitStateElementCodeStatusValue
 } from '../models/verona';
 import { ValueChangeElement } from '../../../../common/form';
+import { InputElement, InputElementValue } from '../../../../common/classes/uIElement';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class UnitStateService {
       .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
   }
 
-  private setUnitStateElementCodeValue(id: string, value: string | number | boolean | undefined): void {
+  setUnitStateElementCodeValue(id: string, value: InputElementValue): void {
     const unitStateElementCode = this.getUnitStateElement(id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;
@@ -49,7 +49,7 @@ export class UnitStateService {
     return this._presentedPageAdded.asObservable();
   }
 
-  registerElement(element: UnitUIElement): void {
+  registerElement(element: InputElement): void {
     this.addUnitStateElementCode(element.id, element.value);
   }
 
@@ -71,7 +71,7 @@ export class UnitStateService {
     this.setUnitStateElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
-  private addUnitStateElementCode(id: string, value: string | number | boolean | string[] | undefined): void {
+  private addUnitStateElementCode(id: string, value: string | number | boolean | null): void {
     if (!this.getUnitStateElement(id)) {
       const unitStateElementCode: UnitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.unitStateElementCodes.push(unitStateElementCode);

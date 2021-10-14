@@ -6,11 +6,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { UnitUIElement } from '../../../../../../../common/unit';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 import { MessageService } from '../../../../../../../common/message.service';
 import { FileService } from '../../../../../../../common/file.service';
+import { UIElement } from '../../../../../../../common/classes/uIElement';
 
 @Component({
   selector: 'app-element-properties',
@@ -18,8 +18,8 @@ import { FileService } from '../../../../../../../common/file.service';
   styleUrls: ['./element-properties.component.css']
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
-  selectedElements!: UnitUIElement[];
-  combinedProperties: Record<string, string | number | boolean | string[] | undefined> = {};
+  selectedElements!: UIElement[];
+  combinedProperties: UIElement = {} as UIElement;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
@@ -37,7 +37,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     this.selectionService.selectedElements
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
-        (selectedElements: UnitUIElement[]) => {
+        (selectedElements: UIElement[]) => {
           this.selectedElements = selectedElements;
           this.createCombinedProperties();
         }
@@ -47,15 +47,20 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   /* Create new object with properties of all selected elements. When values differ set prop to undefined. */
   createCombinedProperties(): void {
     if (this.selectedElements.length === 0) {
-      this.combinedProperties = {};
+      this.combinedProperties = {} as UIElement;
     } else {
-      this.combinedProperties = { ...this.selectedElements[0] };
+      this.combinedProperties = { ...this.selectedElements[0] } as UIElement;
 
       for (let i = 1; i < this.selectedElements.length; i++) {
-        Object.keys(this.combinedProperties).forEach((property: keyof UnitUIElement) => {
+        Object.keys(this.combinedProperties).forEach((property: keyof UIElement) => {
           if (Object.prototype.hasOwnProperty.call(this.selectedElements[i], property)) {
+            if (Array.isArray(this.selectedElements[i][property])) {
+              if (this.selectedElements[i][property]!.toString() === this.combinedProperties[property]!.toString()) {
+                this.combinedProperties[property] = this.selectedElements[i][property];
+              }
+            }
             if (this.selectedElements[i][property] !== this.combinedProperties[property]) {
-              this.combinedProperties[property] = undefined;
+              this.combinedProperties[property] = null;
             }
           } else {
             delete this.combinedProperties[property];
@@ -66,7 +71,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] | undefined,
+              value: string | number | boolean | string[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid && value !== null) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);
@@ -98,7 +103,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
 
   addOption(property: string, value: string): void {
     (this.combinedProperties[property] as string[]).push(value);
-    this.updateModel(property, this.combinedProperties[property]);
+    this.updateModel(property, this.combinedProperties[property] as string[]);
   }
 
   reorderOptions(property: string, event: CdkDragDrop<string[]>): void {
@@ -107,7 +112,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   removeOption(property: string, option: string): void {
-    const valueList: string[] = this.combinedProperties[property] as [];
+    const valueList: string[] = this.combinedProperties[property] as string[];
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel(property, valueList);
   }
@@ -117,6 +122,6 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   removeImage(): void {
-    this.updateModel('imageSrc', undefined);
+    this.updateModel('imageSrc', null);
   }
 }

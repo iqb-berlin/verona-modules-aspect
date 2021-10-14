@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { DropdownElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
+import { DropdownElement } from '../classes/dropdownElement';
 
 @Component({
   selector: 'app-dropdown',

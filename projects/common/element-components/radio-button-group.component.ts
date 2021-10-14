@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { RadioButtonGroupElement } from '../unit';
 import { FormElementComponent } from '../form-element-component.directive';
+import { RadioButtonGroupElement } from '../classes/radioButtonGroupElement';
 
 @Component({
   selector: 'app-radio-button-group',

@@ -2,9 +2,9 @@ import {
   Component, Input, OnInit, Output, EventEmitter
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { UnitPage } from '../../../../../common/unit';
 import { FormService } from '../../../../../common/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
+import { Page } from '../../../../../common/classes/page';
 
 @Component({
   selector: 'app-page',
@@ -12,7 +12,7 @@ import { UnitStateService } from '../../services/unit-state.service';
 })
 
 export class PageComponent implements OnInit {
-  @Input() page!: UnitPage;
+  @Input() page!: Page;
   @Input() isLastPage!: boolean;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;

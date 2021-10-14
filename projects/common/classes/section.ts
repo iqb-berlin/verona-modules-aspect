@@ -9,6 +9,8 @@ export class Section {
   height: number = 400;
   backgroundColor: string = 'white';
   dynamicPositioning: boolean = false;
+  autoColumnSize: boolean = true;
+  autoRowSize: boolean = true;
   gridColumnSizes: string = '1fr 1fr';
   gridRowSizes: string = '1fr';
 

@@ -51,21 +51,28 @@ import { Section } from '../../../../../../../common/classes/section';
                    (click)="$any($event).stopPropagation()"
                    (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">
           </mat-form-field>
-          <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs" fxLayout="row">
-            <mat-form-field>
-              <mat-label>Breite {{i + 1}}</mat-label>
-              <input matInput type="number"
-                     [value]="size.value"
-                     (click)="$any($event).stopPropagation()"
-                     (change)="changeGridSize('gridColumnSizes', i, false, $any($event).target.value)">
-            </mat-form-field>
-            <mat-select [value]="size.unit"
+          <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
                         (click)="$any($event).stopPropagation()"
-                        (selectionChange)="changeGridSize('gridColumnSizes', i, true, $event.value)">
-              <mat-option value="fr">Anteile</mat-option>
-              <mat-option value="px">Bildpunkte</mat-option>
-            </mat-select>
-          </div>
+                        (change)="updateModel('autoColumns', $event.checked)">
+            dynamische Breite
+          </mat-checkbox>
+          <ng-container *ngIf="!section.autoColumnSize">
+            <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs" fxLayout="row">
+              <mat-form-field>
+                <mat-label>Breite {{i + 1}}</mat-label>
+                <input matInput type="number"
+                       [value]="size.value"
+                       (click)="$any($event).stopPropagation()"
+                       (change)="changeGridSize('gridColumnSizes', i, false, $any($event).target.value)">
+              </mat-form-field>
+              <mat-select [value]="size.unit"
+                          (click)="$any($event).stopPropagation()"
+                          (selectionChange)="changeGridSize('gridColumnSizes', i, true, $event.value)">
+                <mat-option value="fr">Anteile</mat-option>
+                <mat-option value="px">Bildpunkte</mat-option>
+              </mat-select>
+            </div>
+          </ng-container>
         </div>
         Zeilen
         <div class="size-group">
@@ -76,21 +83,28 @@ import { Section } from '../../../../../../../common/classes/section';
                    (click)="$any($event).stopPropagation()"
                    (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
           </mat-form-field>
-          <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
-            <mat-form-field>
-              <mat-label>Höhe {{i + 1}}</mat-label>
-              <input matInput type="number"
-                     [value]="size.value"
-                     (click)="$any($event).stopPropagation()"
-                     (change)="changeGridSize('gridRowSizes', i, false, $any($event).target.value)">
-            </mat-form-field>
-            <mat-select [value]="size.unit"
+          <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
                         (click)="$any($event).stopPropagation()"
-                        (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
-              <mat-option value="fr">Anteile</mat-option>
-              <mat-option value="px">Bildpunkte</mat-option>
-            </mat-select>
-          </div>
+                        (change)="updateModel('autoRows', $event.checked)">
+            dynamische Höhe
+          </mat-checkbox>
+          <ng-container *ngIf="!section.autoRowSize">
+            <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
+              <mat-form-field>
+                <mat-label>Höhe {{i + 1}}</mat-label>
+                <input matInput type="number"
+                       [value]="size.value"
+                       (click)="$any($event).stopPropagation()"
+                       (change)="changeGridSize('gridRowSizes', i, false, $any($event).target.value)">
+              </mat-form-field>
+              <mat-select [value]="size.unit"
+                          (click)="$any($event).stopPropagation()"
+                          (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
+                <mat-option value="fr">Anteile</mat-option>
+                <mat-option value="px">Bildpunkte</mat-option>
+              </mat-select>
+            </div>
+          </ng-container>
         </div>
       </div>
     </mat-menu>

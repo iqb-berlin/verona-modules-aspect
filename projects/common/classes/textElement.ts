@@ -1,5 +1,6 @@
-import { initSurfaceElement, UIElement } from './uIElement';
+import { UIElement } from './uIElement';
 import { SurfaceUIElement } from '../interfaces/UIElementInterfaces';
+import { initSurfaceElement } from '../util/unit-interface-initializer';
 
 export class TextElement extends UIElement implements SurfaceUIElement {
   text: string = '<p>Lorem ipsum dolor sit amet</p>';

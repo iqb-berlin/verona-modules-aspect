@@ -1,5 +1,4 @@
 // eslint-disable-next-line max-classes-per-file
-import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
 import { IdService } from '../id.service';
 
 export abstract class UIElement {
@@ -53,21 +52,4 @@ export abstract class InputElement extends UIElement {
     this.required = serializedElement.required as boolean || false;
     this.requiredWarnMessage = serializedElement.requiredWarnMessage as string || 'Eingabe erforderlich';
   }
-}
-
-// ================================================
-
-export function initFontElement(): FontElement {
-  return {
-    fontColor: 'black',
-    font: 'Roboto',
-    fontSize: 18,
-    bold: false,
-    italic: false,
-    underline: false
-  };
-}
-
-export function initSurfaceElement(): SurfaceUIElement {
-  return { backgroundColor: 'lightgrey' };
 }

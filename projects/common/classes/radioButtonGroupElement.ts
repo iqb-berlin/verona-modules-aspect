@@ -1,5 +1,6 @@
-import { initSurfaceElement, initFontElement, InputElement, UIElement } from './uIElement';
+import { InputElement, UIElement } from './uIElement';
 import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
+import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
 export class RadioButtonGroupElement extends InputElement implements FontElement, SurfaceUIElement {
   options: string[] = [];

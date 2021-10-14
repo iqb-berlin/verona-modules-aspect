@@ -1,5 +1,6 @@
 import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
-import { initSurfaceElement, initFontElement, InputElement, UIElement } from './uIElement';
+import { InputElement, UIElement } from './uIElement';
+import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
 export class TextAreaElement extends InputElement implements FontElement, SurfaceUIElement {
   appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';

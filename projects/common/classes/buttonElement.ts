@@ -1,5 +1,6 @@
 import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
-import { initSurfaceElement, initFontElement, UIElement } from './uIElement';
+import { UIElement } from './uIElement';
+import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
 export class ButtonElement extends UIElement implements FontElement, SurfaceUIElement {
   label: string = 'Knopf';

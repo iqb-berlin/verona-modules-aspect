@@ -5,7 +5,8 @@ import { ImageElement } from '../models/image-element';
 @Component({
   selector: 'app-image',
   template: `
-    <div [style.height.%]="100"
+    <div [style.display]="'flex'"
+         [style.height.%]="100"
          [style.width.%]="100">
       <img [src]="elementModel.src | safeResourceUrl"
            alt="Image Placeholder"

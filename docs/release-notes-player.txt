@@ -1,7 +1,10 @@
 Player
 ======
-- new
-- make texts markable
+- 1.1.0
+- Make texts markable
+- Implements virtual keyboard for special characters
+- Implements autosize for grid columns and grid
+- Allow different positions for always visible page
 
 1.0.11
 - Disable autocomplete for text field and text area

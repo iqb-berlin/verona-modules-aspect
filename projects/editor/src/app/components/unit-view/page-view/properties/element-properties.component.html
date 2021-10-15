@@ -127,7 +127,7 @@
           <mat-select [value]="combinedProperties.value"
                       (selectionChange)="updateModel('value', $event.value)">
             <mat-option>undefiniert</mat-option>
-            <mat-option *ngFor="let option of $any(combinedProperties).options" [value]="option">
+            <mat-option *ngFor="let option of $any(combinedProperties).options; let i = index" [value]="i">
               {{option}}
             </mat-option>
           </mat-select>

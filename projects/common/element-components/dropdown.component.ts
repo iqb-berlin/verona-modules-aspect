@@ -20,7 +20,7 @@ import { DropdownElement } from '../classes/dropdownElement';
       <mat-select (focusin)="onFocusin.emit()"
                   [formControl]="elementFormControl">
         <mat-option *ngIf="elementModel.allowUnset" value=""></mat-option>
-        <mat-option *ngFor="let option of elementModel.options" [value]="option">
+        <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i">
           {{option}}
         </mat-option>
       </mat-select>

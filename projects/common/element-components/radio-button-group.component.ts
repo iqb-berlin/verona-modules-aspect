@@ -23,8 +23,7 @@ import { RadioButtonGroupElement } from '../classes/radioButtonGroupElement';
                        [style.margin-bottom.px]="25"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
-        <mat-radio-button *ngFor="let option of elementModel.options"
-                          [value]="option">
+        <mat-radio-button *ngFor="let option of elementModel.options; let i = index" [value]="i">
           {{option}}
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"

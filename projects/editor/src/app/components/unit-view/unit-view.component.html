@@ -78,6 +78,20 @@
                             (change)="updateModel(page, 'alwaysVisible', $any($event.source).checked)">
                 Immer angezeigt
               </mat-checkbox>
+              <mat-form-field *ngIf="page.alwaysVisible" class="menuItem" appearance="fill">
+                <mat-label>Position</mat-label>
+                <mat-select [value]="page.alwaysVisiblePagePosition"
+                            (click)="$any($event).stopPropagation()"
+                            (selectionChange)="updateModel(page, 'alwaysVisiblePagePosition', $event.value)">
+                  <mat-option *ngFor="let option of [{displayValue: 'links', value: 'left'},
+                                               {displayValue: 'rechts', value: 'right'},
+                                               {displayValue: 'oben', value: 'top'},
+                                               {displayValue: 'unten', value: 'bottom'}]"
+                              [value]="option.value">
+                    {{option.displayValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
               <mat-form-field class="menuItem" appearance="fill"
                               *ngIf="page.alwaysVisible">
                 <mat-label>Seitenverhältnis (in Prozent)</mat-label>

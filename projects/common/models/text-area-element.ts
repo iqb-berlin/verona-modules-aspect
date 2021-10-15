@@ -24,6 +24,6 @@ export class TextAreaElement extends InputElement implements FontElement, Surfac
     Object.assign(this, initSurfaceElement());
 
     this.backgroundColor = 'transparent';
-    this.height = 12;
+    this.height = 120;
   }
 }

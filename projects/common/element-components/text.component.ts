@@ -10,20 +10,21 @@ import { TextElement } from '../classes/textElement';
   template: `
     <div [style.width.%]="100"
          [style.height]="'auto'">
-      <div *ngIf="elementModel.highlightable">
-        <button mat-button [style.background-color]="'yellow'"
+      <div *ngIf="elementModel.highlightable"
+           class="marking-bar">
+        <button class="marking-button" mat-mini-fab [style.background-color]="'yellow'"
                 (click)="applySelection.emit({color:'yellow', element: container, clear: false})">
           <mat-icon>border_color</mat-icon>
         </button>
-        <button mat-button [style.background-color]="'turquoise'"
+        <button class="marking-button" mat-mini-fab [style.background-color]="'turquoise'"
                 (click)="applySelection.emit({color: 'turquoise', element: container, clear: false})">
           <mat-icon>border_color</mat-icon>
         </button>
-        <button mat-button [style.background-color]="'orange'"
+        <button class="marking-button" mat-mini-fab [style.background-color]="'orange'"
                 (click)="applySelection.emit({color: 'orange', element: container, clear: false})">
           <mat-icon>border_color</mat-icon>
         </button>
-        <button mat-button
+        <button class="marking-button" [style.background-color]="'lightgrey'" mat-mini-fab
                 (click)="applySelection.emit({color: 'none', element: container, clear: true})">
           <mat-icon>clear</mat-icon>
         </button>
@@ -38,11 +39,15 @@ import { TextElement } from '../classes/textElement';
            #container>
       </div>
     </div>
-  `
+  `,
+  styles: [
+    '.marking-bar{position: sticky; top: 0}',
+    '.marking-button{color: #333}'
+  ]
 })
 export class TextComponent extends ElementComponent {
   elementModel!: TextElement;
-  @Output()applySelection = new EventEmitter<{ color: string, element: HTMLElement, clear: boolean }>();
+  @Output() applySelection = new EventEmitter<{ color: string, element: HTMLElement, clear: boolean }>();
   @ViewChild('container') containerDiv!: ElementRef;
 
   constructor(public sanitizer: DomSanitizer) {

@@ -50,6 +50,7 @@ import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-h
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    MatButtonModule,
     TranslateModule
   ],
   declarations: [

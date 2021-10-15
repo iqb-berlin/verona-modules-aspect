@@ -18,14 +18,14 @@ export class Section {
     Object.assign(this, serializedSection);
     this.elements = [];
     if (serializedSection) {
-      serializedSection?.elements.forEach((element: UIElement) => {
-        this.elements.push(ElementFactory.createElement(element));
+      serializedSection?.elements.forEach(async (element: UIElement) => {
+        this.elements.push(await ElementFactory.createElement(element));
       });
     }
   }
 
   async addElement(elementType: string, coordinates: { x: number; y: number } | undefined): Promise<void> {
-    this.elements.push(ElementFactory.createElement({ type: elementType } as UIElement, coordinates));
+    this.elements.push(await ElementFactory.createElement({ type: elementType } as UIElement, coordinates));
   }
 
   deleteElements(elements: UIElement[]): void {
@@ -48,11 +48,11 @@ export class Section {
   }
 
   duplicateElements(elements: UIElement[]): void {
-    elements.forEach((element: UIElement) => {
+    elements.forEach(async (element: UIElement) => {
       const newElementConfig: Record<string, string | number | boolean | string[]> = { ...element } as
         Record<string, string | number | boolean | string[]>;
       delete newElementConfig.id; // remove ID from object, so a new one is created
-      const newElement: UIElement = ElementFactory.createElement(newElementConfig as UIElement);
+      const newElement: UIElement = await ElementFactory.createElement(newElementConfig as UIElement);
       newElement.xPosition += 10;
       newElement.yPosition += 10;
       this.elements.push(newElement);

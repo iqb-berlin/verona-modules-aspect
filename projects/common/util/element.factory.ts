@@ -9,8 +9,9 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
 import { ImageElement } from '../models/image-element';
 import { AudioElement } from '../models/audio-element';
 import { VideoElement } from '../models/video-element';
+import { FileService } from '../file.service';
 
-export function createElement(elementModel: UIElement, coordinates?: { x: number; y: number }): UIElement {
+export async function createElement(elementModel: UIElement, coordinates?: { x: number; y: number }): Promise<UIElement> {
   let newElement: UIElement;
   switch (elementModel.type) {
     case 'text':
@@ -35,12 +36,21 @@ export function createElement(elementModel: UIElement, coordinates?: { x: number
       newElement = new RadioButtonGroupElement(elementModel, coordinates);
       break;
     case 'image':
+      if (!elementModel.src) {
+        elementModel.src = await FileService.loadImage();
+      }
       newElement = new ImageElement(elementModel, coordinates);
       break;
     case 'audio':
+      if (!elementModel.src) {
+        elementModel.src = await FileService.loadAudio();
+      }
       newElement = new AudioElement(elementModel, coordinates);
       break;
     case 'video':
+      if (!elementModel.src) {
+        elementModel.src = await FileService.loadVideo();
+      }
       newElement = new VideoElement(elementModel, coordinates);
       break;
     default:

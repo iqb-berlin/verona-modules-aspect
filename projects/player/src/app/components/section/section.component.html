@@ -19,8 +19,10 @@
 
 <ng-template #dynamicElements>
   <div [style.display]="'grid'"
-       [style.grid-template-columns]="section.gridColumnSizes"
-       [style.grid-template-rows]="section.gridRowSizes">
+       [style.grid-template-columns]="!section.autoColumnSize ? section.gridColumnSizes : undefined"
+       [style.grid-template-rows]="!section.autoRowSize ? section.gridRowSizes : undefined"
+       [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
+       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined">
     <ng-container *ngFor="let element of section.elements; let i = index">
       <app-element
           [style.min-width.px]="element.width"

@@ -54,9 +54,9 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent): void {
-    if ((event.target as Element).parentElement &&
-        (event.target as Element).parentElement!.parentElement &&
-        (event.target as Element).parentElement!.parentElement!.className.indexOf('aspect-inserted-element') > -1 &&
+    if ((event.target as Element).tagName !== 'INPUT' && (event.target as Element).tagName !== 'TEXTAREA' &&
+        ((event.target as Element).className.indexOf('aspect-inserted-element') > -1 ||
+        (event.target as Element).closest('.aspect-inserted-element')) &&
         event.key === 'Delete') {
       this.selectionService.selectedElements
         .pipe(take(1))

@@ -1,13 +1,27 @@
 Editor
 ======
-next:
+1.5.0:
 - Show scroll bars on element overflow
 - Allow images for buttons
 - Add border-radius setting to buttons
 - [bug] Fix properties panel not always showing the appropriate inputs
   (especially when selecting multiple elements)
-- Allow editing of options list for multiple (selected) elements in case they
-  contain the same elements
+- Allow editing of option list for multiple (selected) elements IF they
+  contain the same values
+- Reduce delay of section menu hide-effect
+- Add grid settings automatic sizing
+- Improve deleting element via Delete key
+  (There are still issues with that but it is not as bad as before and
+  accidentally deleting elements when not in focus should not happen anymore.)
+- Add Input Assistance property to input elements
+  This can be activated by selecting one of the presets, which are mutually
+  exclusive for now.
+- Add "clearable" property to text field element
+  When set, a button at the end of the field appears which allows deleting the
+  field's content.
+- Add "position" property to "always-visible" pages
+- [bug] Fix option elements saving value index instead of actual option string
+  This allows duplicate (or empty) options.
 
 1.4.0
 - New Text-Editor (based on TipTap/ProseMirror)

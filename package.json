@@ -1,6 +1,6 @@
 {
   "name": "verona-modules-aspect",
-  "editor_version": "1.4.0",
+  "editor_version": "1.5.0",
   "player_version": "1.0.11",
   "scripts": {
     "ng": "ng",

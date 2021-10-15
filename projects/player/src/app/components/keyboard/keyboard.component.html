@@ -1,24 +1,8 @@
-<ng-container *ngTemplateOutlet="keyboardService.type === 'full' ? fullKeyboard : miniKeyboard"></ng-container>
-
-<ng-template #fullKeyboard>
-  <div class="keyboard-container" (mousedown)="onMouseDown($event)">
-    <div *ngFor="let row of rows" class="keyboard-row">
-      <ng-container *ngFor="let key of row">
-        <app-key class="key" [key]="key"></app-key>
-      </ng-container>
-    </div>
+<div class="keyboard-container" (mousedown)="onMouseDown($event)">
+  <div class="keyboard-header"></div>
+  <div class="keyboard-inner-container">
+    <app-french-keyboard *ngIf="preset === 'french'">
+    </app-french-keyboard>
   </div>
-</ng-template>
+</div>
 
-<ng-template #miniKeyboard>
-  <div class="keypad-container" (mousedown)="onMouseDown($event)">
-    <div class="keypad-header"></div>
-    <div class="keypad-inner-container">
-      <div class="keypad-row" *ngFor="let row of rows">
-        <ng-container *ngFor="let key of row" >
-          <app-key [key]="key"></app-key>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</ng-template>

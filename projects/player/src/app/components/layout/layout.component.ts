@@ -6,7 +6,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerConfig } from '../../models/verona';
-import { KeyboardService } from '../../services/keyboard.service';
 import { Page } from '../../../../../common/models/page';
 
 @Component({
@@ -26,7 +25,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  isKeyboardOpen!: boolean;
   scrollPagesIndices!: number[];
   scrollPages!: Page[];
   hasScrollPages!: boolean;
@@ -49,8 +47,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
   { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
-  constructor(private translateService: TranslateService,
-              public keyboardService: KeyboardService) { }
+  constructor(private translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.initPages();
@@ -58,9 +55,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.selectIndex
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((selectedIndex: number): void => { this.selectedIndex = selectedIndex; });
-    this.keyboardService.isOpen
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isOpen: boolean): void => { this.isKeyboardOpen = isOpen; });
   }
 
   private initPages(): void {

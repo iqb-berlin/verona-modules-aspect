@@ -1,15 +1,7 @@
-.key-button{
-  width: 100%;
-  min-width: 20px;
+.key{
+  background-color: lightgray;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  color: black;
 }
 
-.mini-key{
-  display: inline-block;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  line-height: 25px;
-}
-.mini-key:hover{
-  background-color: #f1f1f1;
-}

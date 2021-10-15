@@ -10,7 +10,6 @@ import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
 import { PlayerConfig, VopStartCommand } from './models/verona';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
-import { KeyboardService } from './services/keyboard.service';
 import { UnitStateService } from './services/unit-state.service';
 import { Page } from '../../../common/models/page';
 
@@ -32,7 +31,6 @@ export class AppComponent implements OnInit {
               private veronaPostService: VeronaPostService,
               private metaDataService: MetaDataService,
               private nativeEventService: NativeEventService,
-              private keyboardService: KeyboardService,
               private unitStateService: UnitStateService,
               private dialog: MatDialog) {
   }
@@ -64,7 +62,6 @@ export class AppComponent implements OnInit {
         this.pages = unitDefinition.pages;
         this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
           JSON.parse(message.unitState.dataParts.elementCodes) : [];
-        this.keyboardService.useKeyboard(false, 'mini');
       } else {
         this.dialog.open(AlertDialogComponent, {
           data: {

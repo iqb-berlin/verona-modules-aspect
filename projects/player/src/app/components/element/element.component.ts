@@ -14,6 +14,7 @@ import { ValueChangeElement } from '../../../../../common/form';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
 import { UIElement } from '../../../../../common/models/uI-element';
+import { TextFieldElement } from '../../../../../common/models/text-field-element';
 
 @Component({
   selector: 'app-element',
@@ -26,6 +27,7 @@ export class ElementComponent implements OnInit {
   @Input() parentArrayIndex!: number;
 
   isKeyboardOpen!: boolean;
+  keyboardLayout!: 'french' | 'numbers' | 'numbersAndOperators' | 'none';
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -85,8 +87,9 @@ export class ElementComponent implements OnInit {
           this.unitStateService.changeElementValue(changeElement);
         });
 
-      if (this.keyboardService.isActive &&
+      if (this.elementModel.inputAssistancePreset !== 'none' &&
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
+        this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
         this.initEventsForKeyboard(elementComponent);
       }
     } // no else

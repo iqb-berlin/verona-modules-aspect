@@ -1,19 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { KeyboardService } from '../../services/keyboard.service';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-keyboard',
   templateUrl: './keyboard.component.html',
   styleUrls: ['./keyboard.component.css']
 })
-export class KeyboardComponent implements OnInit {
-  rows!: string[][];
-
-  constructor(public keyboardService: KeyboardService) { }
-
-  ngOnInit(): void {
-    this.rows = this.keyboardService.rows;
-  }
+export class KeyboardComponent {
+  @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'none';
 
   onMouseDown = (event: MouseEvent): void => {
     event.preventDefault();

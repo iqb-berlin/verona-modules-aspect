@@ -1,0 +1,9 @@
+<div class="keypad-row" *ngFor="let row of rows">
+  <ng-container *ngFor="let key of row" >
+    <app-key [key]="key"></app-key>
+  </ng-container>
+</div>
+<button class="keyboard_capslock" mat-mini-fab (mousedown)="toggleCharacterCase($event)">
+  <mat-icon *ngIf="lowerCharacters">keyboard_arrow_up</mat-icon>
+  <mat-icon *ngIf="!lowerCharacters">keyboard_capslock</mat-icon>
+</button>

@@ -3,9 +3,12 @@
   <ng-template #elementComponentContainer></ng-template>
 </div>
 
-<ng-template *ngIf="keyboardService.type==='mini'"
-    cdkConnectedOverlay
-    [cdkConnectedOverlayOrigin]="overlayOrigin"
-    [cdkConnectedOverlayOpen]="isKeyboardOpen">
-  <app-keyboard cdkDrag></app-keyboard>
+<ng-template *ngIf="keyboardLayout !== 'none' &&
+    (elementModel.type === 'text-area' || elementModel.type === 'text-field')"
+             cdkConnectedOverlay
+             [cdkConnectedOverlayOrigin]="overlayOrigin"
+             [cdkConnectedOverlayOpen]="isKeyboardOpen">
+  <app-keyboard cdkDrag
+                [preset]="keyboardLayout">
+  </app-keyboard>
 </ng-template>

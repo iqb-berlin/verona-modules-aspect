@@ -1,41 +1,21 @@
 .keyboard-container{
-  background-color: lightgray;
-  padding: 10px 10px 0 10px;
-}
-
-.key{
-  flex-grow: 1;
-  margin-bottom: 10px;
-  margin-right: 10px;
-}
-
-.keyboard-row{
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  justify-content: center;
-}
-
-
-.keypad-container{
-  margin-top: 30px;
+  margin-top: 20px;
   background-color: white;
   border: lightgray solid 1px;
-  max-width: 220px;
+  border-radius: 3px;
   overflow-wrap: break-word;
 }
 
-.keypad-header{
-  height: 30px;
+.keyboard-header{
+  cursor: move;
+  height: 40px;
   background-color: #f1f1f1;
   text-align: center;
   border-bottom: lightgray;
 }
 
-.keypad-inner-container{
+.keyboard-inner-container{
   padding: 10px;
 }
 
-.keypad-row{
-  overflow-wrap: break-word;
-}
+

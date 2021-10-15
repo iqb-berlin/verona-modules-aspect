@@ -1,14 +1,3 @@
-<ng-container *ngTemplateOutlet="keyboardService.type === 'full' ? fullKeyboard : miniKeyboard"></ng-container>
-
-<ng-template #fullKeyboard>
-  <button class="key-button"
-          (mousedown)="onMouseDown($event)"
-          mat-stroked-button>{{key}}
-  </button>
-</ng-template>
-
-<ng-template #miniKeyboard>
-  <div class="mini-key mat-typography"
-       (mousedown)="onMouseDown($event)">{{key}}
-  </div>
-</ng-template>
+<button mat-mini-fab class="key"
+     (mousedown)="onMouseDown($event)">{{key}}
+</button>

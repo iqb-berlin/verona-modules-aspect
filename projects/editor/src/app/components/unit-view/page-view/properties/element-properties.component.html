@@ -142,7 +142,7 @@
           </mat-button-toggle-group>
         </ng-container>
 
-        <mat-form-field *ngIf="combinedProperties.value !== undefined &&
+        <mat-form-field *ngIf="combinedProperties.value !== undefined && !combinedProperties.options &&
                            combinedProperties.value !== true && combinedProperties.value !== false"
                         appearance="fill">
           <mat-label>Vorbelegung</mat-label>

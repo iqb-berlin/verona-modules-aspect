@@ -212,15 +212,12 @@
           Knopf zum Leeren anzeigen
         </mat-checkbox>
 
-        <mat-checkbox *ngIf="combinedProperties.inputAssistance !== undefined"
-                      [checked]="$any(combinedProperties.inputAssistance)"
-                      (change)="updateModel('inputAssistance', $event.checked)">
-          Eingabehilfe anzeigen
-        </mat-checkbox>
-        <mat-form-field *ngIf="combinedProperties.inputAssistance" appearance="fill">
-          <mat-label>Art der Eingabehilfe</mat-label>
-          <mat-select (selectionChange)="updateModel('inputAssistancePreset', $event.value)">
-            <mat-option *ngFor="let option of [{displayValue: 'Französische Sonderzeichen', value: 'french'},
+        <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== undefined" appearance="fill">
+          <mat-label>Eingabehilfe</mat-label>
+          <mat-select [value]="combinedProperties.inputAssistancePreset"
+                      (selectionChange)="updateModel('inputAssistancePreset', $event.value)">
+            <mat-option *ngFor="let option of [{displayValue: 'keine', value: 'none'},
+                                               {displayValue: 'Französische Sonderzeichen', value: 'french'},
                                                {displayValue: 'Zahlen', value: 'numbers'},
                                                {displayValue: 'Zahlen & Operatoren', value: 'numbersAndOperators'}]"
                         [value]="option.value">

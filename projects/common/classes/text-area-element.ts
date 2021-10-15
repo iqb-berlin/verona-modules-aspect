@@ -13,8 +13,7 @@ export class TextAreaElement extends InputElement implements FontElement, Surfac
   italic: boolean = false;
   underline: boolean = false;
 
-  inputAssistance: boolean = false;
-  inputAssistancePreset: 'french' | 'numbers' | 'numbersAndOperators' | null = null;
+  inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' = 'none';
 
   backgroundColor: string = 'transparent';
 

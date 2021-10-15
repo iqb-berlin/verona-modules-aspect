@@ -206,6 +206,12 @@
                  (input)="updateModel('patternWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
+        <mat-checkbox *ngIf="combinedProperties.clearable !== undefined"
+                      [checked]="$any(combinedProperties.clearable)"
+                      (change)="updateModel('clearable', $event.checked)">
+          Knopf zum Leeren anzeigen
+        </mat-checkbox>
+
         <mat-checkbox *ngIf="combinedProperties.inputAssistance !== undefined"
                       [checked]="$any(combinedProperties.inputAssistance)"
                       (change)="updateModel('inputAssistance', $event.checked)">

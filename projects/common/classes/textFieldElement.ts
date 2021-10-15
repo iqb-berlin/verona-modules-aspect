@@ -14,6 +14,8 @@ export class TextFieldElement extends InputElement implements FontElement, Surfa
   inputAssistance: boolean = false;
   inputAssistancePreset: 'french' | 'numbers' | 'numbersAndOperators' | null = null;
 
+  clearable: boolean = false;
+
   fontColor: string = 'black';
   font: string = 'Roboto';
   fontSize: number = 18;

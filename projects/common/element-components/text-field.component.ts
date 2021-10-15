@@ -23,6 +23,10 @@ import { TextFieldElement } from '../classes/textFieldElement';
              autocomplete="off"
              [formControl]="elementFormControl"
              placeholder="{{elementModel.label}}">
+      <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
+              (click)="elementFormControl.setValue('')">
+        <mat-icon>close</mat-icon>
+      </button>
       <mat-error *ngIf="elementFormControl.errors">
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>

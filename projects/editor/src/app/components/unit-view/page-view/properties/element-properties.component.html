@@ -214,9 +214,9 @@
         <mat-form-field *ngIf="combinedProperties.inputAssistance" appearance="fill">
           <mat-label>Art der Eingabehilfe</mat-label>
           <mat-select (selectionChange)="updateModel('inputAssistancePreset', $event.value)">
-            <mat-option *ngFor="let option of [{displayValue: 'Französisch', value: 'french'},
+            <mat-option *ngFor="let option of [{displayValue: 'Französische Sonderzeichen', value: 'french'},
                                                {displayValue: 'Zahlen', value: 'numbers'},
-                                               {displayValue: 'Operatoren', value: 'operators'}]"
+                                               {displayValue: 'Zahlen & Operatoren', value: 'numbersAndOperators'}]"
                         [value]="option.value">
               {{option.displayValue}}
             </mat-option>

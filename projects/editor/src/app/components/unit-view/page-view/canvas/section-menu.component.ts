@@ -53,7 +53,7 @@ import { Section } from '../../../../../../../common/classes/section';
           </mat-form-field>
           <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
                         (click)="$any($event).stopPropagation()"
-                        (change)="updateModel('autoColumns', $event.checked)">
+                        (change)="updateModel('autoColumnSize', $event.checked)">
             dynamische Breite
           </mat-checkbox>
           <ng-container *ngIf="!section.autoColumnSize">
@@ -85,7 +85,7 @@ import { Section } from '../../../../../../../common/classes/section';
           </mat-form-field>
           <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
                         (click)="$any($event).stopPropagation()"
-                        (change)="updateModel('autoRows', $event.checked)">
+                        (change)="updateModel('autoRowSize', $event.checked)">
             dynamische Höhe
           </mat-checkbox>
           <ng-container *ngIf="!section.autoRowSize">

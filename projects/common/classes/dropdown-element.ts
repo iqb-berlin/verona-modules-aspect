@@ -1,10 +1,10 @@
-import { InputElement, UIElement } from './uIElement';
+import { InputElement, UIElement } from './uI-element';
 import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
 import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
-export class RadioButtonGroupElement extends InputElement implements FontElement, SurfaceUIElement {
+export class DropdownElement extends InputElement implements FontElement, SurfaceUIElement {
   options: string[] = [];
-  alignment: 'row' | 'column' = 'column';
+  allowUnset: boolean = false;
 
   fontColor: string = 'black';
   font: string = 'Roboto';
@@ -21,7 +21,6 @@ export class RadioButtonGroupElement extends InputElement implements FontElement
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
 
-    this.height = 85;
-    this.backgroundColor = 'transparent';
+    this.height = 83;
   }
 }

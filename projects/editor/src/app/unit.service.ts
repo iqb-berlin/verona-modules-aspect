@@ -9,8 +9,8 @@ import { VeronaAPIService } from './verona-api.service';
 import { Unit } from '../../../common/classes/unit';
 import { Page } from '../../../common/classes/page';
 import { Section } from '../../../common/classes/section';
-import { InputElement, UIElement } from '../../../common/classes/uIElement';
-import { TextElement } from '../../../common/classes/textElement';
+import { InputElement, UIElement } from '../../../common/classes/uI-element';
+import { TextElement } from '../../../common/classes/text-element';
 
 @Injectable({
   providedIn: 'root'

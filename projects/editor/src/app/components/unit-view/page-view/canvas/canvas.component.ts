@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 import { Page } from '../../../../../../../common/classes/page';
-import { UIElement } from '../../../../../../../common/classes/uIElement';
+import { UIElement } from '../../../../../../../common/classes/uI-element';
 import { Section } from '../../../../../../../common/classes/section';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { UIElement } from '../../classes/uIElement';
+import { UIElement } from '../../classes/uI-element';
 
 @Pipe({
   name: 'errorTransform'

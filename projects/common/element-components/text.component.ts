@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementComponent } from '../element-component.directive';
-import { TextElement } from '../classes/textElement';
+import { TextElement } from '../classes/text-element';
 
 @Component({
   selector: 'app-text',

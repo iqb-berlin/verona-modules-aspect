@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
-import { ButtonElement } from '../classes/buttonElement';
+import { ButtonElement } from '../classes/button-element';
 
 @Component({
   selector: 'app-button',

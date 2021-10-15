@@ -1,12 +1,10 @@
 import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
-import { UIElement } from './uIElement';
+import { InputElement, UIElement } from './uI-element';
 import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
-export class ButtonElement extends UIElement implements FontElement, SurfaceUIElement {
-  label: string = 'Knopf';
-  imageSrc: string | null = null;
-  borderRadius: number = 0;
-  action: null | 'previous' | 'next' | 'end' = null;
+export class TextAreaElement extends InputElement implements FontElement, SurfaceUIElement {
+  appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';
+  resizeEnabled: boolean = false;
 
   fontColor: string = 'black';
   font: string = 'Roboto';
@@ -15,6 +13,9 @@ export class ButtonElement extends UIElement implements FontElement, SurfaceUIEl
   italic: boolean = false;
   underline: boolean = false;
 
+  inputAssistance: boolean = false;
+  inputAssistancePreset: 'french' | 'numbers' | 'numbersAndOperators' | null = null;
+
   backgroundColor: string = 'transparent';
 
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
@@ -22,5 +23,8 @@ export class ButtonElement extends UIElement implements FontElement, SurfaceUIEl
     Object.assign(this, serializedElement);
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
+
+    this.backgroundColor = 'transparent';
+    this.height = 12;
   }
 }

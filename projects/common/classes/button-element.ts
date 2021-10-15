@@ -1,10 +1,12 @@
-import { InputElement, UIElement } from './uIElement';
 import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
+import { UIElement } from './uI-element';
 import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
-export class DropdownElement extends InputElement implements FontElement, SurfaceUIElement {
-  options: string[] = [];
-  allowUnset: boolean = false;
+export class ButtonElement extends UIElement implements FontElement, SurfaceUIElement {
+  label: string = 'Knopf';
+  imageSrc: string | null = null;
+  borderRadius: number = 0;
+  action: null | 'previous' | 'next' | 'end' = null;
 
   fontColor: string = 'black';
   font: string = 'Roboto';
@@ -20,7 +22,5 @@ export class DropdownElement extends InputElement implements FontElement, Surfac
     Object.assign(this, serializedElement);
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
-
-    this.height = 83;
   }
 }

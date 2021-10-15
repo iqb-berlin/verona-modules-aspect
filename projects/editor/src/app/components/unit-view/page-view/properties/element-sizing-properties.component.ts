@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
-import { UIElement } from '../../../../../../../common/classes/uIElement';
+import { UIElement } from '../../../../../../../common/classes/uI-element';
 
 @Component({
   selector: 'app-element-sizing-properties',

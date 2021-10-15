@@ -1,4 +1,4 @@
-import { UIElement } from './uIElement';
+import { UIElement } from './uI-element';
 import { SurfaceUIElement } from '../interfaces/UIElementInterfaces';
 import { initSurfaceElement } from '../util/unit-interface-initializer';
 

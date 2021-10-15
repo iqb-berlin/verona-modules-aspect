@@ -1,6 +1,6 @@
 import {
   UIElement
-} from './uIElement';
+} from './uI-element';
 import * as ElementFactory from '../util/element.factory';
 
 export class Section {

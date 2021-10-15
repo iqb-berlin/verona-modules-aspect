@@ -1,4 +1,4 @@
-import { UIElement } from './uIElement';
+import { UIElement } from './uI-element';
 
 export class AudioElement extends UIElement {
   src: string = '';

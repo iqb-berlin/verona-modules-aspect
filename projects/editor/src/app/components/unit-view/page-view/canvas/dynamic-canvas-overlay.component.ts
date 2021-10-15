@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { CanvasElementOverlay } from './canvas-element-overlay';
-import { UIElement } from '../../../../../../../common/classes/uIElement';
+import { UIElement } from '../../../../../../../common/classes/uI-element';
 
 @Component({
   selector: 'app-dynamic-canvas-overlay',

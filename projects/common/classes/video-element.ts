@@ -1,10 +1,12 @@
-import { UIElement } from './uIElement';
+import { UIElement } from './uI-element';
 
-export class ImageElement extends UIElement {
+export class VideoElement extends UIElement {
   src: string = '';
+
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
+
     this.height = 100;
   }
 }

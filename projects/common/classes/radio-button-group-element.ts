@@ -1,10 +1,10 @@
+import { InputElement, UIElement } from './uI-element';
 import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
-import { InputElement, UIElement } from './uIElement';
 import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
-export class TextAreaElement extends InputElement implements FontElement, SurfaceUIElement {
-  appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';
-  resizeEnabled: boolean = false;
+export class RadioButtonGroupElement extends InputElement implements FontElement, SurfaceUIElement {
+  options: string[] = [];
+  alignment: 'row' | 'column' = 'column';
 
   fontColor: string = 'black';
   font: string = 'Roboto';
@@ -12,9 +12,6 @@ export class TextAreaElement extends InputElement implements FontElement, Surfac
   bold: boolean = false;
   italic: boolean = false;
   underline: boolean = false;
-
-  inputAssistance: boolean = false;
-  inputAssistancePreset: 'french' | 'numbers' | 'numbersAndOperators' | null = null;
 
   backgroundColor: string = 'transparent';
 
@@ -24,7 +21,7 @@ export class TextAreaElement extends InputElement implements FontElement, Surfac
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
 
+    this.height = 85;
     this.backgroundColor = 'transparent';
-    this.height = 12;
   }
 }

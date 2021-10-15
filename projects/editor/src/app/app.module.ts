@@ -8,7 +8,6 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NgxTiptapModule } from 'ngx-tiptap';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
@@ -60,7 +59,6 @@ import { ElementSizingPropertiesComponent } from './components/unit-view/page-vi
     CommonModule,
     SharedModule,
     MatButtonToggleModule,
-    MatSlideToggleModule,
     MatMenuModule,
     NgxTiptapModule,
     TranslateModule.forRoot({

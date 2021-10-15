@@ -206,6 +206,23 @@
                  (input)="updateModel('patternWarnMessage', $any($event.target).value)">
         </mat-form-field>
 
+        <mat-checkbox *ngIf="combinedProperties.inputAssistance !== undefined"
+                      [checked]="$any(combinedProperties.inputAssistance)"
+                      (change)="updateModel('inputAssistance', $event.checked)">
+          Eingabehilfe anzeigen
+        </mat-checkbox>
+        <mat-form-field *ngIf="combinedProperties.inputAssistance" appearance="fill">
+          <mat-label>Art der Eingabehilfe</mat-label>
+          <mat-select (selectionChange)="updateModel('inputAssistancePreset', $event.value)">
+            <mat-option *ngFor="let option of [{displayValue: 'Französisch', value: 'french'},
+                                               {displayValue: 'Zahlen', value: 'numbers'},
+                                               {displayValue: 'Operatoren', value: 'operators'}]"
+                        [value]="option.value">
+              {{option.displayValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <mat-divider></mat-divider>
 
         <button mat-raised-button class="element-button"

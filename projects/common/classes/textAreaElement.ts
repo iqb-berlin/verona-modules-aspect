@@ -13,6 +13,9 @@ export class TextAreaElement extends InputElement implements FontElement, Surfac
   italic: boolean = false;
   underline: boolean = false;
 
+  inputAssistance: boolean = false;
+  inputAssistancePreset: 'french' | 'numbers' | 'operators' | null = null;
+
   backgroundColor: string = 'transparent';
 
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {

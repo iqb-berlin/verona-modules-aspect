@@ -12,7 +12,7 @@ import { FormElementComponent } from '../../../../../../../common/form-element-c
 import { ValueChangeElement } from '../../../../../../../common/form';
 import { ElementComponent } from '../../../../../../../common/element-component.directive';
 import { SelectionService } from '../../../../selection.service';
-import { InputElement, UIElement } from '../../../../../../../common/classes/uI-element';
+import { InputElement, UIElement } from '../../../../../../../common/models/uI-element';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {

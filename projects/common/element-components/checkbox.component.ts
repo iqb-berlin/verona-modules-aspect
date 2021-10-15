@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { FormElementComponent } from '../form-element-component.directive';
-import { CheckboxElement } from '../classes/checkbox-element';
+import { CheckboxElement } from '../models/checkbox-element';
 
 @Component({
   selector: 'app-checkbox',

@@ -13,7 +13,7 @@ import { FormService } from '../../../../../common/form.service';
 import { ValueChangeElement } from '../../../../../common/form';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
-import { UIElement } from '../../../../../common/classes/uI-element';
+import { UIElement } from '../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-element',

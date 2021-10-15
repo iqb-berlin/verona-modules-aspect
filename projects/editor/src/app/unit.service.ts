@@ -6,11 +6,11 @@ import { MessageService } from '../../../common/message.service';
 import { IdService } from '../../../common/id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
-import { Unit } from '../../../common/classes/unit';
-import { Page } from '../../../common/classes/page';
-import { Section } from '../../../common/classes/section';
-import { InputElement, UIElement } from '../../../common/classes/uI-element';
-import { TextElement } from '../../../common/classes/text-element';
+import { Unit } from '../../../common/models/unit';
+import { Page } from '../../../common/models/page';
+import { Section } from '../../../common/models/section';
+import { InputElement, UIElement } from '../../../common/models/uI-element';
+import { TextElement } from '../../../common/models/text-element';
 
 @Injectable({
   providedIn: 'root'

@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   Unit
-} from '../../../common/classes/unit';
+} from '../../../common/models/unit';
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
 import { VeronaPostService } from './services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
@@ -12,7 +12,7 @@ import { PlayerConfig, VopStartCommand } from './models/verona';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { KeyboardService } from './services/keyboard.service';
 import { UnitStateService } from './services/unit-state.service';
-import { Page } from '../../../common/classes/page';
+import { Page } from '../../../common/models/page';
 
 @Component({
   selector: 'player-aspect',

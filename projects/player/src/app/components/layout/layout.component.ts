@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PlayerConfig } from '../../models/verona';
 import { KeyboardService } from '../../services/keyboard.service';
-import { Page } from '../../../../../common/classes/page';
+import { Page } from '../../../../../common/models/page';
 
 @Component({
   selector: 'app-layout',

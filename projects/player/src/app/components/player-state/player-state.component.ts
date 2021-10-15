@@ -10,7 +10,7 @@ import {
   VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
 } from '../../models/verona';
 import { VeronaPostService } from '../../services/verona-post.service';
-import { Page } from '../../../../../common/classes/page';
+import { Page } from '../../../../../common/models/page';
 
 @Component({
   selector: 'app-player-state',

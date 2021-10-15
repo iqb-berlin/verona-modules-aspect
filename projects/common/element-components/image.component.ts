@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
-import { ImageElement } from '../classes/image-element';
+import { ImageElement } from '../models/image-element';
 
 @Component({
   selector: 'app-image',

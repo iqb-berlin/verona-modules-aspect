@@ -20,7 +20,7 @@ import {
   PlayerConfig, Progress, UnitState, VopNavigationDeniedNotification
 } from '../../models/verona';
 import { UnitStateService } from '../../services/unit-state.service';
-import { Page } from '../../../../../common/classes/page';
+import { Page } from '../../../../../common/models/page';
 
 @Component({
   selector: 'app-unit-state',

@@ -1,7 +1,7 @@
 import {
   Directive
 } from '@angular/core';
-import { UIElement } from './classes/uI-element';
+import { UIElement } from './models/uI-element';
 
 @Directive()
 export abstract class ElementComponent {

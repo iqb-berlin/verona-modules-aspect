@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import { DialogService } from '../../../../dialog.service';
 import { SelectionService } from '../../../../selection.service';
-import { Section } from '../../../../../../../common/classes/section';
+import { Section } from '../../../../../../../common/models/section';
 
 @Component({
   selector: 'app-section-menu',

@@ -10,7 +10,7 @@ import { UnitService } from '../../../../unit.service';
 import { SelectionService } from '../../../../selection.service';
 import { MessageService } from '../../../../../../../common/message.service';
 import { FileService } from '../../../../../../../common/file.service';
-import { UIElement } from '../../../../../../../common/classes/uI-element';
+import { UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-element-properties',

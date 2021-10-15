@@ -1,14 +1,14 @@
-import { UIElement } from '../classes/uI-element';
-import { TextElement } from '../classes/text-element';
-import { ButtonElement } from '../classes/button-element';
-import { TextFieldElement } from '../classes/text-field-element';
-import { TextAreaElement } from '../classes/text-area-element';
-import { CheckboxElement } from '../classes/checkbox-element';
-import { DropdownElement } from '../classes/dropdown-element';
-import { RadioButtonGroupElement } from '../classes/radio-button-group-element';
-import { ImageElement } from '../classes/image-element';
-import { AudioElement } from '../classes/audio-element';
-import { VideoElement } from '../classes/video-element';
+import { UIElement } from '../models/uI-element';
+import { TextElement } from '../models/text-element';
+import { ButtonElement } from '../models/button-element';
+import { TextFieldElement } from '../models/text-field-element';
+import { TextAreaElement } from '../models/text-area-element';
+import { CheckboxElement } from '../models/checkbox-element';
+import { DropdownElement } from '../models/dropdown-element';
+import { RadioButtonGroupElement } from '../models/radio-button-group-element';
+import { ImageElement } from '../models/image-element';
+import { AudioElement } from '../models/audio-element';
+import { VideoElement } from '../models/video-element';
 
 export function createElement(elementModel: UIElement, coordinates?: { x: number; y: number }): UIElement {
   let newElement: UIElement;

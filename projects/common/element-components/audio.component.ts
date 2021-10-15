@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
-import { AudioElement } from '../classes/audio-element';
+import { AudioElement } from '../models/audio-element';
 
 @Component({
   selector: 'app-audio',

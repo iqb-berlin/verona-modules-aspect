@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormService } from '../../../../../common/form.service';
-import { Section } from '../../../../../common/classes/section';
+import { Section } from '../../../../../common/models/section';
 
 @Component({
   selector: 'app-section',

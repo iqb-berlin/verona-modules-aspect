@@ -10,10 +10,10 @@ import { Subscript } from '@tiptap/extension-subscript';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
-import { FontSize } from '@luciusa/extension-font-size';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
 import { Indent } from './indent';
+import { fontSizeExtension } from './font-size-extension';
 
 @Component({
   selector: 'app-rich-text-editor',
@@ -27,7 +27,7 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   editor = new Editor({
     extensions: [StarterKit, Underline, Superscript, Subscript,
-      TextStyle, Color, FontSize,
+      TextStyle, Color,
       Highlight.configure({
         multicolor: true
       }),
@@ -43,6 +43,8 @@ export class RichTextEditorComponent implements AfterViewInit {
       Heading.configure({
         levels: [1, 2, 3, 4]
       })
+      }),
+      fontSizeExtension
     ]
   });
 
@@ -82,8 +84,8 @@ export class RichTextEditorComponent implements AfterViewInit {
     this.editor.chain().toggleSubscript().focus().run();
   }
 
-  applyFontSize(size: string): void {
-    (this.editor.chain().setFontSize(size) as unknown as ChainedCommands).focus().run();
+  applyFontSize(size: number): void {
+    this.editor.commands.setFontSize(size);
   }
 
   applyColor(color: string): void {

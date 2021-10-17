@@ -1,14 +1,16 @@
 {
   "name": "verona-modules-aspect",
-  "editor_version": "1.5.0",
-  "player_version": "1.1.0",
+  "config": {
+    "editor_version": "1.5.0",
+    "player_version": "1.1.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "start-editor-local": "ng serve editor --port 4201",
     "start-player-local": "ng serve player --port 4202",
-    "build-editor-prod": "ng build --project editor --output-hashing=none && node scripts/wrap_and_pack.js editor $npm_package_editor_version projects/editor/src/html_wrapper/index.html",
-    "build-player-prod": "ng build --project player --output-hashing=none && node scripts/wrap_and_pack.js player $npm_package_player_version projects/player/src/html_wrapper/index.html",
+    "build-editor-prod": "ng build --project editor --output-hashing=none && node scripts/wrap_and_pack.js editor $npm_package_config_editor_version projects/editor/src/html_wrapper/index.html",
+    "build-player-prod": "ng build --project player --output-hashing=none && node scripts/wrap_and_pack.js player $npm_package_config_player_version projects/player/src/html_wrapper/index.html",
     "test": "ng test"
   },
   "private": true,

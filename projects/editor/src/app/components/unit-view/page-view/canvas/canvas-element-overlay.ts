@@ -1,11 +1,10 @@
 import {
   Directive, Input,
   ComponentFactoryResolver, ComponentRef,
-  HostListener,
   ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../unit.service';
 import * as ComponentUtils from '../../../../../../../common/component-utils';
 import { FormElementComponent } from '../../../../../../../common/form-element-component.directive';
@@ -52,26 +51,6 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
             (this.element as InputElement).value as string | number | boolean | null
           );
         });
-    }
-  }
-
-  @HostListener('window:keydown', ['$event'])
-  handleKeyDown(event: KeyboardEvent): void {
-    if ((event.target as Element).tagName !== 'INPUT' && (event.target as Element).tagName !== 'TEXTAREA' &&
-        ((event.target as Element).className.indexOf('aspect-inserted-element') > -1 ||
-        (event.target as Element).closest('.aspect-inserted-element')) &&
-        event.key === 'Delete') {
-      this.selectionService.selectedElements
-        .pipe(take(1))
-        .subscribe((selectedElements: UIElement[]) => {
-          this.unitService.deleteElementsFromSectionByIndex(
-            selectedElements,
-            this.selectionService.selectedPageIndex,
-            this.selectionService.selectedPageSectionIndex
-          );
-          this.selectionService.clearElementSelection();
-        })
-        .unsubscribe();
     }
   }
 

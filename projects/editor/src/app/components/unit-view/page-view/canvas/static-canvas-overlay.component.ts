@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { CdkDragMove } from '@angular/cdk/drag-drop';
 import { CanvasElementOverlay } from './canvas-element-overlay';
+import { UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-static-canvas-overlay',
   template: `
     <!-- Is also a droplist to catch the resize drop and not let it bubble up to the canvas drop handler. -->
+    <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <div class="draggable-element" [class.draggable-element-selected]="isSelected"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
          (click)="selectElement($event.shiftKey)" (cdkDragStarted)="!isSelected && selectElement()"
          (dblclick)="openEditDialog()"
+         (keyup.delete)="deleteSelectedElements()" tabindex="-1"
          cdkDropList>
       <!-- Needs extra div because styling can interfere with drag and drop-->
       <div [style.position]="'absolute'"
@@ -62,5 +66,19 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
       'height',
       Math.max(this.oldY + event.distance.y, 0)
     );
+  }
+
+  deleteSelectedElements(): void {
+    this.selectionService.selectedElements
+      .pipe(take(1))
+      .subscribe((selectedElements: UIElement[]) => {
+        this.unitService.deleteElementsFromSectionByIndex(
+          selectedElements,
+          this.selectionService.selectedPageIndex,
+          this.selectionService.selectedPageSectionIndex
+        );
+        this.selectionService.clearElementSelection();
+      })
+      .unsubscribe();
   }
 }

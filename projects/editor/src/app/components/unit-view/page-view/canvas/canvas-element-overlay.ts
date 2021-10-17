@@ -33,6 +33,9 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.childComponent = this.elementContainer.createComponent(componentFactory);
     this.childComponent.instance.elementModel = this.element;
 
+    // Make children not clickable. This way the only relevant events are managed by the overlay.
+    this.childComponent.location.nativeElement.style.pointerEvents = 'none';
+
     this.selectionService.selectElement({ componentElement: this, multiSelect: false });
 
     if (this.childComponent.instance instanceof FormElementComponent) {

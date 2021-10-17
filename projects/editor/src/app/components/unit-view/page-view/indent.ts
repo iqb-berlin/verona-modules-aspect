@@ -36,10 +36,7 @@ export const Indent = Extension.create<IndentOptions>({
             renderHTML: attributes => (
               { style: `padding-left: ${attributes.indent * this.options.paddingMultiplier}px` }
             ),
-            parseHTML: element => {
-              const level = Number(element.getAttribute('style'));
-              return level && level > this.options.minLevel ? level : null;
-            }
+            parseHTML: element => Number(element.style.paddingLeft.slice(0, -2)) / this.options.paddingMultiplier
           }
         }
       }

@@ -52,7 +52,6 @@
     "@tiptap/extension-text-align": "^2.0.0-beta.23",
     "@tiptap/extension-text-style": "^2.0.0-beta.17",
     "@tiptap/extension-underline": "^2.0.0-beta.16",
-    "@luciusa/extension-font-size": "^1.0.1",
     "prosemirror-state": "^1.3.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",

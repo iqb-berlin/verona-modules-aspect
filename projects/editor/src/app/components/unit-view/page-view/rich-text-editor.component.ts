@@ -42,7 +42,6 @@ export class RichTextEditorComponent implements AfterViewInit {
       }),
       Heading.configure({
         levels: [1, 2, 3, 4]
-      })
       }),
       fontSizeExtension
     ]

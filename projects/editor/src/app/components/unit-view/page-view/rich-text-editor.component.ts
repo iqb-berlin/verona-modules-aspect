@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, Output, ViewEncapsulation,
-  AfterViewInit, OnInit
+  AfterViewInit
 } from '@angular/core';
-import { ChainedCommands, Editor, Extension } from '@tiptap/core';
+import { Editor, Extension } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
@@ -13,6 +13,7 @@ import { Highlight } from '@tiptap/extension-highlight';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
 import { Indent } from './indent';
+import { customParagraph } from './paragraph-extension';
 import { fontSizeExtension } from './font-size-extension';
 
 @Component({
@@ -43,20 +44,13 @@ export class RichTextEditorComponent implements AfterViewInit {
       Heading.configure({
         levels: [1, 2, 3, 4]
       }),
+      customParagraph,
       fontSizeExtension
     ]
   });
 
   ngAfterViewInit(): void {
     this.editor.commands.focus();
-    (this.editor.extensionManager.extensions
-      .filter(ext => ext.name === 'paragraph')[0] as Extension).options.HTMLAttributes =
-      {
-        style: 'margin: 10px 0'
-      };
-    // Hack to apply style on first p-Element. All following paragraphs have this automatically
-    this.editor.commands.toggleNode('paragraph', 'heading');
-    this.editor.commands.toggleNode('heading', 'paragraph');
   }
 
   toggleBold(): void {
@@ -132,11 +126,7 @@ export class RichTextEditorComponent implements AfterViewInit {
   }
 
   applyParagraphStyle(margin: number): void {
-    (this.editor.extensionManager.extensions
-      .filter(ext => ext.name === 'paragraph')[0] as Extension).options.HTMLAttributes =
-      {
-        style: `margin: ${margin}px 0`
-      };
+    this.editor.commands.setMargin(margin);
   }
 
   insertSpecialChar(char: string): void {

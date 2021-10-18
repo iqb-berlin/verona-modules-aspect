@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
       });
     this.veronaApiService.voeGetDefinitionRequest
       .subscribe(() => {
-        console.log('unit:', this.unitService.getUnitAsJSON());
         this.veronaApiService.sendVoeDefinitionChangedNotification(this.unitService.getUnitAsJSON());
       });
 

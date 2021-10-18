@@ -16,7 +16,6 @@ export const customParagraph = Paragraph.extend({
       margin: {
         default: 10,
         parseHTML: element => {
-          console.log('ggg', element.style.marginBottom);
           return Number(element.style.marginBottom.slice(0, -2));
         },
         renderHTML: attributes => ({

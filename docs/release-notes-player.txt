@@ -1,6 +1,9 @@
 Player
 ======
-- 1.1.0
+1.1.1:
+- Fix reading of existing elements
+
+1.1.0
 - Make texts markable
 - Implements virtual keyboard for special characters
 - Implements autosize for grid columns and grid

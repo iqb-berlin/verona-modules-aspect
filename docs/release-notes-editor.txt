@@ -1,5 +1,8 @@
 Editor
 ======
+1.5.1:
+- Fix reading of existing elements
+
 1.5.0:
 - Show scroll bars on element overflow
 - Allow images for buttons

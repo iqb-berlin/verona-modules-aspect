@@ -31,5 +31,6 @@ export class FrenchKeyboardComponent implements OnInit {
       this.rows = this.upperCharacterRows;
     }
     event.preventDefault();
+    event.stopPropagation();
   }
 }

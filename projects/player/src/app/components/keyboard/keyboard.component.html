@@ -1,6 +1,8 @@
-<div class="keyboard-container" (mousedown)="onMouseDown($event)">
+<div class="keyboard-container"
+     (mousedown)="onMouseDown($event, false)">
   <div class="keyboard-header"></div>
-  <div class="keyboard-inner-container">
+  <div class="keyboard-inner-container"
+       (mousedown)="onMouseDown($event, true)">
     <app-french-keyboard *ngIf="preset === 'french'">
     </app-french-keyboard>
   </div>

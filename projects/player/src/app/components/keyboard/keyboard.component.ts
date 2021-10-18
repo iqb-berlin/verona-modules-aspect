@@ -8,7 +8,10 @@ import { Component, Input } from '@angular/core';
 export class KeyboardComponent {
   @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'none';
 
-  onMouseDown = (event: MouseEvent): void => {
+  onMouseDown = (event: MouseEvent, stopPropagation: boolean): void => {
     event.preventDefault();
+    if (stopPropagation) {
+      event.stopPropagation();
+    }
   };
 }

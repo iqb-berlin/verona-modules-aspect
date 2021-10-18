@@ -5,6 +5,7 @@ Player
 - Implements virtual keyboard for special characters
 - Implements autosize for grid columns and grid
 - Allow different positions for always visible page
+- [bug] Remove unnecessary scrollbars from images in Firefox
 
 1.0.11
 - Disable autocomplete for text field and text area

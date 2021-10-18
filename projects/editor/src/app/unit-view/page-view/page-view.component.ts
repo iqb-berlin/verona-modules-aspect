@@ -1,7 +1,7 @@
 import {
   Component, Input
 } from '@angular/core';
-import { Page } from '../../../../../../common/models/page';
+import { Page } from '../../../../../common/models/page';
 
 @Component({
   selector: 'app-page-view',

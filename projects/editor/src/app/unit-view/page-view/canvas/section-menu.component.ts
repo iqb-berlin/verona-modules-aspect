@@ -4,10 +4,10 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../../../unit.service';
-import { DialogService } from '../../../../dialog.service';
-import { SelectionService } from '../../../../selection.service';
-import { Section } from '../../../../../../../common/models/section';
+import { UnitService } from '../../../unit.service';
+import { DialogService } from '../../../dialog.service';
+import { SelectionService } from '../../../selection.service';
+import { Section } from '../../../../../../common/models/section';
 
 @Component({
   selector: 'app-section-menu',

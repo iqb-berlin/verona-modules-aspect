@@ -11,25 +11,25 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { UiElementToolboxComponent } from './components/unit-view/page-view/ui-element-toolbox/ui-element-toolbox.component';
-import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
-import { CanvasComponent } from './components/unit-view/page-view/canvas/canvas.component';
-import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/static-canvas-overlay.component';
-import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { UiElementToolboxComponent } from './unit-view/page-view/new-ui-element-panel/ui-element-toolbox.component';
+import { UnitViewComponent } from './unit-view/unit-view.component';
+import { PageViewComponent } from './unit-view/page-view/page-view.component';
+import { CanvasComponent } from './unit-view/page-view/canvas/canvas.component';
+import { StaticCanvasOverlayComponent } from './unit-view/page-view/canvas/static-canvas-overlay.component';
+import { DynamicCanvasOverlayComponent } from './unit-view/page-view/canvas/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/shared.module';
 import {
   ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialog
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import { ElementPropertiesComponent } from './components/unit-view/page-view/properties/element-properties.component';
-import { SectionMenuComponent } from './components/unit-view/page-view/canvas/section-menu.component';
-import { SectionStaticComponent } from './components/unit-view/page-view/canvas/section-static.component';
-import { SectionDynamicComponent } from './components/unit-view/page-view/canvas/section-dynamic.component';
-import { RichTextEditorComponent } from './components/unit-view/page-view/rich-text-editor.component';
-import { ElementStylePropertiesComponent } from './components/unit-view/page-view/properties/element-style-properties.component';
-import { ElementSizingPropertiesComponent } from './components/unit-view/page-view/properties/element-sizing-properties.component';
+import { ElementPropertiesComponent } from './unit-view/page-view/properties-panel/element-properties.component';
+import { SectionMenuComponent } from './unit-view/page-view/canvas/section-menu.component';
+import { SectionStaticComponent } from './unit-view/page-view/canvas/section-static.component';
+import { SectionDynamicComponent } from './unit-view/page-view/canvas/section-dynamic.component';
+import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
+import { ElementStylePropertiesComponent } from './unit-view/page-view/properties-panel/element-style-properties.component';
+import { ElementSizingPropertiesComponent } from './unit-view/page-view/properties-panel/element-sizing-properties.component';
 
 @NgModule({
   declarations: [

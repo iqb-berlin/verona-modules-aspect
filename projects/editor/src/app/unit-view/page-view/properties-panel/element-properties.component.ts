@@ -6,11 +6,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { UnitService } from '../../../../unit.service';
-import { SelectionService } from '../../../../selection.service';
-import { MessageService } from '../../../../../../../common/message.service';
-import { FileService } from '../../../../../../../common/file.service';
-import { UIElement } from '../../../../../../../common/models/uI-element';
+import { UnitService } from '../../../unit.service';
+import { SelectionService } from '../../../selection.service';
+import { MessageService } from '../../../../../../common/message.service';
+import { FileService } from '../../../../../../common/file.service';
+import { UIElement } from '../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-element-properties',

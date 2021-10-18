@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { DragItemData, DropListData } from './canvas.component';
-import { UnitService } from '../../../../unit.service';
-import { Section } from '../../../../../../../common/models/section';
+import { UnitService } from '../../../unit.service';
+import { Section } from '../../../../../../common/models/section';
 
 @Component({
   selector: 'app-section-dynamic',

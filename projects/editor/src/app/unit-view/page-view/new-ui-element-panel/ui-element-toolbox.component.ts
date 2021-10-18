@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { UnitService } from '../../../../unit.service';
-import { SelectionService } from '../../../../selection.service';
+import { UnitService } from '../../../unit.service';
+import { SelectionService } from '../../../selection.service';
 
 @Component({
   selector: 'app-ui-element-toolbox',

@@ -21,7 +21,7 @@ export class RadioButtonGroupElement extends InputElement implements FontElement
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
 
-    this.height = 85;
-    this.backgroundColor = 'transparent';
+    this.height = serializedElement.height || 85;
+    this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }
 }

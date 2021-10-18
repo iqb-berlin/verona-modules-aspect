@@ -30,7 +30,7 @@ export class TextFieldElement extends InputElement implements FontElement, Surfa
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
 
-    this.height = 100;
-    this.backgroundColor = 'transparent';
+    this.height = serializedElement.height || 100;
+    this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }
 }

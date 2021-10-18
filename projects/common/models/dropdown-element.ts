@@ -21,6 +21,6 @@ export class DropdownElement extends InputElement implements FontElement, Surfac
     Object.assign(this, initFontElement());
     Object.assign(this, initSurfaceElement());
 
-    this.height = 83;
+    this.height = serializedElement.height || 83;
   }
 }

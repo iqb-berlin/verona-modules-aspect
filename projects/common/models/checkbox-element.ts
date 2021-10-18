@@ -20,6 +20,6 @@ export class CheckboxElement extends InputElement implements FontElement, Surfac
 
     this.value = serializedElement.value as boolean || false; // booleans are always initialized false
 
-    this.backgroundColor = 'transparent';
+    this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }
 }

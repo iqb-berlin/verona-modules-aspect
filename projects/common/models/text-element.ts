@@ -23,7 +23,7 @@ export class TextElement extends UIElement implements SurfaceUIElement {
     this.italic = serializedElement.italic as boolean || false;
     this.underline = serializedElement.underline as boolean || false;
 
-    this.height = 78;
-    this.backgroundColor = 'transparent';
+    this.height = serializedElement.height || 78;
+    this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }
 }

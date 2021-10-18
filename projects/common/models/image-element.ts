@@ -5,6 +5,6 @@ export class ImageElement extends UIElement {
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
-    this.height = 100;
+    this.height = serializedElement.height || 100;
   }
 }

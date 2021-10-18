@@ -7,6 +7,6 @@ export class VideoElement extends UIElement {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
 
-    this.height = 100;
+    this.height = serializedElement.height || 100;
   }
 }

@@ -21,6 +21,9 @@ import { IntersectionDetectionDirective } from './directives/intersection-detect
 import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { KeyComponent } from './components/key/key.component';
 import { FrenchKeyboardComponent } from './components/french-keyboard/french-keyboard.component';
+import { NumbersKeyboardComponent } from './components/numbers-keyboard/numbers-keyboard.component';
+import { NumbersAndOperatorsKeyboardComponent }
+  from './components/numbers-and-operators-keyboard/numbers-and-operators-keyboard.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import { FrenchKeyboardComponent } from './components/french-keyboard/french-key
     IntersectionDetectionDirective,
     KeyboardComponent,
     KeyComponent,
-    FrenchKeyboardComponent
+    FrenchKeyboardComponent,
+    NumbersKeyboardComponent,
+    NumbersAndOperatorsKeyboardComponent
   ],
   imports: [
     BrowserModule,

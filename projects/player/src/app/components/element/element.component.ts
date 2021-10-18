@@ -51,7 +51,7 @@ export class ElementComponent implements OnInit {
     const unitStateElementCode = this.unitStateService.getUnitStateElement(this.elementModel.id);
     if (unitStateElementCode) {
       if (this.elementModel.type === 'text') {
-        elementComponent.elementModel.text = unitStateElementCode.value;
+        // elementComponent.elementModel.text = unitStateElementCode.value;
       } else {
         elementComponent.elementModel.value = unitStateElementCode.value;
       }

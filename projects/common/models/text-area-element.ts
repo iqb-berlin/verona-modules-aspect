@@ -20,8 +20,8 @@ export class TextAreaElement extends InputElement implements FontElement, Surfac
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
-    Object.assign(this, initFontElement());
-    Object.assign(this, initSurfaceElement());
+    Object.assign(this, initFontElement(serializedElement));
+    Object.assign(this, initSurfaceElement(serializedElement));
 
     this.height = serializedElement.height || 132;
     this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';

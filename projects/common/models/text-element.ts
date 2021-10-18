@@ -16,7 +16,7 @@ export class TextElement extends UIElement implements SurfaceUIElement {
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
-    Object.assign(this, initSurfaceElement());
+    Object.assign(this, initSurfaceElement(serializedElement));
     this.fontColor = serializedElement.fontColor as string || 'black';
     this.font = serializedElement.font as string || 'Roboto';
     this.bold = serializedElement.bold as boolean || false;

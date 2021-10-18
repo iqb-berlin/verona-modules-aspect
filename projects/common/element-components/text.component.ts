@@ -13,19 +13,19 @@ import { TextElement } from '../models/text-element';
       <div *ngIf="elementModel.highlightable"
            class="marking-bar">
         <button class="marking-button" mat-mini-fab [style.background-color]="'yellow'"
-                (click)="applySelection.emit({color:'yellow', element: container, clear: false})">
+                (click)="onClick($event, {color:'yellow', element: container, clear: false})">
           <mat-icon>border_color</mat-icon>
         </button>
         <button class="marking-button" mat-mini-fab [style.background-color]="'turquoise'"
-                (click)="applySelection.emit({color: 'turquoise', element: container, clear: false})">
+                (click)="onClick($event, {color: 'turquoise', element: container, clear: false})">
           <mat-icon>border_color</mat-icon>
         </button>
         <button class="marking-button" mat-mini-fab [style.background-color]="'orange'"
-                (click)="applySelection.emit({color: 'orange', element: container, clear: false})">
+                (click)="onClick($event, {color: 'orange', element: container, clear: false})">
           <mat-icon>border_color</mat-icon>
         </button>
         <button class="marking-button" [style.background-color]="'lightgrey'" mat-mini-fab
-                (click)="applySelection.emit({color: 'none', element: container, clear: true})">
+                (click)="onClick($event, {color: 'none', element: container, clear: true})">
           <mat-icon>clear</mat-icon>
         </button>
       </div>
@@ -52,5 +52,11 @@ export class TextComponent extends ElementComponent {
 
   constructor(public sanitizer: DomSanitizer) {
     super();
+  }
+
+  onClick(event: MouseEvent, markingValues: { color: string; element: HTMLElement; clear: boolean }) : void {
+    this.applySelection.emit(markingValues);
+    event.preventDefault();
+    event.stopPropagation();
   }
 }

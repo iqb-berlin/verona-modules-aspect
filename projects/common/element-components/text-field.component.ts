@@ -24,7 +24,7 @@ import { TextFieldElement } from '../models/text-field-element';
              [formControl]="elementFormControl"
              placeholder="{{elementModel.label}}">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
-              (click)="elementFormControl.setValue('')">
+              (click)="onClick($event)">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="elementFormControl.errors">
@@ -38,6 +38,12 @@ export class TextFieldComponent extends FormElementComponent {
   @Output() onFocus = new EventEmitter<HTMLElement>();
   @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextFieldElement;
+
+  onClick(event: MouseEvent) : void {
+    this.elementFormControl.setValue('');
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
   get validators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];

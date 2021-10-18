@@ -59,19 +59,10 @@ export class ElementComponent implements OnInit {
 
     this.unitStateService.registerElement(elementComponent.elementModel);
 
-    if (elementComponent.onFocusin) {
-      elementComponent.onFocusin
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
-          this.unitStateService.changeElementStatus({ id: this.elementModel.id, status: 'TOUCHED' });
-        });
-    }
-
     if (elementComponent.applySelection) {
       elementComponent.applySelection
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selection: { color: string; element: HTMLElement; clear: boolean }) => {
-          this.unitStateService.changeElementStatus({ id: this.elementModel.id, status: 'TOUCHED' });
           this.applySelection(selection.color, selection.element, selection.clear);
         });
     }

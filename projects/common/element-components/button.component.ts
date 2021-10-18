@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { ButtonElement } from '../models/button-element';
 
@@ -9,7 +9,6 @@ import { ButtonElement } from '../models/button-element';
          [style.width.%]="100"
          [style.height.%]="100">
       <button *ngIf="!elementModel.imageSrc" mat-button
-              (focusin)="onFocusin.emit()"
               (click)="onClick($event)"
               [style.width.%]="100"
               [style.height.%]="100"
@@ -24,7 +23,6 @@ import { ButtonElement } from '../models/button-element';
         {{elementModel.label}}
       </button>
       <input *ngIf="elementModel.imageSrc" type="image"
-             (focusin)="onFocusin.emit()"
              (click)="onClick($event)"
              [src]="elementModel.imageSrc | safeResourceUrl"
              [class]="elementModel.dynamicPositioning? 'dynamic-image' : 'static-image'"
@@ -37,7 +35,6 @@ import { ButtonElement } from '../models/button-element';
   ]
 })
 export class ButtonComponent extends ElementComponent {
-  @Output() onFocusin = new EventEmitter();
   elementModel!: ButtonElement;
 
   onClick = (event: MouseEvent): void => {

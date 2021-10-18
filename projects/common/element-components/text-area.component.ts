@@ -16,7 +16,6 @@ import { TextAreaElement } from '../models/text-area-element';
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''"
                     [appearance]="$any(elementModel.appearance)">
       <textarea matInput [formControl]="elementFormControl" #input
-                (focusin)="onFocusin.emit()"
                 (focus)="onFocus.emit(input)"
                 (blur)="onBlur.emit(input)"
                 autocomplete="off"
@@ -31,7 +30,6 @@ import { TextAreaElement } from '../models/text-area-element';
   `
 })
 export class TextAreaComponent extends FormElementComponent {
-  @Output() onFocusin = new EventEmitter();
   @Output() onFocus = new EventEmitter<HTMLElement>();
   @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextAreaElement;

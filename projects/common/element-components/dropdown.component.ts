@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormElementComponent } from '../form-element-component.directive';
 import { DropdownElement } from '../models/dropdown-element';
 
@@ -17,8 +17,7 @@ import { DropdownElement } from '../models/dropdown-element';
                  [style.text-decoration]="elementModel.underline ? 'underline' : ''">
         {{$any(elementModel).label}}
       </mat-label>
-      <mat-select (focusin)="onFocusin.emit()"
-                  [formControl]="elementFormControl">
+      <mat-select [formControl]="elementFormControl">
         <mat-option *ngIf="elementModel.allowUnset" value=""></mat-option>
         <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i">
           {{option}}
@@ -31,6 +30,5 @@ import { DropdownElement } from '../models/dropdown-element';
   `
 })
 export class DropdownComponent extends FormElementComponent {
-  @Output() onFocusin = new EventEmitter();
   elementModel!: DropdownElement;
 }

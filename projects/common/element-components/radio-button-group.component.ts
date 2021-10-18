@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormElementComponent } from '../form-element-component.directive';
 import { RadioButtonGroupElement } from '../models/radio-button-group-element';
 
@@ -19,7 +19,6 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
              class="white-space-break"
              id="radio-group-label"></label>
       <mat-radio-group aria-labelledby="radio-group-label"
-                       (focusin)="onFocusin.emit()"
                        [style.margin-bottom.px]="25"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
@@ -41,6 +40,5 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
-  @Output() onFocusin = new EventEmitter();
   elementModel!: RadioButtonGroupElement;
 }

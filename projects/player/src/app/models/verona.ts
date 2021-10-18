@@ -6,9 +6,9 @@ export type Progress = 'none' | 'some' | 'complete';
 
 export type StateReportPolicy = 'none' | 'eager' | 'on-demand';
 
-export type UnitStateElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'TOUCHED' | 'VALUE_CHANGED';
+export type UnitStateElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
 
-export enum UnitStateElementCodeStatusValue { NOT_REACHED = 0, DISPLAYED = 1, TOUCHED = 2, VALUE_CHANGED = 3}
+export enum UnitStateElementCodeStatusValue { NOT_REACHED = 0, DISPLAYED = 1, VALUE_CHANGED = 2}
 
 export interface StatusChangeElement {
   id: string;

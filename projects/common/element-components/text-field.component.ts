@@ -17,7 +17,6 @@ import { TextFieldElement } from '../models/text-field-element';
                     appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" [pattern]="elementModel.pattern" #input
-             (focusin)="onFocusin.emit()"
              (focus)="onFocus.emit(input)"
              (blur)="onBlur.emit(input)"
              autocomplete="off"
@@ -34,7 +33,6 @@ import { TextFieldElement } from '../models/text-field-element';
   `
 })
 export class TextFieldComponent extends FormElementComponent {
-  @Output() onFocusin = new EventEmitter();
   @Output() onFocus = new EventEmitter<HTMLElement>();
   @Output() onBlur = new EventEmitter<HTMLElement>();
   elementModel!: TextFieldElement;

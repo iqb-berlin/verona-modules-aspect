@@ -3,6 +3,11 @@
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">
     <app-element
+        appIntersectionDetection
+        detectionType="full"
+        [intersectionContainer]="document"
+        [id]="element.id"
+        (intersecting)="onIntersection($event)"
         [style.display]="'block'"
         [style.overflow]="'auto'"
         [style.width.px]="element.width"
@@ -25,6 +30,11 @@
        [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined">
     <ng-container *ngFor="let element of section.elements; let i = index">
       <app-element
+          appIntersectionDetection
+          detectionType="full"
+          [intersectionContainer]="document"
+          [id]="element.id"
+          (intersecting)="onIntersection($event)"
           [style.min-width.px]="element.width"
           [style.min-height.px]="element.height"
           [style.margin-left.px]="element.marginLeft"

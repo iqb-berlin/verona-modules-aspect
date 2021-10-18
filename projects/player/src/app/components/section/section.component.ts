@@ -1,9 +1,11 @@
 import {
-  Component, Input, OnInit
+  Component, Inject, Input, OnInit
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { DOCUMENT } from '@angular/common';
 import { FormService } from '../../../../../common/form.service';
 import { Section } from '../../../../../common/models/section';
+import { UnitStateService } from '../../services/unit-state.service';
 
 @Component({
   selector: 'app-section',
@@ -17,7 +19,9 @@ export class SectionComponent implements OnInit {
   sectionForm!: FormGroup;
 
   constructor(private formService: FormService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private unitStateService: UnitStateService,
+              @Inject(DOCUMENT) public document: Document) {
   }
 
   ngOnInit(): void {
@@ -30,5 +34,9 @@ export class SectionComponent implements OnInit {
       parentArray: 'sections',
       parentArrayIndex: this.parentArrayIndex
     });
+  }
+
+  onIntersection(detection: { detectionType: 'top' | 'bottom' | 'full', id: string }): void {
+    this.unitStateService.changeElementStatus({ id: detection.id, status: 'DISPLAYED' });
   }
 }

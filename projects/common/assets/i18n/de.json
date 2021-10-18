@@ -7,5 +7,6 @@
     "inputTooShort": "Eingabe zu kurz",
     "inputTooLong": "Eingabe zu lang",
     "wrongPattern": "Eingabe enthält falsche Zeichen"
-  }
+  },
+  "imageNotFound": "Bild nicht gefunden"
 }

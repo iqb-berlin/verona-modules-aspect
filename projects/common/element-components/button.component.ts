@@ -22,12 +22,16 @@ import { ButtonElement } from '../models/button-element';
               [style.border-radius.px]="elementModel.borderRadius">
         {{elementModel.label}}
       </button>
-      <input *ngIf="elementModel.imageSrc" type="image" [src]="elementModel.imageSrc"
-             [style.width.%]="100"
-             [style.height.%]="100"
-             [style.object-fit]="'contain'" alt="Bild nicht gefunden">
+      <input *ngIf="elementModel.imageSrc" type="image"
+             [src]="elementModel.imageSrc | safeResourceUrl"
+             [class]="elementModel.dynamicPositioning? 'dynamic-image' : 'static-image'"
+             [alt]="'imageNotFound' | translate">
     </div>
-  `
+  `,
+  styles: [
+    '.dynamic-image{width: 100%; height: fit-content}',
+    '.static-image{ width: 100%; height: 100%; object-fit: contain}'
+  ]
 })
 export class ButtonComponent extends ElementComponent {
   @Output() onFocusin = new EventEmitter();

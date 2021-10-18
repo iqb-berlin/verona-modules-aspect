@@ -54,22 +54,27 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       // eslint-disable-next-line no-console
       console.log('player: onStart', message);
-      const unitDefinition: Unit = message.unitDefinition ? JSON.parse(message.unitDefinition) : {};
-      if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
-        this.playerConfig = message.playerConfig || {};
-        this.veronaPostService.sessionId = message.sessionId;
-        this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
-        this.pages = unitDefinition.pages;
-        this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
-          JSON.parse(message.unitState.dataParts.elementCodes) : [];
+      if (message.unitDefinition) {
+        const unitDefinition: Unit = new Unit(JSON.parse(message.unitDefinition));
+        if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
+          this.playerConfig = message.playerConfig || {};
+          this.veronaPostService.sessionId = message.sessionId;
+          this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
+          this.pages = unitDefinition.pages;
+          this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
+            JSON.parse(message.unitState.dataParts.elementCodes) : [];
+        } else {
+          this.dialog.open(AlertDialogComponent, {
+            data: {
+              title: this.translateService.instant('dialogTitle.wrongUnitDefinitionType'),
+              content: this.translateService.instant('dialogContent.wrongUnitDefinitionType',
+                { version: this.metaDataService.playerMetadata.supportedUnitDefinitionTypes })
+            }
+          });
+        }
       } else {
-        this.dialog.open(AlertDialogComponent, {
-          data: {
-            title: this.translateService.instant('dialogTitle.wrongUnitDefinitionType'),
-            content: this.translateService.instant('dialogContent.wrongUnitDefinitionType',
-              { version: this.metaDataService.playerMetadata.supportedUnitDefinitionTypes })
-          }
-        });
+        // eslint-disable-next-line no-console
+        console.warn('player: message has no unitDefinition');
       }
     });
   }

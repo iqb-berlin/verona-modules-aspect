@@ -10,9 +10,7 @@ Editor
   contain the same values
 - Reduce delay of section menu hide-effect
 - Add grid settings automatic sizing
-- Improve deleting element via Delete key
-  (There are still issues with that but it is not as bad as before and
-  accidentally deleting elements when not in focus should not happen anymore.)
+- Improve deleting elements via Delete key
 - Add Input Assistance property to input elements
   This can be activated by selecting one of the presets, which are mutually
   exclusive for now.
@@ -22,6 +20,11 @@ Editor
 - Add "position" property to "always-visible" pages
 - [bug] Fix option elements saving value index instead of actual option string
   This allows duplicate (or empty) options.
+- Fix TextEditor indent setting to persist when re-opening text element
+- Improve TextEditor margin logic
+  Default margin of paragraphs is 0px. It can now read existing margin
+  settings.
+- Make all elements non-interactable. Only the overlay can be moved and resized.
 
 1.4.0
 - New Text-Editor (based on TipTap/ProseMirror)

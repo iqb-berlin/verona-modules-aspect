@@ -25,7 +25,9 @@ export class Section {
   }
 
   async addElement(elementType: string, coordinates: { x: number; y: number } | undefined): Promise<void> {
-    this.elements.push(await ElementFactory.createElement({ type: elementType } as UIElement, coordinates));
+    this.elements.push(await ElementFactory.createElement(
+      { type: elementType, dynamicPositioning: this.dynamicPositioning } as UIElement, coordinates
+    ));
   }
 
   deleteElements(elements: UIElement[]): void {

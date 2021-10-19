@@ -115,17 +115,19 @@ export class ElementComponent implements OnInit {
   private applySelection(color: string, element: HTMLElement, clear: boolean): void {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      if (this.isDescendantOf(range.startContainer, element) &&
-        this.isDescendantOf(range.endContainer, element)) {
-        this.markingService.applySelection(range, selection, clear, color);
-        this.unitStateService.changeElementValue({
-          id: this.elementModel.id,
-          values: [this.elementModel.text as string, element.innerHTML]
-        });
-        this.elementModel.text = element.innerHTML;
+      for (let i = 0; i < selection.rangeCount; i++) {
+        const range = selection.getRangeAt(i);
+        if (this.isDescendantOf(range.startContainer, element) &&
+          this.isDescendantOf(range.endContainer, element)) {
+          this.markingService.applySelection(range, selection, clear, color);
+          this.unitStateService.changeElementValue({
+            id: this.elementModel.id,
+            values: [this.elementModel.text as string, element.innerHTML]
+          });
+          this.elementModel.text = element.innerHTML;
+        }
       }
-      selection.removeRange(range);
+      selection.removeAllRanges();
     } // nothing to do!
   }
 

@@ -37,7 +37,7 @@ export class MarkingService {
 
   private clearMarkingFromNodes(nodes: Node[], range: Range): void {
     nodes.forEach((node, index) => {
-      if (node.parentElement?.tagName === MarkingService.MARKING_TAG) {
+      if (node.parentElement?.tagName.toUpperCase() === MarkingService.MARKING_TAG) {
         const nodeValues = this.getNodeValues(node, nodes, index, range);
         if (nodeValues.text) {
           this.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, range);
@@ -85,13 +85,15 @@ export class MarkingService {
   private getNodeValues = (node: Node, nodes: Node[], index: number, range: Range): {
     text: string, previousText: string, nextText: string
   } => {
+    const start = Math.min(range.startOffset, range.endOffset);
+    const end = Math.max(range.startOffset, range.endOffset);
     let text: string; let previousText = ''; let nextText = '';
     if (index === 0) {
-      previousText = node.nodeValue?.substring(0, range.startOffset) || '';
-      text = node.nodeValue?.substring(range.startOffset) || '';
+      previousText = node.nodeValue?.substring(0, start) || '';
+      text = node.nodeValue?.substring(start) || '';
     } else if (index === nodes.length - 1) {
-      text = node.nodeValue?.substring(0, range.endOffset) || '';
-      nextText = node.nodeValue?.substring(range.endOffset) || '';
+      text = node.nodeValue?.substring(0, end) || '';
+      nextText = node.nodeValue?.substring(end) || '';
     } else {
       text = node.nodeValue || '';
     }

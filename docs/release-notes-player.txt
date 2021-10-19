@@ -1,5 +1,10 @@
 Player
 ======
+next:
+- Changes background color of virtual keyboard keys
+- Changes font size of virtual keyboard keys
+- [bug] Solve problem with deleting markers in Firefox
+
 1.1.1:
 - Fix reading of existing elements
 

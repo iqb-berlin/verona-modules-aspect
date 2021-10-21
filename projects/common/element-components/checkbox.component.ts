@@ -21,15 +21,15 @@ import { CheckboxElement } from '../models/checkbox-element';
         <div [innerHTML]="elementModel.label"></div>
       </mat-checkbox>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-                 [style.margin-top.px]="5"
-                 [style.position]="'absolute'"
-                 [style.display]="'block'"
-                 [style.font-size.%]="75">
+                 class="error-message">
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
     </div>
   `,
-  styles: ['::ng-deep .mat-checkbox-layout {white-space: normal !important}']
+  styles: [
+    '::ng-deep .mat-checkbox-layout {white-space: normal !important}',
+    '.error-message { position: absolute; display: block; margin-top: 5px; font-size: 75% }'
+  ]
 })
 export class CheckboxComponent extends FormElementComponent {
   elementModel!: CheckboxElement;

@@ -26,9 +26,7 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
           {{option}}
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-                   [style.font-size.%]="75"
-                   [style.margin-top.px]="25"
-                   [style.position]="'absolute'">
+                   class="error-message">
           {{elementFormControl.errors | errorTransform: elementModel}}
         </mat-error>
       </mat-radio-group>
@@ -36,7 +34,8 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
   `,
   styles: [
     '::ng-deep .mat-radio-label {white-space: normal !important}',
-    '.white-space-break {white-space: normal}'
+    '.white-space-break {white-space: normal}',
+    '.error-message { position: absolute; margin-top: 25px; font-size: 75% }'
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

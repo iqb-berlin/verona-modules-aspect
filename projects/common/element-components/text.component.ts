@@ -41,7 +41,7 @@ import { TextElement } from '../models/text-element';
     </div>
   `,
   styles: [
-    '.marking-bar{position: sticky; top: 0}',
+    '.marking-bar{position: sticky; top: 0; margin-bottom: 15px}',
     '.marking-button{color: #333}'
   ]
 })

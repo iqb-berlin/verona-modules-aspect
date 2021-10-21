@@ -11,7 +11,7 @@ export class KeyComponent {
 
   constructor(public keyboardService: KeyboardService) { }
 
-  onMouseDown(event: MouseEvent): void {
+  onClick(event: MouseEvent): void {
     this.keyboardService.enterKey(this.key);
     event.preventDefault();
     event.stopPropagation();

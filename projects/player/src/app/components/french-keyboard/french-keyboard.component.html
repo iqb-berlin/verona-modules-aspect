@@ -3,7 +3,7 @@
     <app-key [key]="key"></app-key>
   </ng-container>
 </div>
-<button class="keyboard_capslock" mat-mini-fab (mousedown)="toggleCharacterCase($event)">
+<button class="keyboard_capslock" mat-mini-fab (click)="toggleCharacterCase($event)">
   <mat-icon *ngIf="lowerCharacters">keyboard_arrow_up</mat-icon>
   <mat-icon *ngIf="!lowerCharacters">keyboard_capslock</mat-icon>
 </button>

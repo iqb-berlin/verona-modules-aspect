@@ -14,7 +14,6 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
            [style.grid-row-start]="1"
            [style.grid-row-end]="2">
         {{elementModel.text}}
-        {{elementModel.id}}
       </div>
 
       <mat-radio-button *ngFor="let answer of [].constructor(elementModel.columnCount); let j = index"

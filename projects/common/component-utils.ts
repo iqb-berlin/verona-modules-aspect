@@ -9,6 +9,7 @@ import { RadioButtonGroupComponent } from './element-components/radio-button-gro
 import { ImageComponent } from './element-components/image.component';
 import { AudioComponent } from './element-components/audio.component';
 import { VideoComponent } from './element-components/video.component';
+import { LikertComponent } from './element-components/compound-elements/likert.component';
 
 export function getComponentFactory(
   elementType: string, componentFactoryResolver: ComponentFactoryResolver
@@ -35,6 +36,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(AudioComponent);
     case 'video':
       return componentFactoryResolver.resolveComponentFactory(VideoComponent);
+    case 'likert':
+      return componentFactoryResolver.resolveComponentFactory(LikertComponent);
     default:
       throw new Error('unknown element');
   }

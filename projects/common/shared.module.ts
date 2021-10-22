@@ -35,6 +35,8 @@ import { SafeResourceUrlPipe } from './element-components/pipes/safe-resource-ur
 import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
 import { ErrorTransformPipe } from './element-components/pipes/error-transform.pipe';
 import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-html.pipe';
+import { LikertComponent } from './element-components/compound-elements/likert.component';
+import { LikertRadioButtonGroupComponent } from './element-components/compound-elements/likert-radio-button-group.component';
 
 @NgModule({
   imports: [
@@ -67,7 +69,9 @@ import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-h
     SafeResourceUrlPipe,
     InputBackgroundColorDirective,
     ErrorTransformPipe,
-    SafeResourceHTMLPipe
+    SafeResourceHTMLPipe,
+    LikertComponent,
+    LikertRadioButtonGroupComponent
   ],
   exports: [
     CommonModule,

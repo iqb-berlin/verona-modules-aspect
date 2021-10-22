@@ -10,6 +10,7 @@ import { ImageElement } from '../models/image-element';
 import { AudioElement } from '../models/audio-element';
 import { VideoElement } from '../models/video-element';
 import { FileService } from '../file.service';
+import { LikertElement } from '../models/compound-elements/likert-element';
 
 export async function createElement(elementModel: UIElement, coordinates?: { x: number; y: number }): Promise<UIElement> {
   let newElement: UIElement;
@@ -52,6 +53,9 @@ export async function createElement(elementModel: UIElement, coordinates?: { x: 
         elementModel.src = await FileService.loadVideo();
       }
       newElement = new VideoElement(elementModel, coordinates);
+      break;
+    case 'likert':
+      newElement = new LikertElement(elementModel, coordinates);
       break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);

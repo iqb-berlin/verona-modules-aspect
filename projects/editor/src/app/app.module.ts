@@ -20,7 +20,12 @@ import { StaticCanvasOverlayComponent } from './unit-view/page-view/canvas/stati
 import { DynamicCanvasOverlayComponent } from './unit-view/page-view/canvas/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/shared.module';
 import {
-  ConfirmationDialog, TextEditDialog, MultilineTextEditDialog, RichTextEditDialog
+  ConfirmationDialog,
+  TextEditDialog,
+  MultilineTextEditDialog,
+  RichTextEditDialog,
+  LikertAnswerEditDialog,
+  LikertQuestionEditDialog
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { ElementPropertiesComponent } from './unit-view/page-view/properties-panel/element-properties.component';
@@ -45,6 +50,8 @@ import { ElementSizingPropertiesComponent } from './unit-view/page-view/properti
     TextEditDialog,
     MultilineTextEditDialog,
     RichTextEditDialog,
+    LikertAnswerEditDialog,
+    LikertQuestionEditDialog,
     ElementPropertiesComponent,
     SectionMenuComponent,
     SectionStaticComponent,

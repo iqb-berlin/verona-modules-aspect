@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { LikertElement } from '../../models/complex-elements/likert-element';
+import { LikertElement } from '../../models/compound-elements/likert-element';
 
 @Component({
   selector: 'app-likert',

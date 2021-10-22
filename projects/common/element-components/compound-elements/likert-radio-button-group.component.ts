@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormElementComponent } from '../../form-element-component.directive';
-import { LikertElementRow } from '../../models/complex-elements/likert-element-row';
+import { LikertElementRow } from '../../models/compound-elements/likert-element-row';
 
 @Component({
   selector: 'app-likert-radio-button-group',

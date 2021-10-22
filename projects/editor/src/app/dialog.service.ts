@@ -2,9 +2,9 @@
 import { Component, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AnswerOption } from '../../../common/models/uI-element';
 import { FileService } from '../../../common/file.service';
 import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
+import { AnswerOption } from '../../../common/interfaces/UIElementInterfaces';
 
 @Injectable({
   providedIn: 'root'

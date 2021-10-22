@@ -13,7 +13,7 @@ import { InputElement, UIElement } from '../../../common/models/uI-element';
 import { TextElement } from '../../../common/models/text-element';
 import { LikertElement } from '../../../common/models/compound-elements/likert-element';
 import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
-import { AnswerOption } from '../../../common/interfaces/UIElementInterfaces';
+import { AnswerOption, LikertRow } from '../../../common/interfaces/UIElementInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -167,7 +167,7 @@ export class UnitService {
 
   updateElementProperty(elements: UIElement[], property: string,
                         value: string | number | boolean | string[] |
-                        AnswerOption[] | LikertElementRow[] | null): boolean {
+                        AnswerOption[] | LikertRow[] | null): boolean {
     for (const element of elements) {
       if (property === 'id') {
         if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs

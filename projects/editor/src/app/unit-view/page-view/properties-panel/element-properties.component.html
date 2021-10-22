@@ -226,6 +226,70 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-form-field disabled="true" *ngIf="combinedProperties.questions !== undefined">
+          <ng-container>
+            <mat-label>Fragen</mat-label>
+            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.questions"
+                 (cdkDropListDropped)="reorderOptions('questions', $any($event))">
+              <div *ngFor="let question of $any(combinedProperties.questions); let i = index" cdkDrag
+                   class="list-items">
+                {{question.text}}
+                <button mat-icon-button color="warn"
+                        (click)="editQuestionOption(i)">
+                  <mat-icon>build</mat-icon>
+                </button>
+                <button mat-icon-button color="warn"
+                        (click)="removeOption('questions', question)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matPrefix
+                    (click)="addQuestion(newQuestion.value); newQuestion.select()">
+              <mat-icon>add</mat-icon>
+            </button>
+            <input #newQuestion matInput type="text" placeholder="Fragetext"
+                   (keyup.enter)="addQuestion(newQuestion.value); newQuestion.select()">
+          </div>
+        </mat-form-field>
+
+        <mat-form-field disabled="true" *ngIf="combinedProperties.answers !== undefined">
+          <ng-container>
+            <mat-label>Antworten</mat-label>
+            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.answers"
+                 (cdkDropListDropped)="reorderOptions('answers', $any($event))">
+              <div *ngFor="let answer of $any(combinedProperties.answers); let i = index" cdkDrag
+                   class="list-items">
+                {{answer.text}}
+                <button mat-icon-button color="warn"
+                        (click)="editAnswerOption(i)">
+                  <mat-icon>build</mat-icon>
+                </button>
+                <button mat-icon-button color="warn"
+                        (click)="removeOption('answers', answer)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matPrefix
+                    (click)="addAnswer(newAnswer.value); newAnswer.select()">
+              <mat-icon>add</mat-icon>
+            </button>
+            <input #newAnswer matInput type="text" placeholder="Antworttext"
+                   (keyup.enter)="addAnswer(newAnswer.value); newAnswer.select()">
+          </div>
+        </mat-form-field>
+
+        <mat-checkbox *ngIf="combinedProperties.lineColoring !== undefined"
+                      [checked]="$any(combinedProperties.lineColoring)"
+                      (change)="updateModel('lineColoring', $event.checked)">
+          Zeilenfärbung
+        </mat-checkbox>
+
         <mat-divider></mat-divider>
 
         <button mat-raised-button class="element-button"

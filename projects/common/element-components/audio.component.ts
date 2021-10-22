@@ -5,9 +5,15 @@ import { AudioElement } from '../models/audio-element';
 @Component({
   selector: 'app-audio',
   template: `
-    <audio controls [src]="elementModel.src | safeResourceUrl"
-           [style.width.%]="100">
-    </audio>
+    <div [style.width.%]="100"
+         [style.height.%]="100">
+      <audio #player
+             [src]="elementModel.src | safeResourceUrl"
+             [style.width.%]="100">
+      </audio>
+      <app-control-bar [player]="player">
+      </app-control-bar>
+    </div>
   `
 })
 export class AudioComponent extends ElementComponent {

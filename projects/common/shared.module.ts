@@ -21,6 +21,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSliderModule } from '@angular/material/slider';
 import { TextComponent } from './element-components/text.component';
 import { ButtonComponent } from './element-components/button.component';
 import { TextFieldComponent } from './element-components/text-field.component';
@@ -35,6 +36,8 @@ import { SafeResourceUrlPipe } from './element-components/pipes/safe-resource-ur
 import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
 import { ErrorTransformPipe } from './element-components/pipes/error-transform.pipe';
 import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-html.pipe';
+import { ControlBarComponent } from './element-components/control-bar/control-bar.component';
+import { PlayerTimeFormatPipe } from './element-components/control-bar/player-time-format.pipe';
 
 @NgModule({
   imports: [
@@ -51,7 +54,8 @@ import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-h
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
-    TranslateModule
+    TranslateModule,
+    MatSliderModule
   ],
   declarations: [
     ButtonComponent,
@@ -67,7 +71,9 @@ import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-h
     SafeResourceUrlPipe,
     InputBackgroundColorDirective,
     ErrorTransformPipe,
-    SafeResourceHTMLPipe
+    SafeResourceHTMLPipe,
+    ControlBarComponent,
+    PlayerTimeFormatPipe
   ],
   exports: [
     CommonModule,

@@ -6,7 +6,7 @@ export class VideoElement extends UIElement {
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
-
-    this.height = serializedElement.height || 100;
+    this.height = serializedElement.height || 200;
+    this.width = serializedElement.width || 280;
   }
 }

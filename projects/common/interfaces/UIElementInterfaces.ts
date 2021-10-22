@@ -11,7 +11,7 @@ export interface SurfaceUIElement {
   backgroundColor: string;
 }
 
-export interface MediaElement {
+export interface PlayerElement {
   autostart: boolean; // default: false
   autostartDelay: number; // default: 0 (milliseconds)
   loop: boolean; // false

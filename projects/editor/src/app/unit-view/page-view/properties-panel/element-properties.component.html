@@ -225,6 +225,19 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== 'none' &&
+                               combinedProperties.inputAssistancePosition !== undefined"
+                        appearance="fill">
+          <mat-label>Eingabehilfeposition</mat-label>
+          <mat-select [value]="combinedProperties.inputAssistancePosition"
+                      (selectionChange)="updateModel('inputAssistancePosition', $event.value)">
+            <mat-option *ngFor="let option of [{displayValue: 'schwebend', value: 'floating'},
+                                               {displayValue: 'rechts', value: 'right'}]"
+                        [value]="option.value">
+              {{option.displayValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <mat-divider></mat-divider>
 

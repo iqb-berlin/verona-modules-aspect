@@ -14,7 +14,7 @@ export class TextAreaElement extends InputElement implements FontElement, Surfac
   underline: boolean = false;
 
   inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' = 'none';
-  inputAssistanceType: 'floating' | 'right' = 'floating';
+  inputAssistancePosition: 'floating' | 'right' = 'floating';
 
   backgroundColor: string = 'transparent';
 

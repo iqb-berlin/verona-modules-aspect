@@ -114,8 +114,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     this.updateModel(property, event.container.data);
   }
 
-  removeOption(property: string, option: string): void {
-    const valueList: string[] = this.combinedProperties[property] as string[];
+  removeOption(property: string, option: any): void {
+    const valueList: any[] = this.combinedProperties[property] as any[];
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel(property, valueList);
   }

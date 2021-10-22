@@ -60,7 +60,7 @@ import { Section } from '../../../../../../common/models/section';
     </div>
   `,
   styles: [
-    '.grid-placeholder {border: 25px inset aliceblue; text-align: center;}'
+    '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center;}'
   ]
 })
 export class SectionDynamicComponent {

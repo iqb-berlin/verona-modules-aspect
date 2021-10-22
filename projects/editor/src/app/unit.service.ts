@@ -11,6 +11,7 @@ import { Page } from '../../../common/models/page';
 import { Section } from '../../../common/models/section';
 import { InputElement, UIElement } from '../../../common/models/uI-element';
 import { TextElement } from '../../../common/models/text-element';
+import { PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -241,6 +242,19 @@ export class UnitService {
             this.updateElementProperty([element], 'value', result);
           }
         });
+        break;
+      case 'audio':
+      case 'video':
+        this.dialogService.showPlayerEditDialog(element as unknown as PlayerElement)
+          .subscribe((result: PlayerElement) => {
+            if (result) {
+              console.log('result', result);
+              for (const key in result) {
+                // @ts-ignore
+                this.updateElementProperty([element], key, result[key]);
+              }
+            }
+          });
         break;
       // no default
     }

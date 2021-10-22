@@ -12,6 +12,7 @@ export class TextFieldElement extends InputElement implements FontElement, Surfa
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
 
   inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' = 'none';
+  inputAssistanceType: 'floating' | 'right' = 'floating';
 
   clearable: boolean = false;
 

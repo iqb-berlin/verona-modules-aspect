@@ -30,7 +30,9 @@ import { LikertElement } from '../../models/compound-elements/likert-element';
       </div>
 
       <ng-container *ngFor="let question of elementModel.questions; let i = index">
-        <app-likert-radio-button-group [style.display]="'grid'"
+        <app-likert-radio-button-group
+             [ngClass]="{ 'odd': i % 2 ===0 }"
+             [style.display]="'grid'"
              [style.grid-column-start]="1"
              [style.grid-column-end]="elementModel.answers.length + 2"
              [style.grid-row-start]="2 + i"

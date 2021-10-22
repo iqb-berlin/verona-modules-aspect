@@ -6,7 +6,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../unit.service';
-import * as ComponentUtils from '../../../../../../common/component-utils';
+import * as ElementFactory from '../../../../../../common/util/element.factory';
 import { FormElementComponent } from '../../../../../../common/form-element-component.directive';
 import { ValueChangeElement } from '../../../../../../common/form';
 import { ElementComponent } from '../../../../../../common/element-component.directive';
@@ -28,7 +28,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    const componentFactory = ComponentUtils.getComponentFactory(this.element.type, this.componentFactoryResolver);
+    const componentFactory = ElementFactory.getComponentFactory(this.element.type, this.componentFactoryResolver);
     this.childComponent = this.elementContainer.createComponent(componentFactory);
     this.childComponent.instance.elementModel = this.element;
 

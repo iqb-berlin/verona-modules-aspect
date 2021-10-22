@@ -5,7 +5,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as ComponentUtils from '../../../../../common/component-utils';
+import * as ElementFactory from '../../../../../common/util/element.factory';
 import { KeyboardService } from '../../services/keyboard.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
@@ -44,7 +44,7 @@ export class ElementComponent implements OnInit {
 
   ngOnInit(): void {
     const elementComponentFactory =
-      ComponentUtils.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
+      ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     elementComponent.elementModel = this.elementModel;
 

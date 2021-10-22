@@ -37,6 +37,7 @@ import { LikertElement } from '../../models/compound-elements/likert-element';
              [style.grid-column-end]="elementModel.answers.length + 2"
              [style.grid-row-start]="2 + i"
              [style.grid-row-end]="3 + i"
+             [style.padding.px]="3"
              [elementModel]="elementModel.questions[i]"
              [parentForm]="parentForm">
         </app-likert-radio-button-group>

@@ -1,5 +1,6 @@
-import { AnswerOption, UIElement } from '../uI-element';
+import { UIElement } from '../uI-element';
 import { LikertElementRow } from './likert-element-row';
+import { AnswerOption } from '../../interfaces/UIElementInterfaces';
 
 export class LikertElement extends UIElement {
   questions: LikertElementRow[] = [

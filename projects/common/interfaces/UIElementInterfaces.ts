@@ -31,3 +31,14 @@ export interface MediaElement {
   showRestRuns: boolean; // true (wenn maxRuns)
   showRestTime: boolean; // true
 }
+
+export interface AnswerOption {
+  text: string;
+  imgSrc: string | null;
+  position: 'above' | 'below';
+}
+
+export interface LikertRow {
+  text: string;
+  columnCount: number;
+}

@@ -1,12 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
 import { IdService } from '../id.service';
+import { AnswerOption, LikertRow } from '../interfaces/UIElementInterfaces';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
-| 'dropdown' | 'radio' | 'image' | 'audio' | 'video';
+| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row';
 export type InputElementValue = string | number | boolean | null;
 
 export abstract class UIElement {
-  [index: string]: string | number | boolean | string[] | null | ((...args: any) => any);
+  [index: string]: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null | ((...args: any) => any);
   type!: UIElementType;
 
   id: string = 'id_placeholder';

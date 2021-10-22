@@ -232,8 +232,10 @@
             <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.questions"
                  (cdkDropListDropped)="reorderOptions('questions', $any($event))">
               <div *ngFor="let question of $any(combinedProperties.questions); let i = index" cdkDrag
-                   class="list-items">
-                {{question.text}}
+                   class="list-items" fxLayout="row" fxLayoutAlign="end center">
+                <div fxFlex="70">
+                  {{question.text}}
+                </div>
                 <button mat-icon-button color="warn"
                         (click)="editQuestionOption(i)">
                   <mat-icon>build</mat-icon>
@@ -261,8 +263,10 @@
             <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.answers"
                  (cdkDropListDropped)="reorderOptions('answers', $any($event))">
               <div *ngFor="let answer of $any(combinedProperties.answers); let i = index" cdkDrag
-                   class="list-items">
-                {{answer.text}}
+                   class="list-items" fxLayout="row" fxLayoutAlign="end center">
+                <div fxFlex="70">
+                  {{answer.text}}
+                </div>
                 <button mat-icon-button color="warn"
                         (click)="editAnswerOption(i)">
                   <mat-icon>build</mat-icon>

@@ -41,6 +41,12 @@ export abstract class UIElement {
       this.yPosition = coordinates.y;
     }
   }
+
+  // This can be overwritten by elements if they need to handle some property specifics. Likert does.
+  setProperty(property: string,
+              value: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null): void {
+    this[property] = value;
+  }
 }
 
 export abstract class InputElement extends UIElement {

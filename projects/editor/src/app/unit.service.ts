@@ -166,8 +166,9 @@ export class UnitService {
   }
 
   updateElementProperty(elements: UIElement[], property: string,
-                        value: string | number | boolean | string[] | null): void {
-    elements.forEach((element: UIElement) => {
+                        value: string | number | boolean | string[] |
+                        AnswerOption[] | LikertElementRow[] | null): boolean {
+    for (const element of elements) {
       if (property === 'id') {
         if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError('ID ist bereits vergeben');
@@ -176,15 +177,13 @@ export class UnitService {
         IdService.getInstance().removeId(element[property]);
         IdService.getInstance().addId(<string>value);
       }
-      if (Array.isArray(value)) {
-        element[property] = [...value];
-      } else {
-        element[property] = value;
-      }
+      element.setProperty(property, value);
       this.elementPropertyUpdated.next();
       return true;
-    });
+    }
     this.veronaApiService.sendVoeDefinitionChangedNotification();
+    return true;
+  }
 
   async editQuestion(question: LikertElementRow): Promise<void> {
     await this.dialogService.showLikertQuestionEditDialog(question)

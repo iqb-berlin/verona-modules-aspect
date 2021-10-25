@@ -179,6 +179,7 @@ export class UnitService {
       }
       element.setProperty(property, value);
       this.elementPropertyUpdated.next();
+      this.veronaApiService.sendVoeDefinitionChangedNotification();
       return true;
     }
     this.veronaApiService.sendVoeDefinitionChangedNotification();

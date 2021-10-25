@@ -34,6 +34,9 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
   `,
   styles: [
     '::ng-deep .mat-radio-label {white-space: normal !important}',
+    '::ng-deep app-radio-button-group .mat-radio-label .mat-radio-label-content {padding-left: 10px}',
+    '::ng-deep app-radio-button-group mat-radio-button {margin-bottom: 6px}',
+    '::ng-deep app-radio-button-group mat-radio-button {margin-right: 15px}',
     '.white-space-break {white-space: normal}',
     '.error-message { position: absolute; margin-top: 25px; font-size: 75% }'
   ]

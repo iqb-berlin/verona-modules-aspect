@@ -18,7 +18,7 @@ export class VideoElement extends UIElement implements PlayerElement {
   hintLabelDelay: number = 0;
   uninterruptible: boolean = false;
   hideOtherPages: boolean = false;
-  activeAfter: string = '';
+  activeAfterID: string = '';
   minRuns: number = 1;
   maxRuns: number | null = null;
   showRestTime: boolean = true;

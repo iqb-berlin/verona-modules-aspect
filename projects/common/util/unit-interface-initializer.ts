@@ -31,7 +31,7 @@ export function initPlayerElement(serializedElement: UIElement): PlayerElement {
     hintLabelDelay: serializedElement.hintLabelDelay as number || 0,
     uninterruptible: serializedElement.uninterruptible as boolean || false,
     hideOtherPages: serializedElement.hideOtherPages as boolean || false,
-    activeAfter: serializedElement.activeAfter as string || '',
+    activeAfterID: serializedElement.activeAfterID as string || '',
     minRuns: serializedElement.minRuns as number || 1,
     maxRuns: serializedElement.maxRuns as number | null || null,
     showRestTime: serializedElement.showRestTime as boolean || true

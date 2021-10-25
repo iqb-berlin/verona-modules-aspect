@@ -25,7 +25,7 @@ export interface PlayerElement {
   hintLabelDelay: number; // default: 0 (milliseconds)
   uninterruptible: boolean; // false kein Blättern; starten eines anderen Videos; ....
   hideOtherPages: boolean; // false (Solange nicht vollständig gespielt, sind alle anderen Seiten verborgen)
-  activeAfter: string; // '' (andere Audio - id; Audio ist deaktiviert, solange anderes nicht vollständig abgespielt)
+  activeAfterID: string; // '' (andere Audio - id; Audio ist deaktiviert, solange anderes nicht vollständig abgespielt)
   minRuns: number; // 1
   maxRuns: number | null; // null
   showRestTime: boolean; // true

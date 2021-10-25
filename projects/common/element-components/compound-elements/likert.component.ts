@@ -6,7 +6,15 @@ import { LikertElement } from '../../models/compound-elements/likert-element';
   selector: 'app-likert',
   template: `
     <div class="mat-typography"
-         [style.display]="'grid'" [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.answers.length)">
+         [style.display]="'grid'" [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.answers.length)"
+         [style.background-color]="elementModel.backgroundColor"
+         [style.color]="elementModel.fontColor"
+         [style.font-family]="elementModel.font"
+         [style.font-size.px]="elementModel.fontSize"
+         [style.font-weight]="elementModel.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+         [style.height.px]="100">
       <div class="headings" [style.display]="'grid'"
            [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.answers.length)"
            [style.grid-column-start]="1"

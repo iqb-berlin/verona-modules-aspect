@@ -31,15 +31,6 @@ export abstract class UIElement {
     if (!serializedElement.id) {
       this.id = IdService.getInstance().getNewID(serializedElement.type);
     }
-    if (coordinates && this.dynamicPositioning) {
-      this.gridColumnStart = coordinates.x;
-      this.gridColumnEnd = coordinates.x + 1;
-      this.gridRowStart = coordinates.y;
-      this.gridRowEnd = coordinates.y + 1;
-    } else if (coordinates && !this.dynamicPositioning) {
-      this.xPosition = coordinates.x;
-      this.yPosition = coordinates.y;
-    }
   }
 
   // This can be overwritten by elements if they need to handle some property specifics. Likert does.

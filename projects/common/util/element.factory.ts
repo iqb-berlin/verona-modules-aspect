@@ -24,50 +24,41 @@ import { VideoComponent } from '../element-components/video.component';
 import { LikertElement } from '../models/compound-elements/likert-element';
 import { LikertComponent } from '../element-components/compound-elements/likert.component';
 
-export async function createElement(elementModel: UIElement, coordinates?: { x: number; y: number }): Promise<UIElement> {
+export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
   switch (elementModel.type) {
     case 'text':
-      newElement = new TextElement(elementModel, coordinates);
+      newElement = new TextElement(elementModel);
       break;
     case 'button':
-      newElement = new ButtonElement(elementModel, coordinates);
+      newElement = new ButtonElement(elementModel);
       break;
     case 'text-field':
-      newElement = new TextFieldElement(elementModel, coordinates);
+      newElement = new TextFieldElement(elementModel);
       break;
     case 'text-area':
-      newElement = new TextAreaElement(elementModel, coordinates);
+      newElement = new TextAreaElement(elementModel);
       break;
     case 'checkbox':
-      newElement = new CheckboxElement(elementModel, coordinates);
+      newElement = new CheckboxElement(elementModel);
       break;
     case 'dropdown':
-      newElement = new DropdownElement(elementModel, coordinates);
+      newElement = new DropdownElement(elementModel);
       break;
     case 'radio':
-      newElement = new RadioButtonGroupElement(elementModel, coordinates);
+      newElement = new RadioButtonGroupElement(elementModel);
       break;
     case 'image':
-      if (!elementModel.src) {
-        elementModel.src = await FileService.loadImage();
-      }
-      newElement = new ImageElement(elementModel, coordinates);
+      newElement = new ImageElement(elementModel);
       break;
     case 'audio':
-      if (!elementModel.src) {
-        elementModel.src = await FileService.loadAudio();
-      }
-      newElement = new AudioElement(elementModel, coordinates);
+      newElement = new AudioElement(elementModel);
       break;
     case 'video':
-      if (!elementModel.src) {
-        elementModel.src = await FileService.loadVideo();
-      }
-      newElement = new VideoElement(elementModel, coordinates);
+      newElement = new VideoElement(elementModel);
       break;
     case 'likert':
-      newElement = new LikertElement(elementModel, coordinates);
+      newElement = new LikertElement(elementModel);
       break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);

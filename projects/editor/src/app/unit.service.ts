@@ -9,12 +9,13 @@ import { VeronaAPIService } from './verona-api.service';
 import { Unit } from '../../../common/models/unit';
 import { Page } from '../../../common/models/page';
 import { Section } from '../../../common/models/section';
-import { InputElement, UIElement } from '../../../common/models/uI-element';
+import { InputElement, UIElement, UIElementType } from '../../../common/models/uI-element';
 import { TextElement } from '../../../common/models/text-element';
 import { LikertElement } from '../../../common/models/compound-elements/likert-element';
 import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
 import { AnswerOption, LikertRow, PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
 import { SelectionService } from './selection.service';
+import * as ElementFactory from '../../../common/util/element.factory';
 
 @Injectable({
   providedIn: 'root'
@@ -114,17 +115,48 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  async addElementToSectionByIndex(elementType: string,
-                                   pageIndex: number,
-                                   sectionIndex: number,
-                                   coordinates?: { x: number, y: number }): Promise<void> {
-    await this.addElementToSection(elementType, this._unit.value.pages[pageIndex].sections[sectionIndex], coordinates);
+  addElementToSectionByIndex(elementType: UIElementType,
+                             pageIndex: number,
+                             sectionIndex: number): void {
+    this.addElementToSection(elementType, this._unit.value.pages[pageIndex].sections[sectionIndex]);
   }
 
-  async addElementToSection(elementType: string,
+  async addElementToSection(elementType: UIElementType,
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    await section.addElement(elementType, coordinates);
+    let newElement;
+    if (['audio', 'video', 'image'].includes(elementType)) {
+      let mediaSrc = '';
+      switch (elementType) {
+        case 'image':
+          mediaSrc = await FileService.loadImage();
+          break;
+        case 'audio':
+          mediaSrc = await FileService.loadAudio();
+          break;
+        case 'video':
+          mediaSrc = await FileService.loadVideo();
+          break;
+        // no default
+      }
+      newElement = ElementFactory.createElement(
+        { type: elementType, dynamicPositioning: section.dynamicPositioning, src: mediaSrc } as unknown as UIElement
+      );
+    } else {
+      newElement = ElementFactory.createElement(
+        { type: elementType, dynamicPositioning: section.dynamicPositioning } as UIElement
+      );
+    }
+    if (coordinates && section.dynamicPositioning) {
+      newElement.gridColumnStart = coordinates.x;
+      newElement.gridColumnEnd = coordinates.x + 1;
+      newElement.gridRowStart = coordinates.y;
+      newElement.gridRowEnd = coordinates.y + 1;
+    } else if (coordinates && !section.dynamicPositioning) {
+      newElement.xPosition = coordinates.x;
+      newElement.yPosition = coordinates.y;
+    }
+    section.addElement(newElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 

@@ -11,6 +11,9 @@ import { SelectionService } from '../../../selection.service';
 import { MessageService } from '../../../../../../common/message.service';
 import { FileService } from '../../../../../../common/file.service';
 import { UIElement } from '../../../../../../common/models/uI-element';
+import { LikertElementRow } from '../../../../../../common/models/compound-elements/likert-element-row';
+import { LikertElement } from '../../../../../../common/models/compound-elements/likert-element';
+import { AnswerOption, LikertRow } from '../../../../../../common/interfaces/UIElementInterfaces';
 
 @Component({
   selector: 'app-element-properties',
@@ -71,7 +74,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] | null,
+              value: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid && value !== null) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);
@@ -111,8 +114,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     this.updateModel(property, event.container.data);
   }
 
-  removeOption(property: string, option: string): void {
-    const valueList: string[] = this.combinedProperties[property] as string[];
+  removeOption(property: string, option: any): void {
+    const valueList: any[] = this.combinedProperties[property] as any[];
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel(property, valueList);
   }
@@ -123,5 +126,30 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
 
   removeImage(): void {
     this.updateModel('imageSrc', null);
+  }
+
+  addAnswer(value: string): void {
+    const answer = UnitService.createLikertAnswer(value);
+    (this.combinedProperties.answers as AnswerOption[]).push(answer);
+    this.updateModel('answers', this.combinedProperties.answers as AnswerOption[]);
+  }
+
+  addQuestion(question: string): void {
+    const newQuestion = UnitService.createLikertQuestion(
+      question,
+      (this.combinedProperties.answers as AnswerOption[]).length
+    );
+    (this.combinedProperties.questions as LikertElementRow[]).push(newQuestion);
+    this.updateModel('questions', this.combinedProperties.questions as LikertElementRow[]);
+  }
+
+  async editAnswerOption(optionIndex: number): Promise<void> {
+    await this.unitService.editAnswer(this.selectedElements as LikertElement[], optionIndex);
+  }
+
+  async editQuestionOption(optionIndex: number): Promise<void> {
+    await this.unitService.editQuestion(
+      (this.combinedProperties.questions as LikertElementRow[])[optionIndex] as LikertElementRow
+    );
   }
 }

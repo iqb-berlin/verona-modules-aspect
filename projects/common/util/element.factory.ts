@@ -21,6 +21,8 @@ import { RadioButtonGroupComponent } from '../element-components/radio-button-gr
 import { ImageComponent } from '../element-components/image.component';
 import { AudioComponent } from '../element-components/audio.component';
 import { VideoComponent } from '../element-components/video.component';
+import { LikertElement } from '../models/compound-elements/likert-element';
+import { LikertComponent } from '../element-components/compound-elements/likert.component';
 
 export async function createElement(elementModel: UIElement, coordinates?: { x: number; y: number }): Promise<UIElement> {
   let newElement: UIElement;
@@ -64,6 +66,9 @@ export async function createElement(elementModel: UIElement, coordinates?: { x: 
       }
       newElement = new VideoElement(elementModel, coordinates);
       break;
+    case 'likert':
+      newElement = new LikertElement(elementModel, coordinates);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -96,6 +101,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(AudioComponent);
     case 'video':
       return componentFactoryResolver.resolveComponentFactory(VideoComponent);
+    case 'likert':
+      return componentFactoryResolver.resolveComponentFactory(LikertComponent);
     default:
       throw new Error('unknown element');
   }

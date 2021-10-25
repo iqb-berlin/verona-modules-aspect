@@ -1,12 +1,13 @@
 // eslint-disable-next-line max-classes-per-file
 import { IdService } from '../id.service';
+import { AnswerOption, LikertRow } from '../interfaces/UIElementInterfaces';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
-| 'dropdown' | 'radio' | 'image' | 'audio' | 'video';
+| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row';
 export type InputElementValue = string | number | boolean | null;
 
 export abstract class UIElement {
-  [index: string]: string | number | boolean | string[] | null | ((...args: any) => any);
+  [index: string]: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null | ((...args: any) => any);
   type!: UIElementType;
 
   id: string = 'id_placeholder';
@@ -39,6 +40,12 @@ export abstract class UIElement {
       this.xPosition = coordinates.x;
       this.yPosition = coordinates.y;
     }
+  }
+
+  // This can be overwritten by elements if they need to handle some property specifics. Likert does.
+  setProperty(property: string,
+              value: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null): void {
+    this[property] = value;
   }
 }
 

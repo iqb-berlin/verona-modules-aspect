@@ -11,7 +11,9 @@ import { Page } from '../../../common/models/page';
 import { Section } from '../../../common/models/section';
 import { InputElement, UIElement } from '../../../common/models/uI-element';
 import { TextElement } from '../../../common/models/text-element';
-import { PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
+import { LikertElement } from '../../../common/models/compound-elements/likert-element';
+import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
+import { AnswerOption, LikertRow, PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -164,8 +166,9 @@ export class UnitService {
   }
 
   updateElementProperty(elements: UIElement[], property: string,
-                        value: string | number | boolean | string[] | null): void {
-    elements.forEach((element: UIElement) => {
+                        value: string | number | boolean | string[] |
+                        AnswerOption[] | LikertRow[] | null): boolean {
+    for (const element of elements) {
       if (property === 'id') {
         if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError('ID ist bereits vergeben');
@@ -174,15 +177,66 @@ export class UnitService {
         IdService.getInstance().removeId(element[property]);
         IdService.getInstance().addId(<string>value);
       }
-      if (Array.isArray(value)) {
-        element[property] = [...value];
-      } else {
-        element[property] = value;
-      }
+      element.setProperty(property, value);
       this.elementPropertyUpdated.next();
       return true;
-    });
+    }
     this.veronaApiService.sendVoeDefinitionChangedNotification();
+    return true;
+  }
+
+  async editQuestion(question: LikertElementRow): Promise<void> {
+    await this.dialogService.showLikertQuestionEditDialog(question)
+      .subscribe((result: LikertElementRow) => {
+        if (result) {
+          if (result.id !== question.id) {
+            this.updateElementProperty(
+              [question],
+              'id',
+              result.id
+            );
+          }
+          if (result.text !== question.text) {
+            this.updateElementProperty(
+              [question],
+              'text',
+              result.text
+            );
+          }
+        }
+      });
+  }
+
+  async editAnswer(likertElements: LikertElement[], answerIndex: number): Promise<void> {
+    await this.dialogService.showLikertAnswerEditDialog(likertElements[0].answers[answerIndex])
+      .subscribe((result: AnswerOption) => {
+        if (result) {
+          likertElements[0].answers[answerIndex] = result;
+          this.updateElementProperty(
+            likertElements,
+            'answers',
+            likertElements[0].answers
+          );
+        }
+      });
+  }
+
+  static createLikertAnswer(value: string): AnswerOption {
+    return {
+      text: value,
+      imgSrc: null,
+      position: 'above'
+    };
+  }
+
+  static createLikertQuestion(question: string, columnCount: number): LikertElementRow {
+    return new LikertElementRow(
+      {
+        type: 'likert_row',
+        text: question,
+        columnCount: columnCount
+      } as LikertElementRow
+    );
   }
 
   alignElements(elements: UIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {

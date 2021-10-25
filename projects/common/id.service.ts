@@ -14,7 +14,8 @@ export class IdService {
     image: 0,
     audio: 0,
     video: 0,
-    correction: 0
+    likert: 0,
+    likert_row: 0
   };
 
   static getInstance(): IdService {

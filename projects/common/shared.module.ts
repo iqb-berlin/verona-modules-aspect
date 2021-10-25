@@ -38,6 +38,8 @@ import { ErrorTransformPipe } from './element-components/pipes/error-transform.p
 import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-html.pipe';
 import { ControlBarComponent } from './element-components/control-bar/control-bar.component';
 import { PlayerTimeFormatPipe } from './element-components/control-bar/player-time-format.pipe';
+import { LikertComponent } from './element-components/compound-elements/likert.component';
+import { LikertRadioButtonGroupComponent } from './element-components/compound-elements/likert-radio-button-group.component';
 
 @NgModule({
   imports: [
@@ -73,7 +75,9 @@ import { PlayerTimeFormatPipe } from './element-components/control-bar/player-ti
     ErrorTransformPipe,
     SafeResourceHTMLPipe,
     ControlBarComponent,
-    PlayerTimeFormatPipe
+    PlayerTimeFormatPipe,
+    LikertComponent,
+    LikertRadioButtonGroupComponent
   ],
   exports: [
     CommonModule,

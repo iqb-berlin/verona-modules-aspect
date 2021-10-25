@@ -1,4 +1,24 @@
 {
   "loadUnit": "Unit laden",
-  "saveUnit": "Unit speichern"
+  "saveUnit": "Unit speichern",
+  "player": {
+    "autoStart": "Autostart",
+    "loop": "Wiederholt abspielen",
+    "startControl": "Startknopf",
+    "pauseControl": "Pauseknopf",
+    "progressBar": "Fortschrittsbalken",
+    "interactiveProgressbar": "Fortschrittsbalken (steuerbar)",
+    "volumeControl": "Lautstärkeregelung",
+    "uninterruptible": "Unterbrechen verbieten",
+    "hideOtherPages": "Weitere Seiten verbergen",
+    "showRestRuns": "Verbleibender Durchläufe anzeigen",
+    "showRestTime": "Verbleibende Zeit anzeigen",
+    "hintLabel": "Aufforderungstext zum Starten",
+    "hintLabelDelay": "Verzögerung für Aufforderungstext",
+    "activeAfterID": "Abspielbar nach Audio/Video-ID",
+    "minRuns": "Minimale Anzahl der Durchläufe",
+    "maxRuns": "Maximale Anzahl der Durchläufe",
+    "appearance": "Erscheinungsbild",
+    "behaviour": "Verhalten"
+  }
 }

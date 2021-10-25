@@ -52,8 +52,8 @@ export class DialogService {
 
   showPlayerEditDialog(player: PlayerElement): Observable<PlayerElement> {
     const dialogRef = this.dialog.open(PlayerEditDialog, {
-      width: '470px',
-      height: '520px',
+      width: '370px',
+      height: '510px',
       data: {
         player: player
       },
@@ -138,88 +138,86 @@ export class RichTextEditDialog {
   selector: 'app-player-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="row">
-      <div class="property-column" fxLayout="column">
-        <mat-checkbox [checked]="newPlayerConfig.autostart || data.player.autostart"
-                      (change)="newPlayerConfig.autostart = $event.checked">
-          Autostart
-        </mat-checkbox>
-        <mat-form-field *ngIf="newPlayerConfig.autostart" appearance="fill">
-          <mat-label>Autostart Verzögerung</mat-label>
-          <input matInput type="number" [value]="newPlayerConfig.autostartDelay || data.player.autostartDelay"
-                 (input)="newPlayerConfig.autostartDelay = $any($event.target).value">
-        </mat-form-field>
-        <mat-checkbox [checked]="newPlayerConfig.loop || data.player.loop"
-                      (change)="newPlayerConfig.loop = $event.checked">
-          Loop
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.startControl || data.player.startControl"
-                      (change)="newPlayerConfig.startControl = $event.checked">
-          startControl
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.pauseControl || data.player.pauseControl"
-                      (change)="newPlayerConfig.pauseControl = $event.checked">
-          pauseControl
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.stopControl || data.player.stopControl"
-                      (change)="newPlayerConfig.stopControl = $event.checked">
-          stopControl
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.progressBar || data.player.progressBar"
-                      (change)="newPlayerConfig.progressBar = $event.checked">
-          progressBar
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.interactiveProgressbar || data.player.interactiveProgressbar"
-                      (change)="newPlayerConfig.interactiveProgressbar = $event.checked">
-          interactiveProgressbar
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.volumeControl || data.player.volumeControl"
-                      (change)="newPlayerConfig.volumeControl = $event.checked">
-          volumeControl
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.uninterruptible || data.player.uninterruptible"
-                      (change)="newPlayerConfig.uninterruptible = $event.checked">
-          uninterruptible
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.hideOtherPages || data.player.hideOtherPages"
-                      (change)="newPlayerConfig.hideOtherPages = $event.checked">
-          hideOtherPages
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.showRestRuns || data.player.showRestRuns"
-                      (change)="newPlayerConfig.showRestRuns = $event.checked">
-          showRestRuns
-        </mat-checkbox>
-        <mat-checkbox [checked]="newPlayerConfig.showRestTime || data.player.showRestTime"
-                      (change)="newPlayerConfig.showRestTime = $event.checked">
-          showRestTime
-        </mat-checkbox>
-      </div>
-      <div fxLayout="column">
-        <mat-form-field appearance="fill">
-          <mat-label>hintLabel</mat-label>
-          <input matInput type="text" [value]="newPlayerConfig.hintLabel || data.player.hintLabel"
-                 (input)="newPlayerConfig.hintLabel = $any($event.target).value">
-        </mat-form-field>
-        <mat-form-field *ngIf="newPlayerConfig.hintLabel !== ''" appearance="fill">
-          <mat-label>hintLabelDelay</mat-label>
-          <input matInput type="number" [value]="newPlayerConfig.hintLabelDelay"
-                 (input)="newPlayerConfig.hintLabelDelay = $any($event.target).value">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>activeAfter</mat-label>
-          <input matInput type="text" [value]="newPlayerConfig.activeAfter || data.player.activeAfter"
-                 (input)="newPlayerConfig.activeAfter = $any($event.target).value">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>minRuns</mat-label>
-          <input matInput type="number" [value]="newPlayerConfig.minRuns || data.player.minRuns"
-                 (input)="newPlayerConfig.minRuns = $any($event.target).value">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>maxRuns</mat-label>
-          <input matInput type="number" [value]="newPlayerConfig.maxRuns || data.player.maxRuns"
-                 (input)="newPlayerConfig.maxRuns = $any($event.target).value">
-        </mat-form-field>
-      </div>
+      <mat-tab-group>
+        <mat-tab label="{{ 'player.appearance' | translate }}">
+          <div fxLayout="column">
+            <mat-checkbox [checked]="newPlayerConfig.startControl || data.player.startControl"
+                          (change)="newPlayerConfig.startControl = $event.checked">
+              {{ 'player.startControl' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.pauseControl || data.player.pauseControl"
+                          (change)="newPlayerConfig.pauseControl = $event.checked">
+              {{ 'player.pauseControl' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.progressBar || data.player.progressBar"
+                          (change)="newPlayerConfig.progressBar = $event.checked">
+              {{ 'player.progressBar' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.interactiveProgressbar || data.player.interactiveProgressbar"
+                          (change)="newPlayerConfig.interactiveProgressbar = $event.checked">
+              {{ 'player.interactiveProgressbar' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.volumeControl || data.player.volumeControl"
+                          (change)="newPlayerConfig.volumeControl = $event.checked">
+              {{ 'player.volumeControl' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.showRestTime || data.player.showRestTime"
+                          (change)="newPlayerConfig.showRestTime = $event.checked">
+              {{ 'player.showRestTime' | translate }}
+            </mat-checkbox>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'player.hintLabel' | translate }}</mat-label>
+              <input matInput type="text" [value]="newPlayerConfig.hintLabel || data.player.hintLabel"
+                     (input)="newPlayerConfig.hintLabel = $any($event.target).value">
+            </mat-form-field>
+            <mat-form-field *ngIf="newPlayerConfig.hintLabel !== ''" appearance="fill">
+              <mat-label>{{ 'player.hintLabelDelay' | translate }}</mat-label>
+              <input matInput type="number" [value]="newPlayerConfig.hintLabelDelay"
+                     (input)="newPlayerConfig.hintLabelDelay = $any($event.target).value">
+            </mat-form-field>
+          </div>
+        </mat-tab>
+        <mat-tab label="{{ 'player.behaviour' | translate }}">
+          <div fxLayout="column">
+            <mat-checkbox [checked]="newPlayerConfig.autostart || data.player.autostart"
+                          (change)="newPlayerConfig.autostart = $event.checked">
+              {{ 'player.autoStart' | translate }}
+            </mat-checkbox>
+            <mat-form-field *ngIf="newPlayerConfig.autostart" appearance="fill">
+              <mat-label>Autostart Verzögerung</mat-label>
+              <input matInput type="number" [value]="newPlayerConfig.autostartDelay || data.player.autostartDelay"
+                     (input)="newPlayerConfig.autostartDelay = $any($event.target).value">
+            </mat-form-field>
+            <mat-checkbox [checked]="newPlayerConfig.loop || data.player.loop"
+                          (change)="newPlayerConfig.loop = $event.checked">
+              {{ 'player.loop' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.uninterruptible || data.player.uninterruptible"
+                          (change)="newPlayerConfig.uninterruptible = $event.checked">
+              {{ 'player.uninterruptible' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.hideOtherPages || data.player.hideOtherPages"
+                          (change)="newPlayerConfig.hideOtherPages = $event.checked">
+              {{ 'player.hideOtherPages' | translate }}
+            </mat-checkbox>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'player.activeAfterID' | translate }}</mat-label>
+              <input matInput type="text" [value]="newPlayerConfig.activeAfterID || data.player.activeAfterID"
+                     (input)="newPlayerConfig.activeAfterID = $any($event.target).value">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
+              <input matInput type="number" [value]="newPlayerConfig.minRuns || data.player.minRuns"
+                     (input)="newPlayerConfig.minRuns = $any($event.target).value">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'player.maxRuns' | translate }}</mat-label>
+              <input matInput type="number" [value]="newPlayerConfig.maxRuns || data.player.maxRuns"
+                     (input)="newPlayerConfig.maxRuns = $any($event.target).value">
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="newPlayerConfig">Speichern</button>

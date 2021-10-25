@@ -14,6 +14,7 @@ import { TextElement } from '../../../common/models/text-element';
 import { LikertElement } from '../../../common/models/compound-elements/likert-element';
 import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
 import { AnswerOption, LikertRow, PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
+import { SelectionService } from './selection.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,9 @@ export class UnitService {
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   pageMoved: Subject<void> = new Subject<void>();
-  selectedPageIndex: number = 0; // TODO weg refactorn
 
-  constructor(private veronaApiService: VeronaAPIService,
+  constructor(private selectionService: SelectionService,
+              private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
               private sanitizer: DomSanitizer) {
@@ -96,7 +97,7 @@ export class UnitService {
   }
 
   deleteSection(section: Section): void {
-    (this.unitModel.pages[this.selectedPageIndex] as unknown as Page).deleteSection(section as unknown as Section);
+    this.unitModel.pages[this.selectionService.selectedPageIndex].deleteSection(section as unknown as Section);
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }

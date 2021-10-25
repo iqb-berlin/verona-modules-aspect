@@ -1,5 +1,9 @@
 Editor
 ======
+1.6.0:
+- Add Likert-Element (looking for better name)
+- Add Player-Element property controls
+
 1.5.1:
 - Fix reading of existing elements
 

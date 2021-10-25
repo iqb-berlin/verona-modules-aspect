@@ -1,10 +1,9 @@
 Player
 ======
-next:
+1.2.0:
 - Add custom control bar for audio and video elements
-- Changes background color of virtual keyboard keys
-- Changes font size of virtual keyboard keys
-- [bug] Solve problem with deleting markers in Firefox
+- Change background color and font size of virtual keyboard keys
+- [bug] Solve problem with deleting text markers in Firefox
 
 1.1.1:
 - Fix reading of existing elements

@@ -60,13 +60,13 @@ export class UnitService {
   }
 
   deletePage(page: Page): void {
-    this.unitModel.deletePage(page as unknown as Page);
+    this.unitModel.deletePage(page);
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   movePage(selectedPage: Page, direction: 'up' | 'down'): void {
-    this.unitModel.movePage(selectedPage as unknown as Page, direction);
+    this.unitModel.movePage(selectedPage, direction);
     this._unit.next(this._unit.value);
     this.pageMoved.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
@@ -90,26 +90,26 @@ export class UnitService {
     page.alwaysVisible = true;
   }
 
-  addSection(page: Page, index: number | null = null): void {
-    (page as unknown as Page).addSection();
+  addSection(page: Page): void {
+    page.addSection();
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deleteSection(section: Section): void {
-    this.unitModel.pages[this.selectionService.selectedPageIndex].deleteSection(section as unknown as Section);
+    this.unitModel.pages[this.selectionService.selectedPageIndex].deleteSection(section);
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
-    (page as unknown as Page).duplicateSection(section as unknown as Section, sectionIndex);
+    page.duplicateSection(section, sectionIndex);
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
-    (page as unknown as Page).moveSection(section as unknown as Section, direction);
+    page.moveSection(section, direction);
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -118,13 +118,13 @@ export class UnitService {
                                    pageIndex: number,
                                    sectionIndex: number,
                                    coordinates?: { x: number, y: number }): Promise<void> {
-    this.addElementToSection(elementType, this._unit.value.pages[pageIndex].sections[sectionIndex], coordinates);
+    await this.addElementToSection(elementType, this._unit.value.pages[pageIndex].sections[sectionIndex], coordinates);
   }
 
   async addElementToSection(elementType: string,
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    section.addElement(elementType, coordinates);
+    await section.addElement(elementType, coordinates);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -133,7 +133,7 @@ export class UnitService {
   }
 
   deleteElementsFromSection(elements: UIElement[], section: Section): void {
-    (section as unknown as Section).deleteElements(elements);
+    section.deleteElements(elements);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -155,7 +155,7 @@ export class UnitService {
   }
 
   duplicateElementsInSection(elements: UIElement[], section: Section): void {
-    (section as unknown as Section).duplicateElements(elements);
+    section.duplicateElements(elements);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -304,7 +304,6 @@ export class UnitService {
         this.dialogService.showPlayerEditDialog(element as unknown as PlayerElement)
           .subscribe((result: PlayerElement) => {
             if (result) {
-              console.log('result', result);
               for (const key in result) {
                 // @ts-ignore
                 this.updateElementProperty([element], key, result[key]);

@@ -24,3 +24,7 @@ or
 or
 
 ```npm run build-player-prod```
+
+## Development
+
+NPM version: 6,7,8

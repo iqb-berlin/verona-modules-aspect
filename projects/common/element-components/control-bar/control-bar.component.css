@@ -18,7 +18,7 @@
 
 .time {
   white-space: nowrap;
-  padding: 15px 5px 0 0;
+  padding: 17px 5px 0 5px;
 }
 
 .active-control{
@@ -26,12 +26,15 @@
 }
 
 .duration{
-  flex-grow: 4;
+  flex-grow: 5;
   min-width: 20%;
+  margin-top: 2px;
 }
 
 .volume{
+  flex-grow: 2;
   min-width: 10%;
+  margin-top: 2px;
 }
 
 ::ng-deep .mat-accent .mat-slider-thumb {

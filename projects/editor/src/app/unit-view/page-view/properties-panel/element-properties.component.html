@@ -26,7 +26,7 @@
         </ng-container>
 
         <ng-container *ngIf="combinedProperties.autostart !== undefined">
-          <button mat-fab (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+          <button (click)="unitService.showDefaultEditDialog(selectedElements[0])">
             <mat-icon>build_circle</mat-icon>
           </button>
         </ng-container>

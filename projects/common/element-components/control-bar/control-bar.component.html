@@ -1,13 +1,11 @@
 <div class="control-bar">
-  <button mat-button
+  <button *ngIf="!playing" mat-button
           class="control-button"
-          [class.active-control]="playing"
           (click)="play()">
     <mat-icon>play_arrow</mat-icon>
   </button>
-  <button mat-button
+  <button *ngIf="playing" mat-button
           class="control-button"
-          [class.active-control]="pausing"
           (click)="pause()">
     <mat-icon>pause</mat-icon>
   </button>

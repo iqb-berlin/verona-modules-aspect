@@ -160,7 +160,8 @@
   <mat-menu #optionsMenu="matMenu">
     <mat-form-field>
       <mat-label>Aufzählungszeichen</mat-label>
-      <mat-select [value]="'disc'" (click)="$any($event).stopPropagation()"
+      <mat-select [value]="editor.getAttributes('bulletList').listStyle"
+                  (click)="$any($event).stopPropagation()"
                   (valueChange)="applyListStyle('bulletList', $event)">
         <mat-option value="disc">disc</mat-option>
         <mat-option value="circle">circle</mat-option>
@@ -169,7 +170,8 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Aufzählungsnummerierung</mat-label>
-      <mat-select [value]="'decimal'" (click)="$any($event).stopPropagation()"
+      <mat-select [value]="editor.getAttributes('orderedList').listStyle"
+                  (click)="$any($event).stopPropagation()"
                   (valueChange)="applyListStyle('orderedList', $event)">
         <mat-option value="decimal">decimal</mat-option>
         <mat-option value="lower-latin">lower-latin</mat-option>

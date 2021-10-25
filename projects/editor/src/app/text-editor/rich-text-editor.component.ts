@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output, ViewEncapsulation,
   AfterViewInit
 } from '@angular/core';
-import { Editor, Extension } from '@tiptap/core';
+import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
@@ -15,6 +15,8 @@ import { Heading } from '@tiptap/extension-heading';
 import { Indent } from './indent';
 import { customParagraph } from './paragraph-extension';
 import { fontSizeExtension } from './font-size-extension';
+import { bulletListExtension } from './bulletList-extension';
+import { orderedListExtension } from './orderedList-extension';
 
 @Component({
   selector: 'app-rich-text-editor',
@@ -45,7 +47,9 @@ export class RichTextEditorComponent implements AfterViewInit {
         levels: [1, 2, 3, 4]
       }),
       customParagraph,
-      fontSizeExtension
+      fontSizeExtension,
+      bulletListExtension,
+      orderedListExtension
     ]
   });
 
@@ -110,11 +114,11 @@ export class RichTextEditorComponent implements AfterViewInit {
   }
 
   applyListStyle(listType: string, style: string): void {
-    (this.editor.extensionManager.extensions
-      .filter(ext => ext.name === listType)[0] as Extension).options.HTMLAttributes =
-      {
-        style: `list-style-type:${style}`
-      };
+    if (listType === 'bulletList') {
+      this.editor.commands.setBulletListStyle(style);
+    } else {
+      this.editor.commands.setOrderedListStyle(style);
+    }
   }
 
   toggleHeading(level?: string): void {

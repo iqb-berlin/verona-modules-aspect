@@ -1,5 +1,7 @@
 import { Section } from './section';
 import { moveArrayItem } from '../util/array';
+import { UIElement } from './uI-element';
+import { IdService } from '../id.service';
 
 export class Page {
   [index: string]: string | number | boolean | Section[] | undefined | ((...args: any) => any);
@@ -39,8 +41,12 @@ export class Page {
     );
   }
 
+  /** Create new section with old section elements are overwrite the ids. */
   duplicateSection(section: Section, sectionIndex: number): void {
     const newSection = new Section(section);
+    newSection.elements.forEach((element: UIElement) => {
+      element.id = IdService.getInstance().getNewID(element.type);
+    });
     this.sections.splice(sectionIndex + 1, 0, newSection);
   }
 

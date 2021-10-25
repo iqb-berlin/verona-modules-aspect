@@ -34,13 +34,20 @@
   <div>
     <mat-form-field>
       <mat-label>Schriftgröße</mat-label>
-      <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || ''"
+      <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || '16'"
                   (valueChange)="applyFontSize($event)">
         <mat-option value="8">8px</mat-option>
+        <mat-option value="10">10px</mat-option>
+        <mat-option value="12">12px</mat-option>
         <mat-option value="14">14px</mat-option>
         <mat-option value="16">16px</mat-option>
         <mat-option value="18">18px</mat-option>
+        <mat-option value="20">20px</mat-option>
+        <mat-option value="22">22px</mat-option>
         <mat-option value="24">24px</mat-option>
+        <mat-option value="26">26px</mat-option>
+        <mat-option value="28">28px</mat-option>
+        <mat-option value="30">30px</mat-option>
         <mat-option value="36">36px</mat-option>
       </mat-select>
     </mat-form-field>

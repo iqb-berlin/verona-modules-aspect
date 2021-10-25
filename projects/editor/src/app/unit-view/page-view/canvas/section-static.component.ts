@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../../unit.service';
 import { Section } from '../../../../../../common/models/section';
+import { UIElementType } from '../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-section-static',
@@ -33,7 +34,7 @@ export class SectionStaticComponent {
     event.preventDefault();
     const sectionRect = this.sectionElement.nativeElement.getBoundingClientRect();
     this.unitService.addElementToSection(
-      event.dataTransfer?.getData('elementType') as string,
+      event.dataTransfer?.getData('elementType') as UIElementType,
       this.section,
       { x: event.clientX - Math.round(sectionRect.left), y: event.clientY - Math.round(sectionRect.top) }
     );

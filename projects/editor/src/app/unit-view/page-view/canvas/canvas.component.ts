@@ -108,8 +108,8 @@ export class CanvasComponent implements OnInit, OnDestroy {
     return this.page.sections.reduce(reduceFct, 0);
   }
 
-  addSection(index: number | null = null): void {
-    this.unitService.addSection(this.page, index);
+  addSection(): void {
+    this.unitService.addSection(this.page);
     this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
   }
 

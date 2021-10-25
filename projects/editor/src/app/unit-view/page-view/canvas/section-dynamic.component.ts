@@ -5,6 +5,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { DragItemData, DropListData } from './canvas.component';
 import { UnitService } from '../../../unit.service';
 import { Section } from '../../../../../../common/models/section';
+import { UIElementType } from '../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-section-dynamic',
@@ -129,7 +130,7 @@ export class SectionDynamicComponent {
   newElementDropped(event: DragEvent, gridX: number, gridY: number): void {
     event.preventDefault();
     this.unitService.addElementToSection(
-      event.dataTransfer?.getData('elementType') as string,
+      event.dataTransfer?.getData('elementType') as UIElementType,
       this.section,
       { x: gridX, y: gridY }
     );

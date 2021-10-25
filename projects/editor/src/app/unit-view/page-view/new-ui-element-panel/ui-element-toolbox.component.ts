@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UnitService } from '../../../unit.service';
 import { SelectionService } from '../../../selection.service';
+import { UIElementType } from '../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-ui-element-toolbox',
@@ -16,7 +17,7 @@ import { SelectionService } from '../../../selection.service';
 export class UiElementToolboxComponent {
   constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 
-  async addUIElement(elementType: string): Promise<void> {
+  async addUIElement(elementType: UIElementType): Promise<void> {
     this.unitService.addElementToSectionByIndex(elementType,
       this.selectionService.selectedPageIndex,
       this.selectionService.selectedPageSectionIndex);

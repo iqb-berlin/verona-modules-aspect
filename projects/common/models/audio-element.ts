@@ -10,7 +10,6 @@ export class AudioElement extends UIElement implements PlayerElement {
   loop: boolean = false;
   startControl: boolean = true;
   pauseControl: boolean = false;
-  stopControl: boolean = false;
   progressBar: boolean = true;
   interactiveProgressbar: boolean = false;
   volumeControl: boolean = true;

@@ -23,7 +23,6 @@ export function initPlayerElement(serializedElement: UIElement): PlayerElement {
     loop: serializedElement.loop as boolean || false,
     startControl: serializedElement.startControl as boolean || true,
     pauseControl: serializedElement.pauseControl as boolean || false,
-    stopControl: serializedElement.stopControl as boolean || false,
     progressBar: serializedElement.progressBar as boolean || true,
     interactiveProgressbar: serializedElement.interactiveProgressbar as boolean || false,
     volumeControl: serializedElement.volumeControl as boolean || true,

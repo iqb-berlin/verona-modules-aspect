@@ -66,9 +66,13 @@
             <mat-label>Optionen</mat-label>
             <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.options"
                  (cdkDropListDropped)="reorderOptions('options', $any($event))">
-              <div *ngFor="let option of $any(combinedProperties.options)" cdkDrag
+              <div *ngFor="let option of $any(combinedProperties.options); let i = index" cdkDrag
                    class="list-items">
                 {{option}}
+                <button mat-icon-button color="warn"
+                        (click)="editTextOption(i)">
+                  <mat-icon>build</mat-icon>
+                </button>
                 <button mat-icon-button color="warn"
                         (click)="removeOption('options', option)">
                   <mat-icon>clear</mat-icon>

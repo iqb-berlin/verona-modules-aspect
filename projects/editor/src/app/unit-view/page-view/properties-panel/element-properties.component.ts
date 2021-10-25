@@ -143,6 +143,10 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     this.updateModel('questions', this.combinedProperties.questions as LikertElementRow[]);
   }
 
+  async editTextOption(optionIndex: number): Promise<void> {
+    await this.unitService.editTextOption(optionIndex);
+  }
+
   async editAnswerOption(optionIndex: number): Promise<void> {
     await this.unitService.editAnswer(this.selectedElements as LikertElement[], optionIndex);
   }

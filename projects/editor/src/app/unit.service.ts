@@ -219,6 +219,17 @@ export class UnitService {
     return true;
   }
 
+  async editTextOption(optionIndex: number): Promise<void> {
+    const oldOptions = this.selectionService.getSelectedElements()[0].options as string[];
+    await this.dialogService.showTextEditDialog(oldOptions[optionIndex])
+      .subscribe((result: string) => {
+        if (result) {
+          oldOptions[optionIndex] = result;
+          this.updateElementProperty(this.selectionService.getSelectedElements(), 'options', oldOptions);
+        }
+      });
+  }
+
   async editQuestion(question: LikertElementRow): Promise<void> {
     await this.dialogService.showLikertQuestionEditDialog(question)
       .subscribe((result: LikertElementRow) => {

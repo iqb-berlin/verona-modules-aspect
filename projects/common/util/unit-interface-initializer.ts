@@ -34,7 +34,6 @@ export function initPlayerElement(serializedElement: UIElement): PlayerElement {
     activeAfter: serializedElement.activeAfter as string || '',
     minRuns: serializedElement.minRuns as number || 1,
     maxRuns: serializedElement.maxRuns as number | null || null,
-    showRestRuns: serializedElement.showRestRuns as boolean || true,
     showRestTime: serializedElement.showRestTime as boolean || true
   };
 }

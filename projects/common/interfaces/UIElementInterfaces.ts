@@ -28,6 +28,5 @@ export interface PlayerElement {
   activeAfter: string; // '' (andere Audio - id; Audio ist deaktiviert, solange anderes nicht vollständig abgespielt)
   minRuns: number; // 1
   maxRuns: number | null; // null
-  showRestRuns: boolean; // true (wenn maxRuns)
   showRestTime: boolean; // true
 }

@@ -21,7 +21,6 @@ export class AudioElement extends UIElement implements PlayerElement {
   activeAfter: string = '';
   minRuns: number = 1;
   maxRuns: number | null = null;
-  showRestRuns: boolean = true;
   showRestTime: boolean = true;
 
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {

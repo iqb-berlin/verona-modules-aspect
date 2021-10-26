@@ -7,7 +7,7 @@ import {
   UnitStateElementCodeStatusValue
 } from '../models/verona';
 import { ValueChangeElement } from '../../../../common/form';
-import { InputElement, InputElementValue } from '../../../../common/models/uI-element';
+import { InputElementValue } from '../../../../common/models/uI-element';
 
 @Injectable({
   providedIn: 'root'
@@ -49,8 +49,8 @@ export class UnitStateService {
     return this._presentedPageAdded.asObservable();
   }
 
-  registerElement(element: InputElement): void {
-    this.addUnitStateElementCode(element.id, element.value);
+  registerElement(id: string, value: InputElementValue): void {
+    this.addUnitStateElementCode(id, value);
   }
 
   addPresentedPage(presentedPage: number): void {
@@ -71,7 +71,7 @@ export class UnitStateService {
     this.setUnitStateElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
-  private addUnitStateElementCode(id: string, value: string | number | boolean | null): void {
+  private addUnitStateElementCode(id: string, value: InputElementValue): void {
     if (!this.getUnitStateElement(id)) {
       const unitStateElementCode: UnitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.unitStateElementCodes.push(unitStateElementCode);

@@ -13,8 +13,9 @@ import { FormService } from '../../../../../common/form.service';
 import { ValueChangeElement } from '../../../../../common/form';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
-import { UIElement } from '../../../../../common/models/uI-element';
+import { InputElementValue, UIElement } from '../../../../../common/models/uI-element';
 import { TextFieldElement } from '../../../../../common/models/text-field-element';
+import { FormElementComponent } from '../../../../../common/form-element-component.directive';
 
 @Component({
   selector: 'app-element',
@@ -57,7 +58,14 @@ export class ElementComponent implements OnInit {
       }
     }
 
-    this.unitStateService.registerElement(elementComponent.elementModel);
+    this.unitStateService.registerElement(elementComponent.elementModel.id, elementComponent.elementModel.value);
+
+    if (this.elementModel.type === 'likert') {
+      elementComponent.getChildElementValues()
+        .forEach((element: { id: string, value: InputElementValue }) => (
+          this.unitStateService.registerElement(element.id, element.value)
+        ));
+    }
 
     if (elementComponent.applySelection) {
       elementComponent.applySelection
@@ -67,7 +75,7 @@ export class ElementComponent implements OnInit {
         });
     }
 
-    if (Object.prototype.hasOwnProperty.call(this.elementModel, 'required')) {
+    if (elementComponent instanceof FormElementComponent || this.elementModel.type === 'likert') {
       const elementForm = this.formBuilder.group({});
       elementComponent.parentForm = elementForm;
       this.registerFormGroup(elementForm);
@@ -81,7 +89,11 @@ export class ElementComponent implements OnInit {
       if (this.elementModel.inputAssistancePreset !== 'none' &&
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
         this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
-        this.initEventsForKeyboard(elementComponent);
+        if (this.elementModel.type === 'text-field') {
+          this.initEventsForKeyboard(elementComponent as TextFieldComponent);
+        } else {
+          this.initEventsForKeyboard(elementComponent as TextAreaComponent);
+        }
       }
     } // no else
   }

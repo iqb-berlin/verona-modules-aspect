@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LikertElement } from '../../models/compound-elements/likert-element';
+import { ValueChangeElement } from '../../form';
+import { InputElementValue } from '../../models/uI-element';
+import { LikertElementRow } from '../../models/compound-elements/likert-element-row';
 
 @Component({
   selector: 'app-likert',
@@ -46,7 +49,8 @@ import { LikertElement } from '../../models/compound-elements/likert-element';
              [style.grid-row-end]="3 + i"
              [style.padding.px]="3"
              [elementModel]="elementModel.questions[i]"
-             [parentForm]="parentForm">
+             [parentForm]="parentForm"
+             (formValueChanged)="formValueChanged.emit($event)">
         </app-likert-radio-button-group>
       </ng-container>
     </div>
@@ -59,6 +63,14 @@ import { LikertElement } from '../../models/compound-elements/likert-element';
   ]
 })
 export class LikertComponent {
+  @Output() formValueChanged = new EventEmitter<ValueChangeElement>();
   elementModel!: LikertElement;
   parentForm!: FormGroup;
+
+  getChildElementValues(): { id: string, value: InputElementValue }[] {
+    return this.elementModel.questions
+      .map((question: LikertElementRow): { id: string, value: InputElementValue } => (
+        { id: question.id, value: question.value }
+      ));
+  }
 }

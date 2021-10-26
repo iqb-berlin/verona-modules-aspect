@@ -1,3 +1,5 @@
+import { InputElementValue } from '../../../../common/models/uI-element';
+
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 
 export type RunningState = 'running' | 'stopped';
@@ -29,7 +31,7 @@ export interface PlayerConfig {
 export interface UnitStateElementCode {
   id: string;
   status: UnitStateElementCodeStatus;
-  value: string | number | boolean | null;
+  value: InputElementValue;
 }
 
 export interface UnitState {

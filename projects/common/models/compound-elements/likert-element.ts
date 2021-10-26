@@ -1,4 +1,4 @@
-import { UIElement } from '../uI-element';
+import { InputElementValue, UIElement } from '../uI-element';
 import { LikertElementRow } from './likert-element-row';
 import { AnswerOption, FontElement, SurfaceUIElement } from '../../interfaces/UIElementInterfaces';
 import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
@@ -28,7 +28,7 @@ export class LikertElement extends UIElement implements FontElement, SurfaceUIEl
     this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }
 
-  setProperty(property: string, value: string | number | boolean | string[] | AnswerOption[] | null): void {
+  setProperty(property: string, value: InputElementValue): void {
     super.setProperty(property, value);
     if (property === 'answers') {
       this.questions.forEach(question => {

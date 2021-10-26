@@ -1,34 +1,72 @@
-<div class="control-bar">
-  <button *ngIf="!playing" mat-button
-          class="control-button"
-          (click)="play()">
-    <mat-icon>play_arrow</mat-icon>
-  </button>
-  <button *ngIf="playing" mat-button
-          class="control-button"
-          (click)="pause()">
-    <mat-icon>pause</mat-icon>
-  </button>
-  <mat-slider class="duration"
-              min="0"
-              [max]="player.duration"
-              step="1"
-              (input)="onTimeChange($event)"
-              [value]="player.currentTime">
-  </mat-slider>
-  <div class="time mat-typography">{{currentTime | playerTimeFormat}} / {{duration | playerTimeFormat }}</div>
-  <button mat-button
-          class="control-button"
-          (click)="toggleVolume()">
-    <mat-icon *ngIf="!player.muted">volume_up</mat-icon>
-    <mat-icon *ngIf="player.muted">volume_off</mat-icon>
-  </button>
-  <mat-slider class="volume"
-              min="0"
-              [max]="1"
-              step="0.01"
-              (input)="onVolumeChange($event)"
-              [value]="player.volume">
-  </mat-slider>
+<div class="control-bar"
+     [class.hint-border]="showHint">
+  <ng-container *ngIf="elementModel.startControl">
+    <button *ngIf="!playing || !elementModel.pauseControl"
+            mat-button
+            class="control-button"
+            [class.enabled-control]="!disabled"
+            [class.active-control]="playing"
+            [disabled]="disabled"
+            (click)="play($event)">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+  </ng-container>
+  <ng-container *ngIf="elementModel.pauseControl">
+    <button *ngIf="playing"
+            mat-button
+            class="control-button"
+            [class.enabled-control]="!disabled"
+            [class.active-control]="pausing"
+            [disabled]="disabled"
+            (click)="pause($event)">
+      <mat-icon>pause</mat-icon>
+    </button>
+  </ng-container>
+  <ng-container *ngIf="elementModel.maxRuns">
+    <div class="runs mat-typography">
+      {{ runCounter + 1 }} / {{ elementModel.maxRuns }}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="elementModel.progressBar">
+    <mat-slider class="duration"
+                min="0"
+                step="1"
+                [max]="player.duration"
+                [value]="player.currentTime"
+                [disabled]="disabled || !elementModel.interactiveProgressbar"
+                (input)="onTimeChange($event)">
+    </mat-slider>
+  </ng-container>
+  <ng-container *ngIf="elementModel.showRestTime">
+    <div *ngIf="!restTimeMode"
+         class="time mat-typography"
+         (click)="toggleTime($event)">
+      {{currentTime | playerTimeFormat}} / {{duration | playerTimeFormat }}
+    </div>
+    <div *ngIf="restTimeMode"
+         class="time mat-typography"
+         (click)="toggleTime($event)">
+      -{{currentRestTime | playerTimeFormat}}
+    </div>
+  </ng-container>
+  <ng-container *ngIf="elementModel.volumeControl">
+    <button mat-button
+            class="control-button enabled-control"
+            (click)="toggleVolume($event)">
+      <mat-icon *ngIf="!player.muted">volume_up</mat-icon>
+      <mat-icon *ngIf="player.muted">volume_off</mat-icon>
+    </button>
+    <mat-slider class="volume"
+                min="0"
+                step="0.01"
+                [max]="1"
+                [value]="player.volume"
+                (input)="onVolumeChange($event)">
+    </mat-slider>
+  </ng-container>
+</div>
+<div *ngIf="showHint || !isAspectPlayer"
+     class="status-bar mat-typography">
+  {{elementModel.hintLabel}}
 </div>
 

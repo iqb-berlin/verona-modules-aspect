@@ -1,5 +1,8 @@
 Player
 ======
+1.2.1
+- Apply audio and video appearance properties to player
+
 1.2.0:
 - Add custom control bar for audio and video elements
 - Change background color and font size of virtual keyboard keys

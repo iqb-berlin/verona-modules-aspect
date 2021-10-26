@@ -8,10 +8,11 @@ import { AudioElement } from '../models/audio-element';
     <div [style.width.%]="100"
          [style.height.%]="100">
       <audio #player
-             [src]="elementModel.src | safeResourceUrl"
-             [style.width.%]="100">
+             [style.width.%]="100"
+             [src]="elementModel.src | safeResourceUrl">
       </audio>
-      <app-control-bar [player]="player">
+      <app-control-bar [player]="player"
+                       [elementModel]="elementModel">
       </app-control-bar>
     </div>
   `

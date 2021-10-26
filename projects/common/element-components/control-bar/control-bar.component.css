@@ -4,7 +4,6 @@
   flex-direction: row;
   padding-right: 10px;
   overflow: hidden;
-  margin-top: -4px
 }
 
 .control-button {
@@ -12,13 +11,23 @@
   padding: 0 5px;
 }
 
-.control-button:hover {
+.enabled-control:hover{
   color: #006064;
 }
 
 .time {
+  cursor: pointer;
   white-space: nowrap;
   padding: 17px 5px 0 5px;
+}
+
+.runs {
+  white-space: nowrap;
+  padding: 17px 5px 0 5px;
+}
+
+.time:hover {
+  color: #006064;
 }
 
 .active-control{
@@ -28,21 +37,31 @@
 .duration{
   flex-grow: 5;
   min-width: 20%;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .volume{
   flex-grow: 2;
   min-width: 10%;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
-::ng-deep .mat-accent .mat-slider-thumb {
+.status-bar{
+  padding: 10px;
+  color: #f44336;
+  font-size: 75%;
+}
+
+.hint-border{
+  border: 2px #f44336 solid;
+}
+
+::ng-deep app-control-bar .mat-accent .mat-slider-thumb {
   background-color: #006064;
 }
-::ng-deep .mat-accent .mat-slider-thumb-label {
+::ng-deep app-control-bar .mat-accent .mat-slider-thumb-label {
   background-color: #006064;
 }
-::ng-deep .mat-accent .mat-slider-track-fill {
+::ng-deep app-control-bar .mat-accent .mat-slider-track-fill {
   background-color: #006064;
 }

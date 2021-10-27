@@ -1,7 +1,9 @@
 Player
 ======
 1.2.1
-- Apply audio and video appearance properties to player
+- Apply audio and video appearance properties of the editor to the player
+- Add space for hints beneath the control bar for audios and videos
+- Save the current playback time of audio and videos
 
 1.2.0:
 - Add custom control bar for audio and video elements

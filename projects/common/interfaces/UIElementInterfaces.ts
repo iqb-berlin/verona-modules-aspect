@@ -28,6 +28,7 @@ export interface PlayerElement {
   minRuns: number;
   maxRuns: number | null;
   showRestTime: boolean;
+  playbackTime: number;
 }
 
 export interface AnswerOption {

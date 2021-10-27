@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { AudioElement } from '../models/audio-element';
+import { ValueChangeElement } from '../form';
 
 @Component({
   selector: 'app-audio',
@@ -12,11 +13,13 @@ import { AudioElement } from '../models/audio-element';
              [src]="elementModel.src | safeResourceUrl">
       </audio>
       <app-control-bar [player]="player"
-                       [elementModel]="elementModel">
+                       [elementModel]="elementModel"
+                       (playbackTimeChanged)="playbackTimeChanged.emit($event)">
       </app-control-bar>
     </div>
   `
 })
 export class AudioComponent extends ElementComponent {
+  @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
   elementModel!: AudioElement;
 }

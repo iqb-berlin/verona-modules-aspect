@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { VideoElement } from '../models/video-element';
+import { ValueChangeElement } from '../form';
 
 @Component({
   selector: 'app-video',
@@ -14,12 +15,14 @@ import { VideoElement } from '../models/video-element';
       </video>
       <app-control-bar class="correct-position"
                        [player]="player"
-                       [elementModel]="elementModel">
+                       [elementModel]="elementModel"
+                       (playbackTimeChanged)="playbackTimeChanged.emit($event)">
       </app-control-bar>
     </div>
   `,
   styles: ['.correct-position{ display: block; margin-top: -4px; }']
 })
 export class VideoComponent extends ElementComponent {
+  @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
   elementModel!: VideoElement;
 }

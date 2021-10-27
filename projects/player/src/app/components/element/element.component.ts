@@ -51,10 +51,16 @@ export class ElementComponent implements OnInit {
 
     const unitStateElementCode = this.unitStateService.getUnitStateElement(this.elementModel.id);
     if (unitStateElementCode && unitStateElementCode.value !== undefined) {
-      if (this.elementModel.type === 'text') {
-        elementComponent.elementModel.text = unitStateElementCode.value;
-      } else {
-        elementComponent.elementModel.value = unitStateElementCode.value;
+      switch (this.elementModel.type) {
+        case 'text':
+          elementComponent.elementModel.text = unitStateElementCode.value;
+          break;
+        case 'video':
+        case 'audio':
+          elementComponent.elementModel.playbackTime = unitStateElementCode.value;
+          break;
+        default:
+          elementComponent.elementModel.value = unitStateElementCode.value;
       }
     }
 
@@ -72,6 +78,14 @@ export class ElementComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selection: { color: string; element: HTMLElement; clear: boolean }) => {
           this.applySelection(selection.color, selection.element, selection.clear);
+        });
+    }
+
+    if (elementComponent.playbackTimeChanged) {
+      elementComponent.playbackTimeChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((playbackTimeChanged: ValueChangeElement) => {
+          this.unitStateService.changeElementValue(playbackTimeChanged);
         });
     }
 

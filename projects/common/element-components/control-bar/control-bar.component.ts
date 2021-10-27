@@ -1,18 +1,20 @@
 import {
-  Component, Input, OnInit
+  Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { AudioElement } from '../../models/audio-element';
 import { VideoElement } from '../../models/video-element';
+import { ValueChangeElement } from '../../form';
 
 @Component({
   selector: 'app-control-bar',
   templateUrl: './control-bar.component.html',
   styleUrls: ['./control-bar.component.css']
 })
-export class ControlBarComponent implements OnInit {
+export class ControlBarComponent implements OnInit, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() elementModel!: AudioElement | VideoElement;
+  @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
   duration!: number;
   currentTime!: number;
   currentRestTime!: number;
@@ -25,6 +27,7 @@ export class ControlBarComponent implements OnInit {
   showHint!: boolean;
   disabled!: boolean;
   isAspectPlayer!: boolean;
+  playbackTime!: number;
 
   // TODO:
   // uninterruptible: boolean; // false kein Blättern; starten eines anderen Videos; ....
@@ -35,10 +38,11 @@ export class ControlBarComponent implements OnInit {
   ngOnInit(): void {
     this.checkEnvironment();
     // Firefox has problems to get the duration
-    this.player.ondurationchange = () => this.initTimerValues();
+    this.player.ondurationchange = () => this.initTimeValues();
     this.player.ontimeupdate = () => {
       this.currentTime = this.player.currentTime / 60;
       this.currentRestTime = this.player.duration ? (this.player.duration - this.player.currentTime) / 60 : 0;
+      this.sendPlaybackTimeChanged();
     };
     this.player.onpause = () => {
       this.playing = false;
@@ -62,43 +66,10 @@ export class ControlBarComponent implements OnInit {
       this.player.muted = !this.player.volume;
     };
     this.lastVolume = this.player.volume;
-    this.runCounter = 0;
-    this.currentTime = 0;
     if (this.isAspectPlayer) {
       this.initAutostart();
       this.initHint();
     }
-  }
-
-  private checkEnvironment() {
-    this.isAspectPlayer = !!this.player.closest('player-aspect');
-  }
-
-  private checkStatus(runCounter: number): boolean {
-    this.disabled = !this.elementModel.maxRuns ? false : this.elementModel.maxRuns <= runCounter;
-    return this.disabled;
-  }
-
-  private initAutostart(): void {
-    if (this.elementModel.autostart && !this.started) {
-      setTimeout(() => {
-        this._play();
-      }, this.elementModel.autostartDelay);
-    }
-  }
-
-  private initHint(): void {
-    if (this.elementModel.hintLabel && !this.started) {
-      setTimeout(() => {
-        this.showHint = true;
-      }, this.elementModel.hintLabelDelay);
-    }
-  }
-
-  private _play(): void {
-    this.player.play().then(() => {},
-    // eslint-disable-next-line no-console
-      () => console.error('error'));
   }
 
   play(event: MouseEvent): void {
@@ -138,14 +109,68 @@ export class ControlBarComponent implements OnInit {
     event.preventDefault();
   }
 
-  private initTimerValues(): void {
+  private checkEnvironment() {
+    this.isAspectPlayer = !!this.player.closest('player-aspect');
+  }
+
+  private checkStatus(runCounter: number): boolean {
+    this.disabled = !this.elementModel.maxRuns ? false : this.elementModel.maxRuns <= runCounter;
+    return this.disabled;
+  }
+
+  private initAutostart(): void {
+    if (this.elementModel.autostart && !this.started) {
+      setTimeout(() => {
+        this._play();
+      }, this.elementModel.autostartDelay);
+    }
+  }
+
+  private initHint(): void {
+    if (this.elementModel.hintLabel && !this.started) {
+      setTimeout(() => {
+        this.showHint = true;
+      }, this.elementModel.hintLabelDelay);
+    }
+  }
+
+  private _play(): void {
+    this.player.play().then(() => {},
+      // eslint-disable-next-line no-console
+      () => console.error('error'));
+  }
+
+  private sendPlaybackTimeChanged() {
+    this.playbackTimeChanged.emit({
+      id: this.elementModel.id,
+      values: [this.playbackTime, this.toPlaybackTime()]
+    });
+  }
+
+  private toPlaybackTime(): number {
+    let newPlayBackTime: number = 0;
+    if (this.player.duration && this.player.currentTime) {
+      newPlayBackTime = this.runCounter + this.player.currentTime / this.player.duration;
+    }
+    this.playbackTime = newPlayBackTime;
+    return newPlayBackTime;
+  }
+
+  private initTimeValues(): void {
     if (!this.duration) {
       if ((this.player.duration !== Infinity) && this.player.duration) {
         this.duration = this.player.duration / 60;
         this.currentRestTime = (this.player.duration - this.player.currentTime) / 60;
+        this.runCounter = Math.floor(this.elementModel.playbackTime);
+        this.player.currentTime = (this.elementModel.playbackTime - this.runCounter) * this.player.duration;
       } else {
         this.duration = 0;
+        this.runCounter = 0;
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.player.pause();
   }
 }

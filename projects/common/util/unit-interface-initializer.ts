@@ -33,6 +33,7 @@ export function initPlayerElement(serializedElement: UIElement): PlayerElement {
     activeAfterID: serializedElement.activeAfterID as string || '',
     minRuns: serializedElement.minRuns as number || 1,
     maxRuns: serializedElement.maxRuns as number | null || null,
-    showRestTime: serializedElement.showRestTime as boolean || true
+    showRestTime: serializedElement.showRestTime as boolean || true,
+    playbackTime: serializedElement.playbackTime as number || 0
   };
 }

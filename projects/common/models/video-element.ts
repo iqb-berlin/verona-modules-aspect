@@ -21,12 +21,13 @@ export class VideoElement extends UIElement implements PlayerElement {
   minRuns: number = 1;
   maxRuns: number | null = null;
   showRestTime: boolean = true;
+  playbackTime: number = 0;
 
   constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
     Object.assign(this, serializedElement);
     Object.assign(this, initPlayerElement(serializedElement));
-    this.height = serializedElement.height || 200;
+    this.height = serializedElement.height || 230;
     this.width = serializedElement.width || 280;
   }
 }

@@ -1,5 +1,15 @@
 Editor
 ======
+1.6.1:
+- Allow styling of "Likert" element
+- Set Roboto as app-wide font
+- [bug] Fix selected page when deleting sections
+- [bug] Fix duplicated section elements not getting new ID
+- TextEditor: Improve list style
+- TextEditor: Add more font sizes
+- Improve radio button group style (margins)
+- Allow editing text option properties (via overlay menu)
+
 1.6.0:
 - Add Likert-Element (looking for better name)
 - Add Player-Element property controls

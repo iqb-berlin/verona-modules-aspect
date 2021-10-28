@@ -163,9 +163,10 @@
                            combinedProperties.value !== true && combinedProperties.value !== false"
                         appearance="fill">
           <mat-label>Vorbelegung</mat-label>
-          <input matInput type="text"
+          <textarea matInput type="text"
                  [value]="combinedProperties.value"
                  (input)="updateModel('value', $any($event.target).value)">
+          </textarea>
         </mat-form-field>
 
         <mat-form-field *ngIf="combinedProperties.appearance !== undefined" appearance="fill">

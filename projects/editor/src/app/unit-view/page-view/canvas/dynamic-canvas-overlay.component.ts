@@ -12,7 +12,8 @@ import { UIElement } from '../../../../../../common/models/uI-element';
            cdkDrag [cdkDragData]="{dragType: 'move', element: element}" [cdkDragDisabled]="!isSelected"
            (click)="selectElement($event.shiftKey)" (dblclick)="openEditDialog()"
            (cdkDragStarted)="!isSelected && selectElement()"
-           [style.outline]="isSelected ? 'purple solid 1px' : ''">
+           [style.outline]="isSelected ? 'purple solid 1px' : ''"
+           [style.z-index]="isSelected ? 2 : 1">
           <div *ngIf="isSelected"
                [style.width.%]="dragging ? 100 : 0"
                [style.height.%]="dragging ? 100 : 0"

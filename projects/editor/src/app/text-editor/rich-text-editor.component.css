@@ -27,3 +27,8 @@ app-rich-text-editor .editor-control-line {
   height: 50px;
   margin-bottom: 5px;
 }
+
+.ProseMirror p strong {
+  letter-spacing: 0.04em !important;
+  font-weight: 600 !important;
+}

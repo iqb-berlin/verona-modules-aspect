@@ -28,21 +28,22 @@ import { TextElement } from '../models/text-element';
           <mat-icon>clear</mat-icon>
         </button>
       </div>
-      <div [style.background-color]="elementModel.backgroundColor"
+      <div #container class="text-container"
+           [style.background-color]="elementModel.backgroundColor"
            [style.color]="elementModel.fontColor"
            [style.font-family]="elementModel.font"
            [style.line-height.%]="elementModel.lineHeight"
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''"
-           [innerHTML]="elementModel.text | safeResourceHTML"
-           #container>
+           [innerHTML]="elementModel.text | safeResourceHTML">
       </div>
     </div>
   `,
   styles: [
     '.marking-bar{position: sticky; top: 0; margin-bottom: 15px}',
-    '.marking-button{color: #333}'
+    '.marking-button{color: #333}',
+    '::ng-deep .text-container p strong {letter-spacing: 0.04em; font-weight: 600}'
   ]
 })
 export class TextComponent extends ElementComponent {

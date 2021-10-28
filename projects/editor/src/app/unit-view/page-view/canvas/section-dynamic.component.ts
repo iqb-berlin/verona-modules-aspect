@@ -53,10 +53,8 @@ import { UIElementType } from '../../../../../../common/models/uI-element';
                                   [cdkDropListData]="{ sectionIndex: sectionIndex }"
                                   [cdkDropListConnectedTo]="dropListList"
                                   (resize)="resizeOverlay($event)"
-                                  [style.pointer-events]="dragging ? 'none' : 'auto'"
-                                  [style.position]="dragging ? 'absolute' : null"
-                                  [style.width.px]="dragging ? draggingElementWidth : null"
-                                  [style.height.px]="dragging ? draggingElementHeight : null">
+                                  [style.position]="'relative'"
+                                  [style.pointer-events]="dragging ? 'none' : 'auto'">
       </app-dynamic-canvas-overlay>
     </div>
   `,
@@ -72,8 +70,6 @@ export class SectionDynamicComponent {
   @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
 
   dragging = false;
-  draggingElementWidth: number | undefined = 0;
-  draggingElementHeight: number | undefined = 0;
 
   constructor(public unitService: UnitService) { }
 
@@ -138,7 +134,5 @@ export class SectionDynamicComponent {
 
   resizeOverlay(event: { dragging: boolean, elementWidth?: number, elementHeight?: number }): void {
     this.dragging = event.dragging;
-    this.draggingElementWidth = event.elementWidth;
-    this.draggingElementHeight = event.elementHeight;
   }
 }

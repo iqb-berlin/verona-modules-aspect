@@ -10,7 +10,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
   template: `
       <div #draggableElement class="draggable-element" [class.draggable-element-selected]="isSelected"
            cdkDrag [cdkDragData]="{dragType: 'move', element: element}" [cdkDragDisabled]="!isSelected"
-           (click)="selectElement($event.shiftKey)" (dblclick)="openEditDialog()"
+           (click)="selectElement($event.shiftKey); $event.stopPropagation()" (dblclick)="openEditDialog()"
            (cdkDragStarted)="!isSelected && selectElement()"
            [style.outline]="isSelected ? 'purple solid 1px' : ''"
            [style.z-index]="isSelected ? 2 : 1">

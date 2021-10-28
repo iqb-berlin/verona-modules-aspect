@@ -11,7 +11,8 @@ import { UIElement } from '../../../../../../common/models/uI-element';
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <div class="draggable-element" [class.draggable-element-selected]="isSelected"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
-         (click)="selectElement($event.shiftKey)" (cdkDragStarted)="!isSelected && selectElement()"
+         (click)="selectElement($event.shiftKey); $event.stopPropagation()"
+         (cdkDragStarted)="!isSelected && selectElement()"
          (dblclick)="openEditDialog()"
          (keyup.delete)="deleteSelectedElements()" tabindex="-1"
          cdkDropList>

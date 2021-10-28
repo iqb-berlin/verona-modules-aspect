@@ -1,4 +1,5 @@
-<div class="canvasBackground" fxFlex>
+<div class="canvasBackground" fxFlex
+     (click)="selectionService.clearElementSelection()">
   <div class="canvasFrame"
        [style.width.px]="page.hasMaxWidth ? page.maxWidth : 900"
        [style.padding.px]="page.margin"

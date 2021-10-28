@@ -31,6 +31,7 @@ import { TextElement } from '../models/text-element';
       <div [style.background-color]="elementModel.backgroundColor"
            [style.color]="elementModel.fontColor"
            [style.font-family]="elementModel.font"
+           [style.line-height.%]="elementModel.lineHeight"
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.underline ? 'underline' : ''"

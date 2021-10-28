@@ -15,14 +15,16 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
          [style.font-weight]="elementModel.bold ? 'bold' : ''"
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-      <label [innerHTML]="elementModel.label"
-             class="white-space-break"
-             id="radio-group-label"></label>
+      <label id="radio-group-label" class="white-space-break"
+             [innerHTML]="elementModel.label">
+      </label>
       <mat-radio-group aria-labelledby="radio-group-label"
                        [style.margin-bottom.px]="25"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
-        <mat-radio-button *ngFor="let option of elementModel.options; let i = index" [value]="i">
+        <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
+                          [value]="i"
+                          [style.line-height.%]="elementModel.lineHeight">
           {{option}}
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"

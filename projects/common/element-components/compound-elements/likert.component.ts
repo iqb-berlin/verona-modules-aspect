@@ -13,6 +13,7 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
          [style.color]="elementModel.fontColor"
          [style.font-family]="elementModel.font"
          [style.font-size.px]="elementModel.fontSize"
+         [style.line-height.%]="elementModel.lineHeight"
          [style.font-weight]="elementModel.bold ? 'bold' : ''"
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''"

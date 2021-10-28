@@ -21,6 +21,7 @@ import { TextAreaElement } from '../models/text-area-element';
                 autocomplete="off"
                 placeholder="{{elementModel.label}}"
                 [style.min-width.%]="100"
+                [style.line-height.%]="elementModel.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">
       </textarea>
       <mat-error *ngIf="elementFormControl.errors">

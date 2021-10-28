@@ -18,7 +18,7 @@ import { CheckboxElement } from '../models/checkbox-element';
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''">
-        <div [innerHTML]="elementModel.label"></div>
+        <div [style.line-height.%]="elementModel.lineHeight" [innerHTML]="elementModel.label"></div>
       </mat-checkbox>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">

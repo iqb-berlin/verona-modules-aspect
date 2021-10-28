@@ -18,8 +18,10 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
       <label id="radio-group-label" class="white-space-break"
              [innerHTML]="elementModel.label">
       </label>
+<!--      TODO why margin-bottom?-->
       <mat-radio-group aria-labelledby="radio-group-label"
                        [style.margin-bottom.px]="25"
+                       [style.margin-top.px]="10"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"

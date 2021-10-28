@@ -28,11 +28,13 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
              [style.grid-column-end]="3 + i"
              [style.grid-row-start]="1"
              [style.grid-row-end]="2">
-          <img *ngIf="answer.imgSrc && answer.position === 'above'" [src]="answer.imgSrc" alt="Image Placeholder"
+          <img *ngIf="answer.imgSrc && answer.position === 'above'"
+               [src]="answer.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'"
                [width]="200">
           {{answer.text}}
-          <img *ngIf="answer.imgSrc && answer.position === 'below'" [src]="answer.imgSrc" alt="Image Placeholder"
+          <img *ngIf="answer.imgSrc && answer.position === 'below'"
+               [src]="answer.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'"
                [width]="200">
         </div>

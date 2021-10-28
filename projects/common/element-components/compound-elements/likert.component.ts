@@ -17,7 +17,8 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
          [style.font-weight]="elementModel.bold ? 'bold' : ''"
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''"
-         [style.height.px]="100">
+         [style.height.px]="elementModel.height"
+         [style.width.px]="elementModel.width">
       <div class="headings" [style.display]="'grid'"
            [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.answers.length)"
            [style.grid-column-start]="1"

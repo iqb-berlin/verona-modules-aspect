@@ -31,7 +31,7 @@ export abstract class UIElement {
   marginTop: number = 0;
   marginBottom: number = 0;
 
-  protected constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
+  protected constructor(serializedElement: UIElement) {
     Object.assign(this, serializedElement);
     if (!serializedElement.id) {
       this.id = IdService.getInstance().getNewID(serializedElement.type);
@@ -51,8 +51,8 @@ export abstract class InputElement extends UIElement {
   required: boolean;
   requiredWarnMessage: string;
 
-  protected constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
-    super(serializedElement, coordinates);
+  protected constructor(serializedElement: UIElement) {
+    super(serializedElement);
     this.label = serializedElement.label as string || 'Beispielbeschriftung';
     this.value = serializedElement.value as string | number | boolean | null || null;
     this.required = serializedElement.required as boolean || false;

@@ -26,8 +26,8 @@ export class TextFieldElement extends InputElement implements FontElement, Surfa
 
   backgroundColor: string = 'transparent';
 
-  constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
-    super(serializedElement, coordinates);
+  constructor(serializedElement: UIElement) {
+    super(serializedElement);
     Object.assign(this, serializedElement);
     Object.assign(this, initFontElement(serializedElement));
     Object.assign(this, initSurfaceElement(serializedElement));

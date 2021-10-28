@@ -108,6 +108,13 @@
           größenverstellbar
         </mat-checkbox>
 
+        <mat-form-field *ngIf="combinedProperties.rows != null"
+                        appearance="fill" class="mdInput textsingleline">
+          <mat-label>Zeilen</mat-label>
+          <input matInput type="number" [value]="combinedProperties.rows"
+                 (input)="updateModel('rows', $any($event.target).value)">
+        </mat-form-field>
+
         <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">
           <mat-label>Aktion</mat-label>
           <mat-select [value]="combinedProperties.action"

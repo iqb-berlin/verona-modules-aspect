@@ -16,6 +16,7 @@ import { TextAreaElement } from '../models/text-area-element';
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''"
                     [appearance]="$any(elementModel.appearance)">
       <textarea matInput [formControl]="elementFormControl" #input
+                rows="{{elementModel.rows}}"
                 (focus)="onFocus.emit(input)"
                 (blur)="onBlur.emit(input)"
                 autocomplete="off"

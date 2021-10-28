@@ -2,6 +2,7 @@ export interface FontElement {
   fontColor: string;
   font: string;
   fontSize: number;
+  lineHeight: number;
   bold: boolean;
   italic: boolean;
   underline: boolean;

@@ -31,6 +31,12 @@ import { UIElement } from '../../../../../../common/models/uI-element';
         <input matInput type="text" [value]="combinedProperties.fontSize"
                (input)="updateModel.emit({ property: 'fontSize', value: $any($event.target).value })">
       </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.lineHeight != null"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>Zeilenhöhe</mat-label>
+        <input matInput type="number" [value]="combinedProperties.lineHeight"
+               (input)="updateModel.emit({ property: 'lineHeight', value: $any($event.target).value })">
+      </mat-form-field>
 
       <mat-checkbox *ngIf="combinedProperties.bold != null"
                     [checked]="$any(combinedProperties.bold)"

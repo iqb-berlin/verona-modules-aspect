@@ -6,6 +6,7 @@ export function initFontElement(serializedElement: UIElement): FontElement {
     fontColor: serializedElement.fontColor as string || 'black',
     font: serializedElement.font as string || 'Roboto',
     fontSize: serializedElement.fontSize as number || 18,
+    lineHeight: serializedElement.lineHeight as number || 120,
     bold: serializedElement.bold as boolean || false,
     italic: serializedElement.italic as boolean || false,
     underline: serializedElement.underline as boolean || false

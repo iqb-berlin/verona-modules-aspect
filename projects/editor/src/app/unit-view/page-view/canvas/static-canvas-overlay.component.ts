@@ -17,7 +17,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
          cdkDropList>
       <!-- Needs extra div because styling can interfere with drag and drop-->
       <div [style.position]="'absolute'"
-           [style.border]="isSelected ? '2px solid' : ''"
+           [style.outline]="isSelected ? 'purple solid 1px' : ''"
            [style.left.px]="element.xPosition"
            [style.top.px]="element.yPosition"
            [style.z-index]="element.zIndex">

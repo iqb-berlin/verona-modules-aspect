@@ -1,7 +1,6 @@
 import {
   Component, ElementRef, EventEmitter, Output, ViewChild
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ElementComponent } from '../element-component.directive';
 import { TextElement } from '../models/text-element';
 
@@ -49,10 +48,6 @@ export class TextComponent extends ElementComponent {
   elementModel!: TextElement;
   @Output() applySelection = new EventEmitter<{ color: string, element: HTMLElement, clear: boolean }>();
   @ViewChild('container') containerDiv!: ElementRef;
-
-  constructor(public sanitizer: DomSanitizer) {
-    super();
-  }
 
   onClick(event: MouseEvent, markingValues: { color: string; element: HTMLElement; clear: boolean }) : void {
     this.applySelection.emit(markingValues);

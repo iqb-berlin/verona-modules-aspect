@@ -28,7 +28,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
       <mat-form-field *ngIf="combinedProperties.fontSize != null"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>Schriftgröße</mat-label>
-        <input matInput type="text" [value]="combinedProperties.fontSize"
+        <input matInput type="number" [value]="combinedProperties.fontSize"
                (input)="updateModel.emit({ property: 'fontSize', value: $any($event.target).value })">
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.lineHeight != null"

@@ -53,7 +53,7 @@ export abstract class InputElement extends UIElement {
 
   protected constructor(serializedElement: UIElement, coordinates?: { x: number; y: number }) {
     super(serializedElement, coordinates);
-    this.label = serializedElement.label as string || 'Dummylabel';
+    this.label = serializedElement.label as string || 'Beispielbeschriftung';
     this.value = serializedElement.value as string | number | boolean | null || null;
     this.required = serializedElement.required as boolean || false;
     this.requiredWarnMessage = serializedElement.requiredWarnMessage as string || 'Eingabe erforderlich';

@@ -16,12 +16,12 @@ import { TextFieldElement } from '../models/text-field-element';
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''"
                     appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
+      <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" [pattern]="elementModel.pattern" #input
              (focus)="onFocus.emit(input)"
              (blur)="onBlur.emit(input)"
              autocomplete="off"
-             [formControl]="elementFormControl"
-             placeholder="{{elementModel.label}}">
+             [formControl]="elementFormControl">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
               (click)="onClick($event)">
         <mat-icon>close</mat-icon>

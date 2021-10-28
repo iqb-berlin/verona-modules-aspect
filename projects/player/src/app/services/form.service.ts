@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import {
   FormControlElement, FormControlValidators, ChildFormGroup
-} from './form';
+} from '../models/form';
 
 @Injectable({
   providedIn: 'root'

@@ -2,7 +2,7 @@ import {
   Component, Input, OnInit, Output, EventEmitter
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormService } from '../../../../../common/form.service';
+import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { Page } from '../../../../../common/models/page';
 

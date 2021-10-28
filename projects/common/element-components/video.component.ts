@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { VideoElement } from '../models/video-element';
-import { ValueChangeElement } from '../form';
+import { ValueChangeElement } from '../models/uI-element';
 
 @Component({
   selector: 'app-video',

@@ -6,8 +6,7 @@ import {
   UnitStateElementCodeStatus,
   UnitStateElementCodeStatusValue
 } from '../models/verona';
-import { ValueChangeElement } from '../../../../common/form';
-import { InputElementValue } from '../../../../common/models/uI-element';
+import { InputElementValue, ValueChangeElement } from '../../../../common/models/uI-element';
 
 @Injectable({
   providedIn: 'root'

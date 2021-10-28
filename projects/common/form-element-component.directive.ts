@@ -6,44 +6,30 @@ import {
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { pairwise, startWith, takeUntil } from 'rxjs/operators';
-import { FormService } from './form.service';
-import { ValueChangeElement } from './form';
 import { ElementComponent } from './element-component.directive';
-import { InputElement } from './models/uI-element';
+import { InputElement, InputElementValue, ValueChangeElement } from './models/uI-element';
 
 @Directive()
 export abstract class FormElementComponent extends ElementComponent implements OnInit, OnDestroy {
   @Output() formValueChanged = new EventEmitter<ValueChangeElement>();
+  @Output() setValidators = new EventEmitter<ValidatorFn[]>();
   parentForm!: FormGroup;
-  defaultValue!: string | number | boolean | undefined;
+  defaultValue!: InputElementValue;
   elementFormControl!: FormControl;
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private formService: FormService) {
-    super();
-  }
-
   ngOnInit(): void {
-    this.formService.registerFormControl({
-      id: this.elementModel.id,
-      formControl: new FormControl((this.elementModel as InputElement).value),
-      formGroup: this.parentForm
-    });
     this.elementFormControl = this.formControl;
     this.updateFormValue((this.elementModel as InputElement).value);
-    this.formService.setValidators({
-      id: this.elementModel.id,
-      validators: this.validators,
-      formGroup: this.parentForm
-    });
+    this.setValidators.emit(this.validators);
     this.elementFormControl.valueChanges
       .pipe(
         startWith((this.elementModel as InputElement).value),
         pairwise(),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(([prevValue, nextValue] : [string | number | boolean | undefined, string | number | boolean]) => {
+      .subscribe(([prevValue, nextValue]: [InputElementValue, InputElementValue]) => {
         if (nextValue != null) { // invalid input on number fields generates event with null TODO find a better solution
           this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
         }
@@ -65,7 +51,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
       new FormControl({});
   }
 
-  updateFormValue(newValue: string | number | boolean | null): void {
+  updateFormValue(newValue: InputElementValue): void {
     this.elementFormControl?.setValue(newValue, { emitEvent: false });
   }
 

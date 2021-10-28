@@ -1,10 +1,5 @@
 import { FormControl, FormGroup, ValidatorFn } from '@angular/forms';
 
-export interface ValueChangeElement {
-  id: string;
-  values: [string | number | boolean | null | undefined, string | number | boolean];
-}
-
 export interface FormControlElement {
   id: string;
   formControl: FormControl;

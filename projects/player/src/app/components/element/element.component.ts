@@ -2,18 +2,24 @@ import {
   Component, OnInit, Input, ComponentFactoryResolver,
   ViewChild, ViewContainerRef
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder, FormControl, FormGroup, ValidatorFn
+} from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as ElementFactory from '../../../../../common/util/element.factory';
 import { KeyboardService } from '../../services/keyboard.service';
 import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
 import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
-import { FormService } from '../../../../../common/form.service';
-import { ValueChangeElement } from '../../../../../common/form';
+import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
-import { InputElementValue, UIElement } from '../../../../../common/models/uI-element';
+import {
+  InputElement,
+  InputElementValue,
+  UIElement,
+  ValueChangeElement
+} from '../../../../../common/models/uI-element';
 import { TextFieldElement } from '../../../../../common/models/text-field-element';
 import { FormElementComponent } from '../../../../../common/form-element-component.directive';
 
@@ -66,13 +72,6 @@ export class ElementComponent implements OnInit {
 
     this.unitStateService.registerElement(elementComponent.elementModel.id, elementComponent.elementModel.value);
 
-    if (this.elementModel.type === 'likert') {
-      elementComponent.getChildElementValues()
-        .forEach((element: { id: string, value: InputElementValue }) => (
-          this.unitStateService.registerElement(element.id, element.value)
-        ));
-    }
-
     if (elementComponent.applySelection) {
       elementComponent.applySelection
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -93,6 +92,36 @@ export class ElementComponent implements OnInit {
       const elementForm = this.formBuilder.group({});
       elementComponent.parentForm = elementForm;
       this.registerFormGroup(elementForm);
+
+      this.formService.registerFormControl({
+        id: this.elementModel.id,
+        formControl: new FormControl((this.elementModel as InputElement).value),
+        formGroup: elementForm
+      });
+
+      if (this.elementModel.type === 'likert') {
+        elementComponent.getChildElementValues()
+          .forEach((element: { id: string, value: InputElementValue }) => {
+            this.unitStateService.registerElement(element.id, element.value);
+            this.formService.registerFormControl({
+              id: element.id,
+              formControl: new FormControl((element as InputElement).value),
+              formGroup: elementForm
+            });
+          });
+      }
+
+      if (elementComponent.setValidators) {
+        elementComponent.setValidators
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe((validators: ValidatorFn[]) => {
+            this.formService.setValidators({
+              id: this.elementModel.id,
+              validators: validators,
+              formGroup: elementForm
+            });
+          });
+      }
 
       elementComponent.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))

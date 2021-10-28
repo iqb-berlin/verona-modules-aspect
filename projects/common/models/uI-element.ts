@@ -6,8 +6,13 @@ export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'ch
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row';
 export type InputElementValue = string | number | boolean | null;
 
+export interface ValueChangeElement {
+  id: string;
+  values: [InputElementValue, InputElementValue];
+}
+
 export abstract class UIElement {
-  [index: string]: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null | ((...args: any) => any);
+  [index: string]: InputElementValue | string[] | AnswerOption[] | LikertRow[] | ((...args: any) => any);
   type!: UIElementType;
 
   id: string = 'id_placeholder';
@@ -35,7 +40,7 @@ export abstract class UIElement {
 
   // This can be overwritten by elements if they need to handle some property specifics. Likert does.
   setProperty(property: string,
-              value: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null): void {
+              value: InputElementValue | string[] | AnswerOption[] | LikertRow[]): void {
     this[property] = value;
   }
 }

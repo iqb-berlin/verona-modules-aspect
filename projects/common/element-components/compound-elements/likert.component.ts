@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LikertElement } from '../../models/compound-elements/likert-element';
-import { ValueChangeElement } from '../../form';
-import { InputElementValue } from '../../models/uI-element';
+import { InputElementValue, ValueChangeElement } from '../../models/uI-element';
 import { LikertElementRow } from '../../models/compound-elements/likert-element-row';
 
 @Component({

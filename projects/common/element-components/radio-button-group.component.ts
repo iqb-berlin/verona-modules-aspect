@@ -25,6 +25,7 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
+                          [ngClass]="{ 'strike' : elementModel.strikeOtherOptions && elementModel.value !== i }"
                           [value]="i"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [style.line-height.%]="elementModel.lineHeight">
@@ -43,7 +44,8 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
     '::ng-deep app-radio-button-group mat-radio-button {margin-bottom: 6px}',
     '::ng-deep app-radio-button-group mat-radio-button {margin-right: 15px}',
     '.white-space-break {white-space: normal}',
-    '.error-message { position: absolute; margin-top: 25px; font-size: 75% }'
+    '.error-message { position: absolute; margin-top: 25px; font-size: 75% }',
+    '::ng-deep app-radio-button-group .strike .mat-radio-label {text-decoration: line-through}'
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

@@ -48,6 +48,12 @@
           Unterstreichung erlauben
         </mat-checkbox>
 
+        <mat-checkbox *ngIf="combinedProperties.strikeOtherOptions !== undefined"
+                      [checked]="$any(combinedProperties.strikeOtherOptions)"
+                      (change)="updateModel('strikeOtherOptions', $event.checked)">
+          Andere Optionen durchstreichen
+        </mat-checkbox>
+
         <mat-checkbox *ngIf="combinedProperties.allowUnset !== undefined"
                       [checked]="$any(combinedProperties.allowUnset)"
                       (change)="updateModel('allowUnset', $event.checked)">

@@ -83,8 +83,10 @@
             <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.options"
                  (cdkDropListDropped)="reorderOptions('options', $any($event))">
               <div *ngFor="let option of $any(combinedProperties.options); let i = index" cdkDrag
-                   class="list-items">
-                {{option}}
+                   class="list-items" fxLayout="row" fxLayoutAlign="end center">
+                <div fxFlex="70">
+                  {{option}}
+                </div>
                 <button mat-icon-button color="warn"
                         (click)="editTextOption(i)">
                   <mat-icon>build</mat-icon>

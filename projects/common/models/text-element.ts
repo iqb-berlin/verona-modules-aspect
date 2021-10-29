@@ -5,6 +5,7 @@ import { initSurfaceElement } from '../util/unit-interface-initializer';
 export class TextElement extends UIElement implements SurfaceUIElement {
   text: string = '<p>Lorem ipsum dolor sit amet</p>';
   highlightable: boolean = false;
+  underlinable: boolean = false;
   fontColor: string = 'black';
   font: string = 'Roboto';
   lineHeight: number = 120;

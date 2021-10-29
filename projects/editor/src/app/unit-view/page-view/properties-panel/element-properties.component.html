@@ -42,6 +42,11 @@
                       (change)="updateModel('highlightable', $event.checked)">
           Farbmarkierungen erlauben
         </mat-checkbox>
+        <mat-checkbox *ngIf="combinedProperties.underlinable !== undefined"
+                      [checked]="$any(combinedProperties.underlinable)"
+                      (change)="updateModel('underlinable', $event.checked)">
+          Unterstreichung erlauben
+        </mat-checkbox>
 
         <mat-checkbox *ngIf="combinedProperties.allowUnset !== undefined"
                       [checked]="$any(combinedProperties.allowUnset)"

@@ -9,7 +9,7 @@ export class Page {
   hasMaxWidth: boolean = false;
   maxWidth: number = 900;
   margin: number = 0;
-  backgroundColor: string = 'white';
+  backgroundColor: string = '#ffffff';
   alwaysVisible: boolean = false;
   alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom' = 'left';
   alwaysVisibleAspectRatio: number = 50;

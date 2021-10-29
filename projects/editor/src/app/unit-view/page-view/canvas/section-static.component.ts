@@ -9,7 +9,8 @@ import { UIElementType } from '../../../../../../common/models/uI-element';
   selector: 'app-section-static',
   template: `
     <div #sectionElement class="section-wrapper"
-         [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
+         [style.outline]="isSelected ? '2px solid #ff4081': '1px dotted'"
+         [style.z-index]="isSelected ? 1 : 0"
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
          (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
@@ -20,7 +21,7 @@ import { UIElementType } from '../../../../../../common/models/uI-element';
     </div>
   `,
   styles: [
-    '.section-wrapper {width: 100%}'
+    '.section-wrapper {position: relative; width: 100%}'
   ]
 })
 export class SectionStaticComponent {

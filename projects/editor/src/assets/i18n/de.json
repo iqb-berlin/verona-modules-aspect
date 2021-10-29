@@ -1,6 +1,24 @@
 {
-  "loadUnit": "Unit laden",
-  "saveUnit": "Unit speichern",
+  "elements": "Elemente",
+  "properties": "Eigenschaften",
+  "page": "Seite",
+  "forward": "nach vorn",
+  "backward": "nach hinten",
+  "delete": "Löschen",
+  "maxWidth": "Maximalbreite",
+  "marginWidth": "Randbreite",
+  "backgroundColor": "Hintergrundfarbe",
+  "alwaysVisible": "Immer angezeigt",
+  "position": "Position",
+  "alwaysVisibleAspectRatio": "Seitenverhältnis (in Prozent)",
+  "left": "Links",
+  "right": "Rechts",
+  "top": "Oben",
+  "bottom": "Unten",
+  "toolbar": {
+    "loadUnit": "Unit laden",
+    "saveUnit": "Unit speichern"
+  },
   "player": {
     "autoStart": "Autostart",
     "loop": "Wiederholt abspielen",

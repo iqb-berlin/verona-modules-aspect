@@ -9,11 +9,12 @@ import { UIElement } from '../../../../../../common/models/uI-element';
   selector: 'app-dynamic-canvas-overlay',
   template: `
       <div #draggableElement class="draggable-element" [class.draggable-element-selected]="isSelected"
-           cdkDrag [cdkDragData]="{dragType: 'move', element: element}" [cdkDragDisabled]="!isSelected"
+           cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
            (click)="selectElement($event.shiftKey); $event.stopPropagation()" (dblclick)="openEditDialog()"
            (cdkDragStarted)="!isSelected && selectElement()"
            [style.outline]="isSelected ? 'purple solid 1px' : ''"
            [style.z-index]="isSelected ? 2 : 1">
+        <div *cdkDragPlaceholder></div>
           <div *ngIf="isSelected"
                [style.width.%]="dragging ? 100 : 0"
                [style.height.%]="dragging ? 100 : 0"

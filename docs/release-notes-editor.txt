@@ -1,5 +1,37 @@
 Editor
 ======
+1.7.0:
+- [bug] Fix resize (drag and drop) in dynamic sections
+- Replace element selection indicator from border to outline
+  This makes element contents not move when selected.
+- Allow deselection of elements
+  Clicking anywhere (but the side panels) will deselect elements. This makes
+  it easier to get an impression of how it will look like.
+- Add 'line-height' property to all elements which have a font
+- Add 'rows' property to text areas
+- Change text property input to textarea
+  This allows to properly enter longer default texts in text areas. (This is
+  also active for text-field elements, where it makes little sense but makes
+  it technically simpler to not differentiate).
+- Fix lables on text fields
+  Now correctly uses a proper label instead of a placeholder.
+- Change text field appearance depending on label existence
+  When the label text is empty the field will be rendered a lot smaller (and
+  without any label obviously)
+- Change font-size property to number field
+- Improve radio-button-group styling
+  Add 10px margin between label and options.
+- Fix likert elements sizing
+  This should make the selected background color cover the whole element instead
+  of just the upper 100 pixels.
+- Improve bold text style to be less bold and have letter spacing
+- Add read-only property to all input elements and likert
+- Allow changing the line-coloring color for likert elements
+  (not to be mistaken for background color)
+- Add 'underlinable' property to text elements
+  This is to allow different purpose markers on text. Does NOT work in the
+  aspect-player yet.
+
 1.6.1:
 - Allow styling of "Likert" element
 - Set Roboto as app-wide font

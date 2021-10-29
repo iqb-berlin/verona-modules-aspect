@@ -3,7 +3,7 @@ import { UIElement } from '../models/uI-element';
 
 export function initFontElement(serializedElement: UIElement): FontElement {
   return {
-    fontColor: serializedElement.fontColor as string || 'black',
+    fontColor: serializedElement.fontColor as string || '#000000',
     font: serializedElement.font as string || 'Roboto',
     fontSize: serializedElement.fontSize as number || 18,
     lineHeight: serializedElement.lineHeight as number || 120,
@@ -14,7 +14,7 @@ export function initFontElement(serializedElement: UIElement): FontElement {
 }
 
 export function initSurfaceElement(serializedElement: UIElement): SurfaceUIElement {
-  return { backgroundColor: serializedElement.backgroundColor as string || 'lightgrey' };
+  return { backgroundColor: serializedElement.backgroundColor as string || '#d3d3d3' };
 }
 
 export function initPlayerElement(serializedElement: UIElement): PlayerElement {

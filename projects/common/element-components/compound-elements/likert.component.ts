@@ -1,8 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Output, QueryList, ViewChildren
+} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LikertElement } from '../../models/compound-elements/likert-element';
-import { InputElementValue, ValueChangeElement } from '../../models/uI-element';
+import { ValueChangeElement } from '../../models/uI-element';
 import { LikertElementRow } from '../../models/compound-elements/likert-element-row';
+import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
+import { CompoundElementComponent } from './compound-element.directive';
 
 @Component({
   selector: 'app-likert',
@@ -65,15 +69,13 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
     '::ng-deep app-likert mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}'
   ]
 })
-export class LikertComponent {
+export class LikertComponent extends CompoundElementComponent {
   @Output() formValueChanged = new EventEmitter<ValueChangeElement>();
+  @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;
   elementModel!: LikertElement;
   parentForm!: FormGroup;
 
-  getChildElementValues(): { id: string, value: InputElementValue }[] {
-    return this.elementModel.questions
-      .map((question: LikertElementRow): { id: string, value: InputElementValue } => (
-        { id: question.id, value: question.value }
-      ));
+  getFormElementModelChildren(): LikertElementRow[] {
+    return this.elementModel.questions;
   }
 }

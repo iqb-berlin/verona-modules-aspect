@@ -40,11 +40,11 @@ export class PageComponent implements OnInit {
     });
   }
 
-  onIntersection(detection: { detectionType: 'top' | 'bottom' | 'full', id: string }): void {
-    if (detection.detectionType === 'bottom') {
+  onIntersection(detectionType: 'top' | 'bottom'): void {
+    if (detectionType === 'bottom') {
       this.unitStateService.addPresentedPage(this.index);
     }
-    if (detection.detectionType === 'top' || this.isLastPage) {
+    if (detectionType === 'top' || this.isLastPage) {
       this.selectedIndexChange.emit(this.index);
     }
   }

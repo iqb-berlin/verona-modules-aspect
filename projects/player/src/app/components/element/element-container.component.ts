@@ -1,6 +1,5 @@
 import {
-  Component, OnInit, Input, ComponentFactoryResolver,
-  ViewChild, ViewContainerRef
+  Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, QueryList
 } from '@angular/core';
 import {
   FormBuilder, FormControl, FormGroup, ValidatorFn
@@ -16,19 +15,21 @@ import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
 import {
   InputElement,
-  InputElementValue,
   UIElement,
   ValueChangeElement
 } from '../../../../../common/models/uI-element';
 import { TextFieldElement } from '../../../../../common/models/text-field-element';
 import { FormElementComponent } from '../../../../../common/form-element-component.directive';
+import { ElementComponent } from '../../../../../common/element-component.directive';
+import { CompoundElementComponent }
+  from '../../../../../common/element-components/compound-elements/compound-element.directive';
 
 @Component({
-  selector: 'app-element',
-  templateUrl: './element.component.html',
-  styleUrls: ['./element.component.css']
+  selector: 'app-element-container',
+  templateUrl: './element-container.component.html',
+  styleUrls: ['./element-container.component.css']
 })
-export class ElementComponent implements OnInit {
+export class ElementContainerComponent implements OnInit {
   @Input() elementModel!: UIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
@@ -53,24 +54,23 @@ export class ElementComponent implements OnInit {
     const elementComponentFactory =
       ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
-    elementComponent.elementModel = this.elementModel;
+    elementComponent.elementModel = this.unitStateService.restoreUnitStateValue(this.elementModel);
 
-    const unitStateElementCode = this.unitStateService.getUnitStateElement(this.elementModel.id);
-    if (unitStateElementCode && unitStateElementCode.value !== undefined) {
-      switch (this.elementModel.type) {
-        case 'text':
-          elementComponent.elementModel.text = unitStateElementCode.value;
-          break;
-        case 'video':
-        case 'audio':
-          elementComponent.elementModel.playbackTime = unitStateElementCode.value;
-          break;
-        default:
-          elementComponent.elementModel.value = unitStateElementCode.value;
-      }
+    if (elementComponent.domElement) {
+      this.unitStateService.registerElement(elementComponent.elementModel, elementComponent.domElement);
     }
 
-    this.unitStateService.registerElement(elementComponent.elementModel.id, elementComponent.elementModel.value);
+    if (elementComponent.childrenAdded) {
+      elementComponent.childrenAdded
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((children: QueryList<ElementComponent>) => {
+          children.forEach(child => {
+            if (child.domElement) {
+              this.unitStateService.registerElement(child.elementModel, child.domElement);
+            }
+          });
+        });
+    }
 
     if (elementComponent.applySelection) {
       elementComponent.applySelection
@@ -88,46 +88,35 @@ export class ElementComponent implements OnInit {
         });
     }
 
-    if (elementComponent instanceof FormElementComponent || this.elementModel.type === 'likert') {
-      const elementForm = this.formBuilder.group({});
-      elementComponent.parentForm = elementForm;
-      this.registerFormGroup(elementForm);
-
-      this.formService.registerFormControl({
-        id: this.elementModel.id,
-        formControl: new FormControl((this.elementModel as InputElement).value),
-        formGroup: elementForm
-      });
-
-      if (this.elementModel.type === 'likert') {
-        elementComponent.getChildElementValues()
-          .forEach((element: { id: string, value: InputElementValue }) => {
-            this.unitStateService.registerElement(element.id, element.value);
-            this.formService.registerFormControl({
-              id: element.id,
-              formControl: new FormControl((element as InputElement).value),
-              formGroup: elementForm
-            });
-          });
-      }
-
-      if (elementComponent.setValidators) {
-        elementComponent.setValidators
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe((validators: ValidatorFn[]) => {
-            this.formService.setValidators({
-              id: this.elementModel.id,
-              validators: validators,
-              formGroup: elementForm
-            });
-          });
-      }
-
+    if (elementComponent.formValueChanged) {
       elementComponent.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((changeElement: ValueChangeElement) => {
           this.unitStateService.changeElementValue(changeElement);
         });
+    }
+
+    if (elementComponent.setValidators) {
+      elementComponent.setValidators
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((validators: ValidatorFn[]) => {
+          this.formService.setValidators({
+            id: this.elementModel.id,
+            validators: validators,
+            formGroup: elementForm
+          });
+        });
+    }
+
+    const elementForm = this.formBuilder.group({});
+    if (elementComponent instanceof FormElementComponent) {
+      elementComponent.parentForm = elementForm;
+      this.registerFormGroup(elementForm);
+      this.formService.registerFormControl({
+        id: this.elementModel.id,
+        formControl: new FormControl((this.elementModel as InputElement).value),
+        formGroup: elementForm
+      });
 
       if (this.elementModel.inputAssistancePreset !== 'none' &&
         (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
@@ -138,7 +127,18 @@ export class ElementComponent implements OnInit {
           this.initEventsForKeyboard(elementComponent as TextAreaComponent);
         }
       }
-    } // no else
+    } else if (elementComponent instanceof CompoundElementComponent) {
+      elementComponent.parentForm = elementForm;
+      elementComponent.getFormElementModelChildren()
+        .forEach((element: InputElement) => {
+          this.registerFormGroup(elementForm);
+          this.formService.registerFormControl({
+            id: element.id,
+            formControl: new FormControl(element.value),
+            formGroup: elementForm
+          });
+        });
+    }
   }
 
   private registerFormGroup(elementForm: FormGroup): void {

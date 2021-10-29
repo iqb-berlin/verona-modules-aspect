@@ -20,9 +20,7 @@ import { CompoundElementComponent } from './compound-element.directive';
          [style.line-height.%]="elementModel.lineHeight"
          [style.font-weight]="elementModel.bold ? 'bold' : ''"
          [style.font-style]="elementModel.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.underline ? 'underline' : ''"
-         [style.height.px]="elementModel.height"
-         [style.width.px]="elementModel.width">
+         [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       <div class="headings" [style.display]="'grid'"
            [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.answers.length)"
            [style.grid-column-start]="1"

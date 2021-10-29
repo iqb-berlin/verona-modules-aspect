@@ -1,17 +1,13 @@
-import {
-  EventEmitter, Inject, Injectable, Output
-} from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { EventEmitter } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class IntersectionService {
+export class IntersectionDetector {
   intersectionObserver!: IntersectionObserver;
   elements: { id: string, element: Element }[] = [];
-  @Output() intersecting = new EventEmitter<string>();
+  root!: Document;
+  intersecting = new EventEmitter<string>();
 
-  constructor(@Inject(DOCUMENT) private document: Document) {
+  constructor(root: Document) {
+    this.root = root;
     this.initIntersectionObserver();
   }
 
@@ -24,7 +20,7 @@ export class IntersectionService {
           }
         });
       }, {
-        root: document,
+        root: this.root,
         rootMargin: '0px 0px 0px 0px'
       }
     );
@@ -39,7 +35,6 @@ export class IntersectionService {
     const intersectedElementIndex = this.elements.findIndex(e => e.element === element);
     if (intersectedElementIndex > -1) {
       const intersectedElement = this.elements[intersectedElementIndex];
-      this.intersecting.emit(intersectedElement.id);
       this.intersectionObserver.unobserve(intersectedElement.element);
       this.elements.splice(intersectedElementIndex, 1);
     }

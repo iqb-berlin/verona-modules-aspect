@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 import {
   StatusChangeElement,
   UnitStateElementCode,
@@ -12,7 +13,7 @@ import {
 import { TextElement } from '../../../../common/models/text-element';
 import { VideoElement } from '../../../../common/models/video-element';
 import { AudioElement } from '../../../../common/models/audio-element';
-import { IntersectionService } from './intersection.service';
+import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +21,12 @@ import { IntersectionService } from './intersection.service';
 export class UnitStateService {
   private _presentedPageAdded = new Subject<number>();
   private _unitStateElementCodeChanged = new Subject<UnitStateElementCode>();
+  private intersectionDetector!: IntersectionDetector;
   unitStateElementCodes!: UnitStateElementCode[];
 
-  constructor(private intersectionService: IntersectionService) {}
+  constructor(@Inject(DOCUMENT) private document: Document) {
+    this.intersectionDetector = new IntersectionDetector(document);
+  }
 
   private getUnitStateElement(id: string): UnitStateElementCode | undefined {
     return this.unitStateElementCodes
@@ -58,8 +62,8 @@ export class UnitStateService {
 
   registerElement(elementModel: UIElement, element: Element): void {
     this.initUnitStateValue(elementModel);
-    this.intersectionService.observe(elementModel.id, element);
-    this.intersectionService.intersecting
+    this.intersectionDetector.observe(elementModel.id, element);
+    this.intersectionDetector.intersecting
       .subscribe((id: string) => {
         this.changeElementStatus({ id: id, status: 'DISPLAYED' });
       });

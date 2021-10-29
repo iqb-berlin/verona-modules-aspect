@@ -7,12 +7,7 @@ import {
   UnitStateElementCodeStatus,
   UnitStateElementCodeStatusValue
 } from '../models/verona';
-import {
-  InputElement, InputElementValue, UIElement, ValueChangeElement
-} from '../../../../common/models/uI-element';
-import { TextElement } from '../../../../common/models/text-element';
-import { VideoElement } from '../../../../common/models/video-element';
-import { AudioElement } from '../../../../common/models/audio-element';
+import { InputElementValue, ValueChangeElement } from '../../../../common/models/uI-element';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Injectable({
@@ -28,7 +23,7 @@ export class UnitStateService {
     this.intersectionDetector = new IntersectionDetector(document);
   }
 
-  private getUnitStateElement(id: string): UnitStateElementCode | undefined {
+  getUnitStateElement(id: string): UnitStateElementCode | undefined {
     return this.unitStateElementCodes
       .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
   }
@@ -60,31 +55,13 @@ export class UnitStateService {
     return this._presentedPageAdded.asObservable();
   }
 
-  registerElement(elementModel: UIElement, element: Element): void {
-    this.initUnitStateValue(elementModel);
-    this.intersectionDetector.observe(elementModel.id, element);
+  registerElement(element: { id: string, value: InputElementValue }, domElement: Element): void {
+    this.addUnitStateElementCode(element.id, element.value);
+    this.intersectionDetector.observe(element.id, domElement);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
         this.changeElementStatus({ id: id, status: 'DISPLAYED' });
       });
-  }
-
-  restoreUnitStateValue(elementModel: UIElement): UIElement {
-    const unitStateElementCode = this.getUnitStateElement(elementModel.id);
-    if (unitStateElementCode && unitStateElementCode.value !== undefined) {
-      switch (elementModel.type) {
-        case 'text':
-          elementModel.text = unitStateElementCode.value;
-          break;
-        case 'video':
-        case 'audio':
-          elementModel.playbackTime = unitStateElementCode.value;
-          break;
-        default:
-          elementModel.value = unitStateElementCode.value;
-      }
-    }
-    return elementModel;
   }
 
   addPresentedPage(presentedPage: number): void {
@@ -103,22 +80,6 @@ export class UnitStateService {
     // eslint-disable-next-line no-console
     console.log(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
     this.setUnitStateElementCodeStatus(elementStatus.id, elementStatus.status);
-  }
-
-  private initUnitStateValue(elementModel: UIElement): void {
-    switch (elementModel.type) {
-      case 'text':
-        this.addUnitStateElementCode(elementModel.id, (elementModel as TextElement).text);
-        break;
-      case 'video':
-        this.addUnitStateElementCode(elementModel.id, (elementModel as VideoElement).playbackTime);
-        break;
-      case 'audio':
-        this.addUnitStateElementCode(elementModel.id, (elementModel as AudioElement).playbackTime);
-        break;
-      default:
-        this.addUnitStateElementCode(elementModel.id, (elementModel as InputElement).value);
-    }
   }
 
   private addUnitStateElementCode(id: string, value: InputElementValue): void {

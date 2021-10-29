@@ -14,7 +14,7 @@ import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
 import {
-  InputElement,
+  InputElement, InputElementValue,
   UIElement,
   ValueChangeElement
 } from '../../../../../common/models/uI-element';
@@ -23,6 +23,9 @@ import { FormElementComponent } from '../../../../../common/form-element-compone
 import { ElementComponent } from '../../../../../common/element-component.directive';
 import { CompoundElementComponent }
   from '../../../../../common/element-components/compound-elements/compound-element.directive';
+import { TextElement } from '../../../../../common/models/text-element';
+import { VideoElement } from '../../../../../common/models/video-element';
+import { AudioElement } from '../../../../../common/models/audio-element';
 
 @Component({
   selector: 'app-element-container',
@@ -54,10 +57,12 @@ export class ElementContainerComponent implements OnInit {
     const elementComponentFactory =
       ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
-    elementComponent.elementModel = this.unitStateService.restoreUnitStateValue(this.elementModel);
+    elementComponent.elementModel = this.restoreUnitStateValue(this.elementModel);
 
     if (elementComponent.domElement) {
-      this.unitStateService.registerElement(elementComponent.elementModel, elementComponent.domElement);
+      this.unitStateService.registerElement(
+        this.initUnitStateValue(elementComponent.elementModel), elementComponent.domElement
+      );
     }
 
     if (elementComponent.childrenAdded) {
@@ -66,7 +71,7 @@ export class ElementContainerComponent implements OnInit {
         .subscribe((children: QueryList<ElementComponent>) => {
           children.forEach(child => {
             if (child.domElement) {
-              this.unitStateService.registerElement(child.elementModel, child.domElement);
+              this.unitStateService.registerElement(this.initUnitStateValue(child.elementModel), child.domElement);
             }
           });
         });
@@ -140,6 +145,37 @@ export class ElementContainerComponent implements OnInit {
         });
     }
   }
+
+  private restoreUnitStateValue(elementModel: UIElement): UIElement {
+    const unitStateElementCode = this.unitStateService.getUnitStateElement(elementModel.id);
+    if (unitStateElementCode && unitStateElementCode.value !== undefined) {
+      switch (elementModel.type) {
+        case 'text':
+          elementModel.text = unitStateElementCode.value;
+          break;
+        case 'video':
+        case 'audio':
+          elementModel.playbackTime = unitStateElementCode.value;
+          break;
+        default:
+          elementModel.value = unitStateElementCode.value;
+      }
+    }
+    return elementModel;
+  }
+
+  private initUnitStateValue = (elementModel: UIElement): { id: string, value: InputElementValue } => {
+    switch (elementModel.type) {
+      case 'text':
+        return { id: elementModel.id, value: (elementModel as TextElement).text };
+      case 'video':
+        return { id: elementModel.id, value: (elementModel as VideoElement).playbackTime };
+      case 'audio':
+        return { id: elementModel.id, value: (elementModel as AudioElement).playbackTime };
+      default:
+        return { id: elementModel.id, value: (elementModel as InputElement).value };
+    }
+  };
 
   private registerFormGroup(elementForm: FormGroup): void {
     this.formService.registerFormGroup({

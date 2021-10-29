@@ -35,6 +35,7 @@ export class IntersectionDetector {
     const intersectedElementIndex = this.elements.findIndex(e => e.element === element);
     if (intersectedElementIndex > -1) {
       const intersectedElement = this.elements[intersectedElementIndex];
+      this.intersecting.emit(intersectedElement.id);
       this.intersectionObserver.unobserve(intersectedElement.element);
       this.elements.splice(intersectedElementIndex, 1);
     }

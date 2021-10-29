@@ -4,6 +4,8 @@ Player
  - Turn the display of the audio/video start button on and off
  - Turn the display of the audio/video pause button on and off
  - Turn the display of the audio/video progressbar on and off
+ - Turn the display of the audio/video progressbar on and off
+ - Turn the use of the audio/video progressbar on and off
  - Turn the display of the audio/video volume controls on and off
  - Turn the display of the audio/video remaining time display on and off
  - Change the display mode of the audio/videoAudio/video time by clicking on it

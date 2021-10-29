@@ -26,6 +26,7 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
                        [formControl]="elementFormControl">
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
                           [value]="i"
+                          [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [style.line-height.%]="elementModel.lineHeight">
           {{option}}
         </mat-radio-button>

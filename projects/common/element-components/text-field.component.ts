@@ -19,6 +19,7 @@ import { TextFieldElement } from '../models/text-field-element';
                     [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" [pattern]="elementModel.pattern" #input
+             [readonly]="elementModel.readOnly"
              (focus)="onFocus.emit(input)"
              (blur)="onBlur.emit(input)"
              autocomplete="off"
@@ -43,6 +44,7 @@ import { TextFieldElement } from '../models/text-field-element';
                     appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" #input
+             [readonly]="elementModel.readOnly"
              [pattern]="elementModel.pattern"
              (focus)="onFocus.emit(input)"
              (blur)="onBlur.emit(input)"

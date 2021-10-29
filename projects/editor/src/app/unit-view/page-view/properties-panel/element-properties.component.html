@@ -49,6 +49,11 @@
           Deselektion erlauben
         </mat-checkbox>
 
+        <mat-checkbox *ngIf="combinedProperties.readOnly !== undefined"
+                      [checked]="$any(combinedProperties.readOnly)"
+                      (change)="updateModel('readOnly', $event.checked)">
+          Schreibgeschützt
+        </mat-checkbox>
         <mat-checkbox *ngIf="combinedProperties.required !== undefined"
                       [checked]="$any(combinedProperties.required)"
                       (change)="updateModel('required', $event.checked)">

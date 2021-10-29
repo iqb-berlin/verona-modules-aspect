@@ -11,6 +11,7 @@ import { CheckboxElement } from '../models/checkbox-element';
          [style.height.%]="100"
          [style.background-color]="elementModel.backgroundColor">
       <mat-checkbox #checkbox class="example-margin"
+                    (click)="elementModel.readOnly ? $event.preventDefault() : null"
                     [formControl]="elementFormControl"
                     [style.color]="elementModel.fontColor"
                     [style.font-family]="elementModel.font"

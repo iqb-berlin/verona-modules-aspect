@@ -17,6 +17,7 @@ import { TextAreaElement } from '../models/text-area-element';
                     [appearance]="$any(elementModel.appearance)">
       <textarea matInput [formControl]="elementFormControl" #input
                 rows="{{elementModel.rows}}"
+                [readonly]="elementModel.readOnly"
                 (focus)="onFocus.emit(input)"
                 (blur)="onBlur.emit(input)"
                 autocomplete="off"

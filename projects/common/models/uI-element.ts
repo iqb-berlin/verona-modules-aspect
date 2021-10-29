@@ -50,6 +50,7 @@ export abstract class InputElement extends UIElement {
   value: InputElementValue;
   required: boolean;
   requiredWarnMessage: string;
+  readOnly: boolean = false;
 
   protected constructor(serializedElement: UIElement) {
     super(serializedElement);
@@ -57,5 +58,6 @@ export abstract class InputElement extends UIElement {
     this.value = serializedElement.value as string | number | boolean | null || null;
     this.required = serializedElement.required as boolean || false;
     this.requiredWarnMessage = serializedElement.requiredWarnMessage as string || 'Eingabe erforderlich';
+    this.readOnly = serializedElement.readOnly as boolean || false;
   }
 }

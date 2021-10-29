@@ -7,6 +7,7 @@ export class LikertElement extends UIElement implements FontElement, SurfaceUIEl
   questions: LikertElementRow[] = [];
   answers: AnswerOption[] = [];
   lineColoring: boolean = true;
+  readOnly: boolean = false;
 
   fontColor: string = 'black';
   font: string = 'Roboto';
@@ -34,6 +35,11 @@ export class LikertElement extends UIElement implements FontElement, SurfaceUIEl
     if (property === 'answers') {
       this.questions.forEach(question => {
         question.columnCount = this.answers.length;
+      });
+    }
+    if (property === 'readOnly') {
+      this.questions.forEach(question => {
+        question.readOnly = this.readOnly;
       });
     }
   }

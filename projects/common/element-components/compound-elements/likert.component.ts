@@ -46,7 +46,7 @@ import { CompoundElementComponent } from './compound-element.directive';
 
       <ng-container *ngFor="let question of elementModel.questions; let i = index">
         <app-likert-radio-button-group
-             [ngClass]="{ 'odd': elementModel.lineColoring && i % 2 === 0 }"
+             [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
              [style.display]="'grid'"
              [style.grid-column-start]="1"
              [style.grid-column-end]="elementModel.answers.length + 2"
@@ -62,7 +62,6 @@ import { CompoundElementComponent } from './compound-element.directive';
   `,
   styles: [
     '.headings {padding-bottom: 10px}',
-    '.odd {background-color: #D0F6E7;}',
     '.answers {text-align: center;}',
     '::ng-deep app-likert mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}'
   ]

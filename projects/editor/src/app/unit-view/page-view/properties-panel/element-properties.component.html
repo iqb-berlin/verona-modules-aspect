@@ -330,6 +330,13 @@
           Zeilenfärbung
         </mat-checkbox>
 
+        <mat-form-field *ngIf="combinedProperties.lineColoringColor"
+                        appearance="fill" class="mdInput textsingleline">
+          <mat-label>Zeilenfarbe</mat-label>
+          <input matInput type="color" [value]="combinedProperties.lineColoringColor"
+                 (input)="updateModel('lineColoringColor', $any($event.target).value)">
+        </mat-form-field>
+
         <mat-divider></mat-divider>
 
         <button mat-raised-button class="element-button"

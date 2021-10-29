@@ -7,6 +7,7 @@ export class LikertElement extends UIElement implements FontElement, SurfaceUIEl
   questions: LikertElementRow[] = [];
   answers: AnswerOption[] = [];
   lineColoring: boolean = true;
+  lineColoringColor: string = '#D0F6E7';
   readOnly: boolean = false;
 
   fontColor: string = 'black';

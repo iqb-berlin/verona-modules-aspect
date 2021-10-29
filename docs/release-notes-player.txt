@@ -1,5 +1,9 @@
 Player
 ======
+next
+ - [Bug] Fix position of error warn message for radio buttons
+
+
 1.2.2
  - Turn the display of the audio/video start button on and off
  - Turn the display of the audio/video pause button on and off

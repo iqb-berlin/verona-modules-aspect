@@ -45,7 +45,8 @@
 
   <button mat-fab class="add-section-button"
           [style.width.px]="page.hasMaxWidth ? page.maxWidth : 900"
-          [style.margin.px]="page.margin"
+          [style.margin-left.px]="page.margin"
+          [style.margin-right.px]="page.margin"
           (click)="addSection()">
     <mat-icon>add</mat-icon>
   </button>

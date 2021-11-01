@@ -115,6 +115,7 @@
     <mat-icon>emoji_symbols</mat-icon>
   </button>
   <mat-menu #specialCharsMenu="matMenu" yPosition="above">
+    <button mat-button (click)="insertSpecialChar('&nbsp;')">&blank;</button>
     <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
     <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
     <button mat-button (click)="insertSpecialChar('&micro;')">&micro;</button>

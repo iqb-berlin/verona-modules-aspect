@@ -198,7 +198,8 @@ export class RichTextEditDialog {
             </mat-form-field>
             <mat-form-field *ngIf="newPlayerConfig.hintLabel !== ''" appearance="fill">
               <mat-label>{{ 'player.hintLabelDelay' | translate }}</mat-label>
-              <input matInput type="number" [value]="newPlayerConfig.hintLabelDelay"
+              <input matInput type="number" step="1000"
+                     [value]="newPlayerConfig.hintLabelDelay"
                      (input)="newPlayerConfig.hintLabelDelay = $any($event.target).value">
             </mat-form-field>
           </div>
@@ -210,8 +211,9 @@ export class RichTextEditDialog {
               {{ 'player.autoStart' | translate }}
             </mat-checkbox>
             <mat-form-field *ngIf="newPlayerConfig.autostart" appearance="fill">
-              <mat-label>Autostart Verzögerung</mat-label>
-              <input matInput type="number" [value]="newPlayerConfig.autostartDelay || data.player.autostartDelay"
+              <mat-label>{{ 'player.autoStartDelay' | translate }}</mat-label>
+              <input matInput type="number" step="1000"
+                     [value]="newPlayerConfig.autostartDelay || data.player.autostartDelay"
                      (input)="newPlayerConfig.autostartDelay = $any($event.target).value">
             </mat-form-field>
             <mat-checkbox [checked]="newPlayerConfig.loop || data.player.loop"

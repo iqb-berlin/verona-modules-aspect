@@ -21,6 +21,7 @@
   },
   "player": {
     "autoStart": "Autostart",
+    "autoStartDelay": "Autostart Verzögerung (ms)",
     "loop": "Wiederholt abspielen",
     "startControl": "Startknopf",
     "pauseControl": "Pauseknopf",
@@ -32,7 +33,7 @@
     "showRestRuns": "Verbleibender Durchläufe anzeigen",
     "showRestTime": "Verbleibende Zeit anzeigen",
     "hintLabel": "Aufforderungstext zum Starten",
-    "hintLabelDelay": "Verzögerung für Aufforderungstext",
+    "hintLabelDelay": "Verzögerung Aufforderungstext (ms)",
     "activeAfterID": "Abspielbar nach Audio/Video-ID",
     "minRuns": "Minimale Anzahl der Durchläufe",
     "maxRuns": "Maximale Anzahl der Durchläufe",

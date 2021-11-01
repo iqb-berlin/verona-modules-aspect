@@ -44,7 +44,11 @@ import { TextElement } from '../models/text-element';
     '.marking-bar {position: sticky; top: 0; margin-bottom: 15px}',
     '.marking-button {color: #333}',
     '::ng-deep .text-container p strong {letter-spacing: 0.04em; font-weight: 600}', // bold less bold
-    '::ng-deep .text-container p:empty::after {content: "\\00A0"}' // render empty p
+    '::ng-deep .text-container p:empty::after {content: "\\00A0"}', // render empty p
+    '::ng-deep .text-container h1 {font-weight: bold; font-size: 20px;}',
+    '::ng-deep .text-container h2 {font-weight: bold; font-size: 18px;}',
+    '::ng-deep .text-container h3 {font-weight: bold; font-size: 16px;}',
+    '::ng-deep .text-container h4 {font-weight: normal; font-size: 16px;}'
   ]
 })
 export class TextComponent extends ElementComponent {

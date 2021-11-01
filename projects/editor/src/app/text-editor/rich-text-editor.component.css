@@ -32,3 +32,20 @@ app-rich-text-editor .editor-control-line {
   letter-spacing: 0.04em !important;
   font-weight: 600 !important;
 }
+
+.ProseMirror h1 {
+  font-weight: bold;
+  font-size: 20px;
+}
+.ProseMirror h2 {
+  font-weight: bold;
+  font-size: 18px;
+}
+.ProseMirror h3 {
+  font-weight: bold;
+  font-size: 16px;
+}
+.ProseMirror h4 {
+  font-weight: normal;
+  font-size: 16px;
+}

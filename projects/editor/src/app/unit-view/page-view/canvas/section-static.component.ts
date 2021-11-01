@@ -21,7 +21,7 @@ import { UIElementType } from '../../../../../../common/models/uI-element';
     </div>
   `,
   styles: [
-    '.section-wrapper {position: relative; width: 100%}'
+    '.section-wrapper {position: relative; width: 100%; overflow: hidden;}'
   ]
 })
 export class SectionStaticComponent {

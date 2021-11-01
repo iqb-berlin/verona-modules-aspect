@@ -20,8 +20,6 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
       </label>
 <!--      TODO why margin-bottom?-->
       <mat-radio-group aria-labelledby="radio-group-label"
-                       [style.margin-bottom.px]="25"
-                       [style.margin-top.px]="10"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl">
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
@@ -46,7 +44,7 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
     '::ng-deep app-radio-button-group mat-radio-button {margin-bottom: 6px}',
     '::ng-deep app-radio-button-group mat-radio-button {margin-right: 15px}',
     '.white-space-break {white-space: normal}',
-    '.error-message { position: absolute; margin-top: 25px; font-size: 75% }',
+    '.error-message { font-size: 75% }',
     '::ng-deep app-radio-button-group .strike .mat-radio-label {text-decoration: line-through}',
     '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label {align-items: unset}',
     '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label .mat-radio-container {margin-top: 1px}'

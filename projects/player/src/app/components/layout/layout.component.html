@@ -27,7 +27,6 @@
            [style.margin.px]="alwaysVisiblePage.margin">
         <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
         <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
-                  [index]="alwaysVisibleUnitPageIndex"
                   [parentForm]="parentForm"
                   [isLastPage]="false"
                   [pagesContainer]="alwaysVisiblePageContainer"
@@ -68,7 +67,6 @@
         <div [style.margin.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
           <app-page [parentArrayIndex]="scrollPagesIndices[i]"
-                    [index]="scrollPagesIndices[i]"
                     [parentForm]="parentForm"
                     [isLastPage]="last"
                     [pagesContainer]="pagesContainer"
@@ -95,7 +93,6 @@
         {{'pageIndication' | translate: {index: i + 1} }}
       </div>
       <app-page [parentArrayIndex]="scrollPagesIndices[i]"
-                [index]="scrollPagesIndices[i]"
                 [parentForm]="parentForm"
                 [pagesContainer]="pagesContainer"
                 [page]="page"

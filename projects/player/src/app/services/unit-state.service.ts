@@ -20,7 +20,7 @@ export class UnitStateService {
   unitStateElementCodes!: UnitStateElementCode[];
 
   constructor(@Inject(DOCUMENT) private document: Document) {
-    this.intersectionDetector = new IntersectionDetector(document);
+    this.intersectionDetector = new IntersectionDetector(document, '0px 0px 0px 0px');
   }
 
   getUnitStateElement(id: string): UnitStateElementCode | undefined {
@@ -57,10 +57,11 @@ export class UnitStateService {
 
   registerElement(element: { id: string, value: InputElementValue }, domElement: Element): void {
     this.addUnitStateElementCode(element.id, element.value);
-    this.intersectionDetector.observe(element.id, domElement);
+    this.intersectionDetector.observe(domElement, element.id);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
         this.changeElementStatus({ id: id, status: 'DISPLAYED' });
+        this.intersectionDetector.unobserve(id);
       });
   }
 

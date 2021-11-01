@@ -16,8 +16,6 @@ export class PageComponent implements OnInit {
   @Input() isLastPage!: boolean;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
-  @Input() index!: number;
-
   @Input() pagesContainer!: HTMLElement;
   @Output() selectedIndexChange = new EventEmitter<number>();
 
@@ -40,12 +38,7 @@ export class PageComponent implements OnInit {
     });
   }
 
-  onIntersection(detectionType: 'top' | 'bottom'): void {
-    if (detectionType === 'bottom') {
-      this.unitStateService.addPresentedPage(this.index);
-    }
-    if (detectionType === 'top' || this.isLastPage) {
-      this.selectedIndexChange.emit(this.index);
-    }
+  onIntersection(): void {
+    this.selectedIndexChange.emit(this.parentArrayIndex);
   }
 }

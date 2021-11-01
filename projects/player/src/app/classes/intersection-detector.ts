@@ -3,11 +3,14 @@ import { EventEmitter } from '@angular/core';
 export class IntersectionDetector {
   intersectionObserver!: IntersectionObserver;
   elements: { id: string, element: Element }[] = [];
-  root!: Document;
-  intersecting = new EventEmitter<string>();
+  root!: Document | HTMLElement;
+  constraint!: string;
+  intersecting = new EventEmitter<string | null>();
 
-  constructor(root: Document) {
+  constructor(root: Document | HTMLElement,
+              constraint: string) {
     this.root = root;
+    this.constraint = constraint;
     this.initIntersectionObserver();
   }
 
@@ -21,23 +24,39 @@ export class IntersectionDetector {
         });
       }, {
         root: this.root,
-        rootMargin: '0px 0px 0px 0px'
+        rootMargin: this.constraint
       }
     );
   }
 
-  observe(id: string, element: Element): void {
-    this.elements.push({ id, element });
+  observe(element: Element, id?: string): void {
+    if (id) {
+      this.elements.push({ id, element });
+    }
     this.intersectionObserver.observe(element);
   }
 
-  private intersectionDetected(element: Element):void {
+  unobserve(id: string): void {
+    const elementIndex = this.elements.findIndex(e => e.id === id);
+    if (elementIndex > -1) {
+      const element = this.elements[elementIndex];
+      this.intersectionObserver.unobserve(element.element);
+      this.elements.splice(elementIndex, 1);
+    }
+  }
+
+  disconnect(element: Element): void {
+    this.intersectionObserver.unobserve(element);
+    this.intersectionObserver.disconnect();
+  }
+
+  private intersectionDetected(element: Element): void {
     const intersectedElementIndex = this.elements.findIndex(e => e.element === element);
     if (intersectedElementIndex > -1) {
       const intersectedElement = this.elements[intersectedElementIndex];
       this.intersecting.emit(intersectedElement.id);
-      this.intersectionObserver.unobserve(intersectedElement.element);
-      this.elements.splice(intersectedElementIndex, 1);
+    } else {
+      this.intersecting.emit();
     }
   }
 }

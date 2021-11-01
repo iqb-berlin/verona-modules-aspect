@@ -1,42 +1,30 @@
 import {
   Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
+import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Directive({
   selector: '[appIntersectionDetection]'
 })
 export class IntersectionDetectionDirective implements OnInit, OnDestroy {
   @Input() detectionType!: 'top' | 'bottom';
-  @Output() intersecting = new EventEmitter<'top' | 'bottom'>();
+  @Output() intersecting = new EventEmitter();
   @Input() intersectionContainer!: HTMLElement;
 
-  intersectionObserver!: IntersectionObserver;
-
-  private constraint!: string;
+  intersectionDetector!: IntersectionDetector;
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    this.constraint = this.detectionType === 'top' ? '0px 0px -95% 0px' : '-95% 0px 0px 0px';
-    this.initIntersectionObserver();
-  }
-
-  initIntersectionObserver(): void {
-    this.intersectionObserver = new IntersectionObserver(
-      (entries: IntersectionObserverEntry[]): void => entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          this.intersecting.emit(this.detectionType);
-        }
-      }), {
-        root: this.intersectionContainer,
-        rootMargin: this.constraint
-      }
-    );
-    this.intersectionObserver.observe(this.elementRef.nativeElement);
+    const constraint = this.detectionType === 'top' ? '0px 0px 0px 0px' : '-95% 0px 0px 0px';
+    this.intersectionDetector = new IntersectionDetector(this.intersectionContainer, constraint);
+    this.intersectionDetector.observe(this.elementRef.nativeElement);
+    this.intersectionDetector.intersecting.subscribe(() => {
+      this.intersecting.emit();
+    });
   }
 
   ngOnDestroy(): void {
-    this.intersectionObserver.unobserve(this.elementRef.nativeElement);
-    this.intersectionObserver.disconnect();
+    this.intersectionDetector.disconnect(this.elementRef.nativeElement);
   }
 }

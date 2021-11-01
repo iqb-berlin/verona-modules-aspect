@@ -161,7 +161,7 @@
           <mat-label>Vorbelegung</mat-label>
           <mat-select [value]="combinedProperties.value"
                       (selectionChange)="updateModel('value', $event.value)">
-            <mat-option>undefiniert</mat-option>
+            <mat-option [value]="null">undefiniert</mat-option>
             <mat-option *ngFor="let option of $any(combinedProperties).options; let i = index" [value]="i">
               {{option}}
             </mat-option>

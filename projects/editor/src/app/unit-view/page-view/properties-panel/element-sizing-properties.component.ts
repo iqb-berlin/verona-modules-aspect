@@ -14,13 +14,17 @@ import { UIElement } from '../../../../../../common/models/uI-element';
           <mat-label>Breite</mat-label>
           <input matInput type="number" #width="ngModel" min="0"
                  [ngModel]="combinedProperties.width"
-                 (ngModelChange)="updateModel.emit({ property: 'width', value: $event, isInputValid: width.valid })">
+                 (ngModelChange)="updateModel.emit({ property: 'width',
+                                                     value: $event,
+                                                     isInputValid: width .valid && $event !== null})">
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Hoehe</mat-label>
           <input matInput type="number" #height="ngModel" min="0"
                  [ngModel]="combinedProperties.height"
-                 (ngModelChange)="updateModel.emit({ property: 'height', value: $event, isInputValid: height.valid })">
+                 (ngModelChange)="updateModel.emit({ property: 'height',
+                                                     value: $event,
+                                                     isInputValid: height .valid && $event !== null})">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -28,7 +32,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
           <input matInput type="number" #xPosition="ngModel" min="0"
                  [ngModel]="combinedProperties.xPosition"
                  (ngModelChange)="updateModel.emit(
-                    { property: 'xPosition', value: $event, isInputValid: xPosition.valid })">
+                    { property: 'xPosition', value: $event, isInputValid: xPosition .valid && $event !== null })">
         </mat-form-field>
 
         <mat-form-field appearance="fill">
@@ -36,7 +40,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
           <input matInput type="number" #yPosition="ngModel" min="0"
                  [ngModel]="combinedProperties.yPosition"
                  (ngModelChange)="updateModel.emit(
-                    { property: 'yPosition', value: $event, isInputValid: yPosition.valid })">
+                    { property: 'yPosition', value: $event, isInputValid: yPosition .valid && $event !== null })">
         </mat-form-field>
       </ng-container>
       <ng-template #elseBlock>
@@ -44,13 +48,17 @@ import { UIElement } from '../../../../../../common/models/uI-element';
           <mat-label>Mindestbreite</mat-label>
           <input matInput type="number" #width="ngModel" min="0"
                  [ngModel]="combinedProperties.width"
-                 (ngModelChange)="updateModel.emit({ property: 'width', value: $event, isInputValid: width.valid })">
+                 (ngModelChange)="updateModel.emit({ property: 'width',
+                                                     value: $event,
+                                                     isInputValid: width .valid && $event !== null })">
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>Mindesthöhe</mat-label>
           <input matInput type="number" #height="ngModel" min="0"
                  [ngModel]="combinedProperties.height"
-                 (ngModelChange)="updateModel.emit({ property: 'height', value: $event, isInputValid: height.valid })">
+                 (ngModelChange)="updateModel.emit({ property: 'height',
+                                                     value: $event,
+                                                     isInputValid: height .valid && $event !== null })">
         </mat-form-field>
 
         Grid
@@ -88,7 +96,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
             <input matInput type="number" #marginTop="ngModel" min="0"
                    [ngModel]="combinedProperties.marginTop"
                    (ngModelChange)="updateModel.emit(
-                      { property: 'marginTop', value: $event, isInputValid: marginTop.valid })">
+                      { property: 'marginTop', value: $event, isInputValid: marginTop .valid && $event !== null })">
           </mat-form-field>
           <div fxLayoutAlign="row">
             <mat-form-field class="small-input">
@@ -96,14 +104,16 @@ import { UIElement } from '../../../../../../common/models/uI-element';
               <input matInput type="number" #marginLeft="ngModel" min="0"
                      [ngModel]="combinedProperties.marginLeft"
                      (ngModelChange)="updateModel.emit(
-                        { property: 'marginLeft', value: $event, isInputValid: marginLeft.valid })">
+                        { property: 'marginLeft', value: $event, isInputValid: marginLeft .valid && $event !== null })">
             </mat-form-field>
             <mat-form-field class="right-form-field small-input">
               <mat-label>rechts</mat-label>
               <input matInput type="number" #marginRight="ngModel" min="0"
                      [ngModel]="combinedProperties.marginRight"
                      (ngModelChange)="updateModel.emit(
-                        { property: 'marginRight', value: $event, isInputValid: marginRight.valid })">
+                        { property: 'marginRight',
+                          value: $event,
+                          isInputValid: marginRight .valid && $event !== null })">
             </mat-form-field>
           </div>
           <mat-form-field class="centered-form-field small-input">
@@ -111,7 +121,9 @@ import { UIElement } from '../../../../../../common/models/uI-element';
             <input matInput type="number" #marginBottom="ngModel" min="0"
                    [ngModel]="combinedProperties.marginBottom"
                    (ngModelChange)="updateModel.emit(
-                      { property: 'marginBottom', value: $event, isInputValid: marginBottom.valid })">
+                      { property: 'marginBottom',
+                        value: $event,
+                        isInputValid: marginBottom .valid && $event !== null })">
           </mat-form-field>
         </div>
       </ng-template>
@@ -120,7 +132,9 @@ import { UIElement } from '../../../../../../common/models/uI-element';
         <mat-label>Z-Index</mat-label>
         <input matInput type="number" #zIndex="ngModel" min="0"
                [ngModel]="combinedProperties.zIndex"
-               (ngModelChange)="updateModel.emit({ property: 'zIndex', value: $event, isInputValid: zIndex.valid })"
+               (ngModelChange)="updateModel.emit({ property: 'zIndex',
+                                                   value: $event,
+                                                   isInputValid: zIndex .valid && $event !== null })"
                matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
       </mat-form-field>
       <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">

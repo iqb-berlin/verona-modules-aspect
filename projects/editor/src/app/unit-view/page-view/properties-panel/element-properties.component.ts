@@ -76,7 +76,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   updateModel(property: string,
               value: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null,
               isInputValid: boolean | null = true): void {
-    if (isInputValid && value !== null) {
+    if (isInputValid) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);
     } else {
       this.messageService.showWarning('Eingabe ungültig');

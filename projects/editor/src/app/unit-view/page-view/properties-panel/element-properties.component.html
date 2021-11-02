@@ -126,11 +126,11 @@
           {{'propertiesPanel.resizeEnabled' | translate }}
         </mat-checkbox>
 
-        <mat-form-field *ngIf="combinedProperties.rows != null"
+        <mat-form-field *ngIf="combinedProperties.rowCount != null"
                         appearance="fill" class="mdInput textsingleline">
           <mat-label>{{'rows' | translate }}</mat-label>
-          <input matInput type="number" [value]="combinedProperties.rows"
-                 (input)="updateModel('rows', $any($event.target).value)">
+          <input matInput type="number" [value]="combinedProperties.rowCount"
+                 (input)="updateModel('rowCount', $any($event.target).value)">
         </mat-form-field>
 
         <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">

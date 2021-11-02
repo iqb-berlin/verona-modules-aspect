@@ -5,7 +5,7 @@ import { initFontElement, initSurfaceElement } from '../util/unit-interface-init
 export class TextAreaElement extends InputElement implements FontElement, SurfaceUIElement {
   appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
-  rows: number = 3;
+  rowCount: number = 3;
 
   fontColor: string = 'black';
   font: string = 'Roboto';

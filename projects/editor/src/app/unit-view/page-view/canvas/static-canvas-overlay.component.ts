@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { CdkDragMove } from '@angular/cdk/drag-drop';
+import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { CanvasElementOverlay } from './canvas-element-overlay';
 import { UIElement } from '../../../../../../common/models/uI-element';
 
@@ -23,7 +23,9 @@ import { UIElement } from '../../../../../../common/models/uI-element';
            [style.top.px]="element.yPosition"
            [style.z-index]="element.zIndex">
         <div *ngIf="isSelected" class="resizeHandle"
-             cdkDrag (cdkDragStarted)="resizeDragStart()" (cdkDragMoved)="resizeElement($event)"
+             cdkDrag (cdkDragStarted)="resizeDragStart()"
+             (cdkDragMoved)="resizeElement($event)"
+             (cdkDragEnded)="updateModel($event)"
              cdkDragBoundary=".section-wrapper"
              [style.right.px]="-1"
              [style.bottom.px]="-7"
@@ -57,6 +59,11 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
   }
 
   resizeElement(event: CdkDragMove): void {
+    this.element.width = Math.max(this.oldX + event.distance.x, 0);
+    this.element.height = Math.max(this.oldY + event.distance.y, 0);
+  }
+
+  updateModel(event: CdkDragEnd): void {
     this.unitService.updateElementProperty(
       this.selectionService.getSelectedElements(),
       'width',

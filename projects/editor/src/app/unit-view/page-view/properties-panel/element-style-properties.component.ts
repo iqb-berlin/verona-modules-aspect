@@ -13,6 +13,12 @@ import { UIElement } from '../../../../../../common/models/uI-element';
         <input matInput type="color" [value]="combinedProperties.backgroundColor"
                (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
       </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.backgroundColor"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>Hintergrundfarbe</mat-label>
+        <input matInput type="text" [value]="combinedProperties.backgroundColor"
+               (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
+      </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.fontColor"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>Schriftfarbe</mat-label>

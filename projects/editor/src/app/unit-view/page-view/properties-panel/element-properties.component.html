@@ -268,22 +268,22 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field disabled="true" *ngIf="combinedProperties.questions !== undefined">
+        <mat-form-field disabled="true" *ngIf="combinedProperties.rows !== undefined">
           <ng-container>
-            <mat-label>{{'propertiesPanel.rows' | translate }}</mat-label>
-            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.questions"
-                 (cdkDropListDropped)="reorderOptions('questions', $any($event))">
-              <div *ngFor="let question of $any(combinedProperties.questions); let i = index" cdkDrag
+            <mat-label>{{'rows' | translate }}</mat-label>
+            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.rows"
+                 (cdkDropListDropped)="reorderOptions('rows', $any($event))">
+              <div *ngFor="let row of $any(combinedProperties.rows); let i = index" cdkDrag
                    class="list-items" fxLayout="row" fxLayoutAlign="end center">
                 <div fxFlex="70">
-                  {{question.text}}
+                  {{row.text}}
                 </div>
                 <button mat-icon-button color="primary"
-                        (click)="editQuestionOption(i)">
+                        (click)="editRowOption(i)">
                   <mat-icon>build</mat-icon>
                 </button>
                 <button mat-icon-button color="primary"
-                        (click)="removeOption('questions', question)">
+                        (click)="removeOption('rows', row)">
                   <mat-icon>clear</mat-icon>
                 </button>
               </div>
@@ -291,30 +291,30 @@
           </ng-container>
           <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-icon-button matPrefix
-                    (click)="addQuestion(newQuestion.value); newQuestion.select()">
+                    (click)="addRow(newRow.value); newRow.select()">
               <mat-icon>add</mat-icon>
             </button>
-            <input #newQuestion matInput type="text" placeholder="Fragetext"
-                   (keyup.enter)="addQuestion(newQuestion.value); newQuestion.select()">
+            <input #newRow matInput type="text" placeholder="Fragetext"
+                   (keyup.enter)="addRow(newRow.value); newRow.select()">
           </div>
         </mat-form-field>
 
-        <mat-form-field disabled="true" *ngIf="combinedProperties.answers !== undefined">
+        <mat-form-field disabled="true" *ngIf="combinedProperties.columns !== undefined">
           <ng-container>
-            <mat-label>{{'propertiesPanel.columns' | translate }}</mat-label>
-            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.answers"
-                 (cdkDropListDropped)="reorderOptions('answers', $any($event))">
-              <div *ngFor="let answer of $any(combinedProperties.answers); let i = index" cdkDrag
+            <mat-label>{{'columns' | translate }}</mat-label>
+            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.columns"
+                 (cdkDropListDropped)="reorderOptions('columns', $any($event))">
+              <div *ngFor="let column of $any(combinedProperties.columns); let i = index" cdkDrag
                    class="list-items" fxLayout="row" fxLayoutAlign="end center">
                 <div fxFlex="70">
-                  {{answer.text}}
+                  {{column.text}}
                 </div>
                 <button mat-icon-button color="primary"
-                        (click)="editAnswerOption(i)">
+                        (click)="editColumnOption(i)">
                   <mat-icon>build</mat-icon>
                 </button>
                 <button mat-icon-button color="primary"
-                        (click)="removeOption('answers', answer)">
+                        (click)="removeOption('columns', column)">
                   <mat-icon>clear</mat-icon>
                 </button>
               </div>
@@ -322,11 +322,11 @@
           </ng-container>
           <div fxLayout="row" fxLayoutAlign="center center">
             <button mat-icon-button matPrefix
-                    (click)="addAnswer(newAnswer.value); newAnswer.select()">
+                    (click)="addColumn(newColumn.value); newColumn.select()">
               <mat-icon>add</mat-icon>
             </button>
-            <input #newAnswer matInput type="text" placeholder="Antworttext"
-                   (keyup.enter)="addAnswer(newAnswer.value); newAnswer.select()">
+            <input #newColumn matInput type="text" placeholder="Antworttext"
+                   (keyup.enter)="addColumn(newColumn.value); newColumn.select()">
           </div>
         </mat-form-field>
 

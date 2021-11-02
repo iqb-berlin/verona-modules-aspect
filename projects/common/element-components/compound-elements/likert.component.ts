@@ -12,7 +12,7 @@ import { CompoundElementComponent } from './compound-element.directive';
   selector: 'app-likert',
   template: `
     <div class="mat-typography"
-         [style.display]="'grid'" [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.answers.length)"
+         [style.display]="'grid'" [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.columns.length)"
          [style.background-color]="elementModel.backgroundColor"
          [style.color]="elementModel.fontColor"
          [style.font-family]="elementModel.font"
@@ -22,12 +22,12 @@ import { CompoundElementComponent } from './compound-element.directive';
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       <div class="headings" [style.display]="'grid'"
-           [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.answers.length)"
+           [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.columns.length)"
            [style.grid-column-start]="1"
-           [style.grid-column-end]="elementModel.answers.length + 2"
+           [style.grid-column-end]="elementModel.columns.length + 2"
            [style.grid-row-start]="1"
            [style.grid-row-end]="2">
-        <div *ngFor="let answer of elementModel.answers; let i = index" class="answers"
+        <div *ngFor="let answer of elementModel.columns; let i = index" class="answers"
              [style.grid-column-start]="2 + i"
              [style.grid-column-end]="3 + i"
              [style.grid-row-start]="1"
@@ -44,18 +44,18 @@ import { CompoundElementComponent } from './compound-element.directive';
         </div>
       </div>
 
-      <ng-container *ngFor="let question of elementModel.questions; let i = index">
+      <ng-container *ngFor="let question of elementModel.rows; let i = index">
         <app-likert-radio-button-group
-             [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
-             [style.display]="'grid'"
-             [style.grid-column-start]="1"
-             [style.grid-column-end]="elementModel.answers.length + 2"
-             [style.grid-row-start]="2 + i"
-             [style.grid-row-end]="3 + i"
-             [style.padding.px]="3"
-             [elementModel]="elementModel.questions[i]"
-             [parentForm]="parentForm"
-             (formValueChanged)="formValueChanged.emit($event)">
+          [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
+          [style.display]="'grid'"
+          [style.grid-column-start]="1"
+          [style.grid-column-end]="elementModel.columns.length + 2"
+          [style.grid-row-start]="2 + i"
+          [style.grid-row-end]="3 + i"
+          [style.padding.px]="3"
+          [elementModel]="elementModel.rows[i]"
+          [parentForm]="parentForm"
+          (formValueChanged)="formValueChanged.emit($event)">
         </app-likert-radio-button-group>
       </ng-container>
     </div>
@@ -73,6 +73,6 @@ export class LikertComponent extends CompoundElementComponent {
   parentForm!: FormGroup;
 
   getFormElementModelChildren(): LikertElementRow[] {
-    return this.elementModel.questions;
+    return this.elementModel.rows;
   }
 }

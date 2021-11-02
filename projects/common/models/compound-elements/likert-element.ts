@@ -1,11 +1,11 @@
 import { InputElementValue, UIElement } from '../uI-element';
 import { LikertElementRow } from './likert-element-row';
-import { AnswerOption, FontElement, SurfaceUIElement } from '../../interfaces/UIElementInterfaces';
+import { LikertColumn, FontElement, SurfaceUIElement } from '../../interfaces/UIElementInterfaces';
 import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class LikertElement extends UIElement implements FontElement, SurfaceUIElement {
-  questions: LikertElementRow[] = [];
-  answers: AnswerOption[] = [];
+  rows: LikertElementRow[] = [];
+  columns: LikertColumn[] = [];
   lineColoring: boolean = true;
   lineColoringColor: string = '#D0F6E7';
   readOnly: boolean = false;
@@ -34,12 +34,12 @@ export class LikertElement extends UIElement implements FontElement, SurfaceUIEl
   setProperty(property: string, value: InputElementValue): void {
     super.setProperty(property, value);
     if (property === 'answers') {
-      this.questions.forEach(question => {
-        question.columnCount = this.answers.length;
+      this.rows.forEach(question => {
+        question.columnCount = this.columns.length;
       });
     }
     if (property === 'readOnly') {
-      this.questions.forEach(question => {
+      this.rows.forEach(question => {
         question.readOnly = this.readOnly;
       });
     }

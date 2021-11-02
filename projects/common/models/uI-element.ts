@@ -1,6 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
 import { IdService } from '../id.service';
-import { AnswerOption, LikertRow } from '../interfaces/UIElementInterfaces';
+import { LikertColumn, LikertRow } from '../interfaces/UIElementInterfaces';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row';
@@ -12,7 +12,7 @@ export interface ValueChangeElement {
 }
 
 export abstract class UIElement {
-  [index: string]: InputElementValue | string[] | AnswerOption[] | LikertRow[] | ((...args: any) => any);
+  [index: string]: InputElementValue | string[] | LikertColumn[] | LikertRow[] | ((...args: any) => any);
   type!: UIElementType;
 
   id: string = 'id_placeholder';
@@ -40,7 +40,7 @@ export abstract class UIElement {
 
   // This can be overwritten by elements if they need to handle some property specifics. Likert does.
   setProperty(property: string,
-              value: InputElementValue | string[] | AnswerOption[] | LikertRow[]): void {
+              value: InputElementValue | string[] | LikertColumn[] | LikertRow[]): void {
     this[property] = value;
   }
 }

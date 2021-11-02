@@ -32,7 +32,7 @@ export interface PlayerElement {
   playbackTime: number;
 }
 
-export interface AnswerOption {
+export interface LikertColumn {
   text: string;
   imgSrc: string | null;
   position: 'above' | 'below';

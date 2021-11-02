@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../../unit.service';
 import { SelectionService } from '../../../selection.service';
 import { MessageService } from '../../../../../../common/message.service';
@@ -13,8 +14,7 @@ import { FileService } from '../../../../../../common/file.service';
 import { UIElement } from '../../../../../../common/models/uI-element';
 import { LikertElementRow } from '../../../../../../common/models/compound-elements/likert-element-row';
 import { LikertElement } from '../../../../../../common/models/compound-elements/likert-element';
-import { AnswerOption, LikertRow } from '../../../../../../common/interfaces/UIElementInterfaces';
-import { TranslateService } from '@ngx-translate/core';
+import { LikertColumn, LikertRow } from '../../../../../../common/interfaces/UIElementInterfaces';
 
 @Component({
   selector: 'app-element-properties',
@@ -76,7 +76,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] | AnswerOption[] | LikertRow[] | null,
+              value: string | number | boolean | string[] | LikertColumn[] | LikertRow[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);
@@ -130,32 +130,32 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     this.updateModel('imageSrc', null);
   }
 
-  addAnswer(value: string): void {
-    const answer = UnitService.createLikertAnswer(value);
-    (this.combinedProperties.answers as AnswerOption[]).push(answer);
-    this.updateModel('answers', this.combinedProperties.answers as AnswerOption[]);
+  addColumn(value: string): void {
+    const column = UnitService.createLikertColumn(value);
+    (this.combinedProperties.columns as LikertColumn[]).push(column);
+    this.updateModel('columns', this.combinedProperties.columns as LikertColumn[]);
   }
 
-  addQuestion(question: string): void {
-    const newQuestion = UnitService.createLikertQuestion(
+  addRow(question: string): void {
+    const newRow = UnitService.createLikertRow(
       question,
-      (this.combinedProperties.answers as AnswerOption[]).length
+      (this.combinedProperties.columns as LikertColumn[]).length
     );
-    (this.combinedProperties.questions as LikertElementRow[]).push(newQuestion);
-    this.updateModel('questions', this.combinedProperties.questions as LikertElementRow[]);
+    (this.combinedProperties.rows as LikertElementRow[]).push(newRow);
+    this.updateModel('rows', this.combinedProperties.rows as LikertElementRow[]);
   }
 
   async editTextOption(optionIndex: number): Promise<void> {
     await this.unitService.editTextOption(optionIndex);
   }
 
-  async editAnswerOption(optionIndex: number): Promise<void> {
-    await this.unitService.editAnswer(this.selectedElements as LikertElement[], optionIndex);
+  async editColumnOption(optionIndex: number): Promise<void> {
+    await this.unitService.editLikertColumn(this.selectedElements as LikertElement[], optionIndex);
   }
 
-  async editQuestionOption(optionIndex: number): Promise<void> {
-    await this.unitService.editQuestion(
-      (this.combinedProperties.questions as LikertElementRow[])[optionIndex] as LikertElementRow
+  async editRowOption(optionIndex: number): Promise<void> {
+    await this.unitService.editLikertRow(
+      (this.combinedProperties.rows as LikertElementRow[])[optionIndex] as LikertElementRow
     );
   }
 }

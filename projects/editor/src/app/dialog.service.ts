@@ -2,7 +2,7 @@
 import { Component, Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { PlayerElement, AnswerOption } from '../../../common/interfaces/UIElementInterfaces';
+import { PlayerElement, LikertColumn } from '../../../common/interfaces/UIElementInterfaces';
 import { FileService } from '../../../common/file.service';
 import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
 
@@ -64,7 +64,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertAnswerEditDialog(answer: AnswerOption): Observable<AnswerOption> {
+  showLikertAnswerEditDialog(answer: LikertColumn): Observable<LikertColumn> {
     const dialogRef = this.dialog.open(LikertAnswerEditDialog, {
       width: '300px',
       height: '550px',
@@ -303,7 +303,7 @@ export class PlayerEditDialog {
   `
 })
 export class LikertAnswerEditDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { answer: AnswerOption }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { answer: LikertColumn }) { }
 
   async loadImage(): Promise<void> {
     this.data.answer.imgSrc = await FileService.loadImage();

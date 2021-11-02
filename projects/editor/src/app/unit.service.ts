@@ -14,7 +14,7 @@ import { InputElement, UIElement, UIElementType } from '../../../common/models/u
 import { TextElement } from '../../../common/models/text-element';
 import { LikertElement } from '../../../common/models/compound-elements/likert-element';
 import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
-import { AnswerOption, LikertRow, PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
+import { LikertColumn, LikertRow, PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
 import { SelectionService } from './selection.service';
 import * as ElementFactory from '../../../common/util/element.factory';
 
@@ -202,7 +202,8 @@ export class UnitService {
 
   updateElementProperty(elements: UIElement[], property: string,
                         value: string | number | boolean | string[] |
-                        AnswerOption[] | LikertRow[] | null): boolean {
+                        LikertColumn[] | LikertRow[] | null): boolean {
+    console.log('updateElementProperty', property, value);
     for (const element of elements) {
       if (property === 'id') {
         if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs
@@ -232,7 +233,7 @@ export class UnitService {
       });
   }
 
-  async editQuestion(question: LikertElementRow): Promise<void> {
+  async editLikertRow(question: LikertElementRow): Promise<void> {
     await this.dialogService.showLikertQuestionEditDialog(question)
       .subscribe((result: LikertElementRow) => {
         if (result) {
@@ -254,21 +255,21 @@ export class UnitService {
       });
   }
 
-  async editAnswer(likertElements: LikertElement[], answerIndex: number): Promise<void> {
-    await this.dialogService.showLikertAnswerEditDialog(likertElements[0].answers[answerIndex])
-      .subscribe((result: AnswerOption) => {
+  async editLikertColumn(likertElements: LikertElement[], answerIndex: number): Promise<void> {
+    await this.dialogService.showLikertAnswerEditDialog(likertElements[0].columns[answerIndex])
+      .subscribe((result: LikertColumn) => {
         if (result) {
-          likertElements[0].answers[answerIndex] = result;
+          likertElements[0].columns[answerIndex] = result;
           this.updateElementProperty(
             likertElements,
             'answers',
-            likertElements[0].answers
+            likertElements[0].columns
           );
         }
       });
   }
 
-  static createLikertAnswer(value: string): AnswerOption {
+  static createLikertColumn(value: string): LikertColumn {
     return {
       text: value,
       imgSrc: null,
@@ -276,7 +277,7 @@ export class UnitService {
     };
   }
 
-  static createLikertQuestion(question: string, columnCount: number): LikertElementRow {
+  static createLikertRow(question: string, columnCount: number): LikertElementRow {
     return new LikertElementRow(
       {
         type: 'likert_row',

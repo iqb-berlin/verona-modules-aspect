@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { FileService } from '../../../common/file.service';
 import { MessageService } from '../../../common/message.service';
 import { IdService } from '../../../common/id.service';
@@ -31,7 +32,8 @@ export class UnitService {
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private translateService: TranslateService) {
     this.unitModel = new Unit();
     this._unit = new BehaviorSubject(this.unitModel);
   }
@@ -204,7 +206,7 @@ export class UnitService {
     for (const element of elements) {
       if (property === 'id') {
         if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs
-          this.messageService.showError('ID ist bereits vergeben');
+          this.messageService.showError(this.translateService.instant('idTaken'));
           return false;
         }
         IdService.getInstance().removeId(element[property]);

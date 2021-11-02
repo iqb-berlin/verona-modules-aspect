@@ -15,6 +15,14 @@
   "right": "Rechts",
   "top": "Oben",
   "bottom": "Unten",
+  "idTaken": "ID ist bereits vergeben",
+  "save": "Speichern",
+  "cancel": "Abbrechen",
+  "text": "Text",
+  "loadImage": "Bild laden",
+  "removeImage": "Bild entfernen",
+  "above": "oben",
+  "below": "unten",
   "toolbar": {
     "loadUnit": "Unit laden",
     "saveUnit": "Unit speichern"

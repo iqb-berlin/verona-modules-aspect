@@ -96,8 +96,8 @@ export class DialogService {
         {{data.text}}
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true">Speichern</button>
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button [mat-dialog-close]="true">{{'save' | translate }}</button>
+      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
     `
 })
@@ -110,13 +110,13 @@ export class ConfirmationDialog {
   template: `
     <mat-dialog-content>
       <mat-form-field>
-        <mat-label>Text</mat-label>
+        <mat-label>{{'text' | translate }}</mat-label>
         <input #inputElement matInput type="text" [value]="data.text">
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="inputElement.value">Speichern</button>
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button [mat-dialog-close]="inputElement.value">{{'save' | translate }}</button>
+      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
     `
 })
@@ -129,14 +129,14 @@ export class TextEditDialog {
   template: `
     <mat-dialog-content>
       <mat-form-field [style.width.%]="100">
-        <mat-label>Text</mat-label>
+        <mat-label>{{'text' | translate }}</mat-label>
         <textarea #inputElement matInput type="text" [value]="data.text">
         </textarea>
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="inputElement.value">Speichern</button>
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button [mat-dialog-close]="inputElement.value">{{'save' | translate }}</button>
+      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
     `
 })
@@ -151,8 +151,8 @@ export class MultilineTextEditDialog {
       <app-rich-text-editor [(text)]="data.text"></app-rich-text-editor>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="data.text">Speichern</button>
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button [mat-dialog-close]="data.text">{{'save' | translate }}</button>
+      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
     `
 })
@@ -251,8 +251,8 @@ export class RichTextEditDialog {
       </mat-tab-group>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="newPlayerConfig">Speichern</button>
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button [mat-dialog-close]="newPlayerConfig">{{'save' | translate }}</button>
+      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
     `,
   styles: [
@@ -271,23 +271,22 @@ export class PlayerEditDialog {
   template: `
     <mat-dialog-content fxLayout="column">
       <mat-form-field>
-        <mat-label>Text</mat-label>
+        <mat-label>{{'text' | translate }}</mat-label>
         <input #textInput matInput type="text" [value]="data.answer.text">
       </mat-form-field>
       <input #imageUpload type="file" hidden (click)="loadImage()">
-      <button mat-raised-button (click)="imageUpload.click()">Bild laden</button>
-      <button mat-raised-button (click)="data.answer.imgSrc = null">Bild entfernen</button>
+      <button mat-raised-button (click)="imageUpload.click()">{{ 'loadImage' | translate }}</button>
+      <button mat-raised-button (click)="data.answer.imgSrc = null">{{ 'removeImage' | translate }}</button>
       <img [src]="data.answer.imgSrc"
            [style.object-fit]="'scale-down'"
            [width]="200">
       <mat-form-field appearance="fill">
-        <mat-label>Position</mat-label>
+        <mat-label>{{'position' | translate }}</mat-label>
         <mat-select [value]="data.answer.position"
                     (selectionChange)="this.data.answer.position = $event.value">
-          <mat-option *ngFor="let option of [{displayValue: 'oben', value: 'above'},
-                                               {displayValue: 'unten', value: 'below'}]"
-                      [value]="option.value">
-            {{option.displayValue}}
+          <mat-option *ngFor="let option of ['above', 'below']"
+                      [value]="option">
+            {{ option | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -297,9 +296,9 @@ export class PlayerEditDialog {
                          text: textInput.value,
                          imgSrc: data.answer.imgSrc,
                          position: data.answer.position }">
-        Speichern
+        {{'save' | translate }}
       </button>
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `
 })
@@ -325,8 +324,8 @@ export class LikertAnswerEditDialog {
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ text: textField.value, id: idField.value }">Speichern</button>
-      <button mat-button mat-dialog-close>Abbrechen</button>
+      <button mat-button [mat-dialog-close]="{ text: textField.value, id: idField.value }">{{'save' | translate }}</button>
+      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `
 })

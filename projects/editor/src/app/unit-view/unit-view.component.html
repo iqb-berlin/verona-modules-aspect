@@ -49,7 +49,7 @@
               <mat-checkbox class="menuItem" [checked]="page.hasMaxWidth"
                             (click)="$any($event).stopPropagation()"
                             (change)="updateModel(page, 'hasMaxWidth', $any($event.source).checked)">
-                {{'maxWidth' | translate }}
+                {{'pageProperties.maxWidth' | translate }}
               </mat-checkbox>
               <mat-form-field *ngIf="page.hasMaxWidth" class="menuItem" appearance="fill">
                 <mat-label>{{'maxWidth' | translate }}</mat-label>
@@ -59,14 +59,14 @@
                        (ngModelChange)="updateModel(page,'maxWidth', $event, maxWidth.valid)">
               </mat-form-field>
               <mat-form-field class="menuItem" appearance="fill">
-                <mat-label>{{'marginWidth' | translate }}</mat-label>
+                <mat-label>{{'pageProperties.marginWidth' | translate }}</mat-label>
                 <input matInput type="number" min="0" #margin="ngModel"
                        [ngModel]="page.margin"
                        (click)="$any($event).stopPropagation()"
                        (ngModelChange)="updateModel(page,'margin', $event, margin.valid)">
               </mat-form-field>
               <mat-form-field class="menuItem" appearance="fill">
-                <mat-label>{{'backgroundColor' | translate }}</mat-label>
+                <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
                 <input matInput type="color"
                        [value]="page.backgroundColor"
                        (change)="updateModel(page,'backgroundColor', $any($event.target).value)">
@@ -76,10 +76,10 @@
                             [ngModel]="page.alwaysVisible"
                             (click)="$any($event).stopPropagation()"
                             (change)="updateModel(page, 'alwaysVisible', $any($event.source).checked)">
-                {{'alwaysVisible' | translate }}
+                {{'pageProperties.alwaysVisible' | translate }}
               </mat-checkbox>
               <mat-form-field *ngIf="page.alwaysVisible" class="menuItem" appearance="fill">
-                <mat-label>{{'position' | translate }}</mat-label>
+                <mat-label>{{'pageProperties.position' | translate }}</mat-label>
                 <mat-select [value]="page.alwaysVisiblePagePosition"
                             (click)="$any($event).stopPropagation()"
                             (selectionChange)="updateModel(page, 'alwaysVisiblePagePosition', $event.value)">
@@ -91,7 +91,7 @@
               </mat-form-field>
               <mat-form-field class="menuItem" appearance="fill"
                               *ngIf="page.alwaysVisible">
-                <mat-label>{{'alwaysVisibleAspectRatio' | translate }}</mat-label>
+                <mat-label>{{'pageProperties.alwaysVisibleAspectRatio' | translate }}</mat-label>
                 <input matInput type="number" min="0" max="100"
                        [ngModel]="page.alwaysVisibleAspectRatio"
                        (click)="$any($event).stopPropagation()"

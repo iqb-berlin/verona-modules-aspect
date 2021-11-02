@@ -9,31 +9,31 @@ import { UIElement } from '../../../../../../common/models/uI-element';
     <div fxLayout="column">
       <mat-form-field *ngIf="combinedProperties.backgroundColor"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>Hintergrundfarbe</mat-label>
+        <mat-label>{{'propertiesPanel.backgroundColor' | translate }}</mat-label>
         <input matInput type="color" [value]="combinedProperties.backgroundColor"
                (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.backgroundColor"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>Hintergrundfarbe</mat-label>
+        <mat-label>{{'propertiesPanel.backgroundColor' | translate }}</mat-label>
         <input matInput type="text" [value]="combinedProperties.backgroundColor"
                (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.fontColor"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>Schriftfarbe</mat-label>
+        <mat-label>{{'propertiesPanel.fontColor' | translate }}</mat-label>
         <input matInput type="color" [value]="combinedProperties.fontColor"
                (input)="updateModel.emit({ property: 'fontColor', value: $any($event.target).value })">
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.font != null"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>Schriftart</mat-label>
+        <mat-label>{{'propertiesPanel.font' | translate }}</mat-label>
         <input matInput type="text" [value]="combinedProperties.font"
                (input)="updateModel.emit({ property: 'font', value: $any($event.target).value })">
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.fontSize != null"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>Schriftgröße</mat-label>
+        <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>
         <input matInput type="number" #fontSize="ngModel" min="0"
                [ngModel]="combinedProperties.fontSize"
                (ngModelChange)="updateModel.emit({ property: 'fontSize',
@@ -42,7 +42,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.lineHeight != null"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>Zeilenhöhe</mat-label>
+        <mat-label>{{'propertiesPanel.lineHeight' | translate }}</mat-label>
         <input matInput type="number" #lineHeight="ngModel" min="0"
                [ngModel]="combinedProperties.lineHeight"
                (ngModelChange)="updateModel.emit({ property: 'lineHeight',
@@ -53,17 +53,17 @@ import { UIElement } from '../../../../../../common/models/uI-element';
       <mat-checkbox *ngIf="combinedProperties.bold != null"
                     [checked]="$any(combinedProperties.bold)"
                     (change)="updateModel.emit({ property: 'bold', value: $event.checked })">
-        Fett
+        {{'propertiesPanel.bold' | translate }}
       </mat-checkbox>
       <mat-checkbox *ngIf="combinedProperties.italic != null"
                     [checked]="$any(combinedProperties.italic)"
                     (change)="updateModel.emit({ property: 'italic', value: $event.checked })">
-        Kursiv
+        {{'propertiesPanel.italic' | translate }}
       </mat-checkbox>
       <mat-checkbox *ngIf="combinedProperties.underline != null"
                     [checked]="$any(combinedProperties.underline)"
                     (change)="updateModel.emit({ property: 'underline', value: $event.checked })">
-        Unterstrichen
+        {{'propertiesPanel.underline' | translate }}
       </mat-checkbox>
     </div>
   `

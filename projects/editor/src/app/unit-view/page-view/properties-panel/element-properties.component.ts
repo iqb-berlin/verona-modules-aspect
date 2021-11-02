@@ -14,6 +14,7 @@ import { UIElement } from '../../../../../../common/models/uI-element';
 import { LikertElementRow } from '../../../../../../common/models/compound-elements/likert-element-row';
 import { LikertElement } from '../../../../../../common/models/compound-elements/likert-element';
 import { AnswerOption, LikertRow } from '../../../../../../common/interfaces/UIElementInterfaces';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-element-properties',
@@ -27,7 +28,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
               private messageService: MessageService,
-              public sanitizer: DomSanitizer) { }
+              public sanitizer: DomSanitizer,
+              private translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.unitService.elementPropertyUpdated
@@ -79,7 +81,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     if (isInputValid) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);
     } else {
-      this.messageService.showWarning('Eingabe ungültig');
+      this.messageService.showWarning(this.translateService.instant('inputInvalid'));
     }
   }
 

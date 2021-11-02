@@ -140,7 +140,9 @@
             <mat-option *ngFor="let option of [{displayValue: 'keine', value: undefined},
                                                {displayValue: 'Vorherige Seite', value: 'previous'},
                                                {displayValue: 'Nächste Seite', value: 'next'},
-                                               {displayValue: 'Letzte Seite', value: 'end'}]"
+                                               {displayValue: 'Erste Seite', value: 'first'},
+                                               {displayValue: 'Letzte Seite', value: 'last'},
+                                               {displayValue: 'Beenden', value: 'end'}]"
                         [value]="option.value">
               {{option.displayValue}}
             </mat-option>

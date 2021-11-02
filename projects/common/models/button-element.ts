@@ -6,7 +6,7 @@ export class ButtonElement extends UIElement implements FontElement, SurfaceUIEl
   label: string = 'Knopf';
   imageSrc: string | null = null;
   borderRadius: number = 0;
-  action: null | 'previous' | 'next' | 'end' = null;
+  action: null | 'previous' | 'next' | 'first' | 'last' | 'end' = null;
 
   fontColor: string = 'black';
   font: string = 'Roboto';

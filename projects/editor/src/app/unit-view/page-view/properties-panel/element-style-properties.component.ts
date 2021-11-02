@@ -34,14 +34,20 @@ import { UIElement } from '../../../../../../common/models/uI-element';
       <mat-form-field *ngIf="combinedProperties.fontSize != null"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>Schriftgröße</mat-label>
-        <input matInput type="number" [value]="combinedProperties.fontSize"
-               (input)="updateModel.emit({ property: 'fontSize', value: $any($event.target).value })">
+        <input matInput type="number" #fontSize="ngModel" min="0"
+               [ngModel]="combinedProperties.fontSize"
+               (ngModelChange)="updateModel.emit({ property: 'fontSize',
+                                                   value: $event,
+                                                   isInputValid: fontSize.valid && $event !== null})">
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.lineHeight != null"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>Zeilenhöhe</mat-label>
-        <input matInput type="number" [value]="combinedProperties.lineHeight"
-               (input)="updateModel.emit({ property: 'lineHeight', value: $any($event.target).value })">
+        <input matInput type="number" #lineHeight="ngModel" min="0"
+               [ngModel]="combinedProperties.lineHeight"
+               (ngModelChange)="updateModel.emit({ property: 'lineHeight',
+                                                   value: $event,
+                                                   isInputValid: lineHeight.valid && $event !== null })">
       </mat-form-field>
 
       <mat-checkbox *ngIf="combinedProperties.bold != null"
@@ -64,5 +70,5 @@ import { UIElement } from '../../../../../../common/models/uI-element';
 })
 export class ElementStylePropertiesComponent {
   @Input() combinedProperties: UIElement = {} as UIElement;
-  @Output() updateModel = new EventEmitter<{ property: string; value: string | boolean }>();
+  @Output() updateModel = new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
 }

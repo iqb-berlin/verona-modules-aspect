@@ -196,11 +196,12 @@ export class RichTextEditDialog {
               <input matInput type="text" [value]="newPlayerConfig.hintLabel || data.player.hintLabel"
                      (input)="newPlayerConfig.hintLabel = $any($event.target).value">
             </mat-form-field>
-            <mat-form-field *ngIf="newPlayerConfig.hintLabel !== ''" appearance="fill">
+            <mat-form-field *ngIf="newPlayerConfig.hintLabel || data.player.hintLabel"
+                            appearance="fill">
               <mat-label>{{ 'player.hintLabelDelay' | translate }}</mat-label>
-              <input matInput type="number" step="1000"
-                     [value]="newPlayerConfig.hintLabelDelay"
-                     (input)="newPlayerConfig.hintLabelDelay = $any($event.target).value">
+              <input matInput type="number" step="1000" min="0"
+                     [ngModel]="newPlayerConfig.hintLabelDelay || data.player.hintLabelDelay"
+                     (ngModelChange)="newPlayerConfig.hintLabelDelay = $event">
             </mat-form-field>
           </div>
         </mat-tab>
@@ -235,13 +236,15 @@ export class RichTextEditDialog {
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
-              <input matInput type="number" [value]="newPlayerConfig.minRuns || data.player.minRuns"
-                     (input)="newPlayerConfig.minRuns = $any($event.target).value">
+              <input matInput type="number" min="0"
+                     [ngModel]="newPlayerConfig.minRuns || data.player.minRuns"
+                     (ngModelChange)="newPlayerConfig.minRuns = $event">
             </mat-form-field>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.maxRuns' | translate }}</mat-label>
-              <input matInput type="number" [value]="newPlayerConfig.maxRuns || data.player.maxRuns"
-                     (input)="newPlayerConfig.maxRuns = $any($event.target).value">
+              <input matInput type="number" min="0"
+                     [ngModel]="newPlayerConfig.maxRuns || data.player.maxRuns"
+                     (ngModelChange)="newPlayerConfig.maxRuns = $event">
             </mat-form-field>
           </div>
         </mat-tab>

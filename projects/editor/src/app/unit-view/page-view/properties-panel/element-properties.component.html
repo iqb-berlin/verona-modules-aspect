@@ -43,11 +43,6 @@
                       (change)="updateModel('highlightable', $event.checked)">
           {{'propertiesPanel.highlightable' | translate }}
         </mat-checkbox>
-        <mat-checkbox *ngIf="combinedProperties.underlinable !== undefined"
-                      [checked]="$any(combinedProperties.underlinable)"
-                      (change)="updateModel('underlinable', $event.checked)">
-          {{'propertiesPanel.underlinable' | translate }}
-        </mat-checkbox>
 
         <mat-checkbox *ngIf="combinedProperties.strikeOtherOptions !== undefined"
                       [checked]="$any(combinedProperties.strikeOtherOptions)"

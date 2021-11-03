@@ -9,26 +9,35 @@ import { TextElement } from '../models/text-element';
   template: `
     <div [style.width.%]="100"
          [style.height]="'auto'">
-      <div *ngIf="elementModel.highlightable"
+      <div *ngIf="elementModel.highlightable || elementModel.underlinable"
            class="marking-bar">
-        <button class="marking-button" mat-mini-fab [style.background-color]="'yellow'"
-                (click)="onClick($event, {color:'yellow', element: container, clear: false})">
-          <mat-icon>border_color</mat-icon>
-        </button>
-        <button class="marking-button" mat-mini-fab [style.background-color]="'turquoise'"
-                (click)="onClick($event, {color: 'turquoise', element: container, clear: false})">
-          <mat-icon>border_color</mat-icon>
-        </button>
-        <button class="marking-button" mat-mini-fab [style.background-color]="'orange'"
-                (click)="onClick($event, {color: 'orange', element: container, clear: false})">
-          <mat-icon>border_color</mat-icon>
-        </button>
+        <ng-container *ngIf="elementModel.highlightable">
+          <button class="marking-button" mat-mini-fab [style.background-color]="'yellow'"
+                  (click)="onMarkingButtonClick($event, { mode: 'mark', color:'yellow', element: container })">
+            <mat-icon>border_color</mat-icon>
+          </button>
+          <button class="marking-button" mat-mini-fab [style.background-color]="'turquoise'"
+                  (click)="onMarkingButtonClick($event, { mode: 'mark', color: 'turquoise', element: container })">
+            <mat-icon>border_color</mat-icon>
+          </button>
+          <button class="marking-button" mat-mini-fab [style.background-color]="'orange'"
+                  (click)="onMarkingButtonClick($event, { mode: 'mark', color: 'orange', element: container })">
+            <mat-icon>border_color</mat-icon>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="elementModel.underlinable">
+          <button class="marking-button" mat-mini-fab [style.background-color]="'white'"
+                  (click)="onMarkingButtonClick($event, { mode: 'underline', color: 'black', element: container })">
+            <mat-icon>format_underlined</mat-icon>
+          </button>
+        </ng-container>
         <button class="marking-button" [style.background-color]="'lightgrey'" mat-mini-fab
-                (click)="onClick($event, {color: 'none', element: container, clear: true})">
+                (click)="onMarkingButtonClick($event, { mode: 'delete', color: 'none', element: container })">
           <mat-icon>clear</mat-icon>
         </button>
       </div>
       <div #container class="text-container"
+           (mousedown)="startSelection.emit($event)"
            [style.background-color]="elementModel.backgroundColor"
            [style.color]="elementModel.fontColor"
            [style.font-family]="elementModel.font"
@@ -53,10 +62,22 @@ import { TextElement } from '../models/text-element';
 })
 export class TextComponent extends ElementComponent {
   elementModel!: TextElement;
-  @Output() applySelection = new EventEmitter<{ color: string, element: HTMLElement, clear: boolean }>();
+  @Output() startSelection = new EventEmitter<MouseEvent>();
+  @Output() applySelection = new EventEmitter <{
+    mode: 'mark' | 'underline' | 'delete',
+    color: string,
+    element: HTMLElement
+  }>();
+
   @ViewChild('container') containerDiv!: ElementRef;
 
-  onClick(event: MouseEvent, markingValues: { color: string; element: HTMLElement; clear: boolean }) : void {
+  onMarkingButtonClick(
+    event: MouseEvent, markingValues: {
+      mode: 'mark' | 'underline' | 'delete',
+      color: string;
+      element: HTMLElement;
+    }
+  ) : void {
     this.applySelection.emit(markingValues);
     event.preventDefault();
     event.stopPropagation();

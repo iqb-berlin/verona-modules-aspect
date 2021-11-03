@@ -5,13 +5,16 @@ import { Injectable } from '@angular/core';
 })
 export class MarkingService {
   private static readonly MARKING_TAG = 'MARKED';
+  private static readonly UNDERLINE_TAG = 'UNDERLINED';
 
-  applySelection(range: Range, selection: Selection, clear: boolean, color: string):void {
+  applySelection(
+    range: Range, selection: Selection, clear: boolean, color: string, markMode: 'marked' | 'underlined'
+  ): void {
     if (range.startContainer === range.endContainer) {
       if (clear) {
         this.clearMarkingFromNode(range);
       } else {
-        this.markNode(range, color);
+        this.markNode(range, color, markMode);
       }
     } else {
       const nodes: Node[] = [];
@@ -19,55 +22,81 @@ export class MarkingService {
       if (clear) {
         this.clearMarkingFromNodes(nodes, range);
       } else {
-        this.markNodes(nodes, range, color);
+        this.markNodes(nodes, range, color, markMode);
       }
     }
   }
 
   private clearMarkingFromNode(range: Range): void {
-    if (range.startContainer.parentElement?.tagName?.toUpperCase() === MarkingService.MARKING_TAG) {
+    if (range.startContainer.parentElement?.tagName?.toUpperCase() === MarkingService.MARKING_TAG ||
+      range.startContainer.parentElement?.tagName?.toUpperCase() === MarkingService.UNDERLINE_TAG) {
       const previousText = range.startContainer.nodeValue?.substring(0, range.startOffset) || '';
       const text = range.startContainer.nodeValue?.substring(range.startOffset, range.endOffset) || '';
       const nextText = range.startContainer.nodeValue?.substring(range.endOffset) || '';
       if (text) {
-        this.clearMarking(range.startContainer, text, previousText, nextText, range);
+        this.clearMarking(range.startContainer, text, previousText, nextText);
       }
     }
   }
 
   private clearMarkingFromNodes(nodes: Node[], range: Range): void {
-    nodes.forEach((node, index) => {
-      if (node.parentElement?.tagName.toUpperCase() === MarkingService.MARKING_TAG) {
-        const nodeValues = this.getNodeValues(node, nodes, index, range);
+    const nestedMarkedNodes = nodes
+      .filter(node => node.parentElement?.parentElement?.tagName.toUpperCase() === MarkingService.MARKING_TAG);
+    const nestedUnderLinedNodes = nodes
+      .filter(node => node.parentElement?.parentElement?.tagName.toUpperCase() === MarkingService.UNDERLINE_TAG);
+    if (nestedUnderLinedNodes.length) {
+      this.clearNodes(nestedUnderLinedNodes, range, nodes);
+    } else if (nestedMarkedNodes.length) {
+      this.clearNodes(nestedMarkedNodes, range, nodes);
+    } else {
+      this.clearNodes(nodes, range, nodes);
+    }
+  }
+
+  private clearMarking(node: Node, text: string, previousText: string, nextText: string) {
+    const textElement = document.createTextNode(text as string);
+    if (node.parentNode) {
+      const { parentNode } = node.parentNode;
+      const markMode =
+        node.parentElement?.tagName.toUpperCase() === MarkingService.MARKING_TAG ? 'marked' : 'underlined';
+      const color =
+        markMode === 'underlined' ? 'black' : (node.parentNode as HTMLElement).style.backgroundColor || 'none';
+      parentNode?.replaceChild(textElement, node.parentNode);
+      if (previousText) {
+        const prev = this.createMarkedElement(color, markMode);
+        prev.append(document.createTextNode(previousText));
+        prev.style.textDecoration = `solid underline ${color}`;
+        parentNode?.insertBefore(prev, textElement);
+      }
+      if (nextText) {
+        const end = this.createMarkedElement(color, markMode);
+        end.append(document.createTextNode(nextText));
+        end.style.textDecoration = `solid underline ${color}`;
+        parentNode?.insertBefore(end, textElement.nextSibling);
+      }
+    }
+  }
+
+  private clearNodes(nodes: Node[], range: Range, allNodes: Node[]): void {
+    nodes.forEach((node: Node) => {
+      const index = allNodes.findIndex(rangeNode => rangeNode === node);
+      if (node.parentElement?.tagName.toUpperCase() === MarkingService.MARKING_TAG ||
+        node.parentElement?.tagName.toUpperCase() === MarkingService.UNDERLINE_TAG) {
+        const nodeValues = this.getNodeValues(node, nodes, index, range, allNodes.length);
         if (nodeValues.text) {
-          this.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, range);
+          this.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn('Cannot recreate node for text', nodeValues);
         }
       }
     });
   }
 
-  private clearMarking(node: Node, text: string, previousText: string, nextText: string, range: Range) {
-    const textElement = document.createTextNode(text as string);
-    if (node.parentNode) {
-      const color = node.parentElement?.style.backgroundColor || 'none';
-      node.parentNode.parentNode?.replaceChild(textElement, node.parentNode);
-      if (previousText) {
-        const prev = this.createMarkedElement(color);
-        prev.append(document.createTextNode(previousText));
-        range.startContainer.insertBefore(prev, textElement);
-      }
-      if (nextText) {
-        const end = this.createMarkedElement(color);
-        end.append(document.createTextNode(nextText));
-        range.endContainer.insertBefore(end, textElement.nextSibling);
-      }
-    }
-  }
-
   private mark(
-    node: Node, text: string, previousText: string, nextText: string, color: string
+    node: Node, text: string, previousText: string, nextText: string, color: string, markMode: 'marked' | 'underlined'
   ): void {
-    const markedElement: HTMLElement = this.createMarkedElement(color);
+    const markedElement: HTMLElement = this.createMarkedElement(color, markMode);
     markedElement.append(document.createTextNode(text));
     // important!
     const { parentNode } = node;
@@ -82,11 +111,16 @@ export class MarkingService {
     }
   }
 
-  private getNodeValues = (node: Node, nodes: Node[], index: number, range: Range): {
+  private getNodeValues = (node: Node, nodes: Node[], index: number, range: Range, nodesCount: number): {
     text: string, previousText: string, nextText: string
   } => {
-    const start = Math.min(range.startOffset, range.endOffset);
-    const end = Math.max(range.startOffset, range.endOffset);
+    let start = range.startOffset;
+    let end = range.endOffset;
+    // Firefox double click hack
+    if (nodesCount === 1) {
+      start = Math.min(range.startOffset, range.endOffset);
+      end = Math.max(range.startOffset, range.endOffset);
+    }
     let text: string; let previousText = ''; let nextText = '';
     if (index === 0) {
       previousText = node.nodeValue?.substring(0, start) || '';
@@ -100,25 +134,34 @@ export class MarkingService {
     return { text, previousText, nextText };
   };
 
-  private markNode(range: Range, color: string): void {
-    if (range.startContainer.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG) {
-      const markedElement: HTMLElement = this.createMarkedElement(color);
+  private markNode(range: Range, color: string, markMode: 'marked' | 'underlined'): void {
+    if (range.startContainer.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG ||
+      range.startContainer.parentElement?.tagName.toUpperCase() !== MarkingService.UNDERLINE_TAG) {
+      const markedElement: HTMLElement = this.createMarkedElement(color, markMode);
       range.surroundContents(markedElement);
     }
   }
 
-  private markNodes(nodes: Node[], range: Range, color: string): void {
+  private markNodes(nodes: Node[], range: Range, color: string, markMode: 'marked' | 'underlined'): void {
     nodes.forEach((node, index) => {
-      const nodeValues = this.getNodeValues(node, nodes, index, range);
-      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG) {
-        this.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
+      const nodeValues = this.getNodeValues(node, nodes, index, range, nodes.length);
+      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG &&
+        (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== MarkingService.UNDERLINE_TAG)
+      ) {
+        this.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color, markMode);
       }
     });
   }
 
-  private createMarkedElement = (color: string): HTMLElement => {
-    const markedElement = document.createElement(MarkingService.MARKING_TAG);
-    markedElement.style.backgroundColor = color;
+  private createMarkedElement = (color: string, markMode: 'marked' | 'underlined'): HTMLElement => {
+    let markedElement;
+    if (markMode === 'marked') {
+      markedElement = document.createElement(MarkingService.MARKING_TAG);
+      markedElement.style.backgroundColor = color;
+    } else {
+      markedElement = document.createElement(MarkingService.UNDERLINE_TAG);
+      markedElement.style.textDecoration = `underline solid ${color}`;
+    }
     return markedElement;
   };
 

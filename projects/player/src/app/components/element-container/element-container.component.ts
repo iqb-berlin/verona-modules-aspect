@@ -77,11 +77,23 @@ export class ElementContainerComponent implements OnInit {
         });
     }
 
+    if (elementComponent.startSelection) {
+      elementComponent.startSelection
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((mouseEvent: MouseEvent) => {
+          const selection = window.getSelection();
+          if (mouseEvent.ctrlKey && selection?.rangeCount) {
+            selection.removeAllRanges();
+          }
+        });
+    }
+
     if (elementComponent.applySelection) {
       elementComponent.applySelection
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((selection: { color: string; element: HTMLElement; clear: boolean }) => {
-          this.applySelection(selection.color, selection.element, selection.clear);
+        .subscribe((selection:
+        { mode: 'mark' | 'underline' | 'delete', color: string; element: HTMLElement; clear: boolean }) => {
+          this.applySelection(selection.mode, selection.color, selection.element);
         });
     }
 
@@ -203,20 +215,19 @@ export class ElementContainerComponent implements OnInit {
       });
   }
 
-  private applySelection(color: string, element: HTMLElement, clear: boolean): void {
+  private applySelection(mode: 'mark' | 'underline' | 'delete', color: string, element: HTMLElement): void {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
-      for (let i = 0; i < selection.rangeCount; i++) {
-        const range = selection.getRangeAt(i);
-        if (this.isDescendantOf(range.startContainer, element) &&
-          this.isDescendantOf(range.endContainer, element)) {
-          this.markingService.applySelection(range, selection, clear, color);
-          this.unitStateService.changeElementValue({
-            id: this.elementModel.id,
-            values: [this.elementModel.text as string, element.innerHTML]
-          });
-          this.elementModel.text = element.innerHTML;
-        }
+      const range = selection.getRangeAt(0);
+      if (this.isDescendantOf(range.startContainer, element) &&
+        this.isDescendantOf(range.endContainer, element)) {
+        const markMode = mode === 'mark' ? 'marked' : 'underlined';
+        this.markingService.applySelection(range, selection, mode === 'delete', color, markMode);
+        this.unitStateService.changeElementValue({
+          id: this.elementModel.id,
+          values: [this.elementModel.text as string, element.innerHTML]
+        });
+        this.elementModel.text = element.innerHTML;
       }
       selection.removeAllRanges();
     } // nothing to do!

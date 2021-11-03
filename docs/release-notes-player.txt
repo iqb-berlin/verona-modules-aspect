@@ -1,10 +1,7 @@
 Player
 ======
-next
+1.2.3
  - [Bug] Fix position of error warn message for radio buttons
- - Allow texts to be underlined
-   It is recommended not to combine this with highlighting texts although it works reasonably well.
-
 
 1.2.2
  - Turn the display of the audio/video start button on and off

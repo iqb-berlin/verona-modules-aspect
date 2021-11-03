@@ -1,5 +1,25 @@
 Editor
 ======
+1.7.1
+- Add radio-button-group property for strike-through of unselected options
+- Allow setting 'first' and 'last' as button actions
+- TextEditor: Add whitespace to special characters menu
+  This allows multiple whitespaces after one another. Also keeps word groups
+  from 'linebreaking'.
+- [bug] TextEditor: Show empty paragraphs outside of the TextEditor
+- Add extra field for manual background color selection
+  Before it was not possible to switch back to transparent, since the color
+  picker does not allow alpha channel settings. This also should make it easier
+  to put the wanted color without having to navigate the picker.
+  NOTE: The color picker does not recognize 'transparent' or any other color
+  notation but hexadecimal. The preview is then always black.
+- Make radio button and first line of the option text (in case there is a line
+  break) appear at the same height
+- Audio-/Video-Player: Use steps (of 1000) for timer fields
+- Remove 'underlinable' property from text elements
+  This feature will have to be reworked from scratch and will be re-introduced
+  in a different form later.
+
 1.7.0:
 - [bug] Fix resize (drag and drop) in dynamic sections
 - Replace element selection indicator from border to outline

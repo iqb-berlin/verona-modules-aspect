@@ -246,6 +246,10 @@ export class RichTextEditDialog {
                      [ngModel]="newPlayerConfig.maxRuns || data.player.maxRuns"
                      (ngModelChange)="newPlayerConfig.maxRuns = $event">
             </mat-form-field>
+            <mat-checkbox [checked]="newPlayerConfig.showRestRuns || data.player.showRestRuns"
+                          (change)="newPlayerConfig.showRestRuns = $event.checked">
+              {{ 'player.showRestRuns' | translate }}
+            </mat-checkbox>
           </div>
         </mat-tab>
       </mat-tab-group>
@@ -257,6 +261,7 @@ export class RichTextEditDialog {
     `,
   styles: [
     'mat-dialog-content {min-height: 410px}',
+    '::ng-deep app-player-edit-dialog .mat-tab-body-content {overflow: hidden}',
     '.property-column {margin-right: 20px}'
   ]
 })

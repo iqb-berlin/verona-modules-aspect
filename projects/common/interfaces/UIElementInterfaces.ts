@@ -28,6 +28,7 @@ export interface PlayerElement {
   activeAfterID: string;
   minRuns: number;
   maxRuns: number | null;
+  showRestRuns: boolean;
   showRestTime: boolean;
   playbackTime: number;
 }

@@ -20,6 +20,7 @@ export class AudioElement extends UIElement implements PlayerElement {
   activeAfterID: string = '';
   minRuns: number = 1;
   maxRuns: number | null = null;
+  showRestRuns: boolean = false;
   showRestTime: boolean = true;
   playbackTime: number = 0;
 

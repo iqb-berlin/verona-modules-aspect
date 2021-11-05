@@ -22,7 +22,7 @@
       <mat-icon>pause</mat-icon>
     </button>
   </ng-container>
-  <ng-container *ngIf="elementModel.maxRuns">
+  <ng-container *ngIf="elementModel.maxRuns && elementModel.showRestRuns">
     <div class="runs mat-typography">
       {{ runCounter + 1 }} / {{ elementModel.maxRuns }}
     </div>

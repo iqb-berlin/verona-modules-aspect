@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, OnDestroy, OnInit, Output
+  OnInit, AfterContentInit, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { AudioElement } from '../../models/audio-element';
@@ -11,7 +11,7 @@ import { ValueChangeElement } from '../../models/uI-element';
   templateUrl: './control-bar.component.html',
   styleUrls: ['./control-bar.component.css']
 })
-export class ControlBarComponent implements OnInit, OnDestroy {
+export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() elementModel!: AudioElement | VideoElement;
   @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
@@ -36,7 +36,6 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   // minRuns: number; // 1
 
   ngOnInit(): void {
-    this.checkEnvironment();
     // Firefox has problems to get the duration
     this.player.ondurationchange = () => this.initTimeValues();
     this.player.ontimeupdate = () => {
@@ -66,6 +65,10 @@ export class ControlBarComponent implements OnInit, OnDestroy {
       this.player.muted = !this.player.volume;
     };
     this.lastVolume = this.player.volume;
+  }
+
+  ngAfterContentInit(): void {
+    this.isAspectPlayer = !!this.player.closest('player-aspect');
     if (this.isAspectPlayer) {
       this.initAutostart();
       this.initHint();
@@ -109,10 +112,6 @@ export class ControlBarComponent implements OnInit, OnDestroy {
     event.preventDefault();
   }
 
-  private checkEnvironment() {
-    this.isAspectPlayer = !!this.player.closest('player-aspect');
-  }
-
   private checkStatus(runCounter: number): boolean {
     this.disabled = !this.elementModel.maxRuns ? false : this.elementModel.maxRuns <= runCounter;
     return this.disabled;
@@ -121,7 +120,9 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   private initAutostart(): void {
     if (this.elementModel.autostart && !this.started) {
       setTimeout(() => {
-        this._play();
+        if (!this.started) {
+          this._play();
+        }
       }, this.elementModel.autostartDelay);
     }
   }
@@ -129,7 +130,9 @@ export class ControlBarComponent implements OnInit, OnDestroy {
   private initHint(): void {
     if (this.elementModel.hintLabel && !this.started) {
       setTimeout(() => {
-        this.showHint = true;
+        if (!this.started) {
+          this.showHint = true;
+        }
       }, this.elementModel.hintLabelDelay);
     }
   }

@@ -214,10 +214,8 @@ export class UnitService {
         IdService.getInstance().addId(<string>value);
       }
       element.setProperty(property, value);
-      this.elementPropertyUpdated.next();
-      this.veronaApiService.sendVoeDefinitionChangedNotification();
-      return true;
     }
+    this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
     return true;
   }

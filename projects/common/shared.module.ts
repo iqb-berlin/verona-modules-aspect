@@ -40,6 +40,7 @@ import { ControlBarComponent } from './element-components/control-bar/control-ba
 import { PlayerTimeFormatPipe } from './element-components/control-bar/player-time-format.pipe';
 import { LikertComponent } from './element-components/compound-elements/likert.component';
 import { LikertRadioButtonGroupComponent } from './element-components/compound-elements/likert-radio-button-group.component';
+import { Magnifier } from './element-components/magnifier.component';
 
 @NgModule({
   imports: [
@@ -77,7 +78,8 @@ import { LikertRadioButtonGroupComponent } from './element-components/compound-e
     ControlBarComponent,
     PlayerTimeFormatPipe,
     LikertComponent,
-    LikertRadioButtonGroupComponent
+    LikertRadioButtonGroupComponent,
+    Magnifier
   ],
   exports: [
     CommonModule,

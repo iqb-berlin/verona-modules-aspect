@@ -1,5 +1,8 @@
 Player
 ======
+1.2.4
+ - Support the possibility to set the display of the remaining runs
+
 1.2.3
  - [Bug] Fix position of error warn message for radio buttons
 

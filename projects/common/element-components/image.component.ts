@@ -13,9 +13,9 @@ import { ImageElement } from '../models/image-element';
              [src]="elementModel.src | safeResourceUrl"
              [alt]="'imageNotFound' | translate"
              [class]="elementModel.dynamicPositioning? 'dynamic-image' : 'static-image'">
-        <app-magnifier
-            [image]=image>
-        </app-magnifier>
+<!--        <app-magnifier-->
+<!--            [image]=image>-->
+<!--        </app-magnifier>-->
       </div>
     </div>
   `,

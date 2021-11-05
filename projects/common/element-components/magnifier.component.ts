@@ -5,16 +5,16 @@ import { Component, HostListener, Input } from '@angular/core';
   template: `
     <div *ngIf="image && image.width && image.height"
          class="hide-cursor">
-      <div class="magnifier-glass"
-           [style.backgroundImage] = "'url('+ (image.src) + ')'"
-           [style.backgroundPosition] = "backgroundPosition"
-           [style.left.px]="left"
-           [style.top.px]="top"
-           [style.width.px]="glassRadius * 2"
-           [style.height.px]="glassRadius * 2"
-           [style.backgroundSize] = "(image.width * zoom) + 'px ' + (image.height * zoom) + 'px'"
-           [style.backgroundRepeat] = "'no-repeat'">
-      </div>
+<!--      <div class="magnifier-glass"-->
+<!--           [style.backgroundImage] = "'url('+ (image.src) + ')'"-->
+<!--           [style.backgroundPosition] = "backgroundPosition"-->
+<!--           [style.left.px]="left"-->
+<!--           [style.top.px]="top"-->
+<!--           [style.width.px]="glassRadius * 2"-->
+<!--           [style.height.px]="glassRadius * 2"-->
+<!--           [style.backgroundSize] = "(image.width * zoom) + 'px ' + (image.height * zoom) + 'px'"-->
+<!--           [style.backgroundRepeat] = "'no-repeat'">-->
+<!--      </div>-->
     </div>
   `,
   styles: [

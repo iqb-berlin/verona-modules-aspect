@@ -1,5 +1,14 @@
 Editor
 ======
+1.7.2
+- Add showRestRuns property to player-elements
+- Fix (several problems with) likert element
+  - Headings with Images should also work better now
+- Fix radio-button-group label margin
+  (Was accidentally removed in the last release)
+- Fix editing properties of multiple selected elements
+- Fix disappearing style properties when deleting the value
+
 1.7.1
 - Add radio-button-group property for strike-through of unselected options
 - Allow setting 'first' and 'last' as button actions

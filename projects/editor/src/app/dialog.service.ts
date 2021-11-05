@@ -64,24 +64,24 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertAnswerEditDialog(answer: LikertColumn): Observable<LikertColumn> {
-    const dialogRef = this.dialog.open(LikertAnswerEditDialog, {
+  showLikertColumnEditDialog(column: LikertColumn): Observable<LikertColumn> {
+    const dialogRef = this.dialog.open(LikertColumnEditDialog, {
       width: '300px',
       height: '550px',
       data: {
-        answer: answer
+        column: column
       },
       autoFocus: false
     });
     return dialogRef.afterClosed();
   }
 
-  showLikertQuestionEditDialog(question: LikertElementRow): Observable<LikertElementRow> {
-    const dialogRef = this.dialog.open(LikertQuestionEditDialog, {
+  showLikertRowEditDialog(row: LikertElementRow): Observable<LikertElementRow> {
+    const dialogRef = this.dialog.open(LikertRowEditDialog, {
       width: '300px',
       height: '550px',
       data: {
-        question: question
+        row: row
       },
       autoFocus: false
     });
@@ -272,23 +272,23 @@ export class PlayerEditDialog {
 }
 
 @Component({
-  selector: 'app-likert-answer-edit-dialog',
+  selector: 'app-likert-column-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="column">
       <mat-form-field>
         <mat-label>{{'text' | translate }}</mat-label>
-        <input #textInput matInput type="text" [value]="data.answer.text">
+        <input #textInput matInput type="text" [value]="data.column.text">
       </mat-form-field>
       <input #imageUpload type="file" hidden (click)="loadImage()">
       <button mat-raised-button (click)="imageUpload.click()">{{ 'loadImage' | translate }}</button>
-      <button mat-raised-button (click)="data.answer.imgSrc = null">{{ 'removeImage' | translate }}</button>
-      <img [src]="data.answer.imgSrc"
+      <button mat-raised-button (click)="data.column.imgSrc = null">{{ 'removeImage' | translate }}</button>
+      <img [src]="data.column.imgSrc"
            [style.object-fit]="'scale-down'"
            [width]="200">
       <mat-form-field appearance="fill">
         <mat-label>{{'position' | translate }}</mat-label>
-        <mat-select [value]="data.answer.position"
-                    (selectionChange)="this.data.answer.position = $event.value">
+        <mat-select [value]="data.column.position"
+                    (selectionChange)="this.data.column.position = $event.value">
           <mat-option *ngFor="let option of ['above', 'below']"
                       [value]="option">
             {{ option | translate }}
@@ -299,41 +299,42 @@ export class PlayerEditDialog {
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="{
                          text: textInput.value,
-                         imgSrc: data.answer.imgSrc,
-                         position: data.answer.position }">
+                         imgSrc: data.column.imgSrc,
+                         position: data.column.position }">
         {{'save' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `
 })
-export class LikertAnswerEditDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { answer: LikertColumn }) { }
+export class LikertColumnEditDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { column: LikertColumn }) { }
 
   async loadImage(): Promise<void> {
-    this.data.answer.imgSrc = await FileService.loadImage();
+    this.data.column.imgSrc = await FileService.loadImage();
   }
 }
 
 @Component({
-  selector: 'app-likert-question-edit-dialog',
+  selector: 'app-likert-row-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="column">
       <mat-form-field>
         <mat-label>Text</mat-label>
-        <input #textField matInput type="text" [value]="data.question.text">
+        <input #textField matInput type="text" [value]="data.row.text">
       </mat-form-field>
       <mat-form-field>
         <mat-label>ID</mat-label>
-        <input #idField matInput type="text" [value]="data.question.id">
+        <input #idField matInput type="text" [value]="data.row.id">
       </mat-form-field>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ text: textField.value, id: idField.value }">{{'save' | translate }}</button>
+      <button mat-button
+              [mat-dialog-close]="{ text: textField.value, id: idField.value }">{{'save' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `
 })
-export class LikertQuestionEditDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { question: LikertElementRow }) { }
+export class LikertRowEditDialog {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertElementRow }) { }
 }

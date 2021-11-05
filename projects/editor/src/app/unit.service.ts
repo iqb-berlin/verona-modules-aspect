@@ -234,7 +234,7 @@ export class UnitService {
   }
 
   async editLikertRow(question: LikertElementRow): Promise<void> {
-    await this.dialogService.showLikertQuestionEditDialog(question)
+    await this.dialogService.showLikertRowEditDialog(question)
       .subscribe((result: LikertElementRow) => {
         if (result) {
           if (result.id !== question.id) {
@@ -255,14 +255,14 @@ export class UnitService {
       });
   }
 
-  async editLikertColumn(likertElements: LikertElement[], answerIndex: number): Promise<void> {
-    await this.dialogService.showLikertAnswerEditDialog(likertElements[0].columns[answerIndex])
+  async editLikertColumn(likertElements: LikertElement[], columnIndex: number): Promise<void> {
+    await this.dialogService.showLikertColumnEditDialog(likertElements[0].columns[columnIndex])
       .subscribe((result: LikertColumn) => {
         if (result) {
-          likertElements[0].columns[answerIndex] = result;
+          likertElements[0].columns[columnIndex] = result;
           this.updateElementProperty(
             likertElements,
-            'answers',
+            'columns',
             likertElements[0].columns
           );
         }

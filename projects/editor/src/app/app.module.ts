@@ -24,8 +24,8 @@ import {
   TextEditDialog,
   MultilineTextEditDialog,
   RichTextEditDialog,
-  LikertAnswerEditDialog,
-  LikertQuestionEditDialog,
+  LikertColumnEditDialog,
+  LikertRowEditDialog,
   PlayerEditDialog
 } from './dialog.service';
 import { EditorTranslateLoader } from './editor-translate-loader';
@@ -51,8 +51,8 @@ import { ElementSizingPropertiesComponent } from './unit-view/page-view/properti
     TextEditDialog,
     MultilineTextEditDialog,
     RichTextEditDialog,
-    LikertAnswerEditDialog,
-    LikertQuestionEditDialog,
+    LikertColumnEditDialog,
+    LikertRowEditDialog,
     PlayerEditDialog,
     ElementPropertiesComponent,
     SectionMenuComponent,

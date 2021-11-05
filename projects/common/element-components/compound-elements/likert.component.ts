@@ -27,24 +27,24 @@ import { CompoundElementComponent } from './compound-element.directive';
            [style.grid-column-end]="elementModel.columns.length + 2"
            [style.grid-row-start]="1"
            [style.grid-row-end]="2">
-        <div *ngFor="let answer of elementModel.columns; let i = index" class="answers"
+        <div *ngFor="let column of elementModel.columns; let i = index" class="columns"
              [style.grid-column-start]="2 + i"
              [style.grid-column-end]="3 + i"
              [style.grid-row-start]="1"
              [style.grid-row-end]="2">
-          <img *ngIf="answer.imgSrc && answer.position === 'above'"
-               [src]="answer.imgSrc | safeResourceUrl" alt="Image Placeholder"
+          <img *ngIf="column.imgSrc && column.position === 'above'"
+               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'"
                [width]="200">
-          {{answer.text}}
-          <img *ngIf="answer.imgSrc && answer.position === 'below'"
-               [src]="answer.imgSrc | safeResourceUrl" alt="Image Placeholder"
+          {{column.text}}
+          <img *ngIf="column.imgSrc && column.position === 'below'"
+               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'"
                [width]="200">
         </div>
       </div>
 
-      <ng-container *ngFor="let question of elementModel.rows; let i = index">
+      <ng-container *ngFor="let row of elementModel.rows; let i = index">
         <app-likert-radio-button-group
           [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
           [style.display]="'grid'"
@@ -53,7 +53,7 @@ import { CompoundElementComponent } from './compound-element.directive';
           [style.grid-row-start]="2 + i"
           [style.grid-row-end]="3 + i"
           [style.padding.px]="3"
-          [elementModel]="elementModel.rows[i]"
+          [elementModel]="row"
           [parentForm]="parentForm"
           (formValueChanged)="formValueChanged.emit($event)">
         </app-likert-radio-button-group>
@@ -62,7 +62,7 @@ import { CompoundElementComponent } from './compound-element.directive';
   `,
   styles: [
     '.headings {padding-bottom: 10px}',
-    '.answers {text-align: center;}',
+    '.columns {text-align: center;}',
     '::ng-deep app-likert mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}'
   ]
 })

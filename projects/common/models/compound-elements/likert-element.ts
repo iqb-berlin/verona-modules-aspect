@@ -33,14 +33,14 @@ export class LikertElement extends UIElement implements FontElement, SurfaceUIEl
 
   setProperty(property: string, value: InputElementValue): void {
     super.setProperty(property, value);
-    if (property === 'answers') {
-      this.rows.forEach(question => {
-        question.columnCount = this.columns.length;
+    if (property === 'columns') {
+      this.rows.forEach(row => {
+        row.columnCount = this.columns.length;
       });
     }
     if (property === 'readOnly') {
-      this.rows.forEach(question => {
-        question.readOnly = this.readOnly;
+      this.rows.forEach(row => {
+        row.readOnly = this.readOnly;
       });
     }
   }

@@ -155,7 +155,7 @@
                       (selectionChange)="updateModel('value', $event.value)">
             <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
             <mat-option *ngFor="let option of $any(combinedProperties).options; let i = index" [value]="i">
-              {{option}}
+              {{option}} (Index: {{i}})
             </mat-option>
           </mat-select>
         </mat-form-field>

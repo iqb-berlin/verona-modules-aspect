@@ -21,19 +21,22 @@ import { FormElementComponent } from '../../form-element-component.directive';
       <mat-radio-group aria-labelledby="radio-group-label" [formControl]="elementFormControl"
                        class="grid-layout" [style.display]="'grid'"
                        [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)">
-        <div *ngFor="let option of elementModel.columns; let i = index" class="columns"
-             fxLayout="column"
-             [style.grid-column-start]="1 + i"
-             [style.grid-column-end]="2 + i"
-             [style.grid-row-start]="1"
-             [style.grid-row-end]="2">
+        <label *ngFor="let option of elementModel.columns; let i = index" class="columns"
+               id="radio-group-label"
+               fxLayout="column"
+               [style.grid-column-start]="1 + i"
+               [style.grid-column-end]="2 + i"
+               [style.grid-row-start]="1"
+               [style.grid-row-end]="2"
+               (click)="selectOption(i)">
           <img *ngIf="option.imgSrc && option.position === 'above'"
                [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
           <div>{{option.text}}</div>
           <img *ngIf="option.imgSrc && option.position === 'below'"
                [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
-        </div>
+        </label>
         <mat-radio-button *ngFor="let option of elementModel.columns; let i = index"
+                          aria-labelledby="radio-group-label"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [value]="i"
                           [style.grid-column-start]="1 + i"
@@ -46,7 +49,7 @@ import { FormElementComponent } from '../../form-element-component.directive';
   `,
   styles: [
     '.grid-layout .columns {text-align: center;}',
-    '.grid-layout .columns img {height: 100%; object-fit: none;}',
+    '.grid-layout .columns img {height: 100%; object-fit: none; cursor: pointer;}',
     '::ng-deep app-radio-group-images .grid-layout mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
     'mat-radio-group {margin-top: 10px}',
     '.grid-layout mat-radio-button {margin-top: 15px}'
@@ -54,4 +57,8 @@ import { FormElementComponent } from '../../form-element-component.directive';
 })
 export class RadioGroupImagesComponent extends FormElementComponent {
   elementModel!: RadioGroupImagesElement;
+
+  selectOption(index: number): void {
+    this.elementFormControl.setValue(index);
+  }
 }

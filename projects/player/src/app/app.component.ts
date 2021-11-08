@@ -90,6 +90,6 @@ export class AppComponent implements OnInit {
     console.log('player: reset');
     this.pages = [];
     this.playerConfig = {};
-    this.unitStateService.unitStateElementCodes = [];
+    this.unitStateService.reset();
   }
 }

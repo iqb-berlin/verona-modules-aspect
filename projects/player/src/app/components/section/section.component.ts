@@ -14,6 +14,7 @@ export class SectionComponent implements OnInit {
   @Input() parentForm!: FormGroup;
   @Input() section!: Section;
   @Input() parentArrayIndex!: number;
+  @Input() pageIndex!: number;
 
   sectionForm!: FormGroup;
 

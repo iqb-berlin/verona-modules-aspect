@@ -3,6 +3,7 @@
      [intersectionContainer]="pagesContainer"
      (intersecting)="onIntersection()">
   <app-section *ngFor="let section of page.sections; let i = index"
+               [pageIndex] = parentArrayIndex
                [parentForm]="pageForm"
                [parentArrayIndex]="i"
                [section]="section"

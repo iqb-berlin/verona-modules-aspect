@@ -31,7 +31,6 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   @Input() playerConfig!: PlayerConfig;
 
   form!: FormGroup;
-  presentedPages: number[] = [];
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -65,7 +64,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
       .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
     this.unitStateService.presentedPageAdded
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((presentedPage: number): void => this.onPresentedPageAdded(presentedPage));
+      .subscribe((): void => this.onPresentedPageAdded());
     this.unitStateService.unitStateElementCodeChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => this.onUnitStateElementCodeChanged());
@@ -83,10 +82,10 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   }
 
   private get presentationProgress(): Progress {
-    if (this.presentedPages.length === 0) {
+    if (this.unitStateService.presentedPages.length === 0) {
       return 'none';
     }
-    return (this.pages.length === this.presentedPages.length) ? 'complete' : 'some';
+    return (this.pages.length === this.unitStateService.presentedPages.length) ? 'complete' : 'some';
   }
 
   private addControl = (control: FormControlElement): void => {
@@ -122,12 +121,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.sendVopStateChangedNotification();
   }
 
-  private onPresentedPageAdded(pagePresented: number): void {
-    if (!this.presentedPages.includes(pagePresented)) {
-      this.presentedPages.push(pagePresented);
-    }
+  private onPresentedPageAdded(): void {
     // eslint-disable-next-line no-console
-    console.log('player: onPresentedPageAdded', this.presentedPages);
+    console.log('player: onPresentedPageAdded', this.unitStateService.presentedPages);
     this.sendVopStateChangedNotification();
   }
 

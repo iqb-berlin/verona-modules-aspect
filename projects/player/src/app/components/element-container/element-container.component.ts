@@ -37,6 +37,7 @@ export class ElementContainerComponent implements OnInit {
   @Input() elementModel!: UIElement;
   @Input() parentForm!: FormGroup;
   @Input() parentArrayIndex!: number;
+  @Input() pageIndex!: number;
 
   isKeyboardOpen!: boolean;
   keyboardLayout!: 'french' | 'numbers' | 'numbersAndOperators' | 'none';
@@ -62,7 +63,9 @@ export class ElementContainerComponent implements OnInit {
 
     if (elementComponent.domElement) {
       this.unitStateService.registerElement(
-        this.initUnitStateValue(elementComponent.elementModel), elementComponent.domElement
+        this.initUnitStateValue(elementComponent.elementModel),
+        elementComponent.domElement,
+        this.pageIndex
       );
     }
 
@@ -72,7 +75,11 @@ export class ElementContainerComponent implements OnInit {
         .subscribe((children: QueryList<ElementComponent>) => {
           children.forEach(child => {
             if (child.domElement) {
-              this.unitStateService.registerElement(this.initUnitStateValue(child.elementModel), child.domElement);
+              this.unitStateService.registerElement(
+                this.initUnitStateValue(child.elementModel),
+                child.domElement,
+                this.pageIndex
+              );
             }
           });
         });

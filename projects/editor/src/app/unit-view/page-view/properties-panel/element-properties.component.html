@@ -108,7 +108,7 @@
           <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.alignment"
                       (selectionChange)="updateModel('alignment', $event.value)">
-            <mat-option *ngFor="let option of ['row', 'column']"
+            <mat-option *ngFor="let option of ['horizontal', 'vertical']"
                         [value]="option">
               {{ 'propertiesPanel.' + option | translate }}
             </mat-option>

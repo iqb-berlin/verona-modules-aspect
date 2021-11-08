@@ -7,7 +7,18 @@ import { FormElementComponent } from '../../form-element-component.directive';
 @Component({
   selector: 'app-drop-list',
   template: `
-    <div class="list" cdkDropList
+    <!-- TODO width/height 90 to not produce overflow. find better solution. -->
+    <div class="list"
+         [style.width.%]="90"
+         [style.height.%]="90"
+         [style.color]="elementModel.fontColor"
+         [style.font-family]="elementModel.font"
+         [style.font-size.px]="elementModel.fontSize"
+         [style.font-weight]="elementModel.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+         [style.backgroundColor]="elementModel.backgroundColor"
+         cdkDropList
          [id]="elementModel.id"
          [cdkDropListData]="this"
          [cdkDropListConnectedTo]="elementModel.connectedTo"

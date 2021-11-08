@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { ButtonElement } from '../models/button-element';
 
@@ -9,7 +9,6 @@ import { ButtonElement } from '../models/button-element';
          [style.width.%]="100"
          [style.height.%]="100">
       <button *ngIf="!elementModel.imageSrc" mat-button
-              (click)="onClick($event)"
               [style.width.%]="100"
               [style.height.%]="100"
               [style.background-color]="elementModel.backgroundColor"
@@ -19,14 +18,15 @@ import { ButtonElement } from '../models/button-element';
               [style.font-weight]="elementModel.bold ? 'bold' : ''"
               [style.font-style]="elementModel.italic ? 'italic' : ''"
               [style.text-decoration]="elementModel.underline ? 'underline' : ''"
-              [style.border-radius.px]="elementModel.borderRadius">
+              [style.border-radius.px]="elementModel.borderRadius"
+              (click)="onClick($event, elementModel.action)">
         {{elementModel.label}}
       </button>
       <input *ngIf="elementModel.imageSrc" type="image"
-             (click)="onClick($event)"
              [src]="elementModel.imageSrc | safeResourceUrl"
              [class]="elementModel.dynamicPositioning? 'dynamic-image' : 'static-image'"
-             [alt]="'imageNotFound' | translate">
+             [alt]="'imageNotFound' | translate"
+             (click)="onClick($event, elementModel.action)">
     </div>
   `,
   styles: [
@@ -35,9 +35,13 @@ import { ButtonElement } from '../models/button-element';
   ]
 })
 export class ButtonComponent extends ElementComponent {
+  @Output() navigationRequested = new EventEmitter<'previous' | 'next' | 'first' | 'last' | 'end'>();
   elementModel!: ButtonElement;
 
-  onClick = (event: MouseEvent): void => {
+  onClick = (event: MouseEvent, action: 'previous' | 'next' | 'first' | 'last' | 'end' | null): void => {
+    if (action) {
+      this.navigationRequested.emit(action);
+    }
     event.stopPropagation();
     event.preventDefault();
   };

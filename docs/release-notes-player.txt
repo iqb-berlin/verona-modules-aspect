@@ -5,6 +5,7 @@ Player
  - Fix delay for hints in audio and video player
  - Fix delay for auto start in audio and video player
  - Send presentationProgress 'complete' when elements are displayed
+ - Implement unit navigation for button elements
 
 1.2.4
  - Support the possibility to set the display of the remaining runs

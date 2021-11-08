@@ -27,6 +27,7 @@ import { TextElement } from '../../../../../common/models/text-element';
 import { VideoElement } from '../../../../../common/models/video-element';
 import { AudioElement } from '../../../../../common/models/audio-element';
 import { ImageElement } from '../../../../../common/models/image-element';
+import { VeronaPostService } from '../../services/verona-post.service';
 
 @Component({
   selector: 'app-element-container',
@@ -52,6 +53,7 @@ export class ElementContainerComponent implements OnInit {
               private formService: FormService,
               private unitStateService: UnitStateService,
               private formBuilder: FormBuilder,
+              private veronaPostService: VeronaPostService,
               private markingService: MarkingService) {
   }
 
@@ -102,6 +104,14 @@ export class ElementContainerComponent implements OnInit {
         .subscribe((selection:
         { mode: 'mark' | 'underline' | 'delete', color: string; element: HTMLElement; clear: boolean }) => {
           this.applySelection(selection.mode, selection.color, selection.element);
+        });
+    }
+
+    if (elementComponent.navigationRequested) {
+      elementComponent.navigationRequested
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((target: 'previous' | 'next' | 'first' | 'last' | 'end') => {
+          this.veronaPostService.sendVopUnitNavigationRequestedNotification(target);
         });
     }
 

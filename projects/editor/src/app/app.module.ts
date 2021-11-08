@@ -9,6 +9,7 @@ import { NgxTiptapModule } from 'ngx-tiptap';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSliderModule } from '@angular/material/slider';
 
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -69,6 +70,7 @@ import { ElementSizingPropertiesComponent } from './unit-view/page-view/properti
     SharedModule,
     MatButtonToggleModule,
     MatMenuModule,
+    MatSliderModule,
     NgxTiptapModule,
     TranslateModule.forRoot({
       loader: {

@@ -101,6 +101,9 @@
     "floating": "schwebend",
     "lineColoring": "Zeilenfärbung",
     "lineColoringColor": "Zeilenfarbe",
+    "magnifier": "Lupe",
+    "magnifierSize": "Größe der Lupe",
+    "magnifierZoom": "Vergrößerung der Lupe",
     "duplicateElement": "Element duplizieren",
     "deleteElement": "Element löschen",
     "noElementSelected": "Kein Element ausgewählt"

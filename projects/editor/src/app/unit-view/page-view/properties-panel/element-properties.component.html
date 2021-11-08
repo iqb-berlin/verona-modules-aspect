@@ -366,13 +366,15 @@
                  (ngModelChange)="updateModel('magnifierSize', $event, magnifierSize.valid)">
         </mat-form-field>
 
-        <mat-slider *ngIf="combinedProperties.magnifier"
-                    min="1" max="3" step="0.1" [ngModel]="combinedProperties.magnifierZoom"
-                    (change)="updateModel('magnifierZoom', $event.value)">
-        </mat-slider>
-        <div *ngIf="combinedProperties.magnifier">
-          {{combinedProperties.magnifierZoom}}
-        </div>
+        <ng-container *ngIf="combinedProperties.magnifier">
+          {{'propertiesPanel.magnifierZoom' | translate }}
+          <mat-slider min="1" max="3" step="0.1" [ngModel]="combinedProperties.magnifierZoom"
+                      (change)="updateModel('magnifierZoom', $event.value)">
+          </mat-slider>
+          <div *ngIf="combinedProperties.magnifier">
+            {{combinedProperties.magnifierZoom}}
+          </div>
+        </ng-container>
 
         <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
           <ng-container>

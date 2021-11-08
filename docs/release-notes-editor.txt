@@ -1,5 +1,26 @@
 Editor
 ======
+1.8.0
+- Add index indicator to option-list preset value
+- Add alternative radio button group with images
+  Automatically aligned horizontally with a vertical label on top.
+  The label can contain text and/or an image. The label is clickable
+  to select a value.
+  Images are not scaled at all.
+- Add small preview images to option list for radios with images
+- Remove image scaling from likert
+- Rename likert to 'Optionentabelle'
+- Fix value of button actions to refer to unit instead of page
+- Fix hidden autoStartDelay property
+- Add magnifier properties to properties panel
+- New element DropList ('Ablegeliste')
+  This element has a list of strings as editable options. Those strings
+  form draggable elements which may be reordered or moved between
+  different DropList elements.
+  To be able to move elements the DropLists need to be configured with
+  the ID of the target DropList.
+  There is an additional switch to allow only one item in a list.
+
 1.7.2
 - Add showRestRuns property to player-elements
 - Fix (several problems with) likert element

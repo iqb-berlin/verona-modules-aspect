@@ -160,6 +160,18 @@
           </mat-select>
         </mat-form-field>
 
+        <mat-form-field *ngIf="combinedProperties.columns !== undefined"
+                        appearance="fill">
+          <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+          <mat-select [value]="combinedProperties.value"
+                      (selectionChange)="updateModel('value', $event.value)">
+            <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
+            <mat-option *ngFor="let column of $any(combinedProperties).columns; let i = index" [value]="i">
+              {{column.name}} (Index: {{i}})
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <ng-container *ngIf="combinedProperties.value === true || combinedProperties.value === false">
           {{'propertiesPanel.preset' | translate }}
           <mat-button-toggle-group [value]="combinedProperties.value"
@@ -169,8 +181,9 @@
           </mat-button-toggle-group>
         </ng-container>
 
-        <mat-form-field *ngIf="combinedProperties.value !== undefined && !combinedProperties.options &&
-                           combinedProperties.value !== true && combinedProperties.value !== false"
+        <mat-form-field *ngIf="combinedProperties.value !== undefined &&
+                               !combinedProperties.options && !combinedProperties.columns &&
+                               combinedProperties.value !== true && combinedProperties.value !== false"
                         appearance="fill">
           <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
           <textarea matInput type="text"

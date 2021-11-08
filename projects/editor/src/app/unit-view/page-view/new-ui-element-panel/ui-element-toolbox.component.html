@@ -60,6 +60,11 @@
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">widgets</mat-icon>
     </ng-template>
+    <button mat-raised-button (click)="addUIElement('radio-group-images')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
+      <mat-icon>radio_button_checked</mat-icon>
+      Optionsfelder (Bild)
+    </button>
     <button mat-raised-button (click)="addUIElement('likert')"
             draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','likert')">
       <mat-icon>toc</mat-icon>

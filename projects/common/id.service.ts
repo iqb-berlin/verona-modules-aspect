@@ -15,7 +15,8 @@ export class IdService {
     audio: 0,
     video: 0,
     likert: 0,
-    likert_row: 0
+    likert_row: 0,
+    'radio-group-images': 0
   };
 
   static getInstance(): IdService {

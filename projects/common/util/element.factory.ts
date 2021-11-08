@@ -23,6 +23,8 @@ import { AudioComponent } from '../element-components/audio.component';
 import { VideoComponent } from '../element-components/video.component';
 import { LikertElement } from '../models/compound-elements/likert-element';
 import { LikertComponent } from '../element-components/compound-elements/likert.component';
+import { RadioGroupImagesComponent } from '../element-components/compound-elements/radio-group-images.component';
+import { RadioGroupImagesElement } from '../models/compound-elements/radio-group-images';
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -60,6 +62,9 @@ export function createElement(elementModel: UIElement): UIElement {
     case 'likert':
       newElement = new LikertElement(elementModel);
       break;
+    case 'radio-group-images':
+      newElement = new RadioGroupImagesElement(elementModel);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -94,6 +99,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(VideoComponent);
     case 'likert':
       return componentFactoryResolver.resolveComponentFactory(LikertComponent);
+    case 'radio-group-images':
+      return componentFactoryResolver.resolveComponentFactory(RadioGroupImagesComponent);
     default:
       throw new Error('unknown element');
   }

@@ -12,7 +12,7 @@ import { Unit } from '../../../../common/models/unit';
   selector: 'app-unit-view',
   templateUrl: './unit-view.component.html',
   styles: [
-    '.toolbox_drawer {width: 230px}',
+    '.toolbox_drawer {width: 248px}',
     '.properties_drawer {width: 320px}',
     '.drawer-button {font-size: large;background-color: lightgray; min-width: 0; width: 2%;}',
     '.drawer-button {border: none; cursor: pointer}',

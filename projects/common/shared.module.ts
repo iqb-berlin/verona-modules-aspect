@@ -41,6 +41,7 @@ import { PlayerTimeFormatPipe } from './element-components/control-bar/player-ti
 import { LikertComponent } from './element-components/compound-elements/likert.component';
 import { LikertRadioButtonGroupComponent } from './element-components/compound-elements/likert-radio-button-group.component';
 import { Magnifier } from './element-components/magnifier.component';
+import { RadioGroupImagesComponent } from './element-components/compound-elements/radio-group-images.component';
 
 @NgModule({
   imports: [
@@ -79,7 +80,8 @@ import { Magnifier } from './element-components/magnifier.component';
     PlayerTimeFormatPipe,
     LikertComponent,
     LikertRadioButtonGroupComponent,
-    Magnifier
+    Magnifier,
+    RadioGroupImagesComponent
   ],
   exports: [
     CommonModule,

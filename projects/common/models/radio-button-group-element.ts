@@ -4,7 +4,7 @@ import { initFontElement, initSurfaceElement } from '../util/unit-interface-init
 
 export class RadioButtonGroupElement extends InputElement implements FontElement, SurfaceUIElement {
   options: string[] = [];
-  alignment: 'vertical' | 'horizontal' = 'vertical';
+  alignment: 'column' | 'row' = 'column';
   strikeOtherOptions: boolean = false;
 
   fontColor: string = 'black';

@@ -145,8 +145,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
     this.updateModel('rows', this.combinedProperties.rows as LikertElementRow[]);
   }
 
-  async editTextOption(optionIndex: number): Promise<void> {
-    await this.unitService.editTextOption(optionIndex);
+  async editTextOption(property: string, optionIndex: number): Promise<void> {
+    await this.unitService.editTextOption(property, optionIndex);
   }
 
   async editColumnOption(optionIndex: number): Promise<void> {

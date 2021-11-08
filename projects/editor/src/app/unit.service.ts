@@ -220,8 +220,8 @@ export class UnitService {
     return true;
   }
 
-  async editTextOption(optionIndex: number): Promise<void> {
-    const oldOptions = this.selectionService.getSelectedElements()[0].options as string[];
+  async editTextOption(property: string, optionIndex: number): Promise<void> {
+    const oldOptions = this.selectionService.getSelectedElements()[0][property] as string[];
     await this.dialogService.showTextEditDialog(oldOptions[optionIndex])
       .subscribe((result: string) => {
         if (result) {

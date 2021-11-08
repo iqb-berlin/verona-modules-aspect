@@ -3,7 +3,7 @@ import { IdService } from '../id.service';
 import { LikertColumn, LikertRow } from '../interfaces/UIElementInterfaces';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
-| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images';
+| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images' | 'drop-list';
 export type InputElementValue = string | number | boolean | null;
 
 export interface ValueChangeElement {

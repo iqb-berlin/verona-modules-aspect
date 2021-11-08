@@ -25,6 +25,8 @@ import { LikertElement } from '../models/compound-elements/likert-element';
 import { LikertComponent } from '../element-components/compound-elements/likert.component';
 import { RadioGroupImagesComponent } from '../element-components/compound-elements/radio-group-images.component';
 import { RadioGroupImagesElement } from '../models/compound-elements/radio-group-images';
+import { DropListComponent } from '../element-components/compound-elements/drop-list.component';
+import { DropListElement } from '../models/compound-elements/drop-list';
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -65,6 +67,9 @@ export function createElement(elementModel: UIElement): UIElement {
     case 'radio-group-images':
       newElement = new RadioGroupImagesElement(elementModel);
       break;
+    case 'drop-list':
+      newElement = new DropListElement(elementModel);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -101,6 +106,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(LikertComponent);
     case 'radio-group-images':
       return componentFactoryResolver.resolveComponentFactory(RadioGroupImagesComponent);
+    case 'drop-list':
+      return componentFactoryResolver.resolveComponentFactory(DropListComponent);
     default:
       throw new Error('unknown element');
   }

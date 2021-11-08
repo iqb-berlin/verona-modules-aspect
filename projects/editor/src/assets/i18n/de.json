@@ -103,7 +103,8 @@
     "lineColoringColor": "Zeilenfarbe",
     "magnifier": "Lupe",
     "magnifierSize": "Größe der Lupe",
-    "magnifierZoom": "Vergrößerung der Lupe",
+    "magnifierZoom": "Vergrößerungsfaktor",
+    "connectedDropList": "Verbundene Ablegelisten",
     "duplicateElement": "Element duplizieren",
     "deleteElement": "Element löschen",
     "noElementSelected": "Kein Element ausgewählt"

@@ -44,6 +44,11 @@
         <mat-icon>radio_button_checked</mat-icon>
         Optionsfelder (Bild)
       </button>
+      <button mat-raised-button (click)="addUIElement('drop-list')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','drop-list')">
+        <mat-icon>drag_indicator</mat-icon>
+        Ablegeliste
+      </button>
       <button mat-raised-button (click)="addUIElement('image')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
         <mat-icon>image</mat-icon>

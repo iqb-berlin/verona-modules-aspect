@@ -84,7 +84,7 @@
                   {{option}}
                 </div>
                 <button mat-icon-button color="primary"
-                        (click)="editTextOption(i)">
+                        (click)="editTextOption('options', i)">
                   <mat-icon>build</mat-icon>
                 </button>
                 <button mat-icon-button color="primary"
@@ -148,7 +148,7 @@
                [width]="200">
         </ng-container>
 
-        <mat-form-field *ngIf="combinedProperties.options !== undefined"
+        <mat-form-field *ngIf="combinedProperties.options !== undefined && !combinedProperties.connectedTo"
                         appearance="fill">
           <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.value"
@@ -373,6 +373,37 @@
         <div *ngIf="combinedProperties.magnifier">
           {{combinedProperties.magnifierZoom}}
         </div>
+
+        <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
+          <ng-container>
+            <mat-label>{{'propertiesPanel.connectedDropList' | translate }}</mat-label>
+            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.connectedTo"
+                 (cdkDropListDropped)="reorderOptions('connectedTo', $any($event))">
+              <div *ngFor="let connectedTo of $any(combinedProperties.connectedTo); let i = index" cdkDrag
+                   class="list-items" fxLayout="row" fxLayoutAlign="end center">
+                <div fxFlex="70">
+                  {{connectedTo}}
+                </div>
+                <button mat-icon-button color="primary"
+                        (click)="editTextOption('connectedTo', i)">
+                  <mat-icon>build</mat-icon>
+                </button>
+                <button mat-icon-button color="primary"
+                        (click)="removeOption('connectedTo', connectedTo)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matPrefix
+                    (click)="addOption('connectedTo', newconnectedTo.value); newconnectedTo.select()">
+              <mat-icon>add</mat-icon>
+            </button>
+            <input #newconnectedTo matInput type="text"
+                   (keyup.enter)="addOption('connectedTo', newconnectedTo.value); newconnectedTo.select()">
+          </div>
+        </mat-form-field>
 
         <mat-divider></mat-divider>
 

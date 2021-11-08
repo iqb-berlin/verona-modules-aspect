@@ -8,7 +8,7 @@ import { ValueChangeElement } from '../models/uI-element';
   template: `
     <div class="hide-cursor">
       <div class="magnifier-glass"
-           [style.backgroundImage]="url + '(' + image.src + ')'"
+           [style.backgroundImage]="'url(' + image.src + ')'"
            [style.backgroundPosition]="backgroundPosition"
            [style.left.px]="left"
            [style.top.px]="top"
@@ -36,7 +36,6 @@ export class Magnifier {
   left!: number;
   top!: number;
   backgroundPosition!: string;
-  url: string = 'url';
 
   @HostListener('mousemove', ['$event'])
   onMousemove(event: MouseEvent): void {

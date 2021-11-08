@@ -26,6 +26,7 @@ import { CompoundElementComponent }
 import { TextElement } from '../../../../../common/models/text-element';
 import { VideoElement } from '../../../../../common/models/video-element';
 import { AudioElement } from '../../../../../common/models/audio-element';
+import { ImageElement } from '../../../../../common/models/image-element';
 
 @Component({
   selector: 'app-element-container',
@@ -105,6 +106,14 @@ export class ElementContainerComponent implements OnInit {
         });
     }
 
+    if (elementComponent.magnifierUsed) {
+      elementComponent.magnifierUsed
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((magnifierUsed: ValueChangeElement) => {
+          this.unitStateService.changeElementValue(magnifierUsed);
+        });
+    }
+
     if (elementComponent.formValueChanged) {
       elementComponent.formValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -165,6 +174,9 @@ export class ElementContainerComponent implements OnInit {
         case 'text':
           elementModel.text = unitStateElementCode.value;
           break;
+        case 'image':
+          elementModel.magnifierUsed = unitStateElementCode.value;
+          break;
         case 'video':
         case 'audio':
           elementModel.playbackTime = unitStateElementCode.value;
@@ -180,6 +192,8 @@ export class ElementContainerComponent implements OnInit {
     switch (elementModel.type) {
       case 'text':
         return { id: elementModel.id, value: (elementModel as TextElement).text };
+      case 'image':
+        return { id: elementModel.id, value: (elementModel as ImageElement).magnifierUsed };
       case 'video':
         return { id: elementModel.id, value: (elementModel as VideoElement).playbackTime };
       case 'audio':

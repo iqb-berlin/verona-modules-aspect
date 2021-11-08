@@ -45,6 +45,10 @@ import { FormElementComponent } from '../../form-element-component.directive';
                           [style.grid-row-end]="3">
         </mat-radio-button>
       </mat-radio-group>
+      <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+                 class="error-message">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
     </div>
   `,
   styles: [
@@ -52,6 +56,7 @@ import { FormElementComponent } from '../../form-element-component.directive';
     '.grid-layout .columns img {height: 100%; object-fit: none; cursor: pointer;}',
     '::ng-deep app-radio-group-images .grid-layout mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
     'mat-radio-group {margin-top: 10px}',
+    '.error-message { font-size: 75% }',
     '.grid-layout mat-radio-button {margin-top: 15px}'
   ]
 })

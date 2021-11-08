@@ -65,8 +65,8 @@ export class UnitStateService {
 
   changeElementValue(elementValues: ValueChangeElement): void {
     // eslint-disable-next-line no-console
-    // console.log(`player: changeElementValue ${elementValues.id}:
-    //  old: ${elementValues.values[0]}, new: ${elementValues.values[1]}`);
+    console.log(`player: changeElementValue ${elementValues.id}:
+     old: ${elementValues.values[0]}, new: ${elementValues.values[1]}`);
     this.setUnitStateElementCodeStatus(elementValues.id, 'VALUE_CHANGED');
     this.setUnitStateElementCodeValue(elementValues.id, elementValues.values[1]);
   }

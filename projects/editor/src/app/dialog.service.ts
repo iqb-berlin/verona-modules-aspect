@@ -211,7 +211,7 @@ export class RichTextEditDialog {
                           (change)="newPlayerConfig.autostart = $event.checked">
               {{ 'player.autoStart' | translate }}
             </mat-checkbox>
-            <mat-form-field *ngIf="newPlayerConfig.autostart" appearance="fill">
+            <mat-form-field *ngIf="newPlayerConfig.autostart || data.player.autostart" appearance="fill">
               <mat-label>{{ 'player.autoStartDelay' | translate }}</mat-label>
               <input matInput type="number" step="1000"
                      [value]="newPlayerConfig.autostartDelay || data.player.autostartDelay"

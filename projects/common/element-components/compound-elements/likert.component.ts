@@ -59,6 +59,7 @@ import { CompoundElementComponent } from './compound-element.directive';
   `,
   styles: [
     '.headings {padding-bottom: 10px}',
+    '.headings img {object-fit: none}',
     '.columns {text-align: center;}',
     '::ng-deep app-likert mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}'
   ]

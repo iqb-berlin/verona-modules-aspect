@@ -317,6 +317,9 @@
                 <div fxFlex="70">
                   {{column.text}}
                 </div>
+                <img [src]="column.imgSrc"
+                     [style.object-fit]="'scale-down'"
+                     [style.height.px]="40">
                 <button mat-icon-button color="primary"
                         (click)="editColumnOption(i)">
                   <mat-icon>build</mat-icon>

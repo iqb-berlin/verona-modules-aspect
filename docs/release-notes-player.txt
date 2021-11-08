@@ -6,6 +6,7 @@ Player
  - Fix delay for auto start in audio and video player
  - Send presentationProgress 'complete' when elements are displayed
  - Implement unit navigation for button elements
+ - Show optional images for radio button groups
 
 1.2.4
  - Support the possibility to set the display of the remaining runs

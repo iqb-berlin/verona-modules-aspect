@@ -407,6 +407,24 @@
           </div>
         </mat-form-field>
 
+        <mat-form-field *ngIf="combinedProperties.orientation !== undefined"
+                        appearance="fill">
+          <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
+          <mat-select [value]="combinedProperties.orientation"
+                      (selectionChange)="updateModel('orientation', $event.value)">
+            <mat-option *ngFor="let option of ['vertical', 'horizontal']"
+                        [value]="option">
+              {{ 'propertiesPanel.' + option | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
+                      [checked]="$any(combinedProperties.onlyOneItem)"
+                      (change)="updateModel('onlyOneItem', $event.checked)">
+          {{'propertiesPanel.onlyOneItem' | translate }}
+        </mat-checkbox>
+
         <mat-divider></mat-divider>
 
         <button mat-raised-button class="element-button"

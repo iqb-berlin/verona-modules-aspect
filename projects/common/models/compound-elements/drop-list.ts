@@ -4,7 +4,9 @@ import { initFontElement, initSurfaceElement } from '../../util/unit-interface-i
 
 export class DropListElement extends InputElement implements FontElement, SurfaceUIElement {
   options: string[] = [];
+  onlyOneItem: boolean = false;
   connectedTo: string[] = [];
+  orientation: 'vertical' | 'horizontal' = 'vertical';
 
   fontColor: string = 'black';
   font: string = 'Roboto';

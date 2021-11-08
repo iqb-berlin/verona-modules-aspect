@@ -68,7 +68,8 @@ export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy 
   }
 
   ngAfterContentInit(): void {
-    this.isAspectPlayer = !!this.player.closest('player-aspect');
+    // player-aspect should work, but doesn't in production
+    this.isAspectPlayer = !!this.player.closest('app-element-container');
     if (this.isAspectPlayer) {
       this.initAutostart();
       this.initHint();

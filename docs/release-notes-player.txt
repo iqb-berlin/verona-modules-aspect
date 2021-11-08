@@ -1,5 +1,10 @@
 Player
 ======
+1.3.0
+ - Add adjustable magnifier for images
+ - Fix delay for hints in audio and video player
+ - Fix delay for auto start in audio and video player
+
 1.2.4
  - Support the possibility to set the display of the remaining runs
 

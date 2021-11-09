@@ -48,18 +48,20 @@ export class DropListComponent extends FormElementComponent {
   elementModel!: DropListElement;
 
   drop(event: CdkDragDrop<DropListComponent>): void {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data.elementModel.options, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data.elementModel.options,
-        event.container.data.elementModel.options,
-        event.previousIndex,
-        event.currentIndex
-      );
-      event.previousContainer.data.elementFormControl.setValue(event.previousContainer.data.elementModel.options);
+    if (!this.elementModel.readOnly) {
+      if (event.previousContainer === event.container) {
+        moveItemInArray(event.container.data.elementModel.options, event.previousIndex, event.currentIndex);
+      } else {
+        transferArrayItem(
+          event.previousContainer.data.elementModel.options,
+          event.container.data.elementModel.options,
+          event.previousIndex,
+          event.currentIndex
+        );
+        event.previousContainer.data.elementFormControl.setValue(event.previousContainer.data.elementModel.options);
+      }
+      this.elementFormControl.setValue(event.container.data.elementModel.options);
     }
-    this.elementFormControl.setValue(event.container.data.elementModel.options);
   }
 
   onlyOneItemPredicate(drag: CdkDrag, drop: CdkDropList): boolean {

@@ -226,7 +226,7 @@ export class UnitService {
       .subscribe((result: string) => {
         if (result) {
           oldOptions[optionIndex] = result;
-          this.updateElementProperty(this.selectionService.getSelectedElements(), 'options', oldOptions);
+          this.updateElementProperty(this.selectionService.getSelectedElements(), property, oldOptions);
         }
       });
   }

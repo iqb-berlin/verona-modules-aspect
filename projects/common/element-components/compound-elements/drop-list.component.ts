@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { CdkDrag, CdkDropList, DragRef, DropListRef, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag, CdkDropList, moveItemInArray, transferArrayItem
+} from '@angular/cdk/drag-drop';
 import { DropListElement } from '../../models/compound-elements/drop-list';
 import { FormElementComponent } from '../../form-element-component.directive';
 
@@ -62,7 +64,7 @@ export class DropListComponent extends FormElementComponent {
     this.elementFormControl.setValue(event.container.data.elementModel.options);
   }
 
-  onlyOneItemPredicate(drag: CdkDrag, drop: CdkDropList): boolean {
-    return !drop.data.elementModel.onlyOneItem || drop.data.elementModel.options.length < 1;
-  }
+  onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
+    !drop.data.elementModel.onlyOneItem || drop.data.elementModel.options.length < 1
+  );
 }

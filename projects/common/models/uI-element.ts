@@ -4,7 +4,7 @@ import { LikertColumn, LikertRow } from '../interfaces/UIElementInterfaces';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images' | 'drop-list';
-export type InputElementValue = string | number | boolean | null;
+export type InputElementValue = string[] | string | number | boolean | null;
 
 export interface ValueChangeElement {
   id: string;
@@ -12,7 +12,7 @@ export interface ValueChangeElement {
 }
 
 export abstract class UIElement {
-  [index: string]: InputElementValue | string[] | LikertColumn[] | LikertRow[] | ((...args: any) => any);
+  [index: string]: InputElementValue | LikertColumn[] | LikertRow[] | ((...args: any) => any);
   type!: UIElementType;
 
   id: string = 'id_placeholder';

@@ -74,11 +74,32 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   }
 
   private get responseProgress(): Progress {
+    // TODO: Check other relevant Elements
     if (this.form.valid) {
       return 'complete';
     }
-    const pages: FormArray = this.form.get('pages') as FormArray;
-    return (pages.controls.some((control: AbstractControl): boolean => control.value)) ? 'some' : 'none';
+    const pagesControls: AbstractControl[] = (this.form.get('pages') as FormArray).controls;
+    for (let i = 0; i < pagesControls.length; i++) {
+      const pageControl = pagesControls[i];
+      if (pageControl.valid) {
+        return 'some';
+      }
+      const sectionControls = (pageControl.get('sections') as FormArray).controls;
+      for (let ii = 0; ii < sectionControls.length; ii++) {
+        const sectionControl = sectionControls[ii];
+        if (sectionControl.valid) {
+          return 'some';
+        }
+        const elementControls = (sectionControl.get('elements') as FormArray).controls;
+        for (let iii = 0; iii < elementControls.length; iii++) {
+          const elementControl = elementControls[iii];
+          if (elementControl.valid) {
+            return 'some';
+          }
+        }
+      }
+    }
+    return 'none';
   }
 
   private get presentationProgress(): Progress {
@@ -128,15 +149,18 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   }
 
   private sendVopStateChangedNotification(): void {
-    const unitState: UnitState = {
-      dataParts: {
-        elementCodes: JSON.stringify(this.unitStateService.unitStateElementCodes)
-      },
-      presentationProgress: this.presentationProgress,
-      responseProgress: this.responseProgress,
-      unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
-    };
-    this.veronaPostService.sendVopStateChangedNotification({ unitState });
+    // give the form time to change its valid status
+    Promise.resolve().then(() => {
+      const unitState: UnitState = {
+        dataParts: {
+          elementCodes: JSON.stringify(this.unitStateService.unitStateElementCodes)
+        },
+        presentationProgress: this.presentationProgress,
+        responseProgress: this.responseProgress,
+        unitStateDataType: this.metaDataService.playerMetadata.supportedUnitStateDataTypes
+      };
+      this.veronaPostService.sendVopStateChangedNotification({ unitState });
+    });
   }
 
   ngOnDestroy(): void {

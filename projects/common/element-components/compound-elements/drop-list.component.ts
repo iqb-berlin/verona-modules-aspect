@@ -10,12 +10,8 @@ import { FormElementComponent } from '../../form-element-component.directive';
   selector: 'app-drop-list',
   template: `
     <!-- TODO width/height 90 to not produce overflow. find better solution. -->
-    <div
-        [style.width.%]="100"
-        [style.height.%]="100">
+    <div class="list-container">
       <div class="list"
-           [style.width.%]="90"
-           [style.height.%]="90"
            [style.color]="elementModel.fontColor"
            [style.font-family]="elementModel.font"
            [style.font-size.px]="elementModel.fontSize"
@@ -41,18 +37,19 @@ import { FormElementComponent } from '../../form-element-component.directive';
           {{option}}
         </div>
       </div>
-    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-               class="error-message">
-      {{elementFormControl.errors | errorTransform: elementModel}}
-    </mat-error>
+      <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+                 class="error-message">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
     </div>
   `,
   styles: [
-    '.list {border: 1px solid; border-radius: 3px;}',
+    '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
+    '.list {border: 1px solid; border-radius: 3px; width: calc(100% - 2px); height: calc(100% - 2px);}',
     '.item {padding: 10px;}',
-    '.error-message { font-size: 75%; margin-top: 10px }',
-    '.vertical-item {border-bottom: 1px solid}',
-    '.horizontal-item {border-right: 1px solid}'
+    '.error-message {font-size: 75%; margin-top: 10px;}',
+    '.vertical-item {border-bottom: 1px solid;}',
+    '.horizontal-item {border-right: 1px solid;}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

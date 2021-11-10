@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ElementComponent } from '../element-component.directive';
+import { Component } from '@angular/core';
 import { AudioElement } from '../models/audio-element';
-import { ValueChangeElement } from '../models/uI-element';
+import { MediaPlayerElementComponent } from '../media-player-element-component.directive';
 
 @Component({
   selector: 'app-audio',
@@ -19,7 +18,6 @@ import { ValueChangeElement } from '../models/uI-element';
     </div>
   `
 })
-export class AudioComponent extends ElementComponent {
-  @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
+export class AudioComponent extends MediaPlayerElementComponent {
   elementModel!: AudioElement;
 }

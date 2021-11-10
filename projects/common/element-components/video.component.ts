@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { ElementComponent } from '../element-component.directive';
+import { Component } from '@angular/core';
 import { VideoElement } from '../models/video-element';
-import { ValueChangeElement } from '../models/uI-element';
+import { MediaPlayerElementComponent } from '../media-player-element-component.directive';
 
 @Component({
   selector: 'app-video',
@@ -22,7 +21,6 @@ import { ValueChangeElement } from '../models/uI-element';
   `,
   styles: ['.correct-position{ display: block; margin-top: -4px; }']
 })
-export class VideoComponent extends ElementComponent {
-  @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
+export class VideoComponent extends MediaPlayerElementComponent {
   elementModel!: VideoElement;
 }

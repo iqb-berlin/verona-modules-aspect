@@ -9,7 +9,6 @@ import { FormElementComponent } from '../../form-element-component.directive';
 @Component({
   selector: 'app-drop-list',
   template: `
-    <!-- TODO width/height 90 to not produce overflow. find better solution. -->
     <div class="list-container">
       <div class="list"
            [style.color]="elementModel.fontColor"

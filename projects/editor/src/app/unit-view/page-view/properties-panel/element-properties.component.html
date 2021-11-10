@@ -111,7 +111,7 @@
 
         <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
           <ng-container>
-            <mat-label>{{'propertiesPanel.value' | translate }}</mat-label>
+            <mat-label>{{'preset' | translate }}</mat-label>
             <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
                  (cdkDropListDropped)="reorderOptions('value', $any($event))">
               <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
@@ -186,7 +186,7 @@
 
         <mat-form-field *ngIf="combinedProperties.options !== undefined && !combinedProperties.connectedTo"
                         appearance="fill">
-          <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+          <mat-label>{{'preset' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.value"
                       (selectionChange)="updateModel('value', $event.value)">
             <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
@@ -209,7 +209,7 @@
         </mat-form-field>
 
         <ng-container *ngIf="combinedProperties.value === true || combinedProperties.value === false">
-          {{'propertiesPanel.preset' | translate }}
+          {{'preset' | translate }}
           <mat-button-toggle-group [value]="combinedProperties.value"
                                    (change)="updateModel('value', $event.value)">
             <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
@@ -217,12 +217,13 @@
           </mat-button-toggle-group>
         </ng-container>
 
+        <!-- TODO wtf-->
         <mat-form-field *ngIf="combinedProperties.value !== undefined &&
                                !combinedProperties.options && !combinedProperties.columns &&
                                combinedProperties.connectedTo === undefined &&
                                combinedProperties.value !== true && combinedProperties.value !== false"
                         appearance="fill">
-          <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+          <mat-label>{{'preset' | translate }}</mat-label>
           <textarea matInput type="text"
                  [value]="combinedProperties.value"
                  (input)="updateModel('value', $any($event.target).value)">

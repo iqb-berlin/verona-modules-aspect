@@ -321,14 +321,16 @@ export class LikertColumnEditDialog {
   template: `
     <mat-dialog-content fxLayout="column">
       <mat-form-field>
-        <mat-label>Text</mat-label>
+        <mat-label>{{'text' | translate }}</mat-label>
         <input #textField matInput type="text" [value]="data.row.text">
       </mat-form-field>
       <mat-form-field>
-        <mat-label>ID</mat-label>
+        <mat-label>{{'id' | translate }}</mat-label>
         <input #idField matInput type="text" [value]="data.row.id">
       </mat-form-field>
+      {{'preset' | translate }}
       <mat-select #valueField [value]="data.row.value">
+        <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
         <mat-option *ngFor="let column of data.columns; let i = index" [value]="i">
           {{column.text}}
         </mat-option>

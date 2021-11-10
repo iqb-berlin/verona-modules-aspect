@@ -20,6 +20,8 @@
   "removeImage": "Bild entfernen",
   "above": "oben",
   "below": "unten",
+  "preset": "Vorbelegung",
+  "id": "ID",
   "toolbar": {
     "loadUnit": "Unit laden",
     "saveUnit": "Unit speichern"

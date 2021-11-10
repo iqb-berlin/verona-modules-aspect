@@ -1,6 +1,19 @@
 Editor
 ======
-1.8.0
+1.9.0
+- Fix dropList element 'connectedTo' property renaming
+- Implement 'readOnly' setting for dropList element
+  This prevents reordering items.
+- Add 5px margin between 'radio-group-image' images
+- Improve dropList styling
+  (background of draggable items, drop-preview, animations etc.)
+- Add property 'itemBackgroundColor' to dropList
+- Replace text element 'highlightable' with 'interaction' dropdown
+  Multiple interaction themes are possible but mutually exclusive (for now).
+  Player support will follow soon.
+- Implement setting 'likert' preset value
+
+1.8.1
 - Add index indicator to option-list preset value
 - Add alternative radio button group with images
   Automatically aligned horizontally with a vertical label on top.

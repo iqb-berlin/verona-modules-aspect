@@ -28,7 +28,6 @@ import { VideoElement } from '../../../../../common/models/video-element';
 import { AudioElement } from '../../../../../common/models/audio-element';
 import { ImageElement } from '../../../../../common/models/image-element';
 import { VeronaPostService } from '../../services/verona-post.service';
-import { DropListElement } from '../../../../../common/models/compound-elements/drop-list';
 
 @Component({
   selector: 'app-element-container',
@@ -189,9 +188,6 @@ export class ElementContainerComponent implements OnInit {
     const unitStateElementCode = this.unitStateService.getUnitStateElement(elementModel.id);
     if (unitStateElementCode && unitStateElementCode.value !== undefined) {
       switch (elementModel.type) {
-        case 'drop-list':
-          elementModel.options = unitStateElementCode.value;
-          break;
         case 'text':
           elementModel.text = unitStateElementCode.value;
           break;
@@ -211,8 +207,6 @@ export class ElementContainerComponent implements OnInit {
 
   private initUnitStateValue = (elementModel: UIElement): { id: string, value: InputElementValue } => {
     switch (elementModel.type) {
-      case 'drop-list':
-        return { id: elementModel.id, value: (elementModel as DropListElement).options };
       case 'text':
         return { id: elementModel.id, value: (elementModel as TextElement).text };
       case 'image':

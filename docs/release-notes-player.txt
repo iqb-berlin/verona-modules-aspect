@@ -4,6 +4,7 @@ Player
   - Add error-messages to DropList
   - Save values of DropList
   - Send responseProgress 'complete' when all required elements are valid
+  - Prevent simultaneous media playback
   - Fix position of virtual keyboard when it appears above a text field
 
 1.3.0

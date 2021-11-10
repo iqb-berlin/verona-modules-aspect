@@ -29,11 +29,10 @@ import { FormElementComponent } from '../../form-element-component.directive';
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
         <div class="item" *ngFor="let option of elementModel.options; let i = index" cdkDrag
-             [ngClass]="{'vertical-item': elementModel.orientation === 'vertical' &&
-                                     i+1 < elementModel.options.length,
-                         'horizontal-item': elementModel.orientation === 'horizontal' &&
-                                     i+1 < elementModel.options.length}">
+             [ngClass]="{'vertical-item': elementModel.orientation === 'vertical',
+                         'horizontal-item': elementModel.orientation === 'horizontal'}">
           <div *cdkDragPreview>{{option}}</div>
+          <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.fontSize"></div>
           {{option}}
         </div>
       </div>
@@ -49,7 +48,12 @@ import { FormElementComponent } from '../../form-element-component.directive';
     '.item {padding: 10px;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.vertical-item {border-bottom: 1px solid;}',
-    '.horizontal-item {border-right: 1px solid;}'
+    '.horizontal-item {border-right: 1px solid;}',
+    '.item:last-child {border: none;}',
+    '.cdk-drag-preview {background-color: lightgrey; padding: 8px 20px; border-radius: 3px}',
+    '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999; padding: 10px;}',
+    '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
+    '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

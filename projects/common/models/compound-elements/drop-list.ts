@@ -3,7 +3,6 @@ import { FontElement, SurfaceUIElement } from '../../interfaces/UIElementInterfa
 import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class DropListElement extends InputElement implements FontElement, SurfaceUIElement {
-  options: string[] = [];
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   orientation: 'vertical' | 'horizontal' = 'vertical';
@@ -24,6 +23,7 @@ export class DropListElement extends InputElement implements FontElement, Surfac
     Object.assign(this, initFontElement(serializedElement));
     Object.assign(this, initSurfaceElement(serializedElement));
 
+    this.value = [];
     this.height = serializedElement.height || 100;
     this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }

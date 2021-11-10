@@ -109,6 +109,37 @@
           </div>
         </mat-form-field>
 
+        <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
+          <ng-container>
+            <mat-label>{{'propertiesPanel.value' | translate }}</mat-label>
+            <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
+                 (cdkDropListDropped)="reorderOptions('value', $any($event))">
+              <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
+                   class="list-items" fxLayout="row" fxLayoutAlign="end center">
+                <div fxFlex="70">
+                  {{value}}
+                </div>
+                <button mat-icon-button color="primary"
+                        (click)="editTextOption('value', i)">
+                  <mat-icon>build</mat-icon>
+                </button>
+                <button mat-icon-button color="primary"
+                        (click)="removeOption('value', value)">
+                  <mat-icon>clear</mat-icon>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+          <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-icon-button matPrefix
+                    (click)="addOption('value', newValue.value); newValue.select()">
+              <mat-icon>add</mat-icon>
+            </button>
+            <input #newValue matInput type="text"
+                   (keyup.enter)="addOption('value', newValue.value); newValue.select()">
+          </div>
+        </mat-form-field>
+
         <mat-form-field *ngIf="combinedProperties.alignment" appearance="fill">
           <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.alignment"
@@ -188,6 +219,7 @@
 
         <mat-form-field *ngIf="combinedProperties.value !== undefined &&
                                !combinedProperties.options && !combinedProperties.columns &&
+                               combinedProperties.connectedTo === undefined &&
                                combinedProperties.value !== true && combinedProperties.value !== false"
                         appearance="fill">
           <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>

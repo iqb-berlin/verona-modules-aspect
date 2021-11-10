@@ -27,12 +27,12 @@ import { FormElementComponent } from '../../form-element-component.directive';
            [cdkDropListOrientation]="elementModel.orientation"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
-        <div class="item" *ngFor="let option of elementModel.options; let i = index" cdkDrag
+        <div class="item" *ngFor="let value of $any(elementModel.value)" cdkDrag
              [ngClass]="{'vertical-item': elementModel.orientation === 'vertical',
                          'horizontal-item': elementModel.orientation === 'horizontal'}">
-          <div *cdkDragPreview>{{option}}</div>
+          <div *cdkDragPreview>{{value}}</div>
           <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.fontSize"></div>
-          {{option}}
+          {{value}}
         </div>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
@@ -61,21 +61,21 @@ export class DropListComponent extends FormElementComponent {
   drop(event: CdkDragDrop<DropListComponent>): void {
     if (!this.elementModel.readOnly) {
       if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data.elementModel.options, event.previousIndex, event.currentIndex);
+        moveItemInArray(event.container.data.elementModel.value as string[], event.previousIndex, event.currentIndex);
       } else {
         transferArrayItem(
-          event.previousContainer.data.elementModel.options,
-          event.container.data.elementModel.options,
+          event.previousContainer.data.elementModel.value as string[],
+          event.container.data.elementModel.value as string[],
           event.previousIndex,
           event.currentIndex
         );
-        event.previousContainer.data.elementFormControl.setValue(event.previousContainer.data.elementModel.options);
+        event.previousContainer.data.elementFormControl.setValue(event.previousContainer.data.elementModel.value);
       }
-      this.elementFormControl.setValue(event.container.data.elementModel.options);
+      this.elementFormControl.setValue(event.container.data.elementModel.value);
     }
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
-    !drop.data.elementModel.onlyOneItem || drop.data.elementModel.options.length < 1
+    !drop.data.elementModel.onlyOneItem || drop.data.elementModel.value.length < 1
   );
 }

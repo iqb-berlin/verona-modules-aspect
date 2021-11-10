@@ -463,6 +463,19 @@
           {{'propertiesPanel.onlyOneItem' | translate }}
         </mat-checkbox>
 
+        <mat-form-field *ngIf="combinedProperties.itemBackgroundColor !== undefined"
+                        appearance="fill" class="mdInput textsingleline">
+          <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
+          <input matInput type="color" [value]="combinedProperties.itemBackgroundColor"
+                 (input)="updateModel('itemBackgroundColor', $any($event.target).value)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.itemBackgroundColor !== undefined"
+                        appearance="fill" class="mdInput textsingleline">
+          <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
+          <input matInput type="text" [value]="combinedProperties.itemBackgroundColor"
+                 (input)="updateModel('itemBackgroundColor', $any($event.target).value)">
+        </mat-form-field>
+
         <mat-divider></mat-divider>
 
         <button mat-raised-button class="element-button"

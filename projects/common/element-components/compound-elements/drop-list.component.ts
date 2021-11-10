@@ -28,9 +28,12 @@ import { FormElementComponent } from '../../form-element-component.directive';
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
         <div class="item" *ngFor="let value of $any(elementModel.value)" cdkDrag
-             [ngClass]="{'vertical-item': elementModel.orientation === 'vertical',
-                         'horizontal-item': elementModel.orientation === 'horizontal'}">
-          <div *cdkDragPreview>{{value}}</div>
+             [style.background-color]="elementModel.itemBackgroundColor">
+          <div *cdkDragPreview
+               [style.font-size.px]="elementModel.fontSize"
+               [style.background-color]="elementModel.itemBackgroundColor">
+            {{value}}
+          </div>
           <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.fontSize"></div>
           {{value}}
         </div>
@@ -43,13 +46,10 @@ import { FormElementComponent } from '../../form-element-component.directive';
   `,
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
-    '.list {border: 1px solid; border-radius: 3px; width: calc(100% - 2px); height: calc(100% - 2px);}',
-    '.item {padding: 10px;}',
+    '.list {width: calc(100% - 2px); height: calc(100% - 2px);}',
+    '.item {background-color: lightblue; margin: 5px; border-radius: 10px; padding: 10px;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
-    '.vertical-item {border-bottom: 1px solid;}',
-    '.horizontal-item {border-right: 1px solid;}',
-    '.item:last-child {border: none;}',
-    '.cdk-drag-preview {background-color: lightgrey; padding: 8px 20px; border-radius: 3px}',
+    '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
     '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999; padding: 10px;}',
     '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}'

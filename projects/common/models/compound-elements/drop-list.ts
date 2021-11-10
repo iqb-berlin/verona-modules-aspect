@@ -6,6 +6,7 @@ export class DropListElement extends InputElement implements FontElement, Surfac
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   orientation: 'vertical' | 'horizontal' = 'vertical';
+  itemBackgroundColor: string = '#add8e6';
 
   fontColor: string = 'black';
   font: string = 'Roboto';
@@ -25,6 +26,6 @@ export class DropListElement extends InputElement implements FontElement, Surfac
 
     this.value = serializedElement.value as string[] || [];
     this.height = serializedElement.height || 100;
-    this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
+    this.backgroundColor = serializedElement.backgroundColor as string || '#eeeeec';
   }
 }

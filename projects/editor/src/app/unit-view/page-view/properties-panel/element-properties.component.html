@@ -44,7 +44,7 @@
                       (selectionChange)="updateModel('interaction', $event.value)">
             <mat-option *ngFor="let interaction of ['none', 'highlightable', 'underlinable', 'strikable']"
                         [value]="interaction">
-              {{interaction}}
+              {{'propertiesPanel.' + interaction | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>

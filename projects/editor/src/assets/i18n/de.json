@@ -87,6 +87,7 @@
     "true": "wahr",
     "false": "falsch",
     "appearance": "Aussehen",
+    "interaction": "Interaktion",
     "minLength": "Minimallänge",
     "minLengthWarnMessage": "Minimalwert Warnmeldung",
     "maxLength": "Maximalwert",

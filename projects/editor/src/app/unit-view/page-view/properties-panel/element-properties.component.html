@@ -38,11 +38,16 @@
                  (input)="updateModel('borderRadius', $any($event.target).value)">
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.highlightable !== undefined"
-                      [checked]="$any(combinedProperties.highlightable)"
-                      (change)="updateModel('highlightable', $event.checked)">
-          {{'propertiesPanel.highlightable' | translate }}
-        </mat-checkbox>
+        <mat-form-field *ngIf="combinedProperties.interaction !== undefined" appearance="fill">
+          <mat-label>{{'propertiesPanel.interaction' | translate }}</mat-label>
+          <mat-select [value]="combinedProperties.interaction"
+                      (selectionChange)="updateModel('interaction', $event.value)">
+            <mat-option *ngFor="let interaction of ['none', 'highlightable', 'underlinable', 'strikable']"
+                        [value]="interaction">
+              {{interaction}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <mat-checkbox *ngIf="combinedProperties.strikeOtherOptions !== undefined"
                       [checked]="$any(combinedProperties.strikeOtherOptions)"

@@ -4,7 +4,7 @@ import { initSurfaceElement } from '../util/unit-interface-initializer';
 
 export class TextElement extends UIElement implements SurfaceUIElement {
   text: string = '<p>Lorem ipsum dolor sit amet</p>';
-  highlightable: boolean = false;
+  interaction: 'none' | 'highlightable' | 'underlinable' | 'strikable' = 'none';
   fontColor: string = 'black';
   font: string = 'Roboto';
   lineHeight: number = 120;
@@ -26,5 +26,13 @@ export class TextElement extends UIElement implements SurfaceUIElement {
 
     this.height = serializedElement.height || 78;
     this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
+
+    this.handleBackwardsCompatibility(serializedElement);
+  }
+
+  handleBackwardsCompatibility(serializedElement: UIElement): void {
+    if (serializedElement.highlightable) {
+      this.interaction = 'highlightable';
+    }
   }
 }

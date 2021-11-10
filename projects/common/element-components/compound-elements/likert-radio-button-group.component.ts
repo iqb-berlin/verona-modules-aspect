@@ -7,8 +7,9 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
   selector: 'app-likert-radio-button-group',
   template: `
     <mat-radio-group [style.display]="'grid'"
-                     [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.columnCount)"
-                     [formControl]="elementFormControl">
+                     [formControl]="elementFormControl"
+                     [value]="elementModel.value"
+                     [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.columnCount)">
       <div [style.grid-column-start]="1"
            [style.grid-column-end]="2"
            [style.grid-row-start]="1"

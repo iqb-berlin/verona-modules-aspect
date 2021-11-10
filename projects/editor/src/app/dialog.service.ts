@@ -76,12 +76,13 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertRowEditDialog(row: LikertElementRow): Observable<LikertElementRow> {
+  showLikertRowEditDialog(row: LikertElementRow, columns: LikertColumn[]): Observable<LikertElementRow> {
     const dialogRef = this.dialog.open(LikertRowEditDialog, {
       width: '300px',
       height: '550px',
       data: {
-        row: row
+        row: row,
+        columns: columns
       },
       autoFocus: false
     });
@@ -327,14 +328,21 @@ export class LikertColumnEditDialog {
         <mat-label>ID</mat-label>
         <input #idField matInput type="text" [value]="data.row.id">
       </mat-form-field>
+      <mat-select #valueField [value]="data.row.value">
+        <mat-option *ngFor="let column of data.columns; let i = index" [value]="i">
+          {{column.text}}
+        </mat-option>
+      </mat-select>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button
-              [mat-dialog-close]="{ text: textField.value, id: idField.value }">{{'save' | translate }}</button>
+              [mat-dialog-close]="{ text: textField.value, id: idField.value, value: valueField.value }">
+        {{'save' | translate }}
+      </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `
 })
 export class LikertRowEditDialog {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertElementRow }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertElementRow, columns: LikertColumn[] }) { }
 }

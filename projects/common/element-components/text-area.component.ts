@@ -15,16 +15,16 @@ import { TextAreaElement } from '../models/text-area-element';
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''"
                     [appearance]="$any(elementModel.appearance)">
-      <textarea matInput [formControl]="elementFormControl" #input
-                rows="{{elementModel.rowCount}}"
+      <textarea matInput #input
+                autocomplete="off" rows="{{elementModel.rowCount}}" placeholder="{{elementModel.label}}"
+                [formControl]="elementFormControl"
+                [value]="elementModel.value"
                 [readonly]="elementModel.readOnly"
-                (focus)="onFocus.emit(input)"
-                (blur)="onBlur.emit(input)"
-                autocomplete="off"
-                placeholder="{{elementModel.label}}"
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.lineHeight"
-                [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'">
+                [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
+                (focus)="onFocus.emit(input)"
+                (blur)="onBlur.emit(input)">
       </textarea>
       <mat-error *ngIf="elementFormControl.errors">
         {{elementFormControl.errors | errorTransform: elementModel}}

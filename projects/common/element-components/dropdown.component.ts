@@ -17,9 +17,10 @@ import { DropdownElement } from '../models/dropdown-element';
                  [style.text-decoration]="elementModel.underline ? 'underline' : ''">
         {{$any(elementModel).label}}
       </mat-label>
-      <mat-select [formControl]="elementFormControl">
-        <mat-option *ngIf="elementModel.allowUnset" value="" (click)="$event.preventDefault()"
-                    [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'">
+      <mat-select [formControl]="elementFormControl" [value]="elementModel.value">
+        <mat-option *ngIf="elementModel.allowUnset" value=""
+                    [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
+                    (click)="$event.preventDefault()">
         </mat-option>
         <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i"
                     [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'">

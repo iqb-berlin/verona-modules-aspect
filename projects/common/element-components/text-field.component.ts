@@ -18,12 +18,13 @@ import { TextFieldElement } from '../models/text-field-element';
                     appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
-      <input matInput type="text" [pattern]="elementModel.pattern" #input
+      <input matInput type="text" #input autocomplete="off"
+             [formControl]="elementFormControl"
+             [value]="elementModel.value"
+             [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"
              (focus)="onFocus.emit(input)"
-             (blur)="onBlur.emit(input)"
-             autocomplete="off"
-             [formControl]="elementFormControl">
+             (blur)="onBlur.emit(input)">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
               (click)="onClick($event)">
         <mat-icon>close</mat-icon>
@@ -43,13 +44,13 @@ import { TextFieldElement } from '../models/text-field-element';
                     [style.text-decoration]="elementModel.underline ? 'underline' : ''"
                     appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
-      <input matInput type="text" #input
+      <input matInput type="text" #input autocomplete="off"
+             [formControl]="elementFormControl"
+             [value]="elementModel.value"
              [readonly]="elementModel.readOnly"
              [pattern]="elementModel.pattern"
              (focus)="onFocus.emit(input)"
-             (blur)="onBlur.emit(input)"
-             autocomplete="off"
-             [formControl]="elementFormControl">
+             (blur)="onBlur.emit(input)">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
               (click)="onClick($event)">
         <mat-icon>close</mat-icon>

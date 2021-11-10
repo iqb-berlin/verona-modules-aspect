@@ -231,22 +231,29 @@ export class UnitService {
       });
   }
 
-  async editLikertRow(question: LikertElementRow): Promise<void> {
-    await this.dialogService.showLikertRowEditDialog(question)
+  async editLikertRow(row: LikertElementRow, columns: LikertColumn[]): Promise<void> {
+    await this.dialogService.showLikertRowEditDialog(row, columns)
       .subscribe((result: LikertElementRow) => {
         if (result) {
-          if (result.id !== question.id) {
+          if (result.id !== row.id) {
             this.updateElementProperty(
-              [question],
+              [row],
               'id',
               result.id
             );
           }
-          if (result.text !== question.text) {
+          if (result.text !== row.text) {
             this.updateElementProperty(
-              [question],
+              [row],
               'text',
               result.text
+            );
+          }
+          if (result.value !== row.value) {
+            this.updateElementProperty(
+              [row],
+              'value',
+              result.value
             );
           }
         }

@@ -11,14 +11,15 @@ import { CheckboxElement } from '../models/checkbox-element';
          [style.height.%]="100"
          [style.background-color]="elementModel.backgroundColor">
       <mat-checkbox #checkbox class="example-margin"
-                    (click)="elementModel.readOnly ? $event.preventDefault() : null"
                     [formControl]="elementFormControl"
+                    [checked]="$any(elementModel.value)"
                     [style.color]="elementModel.fontColor"
                     [style.font-family]="elementModel.font"
                     [style.font-size.px]="elementModel.fontSize"
                     [style.font-weight]="elementModel.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.underline ? 'underline' : ''">
+                    [style.text-decoration]="elementModel.underline ? 'underline' : ''"
+                    (click)="elementModel.readOnly ? $event.preventDefault() : null">
         <div [style.line-height.%]="elementModel.lineHeight" [innerHTML]="elementModel.label"></div>
       </mat-checkbox>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"

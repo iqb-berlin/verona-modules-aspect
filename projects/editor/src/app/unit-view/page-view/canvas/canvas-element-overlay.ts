@@ -4,13 +4,11 @@ import {
   ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../unit.service';
 import * as ElementFactory from '../../../../../../common/util/element.factory';
-import { FormElementComponent } from '../../../../../../common/form-element-component.directive';
 import { ElementComponent } from '../../../../../../common/element-component.directive';
 import { SelectionService } from '../../../selection.service';
-import { InputElement, UIElement, ValueChangeElement } from '../../../../../../common/models/uI-element';
+import { UIElement } from '../../../../../../common/models/uI-element';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -36,21 +34,17 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
     this.selectionService.selectElement({ componentElement: this, multiSelect: false });
 
-    if (this.childComponent.instance instanceof FormElementComponent) {
-      this.childComponent.instance.formValueChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((changeElement: ValueChangeElement) => {
-          this.unitService.updateElementProperty([this.element], 'value', changeElement.values[1]);
-        });
+    // This allows to listen for changed directly on the element. And update the model accordingly.
+    // Since the elements are no longer interactable this code is not used. It may be in the future that
+    // this functionality is wanted again. Therefore the code is kept in commented out form.
 
-      this.unitService.elementPropertyUpdated
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
-          (this.childComponent.instance as FormElementComponent).updateFormValue(
-            (this.element as InputElement).value as string | number | boolean | null
-          );
-        });
-    }
+    // if (this.childComponent.instance instanceof FormElementComponent) {
+    //   this.childComponent.instance.formValueChanged
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((changeElement: ValueChangeElement) => {
+    //       this.unitService.updateElementProperty([this.element], 'value', changeElement.values[1]);
+    //     });
+    // }
   }
 
   setSelected(newValue: boolean): void {

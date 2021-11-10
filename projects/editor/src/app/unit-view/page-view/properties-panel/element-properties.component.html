@@ -196,9 +196,9 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.columns !== undefined"
+        <mat-form-field *ngIf="combinedProperties.columns !== undefined && combinedProperties.rows === undefined"
                         appearance="fill">
-          <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+          <mat-label>{{'preset' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.value"
                       (selectionChange)="updateModel('value', $event.value)">
             <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>

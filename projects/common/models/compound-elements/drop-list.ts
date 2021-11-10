@@ -23,7 +23,7 @@ export class DropListElement extends InputElement implements FontElement, Surfac
     Object.assign(this, initFontElement(serializedElement));
     Object.assign(this, initSurfaceElement(serializedElement));
 
-    this.value = [];
+    this.value = serializedElement.value as string[] || [];
     this.height = serializedElement.height || 100;
     this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }

@@ -20,6 +20,7 @@ import { FormElementComponent } from '../../form-element-component.directive';
       </label>
       <mat-radio-group aria-labelledby="radio-group-label" [formControl]="elementFormControl"
                        class="grid-layout" [style.display]="'grid'"
+                       [value]="elementModel.value"
                        [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)">
         <label *ngFor="let option of elementModel.columns; let i = index" class="columns"
                id="radio-group-label"

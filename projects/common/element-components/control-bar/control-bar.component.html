@@ -4,9 +4,9 @@
     <button *ngIf="!playing || !elementModel.pauseControl"
             mat-button
             class="control-button"
-            [class.enabled-control]="!disabled"
+            [class.enabled-control]="!disabled && active"
             [class.active-control]="playing"
-            [disabled]="disabled"
+            [disabled]="disabled || !active"
             (click)="play($event)">
       <mat-icon>play_arrow</mat-icon>
     </button>
@@ -15,9 +15,9 @@
     <button *ngIf="playing"
             mat-button
             class="control-button"
-            [class.enabled-control]="!disabled"
+            [class.enabled-control]="!disabled && active"
             [class.active-control]="pausing"
-            [disabled]="disabled"
+            [disabled]="disabled || !active"
             (click)="pause($event)">
       <mat-icon>pause</mat-icon>
     </button>
@@ -33,7 +33,7 @@
                 step="1"
                 [max]="player.duration"
                 [value]="player.currentTime"
-                [disabled]="disabled || !elementModel.interactiveProgressbar"
+                [disabled]="disabled || !elementModel.interactiveProgressbar || !active"
                 (input)="onTimeChange($event)">
     </mat-slider>
   </ng-container>

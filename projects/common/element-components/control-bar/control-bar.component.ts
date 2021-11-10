@@ -14,6 +14,7 @@ import { ValueChangeElement } from '../../models/uI-element';
 export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() elementModel!: AudioElement | VideoElement;
+  @Input() active!: boolean;
   @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
   duration!: number;
   currentTime!: number;
@@ -141,7 +142,7 @@ export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy 
   private _play(): void {
     this.player.play().then(() => {},
       // eslint-disable-next-line no-console
-      () => console.error('error'));
+      () => console.error('player: cannot play this media file'));
   }
 
   private sendPlaybackTimeChanged() {

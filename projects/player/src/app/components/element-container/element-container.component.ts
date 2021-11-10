@@ -28,6 +28,8 @@ import { VideoElement } from '../../../../../common/models/video-element';
 import { AudioElement } from '../../../../../common/models/audio-element';
 import { ImageElement } from '../../../../../common/models/image-element';
 import { VeronaPostService } from '../../services/verona-post.service';
+import { MediaPlayerElementComponent } from '../../../../../common/media-player-element-component.directive';
+import { MediaPlayerService } from '../../services/media-player.service';
 
 @Component({
   selector: 'app-element-container',
@@ -54,6 +56,7 @@ export class ElementContainerComponent implements OnInit {
               private unitStateService: UnitStateService,
               private formBuilder: FormBuilder,
               private veronaPostService: VeronaPostService,
+              private mediaPlayerService: MediaPlayerService,
               private markingService: MarkingService) {
   }
 
@@ -95,6 +98,22 @@ export class ElementContainerComponent implements OnInit {
           if (mouseEvent.ctrlKey && selection?.rangeCount) {
             selection.removeAllRanges();
           }
+        });
+    }
+
+    if (elementComponent.mediaPause) {
+      elementComponent.mediaPause
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => {
+          this.mediaPlayerService.broadCastPlayChanges(null);
+        });
+    }
+
+    if (elementComponent.mediaPlay) {
+      elementComponent.mediaPlay
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((playId: string) => {
+          this.mediaPlayerService.broadCastPlayChanges(playId);
         });
     }
 
@@ -181,6 +200,8 @@ export class ElementContainerComponent implements OnInit {
             formGroup: elementForm
           });
         });
+    } else if (elementComponent instanceof MediaPlayerElementComponent) {
+      this.mediaPlayerService.registerMediaElement(elementComponent);
     }
   }
 

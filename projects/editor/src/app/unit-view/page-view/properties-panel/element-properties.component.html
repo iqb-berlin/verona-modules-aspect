@@ -437,10 +437,10 @@
           {{'propertiesPanel.onlyOneItem' | translate }}
         </mat-checkbox>
 
-        <mat-checkbox *ngIf="combinedProperties.showLabel !== undefined"
-                      [checked]="$any(combinedProperties.showLabel)"
-                      (change)="updateModel('showLabel', $event.checked)">
-          {{'propertiesPanel.showLabel' | translate }}
+        <mat-checkbox *ngIf="combinedProperties.showValues !== undefined"
+                      [checked]="$any(combinedProperties.showValues)"
+                      (change)="updateModel('showValues', $event.checked)">
+          {{'propertiesPanel.showValues' | translate }}
         </mat-checkbox>
 
         <mat-divider></mat-divider>

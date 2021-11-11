@@ -1,12 +1,11 @@
 import { SurfaceUIElement } from '../interfaces/UIElementInterfaces';
-import { UIElement } from './uI-element';
+import { InputElement, UIElement} from './uI-element';
 import { initSurfaceElement } from '../util/unit-interface-initializer';
 
-export class SliderElement extends UIElement implements SurfaceUIElement {
-  label: string = 'Zahlenstrahl';
+export class SliderElement extends InputElement implements SurfaceUIElement {
   minValue: number = 0;
   maxValue: number = 100;
-  showLabel: boolean = true;
+  showValues: boolean = true;
 
   backgroundColor: string = 'transparent';
 

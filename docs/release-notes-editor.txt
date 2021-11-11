@@ -1,5 +1,13 @@
 Editor
 ======
+1.10.0
+ - Fix reading of existing likert element row values
+ - Fix reading of existing dropList elements
+   (This element was internally reworked and no longer has the 'options' property.
+   To remain backwards compatible old 'option' lists are now correctly transformed to 'value' lists.)
+ - Fix textarea edit dialog to use multiline dialog
+ - Improve dialog sizing and styling
+
 1.9.1
  - Make text underlinable
  - Fix marking of text

@@ -32,6 +32,7 @@ import { RadioButtonGroupComponent } from './element-components/radio-button-gro
 import { ImageComponent } from './element-components/image.component';
 import { VideoComponent } from './element-components/video.component';
 import { AudioComponent } from './element-components/audio.component';
+import { SliderComponent } from './element-components/slider.component';
 import { SafeResourceUrlPipe } from './element-components/pipes/safe-resource-url.pipe';
 import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
 import { ErrorTransformPipe } from './element-components/pipes/error-transform.pipe';
@@ -43,6 +44,7 @@ import { LikertRadioButtonGroupComponent } from './element-components/compound-e
 import { Magnifier } from './element-components/magnifier.component';
 import { RadioGroupImagesComponent } from './element-components/compound-elements/radio-group-images.component';
 import { DropListComponent } from './element-components/compound-elements/drop-list.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -70,6 +72,7 @@ import { DropListComponent } from './element-components/compound-elements/drop-l
     ImageComponent,
     AudioComponent,
     VideoComponent,
+    SliderComponent,
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
@@ -110,6 +113,7 @@ import { DropListComponent } from './element-components/compound-elements/drop-l
     ImageComponent,
     AudioComponent,
     VideoComponent,
+    SliderComponent,
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
@@ -118,6 +122,10 @@ import { DropListComponent } from './element-components/compound-elements/drop-l
     MatDialogModule,
     TranslateModule,
     SafeResourceHTMLPipe
-  ]
+  ],
+  providers:
+    [
+      { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
+    ]
 })
 export class SharedModule { }

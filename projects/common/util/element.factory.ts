@@ -27,6 +27,8 @@ import { RadioGroupImagesComponent } from '../element-components/compound-elemen
 import { RadioGroupImagesElement } from '../models/compound-elements/radio-group-images';
 import { DropListComponent } from '../element-components/compound-elements/drop-list.component';
 import { DropListElement } from '../models/compound-elements/drop-list';
+import { SliderElement } from '../models/slider-element';
+import {SliderComponent} from "../element-components/slider.component";
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -70,6 +72,9 @@ export function createElement(elementModel: UIElement): UIElement {
     case 'drop-list':
       newElement = new DropListElement(elementModel);
       break;
+    case 'slider':
+      newElement = new SliderElement(elementModel);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -108,6 +113,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(RadioGroupImagesComponent);
     case 'drop-list':
       return componentFactoryResolver.resolveComponentFactory(DropListComponent);
+    case 'slider':
+      return componentFactoryResolver.resolveComponentFactory(SliderComponent);
     default:
       throw new Error('unknown element');
   }

@@ -16,6 +16,7 @@ export class IdService {
     video: 0,
     likert: 0,
     likert_row: 0,
+    slider: 0,
     'radio-group-images': 0,
     'drop-list': 0
   };

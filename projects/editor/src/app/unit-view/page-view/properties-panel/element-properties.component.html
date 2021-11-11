@@ -212,6 +212,18 @@
                  [ngModel]="combinedProperties.minLength"
                  (ngModelChange)="updateModel('minLength', $event, minLength.valid)">
         </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
+          <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
+          <input matInput type="number" #minValue="ngModel" min="0"
+                 [ngModel]="combinedProperties.minValue"
+                 (ngModelChange)="updateModel('minValue', $event, minValue.valid)">
+        </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
+          <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
+          <input matInput type="number" #maxValue="ngModel" min="0"
+                 [ngModel]="combinedProperties.maxValue"
+                 (ngModelChange)="updateModel('maxValue', $event, maxValue.valid)">
+        </mat-form-field>
         <mat-form-field *ngIf="combinedProperties.minLength &&
                                    $any(combinedProperties.minLength) > 0"
                         appearance="fill">
@@ -423,6 +435,12 @@
                       [checked]="$any(combinedProperties.onlyOneItem)"
                       (change)="updateModel('onlyOneItem', $event.checked)">
           {{'propertiesPanel.onlyOneItem' | translate }}
+        </mat-checkbox>
+
+        <mat-checkbox *ngIf="combinedProperties.showLabel !== undefined"
+                      [checked]="$any(combinedProperties.showLabel)"
+                      (change)="updateModel('showLabel', $event.checked)">
+          {{'propertiesPanel.showLabel' | translate }}
         </mat-checkbox>
 
         <mat-divider></mat-divider>

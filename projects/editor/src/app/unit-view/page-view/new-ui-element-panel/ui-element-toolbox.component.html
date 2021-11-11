@@ -64,6 +64,11 @@
         <mat-icon>ondemand_video</mat-icon>
         Video
       </button>
+      <button mat-raised-button (click)="addUIElement('slider')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','slider')">
+        <mat-icon>spa</mat-icon>
+        Zahlenstrahl
+      </button>
     </div>
   </mat-tab>
   <mat-tab>

@@ -1,5 +1,9 @@
 Player
 ======
+1.4.1
+  - Make text underlinable
+  - Fix marking of text
+
 1.4.0
   - Add error-messages to DropList
   - Save values of DropList

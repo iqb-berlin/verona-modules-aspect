@@ -1,5 +1,9 @@
 Editor
 ======
+1.9.1
+ - Make text underlinable
+ - Fix marking of text
+
 1.9.0
 - Fix dropList element 'connectedTo' property renaming
 - Implement 'readOnly' setting for dropList element

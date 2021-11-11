@@ -23,8 +23,8 @@ import { TextFieldElement } from '../models/text-field-element';
              [value]="elementModel.value"
              [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"
-             (focus)="onFocus.emit(input)"
-             (blur)="onBlur.emit(input)">
+             (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
+             (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
               (click)="onClick($event)">
         <mat-icon>close</mat-icon>
@@ -49,8 +49,8 @@ import { TextFieldElement } from '../models/text-field-element';
              [value]="elementModel.value"
              [readonly]="elementModel.readOnly"
              [pattern]="elementModel.pattern"
-             (focus)="onFocus.emit(input)"
-             (blur)="onBlur.emit(input)">
+             (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
+             (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
               (click)="onClick($event)">
         <mat-icon>close</mat-icon>
@@ -65,8 +65,7 @@ import { TextFieldElement } from '../models/text-field-element';
   ]
 })
 export class TextFieldComponent extends FormElementComponent {
-  @Output() onFocus = new EventEmitter<HTMLElement>();
-  @Output() onBlur = new EventEmitter<HTMLElement>();
+  @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
   elementModel!: TextFieldElement;
 
   onClick(event: MouseEvent) : void {

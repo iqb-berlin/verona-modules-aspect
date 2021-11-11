@@ -195,23 +195,19 @@ export class ElementContainerComponent implements OnInit {
   }
 
   private subscribeForKeyboardEvents(elementComponent: any): void {
-    if (elementComponent.onFocus) {
-      elementComponent.onFocus
+    if (elementComponent.onFocusChanged) {
+      elementComponent.onFocusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((focussedInputControl: HTMLElement): void => {
-          const inputElement = this.elementModel.type === 'text-area' ?
-            focussedInputControl as HTMLTextAreaElement :
-            focussedInputControl as HTMLInputElement;
-          this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
-          this.isKeyboardOpen = this.keyboardService.openKeyboard(inputElement);
-        });
-    }
-
-    if (elementComponent.onBlur) {
-      elementComponent.onBlur
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((): void => {
-          this.isKeyboardOpen = this.keyboardService.closeKeyboard();
+        .subscribe((focussedInputControl: HTMLElement | null): void => {
+          if (focussedInputControl) {
+            const inputElement = this.elementModel.type === 'text-area' ?
+              focussedInputControl as HTMLTextAreaElement :
+              focussedInputControl as HTMLInputElement;
+            this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
+            this.isKeyboardOpen = this.keyboardService.openKeyboard(inputElement);
+          } else {
+            this.isKeyboardOpen = this.keyboardService.closeKeyboard();
+          }
         });
     }
   }

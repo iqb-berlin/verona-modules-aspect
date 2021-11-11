@@ -23,8 +23,8 @@ import { TextAreaElement } from '../models/text-area-element';
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
-                (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocus.emit(input) : null"
-                (blur)="elementModel.inputAssistancePreset !== 'none' ? onBlur.emit(input): null">
+                (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
+                (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
       </textarea>
       <mat-error *ngIf="elementFormControl.errors">
         {{elementFormControl.errors | errorTransform: elementModel}}
@@ -33,7 +33,6 @@ import { TextAreaElement } from '../models/text-area-element';
   `
 })
 export class TextAreaComponent extends FormElementComponent {
-  @Output() onFocus = new EventEmitter<HTMLElement>();
-  @Output() onBlur = new EventEmitter<HTMLElement>();
+  @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
   elementModel!: TextAreaElement;
 }

@@ -27,5 +27,13 @@ export class DropListElement extends InputElement implements FontElement, Surfac
     this.value = serializedElement.value as string[] || [];
     this.height = serializedElement.height || 100;
     this.backgroundColor = serializedElement.backgroundColor as string || '#eeeeec';
+
+    this.handleBackwardsCompatibility(serializedElement);
+  }
+
+  handleBackwardsCompatibility(serializedElement: UIElement): void {
+    if (serializedElement.options) {
+      this.value = serializedElement.options as string[];
+    }
   }
 }

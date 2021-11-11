@@ -8,8 +8,8 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
     <div [style.width.%]="100"
          [style.height.%]="100">
       <audio #player
-             (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
-             (pause)="mediaPlayStatusChanged.emit(null)"
+             (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
+             (pause)="onMediaPlayStatusChanged.emit(null)"
              [style.width.%]="100"
              [src]="elementModel.src | safeResourceUrl">
       </audio>

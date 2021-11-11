@@ -151,8 +151,8 @@ export class ElementContainerComponent implements OnInit {
   }
 
   private subscribeMediaStatusChanged(elementComponent: any): void {
-    if (elementComponent.mediaPlayStatusChanged) {
-      elementComponent.mediaPlayStatusChanged
+    if (elementComponent.onMediaPlayStatusChanged) {
+      elementComponent.onMediaPlayStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((playStatus: string | null) => {
           this.mediaPlayerService.broadCastPlayChanges(playStatus);

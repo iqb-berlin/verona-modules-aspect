@@ -13,8 +13,8 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
              [src]="elementModel.src | safeResourceUrl">
       </video>
       <app-control-bar class="correct-position"
-                       (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
-                       (pause)="mediaPlayStatusChanged.emit(null)"
+                       (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
+                       (pause)="onMediaPlayStatusChanged.emit(null)"
                        [player]="player"
                        [elementModel]="elementModel"
                        (elementValueChanged)="elementValueChanged.emit($event)">

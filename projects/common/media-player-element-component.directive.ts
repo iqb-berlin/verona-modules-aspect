@@ -5,7 +5,7 @@ import { ElementComponent } from './element-component.directive';
 @Directive()
 export abstract class MediaPlayerElementComponent extends ElementComponent {
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() mediaPlayStatusChanged = new EventEmitter<string | null>();
+  @Output() onMediaPlayStatusChanged = new EventEmitter<string | null>();
 
   active: boolean = true;
 

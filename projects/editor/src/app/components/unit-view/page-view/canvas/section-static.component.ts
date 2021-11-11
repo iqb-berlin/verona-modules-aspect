@@ -1,9 +1,9 @@
 import {
   Component, ElementRef, Input, ViewChild
 } from '@angular/core';
-import { UnitService } from '../../../unit.service';
-import { Section } from '../../../../../../common/models/section';
-import { UIElementType } from '../../../../../../common/models/uI-element';
+import { UnitService } from '../../../../services/unit.service';
+import { Section } from '../../../../../../../common/models/section';
+import { UIElementType } from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-section-static',

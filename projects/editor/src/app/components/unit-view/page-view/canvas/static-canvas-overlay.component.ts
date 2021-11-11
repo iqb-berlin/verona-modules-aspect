@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
 import { CanvasElementOverlay } from './canvas-element-overlay';
-import { UIElement } from '../../../../../../common/models/uI-element';
+import { UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-static-canvas-overlay',

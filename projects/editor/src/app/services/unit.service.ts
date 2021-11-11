@@ -2,21 +2,21 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { FileService } from '../../../common/file.service';
-import { MessageService } from '../../../common/message.service';
-import { IdService } from '../../../common/id.service';
+import { FileService } from '../../../../common/file.service';
+import { MessageService } from '../../../../common/message.service';
+import { IdService } from '../../../../common/id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
-import { Unit } from '../../../common/models/unit';
-import { Page } from '../../../common/models/page';
-import { Section } from '../../../common/models/section';
-import { InputElement, UIElement, UIElementType } from '../../../common/models/uI-element';
-import { TextElement } from '../../../common/models/text-element';
-import { LikertElement } from '../../../common/models/compound-elements/likert-element';
-import { LikertElementRow } from '../../../common/models/compound-elements/likert-element-row';
-import { LikertColumn, LikertRow, PlayerElement } from '../../../common/interfaces/UIElementInterfaces';
+import { Unit } from '../../../../common/models/unit';
+import { Page } from '../../../../common/models/page';
+import { Section } from '../../../../common/models/section';
+import { InputElement, UIElement, UIElementType } from '../../../../common/models/uI-element';
+import { TextElement } from '../../../../common/models/text-element';
+import { LikertElement } from '../../../../common/models/compound-elements/likert-element';
+import { LikertElementRow } from '../../../../common/models/compound-elements/likert-element-row';
+import { LikertColumn, LikertRow, PlayerElement } from '../../../../common/interfaces/UIElementInterfaces';
 import { SelectionService } from './selection.service';
-import * as ElementFactory from '../../../common/util/element.factory';
+import * as ElementFactory from '../../../../common/util/element.factory';
 
 @Injectable({
   providedIn: 'root'

@@ -4,11 +4,11 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../../unit.service';
-import { SelectionService } from '../../../selection.service';
-import { Page } from '../../../../../../common/models/page';
-import { UIElement } from '../../../../../../common/models/uI-element';
-import { Section } from '../../../../../../common/models/section';
+import { UnitService } from '../../../../services/unit.service';
+import { SelectionService } from '../../../../services/selection.service';
+import { Page } from '../../../../../../../common/models/page';
+import { UIElement } from '../../../../../../../common/models/uI-element';
+import { Section } from '../../../../../../../common/models/section';
 
 @Component({
   selector: 'app-page-canvas',

@@ -4,11 +4,11 @@ import {
   ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { UnitService } from '../../../unit.service';
-import * as ElementFactory from '../../../../../../common/util/element.factory';
-import { ElementComponent } from '../../../../../../common/element-component.directive';
-import { SelectionService } from '../../../selection.service';
-import { UIElement } from '../../../../../../common/models/uI-element';
+import { UnitService } from '../../../../services/unit.service';
+import * as ElementFactory from '../../../../../../../common/util/element.factory';
+import { ElementComponent } from '../../../../../../../common/element-component.directive';
+import { SelectionService } from '../../../../services/selection.service';
+import { UIElement } from '../../../../../../../common/models/uI-element';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {

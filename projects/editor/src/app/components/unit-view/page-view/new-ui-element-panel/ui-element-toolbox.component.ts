@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { UnitService } from '../../../unit.service';
-import { SelectionService } from '../../../selection.service';
-import { UIElementType } from '../../../../../../common/models/uI-element';
+import { UnitService } from '../../../../services/unit.service';
+import { SelectionService } from '../../../../services/selection.service';
+import { UIElementType } from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-ui-element-toolbox',

@@ -7,14 +7,14 @@ import { takeUntil } from 'rxjs/operators';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
-import { UnitService } from '../../../unit.service';
-import { SelectionService } from '../../../selection.service';
-import { MessageService } from '../../../../../../common/message.service';
-import { FileService } from '../../../../../../common/file.service';
-import { UIElement } from '../../../../../../common/models/uI-element';
-import { LikertElementRow } from '../../../../../../common/models/compound-elements/likert-element-row';
-import { LikertElement } from '../../../../../../common/models/compound-elements/likert-element';
-import { LikertColumn, LikertRow } from '../../../../../../common/interfaces/UIElementInterfaces';
+import { UnitService } from '../../../../services/unit.service';
+import { SelectionService } from '../../../../services/selection.service';
+import { MessageService } from '../../../../../../../common/message.service';
+import { FileService } from '../../../../../../../common/file.service';
+import { UIElement } from '../../../../../../../common/models/uI-element';
+import { LikertElementRow } from '../../../../../../../common/models/compound-elements/likert-element-row';
+import { LikertElement } from '../../../../../../../common/models/compound-elements/likert-element';
+import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/UIElementInterfaces';
 
 @Component({
   selector: 'app-element-properties',

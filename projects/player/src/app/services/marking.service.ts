@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TextComponent } from '../../../../common/element-components/text.component';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,38 @@ export class MarkingService {
   private static readonly MARKING_TAG = 'MARKED';
   private static readonly UNDERLINE_TAG = 'UNDERLINED';
 
-  applySelection(
+  applySelection(mode: 'mark' | 'underline' | 'delete',
+                 color: string,
+                 element: HTMLElement,
+                 textComponent: TextComponent): void {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      if (this.isDescendantOf(range.startContainer, element) &&
+        this.isDescendantOf(range.endContainer, element)) {
+        const markMode = mode === 'mark' ? 'marked' : 'underlined';
+        this.applyRange(range, selection, mode === 'delete', color, markMode);
+        textComponent.elementValueChanged.emit({
+          id: textComponent.elementModel.id,
+          values: [textComponent.elementModel.text as string, element.innerHTML]
+        });
+        textComponent.elementModel.text = element.innerHTML;
+      }
+      selection.removeAllRanges();
+    } // nothing to do!
+  }
+
+  private isDescendantOf(node: Node | null, element: HTMLElement): boolean {
+    if (!node || node === document) {
+      return false;
+    }
+    if (node.parentElement === element) {
+      return true;
+    }
+    return this.isDescendantOf(node.parentNode, element);
+  }
+
+  private applyRange(
     range: Range, selection: Selection, clear: boolean, color: string, markMode: 'marked' | 'underlined'
   ): void {
     if (range.startContainer === range.endContainer) {

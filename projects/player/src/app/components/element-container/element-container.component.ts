@@ -30,6 +30,7 @@ import { ImageElement } from '../../../../../common/models/image-element';
 import { VeronaPostService } from '../../services/verona-post.service';
 import { MediaPlayerElementComponent } from '../../../../../common/media-player-element-component.directive';
 import { MediaPlayerService } from '../../services/media-player.service';
+import { TextComponent } from '../../../../../common/element-components/text.component';
 
 @Component({
   selector: 'app-element-container',
@@ -122,7 +123,8 @@ export class ElementContainerComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selection:
         { mode: 'mark' | 'underline' | 'delete', color: string; element: HTMLElement; clear: boolean }) => {
-          this.applySelection(selection.mode, selection.color, selection.element);
+          this.markingService
+            .applySelection(selection.mode, selection.color, selection.element, elementComponent as TextComponent);
         });
     }
 
@@ -249,34 +251,6 @@ export class ElementContainerComponent implements OnInit {
       .subscribe((): void => {
         this.isKeyboardOpen = this.keyboardService.closeKeyboard();
       });
-  }
-
-  private applySelection(mode: 'mark' | 'underline' | 'delete', color: string, element: HTMLElement): void {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      if (this.isDescendantOf(range.startContainer, element) &&
-        this.isDescendantOf(range.endContainer, element)) {
-        const markMode = mode === 'mark' ? 'marked' : 'underlined';
-        this.markingService.applySelection(range, selection, mode === 'delete', color, markMode);
-        this.unitStateService.changeElementValue({
-          id: this.elementModel.id,
-          values: [this.elementModel.text as string, element.innerHTML]
-        });
-        this.elementModel.text = element.innerHTML;
-      }
-      selection.removeAllRanges();
-    } // nothing to do!
-  }
-
-  private isDescendantOf(node: Node | null, element: HTMLElement): boolean {
-    if (!node || node === document) {
-      return false;
-    }
-    if (node.parentElement === element) {
-      return true;
-    }
-    return this.isDescendantOf(node.parentNode, element);
   }
 
   ngOnDestroy(): void {

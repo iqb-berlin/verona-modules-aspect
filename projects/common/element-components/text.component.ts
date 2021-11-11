@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { TextElement } from '../models/text-element';
+import { ValueChangeElement } from '../models/uI-element';
 
 @Component({
   selector: 'app-text',
@@ -62,6 +63,7 @@ import { TextElement } from '../models/text-element';
 })
 export class TextComponent extends ElementComponent {
   elementModel!: TextElement;
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() startSelection = new EventEmitter<MouseEvent>();
   @Output() applySelection = new EventEmitter <{
     mode: 'mark' | 'underline' | 'delete',

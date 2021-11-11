@@ -16,6 +16,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
          (dblclick)="openEditDialog()"
          (keyup.delete)="deleteSelectedElements()" tabindex="-1"
          cdkDropList>
+      <div *cdkDragPlaceholder></div>
       <!-- Needs extra div because styling can interfere with drag and drop-->
       <div [style.position]="'absolute'"
            [style.outline]="isSelected ? 'purple solid 1px' : ''"
@@ -31,7 +32,6 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
              [style.bottom.px]="-7"
              [style.z-index]="5">
           <mat-icon>aspect_ratio</mat-icon>
-          <div *cdkDragPlaceholder></div>
         </div>
         <div class="aspect-inserted-element" [style.width.px]="element.width"
              [style.overflow]="'auto'"
@@ -43,10 +43,9 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
   `,
   styles: [
     '.draggable-element {position: absolute}',
-    '.resizeHandle {position: absolute}',
-    '.resize-droplist {position: absolute}',
-    '.draggable-element-selected .resizeHandle {cursor: nwse-resize}',
-    '.resize-droplist.cdk-drop-list-dragging {cursor: nwse-resize}'
+    '.draggable-element:active {cursor: grabbing}',
+    '.resizeHandle {position: absolute; cursor: nwse-resize}',
+    '.resize-droplist {position: absolute}'
   ]
 })
 export class StaticCanvasOverlayComponent extends CanvasElementOverlay {

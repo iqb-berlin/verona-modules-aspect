@@ -41,15 +41,19 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     if (unitDefinition) {
       this.unitModel = new Unit(JSON.parse(unitDefinition));
-      this.unitModel.pages.forEach((page: Page) => {
-        page.sections.forEach((section: Section) => {
-          section.elements.forEach((element: UIElement) => {
-            IdService.getInstance().addID(element.id);
-          });
-        });
-      });
+      this.readExistingIDs();
       this._unit.next(this.unitModel);
     }
+  }
+
+  private readExistingIDs(): void {
+    this.unitModel.pages.forEach((page: Page) => {
+      page.sections.forEach((section: Section) => {
+        section.elements.forEach((element: UIElement) => {
+          IdService.getInstance().addID(element.id);
+        });
+      });
+    });
   }
 
   get unit(): Observable<Unit> {
@@ -127,6 +131,7 @@ export class UnitService {
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
     let newElement;
+    console.log('t1');
     if (['audio', 'video', 'image'].includes(elementType)) {
       let mediaSrc = '';
       switch (elementType) {
@@ -145,10 +150,12 @@ export class UnitService {
         { type: elementType, dynamicPositioning: section.dynamicPositioning, src: mediaSrc } as unknown as UIElement
       );
     } else {
+      console.log('t10');
       newElement = ElementFactory.createElement(
         { type: elementType, dynamicPositioning: section.dynamicPositioning } as UIElement
       );
     }
+    console.log('t20');
     if (coordinates && section.dynamicPositioning) {
       newElement.gridColumnStart = coordinates.x;
       newElement.gridColumnEnd = coordinates.x + 1;
@@ -203,7 +210,7 @@ export class UnitService {
   updateElementProperty(elements: UIElement[], property: string,
                         value: string | number | boolean | string[] |
                         LikertColumn[] | LikertRow[] | null): boolean {
-    console.log('updateElementProperty', property, value);
+    console.log('updateElementProperty', elements, property, value);
     for (const element of elements) {
       if (property === 'id') {
         if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs

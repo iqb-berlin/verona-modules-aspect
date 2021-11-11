@@ -7,10 +7,6 @@
   justify-content: space-between
 }
 
-.element-button {
-  margin-top: 10px
-}
-
 ::ng-deep app-element-properties .mat-tab-label {
   min-width: 0 !important;
 }
@@ -32,12 +28,6 @@
   font-weight: bold;
 }
 
-mat-divider {
-  margin: 20px;
-  border-top-width: 9px;
-  border-top-style: dotted;
-}
-
 ::ng-deep app-element-properties p strong {
   letter-spacing: 0.04em !important;
   font-weight: 600 !important;
@@ -51,7 +41,7 @@ mat-divider {
   font-weight: bold;
   font-size: 20px;
 }
-:ng-deep .text-text h2 {
+::ng-deep .text-text h2 {
   font-weight: bold;
   font-size: 18px;
 }

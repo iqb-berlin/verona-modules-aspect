@@ -70,5 +70,9 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
 })
 export class ElementStylePropertiesComponent {
   @Input() combinedProperties: UIElement = {} as UIElement;
-  @Output() updateModel = new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
+  @Output() updateModel = new EventEmitter<{
+    property: string;
+    value: string | boolean,
+    isInputValid?: boolean | null
+  }>();
 }

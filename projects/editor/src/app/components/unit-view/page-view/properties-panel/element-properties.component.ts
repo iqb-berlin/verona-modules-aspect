@@ -4,22 +4,20 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { MessageService } from '../../../../../../../common/message.service';
-import { FileService } from '../../../../../../../common/file.service';
 import { UIElement } from '../../../../../../../common/models/uI-element';
-import { LikertElementRow } from '../../../../../../../common/models/compound-elements/likert-element-row';
-import { LikertElement } from '../../../../../../../common/models/compound-elements/likert-element';
 import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/UIElementInterfaces';
 
 @Component({
   selector: 'app-element-properties',
   templateUrl: './element-properties.component.html',
-  styleUrls: ['./element-properties.component.css']
+  styles: [
+    '.element-button {margin-top: 10px;}',
+    'mat-divider {margin: 20px; border-top-width: 9px; border-top-style: dotted;}'
+  ]
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
   selectedElements!: UIElement[];
@@ -104,59 +102,5 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-  }
-
-  addOption(property: string, value: string): void {
-    (this.combinedProperties[property] as string[]).push(value);
-    this.updateModel(property, this.combinedProperties[property] as string[]);
-  }
-
-  reorderOptions(property: string, event: CdkDragDrop<string[]>): void {
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    this.updateModel(property, event.container.data);
-  }
-
-  removeOption(property: string, option: any): void {
-    const valueList: any[] = this.combinedProperties[property] as any[];
-    valueList.splice(valueList.indexOf(option), 1);
-    this.updateModel(property, valueList);
-  }
-
-  async loadImage(): Promise<void> {
-    this.updateModel('imageSrc', await FileService.loadImage());
-  }
-
-  removeImage(): void {
-    this.updateModel('imageSrc', null);
-  }
-
-  addColumn(value: string): void {
-    const column = UnitService.createLikertColumn(value);
-    (this.combinedProperties.columns as LikertColumn[]).push(column);
-    this.updateModel('columns', this.combinedProperties.columns as LikertColumn[]);
-  }
-
-  addRow(question: string): void {
-    const newRow = UnitService.createLikertRow(
-      question,
-      (this.combinedProperties.columns as LikertColumn[]).length
-    );
-    (this.combinedProperties.rows as LikertElementRow[]).push(newRow);
-    this.updateModel('rows', this.combinedProperties.rows as LikertElementRow[]);
-  }
-
-  async editTextOption(property: string, optionIndex: number): Promise<void> {
-    await this.unitService.editTextOption(property, optionIndex);
-  }
-
-  async editColumnOption(optionIndex: number): Promise<void> {
-    await this.unitService.editLikertColumn(this.selectedElements as LikertElement[], optionIndex);
-  }
-
-  async editRowOption(optionIndex: number): Promise<void> {
-    await this.unitService.editLikertRow(
-      (this.combinedProperties.rows as LikertElementRow[])[optionIndex] as LikertElementRow,
-      this.combinedProperties.columns as LikertColumn[]
-    );
   }
 }

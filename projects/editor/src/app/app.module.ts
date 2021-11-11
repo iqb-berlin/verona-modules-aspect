@@ -35,6 +35,7 @@ import { PlayerEditDialogComponent } from './components/dialogs/player-edit-dial
 import { LikertColumnEditDialogComponent } from './components/dialogs/likert-column-edit-dialog.component';
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
 import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
+import { ElementModelPropertiesComponentComponent } from './components/unit-view/page-view/properties-panel/element-model-properties-component.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit
     PlayerEditDialogComponent,
     LikertColumnEditDialogComponent,
     LikertRowEditDialogComponent,
-    RichTextEditDialogComponent
+    RichTextEditDialogComponent,
+    ElementModelPropertiesComponentComponent
   ],
   imports: [
     BrowserModule,

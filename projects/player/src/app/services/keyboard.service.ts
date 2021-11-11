@@ -1,23 +1,27 @@
 import { Injectable } from '@angular/core';
+import { FormElementComponent } from '../../../../common/form-element-component.directive';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeyboardService {
-  private inputControl!: HTMLTextAreaElement | HTMLInputElement;
+  private inputElement!: HTMLTextAreaElement | HTMLInputElement;
+  private elementComponent!: FormElementComponent;
 
   enterKey = (key: string): void => {
-    const selectionStart = this.inputControl.selectionStart || 0;
-    const selectionEnd = this.inputControl.selectionEnd || this.inputControl.value.length;
-    const startText = this.inputControl.value.substring(0, selectionStart);
-    const endText = this.inputControl.value.substring(selectionEnd);
-    this.inputControl.value = startText + key + endText;
+    const selectionStart = this.inputElement.selectionStart || 0;
+    const selectionEnd = this.inputElement.selectionEnd || this.inputElement.value.length;
+    const startText = this.inputElement.value.substring(0, selectionStart);
+    const endText = this.inputElement.value.substring(selectionEnd);
+    this.elementComponent.elementFormControl.setValue(startText + key + endText);
     const selection = selectionStart ? selectionStart + 1 : 1;
-    this.inputControl.setSelectionRange(selection, selection);
+    this.inputElement.setSelectionRange(selection, selection);
   };
 
-  openKeyboard(inputControl: HTMLTextAreaElement | HTMLInputElement): boolean {
-    this.inputControl = inputControl;
+  openKeyboard(inputElement: HTMLTextAreaElement | HTMLInputElement,
+               elementComponent: FormElementComponent): boolean {
+    this.inputElement = inputElement;
+    this.elementComponent = elementComponent;
     return true;
   }
 

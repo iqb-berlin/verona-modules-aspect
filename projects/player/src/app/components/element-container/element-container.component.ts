@@ -12,9 +12,7 @@ import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
 import {
-  InputElement, InputElementValue,
-  UIElement,
-  ValueChangeElement
+  InputElement, InputElementValue, UIElement, ValueChangeElement
 } from '../../../../../common/models/uI-element';
 import { FormElementComponent } from '../../../../../common/form-element-component.directive';
 import { CompoundElementComponent }
@@ -204,7 +202,7 @@ export class ElementContainerComponent implements OnInit {
               focussedInputControl as HTMLTextAreaElement :
               focussedInputControl as HTMLInputElement;
             this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
-            this.isKeyboardOpen = this.keyboardService.openKeyboard(inputElement);
+            this.isKeyboardOpen = this.keyboardService.openKeyboard(inputElement, elementComponent);
           } else {
             this.isKeyboardOpen = this.keyboardService.closeKeyboard();
           }

@@ -351,11 +351,12 @@ export class UnitService {
         });
         break;
       case 'text-area':
-        this.dialogService.showTextEditDialog((element as InputElement).value as string).subscribe((result: string) => {
-          if (result) {
-            this.updateElementProperty([element], 'value', result);
-          }
-        });
+        this.dialogService.showMultilineTextEditDialog((element as InputElement).value as string)
+          .subscribe((result: string) => {
+            if (result) {
+              this.updateElementProperty([element], 'value', result);
+            }
+          });
         break;
       case 'audio':
       case 'video':

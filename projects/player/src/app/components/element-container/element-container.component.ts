@@ -102,19 +102,11 @@ export class ElementContainerComponent implements OnInit {
         });
     }
 
-    if (elementComponent.mediaPause) {
-      elementComponent.mediaPause
+    if (elementComponent.mediaPlayStatusChanged) {
+      elementComponent.mediaPlayStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
-          this.mediaPlayerService.broadCastPlayChanges(null);
-        });
-    }
-
-    if (elementComponent.mediaPlay) {
-      elementComponent.mediaPlay
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((playId: string) => {
-          this.mediaPlayerService.broadCastPlayChanges(playId);
+        .subscribe((playStatus: string | null) => {
+          this.mediaPlayerService.broadCastPlayChanges(playStatus);
         });
     }
 

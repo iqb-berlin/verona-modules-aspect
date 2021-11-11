@@ -42,12 +42,6 @@ import { FileService } from '../../../../../../../common/file.service';
         </button>
       </ng-container>
 
-      <mat-form-field *ngIf="combinedProperties.borderRadius !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
-        <input matInput type="number" [value]="combinedProperties.borderRadius"
-               (input)="updateModel.emit({ property: 'borderRadius', value: $any($event.target).value })">
-      </mat-form-field>
-
       <mat-form-field *ngIf="combinedProperties.interaction !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.interaction' | translate }}</mat-label>
         <mat-select [value]="combinedProperties.interaction"
@@ -481,19 +475,6 @@ import { FileService } from '../../../../../../../common/file.service';
                     (change)="updateModel.emit({ property: 'onlyOneItem', value: $event.checked })">
         {{'propertiesPanel.onlyOneItem' | translate }}
       </mat-checkbox>
-
-      <mat-form-field *ngIf="combinedProperties.itemBackgroundColor !== undefined"
-                      appearance="fill" class="mdInput textsingleline">
-        <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
-        <input matInput type="color" [value]="combinedProperties.itemBackgroundColor"
-               (input)="updateModel.emit({ property: 'itemBackgroundColor', value: $any($event.target).value })">
-      </mat-form-field>
-      <mat-form-field *ngIf="combinedProperties.itemBackgroundColor !== undefined"
-                      appearance="fill" class="mdInput textsingleline">
-        <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="combinedProperties.itemBackgroundColor"
-               (input)="updateModel.emit({ property: 'itemBackgroundColor', value: $any($event.target).value })">
-      </mat-form-field>
     </div>
     `,
   styleUrls: ['./element-model-properties.component.css']

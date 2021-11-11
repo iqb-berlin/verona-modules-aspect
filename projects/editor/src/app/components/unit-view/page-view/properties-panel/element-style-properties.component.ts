@@ -7,6 +7,25 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
   selector: 'app-element-style-properties',
   template: `
     <div fxLayout="column">
+      <mat-form-field *ngIf="combinedProperties.borderRadius !== undefined" appearance="fill">
+        <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
+        <input matInput type="number" [value]="combinedProperties.borderRadius"
+               (input)="updateModel.emit({ property: 'borderRadius', value: $any($event.target).value })">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="combinedProperties.itemBackgroundColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
+        <input matInput type="color" [value]="combinedProperties.itemBackgroundColor"
+               (input)="updateModel.emit({ property: 'itemBackgroundColor', value: $any($event.target).value })">
+      </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.itemBackgroundColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="combinedProperties.itemBackgroundColor"
+               (input)="updateModel.emit({ property: 'itemBackgroundColor', value: $any($event.target).value })">
+      </mat-form-field>
+
       <mat-form-field *ngIf="combinedProperties.backgroundColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.backgroundColor' | translate }}</mat-label>
@@ -19,12 +38,20 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
         <input matInput type="text" [value]="combinedProperties.backgroundColor"
                (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
       </mat-form-field>
+
       <mat-form-field *ngIf="combinedProperties.fontColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.fontColor' | translate }}</mat-label>
         <input matInput type="color" [value]="combinedProperties.fontColor"
                (input)="updateModel.emit({ property: 'fontColor', value: $any($event.target).value })">
       </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.fontColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.fontColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="combinedProperties.fontColor"
+               (input)="updateModel.emit({ property: 'fontColor', value: $any($event.target).value })">
+      </mat-form-field>
+
       <mat-form-field *ngIf="combinedProperties.font !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.font' | translate }}</mat-label>

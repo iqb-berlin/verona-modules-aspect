@@ -131,7 +131,6 @@ export class UnitService {
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
     let newElement;
-    console.log('t1');
     if (['audio', 'video', 'image'].includes(elementType)) {
       let mediaSrc = '';
       switch (elementType) {
@@ -150,12 +149,10 @@ export class UnitService {
         { type: elementType, dynamicPositioning: section.dynamicPositioning, src: mediaSrc } as unknown as UIElement
       );
     } else {
-      console.log('t10');
       newElement = ElementFactory.createElement(
         { type: elementType, dynamicPositioning: section.dynamicPositioning } as UIElement
       );
     }
-    console.log('t20');
     if (coordinates && section.dynamicPositioning) {
       newElement.gridColumnStart = coordinates.x;
       newElement.gridColumnEnd = coordinates.x + 1;

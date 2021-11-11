@@ -134,27 +134,11 @@ export class ElementContainerComponent implements OnInit {
         });
     }
 
-    if (elementComponent.playbackTimeChanged) {
-      elementComponent.playbackTimeChanged
+    if (elementComponent.elementValueChanged) {
+      elementComponent.elementValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((playbackTimeChanged: ValueChangeElement) => {
           this.unitStateService.changeElementValue(playbackTimeChanged);
-        });
-    }
-
-    if (elementComponent.magnifierUsed) {
-      elementComponent.magnifierUsed
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((magnifierUsed: ValueChangeElement) => {
-          this.unitStateService.changeElementValue(magnifierUsed);
-        });
-    }
-
-    if (elementComponent.formValueChanged) {
-      elementComponent.formValueChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((changeElement: ValueChangeElement) => {
-          this.unitStateService.changeElementValue(changeElement);
         });
     }
 

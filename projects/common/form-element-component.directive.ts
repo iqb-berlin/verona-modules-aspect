@@ -11,7 +11,7 @@ import { InputElement, InputElementValue, ValueChangeElement } from './models/uI
 
 @Directive()
 export abstract class FormElementComponent extends ElementComponent implements OnInit, OnDestroy {
-  @Output() formValueChanged = new EventEmitter<ValueChangeElement>();
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() setValidators = new EventEmitter<ValidatorFn[]>();
   parentForm!: FormGroup;
   defaultValue!: InputElementValue;
@@ -31,7 +31,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
       )
       .subscribe(([prevValue, nextValue]: [InputElementValue, InputElementValue]) => {
         if (nextValue != null) { // invalid input on number fields generates event with null TODO find a better solution
-          this.formValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
+          this.elementValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
         }
       });
   }

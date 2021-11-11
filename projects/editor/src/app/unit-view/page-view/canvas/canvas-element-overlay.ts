@@ -39,7 +39,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     // this functionality is wanted again. Therefore the code is kept in commented out form.
 
     // if (this.childComponent.instance instanceof FormElementComponent) {
-    //   this.childComponent.instance.formValueChanged
+    //   this.childComponent.instance.elementValueChanged
     //     .pipe(takeUntil(this.ngUnsubscribe))
     //     .subscribe((changeElement: ValueChangeElement) => {
     //       this.unitService.updateElementProperty([this.element], 'value', changeElement.values[1]);

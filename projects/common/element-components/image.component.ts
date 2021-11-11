@@ -20,7 +20,7 @@ import { ValueChangeElement } from '../models/uI-element';
                        [zoom]="elementModel.magnifierZoom"
                        [used]="elementModel.magnifierUsed"
                        [image]=image
-                       (magnifierUsed)="magnifierUsed.emit($event)">
+                       (elementValueChanged)="elementValueChanged.emit($event)">
         </app-magnifier>
       </div>
     </div>
@@ -32,6 +32,6 @@ import { ValueChangeElement } from '../models/uI-element';
   ]
 })
 export class ImageComponent extends ElementComponent {
-  @Output() magnifierUsed = new EventEmitter<ValueChangeElement>();
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   elementModel!: ImageElement;
 }

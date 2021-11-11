@@ -15,7 +15,7 @@ export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy 
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() elementModel!: AudioElement | VideoElement;
   @Input() active!: boolean;
-  @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   duration!: number;
   currentTime!: number;
   currentRestTime!: number;
@@ -146,7 +146,7 @@ export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy 
   }
 
   private sendPlaybackTimeChanged() {
-    this.playbackTimeChanged.emit({
+    this.elementValueChanged.emit({
       id: this.elementModel.id,
       values: [this.playbackTime, this.toPlaybackTime()]
     });

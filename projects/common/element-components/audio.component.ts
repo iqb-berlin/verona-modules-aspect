@@ -16,7 +16,7 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
       <app-control-bar [player]="player"
                        [elementModel]="elementModel"
                        [active]="active"
-                       (playbackTimeChanged)="playbackTimeChanged.emit($event)">
+                       (elementValueChanged)="elementValueChanged.emit($event)">
       </app-control-bar>
     </div>
   `

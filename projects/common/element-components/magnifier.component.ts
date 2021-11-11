@@ -31,7 +31,7 @@ export class Magnifier {
   @Input() zoom!: number;
   @Input() size!: number;
   @Input() used!: boolean;
-  @Output() magnifierUsed = new EventEmitter<ValueChangeElement>();
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
 
   left!: number;
   top!: number;
@@ -41,7 +41,7 @@ export class Magnifier {
   onMousemove(event: MouseEvent): void {
     if (!this.used) {
       this.used = true;
-      this.magnifierUsed.emit({ id: this.imageId, values: [false, true] });
+      this.elementValueChanged.emit({ id: this.imageId, values: [false, true] });
     }
     this.left = this.calculateGlassPosition(this.image.width, event.offsetX);
     this.top = this.calculateGlassPosition(this.image.height, event.offsetY);

@@ -43,16 +43,16 @@ import { CompoundElementComponent } from './compound-element.directive';
 
       <ng-container *ngFor="let row of elementModel.rows; let i = index">
         <app-likert-radio-button-group
-          [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
-          [style.display]="'grid'"
-          [style.grid-column-start]="1"
-          [style.grid-column-end]="elementModel.columns.length + 2"
-          [style.grid-row-start]="2 + i"
-          [style.grid-row-end]="3 + i"
-          [style.padding.px]="3"
-          [elementModel]="row"
-          [parentForm]="parentForm"
-          (formValueChanged)="formValueChanged.emit($event)">
+            [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
+            [style.display]="'grid'"
+            [style.grid-column-start]="1"
+            [style.grid-column-end]="elementModel.columns.length + 2"
+            [style.grid-row-start]="2 + i"
+            [style.grid-row-end]="3 + i"
+            [style.padding.px]="3"
+            [elementModel]="row"
+            [parentForm]="parentForm"
+            (elementValueChanged)="elementValueChanged.emit($event)">
         </app-likert-radio-button-group>
       </ng-container>
     </div>
@@ -65,7 +65,7 @@ import { CompoundElementComponent } from './compound-element.directive';
   ]
 })
 export class LikertComponent extends CompoundElementComponent {
-  @Output() formValueChanged = new EventEmitter<ValueChangeElement>();
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;
   elementModel!: LikertElement;
   parentForm!: FormGroup;

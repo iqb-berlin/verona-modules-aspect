@@ -4,7 +4,7 @@ import { ElementComponent } from './element-component.directive';
 
 @Directive()
 export abstract class MediaPlayerElementComponent extends ElementComponent {
-  @Output() playbackTimeChanged = new EventEmitter<ValueChangeElement>();
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() mediaPlay = new EventEmitter<string>();
   @Output() mediaPause = new EventEmitter<string>();
 

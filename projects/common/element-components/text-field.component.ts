@@ -26,7 +26,7 @@ import { TextFieldElement } from '../models/text-field-element';
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
              (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
-              (click)="onClick($event)">
+              (click)="onClearButtonClick($event)">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="elementFormControl.errors">
@@ -52,7 +52,7 @@ import { TextFieldElement } from '../models/text-field-element';
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
              (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
       <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
-              (click)="onClick($event)">
+              (click)="onClearButtonClick($event)">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="elementFormControl.errors">
@@ -68,7 +68,7 @@ export class TextFieldComponent extends FormElementComponent {
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
   elementModel!: TextFieldElement;
 
-  onClick(event: MouseEvent) : void {
+  onClearButtonClick(event: MouseEvent) : void {
     this.elementFormControl.setValue('');
     event.preventDefault();
     event.stopPropagation();

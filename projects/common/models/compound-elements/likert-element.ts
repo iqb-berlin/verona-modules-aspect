@@ -26,6 +26,13 @@ export class LikertElement extends UIElement implements FontElement, SurfaceUIEl
     Object.assign(this, initFontElement(serializedElement));
     Object.assign(this, initSurfaceElement(serializedElement));
 
+    if (serializedElement?.rows) {
+      this.rows = [];
+      (serializedElement?.rows as LikertElementRow[]).forEach((row: LikertElementRow) => {
+        this.rows.push(new LikertElementRow(row));
+      });
+    }
+
     this.height = serializedElement.height || 200;
     this.width = serializedElement.width || 400;
     this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';

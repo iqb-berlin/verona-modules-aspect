@@ -9,9 +9,9 @@ import { TextElement } from '../models/text-element';
   template: `
     <div [style.width.%]="100"
          [style.height]="'auto'">
-      <div *ngIf="elementModel.highlightable"
+      <div *ngIf="elementModel.interaction !== 'none'"
            class="marking-bar">
-        <ng-container *ngIf="elementModel.highlightable">
+        <ng-container *ngIf="elementModel.interaction === 'highlightable'">
           <button class="marking-button" mat-mini-fab [style.background-color]="'yellow'"
                   (click)="onMarkingButtonClick($event, { mode: 'mark', color:'yellow', element: container })">
             <mat-icon>border_color</mat-icon>
@@ -23,6 +23,12 @@ import { TextElement } from '../models/text-element';
           <button class="marking-button" mat-mini-fab [style.background-color]="'orange'"
                   (click)="onMarkingButtonClick($event, { mode: 'mark', color: 'orange', element: container })">
             <mat-icon>border_color</mat-icon>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="elementModel.interaction === 'underlinable'">
+          <button class="marking-button" mat-mini-fab [style.background-color]="'white'"
+                  (click)="onMarkingButtonClick($event, { mode: 'underline', color: 'black', element: container })">
+            <mat-icon>format_underlined</mat-icon>
           </button>
         </ng-container>
         <button class="marking-button" [style.background-color]="'lightgrey'" mat-mini-fab

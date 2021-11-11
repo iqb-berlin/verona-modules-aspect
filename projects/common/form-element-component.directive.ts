@@ -14,14 +14,13 @@ export abstract class FormElementComponent extends ElementComponent implements O
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() setValidators = new EventEmitter<ValidatorFn[]>();
   parentForm!: FormGroup;
-  defaultValue!: InputElementValue;
   elementFormControl!: FormControl;
 
   private ngUnsubscribe = new Subject<void>();
 
   ngOnInit(): void {
     this.elementFormControl = this.formControl;
-    this.updateFormValue((this.elementModel as InputElement).value);
+    this.elementFormControl?.setValue((this.elementModel as InputElement).value, { emitEvent: false });
     this.setValidators.emit(this.validators);
     this.elementFormControl.valueChanges
       .pipe(
@@ -30,9 +29,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(([prevValue, nextValue]: [InputElementValue, InputElementValue]) => {
-        if (nextValue != null) { // invalid input on number fields generates event with null TODO find a better solution
-          this.elementValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
-        }
+        this.elementValueChanged.emit({ id: this.elementModel.id, values: [prevValue, nextValue] });
       });
   }
 
@@ -49,10 +46,6 @@ export abstract class FormElementComponent extends ElementComponent implements O
     return (this.parentForm) ?
       this.parentForm.controls[this.elementModel.id] as FormControl :
       new FormControl({});
-  }
-
-  updateFormValue(newValue: InputElementValue): void {
-    this.elementFormControl?.setValue(newValue, { emitEvent: false });
   }
 
   ngOnDestroy(): void {

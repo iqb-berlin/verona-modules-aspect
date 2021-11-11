@@ -32,7 +32,6 @@ export class DialogService {
 
   showMultilineTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(MultilineTextEditDialog, {
-      width: '600px',
       data: {
         text: text
       }
@@ -42,8 +41,6 @@ export class DialogService {
 
   showRichTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialog, {
-      width: '800px',
-      height: '700px',
       data: {
         text: text
       },
@@ -54,8 +51,6 @@ export class DialogService {
 
   showPlayerEditDialog(player: PlayerElement): Observable<PlayerElement> {
     const dialogRef = this.dialog.open(PlayerEditDialog, {
-      width: '370px',
-      height: '510px',
       data: {
         player: player
       },
@@ -66,8 +61,6 @@ export class DialogService {
 
   showLikertColumnEditDialog(column: LikertColumn): Observable<LikertColumn> {
     const dialogRef = this.dialog.open(LikertColumnEditDialog, {
-      width: '300px',
-      height: '550px',
       data: {
         column: column
       },
@@ -78,8 +71,6 @@ export class DialogService {
 
   showLikertRowEditDialog(row: LikertElementRow, columns: LikertColumn[]): Observable<LikertElementRow> {
     const dialogRef = this.dialog.open(LikertRowEditDialog, {
-      width: '300px',
-      height: '550px',
       data: {
         row: row,
         columns: columns
@@ -129,7 +120,7 @@ export class TextEditDialog {
   selector: 'app-multiline-text-edit-dialog',
   template: `
     <mat-dialog-content>
-      <mat-form-field [style.width.%]="100">
+      <mat-form-field>
         <mat-label>{{'text' | translate }}</mat-label>
         <textarea #inputElement matInput type="text" [value]="data.text">
         </textarea>
@@ -259,12 +250,7 @@ export class RichTextEditDialog {
       <button mat-button [mat-dialog-close]="newPlayerConfig">{{'save' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-    `,
-  styles: [
-    'mat-dialog-content {min-height: 410px}',
-    '::ng-deep app-player-edit-dialog .mat-tab-body-content {overflow: hidden}',
-    '.property-column {margin-right: 20px}'
-  ]
+    `
 })
 export class PlayerEditDialog {
   newPlayerConfig: PlayerElement = {} as PlayerElement;

@@ -8,13 +8,16 @@ import { ValueChangeElement } from '../models/uI-element';
   template: `
     <div [style.display]="'flex'"
          [style.height.%]="100"
-         [style.width.%]="100">
+         [style.width.%]="100"
+         (mouseover)="magnifierVisible = true"
+         (mouseenter)="magnifierVisible = true"
+         (mouseleave)="magnifierVisible = false">
       <div class="image-container">
         <img #image
              [src]="elementModel.src | safeResourceUrl"
              [alt]="'imageNotFound' | translate"
              [class]="elementModel.dynamicPositioning? 'dynamic-image' : 'static-image'">
-        <app-magnifier *ngIf="elementModel.magnifier"
+        <app-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
                        [imageId]="elementModel.id"
                        [size]="elementModel.magnifierSize"
                        [zoom]="elementModel.magnifierZoom"
@@ -33,5 +36,6 @@ import { ValueChangeElement } from '../models/uI-element';
 })
 export class ImageComponent extends ElementComponent {
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
+  magnifierVisible = false;
   elementModel!: ImageElement;
 }

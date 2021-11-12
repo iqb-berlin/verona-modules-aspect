@@ -7,6 +7,8 @@ export class DropListElement extends InputElement implements FontElement, Surfac
   connectedTo: string[] = [];
   orientation: 'vertical' | 'horizontal' = 'vertical';
   itemBackgroundColor: string = '#add8e6';
+  highlightReceivingDropList: boolean = false;
+  highlightReceivingDropListColor: string = '#add8e6';
 
   fontColor: string = 'black';
   font: string = 'Roboto';

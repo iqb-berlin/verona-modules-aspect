@@ -112,6 +112,8 @@
     "connectedDropList": "Verbundene Ablegelisten",
     "onlyOneItem": "Nur ein erlaubtes Element",
     "itemBackgroundColor": "Hintergrundfarbe der Elemente",
+    "highlightReceivingDropList": "Potentielle Ablagen hervorheben",
+    "highlightReceivingDropListColor": "Farbe der Hervorhebung",
     "duplicateElement": "Element duplizieren",
     "deleteElement": "Element löschen",
     "noElementSelected": "Kein Element ausgewählt"

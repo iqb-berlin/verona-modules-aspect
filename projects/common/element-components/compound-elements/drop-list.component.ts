@@ -10,7 +10,12 @@ import { FormElementComponent } from '../../form-element-component.directive';
   selector: 'app-drop-list',
   template: `
     <div class="list-container">
+      <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
+      <!-- class style.-->
       <div class="list"
+           [class.dropList-highlight]="elementModel.highlightReceivingDropList"
+           [style.border-color]="elementModel.highlightReceivingDropListColor"
+           [style.border-width.px]="elementModel.highlightReceivingDropList ? 2 : 0"
            [style.color]="elementModel.fontColor"
            [style.font-family]="elementModel.font"
            [style.font-size.px]="elementModel.fontSize"
@@ -46,13 +51,16 @@ import { FormElementComponent } from '../../form-element-component.directive';
   `,
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
-    '.list {width: calc(100% - 2px); height: calc(100% - 2px);}',
+    '.list {width: calc(100% - 4px); height: calc(100% - 4px);}',
     '.item {background-color: lightblue; margin: 5px; border-radius: 10px; padding: 10px;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
     '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999; padding: 10px;}',
     '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
-    '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}'
+    '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
+
+    '.dropList-highlight.cdk-drop-list-receiving {border: solid;}',
+    '.dropList-highlight.cdk-drop-list-dragging {border: solid;}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

@@ -14,6 +14,7 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
              [src]="elementModel.src | safeResourceUrl">
       </audio>
       <app-control-bar [player]="player"
+                       [project]="project"
                        [elementModel]="elementModel"
                        [active]="active"
                        (elementValueChanged)="elementValueChanged.emit($event)">

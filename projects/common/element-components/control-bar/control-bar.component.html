@@ -65,7 +65,7 @@
     </mat-slider>
   </ng-container>
 </div>
-<div *ngIf="showHint || !isAspectPlayer"
+<div *ngIf="showHint || project === 'editor'"
      class="status-bar mat-typography">
   {{elementModel.hintLabel}}
 </div>

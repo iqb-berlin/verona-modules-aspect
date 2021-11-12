@@ -1,5 +1,5 @@
 import {
-  OnInit, AfterContentInit, OnDestroy, Component, EventEmitter, Input, Output
+  OnInit, OnChanges, SimpleChanges, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { AudioElement } from '../../models/audio-element';
@@ -11,9 +11,10 @@ import { ValueChangeElement } from '../../models/uI-element';
   templateUrl: './control-bar.component.html',
   styleUrls: ['./control-bar.component.css']
 })
-export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy {
+export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() elementModel!: AudioElement | VideoElement;
+  @Input() project!: 'player' | 'editor';
   @Input() active!: boolean;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   duration!: number;
@@ -27,7 +28,6 @@ export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy 
   restTimeMode: boolean = true;
   showHint!: boolean;
   disabled!: boolean;
-  isAspectPlayer!: boolean;
   playbackTime!: number;
 
   // TODO:
@@ -68,10 +68,8 @@ export class ControlBarComponent implements OnInit, AfterContentInit, OnDestroy 
     this.lastVolume = this.player.volume;
   }
 
-  ngAfterContentInit(): void {
-    // player-aspect should work, but doesn't in production
-    this.isAspectPlayer = !!this.player.closest('app-element-container');
-    if (this.isAspectPlayer) {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.project && changes.project.currentValue === 'player') {
       this.initAutostart();
       this.initHint();
     }

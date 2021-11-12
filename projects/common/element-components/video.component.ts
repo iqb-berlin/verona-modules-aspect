@@ -16,6 +16,7 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
                        (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
                        (pause)="onMediaPlayStatusChanged.emit(null)"
                        [player]="player"
+                       [project]="project"
                        [elementModel]="elementModel"
                        (elementValueChanged)="elementValueChanged.emit($event)">
       </app-control-bar>

@@ -4,6 +4,8 @@ Player
  - Show the magnifier only when the mouse is over the image
  - Fix saving of inputs via the virtual keyboard
  - Show background color for dynamic sections
+ - Make sure that settings of Boolean values are taken over from the editor to the player.
+   The error occurred with the progress bar of the video element.
 
 1.4.1
   - Make text underlinable

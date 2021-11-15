@@ -1,5 +1,10 @@
 Player
 ======
+1.5.0
+ - Show the magnifier only when the mouse is over the image
+ - Fix saving of inputs via the virtual keyboard
+ - Show background color for dynamic sections
+
 1.4.1
   - Make text underlinable
   - Fix marking of text

@@ -55,9 +55,10 @@ export abstract class InputElement extends UIElement {
   protected constructor(serializedElement: UIElement) {
     super(serializedElement);
     this.label = serializedElement.label as string || 'Beispielbeschriftung';
-    this.value = serializedElement.value as string | number | boolean | null || null;
-    this.required = serializedElement.required as boolean || false;
+    this.value =
+      serializedElement.value !== undefined ? serializedElement.value as string | number | boolean | null : null;
+    this.required = serializedElement.required !== undefined ? serializedElement.required as boolean : false;
     this.requiredWarnMessage = serializedElement.requiredWarnMessage as string || 'Eingabe erforderlich';
-    this.readOnly = serializedElement.readOnly as boolean || false;
+    this.readOnly = serializedElement.readOnly !== undefined ? serializedElement.readOnly as boolean : false;
   }
 }

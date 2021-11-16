@@ -65,6 +65,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
     this.player.onvolumechange = () => {
       this.player.muted = !this.player.volume;
     };
+    this.player.volume = 0.8;
     this.lastVolume = this.player.volume;
   }
 

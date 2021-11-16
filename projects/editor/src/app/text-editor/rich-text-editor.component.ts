@@ -28,6 +28,11 @@ export class RichTextEditorComponent implements AfterViewInit {
   @Input() text!: string;
   @Output() textChange = new EventEmitter<string>();
 
+  selectedFontColor = 'lightgrey';
+  selectedHighlightColor = 'lightgrey';
+  bulletListStyle: string = 'disc';
+  orderedListStyle: string = 'decimal';
+
   editor = new Editor({
     extensions: [StarterKit, Underline, Superscript, Subscript,
       TextStyle, Color,
@@ -85,12 +90,12 @@ export class RichTextEditorComponent implements AfterViewInit {
     this.editor.commands.setFontSize(size);
   }
 
-  applyColor(color: string): void {
-    this.editor.chain().focus().setColor(color).run();
+  applyFontColor(): void {
+    this.editor.chain().focus().setColor(this.selectedFontColor).run();
   }
 
-  applyHighlight(color: string): void {
-    this.editor.chain().focus().toggleHighlight({ color: color }).run();
+  applyHighlightColor(): void {
+    this.editor.chain().focus().toggleHighlight({ color: this.selectedHighlightColor }).run();
   }
 
   alignText(direction: string): void {
@@ -107,16 +112,20 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   toggleBulletList(): void {
     this.editor.chain().toggleBulletList().focus().run();
+    this.editor.commands.setBulletListStyle(this.bulletListStyle);
   }
 
   togleOrderedList(): void {
     this.editor.chain().toggleOrderedList().focus().run();
+    this.editor.commands.setBulletListStyle(this.orderedListStyle);
   }
 
   applyListStyle(listType: string, style: string): void {
     if (listType === 'bulletList') {
+      this.bulletListStyle = style;
       this.editor.commands.setBulletListStyle(style);
     } else {
+      this.orderedListStyle = style;
       this.editor.commands.setOrderedListStyle(style);
     }
   }

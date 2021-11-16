@@ -14,13 +14,12 @@ import { FileService } from '../../../../../common/file.service';
       <input #imageUpload type="file" hidden (click)="loadImage()">
       <button mat-raised-button (click)="imageUpload.click()">{{ 'loadImage' | translate }}</button>
       <button mat-raised-button (click)="data.column.imgSrc = null">{{ 'removeImage' | translate }}</button>
-      <img [src]="data.column.imgSrc"
+      <img [src]="imgSrc"
            [style.object-fit]="'scale-down'"
            [width]="200">
       <mat-form-field appearance="fill">
         <mat-label>{{'position' | translate }}</mat-label>
-        <mat-select [value]="data.column.position"
-                    (selectionChange)="this.data.column.position = $event.value">
+        <mat-select #positionSelect [value]="data.column.position">
           <mat-option *ngFor="let option of ['above', 'below']"
                       [value]="option">
             {{ option | translate }}
@@ -31,8 +30,8 @@ import { FileService } from '../../../../../common/file.service';
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="{
                          text: textInput.value,
-                         imgSrc: data.column.imgSrc,
-                         position: data.column.position }">
+                         imgSrc: imgSrc,
+                         position: positionSelect.value }">
         {{'save' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -41,8 +40,9 @@ import { FileService } from '../../../../../common/file.service';
 })
 export class LikertColumnEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { column: LikertColumn }) { }
+  imgSrc: string | null = this.data.column.imgSrc;
 
   async loadImage(): Promise<void> {
-    this.data.column.imgSrc = await FileService.loadImage();
+    this.imgSrc = await FileService.loadImage();
   }
 }

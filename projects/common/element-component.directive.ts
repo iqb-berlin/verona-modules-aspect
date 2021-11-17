@@ -1,11 +1,11 @@
 import {
-  AfterViewInit,
+  AfterContentChecked,
   Directive, ElementRef
 } from '@angular/core';
 import { UIElement } from './models/uI-element';
 
 @Directive()
-export abstract class ElementComponent implements AfterViewInit {
+export abstract class ElementComponent implements AfterContentChecked {
   abstract elementModel: UIElement;
   project!: 'player' | 'editor';
 
@@ -15,7 +15,7 @@ export abstract class ElementComponent implements AfterViewInit {
     return this.elementRef.nativeElement;
   }
 
-  ngAfterViewInit(): void {
+  ngAfterContentChecked(): void {
     this.project = this.elementRef.nativeElement.closest('app-element-container') ? 'player' : 'editor';
   }
 }

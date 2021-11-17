@@ -51,8 +51,9 @@ import { FormElementComponent } from '../../form-element-component.directive';
   `,
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
-    '.list {width: calc(100% - 4px); height: calc(100% - 4px);}',
-    '.item {background-color: lightblue; margin: 5px; border-radius: 10px; padding: 10px;}',
+    '.list {width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 10px}',
+    '.item {border-radius: 10px; padding: 10px;}',
+    '.item:not(:last-child) {margin-bottom: 5px;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
     '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999; padding: 10px;}',

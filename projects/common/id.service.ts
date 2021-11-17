@@ -28,6 +28,9 @@ export class IdService {
   }
 
   getNewID(type: string): string {
+    if (!type) {
+      throw Error('ID-Service: No type given!');
+    }
     do {
       this.idCounter[type] += 1;
     }

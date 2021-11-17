@@ -5,13 +5,18 @@ import { MediaPlayerElementComponent } from '../../../../common/media-player-ele
   providedIn: 'root'
 })
 export class MediaPlayerService {
-  mediaElements: MediaPlayerElementComponent[] = [];
+  mediaElements: { mediaElement: MediaPlayerElementComponent; dependOn: string }[] = [];
 
-  registerMediaElement(mediaElement: MediaPlayerElementComponent): void {
-    this.mediaElements.push(mediaElement);
+  registerMediaElement(mediaElement: MediaPlayerElementComponent, dependOn: string): void {
+    this.mediaElements.push({ mediaElement, dependOn });
   }
 
-  broadCastPlayChanges(actualId: string | null): void {
-    this.mediaElements.forEach(mediaElement => mediaElement.setActualPlayingMediaId(actualId));
+  broadcastPlayStatusChanged(actualId: string | null): void {
+    this.mediaElements.forEach(mediaElement => mediaElement.mediaElement.setActualPlayingMediaId(actualId));
+  }
+
+  broadcastValidStatusChanged(validId: string): void {
+    const validMediaElements = this.mediaElements.filter(mediaElement => mediaElement.dependOn === validId);
+    validMediaElements.forEach(mediaElement => mediaElement.mediaElement.setActivatedAfterID());
   }
 }

@@ -66,11 +66,12 @@ export class ElementContainerComponent implements OnInit {
     } else if (elementComponent instanceof CompoundElementComponent) {
       this.initCompoundElement(elementComponent);
     } else if (elementComponent instanceof MediaPlayerElementComponent) {
-      this.mediaPlayerService.registerMediaElement(elementComponent);
+      this.mediaPlayerService.registerMediaElement(elementComponent, this.elementModel.activeAfterID as string);
     }
     this.subscribeStartSelection(elementComponent);
     this.subscribeApplySelection(elementComponent);
-    this.subscribeMediaStatusChanged(elementComponent);
+    this.subscribeMediaPlayStatusChanged(elementComponent);
+    this.subscribeMediaValidStatusChanged(elementComponent);
     this.subscribeNavigationRequested(elementComponent);
     this.subscribeElementValueChanged(elementComponent);
     this.subscribeForKeyboardEvents(elementComponent);
@@ -167,12 +168,22 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeMediaStatusChanged(elementComponent: any): void {
+  private subscribeMediaPlayStatusChanged(elementComponent: any): void {
     if (elementComponent.onMediaPlayStatusChanged) {
       elementComponent.onMediaPlayStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((playStatus: string | null) => {
-          this.mediaPlayerService.broadCastPlayChanges(playStatus);
+          this.mediaPlayerService.broadcastPlayStatusChanged(playStatus);
+        });
+    }
+  }
+
+  private subscribeMediaValidStatusChanged(elementComponent: any): void {
+    if (elementComponent.onMediaValidStatusChanged) {
+      elementComponent.onMediaValidStatusChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((validId: string) => {
+          this.mediaPlayerService.broadcastValidStatusChanged(validId);
         });
     }
   }

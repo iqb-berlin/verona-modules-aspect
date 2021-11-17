@@ -16,7 +16,10 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() elementModel!: AudioElement | VideoElement;
   @Input() project!: 'player' | 'editor';
   @Input() active!: boolean;
+  @Input() dependencyDissolved!: boolean;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
+  @Output() onMediaValidStatusChanged = new EventEmitter<string>();
+
   duration!: number;
   currentTime!: number;
   currentRestTime!: number;
@@ -29,15 +32,15 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   showHint!: boolean;
   disabled!: boolean;
   playbackTime!: number;
+  valid!: boolean;
 
   // TODO:
   // uninterruptible: boolean; // false kein Blättern; starten eines anderen Videos; ....
   // hideOtherPages: boolean; // false (Solange nicht vollständig gespielt, sind alle anderen Seiten verborgen)
-  // activeAfterID: string; // '' (andere Audio-id; Audio ist deaktiviert, solange anderes nicht vollständig abgespielt)
   // minRuns: number; // 1
 
   ngOnInit(): void {
-    // Firefox has problems to get the duration
+    this.dependencyDissolved = !this.elementModel.activeAfterID;
     this.player.ondurationchange = () => this.initTimeValues();
     this.player.ontimeupdate = () => {
       this.currentTime = this.player.currentTime / 60;
@@ -55,12 +58,13 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
       this.showHint = false;
     };
     this.player.onended = () => {
-      if (!this.checkStatus(this.runCounter + 1)) {
+      if (!this.checkDisabledState(this.runCounter + 1)) {
         this.runCounter += 1;
         if (this.elementModel.loop) {
           this._play();
         }
       }
+      this.checkValidState(this.runCounter);
     };
     this.player.onvolumechange = () => {
       this.player.muted = !this.player.volume;
@@ -113,7 +117,15 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
     event.preventDefault();
   }
 
-  private checkStatus(runCounter: number): boolean {
+  private checkValidState(runCounter: number): boolean {
+    this.valid = this.elementModel.minRuns === 0 ? true : runCounter >= this.elementModel.minRuns;
+    if (this.valid) {
+      this.onMediaValidStatusChanged.emit(this.elementModel.id);
+    }
+    return this.valid;
+  }
+
+  private checkDisabledState(runCounter: number): boolean {
     this.disabled = !this.elementModel.maxRuns ? false : this.elementModel.maxRuns <= runCounter;
     return this.disabled;
   }
@@ -167,6 +179,8 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
         this.currentRestTime = (this.player.duration - this.player.currentTime) / 60;
         this.runCounter = Math.floor(this.elementModel.playbackTime);
         this.player.currentTime = (this.elementModel.playbackTime - this.runCounter) * this.player.duration;
+        this.checkDisabledState(this.runCounter);
+        this.checkValidState(this.runCounter);
       } else {
         this.duration = 0;
         this.runCounter = 0;

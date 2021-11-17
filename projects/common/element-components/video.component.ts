@@ -18,6 +18,8 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
                        [player]="player"
                        [project]="project"
                        [elementModel]="elementModel"
+                       [dependencyDissolved]="dependencyDissolved"
+                       (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"
                        (elementValueChanged)="elementValueChanged.emit($event)">
       </app-control-bar>
     </div>

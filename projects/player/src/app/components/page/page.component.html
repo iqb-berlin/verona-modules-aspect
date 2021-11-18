@@ -3,6 +3,7 @@
      [intersectionContainer]="pagesContainer"
      (intersecting)="onIntersection()">
   <div *ngFor="let section of page.sections; let i = index"
+       [style.overflow]="'hidden'"
        [style.backgroundColor]="section.backgroundColor">
     <app-section
         class="section"

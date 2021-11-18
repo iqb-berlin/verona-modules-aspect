@@ -13,7 +13,7 @@ import { FileService } from '../../../../../common/file.service';
       </mat-form-field>
       <input #imageUpload type="file" hidden (click)="loadImage()">
       <button mat-raised-button (click)="imageUpload.click()">{{ 'loadImage' | translate }}</button>
-      <button mat-raised-button (click)="data.column.imgSrc = null">{{ 'removeImage' | translate }}</button>
+      <button mat-raised-button (click)="imgSrc = null">{{ 'removeImage' | translate }}</button>
       <img [src]="imgSrc"
            [style.object-fit]="'scale-down'"
            [width]="200">

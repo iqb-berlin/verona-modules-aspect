@@ -65,3 +65,5 @@ export abstract class InputElement extends UIElement {
     this.readOnly = serializedElement.readOnly !== undefined ? serializedElement.readOnly as boolean : false;
   }
 }
+
+export abstract class CompoundElement extends UIElement {}

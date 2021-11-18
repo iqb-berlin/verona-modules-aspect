@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, Output, ViewChild
+  Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { TextElement } from '../models/text-element';
@@ -62,7 +62,7 @@ import { ValueChangeElement } from '../models/uI-element';
   ]
 })
 export class TextComponent extends ElementComponent {
-  elementModel!: TextElement;
+  @Input() elementModel!: TextElement;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() startSelection = new EventEmitter<MouseEvent>();
   @Output() applySelection = new EventEmitter <{

@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormElementComponent } from '../form-element-component.directive';
 import { TextAreaElement } from '../models/text-area-element';
 
@@ -33,6 +33,6 @@ import { TextAreaElement } from '../models/text-area-element';
   `
 })
 export class TextAreaComponent extends FormElementComponent {
+  @Input() elementModel!: TextAreaElement;
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
-  elementModel!: TextAreaElement;
 }

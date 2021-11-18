@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { VideoElement } from '../models/video-element';
 import { MediaPlayerElementComponent } from '../media-player-element-component.directive';
 
@@ -27,5 +27,5 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
   styles: ['.correct-position{ display: block; margin-top: -4px; }']
 })
 export class VideoComponent extends MediaPlayerElementComponent {
-  elementModel!: VideoElement;
+  @Input() elementModel!: VideoElement;
 }

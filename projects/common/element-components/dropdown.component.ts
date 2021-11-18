@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormElementComponent } from '../form-element-component.directive';
 import { DropdownElement } from '../models/dropdown-element';
 
@@ -34,5 +34,5 @@ import { DropdownElement } from '../models/dropdown-element';
   `
 })
 export class DropdownComponent extends FormElementComponent {
-  elementModel!: DropdownElement;
+  @Input() elementModel!: DropdownElement;
 }

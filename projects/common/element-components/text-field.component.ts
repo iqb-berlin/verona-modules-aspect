@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { FormElementComponent } from '../form-element-component.directive';
 import { TextFieldElement } from '../models/text-field-element';
@@ -65,8 +65,8 @@ import { TextFieldElement } from '../models/text-field-element';
   ]
 })
 export class TextFieldComponent extends FormElementComponent {
+  @Input() elementModel!: TextFieldElement;
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
-  elementModel!: TextFieldElement;
 
   onClearButtonClick(event: MouseEvent) : void {
     this.elementFormControl.setValue('');

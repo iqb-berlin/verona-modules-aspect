@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormElementComponent } from '../form-element-component.directive';
 import { RadioButtonGroupElement } from '../models/radio-button-group-element';
 
@@ -52,5 +52,5 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
-  elementModel!: RadioButtonGroupElement;
+  @Input() elementModel!: RadioButtonGroupElement;
 }

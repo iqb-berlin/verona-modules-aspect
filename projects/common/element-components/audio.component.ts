@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AudioElement } from '../models/audio-element';
 import { MediaPlayerElementComponent } from '../media-player-element-component.directive';
 
@@ -25,5 +25,5 @@ import { MediaPlayerElementComponent } from '../media-player-element-component.d
   `
 })
 export class AudioComponent extends MediaPlayerElementComponent {
-  elementModel!: AudioElement;
+  @Input() elementModel!: AudioElement;
 }

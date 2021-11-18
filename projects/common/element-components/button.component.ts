@@ -35,8 +35,8 @@ import { ButtonElement } from '../models/button-element';
   ]
 })
 export class ButtonComponent extends ElementComponent {
+  @Input() elementModel!: ButtonElement;
   @Output() navigationRequested = new EventEmitter<'previous' | 'next' | 'first' | 'last' | 'end'>();
-  elementModel!: ButtonElement;
 
   onClick = (event: MouseEvent, action: 'previous' | 'next' | 'first' | 'last' | 'end' | null): void => {
     if (action) {

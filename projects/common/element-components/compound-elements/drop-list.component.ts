@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
   CdkDrag, CdkDropList, moveItemInArray, transferArrayItem
@@ -65,7 +65,7 @@ import { FormElementComponent } from '../../form-element-component.directive';
   ]
 })
 export class DropListComponent extends FormElementComponent {
-  elementModel!: DropListElement;
+  @Input() elementModel!: DropListElement;
 
   drop(event: CdkDragDrop<DropListComponent>): void {
     if (!this.elementModel.readOnly) {

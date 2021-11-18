@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { ImageElement } from '../models/image-element';
 import { ValueChangeElement } from '../models/uI-element';
@@ -35,7 +35,7 @@ import { ValueChangeElement } from '../models/uI-element';
   ]
 })
 export class ImageComponent extends ElementComponent {
+  @Input() elementModel!: ImageElement;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   magnifierVisible = false;
-  elementModel!: ImageElement;
 }

@@ -1,3 +1,5 @@
+import { UIElement } from '../models/uI-element';
+
 export interface FontElement {
   fontColor: string;
   font: string;
@@ -42,4 +44,9 @@ export interface LikertColumn {
 export interface LikertRow {
   text: string;
   columnCount: number;
+}
+
+export interface ClozePart {
+  type: string;
+  value: string | UIElement;
 }

@@ -1,9 +1,10 @@
 // eslint-disable-next-line max-classes-per-file
 import { IdService } from '../id.service';
-import { LikertColumn, LikertRow } from '../interfaces/UIElementInterfaces';
+import { LikertColumn, LikertRow, ClozePart } from '../interfaces/UIElementInterfaces';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
-| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images' | 'drop-list';
+| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images'
+| 'drop-list' | 'cloze';
 export type InputElementValue = string[] | string | number | boolean | null;
 
 export interface ValueChangeElement {
@@ -12,7 +13,9 @@ export interface ValueChangeElement {
 }
 
 export abstract class UIElement {
-  [index: string]: InputElementValue | LikertColumn[] | LikertRow[] | ((...args: any) => any);
+  [index: string]: InputElementValue | LikertColumn[] | LikertRow[] | ClozePart[]
+  | UIElement[] | ClozePart[][] | ((...args: any) => any);
+
   type!: UIElementType;
 
   id: string = 'id_placeholder';

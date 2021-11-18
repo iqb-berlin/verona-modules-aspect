@@ -43,6 +43,7 @@ import { LikertRadioButtonGroupComponent } from './element-components/compound-e
 import { Magnifier } from './element-components/magnifier.component';
 import { RadioGroupImagesComponent } from './element-components/compound-elements/radio-group-images.component';
 import { DropListComponent } from './element-components/compound-elements/drop-list.component';
+import { ClozeComponent } from './element-components/compound-elements/cloze.component';
 
 @NgModule({
   imports: [
@@ -83,7 +84,8 @@ import { DropListComponent } from './element-components/compound-elements/drop-l
     LikertRadioButtonGroupComponent,
     Magnifier,
     RadioGroupImagesComponent,
-    DropListComponent
+    DropListComponent,
+    ClozeComponent
   ],
   exports: [
     CommonModule,

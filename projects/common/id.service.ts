@@ -17,7 +17,8 @@ export class IdService {
     likert: 0,
     likert_row: 0,
     'radio-group-images': 0,
-    'drop-list': 0
+    'drop-list': 0,
+    cloze: 0
   };
 
   static getInstance(): IdService {

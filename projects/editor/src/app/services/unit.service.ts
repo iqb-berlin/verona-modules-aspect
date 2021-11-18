@@ -10,7 +10,7 @@ import { VeronaAPIService } from './verona-api.service';
 import { Unit } from '../../../../common/models/unit';
 import { Page } from '../../../../common/models/page';
 import { Section } from '../../../../common/models/section';
-import { InputElement, UIElement, UIElementType } from '../../../../common/models/uI-element';
+import { CompoundElement, InputElement, UIElement, UIElementType } from '../../../../common/models/uI-element';
 import { TextElement } from '../../../../common/models/text-element';
 import { LikertElement } from '../../../../common/models/compound-elements/likert-element';
 import { LikertElementRow } from '../../../../common/models/compound-elements/likert-element-row';
@@ -330,6 +330,18 @@ export class UnitService {
         break;
       case 'text':
         this.dialogService.showRichTextEditDialog((element as TextElement).text).subscribe((result: string) => {
+          if (result) {
+            // TODO add proper sanitization
+            this.updateElementProperty(
+              [element],
+              'text',
+              (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
+            );
+          }
+        });
+        break;
+      case 'cloze':
+        this.dialogService.showClozeTextEditDialog((element as TextElement).text).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
             this.updateElementProperty(

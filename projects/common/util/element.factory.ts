@@ -27,6 +27,8 @@ import { RadioGroupImagesComponent } from '../element-components/compound-elemen
 import { RadioGroupImagesElement } from '../models/compound-elements/radio-group-images';
 import { DropListComponent } from '../element-components/compound-elements/drop-list.component';
 import { DropListElement } from '../models/compound-elements/drop-list';
+import { ClozeComponent } from '../element-components/compound-elements/cloze.component';
+import { ClozeElement } from '../models/compound-elements/cloze-element';
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -70,6 +72,9 @@ export function createElement(elementModel: UIElement): UIElement {
     case 'drop-list':
       newElement = new DropListElement(elementModel);
       break;
+    case 'cloze':
+      newElement = new ClozeElement(elementModel);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -108,6 +113,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(RadioGroupImagesComponent);
     case 'drop-list':
       return componentFactoryResolver.resolveComponentFactory(DropListComponent);
+    case 'cloze':
+      return componentFactoryResolver.resolveComponentFactory(ClozeComponent);
     default:
       throw new Error('unknown element');
   }

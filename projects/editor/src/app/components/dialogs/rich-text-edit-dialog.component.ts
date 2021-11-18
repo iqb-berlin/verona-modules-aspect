@@ -5,7 +5,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
   selector: 'app-rich-text-edit-dialog-tinymce',
   template: `
     <mat-dialog-content>
-      <app-rich-text-editor [(text)]="data.text"></app-rich-text-editor>
+      <app-rich-text-editor [(text)]="data.text" [showCloseElements]="data.showCloseElements"></app-rich-text-editor>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="data.text">{{'save' | translate }}</button>
@@ -14,5 +14,5 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
     `
 })
 export class RichTextEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, showCloseElements?: boolean }) { }
 }

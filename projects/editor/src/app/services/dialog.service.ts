@@ -54,6 +54,17 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
+  showClozeTextEditDialog(text: string): Observable<string> {
+    const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
+      data: {
+        text: text,
+        showCloseElements: true
+      },
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
   showPlayerEditDialog(player: PlayerElement): Observable<PlayerElement> {
     const dialogRef = this.dialog.open(PlayerEditDialogComponent, {
       data: {

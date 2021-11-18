@@ -200,21 +200,16 @@
       <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
       <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
     </mat-menu>
-<!--    <button mat-icon-button [matMenuTriggerFor]="optionsMenu">-->
-<!--      <mat-icon>more_vert</mat-icon>-->
-<!--    </button>-->
-<!--    <mat-menu #optionsMenu="matMenu">-->
-<!--      <mat-form-field>-->
-<!--        <mat-label>Absatzabstand</mat-label>-->
-<!--        <mat-select matTooltip="Achtung: Gilt nur für zukünftig angelegte Absätze" [matTooltipShowDelay]="300"-->
-<!--                    [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"-->
-<!--                    (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">-->
-<!--          <mat-option value="0">0px</mat-option>-->
-<!--          <mat-option value="10">10px</mat-option>-->
-<!--          <mat-option value="20">20px</mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
-<!--    </mat-menu>-->
+  </div>
+  <div *ngIf="showCloseElements" fxLayout="row" fxLayoutAlign="space-around center" >
+    <button mat-icon-button matTooltip="\\i" [matTooltipShowDelay]="300"
+            (click)="insertSpecialChar('\\i')">
+      <mat-icon>text_fields</mat-icon>
+    </button>
+    <button mat-icon-button matTooltip="\\z" [matTooltipShowDelay]="300"
+            (click)="insertSpecialChar('\\z')">
+      <mat-icon>drag_indicator</mat-icon>
+    </button>
   </div>
 </div>
 <tiptap-editor [editor]="editor" [ngModel]="text" (ngModelChange)="textChange.emit($event)">

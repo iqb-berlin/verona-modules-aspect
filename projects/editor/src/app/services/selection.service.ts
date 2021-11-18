@@ -23,7 +23,7 @@ export class SelectionService {
     return this._selectedElements.value;
   }
 
-  selectElement(event: { componentElement: any; multiSelect: boolean }): void {
+  selectElement(event: { componentElement: any; multiSelect: boolean }): void { // TODO UIElement statt any
     if (!event.multiSelect) {
       this.clearElementSelection();
     }

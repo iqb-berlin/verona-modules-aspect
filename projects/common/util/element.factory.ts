@@ -10,7 +10,6 @@ import { RadioButtonGroupElement } from '../models/radio-button-group-element';
 import { ImageElement } from '../models/image-element';
 import { AudioElement } from '../models/audio-element';
 import { VideoElement } from '../models/video-element';
-import { FileService } from '../file.service';
 import { TextComponent } from '../element-components/text.component';
 import { ButtonComponent } from '../element-components/button.component';
 import { TextFieldComponent } from '../element-components/text-field.component';

@@ -17,8 +17,8 @@ import { UiElementToolboxComponent } from './components/unit-view/page-view/new-
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
 import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
 import { CanvasComponent } from './components/unit-view/page-view/canvas/canvas.component';
-import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/static-canvas-overlay.component';
-import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/dynamic-canvas-overlay.component';
+import { StaticCanvasOverlayComponent } from './components/unit-view/page-view/canvas/overlays/static-canvas-overlay.component';
+import { DynamicCanvasOverlayComponent } from './components/unit-view/page-view/canvas/overlays/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/shared.module';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { ElementPropertiesComponent } from './components/unit-view/page-view/properties-panel/element-properties.component';

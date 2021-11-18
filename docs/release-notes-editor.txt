@@ -1,5 +1,39 @@
 Editor
 ======
+1.11.0
+ - New DropList feature: highlightReceivingDropList ("Potentielle Ablagen hervorheben")
+   When set eligible dropLists display a highlight effect. Currently with
+   a colored border. The color is adjustable.
+   This needs to be set on the target list, NOT on the list items are being
+   dragged from.
+ - Refactor likert layout and add first column ratio property
+   Images now scale depending on the available space.
+   The new property controls the first (column) size parameter for the
+   grid. The others are fixed at 1. Decimal values are allowed for
+   fine-tuned control.
+ - Improve TextEditor toolbar layout and functionality
+   Reordered the controls to make it look nicer. The sub menu no longer exists.
+   Improve layouting to prevent elements from moving unexpextedly on different
+   window sizes.
+   Changed color and list inputs to split-buttons. Those combine a button
+   with a dropdown allowing to specify the action of the button.
+   For lists this does not actually toggle the list. The button needs to be used
+   after setting the style. For colors the color is set immediately after using
+   the dropdown/color picker.
+   Now saves the set color and it can be applied to subsequent selections as well.
+ - Change dropList styling
+   (Item margins and dropList border radius)
+ - Improved cursors everywhere
+   Notice how the cursor changes to the grabbing hand on click before
+   actually dragging canvas elements!
+   The resizing preview in dynamic mode is no longer obstructed by the
+   element itself. It is now hidden while resize-dragging.
+   Color inputs now have the pointer cursor.
+ - Fix TestEditor (console) error when using the bullet-lists
+ - Fix likert column-edit dialog to set values on save
+ - Move some styling properties to the styling tab
+   Applies to: borderRadius, itemBackgroundColor
+
 1.10.0
  - Fix reading of existing likert element row values
  - Fix reading of existing dropList elements

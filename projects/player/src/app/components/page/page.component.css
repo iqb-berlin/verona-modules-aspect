@@ -1,6 +1,5 @@
 .section{
   position: relative;
-  display: block;
   overflow: auto;
   width: 100%
 }

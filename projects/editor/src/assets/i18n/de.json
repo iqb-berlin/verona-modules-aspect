@@ -114,6 +114,8 @@
     "itemBackgroundColor": "Hintergrundfarbe der Elemente",
     "highlightReceivingDropList": "Potentielle Ablagen hervorheben",
     "highlightReceivingDropListColor": "Farbe der Hervorhebung",
+    "firstColumnSizeRatio": "Anteil der ersten Spalte",
+    "firstColumnSizeRatioExplanation": "Größenverhältnis der ersten Spalte zu allen anderen",
     "duplicateElement": "Element duplizieren",
     "deleteElement": "Element löschen",
     "noElementSelected": "Kein Element ausgewählt"

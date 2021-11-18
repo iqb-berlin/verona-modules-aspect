@@ -489,6 +489,13 @@ import { FileService } from '../../../../../../../common/file.service';
                    property: 'highlightReceivingDropListColor',
                    value: $any($event.target).value })">
       </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.firstColumnSizeRatio != null"
+                      matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
+        <input matInput type="number" [value]="combinedProperties.firstColumnSizeRatio"
+               (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: $any($event.target).value })">
+      </mat-form-field>
     </div>
     `,
   styleUrls: ['./element-model-properties.component.css']

@@ -6,6 +6,7 @@ import { initFontElement, initSurfaceElement } from '../../util/unit-interface-i
 export class LikertElement extends UIElement implements FontElement, SurfaceUIElement {
   rows: LikertElementRow[] = [];
   columns: LikertColumn[] = [];
+  firstColumnSizeRatio: number = 5;
   lineColoring: boolean = true;
   lineColoringColor: string = '#D0F6E7';
   readOnly: boolean = false;

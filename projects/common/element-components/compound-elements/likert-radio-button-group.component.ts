@@ -9,7 +9,8 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
     <mat-radio-group [style.display]="'grid'"
                      [formControl]="elementFormControl"
                      [value]="elementModel.value"
-                     [style.grid-template-columns]="'5fr ' + '2fr '.repeat(elementModel.columnCount)">
+                     [style.grid-template-columns]="firstColumnSizeRatio + 'fr ' +
+                                                    '1fr '.repeat(elementModel.columnCount)">
       <div [style.grid-column-start]="1"
            [style.grid-column-end]="2"
            [style.grid-row-start]="1"
@@ -31,4 +32,5 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
 export class LikertRadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: LikertElementRow;
   @Input() parentForm!: FormGroup;
+  @Input() firstColumnSizeRatio!: number;
 }

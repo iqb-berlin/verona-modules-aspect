@@ -39,4 +39,8 @@ export class SelectionService {
     this.selectedElementComponents = [];
     this._selectedElements.next([]);
   }
+
+  selectCompoundChild(element: UIElement): void {
+    this._selectedElements.next([element]);
+  }
 }

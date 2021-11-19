@@ -92,7 +92,7 @@
     "minLengthWarnMessage": "Minimalwert Warnmeldung",
     "maxLength": "Maximalwert",
     "maxValue": "Maximalwert",
-    "showValues": "Zeige Beschriftung",
+    "showValues": "Zeige Start- und Endwert",
     "maxLengthWarnMessage": "Maximalwert Warnmeldung",
     "pattern": "Muster",
     "patternWarnMessage": "Muster Warnmeldung",

@@ -35,7 +35,11 @@ import { InputElement } from '../../models/uI-element';
         </span>
       </ng-container>
     </p>
-  `
+  `,
+  styles: [
+    ':host ::ng-deep app-text-field .mat-form-field-wrapper {padding-bottom: 0; margin: 0}',
+    ':host ::ng-deep app-drop-list .cdk-drop-list {height: 100%; width: 100%;}'
+  ]
 })
 export class ClozeComponent extends CompoundElementComponent {
   elementModel!: ClozeElement;

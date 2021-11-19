@@ -42,7 +42,7 @@ export class ClozeComponent extends CompoundElementComponent {
   @Output() elementSelected = new EventEmitter<{ element: ClozeElement, event: MouseEvent }>();
 
   getFormElementModelChildren(): InputElement[] {
-    return [];
+    return this.elementModel.childElements;
   }
 
   selectElement(element: ClozeElement, event: MouseEvent): void {

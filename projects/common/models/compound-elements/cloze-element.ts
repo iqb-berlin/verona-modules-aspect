@@ -17,7 +17,7 @@ import { DropListElement } from './drop-list';
 export class ClozeElement extends CompoundElement {
   text: string = '<p>Lorem ipsum dolor \\z sit amet \\i</p>';
   parts: ClozePart[][] = [];
-  childElements: UIElement[] = [];
+  childElements: InputElement[] = [];
 
   constructor(serializedElement: UIElement) {
     super(serializedElement);
@@ -99,9 +99,9 @@ export class ClozeElement extends CompoundElement {
     return [y, nextElementType];
   }
 
-  private static createElement(elementType: string): UIElement {
+  private static createElement(elementType: string): InputElement {
     const elementModel: UIElement = { type: elementType } as UIElement;
-    let newElement: UIElement;
+    let newElement: InputElement;
     switch (elementModel.type) {
       case 'text':
         newElement = new TextElement(elementModel);

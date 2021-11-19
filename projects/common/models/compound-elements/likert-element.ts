@@ -1,9 +1,9 @@
-import { InputElementValue, UIElement } from '../uI-element';
+import { CompoundElement, InputElementValue, UIElement } from '../uI-element';
 import { LikertElementRow } from './likert-element-row';
 import { LikertColumn, FontElement, SurfaceUIElement } from '../../interfaces/UIElementInterfaces';
 import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
-export class LikertElement extends UIElement implements FontElement, SurfaceUIElement {
+export class LikertElement extends CompoundElement implements FontElement, SurfaceUIElement {
   rows: LikertElementRow[] = [];
   columns: LikertColumn[] = [];
   firstColumnSizeRatio: number = 5;

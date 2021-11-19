@@ -6,6 +6,7 @@ import { DragItemData, DropListData } from './canvas.component';
 import { UnitService } from '../../../../services/unit.service';
 import { Section } from '../../../../../../../common/models/section';
 import { UIElementType } from '../../../../../../../common/models/uI-element';
+import { SelectionService } from '../../../../services/selection.service';
 
 @Component({
   selector: 'app-section-dynamic',
@@ -52,6 +53,8 @@ import { UIElementType } from '../../../../../../../common/models/uI-element';
                                   cdkDropList cdkDropListSortingDisabled
                                   [cdkDropListData]="{ sectionIndex: sectionIndex }"
                                   [cdkDropListConnectedTo]="dropListList"
+                                  (elementSelected)="selectionService.selectElement($event);
+                                                      selectionService.selectedPageSectionIndex = sectionIndex"
                                   (resize)="resizeOverlay($event)"
                                   [style.position]="'relative'"
                                   [style.pointer-events]="dragging ? 'none' : 'auto'">
@@ -71,7 +74,7 @@ export class SectionDynamicComponent {
 
   dragging = false;
 
-  constructor(public unitService: UnitService) { }
+  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
 
   drop(event: CdkDragDrop<DropListData>): void {
     const dragItemData: DragItemData = event.item.data;

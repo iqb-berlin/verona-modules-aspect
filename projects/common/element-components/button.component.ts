@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { ButtonElement } from '../models/button-element';
 
@@ -6,6 +8,7 @@ import { ButtonElement } from '../models/button-element';
   selector: 'app-button',
   template: `
     <button *ngIf="!elementModel.imageSrc" mat-button
+            type='button'
             [style.width.%]="100"
             [style.height.%]="100"
             [style.background-color]="elementModel.backgroundColor"
@@ -35,10 +38,8 @@ export class ButtonComponent extends ElementComponent {
   @Output() navigationRequested = new EventEmitter<'previous' | 'next' | 'first' | 'last' | 'end'>();
 
   onClick = (event: MouseEvent, action: 'previous' | 'next' | 'first' | 'last' | 'end' | null): void => {
-    if (action) {
+    if (action) { // TODO warum kann das null sein?
       this.navigationRequested.emit(action);
     }
-    // event.stopPropagation();
-    // event.preventDefault(); TODO
   };
 }

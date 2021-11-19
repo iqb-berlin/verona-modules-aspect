@@ -7,7 +7,7 @@ import { UIElement } from './models/uI-element';
 @Directive()
 export abstract class ElementComponent implements AfterContentChecked {
   abstract elementModel: UIElement;
-  project!: 'player' | 'editor'; // TODO x2
+  project!: 'player' | 'editor';
 
   constructor(private elementRef: ElementRef) {}
 

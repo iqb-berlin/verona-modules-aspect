@@ -113,7 +113,7 @@ export class ElementContainerComponent implements OnInit {
   }
 
   private registerAtUnitStateService(elementComponent: any): void {
-    if (elementComponent.domElement) {
+    if (!(elementComponent instanceof CompoundElementComponent)) {
       this.unitStateService.registerElement(
         this.initUnitStateValue(elementComponent.elementModel),
         elementComponent.domElement,
@@ -128,13 +128,11 @@ export class ElementContainerComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((children: QueryList<ElementComponent>) => {
           children.forEach(child => {
-            if (child.domElement) {
-              this.unitStateService.registerElement(
-                this.initUnitStateValue(child.elementModel),
-                child.domElement,
-                this.pageIndex
-              );
-            }
+            this.unitStateService.registerElement(
+              this.initUnitStateValue(child.elementModel),
+              child.domElement,
+              this.pageIndex
+            );
           });
         });
     }

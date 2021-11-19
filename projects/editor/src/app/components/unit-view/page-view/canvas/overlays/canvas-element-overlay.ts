@@ -40,10 +40,10 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.selectionService.selectElement({ componentElement: this, multiSelect: false });
 
     if (this.childComponent.instance instanceof ClozeComponent) {
+      this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.elementSelected
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((element: ClozeElement) => {
-          this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
           this.selectionService.selectCompoundChild(element);
         });
     }

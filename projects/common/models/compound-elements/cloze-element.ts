@@ -1,4 +1,6 @@
-import { CompoundElement, InputElementValue, UIElement } from '../uI-element';
+import {
+  CompoundElement, InputElement, InputElementValue, UIElement
+} from '../uI-element';
 import { ClozePart, LikertColumn, LikertRow } from '../../interfaces/UIElementInterfaces';
 import { TextElement } from '../text-element';
 import { ButtonElement } from '../button-element';
@@ -74,9 +76,6 @@ export class ClozeElement extends CompoundElement {
 
   private static getNextSpecialElement(p: string): [number, string] {
     const x = [];
-    if (p.indexOf('\\b') > 0) {
-      x.push(p.indexOf('\\b'));
-    }
     if (p.indexOf('\\d') > 0) {
       x.push(p.indexOf('\\d'));
     }
@@ -90,7 +89,6 @@ export class ClozeElement extends CompoundElement {
     const y = Math.min(...x);
     let nextElementType = '';
     switch (p[y + 1]) {
-      case 'b': nextElementType = 'button'; break;
       case 'd': nextElementType = 'dropdown'; break;
       case 'i': nextElementType = 'text-field'; break;
       case 'z': nextElementType = 'drop-list'; break;
@@ -103,12 +101,6 @@ export class ClozeElement extends CompoundElement {
     const elementModel: UIElement = { type: elementType } as UIElement;
     let newElement: InputElement;
     switch (elementModel.type) {
-      case 'text':
-        newElement = new TextElement(elementModel);
-        break;
-      case 'button':
-        newElement = new ButtonElement(elementModel);
-        break;
       case 'text-field':
         newElement = new TextFieldElement(elementModel);
         (newElement as TextFieldElement).label = '';
@@ -121,24 +113,6 @@ export class ClozeElement extends CompoundElement {
         break;
       case 'dropdown':
         newElement = new DropdownElement(elementModel);
-        break;
-      case 'radio':
-        newElement = new RadioButtonGroupElement(elementModel);
-        break;
-      case 'image':
-        newElement = new ImageElement(elementModel);
-        break;
-      case 'audio':
-        newElement = new AudioElement(elementModel);
-        break;
-      case 'video':
-        newElement = new VideoElement(elementModel);
-        break;
-      case 'likert':
-        newElement = new LikertElement(elementModel);
-        break;
-      case 'radio-group-images':
-        newElement = new RadioGroupImagesElement(elementModel);
         break;
       case 'drop-list':
         newElement = new DropListElement(elementModel);

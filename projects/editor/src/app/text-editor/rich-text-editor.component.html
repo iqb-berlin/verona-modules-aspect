@@ -165,6 +165,8 @@
     <mat-menu #specialCharsMenu="matMenu" yPosition="above">
       <button mat-button (click)="insertSpecialChar('&nbsp;')"
               [matTooltip]="'Geschütztes Leerzeichen'">&blank;</button>
+      <button mat-button (click)="insertSpecialChar('&bdquo;')">&bdquo;</button>
+      <button mat-button (click)="insertSpecialChar('&rdquo;')">&rdquo;</button>
       <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
       <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
       <button mat-button (click)="insertSpecialChar('&micro;')">&micro;</button>

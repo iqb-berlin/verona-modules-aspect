@@ -12,6 +12,7 @@ export abstract class CompoundElementComponent extends ElementComponent implemen
   @Output() childrenAdded = new EventEmitter<QueryList<ElementComponent>>();
   compoundChildren!: QueryList<ElementComponent>;
   parentForm!: FormGroup;
+  allowClickThrough = true;
 
   ngAfterViewInit(): void {
     this.childrenAdded.emit(this.compoundChildren);

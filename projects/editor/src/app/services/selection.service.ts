@@ -10,6 +10,7 @@ export class SelectionService {
   selectedPageSectionIndex: number = 0;
   private _selectedElements!: BehaviorSubject<UIElement[]>;
   selectedElementComponents: any[] = [];
+  selectedCompoundChild: { element: UIElement, nativeElement: HTMLElement } | null = null;
 
   constructor() {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
@@ -27,6 +28,7 @@ export class SelectionService {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
+    this.removeCompoundChildSelection();
     this.selectedElementComponents.push(event.componentElement);
     event.componentElement.setSelected(true);
     this._selectedElements.next(this.selectedElementComponents.map(componentElement => componentElement.element));
@@ -40,7 +42,30 @@ export class SelectionService {
     this._selectedElements.next([]);
   }
 
-  selectCompoundChild(element: UIElement): void {
+  selectCompoundChild(element: UIElement, nativeElement: HTMLElement): void {
+    this.removeCompoundChildSelection();
+
+    this.setCompoundChildSelection(element, nativeElement);
+    this.selectedCompoundChild = { element: element, nativeElement: nativeElement };
     this._selectedElements.next([element]);
+  }
+
+  private setCompoundChildSelection(element: UIElement, nativeElement: HTMLElement): void {
+    if (element.type === 'text-field') {
+      (nativeElement.children[0] as HTMLElement).style.border = '1px solid';
+    } else {
+      nativeElement.style.border = '1px solid';
+    }
+  }
+
+  private removeCompoundChildSelection(): void {
+    if (this.selectedCompoundChild) {
+      if (this.selectedCompoundChild.element.type === 'text-field') {
+        (this.selectedCompoundChild.nativeElement.children[0] as HTMLElement).style.border = 'unset';
+      } else {
+        this.selectedCompoundChild.nativeElement.style.border = 'unset';
+      }
+      this.selectedCompoundChild = null;
+    }
   }
 }

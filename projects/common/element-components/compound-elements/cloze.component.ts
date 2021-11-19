@@ -13,44 +13,39 @@ import { InputElement } from '../../models/uI-element';
              [innerHTML]="part.value">
         </span>
 
-        <div (click)="selectElement($any(part.value)); $event.stopPropagation()"
-             [style.display]="'inline-block'">
-
-          <app-button *ngIf="part.type === 'button'"
-                      [style.display]="'inline-block'"
-                      [style.pointerEvents]="'none'"
-                      [elementModel]="$any(part.value)"></app-button>
+        <span (click)="selectElement($any(part.value), $event)">
           <app-dropdown *ngIf="part.type === 'dropdown'"
                         [style.display]="'inline-block'"
-                        [style.pointerEvents]="'none'"
+                        [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
                         [elementModel]="$any(part.value)"></app-dropdown>
           <app-text-field *ngIf="part.type === 'text-field'"
                           [style.vertical-align]="'sub'"
                           [style.display]="'inline-block'"
-                          [style.pointerEvents]="'none'"
+                          [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
                           [elementModel]="$any(part.value)"></app-text-field>
           <div *ngIf="part.type === 'drop-list'" [style.display]="'inline-block'"
                [style.vertical-align]="'middle'"
+               [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
                [style.width.px]="$any(part.value).width"
                [style.height.px]="$any(part.value).height">
             <app-drop-list [style.pointerEvents]="'none'"
                            [elementModel]="$any(part.value)">
             </app-drop-list>
           </div>
-        </div>
+        </span>
       </ng-container>
     </p>
   `
 })
 export class ClozeComponent extends CompoundElementComponent {
   elementModel!: ClozeElement;
-  @Output() elementSelected = new EventEmitter<ClozeElement>();
+  @Output() elementSelected = new EventEmitter<{ element: ClozeElement, event: MouseEvent }>();
 
   getFormElementModelChildren(): InputElement[] {
     return [];
   }
 
-  selectElement(event: ClozeElement): void {
-    this.elementSelected.emit(event);
+  selectElement(element: ClozeElement, event: MouseEvent): void {
+    this.elementSelected.emit({ element: element, event: event });
   }
 }

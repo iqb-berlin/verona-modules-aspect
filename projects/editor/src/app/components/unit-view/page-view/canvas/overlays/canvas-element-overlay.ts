@@ -42,10 +42,14 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
     if (this.childComponent.instance instanceof ClozeComponent) {
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
+      (this.childComponent.instance as unknown as ClozeComponent).allowClickThrough = false;
       this.childComponent.instance.elementSelected
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((element: ClozeElement) => {
-          this.selectionService.selectCompoundChild(element);
+        .subscribe((elementSelectionEvent: { element: ClozeElement, event: MouseEvent }) => {
+          this.selectionService.selectCompoundChild(
+            elementSelectionEvent.element, elementSelectionEvent.event.target as HTMLElement
+          );
+          elementSelectionEvent.event.stopPropagation();
         });
     }
   }

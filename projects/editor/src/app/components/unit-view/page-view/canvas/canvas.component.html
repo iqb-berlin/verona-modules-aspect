@@ -20,7 +20,6 @@
         <app-section-static *ngIf="!section.dynamicPositioning"
              class="section drop-list" id="section-{{i}}"
              [section]="section"
-             [sectionIndex]="i"
              [isSelected]="selectionService.selectedPageSectionIndex === i"
              cdkDropList cdkDropListSortingDisabled
              [cdkDropListData]="{ sectionIndex: i }"

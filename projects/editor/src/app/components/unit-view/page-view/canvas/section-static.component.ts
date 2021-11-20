@@ -4,7 +4,6 @@ import {
 import { UnitService } from '../../../../services/unit.service';
 import { Section } from '../../../../../../../common/models/section';
 import { UIElementType } from '../../../../../../../common/models/uI-element';
-import { SelectionService } from '../../../../services/selection.service';
 
 @Component({
   selector: 'app-section-static',
@@ -17,9 +16,7 @@ import { SelectionService } from '../../../../services/selection.service';
          (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
       <app-static-canvas-overlay
         *ngFor="let element of section.elements"
-        [element]="$any(element)"
-        (elementSelected)="selectionService.selectElement($event);
-                           selectionService.selectedPageSectionIndex = sectionIndex">
+        [element]="$any(element)">
       </app-static-canvas-overlay>
     </div>
   `,
@@ -29,11 +26,10 @@ import { SelectionService } from '../../../../services/selection.service';
 })
 export class SectionStaticComponent {
   @Input() section!: Section;
-  @Input() sectionIndex!: number;
   @Input() isSelected!: boolean;
   @ViewChild('sectionElement') sectionElement!: ElementRef;
 
-  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
+  constructor(public unitService: UnitService) { }
 
   newElementDropped(event: DragEvent): void {
     event.preventDefault();

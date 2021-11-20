@@ -34,21 +34,20 @@
     </div>
     <mat-form-field class="font-size-dropdown">
       <mat-label>Schriftgröße</mat-label>
-      <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || '16'"
-                  (valueChange)="applyFontSize($event)">
-        <mat-option value="8">8px</mat-option>
-        <mat-option value="10">10px</mat-option>
-        <mat-option value="12">12px</mat-option>
-        <mat-option value="14">14px</mat-option>
-        <mat-option value="16">16px</mat-option>
-        <mat-option value="18">18px</mat-option>
-        <mat-option value="20">20px</mat-option>
-        <mat-option value="22">22px</mat-option>
-        <mat-option value="24">24px</mat-option>
-        <mat-option value="26">26px</mat-option>
-        <mat-option value="28">28px</mat-option>
-        <mat-option value="30">30px</mat-option>
-        <mat-option value="36">36px</mat-option>
+      <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize">
+        <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
+        <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
+        <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
+        <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
+        <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
+        <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
+        <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
+        <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
+        <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
+        <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
+        <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
+        <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
+        <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
       </mat-select>
     </mat-form-field>
     <div class="combo-button" fxLayout="row"
@@ -144,17 +143,36 @@
       <div class="combo-button" fxLayout="row" [style.background-color]="editor.isActive('orderedList') ? 'lightgrey' : ''">
         <button mat-icon-button matTooltip="Aufzählung (nummeriert)" [matTooltipShowDelay]="300"
                 [class.active]="editor.isActive('orderedList')"
-                (click)="togleOrderedList()">
+                (click)="toggleOrderedList()">
           <mat-icon>format_list_numbered</mat-icon>
         </button>
           <mat-select [value]="editor.getAttributes('orderedList').listStyle"
                       (valueChange)="applyListStyle('orderedList', $event)">
-            <mat-option value="decimal">decimal</mat-option>
-            <mat-option value="lower-latin">lower-latin</mat-option>
-            <mat-option value="upper-latin">upper-latin</mat-option>
-            <mat-option value="lower-roman">lower-roman</mat-option>
-            <mat-option value="upper-roman">upper-roman</mat-option>
-            <mat-option value="lower-greek">lower-greek</mat-option>
+            <mat-option value="decimal"
+                        (click)="applyListStyle('orderedList', 'decimal')">
+              decimal
+            </mat-option>
+            <mat-option value="lower-latin"
+                        (click)="applyListStyle('orderedList', 'lower-latin')">
+              lower-latin
+            </mat-option>
+
+            <mat-option value="upper-latin"
+                        (click)="applyListStyle('orderedList', 'upper-latin')">
+              upper-latin
+            </mat-option>
+            <mat-option value="lower-roman"
+                        (click)="applyListStyle('orderedList', 'lower-roman')">
+              lower-roman
+            </mat-option>
+            <mat-option value="upper-roman"
+                        (click)="applyListStyle('orderedList', 'upper-roman')">
+              upper-roman
+            </mat-option>
+            <mat-option value="lower-greek"
+                        (click)="applyListStyle('orderedList', 'lower-greek')">
+              lower-greek
+            </mat-option>
           </mat-select>
       </div>
     </div>

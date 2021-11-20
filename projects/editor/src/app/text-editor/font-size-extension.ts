@@ -4,7 +4,7 @@ import { TextStyle } from '@tiptap/extension-text-style';
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     fontSizeExtension: {
-      setFontSize: (fontSize: number) => Command
+      setFontSize: (fontSize: string) => Command
     };
   }
 }
@@ -13,10 +13,10 @@ export const fontSizeExtension = TextStyle.extend({
   addAttributes() {
     return {
       fontSize: {
-        default: 16,
-        parseHTML: element => Number(element.style.fontSize.slice(0, -2)),
+        default: '16px',
+        parseHTML: element => element.style.fontSize,
         renderHTML: attributes => ({
-          style: `font-size: ${attributes.fontSize}px`
+          style: `font-size: ${attributes.fontSize}`
         })
       }
     };

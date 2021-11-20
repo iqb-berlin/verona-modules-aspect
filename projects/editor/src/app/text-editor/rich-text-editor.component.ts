@@ -31,6 +31,7 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   selectedFontColor = 'lightgrey';
   selectedHighlightColor = 'lightgrey';
+  selectedFontSize = '16px';
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
 
@@ -87,7 +88,8 @@ export class RichTextEditorComponent implements AfterViewInit {
     this.editor.chain().toggleSubscript().focus().run();
   }
 
-  applyFontSize(size: number): void {
+  applyFontSize(size: string): void {
+    this.selectedFontSize = size;
     this.editor.commands.setFontSize(size);
   }
 
@@ -116,9 +118,9 @@ export class RichTextEditorComponent implements AfterViewInit {
     this.editor.commands.setBulletListStyle(this.bulletListStyle);
   }
 
-  togleOrderedList(): void {
+  toggleOrderedList(): void {
     this.editor.chain().toggleOrderedList().focus().run();
-    this.editor.commands.setBulletListStyle(this.orderedListStyle);
+    this.editor.commands.setOrderedListStyle(this.orderedListStyle, this.selectedFontSize);
   }
 
   applyListStyle(listType: string, style: string): void {
@@ -130,9 +132,9 @@ export class RichTextEditorComponent implements AfterViewInit {
       }
     } else {
       this.orderedListStyle = style;
-      this.editor.commands.setOrderedListStyle(style);
+      this.editor.commands.setOrderedListStyle(style, this.selectedFontSize);
       if (!this.editor.isActive('orderedList')) {
-        this.togleOrderedList();
+        this.toggleOrderedList();
       }
     }
   }

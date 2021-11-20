@@ -166,12 +166,10 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  deleteElementsFromSectionByIndex(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
-    this.deleteElementsFromSection(elements, this._unit.value.pages[pageIndex].sections[sectionIndex]);
-  }
-
-  deleteElementsFromSection(elements: UIElement[], section: Section): void {
-    section.deleteElements(elements);
+  deleteElements(elements: UIElement[]): void {
+    this.unitModel.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
+      section.deleteElements(elements);
+    });
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 

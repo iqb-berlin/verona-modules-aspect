@@ -84,11 +84,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   deleteElement(): void {
-    this.unitService.deleteElementsFromSectionByIndex(
-      this.selectedElements,
-      this.selectionService.selectedPageIndex,
-      this.selectionService.selectedPageSectionIndex
-    );
+    this.unitService.deleteElements(this.selectedElements);
   }
 
   duplicateElement(): void {

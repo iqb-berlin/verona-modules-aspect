@@ -79,11 +79,7 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
     this.selectionService.selectedElements
       .pipe(take(1))
       .subscribe((selectedElements: UIElement[]) => {
-        this.unitService.deleteElementsFromSectionByIndex(
-          selectedElements,
-          this.selectionService.selectedPageIndex,
-          this.selectionService.selectedPageSectionIndex
-        );
+        this.unitService.deleteElements(selectedElements);
         this.selectionService.clearElementSelection();
       })
       .unsubscribe();

@@ -6,7 +6,14 @@ import { InputElement } from '../../models/uI-element';
 @Component({
   selector: 'app-cloze',
   template: `
-    <p *ngFor="let paragraph of elementModel.parts; let i = index">
+    <p *ngFor="let paragraph of elementModel.parts; let i = index"
+       [style.line-height.px]="elementModel.fontSize + 15"
+       [style.color]="elementModel.fontColor"
+       [style.font-family]="elementModel.font"
+       [style.font-size.px]="elementModel.fontSize"
+       [style.font-weight]="elementModel.bold ? 'bold' : ''"
+       [style.font-style]="elementModel.italic ? 'italic' : ''"
+       [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       <ng-container *ngFor="let part of paragraph; let j = index">
 
         <span *ngIf="part.type === 'text'"
@@ -38,7 +45,9 @@ import { InputElement } from '../../models/uI-element';
   `,
   styles: [
     ':host ::ng-deep app-text-field .mat-form-field-wrapper {padding-bottom: 0; margin: 0}',
-    ':host ::ng-deep app-drop-list .cdk-drop-list {height: 100%; width: 100%;}'
+    ':host ::ng-deep app-drop-list .cdk-drop-list {height: 100%; width: 100%;}',
+    ':host ::ng-deep app-drop-list .item {padding: 0 10px; height: 30px; line-height: 30px; text-align: center;}',
+    'p {margin: 0}'
   ]
 })
 export class ClozeComponent extends CompoundElementComponent {

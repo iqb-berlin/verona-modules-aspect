@@ -1,29 +1,38 @@
 import {
   CompoundElement, InputElement, InputElementValue, UIElement
 } from '../uI-element';
-import { ClozePart, LikertColumn, LikertRow } from '../../interfaces/UIElementInterfaces';
-import { TextElement } from '../text-element';
-import { ButtonElement } from '../button-element';
+import {
+  ClozePart, FontElement, LikertColumn, LikertRow
+} from '../../interfaces/UIElementInterfaces';
 import { TextFieldElement } from '../text-field-element';
 import { TextAreaElement } from '../text-area-element';
 import { CheckboxElement } from '../checkbox-element';
 import { DropdownElement } from '../dropdown-element';
-import { RadioButtonGroupElement } from '../radio-button-group-element';
-import { ImageElement } from '../image-element';
-import { AudioElement } from '../audio-element';
-import { VideoElement } from '../video-element';
-import { LikertElement } from './likert-element';
-import { RadioGroupImagesElement } from './radio-group-images';
 import { DropListElement } from './drop-list';
+import { initFontElement } from '../../util/unit-interface-initializer';
 
-export class ClozeElement extends CompoundElement {
-  text: string = '<p>Lorem ipsum dolor \\z sit amet \\i</p>';
+export class ClozeElement extends CompoundElement implements FontElement {
+  text: string = '<p>Lorem ipsum dolor \\z sit amet \\i\n' +
+    '\n' +
+    'Lorem ipsum dolor \\z sit amet \\i\n' +
+    '\n' +
+    'Lorem ipsum dolor \\z sit amet \\i</p>';
+
   parts: ClozePart[][] = [];
   childElements: InputElement[] = [];
+
+  fontColor: string = 'black';
+  font: string = 'Roboto';
+  fontSize: number = 20;
+  lineHeight: number = 120;
+  bold: boolean = false;
+  italic: boolean = false;
+  underline: boolean = false;
 
   constructor(serializedElement: UIElement) {
     super(serializedElement);
     Object.assign(this, serializedElement);
+    Object.assign(this, initFontElement(serializedElement));
     this.createParts(this.text as string);
 
     this.height = 200;

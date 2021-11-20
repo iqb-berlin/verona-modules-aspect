@@ -31,7 +31,7 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   selectedFontColor = 'lightgrey';
   selectedHighlightColor = 'lightgrey';
-  selectedFontSize = '16px';
+  selectedFontSize = '20px';
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
 

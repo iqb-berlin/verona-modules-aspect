@@ -8,7 +8,7 @@ export class DropdownElement extends InputElement implements FontElement, Surfac
 
   fontColor: string = 'black';
   font: string = 'Roboto';
-  fontSize: number = 18;
+  fontSize: number = 20;
   lineHeight: number = 120;
   bold: boolean = false;
   italic: boolean = false;

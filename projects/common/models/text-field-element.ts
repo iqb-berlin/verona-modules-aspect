@@ -18,7 +18,7 @@ export class TextFieldElement extends InputElement implements FontElement, Surfa
 
   fontColor: string = 'black';
   font: string = 'Roboto';
-  fontSize: number = 18;
+  fontSize: number = 20;
   lineHeight: number = 120;
   bold: boolean = false;
   italic: boolean = false;

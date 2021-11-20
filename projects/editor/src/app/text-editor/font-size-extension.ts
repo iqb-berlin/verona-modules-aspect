@@ -13,7 +13,7 @@ export const fontSizeExtension = TextStyle.extend({
   addAttributes() {
     return {
       fontSize: {
-        default: '16px',
+        default: '20px',
         parseHTML: element => element.style.fontSize,
         renderHTML: attributes => ({
           style: `font-size: ${attributes.fontSize}`

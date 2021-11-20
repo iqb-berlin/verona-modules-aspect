@@ -21,7 +21,7 @@ export const orderedListExtension = OrderedList.extend({
         })
       },
       fontSize: {
-        default: '16px',
+        default: '20px',
         parseHTML: element => element.style.fontSize,
         renderHTML: attributes => ({
           style: `font-size: ${attributes.fontSize}`

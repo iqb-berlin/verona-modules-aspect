@@ -30,7 +30,9 @@ export const orderedListExtension = OrderedList.extend({
       const node = tr?.doc?.nodeAt(pos);
       if (node) {
         const nodeAttrs = { ...node.attrs, listStyle: newStyle };
-        return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
+        if (node.type.name !== 'text') {
+          return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
+        }
       }
       return tr;
     };

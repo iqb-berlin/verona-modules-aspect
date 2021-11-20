@@ -7,7 +7,7 @@ export class TextElement extends UIElement implements SurfaceUIElement {
   interaction: 'none' | 'highlightable' | 'underlinable' | 'strikable' = 'none';
   fontColor: string = 'black';
   font: string = 'Roboto';
-  lineHeight: number = 120;
+  lineHeight: number = 135;
   bold: boolean = false;
   italic: boolean = false;
   underline: boolean = false;

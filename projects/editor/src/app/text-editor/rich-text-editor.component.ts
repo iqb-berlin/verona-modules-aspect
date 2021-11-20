@@ -125,9 +125,15 @@ export class RichTextEditorComponent implements AfterViewInit {
     if (listType === 'bulletList') {
       this.bulletListStyle = style;
       this.editor.commands.setBulletListStyle(style);
+      if (!this.editor.isActive('bulletList')) {
+        this.toggleBulletList();
+      }
     } else {
       this.orderedListStyle = style;
       this.editor.commands.setOrderedListStyle(style);
+      if (!this.editor.isActive('orderedList')) {
+        this.togleOrderedList();
+      }
     }
   }
 

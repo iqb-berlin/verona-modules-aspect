@@ -18,6 +18,12 @@
                  (input)="updateModel('label', $any($event.target).value)">
         </mat-form-field>
 
+        <mat-form-field *ngIf="combinedProperties.buttonLabel !== undefined" appearance="fill">
+          <mat-label>{{'propertiesPanel.spellCorrectButtonLabel' | translate }}</mat-label>
+          <input matInput type="text" [value]="combinedProperties.buttonLabel"
+                 (input)="updateModel('buttonLabel', $any($event.target).value)">
+        </mat-form-field>
+
         <ng-container *ngIf="combinedProperties.text">
           {{'propertiesPanel.text' | translate }}
           <div class="text-text" [innerHTML]="$any(combinedProperties.text) | safeResourceHTML"

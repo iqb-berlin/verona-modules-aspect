@@ -44,7 +44,7 @@ import { LikertRadioButtonGroupComponent } from './element-components/compound-e
 import { Magnifier } from './element-components/magnifier.component';
 import { RadioGroupImagesComponent } from './element-components/compound-elements/radio-group-images.component';
 import { DropListComponent } from './element-components/compound-elements/drop-list.component';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { SpellCorrectComponent } from "./element-components/spell-correct.component";
 
 @NgModule({
   imports: [
@@ -61,7 +61,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
-    TranslateModule,
+    TranslateModule.forChild(),
     MatSliderModule
   ],
   declarations: [
@@ -73,6 +73,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     AudioComponent,
     VideoComponent,
     SliderComponent,
+    SpellCorrectComponent,
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
@@ -114,18 +115,14 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     AudioComponent,
     VideoComponent,
     SliderComponent,
+    SpellCorrectComponent,
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,
-    TranslateModule,
     SafeResourceHTMLPipe
-  ],
-  providers:
-    [
-      { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
-    ]
+  ]
 })
 export class SharedModule { }

@@ -2,7 +2,7 @@
 import { IdService } from '../id.service';
 import { LikertColumn, LikertRow } from '../interfaces/UIElementInterfaces';
 
-export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
+export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox' | 'spell-correct'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images' | 'drop-list' | 'slider';
 export type InputElementValue = string[] | string | number | boolean | null;
 

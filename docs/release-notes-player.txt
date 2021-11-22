@@ -5,8 +5,7 @@ Player
    with the minRun property have been played.
  - Fix style and scroll behavior of marking buttons
  - Fix problem with truncated text in text components when using large font sizes
-
-
+ - Hide audio and video control bar when no control is marked for display
 
 1.5.0
  - Show the magnifier only when the mouse is over the image

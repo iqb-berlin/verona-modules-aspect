@@ -1,5 +1,11 @@
-<div class="control-bar"
-     [class.hint-border]="showHint">
+<div *ngIf="elementModel.startControl ||
+    elementModel.pauseControl ||
+    elementModel.showRestRuns ||
+    elementModel.progressBar ||
+    elementModel.showRestTime ||
+    elementModel.volumeControl"
+    class="control-bar"
+    [class.hint-border]="showHint">
   <ng-container *ngIf="elementModel.startControl">
     <button *ngIf="!playing || !elementModel.pauseControl"
             type="button"

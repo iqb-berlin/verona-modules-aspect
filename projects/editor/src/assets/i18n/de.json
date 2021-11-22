@@ -115,8 +115,7 @@
     "onlyOneItem": "Nur ein erlaubtes Element",
     "duplicateElement": "Element duplizieren",
     "deleteElement": "Element löschen",
-    "noElementSelected": "Kein Element ausgewählt",
-    "spellCorrectButtonLabel": "Wort zum Korrigieren"
+    "noElementSelected": "Kein Element ausgewählt"
   },
   "player": {
     "autoStart": "Autostart",

@@ -17,8 +17,7 @@ export class ErrorTransformPipe implements PipeTransform {
       if (returnMessage) {
         returnMessage += '; ';
       }
-      const messageKey = (errorKey === 'required' && elementModel.type === 'checkbox') ||
-        (errorKey === 'min' && elementModel.type === 'slider') ? 'requiredTrue' : errorKey;
+      const messageKey = errorKey === 'required' && elementModel.type === 'checkbox' ? 'requiredTrue' : errorKey;
       returnMessage += validationMessages[messageKey];
     });
     return returnMessage;

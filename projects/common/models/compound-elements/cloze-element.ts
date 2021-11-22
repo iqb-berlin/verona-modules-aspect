@@ -33,8 +33,6 @@ export class ClozeElement extends CompoundElement implements FontElement {
     super(serializedElement);
     Object.assign(this, serializedElement);
     Object.assign(this, initFontElement(serializedElement));
-    this.createParts(this.text as string);
-
     this.height = 200;
     this.width = 500;
   }

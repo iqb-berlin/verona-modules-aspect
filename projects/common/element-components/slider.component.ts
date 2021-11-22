@@ -37,6 +37,7 @@ import { FormElementComponent } from '../form-element-component.directive';
              [style.width.%]="100"
              [style.height.%]="100">
           <mat-slider
+            [class]="elementModel.barStyle ? 'bar-style' : ''"
             [formControl]="elementFormControl"
             [style.width.%]="100"
             [max]="elementModel.maxValue"
@@ -59,7 +60,7 @@ import { FormElementComponent } from '../form-element-component.directive';
     </div>
   `,
   styles: [
-    ':host ::ng-deep .mat-slider-thumb {border-radius: 0; width: 10px; height: 40px; bottom: -15px}'
+    ':host ::ng-deep .bar-style .mat-slider-thumb {border-radius: 0; width: 10px; height: 40px; bottom: -15px}'
   ]
 })
 export class SliderComponent extends FormElementComponent implements OnInit {

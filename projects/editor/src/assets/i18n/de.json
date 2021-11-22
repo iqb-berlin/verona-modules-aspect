@@ -93,6 +93,7 @@
     "maxLength": "Maximalwert",
     "maxValue": "Maximalwert",
     "showValues": "Zeige Start- und Endwert",
+    "barStyle": "Balken statt Kreis",
     "maxLengthWarnMessage": "Maximalwert Warnmeldung",
     "pattern": "Muster",
     "patternWarnMessage": "Muster Warnmeldung",

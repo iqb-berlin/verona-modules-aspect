@@ -449,6 +449,11 @@
                       (change)="updateModel('showValues', $event.checked)">
           {{'propertiesPanel.showValues' | translate }}
         </mat-checkbox>
+        <mat-checkbox *ngIf="combinedProperties.barStyle !== undefined"
+                      [checked]="$any(combinedProperties.barStyle)"
+                      (change)="updateModel('barStyle', $event.checked)">
+          {{'propertiesPanel.barStyle' | translate }}
+        </mat-checkbox>
 
         <mat-divider></mat-divider>
 

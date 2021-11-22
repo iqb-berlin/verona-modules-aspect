@@ -1,5 +1,13 @@
 Player
 ======
+1.6.0
+ - Include audios and videos in presentationProgress. The presentation will not be completed until all audios and videos
+   with the minRun property have been played.
+ - Fix style and scroll behavior of marking buttons
+ - Fix problem with truncated text in text components when using large font sizes
+
+
+
 1.5.0
  - Show the magnifier only when the mouse is over the image
  - Fix saving of inputs via the virtual keyboard

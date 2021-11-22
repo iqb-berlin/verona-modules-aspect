@@ -181,7 +181,14 @@
           </mat-button-toggle-group>
         </ng-container>
 
-        <mat-form-field *ngIf="combinedProperties.value !== undefined &&
+        <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
+          <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+          <input matInput type="number" #value="ngModel"
+                 [ngModel]="combinedProperties.value"
+                 (ngModelChange)="updateModel('value', $event, value.valid)">
+        </mat-form-field>
+
+        <mat-form-field *ngIf="combinedProperties.value !== undefined && combinedProperties.minValue === undefined &&
                                !combinedProperties.options && !combinedProperties.columns &&
                                combinedProperties.value !== true && combinedProperties.value !== false"
                         appearance="fill">

@@ -76,6 +76,8 @@ export class SliderComponent extends FormElementComponent implements OnInit {
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.inputElement.disabled = this.elementModel.readOnly;
+    if (this.inputElement) {
+      this.inputElement.disabled = this.elementModel.readOnly;
+    }
   }
 }

@@ -28,6 +28,8 @@ import { DropListComponent } from '../element-components/compound-elements/drop-
 import { DropListElement } from '../models/compound-elements/drop-list';
 import { SliderElement } from '../models/slider-element';
 import { SliderComponent } from '../element-components/slider.component';
+import { SpellCorrectElement } from '../models/spell-correct-element';
+import { SpellCorrectComponent } from '../element-components/spell-correct.component';
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -74,6 +76,9 @@ export function createElement(elementModel: UIElement): UIElement {
     case 'slider':
       newElement = new SliderElement(elementModel);
       break;
+    case 'spell-correct':
+      newElement = new SpellCorrectElement(elementModel);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -114,6 +119,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(DropListComponent);
     case 'slider':
       return componentFactoryResolver.resolveComponentFactory(SliderComponent);
+    case 'spell-correct':
+      return componentFactoryResolver.resolveComponentFactory(SpellCorrectComponent);
     default:
       throw new Error('unknown element');
   }

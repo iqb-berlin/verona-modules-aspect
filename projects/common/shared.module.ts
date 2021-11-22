@@ -45,6 +45,7 @@ import { LikertRadioButtonGroupComponent }
 import { Magnifier } from './element-components/magnifier.component';
 import { RadioGroupImagesComponent } from './element-components/compound-elements/radio-group-images.component';
 import { DropListComponent } from './element-components/compound-elements/drop-list.component';
+import { SpellCorrectComponent } from "./element-components/spell-correct.component";
 
 @NgModule({
   imports: [
@@ -73,6 +74,7 @@ import { DropListComponent } from './element-components/compound-elements/drop-l
     AudioComponent,
     VideoComponent,
     SliderComponent,
+    SpellCorrectComponent,
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
@@ -113,13 +115,13 @@ import { DropListComponent } from './element-components/compound-elements/drop-l
     AudioComponent,
     VideoComponent,
     SliderComponent,
+    SpellCorrectComponent,
     RadioButtonGroupComponent,
     CheckboxComponent,
     DropdownComponent,
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,
-    TranslateModule,
     SafeResourceHTMLPipe
   ],
   providers:

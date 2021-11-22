@@ -31,6 +31,5 @@ import { LikertElementRow } from '../../models/compound-elements/likert-element-
 })
 export class LikertRadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: LikertElementRow;
-  @Input() parentForm!: FormGroup;
   @Input() firstColumnSizeRatio!: number;
 }

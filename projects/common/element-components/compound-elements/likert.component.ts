@@ -59,10 +59,8 @@ import { CompoundElementComponent } from './compound-element.directive';
   ]
 })
 export class LikertComponent extends CompoundElementComponent {
-  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;
   elementModel!: LikertElement;
-  parentForm!: FormGroup;
 
   getFormElementModelChildren(): LikertElementRow[] {
     return this.elementModel.rows;

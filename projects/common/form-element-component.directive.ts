@@ -1,5 +1,5 @@
 import {
-  Directive, EventEmitter, OnDestroy, OnInit, Output
+  Directive, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import {
   FormControl, FormGroup, ValidatorFn, Validators
@@ -11,9 +11,9 @@ import { InputElement, InputElementValue, ValueChangeElement } from './models/uI
 
 @Directive()
 export abstract class FormElementComponent extends ElementComponent implements OnInit, OnDestroy {
+  @Input() parentForm!: FormGroup;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() setValidators = new EventEmitter<ValidatorFn[]>();
-  parentForm!: FormGroup;
   elementFormControl!: FormControl;
 
   private ngUnsubscribe = new Subject<void>();

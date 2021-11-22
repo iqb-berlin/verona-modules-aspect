@@ -61,7 +61,7 @@ export class ClozeElement extends CompoundElement implements FontElement {
     return Array.from(el.getElementsByTagName('p'));
   }
 
-  parseParagraphs(p: string, partIndex: number): void {
+  private parseParagraphs(p: string, partIndex: number): void {
     this.parts[partIndex] = []; // init array to be able to push
     let [nextSpecialElementIndex, nextElementType] = ClozeElement.getNextSpecialElement(p);
     let indexOffset = 0;
@@ -129,7 +129,6 @@ export class ClozeElement extends CompoundElement implements FontElement {
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);
     }
-    console.log('newElement', newElement);
     return newElement;
   }
 }

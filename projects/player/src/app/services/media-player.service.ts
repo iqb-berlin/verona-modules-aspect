@@ -14,7 +14,7 @@ export class MediaPlayerService {
     if (validMediaElements.length) {
       return validMediaElements.length === this.mediaElements.length ? 'complete' : 'some';
     }
-    return 'none';
+    return this.mediaElements.length ? 'none' : 'complete';
   }
 
   get mediaStatusChanged(): Observable<string> {

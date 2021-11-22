@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -40,11 +40,11 @@ import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-h
 import { ControlBarComponent } from './element-components/control-bar/control-bar.component';
 import { PlayerTimeFormatPipe } from './element-components/control-bar/player-time-format.pipe';
 import { LikertComponent } from './element-components/compound-elements/likert.component';
-import { LikertRadioButtonGroupComponent } from './element-components/compound-elements/likert-radio-button-group.component';
+import { LikertRadioButtonGroupComponent }
+  from './element-components/compound-elements/likert-radio-button-group.component';
 import { Magnifier } from './element-components/magnifier.component';
 import { RadioGroupImagesComponent } from './element-components/compound-elements/radio-group-images.component';
 import { DropListComponent } from './element-components/compound-elements/drop-list.component';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -89,7 +89,6 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     DropListComponent
   ],
   exports: [
-    CommonModule,
     FlexLayoutModule,
     MatToolbarModule,
     MatIconModule,
@@ -125,7 +124,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
   ],
   providers:
     [
-      { provide: MAT_DATE_LOCALE, useValue: 'de-DE' }
+      { provide: LOCALE_ID, useValue: 'de-DE' }
     ]
 })
 export class SharedModule { }

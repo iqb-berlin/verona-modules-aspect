@@ -1,8 +1,7 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import { ElementComponent } from '../element-component.directive';
+import { Component } from '@angular/core';
+import { ValidatorFn, Validators } from '@angular/forms';
 import { SliderElement } from '../models/slider-element';
 import { FormElementComponent } from '../form-element-component.directive';
-import {ValidatorFn, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-slider',
@@ -19,7 +18,9 @@ import {ValidatorFn, Validators} from "@angular/forms";
            [style.line-height.%]="elementModel.lineHeight"
            [style.font-weight]="elementModel.bold ? 'bold' : ''"
            [style.font-style]="elementModel.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.underline ? 'underline' : ''">{{elementModel.minValue | number:'.0'}}</div>
+           [style.text-decoration]="elementModel.underline ? 'underline' : ''">
+        {{elementModel.minValue | number:'.0'}}
+      </div>
       <div [style.display]="'flex'"
            [style.flex-direction]="'column'"
            [style.width.%]="100"
@@ -55,7 +56,6 @@ import {ValidatorFn, Validators} from "@angular/forms";
 export class SliderComponent extends FormElementComponent {
   elementModel!: SliderElement;
   // todo: ?? setting disabled attribute of slider may cause 'changed after checked' error
-  // todo: localize 'number' pipe to show '.' instead of ',' by values greater then 999
 
   get validators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];

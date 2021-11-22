@@ -48,9 +48,7 @@ import { FormElementComponent } from '../form-element-component.directive';
     </div>
   `,
   styles: [
-    '.dynamic-image{width: 100%; height: fit-content}',
-    '.static-image{ width: 100%; height: 100%; object-fit: contain}',
-    ':host ::ng-deep .mat-slider-thumb{border-radius: 0; width: 10px; height: 40px; bottom: -15px}'
+    ':host ::ng-deep .mat-slider-thumb {border-radius: 0; width: 10px; height: 40px; bottom: -15px}'
   ]
 })
 export class SliderComponent extends FormElementComponent implements OnInit {

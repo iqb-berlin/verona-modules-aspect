@@ -19,5 +19,7 @@ export class SpellCorrectElement extends InputElement implements FontElement, Su
     Object.assign(this, initSurfaceElement(serializedElement));
 
     this.backgroundColor = serializedElement.backgroundColor as string || '#d3d3d300';
+    this.height = serializedElement.height || 80;
+    this.width = serializedElement.width || 200;
   }
 }

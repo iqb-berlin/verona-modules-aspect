@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { ElementComponent } from '../element-component.directive';
 import { ImageElement } from '../models/image-element';
 import { ValueChangeElement } from '../models/uI-element';
@@ -6,8 +8,7 @@ import { ValueChangeElement } from '../models/uI-element';
 @Component({
   selector: 'app-image',
   template: `
-    <div [style.display]="'flex'"
-         [style.height.%]="100"
+    <div [style.height.%]="100"
          [style.width.%]="100"
          (mouseover)="magnifierVisible = true"
          (mouseenter)="magnifierVisible = true"

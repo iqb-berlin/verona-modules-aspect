@@ -1,7 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Output, QueryList, ViewChildren
+} from '@angular/core';
 import { ClozeElement } from '../../models/compound-elements/cloze-element';
 import { CompoundElementComponent } from './compound-element.directive';
 import { InputElement } from '../../models/uI-element';
+import { FormElementComponent } from '../../form-element-component.directive';
 
 @Component({
   selector: 'app-cloze',
@@ -20,22 +23,30 @@ import { InputElement } from '../../models/uI-element';
              [innerHTML]="part.value">
         </span>
 
-        <span (click)="selectElement($any(part.value), $event)">
-          <app-dropdown *ngIf="part.type === 'dropdown'"
+        <span (click)="allowClickThrough || selectElement($any(part.value), $event)">
+          <app-dropdown *ngIf="part.type === 'dropdown'" #drowdownComponent
+                        [parentForm]="parentForm"
                         [style.display]="'inline-block'"
                         [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
-                        [elementModel]="$any(part.value)"></app-dropdown>
-          <app-text-field *ngIf="part.type === 'text-field'"
+                        [elementModel]="$any(part.value)"
+                        (elementValueChanged)="elementValueChanged.emit($event)">
+          </app-dropdown>
+          <app-text-field *ngIf="part.type === 'text-field'" #textfieldComponent
+                          [parentForm]="parentForm"
                           [style.vertical-align]="'sub'"
                           [style.display]="'inline-block'"
                           [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
-                          [elementModel]="$any(part.value)"></app-text-field>
+                          [elementModel]="$any(part.value)"
+                          (elementValueChanged)="elementValueChanged.emit($event)">
+          </app-text-field>
           <div *ngIf="part.type === 'drop-list'" [style.display]="'inline-block'"
                [style.vertical-align]="'middle'"
                [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
                [style.width.px]="$any(part.value).width"
                [style.height.px]="$any(part.value).height">
-            <app-drop-list [style.pointerEvents]="'none'"
+            <app-drop-list #droplistComponent
+                           [parentForm]="parentForm"
+                           (elementValueChanged)="elementValueChanged.emit($event)"
                            [elementModel]="$any(part.value)">
             </app-drop-list>
           </div>
@@ -53,6 +64,8 @@ import { InputElement } from '../../models/uI-element';
 export class ClozeComponent extends CompoundElementComponent {
   elementModel!: ClozeElement;
   @Output() elementSelected = new EventEmitter<{ element: ClozeElement, event: MouseEvent }>();
+  @ViewChildren('drowdownComponent, textfieldComponent, droplistComponent')
+  compoundChildren!: QueryList<FormElementComponent>;
 
   getFormElementModelChildren(): InputElement[] {
     return this.elementModel.childElements;

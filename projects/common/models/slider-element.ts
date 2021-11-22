@@ -26,10 +26,10 @@ export class SliderElement extends InputElement implements FontElement, SurfaceU
     registerLocaleData(localeDe);
     Object.assign(this, serializedElement);
     Object.assign(this, initFontElement(serializedElement));
-    if (!serializedElement.backgroundColor) {
-      serializedElement.backgroundColor = '#d3d3d300';
-    }
     Object.assign(this, initSurfaceElement(serializedElement));
-    // todo: delete this.label --> label must be declared as optional
+
+    this.height = serializedElement.height || 70;
+    this.width = serializedElement.width || 300;
+    this.backgroundColor = serializedElement.backgroundColor as string || '#d3d3d300';
   }
 }

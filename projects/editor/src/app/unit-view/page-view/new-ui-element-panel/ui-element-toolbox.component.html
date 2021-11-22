@@ -85,5 +85,10 @@
       <mat-icon>format_strikethrough</mat-icon>
       Wort korrigieren
     </button>
+    <button mat-raised-button (click)="addUIElement('spell-correct')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','spell-correct')">
+      <mat-icon>format_strikethrough</mat-icon>
+      Wort korrigieren
+    </button>
   </mat-tab>
 </mat-tab-group>

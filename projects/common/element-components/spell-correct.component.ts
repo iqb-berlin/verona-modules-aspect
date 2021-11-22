@@ -1,5 +1,6 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 import { FormElementComponent } from '../form-element-component.directive';
 import { SpellCorrectElement } from '../models/spell-correct-element';
 
@@ -35,9 +36,20 @@ import { SpellCorrectElement } from '../models/spell-correct-element';
     '::ng-deep app-spell-correct .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
   ]
 })
-export class SpellCorrectComponent extends FormElementComponent {
+export class SpellCorrectComponent extends FormElementComponent implements OnInit {
   elementModel!: SpellCorrectElement;
   @ViewChild(MatInput) inputElement!: MatInput;
+  @ViewChild(MatButton) buttonElement!: MatButton;
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    if (this.inputElement && this.elementModel.readOnly) {
+      this.inputElement.readonly = true;
+    }
+    if (this.buttonElement && this.elementModel.readOnly) {
+      this.buttonElement.disabled = true;
+    }
+  }
 
   strikethrough(): boolean {
     if (this.inputElement) {

@@ -1,6 +1,6 @@
-import {FontElement, SurfaceUIElement} from '../interfaces/UIElementInterfaces';
-import { InputElement, UIElement} from './uI-element';
-import {initFontElement, initSurfaceElement} from '../util/unit-interface-initializer';
+import { FontElement, SurfaceUIElement } from '../interfaces/UIElementInterfaces';
+import { InputElement, UIElement } from './uI-element';
+import { initFontElement, initSurfaceElement } from '../util/unit-interface-initializer';
 
 export class SpellCorrectElement extends InputElement implements FontElement, SurfaceUIElement {
   bold: boolean = false;

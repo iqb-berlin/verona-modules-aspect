@@ -9,6 +9,7 @@ export class SliderElement extends InputElement implements FontElement, SurfaceU
   maxValue: number = 100;
   showValues: boolean = true;
   barStyle: boolean = false;
+  thumbLabel: boolean = false;
 
   bold: boolean = false;
   font: string = 'Roboto';

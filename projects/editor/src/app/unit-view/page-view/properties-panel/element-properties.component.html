@@ -454,6 +454,11 @@
                       (change)="updateModel('barStyle', $event.checked)">
           {{'propertiesPanel.barStyle' | translate }}
         </mat-checkbox>
+        <mat-checkbox *ngIf="combinedProperties.thumbLabel !== undefined"
+                      [checked]="$any(combinedProperties.thumbLabel)"
+                      (change)="updateModel('thumbLabel', $event.checked)">
+          {{'propertiesPanel.thumbLabel' | translate }}
+        </mat-checkbox>
 
         <mat-divider></mat-divider>
 

@@ -38,6 +38,7 @@ import { FormElementComponent } from '../form-element-component.directive';
              [style.height.%]="100">
           <mat-slider
             [class]="elementModel.barStyle ? 'bar-style' : ''"
+            [thumbLabel]="elementModel.thumbLabel"
             [formControl]="elementFormControl"
             [style.width.%]="100"
             [max]="elementModel.maxValue"

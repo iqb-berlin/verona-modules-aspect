@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
 import { FormElementComponent } from '../form-element-component.directive';
 import { TextFieldElement } from '../models/text-field-element';
@@ -25,8 +27,10 @@ import { TextFieldElement } from '../models/text-field-element';
              [readonly]="elementModel.readOnly"
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
              (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
-      <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
-              (click)="onClearButtonClick($event)">
+      <button *ngIf="elementModel.clearable"
+              type="button"
+              matSuffix mat-icon-button aria-label="Clear"
+              (click)="this.elementFormControl.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="elementFormControl.errors">
@@ -51,8 +55,10 @@ import { TextFieldElement } from '../models/text-field-element';
              [pattern]="elementModel.pattern"
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
              (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
-      <button *ngIf="elementModel.clearable" matSuffix mat-icon-button aria-label="Clear"
-              (click)="onClearButtonClick($event)">
+      <button *ngIf="elementModel.clearable"
+              type="button"
+              matSuffix mat-icon-button aria-label="Clear"
+              (click)="this.elementFormControl.setValue('')">
         <mat-icon>close</mat-icon>
       </button>
       <mat-error *ngIf="elementFormControl.errors">
@@ -67,12 +73,6 @@ import { TextFieldElement } from '../models/text-field-element';
 export class TextFieldComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldElement;
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
-
-  onClearButtonClick(event: MouseEvent) : void {
-    this.elementFormControl.setValue('');
-    event.preventDefault();
-    event.stopPropagation();
-  }
 
   get validators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];

@@ -1,4 +1,6 @@
-<button mat-mini-fab
-        class="key"
-        (click)="onClick($event)">{{key}}
+<button
+    type="button"
+    mat-mini-fab
+    class="key"
+    (click)="keyboardService.enterKey(key);">{{key}}
 </button>

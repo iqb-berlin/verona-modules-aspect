@@ -10,10 +10,4 @@ export class KeyComponent {
   @Input() key!: string;
 
   constructor(public keyboardService: KeyboardService) { }
-
-  onClick(event: MouseEvent): void {
-    this.keyboardService.enterKey(this.key);
-    event.preventDefault();
-    event.stopPropagation();
-  }
 }

@@ -80,16 +80,12 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  play(event: MouseEvent): void {
+  play(): void {
     this._play();
-    event.stopPropagation();
-    event.preventDefault();
   }
 
-  pause(event: MouseEvent): void {
+  pause(): void {
     this.player.pause();
-    event.stopPropagation();
-    event.preventDefault();
   }
 
   onTimeChange(event: MatSliderChange): void {
@@ -100,21 +96,17 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
     this.player.volume = event.value ? event.value : 0;
   }
 
-  toggleTime(event: MouseEvent): void {
+  toggleTime(): void {
     this.restTimeMode = !this.restTimeMode;
-    event.stopPropagation();
-    event.preventDefault();
   }
 
-  toggleVolume(event: MouseEvent): void {
+  toggleVolume(): void {
     if (this.player.volume) {
       this.lastVolume = this.player.volume;
       this.player.volume = 0;
     } else {
       this.player.volume = this.lastVolume;
     }
-    event.stopPropagation();
-    event.preventDefault();
   }
 
   private checkValidState(runCounter: number): boolean {

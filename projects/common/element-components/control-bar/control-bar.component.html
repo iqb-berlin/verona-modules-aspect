@@ -2,23 +2,25 @@
      [class.hint-border]="showHint">
   <ng-container *ngIf="elementModel.startControl">
     <button *ngIf="!playing || !elementModel.pauseControl"
+            type="button"
             mat-button
             class="control-button"
             [class.enabled-control]="!disabled && active && dependencyDissolved"
             [class.active-control]="playing"
             [disabled]="disabled || !active || !dependencyDissolved"
-            (click)="play($event)">
+            (click)="play()">
       <mat-icon>play_arrow</mat-icon>
     </button>
   </ng-container>
   <ng-container *ngIf="elementModel.pauseControl">
     <button *ngIf="playing"
+            type="button"
             mat-button
             class="control-button"
             [class.enabled-control]="!disabled && active && dependencyDissolved"
             [class.active-control]="pausing"
             [disabled]="disabled || !active || !dependencyDissolved"
-            (click)="pause($event)">
+            (click)="pause()">
       <mat-icon>pause</mat-icon>
     </button>
   </ng-container>
@@ -40,19 +42,20 @@
   <ng-container *ngIf="elementModel.showRestTime">
     <div *ngIf="!restTimeMode"
          class="time mat-typography"
-         (click)="toggleTime($event)">
+         (click)="toggleTime()">
       {{currentTime | playerTimeFormat}} / {{duration | playerTimeFormat }}
     </div>
     <div *ngIf="restTimeMode"
          class="time mat-typography"
-         (click)="toggleTime($event)">
+         (click)="toggleTime()">
       -{{currentRestTime | playerTimeFormat}}
     </div>
   </ng-container>
   <ng-container *ngIf="elementModel.volumeControl">
     <button mat-button
+            type="button"
             class="control-button enabled-control"
-            (click)="toggleVolume($event)">
+            (click)="toggleVolume()">
       <mat-icon *ngIf="!player.muted">volume_up</mat-icon>
       <mat-icon *ngIf="player.muted">volume_off</mat-icon>
     </button>

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ValidatorFn, Validators } from '@angular/forms';
+import { MatSlider } from '@angular/material/slider';
 import { SliderElement } from '../models/slider-element';
 import { FormElementComponent } from '../form-element-component.directive';
 
@@ -27,7 +28,6 @@ import { FormElementComponent } from '../form-element-component.directive';
            [style.height.%]="100">
         <mat-slider
           [formControl]="elementFormControl"
-          [disabled]="elementModel.readOnly"
           [style.width.%]="100"
           [max]="elementModel.maxValue"
           [min]="elementModel.minValue">
@@ -53,9 +53,9 @@ import { FormElementComponent } from '../form-element-component.directive';
     ':host ::ng-deep .mat-slider-thumb{border-radius: 0; width: 10px; height: 40px; bottom: -15px}'
   ]
 })
-export class SliderComponent extends FormElementComponent {
+export class SliderComponent extends FormElementComponent implements OnInit {
+  @ViewChild(MatSlider) inputElement!: MatSlider;
   elementModel!: SliderElement;
-  // todo: ?? setting disabled attribute of slider may cause 'changed after checked' error
 
   get validators(): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
@@ -63,5 +63,10 @@ export class SliderComponent extends FormElementComponent {
       validators.push(Validators.min(this.elementModel.minValue + 1));
     }
     return validators;
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.inputElement.disabled = this.elementModel.readOnly;
   }
 }

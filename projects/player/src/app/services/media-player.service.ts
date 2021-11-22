@@ -42,6 +42,10 @@ export class MediaPlayerService {
     this.broadcastValidStatusChanged(validId);
   }
 
+  reset(): void {
+    this.mediaElements = [];
+  }
+
   private broadcastValidStatusChanged(validId: string): void {
     const dependingMediaElements = this.mediaElements.filter(mediaElement => mediaElement.dependOn === validId);
     dependingMediaElements.forEach(mediaElement => mediaElement.mediaComponent.setActivatedAfterID());

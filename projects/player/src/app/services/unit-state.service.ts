@@ -59,10 +59,6 @@ export class UnitStateService {
       });
   }
 
-  addPresentedPage(presentedPage: number): void {
-    this._presentedPageAdded.next(presentedPage);
-  }
-
   changeElementValue(elementValues: ValueChangeElement): void {
     // eslint-disable-next-line no-console
     console.log(`player: changeElementValue ${elementValues.id}:
@@ -105,8 +101,8 @@ export class UnitStateService {
         .filter(pageElement => pageElement && UnitStateElementCodeStatusValue[pageElement.status] <
           UnitStateElementCodeStatusValue.DISPLAYED);
       if (notDisplayedElements.length === 0) {
-        this.addPresentedPage(pageIndex);
         this.presentedPages.push(pageIndex);
+        this._presentedPageAdded.next(pageIndex);
       }
     } else {
       // eslint-disable-next-line no-console

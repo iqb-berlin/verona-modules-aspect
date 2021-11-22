@@ -66,7 +66,12 @@ export class ElementContainerComponent implements OnInit {
     } else if (elementComponent instanceof CompoundElementComponent) {
       this.initCompoundElement(elementComponent);
     } else if (elementComponent instanceof MediaPlayerElementComponent) {
-      this.mediaPlayerService.registerMediaElement(elementComponent, this.elementModel.activeAfterID as string);
+      this.mediaPlayerService.registerMediaElement(
+        this.elementModel.id,
+        elementComponent,
+        this.elementModel.activeAfterID as string,
+        this.elementModel.minRuns as number === 0
+      );
     }
     this.subscribeStartSelection(elementComponent);
     this.subscribeApplySelection(elementComponent);
@@ -171,7 +176,7 @@ export class ElementContainerComponent implements OnInit {
       elementComponent.onMediaPlayStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((playStatus: string | null) => {
-          this.mediaPlayerService.broadcastPlayStatusChanged(playStatus);
+          this.mediaPlayerService.setActualPlayingMediaId(playStatus);
         });
     }
   }
@@ -181,7 +186,7 @@ export class ElementContainerComponent implements OnInit {
       elementComponent.onMediaValidStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((validId: string) => {
-          this.mediaPlayerService.broadcastValidStatusChanged(validId);
+          this.mediaPlayerService.setValidStatusChanged(validId);
         });
     }
   }

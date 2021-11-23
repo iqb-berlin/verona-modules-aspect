@@ -2,5 +2,6 @@
     type="button"
     mat-mini-fab
     class="key"
+    [class.big-key]="big"
     (click)="keyboardService.enterKey(key);">{{key}}
 </button>

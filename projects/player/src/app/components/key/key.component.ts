@@ -8,6 +8,7 @@ import { KeyboardService } from '../../services/keyboard.service';
 })
 export class KeyComponent {
   @Input() key!: string;
+  @Input() big!: boolean;
 
   constructor(public keyboardService: KeyboardService) { }
 }

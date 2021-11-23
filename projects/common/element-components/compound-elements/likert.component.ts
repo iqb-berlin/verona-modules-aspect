@@ -24,16 +24,19 @@ import { CompoundElementComponent } from './compound-element.directive';
          [style.font-style]="elementModel.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.underline ? 'underline' : ''">
         <div *ngFor="let column of elementModel.columns; let i = index" class="columns"
-             fxLayout="column"
              [style.grid-column-start]="2 + i"
              [style.grid-column-end]="3 + i"
              [style.grid-row-start]="1"
              [style.grid-row-end]="2">
           <img *ngIf="column.imgSrc && column.position === 'above'"
-               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder">
-          <div>{{column.text}}</div>
+               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
+               [style.object-fit]="'scale-down'"
+               [width]="200">
+          {{column.text}}
           <img *ngIf="column.imgSrc && column.position === 'below'"
-               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder">
+               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
+               [style.object-fit]="'scale-down'"
+               [width]="200">
         </div>
 
       <ng-container *ngFor="let row of elementModel.rows; let i = index">

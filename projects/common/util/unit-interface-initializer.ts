@@ -28,6 +28,9 @@ export function initPlayerElement(serializedElement: UIElement): PlayerElement {
     interactiveProgressbar: serializedElement.interactiveProgressbar !== undefined ?
       serializedElement.interactiveProgressbar as boolean : false,
     volumeControl: serializedElement.volumeControl !== undefined ? serializedElement.volumeControl as boolean : true,
+    defaultVolume: serializedElement.defaultVolume !== undefined ? serializedElement.defaultVolume as number : 0.8,
+    minVolume: serializedElement.minVolume !== undefined ? serializedElement.minVolume as number : 0,
+    muteControl: serializedElement.muteControl !== undefined ? serializedElement.muteControl as boolean : true,
     hintLabel: serializedElement.hintLabel as string || '',
     hintLabelDelay: serializedElement.hintLabelDelay !== undefined ? serializedElement.hintLabelDelay as number : 0,
     uninterruptible:

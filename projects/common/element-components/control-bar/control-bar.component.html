@@ -57,7 +57,7 @@
       -{{currentRestTime | playerTimeFormat}}
     </div>
   </ng-container>
-  <ng-container *ngIf="elementModel.volumeControl">
+  <ng-container *ngIf="elementModel.muteControl">
     <button mat-button
             type="button"
             class="control-button enabled-control"
@@ -65,10 +65,12 @@
       <mat-icon *ngIf="!player.muted">volume_up</mat-icon>
       <mat-icon *ngIf="player.muted">volume_off</mat-icon>
     </button>
+  </ng-container>
+  <ng-container *ngIf="elementModel.volumeControl">
     <mat-slider class="volume"
                 min="0"
                 step="0.01"
-                [max]="1"
+                max="1"
                 [value]="player.volume"
                 (input)="onVolumeChange($event)">
     </mat-slider>

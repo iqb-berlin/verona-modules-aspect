@@ -69,7 +69,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
     this.player.onvolumechange = () => {
       this.player.muted = !this.player.volume;
     };
-    this.player.volume = 0.8;
+    this.player.volume = this.elementModel.defaultVolume;
     this.lastVolume = this.player.volume;
   }
 
@@ -93,7 +93,8 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onVolumeChange(event: MatSliderChange): void {
-    this.player.volume = event.value ? event.value : 0;
+    event.source.value = event.value && event.value > this.elementModel.minVolume ?
+      event.value : this.elementModel.minVolume;
   }
 
   toggleTime(): void {
@@ -101,9 +102,9 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   toggleVolume(): void {
-    if (this.player.volume) {
+    if (this.player.volume > this.elementModel.minVolume) {
       this.lastVolume = this.player.volume;
-      this.player.volume = 0;
+      this.player.volume = this.elementModel.minVolume;
     } else {
       this.player.volume = this.lastVolume;
     }
@@ -143,9 +144,10 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private _play(): void {
-    this.player.play().then(() => {},
-      // eslint-disable-next-line no-console
-      () => console.error('player: cannot play this media file'));
+    this.player.play().then(() => {
+    },
+    // eslint-disable-next-line no-console
+    () => console.error('player: cannot play this media file'));
   }
 
   private sendPlaybackTimeChanged() {

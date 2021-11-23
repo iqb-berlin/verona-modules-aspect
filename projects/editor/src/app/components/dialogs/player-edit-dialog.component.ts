@@ -29,6 +29,22 @@ import { PlayerElement } from '../../../../../common/interfaces/UIElementInterfa
                           (change)="newPlayerConfig.volumeControl = $event.checked">
               {{ 'player.volumeControl' | translate }}
             </mat-checkbox>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'player.defaultVolume' | translate }}</mat-label>
+              <input matInput type="number" min="0" max="1" step="0.1"
+                     [ngModel]="newPlayerConfig.defaultVolume || data.player.defaultVolume"
+                     (ngModelChange)="newPlayerConfig.defaultVolume = $event">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>{{ 'player.minVolume' | translate }}</mat-label>
+              <input matInput type="number" min="0" max="1" step="0.1"
+                     [ngModel]="newPlayerConfig.minVolume || data.player.minVolume"
+                     (ngModelChange)="newPlayerConfig.minVolume = $event">
+            </mat-form-field>
+            <mat-checkbox [checked]="newPlayerConfig.muteControl || data.player.muteControl"
+                          (change)="newPlayerConfig.muteControl = $event.checked">
+              {{ 'player.muteControl' | translate }}
+            </mat-checkbox>
             <mat-checkbox [checked]="newPlayerConfig.showRestTime || data.player.showRestTime"
                           (change)="newPlayerConfig.showRestTime = $event.checked">
               {{ 'player.showRestTime' | translate }}

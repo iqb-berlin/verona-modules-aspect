@@ -13,6 +13,9 @@ export class VideoElement extends UIElement implements PlayerElement {
   progressBar: boolean = true;
   interactiveProgressbar: boolean = false;
   volumeControl: boolean = true;
+  defaultVolume: number = 0.8;
+  minVolume: number = 0;
+  muteControl: boolean = true;
   hintLabel: string = '';
   hintLabelDelay: number = 0;
   uninterruptible: boolean = false;

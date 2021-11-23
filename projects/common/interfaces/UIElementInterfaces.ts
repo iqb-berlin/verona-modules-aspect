@@ -23,6 +23,9 @@ export interface PlayerElement {
   progressBar: boolean;
   interactiveProgressbar: boolean;
   volumeControl: boolean;
+  defaultVolume: number;
+  minVolume: number;
+  muteControl: boolean;
   hintLabel: string;
   hintLabelDelay: number;
   uninterruptible: boolean;

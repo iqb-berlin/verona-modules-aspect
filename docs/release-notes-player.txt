@@ -7,6 +7,9 @@ Player
  - Fix problem with truncated text in text components when using large font sizes
  - Hide audio and video control bar when no control is marked for display
  - Add the floating variant of the virtual keyboard for numbers and numbers + operators
+ - Hide mute control if wanted
+ - Use minimum volume value (value between 0 and 1)
+ - Use default volume value  (value between 0 and 1)
 
 1.5.0
  - Show the magnifier only when the mouse is over the image

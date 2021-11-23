@@ -29,6 +29,6 @@ export class AudioElement extends UIElement implements PlayerElement {
     Object.assign(this, serializedElement);
     Object.assign(this, initPlayerElement(serializedElement));
     this.height = serializedElement.height || 90;
-    this.width = serializedElement.width || 280;
+    this.width = serializedElement.width || 250;
   }
 }

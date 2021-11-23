@@ -35,7 +35,7 @@ export class LikertElement extends CompoundElement implements FontElement, Surfa
     }
 
     this.height = serializedElement.height || 200;
-    this.width = serializedElement.width || 400;
+    this.width = serializedElement.width || 250;
     this.backgroundColor = serializedElement.backgroundColor as string || 'transparent';
   }
 

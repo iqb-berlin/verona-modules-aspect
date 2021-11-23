@@ -63,7 +63,7 @@ import { FormElementComponent } from '../../form-element-component.directive';
   `,
   styles: [
     '.columns {text-align: center; margin: 0 5px;}',
-    // '.grid-layout .columns img {height: 100%; object-fit: none; cursor: pointer;}',
+    '.grid-layout .columns img {cursor: pointer;}',
     '::ng-deep app-radio-group-images mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
     'mat-radio-group {margin-top: 10px}',
     '.error-message { font-size: 75% }',

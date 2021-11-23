@@ -19,9 +19,31 @@ import { FormElementComponent } from '../../form-element-component.directive';
        [style.text-decoration]="elementModel.underline ? 'underline' : ''">
       <ng-container *ngFor="let part of paragraph; let j = index">
 
-        <span *ngIf="part.type === 'text'"
-             [innerHTML]="part.value">
+        <span *ngIf="part.type === 'p'"
+             [innerHTML]="part.value"
+             [style]="part.style">
         </span>
+
+        <h1 *ngIf="part.type === 'h1'"
+            [innerHTML]="part.value"
+            [style.display]="'inline'"
+            [style]="part.style">
+        </h1>
+        <h2 *ngIf="part.type === 'h2'"
+            [innerHTML]="part.value"
+            [style.display]="'inline'"
+            [style]="part.style">
+        </h2>
+        <h3 *ngIf="part.type === 'h3'"
+            [innerHTML]="part.value"
+            [style.display]="'inline'"
+            [style]="part.style">
+        </h3>
+        <h4 *ngIf="part.type === 'h4'"
+            [innerHTML]="part.value"
+            [style.display]="'inline'"
+            [style]="part.style">
+        </h4>
 
         <span (click)="allowClickThrough || selectElement($any(part.value), $event)">
           <app-dropdown *ngIf="part.type === 'dropdown'" #drowdownComponent

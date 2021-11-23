@@ -49,4 +49,5 @@ export interface LikertRow {
 export interface ClozePart {
   type: string;
   value: string | UIElement;
+  style?: string;
 }

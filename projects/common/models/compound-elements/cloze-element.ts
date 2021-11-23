@@ -11,12 +11,10 @@ import { DropdownElement } from '../dropdown-element';
 import { DropListElement } from './drop-list';
 import { initFontElement } from '../../util/unit-interface-initializer';
 
+// TODO styles like em dont continue after inserted components
+
 export class ClozeElement extends CompoundElement implements FontElement {
-  text: string = '<p>Lorem ipsum dolor \\z sit amet \\i\n' +
-    '\n' +
-    'Lorem ipsum dolor \\z sit amet \\i\n' +
-    '\n' +
-    'Lorem ipsum dolor \\z sit amet \\i</p>';
+  text: string = '<p>Lorem ipsum dolor \\z</p>';
 
   parts: ClozePart[][] = [];
   childElements: InputElement[] = [];
@@ -46,29 +44,33 @@ export class ClozeElement extends CompoundElement implements FontElement {
   }
 
   private createParts(htmlText: string): void {
-    const paragraphList = ClozeElement.readElementArray(htmlText);
+    const elementList = ClozeElement.readElementArray(htmlText);
 
     this.parts = [];
-    paragraphList.forEach((p, i) => {
-      this.parseParagraphs(p.innerText, i);
+    elementList.forEach((element: HTMLParagraphElement | HTMLHeadingElement, i: number) => {
+      this.parseParagraphs(element, i);
     });
     // console.log('PARTS:', this.parts);
   }
 
-  private static readElementArray(htmlText: string): HTMLParagraphElement[] {
+  private static readElementArray(htmlText: string): (HTMLParagraphElement | HTMLHeadingElement)[] {
     const el = document.createElement('html');
     el.innerHTML = htmlText;
-    return Array.from(el.getElementsByTagName('p'));
+    return Array.from(el.children[1].children) as (HTMLParagraphElement | HTMLHeadingElement)[];
   }
 
-  private parseParagraphs(p: string, partIndex: number): void {
+  private parseParagraphs(element: HTMLParagraphElement | HTMLHeadingElement, partIndex: number): void {
     this.parts[partIndex] = []; // init array to be able to push
-    let [nextSpecialElementIndex, nextElementType] = ClozeElement.getNextSpecialElement(p);
+    let [nextSpecialElementIndex, nextElementType] = ClozeElement.getNextSpecialElement(element.innerHTML);
     let indexOffset = 0;
 
     while (nextSpecialElementIndex !== -1) {
       nextSpecialElementIndex += indexOffset;
-      this.parts[partIndex].push({ type: 'text', value: p.substring(indexOffset, nextSpecialElementIndex) });
+      this.parts[partIndex].push({
+        type: element.localName,
+        value: element.innerHTML.substring(indexOffset, nextSpecialElementIndex),
+        style: element.style.cssText
+      });
 
       const newElement = ClozeElement.createElement(nextElementType);
       this.childElements.push(newElement);
@@ -76,9 +78,13 @@ export class ClozeElement extends CompoundElement implements FontElement {
 
       indexOffset = nextSpecialElementIndex + 2; // + 2 to get rid of the marker, i.e. '\b'
       [nextSpecialElementIndex, nextElementType] =
-        ClozeElement.getNextSpecialElement(p.substring(indexOffset));
+        ClozeElement.getNextSpecialElement(element.innerHTML.substring(indexOffset));
     }
-    this.parts[partIndex].push({ type: 'text', value: p.substring(indexOffset) });
+    this.parts[partIndex].push({
+      type: element.localName,
+      value: element.innerHTML.substring(indexOffset),
+      style: element.style.cssText
+    });
   }
 
   private static getNextSpecialElement(p: string): [number, string] {

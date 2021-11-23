@@ -8,12 +8,13 @@ import { ValueChangeElement } from '../models/uI-element';
 @Component({
   selector: 'app-image',
   template: `
-    <div [style.height.%]="100"
-         [style.width.%]="100"
+   <!-- Display Flex ensures that the image container is centered and
+    that image and magnifier are displayed properly.-->
+    <div [style.width.%]="100"
+         class="image-container"
          (mouseover)="magnifierVisible = true"
          (mouseenter)="magnifierVisible = true"
          (mouseleave)="magnifierVisible = false">
-      <div class="image-container">
         <img #image
              [src]="elementModel.src | safeResourceUrl"
              [alt]="'imageNotFound' | translate"
@@ -27,10 +28,9 @@ import { ValueChangeElement } from '../models/uI-element';
                        (elementValueChanged)="elementValueChanged.emit($event)">
         </app-magnifier>
       </div>
-    </div>
   `,
   styles: [
-    '.image-container{ width: fit-content; height: fit-content; margin: auto; position: relative }',
+    '.image-container{ position: relative }',
     '.dynamic-image{ width: 100%; height: fit-content }',
     '.static-image{ width: 100%; height: 100%; object-fit: contain }'
   ]

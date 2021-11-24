@@ -10,6 +10,7 @@ Player
  - Hide mute control if wanted
  - Use minimum volume value (value between 0 and 1)
  - Use default volume value  (value between 0 and 1)
+ - Use minimal height setting for dynamic elements
 
 1.5.0
  - Show the magnifier only when the mouse is over the image

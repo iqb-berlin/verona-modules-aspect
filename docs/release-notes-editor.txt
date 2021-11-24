@@ -1,5 +1,46 @@
 Editor
 ======
+1.12.0
+ - Add new element cloze ("Lückentext")
+   Similar to a text element but parses the text on change and replaces
+   markers with actual ui elements.
+   The text is then displayed in line with the elements.
+   Allowed markers are presented by buttons in the text editor but can
+   also be entered manually. Implemented by now are "\i" for inputs
+   and "\z" for drop Zones.
+   It is now possible to select sub-elements (in addition to the parent cloze element)
+   to alter element properties as usual.
+   This element is still in development and contains functional and visual issues.
+   Known issues:
+    - To generate the text and elements you have to open the TextEditor at least once.
+    - Elements are regenerated everytime the text is changed. This means they get a
+      new ID and lose changed property values.
+    - Text styling (like bold) does not continue after an inserted sub-element.
+      To work around that, the style has to be applied separately to the text before
+      and after inserted elements.
+    - Changing dimension properties of sub-elements does not work.
+ - Add typographic quotes to TextEditor's special characters
+ - Fix radio button alignment
+   Should now always correctly line up with the text on different line
+   heights.
+ - Allow element deletion regardless of the selected section
+   This has the additional benefit of allowing to delete multiple selected
+   elements in different sections.
+ - Setting list style in TextEditor now also toggles the list (when not set)
+ - Setting list style in TextEditor applies the selected font size to the list counter
+   It takes the selected font size, which is indepent of the font size of the items
+   in the list. If you change the font size you may have to re-apply the font size
+   to the list. This can be done by selecting the wanted style again.
+ - Changed default values:
+   - font size: 20px
+   - likert and text: line-height: 135px
+   - likert and audio: width: 250px
+   - page: margin: 30px
+ - Revert likert heading with images to not scale the images
+ - Improve visuals of radio-button-image elements
+   Images are scaled again but behave a little better.
+ - Make min-height optional
+
 1.11.0
  - New DropList feature: highlightReceivingDropList ("Potentielle Ablagen hervorheben")
    When set eligible dropLists display a highlight effect. Currently with

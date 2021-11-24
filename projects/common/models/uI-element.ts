@@ -25,6 +25,7 @@ export abstract class UIElement {
   dynamicPositioning: boolean = false;
   xPosition: number = 0;
   yPosition: number = 0;
+  useMinHeight: boolean = false;
   gridColumnStart: number = 1;
   gridColumnEnd: number = 2;
   gridRowStart: number = 1;

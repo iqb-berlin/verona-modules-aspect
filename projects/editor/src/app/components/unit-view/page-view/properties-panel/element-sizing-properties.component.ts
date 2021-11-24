@@ -52,7 +52,14 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                      value: $event,
                                                      isInputValid: width.valid && $event !== null })">
         </mat-form-field>
-        <mat-form-field appearance="fill">
+
+        <mat-checkbox *ngIf="combinedProperties.useMinHeight !== undefined"
+                      [checked]="$any(combinedProperties.useMinHeight)"
+                      (change)="updateModel.emit({ property: 'useMinHeight', value: $event.checked })">
+          {{'propertiesPanel.useMinHeight' | translate }}
+        </mat-checkbox>
+
+        <mat-form-field *ngIf="combinedProperties.useMinHeight" appearance="fill">
           <mat-label>{{'propertiesPanel.minHeight' | translate }}</mat-label>
           <input matInput type="number" #height="ngModel" min="0"
                  [ngModel]="combinedProperties.height"

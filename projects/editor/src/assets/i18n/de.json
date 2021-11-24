@@ -48,6 +48,7 @@
     "xPosition": "X Position",
     "yPosition": "Y Position",
     "minWidth": "Mindestbreite",
+    "useMinHeight": "Mindesthöhe setzen",
     "minHeight": "Mindesthöhe",
     "grid": "Raster",
     "startColumn": "Start-Spalte",

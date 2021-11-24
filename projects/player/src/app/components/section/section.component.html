@@ -27,7 +27,7 @@
     <ng-container *ngFor="let element of section.elements; let i = index">
       <app-element-container
           [style.min-width.px]="element.width"
-          [style.min-height.px]="element.height"
+          [style.min-height.px]="element.useMinHeight ? element.height : 0"
           [style.margin-left.px]="element.marginLeft"
           [style.margin-right.px]="element.marginRight"
           [style.margin-top.px]="element.marginTop"

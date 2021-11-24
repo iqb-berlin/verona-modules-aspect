@@ -55,15 +55,15 @@ import { FormElementComponent } from '../../form-element-component.directive';
           </app-dropdown>
           <app-text-field *ngIf="part.type === 'text-field'" #textfieldComponent
                           [parentForm]="parentForm"
-                          [style.vertical-align]="'sub'"
                           [style.display]="'inline-block'"
                           [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
                           [elementModel]="$any(part.value)"
                           (elementValueChanged)="elementValueChanged.emit($event)">
           </app-text-field>
-          <div *ngIf="part.type === 'drop-list'" [style.display]="'inline-block'"
-               [style.vertical-align]="'middle'"
+          <div *ngIf="part.type === 'drop-list'"
+               [style.display]="'inline-block'"
                [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
+               [style.vertical-align]="'middle'"
                [style.width.px]="$any(part.value).width"
                [style.height.px]="$any(part.value).height">
             <app-drop-list #droplistComponent
@@ -77,7 +77,11 @@ import { FormElementComponent } from '../../form-element-component.directive';
     </p>
   `,
   styles: [
-    ':host ::ng-deep app-text-field .mat-form-field-wrapper {padding-bottom: 0; margin: 0}',
+    ':host ::ng-deep app-text-field {vertical-align: middle}',
+    ':host ::ng-deep app-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}',
+    ':host ::ng-deep app-text-field .mat-form-field {height: 100%}',
+    ':host ::ng-deep app-text-field .mat-form-field-flex {height: 100%}',
+    ':host ::ng-deep app-drop-list {vertical-align: middle}',
     ':host ::ng-deep app-drop-list .cdk-drop-list {height: 100%; width: 100%;}',
     ':host ::ng-deep app-drop-list .item {padding: 0 10px; height: 30px; line-height: 30px; text-align: center;}',
     'p {margin: 0}'

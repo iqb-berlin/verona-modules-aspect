@@ -14,7 +14,7 @@ import { initFontElement } from '../../util/unit-interface-initializer';
 // TODO styles like em dont continue after inserted components
 
 export class ClozeElement extends CompoundElement implements FontElement {
-  text: string = '<p>Lorem ipsum dolor \\z</p>';
+  text: string = '<p>Lorem ipsum dolor \\z sdfsdf \\i sdfsdf</p>';
 
   parts: ClozePart[][] = [];
   childElements: InputElement[] = [];
@@ -131,6 +131,7 @@ export class ClozeElement extends CompoundElement implements FontElement {
         newElement = new DropListElement(elementModel);
         newElement.height = 30;
         newElement.width = 100;
+        newElement.onlyOneItem = true;
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

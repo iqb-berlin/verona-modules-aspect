@@ -10,6 +10,7 @@ import { CheckboxElement } from '../checkbox-element';
 import { DropdownElement } from '../dropdown-element';
 import { DropListElement } from './drop-list';
 import { initFontElement } from '../../util/unit-interface-initializer';
+import { TextFieldSimpleElement } from '../text-field-simple-element';
 
 // TODO styles like em dont continue after inserted components
 
@@ -115,7 +116,7 @@ export class ClozeElement extends CompoundElement implements FontElement {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field':
-        newElement = new TextFieldElement(elementModel);
+        newElement = new TextFieldSimpleElement(elementModel);
         (newElement as TextFieldElement).label = '';
         break;
       case 'text-area':

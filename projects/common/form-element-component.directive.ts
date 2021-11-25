@@ -48,6 +48,10 @@ export abstract class FormElementComponent extends ElementComponent implements O
       new FormControl({});
   }
 
+  setFormValue(value: InputElementValue): void {
+    this.elementFormControl.setValue(value);
+  }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

@@ -53,13 +53,13 @@ import { FormElementComponent } from '../../form-element-component.directive';
                         [elementModel]="$any(part.value)"
                         (elementValueChanged)="elementValueChanged.emit($event)">
           </app-dropdown>
-          <app-text-field *ngIf="part.type === 'text-field'" #textfieldComponent
+          <app-text-field-simple *ngIf="part.type === 'text-field'" #textfieldComponent
                           [parentForm]="parentForm"
                           [style.display]="'inline-block'"
                           [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
                           [elementModel]="$any(part.value)"
                           (elementValueChanged)="elementValueChanged.emit($event)">
-          </app-text-field>
+          </app-text-field-simple>
           <div *ngIf="part.type === 'drop-list'"
                [style.display]="'inline-block'"
                [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"

@@ -52,18 +52,18 @@ export class SelectionService {
 
   private setCompoundChildSelection(element: UIElement, nativeElement: HTMLElement): void {
     if (element.type === 'text-field') {
-      (nativeElement.children[0] as HTMLElement).style.border = '1px solid';
+      (nativeElement.children[0] as HTMLElement).style.outline = '1px solid';
     } else {
-      nativeElement.style.border = '1px solid';
+      nativeElement.style.outline = '1px solid';
     }
   }
 
   private removeCompoundChildSelection(): void {
     if (this.selectedCompoundChild) {
       if (this.selectedCompoundChild.element.type === 'text-field') {
-        (this.selectedCompoundChild.nativeElement.children[0] as HTMLElement).style.border = 'unset';
+        (this.selectedCompoundChild.nativeElement.children[0] as HTMLElement).style.outline = 'unset';
       } else {
-        this.selectedCompoundChild.nativeElement.style.border = 'unset';
+        this.selectedCompoundChild.nativeElement.style.outline = 'unset';
       }
       this.selectedCompoundChild = null;
     }

@@ -87,3 +87,7 @@ app-rich-text-editor .editor-controls-second-line {
 .special-chars-button {
   margin-left: 25px;
 }
+
+mark {
+  color: inherit;
+}

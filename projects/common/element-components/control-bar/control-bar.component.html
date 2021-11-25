@@ -55,7 +55,7 @@
     <div *ngIf="restTimeMode"
          class="time mat-typography"
          (click)="toggleTime()">
-      -{{currentRestTime | playerTimeFormat}}
+      {{currentRestTime ? '-' : ''}}{{currentRestTime | playerTimeFormat}}
     </div>
   </ng-container>
   <ng-container *ngIf="elementModel.muteControl">

@@ -37,7 +37,6 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   // TODO:
   // uninterruptible: boolean; // false kein Blättern; starten eines anderen Videos; ....
   // hideOtherPages: boolean; // false (Solange nicht vollständig gespielt, sind alle anderen Seiten verborgen)
-  // minRuns: number; // 1
 
   ngOnInit(): void {
     this.dependencyDissolved = !this.elementModel.activeAfterID;
@@ -74,9 +73,8 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.project && changes.project.currentValue === 'player') {
-      this.initAutostart();
-      this.initHint();
+    if ((changes.project || changes.dependencyDissolved) && this.project === 'player') {
+      this.initDelays();
     }
   }
 
@@ -123,10 +121,18 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
     return this.disabled;
   }
 
+  private initDelays(): void {
+    if (!this.started &&
+      (this.dependencyDissolved || this.dependencyDissolved === undefined)) {
+      this.initAutostart();
+      this.initHint();
+    }
+  }
+
   private initAutostart(): void {
-    if (this.elementModel.autostart && !this.started) {
+    if (this.elementModel.autostart) {
       setTimeout(() => {
-        if (!this.started) {
+        if (!this.started && this.dependencyDissolved) {
           this._play();
         }
       }, this.elementModel.autostartDelay);
@@ -134,9 +140,9 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initHint(): void {
-    if (this.elementModel.hintLabel && !this.started) {
+    if (this.elementModel.hintLabel) {
       setTimeout(() => {
-        if (!this.started) {
+        if (!this.started && this.dependencyDissolved) {
           this.showHint = true;
         }
       }, this.elementModel.hintLabelDelay);
@@ -144,10 +150,9 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private _play(): void {
-    this.player.play().then(() => {
-    },
-    // eslint-disable-next-line no-console
-    () => console.error('player: cannot play this media file'));
+    this.player.play().then(() => {},
+      // eslint-disable-next-line no-console
+      () => console.error('player: cannot play this media file'));
   }
 
   private sendPlaybackTimeChanged() {

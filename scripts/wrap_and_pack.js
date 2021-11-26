@@ -16,4 +16,4 @@ fs.writeFileSync('dist/index.html', fileContent, 'utf8');
 
 const targetFileName = `verona-${packageName}-aspect-${packageVersion}.html`;
 childProcess.fork('node_modules/iqb-dev-components/src/distpacker.js',
-  ['dist', targetFileName]);
+['dist', targetFileName, packageName]);

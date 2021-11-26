@@ -2,8 +2,6 @@ import {
   OnInit, OnChanges, SimpleChanges, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-import { AudioElement } from '../../ui-elements/audio/audio-element';
-import { VideoElement } from '../../ui-elements/video/video-element';
 import { PlayerProperties, ValueChangeElement } from '../../models/uI-element';
 
 @Component({
@@ -58,13 +56,13 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
       this.showHint = false;
     };
     this.player.onended = () => {
+      this.checkValidState(this.runCounter + 1);
       if (!this.checkDisabledState(this.runCounter + 1)) {
         this.runCounter += 1;
         if (this.playerProperties.loop) {
           this._play();
         }
       }
-      this.checkValidState(this.runCounter);
     };
     this.player.onvolumechange = () => {
       this.player.muted = !this.player.volume;

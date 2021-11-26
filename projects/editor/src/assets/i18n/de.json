@@ -131,6 +131,7 @@
     "interactiveProgressbar": "Fortschrittsbalken (steuerbar)",
     "volumeControl": "Lautstärkeregelung",
     "muteControl": "Stummschaltung",
+    "interactiveMuteControl": "Stummschaltung (steuerbar)",
     "minVolume": "Minimale Lautstärke",
     "defaultVolume": "Voreingestellte Lautstärke",
     "uninterruptible": "Unterbrechen verbieten",

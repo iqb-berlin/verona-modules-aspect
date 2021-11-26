@@ -147,6 +147,7 @@ export interface PlayerProperties {
   defaultVolume: number;
   minVolume: number;
   muteControl: boolean;
+  interactiveMuteControl: boolean;
   hintLabel: string;
   hintLabelDelay: number;
   uninterruptible: boolean;

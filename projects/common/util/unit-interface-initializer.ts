@@ -128,6 +128,9 @@ export function initPlayerElement(serializedElement: Partial<UIElement>): Player
         serializedElement.playerProps.minVolume as number : 0,
       muteControl: serializedElement.playerProps.muteControl !== undefined ?
         serializedElement.playerProps.muteControl as boolean : true,
+      interactiveMuteControl:
+        serializedElement.playerProps.interactiveMuteControl !== undefined ?
+          serializedElement.playerProps.interactiveMuteControl as boolean : false,
       hintLabel: serializedElement.playerProps.hintLabel as string || '',
       hintLabelDelay: serializedElement.playerProps.hintLabelDelay !== undefined ?
         serializedElement.playerProps.hintLabelDelay as number : 0,
@@ -162,6 +165,9 @@ export function initPlayerElement(serializedElement: Partial<UIElement>): Player
     defaultVolume: serializedElement.defaultVolume !== undefined ? serializedElement.defaultVolume as number : 0.8,
     minVolume: serializedElement.minVolume !== undefined ? serializedElement.minVolume as number : 0,
     muteControl: serializedElement.muteControl !== undefined ? serializedElement.muteControl as boolean : true,
+    interactiveMuteControl:
+      serializedElement.interactiveMuteControl !== undefined ?
+        serializedElement.interactiveMuteControl as boolean : true,
     hintLabel: serializedElement.hintLabel as string || '',
     hintLabelDelay: serializedElement.hintLabelDelay !== undefined ? serializedElement.hintLabelDelay as number : 0,
     uninterruptible:

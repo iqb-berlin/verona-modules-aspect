@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { PlayerElement, PlayerProperties } from '../../../../../common/models/uI-element';
+import { PlayerProperties } from '../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-player-edit-dialog',
@@ -44,6 +44,10 @@ import { PlayerElement, PlayerProperties } from '../../../../../common/models/uI
             <mat-checkbox [checked]="newPlayerConfig.muteControl || data.playerProps.muteControl"
                           (change)="newPlayerConfig.muteControl = $event.checked">
               {{ 'player.muteControl' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="newPlayerConfig.interactiveMuteControl || data.playerProps.interactiveMuteControl"
+                          (change)="newPlayerConfig.interactiveMuteControl = $event.checked">
+              {{ 'player.interactiveMuteControl' | translate }}
             </mat-checkbox>
             <mat-checkbox [checked]="newPlayerConfig.showRestTime || data.playerProps.showRestTime"
                           (change)="newPlayerConfig.showRestTime = $event.checked">

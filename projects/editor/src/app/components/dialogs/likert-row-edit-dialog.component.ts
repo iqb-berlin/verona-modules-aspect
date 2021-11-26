@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { LikertElementRow } from '../../../../../common/models/compound-elements/likert-element-row';
-import { LikertColumn } from '../../../../../common/interfaces/UIElementInterfaces';
+import { LikertElementRow } from '../../../../../common/ui-elements/likert/likert-element-row';
+import { LikertColumn } from '../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-likert-row-edit-dialog',

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TextComponent } from '../../../../common/element-components/text.component';
+import { TextComponent } from '../../../../common/ui-elements/text/text.component';
 
 @Injectable({
   providedIn: 'root'

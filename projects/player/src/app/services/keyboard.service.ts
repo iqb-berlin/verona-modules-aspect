@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormElementComponent } from '../../../../common/form-element-component.directive';
+import { FormElementComponent } from '../../../../common/directives/form-element-component.directive';
 
 @Injectable({
   providedIn: 'root'

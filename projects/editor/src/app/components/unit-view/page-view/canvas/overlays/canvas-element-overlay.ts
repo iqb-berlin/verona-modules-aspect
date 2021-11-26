@@ -7,13 +7,13 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../../services/unit.service';
 import * as ElementFactory from '../../../../../../../../common/util/element.factory';
-import { ElementComponent } from '../../../../../../../../common/element-component.directive';
+import { ElementComponent } from '../../../../../../../../common/directives/element-component.directive';
 import { SelectionService } from '../../../../../services/selection.service';
 import { UIElement } from '../../../../../../../../common/models/uI-element';
 import { CompoundElementComponent } from
-  '../../../../../../../../common/element-components/compound-elements/compound-element.directive';
-import { ClozeComponent } from '../../../../../../../../common/element-components/compound-elements/cloze.component';
-import { ClozeElement } from '../../../../../../../../common/models/compound-elements/cloze-element';
+  '../../../../../../../../common/directives/compound-element.directive';
+import { ClozeComponent } from '../../../../../../../../common/ui-elements/cloze/cloze.component';
+import { ClozeElement } from '../../../../../../../../common/ui-elements/cloze/cloze-element';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {

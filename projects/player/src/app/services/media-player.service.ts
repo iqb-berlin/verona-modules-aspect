@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { MediaPlayerElementComponent } from '../../../../common/media-player-element-component.directive';
+import { MediaPlayerElementComponent } from '../../../../common/directives/media-player-element-component.directive';
 
 @Injectable({
   providedIn: 'root'

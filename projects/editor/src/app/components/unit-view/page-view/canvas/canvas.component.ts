@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { Page } from '../../../../../../../common/models/page';
-import { UIElement } from '../../../../../../../common/models/uI-element';
+import { PositionedElement, UIElement } from '../../../../../../../common/models/uI-element';
 import { Section } from '../../../../../../../common/models/section';
 
 @Component({
@@ -74,15 +74,15 @@ export class CanvasComponent implements OnInit, OnDestroy {
   }
 
   elementDropped(event: CdkDragDrop<DropListData>): void {
-    const selectedElements = this.selectionService.getSelectedElements();
+    const selectedElements = this.selectionService.getSelectedElements() as PositionedElement[];
 
     if (event.previousContainer !== event.container) {
       this.moveElementsBetweenSections(selectedElements,
         event.previousContainer.data.sectionIndex,
         event.container.data.sectionIndex);
     } else {
-      selectedElements.forEach((element: UIElement) => {
-        let newXPosition = element.xPosition + event.distance.x;
+      selectedElements.forEach((element: PositionedElement) => {
+        let newXPosition = element.positionProps.xPosition + event.distance.x;
         if (newXPosition < 0) {
           newXPosition = 0;
         }
@@ -91,7 +91,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
         }
         this.unitService.updateElementProperty([element], 'xPosition', newXPosition);
 
-        let newYPosition = element.yPosition + event.distance.y;
+        let newYPosition = element.positionProps.yPosition + event.distance.y;
         if (newYPosition < 0) {
           newYPosition = 0;
         }

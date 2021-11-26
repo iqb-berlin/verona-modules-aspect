@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../services/form.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import { VeronaPostService } from '../../services/verona-post.service';
-import { MessageService } from '../../../../../common/message.service';
+import { MessageService } from '../../../../../common/services/message.service';
 import { MetaDataService } from '../../services/meta-data.service';
 import {
   FormControlElement, FormControlValidators, ChildFormGroup

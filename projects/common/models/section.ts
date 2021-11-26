@@ -1,11 +1,12 @@
 import {
+  PositionedElement,
   UIElement
 } from './uI-element';
 import * as ElementFactory from '../util/element.factory';
 
 export class Section {
   [index: string]: string | number | boolean | UIElement[] | ((...args: any) => any);
-  elements: UIElement[] = [];
+  elements: PositionedElement[] = [];
   height: number = 400;
   backgroundColor: string = 'white';
   dynamicPositioning: boolean = false;
@@ -19,12 +20,12 @@ export class Section {
     this.elements = [];
     if (serializedSection) {
       serializedSection?.elements.forEach((element: UIElement) => {
-        this.elements.push(ElementFactory.createElement(element));
+        this.elements.push(ElementFactory.createElement(element) as PositionedElement);
       });
     }
   }
 
-  addElement(element: UIElement): void {
+  addElement(element: PositionedElement): void {
     this.elements.push(element);
   }
 
@@ -47,41 +48,42 @@ export class Section {
     });
   }
 
-  duplicateElements(elements: UIElement[]): void {
-    elements.forEach((element: UIElement) => {
+  duplicateElements(elements: PositionedElement[]): void {
+    elements.forEach((element: PositionedElement) => {
       const newElementConfig: Record<string, string | number | boolean | string[]> = { ...element } as
         Record<string, string | number | boolean | string[]>;
       delete newElementConfig.id; // remove ID from object, so a new one is created
-      const newElement: UIElement = ElementFactory.createElement(newElementConfig as UIElement);
-      newElement.xPosition += 10;
-      newElement.yPosition += 10;
+      const newElement: PositionedElement =
+        ElementFactory.createElement(newElementConfig as UIElement) as PositionedElement;
+      newElement.positionProps.xPosition += 10;
+      newElement.positionProps.yPosition += 10;
       this.elements.push(newElement);
     });
   }
 
-  static alignElements(elements: UIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
+  static alignElements(elements: PositionedElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     let newValue: number;
     switch (alignmentDirection) {
       case 'left':
-        newValue = Math.min(...elements.map(element => element.xPosition));
+        newValue = Math.min(...elements.map(element => element.positionProps.xPosition));
         elements.forEach((element: UIElement) => {
           element.xPosition = newValue;
         });
         break;
       case 'right':
-        newValue = Math.max(...elements.map(element => element.xPosition + element.width));
+        newValue = Math.max(...elements.map(element => element.positionProps.xPosition + element.width));
         elements.forEach((element: UIElement) => {
           element.xPosition = newValue - element.width;
         });
         break;
       case 'top':
-        newValue = Math.min(...elements.map(element => element.yPosition));
+        newValue = Math.min(...elements.map(element => element.positionProps.yPosition));
         elements.forEach((element: UIElement) => {
           element.yPosition = newValue;
         });
         break;
       case 'bottom':
-        newValue = Math.max(...elements.map(element => element.yPosition + element.height));
+        newValue = Math.max(...elements.map(element => element.positionProps.yPosition + element.height));
         elements.forEach((element: UIElement) => {
           element.yPosition = newValue - element.height;
         });

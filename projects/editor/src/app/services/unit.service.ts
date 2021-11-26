@@ -3,18 +3,24 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from '../../../../common/file.service';
-import { MessageService } from '../../../../common/message.service';
+import { MessageService } from '../../../../common/services/message.service';
 import { IdService } from '../../../../common/id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { Unit } from '../../../../common/models/unit';
 import { Page } from '../../../../common/models/page';
 import { Section } from '../../../../common/models/section';
-import { CompoundElement, InputElement, UIElement, UIElementType } from '../../../../common/models/uI-element';
-import { TextElement } from '../../../../common/models/text-element';
-import { LikertElement } from '../../../../common/models/compound-elements/likert-element';
-import { LikertElementRow } from '../../../../common/models/compound-elements/likert-element-row';
-import { LikertColumn, LikertRow, PlayerElement } from '../../../../common/interfaces/UIElementInterfaces';
+import {
+  InputElement,
+  LikertColumn,
+  LikertRow, PlayerElement,
+  PlayerProperties, PositionedElement,
+  UIElement,
+  UIElementType
+} from '../../../../common/models/uI-element';
+import { TextElement } from '../../../../common/ui-elements/text/text-element';
+import { LikertElement } from '../../../../common/ui-elements/likert/likert-element';
+import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-element-row';
 import { SelectionService } from './selection.service';
 import * as ElementFactory from '../../../../common/util/element.factory';
 
@@ -150,7 +156,7 @@ export class UnitService {
       );
     } else {
       newElement = ElementFactory.createElement(
-        { type: elementType, dynamicPositioning: section.dynamicPositioning } as UIElement
+        { type: elementType, dynamicPositioning: section.dynamicPositioning } as unknown as UIElement
       );
     }
     if (coordinates && section.dynamicPositioning) {
@@ -162,7 +168,7 @@ export class UnitService {
       newElement.xPosition = coordinates.x;
       newElement.yPosition = coordinates.y;
     }
-    section.addElement(newElement);
+    section.addElement(newElement as PositionedElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -177,7 +183,7 @@ export class UnitService {
   transferElement(elements: UIElement[], previousSection: Section, newSection: Section): void {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {
-      newSection.elements.push(element);
+      newSection.elements.push(element as PositionedElement);
       element.dynamicPositioning = newSection.dynamicPositioning;
     });
     this._unit.next(this._unit.value);
@@ -191,7 +197,7 @@ export class UnitService {
   }
 
   duplicateElementsInSection(elements: UIElement[], section: Section): void {
-    section.duplicateElements(elements);
+    section.duplicateElements(elements as PositionedElement[]);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -295,7 +301,7 @@ export class UnitService {
   }
 
   alignElements(elements: UIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
-    Section.alignElements(elements, alignmentDirection);
+    Section.alignElements(elements as PositionedElement[], alignmentDirection);
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -367,8 +373,8 @@ export class UnitService {
         break;
       case 'audio':
       case 'video':
-        this.dialogService.showPlayerEditDialog(element as unknown as PlayerElement)
-          .subscribe((result: PlayerElement) => {
+        this.dialogService.showPlayerEditDialog((element as PlayerElement).playerProps)
+          .subscribe((result: PlayerProperties) => {
             if (result) {
               for (const key in result) {
                 // @ts-ignore

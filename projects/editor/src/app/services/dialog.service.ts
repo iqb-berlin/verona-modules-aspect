@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { PlayerElement, LikertColumn } from '../../../../common/interfaces/UIElementInterfaces';
-import { LikertElementRow } from '../../../../common/models/compound-elements/likert-element-row';
+import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-element-row';
 import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -10,6 +9,7 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertColumnEditDialogComponent } from '../components/dialogs/likert-column-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
+import { LikertColumn, PlayerElement, PlayerProperties } from '../../../../common/models/uI-element';
 
 @Injectable({
   providedIn: 'root'
@@ -65,10 +65,10 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showPlayerEditDialog(player: PlayerElement): Observable<PlayerElement> {
+  showPlayerEditDialog(playerProps: PlayerProperties): Observable<PlayerProperties> {
     const dialogRef = this.dialog.open(PlayerEditDialogComponent, {
       data: {
-        player: player
+        playerProps: playerProps
       }
     });
     return dialogRef.afterClosed();

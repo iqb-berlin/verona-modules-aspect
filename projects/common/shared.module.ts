@@ -3,14 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -22,29 +18,29 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
-import { TextComponent } from './element-components/text.component';
-import { ButtonComponent } from './element-components/button.component';
-import { TextFieldComponent } from './element-components/text-field.component';
-import { TextAreaComponent } from './element-components/text-area.component';
-import { CheckboxComponent } from './element-components/checkbox.component';
-import { DropdownComponent } from './element-components/dropdown.component';
-import { RadioButtonGroupComponent } from './element-components/radio-button-group.component';
-import { ImageComponent } from './element-components/image.component';
-import { VideoComponent } from './element-components/video.component';
-import { AudioComponent } from './element-components/audio.component';
-import { SafeResourceUrlPipe } from './element-components/pipes/safe-resource-url.pipe';
-import { InputBackgroundColorDirective } from './element-components/directives/input-background-color.directive';
-import { ErrorTransformPipe } from './element-components/pipes/error-transform.pipe';
-import { SafeResourceHTMLPipe } from './element-components/pipes/safe-resource-html.pipe';
-import { ControlBarComponent } from './element-components/control-bar/control-bar.component';
-import { PlayerTimeFormatPipe } from './element-components/control-bar/player-time-format.pipe';
-import { LikertComponent } from './element-components/compound-elements/likert.component';
-import { LikertRadioButtonGroupComponent } from './element-components/compound-elements/likert-radio-button-group.component';
-import { Magnifier } from './element-components/magnifier.component';
-import { RadioGroupImagesComponent } from './element-components/compound-elements/radio-group-images.component';
-import { DropListComponent } from './element-components/compound-elements/drop-list.component';
-import { ClozeComponent } from './element-components/compound-elements/cloze.component';
-import { TextFieldSimpleComponent } from './element-components/text-field-simple.component';
+import { TextComponent } from './ui-elements/text/text.component';
+import { ButtonComponent } from './ui-elements/button/button.component';
+import { TextFieldComponent } from './ui-elements/text-field/text-field.component';
+import { TextAreaComponent } from './ui-elements/text-area/text-area.component';
+import { CheckboxComponent } from './ui-elements/checkbox/checkbox.component';
+import { DropdownComponent } from './ui-elements/dropdown/dropdown.component';
+import { RadioButtonGroupComponent } from './ui-elements/radio/radio-button-group.component';
+import { ImageComponent } from './ui-elements/image/image.component';
+import { VideoComponent } from './ui-elements/video/video.component';
+import { AudioComponent } from './ui-elements/audio/audio.component';
+import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
+import { InputBackgroundColorDirective } from './directives/input-background-color.directive';
+import { ErrorTransformPipe } from './pipes/error-transform.pipe';
+import { SafeResourceHTMLPipe } from './pipes/safe-resource-html.pipe';
+import { ControlBarComponent } from './components/control-bar/control-bar.component';
+import { PlayerTimeFormatPipe } from './components/control-bar/player-time-format.pipe';
+import { LikertComponent } from './ui-elements/likert/likert.component';
+import { LikertRadioButtonGroupComponent } from './ui-elements/likert/likert-radio-button-group.component';
+import { Magnifier } from './ui-elements/image/magnifier.component';
+import { RadioGroupImagesComponent } from './ui-elements/radio-with-images/radio-group-images.component';
+import { DropListComponent } from './ui-elements/drop-list/drop-list.component';
+import { ClozeComponent } from './ui-elements/cloze/cloze.component';
+import { TextFieldSimpleComponent } from './ui-elements/textfield-simple/text-field-simple.component';
 
 @NgModule({
   imports: [
@@ -92,31 +88,12 @@ import { TextFieldSimpleComponent } from './element-components/text-field-simple
   exports: [
     CommonModule,
     FlexLayoutModule,
-    MatToolbarModule,
     MatIconModule,
     MatTabsModule,
-    MatButtonModule,
-    MatInputModule,
     FormsModule,
     ReactiveFormsModule,
     DragDropModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatListModule,
-    MatExpansionModule,
-    MatSidenavModule,
     MatFormFieldModule,
-    ButtonComponent,
-    TextComponent,
-    TextFieldComponent,
-    TextAreaComponent,
-    ImageComponent,
-    AudioComponent,
-    VideoComponent,
-    RadioButtonGroupComponent,
-    CheckboxComponent,
-    DropdownComponent,
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,

@@ -14,19 +14,19 @@ import { MarkingService } from '../../services/marking.service';
 import {
   InputElement, InputElementValue, UIElement, ValueChangeElement
 } from '../../../../../common/models/uI-element';
-import { FormElementComponent } from '../../../../../common/form-element-component.directive';
+import { FormElementComponent } from '../../../../../common/directives/form-element-component.directive';
 import { CompoundElementComponent }
-  from '../../../../../common/element-components/compound-elements/compound-element.directive';
-import { TextElement } from '../../../../../common/models/text-element';
-import { VideoElement } from '../../../../../common/models/video-element';
-import { AudioElement } from '../../../../../common/models/audio-element';
-import { ImageElement } from '../../../../../common/models/image-element';
+  from '../../../../../common/directives/compound-element.directive';
+import { TextElement } from '../../../../../common/ui-elements/text/text-element';
+import { VideoElement } from '../../../../../common/ui-elements/video/video-element';
+import { AudioElement } from '../../../../../common/ui-elements/audio/audio-element';
+import { ImageElement } from '../../../../../common/ui-elements/image/image-element';
 import { VeronaPostService } from '../../services/verona-post.service';
-import { MediaPlayerElementComponent } from '../../../../../common/media-player-element-component.directive';
+import { MediaPlayerElementComponent } from '../../../../../common/directives/media-player-element-component.directive';
 import { MediaPlayerService } from '../../services/media-player.service';
-import { TextComponent } from '../../../../../common/element-components/text.component';
-import { TextFieldElement } from '../../../../../common/models/text-field-element';
-import { ElementComponent } from '../../../../../common/element-component.directive';
+import { TextComponent } from '../../../../../common/ui-elements/text/text.component';
+import { TextFieldElement } from '../../../../../common/ui-elements/text-field/text-field-element';
+import { ElementComponent } from '../../../../../common/directives/element-component.directive';
 
 @Component({
   selector: 'app-element-container',

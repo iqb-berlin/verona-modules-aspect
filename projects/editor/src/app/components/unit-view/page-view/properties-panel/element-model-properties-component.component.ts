@@ -4,10 +4,9 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { InputElementValue, UIElement } from '../../../../../../../common/models/uI-element';
-import { LikertElement } from '../../../../../../../common/models/compound-elements/likert-element';
-import { LikertElementRow } from '../../../../../../../common/models/compound-elements/likert-element-row';
-import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/UIElementInterfaces';
+import { InputElementValue, LikertColumn, LikertRow, UIElement } from '../../../../../../../common/models/uI-element';
+import { LikertElement } from '../../../../../../../common/ui-elements/likert/likert-element';
+import { LikertElementRow } from '../../../../../../../common/ui-elements/likert/likert-element-row';
 import { UnitService } from '../../../../services/unit.service';
 import { FileService } from '../../../../../../../common/file.service';
 
@@ -36,7 +35,7 @@ import { FileService } from '../../../../../../../common/file.service';
       </ng-container>
 
       <!-- Autostart for detecting a player-element -->
-      <ng-container *ngIf="combinedProperties.autostart !== undefined">
+      <ng-container *ngIf="combinedProperties.playerProps">
         <button (click)="unitService.showDefaultEditDialog(selectedElements[0])">
           <mat-icon>build_circle</mat-icon>
         </button>

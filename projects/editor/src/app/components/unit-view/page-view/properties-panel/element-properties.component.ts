@@ -7,9 +7,8 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
-import { MessageService } from '../../../../../../../common/message.service';
-import { UIElement } from '../../../../../../../common/models/uI-element';
-import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/UIElementInterfaces';
+import { MessageService } from '../../../../../../../common/services/message.service';
+import { LikertColumn, LikertRow, UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-element-properties',

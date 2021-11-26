@@ -20,9 +20,9 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
       <!-- Needs extra div because styling can interfere with drag and drop-->
       <div [style.position]="'absolute'"
            [style.outline]="isSelected ? 'purple solid 1px' : ''"
-           [style.left.px]="element.xPosition"
-           [style.top.px]="element.yPosition"
-           [style.z-index]="element.zIndex">
+           [style.left.px]="element.positionProps?.xPosition"
+           [style.top.px]="element.positionProps?.yPosition"
+           [style.z-index]="element.positionProps?.zIndex">
         <div *ngIf="isSelected" class="resizeHandle"
              cdkDrag (cdkDragStarted)="resizeDragStart()"
              (cdkDragMoved)="resizeElement($event)"

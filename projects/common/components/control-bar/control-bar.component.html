@@ -61,7 +61,8 @@
   <ng-container *ngIf="playerProperties.muteControl">
     <button mat-button
             type="button"
-            class="control-button enabled-control"
+            class="control-button"
+            [class.enabled-control]="playerProperties.interactiveMuteControl"
             (click)="toggleVolume()">
       <mat-icon *ngIf="!player.muted">volume_up</mat-icon>
       <mat-icon *ngIf="player.muted">volume_off</mat-icon>

@@ -9,14 +9,15 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
          [style.height.%]="100"
          [style.width.%]="100">
       <video #player
+             (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
+             (pause)="onMediaPlayStatusChanged.emit(null)"
              [style.width.%]="100"
              [src]="elementModel.src | safeResourceUrl">
       </video>
       <app-control-bar class="correct-position"
-                       (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
-                       (pause)="onMediaPlayStatusChanged.emit(null)"
                        [player]="player"
                        [project]="project"
+                       [active]="active"
                        [id]="elementModel.id"
                        [playerProperties]="elementModel.playerProps"
                        [dependencyDissolved]="dependencyDissolved"

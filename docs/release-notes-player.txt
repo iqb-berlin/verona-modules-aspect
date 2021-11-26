@@ -4,6 +4,10 @@ Player
  - Hint and autostart functionality of videos and audios is initialized only
    after dependencies to other audios and videos have been resolved
  - Remove minus sign if remaining time in audio/video player is 0
+ - Fix playback option for videos
+ - Fix dependency resolving problems with audios and videos, when minRuns and maxRuns have the same value
+ - Add rubber icon to delete text marks
+
 
 1.6.0
  - Include audios and videos in presentationProgress. The presentation will not be completed until all audios and videos

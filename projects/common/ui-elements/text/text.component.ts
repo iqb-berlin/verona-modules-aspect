@@ -43,7 +43,7 @@ import { ValueChangeElement } from '../../models/uI-element';
         <button type="button"
                 class="marking-button" [style.background-color]="'lightgrey'" mat-mini-fab
                 (click)="applySelection.emit({ mode: 'delete', color: 'none', element: container })">
-          <mat-icon>clear</mat-icon>
+          <mat-icon svgIcon="rubber-black"></mat-icon>
         </button>
       </div>
       <div #container class="text-container"

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -41,10 +41,13 @@ import { RadioGroupImagesComponent } from './ui-elements/radio-with-images/radio
 import { DropListComponent } from './ui-elements/drop-list/drop-list.component';
 import { ClozeComponent } from './ui-elements/cloze/cloze.component';
 import { TextFieldSimpleComponent } from './ui-elements/textfield-simple/text-field-simple.component';
+import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
     CommonModule,
+    HttpClientModule,
     FlexLayoutModule,
     DragDropModule,
     MatSelectModule,
@@ -101,4 +104,11 @@ import { TextFieldSimpleComponent } from './ui-elements/textfield-simple/text-fi
     SafeResourceHTMLPipe
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+  constructor(iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'rubber-black',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/images/rubber-black.svg')
+    );
+  }
+}

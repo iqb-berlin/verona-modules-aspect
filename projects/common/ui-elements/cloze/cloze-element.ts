@@ -135,10 +135,9 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
         newElement = new DropdownElement(elementModel);
         break;
       case 'drop-list':
-        newElement = new DropListElement(elementModel);
-        newElement.height = 30;
+        newElement = new DropListSimpleElement(elementModel);
+        newElement.height = 25;
         newElement.width = 100;
-        newElement.onlyOneItem = true;
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

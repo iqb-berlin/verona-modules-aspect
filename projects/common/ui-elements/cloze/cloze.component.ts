@@ -66,11 +66,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                [style.vertical-align]="'middle'"
                [style.width.px]="$any(part.value).width"
                [style.height.px]="$any(part.value).height">
-            <app-drop-list #droplistComponent
+            <app-drop-list-simple #droplistComponent
                            [parentForm]="parentForm"
                            (elementValueChanged)="elementValueChanged.emit($event)"
                            [elementModel]="$any(part.value)">
-            </app-drop-list>
+            </app-drop-list-simple>
           </div>
         </span>
       </ng-container>

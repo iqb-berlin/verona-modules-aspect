@@ -38,8 +38,9 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
-    this.height = 200;
-    this.width = 500; // TODO
+
+    this.width = serializedElement.height || 450;
+    this.height = serializedElement.height || 200;
   }
 
   setProperty(property: string, value: InputElementValue | string[] | LikertColumn[] | LikertRow[]): void {

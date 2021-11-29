@@ -23,6 +23,6 @@ export class SpellCorrectElement extends InputElement implements FontElement, Su
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string || 'transparent';
     this.height = serializedElement.height || 80;
-    this.width = serializedElement.width || 200;
+    this.width = serializedElement.width || 230;
   }
 }

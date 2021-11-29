@@ -10,7 +10,7 @@ import { SpellCorrectElement } from './spell-correct-element';
     <div fxFlex
          fxLayout="column"
          [style.width.%]="100"
-         appInputBackgroundColor [backgroundColor]="elementModel.backgroundColor"
+         appInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
          [style.height.%]="100">
       <mat-form-field class="small-input">
         <input matInput type="text"
@@ -19,11 +19,11 @@ import { SpellCorrectElement } from './spell-correct-element';
                [formControl]="elementFormControl">
       </mat-form-field>
       <button mat-button
-              [style.color]="elementModel.fontColor"
-              [style.font-family]="elementModel.font"
-              [style.font-size.px]="elementModel.fontSize"
-              [style.font-weight]="elementModel.bold ? 'bold' : ''"
-              [style.font-style]="elementModel.italic ? 'italic' : ''"
+              [style.color]="elementModel.fontProps.fontColor"
+              [style.font-family]="elementModel.fontProps.font"
+              [style.font-size.px]="elementModel.fontProps.fontSize"
+              [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+              [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
               [style.width.%]="100"
               [style.margin-top]="'-20px'"
               [style.text-decoration-line]="strikethrough() ? 'line-through' : ''"

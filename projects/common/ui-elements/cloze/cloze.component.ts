@@ -10,7 +10,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   selector: 'app-cloze',
   template: `
     <p *ngFor="let paragraph of elementModel.parts; let i = index"
-       [style.line-height.px]="$any(elementModel.fontProps.fontSize) + 15"
+       [style.line-height.%]="elementModel.fontProps.lineHeight"
        [style.color]="elementModel.fontProps.fontColor"
        [style.font-family]="elementModel.fontProps.font"
        [style.font-size.px]="elementModel.fontProps.fontSize"
@@ -66,11 +66,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                [style.vertical-align]="'middle'"
                [style.width.px]="$any(part.value).width"
                [style.height.px]="$any(part.value).height">
-            <app-drop-list #droplistComponent
+            <app-drop-list-simple #droplistComponent
                            [parentForm]="parentForm"
                            (elementValueChanged)="elementValueChanged.emit($event)"
                            [elementModel]="$any(part.value)">
-            </app-drop-list>
+            </app-drop-list-simple>
           </div>
         </span>
       </ng-container>
@@ -81,9 +81,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     ':host ::ng-deep app-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}',
     ':host ::ng-deep app-text-field .mat-form-field {height: 100%}',
     ':host ::ng-deep app-text-field .mat-form-field-flex {height: 100%}',
-    ':host ::ng-deep app-drop-list {vertical-align: middle}',
-    ':host ::ng-deep app-drop-list .cdk-drop-list {height: 100%; width: 100%;}',
-    ':host ::ng-deep app-drop-list .item {padding: 0 10px; height: 30px; line-height: 30px; text-align: center;}',
     'p {margin: 0}'
   ]
 })

@@ -26,39 +26,39 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                (input)="updateModel.emit({ property: 'itemBackgroundColor', value: $any($event.target).value })">
       </mat-form-field>
 
-      <mat-form-field *ngIf="combinedProperties.surfaceProps?.backgroundColor !== undefined"
+      <mat-form-field *ngIf="combinedProperties.surfaceProps"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.backgroundColor' | translate }}</mat-label>
         <input matInput type="color" [value]="combinedProperties.surfaceProps?.backgroundColor"
                (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
       </mat-form-field>
-      <mat-form-field *ngIf="combinedProperties.surfaceProps?.backgroundColor !== undefined"
+      <mat-form-field *ngIf="combinedProperties.surfaceProps"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.backgroundColor' | translate }}</mat-label>
         <input matInput type="text" [value]="combinedProperties.surfaceProps?.backgroundColor"
                (input)="updateModel.emit({ property: 'backgroundColor', value: $any($event.target).value })">
       </mat-form-field>
 
-      <mat-form-field *ngIf="combinedProperties.fontProps?.fontColor !== undefined"
+      <mat-form-field *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.fontColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.fontColor' | translate }}</mat-label>
         <input matInput type="color" [value]="combinedProperties.fontProps?.fontColor"
                (input)="updateModel.emit({ property: 'fontColor', value: $any($event.target).value })">
       </mat-form-field>
-      <mat-form-field *ngIf="combinedProperties.fontProps?.fontColor !== undefined"
+      <mat-form-field *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.fontColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.fontColor' | translate }}</mat-label>
         <input matInput type="text" [value]="combinedProperties.fontProps?.fontColor"
                (input)="updateModel.emit({ property: 'fontColor', value: $any($event.target).value })">
       </mat-form-field>
 
-      <mat-form-field *ngIf="combinedProperties.fontProps?.font !== undefined"
+      <mat-form-field *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.font !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.font' | translate }}</mat-label>
         <input matInput type="text" [value]="combinedProperties.fontProps?.font"
                (input)="updateModel.emit({ property: 'font', value: $any($event.target).value })">
       </mat-form-field>
-      <mat-form-field *ngIf="combinedProperties.fontProps?.fontSize !== undefined"
+      <mat-form-field *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.fontSize !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>
         <input matInput type="number" #fontSize="ngModel" min="0"
@@ -67,7 +67,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                    value: $event,
                                                    isInputValid: fontSize.valid && $event !== null})">
       </mat-form-field>
-      <mat-form-field *ngIf="combinedProperties.fontProps?.lineHeight !== undefined"
+      <mat-form-field *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.lineHeight !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.lineHeight' | translate }}</mat-label>
         <input matInput type="number" #lineHeight="ngModel" min="0"
@@ -77,17 +77,17 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                    isInputValid: lineHeight.valid && $event !== null })">
       </mat-form-field>
 
-      <mat-checkbox *ngIf="combinedProperties.fontProps?.bold !== undefined"
+      <mat-checkbox *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.bold !== undefined"
                     [checked]="$any(combinedProperties.fontProps?.bold)"
                     (change)="updateModel.emit({ property: 'bold', value: $event.checked })">
         {{'propertiesPanel.bold' | translate }}
       </mat-checkbox>
-      <mat-checkbox *ngIf="combinedProperties.fontProps?.italic !== undefined"
+      <mat-checkbox *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.italic !== undefined"
                     [checked]="$any(combinedProperties.fontProps?.italic)"
                     (change)="updateModel.emit({ property: 'italic', value: $event.checked })">
         {{'propertiesPanel.italic' | translate }}
       </mat-checkbox>
-      <mat-checkbox *ngIf="combinedProperties.fontProps?.underline !== undefined"
+      <mat-checkbox *ngIf="combinedProperties.fontProps && combinedProperties.fontProps.underline !== undefined"
                     [checked]="$any(combinedProperties.fontProps?.underline)"
                     (change)="updateModel.emit({ property: 'underline', value: $event.checked })">
         {{'propertiesPanel.underline' | translate }}

@@ -8,9 +8,19 @@ import { TextFieldSimpleElement } from './text-field-simple-element';
     <input type="text" form="parentForm"
            [style.width.px]="elementModel.width"
            [style.height.px]="elementModel.height"
+           [style.line-height.px]="elementModel.fontProps.fontSize"
+           [style.color]="elementModel.fontProps.fontColor"
+           [style.font-family]="elementModel.fontProps.font"
+           [style.font-size.px]="elementModel.fontProps.fontSize"
+           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
            value="{{elementModel.value}}"
            (input)="setFormValue($any($event.target).value)">
-  `
+  `,
+  styles: [
+    'input {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}'
+  ]
 })
 export class TextFieldSimpleComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldSimpleElement;

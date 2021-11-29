@@ -9,7 +9,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
   selector: 'app-element-sizing-properties',
   template: `
     <div fxLayout="column">
-      <ng-container *ngIf="!combinedProperties.dynamicPositioning; else elseBlock">
+      <ng-container *ngIf="!combinedProperties.positionProps?.dynamicPositioning; else elseBlock">
         <mat-form-field appearance="fill">
           <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
           <input matInput type="number" #width="ngModel" min="0"
@@ -27,7 +27,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                      isInputValid: height.valid && $event !== null})">
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.positionProps" appearance="fill">
           <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
           <input matInput type="number" #xPosition="ngModel" min="0"
                  [ngModel]="combinedProperties.positionProps?.xPosition"
@@ -35,7 +35,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                     { property: 'xPosition', value: $event, isInputValid: xPosition.valid && $event !== null })">
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.positionProps" appearance="fill">
           <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
           <input matInput type="number" #yPosition="ngModel" min="0"
                  [ngModel]="combinedProperties.positionProps?.yPosition"
@@ -44,7 +44,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
         </mat-form-field>
       </ng-container>
       <ng-template #elseBlock>
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill" *ngIf="combinedProperties.positionProps !== undefined">
           <mat-label>{{'propertiesPanel.minWidth' | translate }}</mat-label>
           <input matInput type="number" #width="ngModel" min="0"
                  [ngModel]="combinedProperties.width"
@@ -53,7 +53,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                      isInputValid: width.valid && $event !== null })">
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.positionProps?.useMinHeight !== undefined"
+        <mat-checkbox *ngIf="combinedProperties.positionProps !== undefined"
                       [checked]="$any(combinedProperties.positionProps?.useMinHeight)"
                       (change)="updateModel.emit({ property: 'useMinHeight', value: $event.checked })">
           {{'propertiesPanel.useMinHeight' | translate }}
@@ -135,7 +135,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
         </div>
       </ng-template>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field *ngIf="combinedProperties.positionProps" appearance="fill">
         <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
         <input matInput type="number" #zIndex="ngModel" min="0"
                [ngModel]="combinedProperties.positionProps?.zIndex"

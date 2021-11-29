@@ -45,6 +45,7 @@ import { ClozeComponent } from './ui-elements/cloze/cloze.component';
 import { TextFieldSimpleComponent } from './ui-elements/textfield-simple/text-field-simple.component';
 import { SliderComponent } from './ui-elements/slider/slider.component';
 import { SpellCorrectComponent } from './ui-elements/spell-correct/spell-correct.component';
+import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-list-simple.component';
 
 @NgModule({
   imports: [
@@ -88,6 +89,8 @@ import { SpellCorrectComponent } from './ui-elements/spell-correct/spell-correct
     RadioGroupImagesComponent,
     DropListComponent,
     ClozeComponent,
+    TextFieldSimpleComponent,
+    DropListSimpleComponent,
     SliderComponent,
     SpellCorrectComponent,
     TextFieldSimpleComponent

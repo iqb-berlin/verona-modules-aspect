@@ -33,7 +33,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
         <div class="item" *ngFor="let value of $any(elementModel.value)" cdkDrag
-             [style.background-color]="elementModel.itemBackgroundColor">
+             [style.background-color]="elementModel.itemBackgroundColor"
+             (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
           <div *cdkDragPreview
                [style.font-size.px]="elementModel.fontProps.fontSize"
                [style.background-color]="elementModel.itemBackgroundColor">
@@ -54,6 +55,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
     '.list {width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 10px}',
     '.item {border-radius: 10px; padding: 10px;}',
+    '.item {cursor: grab}',
+    '.item:active {cursor: grabbing}',
     '.item:not(:last-child) {margin-bottom: 5px;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
@@ -67,6 +70,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 })
 export class DropListComponent extends FormElementComponent {
   @Input() elementModel!: DropListElement;
+
+  bodyElement: HTMLElement = document.body;
+
+  dragStart() {
+    this.bodyElement.classList.add('inheritCursors');
+    this.bodyElement.style.cursor = 'grabbing';
+  }
+
+  dragEnd(): void {
+    this.bodyElement.classList.remove('inheritCursors');
+    this.bodyElement.style.cursor = 'unset';
+  }
 
   drop(event: CdkDragDrop<DropListComponent>): void {
     if (!this.elementModel.readOnly) {

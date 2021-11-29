@@ -1,5 +1,3 @@
-import localeDe from '@angular/common/locales/de';
-import { registerLocaleData } from '@angular/common';
 import {
   FontElement,
   FontProperties,
@@ -22,7 +20,6 @@ export class SliderElement extends InputElement implements FontElement, SurfaceE
 
   constructor(serializedElement: UIElement) {
     super(serializedElement);
-    registerLocaleData(localeDe); // todo MOVE!
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);

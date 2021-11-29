@@ -1,15 +1,15 @@
 import {
   CompoundElement, FontElement, FontProperties,
   InputElementValue,
-  LikertColumn,
+  LikertColumn, PositionedElement, PositionProperties,
   SurfaceElement,
   SurfaceProperties,
   UIElement
 } from '../../models/uI-element';
 import { LikertElementRow } from './likert-element-row';
-import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
+import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
-export class LikertElement extends CompoundElement implements FontElement, SurfaceElement {
+export class LikertElement extends CompoundElement implements PositionedElement, FontElement, SurfaceElement {
   rows: LikertElementRow[] = [];
   columns: LikertColumn[] = [];
   firstColumnSizeRatio: number = 5;
@@ -17,12 +17,14 @@ export class LikertElement extends CompoundElement implements FontElement, Surfa
   lineColoringColor: string = '#D0F6E7';
   readOnly: boolean = false;
 
+  positionProps: PositionProperties;
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;
 
   constructor(serializedElement: UIElement) {
     super(serializedElement);
     Object.assign(this, serializedElement);
+    this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 

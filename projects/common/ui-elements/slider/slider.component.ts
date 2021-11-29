@@ -45,7 +45,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
             [min]="elementModel.minValue">
           </mat-slider>
           <mat-error *ngIf="elementFormControl.touched && elementFormControl.errors">
-            {{elementModel.requiredWarnMessage || 'validators.inputRequired' | translate}}
+            {{elementModel.requiredWarnMessage}}
           </mat-error>
         </div>
         <div *ngIf="elementModel.showValues"

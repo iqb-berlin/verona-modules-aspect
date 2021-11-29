@@ -37,8 +37,15 @@ export class LikertElement extends CompoundElement implements PositionedElement,
 
     this.height = serializedElement.height || 200;
     this.width = serializedElement.width || 250;
+    if (serializedElement.marginBottom !== undefined) {
+      this.positionProps.marginBottom = serializedElement.marginBottom;
+    } else if (serializedElement.positionProps?.marginBottom !== undefined) {
+      this.positionProps.marginBottom = serializedElement.positionProps.marginBottom;
+    } else {
+      this.positionProps.marginBottom = 30;
+    }
     this.surfaceProps.backgroundColor =
-      (serializedElement as unknown as SurfaceElement).surfaceProps.backgroundColor as string ||
+      (serializedElement as unknown as SurfaceElement).surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||
       'transparent';
   }

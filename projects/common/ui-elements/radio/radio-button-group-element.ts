@@ -26,6 +26,13 @@ export class RadioButtonGroupElement extends InputElement implements PositionedE
     this.surfaceProps = initSurfaceElement(serializedElement);
 
     this.height = serializedElement.height || 85;
+    if (serializedElement.marginBottom !== undefined) {
+      this.positionProps.marginBottom = serializedElement.marginBottom;
+    } else if (serializedElement.positionProps?.marginBottom !== undefined) {
+      this.positionProps.marginBottom = serializedElement.positionProps.marginBottom;
+    } else {
+      this.positionProps.marginBottom = 30;
+    }
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||

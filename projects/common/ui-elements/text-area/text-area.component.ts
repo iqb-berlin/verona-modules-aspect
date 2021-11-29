@@ -5,7 +5,8 @@ import { TextAreaElement } from './text-area-element';
 @Component({
   selector: 'app-text-area',
   template: `
-    <mat-form-field [style.width.%]="100"
+    <mat-form-field [ngClass]="{ 'no-label' : !elementModel.label}"
+                    [style.width.%]="100"
                     [style.min-height.%]="100"
                     appInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
                     [style.color]="elementModel.fontProps.fontColor"
@@ -15,8 +16,9 @@ import { TextAreaElement } from './text-area-element';
                     [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
                     [appearance]="$any(elementModel.appearance)">
+      <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
       <textarea matInput #input
-                autocomplete="off" rows="{{elementModel.rowCount}}" placeholder="{{elementModel.label}}"
+                autocomplete="off" rows="{{elementModel.rowCount}}"
                 [formControl]="elementFormControl"
                 [value]="elementModel.value"
                 [readonly]="elementModel.readOnly"
@@ -30,7 +32,11 @@ import { TextAreaElement } from './text-area-element';
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
     </mat-form-field>
-  `
+  `,
+  styles: [
+    ':host ::ng-deep div.mat-form-field-infix {padding-top: 0.2em;}',
+    ':host ::ng-deep .no-label .mat-form-field-outline-gap {border-top-color: unset !important}'
+  ]
 })
 export class TextAreaComponent extends FormElementComponent {
   @Input() elementModel!: TextAreaElement;

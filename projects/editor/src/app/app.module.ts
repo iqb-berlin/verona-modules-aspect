@@ -11,7 +11,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -76,7 +75,6 @@ import { ElementModelPropertiesComponentComponent } from './components/unit-view
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,
-    MatButtonModule,
     MatInputModule,
     MatButtonToggleModule,
     MatCheckboxModule,

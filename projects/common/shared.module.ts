@@ -18,6 +18,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
+import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { TextComponent } from './ui-elements/text/text.component';
 import { ButtonComponent } from './ui-elements/button/button.component';
 import { TextFieldComponent } from './ui-elements/text-field/text-field.component';
@@ -41,8 +43,6 @@ import { RadioGroupImagesComponent } from './ui-elements/radio-with-images/radio
 import { DropListComponent } from './ui-elements/drop-list/drop-list.component';
 import { ClozeComponent } from './ui-elements/cloze/cloze.component';
 import { TextFieldSimpleComponent } from './ui-elements/textfield-simple/text-field-simple.component';
-import { DomSanitizer } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -93,6 +93,7 @@ import { HttpClientModule } from '@angular/common/http';
     FlexLayoutModule,
     MatIconModule,
     MatTabsModule,
+    MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
     DragDropModule,

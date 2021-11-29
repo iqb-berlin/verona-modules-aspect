@@ -84,8 +84,10 @@ export class SectionDynamicComponent {
       });
     }
     if (dragItemData.dragType === 'move') {
-      const elementWidth: number = event.item.data.element.gridColumnEnd - event.item.data.element.gridColumnStart;
-      const elementHeight: number = event.item.data.element.gridRowEnd - event.item.data.element.gridRowStart;
+      const elementColumnRange: number =
+        event.item.data.element.positionProps.gridColumnEnd - event.item.data.element.positionProps.gridColumnStart;
+      const elementRowRange: number =
+        event.item.data.element.positionProps.gridRowEnd - event.item.data.element.positionProps.gridRowStart;
       this.unitService.updateElementProperty(
         [event.item.data.element],
         'gridColumnStart',
@@ -95,7 +97,7 @@ export class SectionDynamicComponent {
       this.unitService.updateElementProperty(
         [dragItemData.element],
         'gridColumnEnd',
-        event.container.data.gridCoordinates![0] + elementWidth
+        event.container.data.gridCoordinates![0] + elementColumnRange
       );
       this.unitService.updateElementProperty(
         [dragItemData.element],
@@ -105,7 +107,7 @@ export class SectionDynamicComponent {
       this.unitService.updateElementProperty(
         [dragItemData.element],
         'gridRowEnd',
-        event.container.data.gridCoordinates![1] + elementHeight
+        event.container.data.gridCoordinates![1] + elementRowRange
       );
     } else if (event.item.data.dragType === 'resize') {
       this.unitService.updateElementProperty(

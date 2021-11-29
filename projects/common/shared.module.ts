@@ -97,6 +97,7 @@ import { SpellCorrectComponent } from './ui-elements/spell-correct/spell-correct
     FlexLayoutModule,
     MatIconModule,
     MatTabsModule,
+    MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
     DragDropModule,

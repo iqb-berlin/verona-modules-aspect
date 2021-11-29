@@ -10,7 +10,9 @@ import { initFontElement, initPositionedElement, initSurfaceElement } from '../.
 
 export class TextElement extends UIElement implements PositionedElement, FontElement, SurfaceElement {
   text: string = '<p>Lorem ipsum dolor sit amet</p>';
-  interaction: 'none' | 'highlightable' | 'underlinable' | 'strikable' = 'none';
+  highlightableOrange: boolean = false;
+  highlightableTurquoise: boolean = false;
+  highlightableYellow: boolean = false;
 
   positionProps: PositionProperties;
   fontProps: FontProperties;
@@ -34,8 +36,12 @@ export class TextElement extends UIElement implements PositionedElement, FontEle
   }
 
   handleBackwardsCompatibility(serializedElement: UIElement): void {
-    if (serializedElement.highlightable) { // TODO
-      this.interaction = 'highlightable';
+    if (serializedElement.highlightable || serializedElement.interaction === 'highlightable') {
+      this.highlightableYellow = true;
+      this.highlightableTurquoise = true;
+      this.highlightableOrange = true;
+    } else if (serializedElement.interaction === 'underlinable') {
+      this.highlightableYellow = true;
     }
   }
 }

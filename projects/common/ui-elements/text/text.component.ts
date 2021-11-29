@@ -10,36 +10,31 @@ import { ValueChangeElement } from '../../models/uI-element';
   template: `
     <div [style.width.%]="100"
          [style.height]="'auto'">
-      <div *ngIf="elementModel.interaction !== 'none'"
+      <div *ngIf="elementModel.highlightableYellow ||
+           elementModel.highlightableTurquoise ||
+           elementModel.highlightableOrange"
            class="marking-bar">
-        <ng-container *ngIf="elementModel.interaction === 'highlightable'">
-          <button type="button"
-                  class="marking-button"
-                  mat-mini-fab [style.background-color]="'yellow'"
-                  (click)="applySelection.emit({ mode: 'mark', color:'yellow', element: container })">
-            <mat-icon>border_color</mat-icon>
-          </button>
-          <button type="button"
-                  class="marking-button"
-                  mat-mini-fab [style.background-color]="'turquoise'"
-                  (click)="applySelection.emit({ mode: 'mark', color: 'turquoise', element: container })">
-            <mat-icon>border_color</mat-icon>
-          </button>
-          <button type="button"
-                  class="marking-button"
-                  mat-mini-fab [style.background-color]="'orange'"
-                  (click)="applySelection.emit({ mode: 'mark', color: 'orange', element: container })">
-            <mat-icon>border_color</mat-icon>
-          </button>
-        </ng-container>
-        <ng-container *ngIf="elementModel.interaction === 'underlinable'">
-          <button type="button"
-                  class="marking-button"
-                  mat-mini-fab [style.background-color]="'white'"
-                  (click)="applySelection.emit({ mode: 'underline', color: 'black', element: container })">
-            <mat-icon>format_underlined</mat-icon>
-          </button>
-        </ng-container>
+        <button *ngIf="elementModel.highlightableYellow"
+                type="button"
+                class="marking-button"
+                mat-mini-fab [style.background-color]="'yellow'"
+                (click)="applySelection.emit({ mode: 'mark', color:'yellow', element: container })">
+          <mat-icon>border_color</mat-icon>
+        </button>
+        <button *ngIf="elementModel.highlightableTurquoise"
+                type="button"
+                class="marking-button"
+                mat-mini-fab [style.background-color]="'turquoise'"
+                (click)="applySelection.emit({ mode: 'mark', color: 'turquoise', element: container })">
+          <mat-icon>border_color</mat-icon>
+        </button>
+        <button *ngIf="elementModel.highlightableOrange"
+                type="button"
+                class="marking-button"
+                mat-mini-fab [style.background-color]="'orange'"
+                (click)="applySelection.emit({ mode: 'mark', color: 'orange', element: container })">
+          <mat-icon>border_color</mat-icon>
+        </button>
         <button type="button"
                 class="marking-button" [style.background-color]="'lightgrey'" mat-mini-fab
                 (click)="applySelection.emit({ mode: 'delete', color: 'none', element: container })">
@@ -75,7 +70,7 @@ export class TextComponent extends ElementComponent {
   @Input() elementModel!: TextElement;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() startSelection = new EventEmitter<MouseEvent>();
-  @Output() applySelection = new EventEmitter <{
+  @Output() applySelection = new EventEmitter<{
     mode: 'mark' | 'underline' | 'delete',
     color: string,
     element: HTMLElement

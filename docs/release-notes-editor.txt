@@ -1,5 +1,9 @@
 Editor
 ======
+ - Remove underlinable option for text
+ - Offer a choice of colors for marking text
+
+
 1.12.0
  - Add new element cloze ("Lückentext")
    Similar to a text element but parses the text on change and replaces

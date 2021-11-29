@@ -4,7 +4,9 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { InputElementValue, LikertColumn, LikertRow, UIElement } from '../../../../../../../common/models/uI-element';
+import {
+  InputElementValue, LikertColumn, LikertRow, UIElement
+} from '../../../../../../../common/models/uI-element';
 import { LikertElement } from '../../../../../../../common/ui-elements/likert/likert-element';
 import { LikertElementRow } from '../../../../../../../common/ui-elements/likert/likert-element-row';
 import { UnitService } from '../../../../services/unit.service';
@@ -41,23 +43,28 @@ import { FileService } from '../../../../../../../common/file.service';
         </button>
       </ng-container>
 
-      <mat-form-field *ngIf="combinedProperties.interaction !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.interaction' | translate }}</mat-label>
-        <mat-select [value]="combinedProperties.interaction"
-                    (selectionChange)="updateModel.emit({ property: 'interaction', value: $event.value })">
-          <mat-option *ngFor="let interaction of ['none', 'highlightable', 'underlinable', 'strikable']"
-                      [value]="interaction">
-            {{'propertiesPanel.' + interaction | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      {{'propertiesPanel.highlightable' | translate }}
+      <mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
+                    [checked]="$any(combinedProperties.highlightableYellow)"
+                    (change)="updateModel.emit({ property: 'highlightableYellow', value: $event.checked })">
+        {{'propertiesPanel.highlightableYellow' | translate }}
+      </mat-checkbox>
+      <mat-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
+                    [checked]="$any(combinedProperties.highlightableTurquoise)"
+                    (change)="updateModel.emit({ property: 'highlightableTurquoise', value: $event.checked })">
+        {{'propertiesPanel.highlightableTurquoise' | translate }}
+      </mat-checkbox>
+      <mat-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
+                    [checked]="$any(combinedProperties.highlightableOrange)"
+                    (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
+        {{'propertiesPanel.highlightableOrange' | translate }}
+      </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.strikeOtherOptions !== undefined"
                     [checked]="$any(combinedProperties.strikeOtherOptions)"
                     (change)="updateModel.emit({ property: 'strikeOtherOptions', value: $event.checked })">
         {{'propertiesPanel.strikeOtherOptions' | translate }}
       </mat-checkbox>
-
       <mat-checkbox *ngIf="combinedProperties.allowUnset !== undefined"
                     [checked]="$any(combinedProperties.allowUnset)"
                     (change)="updateModel.emit({ property: 'allowUnset', value: $event.checked })">

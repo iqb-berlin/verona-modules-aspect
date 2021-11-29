@@ -1,17 +1,26 @@
 import {
-  CompoundElement, FontElement, FontProperties, InputElement, InputElementValue, LikertColumn, LikertRow, UIElement
+  CompoundElement,
+  FontElement,
+  FontProperties,
+  InputElement,
+  InputElementValue,
+  LikertColumn,
+  LikertRow,
+  PositionedElement, PositionProperties,
+  UIElement
 } from '../../models/uI-element';
 import { TextFieldElement } from '../text-field/text-field-element';
 import { TextAreaElement } from '../text-area/text-area-element';
 import { CheckboxElement } from '../checkbox/checkbox-element';
 import { DropdownElement } from '../dropdown/dropdown-element';
 import { DropListElement } from '../drop-list/drop-list';
-import { initFontElement } from '../../util/unit-interface-initializer';
+import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
 import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
+import { DropListSimpleElement } from '../drop-list-simple/drop-list-simple';
 
 // TODO styles like em dont continue after inserted components
 
-export class ClozeElement extends CompoundElement implements FontElement {
+export class ClozeElement extends CompoundElement implements PositionedElement, FontElement {
   text: string = '<p>Lorem ipsum dolor \\z sdfsdf \\i sdfsdf</p>';
   parts: {
     type: string;
@@ -21,11 +30,13 @@ export class ClozeElement extends CompoundElement implements FontElement {
 
   childElements: InputElement[] = [];
 
+  positionProps: PositionProperties;
   fontProps: FontProperties;
 
   constructor(serializedElement: UIElement) {
     super(serializedElement);
     Object.assign(this, serializedElement);
+    this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
     this.height = 200;
     this.width = 500; // TODO

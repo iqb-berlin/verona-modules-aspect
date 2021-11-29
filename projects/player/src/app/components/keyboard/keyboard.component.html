@@ -4,8 +4,12 @@
   <div class="keyboard-inner-container"
        (mousedown)="onMouseDown($event, true)">
     <app-french-keyboard *ngIf="preset === 'french'"></app-french-keyboard>
-    <app-numbers-keyboard *ngIf="preset === 'numbers'" [operators]="false"></app-numbers-keyboard>
-    <app-numbers-keyboard *ngIf="preset === 'numbersAndOperators'" [operators]="true"></app-numbers-keyboard>
+    <app-numbers-keyboard *ngIf="preset === 'numbers'"
+                          [inputComponent]="inputComponent"
+                          [showOperators]="false"></app-numbers-keyboard>
+    <app-numbers-keyboard *ngIf="preset === 'numbersAndOperators'"
+                          [inputComponent]="inputComponent"
+                          [showOperators]="true"></app-numbers-keyboard>
   </div>
 </div>
 

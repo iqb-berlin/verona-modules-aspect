@@ -41,6 +41,7 @@ export class ElementContainerComponent implements OnInit {
 
   isKeyboardOpen!: boolean;
   keyboardLayout!: 'french' | 'numbers' | 'numbersAndOperators' | 'none';
+  focussedInputElement!: HTMLTextAreaElement | HTMLInputElement;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -231,11 +232,11 @@ export class ElementContainerComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((focussedInputControl: HTMLElement | null): void => {
           if (focussedInputControl) {
-            const inputElement = this.elementModel.type === 'text-area' ?
+            this.focussedInputElement = this.elementModel.type === 'text-area' ?
               focussedInputControl as HTMLTextAreaElement :
               focussedInputControl as HTMLInputElement;
             this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
-            this.isKeyboardOpen = this.keyboardService.openKeyboard(inputElement, elementComponent);
+            this.isKeyboardOpen = this.keyboardService.openKeyboard(this.focussedInputElement, elementComponent);
           } else {
             this.isKeyboardOpen = this.keyboardService.closeKeyboard();
           }

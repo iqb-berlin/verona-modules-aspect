@@ -1,58 +1,35 @@
-<div>
-  <app-key [key]="'7'"></app-key>
-  <app-key [key]="'8'"></app-key>
-  <app-key [key]="'9'"></app-key>
+<div *ngFor="let row of numbers">
+  <ng-container *ngFor="let key of row">
+    <app-key [key]="key"></app-key>
+    <button *ngIf="key === '0'"
+            type="button"
+            mat-mini-fab
+            class="delete-characters"
+            (click)="keyboardService.deleterCharacters()">
+      <mat-icon>keyboard_backspace</mat-icon>
+    </button>
+  </ng-container>
 </div>
-<div>
-  <app-key [key]="'4'"></app-key>
-  <app-key [key]="'5'"></app-key>
-  <app-key [key]="'6'"></app-key>
+
+<div *ngIf="showOperators" class="grid-layout">
+  <ng-container *ngFor="let row of operators; let rowIndex = index ">
+    <ng-container *ngFor="let key of row; let columnIndex = index">
+      <app-key *ngIf="key !== '='"
+               [key]="key"
+               [style.grid-column-start]="columnIndex+1"
+               [style.grid-column-end]="columnIndex+2"
+               [style.grid-row-start]="rowIndex + 1"
+               [style.grid-row-end]="rowIndex + 2">
+      </app-key>
+      <app-key *ngIf="key === '='"
+               [key]="key"
+               [big]="true"
+               [style.grid-column-start]="3"
+               [style.grid-column-end]="3"
+               [style.grid-row-start]="1"
+               [style.grid-row-end]="3">
+      </app-key>
+    </ng-container>
+  </ng-container>
 </div>
-<div>
-  <app-key [key]="'1'"></app-key>
-  <app-key [key]="'2'"></app-key>
-  <app-key [key]="'3'"></app-key>
-</div>
-<div>
-  <app-key [key]="'0'"></app-key>
-  <button
-      type="button"
-      mat-mini-fab
-      class="delete-characters"
-      (click)="keyboardService.deleterCharacters()">
-    <mat-icon>keyboard_backspace</mat-icon>
-  </button>
-</div>
-<ng-container *ngIf="operators">
-  <div class="grid-layout">
-    <app-key [key]="'+'"
-             [style.grid-column-start]="1"
-             [style.grid-column-end]="2"
-             [style.grid-row-start]="1"
-             [style.grid-row-end]="2"></app-key>
-    <app-key [key]="'-'"
-             [style.grid-column-start]="2"
-             [style.grid-column-end]="3"
-             [style.grid-row-start]="1"
-             [style.grid-row-end]="2"></app-key>
-    <app-key [key]="'&middot;'"
-             [style.grid-column-start]="1"
-             [style.grid-column-end]="2"
-             [style.grid-row-start]="2"
-             [style.grid-row-end]="3"></app-key>
-    <app-key [key]="':'"
-             [style.grid-column-start]="2"
-             [style.grid-column-end]="3"
-             [style.grid-row-start]="2"
-             [style.grid-row-end]="3"></app-key>
-    <app-key
-        [key]="'='"
-        [big]="true"
-        [style.grid-column-start]="3"
-        [style.grid-column-end]="3"
-        [style.grid-row-start]="1"
-        [style.grid-row-end]="3">
-    </app-key>
-  </div>
-</ng-container>
 

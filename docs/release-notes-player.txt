@@ -7,6 +7,9 @@ Player
  - Fix playback option for videos
  - Fix dependency resolving problems with audios and videos, when minRuns and maxRuns have the same value
  - Add rubber icon to delete text marks
+ - Restrict the allowed inputs for the virtual keyboard (only numbers and numbers and operators).
+   If these virtual keyboards are used, input via the normal keyboard is also restricted to these
+   characters.
 
 
 1.6.0

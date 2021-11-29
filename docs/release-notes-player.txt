@@ -1,5 +1,47 @@
 Player
 ======
+1.7.0
+ - Hint and autostart functionality of videos and audios is initialized only
+   after dependencies to other audios and videos have been resolved
+ - Remove minus sign if remaining time in audio/video player is 0
+ - Fix playback option for videos
+ - Fix dependency resolving problems with audios and videos, when minRuns and maxRuns have the same value
+ - Add rubber icon to delete text marks
+
+
+1.6.0
+ - Include audios and videos in presentationProgress. The presentation will not be completed until all audios and videos
+   with the minRun property have been played.
+ - Fix style and scroll behavior of marking buttons
+ - Fix problem with truncated text in text components when using large font sizes
+ - Hide audio and video control bar when no control is marked for display
+ - Add the floating variant of the virtual keyboard for numbers and numbers + operators
+ - Hide mute control if wanted
+ - Use minimum volume value (value between 0 and 1)
+ - Use default volume value  (value between 0 and 1)
+ - Use minimal height setting for dynamic elements
+
+1.5.0
+ - Show the magnifier only when the mouse is over the image
+ - Fix saving of inputs via the virtual keyboard
+ - Show background color for dynamic sections
+ - Set default volume of audios and videos to 80%
+ - Play audios and videos depending on others. If an audio or video is defined as dependent on another, it
+   cannot be played until the latter has played the minimum number of its runs
+ - Make sure that settings of Boolean values are taken over from the editor to the player.
+   The error occurred with the progress bar of the video element.
+
+1.4.1
+  - Make text underlinable
+  - Fix marking of text
+
+1.4.0
+  - Add error-messages to DropList
+  - Save values of DropList
+  - Send responseProgress 'complete' when all required elements are valid
+  - Prevent simultaneous media playback
+  - Fix position of virtual keyboard when it appears above a text field
+
 1.3.0
  - Add adjustable magnifier for images
  - Fix delay for hints in audio and video player

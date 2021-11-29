@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { VeronaAPIService } from './verona-api.service';
-import { UnitService } from './unit.service';
+import { VeronaAPIService } from './services/verona-api.service';
+import { UnitService } from './services/unit.service';
 
 @Component({
   selector: 'editor-aspect',

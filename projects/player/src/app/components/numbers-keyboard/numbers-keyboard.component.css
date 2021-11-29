@@ -1,0 +1,16 @@
+.delete-characters{
+  font-size: x-large;
+  width: 85px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: dimgray;
+  color: #fff;
+}
+
+.grid-layout {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+

@@ -1,0 +1,5 @@
+.section{
+  position: relative;
+  overflow: auto;
+  width: 100%
+}

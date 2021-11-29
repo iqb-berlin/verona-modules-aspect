@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FormService } from '../../services/form.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import { VeronaPostService } from '../../services/verona-post.service';
-import { MessageService } from '../../../../../common/message.service';
+import { MessageService } from '../../../../../common/services/message.service';
 import { MetaDataService } from '../../services/meta-data.service';
 import {
   FormControlElement, FormControlValidators, ChildFormGroup
@@ -21,6 +21,7 @@ import {
 } from '../../models/verona';
 import { UnitStateService } from '../../services/unit-state.service';
 import { Page } from '../../../../../common/models/page';
+import { MediaPlayerService } from '../../services/media-player.service';
 
 @Component({
   selector: 'app-unit-state',
@@ -37,6 +38,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder,
               private formService: FormService,
               private unitStateService: UnitStateService,
+              private mediaPlayerService: MediaPlayerService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private messageService: MessageService,
@@ -62,6 +64,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     this.formService.validatorsAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
+    this.mediaPlayerService.mediaStatusChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((): void => this.onMediaStatusChanged());
     this.unitStateService.presentedPageAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => this.onPresentedPageAdded());
@@ -103,10 +108,13 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   }
 
   private get presentationProgress(): Progress {
-    if (this.unitStateService.presentedPages.length === 0) {
+    const mediaStatus = this.mediaPlayerService.mediaStatus;
+    if (this.unitStateService.presentedPages.length === 0 && mediaStatus === 'none') {
       return 'none';
     }
-    return (this.pages.length === this.unitStateService.presentedPages.length) ? 'complete' : 'some';
+    return (
+      this.pages.length === this.unitStateService.presentedPages.length && mediaStatus === 'complete'
+    ) ? 'complete' : 'some';
   }
 
   private addControl = (control: FormControlElement): void => {
@@ -145,6 +153,12 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   private onPresentedPageAdded(): void {
     // eslint-disable-next-line no-console
     console.log('player: onPresentedPageAdded', this.unitStateService.presentedPages);
+    this.sendVopStateChangedNotification();
+  }
+
+  private onMediaStatusChanged(): void {
+    // eslint-disable-next-line no-console
+    console.log('player: onMediaStatusChanged', this.mediaPlayerService.mediaStatus);
     this.sendVopStateChangedNotification();
   }
 

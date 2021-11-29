@@ -1,0 +1,47 @@
+<ng-container *ngIf="selectedElements.length > 0">
+  <mat-tab-group mat-stretch-tabs dynamicHeight>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">build</mat-icon>
+      </ng-template>
+      <div fxLayout="column">
+        <app-element-model-properties-component [combinedProperties]="combinedProperties"
+                                                [selectedElements]="selectedElements"
+                                      (updateModel)="updateModel($event.property, $event.value)">
+        </app-element-model-properties-component>
+
+        <mat-divider></mat-divider>
+
+        <button mat-raised-button class="element-button"
+                (click)="duplicateElement()">
+          {{'propertiesPanel.duplicateElement' | translate }}
+        </button>
+        <button mat-raised-button class="element-button" color="warn"
+                (click)="deleteElement()">
+          {{'propertiesPanel.deleteElement' | translate }}
+        </button>
+      </div>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">format_shapes</mat-icon>
+      </ng-template>
+      <app-element-sizing-properties [combinedProperties]="combinedProperties"
+                                     (updateModel)="updateModel($event.property, $event.value, $event.isInputValid)">
+      </app-element-sizing-properties>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">palette</mat-icon>
+      </ng-template>
+      <app-element-style-properties [combinedProperties]="combinedProperties"
+        (updateModel)="updateModel($event.property, $event.value)">
+      </app-element-style-properties>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>
+<ng-container *ngIf="selectedElements.length === 0">
+  <p>{{'propertiesPanel.noElementSelected' | translate }}</p>
+</ng-container>

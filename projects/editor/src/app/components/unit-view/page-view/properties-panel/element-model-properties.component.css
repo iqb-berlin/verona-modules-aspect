@@ -1,0 +1,59 @@
+.list-items {
+  padding: 5px 10px;
+  border-bottom: solid 1px #ccc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between
+}
+
+::ng-deep app-element-properties .mat-tab-label {
+  min-width: 0 !important;
+}
+
+::ng-deep app-element-properties .mat-tab-group {
+  padding: 15px;
+}
+
+.text-text {
+  min-height: 125px;
+  max-height: 500px;
+  overflow: auto;
+  margin-bottom: 10px;
+  background-color: rgba(0,0,0,.04);
+}
+
+::ng-deep app-element-properties>p {
+  text-align: center;
+  font-weight: bold;
+}
+
+::ng-deep app-element-properties p strong {
+  letter-spacing: 0.04em !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .text-text p:empty::after {
+  content: "\00A0";
+}
+
+::ng-deep .text-text h1 {
+  font-weight: bold;
+  font-size: 20px;
+}
+::ng-deep .text-text h2 {
+  font-weight: bold;
+  font-size: 18px;
+}
+::ng-deep .text-text h3 {
+  font-weight: bold;
+  font-size: 16px;
+}
+::ng-deep .text-text h4 {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+mark {
+  color: inherit;
+}

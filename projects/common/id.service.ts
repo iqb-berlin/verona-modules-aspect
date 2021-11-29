@@ -19,7 +19,8 @@ export class IdService {
     slider: 0,
     'spell-correct': 0,
     'radio-group-images': 0,
-    'drop-list': 0
+    'drop-list': 0,
+    cloze: 0
   };
 
   static getInstance(): IdService {
@@ -30,6 +31,9 @@ export class IdService {
   }
 
   getNewID(type: string): string {
+    if (!type) {
+      throw Error('ID-Service: No type given!');
+    }
     do {
       this.idCounter[type] += 1;
     }

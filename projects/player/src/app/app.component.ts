@@ -11,6 +11,7 @@ import { MetaDataService } from './services/meta-data.service';
 import { PlayerConfig, VopStartCommand } from './models/verona';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { UnitStateService } from './services/unit-state.service';
+import { MediaPlayerService } from './services/media-player.service';
 import { Page } from '../../../common/models/page';
 
 @Component({
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
               private metaDataService: MetaDataService,
               private nativeEventService: NativeEventService,
               private unitStateService: UnitStateService,
+              private mediaPlayerService: MediaPlayerService,
               private dialog: MatDialog) {
   }
 
@@ -91,5 +93,6 @@ export class AppComponent implements OnInit {
     this.pages = [];
     this.playerConfig = {};
     this.unitStateService.reset();
+    this.mediaPlayerService.reset();
   }
 }

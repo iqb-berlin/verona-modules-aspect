@@ -23,14 +23,12 @@ export class FrenchKeyboardComponent implements OnInit {
     this.lowerCharacters = true;
   }
 
-  toggleCharacterCase(event: MouseEvent): void {
+  toggleCharacterCase(): void {
     this.lowerCharacters = !this.lowerCharacters;
     if (this.lowerCharacters) {
       this.rows = this.lowerCharacterRows;
     } else {
       this.rows = this.upperCharacterRows;
     }
-    event.preventDefault();
-    event.stopPropagation();
   }
 }

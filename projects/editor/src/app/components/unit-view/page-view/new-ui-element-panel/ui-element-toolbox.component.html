@@ -1,0 +1,96 @@
+<mat-tab-group mat-stretch-tabs>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">highlight_alt</mat-icon>
+    </ng-template>
+    <div fxLayout="column">
+      <button mat-raised-button (click)="addUIElement('text')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text');">
+        <mat-icon>text_snippet</mat-icon>
+        Text
+      </button>
+      <button mat-raised-button (click)="addUIElement('button')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','button')">
+        <mat-icon>smart_button</mat-icon>
+        Knopf
+      </button>
+      <button mat-raised-button (click)="addUIElement('text-field')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
+        <mat-icon>text_fields</mat-icon>
+        Eingabefeld
+      </button>
+      <button mat-raised-button (click)="addUIElement('text-area')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area')">
+        <mat-icon>notes</mat-icon>
+        Eingabebereich
+      </button>
+      <button mat-raised-button (click)="addUIElement('checkbox')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','checkbox')">
+        <mat-icon>check_box</mat-icon>
+        Kontrollkästchen
+      </button>
+      <button mat-raised-button (click)="addUIElement('dropdown')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','dropdown')">
+        <mat-icon>menu_open</mat-icon>
+        Klappliste
+      </button>
+      <button mat-raised-button (click)="addUIElement('radio')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
+        <mat-icon>radio_button_checked</mat-icon>
+        Optionsfelder
+      </button>
+      <button mat-raised-button (click)="addUIElement('radio-group-images')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
+        <mat-icon>radio_button_checked</mat-icon>
+        Optionsfelder (Bild)
+      </button>
+      <button mat-raised-button (click)="addUIElement('drop-list')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','drop-list')">
+        <mat-icon>drag_indicator</mat-icon>
+        Ablegeliste
+      </button>
+      <button mat-raised-button (click)="addUIElement('image')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
+        <mat-icon>image</mat-icon>
+        Bild
+      </button>
+      <button mat-raised-button (click)="addUIElement('audio')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','audio')">
+        <mat-icon>volume_up</mat-icon>
+        Audio
+      </button>
+      <button mat-raised-button (click)="addUIElement('video')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','video')">
+        <mat-icon>ondemand_video</mat-icon>
+        Video
+      </button>
+    </div>
+  </mat-tab>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">widgets</mat-icon>
+    </ng-template>
+    <div fxLayout="column">
+      <button mat-raised-button (click)="addUIElement('likert')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','likert')">
+        <mat-icon>toc</mat-icon>
+        Optionentabelle
+      </button>
+      <button mat-raised-button (click)="addUIElement('cloze')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','cloze')">
+        <mat-icon>vertical_split</mat-icon>
+        Lückentext
+      </button>
+      <button mat-raised-button (click)="addUIElement('slider')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','slider')">
+        <mat-icon>linear_scale</mat-icon>
+        Schieberegler
+      </button>
+      <button mat-raised-button (click)="addUIElement('spell-correct')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','spell-correct')">
+        <mat-icon>format_strikethrough</mat-icon>
+        Wort korrigieren
+      </button>
+    </div>
+  </mat-tab>
+</mat-tab-group>

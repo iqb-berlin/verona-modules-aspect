@@ -8,26 +8,25 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import * as ElementFactory from '../../../../../common/util/element.factory';
 import { KeyboardService } from '../../services/keyboard.service';
-import { TextFieldComponent } from '../../../../../common/element-components/text-field.component';
-import { TextAreaComponent } from '../../../../../common/element-components/text-area.component';
 import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MarkingService } from '../../services/marking.service';
 import {
-  InputElement, InputElementValue,
-  UIElement,
-  ValueChangeElement
+  InputElement, InputElementValue, UIElement, ValueChangeElement
 } from '../../../../../common/models/uI-element';
-import { TextFieldElement } from '../../../../../common/models/text-field-element';
-import { FormElementComponent } from '../../../../../common/form-element-component.directive';
-import { ElementComponent } from '../../../../../common/element-component.directive';
+import { FormElementComponent } from '../../../../../common/directives/form-element-component.directive';
 import { CompoundElementComponent }
-  from '../../../../../common/element-components/compound-elements/compound-element.directive';
-import { TextElement } from '../../../../../common/models/text-element';
-import { VideoElement } from '../../../../../common/models/video-element';
-import { AudioElement } from '../../../../../common/models/audio-element';
-import { ImageElement } from '../../../../../common/models/image-element';
+  from '../../../../../common/directives/compound-element.directive';
+import { TextElement } from '../../../../../common/ui-elements/text/text-element';
+import { VideoElement } from '../../../../../common/ui-elements/video/video-element';
+import { AudioElement } from '../../../../../common/ui-elements/audio/audio-element';
+import { ImageElement } from '../../../../../common/ui-elements/image/image-element';
 import { VeronaPostService } from '../../services/verona-post.service';
+import { MediaPlayerElementComponent } from '../../../../../common/directives/media-player-element-component.directive';
+import { MediaPlayerService } from '../../services/media-player.service';
+import { TextComponent } from '../../../../../common/ui-elements/text/text.component';
+import { TextFieldElement } from '../../../../../common/ui-elements/text-field/text-field-element';
+import { ElementComponent } from '../../../../../common/directives/element-component.directive';
 
 @Component({
   selector: 'app-element-container',
@@ -54,39 +53,97 @@ export class ElementContainerComponent implements OnInit {
               private unitStateService: UnitStateService,
               private formBuilder: FormBuilder,
               private veronaPostService: VeronaPostService,
+              private mediaPlayerService: MediaPlayerService,
               private markingService: MarkingService) {
   }
 
   ngOnInit(): void {
+    const elementComponent: ElementComponent | CompoundElementComponent = this.initElementComponent();
+    this.registerAtUnitStateService(elementComponent);
+
+    if (elementComponent instanceof FormElementComponent) {
+      this.initFormElement(elementComponent);
+    } else if (elementComponent instanceof CompoundElementComponent) {
+      this.initCompoundElement(elementComponent);
+    } else if (elementComponent instanceof MediaPlayerElementComponent) {
+      this.mediaPlayerService.registerMediaElement(
+        this.elementModel.id,
+        elementComponent,
+        this.elementModel.activeAfterID as string,
+        this.elementModel.minRuns as number === 0
+      );
+    }
+    this.subscribeStartSelection(elementComponent);
+    this.subscribeApplySelection(elementComponent);
+    this.subscribeMediaPlayStatusChanged(elementComponent);
+    this.subscribeMediaValidStatusChanged(elementComponent);
+    this.subscribeNavigationRequested(elementComponent);
+    this.subscribeElementValueChanged(elementComponent);
+    this.subscribeForKeyboardEvents(elementComponent);
+  }
+
+  private initElementComponent(): ElementComponent | CompoundElementComponent {
     const elementComponentFactory =
       ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     elementComponent.elementModel = this.restoreUnitStateValue(this.elementModel);
+    return elementComponent;
+  }
 
-    if (elementComponent.domElement) {
+  private initFormElement(elementComponent: any): void {
+    const elementForm = this.formBuilder.group({});
+    elementComponent.parentForm = elementForm;
+    this.subscribeSetValidators(elementComponent, elementForm);
+    this.registerFormGroup(elementForm);
+    this.formService.registerFormControl({
+      id: this.elementModel.id,
+      formControl: new FormControl((this.elementModel as InputElement).value),
+      formGroup: elementForm
+    });
+  }
+
+  private initCompoundElement(elementComponent: any): void {
+    const elementForm = this.formBuilder.group({});
+    elementComponent.parentForm = elementForm;
+    this.subscribeCompoundChildren(elementComponent);
+    elementComponent.getFormElementModelChildren()
+      .forEach((element: InputElement) => {
+        this.registerFormGroup(elementForm);
+        this.formService.registerFormControl({
+          id: element.id,
+          formControl: new FormControl(element.value),
+          formGroup: elementForm
+        });
+      });
+  }
+
+  private registerAtUnitStateService(elementComponent: any): void {
+    if (!(elementComponent instanceof CompoundElementComponent)) {
       this.unitStateService.registerElement(
         this.initUnitStateValue(elementComponent.elementModel),
         elementComponent.domElement,
         this.pageIndex
       );
     }
+  }
 
+  private subscribeCompoundChildren(elementComponent: any): void {
     if (elementComponent.childrenAdded) {
       elementComponent.childrenAdded
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((children: QueryList<ElementComponent>) => {
           children.forEach(child => {
-            if (child.domElement) {
-              this.unitStateService.registerElement(
-                this.initUnitStateValue(child.elementModel),
-                child.domElement,
-                this.pageIndex
-              );
-            }
+            this.unitStateService.registerElement(
+              this.initUnitStateValue(child.elementModel),
+              child.domElement,
+              this.pageIndex
+            );
           });
         });
     }
+  }
 
+  private subscribeStartSelection(elementComponent: any): void {
     if (elementComponent.startSelection) {
       elementComponent.startSelection
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -97,16 +154,44 @@ export class ElementContainerComponent implements OnInit {
           }
         });
     }
+  }
 
+  private subscribeApplySelection(elementComponent: any): void {
     if (elementComponent.applySelection) {
       elementComponent.applySelection
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selection:
-        { mode: 'mark' | 'underline' | 'delete', color: string; element: HTMLElement; clear: boolean }) => {
-          this.applySelection(selection.mode, selection.color, selection.element);
+        { mode: 'mark' | 'underline' | 'delete',
+          color: string;
+          element: HTMLElement;
+          clear: boolean }) => {
+          this.markingService
+            .applySelection(selection.mode, selection.color, selection.element, elementComponent as TextComponent);
         });
     }
+  }
 
+  private subscribeMediaPlayStatusChanged(elementComponent: any): void {
+    if (elementComponent.onMediaPlayStatusChanged) {
+      elementComponent.onMediaPlayStatusChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((playStatus: string | null) => {
+          this.mediaPlayerService.setActualPlayingMediaId(playStatus);
+        });
+    }
+  }
+
+  private subscribeMediaValidStatusChanged(elementComponent: any): void {
+    if (elementComponent.onMediaValidStatusChanged) {
+      elementComponent.onMediaValidStatusChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((validId: string) => {
+          this.mediaPlayerService.setValidStatusChanged(validId);
+        });
+    }
+  }
+
+  private subscribeNavigationRequested(elementComponent: any): void {
     if (elementComponent.navigationRequested) {
       elementComponent.navigationRequested
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -114,31 +199,19 @@ export class ElementContainerComponent implements OnInit {
           this.veronaPostService.sendVopUnitNavigationRequestedNotification(target);
         });
     }
+  }
 
-    if (elementComponent.playbackTimeChanged) {
-      elementComponent.playbackTimeChanged
+  private subscribeElementValueChanged(elementComponent: any): void {
+    if (elementComponent.elementValueChanged) {
+      elementComponent.elementValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((playbackTimeChanged: ValueChangeElement) => {
           this.unitStateService.changeElementValue(playbackTimeChanged);
         });
     }
+  }
 
-    if (elementComponent.magnifierUsed) {
-      elementComponent.magnifierUsed
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((magnifierUsed: ValueChangeElement) => {
-          this.unitStateService.changeElementValue(magnifierUsed);
-        });
-    }
-
-    if (elementComponent.formValueChanged) {
-      elementComponent.formValueChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((changeElement: ValueChangeElement) => {
-          this.unitStateService.changeElementValue(changeElement);
-        });
-    }
-
+  private subscribeSetValidators(elementComponent: any, elementForm: FormGroup): void {
     if (elementComponent.setValidators) {
       elementComponent.setValidators
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -150,36 +223,22 @@ export class ElementContainerComponent implements OnInit {
           });
         });
     }
+  }
 
-    const elementForm = this.formBuilder.group({});
-    if (elementComponent instanceof FormElementComponent) {
-      elementComponent.parentForm = elementForm;
-      this.registerFormGroup(elementForm);
-      this.formService.registerFormControl({
-        id: this.elementModel.id,
-        formControl: new FormControl((this.elementModel as InputElement).value),
-        formGroup: elementForm
-      });
-
-      if (this.elementModel.inputAssistancePreset !== 'none' &&
-        (this.elementModel.type === 'text-field' || this.elementModel.type === 'text-area')) {
-        this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
-        if (this.elementModel.type === 'text-field') {
-          this.initEventsForKeyboard(elementComponent as TextFieldComponent);
-        } else {
-          this.initEventsForKeyboard(elementComponent as TextAreaComponent);
-        }
-      }
-    } else if (elementComponent instanceof CompoundElementComponent) {
-      elementComponent.parentForm = elementForm;
-      elementComponent.getFormElementModelChildren()
-        .forEach((element: InputElement) => {
-          this.registerFormGroup(elementForm);
-          this.formService.registerFormControl({
-            id: element.id,
-            formControl: new FormControl(element.value),
-            formGroup: elementForm
-          });
+  private subscribeForKeyboardEvents(elementComponent: any): void {
+    if (elementComponent.onFocusChanged) {
+      elementComponent.onFocusChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((focussedInputControl: HTMLElement | null): void => {
+          if (focussedInputControl) {
+            const inputElement = this.elementModel.type === 'text-area' ?
+              focussedInputControl as HTMLTextAreaElement :
+              focussedInputControl as HTMLInputElement;
+            this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
+            this.isKeyboardOpen = this.keyboardService.openKeyboard(inputElement, elementComponent);
+          } else {
+            this.isKeyboardOpen = this.keyboardService.closeKeyboard();
+          }
         });
     }
   }
@@ -227,51 +286,6 @@ export class ElementContainerComponent implements OnInit {
       parentArray: 'elements',
       parentArrayIndex: this.parentArrayIndex
     });
-  }
-
-  private initEventsForKeyboard(elementComponent: TextFieldComponent | TextAreaComponent): void {
-    elementComponent.onFocus
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((focussedInputControl: HTMLElement): void => {
-        const inputElement = this.elementModel.type === 'text-area' ?
-          focussedInputControl as HTMLTextAreaElement :
-          focussedInputControl as HTMLInputElement;
-        this.isKeyboardOpen = this.keyboardService.openKeyboard(inputElement);
-      });
-
-    elementComponent.onBlur
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((): void => {
-        this.isKeyboardOpen = this.keyboardService.closeKeyboard();
-      });
-  }
-
-  private applySelection(mode: 'mark' | 'underline' | 'delete', color: string, element: HTMLElement): void {
-    const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-      if (this.isDescendantOf(range.startContainer, element) &&
-        this.isDescendantOf(range.endContainer, element)) {
-        const markMode = mode === 'mark' ? 'marked' : 'underlined';
-        this.markingService.applySelection(range, selection, mode === 'delete', color, markMode);
-        this.unitStateService.changeElementValue({
-          id: this.elementModel.id,
-          values: [this.elementModel.text as string, element.innerHTML]
-        });
-        this.elementModel.text = element.innerHTML;
-      }
-      selection.removeAllRanges();
-    } // nothing to do!
-  }
-
-  private isDescendantOf(node: Node | null, element: HTMLElement): boolean {
-    if (!node || node === document) {
-      return false;
-    }
-    if (node.parentElement === element) {
-      return true;
-    }
-    return this.isDescendantOf(node.parentNode, element);
   }
 
   ngOnDestroy(): void {

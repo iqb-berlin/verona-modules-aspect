@@ -1,0 +1,62 @@
+{
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "id": "dropdown_1",
+              "zIndex": 0,
+              "width": 214,
+              "height": 107,
+              "dynamicPositioning": false,
+              "xPosition": 160,
+              "yPosition": 138,
+              "gridColumnStart": 1,
+              "gridColumnEnd": 2,
+              "gridRowStart": 1,
+              "gridRowEnd": 2,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "marginTop": 0,
+              "marginBottom": 0,
+              "type": "dropdown",
+              "readOnly": false,
+              "label": "Beispielbeschriftung",
+              "value": null,
+              "required": true,
+              "requiredWarnMessage": "Eingabe erforderlich",
+              "options": [
+                "Hong Kong Dynamic"
+              ],
+              "allowUnset": false,
+              "fontColor": "#000000",
+              "font": "Roboto",
+              "fontSize": 18,
+              "lineHeight": 120,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "backgroundColor": "#d3d3d3"
+            }
+          ],
+          "height": 400,
+          "backgroundColor": "white",
+          "dynamicPositioning": false,
+          "autoColumnSize": true,
+          "autoRowSize": true,
+          "gridColumnSizes": "1fr 1fr",
+          "gridRowSizes": "1fr"
+        }
+      ],
+      "hasMaxWidth": false,
+      "maxWidth": 900,
+      "margin": 0,
+      "backgroundColor": "#ffffff",
+      "alwaysVisible": false,
+      "alwaysVisiblePagePosition": "left",
+      "alwaysVisibleAspectRatio": 50
+    }
+  ],
+  "veronaModuleVersion": "iqb-aspect-module@0.1.1"
+}

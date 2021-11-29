@@ -1,35 +1,37 @@
 import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
 import { UIElement } from '../models/uI-element';
-import { TextElement } from '../models/text-element';
-import { ButtonElement } from '../models/button-element';
-import { TextFieldElement } from '../models/text-field-element';
-import { TextAreaElement } from '../models/text-area-element';
-import { CheckboxElement } from '../models/checkbox-element';
-import { DropdownElement } from '../models/dropdown-element';
-import { RadioButtonGroupElement } from '../models/radio-button-group-element';
-import { ImageElement } from '../models/image-element';
-import { AudioElement } from '../models/audio-element';
-import { VideoElement } from '../models/video-element';
-import { TextComponent } from '../element-components/text.component';
-import { ButtonComponent } from '../element-components/button.component';
-import { TextFieldComponent } from '../element-components/text-field.component';
-import { TextAreaComponent } from '../element-components/text-area.component';
-import { CheckboxComponent } from '../element-components/checkbox.component';
-import { DropdownComponent } from '../element-components/dropdown.component';
-import { RadioButtonGroupComponent } from '../element-components/radio-button-group.component';
-import { ImageComponent } from '../element-components/image.component';
-import { AudioComponent } from '../element-components/audio.component';
-import { VideoComponent } from '../element-components/video.component';
-import { LikertElement } from '../models/compound-elements/likert-element';
-import { LikertComponent } from '../element-components/compound-elements/likert.component';
-import { RadioGroupImagesComponent } from '../element-components/compound-elements/radio-group-images.component';
-import { RadioGroupImagesElement } from '../models/compound-elements/radio-group-images';
-import { DropListComponent } from '../element-components/compound-elements/drop-list.component';
-import { DropListElement } from '../models/compound-elements/drop-list';
-import { SliderElement } from '../models/slider-element';
-import { SliderComponent } from '../element-components/slider.component';
-import { SpellCorrectElement } from '../models/spell-correct-element';
-import { SpellCorrectComponent } from '../element-components/spell-correct.component';
+import { TextElement } from '../ui-elements/text/text-element';
+import { ButtonElement } from '../ui-elements/button/button-element';
+import { TextFieldElement } from '../ui-elements/text-field/text-field-element';
+import { TextAreaElement } from '../ui-elements/text-area/text-area-element';
+import { CheckboxElement } from '../ui-elements/checkbox/checkbox-element';
+import { DropdownElement } from '../ui-elements/dropdown/dropdown-element';
+import { RadioButtonGroupElement } from '../ui-elements/radio/radio-button-group-element';
+import { ImageElement } from '../ui-elements/image/image-element';
+import { AudioElement } from '../ui-elements/audio/audio-element';
+import { VideoElement } from '../ui-elements/video/video-element';
+import { TextComponent } from '../ui-elements/text/text.component';
+import { ButtonComponent } from '../ui-elements/button/button.component';
+import { TextFieldComponent } from '../ui-elements/text-field/text-field.component';
+import { TextAreaComponent } from '../ui-elements/text-area/text-area.component';
+import { CheckboxComponent } from '../ui-elements/checkbox/checkbox.component';
+import { DropdownComponent } from '../ui-elements/dropdown/dropdown.component';
+import { RadioButtonGroupComponent } from '../ui-elements/radio/radio-button-group.component';
+import { ImageComponent } from '../ui-elements/image/image.component';
+import { AudioComponent } from '../ui-elements/audio/audio.component';
+import { VideoComponent } from '../ui-elements/video/video.component';
+import { LikertElement } from '../ui-elements/likert/likert-element';
+import { LikertComponent } from '../ui-elements/likert/likert.component';
+import { RadioGroupImagesComponent } from '../ui-elements/radio-with-images/radio-group-images.component';
+import { RadioGroupImagesElement } from '../ui-elements/radio-with-images/radio-group-images';
+import { DropListComponent } from '../ui-elements/drop-list/drop-list.component';
+import { DropListElement } from '../ui-elements/drop-list/drop-list';
+import { ClozeComponent } from '../ui-elements/cloze/cloze.component';
+import { ClozeElement } from '../ui-elements/cloze/cloze-element';
+import { SliderElement } from '../ui-elements/slider/slider-element';
+import { SpellCorrectElement } from '../ui-elements/spell-correct/spell-correct-element';
+import { SliderComponent } from '../ui-elements/slider/slider.component';
+import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correct.component';
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -72,6 +74,9 @@ export function createElement(elementModel: UIElement): UIElement {
       break;
     case 'drop-list':
       newElement = new DropListElement(elementModel);
+      break;
+    case 'cloze':
+      newElement = new ClozeElement(elementModel);
       break;
     case 'slider':
       newElement = new SliderElement(elementModel);
@@ -117,6 +122,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(RadioGroupImagesComponent);
     case 'drop-list':
       return componentFactoryResolver.resolveComponentFactory(DropListComponent);
+    case 'cloze':
+      return componentFactoryResolver.resolveComponentFactory(ClozeComponent);
     case 'slider':
       return componentFactoryResolver.resolveComponentFactory(SliderComponent);
     case 'spell-correct':

@@ -8,7 +8,7 @@ export class Page {
   sections: Section[] = [];
   hasMaxWidth: boolean = false;
   maxWidth: number = 900;
-  margin: number = 0;
+  margin: number = 30;
   backgroundColor: string = '#ffffff';
   alwaysVisible: boolean = false;
   alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom' = 'left';

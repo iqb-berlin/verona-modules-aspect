@@ -8,12 +8,7 @@ import { KeyboardService } from '../../services/keyboard.service';
 })
 export class KeyComponent {
   @Input() key!: string;
+  @Input() big!: boolean;
 
   constructor(public keyboardService: KeyboardService) { }
-
-  onClick(event: MouseEvent): void {
-    this.keyboardService.enterKey(this.key);
-    event.preventDefault();
-    event.stopPropagation();
-  }
 }

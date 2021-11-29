@@ -1,17 +1,6 @@
 div.ProseMirror {
-  height: 450px;
+  min-height: 350px;
   border: 1px solid;
-  overflow: auto;
-}
-
-app-rich-text-editor button {
-  min-width: unset !important;
-  width: 50px;
-}
-
-app-rich-text-editor .editor-button-formfield-align button {
-  vertical-align: top !important;
-  margin-top: 10px !important;
 }
 
 app-rich-text-editor button.active {
@@ -19,11 +8,20 @@ app-rich-text-editor button.active {
 }
 
 app-rich-text-editor mat-form-field {
-  width: 120px;
-  margin: 0 10px;
+  width: 100px;
+  margin: 0 8px;
 }
 
-app-rich-text-editor .editor-control-line {
+app-rich-text-editor mat-form-field.mat-form-field-type-mat-select {
+  margin-top: 4px;
+}
+
+app-rich-text-editor .editor-controls-first-line {
+  height: 50px;
+  margin-bottom: 5px;
+}
+
+app-rich-text-editor .editor-controls-second-line {
   height: 50px;
   margin-bottom: 5px;
 }
@@ -48,4 +46,48 @@ app-rich-text-editor .editor-control-line {
 .ProseMirror h4 {
   font-weight: normal;
   font-size: 16px;
+}
+
+.editor-controls-first-line .combo-button {
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.editor-controls-first-line .combo-button mat-select {
+  margin-top: 25%;
+}
+
+.editor-controls-second-line .combo-button {
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.editor-controls-second-line .combo-button mat-select {
+  margin-top: 25%;
+  margin-left: -10px;
+}
+
+.button-group {
+  margin-right: 10px;
+}
+.button-group button {
+  margin: 0 -5px;
+}
+.editor-controls-first-line .button-group {
+  margin-top: 8px;
+}
+.editor-controls-second-line .button-group {
+  margin-right: 25px;
+}
+
+.font-size-dropdown {
+  width: 70px;
+}
+
+.special-chars-button {
+  margin-left: 25px;
+}
+
+mark {
+  color: inherit;
 }

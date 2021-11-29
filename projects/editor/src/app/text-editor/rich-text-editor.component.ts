@@ -26,7 +26,14 @@ import { orderedListExtension } from './orderedList-extension';
 })
 export class RichTextEditorComponent implements AfterViewInit {
   @Input() text!: string;
+  @Input() showCloseElements: boolean | undefined = false;
   @Output() textChange = new EventEmitter<string>();
+
+  selectedFontColor = 'lightgrey';
+  selectedHighlightColor = 'lightgrey';
+  selectedFontSize = '20px';
+  bulletListStyle: string = 'disc';
+  orderedListStyle: string = 'decimal';
 
   editor = new Editor({
     extensions: [StarterKit, Underline, Superscript, Subscript,
@@ -81,16 +88,17 @@ export class RichTextEditorComponent implements AfterViewInit {
     this.editor.chain().toggleSubscript().focus().run();
   }
 
-  applyFontSize(size: number): void {
+  applyFontSize(size: string): void {
+    this.selectedFontSize = size;
     this.editor.commands.setFontSize(size);
   }
 
-  applyColor(color: string): void {
-    this.editor.chain().focus().setColor(color).run();
+  applyFontColor(): void {
+    this.editor.chain().focus().setColor(this.selectedFontColor).run();
   }
 
-  applyHighlight(color: string): void {
-    this.editor.chain().focus().toggleHighlight({ color: color }).run();
+  applyHighlightColor(): void {
+    this.editor.chain().focus().toggleHighlight({ color: this.selectedHighlightColor }).run();
   }
 
   alignText(direction: string): void {
@@ -107,17 +115,27 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   toggleBulletList(): void {
     this.editor.chain().toggleBulletList().focus().run();
+    this.editor.commands.setBulletListStyle(this.bulletListStyle);
   }
 
-  togleOrderedList(): void {
+  toggleOrderedList(): void {
     this.editor.chain().toggleOrderedList().focus().run();
+    this.editor.commands.setOrderedListStyle(this.orderedListStyle, this.selectedFontSize);
   }
 
   applyListStyle(listType: string, style: string): void {
     if (listType === 'bulletList') {
+      this.bulletListStyle = style;
       this.editor.commands.setBulletListStyle(style);
+      if (!this.editor.isActive('bulletList')) {
+        this.toggleBulletList();
+      }
     } else {
-      this.editor.commands.setOrderedListStyle(style);
+      this.orderedListStyle = style;
+      this.editor.commands.setOrderedListStyle(style, this.selectedFontSize);
+      if (!this.editor.isActive('orderedList')) {
+        this.toggleOrderedList();
+      }
     }
   }
 

@@ -401,4 +401,8 @@ export class UnitService {
       // no default
     }
   }
+
+  getNewValueID(): string {
+    return IdService.getInstance().getNewID('value');
+  }
 }

@@ -400,7 +400,7 @@
   <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
                 [checked]="$any(combinedProperties.scale)"
                 (change)="updateModel.emit({ property: 'scale', value: $event.checked })">
-    {{'propertiesPanel.imageScale' | translate }}
+    {{'propertiesPanel.scale' | translate }}
   </mat-checkbox>
 
   <mat-checkbox *ngIf="combinedProperties.magnifier !== undefined"

@@ -108,7 +108,7 @@
     "floating": "schwebend",
     "lineColoring": "Zeilenfärbung",
     "lineColoringColor": "Zeilenfarbe",
-    "imageScale": "Bild skalieren",
+    "scale": "Skalieren",
     "magnifier": "Lupe",
     "magnifierSize": "Größe der Lupe",
     "magnifierZoom": "Vergrößerungsfaktor",

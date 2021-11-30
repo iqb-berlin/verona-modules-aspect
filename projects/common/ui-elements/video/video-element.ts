@@ -1,9 +1,11 @@
-import { PlayerElement, PlayerProperties, PositionedElement, PositionProperties, UIElement } from '../../models/uI-element';
+import {
+  PlayerElement, PlayerProperties, PositionedElement, PositionProperties, UIElement
+} from '../../models/uI-element';
 import { initPlayerElement, initPositionedElement } from '../../util/unit-interface-initializer';
 
 export class VideoElement extends UIElement implements PositionedElement, PlayerElement {
   src: string = '';
-
+  scale: boolean = false;
   positionProps: PositionProperties;
   playerProps: PlayerProperties;
 

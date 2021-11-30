@@ -5,9 +5,7 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
 @Component({
   selector: 'app-video',
   template: `
-    <div [style.object-fit]="'contain'"
-         [style.height.%]="100"
-         [style.width.%]="100">
+    <div [class]="elementModel.scale ? 'fit-video' : 'max-size-video'">
       <video #player
              (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
              (pause)="onMediaPlayStatusChanged.emit(null)"
@@ -26,7 +24,11 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
       </app-control-bar>
     </div>
   `,
-  styles: ['.correct-position{ display: block; margin-top: -4px; }']
+  styles: [
+    '.correct-position{ display: block; margin-top: -4px; }',
+    '.max-size-video{ width: fit-content; max-height: fit-content }',
+    '.fit-video{ width: 100%; height: 100%; object-fit: contain}'
+  ]
 })
 export class VideoComponent extends MediaPlayerElementComponent {
   @Input() elementModel!: VideoElement;

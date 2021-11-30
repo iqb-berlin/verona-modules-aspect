@@ -11,7 +11,8 @@ import { Unit } from '../../../../common/models/unit';
 import { Page } from '../../../../common/models/page';
 import { Section } from '../../../../common/models/section';
 import {
-  InputElement,
+  DragNDropValueObject,
+  InputElement, InputElementValue,
   LikertColumn,
   LikertRow, PlayerElement,
   PlayerProperties, PositionedElement,
@@ -173,10 +174,22 @@ export class UnitService {
   }
 
   deleteElements(elements: UIElement[]): void {
+    UnitService.freeUpIds(elements);
     this.unitModel.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
       section.deleteElements(elements);
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification();
+  }
+
+  private static freeUpIds(elements: UIElement[]): void {
+    elements.forEach(element => {
+      if (element.type === 'drop-list') {
+        element.value.foreach((value: DragNDropValueObject) => {
+          IdService.getInstance().removeId(value.id);
+        });
+      }
+      IdService.getInstance().removeId(element.id);
+    });
   }
 
   /* Move element between sections */
@@ -218,7 +231,7 @@ export class UnitService {
           this.messageService.showError(this.translateService.instant('idTaken'));
           return false;
         }
-        IdService.getInstance().removeId(element[property]);
+        IdService.getInstance().removeId(element.id);
         IdService.getInstance().addId(<string>value);
       }
       element.setProperty(property, value);

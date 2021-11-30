@@ -53,6 +53,7 @@ export class IdService {
     this.givenIDs.push(id);
   }
 
+  /* Remove ID from givenIDs, so it can be used again. */
   removeId(id: string): void {
     const index = this.givenIDs.indexOf(id, 0);
     if (index > -1) {

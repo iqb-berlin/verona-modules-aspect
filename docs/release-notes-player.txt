@@ -5,11 +5,14 @@ Player
    after dependencies to other audios and videos have been resolved
  - Remove minus sign if remaining time in audio/video player is 0
  - Fix playback option for videos
+ - Disable mute control if wanted
  - Fix dependency resolving problems with audios and videos, when minRuns and maxRuns have the same value
  - Add rubber icon to delete text marks
  - Restrict the allowed inputs for the virtual keyboard (only numbers and numbers and operators).
    If these virtual keyboards are used, input via the normal keyboard is also restricted to these
    characters.
+ - Allow or disallow scaling of videos and images. If the allowed, the video or image will be scaled as far as its
+   container (static element or grid) allows, otherwise only up to its maximum native size.
 
 
 1.6.0

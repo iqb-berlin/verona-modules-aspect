@@ -1,8 +1,16 @@
 Editor
 ======
+1.13.0
  - Remove underlinable option for text
  - Offer a choice of colors for marking text
-
+ - Fix text element with background color and font color at the same time
+ - Add proper label to textarea and reduce vertical space around text
+ - Add 30px default bottom-margin to likert and radio
+ - Rework dropList items to have an ID and allow images references
+   To use images a text option has to be created like before. The image
+   can be set afterwards. When an option has both a text and an image, the
+   text is ignored and the image is shown.
+ - Improve ID-Service to free up IDs when elements are deleted
 
 1.12.0
  - Add new element cloze ("Lückentext")

@@ -3,6 +3,7 @@ import { initPositionedElement } from '../../util/unit-interface-initializer';
 
 export class ImageElement extends UIElement implements PositionedElement {
   src: string = '';
+  scale: boolean = false;
   magnifier: boolean = false;
   magnifierSize: number = 100;
   magnifierZoom: number = 1.5;

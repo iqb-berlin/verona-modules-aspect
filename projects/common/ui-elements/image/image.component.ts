@@ -18,7 +18,7 @@ import { ValueChangeElement } from '../../models/uI-element';
         <img #image
              [src]="elementModel.src | safeResourceUrl"
              [alt]="'imageNotFound' | translate"
-             [class]="elementModel.dynamicPositioning? 'dynamic-image' : 'static-image'">
+             [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">
         <app-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
                        [imageId]="elementModel.id"
                        [size]="elementModel.magnifierSize"
@@ -31,8 +31,8 @@ import { ValueChangeElement } from '../../models/uI-element';
   `,
   styles: [
     '.image-container{ position: relative }',
-    '.dynamic-image{ width: 100%; height: fit-content }',
-    '.static-image{ width: 100%; height: 100%; object-fit: contain }'
+    '.max-size-image{ max-width: 100%; max-height: 100% }',
+    '.fit-image{ width: 100%; height: 100%; object-fit: contain}'
   ]
 })
 export class ImageComponent extends ElementComponent {

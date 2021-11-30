@@ -397,6 +397,12 @@
            (input)="updateModel.emit({ property: 'lineColoringColor', value: $any($event.target).value })">
   </mat-form-field>
 
+  <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
+                [checked]="$any(combinedProperties.scale)"
+                (change)="updateModel.emit({ property: 'scale', value: $event.checked })">
+    {{'propertiesPanel.imageScale' | translate }}
+  </mat-checkbox>
+
   <mat-checkbox *ngIf="combinedProperties.magnifier !== undefined"
                 [checked]="$any(combinedProperties.magnifier)"
                 (change)="updateModel.emit({ property: 'magnifier', value: $event.checked })">

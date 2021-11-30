@@ -13,6 +13,7 @@ Player
    characters.
  - Allow or disallow scaling of videos and images. If the allowed, the video or image will be scaled as far as its
    container (static element or grid) allows, otherwise only up to its maximum native size.
+ - Improve cursors of draggable items
 
 
 1.6.0

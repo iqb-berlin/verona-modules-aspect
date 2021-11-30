@@ -43,8 +43,8 @@ export class Magnifier {
       this.used = true;
       this.elementValueChanged.emit({ id: this.imageId, values: [false, true] });
     }
-    this.left = this.calculateGlassPosition(this.image.width, event.offsetX) - 1;
-    this.top = this.calculateGlassPosition(this.image.height, event.offsetY) - 1;
+    this.left = this.calculateGlassPosition(this.image.width, event.offsetX) - 2;
+    this.top = this.calculateGlassPosition(this.image.height, event.offsetY) - 2;
     this.backgroundPosition =
       `-${
         this.calculateBackgroundPosition(this.image.width, event.offsetX)

@@ -110,10 +110,13 @@
         <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
              class="list-items" fxLayout="row" fxLayoutAlign="end center">
           <div fxFlex="70">
-            {{value}}
+            {{value.stringValue}} ({{value.id}})
           </div>
+          <img [src]="value.imgSrcValue"
+               [style.object-fit]="'scale-down'"
+               [style.height.px]="40">
           <button mat-icon-button color="primary"
-                  (click)="editTextOption('value', i)">
+                  (click)="editDropListOption(i)">
             <mat-icon>build</mat-icon>
           </button>
           <button mat-icon-button color="primary"
@@ -125,11 +128,11 @@
     </ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-icon-button matPrefix
-              (click)="addOption('value', newValue.value); newValue.select()">
+              (click)="addDropListOption(newValue.value); newValue.select()">
         <mat-icon>add</mat-icon>
       </button>
       <input #newValue matInput type="text"
-             (keyup.enter)="addOption('value', newValue.value); newValue.select()">
+             (keyup.enter)="addDropListOption(newValue.value); newValue.select()">
     </div>
   </mat-form-field>
 

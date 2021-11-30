@@ -5,6 +5,7 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
+  DragNDropValueObject,
   InputElementValue, LikertColumn, LikertRow, UIElement
 } from '../../../../../../../common/models/uI-element';
 import { LikertElement } from '../../../../../../../common/ui-elements/likert/likert-element';
@@ -48,6 +49,16 @@ export class ElementModelPropertiesComponent {
 
   async editTextOption(property: string, optionIndex: number): Promise<void> {
     await this.unitService.editTextOption(property, optionIndex);
+  }
+
+  addDropListOption(value: string): void {
+    const id = this.unitService.getNewValueID();
+    this.combinedProperties.value.push({ stringValue: value, id: id });
+    this.updateModel.emit({ property: 'value', value: this.combinedProperties.value });
+  }
+
+  async editDropListOption(optionIndex: number): Promise<void> {
+    await this.unitService.editDropListOption(optionIndex);
   }
 
   async editColumnOption(optionIndex: number): Promise<void> {

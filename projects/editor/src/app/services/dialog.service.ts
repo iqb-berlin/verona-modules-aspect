@@ -9,7 +9,13 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertColumnEditDialogComponent } from '../components/dialogs/likert-column-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
-import { LikertColumn, PlayerElement, PlayerProperties } from '../../../../common/models/uI-element';
+import {
+  DragNDropValueObject,
+  LikertColumn,
+  PlayerElement,
+  PlayerProperties
+} from '../../../../common/models/uI-element';
+import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +36,15 @@ export class DialogService {
     const dialogRef = this.dialog.open(TextEditDialogComponent, {
       data: {
         text: text
+      }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showDropListOptionEditDialog(value: DragNDropValueObject): Observable<DragNDropValueObject> {
+    const dialogRef = this.dialog.open(DropListOptionEditDialogComponent, {
+      data: {
+        value: value
       }
     });
     return dialogRef.afterClosed();

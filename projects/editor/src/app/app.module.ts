@@ -43,6 +43,7 @@ import { LikertColumnEditDialogComponent } from './components/dialogs/likert-col
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
 import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
 import { ElementModelPropertiesComponent } from './components/unit-view/page-view/properties-panel/element-model-properties.component';
+import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ElementModelPropertiesComponent } from './components/unit-view/page-vie
     LikertColumnEditDialogComponent,
     LikertRowEditDialogComponent,
     RichTextEditDialogComponent,
-    ElementModelPropertiesComponent
+    ElementModelPropertiesComponent,
+    DropListOptionEditDialogComponent
   ],
   imports: [
     BrowserModule,

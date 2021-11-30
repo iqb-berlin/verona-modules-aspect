@@ -8,7 +8,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { MessageService } from '../../../../../../../common/services/message.service';
-import { LikertColumn, LikertRow, UIElement } from '../../../../../../../common/models/uI-element';
+import {
+  DragNDropValueObject,
+  LikertColumn,
+  LikertRow,
+  UIElement
+} from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-element-properties',
@@ -73,7 +78,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] | LikertColumn[] | LikertRow[] | null,
+              value: string | number | boolean | string[] |
+              LikertColumn[] | LikertRow[] | DragNDropValueObject | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);

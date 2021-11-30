@@ -209,8 +209,8 @@ export class UnitService {
   }
 
   updateElementProperty(elements: UIElement[], property: string,
-                        value: string | number | boolean | string[] |
-                        LikertColumn[] | LikertRow[] | null): boolean {
+                        value: InputElementValue | LikertColumn[] | LikertRow[] |
+                        DragNDropValueObject[] | null): boolean {
     console.log('updateElementProperty', elements, property, value);
     for (const element of elements) {
       if (property === 'id') {
@@ -235,6 +235,21 @@ export class UnitService {
         if (result) {
           oldOptions[optionIndex] = result;
           this.updateElementProperty(this.selectionService.getSelectedElements(), property, oldOptions);
+        }
+      });
+  }
+
+  async editDropListOption(optionIndex: number): Promise<void> {
+    const oldOptions = this.selectionService.getSelectedElements()[0].value as DragNDropValueObject[];
+    await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])
+      .subscribe((result: DragNDropValueObject) => {
+        if (result) {
+          if (result.id !== oldOptions[optionIndex].id && !IdService.getInstance().isIdAvailable(result.id)) {
+            this.messageService.showError(this.translateService.instant('idTaken'));
+            return;
+          }
+          oldOptions[optionIndex] = result;
+          this.updateElementProperty(this.selectionService.getSelectedElements(), 'value', oldOptions);
         }
       });
   }

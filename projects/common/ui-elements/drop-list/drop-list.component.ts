@@ -32,18 +32,25 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [cdkDropListOrientation]="elementModel.orientation"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
-        <div class="item" *ngFor="let value of $any(elementModel.value)" cdkDrag
-             [style.background-color]="elementModel.itemBackgroundColor"
-             (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
-          <div *cdkDragPreview
-               [style.font-size.px]="elementModel.fontProps.fontSize"
-               [style.background-color]="elementModel.itemBackgroundColor">
-            {{value}}
+        <ng-container *ngFor="let value of $any(elementModel.value)">
+          <div class="item" *ngIf="!value.imgSrcValue" cdkDrag
+               [style.background-color]="elementModel.itemBackgroundColor"
+               (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
+            <div *cdkDragPreview
+                 [style.font-size.px]="elementModel.fontProps.fontSize"
+                 [style.background-color]="elementModel.itemBackgroundColor">
+              {{value.stringValue}}
+            </div>
+            <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.fontProps.fontSize">
+            </div>
+            {{value.stringValue}}
           </div>
-          <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.fontProps.fontSize">
-          </div>
-          {{value}}
-        </div>
+          <img *ngIf="value.imgSrcValue"
+               [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
+
+               cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
+               [style.object-fit]="'scale-down'">
+        </ng-container>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">

@@ -39,7 +39,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
 
-    this.width = serializedElement.height || 450;
+    this.width = serializedElement.width || 450;
     this.height = serializedElement.height || 200;
   }
 

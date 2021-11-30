@@ -43,6 +43,8 @@ import { RadioGroupImagesComponent } from './ui-elements/radio-with-images/radio
 import { DropListComponent } from './ui-elements/drop-list/drop-list.component';
 import { ClozeComponent } from './ui-elements/cloze/cloze.component';
 import { TextFieldSimpleComponent } from './ui-elements/textfield-simple/text-field-simple.component';
+import { SliderComponent } from './ui-elements/slider/slider.component';
+import { SpellCorrectComponent } from './ui-elements/spell-correct/spell-correct.component';
 import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-list-simple.component';
 
 @NgModule({
@@ -88,7 +90,10 @@ import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-lis
     DropListComponent,
     ClozeComponent,
     TextFieldSimpleComponent,
-    DropListSimpleComponent
+    DropListSimpleComponent,
+    SliderComponent,
+    SpellCorrectComponent,
+    TextFieldSimpleComponent
   ],
   exports: [
     CommonModule,

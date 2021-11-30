@@ -1,9 +1,7 @@
 import {
-  Component, EventEmitter, Output, QueryList, ViewChildren
+  Component, QueryList, ViewChildren
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { LikertElement } from './likert-element';
-import { ValueChangeElement } from '../../models/uI-element';
 import { LikertElementRow } from './likert-element-row';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';

@@ -93,8 +93,13 @@
     "appearance": "Aussehen",
 
     "minLength": "Minimallänge",
+    "minValue": "Minimalwert",
     "minLengthWarnMessage": "Minimalwert Warnmeldung",
     "maxLength": "Maximalwert",
+    "maxValue": "Maximalwert",
+    "showValues": "Zeige Start- und Endwert",
+    "barStyle": "Balken statt Kreis",
+    "thumbLabel": "Zeige gewählten Wert",
     "maxLengthWarnMessage": "Maximalwert Warnmeldung",
     "pattern": "Muster",
     "patternWarnMessage": "Muster Warnmeldung",
@@ -121,7 +126,8 @@
     "firstColumnSizeRatioExplanation": "Größenverhältnis der ersten Spalte zu allen anderen",
     "duplicateElement": "Element duplizieren",
     "deleteElement": "Element löschen",
-    "noElementSelected": "Kein Element ausgewählt"
+    "noElementSelected": "Kein Element ausgewählt",
+    "spellCorrectButtonLabel": "Wort zum Korrigieren"
   },
   "player": {
     "autoStart": "Autostart",

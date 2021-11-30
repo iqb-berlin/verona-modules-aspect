@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 import { VeronaAPIService } from './services/verona-api.service';
 import { UnitService } from './services/unit.service';
 
@@ -37,5 +39,6 @@ export class AppComponent implements OnInit {
       });
 
     this.veronaApiService.sendVoeReadyNotification();
+    registerLocaleData(localeDe);
   }
 }

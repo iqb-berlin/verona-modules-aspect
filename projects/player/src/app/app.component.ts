@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
+import { registerLocaleData } from '@angular/common';
+import localeDe from '@angular/common/locales/de';
 import {
   Unit
 } from '../../../common/models/unit';
@@ -42,6 +44,7 @@ export class AppComponent implements OnInit {
     this.veronaPostService.sendVopReadyNotification(this.metaDataService.playerMetadata);
     this.translateService.addLangs(['de']);
     this.translateService.setDefaultLang('de');
+    registerLocaleData(localeDe);
   }
 
   private initSubscriptions(): void {

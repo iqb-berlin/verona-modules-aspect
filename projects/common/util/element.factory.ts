@@ -28,6 +28,10 @@ import { DropListComponent } from '../ui-elements/drop-list/drop-list.component'
 import { DropListElement } from '../ui-elements/drop-list/drop-list';
 import { ClozeComponent } from '../ui-elements/cloze/cloze.component';
 import { ClozeElement } from '../ui-elements/cloze/cloze-element';
+import { SliderElement } from '../ui-elements/slider/slider-element';
+import { SpellCorrectElement } from '../ui-elements/spell-correct/spell-correct-element';
+import { SliderComponent } from '../ui-elements/slider/slider.component';
+import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correct.component';
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -74,6 +78,12 @@ export function createElement(elementModel: UIElement): UIElement {
     case 'cloze':
       newElement = new ClozeElement(elementModel);
       break;
+    case 'slider':
+      newElement = new SliderElement(elementModel);
+      break;
+    case 'spell-correct':
+      newElement = new SpellCorrectElement(elementModel);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -114,6 +124,10 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(DropListComponent);
     case 'cloze':
       return componentFactoryResolver.resolveComponentFactory(ClozeComponent);
+    case 'slider':
+      return componentFactoryResolver.resolveComponentFactory(SliderComponent);
+    case 'spell-correct':
+      return componentFactoryResolver.resolveComponentFactory(SpellCorrectComponent);
     default:
       throw new Error('unknown element');
   }

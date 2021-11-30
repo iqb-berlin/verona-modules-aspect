@@ -5,6 +5,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from './drop-list';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { DragNDropValueObject } from '../../models/uI-element';
 
 @Component({
   selector: 'app-drop-list',
@@ -47,7 +48,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
           </div>
           <img *ngIf="value.imgSrcValue"
                [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
-
                cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
                [style.object-fit]="'scale-down'">
         </ng-container>
@@ -80,7 +80,7 @@ export class DropListComponent extends FormElementComponent {
 
   bodyElement: HTMLElement = document.body;
 
-  dragStart() {
+  dragStart(): void {
     this.bodyElement.classList.add('inheritCursors');
     this.bodyElement.style.cursor = 'grabbing';
   }
@@ -93,17 +93,20 @@ export class DropListComponent extends FormElementComponent {
   drop(event: CdkDragDrop<DropListComponent>): void {
     if (!this.elementModel.readOnly) {
       if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data.elementModel.value as string[], event.previousIndex, event.currentIndex);
+        moveItemInArray(event.container.data.elementModel.value as unknown as DragNDropValueObject[],
+          event.previousIndex, event.currentIndex);
       } else {
         transferArrayItem(
-          event.previousContainer.data.elementModel.value as string[],
-          event.container.data.elementModel.value as string[],
+          event.previousContainer.data.elementModel.value as unknown as DragNDropValueObject[],
+          event.container.data.elementModel.value as unknown as DragNDropValueObject[],
           event.previousIndex,
           event.currentIndex
         );
-        event.previousContainer.data.elementFormControl.setValue(event.previousContainer.data.elementModel.value);
+        event.previousContainer.data.elementFormControl.setValue(
+          (event.previousContainer.data.elementModel.value as DragNDropValueObject).id
+        );
       }
-      this.elementFormControl.setValue(event.container.data.elementModel.value);
+      this.elementFormControl.setValue((event.container.data.elementModel.value as DragNDropValueObject).id);
     }
   }
 

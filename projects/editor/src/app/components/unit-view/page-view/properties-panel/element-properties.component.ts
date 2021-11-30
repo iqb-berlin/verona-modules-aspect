@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { merge } from 'lodash';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { MessageService } from '../../../../../../../common/services/message.service';
@@ -53,6 +54,9 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
 
   /* Create new object with properties of all selected elements. When values differ set prop to undefined. */
   createCombinedProperties(): void {
+    // Flatten all elements first, to make it easier to combine them
+    this.selectedElements =
+      this.selectedElements.map(element => ElementPropertiesComponent.flattenInterfaceProps(element));
     if (this.selectedElements.length === 0) {
       this.combinedProperties = {} as UIElement;
     } else {
@@ -75,6 +79,13 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
         });
       }
     }
+    console.log('combined', this.combinedProperties);
+  }
+
+  private static flattenInterfaceProps(element: UIElement): UIElement {
+    let flatElement = merge(element, element.positionProps);
+    flatElement = merge(flatElement, element.fontProps);
+    return merge(flatElement, element.surfaceProps);
   }
 
   updateModel(property: string,

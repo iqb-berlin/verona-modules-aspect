@@ -9,7 +9,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
   selector: 'app-element-sizing-properties',
   template: `
     <div fxLayout="column">
-      <ng-container *ngIf="!combinedProperties.positionProps?.dynamicPositioning; else elseBlock">
+      <ng-container *ngIf="!combinedProperties.dynamicPositioning; else elseBlock">
         <mat-form-field appearance="fill">
           <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
           <input matInput type="number" #width="ngModel" min="0"
@@ -27,18 +27,18 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                      isInputValid: height.valid && $event !== null})">
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.positionProps" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.xPosition !== undefined" appearance="fill">
           <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
           <input matInput type="number" #xPosition="ngModel" min="0"
-                 [ngModel]="combinedProperties.positionProps?.xPosition"
+                 [ngModel]="combinedProperties.xPosition"
                  (ngModelChange)="updateModel.emit(
                     { property: 'xPosition', value: $event, isInputValid: xPosition.valid && $event !== null })">
         </mat-form-field>
 
-        <mat-form-field *ngIf="combinedProperties.positionProps" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.yPosition !== undefined" appearance="fill">
           <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
           <input matInput type="number" #yPosition="ngModel" min="0"
-                 [ngModel]="combinedProperties.positionProps?.yPosition"
+                 [ngModel]="combinedProperties.yPosition"
                  (ngModelChange)="updateModel.emit(
                     { property: 'yPosition', value: $event, isInputValid: yPosition.valid && $event !== null })">
         </mat-form-field>
@@ -54,12 +54,12 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
         </mat-form-field>
 
         <mat-checkbox *ngIf="combinedProperties.positionProps !== undefined"
-                      [checked]="$any(combinedProperties.positionProps?.useMinHeight)"
+                      [checked]="$any(combinedProperties.useMinHeight)"
                       (change)="updateModel.emit({ property: 'useMinHeight', value: $event.checked })">
           {{'propertiesPanel.useMinHeight' | translate }}
         </mat-checkbox>
 
-        <mat-form-field *ngIf="combinedProperties.positionProps?.useMinHeight" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.useMinHeight !== undefined" appearance="fill">
           <mat-label>{{'propertiesPanel.minHeight' | translate }}</mat-label>
           <input matInput type="number" #height="ngModel" min="0"
                  [ngModel]="combinedProperties.height"
@@ -73,24 +73,24 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
           <div fxLayoutAlign="row">
             <mat-form-field class="small-input">
               <mat-label>{{'propertiesPanel.startColumn' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="combinedProperties.positionProps?.gridColumnStart"
+              <input matInput type="number" [ngModel]="combinedProperties.gridColumnStart"
                      (ngModelChange)="updateModel.emit({ property: 'gridColumnStart', value: $event })">
             </mat-form-field>
             <mat-form-field class="small-input">
               <mat-label>{{'propertiesPanel.endColumn' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="combinedProperties.positionProps?.gridColumnEnd"
+              <input matInput type="number" [ngModel]="combinedProperties.gridColumnEnd"
                      (ngModelChange)="updateModel.emit({ property: 'gridColumnEnd', value: $event })">
             </mat-form-field>
           </div>
           <div fxLayoutAlign="row">
             <mat-form-field class="small-input">
               <mat-label>{{'propertiesPanel.startRow' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="combinedProperties.positionProps?.gridRowStart"
+              <input matInput type="number" [ngModel]="combinedProperties.gridRowStart"
                      (ngModelChange)="updateModel.emit({ property: 'gridRowStart', value: $event })">
             </mat-form-field>
             <mat-form-field class="small-input">
               <mat-label>{{'propertiesPanel.endRow' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="combinedProperties.positionProps?.gridRowEnd"
+              <input matInput type="number" [ngModel]="combinedProperties.gridRowEnd"
                      (ngModelChange)="updateModel.emit({ property: 'gridRowEnd', value: $event })">
             </mat-form-field>
           </div>
@@ -101,7 +101,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
           <mat-form-field class="centered-form-field small-input">
             <mat-label>{{'propertiesPanel.top' | translate }}</mat-label>
             <input matInput type="number" #marginTop="ngModel" min="0"
-                   [ngModel]="combinedProperties.positionProps?.marginTop"
+                   [ngModel]="combinedProperties.marginTop"
                    (ngModelChange)="updateModel.emit(
                       { property: 'marginTop', value: $event, isInputValid: marginTop.valid && $event !== null })">
           </mat-form-field>
@@ -109,14 +109,14 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
             <mat-form-field class="small-input">
               <mat-label>{{'propertiesPanel.left' | translate }}</mat-label>
               <input matInput type="number" #marginLeft="ngModel" min="0"
-                     [ngModel]="combinedProperties.positionProps?.marginLeft"
+                     [ngModel]="combinedProperties.marginLeft"
                      (ngModelChange)="updateModel.emit(
                         { property: 'marginLeft', value: $event, isInputValid: marginLeft.valid && $event !== null })">
             </mat-form-field>
             <mat-form-field class="right-form-field small-input">
               <mat-label>{{'propertiesPanel.right' | translate }}</mat-label>
               <input matInput type="number" #marginRight="ngModel" min="0"
-                     [ngModel]="combinedProperties.positionProps?.marginRight"
+                     [ngModel]="combinedProperties.marginRight"
                      (ngModelChange)="updateModel.emit(
                         { property: 'marginRight',
                           value: $event,
@@ -126,7 +126,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
           <mat-form-field class="centered-form-field small-input">
             <mat-label>{{'propertiesPanel.bottom' | translate }}</mat-label>
             <input matInput type="number" #marginBottom="ngModel" min="0"
-                   [ngModel]="combinedProperties.positionProps?.marginBottom"
+                   [ngModel]="combinedProperties.marginBottom"
                    (ngModelChange)="updateModel.emit(
                       { property: 'marginBottom',
                         value: $event,
@@ -138,7 +138,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
       <mat-form-field *ngIf="combinedProperties.positionProps" appearance="fill">
         <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
         <input matInput type="number" #zIndex="ngModel" min="0"
-               [ngModel]="combinedProperties.positionProps?.zIndex"
+               [ngModel]="combinedProperties.zIndex"
                (ngModelChange)="updateModel.emit({ property: 'zIndex',
                                                    value: $event,
                                                    isInputValid: zIndex.valid && $event !== null })"

@@ -26,7 +26,10 @@
     </button>
   </ng-container>
 
-  {{'propertiesPanel.highlightable' | translate }}
+  <div *ngIf="combinedProperties.highlightableYellow !== undefined ||
+              combinedProperties.highlightableTurquoise !== undefined ||
+              combinedProperties.highlightableOrange !== undefined">
+    {{'propertiesPanel.highlightable' | translate }}</div>
   <mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
                 [checked]="$any(combinedProperties.highlightableYellow)"
                 (change)="updateModel.emit({ property: 'highlightableYellow', value: $event.checked })">

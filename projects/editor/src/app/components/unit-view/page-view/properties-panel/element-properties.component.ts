@@ -55,22 +55,24 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   /* Create new object with properties of all selected elements. When values differ set prop to undefined. */
   createCombinedProperties(): void {
     // Flatten all elements first, to make it easier to combine them
-    this.selectedElements =
+    const flattenedSelectedElements =
       this.selectedElements.map(element => ElementPropertiesComponent.flattenInterfaceProps(element));
-    if (this.selectedElements.length === 0) {
+
+    if (flattenedSelectedElements.length === 0) {
       this.combinedProperties = {} as UIElement;
     } else {
-      this.combinedProperties = { ...this.selectedElements[0] } as UIElement;
+      this.combinedProperties = { ...flattenedSelectedElements[0] } as UIElement;
 
-      for (let i = 1; i < this.selectedElements.length; i++) {
+      for (let i = 1; i < flattenedSelectedElements.length; i++) {
         Object.keys(this.combinedProperties).forEach((property: keyof UIElement) => {
-          if (Object.prototype.hasOwnProperty.call(this.selectedElements[i], property)) {
-            if (Array.isArray(this.selectedElements[i][property])) {
-              if (this.selectedElements[i][property]!.toString() === this.combinedProperties[property]!.toString()) {
-                this.combinedProperties[property] = this.selectedElements[i][property];
+          if (Object.prototype.hasOwnProperty.call(flattenedSelectedElements[i], property)) {
+            if (Array.isArray(flattenedSelectedElements[i][property])) {
+              if (flattenedSelectedElements[i][property]!.toString() === this.combinedProperties[property]!.toString()) {
+                // @ts-ignore TODO
+                flattenedSelectedElements[property] = flattenedSelectedElements[i][property];
               }
             }
-            if (this.selectedElements[i][property] !== this.combinedProperties[property]) {
+            if (flattenedSelectedElements[i][property] !== this.combinedProperties[property]) {
               this.combinedProperties[property] = null;
             }
           } else {
@@ -83,9 +85,9 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   private static flattenInterfaceProps(element: UIElement): UIElement {
-    let flatElement = merge(element, element.positionProps);
+    let flatElement = merge({ ...element }, element.positionProps);
     flatElement = merge(flatElement, element.fontProps);
-    return merge(flatElement, element.surfaceProps);
+    return merge(flatElement, element.surfaceProps) as unknown as UIElement;
   }
 
   updateModel(property: string,

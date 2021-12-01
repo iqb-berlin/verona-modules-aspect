@@ -59,10 +59,11 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showRichTextEditDialog(text: string): Observable<string> {
+  showRichTextEditDialog(text: string, defaultFontSize: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
       data: {
-        text: text
+        text: text,
+        defaultFontSize: defaultFontSize
       },
       autoFocus: false
     });

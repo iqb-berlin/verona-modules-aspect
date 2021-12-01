@@ -46,6 +46,7 @@ import { ValueChangeElement } from '../../models/uI-element';
            [style.background-color]="elementModel.surfaceProps.backgroundColor"
            [style.color]="elementModel.fontProps.fontColor"
            [style.font-family]="elementModel.fontProps.font"
+           [style.font-size.px]="elementModel.fontProps.fontSize"
            [style.line-height.%]="elementModel.fontProps.lineHeight"
            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"

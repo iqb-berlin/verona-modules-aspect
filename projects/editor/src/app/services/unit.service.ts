@@ -361,7 +361,9 @@ export class UnitService {
         });
         break;
       case 'text':
-        this.dialogService.showRichTextEditDialog((element as TextElement).text).subscribe((result: string) => {
+        this.dialogService.showRichTextEditDialog(
+          (element as TextElement).text, (element as TextElement).fontProps.fontSize as number
+        ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
             this.updateElementProperty(

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { SpellCorrectElement } from './spell-correct-element';
 
@@ -9,16 +8,20 @@ import { SpellCorrectElement } from './spell-correct-element';
   template: `
     <div fxFlex
          fxLayout="column"
-         [style.width.%]="100"
          appInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+         [style.width.%]="100"
          [style.height.%]="100">
       <mat-form-field class="small-input">
         <input matInput type="text"
                [style.text-align]="'center'"
                autocomplete="off"
+               [readonly]="elementModel.readOnly"
+               [value]="elementModel.value"
                [formControl]="elementFormControl">
       </mat-form-field>
       <button mat-button
+              type="button"
+              [disabled]="elementModel.readOnly"
               [style.color]="elementModel.fontProps.fontColor"
               [style.font-family]="elementModel.fontProps.font"
               [style.font-size.px]="elementModel.fontProps.fontSize"
@@ -26,8 +29,8 @@ import { SpellCorrectElement } from './spell-correct-element';
               [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
               [style.width.%]="100"
               [style.margin-top]="'-20px'"
-              [style.text-decoration-line]="strikethrough() ? 'line-through' : ''"
-              (click)="onClick($event)">
+              [style.text-decoration-line]="strikethrough ? 'line-through' : ''"
+              (click)="onClick()">
         &nbsp;{{elementModel.label}}&nbsp;
       </button>
     </div>
@@ -38,37 +41,21 @@ import { SpellCorrectElement } from './spell-correct-element';
 })
 export class SpellCorrectComponent extends FormElementComponent implements OnInit {
   elementModel!: SpellCorrectElement;
+  strikethrough!: boolean;
+
   @ViewChild(MatInput) inputElement!: MatInput;
-  @ViewChild(MatButton) buttonElement!: MatButton;
 
-  ngOnInit(): void {
-    super.ngOnInit();
-    if (this.inputElement && this.elementModel.readOnly) {
-      this.inputElement.readonly = true;
-    }
-    if (this.buttonElement && this.elementModel.readOnly) {
-      this.buttonElement.disabled = true;
-    }
+  strikeOut(): boolean {
+    this.strikethrough = (this.inputElement && this.inputElement.value) ? this.inputElement.value.length > 0 : false;
+    return this.strikethrough;
   }
 
-  strikethrough(): boolean {
-    if (this.inputElement) {
-      const value = this.inputElement.value;
-      if (value === null) return false;
-      if (value === undefined) return false;
-      return value.length > 0;
-    }
-    return false;
-  }
-
-  onClick(event: MouseEvent) : void {
-    if (this.strikethrough()) {
+  onClick() : void {
+    if (this.strikeOut()) {
       this.elementFormControl.setValue('');
     } else {
       this.elementFormControl.setValue(this.elementModel.label);
       this.inputElement.focus();
     }
-    event.preventDefault();
-    event.stopPropagation();
   }
 }

@@ -73,15 +73,15 @@ export function initFontElement(serializedElement: Partial<UIElement>): FontProp
       fontColor: (serializedElement.fontProps as FontProperties).fontColor as string || DEFAULT_FONT_COLOR,
       font: (serializedElement.fontProps as FontProperties).font as string || DEFAULT_FONT,
       fontSize: (serializedElement.fontProps as FontProperties).fontSize !== undefined ?
-        serializedElement.fontSize as number : DEFAULT_FONT_SIZE,
+        serializedElement.fontProps.fontSize as number : DEFAULT_FONT_SIZE,
       lineHeight: (serializedElement.fontProps as FontProperties).lineHeight !== undefined ?
-        serializedElement.lineHeight as number : DEFAULT_LINE_HEIGHT,
+        serializedElement.fontProps.lineHeight as number : DEFAULT_LINE_HEIGHT,
       bold: (serializedElement.fontProps as FontProperties).bold !== undefined ?
-        serializedElement.bold as boolean : DEFAULT_BOLD,
+        serializedElement.fontProps.bold as boolean : DEFAULT_BOLD,
       italic: (serializedElement.fontProps as FontProperties).italic !== undefined ?
-        serializedElement.italic as boolean : DEFAULT_ITALIC,
+        serializedElement.fontProps.italic as boolean : DEFAULT_ITALIC,
       underline: (serializedElement.fontProps as FontProperties).underline !== undefined ?
-        serializedElement.underline as boolean : DEFAULT_UNDERLINE
+        serializedElement.fontProps.underline as boolean : DEFAULT_UNDERLINE
     };
   }
   return {

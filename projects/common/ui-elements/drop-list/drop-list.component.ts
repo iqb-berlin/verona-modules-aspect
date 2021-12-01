@@ -103,10 +103,10 @@ export class DropListComponent extends FormElementComponent {
           event.currentIndex
         );
         event.previousContainer.data.elementFormControl.setValue(
-          (event.previousContainer.data.elementModel.value as DragNDropValueObject).id
+          (event.item.data.elementModel.value as DragNDropValueObject).id
         );
       }
-      this.elementFormControl.setValue((event.container.data.elementModel.value as DragNDropValueObject).id);
+      this.elementFormControl.setValue(event.item.data.elementModel.value.id);
     }
   }
 

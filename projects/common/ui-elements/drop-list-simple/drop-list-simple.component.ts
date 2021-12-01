@@ -5,6 +5,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { DropListSimpleElement } from './drop-list-simple';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { DragNDropValueObject } from '../../models/uI-element';
 
 @Component({
   selector: 'app-drop-list-simple',
@@ -29,17 +30,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [cdkDropListConnectedTo]="elementModel.connectedTo"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
-        <div class="item" *ngFor="let value of $any(elementModel.value)" cdkDrag
+        <div class="item" *ngFor="let value of $any(elementModel.value)"
              [style.line-height.px]="elementModel.height - 4"
-             [style.background-color]="elementModel.itemBackgroundColor">
+             [style.background-color]="elementModel.itemBackgroundColor"
+             cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
           <div *cdkDragPreview
                [style.font-size.px]="elementModel.fontProps.fontSize"
                [style.background-color]="elementModel.itemBackgroundColor">
-            {{value}}
+            {{value.stringValue}}
           </div>
           <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.fontProps.fontSize">
           </div>
-          {{value}}
+          {{value.stringValue}}
         </div>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
@@ -66,24 +68,39 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 export class DropListSimpleComponent extends FormElementComponent {
   @Input() elementModel!: DropListSimpleElement;
 
+  bodyElement: HTMLElement = document.body;
+
+  dragStart(): void {
+    this.bodyElement.classList.add('inheritCursors');
+    this.bodyElement.style.cursor = 'grabbing';
+  }
+
+  dragEnd(): void {
+    this.bodyElement.classList.remove('inheritCursors');
+    this.bodyElement.style.cursor = 'unset';
+  }
+
   drop(event: CdkDragDrop<DropListSimpleComponent>): void {
     if (!this.elementModel.readOnly) {
       if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data.elementModel.value as string[], event.previousIndex, event.currentIndex);
+        moveItemInArray(event.container.data.elementModel.value as unknown as DragNDropValueObject[],
+          event.previousIndex, event.currentIndex);
       } else {
         transferArrayItem(
-          event.previousContainer.data.elementModel.value as string[],
-          event.container.data.elementModel.value as string[],
+          event.previousContainer.data.elementModel.value as unknown as DragNDropValueObject[],
+          event.container.data.elementModel.value as unknown as DragNDropValueObject[],
           event.previousIndex,
           event.currentIndex
         );
-        event.previousContainer.data.elementFormControl.setValue(event.previousContainer.data.elementModel.value);
+        event.previousContainer.data.elementFormControl.setValue(
+          (event.previousContainer.data.elementModel.value as DragNDropValueObject).id
+        );
       }
-      this.elementFormControl.setValue(event.container.data.elementModel.value);
+      this.elementFormControl.setValue((event.container.data.elementModel.value as DragNDropValueObject).id);
     }
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
-    !drop.data.elementModel.onlyOneItem || drop.data.elementModel.value.length < 1
+    drop.data.elementModel.value.length < 1 // TODO test?
   );
 }

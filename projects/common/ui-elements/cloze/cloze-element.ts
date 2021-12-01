@@ -13,7 +13,6 @@ import { TextFieldElement } from '../text-field/text-field-element';
 import { TextAreaElement } from '../text-area/text-area-element';
 import { CheckboxElement } from '../checkbox/checkbox-element';
 import { DropdownElement } from '../dropdown/dropdown-element';
-import { DropListElement } from '../drop-list/drop-list';
 import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
 import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
 import { DropListSimpleElement } from '../drop-list-simple/drop-list-simple';
@@ -39,7 +38,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
 
-    this.width = serializedElement.height || 450;
+    this.width = serializedElement.width || 450;
     this.height = serializedElement.height || 200;
   }
 

@@ -23,7 +23,7 @@ export class ElementModelPropertiesComponent {
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
-    value: InputElementValue | LikertColumn[] | LikertRow[] | DragNDropValueObject,
+    value: InputElementValue | LikertColumn[] | LikertRow[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();
 

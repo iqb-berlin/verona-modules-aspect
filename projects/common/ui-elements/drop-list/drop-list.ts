@@ -1,4 +1,5 @@
 import {
+  DragNDropValueObject,
   FontElement,
   FontProperties,
   InputElement,
@@ -8,6 +9,7 @@ import {
   UIElement
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
+import { IdService } from '../../id.service';
 
 export class DropListElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
   onlyOneItem: boolean = false;
@@ -28,7 +30,6 @@ export class DropListElement extends InputElement implements PositionedElement, 
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
-    this.value = serializedElement.value as string[] || [];
     this.height = serializedElement.height || 100;
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
@@ -41,6 +42,16 @@ export class DropListElement extends InputElement implements PositionedElement, 
   handleBackwardsCompatibility(serializedElement: UIElement): void {
     if (serializedElement.options) {
       this.value = serializedElement.options as string[];
+    }
+    if (this.value instanceof Array && this.value[0] && !(this.value[0] instanceof Object)) {
+      const oldValues: string[] = this.value as string[];
+      this.value = [];
+      oldValues.forEach((stringValue: string) => {
+        (this.value as DragNDropValueObject[]).push({
+          id: IdService.getInstance().getNewID('value'),
+          stringValue: stringValue
+        });
+      });
     }
   }
 }

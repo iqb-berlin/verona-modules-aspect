@@ -43,7 +43,7 @@ export interface UnitState {
 
 export interface PlayerState {
   state: RunningState;
-  validPages?: Record<string, string>[];
+  validPages?: Record<string, string>;
   currentPage?: string;
 }
 

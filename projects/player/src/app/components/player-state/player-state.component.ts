@@ -25,7 +25,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   currentPlayerPageIndex: number = 0;
   selectIndex: Subject<number> = new Subject();
   running: boolean = true;
-  validPages!: Record<string, string> [];
+  validPages!: Record<string, string>;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -60,7 +60,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     this.sendVopStateChangedNotification();
   }
 
-  onValidPagesDetermined(validPages: Record<string, string>[]): void {
+  onValidPagesDetermined(validPages: Record<string, string>): void {
     this.validPages = validPages;
     this.sendVopStateChangedNotification();
   }
@@ -100,6 +100,8 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
       currentPage: this.currentPlayerPageIndex.toString(10),
       validPages: this.validPages
     };
+    // eslint-disable-next-line no-console
+    console.log('player: playerState sendVopStateChangedNotification', playerState);
     this.veronaPostService.sendVopStateChangedNotification({ playerState }, requested);
   }
 

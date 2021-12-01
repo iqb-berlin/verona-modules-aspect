@@ -21,7 +21,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   @Input() playerConfig!: PlayerConfig;
 
   @Output() selectedIndexChange = new EventEmitter<number>();
-  @Output() validPagesDetermined = new EventEmitter<Record<string, string>[]>();
+  @Output() validPagesDetermined = new EventEmitter<Record<string, string>>();
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -65,12 +65,15 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.scrollPagesIndices = this.scrollPages.map(
       (scrollPage: Page): number => this.pages.indexOf(scrollPage)
     );
-    this.validPagesDetermined.emit(this.scrollPages.map((page: Page, index: number): Record<string, string> => (
-      {
-        [index.toString(10)]: `${this.translateService.instant('pageIndication', {
-          index: index + 1
-        })}`
-      })));
+    this.validPagesDetermined
+      .emit(this.scrollPages.reduce(
+        (validPages: Record<string, string>, page: Page, index: number) => ({
+          ...validPages,
+          [`page${index + 1}`]: `${this.translateService.instant(
+            'pageIndication', { index: index + 1 }
+          )}`
+        }), {}
+      ));
   }
 
   private initLayout(): void {

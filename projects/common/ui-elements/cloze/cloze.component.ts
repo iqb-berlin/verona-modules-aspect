@@ -82,6 +82,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     ':host ::ng-deep app-text-field .mat-form-field {height: 100%}',
     ':host ::ng-deep app-text-field .mat-form-field-flex {height: 100%}',
     'p {margin: 0}'
+    'p span {font-size: inherit}'
   ]
 })
 export class ClozeComponent extends CompoundElementComponent {

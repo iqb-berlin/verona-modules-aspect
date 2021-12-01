@@ -50,7 +50,7 @@ export abstract class UIElement {
 
   // This can be overwritten by elements if they need to handle some property specifics. Likert does.
   setProperty(property: string,
-              value: InputElementValue | string[] | LikertColumn[] | LikertRow[]): void {
+              value: InputElementValue | LikertColumn[] | LikertRow[] | DragNDropValueObject[]): void {
     if (this.fontProps && property in this.fontProps) {
       this.fontProps[property] = value as string | number | boolean;
     } else if (this.surfaceProps && property in this.surfaceProps) {

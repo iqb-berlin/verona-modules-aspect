@@ -174,7 +174,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
         unitStateDataType: ''
       };
       // eslint-disable-next-line no-console
-      console.log('player: sendVopStateChangedNotification', unitState);
+      console.log('player: unitState sendVopStateChangedNotification', unitState);
       this.veronaPostService.sendVopStateChangedNotification({ unitState });
     });
   }

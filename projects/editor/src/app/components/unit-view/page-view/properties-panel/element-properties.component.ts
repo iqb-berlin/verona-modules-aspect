@@ -92,7 +92,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
 
   updateModel(property: string,
               value: string | number | boolean | string[] |
-              LikertColumn[] | LikertRow[] | DragNDropValueObject | null,
+              LikertColumn[] | LikertRow[] | DragNDropValueObject[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);

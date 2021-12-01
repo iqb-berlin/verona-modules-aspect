@@ -184,7 +184,7 @@ export class UnitService {
   private static freeUpIds(elements: UIElement[]): void {
     elements.forEach(element => {
       if (element.type === 'drop-list') {
-        element.value.foreach((value: DragNDropValueObject) => {
+        element.value.forEach((value: DragNDropValueObject) => {
           IdService.getInstance().removeId(value.id);
         });
       }

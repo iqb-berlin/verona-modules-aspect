@@ -1,5 +1,15 @@
 Editor
 ======
+1.14.0
+ - Fix reading of existing drop lists
+ - Fix reading of highlight properties of text elements
+ - New elements:
+  - Slider
+  - Spelling
+ - Text elements have a general font size again
+   Specific parts of the text can still have a different font size
+   applied to them.
+
 1.13.0
  - Remove underlinable option for text
  - Offer a choice of colors for marking text

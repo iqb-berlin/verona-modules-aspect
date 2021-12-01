@@ -19,15 +19,15 @@ import { DropListSimpleElement } from '../drop-list-simple/drop-list-simple';
 
 // TODO styles like em dont continue after inserted components
 
+export type ClozePart = {
+  type: string;
+  value: string | UIElement;
+  style?: string;
+};
+
 export class ClozeElement extends CompoundElement implements PositionedElement, FontElement {
   text: string = '<p>Lorem ipsum dolor \\z sdfsdf \\i sdfsdf</p>';
-  parts: {
-    type: string;
-    value: string | UIElement;
-    style?: string;
-  }[][] = [];
-
-  childElements: InputElement[] = [];
+  parts: ClozePart[][] = [];
 
   positionProps: PositionProperties;
   fontProps: FontProperties;
@@ -37,6 +37,16 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
+
+    if (serializedElement?.parts) {
+      serializedElement?.parts.forEach((subParts: ClozePart[]) => {
+        subParts.forEach((part: ClozePart) => {
+          if (!['p', 'h1', 'h2', 'h3', 'h4'].includes(part.type)) {
+            part.value = ClozeElement.createElement(part.value as UIElement);
+          }
+        });
+      });
+    }
 
     this.width = serializedElement.width || 450;
     this.height = serializedElement.height || 200;
@@ -79,8 +89,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
         style: element.style.cssText
       });
 
-      const newElement = ClozeElement.createElement(nextElementType);
-      this.childElements.push(newElement);
+      const newElement = ClozeElement.createElement({ type: nextElementType } as UIElement);
       this.parts[partIndex].push({ type: nextElementType, value: newElement });
 
       indexOffset = nextSpecialElementIndex + 2; // + 2 to get rid of the marker, i.e. '\b'
@@ -117,8 +126,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     return [y, nextElementType];
   }
 
-  private static createElement(elementType: string): InputElement {
-    const elementModel: UIElement = { type: elementType } as UIElement;
+  private static createElement(elementModel: UIElement): InputElement {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field':

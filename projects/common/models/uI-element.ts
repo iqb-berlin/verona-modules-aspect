@@ -4,7 +4,7 @@ import { IdService } from '../id.service';
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images'
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider';
-export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject | null;
+export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type DragNDropValueObject = {
   id: string;
   stringValue?: string;

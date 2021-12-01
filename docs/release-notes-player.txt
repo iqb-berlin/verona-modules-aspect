@@ -1,5 +1,9 @@
 Player
 ======
+1.8.0
+ - Fix reading of highlight properties of text elements
+ - Add support for new elements: slider and spelling
+
 1.7.0
  - Hint and autostart functionality of videos and audios is initialized only
    after dependencies to other audios and videos have been resolved

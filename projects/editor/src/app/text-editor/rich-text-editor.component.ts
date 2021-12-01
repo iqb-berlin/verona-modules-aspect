@@ -26,6 +26,7 @@ import { orderedListExtension } from './orderedList-extension';
 })
 export class RichTextEditorComponent implements AfterViewInit {
   @Input() text!: string;
+  @Input() defaultFontSize!: number;
   @Input() showCloseElements: boolean | undefined = false;
   @Output() textChange = new EventEmitter<string>();
 

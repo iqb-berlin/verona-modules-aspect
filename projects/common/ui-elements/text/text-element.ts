@@ -24,7 +24,6 @@ export class TextElement extends UIElement implements PositionedElement, FontEle
     this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
-    delete this.fontProps.fontSize;
 
     this.height = serializedElement.height || 78;
     this.surfaceProps.backgroundColor =

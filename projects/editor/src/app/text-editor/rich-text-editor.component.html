@@ -232,5 +232,7 @@
     </button>
   </div>
 </div>
-<tiptap-editor [editor]="editor" [ngModel]="text" (ngModelChange)="textChange.emit($event)">
+<tiptap-editor [editor]="editor" [ngModel]="text"
+               [style.font-size.px]="defaultFontSize"
+               (ngModelChange)="textChange.emit($event)">
 </tiptap-editor>

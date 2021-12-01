@@ -1,9 +1,9 @@
 import {
   Component, EventEmitter, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { ClozeElement } from './cloze-element';
+import { ClozeElement, ClozePart } from './cloze-element';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
-import { InputElement } from '../../models/uI-element';
+import { InputElement, UIElement } from '../../models/uI-element';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
@@ -92,7 +92,15 @@ export class ClozeComponent extends CompoundElementComponent {
   compoundChildren!: QueryList<FormElementComponent>;
 
   getFormElementModelChildren(): InputElement[] {
-    return this.elementModel.childElements;
+    const uiElements: InputElement[] = [];
+    this.elementModel.parts.forEach((subParts: ClozePart[]) => {
+      subParts.forEach((part: ClozePart) => {
+        if (part.value instanceof InputElement) {
+          uiElements.push(part.value);
+        }
+      });
+    });
+    return uiElements;
   }
 
   selectElement(element: ClozeElement, event: MouseEvent): void {

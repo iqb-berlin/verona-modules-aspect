@@ -40,8 +40,11 @@ export class TextElement extends UIElement implements PositionedElement, FontEle
       this.highlightableYellow = true;
       this.highlightableTurquoise = true;
       this.highlightableOrange = true;
+      delete this.interaction;
+      delete this.highlightable;
     } else if (serializedElement.interaction === 'underlinable') {
       this.highlightableYellow = true;
+      delete this.interaction;
     }
   }
 }

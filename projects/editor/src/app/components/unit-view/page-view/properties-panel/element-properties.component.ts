@@ -20,8 +20,10 @@ import {
   selector: 'app-element-properties',
   templateUrl: './element-properties.component.html',
   styles: [
-    '.element-button {margin-top: 10px;}',
-    'mat-divider {margin: 20px; border-top-width: 9px; border-top-style: dotted;}'
+    '.element-button {margin: 5px 10px;}',
+    'mat-divider {margin: 20px; border-top-width: 9px; border-top-style: dotted;}',
+    '.properties-panel {height: 100%; padding-bottom: 20px}',
+    '.properties-panel .mat-tab-group {overflow: auto}'
   ]
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {

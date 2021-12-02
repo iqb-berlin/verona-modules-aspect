@@ -1,26 +1,15 @@
-<ng-container *ngIf="selectedElements.length > 0">
-  <mat-tab-group mat-stretch-tabs dynamicHeight>
+<div *ngIf="selectedElements.length > 0"
+     class="properties-panel"
+     fxLayout="column" fxLayoutAlign="space-between stretch">
+  <mat-tab-group mat-stretch-tabs>
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">build</mat-icon>
       </ng-template>
-      <div fxLayout="column">
-        <app-element-model-properties-component [combinedProperties]="combinedProperties"
-                                                [selectedElements]="selectedElements"
-                                      (updateModel)="updateModel($event.property, $event.value)">
-        </app-element-model-properties-component>
-
-        <mat-divider></mat-divider>
-
-        <button mat-raised-button class="element-button"
-                (click)="duplicateElement()">
-          {{'propertiesPanel.duplicateElement' | translate }}
-        </button>
-        <button mat-raised-button class="element-button" color="warn"
-                (click)="deleteElement()">
-          {{'propertiesPanel.deleteElement' | translate }}
-        </button>
-      </div>
+      <app-element-model-properties-component [combinedProperties]="combinedProperties"
+                                              [selectedElements]="selectedElements"
+                                    (updateModel)="updateModel($event.property, $event.value)">
+      </app-element-model-properties-component>
     </mat-tab>
 
     <mat-tab>
@@ -41,7 +30,19 @@
       </app-element-style-properties>
     </mat-tab>
   </mat-tab-group>
-</ng-container>
+
+  <div fxLayout="column">
+    <mat-divider></mat-divider>
+    <button mat-raised-button class="element-button"
+            (click)="duplicateElement()">
+      {{'propertiesPanel.duplicateElement' | translate }}
+    </button>
+    <button mat-raised-button class="element-button" color="warn"
+            (click)="deleteElement()">
+      {{'propertiesPanel.deleteElement' | translate }}
+    </button>
+  </div>
+</div>
 <ng-container *ngIf="selectedElements.length === 0">
   <p>{{'propertiesPanel.noElementSelected' | translate }}</p>
 </ng-container>

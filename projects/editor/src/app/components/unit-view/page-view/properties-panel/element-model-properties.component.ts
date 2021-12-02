@@ -53,7 +53,11 @@ export class ElementModelPropertiesComponent {
 
   addDropListOption(value: string): void {
     const id = this.unitService.getNewValueID();
-    this.combinedProperties.value.push({ stringValue: value, id: id });
+    if (this.combinedProperties.value) {
+      this.combinedProperties.value.push({ stringValue: value, id: id });
+    } else {
+      this.combinedProperties.value = [{ stringValue: value, id: id }];
+    }
     this.updateModel.emit({ property: 'value', value: this.combinedProperties.value });
   }
 

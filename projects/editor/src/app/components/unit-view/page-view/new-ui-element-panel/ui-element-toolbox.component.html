@@ -14,6 +14,11 @@
         <mat-icon>smart_button</mat-icon>
         Knopf
       </button>
+      <button mat-raised-button (click)="addUIElement('frame')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','frame')">
+        <mat-icon>crop_square</mat-icon>
+        Rahmen
+      </button>
       <button mat-raised-button (click)="addUIElement('text-field')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
         <mat-icon>text_fields</mat-icon>

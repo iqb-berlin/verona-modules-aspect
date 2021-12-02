@@ -32,6 +32,8 @@ import { SliderElement } from '../ui-elements/slider/slider-element';
 import { SpellCorrectElement } from '../ui-elements/spell-correct/spell-correct-element';
 import { SliderComponent } from '../ui-elements/slider/slider.component';
 import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correct.component';
+import { FrameComponent } from '../ui-elements/frame/frame.component';
+import { FrameElement } from '../ui-elements/frame/frame-element';
 
 export function createElement(elementModel: UIElement): UIElement {
   let newElement: UIElement;
@@ -84,6 +86,9 @@ export function createElement(elementModel: UIElement): UIElement {
     case 'spell-correct':
       newElement = new SpellCorrectElement(elementModel);
       break;
+    case 'frame':
+      newElement = new FrameElement(elementModel);
+      break;
     default:
       throw new Error(`ElementType ${elementModel.type} not found!`);
   }
@@ -128,6 +133,8 @@ export function getComponentFactory(
       return componentFactoryResolver.resolveComponentFactory(SliderComponent);
     case 'spell-correct':
       return componentFactoryResolver.resolveComponentFactory(SpellCorrectComponent);
+    case 'frame':
+      return componentFactoryResolver.resolveComponentFactory(FrameComponent);
     default:
       throw new Error('unknown element');
   }

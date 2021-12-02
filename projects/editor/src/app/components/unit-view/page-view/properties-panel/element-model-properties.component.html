@@ -539,4 +539,42 @@
     <input matInput type="number" [value]="combinedProperties.firstColumnSizeRatio"
            (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: $any($event.target).value })">
   </mat-form-field>
+
+
+
+  <mat-form-field *ngIf="combinedProperties.borderStyle !== undefined"
+                  appearance="fill">
+    <mat-label>{{'propertiesPanel.borderStyle' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.borderStyle"
+                (selectionChange)="updateModel.emit({ property: 'borderStyle', value: $event.value })">
+      <mat-option *ngFor="let option of ['hidden', 'solid', 'dotted', 'dashed',
+                                         'double', 'groove', 'ridge', 'inset', 'outset']"
+                  [value]="option">
+        {{ 'propertiesPanel.' + option | translate }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.borderColor !== undefined"
+                  appearance="fill" class="mdInput textsingleline">
+    <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
+    <input matInput type="color" [value]="combinedProperties.borderColor"
+           (input)="updateModel.emit({ property: 'borderColor', value: $any($event.target).value })">
+  </mat-form-field>
+  <mat-form-field *ngIf="combinedProperties.borderColor !== undefined"
+                  appearance="fill" class="mdInput textsingleline">
+    <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
+    <input matInput type="text" [value]="combinedProperties.borderColor"
+           (input)="updateModel.emit({ property: 'borderColor', value: $any($event.target).value })">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.borderWidth !== undefined"
+                  appearance="fill" class="mdInput textsingleline">
+    <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
+    <input matInput type="number" #borderWidth="ngModel" min="0"
+           [ngModel]="combinedProperties.borderWidth"
+           (ngModelChange)="updateModel.emit({ property: 'borderWidth',
+                                                     value: $event,
+                                                     isInputValid: borderWidth.valid && $event !== null })">
+  </mat-form-field>
 </div>

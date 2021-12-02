@@ -46,6 +46,7 @@ import { TextFieldSimpleComponent } from './ui-elements/textfield-simple/text-fi
 import { SliderComponent } from './ui-elements/slider/slider.component';
 import { SpellCorrectComponent } from './ui-elements/spell-correct/spell-correct.component';
 import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-list-simple.component';
+import { FrameComponent } from './ui-elements/frame/frame.component';
 
 @NgModule({
   imports: [
@@ -93,7 +94,8 @@ import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-lis
     DropListSimpleComponent,
     SliderComponent,
     SpellCorrectComponent,
-    TextFieldSimpleComponent
+    TextFieldSimpleComponent,
+    FrameComponent
   ],
   exports: [
     CommonModule,

@@ -81,7 +81,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
         });
       }
     }
-    console.log('combined', this.combinedProperties);
+    // console.log('combined', this.combinedProperties);
   }
 
   private static flattenInterfaceProps(element: UIElement): UIElement {

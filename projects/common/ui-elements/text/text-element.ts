@@ -9,7 +9,7 @@ import {
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class TextElement extends UIElement implements PositionedElement, FontElement, SurfaceElement {
-  text: string = '<p>Lorem ipsum dolor sit amet</p>';
+  text: string = 'Lorem ipsum dolor sit amet';
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;
@@ -25,7 +25,7 @@ export class TextElement extends UIElement implements PositionedElement, FontEle
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
-    this.height = serializedElement.height || 78;
+    this.height = serializedElement.height || 98;
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||

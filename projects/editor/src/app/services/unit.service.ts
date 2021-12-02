@@ -142,7 +142,7 @@ export class UnitService {
   async addElementToSection(elementType: UIElementType,
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    let newElement;
+    let newElement: PositionedElement;
     if (['audio', 'video', 'image'].includes(elementType)) {
       let mediaSrc = '';
       switch (elementType) {
@@ -157,22 +157,29 @@ export class UnitService {
           break;
         // no default
       }
-      newElement = ElementFactory.createElement(
-        { type: elementType, dynamicPositioning: section.dynamicPositioning, src: mediaSrc } as unknown as UIElement
-      );
+      newElement = ElementFactory.createElement({
+        type: elementType,
+        src: mediaSrc,
+        positionProps: {
+          dynamicPositioning: section.dynamicPositioning
+        }
+      } as unknown as Partial<UIElement>) as PositionedElement;
     } else {
-      newElement = ElementFactory.createElement(
-        { type: elementType, dynamicPositioning: section.dynamicPositioning } as unknown as UIElement
-      );
+      newElement = ElementFactory.createElement({
+        type: elementType,
+        positionProps: {
+          dynamicPositioning: section.dynamicPositioning
+        }
+      } as unknown as Partial<UIElement>) as PositionedElement;
     }
     if (coordinates && section.dynamicPositioning) {
-      newElement.gridColumnStart = coordinates.x;
-      newElement.gridColumnEnd = coordinates.x + 1;
-      newElement.gridRowStart = coordinates.y;
-      newElement.gridRowEnd = coordinates.y + 1;
+      newElement.positionProps.gridColumnStart = coordinates.x;
+      newElement.positionProps.gridColumnEnd = coordinates.x + 1;
+      newElement.positionProps.gridRowStart = coordinates.y;
+      newElement.positionProps.gridRowEnd = coordinates.y + 1;
     } else if (coordinates && !section.dynamicPositioning) {
-      newElement.xPosition = coordinates.x;
-      newElement.yPosition = coordinates.y;
+      newElement.positionProps.xPosition = coordinates.x;
+      newElement.positionProps.yPosition = coordinates.y;
     }
     section.addElement(newElement as PositionedElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
@@ -202,7 +209,7 @@ export class UnitService {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {
       newSection.elements.push(element as PositionedElement);
-      element.dynamicPositioning = newSection.dynamicPositioning;
+      (element as PositionedElement).positionProps.dynamicPositioning = newSection.dynamicPositioning;
     });
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();

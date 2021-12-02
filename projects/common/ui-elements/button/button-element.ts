@@ -18,7 +18,7 @@ export class ButtonElement extends UIElement implements PositionedElement, FontE
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);

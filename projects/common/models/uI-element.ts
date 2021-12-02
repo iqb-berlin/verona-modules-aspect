@@ -25,10 +25,11 @@ export abstract class UIElement {
   surfaceProps?: SurfaceProperties;
   playerProps?: PlayerProperties;
 
-  protected constructor(serializedElement: UIElement) {
+  protected constructor(serializedElement: Partial<UIElement>) {
     Object.assign(this, serializedElement);
     if (!serializedElement.id) {
-      this.id = IdService.getInstance().getNewID(serializedElement.type);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.id = IdService.getInstance().getNewID(serializedElement.type!);
     }
   }
 
@@ -72,7 +73,7 @@ export abstract class InputElement extends UIElement {
   requiredWarnMessage: string;
   readOnly: boolean = false;
 
-  protected constructor(serializedElement: UIElement) {
+  protected constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     this.label = serializedElement.label as string || 'Beispielbeschriftung';
     this.value =

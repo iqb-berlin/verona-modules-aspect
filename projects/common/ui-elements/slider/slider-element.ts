@@ -18,7 +18,7 @@ export class SliderElement extends InputElement implements FontElement, SurfaceE
   barStyle: boolean = false;
   thumbLabel: boolean = false;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);

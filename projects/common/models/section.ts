@@ -43,8 +43,8 @@ export class Section {
 
   private setDynamicPositioning(value: boolean): void {
     this.dynamicPositioning = value;
-    this.elements.forEach((element: UIElement) => {
-      element.dynamicPositioning = value;
+    this.elements.forEach((element: PositionedElement) => {
+      element.positionProps.dynamicPositioning = value;
     });
   }
 

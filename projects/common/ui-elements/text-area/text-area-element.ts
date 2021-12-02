@@ -20,7 +20,7 @@ export class TextAreaElement extends InputElement implements PositionedElement, 
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);

@@ -18,7 +18,7 @@ export class TextElement extends UIElement implements PositionedElement, FontEle
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);
@@ -34,7 +34,7 @@ export class TextElement extends UIElement implements PositionedElement, FontEle
     this.handleBackwardsCompatibility(serializedElement);
   }
 
-  handleBackwardsCompatibility(serializedElement: UIElement): void {
+  handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
     if (serializedElement.highlightable || serializedElement.interaction === 'highlightable') {
       this.highlightableYellow = true;
       this.highlightableTurquoise = true;

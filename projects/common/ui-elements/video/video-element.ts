@@ -9,7 +9,7 @@ export class VideoElement extends UIElement implements PositionedElement, Player
   positionProps: PositionProperties;
   playerProps: PlayerProperties;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);

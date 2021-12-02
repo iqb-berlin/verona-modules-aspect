@@ -11,7 +11,7 @@ export class ImageElement extends UIElement implements PositionedElement {
 
   positionProps: PositionProperties;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);

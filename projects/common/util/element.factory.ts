@@ -35,7 +35,7 @@ import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correc
 import { FrameComponent } from '../ui-elements/frame/frame.component';
 import { FrameElement } from '../ui-elements/frame/frame-element';
 
-export function createElement(elementModel: UIElement): UIElement {
+export function createElement(elementModel: Partial<UIElement>): UIElement {
   let newElement: UIElement;
   switch (elementModel.type) {
     case 'text':

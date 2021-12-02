@@ -32,7 +32,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
   positionProps: PositionProperties;
   fontProps: FontProperties;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);

@@ -23,7 +23,7 @@ export class DropListElement extends InputElement implements PositionedElement, 
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;
 
-  constructor(serializedElement: UIElement) {
+  constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
     this.positionProps = initPositionedElement(serializedElement);
@@ -39,7 +39,7 @@ export class DropListElement extends InputElement implements PositionedElement, 
     this.handleBackwardsCompatibility(serializedElement);
   }
 
-  handleBackwardsCompatibility(serializedElement: UIElement): void {
+  handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
     if (serializedElement.options) {
       this.value = serializedElement.options as string[];
     }

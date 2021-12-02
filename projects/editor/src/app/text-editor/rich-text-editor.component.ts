@@ -13,6 +13,7 @@ import { Highlight } from '@tiptap/extension-highlight';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
 import { Indent } from './indent';
+import { HangingIndent } from './hanging-indent';
 import { customParagraph } from './paragraph-extension';
 import { fontSizeExtension } from './font-size-extension';
 import { bulletListExtension } from './bulletList-extension';
@@ -57,7 +58,8 @@ export class RichTextEditorComponent implements AfterViewInit {
       customParagraph,
       fontSizeExtension,
       bulletListExtension,
-      orderedListExtension
+      orderedListExtension,
+      HangingIndent
     ]
   });
 
@@ -154,5 +156,13 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   insertSpecialChar(char: string): void {
     this.editor.chain().insertContent(char).focus().run();
+  }
+
+  hangIndent() {
+    this.editor.commands.hangIndent();
+  }
+
+  unhangIndent() {
+    this.editor.commands.unhangIndent();
   }
 }

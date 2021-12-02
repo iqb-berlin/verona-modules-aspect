@@ -125,6 +125,14 @@
               (click)="outdent()">
         <mat-icon>format_indent_decrease</mat-icon>
       </button>
+      <button mat-icon-button matTooltip="Hängender Einzug" [matTooltipShowDelay]="300"
+              (click)="hangIndent()">
+        <mat-icon>segment</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Hängenden Einzug entfernen" [matTooltipShowDelay]="300"
+              (click)="unhangIndent()">
+        <mat-icon>view_headline</mat-icon>
+      </button>
     </div>
     <div fxLayout="row">
       <div class="combo-button" fxLayout="row" [style.background-color]="editor.isActive('bulletList') ? 'lightgrey' : ''">

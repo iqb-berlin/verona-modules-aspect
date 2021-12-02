@@ -24,7 +24,7 @@ import { ButtonElement } from './button-element';
     </button>
     <input *ngIf="elementModel.imageSrc" type="image"
            [src]="elementModel.imageSrc | safeResourceUrl"
-           [class]="elementModel.dynamicPositioning? 'dynamic-image' : 'static-image'"
+           [class]="elementModel.positionProps.dynamicPositioning ? 'dynamic-image' : 'static-image'"
            [alt]="'imageNotFound' | translate"
            (click)="onClick($event, elementModel.action)">
   `,

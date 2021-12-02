@@ -59,7 +59,8 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
           {{'propertiesPanel.useMinHeight' | translate }}
         </mat-checkbox>
 
-        <mat-form-field *ngIf="combinedProperties.useMinHeight !== undefined" appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.positionProps &&
+                               combinedProperties.positionProps.useMinHeight" appearance="fill">
           <mat-label>{{'propertiesPanel.minHeight' | translate }}</mat-label>
           <input matInput type="number" #height="ngModel" min="0"
                  [ngModel]="combinedProperties.height"

@@ -1,5 +1,8 @@
 Player
 ======
+1.9.0
+ - Add support for new frame element
+
 1.8.0
  - Fix reading of highlight properties of text elements
  - Add support for new elements: slider and spelling

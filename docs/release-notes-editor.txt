@@ -1,5 +1,27 @@
 Editor
 ======
+1.15.0
+ - New element frame ("Rahmen")
+   (Tested and working for static layouts. Usage in dynamic layouts at one's
+   own risk.)
+ - TextEditor: New functionality to create hanging indent
+   It now also possible to set the indent size. It will be used for hanging
+   and normal indents.
+ - Fix reading of droplist element IDs
+   Should now correctly recognize already given (/read) IDs and refuse.
+ - Fix creating elements in empty (i.e. newly created) dropLists
+ - Improve property panel layout
+   Delete and duplicate buttons are no longer part of the tab view. They are
+   always visible below it.
+ - Fix min-height showing up before being checked
+ - Make text elements no longer start with a margin
+ - Fix image scaling for radio-image element
+   Images are scaled down when needed. Small images do not scale up.
+ - Improve drop list item margins
+   Horizontal orientation no longer has a wrong bottom-margin on the last
+   element but elements now have a margin sideways (5px).
+ - Reduce unused space in textarea
+
 1.14.0
  - Fix reading of existing drop lists
  - Fix reading of highlight properties of text elements

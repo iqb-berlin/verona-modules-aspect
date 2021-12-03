@@ -540,8 +540,6 @@
            (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: $any($event.target).value })">
   </mat-form-field>
 
-
-
   <mat-form-field *ngIf="combinedProperties.borderStyle !== undefined"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.borderStyle' | translate }}</mat-label>
@@ -550,7 +548,7 @@
       <mat-option *ngFor="let option of ['hidden', 'solid', 'dotted', 'dashed',
                                          'double', 'groove', 'ridge', 'inset', 'outset']"
                   [value]="option">
-        {{ 'propertiesPanel.' + option | translate }}
+        {{option}}
       </mat-option>
     </mat-select>
   </mat-form-field>

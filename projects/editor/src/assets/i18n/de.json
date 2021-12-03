@@ -127,7 +127,10 @@
     "duplicateElement": "Element duplizieren",
     "deleteElement": "Element löschen",
     "noElementSelected": "Kein Element ausgewählt",
-    "spellCorrectButtonLabel": "Wort zum Korrigieren"
+    "spellCorrectButtonLabel": "Wort zum Korrigieren",
+    "borderColor": "Randfarbe",
+    "borderWidth": "Randstärke",
+    "borderStyle": "Linienstil"
   },
   "player": {
     "autoStart": "Autostart",

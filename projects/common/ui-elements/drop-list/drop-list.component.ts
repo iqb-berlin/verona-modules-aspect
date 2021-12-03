@@ -35,6 +35,8 @@ import { DragNDropValueObject } from '../../models/uI-element';
            (cdkDropListDropped)="drop($event)">
         <ng-container *ngFor="let value of $any(elementModel.value)">
           <div class="item" *ngIf="!value.imgSrcValue" cdkDrag
+               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                            'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
                [style.background-color]="elementModel.itemBackgroundColor"
                (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
             <div *cdkDragPreview
@@ -64,7 +66,8 @@ import { DragNDropValueObject } from '../../models/uI-element';
     '.item {border-radius: 10px; padding: 10px;}',
     '.item {cursor: grab}',
     '.item:active {cursor: grabbing}',
-    '.item:not(:last-child) {margin-bottom: 5px;}',
+    '.vertical-orientation.item:not(:last-child) {margin-bottom: 5px;}',
+    '.horizontal-orientation.item:not(:last-child) {margin-right: 5px}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
     '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999; padding: 10px;}',

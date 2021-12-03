@@ -24,16 +24,20 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [innerHTML]="elementModel.label">
       </label>
       <div *ngFor="let option of elementModel.columns; let i = index"
-           class="columns" fxLayout="column"
+           class="columns" fxLayout="column" fxLayoutAlign="center center"
            [style.grid-column-start]="1 + i"
            [style.grid-column-end]="2 + i"
            [style.grid-row-start]="2"
            [style.grid-row-end]="3"
            (click)="selectOption(i)">
         <img *ngIf="option.imgSrc && option.position === 'above'"
+             [style.object-fit]="'scale-down'"
+             [style.max-width.%]="100"
              [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
         <div>{{option.text}}</div>
         <img *ngIf="option.imgSrc && option.position === 'below'"
+             [style.object-fit]="'scale-down'"
+             [style.max-width.%]="100"
              [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
       </div>
       <mat-radio-group aria-labelledby="radio-group-label"

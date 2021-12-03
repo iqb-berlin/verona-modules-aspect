@@ -23,7 +23,8 @@ import {
     '.element-button {margin: 5px 10px;}',
     'mat-divider {margin: 20px; border-top-width: 9px; border-top-style: dotted;}',
     '.properties-panel {height: 100%; padding-bottom: 20px}',
-    '.properties-panel .mat-tab-group {overflow: auto}'
+    '.properties-panel .mat-tab-group {height: 100%; overflow: auto}',
+    ':host ::ng-deep .mat-tab-body-wrapper {height: 100%}'
   ]
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {

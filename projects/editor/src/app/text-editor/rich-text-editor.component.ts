@@ -34,6 +34,7 @@ export class RichTextEditorComponent implements AfterViewInit {
   selectedFontColor = 'lightgrey';
   selectedHighlightColor = 'lightgrey';
   selectedFontSize = '20px';
+  selectedIndentSize = 20;
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
 
@@ -50,7 +51,7 @@ export class RichTextEditorComponent implements AfterViewInit {
         types: ['listItem', 'paragraph'],
         minLevel: 0,
         maxLevel: 4,
-        paddingMultiplier: 20
+        indentSize: this.selectedIndentSize
       }),
       Heading.configure({
         levels: [1, 2, 3, 4]
@@ -158,11 +159,17 @@ export class RichTextEditorComponent implements AfterViewInit {
     this.editor.chain().insertContent(char).focus().run();
   }
 
-  hangIndent() {
+  hangIndent(): void {
+    this.editor.commands.indent();
     this.editor.commands.hangIndent();
   }
 
-  unhangIndent() {
+  unhangIndent(): void {
+    this.editor.commands.outdent();
     this.editor.commands.unhangIndent();
+  }
+
+  setIndentSize(): void {
+    this.editor.commands.setIndentSize(this.selectedIndentSize);
   }
 }

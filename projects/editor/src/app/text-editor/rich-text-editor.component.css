@@ -91,3 +91,13 @@ app-rich-text-editor .editor-controls-second-line {
 mark {
   color: inherit;
 }
+
+mat-form-field.indent-size-input .mat-form-field-infix {
+  border-top: unset !important;
+  padding-bottom: 5px;
+}
+
+.indent-size-input {
+  width: 90px;
+  padding-top: 5px;
+}

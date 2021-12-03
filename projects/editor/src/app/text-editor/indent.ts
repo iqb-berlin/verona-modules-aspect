@@ -5,7 +5,7 @@ export interface IndentOptions {
   types: string[];
   minLevel: number;
   maxLevel: number;
-  paddingMultiplier: number;
+  indentSize: number;
 }
 
 declare module '@tiptap/core' {
@@ -13,6 +13,7 @@ declare module '@tiptap/core' {
     indent: {
       indent: () => ReturnType;
       outdent: () => ReturnType;
+      setIndentSize: (indentSize: number) => ReturnType;
     };
   }
 }
@@ -24,7 +25,7 @@ export const Indent = Extension.create<IndentOptions>({
     types: ['listItem', 'paragraph'],
     minLevel: 0,
     maxLevel: 8,
-    paddingMultiplier: 10
+    indentSize: 10
   },
 
   addGlobalAttributes() {
@@ -34,9 +35,9 @@ export const Indent = Extension.create<IndentOptions>({
         attributes: {
           indent: {
             renderHTML: attributes => (
-              { style: `padding-left: ${attributes.indent * this.options.paddingMultiplier}px` }
+              { style: `padding-left: ${attributes.indent * this.options.indentSize}px` }
             ),
-            parseHTML: element => Number(element.style.paddingLeft.slice(0, -2)) / this.options.paddingMultiplier
+            parseHTML: element => Number(element.style.paddingLeft.slice(0, -2)) / this.options.indentSize
           }
         }
       }
@@ -91,9 +92,16 @@ export const Indent = Extension.create<IndentOptions>({
         return false;
       };
 
+    const setIndentSize: (indentSize: number) => () => Command =
+      indentSize => () => ({ tr, state, dispatch }) => {
+        this.options.indentSize = indentSize;
+        return false;
+      };
+
     return {
       indent: applyIndent(1),
-      outdent: applyIndent(-1)
+      outdent: applyIndent(-1),
+      setIndentSize: indentSize => setIndentSize(indentSize)()
     };
   },
 

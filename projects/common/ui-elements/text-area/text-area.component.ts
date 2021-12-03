@@ -34,7 +34,7 @@ import { TextAreaElement } from './text-area-element';
     </mat-form-field>
   `,
   styles: [
-    ':host ::ng-deep div.mat-form-field-infix {padding-top: 0.2em;}',
+    ':host ::ng-deep div.mat-form-field-infix {padding-top: 0.2em; padding-bottom: 0.2em;}',
     ':host ::ng-deep .no-label .mat-form-field-outline-gap {border-top-color: unset !important}'
   ]
 })

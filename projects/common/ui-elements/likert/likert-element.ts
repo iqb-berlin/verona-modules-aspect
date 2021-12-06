@@ -44,6 +44,11 @@ export class LikertElement extends CompoundElement implements PositionedElement,
     } else {
       this.positionProps.marginBottom = 30;
     }
+    // it is okay to discard a 0 value here, as 0 line height makes no sense and it is better to use the default.
+    this.fontProps.lineHeight =
+      serializedElement.fontProps?.lineHeight as number ||
+      serializedElement.lineHeight as number ||
+      135;
     this.surfaceProps.backgroundColor =
       (serializedElement as unknown as SurfaceElement).surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||

@@ -26,6 +26,12 @@ export class TextElement extends UIElement implements PositionedElement, FontEle
     this.surfaceProps = initSurfaceElement(serializedElement);
 
     this.height = serializedElement.height || 98;
+    // it is okay to discard a 0 value here, as 0 line height makes no sense and it is better to use the default.
+    this.fontProps.lineHeight =
+      serializedElement.fontProps?.lineHeight as number ||
+      serializedElement.lineHeight as number ||
+      135;
+
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||

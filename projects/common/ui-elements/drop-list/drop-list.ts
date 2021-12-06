@@ -30,6 +30,9 @@ export class DropListElement extends InputElement implements PositionedElement, 
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
+    this.value =
+      serializedElement.value !== undefined ? serializedElement.value as DragNDropValueObject[] | null : [];
+
     this.height = serializedElement.height || 100;
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
@@ -40,11 +43,16 @@ export class DropListElement extends InputElement implements PositionedElement, 
   }
 
   handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
+    let oldValues: string[] = [];
     if (serializedElement.options) {
-      this.value = serializedElement.options as string[];
+      oldValues = serializedElement.options as string[];
     }
-    if (this.value instanceof Array && this.value[0] && !(this.value[0] instanceof Object)) {
-      const oldValues: string[] = this.value as string[];
+    if (serializedElement.value instanceof Array &&
+        serializedElement.value[0] &&
+        !(serializedElement.value[0] instanceof Object)) {
+      oldValues = this.value as unknown as string[];
+    }
+    if (oldValues.length > 0) {
       this.value = [];
       oldValues.forEach((stringValue: string) => {
         (this.value as DragNDropValueObject[]).push({

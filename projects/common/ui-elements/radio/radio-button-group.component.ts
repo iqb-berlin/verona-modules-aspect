@@ -46,7 +46,7 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
     '.error-message { font-size: 75% }',
     '::ng-deep app-radio-button-group .strike .mat-radio-label {text-decoration: line-through}',
     '::ng-deep app-radio-button-group .mat-radio-label {align-items: baseline}',
-    '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label .mat-radio-container {top: 5px;}'
+    '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}'
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

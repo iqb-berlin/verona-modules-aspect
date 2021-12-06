@@ -59,7 +59,7 @@ export class UnitService {
         section.elements.forEach((element: UIElement) => {
           IdService.getInstance().addID(element.id);
           if (element.type === 'drop-list') {
-            element.value.forEach((valueElement: DragNDropValueObject) => {
+            element.value?.forEach((valueElement: DragNDropValueObject) => {
               IdService.getInstance().addID(valueElement.id);
             });
           }

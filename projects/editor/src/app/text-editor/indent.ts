@@ -5,15 +5,13 @@ export interface IndentOptions {
   types: string[];
   minLevel: number;
   maxLevel: number;
-  indentSize: number;
 }
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     indent: {
-      indent: () => ReturnType;
-      outdent: () => ReturnType;
-      setIndentSize: (indentSize: number) => ReturnType;
+      indent: (indentSize: number) => ReturnType;
+      outdent: (indentSize: number) => ReturnType;
     };
   }
 }
@@ -24,8 +22,7 @@ export const Indent = Extension.create<IndentOptions>({
   defaultOptions: {
     types: ['listItem', 'paragraph'],
     minLevel: 0,
-    maxLevel: 8,
-    indentSize: 10
+    maxLevel: 8
   },
 
   addGlobalAttributes() {
@@ -35,9 +32,17 @@ export const Indent = Extension.create<IndentOptions>({
         attributes: {
           indent: {
             renderHTML: attributes => (
-              { style: `padding-left: ${attributes.indent * this.options.indentSize}px` }
+              {
+                style: `padding-left: ${attributes.indent * attributes.indentSize}px`,
+                indent: attributes.indent,
+                indentSize: attributes.indentSize
+              }
             ),
-            parseHTML: element => Number(element.style.paddingLeft.slice(0, -2)) / this.options.indentSize
+            parseHTML: element => Number(element.getAttribute('indent'))
+          },
+          indentSize: {
+            default: 20,
+            parseHTML: element => Number(element.getAttribute('indentSize'))
           }
         }
       }
@@ -45,7 +50,7 @@ export const Indent = Extension.create<IndentOptions>({
   },
 
   addCommands() {
-    const setNodeIndentMarkup = (tr: Transaction, pos: number, delta: number): Transaction => {
+    const setNodeIndentMarkup = (tr: Transaction, pos: number, delta: number, indentSize: number): Transaction => {
       const node = tr?.doc?.nodeAt(pos);
 
       if (node) {
@@ -54,21 +59,21 @@ export const Indent = Extension.create<IndentOptions>({
         const indent = nextLevel < minLevel ? minLevel : nextLevel > maxLevel ? maxLevel : nextLevel;
 
         if (indent !== node.attrs.indent) {
-          const nodeAttrs = { ...node.attrs, indent };
+          const nodeAttrs = { ...node.attrs, indent, indentSize };
           return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
         }
       }
       return tr;
     };
 
-    const updateIndentLevel = (tr: Transaction, delta: number): Transaction => {
+    const updateIndentLevel = (tr: Transaction, delta: number, indentSize: number): Transaction => {
       const { doc, selection } = tr;
 
       if (doc && selection && (selection instanceof TextSelection || selection instanceof AllSelection)) {
         const { from, to } = selection;
         doc.nodesBetween(from, to, (node, pos) => {
           if (this.options.types.includes(node.type.name)) {
-            tr = setNodeIndentMarkup(tr, pos, delta);
+            tr = setNodeIndentMarkup(tr, pos, delta, indentSize);
             return false;
           }
 
@@ -78,11 +83,11 @@ export const Indent = Extension.create<IndentOptions>({
 
       return tr;
     };
-    const applyIndent: (direction: number) => () => Command =
-      direction => () => ({ tr, state, dispatch }) => {
+    const applyIndent: (direction: number, indentSize: number) => () => Command =
+      (direction, indentSize) => () => ({ tr, state, dispatch }) => {
         const { selection } = state;
         tr = tr.setSelection(selection);
-        tr = updateIndentLevel(tr, direction);
+        tr = updateIndentLevel(tr, direction, indentSize);
 
         if (tr.docChanged) {
           dispatch?.(tr);
@@ -92,23 +97,16 @@ export const Indent = Extension.create<IndentOptions>({
         return false;
       };
 
-    const setIndentSize: (indentSize: number) => () => Command =
-      indentSize => () => ({ tr, state, dispatch }) => {
-        this.options.indentSize = indentSize;
-        return false;
-      };
-
     return {
-      indent: applyIndent(1),
-      outdent: applyIndent(-1),
-      setIndentSize: indentSize => setIndentSize(indentSize)()
+      indent: indentSize => applyIndent(1, indentSize)(),
+      outdent: indentSize => applyIndent(-1, indentSize)()
     };
   },
 
   addKeyboardShortcuts() {
     return {
-      Tab: () => this.editor.commands.indent(),
-      'Shift-Tab': () => this.editor.commands.outdent()
+      Tab: () => this.editor.commands.indent(20),
+      'Shift-Tab': () => this.editor.commands.outdent(20)
     };
   }
 });

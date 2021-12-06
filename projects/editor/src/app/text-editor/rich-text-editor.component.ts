@@ -50,8 +50,7 @@ export class RichTextEditorComponent implements AfterViewInit {
       Indent.configure({
         types: ['listItem', 'paragraph'],
         minLevel: 0,
-        maxLevel: 4,
-        indentSize: this.selectedIndentSize
+        maxLevel: 4
       }),
       Heading.configure({
         levels: [1, 2, 3, 4]
@@ -110,11 +109,11 @@ export class RichTextEditorComponent implements AfterViewInit {
   }
 
   indent(): void {
-    this.editor.commands.indent();
+    this.editor.commands.indent(this.selectedIndentSize);
   }
 
   outdent(): void {
-    this.editor.commands.outdent();
+    this.editor.commands.outdent(this.selectedIndentSize);
   }
 
   toggleBulletList(): void {
@@ -160,16 +159,12 @@ export class RichTextEditorComponent implements AfterViewInit {
   }
 
   hangIndent(): void {
-    this.editor.commands.indent();
-    this.editor.commands.hangIndent();
+    this.editor.commands.indent(this.selectedIndentSize);
+    this.editor.commands.hangIndent(this.selectedIndentSize);
   }
 
   unhangIndent(): void {
-    this.editor.commands.outdent();
-    this.editor.commands.unhangIndent();
-  }
-
-  setIndentSize(): void {
-    this.editor.commands.setIndentSize(this.selectedIndentSize);
+    this.editor.commands.outdent(this.selectedIndentSize);
+    this.editor.commands.unhangIndent(this.selectedIndentSize);
   }
 }

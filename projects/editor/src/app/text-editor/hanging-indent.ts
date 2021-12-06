@@ -4,8 +4,8 @@ import { TextSelection, AllSelection, Transaction } from 'prosemirror-state';
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     hangingIndent: {
-      hangIndent: () => ReturnType;
-      unhangIndent: () => ReturnType;
+      hangIndent: (indentSize: number) => ReturnType;
+      unhangIndent: (indentSize: number) => ReturnType;
     };
   }
 }
@@ -25,9 +25,14 @@ export const HangingIndent = Extension.create({
           hangingIndent: {
             default: false,
             renderHTML: attributes => (attributes.hangingIndent ?
-              { style: 'text-indent: -20px' } : { style: 'text-indent: 0px' }
+              { style: `text-indent: -${attributes.indentSize}px` } :
+              { style: 'text-indent: 0px' }
             ),
-            parseHTML: element => element.style.textIndent === '-20px'
+            parseHTML: element => element.style.textIndent !== '0px'
+          },
+          indentSize: {
+            default: 20,
+            parseHTML: element => Number(element.getAttribute('indentSize'))
           }
         }
       }
@@ -35,36 +40,36 @@ export const HangingIndent = Extension.create({
   },
 
   addCommands() {
-    const setNodeIndentMarkup = (tr: Transaction, pos: number, indent: boolean): Transaction => {
-      const node = tr?.doc?.nodeAt(pos);
-
-      if (node) {
-        if (indent !== node.attrs.indent) {
-          const nodeAttrs = { ...node.attrs, hangingIndent: indent };
-          return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
+    const setNodeIndentMarkup =
+      (tr: Transaction, pos: number, hangingIndent: boolean, indentSize: number): Transaction => {
+        const node = tr?.doc?.nodeAt(pos);
+        if (node) {
+          if (hangingIndent !== node.attrs.indent) {
+            const nodeAttrs = { ...node.attrs, hangingIndent, indentSize };
+            return tr.setNodeMarkup(pos, node.type, nodeAttrs, node.marks);
+          }
         }
-      }
-      return tr;
-    };
+        return tr;
+      };
 
-    const updateIndentLevel = (tr: Transaction, indent: boolean): Transaction => {
+    const updateIndentLevel = (tr: Transaction, hangingIndent: boolean, indentSize: number): Transaction => {
       const { doc, selection } = tr;
 
       if (doc && selection && (selection instanceof TextSelection || selection instanceof AllSelection)) {
         const { from, to } = selection;
         doc.nodesBetween(from, to, (node, pos) => {
-          setNodeIndentMarkup(tr, pos, indent);
+          setNodeIndentMarkup(tr, pos, hangingIndent, indentSize);
           return false;
         });
       }
 
       return tr;
     };
-    const applyIndent: (indent: boolean) => () => Command =
-      indent => () => ({ tr, state, dispatch }) => {
+    const applyIndent: (hangingIndent: boolean, indentSize: number) => () => Command =
+      (hangingIndent, indentSize) => () => ({ tr, state, dispatch }) => {
         const { selection } = state;
         tr = tr.setSelection(selection);
-        tr = updateIndentLevel(tr, indent);
+        tr = updateIndentLevel(tr, hangingIndent, indentSize);
 
         if (tr.docChanged) {
           dispatch?.(tr);
@@ -75,8 +80,8 @@ export const HangingIndent = Extension.create({
       };
 
     return {
-      hangIndent: applyIndent(true),
-      unhangIndent: applyIndent(false)
+      hangIndent: indentSize => applyIndent(true, indentSize)(),
+      unhangIndent: indentSize => applyIndent(false, indentSize)()
     };
   }
 });

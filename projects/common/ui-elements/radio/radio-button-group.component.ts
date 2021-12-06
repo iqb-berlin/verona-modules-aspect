@@ -15,7 +15,7 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-      <label id="radio-group-label" class="white-space-break"
+      <label id="radio-group-label"
              [innerHTML]="elementModel.label">
       </label>
       <mat-radio-group aria-labelledby="radio-group-label"
@@ -29,7 +29,7 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
                                                   elementFormControl.value !== i }"
                           [value]="i"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                          [style.line-height.%]="elementModel.lineHeight">
+                          [style.line-height.%]="elementModel.fontProps.lineHeight">
           {{option}}
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
@@ -43,7 +43,6 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
     '::ng-deep app-radio-button-group .mat-radio-label {white-space: normal}',
     '::ng-deep app-radio-button-group .mat-radio-label .mat-radio-label-content {padding-left: 10px}',
     'mat-radio-button {margin-bottom: 6px; margin-right: 15px}',
-    '.white-space-break {white-space: normal}',
     '.error-message { font-size: 75% }',
     '::ng-deep app-radio-button-group .strike .mat-radio-label {text-decoration: line-through}',
     '::ng-deep app-radio-button-group .mat-radio-label {align-items: baseline}',

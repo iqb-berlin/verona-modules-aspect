@@ -91,7 +91,7 @@
     "true": "wahr",
     "false": "falsch",
     "appearance": "Aussehen",
-
+    "strikeOtherOptions": "Andere Optionen durchstreichen",
     "minLength": "Minimallänge",
     "minValue": "Minimalwert",
     "minLengthWarnMessage": "Minimalwert Warnmeldung",

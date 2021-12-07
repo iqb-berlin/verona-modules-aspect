@@ -121,7 +121,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
   selectElementComponent(element: UIElement): void {
     const elementComponent = this.getElementComponent(element);
     if (elementComponent) {
-      this.selectionService.selectElement({ componentElement: elementComponent, multiSelect: false });
+      this.selectionService.selectElement({ elementComponent: elementComponent, multiSelect: false });
     } else {
       throw Error('Element not found. This is a bug!');
     }

@@ -237,7 +237,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
     this.updateGridSizes();
   }
 
-  openColorPicker() {
+  openColorPicker(): void {
     this.colorPicker.nativeElement.click();
   }
 

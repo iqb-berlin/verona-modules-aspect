@@ -39,7 +39,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     // Make children not clickable. This way the only relevant events are managed by the overlay.
     this.childComponent.location.nativeElement.style.pointerEvents = 'none';
 
-    this.selectionService.selectElement({ componentElement: this, multiSelect: false });
+    this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
 
     if (this.childComponent.instance instanceof ClozeComponent) {
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
@@ -69,9 +69,9 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   selectElement(multiSelect: boolean = false): void {
     if (multiSelect) {
-      this.selectionService.selectElement({ componentElement: this, multiSelect: true });
+      this.selectionService.selectElement({ elementComponent: this, multiSelect: true });
     } else {
-      this.selectionService.selectElement({ componentElement: this, multiSelect: false });
+      this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
     }
   }
 

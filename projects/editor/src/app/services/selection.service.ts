@@ -24,13 +24,13 @@ export class SelectionService {
     return this._selectedElements.value;
   }
 
-  selectElement(event: { componentElement: any; multiSelect: boolean }): void { // TODO UIElement statt any
+  selectElement(event: { elementComponent: any; multiSelect: boolean }): void {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
     this.removeCompoundChildSelection();
-    this.selectedElementComponents.push(event.componentElement);
-    event.componentElement.setSelected(true);
+    this.selectedElementComponents.push(event.elementComponent);
+    event.elementComponent.setSelected(true);
     this._selectedElements.next(this.selectedElementComponents.map(componentElement => componentElement.element));
   }
 

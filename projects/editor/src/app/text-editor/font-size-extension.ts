@@ -2,7 +2,7 @@ import { Command } from '@tiptap/core';
 import { TextStyle } from '@tiptap/extension-text-style';
 
 declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
+  interface Commands<> {
     fontSizeExtension: {
       setFontSize: (fontSize: string) => Command
     };

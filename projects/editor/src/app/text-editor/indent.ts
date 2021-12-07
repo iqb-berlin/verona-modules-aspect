@@ -1,5 +1,5 @@
 import { Command, Extension } from '@tiptap/core';
-import { TextSelection, AllSelection, Transaction } from 'prosemirror-state';
+import { TextSelection, Transaction } from 'prosemirror-state';
 
 export interface IndentOptions {
   types: string[];
@@ -56,7 +56,12 @@ export const Indent = Extension.create<IndentOptions>({
       if (node) {
         const nextLevel = (node.attrs.indent || 0) + delta;
         const { minLevel, maxLevel } = this.options;
-        const indent = nextLevel < minLevel ? minLevel : nextLevel > maxLevel ? maxLevel : nextLevel;
+        let indent: number;
+        if (nextLevel < minLevel) {
+          indent = minLevel;
+        } else {
+          indent = nextLevel > maxLevel ? maxLevel : nextLevel;
+        }
 
         if (indent !== node.attrs.indent) {
           const nodeAttrs = { ...node.attrs, indent, indentSize };
@@ -68,29 +73,30 @@ export const Indent = Extension.create<IndentOptions>({
 
     const updateIndentLevel = (tr: Transaction, delta: number, indentSize: number): Transaction => {
       const { doc, selection } = tr;
+      let transaction = tr;
 
-      if (doc && selection && (selection instanceof TextSelection || selection instanceof AllSelection)) {
+      if (doc && selection && (selection instanceof TextSelection)) {
         const { from, to } = selection;
         doc.nodesBetween(from, to, (node, pos) => {
           if (this.options.types.includes(node.type.name)) {
-            tr = setNodeIndentMarkup(tr, pos, delta, indentSize);
+            transaction = setNodeIndentMarkup(tr, pos, delta, indentSize);
             return false;
           }
-
           return true;
         });
       }
-
-      return tr;
+      return transaction;
     };
+
     const applyIndent: (direction: number, indentSize: number) => () => Command =
       (direction, indentSize) => () => ({ tr, state, dispatch }) => {
         const { selection } = state;
-        tr = tr.setSelection(selection);
-        tr = updateIndentLevel(tr, direction, indentSize);
+        let transaction;
+        transaction = tr.setSelection(selection);
+        transaction = updateIndentLevel(transaction, direction, indentSize);
 
-        if (tr.docChanged) {
-          dispatch?.(tr);
+        if (transaction.docChanged) {
+          dispatch?.(transaction);
           return true;
         }
 

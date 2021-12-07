@@ -4,7 +4,7 @@ import { Transaction } from 'prosemirror-state';
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
-    setMargin: { // TODO customParagraph: { ?
+    setMargin: {
       setMargin: (newMargin: number) => ReturnType;
     };
   }
@@ -15,9 +15,7 @@ export const customParagraph = Paragraph.extend({
     return {
       margin: {
         default: 10,
-        parseHTML: element => {
-          return Number(element.style.marginBottom.slice(0, -2));
-        },
+        parseHTML: element => Number(element.style.marginBottom.slice(0, -2)),
         renderHTML: attributes => ({
           style: `margin-bottom: ${attributes.margin}px; margin-top: 0`
         })

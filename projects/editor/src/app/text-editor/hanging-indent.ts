@@ -68,11 +68,12 @@ export const HangingIndent = Extension.create({
     const applyIndent: (hangingIndent: boolean, indentSize: number) => () => Command =
       (hangingIndent, indentSize) => () => ({ tr, state, dispatch }) => {
         const { selection } = state;
-        tr = tr.setSelection(selection);
-        tr = updateIndentLevel(tr, hangingIndent, indentSize);
+        let transaction;
+        transaction = tr.setSelection(selection);
+        transaction = updateIndentLevel(transaction, hangingIndent, indentSize);
 
-        if (tr.docChanged) {
-          dispatch?.(tr);
+        if (transaction.docChanged) {
+          dispatch?.(transaction);
           return true;
         }
 

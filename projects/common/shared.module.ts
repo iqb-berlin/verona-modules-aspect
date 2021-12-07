@@ -14,6 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -47,6 +48,7 @@ import { SliderComponent } from './ui-elements/slider/slider.component';
 import { SpellCorrectComponent } from './ui-elements/spell-correct/spell-correct.component';
 import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-list-simple.component';
 import { FrameComponent } from './ui-elements/frame/frame.component';
+import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button.component';
 
 @NgModule({
   imports: [
@@ -65,7 +67,8 @@ import { FrameComponent } from './ui-elements/frame/frame.component';
     MatDialogModule,
     MatButtonModule,
     TranslateModule,
-    MatSliderModule
+    MatSliderModule,
+    MatButtonToggleModule
   ],
   declarations: [
     ButtonComponent,
@@ -95,7 +98,8 @@ import { FrameComponent } from './ui-elements/frame/frame.component';
     SliderComponent,
     SpellCorrectComponent,
     TextFieldSimpleComponent,
-    FrameComponent
+    FrameComponent,
+    ToggleButtonComponent
   ],
   exports: [
     CommonModule,

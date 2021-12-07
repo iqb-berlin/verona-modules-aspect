@@ -16,6 +16,7 @@ import { DropdownElement } from '../dropdown/dropdown-element';
 import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
 import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
 import { DropListSimpleElement } from '../drop-list-simple/drop-list-simple';
+import { ToggleButtonElement } from '../toggle-button/toggle-button';
 
 // TODO styles like em dont continue after inserted components
 
@@ -26,7 +27,7 @@ export type ClozePart = {
 };
 
 export class ClozeElement extends CompoundElement implements PositionedElement, FontElement {
-  text: string = '<p>Lorem ipsum dolor \\z sdfsdf \\i sdfsdf</p>';
+  text: string = '<p>Lorem ipsum dolor \\r sdfsdf \\i sdfsdf</p>';
   parts: ClozePart[][] = [];
 
   positionProps: PositionProperties;
@@ -114,6 +115,9 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     if (p.indexOf('\\z') > 0) {
       x.push(p.indexOf('\\z'));
     }
+    if (p.indexOf('\\r') > 0) {
+      x.push(p.indexOf('\\r'));
+    }
 
     const y = Math.min(...x);
     let nextElementType = '';
@@ -121,6 +125,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
       case 'd': nextElementType = 'dropdown'; break;
       case 'i': nextElementType = 'text-field'; break;
       case 'z': nextElementType = 'drop-list'; break;
+      case 'r': nextElementType = 'toggle-button'; break;
       default: return [-1, 'unknown'];
     }
     return [y, nextElementType];
@@ -146,6 +151,9 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
         newElement = new DropListSimpleElement(elementModel);
         newElement.height = 25;
         newElement.width = 100;
+        break;
+      case 'toggle-button':
+        newElement = new ToggleButtonElement(elementModel);
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

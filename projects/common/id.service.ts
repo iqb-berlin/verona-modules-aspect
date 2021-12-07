@@ -22,6 +22,7 @@ export class IdService {
     'drop-list': 0,
     cloze: 0,
     frame: 0,
+    'toggle-button': 0,
     value: 0
   };
 

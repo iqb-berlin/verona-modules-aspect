@@ -60,6 +60,15 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                           [elementModel]="$any(part.value)"
                           (elementValueChanged)="elementValueChanged.emit($event)">
           </app-text-field-simple>
+
+          <app-toggle-button *ngIf="part.type === 'toggle-button'" #radioComponent
+                          [parentForm]="parentForm"
+                          [style.display]="'inline-block'"
+                          [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
+                          [elementModel]="$any(part.value)"
+                          (elementValueChanged)="elementValueChanged.emit($event)">
+          </app-toggle-button>
+
           <div *ngIf="part.type === 'drop-list'"
                [style.display]="'inline-block'"
                [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
@@ -88,7 +97,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 export class ClozeComponent extends CompoundElementComponent {
   elementModel!: ClozeElement;
   @Output() elementSelected = new EventEmitter<{ element: ClozeElement, event: MouseEvent }>();
-  @ViewChildren('drowdownComponent, textfieldComponent, droplistComponent')
+  @ViewChildren('drowdownComponent, textfieldComponent, droplistComponent, radioComponent')
   compoundChildren!: QueryList<FormElementComponent>;
 
   getFormElementModelChildren(): InputElement[] {

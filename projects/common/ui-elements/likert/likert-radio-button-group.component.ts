@@ -26,7 +26,12 @@ import { LikertElementRow } from './likert-element-row';
                         [style.grid-row-end]="2">
       </mat-radio-button>
     </mat-radio-group>
-  `
+  `,
+  styles: [
+    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-outer-circle {border-color: #006064 !important}',
+    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-inner-circle {background-color: #006064 !important}',
+    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-ripple-element {background-color: #006064 !important}'
+  ]
 })
 export class LikertRadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: LikertElementRow;

@@ -14,10 +14,12 @@
                           [allowDelete]="page.sections.length > 1"
                           (moveSection)="unitService.moveSection(section, page, $event)"
                           (duplicateSection)="unitService.duplicateSection(section, page, i)"
+                          (selectElementComponent)="selectElementComponent($event)"
                           (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"> <!-- keep menu open-->
         </app-section-menu>
         <!-- TODO split section into static and dynamic-->
         <app-section-static *ngIf="!section.dynamicPositioning"
+             #sectionComponent
              class="section drop-list" id="section-{{i}}"
              [section]="section"
              [isSelected]="selectionService.selectedPageSectionIndex === i"
@@ -29,6 +31,7 @@
              (click)="selectionService.selectedPageSectionIndex = i">
         </app-section-static>
         <app-section-dynamic *ngIf="section.dynamicPositioning"
+             #sectionComponent
              class="section drop-list"
              [section]="section" [sectionIndex]="i"
              [isSelected]="selectionService.selectedPageSectionIndex === i"

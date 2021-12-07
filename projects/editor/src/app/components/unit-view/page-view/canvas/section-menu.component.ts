@@ -8,10 +8,22 @@ import { UnitService } from '../../../../services/unit.service';
 import { DialogService } from '../../../../services/dialog.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { Section } from '../../../../../../../common/models/section';
+import { UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-section-menu',
   template: `
+    <button mat-mini-fab [matMenuTriggerFor]="elementListMenu">
+      <mat-icon>list</mat-icon>
+    </button>
+    <mat-menu #elementListMenu="matMenu" class="layoutMenu" xPosition="before">
+      <mat-action-list>
+        <mat-list-item *ngFor="let element of section.elements"
+                         (click)="selectElement(element)">
+          {{element.id}}
+        </mat-list-item>
+      </mat-action-list>
+    </mat-menu>
     <button mat-mini-fab [matMenuTriggerFor]="heightMenu">
       <mat-icon>height</mat-icon>
     </button>
@@ -141,6 +153,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
   @Input() allowDelete!: boolean;
   @Output() moveSection = new EventEmitter<'up' | 'down'>();
   @Output() duplicateSection = new EventEmitter();
+  @Output() selectElementComponent = new EventEmitter<UIElement>();
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
   columnSizes: { value: string, unit: string }[] = [];
@@ -157,6 +170,10 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
 
   updateModel(property: string, value: string | number | boolean): void {
     this.unitService.updateSectionProperty(this.section, property, value);
+  }
+
+  selectElement(element: UIElement): void {
+    this.selectElementComponent.emit(element);
   }
 
   deleteSection(): void {

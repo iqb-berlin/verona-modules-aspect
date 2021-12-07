@@ -24,6 +24,8 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   protected childComponent!: ComponentRef<ElementComponent | CompoundElementComponent>;
   private ngUnsubscribe = new Subject<void>();
 
+  temporaryHighlight: boolean = false;
+
   constructor(public selectionService: SelectionService,
               protected unitService: UnitService,
               private componentFactoryResolver: ComponentFactoryResolver,
@@ -54,6 +56,10 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   }
 
   setSelected(newValue: boolean): void {
+    this.temporaryHighlight = true;
+    setTimeout(() => {
+      this.temporaryHighlight = false;
+    }, 2000);
     this.isSelected = newValue;
     // This avoids: "NG0100: Expression has changed after it was checked"
     // The selection service may change the "selected" variable after onInit has run.

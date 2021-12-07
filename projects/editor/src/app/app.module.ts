@@ -44,6 +44,7 @@ import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-ed
 import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
 import { ElementModelPropertiesComponent } from './components/unit-view/page-view/properties-panel/element-model-properties.component';
 import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -93,7 +94,8 @@ import { DropListOptionEditDialogComponent } from './components/dialogs/drop-lis
         provide: TranslateLoader,
         useClass: EditorTranslateLoader
       }
-    })
+    }),
+    MatListModule
   ],
   providers: []
 })

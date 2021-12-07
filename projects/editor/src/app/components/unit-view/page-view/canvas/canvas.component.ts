@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnDestroy, OnInit
+  Component, Input, OnDestroy, OnInit, QueryList, ViewChildren
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
@@ -9,6 +9,9 @@ import { SelectionService } from '../../../../services/selection.service';
 import { Page } from '../../../../../../../common/models/page';
 import { PositionedElement, UIElement } from '../../../../../../../common/models/uI-element';
 import { Section } from '../../../../../../../common/models/section';
+import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
+import { SectionStaticComponent } from './section-static.component';
+import { SectionDynamicComponent } from './section-dynamic.component';
 
 @Component({
   selector: 'app-page-canvas',
@@ -27,6 +30,8 @@ export class CanvasComponent implements OnInit, OnDestroy {
   dropListList: string[] = [];
   hoveredSection: number = -1;
   private ngUnsubscribe = new Subject<void>();
+
+  @ViewChildren('sectionComponent') childSectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
 
   constructor(public selectionService: SelectionService, public unitService: UnitService) { }
 
@@ -111,6 +116,26 @@ export class CanvasComponent implements OnInit, OnDestroy {
   addSection(): void {
     this.unitService.addSection(this.page);
     this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
+  }
+
+  selectElementComponent(element: UIElement): void {
+    const elementComponent = this.getElementComponent(element);
+    if (elementComponent) {
+      this.selectionService.selectElement({ componentElement: elementComponent, multiSelect: false });
+    } else {
+      throw Error('Element not found. This is a bug!');
+    }
+  }
+
+  private getElementComponent(element: UIElement): CanvasElementOverlay | null {
+    for (const sectionComponent of this.childSectionComponents.toArray()) {
+      for (const elementComponent of sectionComponent.childElementComponents.toArray()) {
+        if (elementComponent.element.id === element.id) {
+          return elementComponent;
+        }
+      }
+    }
+    return null;
   }
 
   ngOnDestroy(): void {

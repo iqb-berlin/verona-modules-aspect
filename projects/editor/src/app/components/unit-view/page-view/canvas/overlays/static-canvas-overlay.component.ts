@@ -9,7 +9,8 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
   template: `
     <!-- Is also a droplist to catch the resize drop and not let it bubble up to the canvas drop handler. -->
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
-    <div class="draggable-element" [class.draggable-element-selected]="isSelected"
+    <div class="draggable-element"
+         [class.temporaryHighlight]="temporaryHighlight"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
          (click)="selectElement($event.shiftKey); $event.stopPropagation()"
          (cdkDragStarted)="!isSelected && selectElement()"
@@ -45,7 +46,8 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
     '.draggable-element {position: absolute}',
     '.draggable-element:active {cursor: grabbing}',
     '.resizeHandle {position: absolute; cursor: nwse-resize}',
-    '.resize-droplist {position: absolute}'
+    '.resize-droplist {position: absolute}',
+    '.temporaryHighlight {z-index: 100}'
   ]
 })
 export class StaticCanvasOverlayComponent extends CanvasElementOverlay {

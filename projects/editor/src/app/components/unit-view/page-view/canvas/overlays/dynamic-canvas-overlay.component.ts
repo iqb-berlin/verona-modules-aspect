@@ -10,7 +10,8 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
   template: `
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
-    <div #draggableElement class="draggable-element" [class.draggable-element-selected]="isSelected"
+    <div #draggableElement class="draggable-element"
+         [class.temporaryHighlight]="temporaryHighlight"
          [style.display]="dragging ? 'none' : ''"
          tabindex="-1"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
@@ -45,7 +46,8 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
     '.draggable-element:active {cursor: grabbing}',
     '.resizeHandle {position: absolute; right: 3px; bottom: 3px; z-index: 1; height: 25px}',
     '.resizeHandle {cursor: nwse-resize}',
-    '.cdk-drag {position: absolute; bottom: 0; right: 0}'
+    '.cdk-drag {position: absolute; bottom: 0; right: 0}',
+    '.temporaryHighlight {z-index: 100}'
   ]
 })
 export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {

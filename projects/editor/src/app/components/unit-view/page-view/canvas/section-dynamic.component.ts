@@ -1,11 +1,12 @@
 import {
-  Component, Input, Output, EventEmitter
+  Component, Input, Output, EventEmitter, ViewChildren, QueryList
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { DragItemData, DropListData } from './canvas.component';
 import { UnitService } from '../../../../services/unit.service';
 import { Section } from '../../../../../../../common/models/section';
 import { UIElementType } from '../../../../../../../common/models/uI-element';
+import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 
 @Component({
   selector: 'app-section-dynamic',
@@ -38,6 +39,7 @@ import { UIElementType } from '../../../../../../../common/models/uI-element';
       </ng-container>
 
       <app-dynamic-canvas-overlay *ngFor="let element of section.elements"
+                                  #elementComponent
                                   [element]="$any(element)"
                                   [style.min-width.px]="element.width"
                                   [style.min-height.px]="element.height"
@@ -68,6 +70,8 @@ export class SectionDynamicComponent {
   @Input() dropListList!: string[];
   @Input() isSelected!: boolean;
   @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
+
+  @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
 
   dragging = false;
 

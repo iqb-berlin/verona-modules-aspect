@@ -1,9 +1,11 @@
 import {
-  Component, ElementRef, Input, ViewChild
+  Component, ElementRef, Input, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
 import { UnitService } from '../../../../services/unit.service';
 import { Section } from '../../../../../../../common/models/section';
 import { UIElementType } from '../../../../../../../common/models/uI-element';
+import { SectionDynamicComponent } from './section-dynamic.component';
+import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 
 @Component({
   selector: 'app-section-static',
@@ -14,7 +16,7 @@ import { UIElementType } from '../../../../../../../common/models/uI-element';
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
          (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
-      <app-static-canvas-overlay
+      <app-static-canvas-overlay #elementComponent
         *ngFor="let element of section.elements"
         [element]="$any(element)">
       </app-static-canvas-overlay>
@@ -28,6 +30,7 @@ export class SectionStaticComponent {
   @Input() section!: Section;
   @Input() isSelected!: boolean;
   @ViewChild('sectionElement') sectionElement!: ElementRef;
+  @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
 
   constructor(public unitService: UnitService) { }
 

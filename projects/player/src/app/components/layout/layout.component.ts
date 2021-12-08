@@ -69,7 +69,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
       .emit(this.scrollPages.reduce(
         (validPages: Record<string, string>, page: Page, index: number) => ({
           ...validPages,
-          [`page${index + 1}`]: `${this.translateService.instant(
+          [index.toString(10)]: `${this.translateService.instant(
             'pageIndication', { index: index + 1 }
           )}`
         }), {}

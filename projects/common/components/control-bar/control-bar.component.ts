@@ -92,6 +92,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   onVolumeChange(event: MatSliderChange): void {
     event.source.value = event.value && event.value > this.playerProperties.minVolume ?
       event.value : this.playerProperties.minVolume;
+    this.player.volume = event.source.value;
   }
 
   toggleTime(): void {

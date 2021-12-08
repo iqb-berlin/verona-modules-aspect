@@ -68,6 +68,8 @@ export class AppComponent implements OnInit {
           this.pages = unitDefinition.pages;
           this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
             JSON.parse(message.unitState.dataParts.elementCodes) : [];
+          // eslint-disable-next-line no-console
+          console.log('player: unitStateElementCodes', this.unitStateService.unitStateElementCodes);
         } else {
           this.dialog.open(AlertDialogComponent, {
             data: {

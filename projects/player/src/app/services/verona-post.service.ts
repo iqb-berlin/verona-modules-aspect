@@ -71,6 +71,8 @@ export class VeronaPostService {
 
   sendVopReadyNotification(playerMetadata: VopMetaData): void {
     if (playerMetadata) {
+      // eslint-disable-next-line no-console
+      console.log('player: sendVopReadyNotification', playerMetadata);
       this.send({
         type: 'vopReadyNotification',
         ...playerMetadata

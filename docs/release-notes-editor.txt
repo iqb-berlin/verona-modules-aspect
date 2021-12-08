@@ -1,5 +1,25 @@
 Editor
 ======
+1.16.0
+ - Fix text with background and font color
+ - Fix line-height property for radio button group
+ - Set default line height of 135 for likert and text
+ - Fix dropList values in player
+ - Allow indentation with individual sizes
+ - Move radio button label 1px (!) to the top
+ - Change radio button color to dark green
+   For all elements using radio buttons.
+ - Fix missing translation for "Andere Optionen durchstreichen"
+ - Add section element list
+   It is part of the section menu (appearing to the left of the hovered section)
+   This allows to select elements without clicking them on the canvas, as
+   elements may be obstructed or not visible for some reason.
+   Also when an elements is selected it briefly gets z-index 100 so it is
+   moved to the front and visible and manipulatable.
+ - New element for cloze: toggle-button
+   This is a replacement for actual radio button groups. Will be extended
+   with colors in the next release.
+
 1.15.0
  - New element frame ("Rahmen")
    (Tested and working for static layouts. Usage in dynamic layouts at one's

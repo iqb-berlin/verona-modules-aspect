@@ -3,7 +3,7 @@ Player
 1.10.0
  - Add virtual keyboard for comparison operators only
  - Fix volume setting of audios and videos
- - Fix page turning
+ - Fix page turning in Test Studio
 
 1.9.0
  - Add support for new frame element

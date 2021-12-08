@@ -1,17 +1,37 @@
-<div *ngFor="let row of numbers">
-  <ng-container *ngFor="let key of row">
-    <app-key [key]="key"></app-key>
-    <button *ngIf="key === '0'"
-            type="button"
+<ng-container *ngTemplateOutlet="useComparisonOperators ? comparisonOperatorsTemplate : numbersTemplate"></ng-container>
+
+<ng-template #comparisonOperatorsTemplate>
+  <div *ngFor="let row of comparisonOperators">
+    <ng-container *ngFor="let key of row">
+      <app-key [key]="key"></app-key>
+    </ng-container>
+  </div>
+  <div class="clear-button-container">
+    <button type="button"
             mat-mini-fab
             class="delete-characters"
             (click)="keyboardService.deleterCharacters()">
       <mat-icon>keyboard_backspace</mat-icon>
     </button>
-  </ng-container>
-</div>
+  </div>
+</ng-template>
 
-<div *ngIf="showOperators" class="grid-layout">
+<ng-template #numbersTemplate>
+  <div *ngFor="let row of numbers; let last = last">
+    <ng-container *ngFor="let key of row">
+      <app-key [key]="key"></app-key>
+      <button *ngIf="last"
+              type="button"
+              mat-mini-fab
+              class="delete-characters"
+              (click)="keyboardService.deleterCharacters()">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </button>
+    </ng-container>
+  </div>
+</ng-template>
+
+<div *ngIf="showNumbersWithOperators" class="grid-layout">
   <ng-container *ngFor="let row of operators; let rowIndex = index ">
     <ng-container *ngFor="let key of row; let columnIndex = index">
       <app-key *ngIf="key !== '='"

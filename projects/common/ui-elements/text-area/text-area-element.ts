@@ -13,7 +13,7 @@ export class TextAreaElement extends InputElement implements PositionedElement, 
   appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
   rowCount: number = 3;
-  inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' = 'none';
+  inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' = 'none';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
 
   positionProps: PositionProperties;

@@ -6,10 +6,16 @@
     <app-french-keyboard *ngIf="preset === 'french'"></app-french-keyboard>
     <app-numbers-keyboard *ngIf="preset === 'numbers'"
                           [inputComponent]="inputComponent"
-                          [showOperators]="false"></app-numbers-keyboard>
+                          [useComparisonOperators]="false"
+                          [showNumbersWithOperators]="false"></app-numbers-keyboard>
     <app-numbers-keyboard *ngIf="preset === 'numbersAndOperators'"
                           [inputComponent]="inputComponent"
-                          [showOperators]="true"></app-numbers-keyboard>
+                          [useComparisonOperators]="false"
+                          [showNumbersWithOperators]="true"></app-numbers-keyboard>
+    <app-numbers-keyboard *ngIf="preset === 'comparisonOperators'"
+                          [inputComponent]="inputComponent"
+                          [useComparisonOperators]="true"
+                          [showNumbersWithOperators]="false"></app-numbers-keyboard>
   </div>
 </div>
 

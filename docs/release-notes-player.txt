@@ -1,6 +1,7 @@
 Player
 ======
 1.10.0
+ - Add virtual keyboard for comparison operators only
  - Fix volume setting of audios and videos
  - Fix page turning
 

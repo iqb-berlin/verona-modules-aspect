@@ -7,6 +7,10 @@
   color: #fff;
 }
 
+.clear-button-container{
+  margin-left: 45px;
+}
+
 .grid-layout {
   margin-top: 15px;
   display: grid;

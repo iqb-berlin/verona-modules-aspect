@@ -7,9 +7,15 @@ import { KeyboardService } from '../../services/keyboard.service';
   styleUrls: ['./numbers-keyboard.component.css']
 })
 export class NumbersKeyboardComponent implements AfterViewInit {
-  @Input() showOperators!: boolean;
+  @Input() useComparisonOperators!: boolean;
+  @Input() showNumbersWithOperators!: boolean;
   @Input() inputComponent!: HTMLTextAreaElement | HTMLInputElement;
   allowedKeys!: string[];
+
+  readonly comparisonOperators: string[][] = [
+    ['<', '=', '>']
+  ];
+
   readonly numbers: string[][] = [
     ['7', '8', '9'],
     ['4', '5', '6'],
@@ -27,16 +33,21 @@ export class NumbersKeyboardComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.allowedKeys = this.showOperators ?
-      this.operators
-        .reduce((accumulator: string[], currentValue: string[]): string[] => accumulator.concat(currentValue)).concat(
-          this.numbers
-            .reduce((accumulator: string[], currentValue: string[]): string[] => accumulator.concat(currentValue))
-        ) :
-      this.numbers
+    if (this.useComparisonOperators) {
+      this.allowedKeys = this.comparisonOperators
         .reduce((accumulator: string[], currentValue: string[]): string[] => accumulator.concat(currentValue));
-    if (this.inputComponent) {
-      this.inputComponent.addEventListener('keydown', this.restrict.bind(this));
+    } else {
+      this.allowedKeys = this.showNumbersWithOperators ?
+        this.operators
+          .reduce((accumulator: string[], currentValue: string[]): string[] => accumulator.concat(currentValue)).concat(
+            this.numbers
+              .reduce((accumulator: string[], currentValue: string[]): string[] => accumulator.concat(currentValue))
+          ) :
+        this.numbers
+          .reduce((accumulator: string[], currentValue: string[]): string[] => accumulator.concat(currentValue));
+      if (this.inputComponent) {
+        this.inputComponent.addEventListener('keydown', this.restrict.bind(this));
+      }
     }
   }
 

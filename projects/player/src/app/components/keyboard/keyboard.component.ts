@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./keyboard.component.css']
 })
 export class KeyboardComponent {
-  @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'none';
+  @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
   @Input() inputComponent!: HTMLTextAreaElement | HTMLInputElement;
 
   onMouseDown = (event: MouseEvent, stopPropagation: boolean): void => {

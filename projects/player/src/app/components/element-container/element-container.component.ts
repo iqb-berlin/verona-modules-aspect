@@ -40,7 +40,7 @@ export class ElementContainerComponent implements OnInit {
   @Input() pageIndex!: number;
 
   isKeyboardOpen!: boolean;
-  keyboardLayout!: 'french' | 'numbers' | 'numbersAndOperators' | 'none';
+  keyboardLayout!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
   focussedInputElement!: HTMLTextAreaElement | HTMLInputElement;
 
   private ngUnsubscribe = new Subject<void>();

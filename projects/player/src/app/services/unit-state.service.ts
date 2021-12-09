@@ -83,7 +83,7 @@ export class UnitStateService {
     const unitStateElementCode = this.getUnitStateElement(id);
     if (unitStateElementCode) {
       // Set status only if it is higher than the old status
-      if (UnitStateElementCodeStatusValue[status] > UnitStateElementCodeStatusValue[unitStateElementCode.status]) {
+      if (UnitStateElementCodeStatusValue[status] >= UnitStateElementCodeStatusValue[unitStateElementCode.status]) {
         unitStateElementCode.status = status;
         this._unitStateElementCodeChanged.next(unitStateElementCode);
         this.checkPresentedPageStatus(id);

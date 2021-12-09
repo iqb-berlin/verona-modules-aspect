@@ -275,10 +275,8 @@
     <mat-label>{{'propertiesPanel.appearance' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.appearance"
                 (selectionChange)="updateModel.emit({ property: 'appearance', value: $event.value })">
-      <mat-option *ngFor="let option of [{displayValue: 'standard', value: 'standard'},
-                                                 {displayValue: 'legacy', value: 'legacy'},
-                                                 {displayValue: 'fill', value: 'fill'},
-                                                 {displayValue: 'outline', value: 'outline'}]"
+      <mat-option *ngFor="let option of [{displayValue: 'fill', value: 'fill'},
+                                         {displayValue: 'outline', value: 'outline'}]"
                   [value]="option.value">
         {{option.displayValue}}
       </mat-option>

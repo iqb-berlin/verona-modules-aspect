@@ -10,7 +10,7 @@ import {
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class TextFieldElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
-  appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';
+  appearance: 'fill' | 'outline' = 'outline';
   minLength: number = 0;
   minLengthWarnMessage: string = 'Eingabe zu kurz';
   maxLength: number = 0;

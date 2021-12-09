@@ -10,7 +10,7 @@ import {
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class TextAreaElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
-  appearance: 'standard' | 'legacy' | 'fill' | 'outline' = 'outline';
+  appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
   rowCount: number = 3;
   inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' = 'none';

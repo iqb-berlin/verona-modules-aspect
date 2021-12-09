@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { SpellCorrectElement } from './spell-correct-element';
@@ -16,22 +16,38 @@ import { SpellCorrectElement } from './spell-correct-element';
                [style.text-align]="'center'"
                autocomplete="off"
                [readonly]="elementModel.readOnly"
+               [style.color]="elementModel.fontProps.fontColor"
+               [style.font-family]="elementModel.fontProps.font"
+               [style.font-size.px]="elementModel.fontProps.fontSize"
+               [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+               [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+               [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
                [value]="elementModel.value"
                [formControl]="elementFormControl">
       </mat-form-field>
-      <button mat-button
+      <button #buttonElement
+          mat-button
               type="button"
               [disabled]="elementModel.readOnly"
               [style.color]="elementModel.fontProps.fontColor"
               [style.font-family]="elementModel.fontProps.font"
               [style.font-size.px]="elementModel.fontProps.fontSize"
-              [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+              [style.font-weight]="elementModel.fontProps.bold ? 'bold' : '400'"
               [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+              [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
               [style.width.%]="100"
               [style.margin-top]="'-20px'"
-              [style.text-decoration-line]="strikethrough ? 'line-through' : ''"
-              (click)="onClick()">
-        &nbsp;{{elementModel.label}}&nbsp;
+              [style.text-decoration-line]=
+                  "(inputElement && inputElement.focused) ||
+                  (inputElement && !!inputElement.value) ||
+                  (elementFormControl && elementFormControl.value === '') ? 'line-through' : ''"
+              (click)="
+              elementFormControl.value === null ?
+              inputElement.focus() :
+              buttonElement.focus();
+              elementFormControl.value === null ?
+              (elementFormControl.setValue('')) :
+              elementFormControl.setValue(null)">{{elementModel.label}}
       </button>
     </div>
   `,
@@ -39,23 +55,8 @@ import { SpellCorrectElement } from './spell-correct-element';
     '::ng-deep app-spell-correct .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
   ]
 })
-export class SpellCorrectComponent extends FormElementComponent implements OnInit {
+export class SpellCorrectComponent extends FormElementComponent {
   elementModel!: SpellCorrectElement;
-  strikethrough!: boolean;
 
   @ViewChild(MatInput) inputElement!: MatInput;
-
-  strikeOut(): boolean {
-    this.strikethrough = (this.inputElement && this.inputElement.value) ? this.inputElement.value.length > 0 : false;
-    return this.strikethrough;
-  }
-
-  onClick() : void {
-    if (this.strikeOut()) {
-      this.elementFormControl.setValue('');
-    } else {
-      this.elementFormControl.setValue(this.elementModel.label);
-      this.inputElement.focus();
-    }
-  }
 }

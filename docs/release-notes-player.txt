@@ -1,5 +1,10 @@
 Player
 ======
+1.11.0
+- For spelling element use the same font properties for input field and button
+- Change cross out behaviour of spelling element. The button now behaves as
+  toggle button and sets the focus to the input element only when it is crossed through.
+
 1.10.0
  - Add virtual keyboard for comparison operators only
  - Fix volume setting of audios and videos

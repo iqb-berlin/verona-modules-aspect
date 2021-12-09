@@ -72,9 +72,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     'mat-radio-group {margin-top: 10px}',
     '.error-message { font-size: 75% }',
     '.grid-layout mat-radio-button {margin-top: 15px}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-outer-circle {border-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-inner-circle {background-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-ripple-element {background-color: #006064 !important}'
+    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-outer-circle' +
+      '{border-color: #006064 !important}',
+    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-inner-circle' +
+     '{background-color: #006064 !important}',
+    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-ripple-element' +
+      '{background-color: #006064 !important}'
   ]
 })
 export class RadioGroupImagesComponent extends FormElementComponent {

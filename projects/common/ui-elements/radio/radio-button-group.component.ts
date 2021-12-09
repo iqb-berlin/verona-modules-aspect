@@ -47,9 +47,12 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
     '::ng-deep app-radio-button-group .strike .mat-radio-label {text-decoration: line-through}',
     '::ng-deep app-radio-button-group .mat-radio-label {align-items: baseline}',
     '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-outer-circle {border-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-inner-circle {background-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-ripple-element {background-color: #006064 !important}'
+    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-outer-circle' +
+      '{border-color: #006064 !important}',
+    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-inner-circle' +
+      '{background-color: #006064 !important}',
+    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-ripple-element' +
+      '{background-color: #006064 !important}'
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

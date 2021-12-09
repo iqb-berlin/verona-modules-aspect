@@ -29,8 +29,9 @@ import { CheckboxElement } from './checkbox-element';
     </div>
   `,
   styles: [
-    '::ng-deep .mat-checkbox-layout {white-space: normal !important}',
-    '.error-message { position: absolute; display: block; margin-top: 5px; font-size: 75% }'
+    ':host ::ng-deep .mat-checkbox-layout {white-space: normal !important}',
+    '.error-message { position: absolute; display: block; margin-top: 5px; font-size: 75% }',
+    ':host ::ng-deep mat-checkbox.mat-checkbox-checked .mat-checkbox-background {background-color: #006064}'
   ]
 })
 export class CheckboxComponent extends FormElementComponent {

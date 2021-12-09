@@ -1,5 +1,18 @@
 Editor
 ======
+1.17.0
+ - Rework text field and text area styling
+   The other variants are basically the same as filled. The only
+   difference is the background color, which we are manipulating anyway.
+   So there is no reason to keep them.
+   The selected nackground color is now correctly applied to both
+   remaining appearance variants.
+ - Add coloring options to toggle-button
+   Now correctly sets the chosen background color and additionally sets
+   another (configurable) color to the selected value
+ - Revert radio button color to default when not selected
+ - Add special character 'apostrophe' to TextEditor
+
 1.16.0
  - Fix text with background and font color
  - Fix line-height property for radio button group

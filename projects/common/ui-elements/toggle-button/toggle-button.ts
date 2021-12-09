@@ -10,6 +10,7 @@ import { initFontElement, initSurfaceElement } from '../../util/unit-interface-i
 export class ToggleButtonElement extends InputElement implements FontElement, SurfaceElement {
   options: string[] = ['abc', 'def'];
   strikeOtherOptions: boolean = false;
+  selectionColor: string = 'lightgreen';
 
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;
@@ -21,5 +22,8 @@ export class ToggleButtonElement extends InputElement implements FontElement, Su
     this.surfaceProps = initSurfaceElement(serializedElement);
 
     this.height = serializedElement.height as number || 25;
+    this.surfaceProps.backgroundColor =
+      serializedElement.surfaceProps?.backgroundColor as string ||
+      'transparent';
   }
 }

@@ -7,20 +7,23 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   template: `
     <div class="mat-form-field">
       <mat-button-toggle-group [formControl]="elementFormControl"
-                               [style.height.px]="elementModel.height"
-                               [style.background-color]="elementModel.surfaceProps.backgroundColor"
-                               [style.color]="elementModel.fontProps.fontColor"
-                               [style.font-family]="elementModel.fontProps.font"
-                               [style.font-size.px]="elementModel.fontProps.fontSize"
-                               [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                               [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                               [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                               [style.line-height.%]="elementModel.fontProps.lineHeight">
+                               [style.height.px]="elementModel.height">
         <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
                            [value]="i"
                            [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                    elementFormControl.value !== null &&
-                                                   elementFormControl.value !== i }">
+                                                   elementFormControl.value !== i }"
+                           [style.color]="elementModel.fontProps.fontColor"
+                           [style.font-size.px]="elementModel.fontProps.fontSize"
+                           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+                           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+                           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                           [style.font-family]="elementModel.fontProps.font"
+                           [style.background-color]="elementFormControl.value !== null &&
+                                                   elementFormControl.value === i ?
+                                                   elementModel.selectionColor :
+                                                   elementModel.surfaceProps.backgroundColor"
+                           [style.line-height.%]="elementModel.fontProps.lineHeight">
           {{option}}
         </mat-button-toggle>
       </mat-button-toggle-group>
@@ -30,7 +33,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     'mat-button-toggle-group {min-width: 70px; min-height: 20px}',
     ':host ::ng-deep .mat-button-toggle-button {height: 100%}',
     ':host ::ng-deep .mat-button-toggle-label-content {height: 100%; line-height: unset}',
-    ':host ::ng-deep .strike .mat-button-toggle-label-content {text-decoration: line-through}',
+    ':host ::ng-deep .strike .mat-button-toggle-label-content {text-decoration: line-through}'
   ]
 })
 export class ToggleButtonComponent extends FormElementComponent {

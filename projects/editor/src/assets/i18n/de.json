@@ -131,7 +131,8 @@
     "spellCorrectButtonLabel": "Wort zum Korrigieren",
     "borderColor": "Randfarbe",
     "borderWidth": "Randstärke",
-    "borderStyle": "Linienstil"
+    "borderStyle": "Linienstil",
+    "selectionColor": "Auswahlfarbe"
   },
   "player": {
     "autoStart": "Autostart",

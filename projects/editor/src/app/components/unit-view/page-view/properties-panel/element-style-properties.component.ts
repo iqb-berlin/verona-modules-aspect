@@ -7,6 +7,18 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
   selector: 'app-element-style-properties',
   template: `
     <div fxLayout="column">
+      <mat-form-field *ngIf="combinedProperties.selectionColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.selectionColor' | translate }}</mat-label>
+        <input matInput type="color" [value]="combinedProperties.selectionColor"
+               (input)="updateModel.emit({ property: 'selectionColor', value: $any($event.target).value })">
+      </mat-form-field>
+      <mat-form-field *ngIf="combinedProperties.selectionColor !== undefined" appearance="fill">
+        <mat-label>{{'propertiesPanel.selectionColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="combinedProperties.selectionColor"
+               (input)="updateModel.emit({ property: 'selectionColor', value: $any($event.target).value })">
+      </mat-form-field>
+
       <mat-form-field *ngIf="combinedProperties.borderRadius !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
         <input matInput type="number" [value]="combinedProperties.borderRadius"

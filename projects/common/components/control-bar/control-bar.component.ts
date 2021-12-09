@@ -39,6 +39,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.dependencyDissolved = !this.playerProperties.activeAfterID;
+    this.playbackTime = this.playerProperties.playbackTime;
     this.player.ondurationchange = () => this.initTimeValues();
     this.player.ontimeupdate = () => {
       this.currentTime = this.player.currentTime / 60;
@@ -163,12 +164,9 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private toPlaybackTime(): number {
-    let newPlayBackTime: number = 0;
-    if (this.player.duration && this.player.currentTime) {
-      newPlayBackTime = this.runCounter + this.player.currentTime / this.player.duration;
-    }
-    this.playbackTime = newPlayBackTime;
-    return newPlayBackTime;
+    this.playbackTime = this.player.duration ?
+      this.runCounter + this.player.currentTime / this.player.duration : this.playbackTime;
+    return this.playbackTime;
   }
 
   private initTimeValues(): void {
@@ -180,6 +178,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
         this.player.currentTime = (this.playerProperties.playbackTime - this.runCounter) * this.player.duration;
         this.checkDisabledState(this.runCounter);
         this.checkValidState(this.runCounter);
+        this.sendPlaybackTimeChanged();
       } else {
         this.duration = 0;
         this.runCounter = 0;

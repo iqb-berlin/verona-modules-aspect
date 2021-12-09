@@ -256,7 +256,9 @@ export class ElementContainerComponent implements OnInit {
           break;
         case 'video':
         case 'audio':
-          elementModel.playbackTime = unitStateElementCode.value;
+          if (elementModel && elementModel.playerProps) {
+            elementModel.playerProps.playbackTime = unitStateElementCode.value as number;
+          }
           break;
         default:
           elementModel.value = unitStateElementCode.value;
@@ -272,9 +274,9 @@ export class ElementContainerComponent implements OnInit {
       case 'image':
         return { id: elementModel.id, value: (elementModel as ImageElement).magnifierUsed };
       case 'video':
-        return { id: elementModel.id, value: (elementModel as VideoElement).playbackTime };
+        return { id: elementModel.id, value: (elementModel as VideoElement).playerProps.playbackTime };
       case 'audio':
-        return { id: elementModel.id, value: (elementModel as AudioElement).playbackTime };
+        return { id: elementModel.id, value: (elementModel as AudioElement).playerProps.playbackTime };
       default:
         return { id: elementModel.id, value: (elementModel as InputElement).value };
     }

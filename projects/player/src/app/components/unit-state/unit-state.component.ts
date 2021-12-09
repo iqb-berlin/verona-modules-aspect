@@ -165,6 +165,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   private sendVopStateChangedNotification(): void {
     // give the form time to change its valid status
     Promise.resolve().then(() => {
+      // eslint-disable-next-line no-console
+      console.log('player: this.unitStateService.unitStateElementCodes',
+        this.unitStateService.unitStateElementCodes);
       const unitState: UnitState = {
         dataParts: {
           elementCodes: JSON.stringify(this.unitStateService.unitStateElementCodes)

@@ -6,32 +6,29 @@ import { fromEvent, Observable, Subject } from 'rxjs';
 })
 export class VeronaAPIService {
   sessionID: string = '';
-  private _voeStartCommand = new Subject<Record<string, string>>(); // TODO proper interfaces
-  private _voeGetDefinitionRequest = new Subject<Record<string, string>>();
+  private _voeStartCommand = new Subject<VoeStartCommand>(); // TODO proper interfaces
+  private _voeGetDefinitionRequest = new Subject<VoeGetDefinitionRequest>();
 
   private isStandalone = (): boolean => window === window.parent;
 
   constructor() {
     fromEvent(window, 'message')
       .subscribe((event: Event): void => {
-        const message = (event as MessageEvent).data;
-        this.handleMessage(message);
+        this.handleMessage((event as MessageEvent).data);
       });
   }
 
-  private handleMessage(messageData: Record<string, string>): void {
+  private handleMessage(messageData: VoeGetDefinitionRequest | VoeStartCommand): void {
     switch (messageData.type) {
       case 'voeStartCommand':
-        // console.log('editor: voeStartCommand ', messageData);
         this.sessionID = messageData.sessionId;
-        this._voeStartCommand.next(messageData);
+        this._voeStartCommand.next(messageData as VoeStartCommand);
         break;
       case 'voeGetDefinitionRequest':
-        // console.log('editor: voeGetDefinitionRequest ', messageData);
         this._voeGetDefinitionRequest.next(messageData);
         break;
       default:
-        // console.warn(`editor: got message of unknown type ${messageData.type}`);
+        console.warn(`editor: got message of unknown type ${messageData}`);
     }
   }
 
@@ -63,11 +60,24 @@ export class VeronaAPIService {
     });
   }
 
-  get voeStartCommand(): Observable<any> {
+  get voeStartCommand(): Observable<VoeStartCommand> {
     return this._voeStartCommand.asObservable();
   }
 
-  get voeGetDefinitionRequest(): Observable<any> {
+  get voeGetDefinitionRequest(): Observable<VoeGetDefinitionRequest> {
     return this._voeGetDefinitionRequest.asObservable();
   }
+}
+
+export interface VoeStartCommand extends MessageEvent {
+  sessionId: string,
+  unitDefinition: string,
+  unitDefinitionType: string,
+  editorConfig: {
+    definitionReportPolicy: string
+  }
+}
+
+export interface VoeGetDefinitionRequest extends MessageEvent {
+  sessionId: string
 }

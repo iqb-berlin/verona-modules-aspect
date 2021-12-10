@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { VeronaAPIService } from './services/verona-api.service';
+import { VeronaAPIService, VoeStartCommand } from './services/verona-api.service';
 import { UnitService } from './services/unit.service';
 
 @Component({
@@ -18,7 +18,6 @@ import { UnitService } from './services/unit.service';
   ]
 })
 export class AppComponent implements OnInit {
-  editorConfig!: Record<string, any>;
   isStandalone = (): boolean => window === window.parent;
 
   constructor(private unitService: UnitService,
@@ -30,12 +29,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.veronaApiService.voeStartCommand
-      .subscribe((message: Record<string, any>): void => {
+      .subscribe((message: VoeStartCommand): void => {
         this.unitService.loadUnitDefinition(message.unitDefinition);
       });
     this.veronaApiService.voeGetDefinitionRequest
       .subscribe(() => {
-        this.veronaApiService.sendVoeDefinitionChangedNotification(this.unitService.getUnitAsJSON());
+        this.veronaApiService.sendVoeDefinitionChangedNotification(JSON.stringify(this.unitService.unit));
       });
 
     this.veronaApiService.sendVoeReadyNotification();

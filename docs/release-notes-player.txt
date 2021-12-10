@@ -1,5 +1,10 @@
 Player
 ======
+1.12.0
+- Fix the playability of dependent audios and videos
+- Fix storing/restoring the playback time of audios and videos
+- Fix the response status when re-entering the unit
+
 1.11.0
 - For spelling element use the same font properties for input field and button
 - Change cross out behaviour of spelling element. The button now behaves as

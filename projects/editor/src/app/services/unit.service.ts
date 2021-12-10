@@ -224,14 +224,33 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  duplicateElementsInSectionByIndex(elements: UIElement[],
-                                    pageIndex: number,
-                                    sectionIndex: number): void {
-    this.duplicateElementsInSection(elements, this._unit.value.pages[pageIndex].sections[sectionIndex]);
-  }
+  duplicateElementsInSection(elements: UIElement[],
+                             pageIndex: number,
+                             sectionIndex: number): void {
+    const section = this._unit.value.pages[pageIndex].sections[sectionIndex];
 
-  duplicateElementsInSection(elements: UIElement[], section: Section): void {
-    section.duplicateElements(elements as PositionedElement[]);
+    (elements as PositionedElement[]).forEach((element: PositionedElement) => {
+      const newElement = ElementFactory.createElement({
+        ...JSON.parse(JSON.stringify(element)),
+        id: this.idService.getNewID(element.type),
+        positionProps: {
+          xPosition: element.positionProps.xPosition + 10,
+          yPosition: element.positionProps.yPosition + 10
+        }
+      } as unknown as Partial<PositionedElement>);
+      if (newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
+        newElement.value.forEach((valueObject: { id: string }) => {
+          valueObject.id = this.idService.getNewID('value');
+        });
+      }
+      if (newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
+        newElement.rows.forEach((rowObject: { id: string }) => {
+          rowObject.id = this.idService.getNewID('likert_row');
+        });
+      }
+      section.elements.push(newElement as PositionedElement);
+    });
+
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 

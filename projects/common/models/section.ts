@@ -48,19 +48,6 @@ export class Section {
     });
   }
 
-  duplicateElements(elements: PositionedElement[]): void {
-    elements.forEach((element: PositionedElement) => {
-      const newElementConfig: Record<string, string | number | boolean | string[]> = { ...element } as
-        Record<string, string | number | boolean | string[]>;
-      delete newElementConfig.id; // remove ID from object, so a new one is created
-      const newElement: PositionedElement =
-        ElementFactory.createElement(newElementConfig as UIElement) as PositionedElement;
-      newElement.positionProps.xPosition += 10;
-      newElement.positionProps.yPosition += 10;
-      this.elements.push(newElement);
-    });
-  }
-
   static alignElements(elements: PositionedElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     let newValue: number;
     switch (alignmentDirection) {

@@ -109,7 +109,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
   }
 
   duplicateElement(): void {
-    this.unitService.duplicateElementsInSectionByIndex(
+    this.unitService.duplicateElementsInSection(
       this.selectedElements,
       this.selectionService.selectedPageIndex,
       this.selectionService.selectedPageSectionIndex

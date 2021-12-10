@@ -23,7 +23,7 @@ import { TextElement } from '../../../../common/ui-elements/text/text-element';
 import { LikertElement } from '../../../../common/ui-elements/likert/likert-element';
 import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-element-row';
 import { SelectionService } from './selection.service';
-import * as ElementFactory from '../../../../common/util/element.factory';
+import { ElementFactory } from '../../../../common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
 
 @Injectable({

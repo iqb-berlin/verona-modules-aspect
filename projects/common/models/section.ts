@@ -2,7 +2,7 @@ import {
   PositionedElement,
   UIElement
 } from './uI-element';
-import * as ElementFactory from '../util/element.factory';
+import { ElementFactory } from '../util/element.factory';
 
 export class Section {
   [index: string]: string | number | boolean | UIElement[] | ((...args: any) => any);

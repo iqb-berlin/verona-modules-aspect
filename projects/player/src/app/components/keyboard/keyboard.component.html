@@ -1,4 +1,6 @@
 <div class="keyboard-container"
+     [style.margin-bottom.px]="inputType === 'text-area' ?
+     inputComponent.clientHeight : inputComponent.clientHeight + 20"
      (mousedown)="onMouseDown($event, false)">
   <div class="keyboard-header"></div>
   <div class="keyboard-inner-container"

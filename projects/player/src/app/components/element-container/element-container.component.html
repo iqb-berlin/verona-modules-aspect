@@ -10,6 +10,7 @@
              [cdkConnectedOverlayOpen]="isKeyboardOpen">
   <app-keyboard cdkDrag
                 [inputComponent]="focussedInputElement"
+                [inputType]="elementModel.type"
                 [preset]="keyboardLayout">
   </app-keyboard>
 </ng-template>

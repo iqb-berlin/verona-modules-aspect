@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FrameElement } from './frame-element';
+import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
   selector: 'app-frame',
@@ -18,6 +19,6 @@ import { FrameElement } from './frame-element';
   </div>
   `
 })
-export class FrameComponent {
+export class FrameComponent extends ElementComponent {
   @Input() elementModel!: FrameElement;
 }

@@ -10,10 +10,7 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { LikertColumnEditDialogComponent } from '../components/dialogs/likert-column-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import {
-  DragNDropValueObject,
-  LikertColumn,
-  PlayerElement,
-  PlayerProperties
+  DragNDropValueObject, LikertColumn, PlayerProperties
 } from '../../../../common/models/uI-element';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 
@@ -25,46 +22,35 @@ export class DialogService {
 
   showConfirmDialog(text: string): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: {
-        text: text
-      }
+      data: { text }
     });
     return dialogRef.afterClosed();
   }
 
   showTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(TextEditDialogComponent, {
-      data: {
-        text: text
-      }
+      data: { text }
     });
     return dialogRef.afterClosed();
   }
 
   showDropListOptionEditDialog(value: DragNDropValueObject): Observable<DragNDropValueObject> {
     const dialogRef = this.dialog.open(DropListOptionEditDialogComponent, {
-      data: {
-        value: value
-      }
+      data: { value }
     });
     return dialogRef.afterClosed();
   }
 
   showMultilineTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(TextEditMultilineDialogComponent, {
-      data: {
-        text: text
-      }
+      data: { text }
     });
     return dialogRef.afterClosed();
   }
 
   showRichTextEditDialog(text: string, defaultFontSize: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: {
-        text: text,
-        defaultFontSize: defaultFontSize
-      },
+      data: { text, defaultFontSize },
       autoFocus: false
     });
     return dialogRef.afterClosed();
@@ -72,10 +58,7 @@ export class DialogService {
 
   showClozeTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: {
-        text: text,
-        showCloseElements: true
-      },
+      data: { text, showCloseElements: true },
       autoFocus: false
     });
     return dialogRef.afterClosed();
@@ -83,28 +66,21 @@ export class DialogService {
 
   showPlayerEditDialog(playerProps: PlayerProperties): Observable<PlayerProperties> {
     const dialogRef = this.dialog.open(PlayerEditDialogComponent, {
-      data: {
-        playerProps: playerProps
-      }
+      data: { playerProps }
     });
     return dialogRef.afterClosed();
   }
 
   showLikertColumnEditDialog(column: LikertColumn): Observable<LikertColumn> {
     const dialogRef = this.dialog.open(LikertColumnEditDialogComponent, {
-      data: {
-        column: column
-      }
+      data: { column }
     });
     return dialogRef.afterClosed();
   }
 
   showLikertRowEditDialog(row: LikertElementRow, columns: LikertColumn[]): Observable<LikertElementRow> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
-      data: {
-        row: row,
-        columns: columns
-      }
+      data: { row, columns }
     });
     return dialogRef.afterClosed();
   }

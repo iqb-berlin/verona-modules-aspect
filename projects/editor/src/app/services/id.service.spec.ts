@@ -17,7 +17,7 @@ describe('IDService', () => {
     expect(service.getNewID('text')).toBe('text_1');
   });
 
-  it('getNewID should return different IDs counting up', () => {
+  it('getNewID should return different IDs - counting up', () => {
     service.getNewID('text');
     expect(service.getNewID('text')).toBe('text_2');
   });

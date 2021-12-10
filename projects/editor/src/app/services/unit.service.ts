@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from './file.service';
 import { MessageService } from '../../../../common/services/message.service';
@@ -360,14 +360,8 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  getUnitAsJSON(): string {
-    return JSON.stringify({
-      ...this.unit
-    });
-  }
-
   saveUnit(): void {
-    FileService.saveUnitToFile(this.getUnitAsJSON());
+    FileService.saveUnitToFile(JSON.stringify(this.unit));
   }
 
   async loadUnitFromFile(): Promise<void> {

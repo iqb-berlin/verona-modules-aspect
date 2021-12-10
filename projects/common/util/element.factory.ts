@@ -34,6 +34,7 @@ import { SliderComponent } from '../ui-elements/slider/slider.component';
 import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correct.component';
 import { FrameComponent } from '../ui-elements/frame/frame.component';
 import { FrameElement } from '../ui-elements/frame/frame-element';
+import { ElementComponent } from '../directives/element-component.directive';
 
 export abstract class ElementFactory {
   static createElement(elementModel: Partial<UIElement>): UIElement {
@@ -93,14 +94,13 @@ export abstract class ElementFactory {
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);
     }
-    console.log('newElement', newElement);
+    // console.log('newElement', newElement);
     return newElement;
   }
 
   static getComponentFactory(
     elementType: string, componentFactoryResolver: ComponentFactoryResolver
-  ): ComponentFactory<any> {
-    // TODO: Find better solution than any
+  ): ComponentFactory<ElementComponent> {
     switch (elementType) {
       case 'text':
         return componentFactoryResolver.resolveComponentFactory(TextComponent);

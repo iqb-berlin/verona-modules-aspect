@@ -21,7 +21,7 @@ export class InputBackgroundColorDirective implements OnChanges {
   }
 
   private setBackgroundColor(): void {
-    let targetElements: HTMLElement[] = [];
+    let targetElements: HTMLElement[];
     if (this.appearance === 'outline') {
       targetElements = this.elementRef.nativeElement.querySelector('div.mat-form-field-outline')?.children;
     } else {

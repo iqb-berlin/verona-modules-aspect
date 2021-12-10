@@ -1,7 +1,5 @@
 import { Section } from './section';
 import { moveArrayItem } from '../util/array';
-import { UIElement } from './uI-element';
-import { IdService } from '../../editor/src/app/services/id.service';
 
 export class Page {
   [index: string]: string | number | boolean | Section[] | undefined | ((...args: any) => any);

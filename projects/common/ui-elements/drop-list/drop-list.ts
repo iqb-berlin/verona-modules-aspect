@@ -9,7 +9,6 @@ import {
   UIElement
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
-import { IdService } from '../../id.service';
 
 export class DropListElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
   onlyOneItem: boolean = false;
@@ -54,9 +53,9 @@ export class DropListElement extends InputElement implements PositionedElement, 
     }
     if (oldValues.length > 0) {
       this.value = [];
-      oldValues.forEach((stringValue: string) => {
+      oldValues.forEach((stringValue: string, i: number) => {
         (this.value as DragNDropValueObject[]).push({
-          id: IdService.getInstance().getNewID('value'),
+          id: `${this.id}_value_${i}`,
           stringValue: stringValue
         });
       });

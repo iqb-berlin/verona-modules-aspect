@@ -1,9 +1,9 @@
 import {
   Component, EventEmitter, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { ClozeElement, ClozePart } from './cloze-element';
+import { ClozeElement } from './cloze-element';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
-import { InputElement } from '../../models/uI-element';
+import { InputElement, ClozePart } from '../../models/uI-element';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({

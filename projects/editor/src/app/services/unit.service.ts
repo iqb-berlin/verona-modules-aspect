@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from './file.service';
 import { MessageService } from '../../../../common/services/message.service';
-import { IdService } from '../../../../common/id.service';
+import { IdService } from './id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { Unit } from '../../../../common/models/unit';
@@ -24,6 +24,7 @@ import { LikertElement } from '../../../../common/ui-elements/likert/likert-elem
 import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-element-row';
 import { SelectionService } from './selection.service';
 import * as ElementFactory from '../../../../common/util/element.factory';
+import { ClozeParser } from '../util/cloze-parser';
 
 @Injectable({
   providedIn: 'root'
@@ -122,7 +123,12 @@ export class UnitService {
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
-    page.duplicateSection(section, sectionIndex);
+    const newSection = new Section(section);
+    newSection.elements.forEach((element: UIElement) => {
+      element.id = IdService.getInstance().getNewID(element.type);
+    });
+    page.sections.splice(sectionIndex + 1, 0, newSection);
+
     this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -159,6 +165,7 @@ export class UnitService {
       }
       newElement = ElementFactory.createElement({
         type: elementType,
+        id: IdService.getInstance().getNewID(elementType),
         src: mediaSrc,
         positionProps: {
           dynamicPositioning: section.dynamicPositioning
@@ -167,6 +174,7 @@ export class UnitService {
     } else {
       newElement = ElementFactory.createElement({
         type: elementType,
+        id: IdService.getInstance().getNewID(elementType),
         positionProps: {
           dynamicPositioning: section.dynamicPositioning
         }
@@ -245,8 +253,11 @@ export class UnitService {
         }
         IdService.getInstance().removeId(element.id);
         IdService.getInstance().addId(<string>value);
+      } else if (property === 'text' && element.type === 'cloze') {
+        element.setProperty('parts', ClozeParser.parse(value as string, IdService.getInstance()));
+      } else {
+        element.setProperty(property, value);
       }
-      element.setProperty(property, value);
     }
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
@@ -334,6 +345,7 @@ export class UnitService {
     return new LikertElementRow(
       {
         type: 'likert_row',
+        id: IdService.getInstance().getNewID('likert_row'),
         text: question,
         columnCount: columnCount
       } as LikertElementRow

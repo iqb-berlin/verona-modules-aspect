@@ -1,6 +1,4 @@
 // eslint-disable-next-line max-classes-per-file
-import { IdService } from '../id.service';
-
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images'
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
@@ -27,10 +25,6 @@ export abstract class UIElement {
 
   protected constructor(serializedElement: Partial<UIElement>) {
     Object.assign(this, serializedElement);
-    if (!serializedElement.id) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.id = IdService.getInstance().getNewID(serializedElement.type!);
-    }
   }
 
   getProperty(property: string): any {
@@ -51,7 +45,8 @@ export abstract class UIElement {
 
   // This can be overwritten by elements if they need to handle some property specifics. Likert does.
   setProperty(property: string,
-              value: InputElementValue | LikertColumn[] | LikertRow[] | DragNDropValueObject[]): void {
+              value: InputElementValue | LikertColumn[] | LikertRow[] |
+              DragNDropValueObject[] | ClozePart[][]): void {
     if (this.fontProps && property in this.fontProps) {
       this.fontProps[property] = value as string | number | boolean;
     } else if (this.surfaceProps && property in this.surfaceProps) {
@@ -176,3 +171,9 @@ export interface LikertRow {
   text: string;
   columnCount: number;
 }
+
+export type ClozePart = {
+  type: string;
+  value: string | UIElement;
+  style?: string;
+};

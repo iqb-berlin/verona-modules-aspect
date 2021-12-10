@@ -1,33 +1,17 @@
 import {
+  ClozePart,
   CompoundElement,
   FontElement,
   FontProperties,
-  InputElement,
-  InputElementValue,
-  LikertColumn,
-  LikertRow,
   PositionedElement, PositionProperties,
   UIElement
 } from '../../models/uI-element';
-import { TextFieldElement } from '../text-field/text-field-element';
-import { TextAreaElement } from '../text-area/text-area-element';
-import { CheckboxElement } from '../checkbox/checkbox-element';
-import { DropdownElement } from '../dropdown/dropdown-element';
 import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
-import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
-import { DropListSimpleElement } from '../drop-list-simple/drop-list-simple';
-import { ToggleButtonElement } from '../toggle-button/toggle-button';
 
 // TODO styles like em dont continue after inserted components
 
-export type ClozePart = {
-  type: string;
-  value: string | UIElement;
-  style?: string;
-};
-
 export class ClozeElement extends CompoundElement implements PositionedElement, FontElement {
-  text: string = '<p>Lorem ipsum dolor \\r sdfsdf \\i sdfsdf</p>';
+  text: string = 'Lorem ipsum dolor \\r sdfsdf \\i sdfsdf';
   parts: ClozePart[][] = [];
 
   positionProps: PositionProperties;
@@ -43,7 +27,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
       serializedElement?.parts.forEach((subParts: ClozePart[]) => {
         subParts.forEach((part: ClozePart) => {
           if (!['p', 'h1', 'h2', 'h3', 'h4'].includes(part.type)) {
-            part.value = ClozeElement.createElement(part.value as UIElement);
+            part.value = this.createElement(part.value as UIElement);
           }
         });
       });
@@ -51,113 +35,5 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
 
     this.width = serializedElement.width || 450;
     this.height = serializedElement.height || 200;
-  }
-
-  setProperty(property: string, value: InputElementValue | string[] | LikertColumn[] | LikertRow[]): void {
-    super.setProperty(property, value);
-
-    if (property === 'text') {
-      this.createParts(value as string);
-    }
-  }
-
-  private createParts(htmlText: string): void {
-    const elementList = ClozeElement.readElementArray(htmlText);
-
-    this.parts = [];
-    elementList.forEach((element: HTMLParagraphElement | HTMLHeadingElement, i: number) => {
-      this.parseParagraphs(element, i);
-    });
-    // console.log('PARTS:', this.parts);
-  }
-
-  private static readElementArray(htmlText: string): (HTMLParagraphElement | HTMLHeadingElement)[] {
-    const el = document.createElement('html');
-    el.innerHTML = htmlText;
-    return Array.from(el.children[1].children) as (HTMLParagraphElement | HTMLHeadingElement)[];
-  }
-
-  private parseParagraphs(element: HTMLParagraphElement | HTMLHeadingElement, partIndex: number): void {
-    this.parts[partIndex] = []; // init array to be able to push
-    let [nextSpecialElementIndex, nextElementType] = ClozeElement.getNextSpecialElement(element.innerHTML);
-    let indexOffset = 0;
-
-    while (nextSpecialElementIndex !== -1) {
-      nextSpecialElementIndex += indexOffset;
-      this.parts[partIndex].push({
-        type: element.localName,
-        value: element.innerHTML.substring(indexOffset, nextSpecialElementIndex),
-        style: element.style.cssText
-      });
-
-      const newElement = ClozeElement.createElement({ type: nextElementType } as UIElement);
-      this.parts[partIndex].push({ type: nextElementType, value: newElement });
-
-      indexOffset = nextSpecialElementIndex + 2; // + 2 to get rid of the marker, i.e. '\b'
-      [nextSpecialElementIndex, nextElementType] =
-        ClozeElement.getNextSpecialElement(element.innerHTML.substring(indexOffset));
-    }
-    this.parts[partIndex].push({
-      type: element.localName,
-      value: element.innerHTML.substring(indexOffset),
-      style: element.style.cssText
-    });
-  }
-
-  private static getNextSpecialElement(p: string): [number, string] {
-    const x = [];
-    if (p.indexOf('\\d') > 0) {
-      x.push(p.indexOf('\\d'));
-    }
-    if (p.indexOf('\\i') > 0) {
-      x.push(p.indexOf('\\i'));
-    }
-    if (p.indexOf('\\z') > 0) {
-      x.push(p.indexOf('\\z'));
-    }
-    if (p.indexOf('\\r') > 0) {
-      x.push(p.indexOf('\\r'));
-    }
-
-    const y = Math.min(...x);
-    let nextElementType = '';
-    switch (p[y + 1]) {
-      case 'd': nextElementType = 'dropdown'; break;
-      case 'i': nextElementType = 'text-field'; break;
-      case 'z': nextElementType = 'drop-list'; break;
-      case 'r': nextElementType = 'toggle-button'; break;
-      default: return [-1, 'unknown'];
-    }
-    return [y, nextElementType];
-  }
-
-  private static createElement(elementModel: UIElement): InputElement {
-    let newElement: InputElement;
-    switch (elementModel.type) {
-      case 'text-field':
-        newElement = new TextFieldSimpleElement(elementModel);
-        (newElement as TextFieldElement).label = '';
-        break;
-      case 'text-area':
-        newElement = new TextAreaElement(elementModel);
-        break;
-      case 'checkbox':
-        newElement = new CheckboxElement(elementModel);
-        break;
-      case 'dropdown':
-        newElement = new DropdownElement(elementModel);
-        break;
-      case 'drop-list':
-        newElement = new DropListSimpleElement(elementModel);
-        newElement.height = 25;
-        newElement.width = 100;
-        break;
-      case 'toggle-button':
-        newElement = new ToggleButtonElement(elementModel);
-        break;
-      default:
-        throw new Error(`ElementType ${elementModel.type} not found!`);
-    }
-    return newElement;
   }
 }

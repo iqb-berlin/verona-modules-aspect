@@ -5,8 +5,8 @@ import { TextComponent } from '../../../../common/ui-elements/text/text.componen
   providedIn: 'root'
 })
 export class MarkingService {
-  private static readonly MARKING_TAG = 'MARKED';
-  private static readonly UNDERLINE_TAG = 'UNDERLINED';
+  private static readonly MARKING_TAG = 'ASPECT-MARKED';
+  private static readonly UNDERLINE_TAG = 'ASPECT-UNDERLINED';
 
   applySelection(mode: 'mark' | 'underline' | 'delete',
                  color: string,

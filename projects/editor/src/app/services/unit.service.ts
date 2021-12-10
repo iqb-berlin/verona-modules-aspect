@@ -30,8 +30,7 @@ import { ClozeParser } from '../util/cloze-parser';
   providedIn: 'root'
 })
 export class UnitService {
-  unitModel: Unit;
-  private _unit: BehaviorSubject<Unit>;
+  unit: Unit;
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   pageMoved: Subject<void> = new Subject<void>();
@@ -43,20 +42,18 @@ export class UnitService {
               private dialogService: DialogService,
               private sanitizer: DomSanitizer,
               private translateService: TranslateService) {
-    this.unitModel = new Unit();
-    this._unit = new BehaviorSubject(this.unitModel);
+    this.unit = new Unit();
   }
 
   loadUnitDefinition(unitDefinition: string): void {
     if (unitDefinition) {
-      this.unitModel = new Unit(JSON.parse(unitDefinition));
+      this.unit = new Unit(JSON.parse(unitDefinition));
       this.readExistingIDs();
-      this._unit.next(this.unitModel);
     }
   }
 
   private readExistingIDs(): void {
-    this.unitModel.pages.forEach((page: Page) => {
+    this.unit.pages.forEach((page: Page) => {
       page.sections.forEach((section: Section) => {
         section.elements.forEach((element: UIElement) => {
           this.idService.addID(element.id);
@@ -70,25 +67,18 @@ export class UnitService {
     });
   }
 
-  get unit(): Observable<Unit> {
-    return this._unit.asObservable();
-  }
-
   addPage(): void {
-    this.unitModel.addPage();
-    this._unit.next(this._unit.value);
+    this.unit.addPage();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deletePage(page: Page): void {
-    this.unitModel.deletePage(page);
-    this._unit.next(this._unit.value);
+    this.unit.deletePage(page);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   movePage(selectedPage: Page, direction: 'up' | 'down'): void {
-    this.unitModel.movePage(selectedPage, direction);
-    this._unit.next(this._unit.value);
+    this.unit.movePage(selectedPage, direction);
     this.pageMoved.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -102,10 +92,9 @@ export class UnitService {
   }
 
   private handlePageAlwaysVisiblePropertyChange(page: Page): void {
-    const pageIndex = this._unit.value.pages.indexOf(page);
+    const pageIndex = this.unit.pages.indexOf(page);
     if (pageIndex !== 0) {
-      this.unitModel.movePageToTop(pageIndex, page);
-      this._unit.next(this._unit.value);
+      this.unit.movePageToTop(pageIndex, page);
       this.pageMoved.next();
     }
     page.alwaysVisible = true;
@@ -113,13 +102,11 @@ export class UnitService {
 
   addSection(page: Page): void {
     page.addSection();
-    this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deleteSection(section: Section): void {
-    this.unitModel.pages[this.selectionService.selectedPageIndex].deleteSection(section);
-    this._unit.next(this._unit.value);
+    this.unit.pages[this.selectionService.selectedPageIndex].deleteSection(section);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -129,21 +116,18 @@ export class UnitService {
       element.id = this.idService.getNewID(element.type);
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
-
-    this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
     page.moveSection(section, direction);
-    this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   addElementToSectionByIndex(elementType: UIElementType,
                              pageIndex: number,
                              sectionIndex: number): void {
-    this.addElementToSection(elementType, this._unit.value.pages[pageIndex].sections[sectionIndex]);
+    this.addElementToSection(elementType, this.unit.pages[pageIndex].sections[sectionIndex]);
   }
 
   async addElementToSection(elementType: UIElementType,
@@ -196,7 +180,7 @@ export class UnitService {
 
   deleteElements(elements: UIElement[]): void {
     this.freeUpIds(elements);
-    this.unitModel.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
+    this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
       section.deleteElements(elements);
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification();
@@ -220,14 +204,13 @@ export class UnitService {
       newSection.elements.push(element as PositionedElement);
       (element as PositionedElement).positionProps.dynamicPositioning = newSection.dynamicPositioning;
     });
-    this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   duplicateElementsInSection(elements: UIElement[],
                              pageIndex: number,
                              sectionIndex: number): void {
-    const section = this._unit.value.pages[pageIndex].sections[sectionIndex];
+    const section = this.unit.pages[pageIndex].sections[sectionIndex];
 
     (elements as PositionedElement[]).forEach((element: PositionedElement) => {
       const newElement = ElementFactory.createElement({
@@ -257,14 +240,13 @@ export class UnitService {
   updateSectionProperty(section: Section, property: string, value: string | number | boolean): void {
     section.updateProperty(property, value);
     this.elementPropertyUpdated.next();
-    this._unit.next(this._unit.value);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   updateElementProperty(elements: UIElement[], property: string,
                         value: InputElementValue | LikertColumn[] | LikertRow[] |
                         DragNDropValueObject[] | null): boolean {
-    console.log('updateElementProperty', elements, property, value);
+    // console.log('updateElementProperty', elements, property, value);
     for (const element of elements) {
       if (property === 'id') {
         if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
@@ -380,7 +362,7 @@ export class UnitService {
 
   getUnitAsJSON(): string {
     return JSON.stringify({
-      ...this.unitModel
+      ...this.unit
     });
   }
 

@@ -28,7 +28,7 @@ import { Unit } from '../../../../../common/models/unit';
   ]
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
-  unit!: Unit;
+  unit: Unit = this.unitService.unit;
   selectedPageIndex: number = 0;
   pagesLoaded = true;
   private ngUnsubscribe = new Subject<void>();
@@ -39,11 +39,6 @@ export class UnitViewComponent implements OnInit, OnDestroy {
               private messageService: MessageService) { }
 
   ngOnInit(): void {
-    this.unitService.unit
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((unit: Unit) => {
-        this.unit = unit;
-      });
     // The following is a hack. The tab element gets bugged when changing the underlying array.
     // With this we can temporarily remove it from the DOM and then add it again, re-initializing it.
     this.unitService.pageMoved

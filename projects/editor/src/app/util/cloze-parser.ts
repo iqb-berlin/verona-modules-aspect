@@ -9,12 +9,8 @@ import { ToggleButtonElement } from '../../../../common/ui-elements/toggle-butto
 import { IdService } from '../services/id.service';
 
 export abstract class ClozeParser {
-  static parse(text: string, idService: IdService): ClozePart[][] {
-    return ClozeParser.createParts(text, idService);
-  }
-
-  private static createParts(htmlText: string, idService: IdService): ClozePart[][] {
-    const elementList = ClozeParser.readElementArray(htmlText);
+  static createClozeParts(htmlText: string, idService: IdService): ClozePart[][] {
+    const elementList = ClozeParser.createElementList(htmlText);
 
     const parts: ClozePart[][] = [];
     elementList.forEach((element: HTMLParagraphElement | HTMLHeadingElement, i: number) => {
@@ -23,7 +19,7 @@ export abstract class ClozeParser {
     return parts;
   }
 
-  private static readElementArray(htmlText: string): (HTMLParagraphElement | HTMLHeadingElement)[] {
+  private static createElementList(htmlText: string): (HTMLParagraphElement | HTMLHeadingElement)[] {
     const el = document.createElement('html');
     el.innerHTML = htmlText;
     return Array.from(el.children[1].children) as (HTMLParagraphElement | HTMLHeadingElement)[];
@@ -34,7 +30,7 @@ export abstract class ClozeParser {
     element: HTMLParagraphElement | HTMLHeadingElement, partIndex: number, parts: ClozePart[][], idService: IdService
   ): ClozePart[][] {
     parts[partIndex] = [];
-    let [nextSpecialElementIndex, nextElementType] = ClozeParser.getNextSpecialElement(element.innerHTML);
+    let [nextSpecialElementIndex, nextElementType] = ClozeParser.getNextElementMarker(element.innerHTML);
     let indexOffset = 0;
 
     while (nextSpecialElementIndex !== -1) {
@@ -50,7 +46,7 @@ export abstract class ClozeParser {
 
       indexOffset = nextSpecialElementIndex + 2; // + 2 to get rid of the marker, i.e. '\b'
       [nextSpecialElementIndex, nextElementType] =
-        ClozeParser.getNextSpecialElement(element.innerHTML.substring(indexOffset));
+        ClozeParser.getNextElementMarker(element.innerHTML.substring(indexOffset));
     }
     parts[partIndex].push({
       type: element.localName,
@@ -60,7 +56,7 @@ export abstract class ClozeParser {
     return parts;
   }
 
-  private static getNextSpecialElement(p: string): [number, string] {
+  private static getNextElementMarker(p: string): [number, string] {
     const x = [];
     if (p.indexOf('\\d') > 0) {
       x.push(p.indexOf('\\d'));
@@ -106,7 +102,7 @@ export abstract class ClozeParser {
         break;
       case 'drop-list':
         newElement = new DropListSimpleElement(elementModel);
-        newElement.height = 25;
+        newElement.height = 25; // TODO weg?
         newElement.width = 100;
         break;
       case 'toggle-button':

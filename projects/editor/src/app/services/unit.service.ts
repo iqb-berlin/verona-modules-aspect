@@ -256,7 +256,7 @@ export class UnitService {
         this.idService.removeId(element.id);
         this.idService.addID(<string>value);
       } else if (property === 'text' && element.type === 'cloze') {
-        element.setProperty('parts', ClozeParser.parse(value as string, this.idService));
+        element.setProperty('parts', ClozeParser.createClozeParts(value as string, this.idService));
       } else {
         element.setProperty(property, value);
       }

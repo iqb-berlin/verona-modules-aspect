@@ -19,14 +19,14 @@ import { ButtonElement } from './button-element';
             [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
             [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
             [style.border-radius.px]="elementModel.borderRadius"
-            (click)="onClick($event, elementModel.action)">
+            (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
       {{elementModel.label}}
     </button>
     <input *ngIf="elementModel.imageSrc" type="image"
            [src]="elementModel.imageSrc | safeResourceUrl"
            [class]="elementModel.positionProps.dynamicPositioning ? 'dynamic-image' : 'static-image'"
            [alt]="'imageNotFound' | translate"
-           (click)="onClick($event, elementModel.action)">
+           (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
   `,
   styles: [
     '.dynamic-image {width: 100%; height: fit-content}',
@@ -36,10 +36,4 @@ import { ButtonElement } from './button-element';
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
   @Output() navigationRequested = new EventEmitter<'previous' | 'next' | 'first' | 'last' | 'end'>();
-
-  onClick = (event: MouseEvent, action: 'previous' | 'next' | 'first' | 'last' | 'end' | null): void => {
-    if (action) { // TODO warum kann das null sein?
-      this.navigationRequested.emit(action);
-    }
-  };
 }

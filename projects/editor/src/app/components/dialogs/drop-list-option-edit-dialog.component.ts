@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DragNDropValueObject } from '../../../../../common/models/uI-element';
-import { FileService } from '../../../../../common/file.service';
+import { FileService } from '../../services/file.service';
 
 @Component({
   selector: 'app-drop-list-option-edit-dialog',

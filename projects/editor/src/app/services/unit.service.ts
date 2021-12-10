@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import { FileService } from '../../../../common/file.service';
+import { FileService } from './file.service';
 import { MessageService } from '../../../../common/services/message.service';
 import { IdService } from '../../../../common/id.service';
 import { DialogService } from './dialog.service';

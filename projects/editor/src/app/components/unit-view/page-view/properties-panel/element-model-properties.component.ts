@@ -11,7 +11,7 @@ import {
 import { LikertElement } from '../../../../../../../common/ui-elements/likert/likert-element';
 import { LikertElementRow } from '../../../../../../../common/ui-elements/likert/likert-element-row';
 import { UnitService } from '../../../../services/unit.service';
-import { FileService } from '../../../../../../../common/file.service';
+import { FileService } from '../../../../services/file.service';
 
 @Component({
   selector: 'app-element-model-properties-component',

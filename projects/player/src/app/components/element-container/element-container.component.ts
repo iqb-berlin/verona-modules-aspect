@@ -106,16 +106,16 @@ export class ElementContainerComponent implements OnInit {
   private initCompoundElement(elementComponent: any): void {
     const elementForm = this.formBuilder.group({});
     elementComponent.parentForm = elementForm;
-    this.subscribeCompoundChildren(elementComponent);
-    elementComponent.getFormElementModelChildren()
-      .forEach((element: InputElement) => {
-        this.registerFormGroup(elementForm);
-        this.formService.registerFormControl({
-          id: element.id,
-          formControl: new FormControl(element.value),
-          formGroup: elementForm
-        });
+    const compoundChildren = elementComponent.getFormElementModelChildren();
+    this.subscribeCompoundChildren(elementComponent, compoundChildren);
+    compoundChildren.forEach((element: InputElement) => {
+      this.registerFormGroup(elementForm);
+      this.formService.registerFormControl({
+        id: element.id,
+        formControl: new FormControl(element.value),
+        formGroup: elementForm
       });
+    });
   }
 
   private registerAtUnitStateService(elementComponent: any): void {
@@ -128,12 +128,14 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeCompoundChildren(elementComponent: any): void {
+  private subscribeCompoundChildren(elementComponent: any, compoundChildren: InputElement[]): void {
     if (elementComponent.childrenAdded) {
       elementComponent.childrenAdded
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((children: QueryList<ElementComponent>) => {
-          children.forEach(child => {
+          children.forEach((child, index) => {
+            const childModel = compoundChildren[index];
+            child.elementModel = this.restoreUnitStateValue(childModel);
             this.unitStateService.registerElement(
               this.initUnitStateValue(child.elementModel),
               child.domElement,

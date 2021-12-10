@@ -154,6 +154,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
   @Output() moveSection = new EventEmitter<'up' | 'down'>();
   @Output() duplicateSection = new EventEmitter();
   @Output() selectElementComponent = new EventEmitter<UIElement>();
+  @Output() changeLayout = new EventEmitter();
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
   columnSizes: { value: string, unit: string }[] = [];
@@ -170,6 +171,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
 
   updateModel(property: string, value: string | number | boolean): void {
     this.unitService.updateSectionProperty(this.section, property, value);
+    this.changeLayout.emit();
   }
 
   selectElement(element: UIElement): void {
@@ -200,6 +202,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
     this.section.gridRowSizes.split(' ').forEach((size: string) => {
       this.rowSizes.push({ value: size.slice(0, -2), unit: size.slice(-2) });
     });
+    this.changeLayout.emit();
   }
 
   /* Add elements to size array. Default value 1fr. */

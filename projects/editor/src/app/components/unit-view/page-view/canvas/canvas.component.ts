@@ -1,9 +1,7 @@
 import {
-  Component, Input, OnDestroy, OnInit, QueryList, ViewChildren
+  Component, Input, QueryList, ViewChildren
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { Page } from '../../../../../../../common/models/page';
@@ -25,21 +23,15 @@ import { SectionDynamicComponent } from './section-dynamic.component';
     '.section-menu.open {opacity:1; transition-delay:0s;}'
   ]
 })
-export class CanvasComponent implements OnInit, OnDestroy {
+export class CanvasComponent {
   @Input() page!: Page;
   dropListList: string[] = [];
   hoveredSection: number = -1;
-  private ngUnsubscribe = new Subject<void>();
 
-  @ViewChildren('sectionComponent') childSectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
+  @ViewChildren('sectionComponent')
+  childSectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
 
   constructor(public selectionService: SelectionService, public unitService: UnitService) { }
-
-  ngOnInit(): void {
-    this.unitService.unit
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => this.generateDropListList());
-  }
 
   /*
   To make it work that the section itself can handle drop events, but also have the canvas to handle drops
@@ -58,17 +50,19 @@ export class CanvasComponent implements OnInit, OnDestroy {
   Resizing in dynamic sections is handled by the section/element-overlays themselves.
    */
   generateDropListList(): void {
-    this.dropListList = [];
-    this.page.sections.forEach((section: Section, index: number) => {
-      if (!section.dynamicPositioning) {
-        this.dropListList.push(`section-${index}`);
-      } else {
-        section.gridColumnSizes.split(' ').forEach((columnSize: string, columnIndex: number) => {
-          section.gridRowSizes.split(' ').forEach((rowSize: string, rowIndex: number) => {
-            this.dropListList.push(`list-${index}-${columnIndex + 1}-${rowIndex + 1}`); // grid starts counting at 1
+    setTimeout(() => {
+      this.dropListList = [];
+      this.page.sections.forEach((section: Section, index: number) => {
+        if (!section.dynamicPositioning) {
+          this.dropListList.push(`section-${index}`);
+        } else {
+          section.gridColumnSizes.split(' ').forEach((columnSize: string, columnIndex: number) => {
+            section.gridRowSizes.split(' ').forEach((rowSize: string, rowIndex: number) => {
+              this.dropListList.push(`list-${index}-${columnIndex + 1}-${rowIndex + 1}`); // grid starts counting at 1
+            });
           });
-        });
-      }
+        }
+      });
     });
   }
 
@@ -78,7 +72,7 @@ export class CanvasComponent implements OnInit, OnDestroy {
       this.page.sections[newSectionIndex]);
   }
 
-  elementDropped(event: CdkDragDrop<DropListData>): void {
+  elementDropped(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {
     const selectedElements = this.selectionService.getSelectedElements() as PositionedElement[];
 
     if (event.previousContainer !== event.container) {
@@ -137,19 +131,4 @@ export class CanvasComponent implements OnInit, OnDestroy {
     }
     return null;
   }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-}
-
-export interface DragItemData {
-  dragType: string;
-  element: UIElement;
-}
-
-export interface DropListData {
-  sectionIndex: number;
-  gridCoordinates?: number[];
 }

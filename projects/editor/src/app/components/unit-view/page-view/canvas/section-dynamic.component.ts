@@ -2,10 +2,9 @@ import {
   Component, Input, Output, EventEmitter, ViewChildren, QueryList
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { DragItemData, DropListData } from './canvas.component';
 import { UnitService } from '../../../../services/unit.service';
 import { Section } from '../../../../../../../common/models/section';
-import { UIElementType } from '../../../../../../../common/models/uI-element';
+import { UIElement, UIElementType } from '../../../../../../../common/models/uI-element';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 
 @Component({
@@ -77,8 +76,8 @@ export class SectionDynamicComponent {
 
   constructor(public unitService: UnitService) { }
 
-  drop(event: CdkDragDrop<DropListData>): void {
-    const dragItemData: DragItemData = event.item.data;
+  drop(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {
+    const dragItemData: { dragType: string; element: UIElement; } = event.item.data;
 
     // Move element to other section - handled by parent (page-canvas).
     if (event.previousContainer.data.sectionIndex !== event.container.data.sectionIndex) {

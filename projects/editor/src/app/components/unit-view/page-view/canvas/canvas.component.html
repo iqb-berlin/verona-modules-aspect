@@ -12,6 +12,7 @@
                           [allowMoveUp]="i != 0"
                           [allowMoveDown]="i < page.sections.length - 1"
                           [allowDelete]="page.sections.length > 1"
+                          (changeLayout)="generateDropListList()"
                           (moveSection)="unitService.moveSection(section, page, $event)"
                           (duplicateSection)="unitService.duplicateSection(section, page, i)"
                           (selectElementComponent)="selectElementComponent($event)"

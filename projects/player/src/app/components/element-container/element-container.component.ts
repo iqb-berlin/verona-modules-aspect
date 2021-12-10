@@ -70,8 +70,8 @@ export class ElementContainerComponent implements OnInit {
       this.mediaPlayerService.registerMediaElement(
         this.elementModel.id,
         elementComponent,
-        this.elementModel.activeAfterID as string,
-        this.elementModel.minRuns as number === 0
+        this.elementModel.playerProps?.activeAfterID as string,
+        this.elementModel.playerProps?.minRuns as number === 0
       );
     }
     this.subscribeStartSelection(elementComponent);

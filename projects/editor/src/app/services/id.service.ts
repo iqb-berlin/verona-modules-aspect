@@ -1,6 +1,9 @@
-export class IdService {
-  private static instance: IdService;
+import { Injectable } from '@angular/core';
 
+@Injectable({
+  providedIn: 'root'
+})
+export class IdService {
   private givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,
@@ -26,13 +29,6 @@ export class IdService {
     value: 0
   };
 
-  static getInstance(): IdService {
-    if (!IdService.instance) {
-      IdService.instance = new IdService();
-    }
-    return IdService.instance;
-  }
-
   getNewID(type: string): string {
     if (!type) {
       throw Error('ID-Service: No type given!');
@@ -53,15 +49,8 @@ export class IdService {
     return !this.givenIDs.includes(value);
   }
 
-  addId(id: string): void {
-    this.givenIDs.push(id);
-  }
-
   /* Remove ID from givenIDs, so it can be used again. */
   removeId(id: string): void {
-    const index = this.givenIDs.indexOf(id, 0);
-    if (index > -1) {
-      this.givenIDs.splice(index, 1);
-    }
+    this.givenIDs.splice(this.givenIDs.indexOf(id, 0), 1);
   }
 }

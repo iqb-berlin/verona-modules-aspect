@@ -37,6 +37,7 @@ export class UnitService {
   pageMoved: Subject<void> = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
+              private idService: IdService,
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
@@ -58,10 +59,10 @@ export class UnitService {
     this.unitModel.pages.forEach((page: Page) => {
       page.sections.forEach((section: Section) => {
         section.elements.forEach((element: UIElement) => {
-          IdService.getInstance().addID(element.id);
+          this.idService.addID(element.id);
           if (element.type === 'drop-list') {
             element.value?.forEach((valueElement: DragNDropValueObject) => {
-              IdService.getInstance().addID(valueElement.id);
+              this.idService.addID(valueElement.id);
             });
           }
         });
@@ -125,7 +126,7 @@ export class UnitService {
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
     const newSection = new Section(section);
     newSection.elements.forEach((element: UIElement) => {
-      element.id = IdService.getInstance().getNewID(element.type);
+      element.id = this.idService.getNewID(element.type);
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
 
@@ -165,7 +166,7 @@ export class UnitService {
       }
       newElement = ElementFactory.createElement({
         type: elementType,
-        id: IdService.getInstance().getNewID(elementType),
+        id: this.idService.getNewID(elementType),
         src: mediaSrc,
         positionProps: {
           dynamicPositioning: section.dynamicPositioning
@@ -174,7 +175,7 @@ export class UnitService {
     } else {
       newElement = ElementFactory.createElement({
         type: elementType,
-        id: IdService.getInstance().getNewID(elementType),
+        id: this.idService.getNewID(elementType),
         positionProps: {
           dynamicPositioning: section.dynamicPositioning
         }
@@ -194,21 +195,21 @@ export class UnitService {
   }
 
   deleteElements(elements: UIElement[]): void {
-    UnitService.freeUpIds(elements);
+    this.freeUpIds(elements);
     this.unitModel.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
       section.deleteElements(elements);
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  private static freeUpIds(elements: UIElement[]): void {
+  private freeUpIds(elements: UIElement[]): void {
     elements.forEach(element => {
       if (element.type === 'drop-list') {
         element.value.forEach((value: DragNDropValueObject) => {
-          IdService.getInstance().removeId(value.id);
+          this.idService.removeId(value.id);
         });
       }
-      IdService.getInstance().removeId(element.id);
+      this.idService.removeId(element.id);
     });
   }
 
@@ -247,14 +248,14 @@ export class UnitService {
     console.log('updateElementProperty', elements, property, value);
     for (const element of elements) {
       if (property === 'id') {
-        if (!IdService.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs
+        if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError(this.translateService.instant('idTaken'));
           return false;
         }
-        IdService.getInstance().removeId(element.id);
-        IdService.getInstance().addId(<string>value);
+        this.idService.removeId(element.id);
+        this.idService.addID(<string>value);
       } else if (property === 'text' && element.type === 'cloze') {
-        element.setProperty('parts', ClozeParser.parse(value as string, IdService.getInstance()));
+        element.setProperty('parts', ClozeParser.parse(value as string, this.idService));
       } else {
         element.setProperty(property, value);
       }
@@ -280,7 +281,7 @@ export class UnitService {
     await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])
       .subscribe((result: DragNDropValueObject) => {
         if (result) {
-          if (result.id !== oldOptions[optionIndex].id && !IdService.getInstance().isIdAvailable(result.id)) {
+          if (result.id !== oldOptions[optionIndex].id && !this.idService.isIdAvailable(result.id)) {
             this.messageService.showError(this.translateService.instant('idTaken'));
             return;
           }
@@ -341,11 +342,11 @@ export class UnitService {
     };
   }
 
-  static createLikertRow(question: string, columnCount: number): LikertElementRow {
+  createLikertRow(question: string, columnCount: number): LikertElementRow {
     return new LikertElementRow(
       {
         type: 'likert_row',
-        id: IdService.getInstance().getNewID('likert_row'),
+        id: this.idService.getNewID('likert_row'),
         text: question,
         columnCount: columnCount
       } as LikertElementRow
@@ -442,6 +443,6 @@ export class UnitService {
   }
 
   getNewValueID(): string {
-    return IdService.getInstance().getNewID('value');
+    return this.idService.getNewID('value');
   }
 }

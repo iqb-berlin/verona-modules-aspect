@@ -83,7 +83,7 @@ export class ElementModelPropertiesComponent {
   }
 
   addRow(question: string): void {
-    const newRow = UnitService.createLikertRow(
+    const newRow = this.unitService.createLikertRow(
       question,
       (this.combinedProperties.columns as LikertColumn[]).length
     );

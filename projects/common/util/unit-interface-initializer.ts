@@ -167,7 +167,7 @@ export function initPlayerElement(serializedElement: Partial<UIElement>): Player
     muteControl: serializedElement.muteControl !== undefined ? serializedElement.muteControl as boolean : true,
     interactiveMuteControl:
       serializedElement.interactiveMuteControl !== undefined ?
-        serializedElement.interactiveMuteControl as boolean : true,
+        serializedElement.interactiveMuteControl as boolean : false,
     hintLabel: serializedElement.hintLabel as string || '',
     hintLabelDelay: serializedElement.hintLabelDelay !== undefined ? serializedElement.hintLabelDelay as number : 0,
     uninterruptible:

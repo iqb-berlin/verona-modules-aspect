@@ -28,7 +28,6 @@ import { Unit } from '../../../../../common/models/unit';
   ]
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
-  unit: Unit = this.unitService.unit;
   selectedPageIndex: number = 0;
   pagesLoaded = true;
   private ngUnsubscribe = new Subject<void>();
@@ -59,7 +58,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   addPage(): void {
     this.unitService.addPage();
-    this.selectedPageIndex = this.unit.pages.length - 1;
+    this.selectedPageIndex = this.unitService.unit.pages.length - 1;
     this.selectionService.selectedPageIndex = this.selectedPageIndex;
     this.selectionService.selectedPageSectionIndex = 0;
   }

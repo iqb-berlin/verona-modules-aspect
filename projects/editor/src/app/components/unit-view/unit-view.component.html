@@ -15,15 +15,15 @@
                      [style.height.%]="100" mat-align-tabs="start"
                      [selectedIndex]="selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)">
-        <mat-tab *ngFor="let page of unit.pages; let i = index">
+        <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
           <ng-template mat-tab-label>
             <ng-container *ngIf="page.alwaysVisible">
             <mat-icon class="page-alwaysVisible-icon">assignment</mat-icon>
             </ng-container>
-            <ng-container *ngIf="!page.alwaysVisible && unit.pages[0].alwaysVisible === false">
+            <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === false">
               {{'page' | translate }} {{i + 1}}
             </ng-container>
-            <ng-container *ngIf="!page.alwaysVisible && unit.pages[0].alwaysVisible === true">
+            <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === true">
               {{'page' | translate }} {{i}}
             </ng-container>
 
@@ -72,7 +72,7 @@
                        (change)="updateModel(page,'backgroundColor', $any($event.target).value)">
               </mat-form-field>
               <mat-checkbox class="menuItem"
-                            [disabled]="unit.pages.length < 2 || unit.pages[0].alwaysVisible && i != 0"
+                            [disabled]="unitService.unit.pages.length < 2 || unitService.unit.pages[0].alwaysVisible && i != 0"
                             [ngModel]="page.alwaysVisible"
                             (click)="$any($event).stopPropagation()"
                             (change)="updateModel(page, 'alwaysVisible', $any($event.source).checked)">

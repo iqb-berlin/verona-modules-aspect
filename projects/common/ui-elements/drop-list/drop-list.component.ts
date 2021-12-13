@@ -14,6 +14,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
       <div class="list"
+           [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.border-color]="elementModel.highlightReceivingDropListColor"
            [style.border-width.px]="elementModel.highlightReceivingDropList ? 2 : 0"
@@ -30,11 +31,11 @@ import { DragNDropValueObject } from '../../models/uI-element';
            [id]="elementModel.id"
            [cdkDropListData]="this"
            [cdkDropListConnectedTo]="elementModel.connectedTo"
-           [cdkDropListOrientation]="elementModel.orientation"
+           [cdkDropListOrientation]="elementModel.orientation !== 'flex' ? $any(elementModel.orientation) : ''"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
         <ng-container *ngFor="let value of $any(elementModel.value)">
-          <div class="item" *ngIf="!value.imgSrcValue" cdkDrag
+          <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                             'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
                [style.background-color]="elementModel.itemBackgroundColor"
@@ -50,6 +51,10 @@ import { DragNDropValueObject } from '../../models/uI-element';
           </div>
           <img *ngIf="value.imgSrcValue"
                [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
+               [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
+               class="item"
+               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                            'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
                cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
                [style.object-fit]="'scale-down'">
         </ng-container>
@@ -63,7 +68,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
     '.list {width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 10px}',
-    '.item {border-radius: 10px; padding: 10px;}',
+    '.text-item {border-radius: 10px; padding: 10px;}',
     '.item {cursor: grab}',
     '.item:active {cursor: grabbing}',
     '.vertical-orientation.item:not(:last-child) {margin-bottom: 5px;}',
@@ -75,7 +80,9 @@ import { DragNDropValueObject } from '../../models/uI-element';
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
 
     '.dropList-highlight.cdk-drop-list-receiving {border: solid;}',
-    '.dropList-highlight.cdk-drop-list-dragging {border: solid;}'
+    '.dropList-highlight.cdk-drop-list-dragging {border: solid;}',
+
+    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

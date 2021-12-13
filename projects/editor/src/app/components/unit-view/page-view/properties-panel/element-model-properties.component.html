@@ -504,7 +504,7 @@
     <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.orientation"
                 (selectionChange)="updateModel.emit({ property: 'orientation', value: $event.value })">
-      <mat-option *ngFor="let option of ['vertical', 'horizontal']"
+      <mat-option *ngFor="let option of ['vertical', 'horizontal', 'flex']"
                   [value]="option">
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>

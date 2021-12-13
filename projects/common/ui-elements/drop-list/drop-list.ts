@@ -13,7 +13,7 @@ import { initFontElement, initPositionedElement, initSurfaceElement } from '../.
 export class DropListElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
-  orientation: 'vertical' | 'horizontal' = 'vertical';
+  orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical';
   itemBackgroundColor: string = '#add8e6';
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#add8e6';

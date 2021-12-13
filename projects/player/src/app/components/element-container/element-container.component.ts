@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import * as ElementFactory from '../../../../../common/util/element.factory';
 import { KeyboardService } from '../../services/keyboard.service';
 import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
@@ -27,6 +26,7 @@ import { MediaPlayerService } from '../../services/media-player.service';
 import { TextComponent } from '../../../../../common/ui-elements/text/text.component';
 import { TextFieldElement } from '../../../../../common/ui-elements/text-field/text-field-element';
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ElementFactory } from '../../../../../common/util/element.factory';
 
 @Component({
   selector: 'app-element-container',

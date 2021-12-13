@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import {
+  Progress,
   StatusChangeElement,
   UnitStateElementCode,
   UnitStateElementCodeStatus,
@@ -14,11 +15,11 @@ import { IntersectionDetector } from '../classes/intersection-detector';
   providedIn: 'root'
 })
 export class UnitStateService {
-  unitStateElementCodes!: UnitStateElementCode[];
-  presentedPages: number[] = [];
-  private elementPageMap: { [elementId: string]: number } = {};
+  private _unitStateElementCodes!: UnitStateElementCode[];
   private _presentedPageAdded = new Subject<number>();
   private _unitStateElementCodeChanged = new Subject<UnitStateElementCode>();
+  private presentedPages: number[] = [];
+  private elementPageMap: { [elementId: string]: number } = {};
   private intersectionDetector!: IntersectionDetector;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
@@ -38,6 +39,14 @@ export class UnitStateService {
     }
   }
 
+  set unitStateElementCodes(unitStateElementCodes: UnitStateElementCode[]) {
+    this._unitStateElementCodes = unitStateElementCodes;
+  }
+
+  get unitStateElementCodes(): UnitStateElementCode[] {
+    return this._unitStateElementCodes;
+  }
+
   get unitStateElementCodeChanged(): Observable<UnitStateElementCode> {
     return this._unitStateElementCodeChanged.asObservable();
   }
@@ -46,11 +55,20 @@ export class UnitStateService {
     return this._presentedPageAdded.asObservable();
   }
 
+  get presentedPagesProgress(): Progress {
+    if (this.elementPageIndices.length && !this.presentedPages.length) {
+      return 'none';
+    }
+    return (
+      this.elementPageIndices.length === this.presentedPages.length
+    ) ? 'complete' : 'some';
+  }
+
   registerElement(element: { id: string, value: InputElementValue },
                   domElement: Element,
                   pageIndex: number): void {
-    this.addUnitStateElementCode(element.id, element.value);
     this.elementPageMap[element.id] = pageIndex;
+    this.addUnitStateElementCode(element.id, element.value);
     this.intersectionDetector.observe(domElement, element.id);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
@@ -77,6 +95,15 @@ export class UnitStateService {
     this.elementPageMap = {};
     this.unitStateElementCodes = [];
     this.presentedPages = [];
+  }
+
+  private get elementPageIndices(): number[] {
+    return Object.keys(this.elementPageMap).reduce((elementPageIndices: number[], elementId: string) => {
+      if (!elementPageIndices.includes(this.elementPageMap[elementId])) {
+        elementPageIndices.push(this.elementPageMap[elementId]);
+      }
+      return elementPageIndices;
+    }, []);
   }
 
   private setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus): void {
@@ -115,6 +142,8 @@ export class UnitStateService {
       const unitStateElementCode: UnitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.unitStateElementCodes.push(unitStateElementCode);
       this._unitStateElementCodeChanged.next(unitStateElementCode);
+    } else {
+      this.checkPresentedPageStatus(id);
     }
   }
 }

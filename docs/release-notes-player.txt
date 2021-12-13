@@ -4,6 +4,7 @@ Player
 - Fix the playability of dependent audios and videos
 - Fix storing/restoring the playback time of audios and videos
 - Fix the response status when re-entering the unit
+- Ignore blank pages when calculating the response progress
 - Fix position of virtual keyboard for text areas
 - Rename marking tag of text to 'aspect-marked'
 - Restore the state of likert elements when re-entering a unit

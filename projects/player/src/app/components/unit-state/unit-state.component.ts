@@ -79,7 +79,6 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   }
 
   private get responseProgress(): Progress {
-    // TODO: Check other relevant Elements
     if (this.form.valid) {
       return 'complete';
     }
@@ -109,12 +108,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private get presentationProgress(): Progress {
     const mediaStatus = this.mediaPlayerService.mediaStatus;
-    if (this.unitStateService.presentedPages.length === 0 && mediaStatus === 'none') {
-      return 'none';
-    }
-    return (
-      this.pages.length === this.unitStateService.presentedPages.length && mediaStatus === 'complete'
-    ) ? 'complete' : 'some';
+    return mediaStatus === this.unitStateService.presentedPagesProgress ? mediaStatus : 'some';
   }
 
   private addControl = (control: FormControlElement): void => {
@@ -152,7 +146,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   private onPresentedPageAdded(): void {
     // eslint-disable-next-line no-console
-    console.log('player: onPresentedPageAdded', this.unitStateService.presentedPages);
+    console.log('player: onPresentedPageAdded');
     this.sendVopStateChangedNotification();
   }
 

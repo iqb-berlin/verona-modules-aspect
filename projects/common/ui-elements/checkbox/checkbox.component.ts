@@ -10,7 +10,8 @@ import { CheckboxElement } from './checkbox-element';
          [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.surfaceProps.backgroundColor">
-      <mat-checkbox #checkbox class="example-margin"
+      <mat-checkbox #checkbox class="example-margin aspect-theme"
+                    color="primary"
                     [formControl]="elementFormControl"
                     [checked]="$any(elementModel.value)"
                     [style.color]="elementModel.fontProps.fontColor"
@@ -30,8 +31,7 @@ import { CheckboxElement } from './checkbox-element';
   `,
   styles: [
     ':host ::ng-deep .mat-checkbox-layout {white-space: normal !important}',
-    '.error-message { position: absolute; display: block; margin-top: 5px; font-size: 75% }',
-    ':host ::ng-deep mat-checkbox.mat-checkbox-checked .mat-checkbox-background {background-color: #006064}'
+    '.error-message { position: absolute; display: block; margin-top: 5px; font-size: 75% }'
   ]
 })
 export class CheckboxComponent extends FormElementComponent {

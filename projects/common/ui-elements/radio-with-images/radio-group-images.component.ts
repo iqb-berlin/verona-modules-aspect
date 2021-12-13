@@ -41,6 +41,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
       </div>
       <mat-radio-group aria-labelledby="radio-group-label"
+                       class="aspect-theme" color="primary"
                        [formControl]="elementFormControl"
                        [style.display]="'grid'"
                        [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)"
@@ -71,13 +72,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '::ng-deep app-radio-group-images mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
     'mat-radio-group {margin-top: 10px}',
     '.error-message { font-size: 75% }',
-    '.grid-layout mat-radio-button {margin-top: 15px}',
-    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-outer-circle' +
-      '{border-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-inner-circle' +
-     '{background-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-ripple-element' +
-      '{background-color: #006064 !important}'
+    '.grid-layout mat-radio-button {margin-top: 15px}'
   ]
 })
 export class RadioGroupImagesComponent extends FormElementComponent {

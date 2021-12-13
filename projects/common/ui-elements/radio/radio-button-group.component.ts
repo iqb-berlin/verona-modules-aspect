@@ -19,6 +19,7 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
              [innerHTML]="elementModel.label">
       </label>
       <mat-radio-group aria-labelledby="radio-group-label"
+                       class="aspect-theme" color="primary"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl"
                        [value]="elementModel.value"
@@ -46,13 +47,7 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
     '.error-message { font-size: 75% }',
     '::ng-deep app-radio-button-group .strike .mat-radio-label {text-decoration: line-through}',
     '::ng-deep app-radio-button-group .mat-radio-label {align-items: baseline}',
-    '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}',
-    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-outer-circle' +
-      '{border-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-radio-inner-circle' +
-      '{background-color: #006064 !important}',
-    ':host ::ng-deep mat-radio-button.mat-radio-checked .mat-radio-label .mat-ripple-element' +
-      '{background-color: #006064 !important}'
+    '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}'
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

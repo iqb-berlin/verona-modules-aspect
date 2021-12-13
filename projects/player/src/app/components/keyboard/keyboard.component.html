@@ -6,18 +6,21 @@
   <div class="keyboard-inner-container"
        (mousedown)="onMouseDown($event, true)">
     <app-french-keyboard *ngIf="preset === 'french'"></app-french-keyboard>
-    <app-numbers-keyboard *ngIf="preset === 'numbers'"
-                          [inputComponent]="inputComponent"
-                          [useComparisonOperators]="false"
-                          [showNumbersWithOperators]="false"></app-numbers-keyboard>
-    <app-numbers-keyboard *ngIf="preset === 'numbersAndOperators'"
-                          [inputComponent]="inputComponent"
-                          [useComparisonOperators]="false"
-                          [showNumbersWithOperators]="true"></app-numbers-keyboard>
-    <app-numbers-keyboard *ngIf="preset === 'comparisonOperators'"
-                          [inputComponent]="inputComponent"
-                          [useComparisonOperators]="true"
-                          [showNumbersWithOperators]="false"></app-numbers-keyboard>
+    <app-math-keyboard
+        *ngIf="preset === 'numbers'"
+        [inputComponent]="inputComponent"
+        [preset]="preset">
+    </app-math-keyboard>
+    <app-math-keyboard
+        *ngIf="preset === 'numbersAndOperators'"
+        [inputComponent]="inputComponent"
+        [preset]="preset">
+    </app-math-keyboard>
+    <app-math-keyboard
+        *ngIf="preset === 'comparisonOperators'"
+        [inputComponent]="inputComponent"
+        [preset]="preset">
+    </app-math-keyboard>
   </div>
 </div>
 

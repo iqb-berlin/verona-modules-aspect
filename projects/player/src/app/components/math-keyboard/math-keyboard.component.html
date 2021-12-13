@@ -1,4 +1,7 @@
-<ng-container *ngTemplateOutlet="useComparisonOperators ? comparisonOperatorsTemplate : numbersTemplate"></ng-container>
+<ng-container *ngTemplateOutlet="preset === 'comparisonOperators' ?
+  comparisonOperatorsTemplate :
+  numbersTemplate">
+</ng-container>
 
 <ng-template #comparisonOperatorsTemplate>
   <div *ngFor="let row of comparisonOperators">
@@ -31,7 +34,7 @@
   </div>
 </ng-template>
 
-<div *ngIf="showNumbersWithOperators" class="grid-layout">
+<div *ngIf="preset === 'numbersAndOperators'" class="grid-layout">
   <ng-container *ngFor="let row of operators; let rowIndex = index ">
     <ng-container *ngFor="let key of row; let columnIndex = index">
       <app-key *ngIf="key !== '='"

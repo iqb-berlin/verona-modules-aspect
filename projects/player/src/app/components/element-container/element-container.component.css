@@ -1,3 +1,5 @@
 .element-container{
-  display: inline;
+  position: relative;
+  height: 100%;
+  width: 100%;
 }

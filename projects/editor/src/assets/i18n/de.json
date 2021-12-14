@@ -133,7 +133,8 @@
     "borderWidth": "Randstärke",
     "borderStyle": "Linienstil",
     "selectionColor": "Auswahlfarbe",
-    "flex": "Dynamisch zentriert"
+    "flex": "Dynamisch zentriert",
+    "fixedSize": "Feste Abmessungen"
   },
   "player": {
     "autoStart": "Autostart",

@@ -92,6 +92,7 @@ export interface PositionedElement extends UIElement {
 
 export interface PositionProperties {
   [index: string]: string | number | boolean;
+  fixedSize: boolean;
   dynamicPositioning: boolean;
   xPosition: number;
   yPosition: number;

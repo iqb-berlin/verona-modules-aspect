@@ -9,8 +9,10 @@ import { ButtonElement } from './button-element';
   template: `
     <button *ngIf="!elementModel.imageSrc" mat-button
             type='button'
-            [style.width.%]="100"
-            [style.height.%]="100"
+            [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
+            [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+            [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
             [style.background-color]="elementModel.surfaceProps.backgroundColor"
             [style.color]="elementModel.fontProps.fontColor"
             [style.font-family]="elementModel.fontProps.font"
@@ -30,7 +32,8 @@ import { ButtonElement } from './button-element';
   `,
   styles: [
     '.dynamic-image {width: 100%; height: fit-content}',
-    '.static-image {width: 100%; height: 100%; object-fit: contain}'
+    '.static-image {width: 100%; height: 100%; object-fit: contain}',
+    '.center-content {position: absolute; top: 0; bottom: 0; left: 0;right: 0; margin: auto;}'
   ]
 })
 export class ButtonComponent extends ElementComponent {

@@ -17,6 +17,7 @@ const DEFAULT_LINE_HEIGHT = 120;
 const DEFAULT_BOLD = false;
 const DEFAULT_ITALIC = false;
 const DEFAULT_UNDERLINE = false;
+const DEFAULT_FIXED_SIZE = false;
 
 const DEFAULT_BACKGROUND_COLOR = '#d3d3d3';
 
@@ -24,6 +25,8 @@ export function initPositionedElement(serializedElement: Partial<UIElement>): Po
   if (serializedElement.positionProps) {
     return {
       dynamicPositioning: serializedElement.positionProps.dynamicPositioning as boolean || DEFAULT_DYNAMIC_POSITIONING,
+      fixedSize: serializedElement.positionProps.fixedSize !== undefined ?
+        serializedElement.positionProps.fixedSize as boolean : DEFAULT_FIXED_SIZE,
       xPosition: serializedElement.positionProps.xPosition !== undefined ?
         serializedElement.positionProps.xPosition as number : 0,
       yPosition: serializedElement.positionProps.yPosition !== undefined ?
@@ -51,6 +54,7 @@ export function initPositionedElement(serializedElement: Partial<UIElement>): Po
     };
   }
   return {
+    fixedSize: serializedElement.fixedSize as boolean || DEFAULT_FIXED_SIZE,
     dynamicPositioning: serializedElement.dynamicPositioning as boolean || DEFAULT_DYNAMIC_POSITIONING,
     xPosition: serializedElement.xPosition !== undefined ? serializedElement.xPosition as number : 0,
     yPosition: serializedElement.yPosition !== undefined ? serializedElement.yPosition as number : 0,

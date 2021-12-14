@@ -14,6 +14,10 @@ import { DragNDropValueObject } from '../../models/uI-element';
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
       <div class="list"
+           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.border-color]="elementModel.highlightReceivingDropListColor"
@@ -67,7 +71,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
   `,
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
-    '.list {width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 10px}',
+    '.list {border-radius: 10px}',
     '.text-item {border-radius: 10px; padding: 10px;}',
     '.item {cursor: grab}',
     '.item:active {cursor: grabbing}',
@@ -82,7 +86,8 @@ import { DragNDropValueObject } from '../../models/uI-element';
     '.dropList-highlight.cdk-drop-list-receiving {border: solid;}',
     '.dropList-highlight.cdk-drop-list-dragging {border: solid;}',
 
-    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}'
+    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
+    '.center-content {position: absolute; top: 0; bottom: 0; left: 0;right: 0; margin: auto;}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

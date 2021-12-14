@@ -44,8 +44,21 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
         </mat-form-field>
       </ng-container>
       <ng-template #elseBlock>
+
+        <mat-checkbox *ngIf="combinedProperties.positionProps !== undefined"
+                      matTooltip="Element ist nicht mehr dynamisch. Die eingestellte Größe wird benutzt."
+                      [checked]="$any(combinedProperties.fixedSize)"
+                      (change)="updateModel.emit({ property: 'fixedSize', value: $event.checked })">
+          {{'propertiesPanel.fixedSize' | translate }}
+        </mat-checkbox>
+
         <mat-form-field appearance="fill" *ngIf="combinedProperties.positionProps !== undefined">
-          <mat-label>{{'propertiesPanel.minWidth' | translate }}</mat-label>
+          <mat-label *ngIf="!combinedProperties.positionProps.fixedSize">
+            {{'propertiesPanel.minWidth' | translate }}
+          </mat-label>
+          <mat-label *ngIf="combinedProperties.positionProps.fixedSize">
+            {{'propertiesPanel.width' | translate }}
+          </mat-label>
           <input matInput type="number" #width="ngModel" min="0"
                  [ngModel]="combinedProperties.width"
                  (ngModelChange)="updateModel.emit({ property: 'width',
@@ -53,14 +66,16 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                      isInputValid: width.valid && $event !== null })">
         </mat-form-field>
 
-        <mat-checkbox *ngIf="combinedProperties.positionProps !== undefined"
+        <mat-checkbox *ngIf="combinedProperties.positionProps && !combinedProperties.positionProps.fixedSize"
                       [checked]="$any(combinedProperties.useMinHeight)"
                       (change)="updateModel.emit({ property: 'useMinHeight', value: $event.checked })">
           {{'propertiesPanel.useMinHeight' | translate }}
         </mat-checkbox>
 
         <mat-form-field *ngIf="combinedProperties.positionProps &&
-                               combinedProperties.positionProps.useMinHeight" appearance="fill">
+                               combinedProperties.positionProps.useMinHeight ||
+                               combinedProperties.positionProps &&
+                               combinedProperties.positionProps.fixedSize" appearance="fill">
           <mat-label>{{'propertiesPanel.minHeight' | translate }}</mat-label>
           <input matInput type="number" #height="ngModel" min="0"
                  [ngModel]="combinedProperties.height"
@@ -144,6 +159,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                                    value: $event,
                                                    isInputValid: zIndex.valid && $event !== null })"
                matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+<!--        TODO translate-->
       </mat-form-field>
       <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">
         {{'propertiesPanel.alignment' | translate }}

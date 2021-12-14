@@ -1,7 +1,7 @@
 # Verona Modules Aspect
 
 Repository for the Aspect Editor and Player. The applications have a shared code base,
-but can be run/build separately.
+but can be run/built separately.
 
 Both conform to the Verona API definition:
 

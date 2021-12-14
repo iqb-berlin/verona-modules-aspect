@@ -6,7 +6,6 @@ import { LikertElementRow } from './likert-element-row';
   selector: 'app-likert-radio-button-group',
   template: `
     <mat-radio-group [style.display]="'grid'"
-                     class="aspect-theme" color="primary"
                      [formControl]="elementFormControl"
                      [value]="elementModel.value"
                      [style.grid-template-columns]="firstColumnSizeRatio + 'fr ' +

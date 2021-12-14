@@ -10,8 +10,7 @@ import { CheckboxElement } from './checkbox-element';
          [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.surfaceProps.backgroundColor">
-      <mat-checkbox #checkbox class="example-margin aspect-theme"
-                    color="primary"
+      <mat-checkbox #checkbox class="example-margin"
                     [formControl]="elementFormControl"
                     [checked]="$any(elementModel.value)"
                     [style.color]="elementModel.fontProps.fontColor"

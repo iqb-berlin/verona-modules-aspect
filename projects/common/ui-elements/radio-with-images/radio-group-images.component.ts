@@ -41,7 +41,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
       </div>
       <mat-radio-group aria-labelledby="radio-group-label"
-                       class="aspect-theme" color="primary"
                        [formControl]="elementFormControl"
                        [style.display]="'grid'"
                        [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)"

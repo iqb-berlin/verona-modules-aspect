@@ -1,0 +1,13 @@
+@use '~@angular/material' as mat;
+@import 'node_modules/@angular/material/theming';
+
+.canvasFrame {
+  $aspect-primary: mat.define-palette(mat.$pink-palette);
+  $aspect-accent: mat.define-palette($mat-cyan, 900);
+  $aspect-theme: mat.define-light-theme((
+    color: (primary: $aspect-primary, accent: $aspect-accent),
+  ));
+
+  @include mat.checkbox-color($aspect-theme);
+  @include mat.radio-color($aspect-theme);
+}

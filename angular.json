@@ -29,7 +29,7 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/editor/src/styles.css",
-              "./customTheme.scss"
+              "projects/editor/src/assets/customTheme.scss"
             ],
             "scripts": []
           },
@@ -97,7 +97,7 @@
             ],
             "styles": [
               "projects/editor/src/styles.css",
-              "./customTheme.scss"
+              "projects/editor/src/assets/customTheme.scss"
             ],
             "scripts": []
           }
@@ -130,7 +130,7 @@
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/player/src/styles.css",
-              "./customTheme.scss"
+              "projects/player/src/assets/customTheme.scss"
             ],
             "scripts": []
           },

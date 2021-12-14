@@ -19,7 +19,6 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
              [innerHTML]="elementModel.label">
       </label>
       <mat-radio-group aria-labelledby="radio-group-label"
-                       class="aspect-theme" color="primary"
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl"
                        [value]="elementModel.value"

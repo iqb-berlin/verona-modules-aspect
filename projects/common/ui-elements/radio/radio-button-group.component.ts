@@ -22,7 +22,7 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
                        [fxLayout]="elementModel.alignment"
                        [formControl]="elementFormControl"
                        [value]="elementModel.value"
-                       [style.margin-top.px]="10">
+                       [style.margin-top.px]="elementModel.label !== '' ? 10 : 0">
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
                           [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                   elementFormControl.value !== null &&

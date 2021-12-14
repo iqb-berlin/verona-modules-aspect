@@ -430,12 +430,18 @@
     {{'propertiesPanel.lineColoring' | translate }}
   </mat-checkbox>
 
-  <mat-form-field *ngIf="combinedProperties.lineColoring && combinedProperties.lineColoringColor"
+  <mat-form-field *ngIf="combinedProperties.lineColoring && combinedProperties.lineColoringColor !== undefined"
                   appearance="fill" class="mdInput textsingleline">
     <mat-label>{{'propertiesPanel.lineColoringColor' | translate }}</mat-label>
-    <input matInput type="color" [value]="combinedProperties.lineColoringColor"
+    <input matInput type="text" [value]="combinedProperties.lineColoringColor"
            (input)="updateModel.emit({ property: 'lineColoringColor', value: $any($event.target).value })">
+    <button mat-icon-button matSuffix (click)="lineColorInput.click()">
+      <mat-icon>edit</mat-icon>
+    </button>
   </mat-form-field>
+  <input matInput type="color" hidden #lineColorInput
+         [value]="combinedProperties.lineColoringColor"
+         (input)="updateModel.emit({ property: 'lineColoringColor', value: $any($event.target).value })">
 
   <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
                 [checked]="$any(combinedProperties.scale)"
@@ -549,19 +555,6 @@
         {{option}}
       </mat-option>
     </mat-select>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.borderColor !== undefined"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
-    <input matInput type="color" [value]="combinedProperties.borderColor"
-           (input)="updateModel.emit({ property: 'borderColor', value: $any($event.target).value })">
-  </mat-form-field>
-  <mat-form-field *ngIf="combinedProperties.borderColor !== undefined"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.borderColor"
-           (input)="updateModel.emit({ property: 'borderColor', value: $any($event.target).value })">
   </mat-form-field>
 
   <mat-form-field *ngIf="combinedProperties.borderWidth !== undefined"

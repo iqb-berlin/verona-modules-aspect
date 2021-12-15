@@ -55,14 +55,3 @@
 .hint-border{
   border: 2px #f44336 solid;
 }
-
-/* TODO use material theme color */
-::ng-deep app-control-bar .mat-accent .mat-slider-thumb {
-  background-color: #006064;
-}
-::ng-deep app-control-bar .mat-accent .mat-slider-thumb-label {
-  background-color: #006064;
-}
-::ng-deep app-control-bar .mat-accent .mat-slider-track-fill {
-  background-color: #006064;
-}

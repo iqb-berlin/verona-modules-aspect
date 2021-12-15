@@ -9,3 +9,4 @@ $aspect-theme: mat.define-light-theme((
 
 @include mat.checkbox-color($aspect-theme);
 @include mat.radio-color($aspect-theme);
+@include mat.slider-color($aspect-theme);

@@ -1,5 +1,37 @@
 Editor
 ======
+1.18.0
+ - Change/Fix radio button and checkbox color to dark green
+   Affects all elements using radio buttons (likert, images...).
+ - Improve item duplication
+   There are still some issues with duplication (and multiselect).
+   Will be fixed soon™.
+ - Add flex orientation for dropList
+   This new setting makes child items space around in a row with line
+   break.
+ - Images in vertical alignment now always reserve the whole row and don't
+   appear next to each other.
+ - Fix radio button without label
+   Options still had a margin-top, when there is no label above.
+   (Which produced the all-time favorite bug of unwanted scrollbars))
+ - Rework color inputs
+   Use a suffix button to activate color picker instead of having an extra
+   form field. This makes for a cleaner layout and also has the additional
+   benefit of saving vertical space, reducing the need for scrolling.
+   Also add direct input for likert line coloring color.
+ - Add new position property fixedSize ('Feste Abmessungen')
+   This allows elements in dynamic sections to have fixed dimensions.
+   (Some modifications to property panel logic, to show dimension fields and
+   proper labels.)
+   Only implemented for dropList and button elements!
+ - Add image feature to TextEditor
+   Images are always inline and scaled down to the font size (of the text
+   element as a whole).
+ - Add blockquote feature to TextEditor
+   This creates a special quote text, which is indented and has quote marks
+   x2.5 the font size.
+ - Allow negative values for z-index and margins
+
 1.17.0
  - Rework text field and text area styling
    The other variants are basically the same as filled. The only

@@ -26,6 +26,10 @@ import { TextComponent } from '../../../../../common/ui-elements/text/text.compo
 import { TextFieldElement } from '../../../../../common/ui-elements/text-field/text-field-element';
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
 import { ElementFactory } from '../../../../../common/util/element.factory';
+import { ImageComponent } from '../../../../../common/ui-elements/image/image.component';
+import { ButtonComponent } from '../../../../../common/ui-elements/button/button.component';
+import { TextFieldComponent } from '../../../../../common/ui-elements/text-field/text-field.component';
+import { TextAreaComponent } from '../../../../../common/ui-elements/text-area/text-area.component';
 
 @Component({
   selector: 'app-element-container',
@@ -73,13 +77,15 @@ export class ElementContainerComponent implements OnInit {
         this.elementModel.playerProps?.minRuns as number === 0
       );
     }
-    this.subscribeStartSelection(elementComponent);
-    this.subscribeApplySelection(elementComponent);
-    this.subscribeMediaPlayStatusChanged(elementComponent);
-    this.subscribeMediaValidStatusChanged(elementComponent);
-    this.subscribeNavigationRequested(elementComponent);
-    this.subscribeElementValueChanged(elementComponent);
-    this.subscribeForKeyboardEvents(elementComponent);
+    this.subscribeStartSelection(elementComponent as TextComponent);
+    this.subscribeApplySelection(elementComponent as TextComponent);
+    this.subscribeMediaPlayStatusChanged(elementComponent as MediaPlayerElementComponent);
+    this.subscribeMediaValidStatusChanged(elementComponent as MediaPlayerElementComponent);
+    this.subscribeNavigationRequested(elementComponent as ButtonComponent);
+    this.subscribeElementValueChanged(
+      elementComponent as FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
+    );
+    this.subscribeForKeyboardEvents(elementComponent as TextFieldComponent | TextAreaComponent);
   }
 
   private initElementComponent(): ElementComponent | CompoundElementComponent {
@@ -90,7 +96,7 @@ export class ElementContainerComponent implements OnInit {
     return elementComponent;
   }
 
-  private initFormElement(elementComponent: any): void {
+  private initFormElement(elementComponent: FormElementComponent): void {
     const elementForm = this.formBuilder.group({});
     elementComponent.parentForm = elementForm;
     this.subscribeSetValidators(elementComponent, elementForm);
@@ -102,7 +108,7 @@ export class ElementContainerComponent implements OnInit {
     });
   }
 
-  private initCompoundElement(elementComponent: any): void {
+  private initCompoundElement(elementComponent: CompoundElementComponent): void {
     const elementForm = this.formBuilder.group({});
     elementComponent.parentForm = elementForm;
     const compoundChildren = elementComponent.getFormElementModelChildren();
@@ -117,7 +123,7 @@ export class ElementContainerComponent implements OnInit {
     });
   }
 
-  private registerAtUnitStateService(elementComponent: any): void {
+  private registerAtUnitStateService(elementComponent: ElementComponent): void {
     if (!(elementComponent instanceof CompoundElementComponent)) {
       this.unitStateService.registerElement(
         this.initUnitStateValue(elementComponent.elementModel),
@@ -127,7 +133,9 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeCompoundChildren(elementComponent: any, compoundChildren: InputElement[]): void {
+  private subscribeCompoundChildren(
+    elementComponent: CompoundElementComponent, compoundChildren: InputElement[]
+  ): void {
     if (elementComponent.childrenAdded) {
       elementComponent.childrenAdded
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -145,7 +153,7 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeStartSelection(elementComponent: any): void {
+  private subscribeStartSelection(elementComponent: TextComponent): void {
     if (elementComponent.startSelection) {
       elementComponent.startSelection
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -158,7 +166,7 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeApplySelection(elementComponent: any): void {
+  private subscribeApplySelection(elementComponent: TextComponent): void {
     if (elementComponent.applySelection) {
       elementComponent.applySelection
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -166,14 +174,14 @@ export class ElementContainerComponent implements OnInit {
         { mode: 'mark' | 'underline' | 'delete',
           color: string;
           element: HTMLElement;
-          clear: boolean }) => {
+        }) => {
           this.markingService
             .applySelection(selection.mode, selection.color, selection.element, elementComponent as TextComponent);
         });
     }
   }
 
-  private subscribeMediaPlayStatusChanged(elementComponent: any): void {
+  private subscribeMediaPlayStatusChanged(elementComponent: MediaPlayerElementComponent): void {
     if (elementComponent.onMediaPlayStatusChanged) {
       elementComponent.onMediaPlayStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -183,7 +191,7 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeMediaValidStatusChanged(elementComponent: any): void {
+  private subscribeMediaValidStatusChanged(elementComponent: MediaPlayerElementComponent): void {
     if (elementComponent.onMediaValidStatusChanged) {
       elementComponent.onMediaValidStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -193,7 +201,7 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeNavigationRequested(elementComponent: any): void {
+  private subscribeNavigationRequested(elementComponent: ButtonComponent): void {
     if (elementComponent.navigationRequested) {
       elementComponent.navigationRequested
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -203,7 +211,9 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeElementValueChanged(elementComponent: any): void {
+  private subscribeElementValueChanged(
+    elementComponent: FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
+  ): void {
     if (elementComponent.elementValueChanged) {
       elementComponent.elementValueChanged
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -213,7 +223,7 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeSetValidators(elementComponent: any, elementForm: FormGroup): void {
+  private subscribeSetValidators(elementComponent: FormElementComponent, elementForm: FormGroup): void {
     if (elementComponent.setValidators) {
       elementComponent.setValidators
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -227,7 +237,7 @@ export class ElementContainerComponent implements OnInit {
     }
   }
 
-  private subscribeForKeyboardEvents(elementComponent: any): void {
+  private subscribeForKeyboardEvents(elementComponent: TextFieldComponent | TextAreaComponent): void {
     if (elementComponent.onFocusChanged) {
       elementComponent.onFocusChanged
         .pipe(takeUntil(this.ngUnsubscribe))

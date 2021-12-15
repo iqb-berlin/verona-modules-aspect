@@ -62,7 +62,7 @@ export class ElementContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const elementComponent: ElementComponent | CompoundElementComponent = this.initElementComponent();
+    const elementComponent: ElementComponent = this.initElementComponent();
     this.registerAtUnitStateService(elementComponent);
 
     if (elementComponent instanceof FormElementComponent) {
@@ -88,7 +88,7 @@ export class ElementContainerComponent implements OnInit {
     this.subscribeForKeyboardEvents(elementComponent as TextFieldComponent | TextAreaComponent);
   }
 
-  private initElementComponent(): ElementComponent | CompoundElementComponent {
+  private initElementComponent(): ElementComponent {
     const elementComponentFactory =
       ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;

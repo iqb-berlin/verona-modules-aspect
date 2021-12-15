@@ -31,9 +31,9 @@ import { ButtonElement } from './button-element';
            (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
   `,
   styles: [
-    '.dynamic-image {width: 100%; height: fit-content}',
-    '.static-image {width: 100%; height: 100%; object-fit: contain}',
-    '.center-content {position: relative; top: 0; bottom: 0; left: 0;right: 0; margin: auto;}'
+    '.dynamic-image {width: 100%; height: fit-content;}',
+    '.static-image {width: 100%; height: 100%; object-fit: contain;}',
+    '.center-content {display: block; margin: auto; top: 50%; transform: translateY(-50%);}'
   ]
 })
 export class ButtonComponent extends ElementComponent {

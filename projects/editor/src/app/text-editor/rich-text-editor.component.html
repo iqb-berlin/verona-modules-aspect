@@ -233,6 +233,10 @@
       <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
       <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
     </mat-menu>
+    <button mat-icon-button matTooltip="Bild" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+            (click)="addImage()">
+      <mat-icon>image</mat-icon>
+    </button>
   </div>
   <div *ngIf="showCloseElements" fxLayout="row" fxLayoutAlign="space-around center" >
     <button mat-icon-button matTooltip="\i" [matTooltipShowDelay]="300"

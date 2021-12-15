@@ -12,12 +12,14 @@ import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
+import { Image } from '@tiptap/extension-image';
 import { Indent } from './indent';
 import { HangingIndent } from './hanging-indent';
 import { customParagraph } from './paragraph-extension';
 import { fontSizeExtension } from './font-size-extension';
 import { bulletListExtension } from './bulletList-extension';
 import { orderedListExtension } from './orderedList-extension';
+import { FileService } from '../services/file.service';
 
 @Component({
   selector: 'app-rich-text-editor',
@@ -60,6 +62,12 @@ export class RichTextEditorComponent implements AfterViewInit {
       bulletListExtension,
       orderedListExtension,
       HangingIndent
+      Image.configure({
+        inline: true,
+        HTMLAttributes: {
+          style: 'display: inline-block; height: 1em; vertical-align: middle'
+        }
+      }),
     ]
   });
 
@@ -166,5 +174,10 @@ export class RichTextEditorComponent implements AfterViewInit {
   unhangIndent(): void {
     this.editor.commands.outdent(this.selectedIndentSize);
     this.editor.commands.unhangIndent(this.selectedIndentSize);
+  }
+
+  async addImage(): Promise<void> {
+    const mediaSrc = await FileService.loadImage();
+    this.editor.commands.setImage({ src: mediaSrc });
   }
 }

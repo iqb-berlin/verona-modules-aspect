@@ -116,7 +116,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
         <div class="input-group">
           <mat-form-field class="centered-form-field small-input">
             <mat-label>{{'propertiesPanel.top' | translate }}</mat-label>
-            <input matInput type="number" #marginTop="ngModel" min="0"
+            <input matInput type="number" #marginTop="ngModel"
                    [ngModel]="combinedProperties.marginTop"
                    (ngModelChange)="updateModel.emit(
                       { property: 'marginTop', value: $event, isInputValid: marginTop.valid && $event !== null })">
@@ -124,14 +124,14 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
           <div fxLayoutAlign="row">
             <mat-form-field class="small-input">
               <mat-label>{{'propertiesPanel.left' | translate }}</mat-label>
-              <input matInput type="number" #marginLeft="ngModel" min="0"
+              <input matInput type="number" #marginLeft="ngModel"
                      [ngModel]="combinedProperties.marginLeft"
                      (ngModelChange)="updateModel.emit(
                         { property: 'marginLeft', value: $event, isInputValid: marginLeft.valid && $event !== null })">
             </mat-form-field>
             <mat-form-field class="right-form-field small-input">
               <mat-label>{{'propertiesPanel.right' | translate }}</mat-label>
-              <input matInput type="number" #marginRight="ngModel" min="0"
+              <input matInput type="number" #marginRight="ngModel"
                      [ngModel]="combinedProperties.marginRight"
                      (ngModelChange)="updateModel.emit(
                         { property: 'marginRight',
@@ -141,7 +141,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
           </div>
           <mat-form-field class="centered-form-field small-input">
             <mat-label>{{'propertiesPanel.bottom' | translate }}</mat-label>
-            <input matInput type="number" #marginBottom="ngModel" min="0"
+            <input matInput type="number" #marginBottom="ngModel"
                    [ngModel]="combinedProperties.marginBottom"
                    (ngModelChange)="updateModel.emit(
                       { property: 'marginBottom',
@@ -153,7 +153,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
 
       <mat-form-field *ngIf="combinedProperties.positionProps" appearance="fill">
         <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
-        <input matInput type="number" #zIndex="ngModel" min="0"
+        <input matInput type="number" #zIndex="ngModel"
                [ngModel]="combinedProperties.zIndex"
                (ngModelChange)="updateModel.emit({ property: 'zIndex',
                                                    value: $event,

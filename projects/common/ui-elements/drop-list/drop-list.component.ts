@@ -20,8 +20,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
                                     elementModel.positionProps.fixedSize"
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
-           [style.border-color]="elementModel.highlightReceivingDropListColor"
-           [style.border-width.px]="elementModel.highlightReceivingDropList ? 2 : 0"
+           [style.outline-color]="elementModel.highlightReceivingDropListColor"
            [style.color]="elementModel.fontProps.fontColor"
            [style.font-family]="elementModel.fontProps.font"
            [style.font-size.px]="elementModel.fontProps.fontSize"
@@ -71,7 +70,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
   `,
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
-    '.list {border-radius: 10px}',
+    '.list {border-radius: 10px; margin-bottom: 3px;}', // extra margin to reserve for outline
     '.text-item {border-radius: 10px; padding: 10px;}',
     '.item {cursor: grab}',
     '.item:active {cursor: grabbing}',
@@ -83,8 +82,8 @@ import { DragNDropValueObject } from '../../models/uI-element';
     '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
 
-    '.dropList-highlight.cdk-drop-list-receiving {border: solid;}',
-    '.dropList-highlight.cdk-drop-list-dragging {border: solid;}',
+    '.dropList-highlight.cdk-drop-list-receiving {outline: solid;}',
+    '.dropList-highlight.cdk-drop-list-dragging {outline: solid;}',
 
     '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
     '.center-content {position: relative; top: 0; bottom: 0; left: 0;right: 0; margin: auto;}'

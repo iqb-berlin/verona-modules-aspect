@@ -76,7 +76,12 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                                combinedProperties.positionProps.useMinHeight ||
                                combinedProperties.positionProps &&
                                combinedProperties.positionProps.fixedSize" appearance="fill">
-          <mat-label>{{'propertiesPanel.minHeight' | translate }}</mat-label>
+          <mat-label *ngIf="!combinedProperties.positionProps.fixedSize">
+            {{'propertiesPanel.minHeight' | translate }}
+          </mat-label>
+          <mat-label *ngIf="combinedProperties.positionProps.fixedSize">
+            {{'propertiesPanel.height' | translate }}
+          </mat-label>
           <input matInput type="number" #height="ngModel" min="0"
                  [ngModel]="combinedProperties.height"
                  (ngModelChange)="updateModel.emit({ property: 'height',

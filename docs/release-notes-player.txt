@@ -9,6 +9,7 @@ Player
 - Fix position of virtual keyboard for text areas
 - Rename marking tag of text to 'aspect-marked'
 - Restore the state of likert elements when re-entering a unit
+- Change saving format of text markers
 
 1.11.0
 - For spelling element use the same font properties for input field and button

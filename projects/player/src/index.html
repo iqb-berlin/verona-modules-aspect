@@ -64,6 +64,7 @@
     <option value="eager">eager</option>
     <option value="on-demand">on-demand</option>
   </select>
+<!--  <button onclick='takeUnitStateSnapshot();'>Take Snapshot</button>-->
 </div>
 </body>
 
@@ -91,7 +92,7 @@
         sessionId: 'dev',
         unitDefinition: e.target.result,
         unitState: {
-          dataParts: {}
+          dataParts: unitStateSnapshot
         },
         playerConfig: {
           stateReportPolicy: document.getElementById('stateReportPolicy').value,
@@ -111,5 +112,18 @@
       fileReader.readAsText(input['files'][0]);
     }
   }
+
+  let unitStateData = {};
+  window.addEventListener("message", (event) => {
+    if (event.data.type === 'vopStateChangedNotification') {
+      unitStateData = Object.assign(unitStateData, event.data.unitState?.dataParts);
+    }
+    console.log('dev-player: unitStateData', unitStateData);
+  });
+
+  let unitStateSnapshot = {};
+  takeUnitStateSnapshot = () => {
+    unitStateSnapshot = unitStateData;
+  };
 </script>
 </html>

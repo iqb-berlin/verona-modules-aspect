@@ -16,7 +16,6 @@ import {
 import { FormElementComponent } from '../../../../../common/directives/form-element-component.directive';
 import { CompoundElementComponent }
   from '../../../../../common/directives/compound-element.directive';
-import { TextElement } from '../../../../../common/ui-elements/text/text-element';
 import { VideoElement } from '../../../../../common/ui-elements/video/video-element';
 import { AudioElement } from '../../../../../common/ui-elements/audio/audio-element';
 import { ImageElement } from '../../../../../common/ui-elements/image/image-element';
@@ -251,7 +250,8 @@ export class ElementContainerComponent implements OnInit {
     if (unitStateElementCode && unitStateElementCode.value !== undefined) {
       switch (elementModel.type) {
         case 'text':
-          elementModel.text = unitStateElementCode.value;
+          elementModel.text = this.markingService
+            .restoreMarkings(unitStateElementCode.value as string[], this.elementModel.text);
           break;
         case 'image':
           elementModel.magnifierUsed = unitStateElementCode.value;
@@ -272,7 +272,7 @@ export class ElementContainerComponent implements OnInit {
   private initUnitStateValue = (elementModel: UIElement): { id: string, value: InputElementValue } => {
     switch (elementModel.type) {
       case 'text':
-        return { id: elementModel.id, value: (elementModel as TextElement).text };
+        return { id: elementModel.id, value: [] };
       case 'image':
         return { id: elementModel.id, value: (elementModel as ImageElement).magnifierUsed };
       case 'video':

@@ -21,13 +21,66 @@ export class MarkingService {
         this.applyRange(range, selection, mode === 'delete', color, markMode);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
-          values: [textComponent.elementModel.text as string, element.innerHTML]
+          values: [this.getMarkingData(textComponent.elementModel.text as string),
+            this.getMarkingData(element.innerHTML)]
         });
         textComponent.elementModel.text = element.innerHTML;
       }
       selection.removeAllRanges();
     } // nothing to do!
   }
+
+  getMarkingData = (htmlText: string): string[] => {
+    const markingStartPattern = new RegExp(`<${MarkingService.MARKING_TAG.toLowerCase()} [a-z]+="[\\w- ;:]+">`);
+    const markingClosingTag = `</${MarkingService.MARKING_TAG.toLowerCase()}>`;
+    let newHtmlText = htmlText;
+    const markCollection = [];
+    let matchesArray;
+    do {
+      matchesArray = newHtmlText.match(markingStartPattern);
+      if (matchesArray) {
+        const startMatch = matchesArray[0];
+        matchesArray = newHtmlText.match(markingClosingTag);
+        if (matchesArray) {
+          const endMatch = matchesArray[0];
+          const startIndex = newHtmlText.search(startMatch);
+          newHtmlText = newHtmlText.replace(startMatch, '');
+          const endIndex = newHtmlText.search(endMatch);
+          newHtmlText = newHtmlText.replace(endMatch, '');
+          markCollection.push(`${startIndex}-${endIndex}-${this.getMarkingColor(startMatch)}`);
+        }
+      }
+    } while (matchesArray);
+    return markCollection;
+  };
+
+  restoreMarkings(markings: string[], htmlText: string): string {
+    let newHtmlText = htmlText;
+    if (markings.length) {
+      const markCollectionReversed = [...markings].reverse();
+      const markingDataPattern = /^(\d+)-(\d+)-(.+)$/;
+      const markingClosingTag = `</${MarkingService.MARKING_TAG.toLowerCase()}>`;
+      markCollectionReversed.forEach(markingData => {
+        const matchesArray = markingData.match(markingDataPattern);
+        if (matchesArray) {
+          const startIndex = Number(matchesArray[1]);
+          const endIndex = Number(matchesArray[2]);
+          const startMatch = this.createMarkingStartTag(matchesArray[3]);
+          newHtmlText = newHtmlText.substring(0, endIndex) + markingClosingTag + newHtmlText.substr(endIndex);
+          newHtmlText = newHtmlText.substring(0, startIndex) + startMatch + newHtmlText.substr(startIndex);
+        }
+      });
+    }
+    return newHtmlText;
+  }
+
+  private getMarkingColor = (tag: string): string => {
+    const colors = tag.match(/(?!.*:)\w*(?=;)/);
+    return (colors) ? colors[0] : 'none';
+  };
+
+  private createMarkingStartTag =
+  (color: string): string => `<${MarkingService.MARKING_TAG.toLowerCase()} style="background-color: ${color};">`;
 
   private isDescendantOf(node: Node | null, element: HTMLElement): boolean {
     if (!node || node === document) {
@@ -97,13 +150,11 @@ export class MarkingService {
       if (previousText) {
         const prev = this.createMarkedElement(color, markMode);
         prev.append(document.createTextNode(previousText));
-        prev.style.textDecoration = `solid underline ${color}`;
         parentNode?.insertBefore(prev, textElement);
       }
       if (nextText) {
         const end = this.createMarkedElement(color, markMode);
         end.append(document.createTextNode(nextText));
-        end.style.textDecoration = `solid underline ${color}`;
         parentNode?.insertBefore(end, textElement.nextSibling);
       }
     }

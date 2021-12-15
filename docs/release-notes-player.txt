@@ -4,6 +4,7 @@ Player
 - Fix the playability of dependent audios and videos
 - Fix storing/restoring of the playback time of audios and videos
 - Fix disabling mute button of audios and videos
+- Use z-index property for all elements
 - Fix the response status when re-entering the unit
 - Ignore blank pages when calculating the response progress
 - Fix position of virtual keyboard for text areas

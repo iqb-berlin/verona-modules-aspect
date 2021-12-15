@@ -40,7 +40,7 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
     </div>
   `,
   styles: [
-    '::ng-deep app-radio-button-group .mat-radio-label {white-space: normal}',
+    '::ng-deep app-radio-button-group .mat-radio-label {white-space: normal; width: auto; max-width: 100%;}',
     '::ng-deep app-radio-button-group .mat-radio-label .mat-radio-label-content {padding-left: 10px}',
     'mat-radio-button {margin-bottom: 6px; margin-right: 15px}',
     '.error-message { font-size: 75% }',

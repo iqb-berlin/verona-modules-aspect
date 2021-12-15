@@ -7,6 +7,7 @@ Player
 - Use z-index property for all elements
 - Fix the response status when re-entering the unit
 - Ignore blank pages when calculating the response progress
+- Remove empty clickable area behind radio labels
 - Fix position of virtual keyboard for text areas
 - Rename marking tag of text to 'aspect-marked'
 - Restore the state of likert elements when re-entering a unit

@@ -13,6 +13,7 @@ import { Highlight } from '@tiptap/extension-highlight';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
 import { Image } from '@tiptap/extension-image';
+import { Blockquote } from '@tiptap/extension-blockquote';
 import { Indent } from './indent';
 import { HangingIndent } from './hanging-indent';
 import { customParagraph } from './paragraph-extension';
@@ -61,13 +62,14 @@ export class RichTextEditorComponent implements AfterViewInit {
       fontSizeExtension,
       bulletListExtension,
       orderedListExtension,
-      HangingIndent
+      HangingIndent,
       Image.configure({
         inline: true,
         HTMLAttributes: {
           style: 'display: inline-block; height: 1em; vertical-align: middle'
         }
       }),
+      Blockquote
     ]
   });
 
@@ -179,5 +181,9 @@ export class RichTextEditorComponent implements AfterViewInit {
   async addImage(): Promise<void> {
     const mediaSrc = await FileService.loadImage();
     this.editor.commands.setImage({ src: mediaSrc });
+  }
+
+  toggleBlockquote(): void {
+    this.editor.commands.toggleBlockquote();
   }
 }

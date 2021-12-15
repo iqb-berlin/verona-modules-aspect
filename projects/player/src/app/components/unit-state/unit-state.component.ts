@@ -168,7 +168,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
         },
         presentationProgress: this.presentationProgress,
         responseProgress: this.responseProgress,
-        unitStateDataType: ''
+        unitStateDataType: 'iqb-standard@1.0'
       };
       // eslint-disable-next-line no-console
       console.log('player: unitState sendVopStateChangedNotification', unitState);

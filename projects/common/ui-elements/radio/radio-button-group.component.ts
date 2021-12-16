@@ -6,8 +6,10 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
   selector: 'app-radio-button-group',
   template: `
     <div class="mat-form-field"
-         [style.width.%]="100"
-         [style.height.%]="100"
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
          [style.background-color]="elementModel.surfaceProps.backgroundColor"
          [style.color]="elementModel.fontProps.fontColor"
          [style.font-family]="elementModel.fontProps.font"

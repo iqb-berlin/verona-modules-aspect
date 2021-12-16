@@ -6,8 +6,10 @@ import { TextAreaElement } from './text-area-element';
   selector: 'app-text-area',
   template: `
     <mat-form-field [ngClass]="{ 'no-label' : !elementModel.label}"
-                    [style.width.%]="100"
-                    [style.min-height.%]="100"
+                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+                    [style.min-height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
                     appInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
                     [style.color]="elementModel.fontProps.fontColor"
                     [style.font-family]="elementModel.fontProps.font"

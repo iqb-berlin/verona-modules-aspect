@@ -39,7 +39,6 @@ import { ButtonElement } from './button-element';
   styles: [
     '.dynamic-image {width: 100%; height: fit-content;}',
     '.static-image {max-width: 100%; max-height: 100%; display: grid;}', // grid: to prevent scrollbars
-    '.center-content {display: block; margin: auto; top: 50%; transform: translateY(-50%);}',
     '.fixed-size-dynamic-image {position: relative; object-fit: scale-down;}'
   ]
 })

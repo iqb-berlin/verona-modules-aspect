@@ -10,7 +10,10 @@ import { ValueChangeElement } from '../../models/uI-element';
   template: `
    <!-- Display Flex ensures that the image container is centered and
     that image and magnifier are displayed properly.-->
-    <div [style.width.%]="100"
+    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
          class="image-container"
          (mouseover)="magnifierVisible = true"
          (mouseenter)="magnifierVisible = true"
@@ -30,9 +33,10 @@ import { ValueChangeElement } from '../../models/uI-element';
       </div>
   `,
   styles: [
-    '.image-container{ position: relative }',
-    '.max-size-image{ max-width: 100%; max-height: 100% }',
-    '.fit-image{ width: 100%; height: 100%; object-fit: contain}'
+    '.image-container {position: relative}',
+    '.max-size-image {max-width: 100%; max-height: 100%}',
+    '.center-content .max-size-image { width: 100%; height: 100%}',
+    '.fit-image {width: 100%; height: 100%; object-fit: contain}'
   ]
 })
 export class ImageComponent extends ElementComponent {

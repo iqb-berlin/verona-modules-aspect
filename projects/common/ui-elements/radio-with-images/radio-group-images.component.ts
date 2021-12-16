@@ -5,9 +5,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'app-radio-group-images',
   template: `
-    <div [style.width.%]="100"
-         [style.height.%]="100"
-         [style.display]="'grid'"
+    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
+         [style.display]="'grid !important'"
          [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)"
          [style.background-color]="elementModel.surfaceProps.backgroundColor"
          [style.color]="elementModel.fontProps.fontColor"

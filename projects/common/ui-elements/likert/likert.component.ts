@@ -9,6 +9,10 @@ import { CompoundElementComponent } from '../../directives/compound-element.dire
 @Component({
   selector: 'app-likert',
   template: `
+    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                 elementModel.positionProps.fixedSize"
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'">
     <div class="mat-typography"
          [style.display]="'grid'"
          [style.grid-template-columns]="elementModel.firstColumnSizeRatio + 'fr ' +
@@ -50,6 +54,7 @@ import { CompoundElementComponent } from '../../directives/compound-element.dire
             (elementValueChanged)="elementValueChanged.emit($event)">
         </app-likert-radio-button-group>
       </ng-container>
+    </div>
     </div>
   `,
   styles: [

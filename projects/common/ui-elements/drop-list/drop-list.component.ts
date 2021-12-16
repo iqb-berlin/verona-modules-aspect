@@ -86,7 +86,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
     '.dropList-highlight.cdk-drop-list-dragging {outline: solid;}',
 
     '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
-    '.center-content {position: relative; top: 0; bottom: 0; left: 0;right: 0; margin: auto;}'
+    '.center-content {top: unset; transform: unset;}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

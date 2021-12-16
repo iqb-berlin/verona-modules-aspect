@@ -8,8 +8,10 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'app-text',
   template: `
-    <div [style.width.%]="100"
-         [style.height]="'auto'">
+    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                 elementModel.positionProps.fixedSize"
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
       <div *ngIf="elementModel.highlightableYellow ||
            elementModel.highlightableTurquoise ||
            elementModel.highlightableOrange"

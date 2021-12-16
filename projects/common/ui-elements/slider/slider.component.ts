@@ -9,8 +9,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   template: `
     <div fxLayout="column"
          [style.background-color]="elementModel.surfaceProps.backgroundColor"
-         [style.width.%]="100"
-         [style.height.%]="100">
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize">
       <div *ngIf="elementModel.label"
          [style.color]="elementModel.fontProps.fontColor"
          [style.font-family]="elementModel.fontProps.font"

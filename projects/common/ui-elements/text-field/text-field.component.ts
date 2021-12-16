@@ -9,8 +9,10 @@ import { TextFieldElement } from './text-field-element';
   selector: 'app-text-field',
   template: `
     <mat-form-field *ngIf="elementModel.label !== ''"
-                    [style.width.%]="100"
-                    [style.height.%]="100"
+                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
+                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
                     [style.color]="elementModel.fontProps.fontColor"
                     [style.font-family]="elementModel.fontProps.font"
                     [style.font-size.px]="elementModel.fontProps.fontSize"
@@ -67,6 +69,7 @@ import { TextFieldElement } from './text-field-element';
     </mat-form-field>
   `,
   styles: [
+    '.center-content {display: block; margin: auto; top: 50%; transform: translateY(-50%);}',
     '::ng-deep app-text-field .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}' // TODO
   ]
 })

@@ -26,14 +26,21 @@ import { ButtonElement } from './button-element';
     </button>
     <input *ngIf="elementModel.imageSrc" type="image"
            [src]="elementModel.imageSrc | safeResourceUrl"
+           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
+           [class.fixed-size-dynamic-image]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
            [class]="elementModel.positionProps.dynamicPositioning ? 'dynamic-image' : 'static-image'"
+           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : null"
+           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : null"
            [alt]="'imageNotFound' | translate"
            (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
   `,
   styles: [
     '.dynamic-image {width: 100%; height: fit-content;}',
     '.static-image {width: 100%; height: 100%; object-fit: contain;}',
-    '.center-content {display: block; margin: auto; top: 50%; transform: translateY(-50%);}'
+    '.center-content {display: block; margin: auto; top: 50%; transform: translateY(-50%);}',
+    '.fixed-size-dynamic-image {position: relative; object-fit: scale-down;}'
   ]
 })
 export class ButtonComponent extends ElementComponent {

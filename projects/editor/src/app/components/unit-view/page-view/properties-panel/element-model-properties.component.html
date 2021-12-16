@@ -549,7 +549,7 @@
     <mat-label>{{'propertiesPanel.borderStyle' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.borderStyle"
                 (selectionChange)="updateModel.emit({ property: 'borderStyle', value: $event.value })">
-      <mat-option *ngFor="let option of ['hidden', 'solid', 'dotted', 'dashed',
+      <mat-option *ngFor="let option of ['solid', 'dotted', 'dashed',
                                          'double', 'groove', 'ridge', 'inset', 'outset']"
                   [value]="option">
         {{option}}

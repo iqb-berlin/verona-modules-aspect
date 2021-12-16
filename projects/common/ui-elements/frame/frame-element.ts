@@ -10,7 +10,7 @@ import { initPositionedElement, initSurfaceElement } from '../../util/unit-inter
 export class FrameElement extends UIElement implements PositionedElement, SurfaceElement {
   borderWidth: number = 1;
   borderColor: string = 'black';
-  borderStyle: 'hidden' | 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset' = 'solid';
+  borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset' = 'solid';
   borderRadius: number = 0;
 
   positionProps: PositionProperties;

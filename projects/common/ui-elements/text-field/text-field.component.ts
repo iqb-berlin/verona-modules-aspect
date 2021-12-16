@@ -40,8 +40,10 @@ import { TextFieldElement } from './text-field-element';
       </mat-error>
     </mat-form-field>
     <mat-form-field *ngIf="elementModel.label === ''" class="small-input"
-                    [style.width.%]="100"
-                    [style.height.%]="100"
+                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
+                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
                     [style.color]="elementModel.fontProps.fontColor"
                     [style.font-family]="elementModel.fontProps.font"
                     [style.font-size.px]="elementModel.fontProps.fontSize"

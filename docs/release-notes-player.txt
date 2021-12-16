@@ -1,6 +1,8 @@
 Player
 ======
 1.12.0
+- Use fixed size property button and drop-list components
+- Prevent scrollbars for static buttons with images
 - Fix the playability of dependent audios and videos
 - Fix storing/restoring of the playback time of audios and videos
 - Fix disabling mute button of audios and videos

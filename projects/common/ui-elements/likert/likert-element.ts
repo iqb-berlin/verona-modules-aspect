@@ -14,7 +14,7 @@ export class LikertElement extends CompoundElement implements PositionedElement,
   columns: LikertColumn[] = [];
   firstColumnSizeRatio: number = 5;
   lineColoring: boolean = true;
-  lineColoringColor: string = '#D0F6E7';
+  lineColoringColor: string = '#c9e0e0';
   readOnly: boolean = false;
 
   positionProps: PositionProperties;

@@ -14,9 +14,9 @@ export class DropListElement extends InputElement implements PositionedElement, 
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical';
-  itemBackgroundColor: string = '#add8e6';
+  itemBackgroundColor: string = '#c9e0e0';
   highlightReceivingDropList: boolean = false;
-  highlightReceivingDropListColor: string = '#add8e6';
+  highlightReceivingDropListColor: string = '#006064';
 
   positionProps: PositionProperties;
   fontProps: FontProperties;
@@ -36,7 +36,7 @@ export class DropListElement extends InputElement implements PositionedElement, 
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||
-      '#eeeeec';
+      '#f4f4f2';
 
     this.handleBackwardsCompatibility(serializedElement);
   }

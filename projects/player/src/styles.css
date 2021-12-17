@@ -30,3 +30,11 @@ blockquote:after {
 blockquote p {
   display: inline;
 }
+
+.center-content {
+  position: relative;
+  display: block !important;
+  margin: auto !important;
+  top: 50%;
+  transform: translateY(-50%);
+}

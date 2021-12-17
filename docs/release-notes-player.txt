@@ -2,9 +2,10 @@ Player
 ======
 1.13.0
  - Improve page snapping when scrolling when concat-scroll-snap property is selected
+ - Use fixed size property for video and spelling components
 
 1.12.0
-- Use fixed size property dynamic button, drop-list and text-field components
+- Use fixed size property for dynamic button, drop-list and text-field components
 - Prevent scrollbars for static buttons with images
 - Fix the playability of dependent audios and videos
 - Fix storing/restoring of the playback time of audios and videos

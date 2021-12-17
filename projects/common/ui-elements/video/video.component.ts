@@ -5,7 +5,10 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
 @Component({
   selector: 'app-video',
   template: `
-    <div [class]="elementModel.scale ? 'fit-video' : 'max-size-video'">
+    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+         [class.center-content]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize"
+         [class]="elementModel.scale ? 'fit-video' : 'max-size-video'">
       <video #player
              (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
              (pause)="onMediaPlayStatusChanged.emit(null)"

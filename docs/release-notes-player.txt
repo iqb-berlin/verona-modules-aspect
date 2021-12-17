@@ -3,6 +3,7 @@ Player
 1.13.0
  - Improve page snapping when scrolling when concat-scroll-snap property is selected
  - Use fixed size property for video and spelling components
+ - Color the disabled progress bar of the media player green
 
 1.12.0
 - Use fixed size property for dynamic button, drop-list and text-field components

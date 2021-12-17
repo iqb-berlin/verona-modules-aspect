@@ -1,5 +1,30 @@
 Editor
 ======
+1.19.0
+ - Implement fixedSize for all elements
+ - Add long dash to TextEditor special characters
+ - Remove border style 'hidden' from frame element
+   This makes styling the element harder and the same can be achieved by
+   setting the border width to 0.
+ - Add TextEditor button for toggle-button in cloze element
+   And improve tooltips for the cloze buttons.
+ - Make dropLists always start with a min-height
+   This makes the list not collapse when used in dynamic context.
+ - Fix element multiselection
+   - Selecting multiple elements in dynamic mode no longer bugs out making
+     further editing impossible.
+   - Now correctly keeps the selection after moving multiple elements on
+     the (static) canvas.
+   - Fix element alignment
+ - Fix sizing property panel
+   - Always show z-index
+   - Only show alignment buttons in static mode
+ - Change color defaults:
+   dropList elements: #c9e0e0
+   dropList background: #f4f4f2
+   dropList highlight: #006064
+   likert line color: #c9e0e0
+
 1.18.0
  - Add image feature to TextEditor
    Images are always inline and scaled down to the font size (of the text

@@ -40,9 +40,9 @@
 <ng-template #scrollPagesView>
   <ng-container *ngIf="hasScrollPages">
     <div class="page-container"
+         [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'"
          [style.max-height.%]="aspectRatioColumn.scrollPages"
-         [style.max-width.%]="aspectRatioRow.scrollPages"
-         [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'">
+         [style.max-width.%]="aspectRatioRow.scrollPages">
       <div #pagesScrolledContainer
            [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
            [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"

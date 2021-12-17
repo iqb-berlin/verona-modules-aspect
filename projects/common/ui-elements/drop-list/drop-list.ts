@@ -33,6 +33,10 @@ export class DropListElement extends InputElement implements PositionedElement, 
       serializedElement.value !== undefined ? serializedElement.value as DragNDropValueObject[] | null : [];
 
     this.height = serializedElement.height || 100;
+    this.positionProps.useMinHeight =
+      serializedElement.positionProps?.useMinHeight !== undefined ?
+        serializedElement.positionProps.useMinHeight as boolean :
+        true;
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||

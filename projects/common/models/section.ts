@@ -47,35 +47,4 @@ export class Section {
       element.positionProps.dynamicPositioning = value;
     });
   }
-
-  static alignElements(elements: PositionedElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
-    let newValue: number;
-    switch (alignmentDirection) {
-      case 'left':
-        newValue = Math.min(...elements.map(element => element.positionProps.xPosition));
-        elements.forEach((element: UIElement) => {
-          element.xPosition = newValue;
-        });
-        break;
-      case 'right':
-        newValue = Math.max(...elements.map(element => element.positionProps.xPosition + element.width));
-        elements.forEach((element: UIElement) => {
-          element.xPosition = newValue - element.width;
-        });
-        break;
-      case 'top':
-        newValue = Math.min(...elements.map(element => element.positionProps.yPosition));
-        elements.forEach((element: UIElement) => {
-          element.yPosition = newValue;
-        });
-        break;
-      case 'bottom':
-        newValue = Math.max(...elements.map(element => element.positionProps.yPosition + element.height));
-        elements.forEach((element: UIElement) => {
-          element.yPosition = newValue - element.height;
-        });
-        break;
-      // no default
-    }
-  }
 }

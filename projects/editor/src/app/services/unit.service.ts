@@ -354,8 +354,38 @@ export class UnitService {
     );
   }
 
-  alignElements(elements: UIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
-    Section.alignElements(elements as PositionedElement[], alignmentDirection);
+  alignElements(elements: PositionedElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
+    switch (alignmentDirection) {
+      case 'left':
+        this.updateElementProperty(
+          elements,
+          'xPosition',
+          Math.min(...elements.map(element => element.positionProps.xPosition))
+        );
+        break;
+      case 'right':
+        this.updateElementProperty(
+          elements,
+          'xPosition',
+          Math.max(...elements.map(element => element.positionProps.xPosition))
+        );
+        break;
+      case 'top':
+        this.updateElementProperty(
+          elements,
+          'yPosition',
+          Math.min(...elements.map(element => element.positionProps.yPosition))
+        );
+        break;
+      case 'bottom':
+        this.updateElementProperty(
+          elements,
+          'yPosition',
+          Math.max(...elements.map(element => element.positionProps.yPosition))
+        );
+        break;
+      // no default
+    }
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }

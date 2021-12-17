@@ -200,6 +200,6 @@ export class ElementSizingPropertiesComponent {
   constructor(private unitService: UnitService, public selectionService: SelectionService) { }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
-    this.unitService.alignElements(this.selectionService.getSelectedElements(), direction);
+    this.unitService.alignElements(this.selectionService.getSelectedElements() as PositionedElement[], direction);
   }
 }

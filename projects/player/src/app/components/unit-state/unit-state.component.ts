@@ -126,7 +126,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     console.log('player: onNavigationDenied', message);
     const reasons = message.reason?.map((reason: string) => this.translateService.instant(reason));
     this.messageService.showWarning(reasons?.join(', ') || this.translateService.instant('noReason'));
-    this.form.markAllAsTouched();
+    if (message.reason && message.reason.find(reason => reason === 'responsesIncomplete')) {
+      this.form.markAllAsTouched();
+    }
   }
 
   private addGroup = (group: ChildFormGroup): void => {

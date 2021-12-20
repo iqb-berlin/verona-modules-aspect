@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { MatDialog } from '@angular/material/dialog';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import {
-  Unit
-} from '../../../common/models/unit';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Unit } from '../../../common/models/unit';
+import { PlayerConfig, VopStartCommand } from './models/verona';
+import { UnitStateElementMapperService } from './services/unit-state-element-mapper.service';
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
 import { VeronaPostService } from './services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
-import { PlayerConfig, VopStartCommand } from './models/verona';
-import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
+import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { Page } from '../../../common/models/page';
 
 @Component({
@@ -36,6 +35,7 @@ export class AppComponent implements OnInit {
               private nativeEventService: NativeEventService,
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
+              private unitStateElementMapperService: UnitStateElementMapperService,
               private dialog: MatDialog) {
   }
 
@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
       console.log('player: onStart', message);
       if (message.unitDefinition) {
         const unitDefinition: Unit = new Unit(JSON.parse(message.unitDefinition));
+        this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
         if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
           this.playerConfig = message.playerConfig || {};
           this.veronaPostService.sessionId = message.sessionId;
@@ -99,5 +100,6 @@ export class AppComponent implements OnInit {
     this.playerConfig = {};
     this.unitStateService.reset();
     this.mediaPlayerService.reset();
+    this.unitStateElementMapperService.reset();
   }
 }

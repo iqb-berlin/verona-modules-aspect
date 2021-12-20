@@ -5,6 +5,7 @@ Player
  - Use fixed size property for video and spelling components
  - Color the disabled progress bar of the media player green
  - Fix the section from being placed in front of elements with negative z-index
+ - Fix saving of drop list elements
 
 1.12.0
 - Use fixed size property for dynamic button, drop-list and text-field components

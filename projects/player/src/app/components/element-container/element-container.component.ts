@@ -6,30 +6,28 @@ import {
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { KeyboardService } from '../../services/keyboard.service';
-import { FormService } from '../../services/form.service';
-import { UnitStateService } from '../../services/unit-state.service';
-import { MarkingService } from '../../services/marking.service';
 import {
-  InputElement, InputElementValue, UIElement, ValueChangeElement
+  InputElement, UIElement, ValueChangeElement
 } from '../../../../../common/models/uI-element';
 import { FormElementComponent } from '../../../../../common/directives/form-element-component.directive';
 import { CompoundElementComponent }
   from '../../../../../common/directives/compound-element.directive';
-import { VideoElement } from '../../../../../common/ui-elements/video/video-element';
-import { AudioElement } from '../../../../../common/ui-elements/audio/audio-element';
-import { ImageElement } from '../../../../../common/ui-elements/image/image-element';
-import { VeronaPostService } from '../../services/verona-post.service';
 import { MediaPlayerElementComponent } from '../../../../../common/directives/media-player-element-component.directive';
-import { MediaPlayerService } from '../../services/media-player.service';
 import { TextComponent } from '../../../../../common/ui-elements/text/text.component';
 import { TextFieldElement } from '../../../../../common/ui-elements/text-field/text-field-element';
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
-import { ElementFactory } from '../../../../../common/util/element.factory';
 import { ImageComponent } from '../../../../../common/ui-elements/image/image.component';
 import { ButtonComponent } from '../../../../../common/ui-elements/button/button.component';
 import { TextFieldComponent } from '../../../../../common/ui-elements/text-field/text-field.component';
 import { TextAreaComponent } from '../../../../../common/ui-elements/text-area/text-area.component';
+import { ElementFactory } from '../../../../../common/util/element.factory';
+import { KeyboardService } from '../../services/keyboard.service';
+import { FormService } from '../../services/form.service';
+import { UnitStateService } from '../../services/unit-state.service';
+import { MarkingService } from '../../services/marking.service';
+import { MediaPlayerService } from '../../services/media-player.service';
+import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
+import { VeronaPostService } from '../../services/verona-post.service';
 
 @Component({
   selector: 'app-element-container',
@@ -58,6 +56,7 @@ export class ElementContainerComponent implements OnInit {
               private formBuilder: FormBuilder,
               private veronaPostService: VeronaPostService,
               private mediaPlayerService: MediaPlayerService,
+              private unitStateElementMapperService: UnitStateElementMapperService,
               private markingService: MarkingService) {
   }
 
@@ -92,7 +91,12 @@ export class ElementContainerComponent implements OnInit {
     const elementComponentFactory =
       ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
-    elementComponent.elementModel = this.restoreUnitStateValue(this.elementModel);
+    elementComponent.elementModel = this.unitStateElementMapperService
+      .mapToElementValue(
+        this.elementModel,
+        this.unitStateService.getUnitStateElement(this.elementModel.id),
+        this.markingService
+      );
     return elementComponent;
   }
 
@@ -126,7 +130,10 @@ export class ElementContainerComponent implements OnInit {
   private registerAtUnitStateService(elementComponent: ElementComponent): void {
     if (!(elementComponent instanceof CompoundElementComponent)) {
       this.unitStateService.registerElement(
-        this.initUnitStateValue(elementComponent.elementModel),
+        this.unitStateElementMapperService.mapToUnitStateValue(
+          elementComponent.elementModel,
+          this.unitStateService.getUnitStateElement(elementComponent.elementModel.id)
+        ),
         elementComponent.domElement,
         this.pageIndex
       );
@@ -142,9 +149,17 @@ export class ElementContainerComponent implements OnInit {
         .subscribe((children: QueryList<ElementComponent>) => {
           children.forEach((child, index) => {
             const childModel = compoundChildren[index];
-            child.elementModel = this.restoreUnitStateValue(childModel);
+            child.elementModel = this.unitStateElementMapperService
+              .mapToElementValue(
+                childModel,
+                this.unitStateService.getUnitStateElement(child.elementModel.id),
+                this.markingService
+              );
             this.unitStateService.registerElement(
-              this.initUnitStateValue(child.elementModel),
+              this.unitStateElementMapperService.mapToUnitStateValue(
+                child.elementModel,
+                this.unitStateService.getUnitStateElement(child.elementModel.id)
+              ),
               child.domElement,
               this.pageIndex
             );
@@ -171,7 +186,8 @@ export class ElementContainerComponent implements OnInit {
       elementComponent.applySelection
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selection:
-        { mode: 'mark' | 'underline' | 'delete',
+        {
+          mode: 'mark' | 'underline' | 'delete',
           color: string;
           element: HTMLElement;
         }) => {
@@ -254,45 +270,6 @@ export class ElementContainerComponent implements OnInit {
         });
     }
   }
-
-  private restoreUnitStateValue(elementModel: UIElement): UIElement {
-    const unitStateElementCode = this.unitStateService.getUnitStateElement(elementModel.id);
-    if (unitStateElementCode && unitStateElementCode.value !== undefined) {
-      switch (elementModel.type) {
-        case 'text':
-          elementModel.text = this.markingService
-            .restoreMarkings(unitStateElementCode.value as string[], this.elementModel.text);
-          break;
-        case 'image':
-          elementModel.magnifierUsed = unitStateElementCode.value;
-          break;
-        case 'video':
-        case 'audio':
-          if (elementModel && elementModel.playerProps) {
-            elementModel.playerProps.playbackTime = unitStateElementCode.value as number;
-          }
-          break;
-        default:
-          elementModel.value = unitStateElementCode.value;
-      }
-    }
-    return elementModel;
-  }
-
-  private initUnitStateValue = (elementModel: UIElement): { id: string, value: InputElementValue } => {
-    switch (elementModel.type) {
-      case 'text':
-        return { id: elementModel.id, value: [] };
-      case 'image':
-        return { id: elementModel.id, value: (elementModel as ImageElement).magnifierUsed };
-      case 'video':
-        return { id: elementModel.id, value: (elementModel as VideoElement).playerProps.playbackTime };
-      case 'audio':
-        return { id: elementModel.id, value: (elementModel as AudioElement).playerProps.playbackTime };
-      default:
-        return { id: elementModel.id, value: (elementModel as InputElement).value };
-    }
-  };
 
   private registerFormGroup(elementForm: FormGroup): void {
     this.formService.registerFormGroup({

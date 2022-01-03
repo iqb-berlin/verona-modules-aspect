@@ -255,7 +255,8 @@ export class UnitService {
           return false;
         }
         this.idService.removeId(element.id);
-        this.idService.addID(<string>value);
+        this.idService.addID(value as string);
+        element.setProperty('id', value);
       } else if (property === 'text' && element.type === 'cloze') {
         element.setProperty('parts', ClozeParser.createClozeParts(value as string, this.idService));
       } else {

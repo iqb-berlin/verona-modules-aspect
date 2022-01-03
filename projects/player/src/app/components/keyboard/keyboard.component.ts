@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class KeyboardComponent {
   @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
   @Input() inputComponent!: HTMLTextAreaElement | HTMLInputElement;
-  @Input() inputType!: 'text-field' | 'text-area';
+  @Input() positionOffset!: number;
 
   onMouseDown = (event: MouseEvent, stopPropagation: boolean): void => {
     event.preventDefault();

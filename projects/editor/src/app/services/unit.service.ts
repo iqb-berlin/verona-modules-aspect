@@ -217,6 +217,7 @@ export class UnitService {
         ...JSON.parse(JSON.stringify(element)),
         id: this.idService.getNewID(element.type),
         positionProps: {
+          ...element.positionProps,
           xPosition: element.positionProps.xPosition + 10,
           yPosition: element.positionProps.yPosition + 10
         }

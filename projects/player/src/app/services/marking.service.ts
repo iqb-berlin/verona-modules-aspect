@@ -31,7 +31,8 @@ export class MarkingService {
   }
 
   getMarkingData = (htmlText: string): string[] => {
-    const markingStartPattern = new RegExp(`<${MarkingService.MARKING_TAG.toLowerCase()} [a-z]+="[\\w- ;:]+">`);
+    const markingStartPattern =
+      new RegExp(`<${MarkingService.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
     const markingClosingTag = `</${MarkingService.MARKING_TAG.toLowerCase()}>`;
     let newHtmlText = htmlText;
     const markCollection = [];
@@ -43,7 +44,8 @@ export class MarkingService {
         matchesArray = newHtmlText.match(markingClosingTag);
         if (matchesArray) {
           const endMatch = matchesArray[0];
-          const startIndex = newHtmlText.search(startMatch);
+          // we have to escape the brackets of rgb color
+          const startIndex = newHtmlText.search(startMatch.replace('(', '\\(').replace(')', '\\)'));
           newHtmlText = newHtmlText.replace(startMatch, '');
           const endIndex = newHtmlText.search(endMatch);
           newHtmlText = newHtmlText.replace(endMatch, '');
@@ -75,12 +77,16 @@ export class MarkingService {
   }
 
   private getMarkingColor = (tag: string): string => {
-    const colors = tag.match(/(?!.*:)\w*(?=;)/);
-    return (colors) ? colors[0] : 'none';
+    const colors = tag.match(/\d{1,3}, \d{1,3}, \d{1,3}/);
+    return (colors) ? this.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
   };
 
-  private createMarkingStartTag =
-  (color: string): string => `<${MarkingService.MARKING_TAG.toLowerCase()} style="background-color: ${color};">`;
+  private createMarkingStartTag(color: string): string {
+    const rgb = this.hexToRgb(color);
+    return `<${
+      MarkingService.MARKING_TAG.toLowerCase()
+    } style="background-color: rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]});">`;
+  }
 
   private isDescendantOf(node: Node | null, element: HTMLElement): boolean {
     if (!node || node === document) {
@@ -204,7 +210,9 @@ export class MarkingService {
       start = Math.min(range.startOffset, range.endOffset);
       end = Math.max(range.startOffset, range.endOffset);
     }
-    let text: string; let previousText = ''; let nextText = '';
+    let text: string;
+    let previousText = '';
+    let nextText = '';
     if (index === 0) {
       previousText = node.nodeValue?.substring(0, start) || '';
       text = node.nodeValue?.substring(start) || '';
@@ -262,4 +270,17 @@ export class MarkingService {
       }
     });
   }
+
+  private rgbToHex = (rgb: number[]): string => `#${rgb.map(x => {
+    const hex = x.toString(16);
+    return hex.length === 1 ? `0${hex}` : hex;
+  }).join('')}`;
+
+  private hexToRgb = (hex: string): number[] => {
+    const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+    if (normal) return normal.slice(1).map(e => parseInt(e, 16));
+    const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
+    if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
+    return [];
+  };
 }

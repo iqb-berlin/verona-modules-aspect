@@ -10,22 +10,22 @@ import { TextElement } from '../../ui-elements/text/text-element';
       <button *ngIf="elementModel.highlightableYellow"
               type="button"
               class="marking-button"
-              mat-mini-fab [style.background-color]="'yellow'"
-              (click)="applySelection.emit({ mode: 'mark', color:'yellow', element })">
+              mat-mini-fab [style.background-color]="'#f9f871'"
+              (click)="applySelection.emit({ mode: 'mark', color:'#f9f871', element })">
         <mat-icon>border_color</mat-icon>
       </button>
       <button *ngIf="elementModel.highlightableTurquoise"
               type="button"
               class="marking-button"
-              mat-mini-fab [style.background-color]="'turquoise'"
-              (click)="applySelection.emit({ mode: 'mark', color: 'turquoise', element })">
+              mat-mini-fab [style.background-color]="'#9de8eb'"
+              (click)="applySelection.emit({ mode: 'mark', color: '#9de8eb', element })">
         <mat-icon>border_color</mat-icon>
       </button>
       <button *ngIf="elementModel.highlightableOrange"
               type="button"
               class="marking-button"
-              mat-mini-fab [style.background-color]="'orange'"
-              (click)="applySelection.emit({ mode: 'mark', color: 'orange', element })">
+              mat-mini-fab [style.background-color]="'#ffa06a'"
+              (click)="applySelection.emit({ mode: 'mark', color: '#ffa06a', element })">
         <mat-icon>border_color</mat-icon>
       </button>
       <button type="button"

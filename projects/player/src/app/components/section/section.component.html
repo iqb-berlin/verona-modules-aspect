@@ -24,7 +24,8 @@
        [style.grid-template-columns]="!section.autoColumnSize ? section.gridColumnSizes : undefined"
        [style.grid-template-rows]="!section.autoRowSize ? section.gridRowSizes : undefined"
        [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
-       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined">
+       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
+       [style.backgroundColor]="section.backgroundColor">
     <ng-container *ngFor="let element of section.elements; let i = index">
       <app-element-container
           [style.min-width.px]="element.width"

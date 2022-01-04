@@ -2,16 +2,16 @@
      detectionType="top"
      [intersectionContainer]="pagesContainer"
      (intersecting)="onIntersection()">
-    <app-section *ngFor="let section of page.sections; let i = index"
-        class="section"
-        [style.display]="section.dynamicPositioning ? 'table' : 'block'"
-        [style.backgroundColor]="section.backgroundColor"
-        [style.minHeight]=" section.dynamicPositioning ? 'auto' : section.height + 'px'"
-        [pageIndex] = parentArrayIndex
-        [parentForm]="pageForm"
-        [parentArrayIndex]="i"
-        [section]="section">
-    </app-section>
+  <app-section *ngFor="let section of page.sections; let i = index"
+               class="section"
+               [class.static-section]="!section.dynamicPositioning"
+               [style.backgroundColor]="section.dynamicPositioning ? null : section.backgroundColor"
+               [style.minHeight]="section.dynamicPositioning ? 'auto' : section.height + 'px'"
+               [pageIndex]=parentArrayIndex
+               [parentForm]="pageForm"
+               [parentArrayIndex]="i"
+               [section]="section">
+  </app-section>
 </div>
 <div appIntersectionDetection
      detectionType="bottom"

@@ -1,5 +1,9 @@
 Player
 ======
+1.14.0
+- Specify the colors for marking in hexadecimal notation
+- Fix disappearance of scrollable pages with dynamic content
+
 1.13.0
  - Improve page snapping when scrolling when concat-scroll-snap property is selected
  - Color the disabled progress bar of the media player green

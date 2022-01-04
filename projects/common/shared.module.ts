@@ -49,6 +49,7 @@ import { SpellCorrectComponent } from './ui-elements/spell-correct/spell-correct
 import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-list-simple.component';
 import { FrameComponent } from './ui-elements/frame/frame.component';
 import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button.component';
+import { MarkingBarComponent } from './components/marking-bar/marking-bar.component';
 
 @NgModule({
   imports: [
@@ -99,7 +100,8 @@ import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button
     SpellCorrectComponent,
     TextFieldSimpleComponent,
     FrameComponent,
-    ToggleButtonComponent
+    ToggleButtonComponent,
+    MarkingBarComponent
   ],
   exports: [
     CommonModule,
@@ -115,7 +117,8 @@ import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button
     MatTooltipModule,
     MatDialogModule,
     TranslateModule,
-    SafeResourceHTMLPipe
+    SafeResourceHTMLPipe,
+    MarkingBarComponent
   ]
 })
 export class SharedModule {

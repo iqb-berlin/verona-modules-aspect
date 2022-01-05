@@ -244,7 +244,7 @@
       <mat-icon>format_quote</mat-icon>
     </button>
   </div>
-  <div *ngIf="showCloseElements" fxLayout="row" fxLayoutAlign="space-around center" >
+  <div *ngIf="clozeMode" fxLayout="row" fxLayoutAlign="space-around center" >
     <button mat-icon-button matTooltip="Eingabefeld" [matTooltipShowDelay]="300"
             (click)="insertTextField()">
       <mat-icon>text_fields</mat-icon>
@@ -260,6 +260,7 @@
   </div>
 </div>
 <tiptap-editor [editor]="editor" [ngModel]="text"
+               [outputFormat]="clozeMode ? 'json' : 'html'"
                [style.font-size.px]="defaultFontSize"
                (ngModelChange)="textChange.emit($event)">
 </tiptap-editor>

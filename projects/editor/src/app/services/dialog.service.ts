@@ -58,7 +58,7 @@ export class DialogService {
 
   showClozeTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: { text, showCloseElements: true },
+      data: { text, clozeMode: true },
       autoFocus: false
     });
     return dialogRef.afterClosed();

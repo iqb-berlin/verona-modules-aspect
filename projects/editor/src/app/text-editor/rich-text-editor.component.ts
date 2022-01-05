@@ -35,7 +35,7 @@ import TextFieldComponentExtension from './node-views/text-field-component-exten
 export class RichTextEditorComponent implements AfterViewInit {
   @Input() text!: string;
   @Input() defaultFontSize!: number;
-  @Input() showCloseElements: boolean | undefined = false;
+  @Input() clozeMode: boolean = false;
   @Output() textChange = new EventEmitter<string>();
 
   selectedFontColor = 'lightgrey';

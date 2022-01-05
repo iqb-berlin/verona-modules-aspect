@@ -2,6 +2,7 @@ Player
 ======
 1.14.0
 - Specify the colors for marking in hexadecimal notation
+- Fix unstable behavior when marking text
 - Fix disappearance of scrollable pages with dynamic content
 
 1.13.0

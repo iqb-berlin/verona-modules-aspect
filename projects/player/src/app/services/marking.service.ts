@@ -25,6 +25,9 @@ export class MarkingService {
             this.getMarkingData(element.innerHTML)]
         });
         textComponent.elementModel.text = element.innerHTML;
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn('Selection contains elements that are outside the text component!');
       }
       selection.removeAllRanges();
     } // nothing to do!
@@ -108,7 +111,10 @@ export class MarkingService {
         this.markNode(range, color, markMode);
       }
     } else {
-      const nodes: Node[] = [];
+      // When the user finishes selecting between paragraphs and the selection happens from
+      // back to front, Firefox does not consider the start container as a selected child node.
+      // Therefore, it is added to the list of selected nodes at the beginning.
+      const nodes: Node[] = [range.startContainer];
       this.findNodes(range.commonAncestorContainer.childNodes, nodes, selection);
       if (clear) {
         this.clearMarkingFromNodes(nodes, range);
@@ -159,6 +165,11 @@ export class MarkingService {
         parentNode?.insertBefore(prev, textElement);
       }
       if (nextText) {
+        // When the user exits selecting between paragraphs,
+        // the offset of the end container is set to 0.
+        // In Firefox this always (in Chrome sometimes) leads
+        // to a misinterpretation of the selection. Therefore, the offset
+        // is manipulated.
         const end = this.createMarkedElement(color, markMode);
         end.append(document.createTextNode(nextText));
         parentNode?.insertBefore(end, textElement.nextSibling);
@@ -171,7 +182,7 @@ export class MarkingService {
       const index = allNodes.findIndex(rangeNode => rangeNode === node);
       if (node.parentElement?.tagName.toUpperCase() === MarkingService.MARKING_TAG ||
         node.parentElement?.tagName.toUpperCase() === MarkingService.UNDERLINE_TAG) {
-        const nodeValues = this.getNodeValues(node, nodes, index, range, allNodes.length);
+        const nodeValues = this.getNodeValues(node, nodes, index, range);
         if (nodeValues.text) {
           this.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
         } else {
@@ -200,16 +211,11 @@ export class MarkingService {
     }
   }
 
-  private getNodeValues = (node: Node, nodes: Node[], index: number, range: Range, nodesCount: number): {
+  private getNodeValues = (node: Node, nodes: Node[], index: number, range: Range): {
     text: string, previousText: string, nextText: string
   } => {
-    let start = range.startOffset;
+    const start = range.startOffset;
     let end = range.endOffset;
-    // Firefox double click hack
-    if (nodesCount === 1) {
-      start = Math.min(range.startOffset, range.endOffset);
-      end = Math.max(range.startOffset, range.endOffset);
-    }
     let text: string;
     let previousText = '';
     let nextText = '';
@@ -217,6 +223,8 @@ export class MarkingService {
       previousText = node.nodeValue?.substring(0, start) || '';
       text = node.nodeValue?.substring(start) || '';
     } else if (index === nodes.length - 1) {
+      // Hack: If the selectionSometimes end can be 0! This is handled
+      end = end === 0 && node.nodeValue ? node.nodeValue.length : end;
       text = node.nodeValue?.substring(0, end) || '';
       nextText = node.nodeValue?.substring(end) || '';
     } else {
@@ -235,7 +243,7 @@ export class MarkingService {
 
   private markNodes(nodes: Node[], range: Range, color: string, markMode: 'marked' | 'underlined'): void {
     nodes.forEach((node, index) => {
-      const nodeValues = this.getNodeValues(node, nodes, index, range, nodes.length);
+      const nodeValues = this.getNodeValues(node, nodes, index, range);
       if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG &&
         (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== MarkingService.UNDERLINE_TAG)
       ) {
@@ -259,7 +267,7 @@ export class MarkingService {
   private findNodes(childList: Node[] | NodeListOf<ChildNode>, nodes: Node[], selection: Selection): void {
     childList.forEach((node: Node) => {
       if (selection.containsNode(node, true)) {
-        if (node.nodeType === Node.TEXT_NODE && node.nodeValue) {
+        if (node.nodeType === Node.TEXT_NODE && !nodes.includes(node)) {
           nodes.push(node);
         }
         if (node.nodeType === Node.ELEMENT_NODE) {

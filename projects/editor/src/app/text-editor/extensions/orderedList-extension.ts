@@ -10,7 +10,7 @@ declare module '@tiptap/core' {
   }
 }
 
-export const orderedListExtension = OrderedList.extend({
+export const OrderedListExtension = OrderedList.extend({
   addAttributes() {
     return {
       listStyle: {

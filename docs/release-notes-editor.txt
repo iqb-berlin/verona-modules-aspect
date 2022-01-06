@@ -1,5 +1,13 @@
 Editor
 ======
+1.20.0
+ - Use shorter dash in TextEditor special chars
+ - Add top-99-double quote to TextEditor special chars
+ - Use font 'PT Sans' for blockquote quotes
+ - Set blockquote margins (top and bottom) to 20px
+ - Fix positioning values when duplicating elements
+ - Fix changing element IDs
+
 1.19.0
  - Implement fixedSize for all elements
  - Add long dash to TextEditor special characters

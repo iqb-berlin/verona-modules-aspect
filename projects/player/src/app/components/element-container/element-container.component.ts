@@ -4,7 +4,7 @@ import {
 import {
   FormBuilder, FormControl, FormGroup, ValidatorFn
 } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {
   InputElement, UIElement, ValueChangeElement
@@ -28,6 +28,7 @@ import { MarkingService } from '../../services/marking.service';
 import { MediaPlayerService } from '../../services/media-player.service';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
 import { VeronaPostService } from '../../services/verona-post.service';
+import { NativeEventService } from '../../services/native-event.service';
 
 @Component({
   selector: 'app-element-container',
@@ -54,6 +55,7 @@ export class ElementContainerComponent implements OnInit {
               private formService: FormService,
               private unitStateService: UnitStateService,
               private formBuilder: FormBuilder,
+              private nativeEventService: NativeEventService,
               private veronaPostService: VeronaPostService,
               private mediaPlayerService: MediaPlayerService,
               private unitStateElementMapperService: UnitStateElementMapperService,
@@ -173,11 +175,21 @@ export class ElementContainerComponent implements OnInit {
       elementComponent.startSelection
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((mouseEvent: MouseEvent) => {
-          const selection = window.getSelection();
-          if (mouseEvent.ctrlKey && selection?.rangeCount) {
-            selection.removeAllRanges();
-          }
+          this.nativeEventService.mouseUp
+            .pipe(takeUntil(this.ngUnsubscribe), first())
+            .subscribe(() => this.startSelection(mouseEvent, elementComponent));
         });
+    }
+  }
+
+  private startSelection(mouseEvent: MouseEvent, elementComponent: TextComponent) {
+    const selection = window.getSelection();
+    if (selection) {
+      if (!this.markingService.isDescendantOf(selection.anchorNode, elementComponent.containerDiv.nativeElement) ||
+        !this.markingService.isDescendantOf(selection.focusNode, elementComponent.containerDiv.nativeElement) ||
+      (mouseEvent.ctrlKey && selection.rangeCount)) {
+        selection.removeAllRanges();
+      }
     }
   }
 

@@ -77,6 +77,16 @@ export class MarkingService {
     return newHtmlText;
   }
 
+  isDescendantOf(node: Node | null, element: HTMLElement): boolean {
+    if (!node || node === document) {
+      return false;
+    }
+    if (node.parentElement === element) {
+      return true;
+    }
+    return this.isDescendantOf(node.parentNode, element);
+  }
+
   private getMarkingColor = (tag: string): string => {
     const colors = tag.match(/\d{1,3}, \d{1,3}, \d{1,3}/);
     return (colors) ? this.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
@@ -87,16 +97,6 @@ export class MarkingService {
     return `<${
       MarkingService.MARKING_TAG.toLowerCase()
     } style="background-color: rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]});">`;
-  }
-
-  private isDescendantOf(node: Node | null, element: HTMLElement): boolean {
-    if (!node || node === document) {
-      return false;
-    }
-    if (node.parentElement === element) {
-      return true;
-    }
-    return this.isDescendantOf(node.parentNode, element);
   }
 
   private applyRange(

@@ -10,6 +10,7 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class NativeEventService {
   private _focus = new Subject<boolean>();
+  private _mouseUp = new Subject<Event>();
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     from(['blur', 'focus'])
@@ -19,9 +20,18 @@ export class NativeEventService {
       .subscribe(
         () => this._focus.next(document.hasFocus())// Do something with the event here
       );
+
+    fromEvent(window, 'mouseup')
+      .subscribe((mouseEvent: Event) => {
+        this._mouseUp.next(mouseEvent);
+      });
   }
 
   get focus(): Observable<boolean> {
     return this._focus.asObservable();
+  }
+
+  get mouseUp(): Observable<Event> {
+    return this._mouseUp.asObservable();
   }
 }

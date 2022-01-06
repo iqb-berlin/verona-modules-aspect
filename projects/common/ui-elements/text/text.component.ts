@@ -29,7 +29,7 @@ import { ValueChangeElement } from '../../models/uI-element';
            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-           (mouseup)="startSelection.emit($event)"
+           (mousedown)="startSelection.emit($event)"
            [innerHTML]="elementModel.text | safeResourceHTML">
       </div>
     </div>

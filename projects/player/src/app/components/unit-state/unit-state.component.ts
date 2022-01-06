@@ -85,15 +85,9 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     const pagesControls: AbstractControl[] = (this.form.get('pages') as FormArray).controls;
     for (let i = 0; i < pagesControls.length; i++) {
       const pageControl = pagesControls[i];
-      if (pageControl.valid) {
-        return 'some';
-      }
       const sectionControls = (pageControl.get('sections') as FormArray).controls;
       for (let ii = 0; ii < sectionControls.length; ii++) {
         const sectionControl = sectionControls[ii];
-        if (sectionControl.valid) {
-          return 'some';
-        }
         const elementControls = (sectionControl.get('elements') as FormArray).controls;
         for (let iii = 0; iii < elementControls.length; iii++) {
           const elementControl = elementControls[iii];

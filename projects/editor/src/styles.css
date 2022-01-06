@@ -44,6 +44,8 @@ input[type=color] {
 blockquote {
   quotes: "\201E" "\201C";
   text-indent: -1em;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 blockquote:before {
@@ -51,6 +53,7 @@ blockquote:before {
   font-size: 2.5em;
   padding-right: 3px;
   font-family: 'PT Sans', sans-serif;
+  line-height: 0;
 }
 
 blockquote:after {
@@ -60,6 +63,7 @@ blockquote:after {
   padding-top: 0.3em;
   padding-left: 3px;
   font-family: 'PT Sans', sans-serif;
+  line-height: 0;
 }
 
 blockquote p {

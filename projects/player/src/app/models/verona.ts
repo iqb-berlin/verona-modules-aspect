@@ -95,10 +95,7 @@ export interface VopReadyNotification extends VopMetaData{
 }
 
 export interface VopMetaData {
-  apiVersion: string;
-  notSupportedApiFeatures?: string;
-  supportedUnitDefinitionTypes?: string;
-  supportedUnitStateDataTypes?: string;
+  metadata: string;
 }
 
 export interface VopStateChangedNotification {

@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initSubscriptions();
-    this.veronaPostService.sendVopReadyNotification(this.metaDataService.playerMetadata);
+    this.veronaPostService.sendVopReadyNotification({ metadata: this.metaDataService.playerMetadata });
     this.translateService.addLangs(['de']);
     this.translateService.setDefaultLang('de');
     registerLocaleData(localeDe);
@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
             data: {
               title: this.translateService.instant('dialogTitle.wrongUnitDefinitionType'),
               content: this.translateService.instant('dialogContent.wrongUnitDefinitionType',
-                { version: this.metaDataService.playerMetadata.supportedUnitDefinitionTypes })
+                { version: this.metaDataService.playerMetadata })
             }
           });
         }

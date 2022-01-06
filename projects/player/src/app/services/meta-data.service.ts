@@ -5,12 +5,12 @@ import { DOCUMENT } from '@angular/common';
   providedIn: 'root'
 })
 export class MetaDataService {
-  playerMetadata!: string;
+  playerMetadata!: any;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     const playerMetadata: string | null | undefined = document.getElementById('meta_data')?.textContent;
     if (playerMetadata) {
-      this.playerMetadata = JSON.stringify(playerMetadata);
+      this.playerMetadata = JSON.parse(playerMetadata);
     }
   }
 

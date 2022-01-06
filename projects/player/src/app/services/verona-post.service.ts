@@ -34,7 +34,7 @@ export class VeronaPostService {
 
   private send(message: VopMessage): void {
     // prevent posts in local (dev) mode
-    if (this.isStandalone()) {
+    if (!this.isStandalone()) {
       window.parent.postMessage(message, '*');
     } else {
       // eslint-disable-next-line no-console

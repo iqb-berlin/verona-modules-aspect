@@ -114,6 +114,11 @@ export class MarkingService {
       // Therefore, it is added to the list of selected nodes at the beginning.
       const nodes: Node[] = [range.startContainer];
       this.findNodes(range.commonAncestorContainer.childNodes, nodes, selection);
+      // When the user finishes selecting between paragraphs the browser does not consider the end container
+      // as a selected child node. Therefore, it is added to the list of selected nodes at the end.
+      if (range.endOffset === 0) {
+        this.addEndContainer(nodes, range.endContainer);
+      }
       if (clear) {
         this.clearNodes(nodes, range);
       } else {
@@ -121,6 +126,16 @@ export class MarkingService {
       }
     }
   }
+
+  private addEndContainer = (nodes: Node[], endContainer: Node): void => {
+    if (endContainer.nodeType === Node.ELEMENT_NODE && endContainer.childNodes.length) {
+      if (!nodes.includes(endContainer.childNodes[0])) {
+        nodes.push(endContainer.childNodes[0]);
+      }
+    } else if (endContainer.nodeType === Node.TEXT_NODE) {
+      nodes.push(endContainer);
+    }
+  };
 
   private clearMarkingFromNode(range: Range): void {
     if (range.startContainer.parentElement?.tagName?.toUpperCase() === MarkingService.MARKING_TAG) {
@@ -145,11 +160,6 @@ export class MarkingService {
         parentNode?.insertBefore(prev, textElement);
       }
       if (nextText) {
-        // When the user exits selecting between paragraphs,
-        // the offset of the end container is set to 0.
-        // In Firefox this always (in Chrome sometimes) leads
-        // to a misinterpretation of the selection. Therefore, the offset
-        // is manipulated.
         const end = this.createMarkedElement(color);
         end.append(document.createTextNode(nextText));
         parentNode?.insertBefore(end, textElement.nextSibling);
@@ -194,7 +204,7 @@ export class MarkingService {
     text: string, previousText: string, nextText: string
   } => {
     const start = range.startOffset;
-    let end = range.endOffset;
+    const end = range.endOffset;
     let text: string;
     let previousText = '';
     let nextText = '';
@@ -202,8 +212,6 @@ export class MarkingService {
       previousText = node.nodeValue?.substring(0, start) || '';
       text = node.nodeValue?.substring(start) || '';
     } else if (index === nodes.length - 1) {
-      // Hack: If the selectionSometimes end can be 0! This is handled
-      end = end === 0 && node.nodeValue ? node.nodeValue.length : end;
       text = node.nodeValue?.substring(0, end) || '';
       nextText = node.nodeValue?.substring(end) || '';
     } else {

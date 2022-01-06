@@ -43,7 +43,7 @@ export class MarkingBarComponent {
   @Input() element!: HTMLElement;
   @Input() elementModel!: TextElement;
   @Output() applySelection = new EventEmitter<{
-    mode: 'mark' | 'underline' | 'delete',
+    mode: 'mark' | 'delete',
     color: string,
     element: HTMLElement
   }>();

@@ -49,7 +49,7 @@ export class TextComponent extends ElementComponent {
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() startSelection = new EventEmitter<MouseEvent>();
   @Output() applySelection = new EventEmitter<{
-    mode: 'mark' | 'underline' | 'delete',
+    mode: 'mark' | 'delete',
     color: string,
     element: HTMLElement
   }>();

@@ -187,7 +187,7 @@ export class ElementContainerComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selection:
         {
-          mode: 'mark' | 'underline' | 'delete',
+          mode: 'mark' | 'delete',
           color: string;
           element: HTMLElement;
         }) => {

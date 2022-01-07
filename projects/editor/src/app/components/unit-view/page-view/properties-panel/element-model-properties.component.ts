@@ -31,7 +31,10 @@ export class ElementModelPropertiesComponent {
 
   addOption(property: string, value: string): void {
     (this.combinedProperties[property] as string[]).push(value);
-    this.updateModel.emit({ property: property, value: this.combinedProperties[property] as string[] });
+    this.updateModel.emit({
+      property: property,
+      value: [...this.combinedProperties[property] as string[]]
+    });
   }
 
   reorderOptions(property: string, event: CdkDragDrop<string[]>): void {

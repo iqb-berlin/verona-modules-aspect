@@ -70,9 +70,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
         Object.keys(this.combinedProperties).forEach((property: keyof UIElement) => {
           if (Object.prototype.hasOwnProperty.call(flattenedSelectedElements[i], property)) {
             if (Array.isArray(flattenedSelectedElements[i][property])) {
-              if (flattenedSelectedElements[i][property]!.toString() === this.combinedProperties[property]!.toString()) {
-                // @ts-ignore TODO
-                flattenedSelectedElements[property] = flattenedSelectedElements[i][property];
+              if (flattenedSelectedElements[i][property]?.toString() === this.combinedProperties[property]?.toString()) {
+                this.combinedProperties[property] = flattenedSelectedElements[i][property];
               }
             }
             if (flattenedSelectedElements[i][property] !== this.combinedProperties[property]) {

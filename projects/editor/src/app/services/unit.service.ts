@@ -25,6 +25,7 @@ import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-e
 import { SelectionService } from './selection.service';
 import { ElementFactory } from '../../../../common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
+import { Copy } from '../../../../common/util/copy';
 
 @Injectable({
   providedIn: 'root'
@@ -260,7 +261,7 @@ export class UnitService {
       } else if (property === 'text' && element.type === 'cloze') {
         element.setProperty('parts', ClozeParser.createClozeParts(value as string, this.idService));
       } else {
-        element.setProperty(property, value);
+        element.setProperty(property, Copy.getCopy(value));
       }
     }
     this.elementPropertyUpdated.next();

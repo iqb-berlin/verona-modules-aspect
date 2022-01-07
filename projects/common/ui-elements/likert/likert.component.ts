@@ -9,6 +9,9 @@ import { CompoundElementComponent } from '../../directives/compound-element.dire
 @Component({
   selector: 'app-likert',
   template: `
+    <div *ngIf="elementModel.rows.length === 0 && elementModel.columns.length === 0">
+      Keine Zeilen oder Spalten vorhanden
+    </div>
     <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                  elementModel.positionProps.fixedSize"
          [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"

@@ -33,6 +33,7 @@ export class TextFieldElement extends InputElement implements PositionedElement,
     this.surfaceProps = initSurfaceElement(serializedElement);
 
     this.height = serializedElement.height || 100;
+    this.width = serializedElement.width || 230;
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||

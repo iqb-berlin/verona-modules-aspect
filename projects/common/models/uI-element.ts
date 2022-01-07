@@ -15,7 +15,7 @@ export abstract class UIElement {
   type!: UIElementType;
 
   id: string = 'id_placeholder';
-  width: number = 180;
+  width: number = 190;
   height: number = 60;
 
   positionProps?: PositionProperties;

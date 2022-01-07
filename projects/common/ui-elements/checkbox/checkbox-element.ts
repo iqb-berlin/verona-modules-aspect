@@ -23,6 +23,8 @@ export class CheckboxElement extends InputElement implements PositionedElement, 
 
     this.value = serializedElement.value as boolean || false; // booleans are always initialized false
 
+    this.width = serializedElement.width || 215;
+
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||

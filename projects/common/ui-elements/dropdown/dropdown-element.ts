@@ -24,6 +24,7 @@ export class DropdownElement extends InputElement implements PositionedElement, 
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
+    this.width = serializedElement.width || 240;
     this.height = serializedElement.height || 83;
   }
 }

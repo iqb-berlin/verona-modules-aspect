@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, QueryList
+  Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, QueryList, ChangeDetectorRef
 } from '@angular/core';
 import {
   FormBuilder, FormControl, FormGroup, ValidatorFn
@@ -59,7 +59,8 @@ export class ElementContainerComponent implements OnInit {
               private veronaPostService: VeronaPostService,
               private mediaPlayerService: MediaPlayerService,
               private unitStateElementMapperService: UnitStateElementMapperService,
-              private markingService: MarkingService) {
+              private markingService: MarkingService,
+              private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -119,8 +120,8 @@ export class ElementContainerComponent implements OnInit {
     elementComponent.parentForm = elementForm;
     const compoundChildren = elementComponent.getFormElementModelChildren();
     this.subscribeCompoundChildren(elementComponent, compoundChildren);
+    this.registerFormGroup(elementForm);
     compoundChildren.forEach((element: InputElement) => {
-      this.registerFormGroup(elementForm);
       this.formService.registerFormControl({
         id: element.id,
         formControl: new FormControl(element.value),
@@ -165,7 +166,12 @@ export class ElementContainerComponent implements OnInit {
               child.domElement,
               this.pageIndex
             );
+            const formChild = (child as FormElementComponent);
+            if (formChild) {
+              formChild.setFormValue(child.elementModel.value);
+            }
           });
+          this.changeDetectorRef.detectChanges();
         });
     }
   }

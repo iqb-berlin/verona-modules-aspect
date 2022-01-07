@@ -7,6 +7,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   template: `
     <div class="mat-form-field">
       <mat-button-toggle-group [formControl]="elementFormControl"
+                               [value]="elementModel.value"
                                [style.height.px]="elementModel.height">
         <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
                            [value]="i"

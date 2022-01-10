@@ -119,7 +119,7 @@ export class ElementContainerComponent implements OnInit {
     const elementForm = this.formBuilder.group({});
     elementComponent.parentForm = elementForm;
     const compoundChildren = elementComponent.getFormElementModelChildren();
-    this.subscribeCompoundChildren(elementComponent, compoundChildren);
+    this.subscribeCompoundChildren(elementComponent, compoundChildren, elementForm);
     this.registerFormGroup(elementForm);
     compoundChildren.forEach((element: InputElement) => {
       this.formService.registerFormControl({
@@ -144,7 +144,7 @@ export class ElementContainerComponent implements OnInit {
   }
 
   private subscribeCompoundChildren(
-    elementComponent: CompoundElementComponent, compoundChildren: InputElement[]
+    elementComponent: CompoundElementComponent, compoundChildren: InputElement[], elementForm: FormGroup
   ): void {
     if (elementComponent.childrenAdded) {
       elementComponent.childrenAdded
@@ -168,7 +168,9 @@ export class ElementContainerComponent implements OnInit {
             );
             const formChild = (child as FormElementComponent);
             if (formChild) {
+              this.subscribeSetValidators(formChild, elementForm);
               formChild.setFormValue(child.elementModel.value);
+              formChild.setFormControlValidator();
             }
           });
           this.changeDetectorRef.detectChanges();
@@ -263,7 +265,7 @@ export class ElementContainerComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((validators: ValidatorFn[]) => {
           this.formService.setValidators({
-            id: this.elementModel.id,
+            id: elementComponent.elementModel.id,
             validators: validators,
             formGroup: elementForm
           });

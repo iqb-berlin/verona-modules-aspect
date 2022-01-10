@@ -21,7 +21,7 @@ export abstract class FormElementComponent extends ElementComponent implements O
   ngOnInit(): void {
     this.elementFormControl = this.formControl;
     this.elementFormControl?.setValue((this.elementModel as InputElement).value, { emitEvent: false });
-    this.setValidators.emit(this.validators);
+    this.setFormControlValidator();
     this.elementFormControl.valueChanges
       .pipe(
         startWith((this.elementModel as InputElement).value),
@@ -50,6 +50,10 @@ export abstract class FormElementComponent extends ElementComponent implements O
 
   setFormValue(value: InputElementValue): void {
     this.elementFormControl.setValue(value);
+  }
+
+  setFormControlValidator(): void {
+    this.setValidators.emit(this.validators);
   }
 
   ngOnDestroy(): void {

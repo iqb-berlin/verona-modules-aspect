@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  FormArray, FormBuilder, FormGroup
+  FormArray, FormBuilder, FormControl, FormGroup
 } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -44,7 +44,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
               private messageService: MessageService,
               private metaDataService: MetaDataService,
               private translateService: TranslateService,
-              protected changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -86,13 +86,17 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     for (let i = 0; i < pagesControls.length; i++) {
       const pageControl = pagesControls[i];
       const sectionControls = (pageControl.get('sections') as FormArray).controls;
-      for (let ii = 0; ii < sectionControls.length; ii++) {
-        const sectionControl = sectionControls[ii];
+      for (let j = 0; j < sectionControls.length; j++) {
+        const sectionControl = sectionControls[j];
         const elementControls = (sectionControl.get('elements') as FormArray).controls;
-        for (let iii = 0; iii < elementControls.length; iii++) {
-          const elementControl = elementControls[iii];
-          if (elementControl.valid) {
-            return 'some';
+        for (let k = 0; k < elementControls.length; k++) {
+          const elementControl = elementControls[k] as FormGroup;
+          const controlKeys = (Object.keys(elementControl.value));
+          for (let l = 0; l < controlKeys.length; l++) {
+            const control = elementControl.controls[controlKeys[l]] as FormControl;
+            if (control.valid) {
+              return 'some';
+            }
           }
         }
       }

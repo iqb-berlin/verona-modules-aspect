@@ -1,6 +1,6 @@
 Player
 ======
-1.14.1
+1.15.0
 - Fix restoring of toggle buttons
 - Prevent audio/video hint text from being displayed after reloading a played audio/video file
 - Fix marking text when the selection is empty at the end

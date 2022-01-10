@@ -1,5 +1,17 @@
 Editor
 ======
+1.21.0
+ - Fix multiselect of elements with array values (i.e. dropList)
+   This includes correctly showing them and saving the changes properly
+   so that other elements are not affected.
+ - Extend default width of some elements
+   So the example text is completely visible.
+   Affects: checkbox, text field, text area, dropdown
+ - Add default text to empty likert element
+   This makes the element visible before content is defined.
+ - Fix cloze element to also save the actual HTML text
+   This allows future versions to correctly restore the element
+
 1.20.0
  - Use shorter dash in TextEditor special chars
  - Add top-99-double quote to TextEditor special chars

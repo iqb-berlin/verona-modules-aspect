@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
       if (message.unitDefinition) {
         const unitDefinition: Unit = new Unit(JSON.parse(message.unitDefinition));
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
-        if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.veronaModuleVersion)) {
+        if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.unitDefinitionType)) {
           this.playerConfig = message.playerConfig || {};
           this.veronaPostService.sessionId = message.sessionId;
           this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';

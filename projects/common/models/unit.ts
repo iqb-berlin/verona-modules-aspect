@@ -1,14 +1,13 @@
 import { Page } from './page';
 import { moveArrayItem } from '../util/array';
 
-const EXPORTED_MODULE_VERSION = 'iqb-aspect-module@0.1.1';
+export const EXPORTED_MODULE_VERSION = 'iqb-aspect-definition@1.0.0';
 
 export class Unit {
-  veronaModuleVersion: string;
+  unitDefinitionType = EXPORTED_MODULE_VERSION;
   pages: Page[] = [];
 
   constructor(serializedUnit?: Unit) {
-    this.veronaModuleVersion = EXPORTED_MODULE_VERSION;
     if (serializedUnit && serializedUnit.pages.length > 0) {
       serializedUnit?.pages.forEach((page: Page) => {
         this.pages.push(new Page(page));

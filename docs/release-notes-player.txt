@@ -2,8 +2,8 @@ Player
 ======
 1.14.1
 - Fix restoring of toggle buttons
+- Fix marking text when the selection is empty at the end
 - Improve checking of responsesProgress of compound elements
-
 
 1.14.0
 - Specify the colors for marking in hexadecimal notation

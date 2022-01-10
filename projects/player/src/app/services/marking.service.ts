@@ -128,9 +128,13 @@ export class MarkingService {
   }
 
   private addEndContainer = (nodes: Node[], endContainer: Node): void => {
-    if (endContainer.nodeType === Node.ELEMENT_NODE && endContainer.childNodes.length) {
-      if (!nodes.includes(endContainer.childNodes[0])) {
-        nodes.push(endContainer.childNodes[0]);
+    if (endContainer.nodeType === Node.ELEMENT_NODE) {
+      if (endContainer.childNodes.length) {
+        if (!nodes.includes(endContainer.childNodes[0])) {
+          nodes.push(endContainer.childNodes[0]);
+        }
+      } else if (!nodes.includes(endContainer)) {
+        nodes.push(endContainer);
       }
     } else if (endContainer.nodeType === Node.TEXT_NODE) {
       nodes.push(endContainer);
@@ -249,8 +253,10 @@ export class MarkingService {
           nodes.push(node);
         }
         if (node.nodeType === Node.ELEMENT_NODE) {
-          if (node.childNodes) {
+          if (node.childNodes.length) {
             this.findNodes(node.childNodes, nodes, selection);
+          } else if (!nodes.includes(node)) {
+            nodes.push(node);
           }
         }
       }

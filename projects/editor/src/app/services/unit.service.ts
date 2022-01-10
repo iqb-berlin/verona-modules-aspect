@@ -260,6 +260,7 @@ export class UnitService {
         element.setProperty('id', value);
       } else if (property === 'text' && element.type === 'cloze') {
         element.setProperty('parts', ClozeParser.createClozeParts(value as string, this.idService));
+        element.setProperty('text', value);
       } else {
         element.setProperty(property, Copy.getCopy(value));
       }

@@ -62,7 +62,7 @@ export abstract class UIElement {
 }
 
 export abstract class InputElement extends UIElement {
-  label: string;
+  label?: string;
   value: InputElementValue;
   required: boolean;
   requiredWarnMessage: string;

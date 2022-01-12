@@ -21,6 +21,8 @@ export class ToggleButtonElement extends InputElement implements FontElement, Su
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
+    delete this.label;
+
     this.height = serializedElement.height as number || 25;
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||

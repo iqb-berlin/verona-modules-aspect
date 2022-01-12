@@ -18,6 +18,8 @@ export class TextFieldSimpleElement extends InputElement implements FontElement,
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
+    delete this.label;
+
     this.height = serializedElement.height || 25;
   }
 }

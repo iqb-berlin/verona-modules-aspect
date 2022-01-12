@@ -23,6 +23,8 @@ export class DropListSimpleElement extends InputElement implements FontElement, 
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
+    delete this.label;
+
     this.value = serializedElement.value as string[] || [];
     this.height = serializedElement.height || 100;
     this.surfaceProps.backgroundColor =

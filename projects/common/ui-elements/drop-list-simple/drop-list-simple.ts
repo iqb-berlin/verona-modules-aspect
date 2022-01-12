@@ -2,12 +2,11 @@ import {
   FontElement,
   FontProperties,
   InputElement,
-  PositionedElement, PositionProperties,
   SurfaceElement,
   SurfaceProperties,
   UIElement
 } from '../../models/uI-element';
-import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
+import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class DropListSimpleElement extends InputElement implements FontElement, SurfaceElement {
   connectedTo: string[] = [];

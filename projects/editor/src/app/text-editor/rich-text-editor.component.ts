@@ -64,7 +64,7 @@ export class RichTextEditorComponent implements AfterViewInit {
       Heading.configure({
         levels: [1, 2, 3, 4]
       }),
-      paragraphExtension,
+      ParagraphExtension,
       FontSizeExtension,
       BulletListExtension,
       OrderedListExtension,
@@ -200,13 +200,16 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   insertToggleButton(): void {
     this.editor.commands.insertContent('<app-nodeview-toggle-button></app-nodeview-toggle-button>');
+    this.editor.commands.focus();
   }
 
   insertDropList(): void {
     this.editor.commands.insertContent('<app-nodeview-drop-list></app-nodeview-drop-list>');
+    this.editor.commands.focus();
   }
 
   insertTextField(): void {
     this.editor.commands.insertContent('<app-nodeview-text-field></app-nodeview-text-field>');
+    this.editor.commands.focus();
   }
 }

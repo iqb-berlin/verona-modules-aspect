@@ -245,7 +245,7 @@ export class UnitService {
   }
 
   updateElementProperty(elements: UIElement[], property: string,
-                        value: InputElementValue | LikertColumn[] | LikertRow[] |
+                        value: InputElementValue | LikertColumn[] | LikertRow[] | ClozeDocument |
                         DragNDropValueObject[] | null): boolean {
     // console.log('updateElementProperty', elements, property, value);
     for (const element of elements) {
@@ -257,8 +257,11 @@ export class UnitService {
         this.idService.removeId(element.id);
         this.idService.addID(value as string);
         element.setProperty('id', value);
-      } else if (property === 'text' && element.type === 'cloze') {
-        element.setProperty('parts', ClozeParser.createClozeParts(value as string, this.idService));
+      } else if (property === 'document') {
+        element.setProperty('document', ClozeParser.setMissingIDs(
+          value as ClozeDocument,
+          this.idService
+        ));
       } else {
         element.setProperty(property, value);
       }
@@ -427,12 +430,15 @@ export class UnitService {
         });
         break;
       case 'cloze':
-        this.dialogService.showClozeTextEditDialog((element as TextElement).text).subscribe((result: string) => {
+        this.dialogService.showClozeTextEditDialog(
+          element.document,
+          (element as ClozeElement).fontProps.fontSize as number
+        ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
             this.updateElementProperty(
               [element],
-              'text',
+              'document',
               (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
             );
           }

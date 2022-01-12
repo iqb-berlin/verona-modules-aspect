@@ -1,8 +1,8 @@
 import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
-
-import { NodeviewDropListComponent } from './nodeview-drop-list.component';
+import { DropListNodeviewComponent } from './drop-list-nodeview.component';
+import { DropListSimpleElement } from '../../../../../common/ui-elements/drop-list-simple/drop-list-simple';
 
 const DropListComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -12,8 +12,8 @@ const DropListComponentExtension = (injector: Injector): Node => {
 
     addAttributes() {
       return {
-        id: {
-          default: 'will be generated'
+        model: {
+          default: new DropListSimpleElement({ type: 'drop-list', height: 25, width: 100 })
         }
       };
     },
@@ -25,7 +25,7 @@ const DropListComponentExtension = (injector: Injector): Node => {
       return ['app-nodeview-drop-list', mergeAttributes(HTMLAttributes)];
     },
     addNodeView() {
-      return AngularNodeViewRenderer(NodeviewDropListComponent, { injector });
+      return AngularNodeViewRenderer(DropListNodeviewComponent, { injector });
     }
   });
 };

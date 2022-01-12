@@ -9,13 +9,13 @@ import { DropListSimpleElement } from '../../../../../common/ui-elements/drop-li
          [style.vertical-align]="'middle'"
          [style.width.px]="model.width"
          [style.height.px]="model.height">
-      <app-drop-list-simple [elementModel]="model"
-                            [matTooltip]="'ID: ' + node.attrs.id">
+      <app-drop-list-simple [elementModel]="node.attrs.model"
+                            [matTooltip]="'ID: ' + node.attrs.model.id">
       </app-drop-list-simple>
     </div>
   `
 })
-export class NodeviewDropListComponent extends AngularNodeViewComponent {
+export class DropListNodeviewComponent extends AngularNodeViewComponent {
   model: DropListSimpleElement = new DropListSimpleElement({
     type: 'drop-list',
     height: 25,

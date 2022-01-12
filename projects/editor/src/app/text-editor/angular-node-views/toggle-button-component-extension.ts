@@ -2,7 +2,9 @@ import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 
-import { NodeviewToggleButtonComponent } from './nodeview-toggle-button.component';
+import { ToggleButtonNodeviewComponent } from './toggle-button-nodeview.component';
+import { DropListSimpleElement } from '../../../../../common/ui-elements/drop-list-simple/drop-list-simple';
+import { ToggleButtonElement } from '../../../../../common/ui-elements/toggle-button/toggle-button';
 
 const ToggleButtonComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -12,8 +14,8 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
 
     addAttributes() {
       return {
-        id: {
-          default: 'will be generated'
+        model: {
+          default: new ToggleButtonElement({ type: 'toggle-button' })
         }
       };
     },
@@ -25,7 +27,7 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
       return ['app-nodeview-toggle-button', mergeAttributes(HTMLAttributes)];
     },
     addNodeView() {
-      return AngularNodeViewRenderer(NodeviewToggleButtonComponent, { injector });
+      return AngularNodeViewRenderer(ToggleButtonNodeviewComponent, { injector });
     }
   });
 };

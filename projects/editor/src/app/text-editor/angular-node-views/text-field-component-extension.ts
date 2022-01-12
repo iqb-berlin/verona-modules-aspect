@@ -1,8 +1,8 @@
 import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
-
-import { NodeviewTextFieldComponent } from './nodeview-text-field.component';
+import { TextFieldNodeviewComponent } from './text-field-nodeview.component';
+import { TextFieldSimpleElement } from '../../../../../common/ui-elements/textfield-simple/text-field-simple-element';
 
 const TextFieldComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -12,8 +12,8 @@ const TextFieldComponentExtension = (injector: Injector): Node => {
 
     addAttributes() {
       return {
-        id: {
-          default: 'will be generated'
+        model: {
+          default: new TextFieldSimpleElement({ type: 'text-field' })
         }
       };
     },
@@ -25,7 +25,7 @@ const TextFieldComponentExtension = (injector: Injector): Node => {
       return ['app-nodeview-text-field', mergeAttributes(HTMLAttributes)];
     },
     addNodeView() {
-      return AngularNodeViewRenderer(NodeviewTextFieldComponent, { injector });
+      return AngularNodeViewRenderer(TextFieldNodeviewComponent, { injector });
     }
   });
 };

@@ -10,7 +10,7 @@ declare module '@tiptap/core' {
   }
 }
 
-export const paragraphExtension = Paragraph.extend({
+export const ParagraphExtension = Paragraph.extend({
   addAttributes() {
     return {
       margin: {

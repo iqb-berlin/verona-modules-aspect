@@ -10,6 +10,8 @@ declare module '@tiptap/core' {
 }
 
 export const FontSizeExtension = TextStyle.extend({
+  name: 'FontSizeExtension',
+
   addAttributes() {
     return {
       fontSize: {

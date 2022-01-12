@@ -16,15 +16,17 @@ import { Image } from '@tiptap/extension-image';
 import { Blockquote } from '@tiptap/extension-blockquote';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
-import { paragraphExtension } from './extensions/paragraph-extension';
+import { ParagraphExtension } from './extensions/paragraph-extension';
 import { FontSizeExtension } from './extensions/font-size';
 import { BulletListExtension } from './extensions/bullet-list';
 import { OrderedListExtension } from './extensions/orderedList-extension';
+
 import { FileService } from '../services/file.service';
 
-import ToggleButtonComponentExtension from './node-views/toggle-button-component-extension';
-import DropListComponentExtension from './node-views/drop-list-component-extension';
-import TextFieldComponentExtension from './node-views/text-field-component-extension';
+import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
+import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
+import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
+import { ClozeDocument } from '../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-rich-text-editor',
@@ -33,10 +35,10 @@ import TextFieldComponentExtension from './node-views/text-field-component-exten
   encapsulation: ViewEncapsulation.None
 })
 export class RichTextEditorComponent implements AfterViewInit {
-  @Input() text!: string;
+  @Input() content!: string | Record<string, any>;
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
-  @Output() textChange = new EventEmitter<string>();
+  @Output() contentChange = new EventEmitter<string | Record<string, any>>();
 
   selectedFontColor = 'lightgrey';
   selectedHighlightColor = 'lightgrey';

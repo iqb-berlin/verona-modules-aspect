@@ -259,8 +259,8 @@
     </button>
   </div>
 </div>
-<tiptap-editor [editor]="editor" [ngModel]="text"
+<tiptap-editor [editor]="editor" [ngModel]="content"
                [outputFormat]="clozeMode ? 'json' : 'html'"
                [style.font-size.px]="defaultFontSize"
-               (ngModelChange)="textChange.emit($event)">
+               (ngModelChange)="contentChange.emit($event)">
 </tiptap-editor>

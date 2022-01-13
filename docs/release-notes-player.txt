@@ -2,6 +2,7 @@ Player
 ======
 next
 - Improve the centering of the layout
+- Disable logs to console in production
 
 1.15.0
 - Fix restoring of toggle buttons

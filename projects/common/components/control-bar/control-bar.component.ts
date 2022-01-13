@@ -125,17 +125,18 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initDelays(): void {
-    if (!this.started &&
-      (this.dependencyDissolved || this.dependencyDissolved === undefined)) {
+    if (this.dependencyDissolved || this.dependencyDissolved === undefined) {
       this.initAutostart();
-      this.initHint();
+      if (!this.started) {
+        this.initHint();
+      }
     }
   }
 
   private initAutostart(): void {
     if (this.playerProperties.autostart) {
       setTimeout(() => {
-        if (!this.started && this.dependencyDissolved) {
+        if (this.dependencyDissolved && !this.disabled) {
           this._play();
         }
       }, this.playerProperties.autostartDelay);

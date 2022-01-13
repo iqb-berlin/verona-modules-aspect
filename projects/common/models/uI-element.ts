@@ -24,6 +24,9 @@ export abstract class UIElement {
   playerProps?: PlayerProperties;
 
   protected constructor(serializedElement: Partial<UIElement>) {
+    if (!serializedElement.type) {
+      throw Error('No element type given!');
+    }
     Object.assign(this, serializedElement);
   }
 

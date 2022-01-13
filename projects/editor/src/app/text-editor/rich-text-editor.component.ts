@@ -17,7 +17,7 @@ import { Blockquote } from '@tiptap/extension-blockquote';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
 import { ParagraphExtension } from './extensions/paragraph-extension';
-import { FontSizeExtension } from './extensions/font-size';
+import { FontSize } from './extensions/font-size';
 import { BulletListExtension } from './extensions/bullet-list';
 import { OrderedListExtension } from './extensions/orderedList-extension';
 
@@ -65,7 +65,7 @@ export class RichTextEditorComponent implements AfterViewInit {
         levels: [1, 2, 3, 4]
       }),
       ParagraphExtension,
-      FontSizeExtension,
+      FontSize,
       BulletListExtension,
       OrderedListExtension,
       HangingIndent,

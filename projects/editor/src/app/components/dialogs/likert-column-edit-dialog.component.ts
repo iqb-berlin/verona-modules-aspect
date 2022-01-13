@@ -11,8 +11,7 @@ import { LikertColumn } from '../../../../../common/models/uI-element';
         <mat-label>{{'text' | translate }}</mat-label>
         <input #textInput matInput type="text" [value]="data.column.text">
       </mat-form-field>
-      <input #imageUpload type="file" hidden (click)="loadImage()">
-      <button mat-raised-button (click)="imageUpload.click()">{{ 'loadImage' | translate }}</button>
+      <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
       <button mat-raised-button (click)="imgSrc = null">{{ 'removeImage' | translate }}</button>
       <img [src]="imgSrc"
            [style.object-fit]="'scale-down'"

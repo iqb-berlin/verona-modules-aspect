@@ -180,8 +180,7 @@
   </mat-form-field>
 
   <ng-container *ngIf="combinedProperties.imageSrc !== undefined">
-    <input #imageUpload type="file" hidden (click)="loadImage()">
-    <button mat-raised-button (click)="imageUpload.click()">{{'loadImage' | translate }}</button>
+    <button mat-raised-button (click)="loadImage()">{{'loadImage' | translate }}</button>
     <button mat-raised-button (click)="removeImage()">{{'removeImage' | translate }}</button>
     <img [src]="combinedProperties.imageSrc"
          [style.object-fit]="'scale-down'"

@@ -13,8 +13,10 @@ declare module '@tiptap/core' {
 export const HangingIndent = Extension.create({
   name: 'hangingIndent',
 
-  defaultOptions: {
-    types: ['paragraph']
+  addOptions() {
+    return {
+      types: ['paragraph']
+    };
   },
 
   addGlobalAttributes() {

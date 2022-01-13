@@ -50,6 +50,7 @@ import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-lis
 import { FrameComponent } from './ui-elements/frame/frame.component';
 import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button.component';
 import { MarkingBarComponent } from './components/marking-bar/marking-bar.component';
+import { MarkPipe } from './ui-elements/cloze/mark.pipe';
 
 @NgModule({
   imports: [
@@ -101,7 +102,8 @@ import { MarkingBarComponent } from './components/marking-bar/marking-bar.compon
     TextFieldSimpleComponent,
     FrameComponent,
     ToggleButtonComponent,
-    MarkingBarComponent
+    MarkingBarComponent,
+    MarkPipe
   ],
   exports: [
     CommonModule,
@@ -118,7 +120,11 @@ import { MarkingBarComponent } from './components/marking-bar/marking-bar.compon
     MatDialogModule,
     TranslateModule,
     SafeResourceHTMLPipe,
-    MarkingBarComponent
+    MarkingBarComponent,
+    ToggleButtonComponent,
+    TextFieldComponent,
+    DropListSimpleComponent,
+    TextFieldSimpleComponent
   ]
 })
 export class SharedModule {

@@ -2,12 +2,11 @@ import {
   FontElement,
   FontProperties,
   InputElement,
-  PositionedElement, PositionProperties,
   SurfaceElement,
   SurfaceProperties,
   UIElement
 } from '../../models/uI-element';
-import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
+import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class DropListSimpleElement extends InputElement implements FontElement, SurfaceElement {
   connectedTo: string[] = [];
@@ -23,6 +22,8 @@ export class DropListSimpleElement extends InputElement implements FontElement, 
     Object.assign(this, serializedElement);
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
+
+    delete this.label;
 
     this.value = serializedElement.value as string[] || [];
     this.height = serializedElement.height || 100;

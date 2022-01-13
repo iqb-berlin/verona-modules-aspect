@@ -14,6 +14,8 @@ import { DragNDropValueObject } from '../../models/uI-element';
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
       <div class="list"
+           [style.height.px]="elementModel.height"
+           [style.width.px]="elementModel.width"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.border-color]="elementModel.highlightReceivingDropListColor"
            [style.border-width.px]="elementModel.highlightReceivingDropList ? 2 : 0"

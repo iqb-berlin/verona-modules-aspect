@@ -9,8 +9,15 @@ import { PositionedElement, UIElement } from '../../../../../../../common/models
   selector: 'app-element-sizing-properties',
   template: `
     <div fxLayout="column">
+      <mat-checkbox *ngIf="combinedProperties.dynamicWidth !== undefined"
+                    [checked]="$any(combinedProperties.dynamicWidth)"
+                    (change)="updateModel.emit({ property: 'dynamicWidth', value: $event.checked })">
+        {{'propertiesPanel.dynamicWidth' | translate }}
+      </mat-checkbox>
+
       <ng-container *ngIf="!combinedProperties.dynamicPositioning; else elseBlock">
-        <mat-form-field appearance="fill">
+        <mat-form-field *ngIf="combinedProperties.dynamicWidth === undefined ||
+                               !combinedProperties.dynamicWidth" appearance="fill">
           <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
           <input matInput type="number" #width="ngModel" min="0"
                  [ngModel]="combinedProperties.width"

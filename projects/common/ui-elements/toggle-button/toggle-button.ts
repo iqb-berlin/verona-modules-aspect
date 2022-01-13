@@ -8,9 +8,11 @@ import {
 import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class ToggleButtonElement extends InputElement implements FontElement, SurfaceElement {
-  options: string[] = ['abc', 'def'];
+  options: string[] = ['A', 'B'];
   strikeOtherOptions: boolean = false;
   selectionColor: string = 'lightgreen';
+  verticalOrientation = false;
+  dynamicWidth: boolean = true;
 
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;
@@ -20,6 +22,8 @@ export class ToggleButtonElement extends InputElement implements FontElement, Su
     Object.assign(this, serializedElement);
     this.fontProps = initFontElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
+
+    delete this.label;
 
     this.height = serializedElement.height as number || 25;
     this.surfaceProps.backgroundColor =

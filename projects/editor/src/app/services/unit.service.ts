@@ -15,7 +15,7 @@ import {
   InputElement, InputElementValue,
   LikertColumn,
   LikertRow, PlayerElement,
-  PlayerProperties, PositionedElement,
+  PlayerProperties, PositionedElement, ClozeDocument,
   UIElement,
   UIElementType
 } from '../../../../common/models/uI-element';
@@ -26,6 +26,7 @@ import { SelectionService } from './selection.service';
 import { ElementFactory } from '../../../../common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
 import { Copy } from '../../../../common/util/copy';
+import { ClozeElement } from '../../../../common/ui-elements/cloze/cloze-element';
 
 @Injectable({
   providedIn: 'root'
@@ -246,7 +247,7 @@ export class UnitService {
   }
 
   updateElementProperty(elements: UIElement[], property: string,
-                        value: InputElementValue | LikertColumn[] | LikertRow[] |
+                        value: InputElementValue | LikertColumn[] | LikertRow[] | ClozeDocument |
                         DragNDropValueObject[] | null): boolean {
     // console.log('updateElementProperty', elements, property, value);
     for (const element of elements) {
@@ -258,9 +259,11 @@ export class UnitService {
         this.idService.removeId(element.id);
         this.idService.addID(value as string);
         element.setProperty('id', value);
-      } else if (property === 'text' && element.type === 'cloze') {
-        element.setProperty('parts', ClozeParser.createClozeParts(value as string, this.idService));
-        element.setProperty('text', value);
+      } else if (property === 'document') {
+        element.setProperty('document', ClozeParser.setMissingIDs(
+          value as ClozeDocument,
+          this.idService
+        ));
       } else {
         element.setProperty(property, Copy.getCopy(value));
       }
@@ -408,7 +411,7 @@ export class UnitService {
       case 'dropdown':
       case 'checkbox':
       case 'radio':
-        this.dialogService.showTextEditDialog((element as InputElement).label).subscribe((result: string) => {
+        this.dialogService.showTextEditDialog(element.label).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'label', result);
           }
@@ -429,12 +432,15 @@ export class UnitService {
         });
         break;
       case 'cloze':
-        this.dialogService.showClozeTextEditDialog((element as TextElement).text).subscribe((result: string) => {
+        this.dialogService.showClozeTextEditDialog(
+          element.document,
+          (element as ClozeElement).fontProps.fontSize as number
+        ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
             this.updateElementProperty(
               [element],
-              'text',
+              'document',
               (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
             );
           }

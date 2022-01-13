@@ -1,25 +1,21 @@
+import { Editor } from '@tiptap/core';
+import StarterKit from '@tiptap/starter-kit';
+import ToggleButtonExtension from './tiptap-editor-extensions/toggle-button';
+import DropListExtension from './tiptap-editor-extensions/drop-list';
+import TextFieldExtension from './tiptap-editor-extensions/text-field';
 import {
-  ClozePart,
-  CompoundElement,
-  FontElement,
-  FontProperties, InputElement,
+  UIElement, InputElement, CompoundElement,
+  ClozeDocument,
   PositionedElement, PositionProperties,
-  UIElement
+  FontElement, FontProperties
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
 import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
-import { TextFieldElement } from '../text-field/text-field-element';
-import { TextAreaElement } from '../text-area/text-area-element';
-import { CheckboxElement } from '../checkbox/checkbox-element';
-import { DropdownElement } from '../dropdown/dropdown-element';
 import { DropListSimpleElement } from '../drop-list-simple/drop-list-simple';
 import { ToggleButtonElement } from '../toggle-button/toggle-button';
 
-// TODO styles like em dont continue after inserted components
-
 export class ClozeElement extends CompoundElement implements PositionedElement, FontElement {
-  text: string = 'Lorem ipsum dolor \\r sdfsdf \\i sdfsdf';
-  parts: ClozePart[][] = [];
+  document: ClozeDocument = { type: 'doc', content: [] };
 
   positionProps: PositionProperties;
   fontProps: FontProperties;
@@ -30,40 +26,91 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     this.positionProps = initPositionedElement(serializedElement);
     this.fontProps = initFontElement(serializedElement);
 
-    if (serializedElement?.parts) {
-      serializedElement?.parts.forEach((subParts: ClozePart[]) => {
-        subParts.forEach((part: ClozePart) => {
-          if (!['p', 'h1', 'h2', 'h3', 'h4'].includes(part.type)) {
-            part.value = ClozeElement.createElement(part.value as UIElement);
+    if (serializedElement.document) {
+      serializedElement.document.content.forEach((paragraph: any) => {
+        paragraph.content?.forEach((node: any) => {
+          if (['ToggleButton', 'DropList', 'TextField'].includes(node.type)) {
+            node.attrs.model = ClozeElement.createElement(node.attrs.model);
           }
         });
       });
+    }
+
+    // text property indicates old unit definition
+    if (serializedElement.text) {
+      this.handleBackwardsCompatibility(serializedElement);
     }
 
     this.width = serializedElement.width || 450;
     this.height = serializedElement.height || 200;
   }
 
-  static createElement(elementModel: Partial<UIElement>): InputElement {
+  private handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
+    const childModels = ClozeElement.parseElementList(serializedElement.parts);
+
+    const textFieldElementList = Object.values(childModels).filter((el: any) => el.type === 'text-field');
+    const dropListElementList = Object.values(childModels).filter((el: any) => el.type === 'drop-list');
+    const radioElementList = Object.values(childModels).filter((el: any) => el.type === 'toggle-button');
+
+    const replacedText = (serializedElement.text as string).replace(/\\i|\\z|\\r/g, match => {
+      switch (match) {
+        case '\\i':
+          return `<app-nodeview-text-field id="${textFieldElementList.shift()?.id}"></app-nodeview-text-field>`;
+          break;
+        case '\\z':
+          return `<app-nodeview-drop-list id="${dropListElementList.shift()?.id}"></app-nodeview-drop-list>`;
+          break;
+        case '\\r':
+          return `<app-nodeview-toggle-button id="${radioElementList.shift()?.id}"></app-nodeview-toggle-button>`;
+          break;
+        default:
+          throw Error('error in match');
+      }
+      return match;
+    });
+
+    if (textFieldElementList.length === 0 ||
+        dropListElementList.length === 0 ||
+        radioElementList.length === 0) {
+      throw Error('Error while reading cloze element!');
+    }
+
+    const editor = new Editor({
+      extensions: [
+        StarterKit,
+        ToggleButtonExtension,
+        DropListExtension,
+        TextFieldExtension
+      ],
+      content: replacedText
+    });
+    this.document = editor.getJSON() as ClozeDocument;
+  }
+
+  private static parseElementList(
+    serializedParts: { type: string; value: string | UIElement; style?: string; }[][]
+  ): InputElement[] {
+    const knownElementTypes = ['text-field', 'drop-list', 'toggle-button'];
+    const newElementList: InputElement[] = [];
+
+    serializedParts.forEach((part: any) => {
+      for (const subPart of part) {
+        if (knownElementTypes.includes(subPart.type)) {
+          newElementList.push(subPart.value);
+        }
+      }
+    });
+    return newElementList;
+  }
+
+  private static createElement(elementModel: Partial<UIElement>): InputElement {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field':
         newElement = new TextFieldSimpleElement(elementModel);
-        (newElement as TextFieldElement).label = '';
-        break;
-      case 'text-area':
-        newElement = new TextAreaElement(elementModel);
-        break;
-      case 'checkbox':
-        newElement = new CheckboxElement(elementModel);
-        break;
-      case 'dropdown':
-        newElement = new DropdownElement(elementModel);
         break;
       case 'drop-list':
         newElement = new DropListSimpleElement(elementModel);
-        newElement.height = 25; // TODO weg?
-        newElement.width = 100;
         break;
       case 'toggle-button':
         newElement = new ToggleButtonElement(elementModel);

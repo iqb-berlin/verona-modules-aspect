@@ -24,6 +24,9 @@ export abstract class UIElement {
   playerProps?: PlayerProperties;
 
   protected constructor(serializedElement: Partial<UIElement>) {
+    if (!serializedElement.type) {
+      throw Error('No element type given!');
+    }
     Object.assign(this, serializedElement);
   }
 
@@ -46,7 +49,7 @@ export abstract class UIElement {
   // This can be overwritten by elements if they need to handle some property specifics. Likert does.
   setProperty(property: string,
               value: InputElementValue | LikertColumn[] | LikertRow[] |
-              DragNDropValueObject[] | ClozePart[][]): void {
+              DragNDropValueObject[] | ClozeDocument): void {
     if (this.fontProps && property in this.fontProps) {
       this.fontProps[property] = value as string | number | boolean;
     } else if (this.surfaceProps && property in this.surfaceProps) {
@@ -62,7 +65,7 @@ export abstract class UIElement {
 }
 
 export abstract class InputElement extends UIElement {
-  label: string;
+  label?: string;
   value: InputElementValue;
   required: boolean;
   requiredWarnMessage: string;
@@ -80,6 +83,24 @@ export abstract class InputElement extends UIElement {
 }
 
 export abstract class CompoundElement extends UIElement {}
+
+export interface ClozeDocument {
+  type: string;
+  content: ClozeDocumentParagraph[]
+}
+
+export interface ClozeDocumentParagraph {
+  type: string;
+  attrs: Record<string, string | number | boolean>;
+  content: ClozeDocumentPart[];
+}
+
+export interface ClozeDocumentPart {
+  type: string;
+  text?: string;
+  marks?: any;
+  attrs?: Record<string, string | number | boolean | InputElement>;
+}
 
 export interface ValueChangeElement {
   id: string;
@@ -172,9 +193,3 @@ export interface LikertRow {
   text: string;
   columnCount: number;
 }
-
-export type ClozePart = {
-  type: string;
-  value: string | UIElement;
-  style?: string;
-};

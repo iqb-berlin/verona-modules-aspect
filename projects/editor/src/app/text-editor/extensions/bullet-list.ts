@@ -10,7 +10,9 @@ declare module '@tiptap/core' {
   }
 }
 
-export const bulletListExtension = BulletList.extend({
+export const BulletListExtension = BulletList.extend({
+  name: 'BulletListExtension',
+
   addAttributes() {
     return {
       listStyle: {

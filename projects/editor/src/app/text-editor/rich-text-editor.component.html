@@ -246,22 +246,23 @@
       <mat-icon>format_quote</mat-icon>
     </button>
   </div>
-  <div *ngIf="showCloseElements" fxLayout="row" fxLayoutAlign="space-around center" >
-    <button mat-icon-button matTooltip="Eingabefeld (\i)" [matTooltipShowDelay]="300"
-            (click)="insertSpecialChar('\\i')">
+  <div *ngIf="clozeMode" fxLayout="row" fxLayoutAlign="space-around center" >
+    <button mat-icon-button matTooltip="Eingabefeld" [matTooltipShowDelay]="300"
+            (click)="insertTextField()">
       <mat-icon>text_fields</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Ablegefeld (\z)" [matTooltipShowDelay]="300"
-            (click)="insertSpecialChar('\\z')">
+    <button mat-icon-button matTooltip="Ablegeliste" [matTooltipShowDelay]="300"
+            (click)="insertDropList()">
       <mat-icon>drag_indicator</mat-icon>
     </button>
-    <button mat-icon-button matTooltip="Optionsfeld (\r)" [matTooltipShowDelay]="300"
-            (click)="insertSpecialChar('\\r')">
+    <button mat-icon-button matTooltip="Optionsfeld" [matTooltipShowDelay]="300"
+            (click)="insertToggleButton()">
       <mat-icon>radio_button_checked</mat-icon>
     </button>
   </div>
 </div>
-<tiptap-editor [editor]="editor" [ngModel]="text"
+<tiptap-editor [editor]="editor" [ngModel]="content"
+               [outputFormat]="clozeMode ? 'json' : 'html'"
                [style.font-size.px]="defaultFontSize"
-               (ngModelChange)="textChange.emit($event)">
+               (ngModelChange)="contentChange.emit($event)">
 </tiptap-editor>

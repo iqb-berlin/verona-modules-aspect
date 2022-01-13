@@ -1,6 +1,6 @@
 import {
   Component, EventEmitter, Input, Output, ViewEncapsulation,
-  AfterViewInit
+  AfterViewInit, Injector
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
@@ -14,13 +14,19 @@ import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
 import { Image } from '@tiptap/extension-image';
 import { Blockquote } from '@tiptap/extension-blockquote';
-import { Indent } from './indent';
-import { HangingIndent } from './hanging-indent';
-import { customParagraph } from './paragraph-extension';
-import { fontSizeExtension } from './font-size-extension';
-import { bulletListExtension } from './bulletList-extension';
-import { orderedListExtension } from './orderedList-extension';
+import { Indent } from './extensions/indent';
+import { HangingIndent } from './extensions/hanging-indent';
+import { ParagraphExtension } from './extensions/paragraph-extension';
+import { FontSizeExtension } from './extensions/font-size';
+import { BulletListExtension } from './extensions/bullet-list';
+import { OrderedListExtension } from './extensions/orderedList-extension';
+
 import { FileService } from '../services/file.service';
+
+import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
+import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
+import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
+import { ClozeDocument } from '../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-rich-text-editor',
@@ -29,10 +35,10 @@ import { FileService } from '../services/file.service';
   encapsulation: ViewEncapsulation.None
 })
 export class RichTextEditorComponent implements AfterViewInit {
-  @Input() text!: string;
+  @Input() content!: string | Record<string, any>;
   @Input() defaultFontSize!: number;
-  @Input() showCloseElements: boolean | undefined = false;
-  @Output() textChange = new EventEmitter<string>();
+  @Input() clozeMode: boolean = false;
+  @Output() contentChange = new EventEmitter<string | Record<string, any>>();
 
   selectedFontColor = 'lightgrey';
   selectedHighlightColor = 'lightgrey';
@@ -58,10 +64,10 @@ export class RichTextEditorComponent implements AfterViewInit {
       Heading.configure({
         levels: [1, 2, 3, 4]
       }),
-      customParagraph,
-      fontSizeExtension,
-      bulletListExtension,
-      orderedListExtension,
+      ParagraphExtension,
+      FontSizeExtension,
+      BulletListExtension,
+      OrderedListExtension,
       HangingIndent,
       Image.configure({
         inline: true,
@@ -69,9 +75,14 @@ export class RichTextEditorComponent implements AfterViewInit {
           style: 'display: inline-block; height: 1em; vertical-align: middle'
         }
       }),
-      Blockquote
+      Blockquote,
+      ToggleButtonComponentExtension(this.injector),
+      DropListComponentExtension(this.injector),
+      TextFieldComponentExtension(this.injector)
     ]
   });
+
+  constructor(private injector: Injector) { }
 
   ngAfterViewInit(): void {
     this.editor.commands.focus();
@@ -185,5 +196,20 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   toggleBlockquote(): void {
     this.editor.commands.toggleBlockquote();
+  }
+
+  insertToggleButton(): void {
+    this.editor.commands.insertContent('<app-nodeview-toggle-button></app-nodeview-toggle-button>');
+    this.editor.commands.focus();
+  }
+
+  insertDropList(): void {
+    this.editor.commands.insertContent('<app-nodeview-drop-list></app-nodeview-drop-list>');
+    this.editor.commands.focus();
+  }
+
+  insertTextField(): void {
+    this.editor.commands.insertContent('<app-nodeview-text-field></app-nodeview-text-field>');
+    this.editor.commands.focus();
   }
 }

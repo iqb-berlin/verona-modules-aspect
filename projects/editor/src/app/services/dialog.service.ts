@@ -10,6 +10,7 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { LikertColumnEditDialogComponent } from '../components/dialogs/likert-column-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import {
+  ClozeDocument,
   DragNDropValueObject, LikertColumn, PlayerProperties
 } from '../../../../common/models/uI-element';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
@@ -50,15 +51,15 @@ export class DialogService {
 
   showRichTextEditDialog(text: string, defaultFontSize: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: { text, defaultFontSize },
+      data: { content: text, defaultFontSize },
       autoFocus: false
     });
     return dialogRef.afterClosed();
   }
 
-  showClozeTextEditDialog(text: string): Observable<string> {
+  showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: { text, showCloseElements: true },
+      data: { content: document, defaultFontSize, clozeMode: true },
       autoFocus: false
     });
     return dialogRef.afterClosed();

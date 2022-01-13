@@ -53,9 +53,9 @@ import { ElementModelPropertiesComponent } from
   './components/unit-view/page-view/properties-panel/element-model-properties.component';
 import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
 
-import { NodeviewToggleButtonComponent } from './text-editor/node-views/nodeview-toggle-button.component';
-import { NodeviewTextFieldComponent } from './text-editor/node-views/nodeview-text-field.component';
-import { NodeviewDropListComponent } from './text-editor/node-views/nodeview-drop-list.component';
+import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/toggle-button-nodeview.component';
+import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
+import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
 
 @NgModule({
   declarations: [
@@ -72,9 +72,9 @@ import { NodeviewDropListComponent } from './text-editor/node-views/nodeview-dro
     SectionStaticComponent,
     SectionDynamicComponent,
     RichTextEditorComponent,
-    NodeviewToggleButtonComponent,
-    NodeviewTextFieldComponent,
-    NodeviewDropListComponent,
+    ToggleButtonNodeviewComponent,
+    TextFieldNodeviewComponent,
+    DropListNodeviewComponent,
     ElementStylePropertiesComponent,
     ElementSizingPropertiesComponent,
     ConfirmationDialogComponent,

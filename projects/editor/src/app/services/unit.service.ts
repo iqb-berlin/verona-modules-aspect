@@ -15,7 +15,7 @@ import {
   InputElement, InputElementValue,
   LikertColumn,
   LikertRow, PlayerElement,
-  PlayerProperties, PositionedElement,
+  PlayerProperties, PositionedElement, ClozeDocument,
   UIElement,
   UIElementType
 } from '../../../../common/models/uI-element';
@@ -25,6 +25,7 @@ import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-e
 import { SelectionService } from './selection.service';
 import { ElementFactory } from '../../../../common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
+import { ClozeElement } from '../../../../common/ui-elements/cloze/cloze-element';
 
 @Injectable({
   providedIn: 'root'
@@ -409,7 +410,7 @@ export class UnitService {
       case 'dropdown':
       case 'checkbox':
       case 'radio':
-        this.dialogService.showTextEditDialog((element as InputElement).label).subscribe((result: string) => {
+        this.dialogService.showTextEditDialog(element.label).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'label', result);
           }

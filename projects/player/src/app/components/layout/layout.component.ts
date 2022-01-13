@@ -1,10 +1,12 @@
 import {
+  AfterViewInit, ChangeDetectorRef,
   Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import { NativeEventService } from '../../services/native-event.service';
 import { PlayerConfig } from '../../models/verona';
 import { Page } from '../../../../../common/models/page';
 
@@ -13,7 +15,7 @@ import { Page } from '../../../../../common/models/page';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css']
 })
-export class LayoutComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() parentForm!: FormGroup;
   @Input() pages!: Page[];
   @Input() selectedIndex!: number;
@@ -47,7 +49,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
   containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
   { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
-  constructor(private translateService: TranslateService) { }
+  constructor(private translateService: TranslateService,
+              private nativeEventService: NativeEventService,
+              private changeDetectorRef: ChangeDetectorRef) {
+  }
 
   ngOnInit(): void {
     this.initPages();
@@ -55,6 +60,38 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.selectIndex
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((selectedIndex: number): void => { this.selectedIndex = selectedIndex; });
+  }
+
+  ngAfterViewInit(): void {
+    if (this.alwaysVisiblePage &&
+      this.alwaysVisiblePage.hasMaxWidth &&
+      this.layoutAlignment === 'row') {
+      this.nativeEventService.resize.pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((windowWidth: number): void => this.calculateMargin(windowWidth));
+      this.calculateMargin(window.innerWidth);
+    }
+  }
+
+  onSelectedIndexChange(selectedIndex: number): void {
+    this.selectedIndexChange.emit(selectedIndex);
+  }
+
+  private calculateMargin(windowWidth:number): void {
+    if (this.alwaysVisiblePage) {
+      if (windowWidth > this.maxWidth.alwaysVisiblePage + this.maxWidth.scrollPages) {
+        const margin = (windowWidth - (
+          this.maxWidth.alwaysVisiblePage +
+          this.maxWidth.scrollPages
+        )) / 2;
+        this.aspectRatioRow.alwaysVisiblePage = (100 / windowWidth) * (margin + this.maxWidth.alwaysVisiblePage);
+      } else {
+        let pageWidth = (this.alwaysVisiblePage.alwaysVisibleAspectRatio / 100) * windowWidth;
+        pageWidth = pageWidth > this.maxWidth.alwaysVisiblePage ? this.maxWidth.alwaysVisiblePage : pageWidth;
+        this.aspectRatioRow.alwaysVisiblePage = (pageWidth / windowWidth) * 100;
+      }
+      this.aspectRatioRow.scrollPages = 100 - this.aspectRatioRow.alwaysVisiblePage;
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   private initPages(): void {
@@ -121,10 +158,6 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   private getAbsolutePageWidth = (page: Page | undefined): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
-
-  onSelectedIndexChange(selectedIndex: number): void {
-    this.selectedIndexChange.emit(selectedIndex);
-  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

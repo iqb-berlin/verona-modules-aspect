@@ -1,5 +1,8 @@
 Player
 ======
+next
+- Improve the centering of the layout
+
 1.15.0
 - Fix restoring of toggle buttons
 - Prevent audio/video hint text from being displayed after reloading a played audio/video file

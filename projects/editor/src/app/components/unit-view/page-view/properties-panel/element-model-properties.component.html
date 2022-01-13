@@ -517,6 +517,12 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-checkbox *ngIf="combinedProperties.verticalOrientation !== undefined"
+                [checked]="$any(combinedProperties.verticalOrientation)"
+                (change)="updateModel.emit({ property: 'verticalOrientation', value: $event.checked })">
+    {{'propertiesPanel.verticalOrientation' | translate }}
+  </mat-checkbox>
+
   <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
                 [checked]="$any(combinedProperties.onlyOneItem)"
                 (change)="updateModel.emit({ property: 'onlyOneItem', value: $event.checked })">

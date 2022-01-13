@@ -8,9 +8,11 @@ import {
 import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
 
 export class ToggleButtonElement extends InputElement implements FontElement, SurfaceElement {
-  options: string[] = ['abc', 'def'];
+  options: string[] = ['A', 'B'];
   strikeOtherOptions: boolean = false;
   selectionColor: string = 'lightgreen';
+  verticalOrientation = false;
+  dynamicWidth: boolean = true;
 
   fontProps: FontProperties;
   surfaceProps: SurfaceProperties;

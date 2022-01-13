@@ -19,6 +19,12 @@
     </div>
   </ng-container>
 
+  <ng-container *ngIf="combinedProperties.document">
+    <button (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+      <mat-icon>build_circle</mat-icon>
+    </button>
+  </ng-container>
+
   <ng-container *ngIf="combinedProperties.playerProps">
     <button (click)="unitService.showDefaultEditDialog(selectedElements[0])">
       <mat-icon>build_circle</mat-icon>

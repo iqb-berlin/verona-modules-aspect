@@ -98,8 +98,17 @@ export interface ClozeDocumentParagraph {
 export interface ClozeDocumentPart {
   type: string;
   text?: string;
-  marks?: any;
+  marks?: any[];
   attrs?: Record<string, string | number | boolean | InputElement>;
+}
+
+export interface ClozeMarks {
+  'font-weight'?: string;
+  'font-style'?: string;
+  'text-decoration'?: string;
+  fontSize?: string;
+  color?: string;
+  'background-color'?: string;
 }
 
 export interface ValueChangeElement {

@@ -17,24 +17,134 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
       <ng-container *ngFor="let part of elementModel.document.content">
-        <p *ngIf="part.type === 'paragraph'"
-           [style.line-height.%]="elementModel.fontProps.lineHeight"
-           [style.color]="elementModel.fontProps.fontColor"
-           [style.font-family]="elementModel.fontProps.font"
-           [style.font-size.px]="elementModel.fontProps.fontSize"
-           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-          <ng-container *ngFor="let subPart of part.content">
-            <ng-container *ngIf="subPart.type === 'text'">
-              <span [style.font-weight]="$any((subPart.marks | mark)?.includes('bold')) ? 'bold' : ''"
-                    [style.font-style]="$any((subPart.marks | mark)?.includes('italic')) ? 'italic' : ''"
-                    [style.text-decoration]="$any((subPart.marks | mark)?.includes('underline')) ? 'underline' : ''">
-                {{subPart.text}}
-              </span>
-            </ng-container>
-            <span *ngIf="['ToggleButton', 'DropList', 'TextField'].includes(subPart.type)"
-                  (click)="selectElement($any(subPart.attrs).model, $event)">
+        <ul *ngIf="part.type === 'bulletList'">
+          <li *ngFor="let listItem of part.content">
+            <ng-container *ngFor="let listItemPart of $any(listItem).content"
+                          [ngTemplateOutlet]="paragraphs"
+                          [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
+          </li>
+        </ul>
+        <ol *ngIf="part.type === 'orderedList'">
+          <li *ngFor="let listItem of part.content">
+            <ng-container *ngFor="let listItemPart of $any(listItem).content"
+                          [ngTemplateOutlet]="paragraphs"
+                          [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
+          </li>
+        </ol>
+        <ng-container *ngIf="part.type !== 'bulletList'"
+                      [ngTemplateOutlet]="paragraphs"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </ng-container>
+    </div>
+
+    <ng-template #paragraphs let-part>
+      <p *ngIf="part.type === 'paragraph'"
+         [style.line-height.%]="elementModel.fontProps.lineHeight"
+         [style.color]="elementModel.fontProps.fontColor"
+         [style.font-family]="elementModel.fontProps.font"
+         [style.font-size.px]="elementModel.fontProps.fontSize"
+         [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+         [style.margin-bottom]="part.attrs.margin + 'px'"
+         [style.margin-left]="part.attrs.hangingIndent ? '' :
+               ($any(part.attrs.indentSize) * $any(part.attrs.indent)) + 'px'"
+         [style.text-align]="part.attrs.textAlign"
+         [style.text-indent]="part.attrs.hangingIndent ?
+               ($any(part.attrs.indentSize) * $any(part.attrs.indent)) + 'px' :
+               ''">
+        <ng-container [ngTemplateOutlet]="paragraphChildren"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </p>
+      <h1 *ngIf="part.type === 'heading' && part.attrs.level === 1"
+          [style.display]="'inline'"
+          [style.line-height.%]="elementModel.fontProps.lineHeight"
+          [style.color]="elementModel.fontProps.fontColor"
+          [style.font-family]="elementModel.fontProps.font"
+          [style.font-size.px]="elementModel.fontProps.fontSize"
+          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        <ng-container [ngTemplateOutlet]="paragraphChildren"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </h1>
+      <h2 *ngIf="part.type === 'heading' && part.attrs.level === 2"
+          [style.display]="'inline'"
+          [style.line-height.%]="elementModel.fontProps.lineHeight"
+          [style.color]="elementModel.fontProps.fontColor"
+          [style.font-family]="elementModel.fontProps.font"
+          [style.font-size.px]="elementModel.fontProps.fontSize"
+          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        <ng-container [ngTemplateOutlet]="paragraphChildren"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </h2>
+      <h3 *ngIf="part.type === 'heading' && part.attrs.level === 3"
+          [style.display]="'inline'"
+          [style.line-height.%]="elementModel.fontProps.lineHeight"
+          [style.color]="elementModel.fontProps.fontColor"
+          [style.font-family]="elementModel.fontProps.font"
+          [style.font-size.px]="elementModel.fontProps.fontSize"
+          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        <ng-container [ngTemplateOutlet]="paragraphChildren"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </h3>
+      <h4 *ngIf="part.type === 'heading' && part.attrs.level === 4"
+          [style.display]="'inline'"
+          [style.line-height.%]="elementModel.fontProps.lineHeight"
+          [style.color]="elementModel.fontProps.fontColor"
+          [style.font-family]="elementModel.fontProps.font"
+          [style.font-size.px]="elementModel.fontProps.fontSize"
+          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        <ng-container [ngTemplateOutlet]="paragraphChildren"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </h4>
+      <h5 *ngIf="part.type === 'heading' && part.attrs.level === 5"
+          [style.display]="'inline'"
+          [style.line-height.%]="elementModel.fontProps.lineHeight"
+          [style.color]="elementModel.fontProps.fontColor"
+          [style.font-family]="elementModel.fontProps.font"
+          [style.font-size.px]="elementModel.fontProps.fontSize"
+          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        <ng-container [ngTemplateOutlet]="paragraphChildren"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </h5>
+      <h6 *ngIf="part.type === 'heading' && part.attrs.level === 6"
+          [style.display]="'inline'"
+          [style.line-height.%]="elementModel.fontProps.lineHeight"
+          [style.color]="elementModel.fontProps.fontColor"
+          [style.font-family]="elementModel.fontProps.font"
+          [style.font-size.px]="elementModel.fontProps.fontSize"
+          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        <ng-container [ngTemplateOutlet]="paragraphChildren"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </h6>
+    </ng-template>
+
+    <ng-template #paragraphChildren let-part>
+      <ng-container *ngFor="let subPart of part.content">
+        <ng-container *ngIf="$any(subPart).type === 'text'">
+          <span [ngStyle]="subPart.marks | styleMarks">
+            {{subPart.text}}
+          </span>
+        </ng-container>
+        <ng-container *ngIf="$any(subPart).type === 'image'">
+          <img [src]="subPart.attrs.src" [alt]="subPart.attrs.alt"
+               [style.display]="'inline-block'"
+               [style.height]="'1em'"
+               [style.vertical-align]="'middle'">
+        </ng-container>
+        <span *ngIf="['ToggleButton', 'DropList', 'TextField'].includes(subPart.type)"
+              (click)="selectElement($any(subPart.attrs).model, $event)">
                 <app-toggle-button *ngIf="subPart.type === 'ToggleButton'" #radioComponent
                                    [parentForm]="parentForm"
                                    [style.display]="'inline-block'"
@@ -59,26 +169,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                                       (elementValueChanged)="elementValueChanged.emit($event)">
                 </app-drop-list-simple>
             </span>
-          </ng-container>
-        </p>
-        <h1 *ngIf="part.type === 'heading' && part.attrs.level === 1"
-            [style.display]="'inline'">
-          {{part.content[0].text}}
-        </h1>
-        <h2 *ngIf="part.type === 'heading' && part.attrs.level === 2"
-            [style.display]="'inline'">
-          {{part.content[0].text}}
-        </h2>
-        <h3 *ngIf="part.type === 'heading' && part.attrs.level === 3"
-            [style.display]="'inline'">
-          {{part.content[0].text}}
-        </h3>
-        <h4 *ngIf="part.type === 'heading' && part.attrs.level === 4"
-            [style.display]="'inline'">
-          {{part.content[0].text}}
-        </h4>
       </ng-container>
-    </div>
+    </ng-template>
   `,
   styles: [
     ':host ::ng-deep app-text-field {vertical-align: middle}',

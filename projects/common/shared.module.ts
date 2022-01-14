@@ -50,7 +50,7 @@ import { DropListSimpleComponent } from './ui-elements/drop-list-simple/drop-lis
 import { FrameComponent } from './ui-elements/frame/frame.component';
 import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button.component';
 import { MarkingBarComponent } from './components/marking-bar/marking-bar.component';
-import { MarkPipe } from './ui-elements/cloze/mark.pipe';
+import { StyleMarksPipe } from './ui-elements/cloze/styleMarks.pipe';
 
 @NgModule({
   imports: [
@@ -103,7 +103,7 @@ import { MarkPipe } from './ui-elements/cloze/mark.pipe';
     FrameComponent,
     ToggleButtonComponent,
     MarkingBarComponent,
-    MarkPipe
+    StyleMarksPipe
   ],
   exports: [
     CommonModule,

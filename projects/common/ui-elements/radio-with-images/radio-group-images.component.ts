@@ -31,7 +31,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [style.grid-column-end]="2 + i"
            [style.grid-row-start]="2"
            [style.grid-row-end]="3"
-           (click)="selectOption(i)">
+           (click)="selectOption(i + 1)">
         <img *ngIf="option.imgSrc && option.position === 'above'"
              [style.object-fit]="'scale-down'"
              [style.max-width.%]="100"
@@ -54,7 +54,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <mat-radio-button *ngFor="let option of elementModel.columns; let i = index"
                           aria-labelledby="radio-group-label"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                          [value]="i"
+                          [value]="i + 1"
                           [style.grid-column-start]="1 + i"
                           [style.grid-column-end]="2 + i"
                           [style.grid-row-start]="1"

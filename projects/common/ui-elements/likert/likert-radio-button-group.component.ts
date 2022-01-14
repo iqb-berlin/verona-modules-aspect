@@ -19,7 +19,7 @@ import { LikertElementRow } from './likert-element-row';
 
       <mat-radio-button *ngFor="let column of [].constructor(elementModel.columnCount); let j = index"
                         [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                        [value]="j"
+                        [value]="j + 1"
                         [style.grid-column-start]="2 + j"
                         [style.grid-column-end]="3 + j"
                         [style.grid-row-start]="1"

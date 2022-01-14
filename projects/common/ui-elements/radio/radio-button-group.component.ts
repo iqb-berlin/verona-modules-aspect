@@ -28,8 +28,8 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
                           [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                   elementFormControl.value !== null &&
-                                                  elementFormControl.value !== i }"
-                          [value]="i"
+                                                  elementFormControl.value !== i + 1 }"
+                          [value]="i + 1"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [style.line-height.%]="elementModel.fontProps.lineHeight">
           {{option}}

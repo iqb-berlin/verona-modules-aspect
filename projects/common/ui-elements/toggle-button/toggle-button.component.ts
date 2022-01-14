@@ -12,10 +12,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                                [style.width]="elementModel.dynamicWidth ? 'unset' : elementModel.width+'px'"
                                [vertical]="elementModel.verticalOrientation">
         <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
-                           [value]="i"
+                           [value]="i + 1"
                            [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                    elementFormControl.value !== null &&
-                                                   elementFormControl.value !== i }"
+                                                   elementFormControl.value !== i + 1 }"
                            [style.color]="elementModel.fontProps.fontColor"
                            [style.font-size.px]="elementModel.fontProps.fontSize"
                            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
@@ -23,7 +23,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
                            [style.font-family]="elementModel.fontProps.font"
                            [style.background-color]="elementFormControl.value !== null &&
-                                                   elementFormControl.value === i ?
+                                                   elementFormControl.value === i + 1 ?
                                                    elementModel.selectionColor :
                                                    elementModel.surfaceProps.backgroundColor"
                            [style.line-height.%]="elementModel.fontProps.lineHeight">

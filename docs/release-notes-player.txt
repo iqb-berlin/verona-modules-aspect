@@ -4,6 +4,7 @@ next
 - Improve the centering of the layout
 - Disable logs to console in production
 - Enable autostart of audios/videos when reloading the unit
+- Start the valid value range for DropDown, Likert, RadioGroup, RadioGroupImages and ToggleButton at 1
 
 1.15.0
 - Fix restoring of toggle buttons

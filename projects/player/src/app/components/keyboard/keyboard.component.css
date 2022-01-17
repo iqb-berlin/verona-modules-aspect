@@ -10,7 +10,8 @@
   height: 100vh;
   min-width: 300px;
   width: 25vw;
-  background-color: lightgray;
+  border-left: lightgray solid 1px;
+  background-color: #f1f1f1;
   overflow-wrap: break-word;
   overflow-y: auto;
 }

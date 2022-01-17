@@ -4,7 +4,7 @@ export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'ch
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type InputAssistancePreset = 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
-| 'comparisonOperators' | 'squareDashDot';
+| 'comparisonOperators' | 'squareDashDot' | 'placeValue';
 
 export type DragNDropValueObject = {
   id: string;

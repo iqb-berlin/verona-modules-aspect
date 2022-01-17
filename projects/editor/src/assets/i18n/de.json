@@ -111,6 +111,7 @@
     "numbersAndOperators": "Zahlen & Operatoren & '='",
     "numbersAndBasicOperators": "Zahlen & Basis-Operatoren",
     "squareDashDot": "Quadrat Strich Punkt",
+    "placeValue": "Stellenwert",
     "comparisonOperators": "Vergleichsoperatoren",
     "inputAssistancePosition": "Eingabehilfeposition",
     "floating": "schwebend",

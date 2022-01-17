@@ -20,6 +20,10 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
   operators!: string[][];
   private allowedKeys!: string[];
 
+  readonly placeValue: string[][] = [
+    ['•']
+  ];
+
   readonly squareDashDot: string[][] = [
     ['⬜', '❘', '∙']
   ];
@@ -66,6 +70,11 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
       case 'squareDashDot': {
         this.allowedKeys = this.getAllowedKeys(this.squareDashDot);
         this.mainKeys = this.squareDashDot;
+        break;
+      }
+      case 'placeValue': {
+        this.allowedKeys = this.getAllowedKeys(this.placeValue);
+        this.mainKeys = this.placeValue;
         break;
       }
       default: {

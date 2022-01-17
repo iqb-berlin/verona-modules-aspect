@@ -19,7 +19,7 @@ import { HangingIndent } from './extensions/hanging-indent';
 import { ParagraphExtension } from './extensions/paragraph-extension';
 import { FontSize } from './extensions/font-size';
 import { BulletListExtension } from './extensions/bullet-list';
-import { OrderedListExtension } from './extensions/orderedList-extension';
+import { OrderedListExtension } from './extensions/ordered-list';
 
 import { FileService } from '../services/file.service';
 
@@ -144,7 +144,8 @@ export class RichTextEditorComponent implements AfterViewInit {
 
   toggleOrderedList(): void {
     this.editor.chain().toggleOrderedList().focus().run();
-    this.editor.commands.setOrderedListStyle(this.orderedListStyle, this.selectedFontSize);
+    this.editor.commands.setOrderedListStyle(this.orderedListStyle);
+    this.editor.commands.setOrderedListFontSize(this.selectedFontSize);
   }
 
   applyListStyle(listType: string, style: string): void {
@@ -156,7 +157,8 @@ export class RichTextEditorComponent implements AfterViewInit {
       }
     } else {
       this.orderedListStyle = style;
-      this.editor.commands.setOrderedListStyle(style, this.selectedFontSize);
+      this.editor.commands.setOrderedListStyle(style);
+      this.editor.commands.setOrderedListFontSize(this.selectedFontSize);
       if (!this.editor.isActive('orderedList')) {
         this.toggleOrderedList();
       }

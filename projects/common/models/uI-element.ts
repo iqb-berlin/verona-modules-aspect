@@ -3,6 +3,8 @@ export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'ch
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images'
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
+export type InputAssistancePreset = 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators';
+
 export type DragNDropValueObject = {
   id: string;
   stringValue?: string;

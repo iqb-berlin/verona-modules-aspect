@@ -1,6 +1,7 @@
 import {
   AfterViewInit, Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
+import { InputAssistancePreset } from '../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-math-keyboard',
@@ -8,7 +9,7 @@ import {
   styleUrls: ['./math-keyboard.component.css']
 })
 export class MathKeyboardComponent implements OnInit, AfterViewInit {
-  @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
+  @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
 

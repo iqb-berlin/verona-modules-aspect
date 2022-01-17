@@ -1,6 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { InputAssistancePreset } from '../../../../../common/models/uI-element';
 
 @Component({
   selector: 'app-keyboard',
@@ -8,7 +9,7 @@ import {
   styleUrls: ['./keyboard.component.css']
 })
 export class KeyboardComponent {
-  @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
+  @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
   @Input() positionOffset!: number;

@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { TextFieldComponent } from '../../../../common/ui-elements/text-field/text-field.component';
 import { TextAreaComponent } from '../../../../common/ui-elements/text-area/text-area.component';
+import { InputAssistancePreset } from '../../../../common/models/uI-element';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeyboardService {
   isOpen!: boolean;
-  preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
+  preset!: InputAssistancePreset;
   position!: 'floating' | 'right';
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
   elementComponent!: TextFieldComponent | TextAreaComponent;
@@ -31,7 +32,7 @@ export class KeyboardService {
   }
 
   openKeyboard(inputElement: HTMLTextAreaElement | HTMLInputElement,
-               preset: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none',
+               preset: InputAssistancePreset,
                position: 'floating' | 'right',
                elementComponent: TextFieldComponent | TextAreaComponent): boolean {
     this.inputElement = inputElement;

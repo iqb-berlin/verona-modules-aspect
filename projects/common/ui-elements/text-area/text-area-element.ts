@@ -1,6 +1,7 @@
 import {
   FontElement,
   FontProperties,
+  InputAssistancePreset,
   InputElement, PositionedElement,
   PositionProperties,
   SurfaceElement,
@@ -13,7 +14,7 @@ export class TextAreaElement extends InputElement implements PositionedElement, 
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
   rowCount: number = 3;
-  inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' = 'none';
+  inputAssistancePreset: InputAssistancePreset = 'none';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
 
   positionProps: PositionProperties;

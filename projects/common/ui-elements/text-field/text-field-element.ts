@@ -1,6 +1,7 @@
 import {
   FontElement,
   FontProperties,
+  InputAssistancePreset,
   InputElement, PositionedElement,
   PositionProperties,
   SurfaceElement,
@@ -17,7 +18,7 @@ export class TextFieldElement extends InputElement implements PositionedElement,
   maxLengthWarnMessage: string = 'Eingabe zu lang';
   pattern: string = '';
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
-  inputAssistancePreset: 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' = 'none';
+  inputAssistancePreset: InputAssistancePreset = 'none';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   clearable: boolean = false;
 

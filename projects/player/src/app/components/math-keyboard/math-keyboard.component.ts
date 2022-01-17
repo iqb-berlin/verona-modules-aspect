@@ -16,6 +16,8 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
   @Output() deleteCharacter = new EventEmitter();
   @Output() enterKey = new EventEmitter<string>();
 
+  mainKeys!: string[][];
+  operators!: string[][];
   private allowedKeys!: string[];
 
   readonly comparisonOperators: string[][] = [
@@ -29,19 +31,38 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
     ['0']
   ];
 
-  readonly operators: string[][] = [
+  readonly basicOperators: string[][] = [
     ['+', '-'],
-    ['·', ':'],
+    ['·', ':']
+  ];
+
+  readonly additionalOperators: string[][] = [
     ['=']
   ];
 
   ngOnInit(): void {
-    if (this.preset === 'comparisonOperators') {
-      this.allowedKeys = this.getAllowedKeys(this.comparisonOperators);
-    } else {
-      this.allowedKeys = this.preset === 'numbersAndOperators' ?
-        this.getAllowedKeys(this.operators).concat(this.getAllowedKeys(this.numbers)) :
-        this.getAllowedKeys(this.numbers);
+    switch (this.preset) {
+      case 'comparisonOperators': {
+        this.allowedKeys = this.getAllowedKeys(this.comparisonOperators);
+        this.mainKeys = this.comparisonOperators;
+        break;
+      }
+      case 'numbersAndOperators': {
+        this.operators = [...this.basicOperators, ...this.additionalOperators];
+        this.allowedKeys = [...this.getAllowedKeys(this.operators), ...this.getAllowedKeys(this.numbers)];
+        this.mainKeys = this.numbers;
+        break;
+      }
+      case 'numbersAndBasicOperators': {
+        this.operators = this.basicOperators;
+        this.allowedKeys = [...this.getAllowedKeys(this.operators), ...this.getAllowedKeys(this.numbers)];
+        this.mainKeys = this.numbers;
+        break;
+      }
+      default: {
+        this.allowedKeys = this.getAllowedKeys(this.numbers);
+        this.mainKeys = this.numbers;
+      }
     }
   }
 

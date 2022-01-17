@@ -1,50 +1,30 @@
-<ng-container *ngTemplateOutlet="preset === 'comparisonOperators' ?
-  comparisonOperatorsTemplate :
-  numbersTemplate">
-</ng-container>
-
-<ng-template #comparisonOperatorsTemplate>
-  <div *ngFor="let row of comparisonOperators">
-    <ng-container *ngFor="let key of row">
-      <app-key
-          [position]="position"
-          [key]="key"
-          (enterKey)="enterKey.emit($event)">
-      </app-key>
-    </ng-container>
-  </div>
-  <div [class]="position === 'floating' ? 'clear-button-container-floating-keyboard' : 'clear-button-container-fixed-keyboard'">
-    <button type="button"
-            mat-mini-fab
-            [class]="position === 'floating' ? 'delete-characters-floating-keyboard' : 'delete-characters-fixed-keyboard'"
-            (click)="deleteCharacter.emit()">
-      <mat-icon>keyboard_backspace</mat-icon>
-    </button>
-  </div>
-</ng-template>
-
-<ng-template #numbersTemplate>
-  <div *ngFor="let row of numbers; let last = last">
-    <ng-container *ngFor="let key of row; let lastRowKey = last">
-      <app-key
-          [key]="key"
-          [last]="!last && lastRowKey"
-          [position]="position"
-          (enterKey)="enterKey.emit($event)">
-      </app-key>
-      <button *ngIf="last"
-              type="button"
+<div *ngFor="let row of mainKeys; let last = last">
+  <ng-container *ngFor="let key of row; let lastRowKey = last">
+    <app-key
+        [key]="key"
+        [last]="!last && lastRowKey"
+        [position]="position"
+        (enterKey)="enterKey.emit($event)">
+    </app-key>
+    <span *ngIf="last && lastRowKey"
+          [class.clear-button-container-floating-keyboard]="preset === 'comparisonOperators' && position === 'floating'"
+          [class.clear-button-container-fixed-keyboard]="preset === 'comparisonOperators' && position !== 'floating'">
+      <button type="button"
               mat-mini-fab
               [class]="position === 'floating' ? 'delete-characters-floating-keyboard' : 'delete-characters-fixed-keyboard'"
               (click)="deleteCharacter.emit()">
         <mat-icon>keyboard_backspace</mat-icon>
       </button>
-    </ng-container>
-  </div>
-</ng-template>
+    </span>
+  </ng-container>
+</div>
 
-<div *ngIf="preset === 'numbersAndOperators'"
-     [class]="position === 'floating' ? 'floating-grid-layout' : 'fixed-grid-layout' ">
+<div *ngIf="preset === 'numbersAndOperators' || preset === 'numbersAndBasicOperators'"
+     class="grid-layout"
+     [class.floating-3-column-grid-layout]="position === 'floating' && preset === 'numbersAndOperators'"
+     [class.floating-2-column-grid-layout]="position === 'floating' && preset === 'numbersAndBasicOperators'"
+     [class.fixed-3-column-grid-layout]="position !== 'floating' && preset === 'numbersAndOperators'"
+     [class.fixed-2-column-grid-layout]="position !== 'floating' && preset === 'numbersAndBasicOperators'">
   <ng-container *ngFor="let row of operators; let rowIndex = index ">
     <ng-container *ngFor="let key of row; let columnIndex = index">
       <app-key *ngIf="key !== '='"
@@ -56,17 +36,19 @@
                [style.grid-row-end]="rowIndex + 2"
                (enterKey)="enterKey.emit($event)">
       </app-key>
-      <app-key *ngIf="key === '='"
-               [key]="key"
-               [position]="position"
-               [big]="true"
-               [style.grid-column-start]="3"
-               [style.grid-column-end]="3"
-               [style.grid-row-start]="1"
-               [style.grid-row-end]="3"
-               (enterKey)="enterKey.emit($event)">
-      </app-key>
+        <ng-container *ngIf="preset === 'numbersAndOperators'">
+          <app-key *ngIf="key === '='"
+                   [key]="key"
+                   [position]="position"
+                   [oval]="true"
+                   [style.grid-column-start]="3"
+                   [style.grid-column-end]="3"
+                   [style.grid-row-start]="1"
+                   [style.grid-row-end]="3"
+                   (enterKey)="enterKey.emit($event)">
+          </app-key>
+        </ng-container>
+      </ng-container>
     </ng-container>
-  </ng-container>
 </div>
 

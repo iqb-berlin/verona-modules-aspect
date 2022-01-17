@@ -9,7 +9,7 @@ import {
 })
 export class KeyComponent {
   @Input() key!: string;
-  @Input() big!: boolean;
+  @Input() oval!: boolean;
   @Input() position!: 'floating' | 'right';
   @Input() last!: boolean;
 

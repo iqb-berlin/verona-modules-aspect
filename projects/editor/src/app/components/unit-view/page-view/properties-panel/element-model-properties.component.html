@@ -199,69 +199,69 @@
     </mat-select>
   </mat-form-field>
 
-      <mat-form-field *ngIf="combinedProperties.columns !== undefined && combinedProperties.rows === undefined"
-                      appearance="fill">
-        <mat-label>{{'preset' | translate }}</mat-label>
-        <mat-select [value]="combinedProperties.value"
-                    (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
-          <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-          <mat-option *ngFor="let column of $any(combinedProperties.columns); let i = index" [value]="i">
-            {{column.name}} (Index: {{i}})
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+  <mat-form-field *ngIf="combinedProperties.columns !== undefined && combinedProperties.rows === undefined"
+                  appearance="fill">
+    <mat-label>{{'preset' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.value"
+                (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
+      <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
+      <mat-option *ngFor="let column of $any(combinedProperties.columns); let i = index" [value]="i">
+        {{column.name}} (Index: {{i}})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-      <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
-        <input matInput type="number" #minValue="ngModel"
-               [ngModel]="combinedProperties.minValue"
-               (ngModelChange)="updateModel.emit({
+  <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
+    <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
+    <input matInput type="number" #minValue="ngModel"
+           [ngModel]="combinedProperties.minValue"
+           (ngModelChange)="updateModel.emit({
                     property: 'minValue',
                     value: $event,
                     isInputValid: minValue.valid})">
-      </mat-form-field>
-      <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
-        <input matInput type="number" #maxValue="ngModel"
-               [ngModel]="combinedProperties.maxValue"
-               (ngModelChange)="updateModel.emit({
+  </mat-form-field>
+  <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
+    <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
+    <input matInput type="number" #maxValue="ngModel"
+           [ngModel]="combinedProperties.maxValue"
+           (ngModelChange)="updateModel.emit({
                     property: 'maxValue',
                     value: $event,
                     isInputValid: maxValue.valid})">
-      </mat-form-field>
-      <mat-checkbox *ngIf="combinedProperties.showValues !== undefined"
-                    [checked]="$any(combinedProperties.showValues)"
-                    (change)="updateModel.emit({ property: 'showValues', value: $event.checked })">
-        {{'propertiesPanel.showValues' | translate }}
-      </mat-checkbox>
-      <mat-checkbox *ngIf="combinedProperties.barStyle !== undefined"
-                    [checked]="$any(combinedProperties.barStyle)"
-                    (change)="updateModel.emit({ property: 'barStyle', value: $event.checked })">
-        {{'propertiesPanel.barStyle' | translate }}
-      </mat-checkbox>
-      <mat-checkbox *ngIf="combinedProperties.thumbLabel !== undefined"
-                    [checked]="$any(combinedProperties.thumbLabel)"
-                    (change)="updateModel.emit({ property: 'thumbLabel', value: $event.checked })">
-        {{'propertiesPanel.thumbLabel' | translate }}
-      </mat-checkbox>
+  </mat-form-field>
+  <mat-checkbox *ngIf="combinedProperties.showValues !== undefined"
+                [checked]="$any(combinedProperties.showValues)"
+                (change)="updateModel.emit({ property: 'showValues', value: $event.checked })">
+    {{'propertiesPanel.showValues' | translate }}
+  </mat-checkbox>
+  <mat-checkbox *ngIf="combinedProperties.barStyle !== undefined"
+                [checked]="$any(combinedProperties.barStyle)"
+                (change)="updateModel.emit({ property: 'barStyle', value: $event.checked })">
+    {{'propertiesPanel.barStyle' | translate }}
+  </mat-checkbox>
+  <mat-checkbox *ngIf="combinedProperties.thumbLabel !== undefined"
+                [checked]="$any(combinedProperties.thumbLabel)"
+                (change)="updateModel.emit({ property: 'thumbLabel', value: $event.checked })">
+    {{'propertiesPanel.thumbLabel' | translate }}
+  </mat-checkbox>
 
-      <ng-container *ngIf="combinedProperties.value === true || combinedProperties.value === false">
-        {{'preset' | translate }}
-        <mat-button-toggle-group [value]="combinedProperties.value"
-                                 (change)="updateModel.emit({ property: 'value', value: $event.value })">
-          <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
-          <mat-button-toggle [value]="false">{{'propertiesPanel.false' | translate }}</mat-button-toggle>
-        </mat-button-toggle-group>
-      </ng-container>
-      <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
-        <input matInput type="number" #presetValue="ngModel"
-               [ngModel]="combinedProperties.value"
-               (ngModelChange)="updateModel.emit({
+  <ng-container *ngIf="combinedProperties.value === true || combinedProperties.value === false">
+    {{'preset' | translate }}
+    <mat-button-toggle-group [value]="combinedProperties.value"
+                             (change)="updateModel.emit({ property: 'value', value: $event.value })">
+      <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
+      <mat-button-toggle [value]="false">{{'propertiesPanel.false' | translate }}</mat-button-toggle>
+    </mat-button-toggle-group>
+  </ng-container>
+  <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
+    <mat-label>{{'propertiesPanel.preset' | translate }}</mat-label>
+    <input matInput type="number" #presetValue="ngModel"
+           [ngModel]="combinedProperties.value"
+           (ngModelChange)="updateModel.emit({
                     property: 'value',
                     value: $event,
                     isInputValid: presetValue.valid})">
-      </mat-form-field>
+  </mat-form-field>
 
   <!-- TODO wtf-->
   <mat-form-field *ngIf="combinedProperties.value !== undefined &&
@@ -345,7 +345,9 @@
     <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.inputAssistancePreset"
                 (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
-      <mat-option *ngFor="let option of ['none', 'french', 'numbers', 'numbersAndOperators', 'comparisonOperators']"
+      <mat-option *ngFor="let option of [
+      'none', 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators', 'comparisonOperators'
+      ]"
                   [value]="option">
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>

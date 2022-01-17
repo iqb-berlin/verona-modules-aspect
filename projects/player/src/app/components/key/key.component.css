@@ -14,12 +14,12 @@
   margin-right: 5px;
 }
 
-.big-floating-keyboard-key{
+.oval-floating-keyboard-key{
   height: 85px;
   border-radius: 20px;
 }
 
-.big-fixed-keyboard-key{
+.oval-fixed-keyboard-key{
   height: 135px;
   border-radius: 65px;
 }

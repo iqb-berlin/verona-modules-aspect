@@ -7,8 +7,12 @@
         (enterKey)="enterKey.emit($event)">
     </app-key>
     <span *ngIf="last && lastRowKey"
-          [class.clear-button-container-floating-keyboard]="preset === 'comparisonOperators' && position === 'floating'"
-          [class.clear-button-container-fixed-keyboard]="preset === 'comparisonOperators' && position !== 'floating'">
+          [class.clear-button-container-floating-keyboard]="(
+          preset === 'comparisonOperators' || preset === 'squareDashDot'
+          ) && position === 'floating'"
+          [class.clear-button-container-fixed-keyboard]="(
+          preset === 'comparisonOperators' || preset === 'squareDashDot'
+          ) && position !== 'floating'">
       <button type="button"
               mat-mini-fab
               [class]="position === 'floating' ? 'delete-characters-floating-keyboard' : 'delete-characters-fixed-keyboard'"

@@ -20,6 +20,10 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
   operators!: string[][];
   private allowedKeys!: string[];
 
+  readonly squareDashDot: string[][] = [
+    ['⬜', '❘', '∙']
+  ];
+
   readonly comparisonOperators: string[][] = [
     ['<', '=', '>']
   ];
@@ -57,6 +61,11 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
         this.operators = this.basicOperators;
         this.allowedKeys = [...this.getAllowedKeys(this.operators), ...this.getAllowedKeys(this.numbers)];
         this.mainKeys = this.numbers;
+        break;
+      }
+      case 'squareDashDot': {
+        this.allowedKeys = this.getAllowedKeys(this.squareDashDot);
+        this.mainKeys = this.squareDashDot;
         break;
       }
       default: {

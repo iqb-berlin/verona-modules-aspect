@@ -345,9 +345,8 @@
     <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.inputAssistancePreset"
                 (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
-      <mat-option *ngFor="let option of [
-      'none', 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators', 'comparisonOperators'
-      ]"
+      <mat-option *ngFor="let option of ['none', 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators',
+       'comparisonOperators', 'squareDashDot']"
                   [value]="option">
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>

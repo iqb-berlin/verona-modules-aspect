@@ -6,6 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { KeyboardService } from '../../services/keyboard.service';
 import { NativeEventService } from '../../services/native-event.service';
 import { PlayerConfig } from '../../models/verona';
 import { Page } from '../../../../../common/models/page';
@@ -49,9 +50,12 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
   { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
-  constructor(private translateService: TranslateService,
-              private nativeEventService: NativeEventService,
-              private changeDetectorRef: ChangeDetectorRef) {
+  constructor(
+    public keyboardService: KeyboardService,
+    private translateService: TranslateService,
+    private nativeEventService: NativeEventService,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
   }
 
   ngOnInit(): void {

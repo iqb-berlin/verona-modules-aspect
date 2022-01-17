@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnInit, Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-french-keyboard',
@@ -6,8 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./french-keyboard.component.css']
 })
 export class FrenchKeyboardComponent implements OnInit {
+  @Input() position!: 'floating' | 'right';
+  @Output() enterKey = new EventEmitter<string>();
+
   rows!: string[][];
   lowerCharacters!: boolean;
+
   private readonly upperCharacterRows: string[][] = [
     ['Â', 'À', 'Æ', 'Ê', 'È', 'É', 'Ë', 'Î'],
     ['Ï', 'Ô', 'Ò', 'Œ', 'Û', 'Ù', 'Ü', 'Ç']

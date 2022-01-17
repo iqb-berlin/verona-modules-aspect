@@ -42,8 +42,6 @@ export class ElementContainerComponent implements OnInit {
   @Input() pageIndex!: number;
 
   isKeyboardOpen!: boolean;
-  keyboardLayout!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
-  focussedInputElement!: HTMLTextAreaElement | HTMLInputElement;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -277,13 +275,15 @@ export class ElementContainerComponent implements OnInit {
     if (elementComponent.onFocusChanged) {
       elementComponent.onFocusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((focussedInputControl: HTMLElement | null): void => {
-          if (focussedInputControl) {
-            this.focussedInputElement = this.elementModel.type === 'text-area' ?
-              focussedInputControl as HTMLTextAreaElement :
-              focussedInputControl as HTMLInputElement;
-            this.keyboardLayout = (this.elementModel as TextFieldElement).inputAssistancePreset;
-            this.isKeyboardOpen = this.keyboardService.openKeyboard(this.focussedInputElement, elementComponent);
+        .subscribe((focussedElement: HTMLElement | null): void => {
+          if (focussedElement) {
+            const focussedInputElement = this.elementModel.type === 'text-area' ?
+              focussedElement as HTMLTextAreaElement :
+              focussedElement as HTMLInputElement;
+            const preset = (this.elementModel as TextFieldElement).inputAssistancePreset;
+            const position = (this.elementModel as TextFieldElement).inputAssistancePosition;
+            this.isKeyboardOpen = this.keyboardService
+              .openKeyboard(focussedInputElement, preset, position, elementComponent);
           } else {
             this.isKeyboardOpen = this.keyboardService.closeKeyboard();
           }

@@ -2,12 +2,25 @@
   background-color: white;
   font-size: x-large;
   margin-bottom: 5px;
-  margin-right: 5px;
   color: black;
 }
 
-.big-key{
+.fixed-keyboard-key{
+  width: 65px;
+  height: 65px;
+}
+
+.not-last-key{
+  margin-right: 5px;
+}
+
+.big-floating-keyboard-key{
   height: 85px;
   border-radius: 20px;
+}
+
+.big-fixed-keyboard-key{
+  height: 135px;
+  border-radius: 65px;
 }
 

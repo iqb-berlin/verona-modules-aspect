@@ -1,12 +1,23 @@
-<div class="keypad-row" *ngFor="let row of rows">
-  <ng-container *ngFor="let key of row" >
-    <app-key [key]="key"></app-key>
-  </ng-container>
+<div [class.fixed-row-container]="position === 'right'">
+  <div *ngFor="let row of rows">
+    <ng-container *ngFor="let key of row, let lastRowKey = last">
+      <app-key
+          [key]="key"
+          [position]="position"
+          [last]="lastRowKey"
+          (enterKey)="enterKey.emit($event)">
+      </app-key>
+    </ng-container>
+  </div>
+  <div class="keyboard-capslock-container">
+    <button
+        type="button"
+        class="keyboard-capslock"
+        mat-mini-fab
+        [class.fixed-keyboard-key]="position === 'right'"
+        (click)="toggleCharacterCase()">
+      <mat-icon *ngIf="lowerCharacters">keyboard_arrow_up</mat-icon>
+      <mat-icon *ngIf="!lowerCharacters">keyboard_capslock</mat-icon>
+    </button>
+  </div>
 </div>
-<button
-    type="button"
-    class="keyboard_capslock"
-    mat-mini-fab (click)="toggleCharacterCase()">
-  <mat-icon *ngIf="lowerCharacters">keyboard_arrow_up</mat-icon>
-  <mat-icon *ngIf="!lowerCharacters">keyboard_capslock</mat-icon>
-</button>

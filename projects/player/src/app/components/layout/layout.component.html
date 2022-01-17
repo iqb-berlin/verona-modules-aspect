@@ -10,6 +10,14 @@
         scrollPagesView"></ng-container>
     </div>
   </div>
+  <app-keyboard *ngIf="keyboardService.isOpen && keyboardService.position === 'right'"
+                [positionOffset]="0"
+                [inputElement]="keyboardService.inputElement"
+                [position]="keyboardService.position"
+                [preset]="keyboardService.preset"
+                (deleteCharacter)="keyboardService.deleterCharacters()"
+                (enterKey)="keyboardService.enterKey($event)">
+  </app-keyboard>
 </div>
 
 <ng-template #alwaysVisiblePageView>

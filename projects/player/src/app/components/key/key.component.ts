@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { KeyboardService } from '../../services/keyboard.service';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-key',
@@ -9,6 +10,8 @@ import { KeyboardService } from '../../services/keyboard.service';
 export class KeyComponent {
   @Input() key!: string;
   @Input() big!: boolean;
+  @Input() position!: 'floating' | 'right';
+  @Input() last!: boolean;
 
-  constructor(public keyboardService: KeyboardService) { }
+  @Output() enterKey = new EventEmitter<string>();
 }

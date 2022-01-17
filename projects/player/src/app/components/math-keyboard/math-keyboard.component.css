@@ -1,4 +1,4 @@
-.delete-characters{
+.delete-characters-floating-keyboard{
   font-size: x-large;
   width: 85px;
   height: 40px;
@@ -7,14 +7,41 @@
   color: #fff;
 }
 
-.clear-button-container{
+.delete-characters-fixed-keyboard{
+  font-size: x-large;
+  width: 135px;
+  height: 65px;
+  border-radius: 65px;
+  background-color: dimgray;
+  color: #fff;
+}
+
+.fixed-keyboard-key{
+  width: 65px;
+  height: 65px;
+}
+
+.clear-button-container-floating-keyboard{
   margin-left: 45px;
 }
 
-.grid-layout {
+.clear-button-container-fixed-keyboard{
+  margin-left: 70px;
+}
+
+.floating-grid-layout {
   margin-top: 15px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
+}
+
+
+.fixed-grid-layout {
+  justify-content: center;
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: 70px 70px 65px;
+  grid-template-rows: 70px 70px;
 }
 

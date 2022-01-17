@@ -2,6 +2,9 @@
     type="button"
     mat-mini-fab
     class="key"
-    [class.big-key]="big"
-    (click)="keyboardService.enterKey(key);">{{key}}
+    [class.fixed-keyboard-key]="position === 'right'"
+    [class.not-last-key]="!last"
+    [class.big-floating-keyboard-key]="big && position === 'floating'"
+    [class.big-fixed-keyboard-key]="big && position === 'right'"
+    (click)="enterKey.emit(key);">{{key}}
 </button>

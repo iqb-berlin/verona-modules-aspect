@@ -6,14 +6,18 @@
 <ng-template #comparisonOperatorsTemplate>
   <div *ngFor="let row of comparisonOperators">
     <ng-container *ngFor="let key of row">
-      <app-key [key]="key"></app-key>
+      <app-key
+          [position]="position"
+          [key]="key"
+          (enterKey)="enterKey.emit($event)">
+      </app-key>
     </ng-container>
   </div>
-  <div class="clear-button-container">
+  <div [class]="position === 'floating' ? 'clear-button-container-floating-keyboard' : 'clear-button-container-fixed-keyboard'">
     <button type="button"
             mat-mini-fab
-            class="delete-characters"
-            (click)="keyboardService.deleterCharacters()">
+            [class]="position === 'floating' ? 'delete-characters-floating-keyboard' : 'delete-characters-fixed-keyboard'"
+            (click)="deleteCharacter.emit()">
       <mat-icon>keyboard_backspace</mat-icon>
     </button>
   </div>
@@ -21,36 +25,46 @@
 
 <ng-template #numbersTemplate>
   <div *ngFor="let row of numbers; let last = last">
-    <ng-container *ngFor="let key of row">
-      <app-key [key]="key"></app-key>
+    <ng-container *ngFor="let key of row; let lastRowKey = last">
+      <app-key
+          [key]="key"
+          [last]="!last && lastRowKey"
+          [position]="position"
+          (enterKey)="enterKey.emit($event)">
+      </app-key>
       <button *ngIf="last"
               type="button"
               mat-mini-fab
-              class="delete-characters"
-              (click)="keyboardService.deleterCharacters()">
+              [class]="position === 'floating' ? 'delete-characters-floating-keyboard' : 'delete-characters-fixed-keyboard'"
+              (click)="deleteCharacter.emit()">
         <mat-icon>keyboard_backspace</mat-icon>
       </button>
     </ng-container>
   </div>
 </ng-template>
 
-<div *ngIf="preset === 'numbersAndOperators'" class="grid-layout">
+<div *ngIf="preset === 'numbersAndOperators'"
+     [class]="position === 'floating' ? 'floating-grid-layout' : 'fixed-grid-layout' ">
   <ng-container *ngFor="let row of operators; let rowIndex = index ">
     <ng-container *ngFor="let key of row; let columnIndex = index">
       <app-key *ngIf="key !== '='"
                [key]="key"
+               [position]="position"
                [style.grid-column-start]="columnIndex+1"
                [style.grid-column-end]="columnIndex+2"
                [style.grid-row-start]="rowIndex + 1"
-               [style.grid-row-end]="rowIndex + 2">
+               [style.grid-row-end]="rowIndex + 2"
+               (enterKey)="enterKey.emit($event)">
       </app-key>
       <app-key *ngIf="key === '='"
                [key]="key"
+               [position]="position"
                [big]="true"
                [style.grid-column-start]="3"
                [style.grid-column-end]="3"
                [style.grid-row-start]="1"
-               [style.grid-row-end]="3">
+               [style.grid-row-end]="3"
+               (enterKey)="enterKey.emit($event)">
       </app-key>
     </ng-container>
   </ng-container>

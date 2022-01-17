@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
-import { FormElementComponent } from '../../../../common/directives/form-element-component.directive';
+import { TextFieldComponent } from '../../../../common/ui-elements/text-field/text-field.component';
+import { TextAreaComponent } from '../../../../common/ui-elements/text-area/text-area.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeyboardService {
-  private inputElement!: HTMLTextAreaElement | HTMLInputElement;
-  private elementComponent!: FormElementComponent;
+  isOpen!: boolean;
+  preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
+  position!: 'floating' | 'right';
+  inputElement!: HTMLTextAreaElement | HTMLInputElement;
+  elementComponent!: TextFieldComponent | TextAreaComponent;
 
   enterKey = (key: string): void => {
     const selectionStart = this.inputElement.selectionStart || 0;
@@ -27,13 +31,21 @@ export class KeyboardService {
   }
 
   openKeyboard(inputElement: HTMLTextAreaElement | HTMLInputElement,
-               elementComponent: FormElementComponent): boolean {
+               preset: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none',
+               position: 'floating' | 'right',
+               elementComponent: TextFieldComponent | TextAreaComponent): boolean {
     this.inputElement = inputElement;
+    this.preset = preset;
+    this.position = position;
     this.elementComponent = elementComponent;
+    this.isOpen = true;
     return true;
   }
 
-  closeKeyboard = (): boolean => false;
+  closeKeyboard(): boolean {
+    this.isOpen = false;
+    return false;
+  }
 
   private insert(selectionStart: number, selectionEnd: number, newSelection: number, key: string) {
     const startText = this.inputElement.value.substring(0, selectionStart);

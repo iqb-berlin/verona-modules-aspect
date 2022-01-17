@@ -3,14 +3,17 @@
   <ng-template #elementComponentContainer></ng-template>
 </div>
 
-<ng-template *ngIf="keyboardLayout !== 'none' &&
+<ng-template *ngIf="keyboardService.preset !== 'none' &&
     (elementModel.type === 'text-area' || elementModel.type === 'text-field')"
              cdkConnectedOverlay
              [cdkConnectedOverlayOrigin]="overlayOrigin"
-             [cdkConnectedOverlayOpen]="isKeyboardOpen">
+             [cdkConnectedOverlayOpen]="isKeyboardOpen && keyboardService.position === 'floating'">
   <app-keyboard cdkDrag
-                [inputComponent]="focussedInputElement"
                 [positionOffset]="elementModel.type === 'text-field' ? 20 : 0"
-                [preset]="keyboardLayout">
+                [inputElement]="keyboardService.inputElement"
+                [position]="keyboardService.position"
+                [preset]="keyboardService.preset"
+                (deleteCharacter)="keyboardService.deleterCharacters()"
+                (enterKey)="keyboardService.enterKey($event)">
   </app-keyboard>
 </ng-template>

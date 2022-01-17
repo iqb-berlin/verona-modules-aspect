@@ -1,8 +1,18 @@
-.keyboard-row{
-  max-width: 280px;
-  overflow-wrap: break-word;
+.fixed-row-container{
+  width: 280px;
+  margin: auto;
 }
-.keyboard_capslock{
+
+.fixed-keyboard-key{
+  width: 65px;
+  height: 65px;
+}
+
+.keyboard-capslock{
   background-color: dimgray;
+}
+
+.keyboard-capslock-container{
+  margin-right: 100%;
 }
 

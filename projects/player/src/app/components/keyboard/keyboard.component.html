@@ -1,24 +1,24 @@
-<div class="keyboard-container"
-     [style.margin-bottom.px]="inputComponent.clientHeight + positionOffset"
+<div [class]="position === 'floating' ? 'floating-keyboard-container' : 'fixed-keyboard-container'"
+     [style.margin-bottom.px]="inputElement.clientHeight + positionOffset"
      (mousedown)="onMouseDown($event, false)">
-  <div class="keyboard-header"></div>
+  <div *ngIf="position === 'floating'"
+       class="keyboard-header">
+  </div>
   <div class="keyboard-inner-container"
+      [class.fixed-keyboard-inner-container]="position === 'right'"
        (mousedown)="onMouseDown($event, true)">
-    <app-french-keyboard *ngIf="preset === 'french'"></app-french-keyboard>
+    <app-french-keyboard
+        *ngIf="preset === 'french'"
+        [position]="position"
+        (enterKey)="enterKey.emit($event)">
+    </app-french-keyboard>
     <app-math-keyboard
-        *ngIf="preset === 'numbers'"
-        [inputComponent]="inputComponent"
-        [preset]="preset">
-    </app-math-keyboard>
-    <app-math-keyboard
-        *ngIf="preset === 'numbersAndOperators'"
-        [inputComponent]="inputComponent"
-        [preset]="preset">
-    </app-math-keyboard>
-    <app-math-keyboard
-        *ngIf="preset === 'comparisonOperators'"
-        [inputComponent]="inputComponent"
-        [preset]="preset">
+        *ngIf="preset !== 'french'"
+        [inputElement]="inputElement"
+        [preset]="preset"
+        [position]="position"
+        (deleteCharacter)="deleteCharacter.emit()"
+        (enterKey)="enterKey.emit($event)">
     </app-math-keyboard>
   </div>
 </div>

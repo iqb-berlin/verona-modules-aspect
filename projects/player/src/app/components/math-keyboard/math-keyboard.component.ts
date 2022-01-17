@@ -1,15 +1,21 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
-import { KeyboardService } from '../../services/keyboard.service';
+import {
+  AfterViewInit, Component, EventEmitter, Input, OnInit, Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-math-keyboard',
   templateUrl: './math-keyboard.component.html',
   styleUrls: ['./math-keyboard.component.css']
 })
-export class MathKeyboardComponent implements AfterViewInit {
+export class MathKeyboardComponent implements OnInit, AfterViewInit {
   @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
-  @Input() inputComponent!: HTMLTextAreaElement | HTMLInputElement;
-  allowedKeys!: string[];
+  @Input() position!: 'floating' | 'right';
+  @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
+
+  @Output() deleteCharacter = new EventEmitter();
+  @Output() enterKey = new EventEmitter<string>();
+
+  private allowedKeys!: string[];
 
   readonly comparisonOperators: string[][] = [
     ['<', '=', '>']
@@ -28,10 +34,7 @@ export class MathKeyboardComponent implements AfterViewInit {
     ['=']
   ];
 
-  constructor(public keyboardService: KeyboardService) {
-  }
-
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     if (this.preset === 'comparisonOperators') {
       this.allowedKeys = this.getAllowedKeys(this.comparisonOperators);
     } else {
@@ -39,8 +42,11 @@ export class MathKeyboardComponent implements AfterViewInit {
         this.getAllowedKeys(this.operators).concat(this.getAllowedKeys(this.numbers)) :
         this.getAllowedKeys(this.numbers);
     }
-    if (this.inputComponent) {
-      this.inputComponent.addEventListener('keydown', this.restrict.bind(this));
+  }
+
+  ngAfterViewInit(): void {
+    if (this.inputElement) {
+      this.inputElement.addEventListener('keydown', this.restrict.bind(this));
     }
   }
 

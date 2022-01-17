@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-keyboard',
@@ -7,8 +9,12 @@ import { Component, Input } from '@angular/core';
 })
 export class KeyboardComponent {
   @Input() preset!: 'french' | 'numbers' | 'numbersAndOperators' | 'comparisonOperators' | 'none';
-  @Input() inputComponent!: HTMLTextAreaElement | HTMLInputElement;
+  @Input() position!: 'floating' | 'right';
+  @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
   @Input() positionOffset!: number;
+
+  @Output() deleteCharacter = new EventEmitter();
+  @Output() enterKey = new EventEmitter<string>();
 
   onMouseDown = (event: MouseEvent, stopPropagation: boolean): void => {
     event.preventDefault();

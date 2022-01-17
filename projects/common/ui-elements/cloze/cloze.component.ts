@@ -31,6 +31,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                           [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
           </li>
         </ol>
+        <blockquote *ngIf="part.type === 'blockquote'">
+          <ng-container *ngFor="let blockquotePart of $any(part).content"
+                        [ngTemplateOutlet]="paragraphs"
+                        [ngTemplateOutletContext]="{ $implicit: blockquotePart }"></ng-container>
+        </blockquote>
         <ng-container *ngIf="part.type !== 'bulletList'"
                       [ngTemplateOutlet]="paragraphs"
                       [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>

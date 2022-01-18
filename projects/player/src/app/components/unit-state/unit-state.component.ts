@@ -2,7 +2,6 @@ import {
   ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
 import {
-  AbstractControl,
   FormArray, FormBuilder, FormControl, FormGroup
 } from '@angular/forms';
 import { Subject } from 'rxjs';
@@ -33,6 +32,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
 
   form!: FormGroup;
 
+  private validationControls: FormControl[] = [];
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private formBuilder: FormBuilder,
@@ -82,26 +82,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     if (this.form.valid) {
       return 'complete';
     }
-    const pagesControls: AbstractControl[] = (this.form.get('pages') as FormArray).controls;
-    for (let i = 0; i < pagesControls.length; i++) {
-      const pageControl = pagesControls[i];
-      const sectionControls = (pageControl.get('sections') as FormArray).controls;
-      for (let j = 0; j < sectionControls.length; j++) {
-        const sectionControl = sectionControls[j];
-        const elementControls = (sectionControl.get('elements') as FormArray).controls;
-        for (let k = 0; k < elementControls.length; k++) {
-          const elementControl = elementControls[k] as FormGroup;
-          const controlKeys = (Object.keys(elementControl.value));
-          for (let l = 0; l < controlKeys.length; l++) {
-            const control = elementControl.controls[controlKeys[l]] as FormControl;
-            if (control.valid) {
-              return 'some';
-            }
-          }
-        }
-      }
-    }
-    return 'none';
+    return this.validationControls.some(control => control.valid) ? 'some' : 'none';
   }
 
   private get presentationProgress(): Progress {
@@ -113,9 +94,16 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     control.formGroup.addControl(control.id, control.formControl);
   };
 
+  private registerValidationControl(control: FormControl): void {
+    if (!this.validationControls.includes(control)) {
+      this.validationControls.push(control);
+    }
+  }
+
   private setValidators = (validators: FormControlValidators): void => {
     validators.formGroup.controls[validators.id].setValidators(validators.validators);
     validators.formGroup.controls[validators.id].updateValueAndValidity();
+    this.registerValidationControl(validators.formGroup.controls[validators.id] as FormControl);
     this.changeDetectorRef.detectChanges();
   };
 

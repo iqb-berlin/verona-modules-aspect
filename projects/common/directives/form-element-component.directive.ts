@@ -53,7 +53,9 @@ export abstract class FormElementComponent extends ElementComponent implements O
   }
 
   setFormControlValidator(): void {
-    this.setValidators.emit(this.validators);
+    if (this.validators.length) {
+      this.setValidators.emit(this.validators);
+    }
   }
 
   ngOnDestroy(): void {

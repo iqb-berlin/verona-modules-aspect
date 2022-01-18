@@ -36,13 +36,11 @@ import { TextElement } from '../../ui-elements/text/text-element';
   ]
 })
 export class MarkingBarComponent {
-  @Input() element!: HTMLElement;
   @Input() elementModel!: TextElement;
   @Output() applySelection = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
-    color: string,
-    element: HTMLElement
+    color: string
   }>();
 
   selectedColor!: string;
@@ -51,7 +49,7 @@ export class MarkingBarComponent {
     this.selectedColor = selection.selected ? selection.color : 'none';
     this.applySelection
       .emit({
-        active: selection.selected, mode: selection.mode, color: selection.color, element: this.element
+        active: selection.selected, mode: selection.mode, color: selection.color
       });
   }
 }

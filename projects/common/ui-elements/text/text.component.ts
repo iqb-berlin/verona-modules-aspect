@@ -16,11 +16,10 @@ import { ValueChangeElement } from '../../models/uI-element';
           *ngIf="elementModel.highlightableYellow ||
            elementModel.highlightableTurquoise ||
            elementModel.highlightableOrange"
-          [element]="container"
           [elementModel]="elementModel"
           (applySelection)="applySelection.emit($event)">
       </app-marking-bar>
-      <div #container class="text-container"
+      <div #textContainerRef class="text-container"
            [style.background-color]="elementModel.surfaceProps.backgroundColor"
            [style.color]="elementModel.fontProps.fontColor"
            [style.font-family]="elementModel.fontProps.font"
@@ -51,9 +50,8 @@ export class TextComponent extends ElementComponent {
   @Output() applySelection = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
-    color: string,
-    element: HTMLElement
+    color: string
   }>();
 
-  @ViewChild('container') containerDiv!: ElementRef;
+  @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 }

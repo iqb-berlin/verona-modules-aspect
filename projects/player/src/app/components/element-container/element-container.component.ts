@@ -193,8 +193,8 @@ export class ElementContainerComponent implements OnInit {
   private stopSelection(mouseEvent: MouseEvent, elementComponent: TextComponent) {
     const selection = window.getSelection();
     if (selection) {
-      if (!this.markingService.isDescendantOf(selection.anchorNode, elementComponent.containerDiv.nativeElement) ||
-        !this.markingService.isDescendantOf(selection.focusNode, elementComponent.containerDiv.nativeElement) ||
+      if (!this.markingService.isDescendantOf(selection.anchorNode, elementComponent.textContainerRef.nativeElement) ||
+        !this.markingService.isDescendantOf(selection.focusNode, elementComponent.textContainerRef.nativeElement) ||
       (mouseEvent.ctrlKey && selection.rangeCount)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
@@ -202,7 +202,7 @@ export class ElementContainerComponent implements OnInit {
           .applySelection(
             this.selectedMode,
             this.selectedColor,
-            elementComponent.containerDiv.nativeElement,
+            elementComponent.textContainerRef.nativeElement,
             elementComponent as TextComponent
           );
       }
@@ -218,13 +218,15 @@ export class ElementContainerComponent implements OnInit {
           active: boolean,
           mode: 'mark' | 'delete',
           color: string;
-          element: HTMLElement;
         }) => {
           if (selection.active) {
             this.selectedColor = selection.color;
             this.selectedMode = selection.mode;
             this.markingService
-              .applySelection(selection.mode, selection.color, selection.element, elementComponent as TextComponent);
+              .applySelection(selection.mode,
+                selection.color,
+                elementComponent.textContainerRef.nativeElement,
+                elementComponent as TextComponent);
           } else {
             this.selectedColor = null;
             this.selectedMode = null;

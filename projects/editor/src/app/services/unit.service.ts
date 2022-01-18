@@ -419,7 +419,10 @@ export class UnitService {
         break;
       case 'text':
         this.dialogService.showRichTextEditDialog(
-          (element as TextElement).text, (element as TextElement).fontProps.fontSize as number
+          (element as TextElement).text,
+          (element as TextElement).fontProps.fontSize as number,
+          this.unit.pages[this.selectionService.selectedPageIndex].maxWidth -
+            this.unit.pages[this.selectionService.selectedPageIndex].margin
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
@@ -434,7 +437,9 @@ export class UnitService {
       case 'cloze':
         this.dialogService.showClozeTextEditDialog(
           element.document,
-          (element as ClozeElement).fontProps.fontSize as number
+          (element as ClozeElement).fontProps.fontSize as number,
+          this.unit.pages[this.selectionService.selectedPageIndex].maxWidth -
+            this.unit.pages[this.selectionService.selectedPageIndex].margin
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization

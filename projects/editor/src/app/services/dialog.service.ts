@@ -49,18 +49,24 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showRichTextEditDialog(text: string, defaultFontSize: number): Observable<string> {
+  showRichTextEditDialog(text: string, defaultFontSize: number, width: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: { content: text, defaultFontSize },
-      autoFocus: false
+      data: {
+        content: text,
+        defaultFontSize,
+        clozeMode: false
+      },
+      autoFocus: false,
+      width: `${width}px`
     });
     return dialogRef.afterClosed();
   }
 
-  showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<string> {
+  showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number, width: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
       data: { content: document, defaultFontSize, clozeMode: true },
-      autoFocus: false
+      autoFocus: false,
+      width: `${width}px`
     });
     return dialogRef.afterClosed();
   }

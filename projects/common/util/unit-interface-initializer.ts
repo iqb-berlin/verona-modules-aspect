@@ -138,10 +138,6 @@ export function initPlayerElement(serializedElement: Partial<UIElement>): Player
       hintLabel: serializedElement.playerProps.hintLabel as string || '',
       hintLabelDelay: serializedElement.playerProps.hintLabelDelay !== undefined ?
         serializedElement.playerProps.hintLabelDelay as number : 0,
-      uninterruptible: serializedElement.playerProps.uninterruptible !== undefined ?
-        serializedElement.playerProps.uninterruptible as boolean : false,
-      hideOtherPages: serializedElement.playerProps.hideOtherPages !== undefined ?
-        serializedElement.playerProps.hideOtherPages as boolean : false,
       activeAfterID: serializedElement.playerProps.activeAfterID as string || '',
       minRuns: serializedElement.playerProps.minRuns !== undefined ?
         serializedElement.playerProps.minRuns as number : 1,
@@ -174,10 +170,6 @@ export function initPlayerElement(serializedElement: Partial<UIElement>): Player
         serializedElement.interactiveMuteControl as boolean : false,
     hintLabel: serializedElement.hintLabel as string || '',
     hintLabelDelay: serializedElement.hintLabelDelay !== undefined ? serializedElement.hintLabelDelay as number : 0,
-    uninterruptible:
-      serializedElement.uninterruptible !== undefined ? serializedElement.uninterruptible as boolean : false,
-    hideOtherPages:
-      serializedElement.hideOtherPages !== undefined ? serializedElement.hideOtherPages as boolean : false,
     activeAfterID: serializedElement.activeAfterID as string || '',
     minRuns: serializedElement.minRuns !== undefined ? serializedElement.minRuns as number : 1,
     maxRuns: serializedElement.maxRuns !== undefined ? serializedElement.maxRuns as number : null,

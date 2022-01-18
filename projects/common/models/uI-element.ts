@@ -185,8 +185,6 @@ export interface PlayerProperties {
   interactiveMuteControl: boolean;
   hintLabel: string;
   hintLabelDelay: number;
-  uninterruptible: boolean;
-  hideOtherPages: boolean;
   activeAfterID: string;
   minRuns: number;
   maxRuns: number | null;

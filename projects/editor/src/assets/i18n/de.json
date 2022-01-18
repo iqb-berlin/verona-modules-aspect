@@ -152,8 +152,6 @@
     "interactiveMuteControl": "Stummschaltung (steuerbar)",
     "minVolume": "Minimale Lautstärke",
     "defaultVolume": "Voreingestellte Lautstärke",
-    "uninterruptible": "Unterbrechen verbieten",
-    "hideOtherPages": "Weitere Seiten verbergen",
     "showRestTime": "Verbleibende Zeit anzeigen",
     "showRestRuns": "Verbleibende Durchläufe anzeigen",
     "hintLabel": "Aufforderungstext zum Starten",

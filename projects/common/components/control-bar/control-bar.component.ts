@@ -33,10 +33,6 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   playbackTime!: number;
   valid!: boolean;
 
-  // TODO:
-  // uninterruptible: boolean; // false kein Blättern; starten eines anderen Videos; ....
-  // hideOtherPages: boolean; // false (Solange nicht vollständig gespielt, sind alle anderen Seiten verborgen)
-
   ngOnInit(): void {
     this.dependencyDissolved = !this.playerProperties.activeAfterID;
     this.playbackTime = this.playerProperties.playbackTime;

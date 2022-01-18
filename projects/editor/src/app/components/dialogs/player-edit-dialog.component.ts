@@ -83,14 +83,6 @@ import { PlayerProperties } from '../../../../../common/models/uI-element';
                           (change)="newPlayerConfig.loop = $event.checked">
               {{ 'player.loop' | translate }}
             </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.uninterruptible || data.playerProps.uninterruptible"
-                          (change)="newPlayerConfig.uninterruptible = $event.checked">
-              {{ 'player.uninterruptible' | translate }}
-            </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.hideOtherPages || data.playerProps.hideOtherPages"
-                          (change)="newPlayerConfig.hideOtherPages = $event.checked">
-              {{ 'player.hideOtherPages' | translate }}
-            </mat-checkbox>
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.activeAfterID' | translate }}</mat-label>
               <input matInput type="text" [value]="newPlayerConfig.activeAfterID || data.playerProps.activeAfterID"

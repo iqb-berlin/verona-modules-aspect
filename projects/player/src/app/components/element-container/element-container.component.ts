@@ -41,6 +41,7 @@ export class ElementContainerComponent implements OnInit {
   @Input() parentArrayIndex!: number;
   @Input() pageIndex!: number;
 
+  elementComponent!: ElementComponent;
   isKeyboardOpen!: boolean;
   selectedColor!: string | null;
   selectedMode!: 'mark' | 'delete' | null;
@@ -64,30 +65,30 @@ export class ElementContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const elementComponent: ElementComponent = this.initElementComponent();
-    this.registerAtUnitStateService(elementComponent);
+    this.elementComponent = this.initElementComponent();
+    this.registerAtUnitStateService(this.elementComponent);
 
-    if (elementComponent instanceof FormElementComponent) {
-      this.initFormElement(elementComponent);
-    } else if (elementComponent instanceof CompoundElementComponent) {
-      this.initCompoundElement(elementComponent);
-    } else if (elementComponent instanceof MediaPlayerElementComponent) {
+    if (this.elementComponent instanceof FormElementComponent) {
+      this.initFormElement(this.elementComponent);
+    } else if (this.elementComponent instanceof CompoundElementComponent) {
+      this.initCompoundElement(this.elementComponent);
+    } else if (this.elementComponent instanceof MediaPlayerElementComponent) {
       this.mediaPlayerService.registerMediaElement(
         this.elementModel.id,
-        elementComponent,
+        this.elementComponent,
         this.elementModel.playerProps?.activeAfterID as string,
         this.elementModel.playerProps?.minRuns as number === 0
       );
     }
-    this.subscribeStartSelection(elementComponent as TextComponent);
-    this.subscribeApplySelection(elementComponent as TextComponent);
-    this.subscribeMediaPlayStatusChanged(elementComponent as MediaPlayerElementComponent);
-    this.subscribeMediaValidStatusChanged(elementComponent as MediaPlayerElementComponent);
-    this.subscribeNavigationRequested(elementComponent as ButtonComponent);
+    this.subscribeStartSelection(this.elementComponent as TextComponent);
+    this.subscribeApplySelection(this.elementComponent as TextComponent);
+    this.subscribeMediaPlayStatusChanged(this.elementComponent as MediaPlayerElementComponent);
+    this.subscribeMediaValidStatusChanged(this.elementComponent as MediaPlayerElementComponent);
+    this.subscribeNavigationRequested(this.elementComponent as ButtonComponent);
     this.subscribeElementValueChanged(
-      elementComponent as FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
+      this.elementComponent as FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
     );
-    this.subscribeForKeyboardEvents(elementComponent as TextFieldComponent | TextAreaComponent);
+    this.subscribeForKeyboardEvents(this.elementComponent as TextFieldComponent | TextAreaComponent);
   }
 
   private initElementComponent(): ElementComponent {

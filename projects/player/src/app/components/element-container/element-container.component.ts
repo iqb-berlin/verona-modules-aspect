@@ -42,6 +42,8 @@ export class ElementContainerComponent implements OnInit {
   @Input() pageIndex!: number;
 
   isKeyboardOpen!: boolean;
+  selectedColor!: string | null;
+  selectedMode!: 'mark' | 'delete' | null;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -183,18 +185,26 @@ export class ElementContainerComponent implements OnInit {
         .subscribe((mouseEvent: MouseEvent) => {
           this.nativeEventService.mouseUp
             .pipe(takeUntil(this.ngUnsubscribe), first())
-            .subscribe(() => this.startSelection(mouseEvent, elementComponent));
+            .subscribe(() => this.stopSelection(mouseEvent, elementComponent));
         });
     }
   }
 
-  private startSelection(mouseEvent: MouseEvent, elementComponent: TextComponent) {
+  private stopSelection(mouseEvent: MouseEvent, elementComponent: TextComponent) {
     const selection = window.getSelection();
     if (selection) {
       if (!this.markingService.isDescendantOf(selection.anchorNode, elementComponent.containerDiv.nativeElement) ||
         !this.markingService.isDescendantOf(selection.focusNode, elementComponent.containerDiv.nativeElement) ||
       (mouseEvent.ctrlKey && selection.rangeCount)) {
         selection.removeAllRanges();
+      } else if (this.selectedMode && this.selectedColor) {
+        this.markingService
+          .applySelection(
+            this.selectedMode,
+            this.selectedColor,
+            elementComponent.containerDiv.nativeElement,
+            elementComponent as TextComponent
+          );
       }
     }
   }
@@ -205,12 +215,20 @@ export class ElementContainerComponent implements OnInit {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selection:
         {
+          active: boolean,
           mode: 'mark' | 'delete',
           color: string;
           element: HTMLElement;
         }) => {
-          this.markingService
-            .applySelection(selection.mode, selection.color, selection.element, elementComponent as TextComponent);
+          if (selection.active) {
+            this.selectedColor = selection.color;
+            this.selectedMode = selection.mode;
+            this.markingService
+              .applySelection(selection.mode, selection.color, selection.element, elementComponent as TextComponent);
+          } else {
+            this.selectedColor = null;
+            this.selectedMode = null;
+          }
         });
     }
   }

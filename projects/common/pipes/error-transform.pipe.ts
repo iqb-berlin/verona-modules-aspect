@@ -21,8 +21,8 @@ export class ErrorTransformPipe implements PipeTransform {
 
   private getValidationMessages = (elementModel: UIElement): Record<string, string> => ({
     required: elementModel.requiredWarnMessage as string,
-    minlength: elementModel.minWarnMessage as string,
-    maxlength: elementModel.maxWarnMessage as string,
+    minlength: elementModel.minLengthWarnMessage as string,
+    maxlength: elementModel.maxLengthWarnMessage as string,
     pattern: elementModel.patternWarnMessage as string
   });
 }

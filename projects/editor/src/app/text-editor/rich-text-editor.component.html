@@ -1,6 +1,7 @@
-<div fxLayout="column">
-  <div class="editor-controls-first-line" fxLayout="row">
-    <div fxLayout="row" class="button-group">
+<div fxLayout="column" class="editor-control-panel">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <fieldset fxLayout="row">
+      <legend>Schriftauszeichnung</legend>
       <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive('bold')"
               (click)="toggleBold()">
@@ -31,70 +32,77 @@
               (click)="toggleStrike()">
         <mat-icon>strikethrough_s</mat-icon>
       </button>
-    </div>
-    <mat-form-field class="font-size-dropdown">
-      <mat-label>Schriftgröße</mat-label>
-      <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize">
-        <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
-        <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
-        <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
-        <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
-        <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
-        <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
-        <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
-        <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
-        <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
-        <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
-        <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
-        <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
-        <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div class="combo-button" fxLayout="row"
-         [style.background-color]="selectedFontColor">
-      <button mat-icon-button matTooltip="Textfarbe"
-              (click)="applyFontColor()">
-        <mat-icon>format_color_text</mat-icon>
-      </button>
-      <mat-select (click)="textColorInput.click()"></mat-select>
-      <input matInput type="color" #textColorInput hidden
-             (input)="selectedFontColor = $any($event.target).value; applyFontColor()">
-    </div>
-    <div class="combo-button" fxLayout="row"
-         [style.background-color]="selectedHighlightColor">
-      <button mat-icon-button matTooltip="Texthintergrund"
-              (click)="applyHighlightColor()">
-        <mat-icon>format_color_fill</mat-icon>
-      </button>
-      <mat-select (click)="textHighlightColorInput.click()"></mat-select>
-      <input matInput type="color" #textHighlightColorInput hidden
-             (input)="selectedHighlightColor = $any($event.target).value; applyHighlightColor()">
-    </div>
-    <mat-form-field>
-      <mat-label>Absatztyp</mat-label>
-      <mat-select [value]="editor.getAttributes('heading').level?.toString() || ''"
-                  (valueChange)="toggleHeading($event)">
-        <mat-option value="1">H1</mat-option>
-        <mat-option value="2">H2</mat-option>
-        <mat-option value="3">H3</mat-option>
-        <mat-option value="4">H4</mat-option>
-        <mat-option value="">Paragraph</mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Absatzabstand</mat-label>
-      <mat-select matTooltip="Achtung: Gilt nur für zukünftig angelegte Absätze" [matTooltipShowDelay]="300"
-                  [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
-                  (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
-        <mat-option value="0">0px</mat-option>
-        <mat-option value="10">10px</mat-option>
-        <mat-option value="20">20px</mat-option>
-      </mat-select>
-    </mat-form-field>
+    </fieldset>
+    <fieldset fxLayout="row">
+      <legend>Schrift</legend>
+      <mat-form-field class="small-dropdown">
+        <mat-label>Schriftgröße</mat-label>
+        <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize">
+          <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
+          <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
+          <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
+          <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
+          <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
+          <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
+          <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
+          <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
+          <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
+          <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
+          <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
+          <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
+          <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="combo-button" fxLayout="row"
+           [style.background-color]="selectedFontColor">
+        <button mat-icon-button matTooltip="Textfarbe"
+                (click)="applyFontColor()">
+          <mat-icon>format_color_text</mat-icon>
+        </button>
+        <mat-select (click)="textColorInput.click()"></mat-select>
+        <input matInput type="color" #textColorInput hidden
+               (input)="selectedFontColor = $any($event.target).value; applyFontColor()">
+      </div>
+      <div class="combo-button" fxLayout="row"
+           [style.background-color]="selectedHighlightColor">
+        <button mat-icon-button matTooltip="Texthintergrund"
+                (click)="applyHighlightColor()">
+          <mat-icon>format_color_fill</mat-icon>
+        </button>
+        <mat-select (click)="textHighlightColorInput.click()"></mat-select>
+        <input matInput type="color" #textHighlightColorInput hidden
+               (input)="selectedHighlightColor = $any($event.target).value; applyHighlightColor()">
+      </div>
+    </fieldset>
+    <fieldset fxLayout="row">
+      <legend>Absatz</legend>
+      <mat-form-field class="dropdown">
+        <mat-label>Absatztyp</mat-label>
+        <mat-select [value]="editor.getAttributes('heading').level?.toString() || ''"
+                    (valueChange)="toggleHeading($event)">
+          <mat-option value="1">H1</mat-option>
+          <mat-option value="2">H2</mat-option>
+          <mat-option value="3">H3</mat-option>
+          <mat-option value="4">H4</mat-option>
+          <mat-option value="">Paragraph</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="dropdown">
+        <mat-label>Absatzabstand</mat-label>
+        <mat-select matTooltip="Achtung: Gilt nur für zukünftig angelegte Absätze" [matTooltipShowDelay]="300"
+                    [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
+                    (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
+          <mat-option value="0">0px</mat-option>
+          <mat-option value="10">10px</mat-option>
+          <mat-option value="20">20px</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </fieldset>
   </div>
 
-  <div class="editor-controls-second-line" fxLayout="row">
-    <div class="button-group" fxLayout="row">
+  <div fxLayout="row" fxLayoutAlign="space-between">
+    <fieldset fxLayout="row">
+      <legend>Textausrichtung</legend>
       <button mat-icon-button matTooltip="Linksbündig" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive({ textAlign: 'left' })"
               (click)="alignText('left')">
@@ -115,8 +123,9 @@
               (click)="alignText('justify')">
         <mat-icon>format_align_justify</mat-icon>
       </button>
-    </div>
-    <div class="button-group" fxLayout="row">
+    </fieldset>
+    <fieldset fxLayout="row">
+      <legend>Einrückung</legend>
       <button mat-icon-button matTooltip="Einrücken" [matTooltipShowDelay]="300"
               (click)="indent()">
         <mat-icon>format_indent_increase</mat-icon>
@@ -137,20 +146,22 @@
         <mat-label>Einrücktiefe</mat-label>
         <input matInput type="text" [(ngModel)]="selectedIndentSize">
       </mat-form-field>
-    </div>
-    <div fxLayout="row">
-      <div class="combo-button" fxLayout="row" [style.background-color]="editor.isActive('bulletList') ? 'lightgrey' : ''">
+    </fieldset>
+    <fieldset fxLayout="row">
+      <legend>Listen</legend>
+      <div class="combo-button" fxLayout="row"
+           [style.background-color]="editor.isActive('bulletList') ? 'lightgrey' : ''">
         <button mat-icon-button matTooltip="Aufzählung" [matTooltipShowDelay]="300"
                 [class.active]="editor.isActive('bulletList')"
                 (click)="toggleBulletList()">
           <mat-icon>format_list_bulleted</mat-icon>
         </button>
-          <mat-select [value]="editor.getAttributes('bulletList').listStyle"
-                      (valueChange)="applyListStyle('bulletList', $event)">
-            <mat-option value="disc">disc</mat-option>
-            <mat-option value="circle">circle</mat-option>
-            <mat-option value="square">square</mat-option>
-          </mat-select>
+        <mat-select [value]="editor.getAttributes('bulletList').listStyle"
+                    (valueChange)="applyListStyle('bulletList', $event)">
+          <mat-option value="disc">disc</mat-option>
+          <mat-option value="circle">circle</mat-option>
+          <mat-option value="square">square</mat-option>
+        </mat-select>
       </div>
       <div class="combo-button" fxLayout="row" [style.background-color]="editor.isActive('orderedList') ? 'lightgrey' : ''">
         <button mat-icon-button matTooltip="Aufzählung (nummeriert)" [matTooltipShowDelay]="300"
@@ -187,64 +198,67 @@
             </mat-option>
           </mat-select>
       </div>
-    </div>
-    <button mat-icon-button class="special-chars-button" matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
-            [matMenuTriggerFor]="specialCharsMenu">
-      <mat-icon>emoji_symbols</mat-icon>
-    </button>
-    <mat-menu #specialCharsMenu="matMenu" yPosition="above">
-      <button mat-button (click)="insertSpecialChar('&nbsp;')"
-              [matTooltip]="'Geschütztes Leerzeichen'">&blank;</button>
-      <button mat-button (click)="insertSpecialChar('&ndash;')">&ndash;</button>
-      <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
-      <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
-      <br>
-      <button mat-button (click)="insertSpecialChar('&rsquo;')">&rsquo;</button>
-      <button mat-button (click)="insertSpecialChar('&bdquo;')">&bdquo;</button>
-      <button mat-button (click)="insertSpecialChar('&ldquo;')">&ldquo;</button>
-      <button mat-button (click)="insertSpecialChar('&rdquo;')">&rdquo;</button>
-      <button mat-button (click)="insertSpecialChar('&micro;')">&micro;</button>
-      <br>
-      <button mat-button (click)="insertSpecialChar('&ccedil;')">&ccedil;</button>
-      <button mat-button (click)="insertSpecialChar('&Ccedil;')">&Ccedil;</button>
-      <button mat-button (click)="insertSpecialChar('&AElig;')">&AElig;</button>
-      <br>
-      <button mat-button (click)="insertSpecialChar('&lsaquo;')">&lsaquo;</button>
-      <button mat-button (click)="insertSpecialChar('&rsaquo;')">&rsaquo;</button>
-      <button mat-button (click)="insertSpecialChar('&laquo;')">&laquo;</button>
-      <button mat-button (click)="insertSpecialChar('&raquo;')">&raquo;</button>
-      <br>
-      <button mat-button (click)="insertSpecialChar('&cent;')">&cent;</button>
-      <button mat-button (click)="insertSpecialChar('&pound;')">&pound;</button>
-      <button mat-button (click)="insertSpecialChar('&yen;')">&yen;</button>
-      <br>
-      <button mat-button (click)="insertSpecialChar('&copy;')">&copy;</button>
-      <button mat-button (click)="insertSpecialChar('&reg;')">&reg;</button>
-      <button mat-button (click)="insertSpecialChar('&trade;')">&trade;</button>
-      <br>
-      <button mat-button (click)="insertSpecialChar('&le;')">&le;</button>
-      <button mat-button (click)="insertSpecialChar('&ge;')">&ge;</button>
-      <button mat-button (click)="insertSpecialChar('&fpartint;')">&fpartint;</button>
-      <button mat-button (click)="insertSpecialChar('&sum;')">&sum;</button>
-      <button mat-button (click)="insertSpecialChar('&isin;')">&isin;</button>
-      <button mat-button (click)="insertSpecialChar('&notin;')">&notin;</button>
-      <button mat-button (click)="insertSpecialChar('&radic;')">&radic;</button>
-      <button mat-button (click)="insertSpecialChar('&infin;')">&infin;</button>
-      <br>
-      <button mat-button (click)="insertSpecialChar('&spades;')">&spades;</button>
-      <button mat-button (click)="insertSpecialChar('&clubs;')">&clubs;</button>
-      <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
-      <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
-    </mat-menu>
-    <button mat-icon-button matTooltip="Bild" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
-            (click)="addImage()">
-      <mat-icon>image</mat-icon>
-    </button>
-    <button mat-icon-button matTooltip="Zitat" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
-            [class.active]="editor.isActive('blockquote')"
-            (click)="toggleBlockquote()">
-      <mat-icon>format_quote</mat-icon>
-    </button>
+    </fieldset>
+    <fieldset>
+      <legend>Sonderelemente</legend>
+      <button mat-icon-button class="special-chars-button" matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
+              [matMenuTriggerFor]="specialCharsMenu">
+        <mat-icon>emoji_symbols</mat-icon>
+      </button>
+      <mat-menu #specialCharsMenu="matMenu" yPosition="above">
+        <button mat-button (click)="insertSpecialChar('&nbsp;')"
+                [matTooltip]="'Geschütztes Leerzeichen'">&blank;</button>
+        <button mat-button (click)="insertSpecialChar('&ndash;')">&ndash;</button>
+        <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
+        <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&rsquo;')">&rsquo;</button>
+        <button mat-button (click)="insertSpecialChar('&bdquo;')">&bdquo;</button>
+        <button mat-button (click)="insertSpecialChar('&ldquo;')">&ldquo;</button>
+        <button mat-button (click)="insertSpecialChar('&rdquo;')">&rdquo;</button>
+        <button mat-button (click)="insertSpecialChar('&micro;')">&micro;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&ccedil;')">&ccedil;</button>
+        <button mat-button (click)="insertSpecialChar('&Ccedil;')">&Ccedil;</button>
+        <button mat-button (click)="insertSpecialChar('&AElig;')">&AElig;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&lsaquo;')">&lsaquo;</button>
+        <button mat-button (click)="insertSpecialChar('&rsaquo;')">&rsaquo;</button>
+        <button mat-button (click)="insertSpecialChar('&laquo;')">&laquo;</button>
+        <button mat-button (click)="insertSpecialChar('&raquo;')">&raquo;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&cent;')">&cent;</button>
+        <button mat-button (click)="insertSpecialChar('&pound;')">&pound;</button>
+        <button mat-button (click)="insertSpecialChar('&yen;')">&yen;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&copy;')">&copy;</button>
+        <button mat-button (click)="insertSpecialChar('&reg;')">&reg;</button>
+        <button mat-button (click)="insertSpecialChar('&trade;')">&trade;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&le;')">&le;</button>
+        <button mat-button (click)="insertSpecialChar('&ge;')">&ge;</button>
+        <button mat-button (click)="insertSpecialChar('&fpartint;')">&fpartint;</button>
+        <button mat-button (click)="insertSpecialChar('&sum;')">&sum;</button>
+        <button mat-button (click)="insertSpecialChar('&isin;')">&isin;</button>
+        <button mat-button (click)="insertSpecialChar('&notin;')">&notin;</button>
+        <button mat-button (click)="insertSpecialChar('&radic;')">&radic;</button>
+        <button mat-button (click)="insertSpecialChar('&infin;')">&infin;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&spades;')">&spades;</button>
+        <button mat-button (click)="insertSpecialChar('&clubs;')">&clubs;</button>
+        <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
+        <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
+      </mat-menu>
+      <button mat-icon-button matTooltip="Bild" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              (click)="addImage()">
+        <mat-icon>image</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Zitat" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('blockquote')"
+              (click)="toggleBlockquote()">
+        <mat-icon>format_quote</mat-icon>
+      </button>
+    </fieldset>
   </div>
   <div *ngIf="clozeMode" fxLayout="row" fxLayoutAlign="space-around center" >
     <button mat-icon-button matTooltip="Eingabefeld" [matTooltipShowDelay]="300"

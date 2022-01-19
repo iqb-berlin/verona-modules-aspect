@@ -3,29 +3,6 @@ div.ProseMirror {
   border: 1px solid;
 }
 
-app-rich-text-editor button.active {
-  background-color: lightgrey;
-}
-
-app-rich-text-editor mat-form-field {
-  width: 100px;
-  margin: 0 8px;
-}
-
-app-rich-text-editor mat-form-field.mat-form-field-type-mat-select {
-  margin-top: 4px;
-}
-
-app-rich-text-editor .editor-controls-first-line {
-  height: 50px;
-  margin-bottom: 5px;
-}
-
-app-rich-text-editor .editor-controls-second-line {
-  height: 50px;
-  margin-bottom: 5px;
-}
-
 .ProseMirror p strong {
   letter-spacing: 0.04em !important;
   font-weight: 600 !important;
@@ -48,56 +25,54 @@ app-rich-text-editor .editor-controls-second-line {
   font-size: 16px;
 }
 
-.editor-controls-first-line .combo-button {
-  margin-top: 5px;
-  margin-left: 10px;
-}
-
-.editor-controls-first-line .combo-button mat-select {
-  margin-top: 25%;
-}
-
-.editor-controls-second-line .combo-button {
-  margin-bottom: 10px;
-  border-radius: 10px;
-}
-
-.editor-controls-second-line .combo-button mat-select {
-  margin-top: 25%;
-  margin-left: -10px;
-}
-
-.button-group {
-  margin-right: 10px;
-}
-.button-group button {
-  margin: 0 -5px;
-}
-.editor-controls-first-line .button-group {
-  margin-top: 8px;
-}
-.editor-controls-second-line .button-group {
-  margin-right: 25px;
-}
-
-.font-size-dropdown {
-  width: 70px;
-}
-
-.special-chars-button {
-  margin-left: 25px;
-}
-
 mark {
   color: inherit;
 }
 
-mat-form-field.indent-size-input .mat-form-field-infix {
-  border-top: unset !important;
-  padding-bottom: 5px;
+app-rich-text-editor button.active {
+  background-color: lightgrey;
+}
+
+.combo-button {
+  margin-top: -2px;
+  margin-left: 10px;
+}
+.combo-button mat-select {
+  margin-top: 20%;
+}
+
+.editor-control-panel {
+  margin-bottom: 10px;
+  background: linear-gradient(to top right, #FFF5F8, #FAFAFA);
+}
+
+.small-dropdown {
+  width: 70px;
+  top: -7px;
+}
+
+.dropdown {
+  width: 110px;
+  top: -7px;
+  margin: 0 10px;
 }
 
 .indent-size-input {
   width: 90px;
-  padding-top: 5px;
+  top: -7px;
+}
+
+.indent-size-input .mat-form-field-flex {
+  padding: 5px;
+}
+
+.indent-size-input .mat-form-field-infix {
+  padding: .25em 0 .15em 0;
+}
+
+fieldset {
+  height: 55px;
+  box-sizing: content-box !important;
+  border-radius: 3px;
+  padding-bottom: 7px;
 }

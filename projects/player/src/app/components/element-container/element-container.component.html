@@ -3,17 +3,28 @@
   <ng-template #elementComponentContainer></ng-template>
 </div>
 
-<ng-template *ngIf="keyboardService.preset !== 'none' &&
+<ng-template
+    *ngIf="keyboardService.preset !== 'none' &&
     (elementModel.type === 'text-area' || elementModel.type === 'text-field')"
-             cdkConnectedOverlay
-             [cdkConnectedOverlayOrigin]="overlayOrigin"
-             [cdkConnectedOverlayOpen]="isKeyboardOpen && keyboardService.position === 'floating'">
-  <app-keyboard cdkDrag
-                [positionOffset]="elementModel.type === 'text-field' ? 20 : 0"
-                [inputElement]="keyboardService.inputElement"
-                [position]="keyboardService.position"
-                [preset]="keyboardService.preset"
-                (deleteCharacter)="keyboardService.deleterCharacters()"
-                (enterKey)="keyboardService.enterKey($event)">
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="overlayOrigin"
+    [cdkConnectedOverlayOpen]="isKeyboardOpen && keyboardService.position === 'floating'">
+  <app-keyboard
+      cdkDrag
+      [positionOffset]="elementModel.type === 'text-field' ? 20 : 0"
+      [inputElement]="keyboardService.inputElement"
+      [position]="keyboardService.position"
+      [preset]="keyboardService.preset"
+      (deleteCharacter)="keyboardService.deleterCharacters()"
+      (enterKey)="keyboardService.enterKey($event)">
   </app-keyboard>
 </ng-template>
+
+<app-floating-marking-bar
+    *ngIf="elementModel.type === 'text'"
+    [elementModel]="$any(elementModel)"
+    [overlayOrigin]="overlayOrigin"
+    [positions]="positions"
+    [isMarkingBarOpen]="isMarkingBarOpen"
+    (applySelection)="apply($event.mode, $event.color)">
+</app-floating-marking-bar>

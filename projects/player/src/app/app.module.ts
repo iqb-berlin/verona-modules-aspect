@@ -22,6 +22,7 @@ import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { KeyComponent } from './components/key/key.component';
 import { FrenchKeyboardComponent } from './components/french-keyboard/french-keyboard.component';
 import { MathKeyboardComponent } from './components/math-keyboard/math-keyboard.component';
+import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { MathKeyboardComponent } from './components/math-keyboard/math-keyboard.
     KeyboardComponent,
     KeyComponent,
     FrenchKeyboardComponent,
-    MathKeyboardComponent
+    MathKeyboardComponent,
+    FloatingMarkingBarComponent
   ],
   imports: [
     BrowserModule,

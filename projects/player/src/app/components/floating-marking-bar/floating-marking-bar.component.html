@@ -1,0 +1,10 @@
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="overlayOrigin"
+    [cdkConnectedOverlayPositions]="positions"
+    [cdkConnectedOverlayOpen]="isMarkingBarOpen">
+  <app-marking-bar
+      [elementModel]="elementModel"
+      (applySelection)="applySelection.emit($event)">
+  </app-marking-bar>
+</ng-template>

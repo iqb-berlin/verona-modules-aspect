@@ -12,10 +12,9 @@ export class MarkingService {
                  element: HTMLElement,
                  textComponent: TextComponent): void {
     const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
+    if (selection && this.isSelectionValid(selection) && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      if (this.isDescendantOf(range.startContainer, element) &&
-        this.isDescendantOf(range.endContainer, element)) {
+      if (this.isRangeInside(range, element)) {
         this.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
@@ -29,6 +28,12 @@ export class MarkingService {
       }
       selection.removeAllRanges();
     } // nothing to do!
+  }
+
+  isSelectionValid = (selection: Selection): boolean => selection.toString().length > 0;
+
+  isRangeInside(range: Range, element: HTMLElement): boolean {
+    return (this.isDescendantOf(range.startContainer, element) && this.isDescendantOf(range.endContainer, element));
   }
 
   getMarkingData = (htmlText: string): string[] => {

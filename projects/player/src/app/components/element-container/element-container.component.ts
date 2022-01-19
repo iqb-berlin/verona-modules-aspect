@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import {
   InputElement, UIElement, ValueChangeElement
 } from '../../../../../common/models/uI-element';
@@ -45,6 +46,16 @@ export class ElementContainerComponent implements OnInit {
   isKeyboardOpen!: boolean;
   selectedColor!: string | null;
   selectedMode!: 'mark' | 'delete' | null;
+
+  isMarkingBarOpen!: boolean;
+  positions: ConnectedPosition[] = [{
+    originX: 'start',
+    originY: 'top',
+    overlayX: 'start',
+    overlayY: 'top',
+    offsetX: 0,
+    offsetY: 0
+  }];
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -89,6 +100,17 @@ export class ElementContainerComponent implements OnInit {
       this.elementComponent as FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
     );
     this.subscribeForKeyboardEvents(this.elementComponent as TextFieldComponent | TextAreaComponent);
+  }
+
+  apply(mode: 'mark' | 'delete', color: string): void {
+    this.markingService
+      .applySelection(
+        mode,
+        color,
+        (this.elementComponent as TextComponent).textContainerRef.nativeElement,
+        this.elementComponent as TextComponent
+      );
+    this.isMarkingBarOpen = false;
   }
 
   private initElementComponent(): ElementComponent {
@@ -183,31 +205,35 @@ export class ElementContainerComponent implements OnInit {
     if (elementComponent.startSelection) {
       elementComponent.startSelection
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((mouseEvent: MouseEvent) => {
+        .subscribe(() => {
+          this.isMarkingBarOpen = false;
           this.nativeEventService.mouseUp
             .pipe(takeUntil(this.ngUnsubscribe), first())
-            .subscribe(() => this.stopSelection(mouseEvent, elementComponent));
+            .subscribe((mouseUpEvent: MouseEvent) => this.stopSelection(mouseUpEvent, elementComponent));
         });
     }
   }
 
   private stopSelection(mouseEvent: MouseEvent, elementComponent: TextComponent) {
     const selection = window.getSelection();
-    if (selection) {
-      if (!this.markingService.isDescendantOf(selection.anchorNode, elementComponent.textContainerRef.nativeElement) ||
-        !this.markingService.isDescendantOf(selection.focusNode, elementComponent.textContainerRef.nativeElement) ||
-      (mouseEvent.ctrlKey && selection.rangeCount)) {
+    if (selection && this.markingService.isSelectionValid(selection) && selection.rangeCount > 0) {
+      if (!this.markingService.isRangeInside(selection.getRangeAt(0),
+        elementComponent.textContainerRef.nativeElement) ||
+        (mouseEvent.ctrlKey)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
-        this.markingService
-          .applySelection(
-            this.selectedMode,
-            this.selectedColor,
-            elementComponent.textContainerRef.nativeElement,
-            elementComponent as TextComponent
-          );
+        this.apply(this.selectedMode, this.selectedColor);
+      } else if (selection.anchorNode && selection.focusNode) {
+        this.openMarkingBar(mouseEvent, elementComponent);
       }
     }
+  }
+
+  private openMarkingBar(mouseEvent: MouseEvent, elementComponent: TextComponent) {
+    const rect = (elementComponent.domElement.getBoundingClientRect());
+    this.positions[0].offsetX = mouseEvent.clientX - rect.left;
+    this.positions[0].offsetY = mouseEvent.clientY - rect.top;
+    this.isMarkingBarOpen = true;
   }
 
   private subscribeApplySelection(elementComponent: TextComponent): void {
@@ -223,11 +249,7 @@ export class ElementContainerComponent implements OnInit {
           if (selection.active) {
             this.selectedColor = selection.color;
             this.selectedMode = selection.mode;
-            this.markingService
-              .applySelection(selection.mode,
-                selection.color,
-                elementComponent.textContainerRef.nativeElement,
-                elementComponent as TextComponent);
+            this.apply(selection.mode, selection.color);
           } else {
             this.selectedColor = null;
             this.selectedMode = null;

@@ -5,6 +5,7 @@ import { LikertElement } from './likert-element';
 import { LikertElementRow } from './likert-element-row';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
+import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
   selector: 'app-likert',
@@ -72,5 +73,9 @@ export class LikertComponent extends CompoundElementComponent {
 
   getFormElementModelChildren(): LikertElementRow[] {
     return this.elementModel.rows;
+  }
+
+  getFormElementChildrenComponents(): ElementComponent[] {
+    return this.compoundChildren.toArray();
   }
 }

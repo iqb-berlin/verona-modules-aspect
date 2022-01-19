@@ -5,6 +5,9 @@ import { ClozeElement } from './cloze-element';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
 import { ClozeDocumentParagraph, ClozeDocumentPart, InputElement } from '../../models/uI-element';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { CompoundChildOverlayComponent } from '../../directives/cloze-child-overlay/compound-child-overlay.component';
+import { ElementComponent } from '../../directives/element-component.directive';
+import { LikertRadioButtonGroupComponent } from '../likert/likert-radio-button-group.component';
 
 @Component({
   selector: 'app-cloze',
@@ -148,32 +151,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                [style.height]="'1em'"
                [style.vertical-align]="'middle'">
         </ng-container>
-        <span *ngIf="['ToggleButton', 'DropList', 'TextField'].includes(subPart.type)"
-              (click)="selectElement($any(subPart.attrs).model, $event)">
-                <app-toggle-button *ngIf="subPart.type === 'ToggleButton'" #radioComponent
-                                   [parentForm]="parentForm"
-                                   [style.display]="'inline-block'"
-                                   [style.vertical-align]="'middle'"
-                                   [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
-                                   [elementModel]="$any(subPart.attrs).model"
-                                   (elementValueChanged)="elementValueChanged.emit($event)">
-                </app-toggle-button>
-                <app-text-field-simple *ngIf="subPart.type === 'TextField'" #textfieldComponent
-                                       [parentForm]="parentForm"
-                                       [style.display]="'inline-block'"
-                                       [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
-                                       [elementModel]="$any(subPart.attrs).model"
-                                       (elementValueChanged)="elementValueChanged.emit($event)">
-                </app-text-field-simple>
-                <app-drop-list-simple *ngIf="subPart.type === 'DropList'" #droplistComponent
+        <span *ngIf="['ToggleButton', 'DropList', 'TextField'].includes(subPart.type)">
+          <app-compound-child-overlay [style.display]="'inline-block'"
                                       [parentForm]="parentForm"
-                                      [style.display]="'inline-block'"
-                                      [style.vertical-align]="'middle'"
-                                      [style.pointerEvents]="allowClickThrough ? 'auto' : 'none'"
-                                      [elementModel]="$any(subPart.attrs).model"
+                                      [element]="$any(subPart).attrs.model"
+                                      (elementSelected)="childElementSelected.emit($event)"
                                       (elementValueChanged)="elementValueChanged.emit($event)">
-                </app-drop-list-simple>
-            </span>
+          </app-compound-child-overlay>
+        </span>
       </ng-container>
     </ng-template>
   `,
@@ -190,9 +175,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 })
 export class ClozeComponent extends CompoundElementComponent {
   @Input() elementModel!: ClozeElement;
-  @Output() elementSelected = new EventEmitter<{ element: ClozeElement, event: MouseEvent }>();
-  @ViewChildren('drowdownComponent, textfieldComponent, droplistComponent, radioComponent')
-  compoundChildren!: QueryList<FormElementComponent>;
+  @Output() childElementSelected = new EventEmitter<CompoundChildOverlayComponent>();
+  @ViewChildren(CompoundChildOverlayComponent) compoundChildren!: QueryList<CompoundChildOverlayComponent>;
 
   getFormElementModelChildren(): InputElement[] {
     return this.elementModel.document.content
@@ -203,7 +187,7 @@ export class ClozeComponent extends CompoundElementComponent {
         .concat(currentValue.map((node: ClozeDocumentPart) => node.attrs?.model)), []); // model is in node.attrs.model
   }
 
-  selectElement(element: ClozeElement, event: MouseEvent): void {
-    this.elementSelected.emit({ element: element, event: event });
+  getFormElementChildrenComponents(): ElementComponent[] {
+    return this.compoundChildren.map((child: CompoundChildOverlayComponent) => child.childComponent);
   }
 }

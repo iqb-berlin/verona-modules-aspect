@@ -28,7 +28,6 @@ export class SelectionService {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
-    this.removeCompoundChildSelection();
     this.selectedElementComponents.push(event.elementComponent);
     event.elementComponent.setSelected(true);
     this._selectedElements.next(this.selectedElementComponents.map(componentElement => componentElement.element));
@@ -40,32 +39,5 @@ export class SelectionService {
     });
     this.selectedElementComponents = [];
     this._selectedElements.next([]);
-  }
-
-  selectCompoundChild(element: UIElement, nativeElement: HTMLElement): void {
-    this.removeCompoundChildSelection();
-
-    this.setCompoundChildSelection(element, nativeElement);
-    this.selectedCompoundChild = { element: element, nativeElement: nativeElement };
-    this._selectedElements.next([element]);
-  }
-
-  private setCompoundChildSelection(element: UIElement, nativeElement: HTMLElement): void {
-    if (element.type === 'text-field') {
-      (nativeElement.children[0] as HTMLElement).style.outline = '1px solid';
-    } else {
-      nativeElement.style.outline = '1px solid';
-    }
-  }
-
-  private removeCompoundChildSelection(): void {
-    if (this.selectedCompoundChild) {
-      if (this.selectedCompoundChild.element.type === 'text-field') {
-        (this.selectedCompoundChild.nativeElement.children[0] as HTMLElement).style.outline = 'unset';
-      } else {
-        this.selectedCompoundChild.nativeElement.style.outline = 'unset';
-      }
-      this.selectedCompoundChild = null;
-    }
   }
 }

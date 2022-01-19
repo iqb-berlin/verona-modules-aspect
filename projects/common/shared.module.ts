@@ -52,6 +52,7 @@ import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button
 import { MarkingBarComponent } from './components/marking-bar/marking-bar.component';
 import { StyleMarksPipe } from './ui-elements/cloze/styleMarks.pipe';
 import { MarkingButtonComponent } from './components/marking-bar/marking-button.component';
+import { CompoundChildOverlayComponent } from './directives/cloze-child-overlay/compound-child-overlay.component';
 
 @NgModule({
   imports: [
@@ -105,7 +106,8 @@ import { MarkingButtonComponent } from './components/marking-bar/marking-button.
     ToggleButtonComponent,
     MarkingBarComponent,
     StyleMarksPipe,
-    MarkingButtonComponent
+    MarkingButtonComponent,
+    CompoundChildOverlayComponent
   ],
   exports: [
     CommonModule,

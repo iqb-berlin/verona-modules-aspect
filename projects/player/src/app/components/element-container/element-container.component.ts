@@ -149,7 +149,7 @@ export class ElementContainerComponent implements OnInit {
     if (elementComponent.childrenAdded) {
       elementComponent.childrenAdded
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((children: QueryList<ElementComponent>) => {
+        .subscribe((children: ElementComponent[]) => {
           children.forEach((child, index) => {
             const childModel = compoundChildren[index];
             child.elementModel = this.unitStateElementMapperService

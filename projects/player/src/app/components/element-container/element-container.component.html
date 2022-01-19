@@ -3,22 +3,18 @@
   <ng-template #elementComponentContainer></ng-template>
 </div>
 
-<ng-template
+<app-floating-keyboard
     *ngIf="keyboardService.preset !== 'none' &&
     (elementModel.type === 'text-area' || elementModel.type === 'text-field')"
-    cdkConnectedOverlay
-    [cdkConnectedOverlayOrigin]="overlayOrigin"
-    [cdkConnectedOverlayOpen]="isKeyboardOpen && keyboardService.position === 'floating'">
-  <app-keyboard
-      cdkDrag
-      [positionOffset]="elementModel.type === 'text-field' ? 20 : 0"
-      [inputElement]="keyboardService.inputElement"
-      [position]="keyboardService.position"
-      [preset]="keyboardService.preset"
-      (deleteCharacter)="keyboardService.deleterCharacters()"
-      (enterKey)="keyboardService.enterKey($event)">
-  </app-keyboard>
-</ng-template>
+    [isKeyboardOpen]="isKeyboardOpen && keyboardService.position === 'floating'"
+    [overlayOrigin]="overlayOrigin"
+    [inputElement]="keyboardService.inputElement"
+    [position]="keyboardService.position"
+    [preset]="keyboardService.preset"
+    [positionOffset]="elementModel.type === 'text-field' ? 20 : 0"
+    (deleteCharacter)="keyboardService.deleterCharacters()"
+    (enterKey)="keyboardService.enterKey($event)">
+</app-floating-keyboard>
 
 <app-floating-marking-bar
     *ngIf="elementModel.type === 'text'"

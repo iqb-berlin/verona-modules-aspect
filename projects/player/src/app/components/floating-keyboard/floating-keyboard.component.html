@@ -1,0 +1,14 @@
+<ng-template
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="overlayOrigin"
+    [cdkConnectedOverlayOpen]="isKeyboardOpen">
+  <app-keyboard
+      cdkDrag
+      [positionOffset]="positionOffset"
+      [inputElement]="inputElement"
+      [position]="position"
+      [preset]="preset"
+      (deleteCharacter)="deleteCharacter.emit($event)"
+      (enterKey)="enterKey.emit($event)">
+  </app-keyboard>
+</ng-template>

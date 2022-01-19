@@ -66,7 +66,7 @@ export class DialogService {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
       data: { content: document, defaultFontSize, clozeMode: true },
       autoFocus: false,
-      width: `${width}px`
+      width: `${Math.max(870, width)}px`
     });
     return dialogRef.afterClosed();
   }

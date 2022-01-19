@@ -20,7 +20,7 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
       <div *cdkDragPlaceholder></div>
       <!-- Needs extra div because styling can interfere with drag and drop-->
       <div [style.position]="'absolute'"
-           [style.outline]="isSelected ? 'purple solid 1px' : ''"
+           [style.outline]="isSelected ? '1px dashed purple' : ''"
            [style.left.px]="element.positionProps?.xPosition"
            [style.top.px]="element.positionProps?.yPosition"
            [style.z-index]="element.positionProps?.zIndex">

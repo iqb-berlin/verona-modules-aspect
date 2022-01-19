@@ -38,7 +38,7 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
          [style.position]="'relative'"
          [style.width.px]="dragging ? elementWidth : 0"
          [style.height.px]="dragging ? elementHeight : 0"
-         [style.border]="'1px solid purple'">
+         [style.border]="'1px dashed purple'">
     </div>
   `,
   styles: [

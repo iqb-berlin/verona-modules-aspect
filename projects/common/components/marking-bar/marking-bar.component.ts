@@ -8,27 +8,27 @@ import { TextElement } from '../../ui-elements/text/text-element';
   template: `
     <div class="marking-bar">
       <app-marking-button *ngIf="elementModel.highlightableYellow"
-                          [color]="'#f9f871'"
-                          [selected]="selectedColor === '#f9f871'"
+                          [color]="selectionColors.yellow"
+                          [selected]="selectedColor === selectionColors.yellow"
                           mode="mark"
-                          (selectedChange)="onSelectionChange($event)">
+                          (selectedChanged)="onSelectionChange($event)">
       </app-marking-button>
       <app-marking-button *ngIf="elementModel.highlightableTurquoise"
-                          [color]="'#9de8eb'"
-                          [selected]="selectedColor === '#9de8eb'"
+                          [color]="selectionColors.turquoise"
+                          [selected]="selectedColor === selectionColors.turquoise"
                           mode="mark"
-                          (selectedChange)="onSelectionChange($event)">
+                          (selectedChanged)="onSelectionChange($event)">
       </app-marking-button>
       <app-marking-button *ngIf="elementModel.highlightableOrange"
-                          [color]="'#ffa06a'"
-                          [selected]="selectedColor === '#ffa06a'"
+                          [color]="selectionColors.orange"
+                          [selected]="selectedColor === selectionColors.orange"
                           mode="mark"
-                          (selectedChange)="onSelectionChange($event)">
+                          (selectedChanged)="onSelectionChange($event)">
       </app-marking-button>
-      <app-marking-button [color]="'lightgrey'"
-                          [selected]="selectedColor === 'lightgrey'"
+      <app-marking-button [color]="selectionColors.delete"
+                          [selected]="selectedColor === selectionColors.delete"
                           mode="delete"
-                          (selectedChange)="onSelectionChange($event)">
+                          (selectedChanged)="onSelectionChange($event)">
       </app-marking-button>
     </div>`,
   styles: [
@@ -37,19 +37,27 @@ import { TextElement } from '../../ui-elements/text/text-element';
 })
 export class MarkingBarComponent {
   @Input() elementModel!: TextElement;
-  @Output() applySelection = new EventEmitter<{
+  @Output() selectionChanged = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
-    color: string
+    color: string,
+    colorName: string | undefined
   }>();
 
   selectedColor!: string;
+  selectionColors: Record<string, string> = {
+    yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
+  };
 
   onSelectionChange(selection: { selected: boolean, color: string, mode: 'mark' | 'delete' }): void {
     this.selectedColor = selection.selected ? selection.color : 'none';
-    this.applySelection
+    this.selectionChanged
       .emit({
-        active: selection.selected, mode: selection.mode, color: selection.color
+        active: selection.selected,
+        mode: selection.mode,
+        color: selection.color,
+        colorName: selection.selected ?
+          Object.keys(this.selectionColors).find(key => this.selectionColors[key] === selection.color) : 'none'
       });
   }
 }

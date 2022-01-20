@@ -14,12 +14,16 @@ import { ValueChangeElement } from '../../models/uI-element';
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
       <app-marking-bar
           *ngIf="elementModel.highlightableYellow ||
-           elementModel.highlightableTurquoise ||
-           elementModel.highlightableOrange"
+            elementModel.highlightableTurquoise ||
+            elementModel.highlightableOrange"
           [elementModel]="elementModel"
-          (applySelection)="applySelection.emit($event)">
+          (selectionChanged)="onSelectionChanged($event)">
       </app-marking-bar>
       <div #textContainerRef class="text-container"
+           [class.orange-selection]="selectedColor === 'orange'"
+           [class.yellow-selection]="selectedColor === 'yellow'"
+           [class.turquoise-selection]="selectedColor === 'turquoise'"
+           [class.delete-selection]="selectedColor === 'delete'"
            [style.background-color]="elementModel.surfaceProps.backgroundColor"
            [style.color]="elementModel.fontProps.fontColor"
            [style.font-family]="elementModel.fontProps.font"
@@ -28,12 +32,16 @@ import { ValueChangeElement } from '../../models/uI-element';
            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-           (mousedown)="startSelection.emit($event)"
-           [innerHTML]="elementModel.text | safeResourceHTML">
+           [innerHTML]="elementModel.text | safeResourceHTML"
+           (mousedown)="startSelection.emit($event)">
       </div>
     </div>
   `,
   styles: [
+    '::ng-deep .yellow-selection ::selection {background-color: #f9f871}',
+    '::ng-deep .turquoise-selection ::selection {background-color: #9de8eb}',
+    '::ng-deep .orange-selection ::selection {background-color: #ffa06a}',
+    '::ng-deep .delete-selection ::selection {background-color: lightgrey}',
     '::ng-deep .text-container p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
     '::ng-deep .text-container p:empty::after {content: "\\00A0"}', // render empty p
     '::ng-deep .text-container h1 {font-weight: bold; font-size: 20px;}',
@@ -50,8 +58,21 @@ export class TextComponent extends ElementComponent {
   @Output() applySelection = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
-    color: string
+    color: string,
+    colorName: string | undefined
   }>();
 
+  selectedColor!: string | undefined;
+
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
+
+  onSelectionChanged(selection: {
+    active: boolean,
+    mode: 'mark' | 'delete',
+    color: string,
+    colorName: string | undefined
+  }): void {
+    this.selectedColor = selection.colorName;
+    this.applySelection.emit(selection);
+  }
 }

@@ -5,6 +5,6 @@
     [cdkConnectedOverlayOpen]="isMarkingBarOpen">
   <app-marking-bar
       [elementModel]="elementModel"
-      (applySelection)="applySelection.emit($event)">
+      (selectionChanged)="applySelection.emit($event)">
   </app-marking-bar>
 </ng-template>

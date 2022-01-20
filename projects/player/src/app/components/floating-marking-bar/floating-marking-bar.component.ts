@@ -19,5 +19,6 @@ export class FloatingMarkingBarComponent {
     active: boolean,
     mode: 'mark' | 'delete',
     color: string
+    colorName: string | undefined;
   }>();
 }

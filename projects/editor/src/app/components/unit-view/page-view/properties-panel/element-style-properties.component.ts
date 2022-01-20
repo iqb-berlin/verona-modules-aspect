@@ -80,7 +80,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
       <mat-form-field *ngIf="combinedProperties.font !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.font' | translate }}</mat-label>
-        <input matInput type="text" [value]="combinedProperties.font"
+        <input matInput type="text" [value]="combinedProperties.font" disabled
                (input)="updateModel.emit({ property: 'font', value: $any($event.target).value })">
       </mat-form-field>
       <mat-form-field *ngIf="combinedProperties.fontSize !== undefined"

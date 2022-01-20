@@ -170,7 +170,8 @@ import { LikertRadioButtonGroupComponent } from '../likert/likert-radio-button-g
     'p {margin: 0}',
     ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
     ':host ::ng-deep p:empty::after {content: "\\00A0"}', // render empty p
-    'p span {font-size: inherit}'
+    'p span {font-size: inherit}',
+    'sup, sub {line-height: 0;}'
   ]
 })
 export class ClozeComponent extends CompoundElementComponent {

@@ -48,7 +48,8 @@ import { ValueChangeElement } from '../../models/uI-element';
     '::ng-deep .text-container h2 {font-weight: bold; font-size: 18px;}',
     '::ng-deep .text-container h3 {font-weight: bold; font-size: 16px;}',
     '::ng-deep .text-container h4 {font-weight: normal; font-size: 16px;}',
-    ':host ::ng-deep mark {color: inherit}'
+    ':host ::ng-deep mark {color: inherit}',
+    'sup, sub {line-height: 0;}'
   ]
 })
 export class TextComponent extends ElementComponent {

@@ -205,34 +205,39 @@ export class ElementContainerComponent implements OnInit {
     if (elementComponent.startSelection) {
       elementComponent.startSelection
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(() => {
+        .subscribe((mouseDown: MouseEvent) => {
           this.isMarkingBarOpen = false;
           this.nativeEventService.mouseUp
             .pipe(takeUntil(this.ngUnsubscribe), first())
-            .subscribe((mouseUpEvent: MouseEvent) => this.stopSelection(mouseUpEvent, elementComponent));
+            .subscribe((mouseUp: MouseEvent) => this.stopSelection(mouseUp, mouseDown, elementComponent));
         });
     }
   }
 
-  private stopSelection(mouseEvent: MouseEvent, elementComponent: TextComponent) {
+  private stopSelection(mouseUp: MouseEvent, mouseDown: MouseEvent, elementComponent: TextComponent) {
     const selection = window.getSelection();
     if (selection && this.markingService.isSelectionValid(selection) && selection.rangeCount > 0) {
       if (!this.markingService.isRangeInside(selection.getRangeAt(0),
         elementComponent.textContainerRef.nativeElement) ||
-        (mouseEvent.ctrlKey)) {
+        (mouseUp.ctrlKey)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
         this.apply(this.selectedMode, this.selectedColor);
-      } else if (selection.anchorNode && selection.focusNode) {
-        this.openMarkingBar(mouseEvent, elementComponent);
+      } else if (!this.isMarkingBarOpen) {
+        this.openMarkingBar(mouseUp, mouseDown, elementComponent);
       }
     }
   }
 
-  private openMarkingBar(mouseEvent: MouseEvent, elementComponent: TextComponent) {
+  private openMarkingBar(mouseUp: MouseEvent, mouseDown: MouseEvent, elementComponent: TextComponent) {
     const rect = (elementComponent.domElement.getBoundingClientRect());
-    this.positions[0].offsetX = mouseEvent.clientX - rect.left;
-    this.positions[0].offsetY = mouseEvent.clientY - rect.top;
+    const mouseUpX = mouseUp.clientX - rect.left;
+    const mouseUpY = mouseUp.clientY - rect.top;
+    const mouseDownX = mouseDown.clientX - rect.left;
+    const mouseDownY = mouseDown.clientY - rect.top;
+    const offsetY = 15;
+    this.positions[0].offsetX = mouseDownY > mouseUpY ? mouseDownX : mouseUpX;
+    this.positions[0].offsetY = mouseDownY > mouseUpY ? mouseDownY + offsetY : mouseUpY + offsetY;
     this.isMarkingBarOpen = true;
   }
 

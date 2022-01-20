@@ -30,10 +30,9 @@ export class ElementModelPropertiesComponent {
   constructor(public unitService: UnitService) { }
 
   addOption(property: string, value: string): void {
-    (this.combinedProperties[property] as string[]).push(value);
     this.updateModel.emit({
       property: property,
-      value: [...this.combinedProperties[property] as string[]]
+      value: [...(this.combinedProperties[property] as string[]), value]
     });
   }
 
@@ -55,13 +54,10 @@ export class ElementModelPropertiesComponent {
   }
 
   addDropListOption(value: string): void {
-    const id = this.unitService.getNewValueID();
-    if (this.combinedProperties.value) {
-      this.combinedProperties.value.push({ stringValue: value, id: id });
-    } else {
-      this.combinedProperties.value = [{ stringValue: value, id: id }];
-    }
-    this.updateModel.emit({ property: 'value', value: this.combinedProperties.value });
+    this.updateModel.emit({
+      property: 'value',
+      value: [...this.combinedProperties.value, { stringValue: value, id: this.unitService.getNewValueID() }]
+    });
   }
 
   async editDropListOption(optionIndex: number): Promise<void> {

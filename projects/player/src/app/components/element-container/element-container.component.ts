@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, QueryList, ChangeDetectorRef
+  Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewContainerRef, ChangeDetectorRef
 } from '@angular/core';
 import {
   FormBuilder, FormControl, FormGroup, ValidatorFn

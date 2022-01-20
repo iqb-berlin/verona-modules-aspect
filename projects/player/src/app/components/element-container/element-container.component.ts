@@ -239,6 +239,13 @@ export class ElementContainerComponent implements OnInit {
     this.positions[0].offsetX = mouseDownY > mouseUpY ? mouseDownX : mouseUpX;
     this.positions[0].offsetY = mouseDownY > mouseUpY ? mouseDownY + offsetY : mouseUpY + offsetY;
     this.isMarkingBarOpen = true;
+    this.nativeEventService.mouseDown
+      .pipe(takeUntil(this.ngUnsubscribe), first())
+      .subscribe(() => this.closeMarkingBar());
+  }
+
+  private closeMarkingBar() {
+    this.isMarkingBarOpen = false;
   }
 
   private subscribeApplySelection(elementComponent: TextComponent): void {

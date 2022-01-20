@@ -4,6 +4,7 @@
     [cdkConnectedOverlayPositions]="positions"
     [cdkConnectedOverlayOpen]="isMarkingBarOpen">
   <div class="marking-bar-container"
+       (mousedown)="$event.stopPropagation()"
        cdkDrag>
     <app-marking-bar
         [elementModel]="elementModel"

@@ -199,7 +199,7 @@
     </mat-select>
   </mat-form-field>
 
-<!--  TODO relikt?-->
+  <!-- This is for radio with images-->
   <mat-form-field *ngIf="combinedProperties.columns !== undefined && combinedProperties.rows === undefined"
                   appearance="fill">
     <mat-label>{{'preset' | translate }}</mat-label>
@@ -266,9 +266,9 @@
 
   <!-- TODO wtf-->
   <mat-form-field *ngIf="combinedProperties.value !== undefined &&
-                                 !combinedProperties.options && !combinedProperties.columns &&
-                                 combinedProperties.connectedTo === undefined &&
-                                 combinedProperties.value !== true && combinedProperties.value !== false"
+                         !combinedProperties.options && !combinedProperties.columns &&
+                         combinedProperties.connectedTo === undefined &&
+                         combinedProperties.value !== true && combinedProperties.value !== false"
                   appearance="fill">
     <mat-label>{{'preset' | translate }}</mat-label>
     <textarea matInput type="text"

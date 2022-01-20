@@ -22,6 +22,8 @@ export class FrameElement extends UIElement implements PositionedElement, Surfac
     this.positionProps = initPositionedElement(serializedElement);
     this.surfaceProps = initSurfaceElement(serializedElement);
 
+    this.positionProps.zIndex = -1;
+
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       'transparent';

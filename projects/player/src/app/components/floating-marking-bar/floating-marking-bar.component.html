@@ -3,8 +3,11 @@
     [cdkConnectedOverlayOrigin]="overlayOrigin"
     [cdkConnectedOverlayPositions]="positions"
     [cdkConnectedOverlayOpen]="isMarkingBarOpen">
-  <app-marking-bar
-      [elementModel]="elementModel"
-      (selectionChanged)="applySelection.emit($event)">
-  </app-marking-bar>
+  <div class="marking-bar-container"
+       cdkDrag>
+    <app-marking-bar
+        [elementModel]="elementModel"
+        (selectionChanged)="applySelection.emit($event)">
+    </app-marking-bar>
+  </div>
 </ng-template>

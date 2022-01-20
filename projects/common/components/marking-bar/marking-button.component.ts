@@ -10,6 +10,7 @@ import {
             [class.selected]=selected
             mat-mini-fab
             [style.background-color]="color"
+            (mousedown)="$event.stopPropagation();"
             (click)="selected = !selected; selectedChanged.emit({ selected, mode, color })">
       <mat-icon *ngIf="mode === 'mark'">border_color</mat-icon>
       <mat-icon *ngIf="mode === 'delete'" svgIcon="rubber-black"></mat-icon>

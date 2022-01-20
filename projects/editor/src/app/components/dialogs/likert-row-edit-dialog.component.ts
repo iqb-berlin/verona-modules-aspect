@@ -18,8 +18,8 @@ import { LikertColumn } from '../../../../../common/models/uI-element';
       {{'preset' | translate }}
       <mat-select #valueField [value]="data.row.value">
         <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-        <mat-option *ngFor="let column of data.columns; let i = index" [value]="i">
-          {{column.text}}
+        <mat-option *ngFor="let column of data.columns; let i = index" [value]="i + 1">
+          {{column.text}} (Index: {{i + 1}})
         </mat-option>
       </mat-select>
     </mat-dialog-content>

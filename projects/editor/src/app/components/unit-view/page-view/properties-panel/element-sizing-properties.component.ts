@@ -49,9 +49,20 @@ import { PositionedElement, UIElement } from '../../../../../../../common/models
                  (ngModelChange)="updateModel.emit(
                     { property: 'yPosition', value: $event, isInputValid: yPosition.valid && $event !== null })">
         </mat-form-field>
+        <mat-form-field *ngIf="combinedProperties.zIndex !== undefined" appearance="fill">
+          <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
+          <input matInput type="number" #zIndex="ngModel"
+                 [ngModel]="combinedProperties.zIndex"
+                 (ngModelChange)="updateModel.emit({ property: 'zIndex',
+                                                   value: $event,
+                                                   isInputValid: zIndex.valid && $event !== null })"
+                 matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+          <!--        TODO translate-->
+        </mat-form-field>
         <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">
           {{'propertiesPanel.alignment' | translate }}
-          <div class="alignment-button-group" fxLayout="row" fxLayoutAlign="center center">
+          <div class="alignment-button-group" [style.margin]="'10px 0'"
+               fxLayout="row" fxLayoutAlign="space-evenly center">
             <button (click)="alignElements('left')">
               <mat-icon>align_horizontal_left</mat-icon>
             </button>
@@ -177,18 +188,17 @@ import { PositionedElement, UIElement } from '../../../../../../../common/models
                         isInputValid: marginBottom .valid && $event !== null })">
           </mat-form-field>
         </div>
-      </ng-template>
-
-      <mat-form-field *ngIf="combinedProperties.zIndex !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
-        <input matInput type="number" #zIndex="ngModel"
-               [ngModel]="combinedProperties.zIndex"
-               (ngModelChange)="updateModel.emit({ property: 'zIndex',
+        <mat-form-field *ngIf="combinedProperties.zIndex !== undefined" appearance="fill">
+          <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
+          <input matInput type="number" #zIndex="ngModel"
+                 [ngModel]="combinedProperties.zIndex"
+                 (ngModelChange)="updateModel.emit({ property: 'zIndex',
                                                    value: $event,
                                                    isInputValid: zIndex.valid && $event !== null })"
-               matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
-<!--        TODO translate-->
-      </mat-form-field>
+                 matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+          <!--        TODO translate-->
+        </mat-form-field>
+      </ng-template>
     </div>
   `,
   styles: [

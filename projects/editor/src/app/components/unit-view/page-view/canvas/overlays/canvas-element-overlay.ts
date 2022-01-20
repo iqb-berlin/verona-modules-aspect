@@ -43,6 +43,8 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
 
     if (this.childComponent.instance instanceof ClozeComponent) {
+      // make cloze element children clickable
+      this.childComponent.instance.editorMode = true;
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.childElementSelected
         .pipe(takeUntil(this.ngUnsubscribe))

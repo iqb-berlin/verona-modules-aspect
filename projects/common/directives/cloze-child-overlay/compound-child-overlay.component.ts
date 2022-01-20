@@ -14,6 +14,7 @@ import { ElementComponent } from '../element-component.directive';
     <div [style.outline]="isSelected ? 'purple solid 1px' : ''"
          (click)="elementSelected.emit(this); $event.stopPropagation();">
       <app-toggle-button *ngIf="element.type === 'toggle-button'" #childComponent
+                         [style.pointer-events]="editorMode ? 'none' : 'auto'"
                          [parentForm]="parentForm"
                          [style.display]="'inline-block'"
                          [style.vertical-align]="'middle'"
@@ -21,12 +22,14 @@ import { ElementComponent } from '../element-component.directive';
                          (elementValueChanged)="elementValueChanged.emit($event)">
       </app-toggle-button>
       <app-text-field-simple *ngIf="element.type === 'text-field'" #childComponent
+                             [style.pointer-events]="editorMode ? 'none' : 'auto'"
                              [parentForm]="parentForm"
                              [style.display]="'inline-block'"
                              [elementModel]="$any(element)"
                              (elementValueChanged)="elementValueChanged.emit($event)">
       </app-text-field-simple>
       <app-drop-list-simple *ngIf="element.type === 'drop-list'" #childComponent
+                            [style.pointer-events]="editorMode ? 'none' : 'auto'"
                             [parentForm]="parentForm"
                             [style.display]="'inline-block'"
                             [style.vertical-align]="'middle'"
@@ -39,6 +42,7 @@ import { ElementComponent } from '../element-component.directive';
 export class CompoundChildOverlayComponent {
   @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListSimpleElement;
   @Input() parentForm!: FormGroup;
+  @Input() editorMode: boolean = false;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() elementSelected = new EventEmitter<CompoundChildOverlayComponent>();
   @ViewChild('childComponent') childComponent!: ElementComponent;

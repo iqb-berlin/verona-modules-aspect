@@ -155,6 +155,7 @@ import { LikertRadioButtonGroupComponent } from '../likert/likert-radio-button-g
           <app-compound-child-overlay [style.display]="'inline-block'"
                                       [parentForm]="parentForm"
                                       [element]="$any(subPart).attrs.model"
+                                      [editorMode]="editorMode"
                                       (elementSelected)="childElementSelected.emit($event)"
                                       (elementValueChanged)="elementValueChanged.emit($event)">
           </app-compound-child-overlay>
@@ -178,6 +179,8 @@ export class ClozeComponent extends CompoundElementComponent {
   @Input() elementModel!: ClozeElement;
   @Output() childElementSelected = new EventEmitter<CompoundChildOverlayComponent>();
   @ViewChildren(CompoundChildOverlayComponent) compoundChildren!: QueryList<CompoundChildOverlayComponent>;
+
+  editorMode: boolean = false;
 
   getFormElementModelChildren(): InputElement[] {
     return this.elementModel.document.content

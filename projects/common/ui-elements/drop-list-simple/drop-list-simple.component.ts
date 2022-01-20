@@ -59,7 +59,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
     '.item:not(:last-child) {margin-bottom: 5px;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
-    '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999; padding: 10px;}',
+    '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999;}',
     '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
 

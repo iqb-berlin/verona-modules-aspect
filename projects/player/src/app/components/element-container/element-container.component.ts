@@ -192,7 +192,7 @@ export class ElementContainerComponent implements OnInit {
             const formChild = (child as FormElementComponent);
             if (formChild) {
               this.subscribeSetValidators(formChild, elementForm);
-              formChild.setFormValue(child.elementModel.value);
+              formChild.setFormValue(child.elementModel.value, { emitEvent: false });
               formChild.setFormControlValidator();
             }
           });

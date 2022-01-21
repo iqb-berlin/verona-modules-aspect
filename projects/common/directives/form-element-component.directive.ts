@@ -48,8 +48,8 @@ export abstract class FormElementComponent extends ElementComponent implements O
       new FormControl({});
   }
 
-  setFormValue(value: InputElementValue): void {
-    this.elementFormControl.setValue(value);
+  setFormValue(value: InputElementValue, option: { emitEvent: boolean } = { emitEvent: true }): void {
+    this.elementFormControl.setValue(value, option);
   }
 
   setFormControlValidator(): void {

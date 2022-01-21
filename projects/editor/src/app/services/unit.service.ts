@@ -234,6 +234,11 @@ export class UnitService {
           rowObject.id = this.idService.getNewID('likert_row');
         });
       }
+      if (newElement.type === 'cloze') {
+        (newElement as ClozeElement).getChildElements().forEach((childElement: InputElement) => {
+          childElement.id = this.idService.getNewID(childElement.type);
+        });
+      }
       section.elements.push(newElement as PositionedElement);
     });
 

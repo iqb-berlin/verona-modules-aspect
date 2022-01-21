@@ -7,7 +7,7 @@ import {
   UIElement, InputElement, CompoundElement,
   ClozeDocument,
   PositionedElement, PositionProperties,
-  FontElement, FontProperties
+  FontElement, FontProperties, ClozeDocumentParagraph, ClozeDocumentPart
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
 import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
@@ -43,6 +43,15 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
 
     this.width = serializedElement.width || 450;
     this.height = serializedElement.height || 200;
+  }
+
+  getChildElements(): InputElement[] {
+    return this.document.content
+      .filter((paragraph: ClozeDocumentParagraph) => paragraph.content) // filter empty paragraphs
+      .map((paragraph: ClozeDocumentParagraph) => paragraph.content // get custom paragraph parts
+        .filter((word: ClozeDocumentPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type)))
+      .reduce((accumulator: any[], currentValue: any) => accumulator // put all collected paragraph parts into one list
+        .concat(currentValue.map((node: ClozeDocumentPart) => node.attrs?.model)), []); // model is in node.attrs.model
   }
 
   private handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {

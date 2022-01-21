@@ -183,12 +183,7 @@ export class ClozeComponent extends CompoundElementComponent {
   editorMode: boolean = false;
 
   getFormElementModelChildren(): InputElement[] {
-    return this.elementModel.document.content
-      .filter((paragraph: ClozeDocumentParagraph) => paragraph.content) // filter empty paragraphs
-      .map((paragraph: ClozeDocumentParagraph) => paragraph.content // get custom paragraph parts
-        .filter((word: ClozeDocumentPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type)))
-      .reduce((accumulator: any[], currentValue: any) => accumulator // put all collected paragraph parts into one list
-        .concat(currentValue.map((node: ClozeDocumentPart) => node.attrs?.model)), []); // model is in node.attrs.model
+    return this.elementModel.getChildElements();
   }
 
   getFormElementChildrenComponents(): ElementComponent[] {

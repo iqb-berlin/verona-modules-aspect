@@ -7,7 +7,7 @@ import {
   UIElement, InputElement, CompoundElement,
   ClozeDocument,
   PositionedElement, PositionProperties,
-  FontElement, FontProperties, ClozeDocumentParagraph, ClozeDocumentPart
+  FontElement, FontProperties, ClozeDocumentPart
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
 import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
@@ -66,7 +66,6 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
   }
 
   private static getParagraphCustomElements(documentPart: any): InputElement[] {
-    console.log('fff', documentPart);
     if (!documentPart.content) {
       return [];
     }

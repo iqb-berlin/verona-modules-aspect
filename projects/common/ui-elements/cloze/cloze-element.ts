@@ -46,12 +46,32 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
   }
 
   getChildElements(): InputElement[] {
-    return this.document.content
-      .filter((paragraph: ClozeDocumentParagraph) => paragraph.content) // filter empty paragraphs
-      .map((paragraph: ClozeDocumentParagraph) => paragraph.content // get custom paragraph parts
-        .filter((word: ClozeDocumentPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type)))
-      .reduce((accumulator: any[], currentValue: any) => accumulator // put all collected paragraph parts into one list
-        .concat(currentValue.map((node: ClozeDocumentPart) => node.attrs?.model)), []); // model is in node.attrs.model
+    const elementList: InputElement[] = [];
+    this.document.content.forEach((documentPart: any) => {
+      if (documentPart.type === 'paragraph') {
+        elementList.push(...ClozeElement.getParagraphCustomElements(documentPart));
+      } else if (documentPart.type === 'bulletList' || documentPart.type === 'orderedList') {
+        documentPart.content.forEach((listItem: any) => {
+          listItem.content.forEach((listItemParagraph: any) => {
+            elementList.push(...ClozeElement.getParagraphCustomElements(listItemParagraph));
+          });
+        });
+      } else if (documentPart.type === 'blockquote') {
+        documentPart.content.forEach((blockQuoteItem: any) => {
+          elementList.push(...ClozeElement.getParagraphCustomElements(blockQuoteItem));
+        });
+      }
+    });
+    return elementList;
+  }
+
+  private static getParagraphCustomElements(documentPart: any): InputElement[] {
+    console.log('fff', documentPart);
+    return documentPart.content
+      .filter((word: ClozeDocumentPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type))
+      .reduce((accumulator: any[], currentValue: any) => {
+        return accumulator.concat(currentValue.attrs.model);
+      }, []);
   }
 
   private handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {

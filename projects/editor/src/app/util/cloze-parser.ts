@@ -6,17 +6,33 @@ import { ToggleButtonElement } from '../../../../common/ui-elements/toggle-butto
 
 export abstract class ClozeParser {
   static setMissingIDs(clozeJSON: ClozeDocument, idService: IdService): ClozeDocument {
-    clozeJSON.content.forEach((paragraph: any) => {
-      paragraph.content?.forEach((node: any) => {
-        if (['ToggleButton', 'DropList', 'TextField'].includes(node.type) &&
-            node.attrs.model.id === 'id_placeholder') {
-          // create element anew because the TextEditor can't create multiple element instances
-          node.attrs.model = ClozeParser.createElement(node.attrs.model);
-          node.attrs.model.id = idService.getNewID(node.attrs.model.type);
-        }
-      });
+    clozeJSON.content.forEach((node: any) => {
+      if (node.type === 'paragraph') {
+        ClozeParser.createSubNodeElements(node, idService);
+      } else if (node.type === 'bulletList' || node.type === 'orderedList') {
+        node.content.forEach((listItem: any) => {
+          listItem.content.forEach((listItemParagraph: any) => {
+            ClozeParser.createSubNodeElements(listItemParagraph, idService);
+          });
+        });
+      } else if (node.type === 'blockquote') {
+        node.content.forEach((blockQuoteItem: any) => {
+          ClozeParser.createSubNodeElements(blockQuoteItem, idService);
+        });
+      }
     });
     return clozeJSON;
+  }
+
+  // create element anew because the TextEditor can't create multiple element instances
+  private static createSubNodeElements(node: any, idService: IdService) {
+    node.content?.forEach((subNode: any) => {
+      if (['ToggleButton', 'DropList', 'TextField'].includes(subNode.type) &&
+        subNode.attrs.model.id === 'id_placeholder') {
+        subNode.attrs.model = ClozeParser.createElement(subNode.attrs.model);
+        subNode.attrs.model.id = idService.getNewID(subNode.attrs.model.type);
+      }
+    });
   }
 
   private static createElement(elementModel: Partial<UIElement>): InputElement {

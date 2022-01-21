@@ -3,7 +3,6 @@ import { Unit } from '../../../../common/models/unit';
 import {
   DragNDropValueObject, InputElement, InputElementValue, UIElement
 } from '../../../../common/models/uI-element';
-import { Section } from '../../../../common/models/section';
 import { ImageElement } from '../../../../common/ui-elements/image/image-element';
 import { VideoElement } from '../../../../common/ui-elements/video/video-element';
 import { AudioElement } from '../../../../common/ui-elements/audio/audio-element';
@@ -18,15 +17,31 @@ export class UnitStateElementMapperService {
   dropListValueIds!: DragNDropValueObject[];
 
   registerDropListValueIds(unitDefinition: Unit): void {
-    this.dropListValueIds = unitDefinition.pages.reduce(
-      (accumulator: Section[], currentValue) => accumulator.concat(currentValue.sections), []
-    ).reduce(
-      (accumulator: UIElement[], currentValue) => accumulator.concat(currentValue.elements), []
-    ).filter(element => element.type === 'drop-list').reduce(
-      (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
-        (currentValue.value && currentValue.value.length) ? accumulator.concat(currentValue.value) : accumulator), []
-    );
+    const dropListElements: UIElement[] = [];
+    this.findNestedDropLists(unitDefinition.pages, dropListElements);
+    this.dropListValueIds = dropListElements
+      .reduce(
+        (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
+          (currentValue.value && currentValue.value.length) ? accumulator.concat(currentValue.value) : accumulator), []
+      );
   }
+
+  private findNestedDropLists(value: any | unknown[], dropListElements: UIElement[]): void {
+    if (this.isObject(value)) {
+      if (value.type === 'drop-list') {
+        dropListElements.push(value);
+      } else {
+        const keys = (Object.keys(value));
+        keys.forEach((key: string) => this.findNestedDropLists(value[key], dropListElements));
+      }
+    } else if (this.isArray(value)) {
+      value.forEach((element: unknown) => this.findNestedDropLists(element, dropListElements));
+    }
+  }
+
+  private isObject = (value: unknown) => !!(value && typeof value === 'object' && !Array.isArray(value));
+
+  private isArray = (value: unknown) => !!(value && typeof value === 'object' && Array.isArray(value));
 
   mapToElementValue(
     elementModel: UIElement,

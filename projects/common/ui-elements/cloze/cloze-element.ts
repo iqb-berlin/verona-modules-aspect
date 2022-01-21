@@ -67,6 +67,9 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
 
   private static getParagraphCustomElements(documentPart: any): InputElement[] {
     console.log('fff', documentPart);
+    if (!documentPart.content) {
+      return [];
+    }
     return documentPart.content
       .filter((word: ClozeDocumentPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type))
       .reduce((accumulator: any[], currentValue: any) => {

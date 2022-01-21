@@ -48,7 +48,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
   getChildElements(): InputElement[] {
     const elementList: InputElement[] = [];
     this.document.content.forEach((documentPart: any) => {
-      if (documentPart.type === 'paragraph') {
+      if (documentPart.type === 'paragraph' || documentPart.type === 'heading') {
         elementList.push(...ClozeElement.getParagraphCustomElements(documentPart));
       } else if (documentPart.type === 'bulletList' || documentPart.type === 'orderedList') {
         documentPart.content.forEach((listItem: any) => {

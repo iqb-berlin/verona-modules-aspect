@@ -7,7 +7,7 @@ import { ToggleButtonElement } from '../../../../common/ui-elements/toggle-butto
 export abstract class ClozeParser {
   static setMissingIDs(clozeJSON: ClozeDocument, idService: IdService): ClozeDocument {
     clozeJSON.content.forEach((node: any) => {
-      if (node.type === 'paragraph') {
+      if (node.type === 'paragraph' || node.type === 'heading') {
         ClozeParser.createSubNodeElements(node, idService);
       } else if (node.type === 'bulletList' || node.type === 'orderedList') {
         node.content.forEach((listItem: any) => {

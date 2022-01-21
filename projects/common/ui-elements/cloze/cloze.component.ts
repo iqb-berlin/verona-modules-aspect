@@ -20,14 +20,18 @@ import { LikertRadioButtonGroupComponent } from '../likert/likert-radio-button-g
          [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
       <ng-container *ngFor="let part of elementModel.document.content">
-        <ul *ngIf="part.type === 'bulletList'">
+        <ul *ngIf="part.type === 'bulletList'"
+            [style.font-size]="part.attrs.fontSize"
+            [style.list-style]="part.attrs.listStyle">
           <li *ngFor="let listItem of part.content">
             <ng-container *ngFor="let listItemPart of $any(listItem).content"
                           [ngTemplateOutlet]="paragraphs"
                           [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
           </li>
         </ul>
-        <ol *ngIf="part.type === 'orderedList'">
+        <ol *ngIf="part.type === 'orderedList'"
+            [style.font-size]="part.attrs.fontSize"
+            [style.list-style]="part.attrs.listStyle">
           <li *ngFor="let listItem of part.content">
             <ng-container *ngFor="let listItemPart of $any(listItem).content"
                           [ngTemplateOutlet]="paragraphs"

@@ -39,7 +39,7 @@ import { LikertRadioButtonGroupComponent } from '../likert/likert-radio-button-g
                         [ngTemplateOutlet]="paragraphs"
                         [ngTemplateOutletContext]="{ $implicit: blockquotePart }"></ng-container>
         </blockquote>
-        <ng-container *ngIf="part.type !== 'bulletList'"
+        <ng-container *ngIf="part.type === 'paragraph'"
                       [ngTemplateOutlet]="paragraphs"
                       [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </ng-container>

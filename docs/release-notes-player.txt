@@ -1,10 +1,14 @@
 Player
 ======
-next
+1.16.0
 - Improve the centering of the layout
 - Disable logs to console in production
 - Enable autostart of audios/videos when reloading the unit
 - Start the valid value range for DropDown, Likert, RadioGroup, RadioGroupImages and ToggleButton at 1
+- Mark text without selecting first
+- Show marking options as popup when text is selected
+- Implement virtual keyboards for 'place value', 'numbers and basic operators', 'square, dash and dot'
+- Show the virtual keyboard optionally on the right side of the screen
 
 1.15.0
 - Fix restoring of toggle buttons

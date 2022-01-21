@@ -11,7 +11,8 @@ import { ElementComponent } from '../element-component.directive';
 @Component({
   selector: 'app-compound-child-overlay',
   template: `
-    <div [style.outline]="isSelected ? 'purple solid 1px' : ''"
+    <div [style.border]="isSelected ? 'purple solid 1px' : ''"
+         [style.border-radius.px]="3"
          (click)="elementSelected.emit(this); $event.stopPropagation();">
       <app-toggle-button *ngIf="element.type === 'toggle-button'" #childComponent
                          [style.pointer-events]="editorMode ? 'none' : 'auto'"

@@ -15,8 +15,8 @@ import { TextFieldSimpleElement } from './text-field-simple-element';
            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-           value="{{elementModel.value}}"
-           (input)="setFormValue($any($event.target).value)">
+           [formControl]="elementFormControl"
+           value="{{elementModel.value}}">
   `,
   styles: [
     'input {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}'

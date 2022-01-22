@@ -114,11 +114,13 @@ export class MarkingService {
         this.markNode(range, color);
       }
     } else {
+      const nodes: Node[] = this.findNodes(range.commonAncestorContainer.childNodes, selection);
       // When the user finishes selecting between paragraphs and the selection happens from
       // back to front, Firefox does not consider the start container as a selected child node.
       // Therefore, it is added to the list of selected nodes at the beginning.
-      const nodes: Node[] = [range.startContainer];
-      this.findNodes(range.commonAncestorContainer.childNodes, nodes, selection);
+      if (!nodes.includes(range.startContainer)) {
+        nodes.unshift(range.startContainer);
+      }
       // When the user finishes selecting between paragraphs the browser does not consider the end container
       // as a selected child node. Therefore, it is added to the list of selected nodes at the end.
       if (range.endOffset === 0) {
@@ -251,7 +253,8 @@ export class MarkingService {
     return markedElement;
   };
 
-  private findNodes(childList: Node[] | NodeListOf<ChildNode>, nodes: Node[], selection: Selection): void {
+  private findNodes(childList: Node[] | NodeListOf<ChildNode>, selection: Selection): Node[] {
+    const nodes: Node[] = [];
     childList.forEach((node: Node) => {
       if (selection.containsNode(node, true)) {
         if (node.nodeType === Node.TEXT_NODE && !nodes.includes(node)) {
@@ -259,13 +262,14 @@ export class MarkingService {
         }
         if (node.nodeType === Node.ELEMENT_NODE) {
           if (node.childNodes.length) {
-            this.findNodes(node.childNodes, nodes, selection);
+            nodes.push(...this.findNodes(node.childNodes, selection));
           } else if (!nodes.includes(node)) {
             nodes.push(node);
           }
         }
       }
     });
+    return nodes;
   }
 
   private rgbToHex = (rgb: number[]): string => `#${rgb.map(x => {

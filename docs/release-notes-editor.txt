@@ -1,247 +1,279 @@
 Editor
 ======
+1.22.0
+- Rework cloze element
+  No longer uses 'backslash-markers'. Instead inserts and renders
+  elements directly. It is also able to read sub element properties,
+  though some things like alignment and default values might not work.
+  Also a lot of small improvements, like better sub element selection
+  and support for all TextEditor features. There is a known visual
+  issue with blockquotes though, where sub elements don't respect
+  it's indentation.
+  Also removed some useless properties from cloze child elements,
+  like label.
+  Cloze duplication now works.
+- Cloze toggle-buttons now can have a manually set width and have a
+  second optional vertical layout. The vertical layout is not very
+  useful within a text but might come in handy in the future.
+  The buttons on the element automatically stretch to meet the
+  set width (or height).
+- Fix file upload dialog appearing twice in Chrome
+- Improve TextEditor layout
+  Now widens to meet the set page width.
+  All input controls are grouped in fieldsets.
+- Make frame elements start with a z-index of -1
+  Frames are supposedly used to group other elements and therefore
+  need to be behind them.
+- Slightly improve all menu elements to not close when clicking on them
+- Fix sub- and superscript to not affect line height
+- Disable font field
+  Since we can't safely assume any other font than the one we ship is
+  available, it is better to not allow changing this.
+  The field is not removed completely as in the future more than one font
+  might be available. So for now you just can't choose a different one.
+
 1.21.0
- - Fix multiselect of elements with array values (i.e. dropList)
-   This includes correctly showing them and saving the changes properly
-   so that other elements are not affected.
- - Extend default width of some elements
-   So the example text is completely visible.
-   Affects: checkbox, text field, text area, dropdown
- - Add default text to empty likert element
-   This makes the element visible before content is defined.
- - Fix cloze element to also save the actual HTML text
-   This allows future versions to correctly restore the element
+- Fix multiselect of elements with array values (i.e. dropList)
+  This includes correctly showing them and saving the changes properly
+  so that other elements are not affected.
+- Extend default width of some elements
+  So the example text is completely visible.
+  Affects: checkbox, text field, text area, dropdown
+- Add default text to empty likert element
+  This makes the element visible before content is defined.
+- Fix cloze element to also save the actual HTML text
+  This allows future versions to correctly restore the element
 
 1.20.0
- - Use shorter dash in TextEditor special chars
- - Add top-99-double quote to TextEditor special chars
- - Use font 'PT Sans' for blockquote quotes
- - Set blockquote margins (top and bottom) to 20px
- - Fix positioning values when duplicating elements
- - Fix changing element IDs
+- Use shorter dash in TextEditor special chars
+- Add top-99-double quote to TextEditor special chars
+- Use font 'PT Sans' for blockquote quotes
+- Set blockquote margins (top and bottom) to 20px
+- Fix positioning values when duplicating elements
+- Fix changing element IDs
 
 1.19.0
- - Implement fixedSize for all elements
- - Add long dash to TextEditor special characters
- - Remove border style 'hidden' from frame element
-   This makes styling the element harder and the same can be achieved by
-   setting the border width to 0.
- - Add TextEditor button for toggle-button in cloze element
-   And improve tooltips for the cloze buttons.
- - Make dropLists always start with a min-height
-   This makes the list not collapse when used in dynamic context.
- - Fix element multiselection
-   - Selecting multiple elements in dynamic mode no longer bugs out making
-     further editing impossible.
-   - Now correctly keeps the selection after moving multiple elements on
-     the (static) canvas.
-   - Fix element alignment
- - Fix sizing property panel
-   - Always show z-index
-   - Only show alignment buttons in static mode
- - Change color defaults:
-   dropList elements: #c9e0e0
-   dropList background: #f4f4f2
-   dropList highlight: #006064
-   likert line color: #c9e0e0
+- Implement fixedSize for all elements
+- Add long dash to TextEditor special characters
+- Remove border style 'hidden' from frame element
+  This makes styling the element harder and the same can be achieved by
+  setting the border width to 0.
+- Add TextEditor button for toggle-button in cloze element
+  And improve tooltips for the cloze buttons.
+- Make dropLists always start with a min-height
+  This makes the list not collapse when used in dynamic context.
+- Fix element multiselection
+ - Selecting multiple elements in dynamic mode no longer bugs out making
+   further editing impossible.
+ - Now correctly keeps the selection after moving multiple elements on
+   the (static) canvas.
+ - Fix element alignment
+- Fix sizing property panel
+ - Always show z-index
+ - Only show alignment buttons in static mode
+- Change color defaults:
+  dropList elements: #c9e0e0
+  dropList background: #f4f4f2
+  dropList highlight: #006064
+  likert line color: #c9e0e0
 
 1.18.0
- - Add image feature to TextEditor
-   Images are always inline and scaled down to the font size (of the text
-   element as a whole).
- - Add blockquote feature to TextEditor
-   This creates a special quote text, which is indented and has quote marks
-   x2.5 the font size.
- - Add new position property fixedSize ('Feste Abmessungen')
-   This allows elements in dynamic sections to have fixed dimensions.
-   (Some modifications to property panel logic, to show dimension fields and
-   proper labels.)
-   Only implemented for dropList and button elements!
- - Add flex orientation for dropList
-   This new setting makes child items space around in a row with line
-   break.
-   Images in vertical alignment now always reserve the whole row and don't
-   appear next to each other.
- - Allow negative values for z-index and margins
- - Rework color inputs
-   Use a suffix button to activate color picker instead of having an extra
-   form field. This makes for a cleaner layout and also has the additional
-   benefit of saving vertical space, reducing the need for scrolling.
-   Also add direct input for likert line coloring color.
- - Change/Fix radio button and checkbox color to dark green
-   Affects all elements using radio buttons (likert, images...).
- - Fix radio button without label
-   Options still had a margin-top, when there is no label above.
-   (Which produced the all-time favorite bug of unwanted scrollbars))
- - Improve item duplication
-   There are still some issues with duplication (and multiselect).
-   Will be fixed soon™.
+- Add image feature to TextEditor
+  Images are always inline and scaled down to the font size (of the text
+  element as a whole).
+- Add blockquote feature to TextEditor
+  This creates a special quote text, which is indented and has quote marks
+  x2.5 the font size.
+- Add new position property fixedSize ('Feste Abmessungen')
+  This allows elements in dynamic sections to have fixed dimensions.
+  (Some modifications to property panel logic, to show dimension fields and
+  proper labels.)
+  Only implemented for dropList and button elements!
+- Add flex orientation for dropList
+  This new setting makes child items space around in a row with line
+  break.
+  Images in vertical alignment now always reserve the whole row and don't
+  appear next to each other.
+- Allow negative values for z-index and margins
+- Rework color inputs
+  Use a suffix button to activate color picker instead of having an extra
+  form field. This makes for a cleaner layout and also has the additional
+  benefit of saving vertical space, reducing the need for scrolling.
+  Also add direct input for likert line coloring color.
+- Change/Fix radio button and checkbox color to dark green
+  Affects all elements using radio buttons (likert, images...).
+- Fix radio button without label
+  Options still had a margin-top, when there is no label above.
+  (Which produced the all-time favorite bug of unwanted scrollbars))
+- Improve item duplication
+  There are still some issues with duplication (and multiselect).
+  Will be fixed soon™.
 
 1.17.0
- - Rework text field and text area styling
-   The other variants are basically the same as filled. The only
-   difference is the background color, which we are manipulating anyway.
-   So there is no reason to keep them.
-   The selected nackground color is now correctly applied to both
-   remaining appearance variants.
- - Add coloring options to toggle-button
-   Now correctly sets the chosen background color and additionally sets
-   another (configurable) color to the selected value
- - Revert radio button color to default when not selected
- - Add special character 'apostrophe' to TextEditor
+- Rework text field and text area styling
+  The other variants are basically the same as filled. The only
+  difference is the background color, which we are manipulating anyway.
+  So there is no reason to keep them.
+  The selected nackground color is now correctly applied to both
+  remaining appearance variants.
+- Add coloring options to toggle-button
+  Now correctly sets the chosen background color and additionally sets
+  another (configurable) color to the selected value
+- Revert radio button color to default when not selected
+- Add special character 'apostrophe' to TextEditor
 
 1.16.0
- - Fix text with background and font color
- - Fix line-height property for radio button group
- - Set default line height of 135 for likert and text
- - Fix dropList values in player
- - Allow indentation with individual sizes
- - Move radio button label 1px (!) to the top
- - Change radio button color to dark green
-   For all elements using radio buttons.
- - Fix missing translation for "Andere Optionen durchstreichen"
- - Add section element list
-   It is part of the section menu (appearing to the left of the hovered section)
-   This allows to select elements without clicking them on the canvas, as
-   elements may be obstructed or not visible for some reason.
-   Also when an elements is selected it briefly gets z-index 100 so it is
-   moved to the front and visible and manipulatable.
- - New element for cloze: toggle-button
-   This is a replacement for actual radio button groups. Will be extended
-   with colors in the next release.
+- Fix text with background and font color
+- Fix line-height property for radio button group
+- Set default line height of 135 for likert and text
+- Fix dropList values in player
+- Allow indentation with individual sizes
+- Move radio button label 1px (!) to the top
+- Change radio button color to dark green
+  For all elements using radio buttons.
+- Fix missing translation for "Andere Optionen durchstreichen"
+- Add section element list
+  It is part of the section menu (appearing to the left of the hovered section)
+  This allows to select elements without clicking them on the canvas, as
+  elements may be obstructed or not visible for some reason.
+  Also when an elements is selected it briefly gets z-index 100 so it is
+  moved to the front and visible and manipulatable.
+- New element for cloze: toggle-button
+  This is a replacement for actual radio button groups. Will be extended
+  with colors in the next release.
 
 1.15.0
- - New element frame ("Rahmen")
-   (Tested and working for static layouts. Usage in dynamic layouts at one's
-   own risk.)
- - TextEditor: New functionality to create hanging indent
-   It now also possible to set the indent size. It will be used for hanging
-   and normal indents.
- - Fix reading of droplist element IDs
-   Should now correctly recognize already given (/read) IDs and refuse.
- - Fix creating elements in empty (i.e. newly created) dropLists
- - Improve property panel layout
-   Delete and duplicate buttons are no longer part of the tab view. They are
-   always visible below it.
- - Fix min-height showing up before being checked
- - Make text elements no longer start with a margin
- - Fix image scaling for radio-image element
-   Images are scaled down when needed. Small images do not scale up.
- - Improve drop list item margins
-   Horizontal orientation no longer has a wrong bottom-margin on the last
-   element but elements now have a margin sideways (5px).
- - Reduce unused space in textarea
+- New element frame ("Rahmen")
+  (Tested and working for static layouts. Usage in dynamic layouts at one's
+  own risk.)
+- TextEditor: New functionality to create hanging indent
+  It now also possible to set the indent size. It will be used for hanging
+  and normal indents.
+- Fix reading of droplist element IDs
+  Should now correctly recognize already given (/read) IDs and refuse.
+- Fix creating elements in empty (i.e. newly created) dropLists
+- Improve property panel layout
+  Delete and duplicate buttons are no longer part of the tab view. They are
+  always visible below it.
+- Fix min-height showing up before being checked
+- Make text elements no longer start with a margin
+- Fix image scaling for radio-image element
+  Images are scaled down when needed. Small images do not scale up.
+- Improve drop list item margins
+  Horizontal orientation no longer has a wrong bottom-margin on the last
+  element but elements now have a margin sideways (5px).
+- Reduce unused space in textarea
 
 1.14.0
- - Fix reading of existing drop lists
- - Fix reading of highlight properties of text elements
- - New elements:
-  - Slider
-  - Spelling
- - Text elements have a general font size again
-   Specific parts of the text can still have a different font size
-   applied to them.
+- Fix reading of existing drop lists
+- Fix reading of highlight properties of text elements
+- New elements:
+- Slider
+- Spelling
+- Text elements have a general font size again
+  Specific parts of the text can still have a different font size
+  applied to them.
 
 1.13.0
- - Remove underlinable option for text
- - Offer a choice of colors for marking text
- - Fix text element with background color and font color at the same time
- - Add proper label to textarea and reduce vertical space around text
- - Add 30px default bottom-margin to likert and radio
- - Rework dropList items to have an ID and allow images references
-   To use images a text option has to be created like before. The image
-   can be set afterwards. When an option has both a text and an image, the
-   text is ignored and the image is shown.
- - Improve ID-Service to free up IDs when elements are deleted
- - Improve cloze element all around - most importantly allowing to manually
-   size sub-elements
+- Remove underlinable option for text
+- Offer a choice of colors for marking text
+- Fix text element with background color and font color at the same time
+- Add proper label to textarea and reduce vertical space around text
+- Add 30px default bottom-margin to likert and radio
+- Rework dropList items to have an ID and allow images references
+  To use images a text option has to be created like before. The image
+  can be set afterwards. When an option has both a text and an image, the
+  text is ignored and the image is shown.
+- Improve ID-Service to free up IDs when elements are deleted
+- Improve cloze element all around - most importantly allowing to manually
+ size sub-elements
 
 1.12.0
- - Add new element cloze ("Lückentext")
-   Similar to a text element but parses the text on change and replaces
-   markers with actual ui elements.
-   The text is then displayed in line with the elements.
-   Allowed markers are presented by buttons in the text editor but can
-   also be entered manually. Implemented by now are "\i" for inputs
-   and "\z" for drop Zones.
-   It is now possible to select sub-elements (in addition to the parent cloze element)
-   to alter element properties as usual.
-   This element is still in development and contains functional and visual issues.
-   Known issues:
-    - To generate the text and elements you have to open the TextEditor at least once.
-    - Elements are regenerated everytime the text is changed. This means they get a
-      new ID and lose changed property values.
-    - Text styling (like bold) does not continue after an inserted sub-element.
-      To work around that, the style has to be applied separately to the text before
-      and after inserted elements.
-    - Changing dimension properties of sub-elements does not work.
- - Add typographic quotes to TextEditor's special characters
- - Fix radio button alignment
-   Should now always correctly line up with the text on different line
-   heights.
- - Allow element deletion regardless of the selected section
-   This has the additional benefit of allowing to delete multiple selected
-   elements in different sections.
- - Setting list style in TextEditor now also toggles the list (when not set)
- - Setting list style in TextEditor applies the selected font size to the list counter
-   It takes the selected font size, which is indepent of the font size of the items
-   in the list. If you change the font size you may have to re-apply the font size
-   to the list. This can be done by selecting the wanted style again.
- - Changed default values:
-   - font size: 20px
-   - likert and text: line-height: 135px
-   - likert and audio: width: 250px
-   - page: margin: 30px
- - Revert likert heading with images to not scale the images
- - Improve visuals of radio-button-image elements
-   Images are scaled again but behave a little better.
- - Make min-height optional
+- Add new element cloze ("Lückentext")
+  Similar to a text element but parses the text on change and replaces
+  markers with actual ui elements.
+  The text is then displayed in line with the elements.
+  Allowed markers are presented by buttons in the text editor but can
+  also be entered manually. Implemented by now are "\i" for inputs
+  and "\z" for drop Zones.
+  It is now possible to select sub-elements (in addition to the parent cloze element)
+  to alter element properties as usual.
+  This element is still in development and contains functional and visual issues.
+  Known issues:
+  - To generate the text and elements you have to open the TextEditor at least once.
+  - Elements are regenerated everytime the text is changed. This means they get a
+    new ID and lose changed property values.
+  - Text styling (like bold) does not continue after an inserted sub-element.
+    To work around that, the style has to be applied separately to the text before
+    and after inserted elements.
+  - Changing dimension properties of sub-elements does not work.
+- Add typographic quotes to TextEditor's special characters
+- Fix radio button alignment
+  Should now always correctly line up with the text on different line
+  heights.
+- Allow element deletion regardless of the selected section
+  This has the additional benefit of allowing to delete multiple selected
+  elements in different sections.
+- Setting list style in TextEditor now also toggles the list (when not set)
+- Setting list style in TextEditor applies the selected font size to the list counter
+  It takes the selected font size, which is indepent of the font size of the items
+  in the list. If you change the font size you may have to re-apply the font size
+  to the list. This can be done by selecting the wanted style again.
+- Changed default values:
+ - font size: 20px
+ - likert and text: line-height: 135px
+ - likert and audio: width: 250px
+ - page: margin: 30px
+- Revert likert heading with images to not scale the images
+- Improve visuals of radio-button-image elements
+  Images are scaled again but behave a little better.
+- Make min-height optional
 
 1.11.0
- - New DropList feature: highlightReceivingDropList ("Potentielle Ablagen hervorheben")
-   When set eligible dropLists display a highlight effect. Currently with
-   a colored border. The color is adjustable.
-   This needs to be set on the target list, NOT on the list items are being
-   dragged from.
- - Refactor likert layout and add first column ratio property
-   Images now scale depending on the available space.
-   The new property controls the first (column) size parameter for the
-   grid. The others are fixed at 1. Decimal values are allowed for
-   fine-tuned control.
- - Improve TextEditor toolbar layout and functionality
-   Reordered the controls to make it look nicer. The sub menu no longer exists.
-   Improve layouting to prevent elements from moving unexpextedly on different
-   window sizes.
-   Changed color and list inputs to split-buttons. Those combine a button
-   with a dropdown allowing to specify the action of the button.
-   For lists this does not actually toggle the list. The button needs to be used
-   after setting the style. For colors the color is set immediately after using
-   the dropdown/color picker.
-   Now saves the set color and it can be applied to subsequent selections as well.
- - Change dropList styling
-   (Item margins and dropList border radius)
- - Improved cursors everywhere
-   Notice how the cursor changes to the grabbing hand on click before
-   actually dragging canvas elements!
-   The resizing preview in dynamic mode is no longer obstructed by the
-   element itself. It is now hidden while resize-dragging.
-   Color inputs now have the pointer cursor.
- - Fix TestEditor (console) error when using the bullet-lists
- - Fix likert column-edit dialog to set values on save
- - Move some styling properties to the styling tab
-   Applies to: borderRadius, itemBackgroundColor
+- New DropList feature: highlightReceivingDropList ("Potentielle Ablagen hervorheben")
+  When set eligible dropLists display a highlight effect. Currently with
+  a colored border. The color is adjustable.
+  This needs to be set on the target list, NOT on the list items are being
+  dragged from.
+- Refactor likert layout and add first column ratio property
+  Images now scale depending on the available space.
+  The new property controls the first (column) size parameter for the
+  grid. The others are fixed at 1. Decimal values are allowed for
+  fine-tuned control.
+- Improve TextEditor toolbar layout and functionality
+  Reordered the controls to make it look nicer. The sub menu no longer exists.
+  Improve layouting to prevent elements from moving unexpextedly on different
+  window sizes.
+  Changed color and list inputs to split-buttons. Those combine a button
+  with a dropdown allowing to specify the action of the button.
+  For lists this does not actually toggle the list. The button needs to be used
+  after setting the style. For colors the color is set immediately after using
+  the dropdown/color picker.
+  Now saves the set color and it can be applied to subsequent selections as well.
+- Change dropList styling
+  (Item margins and dropList border radius)
+- Improved cursors everywhere
+  Notice how the cursor changes to the grabbing hand on click before
+  actually dragging canvas elements!
+  The resizing preview in dynamic mode is no longer obstructed by the
+  element itself. It is now hidden while resize-dragging.
+  Color inputs now have the pointer cursor.
+- Fix TestEditor (console) error when using the bullet-lists
+- Fix likert column-edit dialog to set values on save
+- Move some styling properties to the styling tab
+  Applies to: borderRadius, itemBackgroundColor
 
 1.10.0
- - Fix reading of existing likert element row values
- - Fix reading of existing dropList elements
-   (This element was internally reworked and no longer has the 'options' property.
-   To remain backwards compatible old 'option' lists are now correctly transformed to 'value' lists.)
- - Fix textarea edit dialog to use multiline dialog
- - Improve dialog sizing and styling
+- Fix reading of existing likert element row values
+- Fix reading of existing dropList elements
+  (This element was internally reworked and no longer has the 'options' property.
+  To remain backwards compatible old 'option' lists are now correctly transformed to 'value' lists.)
+- Fix textarea edit dialog to use multiline dialog
+- Improve dialog sizing and styling
 
 1.9.1
- - Make text underlinable
- - Fix marking of text
+- Make text underlinable
+- Fix marking of text
 
 1.9.0
 - Fix dropList element 'connectedTo' property renaming

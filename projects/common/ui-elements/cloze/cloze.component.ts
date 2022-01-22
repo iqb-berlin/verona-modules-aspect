@@ -4,7 +4,7 @@ import {
 import { ClozeElement } from './cloze-element';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
 import { InputElement } from '../../models/uI-element';
-import { CompoundChildOverlayComponent } from '../../directives/cloze-child-overlay/compound-child-overlay.component';
+import { CompoundChildOverlayComponent } from '../../components/compound-child-overlay.component';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({

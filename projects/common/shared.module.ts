@@ -52,7 +52,7 @@ import { ToggleButtonComponent } from './ui-elements/toggle-button/toggle-button
 import { MarkingBarComponent } from './components/marking-bar/marking-bar.component';
 import { StyleMarksPipe } from './ui-elements/cloze/styleMarks.pipe';
 import { MarkingButtonComponent } from './components/marking-bar/marking-button.component';
-import { CompoundChildOverlayComponent } from './directives/cloze-child-overlay/compound-child-overlay.component';
+import { CompoundChildOverlayComponent } from './components/compound-child-overlay.component';
 
 @NgModule({
   imports: [

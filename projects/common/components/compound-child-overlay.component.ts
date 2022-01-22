@@ -2,11 +2,11 @@ import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ValueChangeElement } from '../../models/uI-element';
-import { ToggleButtonElement } from '../../ui-elements/toggle-button/toggle-button';
-import { TextFieldSimpleElement } from '../../ui-elements/textfield-simple/text-field-simple-element';
-import { DropListSimpleElement } from '../../ui-elements/drop-list-simple/drop-list-simple';
-import { ElementComponent } from '../element-component.directive';
+import { ValueChangeElement } from '../models/uI-element';
+import { ToggleButtonElement } from '../ui-elements/toggle-button/toggle-button';
+import { TextFieldSimpleElement } from '../ui-elements/textfield-simple/text-field-simple-element';
+import { DropListSimpleElement } from '../ui-elements/drop-list-simple/drop-list-simple';
+import { ElementComponent } from '../directives/element-component.directive';
 
 @Component({
   selector: 'app-compound-child-overlay',

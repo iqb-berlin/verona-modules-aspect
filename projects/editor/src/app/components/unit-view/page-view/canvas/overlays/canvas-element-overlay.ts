@@ -14,7 +14,7 @@ import { CompoundElementComponent } from
   '../../../../../../../../common/directives/compound-element.directive';
 import { ClozeComponent } from '../../../../../../../../common/ui-elements/cloze/cloze.component';
 import { ClozeElement } from '../../../../../../../../common/ui-elements/cloze/cloze-element';
-import { CompoundChildOverlayComponent } from '../../../../../../../../common/directives/cloze-child-overlay/compound-child-overlay.component';
+import { CompoundChildOverlayComponent } from '../../../../../../../../common/components/compound-child-overlay.component';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {

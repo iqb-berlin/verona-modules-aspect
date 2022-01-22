@@ -5,7 +5,7 @@ import {
 import { FormGroup } from '@angular/forms';
 import { ElementComponent } from './element-component.directive';
 import { InputElement, ValueChangeElement } from '../models/uI-element';
-import { CompoundChildOverlayComponent } from './cloze-child-overlay/compound-child-overlay.component';
+import { CompoundChildOverlayComponent } from '../components/compound-child-overlay.component';
 import { LikertRadioButtonGroupComponent } from '../ui-elements/likert/likert-radio-button-group.component';
 
 @Directive({ selector: 'app-compound-element' })

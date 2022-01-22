@@ -102,12 +102,11 @@ export class ElementContainerComponent implements OnInit {
     this.subscribeForKeyboardEvents(this.elementComponent as TextFieldComponent | TextAreaComponent);
   }
 
-  apply(mode: 'mark' | 'delete', color: string): void {
+  applySelectiontoText(mode: 'mark' | 'delete', color: string): void {
     TextMarker
       .applySelection(
         mode,
         color,
-        (this.elementComponent as TextComponent).textContainerRef.nativeElement,
         this.elementComponent as TextComponent
       );
     this.isMarkingBarOpen = false;
@@ -220,7 +219,7 @@ export class ElementContainerComponent implements OnInit {
         (mouseUp.ctrlKey)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
-        this.apply(this.selectedMode, this.selectedColor);
+        this.applySelectiontoText(this.selectedMode, this.selectedColor);
       } else if (!this.isMarkingBarOpen) {
         this.openMarkingBar(mouseUp, mouseDown, elementComponent);
       }
@@ -259,7 +258,7 @@ export class ElementContainerComponent implements OnInit {
           if (selection.active) {
             this.selectedColor = selection.color;
             this.selectedMode = selection.mode;
-            this.apply(selection.mode, selection.color);
+            this.applySelectiontoText(selection.mode, selection.color);
           } else {
             this.selectedColor = null;
             this.selectedMode = null;

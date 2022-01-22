@@ -6,12 +6,12 @@ export class TextMarker {
   static applySelection(
     mode: 'mark' | 'delete',
     color: string,
-    element: HTMLElement,
     textComponent: TextComponent
   ): void {
     const selection = window.getSelection();
     if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
+      const element = textComponent.textContainerRef.nativeElement;
       if (TextMarker.isRangeInside(range, element)) {
         TextMarker.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({

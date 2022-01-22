@@ -12,7 +12,7 @@ export class Page {
   alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom' = 'left';
   alwaysVisibleAspectRatio: number = 50;
 
-  constructor(serializedPage: Page = {} as Page) {
+  constructor(serializedPage: Page = {} as Page) { // TODO
     Object.assign(this, serializedPage);
     this.sections = [];
     if (serializedPage.sections && serializedPage.sections.length > 0) {

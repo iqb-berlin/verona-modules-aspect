@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class IdService {
+export class IdService { // TODO rename: capitalize
   private givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,

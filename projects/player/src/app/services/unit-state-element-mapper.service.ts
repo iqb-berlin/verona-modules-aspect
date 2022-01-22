@@ -17,31 +17,29 @@ export class UnitStateElementMapperService {
   dropListValueIds!: DragNDropValueObject[];
 
   registerDropListValueIds(unitDefinition: Unit): void {
-    const dropListElements: UIElement[] = [];
-    this.findNestedDropLists(unitDefinition.pages, dropListElements);
-    this.dropListValueIds = dropListElements
+    this.dropListValueIds = UnitStateElementMapperService.findNestedUIElement(unitDefinition.pages, 'drop-list')
       .reduce(
         (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
           (currentValue.value && currentValue.value.length) ? accumulator.concat(currentValue.value) : accumulator), []
       );
   }
 
-  private findNestedDropLists(value: any | unknown[], dropListElements: UIElement[]): void {
-    if (this.isObject(value)) {
-      if (value.type === 'drop-list') {
-        dropListElements.push(value);
+  static findNestedUIElement(value: any | unknown[], type: string): UIElement[] {
+    const elements: UIElement[] = [];
+    if (value && typeof value === 'object') {
+      if (Array.isArray(value)) {
+        value.forEach((node: unknown) => elements
+          .push(...UnitStateElementMapperService.findNestedUIElement(node, type)));
+      } else if (value.type === type) {
+        elements.push(value);
       } else {
         const keys = (Object.keys(value));
-        keys.forEach((key: string) => this.findNestedDropLists(value[key], dropListElements));
+        keys.forEach((key: string) => elements
+          .push(...UnitStateElementMapperService.findNestedUIElement(value[key], type)));
       }
-    } else if (this.isArray(value)) {
-      value.forEach((element: unknown) => this.findNestedDropLists(element, dropListElements));
     }
+    return elements;
   }
-
-  private isObject = (value: unknown) => !!(value && typeof value === 'object' && !Array.isArray(value));
-
-  private isArray = (value: unknown) => !!(value && typeof value === 'object' && Array.isArray(value));
 
   mapToElementValue(
     elementModel: UIElement,

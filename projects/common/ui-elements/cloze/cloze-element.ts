@@ -80,7 +80,8 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     const newText = ClozeElement.replaceElementMarkers(serializedElement.text);
     const newDocument = ClozeElement.createClozeDocument(newText);
     this.document = ClozeElement.createDocumentModels(newDocument, childModels);
-    console.log('this compatible document', this.document);
+    delete this.text;
+    delete this.parts;
   }
 
   static replaceElementMarkers(text: string): string {

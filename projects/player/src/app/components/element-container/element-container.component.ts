@@ -25,11 +25,12 @@ import { ElementFactory } from '../../../../../common/util/element.factory';
 import { KeyboardService } from '../../services/keyboard.service';
 import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
-import { MarkingService } from '../../services/marking.service';
+
 import { MediaPlayerService } from '../../services/media-player.service';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
 import { VeronaPostService } from '../../services/verona-post.service';
 import { NativeEventService } from '../../services/native-event.service';
+import { TextMarker } from '../../classes/text-marker';
 
 @Component({
   selector: 'app-element-container',
@@ -71,7 +72,6 @@ export class ElementContainerComponent implements OnInit {
               private veronaPostService: VeronaPostService,
               private mediaPlayerService: MediaPlayerService,
               private unitStateElementMapperService: UnitStateElementMapperService,
-              private markingService: MarkingService,
               private changeDetectorRef: ChangeDetectorRef) {
   }
 
@@ -103,7 +103,7 @@ export class ElementContainerComponent implements OnInit {
   }
 
   apply(mode: 'mark' | 'delete', color: string): void {
-    this.markingService
+    TextMarker
       .applySelection(
         mode,
         color,
@@ -120,8 +120,7 @@ export class ElementContainerComponent implements OnInit {
     elementComponent.elementModel = this.unitStateElementMapperService
       .mapToElementValue(
         this.elementModel,
-        this.unitStateService.getUnitStateElement(this.elementModel.id),
-        this.markingService
+        this.unitStateService.getUnitStateElement(this.elementModel.id)
       );
     return elementComponent;
   }
@@ -178,8 +177,7 @@ export class ElementContainerComponent implements OnInit {
             child.elementModel = this.unitStateElementMapperService
               .mapToElementValue(
                 childModel,
-                this.unitStateService.getUnitStateElement(child.elementModel.id),
-                this.markingService
+                this.unitStateService.getUnitStateElement(child.elementModel.id)
               );
             this.unitStateService.registerElement(
               this.unitStateElementMapperService.mapToUnitStateValue(
@@ -216,8 +214,8 @@ export class ElementContainerComponent implements OnInit {
 
   private stopSelection(mouseUp: MouseEvent, mouseDown: MouseEvent, elementComponent: TextComponent) {
     const selection = window.getSelection();
-    if (selection && this.markingService.isSelectionValid(selection) && selection.rangeCount > 0) {
-      if (!this.markingService.isRangeInside(selection.getRangeAt(0),
+    if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
+      if (!TextMarker.isRangeInside(selection.getRangeAt(0),
         elementComponent.textContainerRef.nativeElement) ||
         (mouseUp.ctrlKey)) {
         selection.removeAllRanges();

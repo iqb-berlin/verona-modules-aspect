@@ -8,7 +8,7 @@ import { VideoElement } from '../../../../common/ui-elements/video/video-element
 import { AudioElement } from '../../../../common/ui-elements/audio/audio-element';
 import { DropListElement } from '../../../../common/ui-elements/drop-list/drop-list';
 import { UnitStateElementCode } from '../models/verona';
-import { MarkingService } from './marking.service';
+import { TextMarker } from '../classes/text-marker';
 
 @Injectable({
   providedIn: 'root'
@@ -43,13 +43,12 @@ export class UnitStateElementMapperService {
 
   mapToElementValue(
     elementModel: UIElement,
-    unitStateElement: UnitStateElementCode | undefined,
-    markingService: MarkingService
+    unitStateElement: UnitStateElementCode | undefined
   ): UIElement {
     if (unitStateElement && unitStateElement.value !== undefined) {
       switch (elementModel.type) {
         case 'text':
-          elementModel.text = markingService
+          elementModel.text = TextMarker
             .restoreMarkings(unitStateElement.value as string[], elementModel.text);
           break;
         case 'image':

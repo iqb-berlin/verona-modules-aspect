@@ -1,25 +1,23 @@
-import { Injectable } from '@angular/core';
 import { TextComponent } from '../../../../common/ui-elements/text/text.component';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class MarkingService {
+export class TextMarker {
   private static readonly MARKING_TAG = 'ASPECT-MARKED';
 
-  applySelection(mode: 'mark' | 'delete',
-                 color: string,
-                 element: HTMLElement,
-                 textComponent: TextComponent): void {
+  static applySelection(
+    mode: 'mark' | 'delete',
+    color: string,
+    element: HTMLElement,
+    textComponent: TextComponent
+  ): void {
     const selection = window.getSelection();
-    if (selection && this.isSelectionValid(selection) && selection.rangeCount > 0) {
+    if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      if (this.isRangeInside(range, element)) {
-        this.applyRange(range, selection, mode === 'delete', color);
+      if (TextMarker.isRangeInside(range, element)) {
+        TextMarker.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
-          values: [this.getMarkingData(textComponent.elementModel.text as string),
-            this.getMarkingData(element.innerHTML)]
+          values: [TextMarker.getMarkingData(textComponent.elementModel.text as string),
+            TextMarker.getMarkingData(element.innerHTML)]
         });
         textComponent.elementModel.text = element.innerHTML;
       } else {
@@ -30,16 +28,17 @@ export class MarkingService {
     } // nothing to do!
   }
 
-  isSelectionValid = (selection: Selection): boolean => selection.toString().length > 0;
+  static isSelectionValid = (selection: Selection): boolean => selection.toString().length > 0;
 
-  isRangeInside(range: Range, element: HTMLElement): boolean {
-    return (this.isDescendantOf(range.startContainer, element) && this.isDescendantOf(range.endContainer, element));
+  static isRangeInside(range: Range, element: HTMLElement): boolean {
+    return (TextMarker.isDescendantOf(range.startContainer, element) &&
+      TextMarker.isDescendantOf(range.endContainer, element));
   }
 
-  getMarkingData = (htmlText: string): string[] => {
+  static getMarkingData = (htmlText: string): string[] => {
     const markingStartPattern =
-      new RegExp(`<${MarkingService.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
-    const markingClosingTag = `</${MarkingService.MARKING_TAG.toLowerCase()}>`;
+      new RegExp(`<${TextMarker.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
+    const markingClosingTag = `</${TextMarker.MARKING_TAG.toLowerCase()}>`;
     let newHtmlText = htmlText;
     const markCollection = [];
     let matchesArray;
@@ -55,25 +54,25 @@ export class MarkingService {
           newHtmlText = newHtmlText.replace(startMatch, '');
           const endIndex = newHtmlText.search(endMatch);
           newHtmlText = newHtmlText.replace(endMatch, '');
-          markCollection.push(`${startIndex}-${endIndex}-${this.getMarkingColor(startMatch)}`);
+          markCollection.push(`${startIndex}-${endIndex}-${TextMarker.getMarkingColor(startMatch)}`);
         }
       }
     } while (matchesArray);
     return markCollection;
   };
 
-  restoreMarkings(markings: string[], htmlText: string): string {
+  static restoreMarkings(markings: string[], htmlText: string): string {
     let newHtmlText = htmlText;
     if (markings.length) {
       const markCollectionReversed = [...markings].reverse();
       const markingDataPattern = /^(\d+)-(\d+)-(.+)$/;
-      const markingClosingTag = `</${MarkingService.MARKING_TAG.toLowerCase()}>`;
+      const markingClosingTag = `</${TextMarker.MARKING_TAG.toLowerCase()}>`;
       markCollectionReversed.forEach(markingData => {
         const matchesArray = markingData.match(markingDataPattern);
         if (matchesArray) {
           const startIndex = Number(matchesArray[1]);
           const endIndex = Number(matchesArray[2]);
-          const startMatch = this.createMarkingStartTag(matchesArray[3]);
+          const startMatch = TextMarker.createMarkingStartTag(matchesArray[3]);
           newHtmlText = newHtmlText.substring(0, endIndex) + markingClosingTag + newHtmlText.substr(endIndex);
           newHtmlText = newHtmlText.substring(0, startIndex) + startMatch + newHtmlText.substr(startIndex);
         }
@@ -82,39 +81,39 @@ export class MarkingService {
     return newHtmlText;
   }
 
-  isDescendantOf(node: Node | null, element: HTMLElement): boolean {
+  static isDescendantOf(node: Node | null, element: HTMLElement): boolean {
     if (!node || node === document) {
       return false;
     }
     if (node.parentElement === element) {
       return true;
     }
-    return this.isDescendantOf(node.parentNode, element);
+    return TextMarker.isDescendantOf(node.parentNode, element);
   }
 
-  private getMarkingColor = (tag: string): string => {
+  private static getMarkingColor = (tag: string): string => {
     const colors = tag.match(/\d{1,3}, \d{1,3}, \d{1,3}/);
-    return (colors) ? this.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
+    return (colors) ? TextMarker.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
   };
 
-  private createMarkingStartTag(color: string): string {
-    const rgb = this.hexToRgb(color);
+  private static createMarkingStartTag(color: string): string {
+    const rgb = TextMarker.hexToRgb(color);
     return `<${
-      MarkingService.MARKING_TAG.toLowerCase()
+      TextMarker.MARKING_TAG.toLowerCase()
     } style="background-color: rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]});">`;
   }
 
-  private applyRange(
+  private static applyRange(
     range: Range, selection: Selection, clear: boolean, color: string
   ): void {
     if (range.startContainer === range.endContainer) {
       if (clear) {
-        this.clearMarkingFromNode(range);
+        TextMarker.clearMarkingFromNode(range);
       } else {
-        this.markNode(range, color);
+        TextMarker.markNode(range, color);
       }
     } else {
-      const nodes: Node[] = this.findNodes(range.commonAncestorContainer.childNodes, selection);
+      const nodes: Node[] = TextMarker.findNodes(range.commonAncestorContainer.childNodes, selection);
       // When the user finishes selecting between paragraphs and the selection happens from
       // back to front, Firefox does not consider the start container as a selected child node.
       // Therefore, it is added to the list of selected nodes at the beginning.
@@ -124,17 +123,17 @@ export class MarkingService {
       // When the user finishes selecting between paragraphs the browser does not consider the end container
       // as a selected child node. Therefore, it is added to the list of selected nodes at the end.
       if (range.endOffset === 0) {
-        this.addEndContainer(nodes, range.endContainer);
+        TextMarker.addEndContainer(nodes, range.endContainer);
       }
       if (clear) {
-        this.clearNodes(nodes, range);
+        TextMarker.clearNodes(nodes, range);
       } else {
-        this.markNodes(nodes, range, color);
+        TextMarker.markNodes(nodes, range, color);
       }
     }
   }
 
-  private addEndContainer = (nodes: Node[], endContainer: Node): void => {
+  private static addEndContainer = (nodes: Node[], endContainer: Node): void => {
     if (endContainer.nodeType === Node.ELEMENT_NODE) {
       if (endContainer.childNodes.length) {
         if (!nodes.includes(endContainer.childNodes[0])) {
@@ -148,43 +147,43 @@ export class MarkingService {
     }
   };
 
-  private clearMarkingFromNode(range: Range): void {
-    if (range.startContainer.parentElement?.tagName?.toUpperCase() === MarkingService.MARKING_TAG) {
+  private static clearMarkingFromNode(range: Range): void {
+    if (range.startContainer.parentElement?.tagName?.toUpperCase() === TextMarker.MARKING_TAG) {
       const previousText = range.startContainer.nodeValue?.substring(0, range.startOffset) || '';
       const text = range.startContainer.nodeValue?.substring(range.startOffset, range.endOffset) || '';
       const nextText = range.startContainer.nodeValue?.substring(range.endOffset) || '';
       if (text) {
-        this.clearMarking(range.startContainer, text, previousText, nextText);
+        TextMarker.clearMarking(range.startContainer, text, previousText, nextText);
       }
     }
   }
 
-  private clearMarking(node: Node, text: string, previousText: string, nextText: string) {
+  private static clearMarking(node: Node, text: string, previousText: string, nextText: string) {
     const textElement = document.createTextNode(text as string);
     if (node.parentNode) {
       const { parentNode } = node.parentNode;
       const color = (node.parentNode as HTMLElement).style.backgroundColor || 'none';
       parentNode?.replaceChild(textElement, node.parentNode);
       if (previousText) {
-        const prev = this.createMarkedElement(color);
+        const prev = TextMarker.createMarkedElement(color);
         prev.append(document.createTextNode(previousText));
         parentNode?.insertBefore(prev, textElement);
       }
       if (nextText) {
-        const end = this.createMarkedElement(color);
+        const end = TextMarker.createMarkedElement(color);
         end.append(document.createTextNode(nextText));
         parentNode?.insertBefore(end, textElement.nextSibling);
       }
     }
   }
 
-  private clearNodes(nodes: Node[], range: Range): void {
+  private static clearNodes(nodes: Node[], range: Range): void {
     nodes.forEach((node: Node) => {
       const index = nodes.findIndex(rangeNode => rangeNode === node);
-      if (node.parentElement?.tagName.toUpperCase() === MarkingService.MARKING_TAG) {
-        const nodeValues = this.getNodeValues(node, nodes, index, range);
+      if (node.parentElement?.tagName.toUpperCase() === TextMarker.MARKING_TAG) {
+        const nodeValues = TextMarker.getNodeValues(node, nodes, index, range);
         if (nodeValues.text) {
-          this.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
+          TextMarker.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
         } else {
           // eslint-disable-next-line no-console
           console.warn('Cannot recreate node for text', nodeValues);
@@ -193,10 +192,10 @@ export class MarkingService {
     });
   }
 
-  private mark(
+  private static mark(
     node: Node, text: string, previousText: string, nextText: string, color: string
   ): void {
-    const markedElement: HTMLElement = this.createMarkedElement(color);
+    const markedElement: HTMLElement = TextMarker.createMarkedElement(color);
     markedElement.append(document.createTextNode(text));
     // important!
     const { parentNode } = node;
@@ -211,7 +210,7 @@ export class MarkingService {
     }
   }
 
-  private getNodeValues = (node: Node, nodes: Node[], index: number, range: Range): {
+  private static getNodeValues = (node: Node, nodes: Node[], index: number, range: Range): {
     text: string, previousText: string, nextText: string
   } => {
     const start = range.startOffset;
@@ -231,29 +230,29 @@ export class MarkingService {
     return { text, previousText, nextText };
   };
 
-  private markNode(range: Range, color: string): void {
-    if (range.startContainer.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG) {
-      const markedElement: HTMLElement = this.createMarkedElement(color);
+  private static markNode(range: Range, color: string): void {
+    if (range.startContainer.parentElement?.tagName.toUpperCase() !== TextMarker.MARKING_TAG) {
+      const markedElement: HTMLElement = TextMarker.createMarkedElement(color);
       range.surroundContents(markedElement);
     }
   }
 
-  private markNodes(nodes: Node[], range: Range, color: string): void {
+  private static markNodes(nodes: Node[], range: Range, color: string): void {
     nodes.forEach((node, index) => {
-      const nodeValues = this.getNodeValues(node, nodes, index, range);
-      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== MarkingService.MARKING_TAG) {
-        this.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
+      const nodeValues = TextMarker.getNodeValues(node, nodes, index, range);
+      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== TextMarker.MARKING_TAG) {
+        TextMarker.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
       }
     });
   }
 
-  private createMarkedElement = (color: string): HTMLElement => {
-    const markedElement = document.createElement(MarkingService.MARKING_TAG);
+  private static createMarkedElement = (color: string): HTMLElement => {
+    const markedElement = document.createElement(TextMarker.MARKING_TAG);
     markedElement.style.backgroundColor = color;
     return markedElement;
   };
 
-  private findNodes(childList: Node[] | NodeListOf<ChildNode>, selection: Selection): Node[] {
+  private static findNodes(childList: Node[] | NodeListOf<ChildNode>, selection: Selection): Node[] {
     const nodes: Node[] = [];
     childList.forEach((node: Node) => {
       if (selection.containsNode(node, true)) {
@@ -262,7 +261,7 @@ export class MarkingService {
         }
         if (node.nodeType === Node.ELEMENT_NODE) {
           if (node.childNodes.length) {
-            nodes.push(...this.findNodes(node.childNodes, selection));
+            nodes.push(...TextMarker.findNodes(node.childNodes, selection));
           } else if (!nodes.includes(node)) {
             nodes.push(node);
           }
@@ -272,12 +271,12 @@ export class MarkingService {
     return nodes;
   }
 
-  private rgbToHex = (rgb: number[]): string => `#${rgb.map(x => {
+  private static rgbToHex = (rgb: number[]): string => `#${rgb.map(x => {
     const hex = x.toString(16);
     return hex.length === 1 ? `0${hex}` : hex;
   }).join('')}`;
 
-  private hexToRgb = (hex: string): number[] => {
+  private static hexToRgb = (hex: string): number[] => {
     const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
     if (normal) return normal.slice(1).map(e => parseInt(e, 16));
     const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);

@@ -1,4 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
+import { ToggleButtonElement } from '../../toggle-button/toggle-button';
 
 const ToggleButtonExtension =
   Node.create({
@@ -8,8 +9,8 @@ const ToggleButtonExtension =
 
     addAttributes() {
       return {
-        id: {
-          default: 'will be generated'
+        model: {
+          default: new ToggleButtonElement({ type: 'toggle-button' })
         }
       };
     },

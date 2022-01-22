@@ -1,4 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
+import { TextFieldSimpleElement } from '../../textfield-simple/text-field-simple-element';
 
 const TextFieldExtension =
   Node.create({
@@ -8,8 +9,8 @@ const TextFieldExtension =
 
     addAttributes() {
       return {
-        id: {
-          default: 'will be generated'
+        model: {
+          default: new TextFieldSimpleElement({ type: 'text-field' })
         }
       };
     },

@@ -7,7 +7,7 @@ import {
   UIElement, InputElement, CompoundElement,
   ClozeDocument,
   PositionedElement, PositionProperties,
-  FontElement, FontProperties, ClozeDocumentPart
+  FontElement, FontProperties, ClozeDocumentParagraphPart, ClozeDocumentParagraph
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement } from '../../util/unit-interface-initializer';
 import { TextFieldSimpleElement } from '../textfield-simple/text-field-simple-element';
@@ -47,7 +47,7 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
 
   getChildElements(): InputElement[] {
     const elementList: InputElement[] = [];
-    this.document.content.forEach((documentPart: any) => {
+    this.document.content.forEach((documentPart: ClozeDocumentParagraph) => {
       if (documentPart.type === 'paragraph' || documentPart.type === 'heading') {
         elementList.push(...ClozeElement.getParagraphCustomElements(documentPart));
       } else if (documentPart.type === 'bulletList' || documentPart.type === 'orderedList') {
@@ -70,42 +70,35 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
       return [];
     }
     return documentPart.content
-      .filter((word: ClozeDocumentPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type))
-      .reduce((accumulator: any[], currentValue: any) => {
-        return accumulator.concat(currentValue.attrs.model);
-      }, []);
+      .filter((word: ClozeDocumentParagraphPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type))
+      .reduce((accumulator: any[], currentValue: any) => accumulator.concat(currentValue.attrs.model), []);
   }
 
   private handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
     const childModels = ClozeElement.parseElementList(serializedElement.parts);
 
-    const textFieldElementList = Object.values(childModels).filter((el: any) => el.type === 'text-field');
-    const dropListElementList = Object.values(childModels).filter((el: any) => el.type === 'drop-list');
-    const radioElementList = Object.values(childModels).filter((el: any) => el.type === 'toggle-button');
+    const newText = ClozeElement.replaceElementMarkers(serializedElement.text);
+    const newDocument = ClozeElement.createClozeDocument(newText);
+    this.document = ClozeElement.createDocumentModels(newDocument, childModels);
+    console.log('this compatible document', this.document);
+  }
 
-    const replacedText = (serializedElement.text as string).replace(/\\i|\\z|\\r/g, match => {
+  static replaceElementMarkers(text: string): string {
+    return text.replace(/\\i|\\z|\\r/g, match => {
       switch (match) {
         case '\\i':
-          return `<app-nodeview-text-field id="${textFieldElementList.shift()?.id}"></app-nodeview-text-field>`;
-          break;
+          return '<app-nodeview-text-field></app-nodeview-text-field>';
         case '\\z':
-          return `<app-nodeview-drop-list id="${dropListElementList.shift()?.id}"></app-nodeview-drop-list>`;
-          break;
+          return '<app-nodeview-drop-list></app-nodeview-drop-list>';
         case '\\r':
-          return `<app-nodeview-toggle-button id="${radioElementList.shift()?.id}"></app-nodeview-toggle-button>`;
-          break;
+          return '<app-nodeview-toggle-button></app-nodeview-toggle-button>';
         default:
           throw Error('error in match');
       }
-      return match;
     });
+  }
 
-    if (textFieldElementList.length === 0 ||
-        dropListElementList.length === 0 ||
-        radioElementList.length === 0) {
-      throw Error('Error while reading cloze element!');
-    }
-
+  static createClozeDocument(text: string): ClozeDocument {
     const editor = new Editor({
       extensions: [
         StarterKit,
@@ -113,9 +106,20 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
         DropListExtension,
         TextFieldExtension
       ],
-      content: replacedText
+      content: text
     });
-    this.document = editor.getJSON() as ClozeDocument;
+    return editor.getJSON() as ClozeDocument;
+  }
+
+  private static createDocumentModels(document: ClozeDocument, modelList: InputElement[]): ClozeDocument {
+    document.content.forEach((paragraph: ClozeDocumentParagraph) => {
+      paragraph.content.forEach((part: ClozeDocumentParagraphPart) => {
+        if (['TextField', 'DropList', 'ToggleButton'].includes(part.type)) {
+          part.attrs!.model = ClozeElement.createElement(modelList.shift() as InputElement);
+        }
+      });
+    });
+    return document;
   }
 
   private static parseElementList(

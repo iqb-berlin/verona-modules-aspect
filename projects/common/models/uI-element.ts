@@ -95,10 +95,10 @@ export interface ClozeDocument {
 export interface ClozeDocumentParagraph {
   type: string;
   attrs: Record<string, string | number | boolean>;
-  content: ClozeDocumentPart[];
+  content: ClozeDocumentParagraphPart[];
 }
 
-export interface ClozeDocumentPart {
+export interface ClozeDocumentParagraphPart {
   type: string;
   text?: string;
   marks?: any[];

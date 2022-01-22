@@ -3,11 +3,9 @@ import {
 } from '@angular/core';
 import { ClozeElement } from './cloze-element';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
-import { ClozeDocumentParagraph, ClozeDocumentPart, InputElement } from '../../models/uI-element';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { InputElement } from '../../models/uI-element';
 import { CompoundChildOverlayComponent } from '../../directives/cloze-child-overlay/compound-child-overlay.component';
 import { ElementComponent } from '../../directives/element-component.directive';
-import { LikertRadioButtonGroupComponent } from '../likert/likert-radio-button-group.component';
 
 @Component({
   selector: 'app-cloze',
@@ -58,13 +56,12 @@ import { LikertRadioButtonGroupComponent } from '../likert/likert-radio-button-g
          [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
          [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-         [style.margin-bottom]="part.attrs.margin + 'px'"
-         [style.margin-left]="part.attrs.hangingIndent ? '' :
-               ($any(part.attrs.indentSize) * $any(part.attrs.indent)) + 'px'"
-         [style.text-align]="part.attrs.textAlign"
-         [style.text-indent]="part.attrs.hangingIndent ?
-               ($any(part.attrs.indentSize) * $any(part.attrs.indent)) + 'px' :
-               ''">
+         [style.margin-bottom]="part.attrs?.margin + 'px'"
+         [style.margin-left]="part.attrs?.hangingIndent ? '' :
+               ($any(part.attrs?.indentSize) * $any(part.attrs?.indent)) + 'px'"
+         [style.text-align]="part.attrs?.textAlign"
+         [style.text-indent]="part.attrs?.hangingIndent ?
+               ($any(part.attrs?.indentSize) * $any(part.attrs?.indent)) + 'px' : ''">
         <ng-container [ngTemplateOutlet]="paragraphChildren"
                       [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </p>

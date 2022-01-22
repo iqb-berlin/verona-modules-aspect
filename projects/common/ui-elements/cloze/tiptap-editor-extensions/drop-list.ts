@@ -1,4 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
+import { DropListSimpleElement } from '../../drop-list-simple/drop-list-simple';
 
 const DropListExtension =
   Node.create({
@@ -8,8 +9,8 @@ const DropListExtension =
 
     addAttributes() {
       return {
-        id: {
-          default: 'will be generated'
+        model: {
+          default: new DropListSimpleElement({ type: 'drop-list', height: 25, width: 100 })
         }
       };
     },

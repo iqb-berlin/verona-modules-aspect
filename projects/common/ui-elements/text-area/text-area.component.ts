@@ -1,4 +1,6 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component, Output, EventEmitter, Input
+} from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { TextAreaElement } from './text-area-element';
 
@@ -22,7 +24,7 @@ import { TextAreaElement } from './text-area-element';
       <textarea matInput #input
                 autocomplete="off" rows="{{elementModel.rowCount}}"
                 [formControl]="elementFormControl"
-                [value]="elementModel.value"
+                [value]="$any(elementModel.value)"
                 [readonly]="elementModel.readOnly"
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.fontProps.lineHeight"

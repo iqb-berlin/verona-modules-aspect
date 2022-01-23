@@ -24,7 +24,7 @@ import { TextFieldElement } from './text-field-element';
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
-             [value]="elementModel.value"
+             [value]="$any(elementModel.value)"
              [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
@@ -54,7 +54,7 @@ import { TextFieldElement } from './text-field-element';
                     [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
-             [value]="elementModel.value"
+             [value]="$any(elementModel.value)"
              [readonly]="elementModel.readOnly"
              [pattern]="elementModel.pattern"
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"

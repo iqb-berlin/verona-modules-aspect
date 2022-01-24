@@ -8,5 +8,12 @@ export class LikertElementRow extends InputElement implements LikertRow {
   constructor(serializedElement: UIElement) {
     super(serializedElement);
     Object.assign(this, serializedElement);
+    this.handleBackwardsCompatibility(serializedElement);
+  }
+
+  handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
+    if (serializedElement.value === 0 && serializedElement.columnCount) {
+      this.value = 1;
+    }
   }
 }

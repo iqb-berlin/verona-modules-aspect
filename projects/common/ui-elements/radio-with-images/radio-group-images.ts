@@ -28,5 +28,12 @@ export class RadioGroupImagesElement extends InputElement implements PositionedE
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||
       'transparent';
+    this.handleBackwardsCompatibility(serializedElement);
+  }
+
+  handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
+    if (serializedElement.value === 0 && serializedElement.columns && serializedElement.columns.length) {
+      this.value = 1;
+    }
   }
 }

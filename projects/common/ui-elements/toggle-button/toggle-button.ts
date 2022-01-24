@@ -29,5 +29,12 @@ export class ToggleButtonElement extends InputElement implements FontElement, Su
     this.surfaceProps.backgroundColor =
       serializedElement.surfaceProps?.backgroundColor as string ||
       'transparent';
+    this.handleBackwardsCompatibility(serializedElement);
+  }
+
+  handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
+    if (serializedElement.value === 0 && serializedElement.options && serializedElement.options.length) {
+      this.value = 1;
+    }
   }
 }

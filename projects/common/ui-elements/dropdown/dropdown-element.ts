@@ -26,5 +26,12 @@ export class DropdownElement extends InputElement implements PositionedElement, 
 
     this.width = serializedElement.width || 240;
     this.height = serializedElement.height || 83;
+    this.handleBackwardsCompatibility(serializedElement);
+  }
+
+  handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
+    if (serializedElement.value === 0 && serializedElement.options && serializedElement.options.length) {
+      this.value = 1;
+    }
   }
 }

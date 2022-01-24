@@ -37,5 +37,12 @@ export class RadioButtonGroupElement extends InputElement implements PositionedE
       serializedElement.surfaceProps?.backgroundColor as string ||
       serializedElement.backgroundColor as string ||
       'transparent';
+    this.handleBackwardsCompatibility(serializedElement);
+  }
+
+  handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
+    if (serializedElement.value === 0 && serializedElement.options && serializedElement.options.length) {
+      this.value = 1;
+    }
   }
 }

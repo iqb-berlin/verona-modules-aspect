@@ -53,4 +53,8 @@ export class IdService { // TODO rename: capitalize
   removeId(id: string): void {
     this.givenIDs.splice(this.givenIDs.indexOf(id, 0), 1);
   }
+
+  reset(): void {
+    this.givenIDs = [];
+  }
 }

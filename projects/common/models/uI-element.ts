@@ -1,4 +1,6 @@
 // eslint-disable-next-line max-classes-per-file
+import { IdService } from '../../editor/src/app/services/id.service';
+
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert_row' | 'radio-group-images'
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
@@ -31,6 +33,9 @@ export abstract class UIElement {
       throw Error('No element type given!');
     }
     Object.assign(this, serializedElement);
+    if (IdService.getInstance() && IdService.getInstance().isIdAvailable(this.id)) {
+      IdService.getInstance().addID(this.id);
+    }
   }
 
   getProperty(property: string): any {

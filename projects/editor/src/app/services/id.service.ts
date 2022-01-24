@@ -29,6 +29,18 @@ export class IdService { // TODO rename: capitalize
     value: 0
   };
 
+  private static instance: IdService;
+
+  constructor() {
+    if (!IdService.instance) {
+      IdService.instance = this;
+    }
+  }
+
+  static getInstance(): IdService {
+    return IdService.instance;
+  }
+
   getNewID(type: string): string {
     if (!type) {
       throw Error('ID-Service: No type given!');

@@ -221,6 +221,11 @@ export class UnitService {
       if (newElement.type === 'cloze') {
         (newElement as ClozeElement).getChildElements().forEach((childElement: InputElement) => {
           childElement.id = this.idService.getNewID(childElement.type);
+          if ((childElement as UIElement).value instanceof Object) { // replace value Ids with fresh ones (dropList)
+            (childElement as UIElement).value.forEach((valueObject: { id: string }) => {
+              valueObject.id = this.idService.getNewID('value');
+            });
+          }
         });
       }
       section.elements.push(newElement as PositionedElement);

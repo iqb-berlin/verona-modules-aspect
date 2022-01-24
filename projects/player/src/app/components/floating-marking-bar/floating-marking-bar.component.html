@@ -1,4 +1,7 @@
 <ng-template
+    *ngIf="elementModel.highlightableYellow ||
+      elementModel.highlightableTurquoise ||
+      elementModel.highlightableOrange"
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="overlayOrigin"
     [cdkConnectedOverlayPositions]="positions"

@@ -33,7 +33,9 @@ import { ValueChangeElement } from '../../models/uI-element';
            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
            [innerHTML]="elementModel.text | safeResourceHTML"
-           (mousedown)="startSelection.emit($event)">
+           (mousedown)="elementModel.highlightableYellow ||
+             elementModel.highlightableTurquoise ||
+             elementModel.highlightableOrange ? startSelection.emit($event) : null">
       </div>
     </div>
   `,

@@ -56,7 +56,7 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
     const rect = (this.elementComponent.domElement.getBoundingClientRect());
     const viewConstraint = {
       top: window.innerHeight - rect.top > rect.height ? rect.height : window.innerHeight - rect.top,
-      left: window.innerWidth - rect.left > rect.width ? rect.width : window.innerWidth - rect.width
+      left: rect.width
     };
     const barConstraint = { top: viewConstraint.top - 100, left: viewConstraint.left - this.calculateOffset() };
     const left = this.position.left - rect.left;

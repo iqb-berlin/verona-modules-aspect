@@ -50,23 +50,7 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     if (unitDefinition) {
       this.unit = new Unit(JSON.parse(unitDefinition));
-      this.readExistingIDs();
     }
-  }
-
-  private readExistingIDs(): void {
-    this.unit.pages.forEach((page: Page) => {
-      page.sections.forEach((section: Section) => {
-        section.elements.forEach((element: UIElement) => {
-          this.idService.addID(element.id);
-          if (element.type === 'drop-list') {
-            element.value?.forEach((valueElement: DragNDropValueObject) => {
-              this.idService.addID(valueElement.id);
-            });
-          }
-        });
-      });
-    });
   }
 
   addPage(): void {

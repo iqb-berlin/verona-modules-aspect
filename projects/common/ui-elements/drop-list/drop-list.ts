@@ -9,6 +9,7 @@ import {
   UIElement
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
+import { IdService } from '../../../editor/src/app/services/id.service';
 
 export class DropListElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
   onlyOneItem: boolean = false;
@@ -43,6 +44,12 @@ export class DropListElement extends InputElement implements PositionedElement, 
       '#f4f4f2';
 
     this.handleBackwardsCompatibility(serializedElement);
+
+    this.value?.forEach((valueElement: DragNDropValueObject) => {
+      if (IdService.getInstance() && IdService.getInstance().isIdAvailable(valueElement.id)) {
+        IdService.getInstance().addID(valueElement.id);
+      }
+    });
   }
 
   handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {

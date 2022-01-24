@@ -18,9 +18,9 @@
 
 <app-floating-marking-bar
     *ngIf="elementModel.type === 'text'"
-    [elementModel]="$any(elementModel)"
+    [elementComponent]="elementComponent"
     [overlayOrigin]="overlayOrigin"
-    [positions]="positions"
     [isMarkingBarOpen]="isMarkingBarOpen"
+    [position]="markingBarPosition"
     (applySelection)="applySelectiontoText($event.mode, $event.color)">
 </app-floating-marking-bar>

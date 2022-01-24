@@ -49,6 +49,7 @@ export class ElementContainerComponent implements OnInit {
   selectedMode!: 'mark' | 'delete' | null;
 
   isMarkingBarOpen!: boolean;
+  markingBarPosition: { top: number, left: number } = { top: 0, left: 0 };
   positions: ConnectedPosition[] = [{
     originX: 'start',
     originY: 'top',
@@ -221,20 +222,14 @@ export class ElementContainerComponent implements OnInit {
       } else if (this.selectedMode && this.selectedColor) {
         this.applySelectiontoText(this.selectedMode, this.selectedColor);
       } else if (!this.isMarkingBarOpen) {
-        this.openMarkingBar(mouseUp, mouseDown, elementComponent);
+        this.openMarkingBar(mouseUp, mouseDown);
       }
     }
   }
 
-  private openMarkingBar(mouseUp: MouseEvent, mouseDown: MouseEvent, elementComponent: TextComponent) {
-    const rect = (elementComponent.domElement.getBoundingClientRect());
-    const mouseUpX = mouseUp.clientX - rect.left;
-    const mouseUpY = mouseUp.clientY - rect.top;
-    const mouseDownX = mouseDown.clientX - rect.left;
-    const mouseDownY = mouseDown.clientY - rect.top;
-    const offsetY = 15;
-    this.positions[0].offsetX = mouseDownY > mouseUpY ? mouseDownX : mouseUpX;
-    this.positions[0].offsetY = mouseDownY > mouseUpY ? mouseDownY + offsetY : mouseUpY + offsetY;
+  private openMarkingBar(mouseUp: MouseEvent, mouseDown: MouseEvent) {
+    this.markingBarPosition.left = mouseDown.clientY > mouseUp.clientY ? mouseDown.clientX : mouseUp.clientX;
+    this.markingBarPosition.top = mouseDown.clientY > mouseUp.clientY ? mouseDown.clientY : mouseUp.clientY;
     this.isMarkingBarOpen = true;
     this.nativeEventService.mouseDown
       .pipe(takeUntil(this.ngUnsubscribe), first())

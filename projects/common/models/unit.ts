@@ -1,7 +1,7 @@
 import { Page } from './page';
 import { moveArrayItem } from '../util/array';
 
-export const EXPORTED_MODULE_VERSION = 'iqb-aspect-definition@1.0.0';
+export const EXPORTED_MODULE_VERSION = 'iqb-aspect-definition@1.1.0';
 
 export class Unit {
   unitDefinitionType = EXPORTED_MODULE_VERSION;

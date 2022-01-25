@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { ConnectedPosition } from '@angular/cdk/overlay';
 import {
   InputElement, UIElement, ValueChangeElement
 } from '../../../../../common/models/uI-element';
@@ -50,14 +49,6 @@ export class ElementContainerComponent implements OnInit {
 
   isMarkingBarOpen!: boolean;
   markingBarPosition: { top: number, left: number } = { top: 0, left: 0 };
-  positions: ConnectedPosition[] = [{
-    originX: 'start',
-    originY: 'top',
-    overlayX: 'start',
-    overlayY: 'top',
-    offsetX: 0,
-    offsetY: 0
-  }];
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -103,7 +94,7 @@ export class ElementContainerComponent implements OnInit {
     this.subscribeForKeyboardEvents(this.elementComponent as TextFieldComponent | TextAreaComponent);
   }
 
-  applySelectiontoText(mode: 'mark' | 'delete', color: string): void {
+  applySelectionToText(mode: 'mark' | 'delete', color: string): void {
     TextMarker
       .applySelection(
         mode,
@@ -220,7 +211,7 @@ export class ElementContainerComponent implements OnInit {
         (mouseUp.ctrlKey)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
-        this.applySelectiontoText(this.selectedMode, this.selectedColor);
+        this.applySelectionToText(this.selectedMode, this.selectedColor);
       } else if (!this.isMarkingBarOpen) {
         this.openMarkingBar(mouseUp, mouseDown);
       }
@@ -253,7 +244,7 @@ export class ElementContainerComponent implements OnInit {
           if (selection.active) {
             this.selectedColor = selection.color;
             this.selectedMode = selection.mode;
-            this.applySelectiontoText(selection.mode, selection.color);
+            this.applySelectionToText(selection.mode, selection.color);
           } else {
             this.selectedColor = null;
             this.selectedMode = null;

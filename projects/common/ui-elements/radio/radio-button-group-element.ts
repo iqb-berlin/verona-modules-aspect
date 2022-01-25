@@ -8,6 +8,7 @@ import {
   UIElement
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
+import { ImportModuleVersion } from '../../classes/importModuleVersion';
 
 export class RadioButtonGroupElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
   options: string[] = [];
@@ -41,8 +42,9 @@ export class RadioButtonGroupElement extends InputElement implements PositionedE
   }
 
   handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
-    if (serializedElement.value === 0 && serializedElement.options && serializedElement.options.length) {
-      this.value = 1;
+    if ((serializedElement.value || serializedElement.value === 0) &&
+      !ImportModuleVersion.isUnitLoaded() && !ImportModuleVersion.verifyVersion()) {
+      this.value = Number(this.value) + 1;
     }
   }
 }

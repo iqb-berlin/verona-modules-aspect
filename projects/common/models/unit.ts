@@ -1,5 +1,6 @@
 import { Page } from './page';
 import { moveArrayItem } from '../util/array';
+import { ImportModuleVersion } from '../classes/importModuleVersion';
 
 export const EXPORTED_MODULE_VERSION = 'iqb-aspect-definition@1.1.0';
 
@@ -9,9 +10,11 @@ export class Unit {
 
   constructor(serializedUnit?: Unit) {
     if (serializedUnit && serializedUnit.pages.length > 0) {
+      ImportModuleVersion.setVersion(serializedUnit.unitDefinitionType || '');
       serializedUnit?.pages.forEach((page: Page) => {
         this.pages.push(new Page(page));
       });
+      ImportModuleVersion.setUnitLoaded();
     } else {
       this.pages.push(new Page());
     }

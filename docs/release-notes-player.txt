@@ -2,15 +2,15 @@ Player
 ======
 1.16.0
 - Start the valid value range for DropDown, Likert, RadioGroup, RadioGroupImages and ToggleButton at 1
-  Attention! This may cause incompatibility with tasks created with Editor < 1.22.0 or saved with Player < 1.16.0.
-  Preset and saved values for these elements will not be displayed correctly.
-- Improve the centering of the layout
+  Attention! This can lead to incompatibilities when reloading units that were answered in IQB - TestCenter
+  with AspectPlayer < 1.16.0. Already saved results are displayed incorrectly for these elements.
+- Improve centering of layout
 - Disable logs to console in production
 - Enable autostart of audios/videos when reloading the unit
 - Mark text without selecting first
 - Show marking options as popup when text is selected
 - Implement virtual keyboards for 'place value', 'numbers and basic operators', 'square, dash and dot'
-- Show virtual keyboard optionally on the right side of the screen
+- Show virtual keyboard optionally on the right side of the view
 
 1.15.0
 - Fix restoring of toggle buttons

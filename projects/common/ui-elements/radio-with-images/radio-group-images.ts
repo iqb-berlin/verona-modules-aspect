@@ -8,6 +8,7 @@ import {
   UIElement
 } from '../../models/uI-element';
 import { initFontElement, initPositionedElement, initSurfaceElement } from '../../util/unit-interface-initializer';
+import { ImportModuleVersion } from '../../classes/importModuleVersion';
 
 export class RadioGroupImagesElement extends InputElement implements PositionedElement, FontElement, SurfaceElement {
   columns: LikertColumn[] = []; // TODO
@@ -32,8 +33,9 @@ export class RadioGroupImagesElement extends InputElement implements PositionedE
   }
 
   handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
-    if (serializedElement.value === 0 && serializedElement.columns && serializedElement.columns.length) {
-      this.value = 1;
+    if ((serializedElement.value || serializedElement.value === 0) &&
+      !ImportModuleVersion.isUnitLoaded() && !ImportModuleVersion.verifyVersion()) {
+      this.value = Number(this.value) + 1;
     }
   }
 }

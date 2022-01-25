@@ -32,9 +32,7 @@ export class IdService { // TODO rename: capitalize
   private static instance: IdService;
 
   constructor() {
-    if (!IdService.instance) {
-      IdService.instance = this;
-    }
+    IdService.instance = this;
   }
 
   static getInstance(): IdService {

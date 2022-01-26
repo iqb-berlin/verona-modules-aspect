@@ -6,6 +6,9 @@ import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import {
+  trigger, style, transition, animate
+} from '@angular/animations';
 import { KeyboardService } from '../../services/keyboard.service';
 import { NativeEventService } from '../../services/native-event.service';
 import { PlayerConfig } from '../../models/verona';
@@ -14,8 +17,20 @@ import { Page } from '../../../../../common/models/page';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css']
+  styleUrls: ['./layout.component.css'],
+  animations: [
+    trigger('keyboardSlideInOut', [
+      transition(':enter', [
+        style({ width: 0 }),
+        animate(200, style({ width: '*' }))
+      ]),
+      transition(':leave', [
+        animate(200, style({ width: 0 }))
+      ])
+    ])
+  ]
 })
+
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() parentForm!: FormGroup;
   @Input() pages!: Page[];

@@ -63,7 +63,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [
-    ':host ::ng-deep .bar-style .mat-slider-thumb {border-radius: 0; width: 10px; height: 40px; bottom: -15px}'
+    ':host ::ng-deep .bar-style .mat-slider-thumb {border-radius: 0; width: 10px; height: 40px; bottom: -15px}',
+    ':host ::ng-deep .bar-style .mat-slider-track-fill { background-color: rgba(0,0,0,.38);}',
+    ':host ::ng-deep .bar-style .mat-slider-track-background { background-color: rgba(0,0,0,.38);}'
   ]
 })
 export class SliderComponent extends FormElementComponent implements OnInit {

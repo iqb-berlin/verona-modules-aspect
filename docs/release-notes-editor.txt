@@ -3,7 +3,8 @@ Editor
 1.23.0
  - Fix setting of the default z-index for frames
  - Use dot instead of comma as thousands separator in number line
- - Rename option "Balken statt Kreis" of number line to "Zahlenstrahl-Modus"
+ - Rename option "Balken statt Kreis" of slider to "Zahlenstrahl-Modus"
+ - Rename virtual keyboards for mathematics
  - Do not color the progress on the number line
 
 1.22.0

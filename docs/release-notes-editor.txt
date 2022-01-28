@@ -3,6 +3,7 @@ Editor
 1.23.0
  - Fix setting of the default z-index for frames
  - Use dot instead of comma as thousands separator in number line
+ - Rename option "Balken statt Kreis" of number line to "Zahlenstrahl-Modus"
 
 1.22.0
 - Rework cloze element

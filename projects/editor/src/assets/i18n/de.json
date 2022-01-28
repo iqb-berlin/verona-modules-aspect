@@ -98,7 +98,7 @@
     "maxLength": "Maximalwert",
     "maxValue": "Maximalwert",
     "showValues": "Zeige Start- und Endwert",
-    "barStyle": "Balken statt Kreis",
+    "barStyle": "Zahlenstrahl-Modus",
     "thumbLabel": "Zeige gewählten Wert",
     "maxLengthWarnMessage": "Maximalwert Warnmeldung",
     "pattern": "Muster",

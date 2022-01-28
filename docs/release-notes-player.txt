@@ -4,6 +4,7 @@ Player
 - Add animation for fixed virtual keyboard
 - Change names of virtual keyboards for math
 - Fix the display of dynamic elements with negative z-index
+- Use dot instead of comma as thousands separator in number line
 
 
 1.16.0

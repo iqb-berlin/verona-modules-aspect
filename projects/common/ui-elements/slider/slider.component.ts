@@ -32,7 +32,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
              [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-          {{elementModel.minValue | number:'.0'}}
+          {{elementModel.minValue | number:'':'de'}}
         </div>
         <div [style.display]="'flex'"
              [style.flex-direction]="'column'"
@@ -58,7 +58,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
              [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-        {{elementModel.maxValue | number:'.0'}}</div>
+        {{elementModel.maxValue | number:'':'de'}}</div>
       </div>
     </div>
   `,

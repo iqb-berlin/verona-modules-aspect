@@ -1,5 +1,11 @@
 Player
 ======
+1.17.0
+- Add animation for fixed virtual keyboard
+- Change names of virtual keyboards for math
+- Fix the display of dynamic elements with negative z-index
+
+
 1.16.0
 - Start the valid value range for DropDown, Likert, RadioGroup, RadioGroupImages and ToggleButton at 1
   Attention! This can lead to incompatibilities when reloading units that were answered in IQB - TestCenter

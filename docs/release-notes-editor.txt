@@ -1,5 +1,8 @@
 Editor
 ======
+1.24.0
+- - Show arrow for slider in number line mode
+
 1.23.0
  - Fix setting of the default z-index for frames
  - Use dot instead of comma as thousands separator in number line

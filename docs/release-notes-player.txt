@@ -1,5 +1,8 @@
 Player
 ======
+1.18.0
+- Show arrow for slider in number line mode
+
 1.17.0
 - Add animation for fixed virtual keyboard
 - Fix the display of dynamic elements with negative z-index

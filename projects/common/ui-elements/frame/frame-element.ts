@@ -20,13 +20,14 @@ export class FrameElement extends UIElement implements PositionedElement, Surfac
   constructor(serializedElement: Partial<UIElement>) {
     super(serializedElement);
     Object.assign(this, serializedElement);
-    if (serializedElement.positionProps && serializedElement.positionProps.zIndex === undefined) {
-      serializedElement.positionProps.zIndex = -1;
+    const newSerializedElement = serializedElement;
+    if (newSerializedElement.positionProps && newSerializedElement.positionProps.zIndex === undefined) {
+      newSerializedElement.positionProps.zIndex = -1;
     }
-    this.positionProps = initPositionedElement(serializedElement);
-    this.surfaceProps = initSurfaceElement(serializedElement);
+    this.positionProps = initPositionedElement(newSerializedElement);
+    this.surfaceProps = initSurfaceElement(newSerializedElement);
     this.surfaceProps.backgroundColor =
-      serializedElement.surfaceProps?.backgroundColor as string ||
+      newSerializedElement.surfaceProps?.backgroundColor as string ||
       'transparent';
   }
 }

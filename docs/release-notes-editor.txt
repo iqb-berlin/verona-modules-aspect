@@ -1,5 +1,8 @@
 Editor
 ======
+1.25.0
+- Remove border of slider rectangle in number line mode at position 0
+
 1.24.0
 - Show arrow for slider in number line mode
 - Center the position of slider rectangle in number line mode

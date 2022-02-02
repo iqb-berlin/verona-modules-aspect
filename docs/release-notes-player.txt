@@ -1,5 +1,8 @@
 Player
 ======
+1.19.0
+- Remove border of slider rectangle in number line mode at position 0
+
 1.18.0
 - Show arrow for slider in number line mode
 - Center the position of slider rectangle in number line mode
@@ -11,7 +14,6 @@ Player
 - Fix the display of dynamic elements with negative z-index
 - Use dot instead of comma as thousands separator in slider
 - Do not color the progress on the number line
-
 
 1.16.0
 - Start the valid value range for DropDown, Likert, RadioGroup, RadioGroupImages and ToggleButton at 1

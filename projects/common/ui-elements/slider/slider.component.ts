@@ -101,8 +101,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.number-marker {width: 2px; height: 20px; background-color: #555; margin: 10px auto 0 auto}',
     // eslint-disable-next-line max-len
     '.arrow-head {width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 20px solid #555;}',
+    // Background color must use !important to be displayed also in the editor
     // eslint-disable-next-line max-len
-    ':host ::ng-deep .bar-style .mat-slider-thumb {border-radius: 0; border: none; width: 9px; height: 40px; bottom: -20px; margin-right: 5px; background-color: #006064}',
+    ':host ::ng-deep .bar-style .mat-slider-thumb {border-radius: 0; border: none; width: 9px; height: 40px; bottom: -20px; margin-right: 5px; background-color: #006064 !important}',
     ':host ::ng-deep .bar-style .mat-slider-track-fill {background-color: rgba(0,0,0,0);}',
     ':host ::ng-deep .bar-style .mat-slider-track-background {background-color: rgba(0,0,0,0);}'
   ]

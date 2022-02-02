@@ -71,7 +71,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div class="arrow-line"></div>
         <div class="arrow-head"></div>
       </div>
-      <div [style.display]="'flex'"
+      <div *ngIf="valueMax && valueMin"
+           [style.display]="'flex'"
            [style.flex-direction]="'column'"
            [style.height.%]="100"
            [style.margin-right.px]="elementModel.barStyle ? valueMax.offsetWidth/2 - 8 : valueMax.offsetWidth"

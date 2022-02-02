@@ -2,6 +2,8 @@ Editor
 ======
 1.24.0
 - Show arrow for slider in number line mode
+- Center the position of slider rectangle in number line mode
+- Color the slider rectangle in number line mode also in position 0
 - Add a Unicode font to display squares, bars, and dots
 
 1.23.0

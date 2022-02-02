@@ -6,6 +6,8 @@ export type RunningState = 'running' | 'stopped';
 
 export type Progress = 'none' | 'some' | 'complete';
 
+export type PagingMode = 'separate' | 'concat-scroll' | 'concat-scroll-snap';
+
 export type StateReportPolicy = 'none' | 'eager' | 'on-demand';
 
 export type UnitStateElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
@@ -22,7 +24,7 @@ export interface PlayerConfig {
   unitTitle?: number;
   unitId?: number;
   stateReportPolicy?: StateReportPolicy;
-  pagingMode?: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
+  pagingMode?: PagingMode;
   logPolicy?: 'lean' | 'rich' | 'debug' | 'disabled';
   startPage?: string;
   enabledNavigationTargets?: NavigationTarget[]

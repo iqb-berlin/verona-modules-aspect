@@ -2,6 +2,7 @@ Player
 ======
 1.18.0
 - Show arrow for slider in number line mode
+- Add a Unicode font to display squares, bars, and dots
 
 1.17.0
 - Add animation for fixed virtual keyboard

@@ -2,6 +2,7 @@
   <ng-container *ngFor="let key of row; let lastRowKey = last">
     <app-key
         [key]="key"
+        [preset]="preset"
         [last]="!last && lastRowKey"
         [position]="position"
         (enterKey)="enterKey.emit($event)">

@@ -3,6 +3,7 @@
     mat-mini-fab
     class="key"
     [class.fixed-keyboard-key]="position === 'right'"
+    [style.font-weight]="preset==='squareDashDot' ? 400: null"
     [class.not-last-key]="!last"
     [class.oval-floating-keyboard-key]="oval && position === 'floating'"
     [class.oval-fixed-keyboard-key]="oval && position !== 'floating'"

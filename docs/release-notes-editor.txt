@@ -1,7 +1,8 @@
 Editor
 ======
 1.24.0
-- - Show arrow for slider in number line mode
+- Show arrow for slider in number line mode
+- Add a Unicode font to display squares, bars, and dots
 
 1.23.0
  - Fix setting of the default z-index for frames

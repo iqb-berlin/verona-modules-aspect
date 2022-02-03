@@ -2,6 +2,9 @@ Player
 ======
 1.19.0
 - Remove border of slider rectangle in number line mode at position 0
+- Set the minimum height of a page to the screen size
+- Set background color of page
+- Improves scroll snap behaviour for small pages
 
 1.18.0
 - Show arrow for slider in number line mode

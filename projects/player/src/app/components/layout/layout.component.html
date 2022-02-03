@@ -10,7 +10,6 @@
         scrollPagesView"></ng-container>
     </div>
   </div>
-
   <app-keyboard
       *ngIf="keyboardService.isOpen && keyboardService.position === 'right'"
       @keyboardSlideInOut
@@ -21,8 +20,6 @@
       (deleteCharacter)="keyboardService.deleterCharacters()"
       (enterKey)="keyboardService.enterKey($event)">
   </app-keyboard>
-
-
 </div>
 
 <ng-template #alwaysVisiblePageView>
@@ -36,8 +33,10 @@
          [style.max-width]="containerMaxWidth.alwaysVisiblePage">
       <div appHideFirstChild
            [hideFirstChild]="hidePageLabels"
+           [style.min-height]="'calc(100vh - ' + (alwaysVisiblePage.margin * 2) + 'px)'"
+           [style.background-color]="alwaysVisiblePage.backgroundColor"
            [style.max-width]="alwaysVisiblePage.hasMaxWidth ? alwaysVisiblePage.maxWidth + 'px' : '100%'"
-           [style.margin.px]="alwaysVisiblePage.margin">
+           [style.padding.px]="alwaysVisiblePage.margin">
         <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
         <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
                   [parentForm]="parentForm"
@@ -77,7 +76,9 @@
                  (selectedIndexChange)="onSelectedIndexChange($event)">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
       <mat-tab [label]="'pageIndication' | translate: {index: i + 1}">
-        <div [style.margin.px]="page.margin"
+        <div [style.min-height]="'calc(100vh - ' + (page.margin * 2) + 'px)'"
+             [style.background-color]="page.backgroundColor"
+             [style.padding.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
           <app-page [parentArrayIndex]="scrollPagesIndices[i]"
                     [parentForm]="parentForm"
@@ -95,9 +96,11 @@
   <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
     <div appHideFirstChild
          [hideFirstChild]="hidePageLabels"
+         [style.min-height]="'calc(100vh - ' + (page.margin * 2) + 'px)'"
+         [style.background-color]="page.backgroundColor"
          [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap'"
          [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
-         [style.margin.px]="page.margin"
+         [style.padding.px]="page.margin"
          appScrollIndex
          [pagesContainer]="pagesContainer"
          [selectIndex]="selectIndex"

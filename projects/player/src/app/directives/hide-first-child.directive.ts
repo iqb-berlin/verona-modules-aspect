@@ -40,7 +40,7 @@ export class HideFirstChildDirective implements OnInit, AfterViewInit, OnDestroy
     }
   }
 
-  private emitHeight() {
+  private emitHeight(): void {
     this.childHeight.emit(this.elementRef.nativeElement.firstChild.offsetHeight);
   }
 

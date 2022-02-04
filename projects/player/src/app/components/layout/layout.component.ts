@@ -51,7 +51,8 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right' ;
   layoutAlignment!: 'row' | 'column';
   scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
-  hidePageLabels!: boolean;
+  hidePageLabels: boolean = true;
+  tabHeaderHeight: number = 0;
 
   maxWidth: { alwaysVisiblePage: number, scrollPages: number, allPages: number } =
   { alwaysVisiblePage: 0, scrollPages: 0, allPages: 0 };
@@ -138,7 +139,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.layoutAlignment = (this.alwaysVisiblePagePosition === 'left' || this.alwaysVisiblePagePosition === 'right') ?
       'row' : 'column';
     this.scrollPageMode = this.playerConfig.pagingMode ? this.playerConfig.pagingMode : 'separate';
-    this.hidePageLabels = true;
 
     this.maxWidth.alwaysVisiblePage = this.getAbsolutePageWidth(this.alwaysVisiblePage);
     this.maxWidth.scrollPages = this.getScrollPagesWidth();

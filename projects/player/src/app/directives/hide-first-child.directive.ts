@@ -1,18 +1,51 @@
 import {
-  Directive, ElementRef, Input
+  AfterViewInit,
+  Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { NativeEventService } from '../services/native-event.service';
 
 @Directive({
   selector: '[appHideFirstChild]'
 })
-export class HideFirstChildDirective {
+export class HideFirstChildDirective implements OnInit, AfterViewInit, OnDestroy {
   @Input() hideFirstChild!: boolean;
+  @Output() childHeight = new EventEmitter<number>();
 
-  constructor(private elementRef: ElementRef) {}
+  private ngUnsubscribe = new Subject<void>();
+
+  constructor(
+    private elementRef: ElementRef,
+    private nativeEventService: NativeEventService
+  ) {}
 
   ngOnInit(): void {
-    if (this.hideFirstChild && this.elementRef.nativeElement.firstChild) {
-      this.elementRef.nativeElement.firstChild.style.display = 'none';
+    if (this.elementRef.nativeElement.firstChild) {
+      if (this.hideFirstChild) {
+        // default usage: hide element!
+        this.elementRef.nativeElement.firstChild.style.display = 'none';
+      } else {
+        // otherwise: send its height to handle it
+        this.nativeEventService.resize
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(() => this.emitHeight());
+      }
     }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.elementRef.nativeElement.firstChild && !this.hideFirstChild) {
+      this.emitHeight();
+    }
+  }
+
+  private emitHeight() {
+    this.childHeight.emit(this.elementRef.nativeElement.firstChild.offsetHeight);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

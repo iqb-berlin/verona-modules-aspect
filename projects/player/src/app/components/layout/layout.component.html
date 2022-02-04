@@ -31,13 +31,14 @@
          [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
          [class.left-container]="alwaysVisiblePagePosition === 'left'"
          [style.max-width]="containerMaxWidth.alwaysVisiblePage">
-      <div appHideFirstChild
-           [hideFirstChild]="hidePageLabels"
-           [style.min-height]="'calc(100vh - ' + (alwaysVisiblePage.margin * 2) + 'px)'"
+      <div [style.min-height]="'calc(100vh - ' + (alwaysVisiblePage.margin * 2) + 'px)'"
            [style.background-color]="alwaysVisiblePage.backgroundColor"
            [style.max-width]="alwaysVisiblePage.hasMaxWidth ? alwaysVisiblePage.maxWidth + 'px' : '100%'"
            [style.padding.px]="alwaysVisiblePage.margin">
-        <div class="mat-tab-label">{{'alwaysVisiblePage' | translate}}</div>
+        <div *ngIf="!hidePageLabels"
+             class="mat-tab-label">
+          {{'alwaysVisiblePage' | translate}}
+        </div>
         <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
                   [parentForm]="parentForm"
                   [isLastPage]="false"
@@ -71,12 +72,13 @@
 <ng-template #scrollPagesSeparatedView let-pagesContainer>
   <mat-tab-group appHideFirstChild
                  [hideFirstChild]="hidePageLabels"
+                 (childHeight)="tabHeaderHeight = $event"
                  mat-align-tabs="start"
                  [(selectedIndex)]="selectedIndex"
                  (selectedIndexChange)="onSelectedIndexChange($event)">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
       <mat-tab [label]="'pageIndication' | translate: {index: i + 1}">
-        <div [style.min-height]="'calc(100vh - ' + (page.margin * 2) + 'px)'"
+        <div [style.min-height]="'calc(100vh - ' + ((page.margin * 2 + tabHeaderHeight)) + 'px)'"
              [style.background-color]="page.backgroundColor"
              [style.padding.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
@@ -94,9 +96,7 @@
 
 <ng-template #scrollPagesScrolledView let-pagesContainer>
   <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
-    <div appHideFirstChild
-         [hideFirstChild]="hidePageLabels"
-         [style.min-height]="'calc(100vh - ' + (page.margin * 2) + 'px)'"
+    <div [style.min-height]="'calc(100vh - ' + (page.margin * 2) + 'px)'"
          [style.background-color]="page.backgroundColor"
          [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap'"
          [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
@@ -105,7 +105,8 @@
          [pagesContainer]="pagesContainer"
          [selectIndex]="selectIndex"
          [index]="i">
-      <div class="mat-tab-label">
+      <div *ngIf="!hidePageLabels"
+           class="mat-tab-label">
         {{'pageIndication' | translate: {index: i + 1} }}
       </div>
       <app-page [parentArrayIndex]="scrollPagesIndices[i]"

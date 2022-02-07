@@ -4,7 +4,6 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { VeronaAPIService, VoeStartCommand } from './services/verona-api.service';
 import { UnitService } from './services/unit.service';
-import { IdService } from './services/id.service';
 
 @Component({
   selector: 'editor-aspect',
@@ -22,7 +21,6 @@ export class AppComponent implements OnInit {
   isStandalone = (): boolean => window === window.parent;
 
   constructor(private unitService: UnitService,
-              private idService: IdService,
               private translateService: TranslateService,
               private veronaApiService: VeronaAPIService) {
     translateService.addLangs(['de']);
@@ -32,7 +30,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.veronaApiService.voeStartCommand
       .subscribe((message: VoeStartCommand): void => {
-        this.idService.reset();
         this.unitService.loadUnitDefinition(message.unitDefinition);
       });
     this.veronaApiService.voeGetDefinitionRequest

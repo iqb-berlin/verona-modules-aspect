@@ -49,6 +49,7 @@ export class UnitService {
 
   loadUnitDefinition(unitDefinition: string): void {
     if (unitDefinition) {
+      this.idService.reset();
       this.unit = new Unit(JSON.parse(unitDefinition));
     }
   }

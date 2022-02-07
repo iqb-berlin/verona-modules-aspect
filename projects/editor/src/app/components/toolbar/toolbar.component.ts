@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { UnitService } from '../../services/unit.service';
-import { IdService } from '../../services/id.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,17 +10,13 @@ import { IdService } from '../../services/id.service';
   ]
 })
 export class ToolbarComponent {
-  constructor(
-    private unitService: UnitService,
-    private idService: IdService
-  ) { }
+  constructor(private unitService: UnitService) { }
 
   save(): void {
     this.unitService.saveUnit();
   }
 
   async load(): Promise<void> {
-    this.idService.reset();
     await this.unitService.loadUnitFromFile();
   }
 }

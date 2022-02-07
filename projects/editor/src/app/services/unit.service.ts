@@ -48,9 +48,20 @@ export class UnitService {
   }
 
   loadUnitDefinition(unitDefinition: string): void {
-    if (unitDefinition) {
-      this.idService.reset();
-      this.unit = new Unit(JSON.parse(unitDefinition));
+    this.idService.reset();
+    let error = false;
+    if (!unitDefinition) {
+      error = true;
+    } else {
+      try {
+        this.unit = new Unit(JSON.parse(unitDefinition));
+      } catch (e) {
+        error = true;
+      }
+    }
+    if (error) {
+      this.messageService.showError('Unit konnte nicht geladen werden!');
+      this.unit = new Unit({});
     }
   }
 

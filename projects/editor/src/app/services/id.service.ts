@@ -65,6 +65,9 @@ export class IdService { // TODO rename: capitalize
   }
 
   reset(): void {
+    Object.keys(this.idCounter).forEach(counter => {
+      this.idCounter[counter] = 0;
+    });
     this.givenIDs = [];
   }
 }

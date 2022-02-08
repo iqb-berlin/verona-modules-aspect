@@ -35,7 +35,7 @@ import { ValueChangeElement } from '../../models/uI-element';
   styles: [
     '.image-container {position: relative}',
     '.max-size-image {max-width: 100%; max-height: 100%}',
-    '.center-content .max-size-image { width: 100%; height: 100%}',
+    '.center-content .max-size-image { object-fit: contain; width: 100%; height: 100%}',
     '.fit-image {width: 100%; height: 100%; object-fit: contain}'
   ]
 })

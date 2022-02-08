@@ -1,5 +1,5 @@
 import { InputElement, LikertRow, UIElement } from '../../models/uI-element';
-import { ImportModuleVersion } from '../../classes/importModuleVersion';
+import { ImportedModuleVersion } from '../../classes/importedModuleVersion';
 
 export class LikertElementRow extends InputElement implements LikertRow {
   text: string = '';
@@ -13,8 +13,8 @@ export class LikertElementRow extends InputElement implements LikertRow {
   }
 
   handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
-    if ((serializedElement.value || serializedElement.value === 0) &&
-      !ImportModuleVersion.isUnitLoaded() && !ImportModuleVersion.verifyVersion()) {
+    if ((serializedElement.value !== null) &&
+      !ImportedModuleVersion.unitLoaded && !ImportedModuleVersion.isGreaterThanOrEqualTo('1.1.0')) {
       this.value = Number(this.value) + 1;
     }
   }

@@ -1,6 +1,6 @@
 import { Page } from './page';
 import { moveArrayItem } from '../util/array';
-import { ImportModuleVersion } from '../classes/importModuleVersion';
+import { ImportedModuleVersion } from '../classes/importedModuleVersion';
 
 export const EXPORTED_MODULE_VERSION = 'iqb-aspect-definition@1.1.0';
 
@@ -8,16 +8,16 @@ export class Unit {
   unitDefinitionType = EXPORTED_MODULE_VERSION;
   pages: Page[] = [];
 
-  constructor(serializedUnit?: Unit) {
-    if (serializedUnit && serializedUnit.pages.length > 0) {
-      ImportModuleVersion.setVersion(serializedUnit.unitDefinitionType || '');
+  constructor(serializedUnit?: Partial<Unit>) {
+    ImportedModuleVersion.setVersion(serializedUnit?.unitDefinitionType);
+    if (serializedUnit?.pages && serializedUnit.pages.length > 0) {
       serializedUnit?.pages.forEach((page: Page) => {
         this.pages.push(new Page(page));
       });
-      ImportModuleVersion.setUnitLoaded();
     } else {
       this.pages.push(new Page());
     }
+    ImportedModuleVersion.unitLoaded = true;
   }
 
   addPage(page?: Page): void {

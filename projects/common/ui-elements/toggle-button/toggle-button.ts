@@ -6,7 +6,7 @@ import {
   FontProperties, SurfaceProperties
 } from '../../models/uI-element';
 import { initFontElement, initSurfaceElement } from '../../util/unit-interface-initializer';
-import { ImportModuleVersion } from '../../classes/importModuleVersion';
+import { ImportedModuleVersion } from '../../classes/importedModuleVersion';
 
 export class ToggleButtonElement extends InputElement implements FontElement, SurfaceElement {
   options: string[] = ['A', 'B'];
@@ -34,8 +34,8 @@ export class ToggleButtonElement extends InputElement implements FontElement, Su
   }
 
   handleBackwardsCompatibility(serializedElement: Partial<UIElement>): void {
-    if ((serializedElement.value || serializedElement.value === 0) &&
-      !ImportModuleVersion.isUnitLoaded() && !ImportModuleVersion.verifyVersion()) {
+    if ((serializedElement.value != null) &&
+      !ImportedModuleVersion.unitLoaded && !ImportedModuleVersion.isGreaterThanOrEqualTo('1.1.0')) {
       this.value = Number(this.value) + 1;
     }
   }

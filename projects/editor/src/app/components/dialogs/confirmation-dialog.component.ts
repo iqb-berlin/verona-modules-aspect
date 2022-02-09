@@ -8,7 +8,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
         {{data.text}}
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="true">{{'save' | translate }}</button>
+      <button mat-button [mat-dialog-close]="true">{{'confirm' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
     `

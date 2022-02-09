@@ -11,8 +11,8 @@ import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
   selector: 'aspect-section-dynamic',
   template: `
       <div [style.display]="'grid'"
-           [style.grid-template-columns]="section.gridColumnSizes"
-           [style.grid-template-rows]="section.gridRowSizes"
+           [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes"
+           [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes"
            [style.height.%]="100"
            cdkDropListGroup
            [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"

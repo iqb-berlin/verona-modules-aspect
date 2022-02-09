@@ -1,0 +1,27 @@
+:host {
+  text-align: center;
+  font-size: larger;
+}
+
+:host button {
+  text-align: left;
+  font-size: large;
+  margin: 5px;
+}
+
+:host ::ng-deep .mat-tab-label {
+  min-width: 0;
+}
+
+mat-tab-group {
+  padding: 10px;
+}
+
+::ng-deep app-ui-element-toolbox .mat-button-wrapper {
+  width: 100%;
+  display: inline-block;
+}
+
+.radio-button-placeholder {
+  width: 96%;
+}

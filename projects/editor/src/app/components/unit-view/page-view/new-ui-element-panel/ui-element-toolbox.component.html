@@ -39,16 +39,23 @@
         <mat-icon>menu_open</mat-icon>
         Klappliste
       </button>
-      <button mat-raised-button (click)="addUIElement('radio')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
-        <mat-icon>radio_button_checked</mat-icon>
-        Optionsfelder
-      </button>
-      <button mat-raised-button (click)="addUIElement('radio-group-images')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
-        <mat-icon>radio_button_checked</mat-icon>
-        Optionsfelder (Bild)
-      </button>
+
+      <div (mouseover)="hoverRadioButton = true" (mouseleave)="hoverRadioButton = false">
+        <button *ngIf="!hoverRadioButton" class="radio-button-placeholder" mat-raised-button>
+          <mat-icon>radio_button_checked</mat-icon>
+          Optionsfelder
+        </button>
+
+        <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio')"
+                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
+          einfach
+        </button>
+        <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio-group-images')"
+                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
+          komplex
+        </button>
+      </div>
+
       <button mat-raised-button (click)="addUIElement('drop-list')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','drop-list')">
         <mat-icon>drag_indicator</mat-icon>

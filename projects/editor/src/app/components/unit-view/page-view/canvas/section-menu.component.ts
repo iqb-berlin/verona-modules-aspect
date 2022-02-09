@@ -30,7 +30,7 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
     <mat-menu #heightMenu="matMenu" class="layoutMenu" xPosition="before">
       <div (click)="$event.stopPropagation()">
         <mat-form-field appearance="fill">
-          <mat-label>Höhe</mat-label>
+          <mat-label>{{'section-menu.height' | translate }}</mat-label>
           <input matInput mat-menu-item type="number"
                  [value]="$any(section.height)"
                  (click)="$any($event).stopPropagation()"
@@ -54,13 +54,13 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
           <mat-checkbox class="menuItem" [checked]="section.dynamicPositioning"
                         (click)="$any($event).stopPropagation()"
                         (change)="updateModel('dynamicPositioning', $event.checked)">
-            dynamisches Layout
+            {{'section-menu.dynamic-positioning' | translate }}
           </mat-checkbox>
         <div *ngIf="section.dynamicPositioning">
-          Spalten
+          {{'section-menu.columns' | translate }}
           <div class="size-group">
             <mat-form-field>
-              <mat-label>Anzahl</mat-label>
+              <mat-label>{{'section-menu.amount' | translate }}</mat-label>
               <input matInput type="number"
                      [value]="$any(section.gridColumnSizes.split(' ').length)"
                      (click)="$any($event).stopPropagation()"
@@ -69,12 +69,12 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
             <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
                           (click)="$any($event).stopPropagation()"
                           (change)="updateModel('autoColumnSize', $event.checked)">
-              dynamische Breite
+              {{'section-menu.autoColumnSize' | translate }}
             </mat-checkbox>
             <ng-container *ngIf="!section.autoColumnSize">
               <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs" fxLayout="row">
                 <mat-form-field>
-                  <mat-label>Breite {{i + 1}}</mat-label>
+                  <mat-label>{{'section-menu.width' | translate }} {{i + 1}}</mat-label>
                   <input matInput type="number"
                          [value]="size.value"
                          (click)="$any($event).stopPropagation()"
@@ -83,16 +83,16 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                 <mat-select [value]="size.unit"
                             (click)="$any($event).stopPropagation()"
                             (selectionChange)="changeGridSize('gridColumnSizes', i, true, $event.value)">
-                  <mat-option value="fr">Anteile</mat-option>
-                  <mat-option value="px">Bildpunkte</mat-option>
+                  <mat-option value="fr">{{'section-menu.fraction' | translate }}</mat-option>
+                  <mat-option value="px">{{'section-menu.pixel' | translate }}</mat-option>
                 </mat-select>
               </div>
             </ng-container>
           </div>
-          Zeilen
+          {{'section-menu.rows' | translate }}
           <div class="size-group">
             <mat-form-field>
-              <mat-label>Anzahl</mat-label>
+              <mat-label>{{'section-menu.amount' | translate }}</mat-label>
               <input matInput type="number"
                      [value]="$any(section.gridRowSizes.split(' ').length)"
                      (click)="$any($event).stopPropagation()"
@@ -101,12 +101,12 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
             <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
                           (click)="$any($event).stopPropagation()"
                           (change)="updateModel('autoRowSize', $event.checked)">
-              dynamische Höhe
+              {{'section-menu.autoRowSize' | translate }}
             </mat-checkbox>
             <ng-container *ngIf="!section.autoRowSize">
               <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
                 <mat-form-field>
-                  <mat-label>Höhe {{i + 1}}</mat-label>
+                  <mat-label>{{'section-menu.height' | translate }} {{i + 1}}</mat-label>
                   <input matInput type="number"
                          [value]="size.value"
                          (click)="$any($event).stopPropagation()"
@@ -115,8 +115,8 @@ import { UIElement } from '../../../../../../../common/models/uI-element';
                 <mat-select [value]="size.unit"
                             (click)="$any($event).stopPropagation()"
                             (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
-                  <mat-option value="fr">Anteile</mat-option>
-                  <mat-option value="px">Bildpunkte</mat-option>
+                  <mat-option value="fr">{{'section-menu.fraction' | translate }}</mat-option>
+                  <mat-option value="px">{{'section-menu.pixel' | translate }}</mat-option>
                 </mat-select>
               </div>
             </ng-container>

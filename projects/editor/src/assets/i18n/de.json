@@ -181,5 +181,17 @@
     "cloze": "Lückentext",
     "slider": "Schieberegler",
     "spell-correct": "Wort korrigieren"
+  },
+  "section-menu": {
+    "height": "Höhe",
+    "dynamic-positioning": "dynamisches Layout",
+    "columns": "Spalten",
+    "rows": "Zeilen",
+    "amount": "Anzahl",
+    "autoColumnSize": "dynamische Breite",
+    "autoRowSize": "dynamische Höhe",
+    "width": "Breite",
+    "fraction": "Anteile",
+    "pixel": "Bildpunkte"
   }
 }

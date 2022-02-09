@@ -7,74 +7,73 @@
       <button mat-raised-button (click)="addUIElement('text')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text');">
         <mat-icon>text_snippet</mat-icon>
-        Text
+        {{'toolbox.text' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('button')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','button')">
         <mat-icon>smart_button</mat-icon>
-        Knopf
+        {{'toolbox.button' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('frame')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','frame')">
         <mat-icon>crop_square</mat-icon>
-        Rahmen
+        {{'toolbox.frame' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('text-field')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
         <mat-icon>text_fields</mat-icon>
-        Eingabefeld
+        {{'toolbox.text-field' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('text-area')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area')">
         <mat-icon>notes</mat-icon>
-        Eingabebereich
+        {{'toolbox.text-area' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('checkbox')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','checkbox')">
         <mat-icon>check_box</mat-icon>
-        Kontrollkästchen
+        {{'toolbox.checkbox' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('dropdown')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','dropdown')">
         <mat-icon>menu_open</mat-icon>
-        Klappliste
+        {{'toolbox.dropdown' | translate }}
       </button>
 
       <div (mouseover)="hoverRadioButton = true" (mouseleave)="hoverRadioButton = false">
         <button *ngIf="!hoverRadioButton" class="radio-button-placeholder" mat-raised-button>
           <mat-icon>radio_button_checked</mat-icon>
-          Optionsfelder
+          {{'toolbox.radio' | translate }}
         </button>
-
         <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio')"
                 draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
-          einfach
+          {{'toolbox.simple' | translate }}
         </button>
         <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio-group-images')"
                 draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
-          komplex
+          {{'toolbox.complex' | translate }}
         </button>
       </div>
 
       <button mat-raised-button (click)="addUIElement('drop-list')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','drop-list')">
         <mat-icon>drag_indicator</mat-icon>
-        Ablegeliste
+        {{'toolbox.drop-list' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('image')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
         <mat-icon>image</mat-icon>
-        Bild
+        {{'toolbox.image' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('audio')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','audio')">
         <mat-icon>volume_up</mat-icon>
-        Audio
+        {{'toolbox.audio' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('video')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','video')">
         <mat-icon>ondemand_video</mat-icon>
-        Video
+        {{'toolbox.video' | translate }}
       </button>
     </div>
   </mat-tab>
@@ -86,22 +85,22 @@
       <button mat-raised-button (click)="addUIElement('likert')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','likert')">
         <mat-icon>toc</mat-icon>
-        Optionentabelle
+        {{'toolbox.likert' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('cloze')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','cloze')">
         <mat-icon>vertical_split</mat-icon>
-        Lückentext
+        {{'toolbox.cloze' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('slider')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','slider')">
         <mat-icon>linear_scale</mat-icon>
-        Schieberegler
+        {{'toolbox.slider' | translate }}
       </button>
       <button mat-raised-button (click)="addUIElement('spell-correct')"
               draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','spell-correct')">
         <mat-icon>format_strikethrough</mat-icon>
-        Wort korrigieren
+        {{'toolbox.spell-correct' | translate }}
       </button>
     </div>
   </mat-tab>

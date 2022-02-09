@@ -4,7 +4,7 @@ import {
 import { InputAssistancePreset } from '../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-math-keyboard',
+  selector: 'aspect-math-keyboard',
   templateUrl: './math-keyboard.component.html',
   styleUrls: ['./math-keyboard.component.css']
 })

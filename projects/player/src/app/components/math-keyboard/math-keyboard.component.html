@@ -1,12 +1,12 @@
 <div *ngFor="let row of mainKeys; let last = last">
   <ng-container *ngFor="let key of row; let lastRowKey = last">
-    <app-key
+    <aspect-key
         [key]="key"
         [preset]="preset"
         [last]="!last && lastRowKey"
         [position]="position"
         (enterKey)="enterKey.emit($event)">
-    </app-key>
+    </aspect-key>
     <span *ngIf="last && lastRowKey"
           [class.clear-button-container-floating-keyboard]="(
           preset === 'comparisonOperators' || preset === 'squareDashDot'
@@ -32,28 +32,27 @@
      [class.fixed-2-column-grid-layout]="position !== 'floating' && preset === 'numbersAndBasicOperators'">
   <ng-container *ngFor="let row of operators; let rowIndex = index ">
     <ng-container *ngFor="let key of row; let columnIndex = index">
-      <app-key *ngIf="key !== '='"
-               [key]="key"
-               [position]="position"
-               [style.grid-column-start]="columnIndex+1"
-               [style.grid-column-end]="columnIndex+2"
-               [style.grid-row-start]="rowIndex + 1"
-               [style.grid-row-end]="rowIndex + 2"
-               (enterKey)="enterKey.emit($event)">
-      </app-key>
+      <aspect-key *ngIf="key !== '='"
+                  [key]="key"
+                  [position]="position"
+                  [style.grid-column-start]="columnIndex+1"
+                  [style.grid-column-end]="columnIndex+2"
+                  [style.grid-row-start]="rowIndex + 1"
+                  [style.grid-row-end]="rowIndex + 2"
+                  (enterKey)="enterKey.emit($event)">
+      </aspect-key>
         <ng-container *ngIf="preset === 'numbersAndOperators'">
-          <app-key *ngIf="key === '='"
-                   [key]="key"
-                   [position]="position"
-                   [oval]="true"
-                   [style.grid-column-start]="3"
-                   [style.grid-column-end]="3"
-                   [style.grid-row-start]="1"
-                   [style.grid-row-end]="3"
-                   (enterKey)="enterKey.emit($event)">
-          </app-key>
+          <aspect-key *ngIf="key === '='"
+                      [key]="key"
+                      [position]="position"
+                      [oval]="true"
+                      [style.grid-column-start]="3"
+                      [style.grid-column-end]="3"
+                      [style.grid-row-start]="1"
+                      [style.grid-row-end]="3"
+                      (enterKey)="enterKey.emit($event)">
+          </aspect-key>
         </ng-container>
       </ng-container>
     </ng-container>
 </div>
-

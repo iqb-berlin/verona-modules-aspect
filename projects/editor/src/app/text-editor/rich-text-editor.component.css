@@ -29,7 +29,7 @@ mark {
   color: inherit;
 }
 
-app-rich-text-editor button.active {
+aspect-rich-text-editor button.active {
   background-color: lightgrey;
 }
 

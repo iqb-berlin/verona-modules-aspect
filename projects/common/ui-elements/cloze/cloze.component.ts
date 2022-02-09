@@ -8,7 +8,7 @@ import { CompoundChildOverlayComponent } from '../../components/compound-child-o
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
-  selector: 'app-cloze',
+  selector: 'aspect-cloze',
   template: `
     <ng-container *ngIf="elementModel.document.content.length == 0">
       Kein Dokument vorhanden
@@ -153,13 +153,13 @@ import { ElementComponent } from '../../directives/element-component.directive';
                [style.vertical-align]="'middle'">
         </ng-container>
         <span *ngIf="['ToggleButton', 'DropList', 'TextField'].includes(subPart.type)">
-          <app-compound-child-overlay [style.display]="'inline-block'"
-                                      [parentForm]="parentForm"
-                                      [element]="$any(subPart).attrs.model"
-                                      [editorMode]="editorMode"
-                                      (elementSelected)="childElementSelected.emit($event)"
-                                      (elementValueChanged)="elementValueChanged.emit($event)">
-          </app-compound-child-overlay>
+          <aspect-compound-child-overlay [style.display]="'inline-block'"
+                                         [parentForm]="parentForm"
+                                         [element]="$any(subPart).attrs.model"
+                                         [editorMode]="editorMode"
+                                         (elementSelected)="childElementSelected.emit($event)"
+                                         (elementValueChanged)="elementValueChanged.emit($event)">
+          </aspect-compound-child-overlay>
         </span>
       </ng-container>
     </ng-template>

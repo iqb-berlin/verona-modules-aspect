@@ -7,7 +7,7 @@ import { FormService } from '../../services/form.service';
 import { Section } from '../../../../../common/models/section';
 
 @Component({
-  selector: 'app-section',
+  selector: 'aspect-section',
   templateUrl: './section.component.html',
   styleUrls: ['./section.component.css']
 })

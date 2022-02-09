@@ -4,7 +4,7 @@ import { SelectionService } from '../../../../services/selection.service';
 import { UIElementType } from '../../../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-ui-element-toolbox',
+  selector: 'aspect-ui-element-toolbox',
   templateUrl: './ui-element-toolbox.component.html',
   styleUrls: ['./ui-element-toolbox.component.css']
 })

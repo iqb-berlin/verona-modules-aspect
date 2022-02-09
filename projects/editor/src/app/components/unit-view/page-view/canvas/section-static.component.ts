@@ -8,7 +8,7 @@ import { SectionDynamicComponent } from './section-dynamic.component';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 
 @Component({
-  selector: 'app-section-static',
+  selector: 'aspect-section-static',
   template: `
     <div #sectionElement class="section-wrapper"
          [style.outline]="isSelected ? '2px solid #ff4081': '1px dotted'"
@@ -16,10 +16,10 @@ import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
          (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
-      <app-static-canvas-overlay #elementComponent
-        *ngFor="let element of section.elements"
-        [element]="$any(element)">
-      </app-static-canvas-overlay>
+      <aspect-static-canvas-overlay #elementComponent
+                                    *ngFor="let element of section.elements"
+                                    [element]="$any(element)">
+      </aspect-static-canvas-overlay>
     </div>
   `,
   styles: [

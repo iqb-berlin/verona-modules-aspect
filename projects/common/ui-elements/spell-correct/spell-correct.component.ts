@@ -4,14 +4,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 import { SpellCorrectElement } from './spell-correct-element';
 
 @Component({
-  selector: 'app-spell-correct',
+  selector: 'aspect-spell-correct',
   template: `
     <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
          [class.center-content]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize">
       <div fxFlex
            fxLayout="column"
-           appInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+           aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
            [style.width.%]="100"
            [style.height.%]="100">
         <mat-form-field class="small-input">
@@ -41,7 +41,7 @@ import { SpellCorrectElement } from './spell-correct-element';
                 [style.width.%]="100"
                 [style.margin-top]="'-20px'"
                 [style.text-decoration-line]=
-                    "(inputElement && inputElement.focused) ||
+                  "(inputElement && inputElement.focused) ||
                   (inputElement && !!inputElement.value) ||
                   (elementFormControl && elementFormControl.value === '') ? 'line-through' : ''"
                 (click)="

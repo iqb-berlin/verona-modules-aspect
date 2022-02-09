@@ -5,7 +5,7 @@ import { CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { InputAssistancePreset } from '../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-floating-keyboard',
+  selector: 'aspect-floating-keyboard',
   templateUrl: './floating-keyboard.component.html',
   styleUrls: ['./floating-keyboard.component.scss']
 })

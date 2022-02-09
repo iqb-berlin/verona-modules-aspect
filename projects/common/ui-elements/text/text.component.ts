@@ -6,19 +6,19 @@ import { TextElement } from './text-element';
 import { ValueChangeElement } from '../../models/uI-element';
 
 @Component({
-  selector: 'app-text',
+  selector: 'aspect-text',
   template: `
     <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                  elementModel.positionProps.fixedSize"
          [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
-      <app-marking-bar
-          *ngIf="elementModel.highlightableYellow ||
+      <aspect-marking-bar
+        *ngIf="elementModel.highlightableYellow ||
             elementModel.highlightableTurquoise ||
             elementModel.highlightableOrange"
-          [elementModel]="elementModel"
-          (selectionChanged)="onSelectionChanged($event)">
-      </app-marking-bar>
+        [elementModel]="elementModel"
+        (selectionChanged)="onSelectionChanged($event)">
+      </aspect-marking-bar>
       <div #textContainerRef class="text-container"
            [class.orange-selection]="selectedColor === 'orange'"
            [class.yellow-selection]="selectedColor === 'yellow'"

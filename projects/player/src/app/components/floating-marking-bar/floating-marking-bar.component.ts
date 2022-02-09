@@ -7,7 +7,7 @@ import { ElementComponent } from '../../../../../common/directives/element-compo
 import { TextComponent } from '../../../../../common/ui-elements/text/text.component';
 
 @Component({
-  selector: 'app-floating-marking-bar',
+  selector: 'aspect-floating-marking-bar',
   templateUrl: './floating-marking-bar.component.html',
   styleUrls: ['./floating-marking-bar.component.scss']
 })

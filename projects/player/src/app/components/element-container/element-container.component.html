@@ -3,7 +3,7 @@
   <ng-template #elementComponentContainer></ng-template>
 </div>
 
-<app-floating-keyboard
+<aspect-floating-keyboard
     *ngIf="keyboardService.preset !== 'none' &&
     (elementModel.type === 'text-area' || elementModel.type === 'text-field')"
     [isKeyboardOpen]="isKeyboardOpen && keyboardService.position === 'floating'"
@@ -14,13 +14,13 @@
     [positionOffset]="elementModel.type === 'text-field' ? 20 : 0"
     (deleteCharacter)="keyboardService.deleterCharacters()"
     (enterKey)="keyboardService.enterKey($event)">
-</app-floating-keyboard>
+</aspect-floating-keyboard>
 
-<app-floating-marking-bar
+<aspect-floating-marking-bar
     *ngIf="elementModel.type === 'text'"
     [elementComponent]="elementComponent"
     [overlayOrigin]="overlayOrigin"
     [isMarkingBarOpen]="isMarkingBarOpen"
     [position]="markingBarPosition"
     (applySelection)="applySelectionToText($event.mode, $event.color)">
-</app-floating-marking-bar>
+</aspect-floating-marking-bar>

@@ -8,8 +8,7 @@ import { InputElement, ValueChangeElement } from '../models/uI-element';
 import { CompoundChildOverlayComponent } from '../components/compound-child-overlay.component';
 import { LikertRadioButtonGroupComponent } from '../ui-elements/likert/likert-radio-button-group.component';
 
-@Directive({ selector: 'app-compound-element' })
-
+@Directive()
 export abstract class CompoundElementComponent extends ElementComponent implements AfterViewInit {
   @Output() childrenAdded = new EventEmitter<ElementComponent[]>();
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();

@@ -2,7 +2,7 @@
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="overlayOrigin"
     [cdkConnectedOverlayOpen]="isKeyboardOpen">
-  <app-keyboard
+  <aspect-keyboard
       cdkDrag
       [positionOffset]="positionOffset"
       [inputElement]="inputElement"
@@ -10,5 +10,5 @@
       [preset]="preset"
       (deleteCharacter)="deleteCharacter.emit($event)"
       (enterKey)="enterKey.emit($event)">
-  </app-keyboard>
+  </aspect-keyboard>
 </ng-template>

@@ -17,7 +17,7 @@ mat-tab-group {
   padding: 10px;
 }
 
-::ng-deep app-ui-element-toolbox .mat-button-wrapper {
+::ng-deep aspect-ui-element-toolbox .mat-button-wrapper {
   width: 100%;
   display: inline-block;
 }

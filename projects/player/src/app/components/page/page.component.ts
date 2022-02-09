@@ -7,7 +7,7 @@ import { UnitStateService } from '../../services/unit-state.service';
 import { Page } from '../../../../../common/models/page';
 
 @Component({
-  selector: 'app-page',
+  selector: 'aspect-page',
   templateUrl: './page.component.html',
   styleUrls: ['./page.component.css']
 })

@@ -7,7 +7,7 @@
 
   <mat-drawer-container fxFlex>
     <mat-drawer #toolbox_drawer class="toolbox_drawer" mode="side" opened>
-      <app-ui-element-toolbox></app-ui-element-toolbox>
+      <aspect-ui-element-toolbox></aspect-ui-element-toolbox>
     </mat-drawer>
 
     <mat-drawer-content>
@@ -102,7 +102,7 @@
             </mat-menu>
 
           </ng-template>
-          <app-page-view [page]="page"></app-page-view>
+          <aspect-page-view [page]="page"></aspect-page-view>
         </mat-tab>
         <mat-tab disabled>
           <ng-template mat-tab-label>
@@ -115,7 +115,7 @@
     </mat-drawer-content>
 
     <mat-drawer #properties_drawer class="properties_drawer" position="end" mode="side" opened>
-      <app-element-properties></app-element-properties>
+      <aspect-element-properties></aspect-element-properties>
     </mat-drawer>
   </mat-drawer-container>
 

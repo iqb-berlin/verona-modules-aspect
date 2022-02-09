@@ -3,7 +3,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 import { LikertElementRow } from './likert-element-row';
 
 @Component({
-  selector: 'app-likert-radio-button-group',
+  selector: 'aspect-likert-radio-button-group',
   template: `
     <mat-radio-group [style.display]="'grid'"
                      [formControl]="elementFormControl"

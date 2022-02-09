@@ -6,7 +6,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 import { TextFieldElement } from './text-field-element';
 
 @Component({
-  selector: 'app-text-field',
+  selector: 'aspect-text-field',
   template: `
     <mat-form-field *ngIf="elementModel.label !== ''"
                     [class.center-content]="elementModel.positionProps.dynamicPositioning &&
@@ -19,7 +19,7 @@ import { TextFieldElement } from './text-field-element';
                     [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                    appInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" #input autocomplete="off"
@@ -50,7 +50,7 @@ import { TextFieldElement } from './text-field-element';
                     [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                    appInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"

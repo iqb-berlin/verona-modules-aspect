@@ -4,7 +4,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 import { CheckboxElement } from './checkbox-element';
 
 @Component({
-  selector: 'app-checkbox',
+  selector: 'aspect-checkbox',
   template: `
     <div class="mat-form-field"
          [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"

@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PlayerProperties } from '../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-player-edit-dialog',
+  selector: 'aspect-player-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="row">
       <mat-tab-group>

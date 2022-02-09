@@ -8,7 +8,7 @@ import { CompoundElementComponent } from '../../directives/compound-element.dire
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
-  selector: 'app-likert',
+  selector: 'aspect-likert',
   template: `
     <div *ngIf="elementModel.rows.length === 0 && elementModel.columns.length === 0">
       Keine Zeilen oder Spalten vorhanden
@@ -45,7 +45,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
         </div>
 
       <ng-container *ngFor="let row of elementModel.rows; let i = index">
-        <app-likert-radio-button-group
+        <aspect-likert-radio-button-group
             [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
             [style.grid-column-start]="1"
             [style.grid-column-end]="elementModel.columns.length + 2"
@@ -56,7 +56,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
             [firstColumnSizeRatio]="elementModel.firstColumnSizeRatio"
             [parentForm]="parentForm"
             (elementValueChanged)="elementValueChanged.emit($event)">
-        </app-likert-radio-button-group>
+        </aspect-likert-radio-button-group>
       </ng-container>
     </div>
     </div>

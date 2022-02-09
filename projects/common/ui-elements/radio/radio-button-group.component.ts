@@ -3,7 +3,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 import { RadioButtonGroupElement } from './radio-button-group-element';
 
 @Component({
-  selector: 'app-radio-button-group',
+  selector: 'aspect-radio-button-group',
   template: `
     <div class="mat-form-field"
          [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"

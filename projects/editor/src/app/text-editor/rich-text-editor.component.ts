@@ -29,7 +29,7 @@ import TextFieldComponentExtension from './angular-node-views/text-field-compone
 import { ClozeDocument } from '../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-rich-text-editor',
+  selector: 'aspect-rich-text-editor',
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.css'],
   encapsulation: ViewEncapsulation.None
@@ -201,17 +201,17 @@ export class RichTextEditorComponent implements AfterViewInit {
   }
 
   insertToggleButton(): void {
-    this.editor.commands.insertContent('<app-nodeview-toggle-button></app-nodeview-toggle-button>');
+    this.editor.commands.insertContent('<aspect-nodeview-toggle-button></aspect-nodeview-toggle-button>');
     this.editor.commands.focus();
   }
 
   insertDropList(): void {
-    this.editor.commands.insertContent('<app-nodeview-drop-list></app-nodeview-drop-list>');
+    this.editor.commands.insertContent('<aspect-nodeview-drop-list></aspect-nodeview-drop-list>');
     this.editor.commands.focus();
   }
 
   insertTextField(): void {
-    this.editor.commands.insertContent('<app-nodeview-text-field></app-nodeview-text-field>');
+    this.editor.commands.insertContent('<aspect-nodeview-text-field></aspect-nodeview-text-field>');
     this.editor.commands.focus();
   }
 }

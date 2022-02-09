@@ -9,9 +9,9 @@
   <div class="marking-bar-container"
        (mousedown)="$event.stopPropagation()"
        cdkDrag>
-    <app-marking-bar
+    <aspect-marking-bar
         [elementModel]="elementModel"
         (selectionChanged)="applySelection.emit($event)">
-    </app-marking-bar>
+    </aspect-marking-bar>
   </div>
 </ng-template>

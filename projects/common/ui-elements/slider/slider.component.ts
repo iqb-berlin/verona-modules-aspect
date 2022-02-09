@@ -5,7 +5,7 @@ import { SliderElement } from './slider-element';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'app-slider',
+  selector: 'aspect-slider',
   template: `
     <div fxLayout="column"
          [style.background-color]="elementModel.surfaceProps.backgroundColor"

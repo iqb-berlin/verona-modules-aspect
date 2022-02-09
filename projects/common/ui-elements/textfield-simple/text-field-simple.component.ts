@@ -3,7 +3,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 import { TextFieldSimpleElement } from './text-field-simple-element';
 
 @Component({
-  selector: 'app-text-field-simple',
+  selector: 'aspect-text-field-simple',
   template: `
     <input type="text" form="parentForm"
            [style.width.px]="elementModel.width"

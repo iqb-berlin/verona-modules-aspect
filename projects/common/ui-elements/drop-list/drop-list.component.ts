@@ -8,7 +8,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 import { DragNDropValueObject } from '../../models/uI-element';
 
 @Component({
-  selector: 'app-drop-list',
+  selector: 'aspect-drop-list',
   template: `
     <div class="list-container">
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->

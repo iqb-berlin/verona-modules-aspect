@@ -118,6 +118,6 @@ export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {}
   ngDoBootstrap(): void {
     const editorElement = createCustomElement(AppComponent, { injector: this.injector });
-    customElements.define('editor-aspect', editorElement);
+    customElements.define('aspect-editor', editorElement);
   }
 }

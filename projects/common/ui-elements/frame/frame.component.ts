@@ -3,7 +3,7 @@ import { FrameElement } from './frame-element';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
-  selector: 'app-frame',
+  selector: 'aspect-frame',
   template: `
     <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                  elementModel.positionProps.fixedSize"

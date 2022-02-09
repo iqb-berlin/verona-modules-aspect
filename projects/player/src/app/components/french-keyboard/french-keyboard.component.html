@@ -1,12 +1,12 @@
 <div [class.fixed-row-container]="position === 'right'">
   <div *ngFor="let row of rows">
     <ng-container *ngFor="let key of row, let lastRowKey = last">
-      <app-key
+      <aspect-key
           [key]="key"
           [position]="position"
           [last]="lastRowKey"
           (enterKey)="enterKey.emit($event)">
-      </app-key>
+      </aspect-key>
     </ng-container>
   </div>
   <div class="keyboard-capslock-container">

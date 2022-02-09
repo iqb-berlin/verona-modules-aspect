@@ -4,7 +4,7 @@ import { DragNDropValueObject } from '../../../../../common/models/uI-element';
 import { FileService } from '../../services/file.service';
 
 @Component({
-  selector: 'app-drop-list-option-edit-dialog',
+  selector: 'aspect-drop-list-option-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="column">
       <mat-form-field>

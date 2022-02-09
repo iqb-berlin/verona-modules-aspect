@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-french-keyboard',
+  selector: 'aspect-french-keyboard',
   templateUrl: './french-keyboard.component.html',
   styleUrls: ['./french-keyboard.component.css']
 })

@@ -4,7 +4,7 @@ import { LikertElementRow } from '../../../../../common/ui-elements/likert/liker
 import { LikertColumn } from '../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-likert-row-edit-dialog',
+  selector: 'aspect-likert-row-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="column">
       <mat-form-field>

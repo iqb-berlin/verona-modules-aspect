@@ -6,7 +6,7 @@ import { SelectionService } from '../../../../services/selection.service';
 import { PositionedElement, UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-element-sizing-properties',
+  selector: 'aspect-element-sizing-properties',
   template: `
     <div fxLayout="column">
       <mat-checkbox *ngIf="combinedProperties.dynamicWidth !== undefined"
@@ -205,7 +205,7 @@ import { PositionedElement, UIElement } from '../../../../../../../common/models
     '.centered-form-field {margin-left: 25%}',
     '.right-form-field {margin-left: 15%}',
     '.input-group {background-color: rgba(0,0,0,.04); margin-bottom: 10px;}',
-    '::ng-deep app-element-properties .small-input .mat-form-field-infix {width: 100px; margin: 0 5px;}'
+    '::ng-deep aspect-element-properties .small-input .mat-form-field-infix {width: 100px; margin: 0 5px;}'
   ]
 })
 export class ElementSizingPropertiesComponent {

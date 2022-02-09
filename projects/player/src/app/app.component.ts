@@ -16,12 +16,12 @@ import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.com
 import { Page } from '../../../common/models/page';
 
 @Component({
-  selector: 'player-aspect',
+  selector: 'aspect-player',
   template: `
-    <app-unit-state *ngIf="playerConfig && pages?.length"
-                    [pages]="pages"
-                    [playerConfig]="playerConfig">
-    </app-unit-state>
+      <aspect-unit-state *ngIf="playerConfig && pages?.length"
+                         [pages]="pages"
+                         [playerConfig]="playerConfig">
+      </aspect-unit-state>
   `
 })
 export class AppComponent implements OnInit {

@@ -32,7 +32,7 @@ import { NativeEventService } from '../../services/native-event.service';
 import { TextMarker } from '../../classes/text-marker';
 
 @Component({
-  selector: 'app-element-container',
+  selector: 'aspect-element-container',
   templateUrl: './element-container.component.html',
   styleUrls: ['./element-container.component.css']
 })

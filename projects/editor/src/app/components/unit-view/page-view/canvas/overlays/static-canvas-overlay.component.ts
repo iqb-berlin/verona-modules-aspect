@@ -5,7 +5,7 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
 import { UIElement } from '../../../../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-static-canvas-overlay',
+  selector: 'aspect-static-canvas-overlay',
   template: `
     <!-- Is also a droplist to catch the resize drop and not let it bubble up to the canvas drop handler. -->
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->

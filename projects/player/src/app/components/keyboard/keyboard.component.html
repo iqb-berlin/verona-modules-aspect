@@ -7,19 +7,18 @@
   <div class="keyboard-inner-container"
       [class.fixed-keyboard-inner-container]="position === 'right'"
        (mousedown)="onMouseDown($event, true)">
-    <app-french-keyboard
+    <aspect-french-keyboard
         *ngIf="preset === 'french'"
         [position]="position"
         (enterKey)="enterKey.emit($event)">
-    </app-french-keyboard>
-    <app-math-keyboard
+    </aspect-french-keyboard>
+    <aspect-math-keyboard
         *ngIf="preset !== 'french'"
         [inputElement]="inputElement"
         [preset]="preset"
         [position]="position"
         (deleteCharacter)="deleteCharacter.emit()"
         (enterKey)="enterKey.emit($event)">
-    </app-math-keyboard>
+    </aspect-math-keyboard>
   </div>
 </div>
-

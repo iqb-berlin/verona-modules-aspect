@@ -65,6 +65,6 @@ export class AppModule implements DoBootstrap {
   constructor(private injector: Injector) {}
   ngDoBootstrap(): void {
     const playerElement = createCustomElement(AppComponent, { injector: this.injector });
-    customElements.define('player-aspect', playerElement);
+    customElements.define('aspect-player', playerElement);
   }
 }

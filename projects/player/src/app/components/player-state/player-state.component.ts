@@ -13,7 +13,7 @@ import { VeronaPostService } from '../../services/verona-post.service';
 import { Page } from '../../../../../common/models/page';
 
 @Component({
-  selector: 'app-player-state',
+  selector: 'aspect-player-state',
   templateUrl: './player-state.component.html',
   styleUrls: ['./player-state.component.css']
 })

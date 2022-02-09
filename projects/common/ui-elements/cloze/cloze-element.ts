@@ -88,11 +88,11 @@ export class ClozeElement extends CompoundElement implements PositionedElement, 
     return text.replace(/\\i|\\z|\\r/g, match => {
       switch (match) {
         case '\\i':
-          return '<app-nodeview-text-field></app-nodeview-text-field>';
+          return '<aspect-nodeview-text-field></aspect-nodeview-text-field>';
         case '\\z':
-          return '<app-nodeview-drop-list></app-nodeview-drop-list>';
+          return '<aspect-nodeview-drop-list></aspect-nodeview-drop-list>';
         case '\\r':
-          return '<app-nodeview-toggle-button></app-nodeview-toggle-button>';
+          return '<aspect-nodeview-toggle-button></aspect-nodeview-toggle-button>';
         default:
           throw Error('error in match');
       }

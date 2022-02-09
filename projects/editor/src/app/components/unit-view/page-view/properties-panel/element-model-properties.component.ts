@@ -14,7 +14,7 @@ import { UnitService } from '../../../../services/unit.service';
 import { FileService } from '../../../../services/file.service';
 
 @Component({
-  selector: 'app-element-model-properties-component',
+  selector: 'aspect-element-model-properties-component',
   templateUrl: './element-model-properties.component.html',
   styleUrls: ['./element-model-properties.component.css']
 })

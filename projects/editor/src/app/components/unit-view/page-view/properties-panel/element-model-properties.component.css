@@ -7,11 +7,11 @@
   justify-content: space-between
 }
 
-::ng-deep app-element-properties .mat-tab-label {
+::ng-deep aspect-element-properties .mat-tab-label {
   min-width: 0 !important;
 }
 
-::ng-deep app-element-properties .mat-tab-group {
+::ng-deep aspect-element-properties .mat-tab-group {
   padding: 15px;
 }
 
@@ -23,12 +23,12 @@
   background-color: rgba(0,0,0,.04);
 }
 
-::ng-deep app-element-properties>p {
+::ng-deep aspect-element-properties>p {
   text-align: center;
   font-weight: bold;
 }
 
-::ng-deep app-element-properties p strong {
+::ng-deep aspect-element-properties p strong {
   letter-spacing: 0.04em !important;
   font-weight: 600 !important;
 }

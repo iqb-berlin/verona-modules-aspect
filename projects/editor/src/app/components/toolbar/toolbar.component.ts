@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UnitService } from '../../services/unit.service';
 
 @Component({
-  selector: 'app-toolbar',
+  selector: 'aspect-toolbar',
   templateUrl: './toolbar.component.html',
   styles: [
     'mat-toolbar {background-color: #696969}',

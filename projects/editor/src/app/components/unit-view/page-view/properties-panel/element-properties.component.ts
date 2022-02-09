@@ -17,7 +17,7 @@ import {
 } from '../../../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-element-properties',
+  selector: 'aspect-element-properties',
   templateUrl: './element-properties.component.html',
   styles: [
     '.element-button {margin: 5px 10px;}',

@@ -21,10 +21,10 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
     },
 
     parseHTML() {
-      return [{ tag: 'app-nodeview-toggle-button' }];
+      return [{ tag: 'aspect-nodeview-toggle-button' }];
     },
     renderHTML({ HTMLAttributes }) {
-      return ['app-nodeview-toggle-button', mergeAttributes(HTMLAttributes)];
+      return ['aspect-nodeview-toggle-button', mergeAttributes(HTMLAttributes)];
     },
     addNodeView() {
       return AngularNodeViewRenderer(ToggleButtonNodeviewComponent, { injector });

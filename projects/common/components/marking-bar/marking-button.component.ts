@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-marking-button',
+  selector: 'aspect-marking-button',
   template: `
     <button type="button"
             class="marking-button"

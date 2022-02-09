@@ -3,7 +3,7 @@ import { ToggleButtonElement } from './toggle-button';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'app-toggle-button',
+  selector: 'aspect-toggle-button',
   template: `
     <div class="mat-form-field">
       <mat-button-toggle-group [formControl]="elementFormControl"

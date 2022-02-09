@@ -4,12 +4,12 @@ import {
 import { Page } from '../../../../../../common/models/page';
 
 @Component({
-  selector: 'app-page-view',
+  selector: 'aspect-page-view',
   template: `
-    <app-page-canvas [page]="page" fxLayout="column"></app-page-canvas>
+    <aspect-page-canvas [page]="page" fxLayout="column"></aspect-page-canvas>
   `,
   styles: [
-    'app-page-canvas {height: 100%; display: block}'
+    'aspect-page-canvas {height: 100%; display: block}'
   ]
 })
 export class PageViewComponent {

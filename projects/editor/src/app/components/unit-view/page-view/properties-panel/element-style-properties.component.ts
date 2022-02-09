@@ -4,7 +4,7 @@ import {
 import { UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-element-style-properties',
+  selector: 'aspect-element-style-properties',
   template: `
     <div fxLayout="column">
       <mat-form-field *ngIf="combinedProperties.selectionColor !== undefined" appearance="fill">

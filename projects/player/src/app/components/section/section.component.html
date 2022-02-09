@@ -2,7 +2,7 @@
 
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">
-    <app-element-container
+    <aspect-element-container
         class="static-element"
         [style.width.px]="element.width"
         [style.height.px]="element.height"
@@ -13,7 +13,7 @@
         [parentForm]="sectionForm"
         [pageIndex]="pageIndex"
         [parentArrayIndex]="i">
-    </app-element-container>
+    </aspect-element-container>
   </ng-container>
 </ng-template>
 
@@ -26,7 +26,7 @@
       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
       [style.backgroundColor]="section.backgroundColor">
     <ng-container *ngFor="let element of section.elements; let i = index">
-      <app-element-container
+      <aspect-element-container
           [style.min-width.px]="element.width"
           [style.min-height.px]="element.positionProps.useMinHeight ? element.height : 0"
           [style.margin-left.px]="element.positionProps.marginLeft"
@@ -42,7 +42,7 @@
           [parentForm]="sectionForm"
           [pageIndex]="pageIndex"
           [parentArrayIndex]="i">
-      </app-element-container>
+      </aspect-element-container>
     </ng-container>
   </div>
 </ng-template>

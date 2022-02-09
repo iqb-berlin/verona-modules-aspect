@@ -3,15 +3,15 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
 import { DropListSimpleElement } from '../../../../../common/ui-elements/drop-list-simple/drop-list-simple';
 
 @Component({
-  selector: 'app-nodeview-drop-list',
+  selector: 'aspect-nodeview-drop-list',
   template: `
     <div [style.display]="'inline-block'"
          [style.vertical-align]="'middle'"
          [style.width.px]="model.width"
          [style.height.px]="model.height">
-      <app-drop-list-simple [elementModel]="node.attrs.model"
+      <aspect-drop-list-simple [elementModel]="node.attrs.model"
                             [matTooltip]="'ID: ' + node.attrs.model.id">
-      </app-drop-list-simple>
+      </aspect-drop-list-simple>
     </div>
   `
 })

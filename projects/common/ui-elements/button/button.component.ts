@@ -5,7 +5,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
 import { ButtonElement } from './button-element';
 
 @Component({
-  selector: 'app-button',
+  selector: 'aspect-button',
   template: `
     <button *ngIf="!elementModel.imageSrc" mat-button
             type='button'

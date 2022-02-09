@@ -11,7 +11,7 @@ import { Section } from '../../../../../../../common/models/section';
 import { UIElement } from '../../../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-section-menu',
+  selector: 'aspect-section-menu',
   template: `
     <button mat-mini-fab [matMenuTriggerFor]="elementListMenu">
       <mat-icon>list</mat-icon>

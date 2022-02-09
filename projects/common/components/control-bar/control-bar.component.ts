@@ -5,7 +5,7 @@ import { MatSliderChange } from '@angular/material/slider';
 import { PlayerProperties, ValueChangeElement } from '../../models/uI-element';
 
 @Component({
-  selector: 'app-control-bar',
+  selector: 'aspect-control-bar',
   templateUrl: './control-bar.component.html',
   styleUrls: ['./control-bar.component.css']
 })

@@ -6,13 +6,13 @@ import { VeronaAPIService, VoeStartCommand } from './services/verona-api.service
 import { UnitService } from './services/unit.service';
 
 @Component({
-  selector: 'editor-aspect',
+  selector: 'aspect-editor',
   template: `
     <div fxLayout="column" class="mainView">
-      <app-toolbar *ngIf="isStandalone()"></app-toolbar>
-      <app-unit-view fxFlex></app-unit-view>
+      <aspect-toolbar *ngIf="isStandalone()"></aspect-toolbar>
+      <aspect-unit-view fxFlex></aspect-unit-view>
     </div>
-    `,
+  `,
   styles: [
     '.mainView {height: 100%;}'
   ]

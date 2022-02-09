@@ -4,32 +4,32 @@ import {
 import { TextElement } from '../../ui-elements/text/text-element';
 
 @Component({
-  selector: 'app-marking-bar',
+  selector: 'aspect-marking-bar',
   template: `
     <div class="marking-bar">
-      <app-marking-button *ngIf="elementModel.highlightableYellow"
-                          [color]="selectionColors.yellow"
-                          [selected]="selectedColor === selectionColors.yellow"
-                          mode="mark"
-                          (selectedChanged)="onSelectionChange($event)">
-      </app-marking-button>
-      <app-marking-button *ngIf="elementModel.highlightableTurquoise"
-                          [color]="selectionColors.turquoise"
-                          [selected]="selectedColor === selectionColors.turquoise"
-                          mode="mark"
-                          (selectedChanged)="onSelectionChange($event)">
-      </app-marking-button>
-      <app-marking-button *ngIf="elementModel.highlightableOrange"
-                          [color]="selectionColors.orange"
-                          [selected]="selectedColor === selectionColors.orange"
-                          mode="mark"
-                          (selectedChanged)="onSelectionChange($event)">
-      </app-marking-button>
-      <app-marking-button [color]="selectionColors.delete"
-                          [selected]="selectedColor === selectionColors.delete"
-                          mode="delete"
-                          (selectedChanged)="onSelectionChange($event)">
-      </app-marking-button>
+      <aspect-marking-button *ngIf="elementModel.highlightableYellow"
+                             [color]="selectionColors.yellow"
+                             [selected]="selectedColor === selectionColors.yellow"
+                             mode="mark"
+                             (selectedChanged)="onSelectionChange($event)">
+      </aspect-marking-button>
+      <aspect-marking-button *ngIf="elementModel.highlightableTurquoise"
+                             [color]="selectionColors.turquoise"
+                             [selected]="selectedColor === selectionColors.turquoise"
+                             mode="mark"
+                             (selectedChanged)="onSelectionChange($event)">
+      </aspect-marking-button>
+      <aspect-marking-button *ngIf="elementModel.highlightableOrange"
+                             [color]="selectionColors.orange"
+                             [selected]="selectedColor === selectionColors.orange"
+                             mode="mark"
+                             (selectedChanged)="onSelectionChange($event)">
+      </aspect-marking-button>
+      <aspect-marking-button [color]="selectionColors.delete"
+                             [selected]="selectedColor === selectionColors.delete"
+                             mode="delete"
+                             (selectedChanged)="onSelectionChange($event)">
+      </aspect-marking-button>
     </div>`,
   styles: [
     '.marking-bar {position: sticky; top: 0; margin-bottom: 13px;}'

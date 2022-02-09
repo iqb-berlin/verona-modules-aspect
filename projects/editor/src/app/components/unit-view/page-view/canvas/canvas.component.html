@@ -6,43 +6,43 @@
        [style.background-color]="page.backgroundColor">
     <div cdkDropListGroup>
       <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
-        <app-section-menu [class.open]="hoveredSection === i" class="section-menu" fxLayout="column"
-                          [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
-                          [section]="section" [sectionIndex]="i"
-                          [allowMoveUp]="i != 0"
-                          [allowMoveDown]="i < page.sections.length - 1"
-                          [allowDelete]="page.sections.length > 1"
-                          (changeLayout)="generateDropListList()"
-                          (moveSection)="unitService.moveSection(section, page, $event)"
-                          (duplicateSection)="unitService.duplicateSection(section, page, i)"
-                          (selectElementComponent)="selectElementComponent($event)"
-                          (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"> <!-- keep menu open-->
-        </app-section-menu>
+        <aspect-section-menu [class.open]="hoveredSection === i" class="section-menu" fxLayout="column"
+                             [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
+                             [section]="section" [sectionIndex]="i"
+                             [allowMoveUp]="i != 0"
+                             [allowMoveDown]="i < page.sections.length - 1"
+                             [allowDelete]="page.sections.length > 1"
+                             (changeLayout)="generateDropListList()"
+                             (moveSection)="unitService.moveSection(section, page, $event)"
+                             (duplicateSection)="unitService.duplicateSection(section, page, i)"
+                             (selectElementComponent)="selectElementComponent($event)"
+                             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"> <!-- keep menu open-->
+        </aspect-section-menu>
         <!-- TODO split section into static and dynamic-->
-        <app-section-static *ngIf="!section.dynamicPositioning"
-             #sectionComponent
-             class="section drop-list" id="section-{{i}}"
-             [section]="section"
-             [isSelected]="selectionService.selectedPageSectionIndex === i"
-             cdkDropList cdkDropListSortingDisabled
-             [cdkDropListData]="{ sectionIndex: i }"
-             (cdkDropListDropped)="elementDropped($event)"
-             [cdkDropListConnectedTo]="dropListList"
-             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"
-             (click)="selectionService.selectedPageSectionIndex = i">
-        </app-section-static>
-        <app-section-dynamic *ngIf="section.dynamicPositioning"
-             #sectionComponent
-             class="section drop-list"
-             [section]="section" [sectionIndex]="i"
-             [isSelected]="selectionService.selectedPageSectionIndex === i"
-             [dropListList]="dropListList"
-             (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
+        <aspect-section-static *ngIf="!section.dynamicPositioning"
+                               #sectionComponent
+                               class="section drop-list" id="section-{{i}}"
+                               [section]="section"
+                               [isSelected]="selectionService.selectedPageSectionIndex === i"
+                               cdkDropList cdkDropListSortingDisabled
+                               [cdkDropListData]="{ sectionIndex: i }"
+                               (cdkDropListDropped)="elementDropped($event)"
+                               [cdkDropListConnectedTo]="dropListList"
+                               (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"
+                               (click)="selectionService.selectedPageSectionIndex = i">
+        </aspect-section-static>
+        <aspect-section-dynamic *ngIf="section.dynamicPositioning"
+                                #sectionComponent
+                                class="section drop-list"
+                                [section]="section" [sectionIndex]="i"
+                                [isSelected]="selectionService.selectedPageSectionIndex === i"
+                                [dropListList]="dropListList"
+                                (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
                                                            $event.previousSectionIndex,
                                                            $event.newSectionIndex)"
-             (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"
-             (click)="selectionService.selectedPageSectionIndex = i">
-        </app-section-dynamic>
+                                (mouseover)="hoveredSection = i" (mouseleave)="hoveredSection = -1"
+                                (click)="selectionService.selectedPageSectionIndex = i">
+        </aspect-section-dynamic>
       </div>
     </div>
   </div>

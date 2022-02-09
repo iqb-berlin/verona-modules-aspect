@@ -4,7 +4,7 @@ import {
 import { InputAssistancePreset } from '../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-key',
+  selector: 'aspect-key',
   templateUrl: './key.component.html',
   styleUrls: ['./key.component.css']
 })

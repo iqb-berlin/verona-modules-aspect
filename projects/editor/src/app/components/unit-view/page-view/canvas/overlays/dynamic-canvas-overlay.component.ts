@@ -6,7 +6,7 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
 import { UIElement } from '../../../../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-dynamic-canvas-overlay',
+  selector: 'aspect-dynamic-canvas-overlay',
   template: `
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->

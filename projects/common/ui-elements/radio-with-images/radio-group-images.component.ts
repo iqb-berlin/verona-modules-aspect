@@ -3,7 +3,7 @@ import { RadioGroupImagesElement } from './radio-group-images';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
-  selector: 'app-radio-group-images',
+  selector: 'aspect-radio-group-images',
   template: `
     <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"

@@ -10,7 +10,7 @@
         scrollPagesView"></ng-container>
     </div>
   </div>
-  <app-keyboard
+  <aspect-keyboard
       *ngIf="keyboardService.isOpen && keyboardService.position === 'right'"
       @keyboardSlideInOut
       [positionOffset]="0"
@@ -19,7 +19,7 @@
       [preset]="keyboardService.preset"
       (deleteCharacter)="keyboardService.deleterCharacters()"
       (enterKey)="keyboardService.enterKey($event)">
-  </app-keyboard>
+  </aspect-keyboard>
 </div>
 
 <ng-template #alwaysVisiblePageView>
@@ -39,12 +39,12 @@
              class="mat-tab-label">
           {{'alwaysVisiblePage' | translate}}
         </div>
-        <app-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
-                  [parentForm]="parentForm"
-                  [isLastPage]="false"
-                  [pagesContainer]="alwaysVisiblePageContainer"
-                  [page]="alwaysVisiblePage">
-        </app-page>
+        <aspect-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
+                     [parentForm]="parentForm"
+                     [isLastPage]="false"
+                     [pagesContainer]="alwaysVisiblePageContainer"
+                     [page]="alwaysVisiblePage">
+        </aspect-page>
       </div>
     </div>
   </div>
@@ -82,12 +82,12 @@
              [style.background-color]="page.backgroundColor"
              [style.padding.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
-          <app-page [parentArrayIndex]="scrollPagesIndices[i]"
-                    [parentForm]="parentForm"
-                    [isLastPage]="last"
-                    [pagesContainer]="pagesContainer"
-                    [page]="page">
-          </app-page>
+          <aspect-page [parentArrayIndex]="scrollPagesIndices[i]"
+                       [parentForm]="parentForm"
+                       [isLastPage]="last"
+                       [pagesContainer]="pagesContainer"
+                       [page]="page">
+          </aspect-page>
         </div>
       </mat-tab>
     </ng-container>
@@ -109,13 +109,13 @@
            class="mat-tab-label">
         {{'pageIndication' | translate: {index: i + 1} }}
       </div>
-      <app-page [parentArrayIndex]="scrollPagesIndices[i]"
-                [parentForm]="parentForm"
-                [pagesContainer]="pagesContainer"
-                [page]="page"
-                [isLastPage]="last"
-                (selectedIndexChange)="onSelectedIndexChange($event)">
-      </app-page>
+      <aspect-page [parentArrayIndex]="scrollPagesIndices[i]"
+                   [parentForm]="parentForm"
+                   [pagesContainer]="pagesContainer"
+                   [page]="page"
+                   [isLastPage]="last"
+                   (selectedIndexChange)="onSelectedIndexChange($event)">
+      </aspect-page>
     </div>
   </ng-container>
 </ng-template>

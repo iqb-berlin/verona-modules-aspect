@@ -4,7 +4,7 @@ import { FileService } from '../../services/file.service';
 import { LikertColumn } from '../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-likert-column-edit-dialog',
+  selector: 'aspect-likert-column-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="column">
       <mat-form-field>

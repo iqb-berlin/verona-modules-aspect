@@ -4,7 +4,7 @@ import {
 import { ValueChangeElement } from '../../models/uI-element';
 
 @Component({
-  selector: 'app-magnifier',
+  selector: 'aspect-magnifier',
   template: `
     <div class="hide-cursor">
       <div class="magnifier-glass"

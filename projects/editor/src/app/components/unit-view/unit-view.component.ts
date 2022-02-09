@@ -9,7 +9,7 @@ import { Page } from '../../../../../common/models/page';
 import { Unit } from '../../../../../common/models/unit';
 
 @Component({
-  selector: 'app-unit-view',
+  selector: 'aspect-unit-view',
   templateUrl: './unit-view.component.html',
   styles: [
     '.toolbox_drawer {width: 248px}',

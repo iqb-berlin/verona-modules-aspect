@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-multiline-text-edit-dialog',
+  selector: 'aspect-multiline-text-edit-dialog',
   template: `
     <mat-dialog-content>
       <mat-form-field>

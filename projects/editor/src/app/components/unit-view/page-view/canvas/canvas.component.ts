@@ -12,7 +12,7 @@ import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';
 
 @Component({
-  selector: 'app-page-canvas',
+  selector: 'aspect-page-canvas',
   templateUrl: './canvas.component.html',
   styles: [
     '.canvasBackground {background-color: lightgrey; padding: 20px 50px; height: 100%; overflow: auto;}',

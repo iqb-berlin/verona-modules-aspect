@@ -6,7 +6,7 @@ import { ImageElement } from './image-element';
 import { ValueChangeElement } from '../../models/uI-element';
 
 @Component({
-  selector: 'app-image',
+  selector: 'aspect-image',
   template: `
    <!-- Display Flex ensures that the image container is centered and
     that image and magnifier are displayed properly.-->
@@ -22,14 +22,14 @@ import { ValueChangeElement } from '../../models/uI-element';
              [src]="elementModel.src | safeResourceUrl"
              [alt]="'imageNotFound' | translate"
              [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">
-        <app-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
+        <aspect-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
                        [imageId]="elementModel.id"
                        [size]="elementModel.magnifierSize"
                        [zoom]="elementModel.magnifierZoom"
                        [used]="elementModel.magnifierUsed"
                        [image]=image
                        (elementValueChanged)="elementValueChanged.emit($event)">
-        </app-magnifier>
+        </aspect-magnifier>
       </div>
   `,
   styles: [

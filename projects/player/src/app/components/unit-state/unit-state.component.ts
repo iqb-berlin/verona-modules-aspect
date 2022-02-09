@@ -23,7 +23,7 @@ import { Page } from '../../../../../common/models/page';
 import { MediaPlayerService } from '../../services/media-player.service';
 
 @Component({
-  selector: 'app-unit-state',
+  selector: 'aspect-unit-state',
   templateUrl: './unit-state.component.html'
 })
 export class UnitStateComponent implements OnInit, OnDestroy {

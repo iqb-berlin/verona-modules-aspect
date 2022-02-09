@@ -3,13 +3,13 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ClozeDocument } from '../../../../../common/models/uI-element';
 
 @Component({
-  selector: 'app-rich-text-edit-dialog',
+  selector: 'aspect-rich-text-edit-dialog',
   template: `
     <mat-dialog-content>
-      <app-rich-text-editor [(content)]="data.content"
-                            [clozeMode]="data.clozeMode"
-                            [defaultFontSize]="data.defaultFontSize">
-      </app-rich-text-editor>
+      <aspect-rich-text-editor [(content)]="data.content"
+                               [clozeMode]="data.clozeMode"
+                               [defaultFontSize]="data.defaultFontSize">
+      </aspect-rich-text-editor>
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="data.content">{{'save' | translate }}</button>

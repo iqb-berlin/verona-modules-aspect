@@ -19,10 +19,10 @@ const DropListComponentExtension = (injector: Injector): Node => {
     },
 
     parseHTML() {
-      return [{ tag: 'app-nodeview-drop-list' }];
+      return [{ tag: 'aspect-nodeview-drop-list' }];
     },
     renderHTML({ HTMLAttributes }) {
-      return ['app-nodeview-drop-list', mergeAttributes(HTMLAttributes)];
+      return ['aspect-nodeview-drop-list', mergeAttributes(HTMLAttributes)];
     },
     addNodeView() {
       return AngularNodeViewRenderer(DropListNodeviewComponent, { injector });

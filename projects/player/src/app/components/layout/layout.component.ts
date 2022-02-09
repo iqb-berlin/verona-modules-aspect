@@ -15,7 +15,7 @@ import { PlayerConfig } from '../../models/verona';
 import { Page } from '../../../../../common/models/page';
 
 @Component({
-  selector: 'app-layout',
+  selector: 'aspect-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
   animations: [

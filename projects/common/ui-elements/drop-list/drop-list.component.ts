@@ -10,7 +10,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
 @Component({
   selector: 'aspect-drop-list',
   template: `
-    <div class="list-container">
+    <div class="element-content-wrapper">
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
       <div class="list"
@@ -69,7 +69,6 @@ import { DragNDropValueObject } from '../../models/uI-element';
     </div>
   `,
   styles: [
-    '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
     '.list {border-radius: 10px; margin-bottom: 3px;}', // extra margin to reserve for outline
     '.text-item {border-radius: 10px; padding: 10px;}',
     '.item {cursor: grab}',
@@ -85,8 +84,7 @@ import { DragNDropValueObject } from '../../models/uI-element';
     '.dropList-highlight.cdk-drop-list-receiving {outline: solid;}',
     '.dropList-highlight.cdk-drop-list-dragging {outline: solid;}',
 
-    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
-    '.center-content {top: unset; transform: unset;}'
+    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

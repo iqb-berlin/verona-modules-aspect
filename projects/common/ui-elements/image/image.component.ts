@@ -8,9 +8,8 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'aspect-image',
   template: `
-   <!-- Display Flex ensures that the image container is centered and
-    that image and magnifier are displayed properly.-->
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+    <div class="element-content-wrapper">
+      <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
          [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
@@ -31,6 +30,7 @@ import { ValueChangeElement } from '../../models/uI-element';
                        (elementValueChanged)="elementValueChanged.emit($event)">
         </aspect-magnifier>
       </div>
+    </div>
   `,
   styles: [
     '.image-container {position: relative}',

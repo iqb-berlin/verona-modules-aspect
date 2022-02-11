@@ -8,70 +8,71 @@ import { TextFieldElement } from './text-field-element';
 @Component({
   selector: 'aspect-text-field',
   template: `
-    <mat-form-field *ngIf="elementModel.label !== ''"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div class="element-content-wrapper">
+      <mat-form-field *ngIf="elementModel.label !== ''"
+                      [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
-                    [appearance]="$any(elementModel.appearance)">
-      <mat-label>{{elementModel.label}}</mat-label>
-      <input matInput type="text" #input autocomplete="off"
-             [formControl]="elementFormControl"
-             [value]="$any(elementModel.value)"
-             [pattern]="elementModel.pattern"
-             [readonly]="elementModel.readOnly"
-             (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
-             (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
-      <button *ngIf="elementModel.clearable"
-              type="button"
-              matSuffix mat-icon-button aria-label="Clear"
-              (click)="this.elementFormControl.setValue('')">
-        <mat-icon>close</mat-icon>
-      </button>
-      <mat-error *ngIf="elementFormControl.errors">
-        {{elementFormControl.errors | errorTransform: elementModel}}
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field *ngIf="elementModel.label === ''" class="small-input"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                      [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+                      [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+                      [style.color]="elementModel.fontProps.fontColor"
+                      [style.font-family]="elementModel.fontProps.font"
+                      [style.font-size.px]="elementModel.fontProps.fontSize"
+                      [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+                      [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+                      [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                      aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+                      [appearance]="$any(elementModel.appearance)">
+        <mat-label>{{elementModel.label}}</mat-label>
+        <input matInput type="text" #input autocomplete="off"
+               [formControl]="elementFormControl"
+               [value]="$any(elementModel.value)"
+               [pattern]="elementModel.pattern"
+               [readonly]="elementModel.readOnly"
+               (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
+               (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
+        <button *ngIf="elementModel.clearable"
+                type="button"
+                matSuffix mat-icon-button aria-label="Clear"
+                (click)="this.elementFormControl.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="elementFormControl.errors">
+          {{elementFormControl.errors | errorTransform: elementModel}}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="elementModel.label === ''" class="small-input"
+                      [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
-                    [appearance]="$any(elementModel.appearance)">
-      <input matInput type="text" #input autocomplete="off"
-             [formControl]="elementFormControl"
-             [value]="$any(elementModel.value)"
-             [readonly]="elementModel.readOnly"
-             [pattern]="elementModel.pattern"
-             (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
-             (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
-      <button *ngIf="elementModel.clearable"
-              type="button"
-              matSuffix mat-icon-button aria-label="Clear"
-              (click)="this.elementFormControl.setValue('')">
-        <mat-icon>close</mat-icon>
-      </button>
-      <mat-error *ngIf="elementFormControl.errors">
-        {{elementFormControl.errors | errorTransform: elementModel}}
-      </mat-error>
-    </mat-form-field>
+                      [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+                      [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+                      [style.color]="elementModel.fontProps.fontColor"
+                      [style.font-family]="elementModel.fontProps.font"
+                      [style.font-size.px]="elementModel.fontProps.fontSize"
+                      [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+                      [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+                      [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                      aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+                      [appearance]="$any(elementModel.appearance)">
+        <input matInput type="text" #input autocomplete="off"
+               [formControl]="elementFormControl"
+               [value]="$any(elementModel.value)"
+               [readonly]="elementModel.readOnly"
+               [pattern]="elementModel.pattern"
+               (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
+               (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
+        <button *ngIf="elementModel.clearable"
+                type="button"
+                matSuffix mat-icon-button aria-label="Clear"
+                (click)="this.elementFormControl.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+        <mat-error *ngIf="elementFormControl.errors">
+          {{elementFormControl.errors | errorTransform: elementModel}}
+        </mat-error>
+      </mat-form-field>
+    </div>
   `,
   styles: [
-    '.center-content {display: block; margin: auto; top: 50%; transform: translateY(-50%);}',
     '::ng-deep app-text-field .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}' // TODO
   ]
 })

@@ -70,10 +70,11 @@ blockquote p {
   display: inline;
 }
 
+.element-content-wrapper {
+  display: flex;
+  height: 100%;
+}
+
 .center-content {
-  position: relative;
-  display: block !important;
-  margin: auto !important;
-  top: 50%;
-  transform: translateY(-50%);
+  margin: auto;
 }

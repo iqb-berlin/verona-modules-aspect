@@ -5,40 +5,42 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
 @Component({
   selector: 'aspect-radio-button-group',
   template: `
-    <div class="mat-form-field"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div class="element-content-wrapper">
+      <div class="mat-form-field"
+           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-         [style.background-color]="elementModel.surfaceProps.backgroundColor"
-         [style.color]="elementModel.fontProps.fontColor"
-         [style.font-family]="elementModel.fontProps.font"
-         [style.font-size.px]="elementModel.fontProps.fontSize"
-         [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-      <label id="radio-group-label"
-             [innerHTML]="elementModel.label">
-      </label>
-      <mat-radio-group aria-labelledby="radio-group-label"
-                       [fxLayout]="elementModel.alignment"
-                       [formControl]="elementFormControl"
-                       [value]="elementModel.value"
-                       [style.margin-top.px]="elementModel.label !== '' ? 10 : 0">
-        <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
-                          [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
+           [style.background-color]="elementModel.surfaceProps.backgroundColor"
+           [style.color]="elementModel.fontProps.fontColor"
+           [style.font-family]="elementModel.fontProps.font"
+           [style.font-size.px]="elementModel.fontProps.fontSize"
+           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        <label id="radio-group-label"
+               [innerHTML]="elementModel.label">
+        </label>
+        <mat-radio-group aria-labelledby="radio-group-label"
+                         [fxLayout]="elementModel.alignment"
+                         [formControl]="elementFormControl"
+                         [value]="elementModel.value"
+                         [style.margin-top.px]="elementModel.label !== '' ? 10 : 0">
+          <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
+                            [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                   elementFormControl.value !== null &&
                                                   elementFormControl.value !== i + 1 }"
-                          [value]="i + 1"
-                          [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                          [style.line-height.%]="elementModel.fontProps.lineHeight">
-          {{option}}
-        </mat-radio-button>
-        <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-                   class="error-message">
-          {{elementFormControl.errors | errorTransform: elementModel}}
-        </mat-error>
-      </mat-radio-group>
+                            [value]="i + 1"
+                            [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
+                            [style.line-height.%]="elementModel.fontProps.lineHeight">
+            {{option}}
+          </mat-radio-button>
+          <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+                     class="error-message">
+            {{elementFormControl.errors | errorTransform: elementModel}}
+          </mat-error>
+        </mat-radio-group>
+      </div>
     </div>
   `,
   styles: [

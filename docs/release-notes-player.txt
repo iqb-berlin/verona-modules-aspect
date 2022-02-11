@@ -2,6 +2,7 @@ Player
 ======
 1.20.0
 - Fix dimensions of images with dynamicPositioning and fixedSize
+- Fix display of fixed size dynamic elements on iPad
 
 1.19.0
 - Remove border of slider rectangle in number line mode at position 0

@@ -8,34 +8,36 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'aspect-text',
   template: `
-    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                 elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
-      <aspect-marking-bar
-        *ngIf="elementModel.highlightableYellow ||
-            elementModel.highlightableTurquoise ||
-            elementModel.highlightableOrange"
-        [elementModel]="elementModel"
-        (selectionChanged)="onSelectionChanged($event)">
-      </aspect-marking-bar>
-      <div #textContainerRef class="text-container"
-           [class.orange-selection]="selectedColor === 'orange'"
-           [class.yellow-selection]="selectedColor === 'yellow'"
-           [class.turquoise-selection]="selectedColor === 'turquoise'"
-           [class.delete-selection]="selectedColor === 'delete'"
-           [style.background-color]="elementModel.surfaceProps.backgroundColor"
-           [style.color]="elementModel.fontProps.fontColor"
-           [style.font-family]="elementModel.fontProps.font"
-           [style.font-size.px]="elementModel.fontProps.fontSize"
-           [style.line-height.%]="elementModel.fontProps.lineHeight"
-           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-           [innerHTML]="elementModel.text | safeResourceHTML"
-           (mousedown)="elementModel.highlightableYellow ||
-             elementModel.highlightableTurquoise ||
-             elementModel.highlightableOrange ? startSelection.emit($event) : null">
+    <div class="element-content-wrapper">
+      <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+                                   elementModel.positionProps.fixedSize"
+           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
+        <aspect-marking-bar
+          *ngIf="elementModel.highlightableYellow ||
+              elementModel.highlightableTurquoise ||
+              elementModel.highlightableOrange"
+          [elementModel]="elementModel"
+          (selectionChanged)="onSelectionChanged($event)">
+        </aspect-marking-bar>
+        <div #textContainerRef class="text-container"
+             [class.orange-selection]="selectedColor === 'orange'"
+             [class.yellow-selection]="selectedColor === 'yellow'"
+             [class.turquoise-selection]="selectedColor === 'turquoise'"
+             [class.delete-selection]="selectedColor === 'delete'"
+             [style.background-color]="elementModel.surfaceProps.backgroundColor"
+             [style.color]="elementModel.fontProps.fontColor"
+             [style.font-family]="elementModel.fontProps.font"
+             [style.font-size.px]="elementModel.fontProps.fontSize"
+             [style.line-height.%]="elementModel.fontProps.lineHeight"
+             [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+             [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+             [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+             [innerHTML]="elementModel.text | safeResourceHTML"
+             (mousedown)="elementModel.highlightableYellow ||
+               elementModel.highlightableTurquoise ||
+               elementModel.highlightableOrange ? startSelection.emit($event) : null">
+        </div>
       </div>
     </div>
   `,
@@ -51,7 +53,8 @@ import { ValueChangeElement } from '../../models/uI-element';
     '::ng-deep .text-container h3 {font-weight: bold; font-size: 16px;}',
     '::ng-deep .text-container h4 {font-weight: normal; font-size: 16px;}',
     ':host ::ng-deep mark {color: inherit}',
-    'sup, sub {line-height: 0;}'
+    'sup, sub {line-height: 0;}',
+    '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}'
   ]
 })
 export class TextComponent extends ElementComponent {

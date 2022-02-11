@@ -13,52 +13,55 @@ import { ElementComponent } from '../../directives/element-component.directive';
     <div *ngIf="elementModel.rows.length === 0 && elementModel.columns.length === 0">
       Keine Zeilen oder Spalten vorhanden
     </div>
-    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div class="element-content-wrapper">
+      <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                  elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'">
-    <div class="mat-typography"
-         [style.display]="'grid'"
-         [style.grid-template-columns]="elementModel.firstColumnSizeRatio + 'fr ' +
+           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'">
+        <div class="mat-typography"
+             [style.display]="'grid'"
+             [style.grid-template-columns]="elementModel.firstColumnSizeRatio + 'fr ' +
                                         '1fr '.repeat(elementModel.columns.length)"
-         [style.background-color]="elementModel.surfaceProps.backgroundColor"
-         [style.color]="elementModel.fontProps.fontColor"
-         [style.font-family]="elementModel.fontProps.font"
-         [style.font-size.px]="elementModel.fontProps.fontSize"
-         [style.line-height.%]="elementModel.fontProps.lineHeight"
-         [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-        <div *ngFor="let column of elementModel.columns; let i = index"
-             class="columns" fxLayout="column" fxLayoutAlign="end center"
-             [style.grid-column-start]="2 + i"
-             [style.grid-column-end]="3 + i"
-             [style.grid-row-start]="1"
-             [style.grid-row-end]="2">
-          <img *ngIf="column.imgSrc && column.position === 'above'"
-               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
-               [style.object-fit]="'scale-down'">
-          {{column.text}}
-          <img *ngIf="column.imgSrc && column.position === 'below'"
-               [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
-               [style.object-fit]="'scale-down'">
-        </div>
+             [style.background-color]="elementModel.surfaceProps.backgroundColor"
+             [style.color]="elementModel.fontProps.fontColor"
+             [style.font-family]="elementModel.fontProps.font"
+             [style.font-size.px]="elementModel.fontProps.fontSize"
+             [style.line-height.%]="elementModel.fontProps.lineHeight"
+             [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+             [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+             [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+          <div *ngFor="let column of elementModel.columns; let i = index"
+               class="columns" fxLayout="column" fxLayoutAlign="end center"
+               [style.grid-column-start]="2 + i"
+               [style.grid-column-end]="3 + i"
+               [style.grid-row-start]="1"
+               [style.grid-row-end]="2">
+            <img *ngIf="column.imgSrc && column.position === 'above'"
+                 [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
+                 [style.object-fit]="'scale-down'">
+            {{column.text}}
+            <img *ngIf="column.imgSrc && column.position === 'below'"
+                 [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
+                 [style.object-fit]="'scale-down'">
+          </div>
 
-      <ng-container *ngFor="let row of elementModel.rows; let i = index">
-        <aspect-likert-radio-button-group
-            [style.background-color]="elementModel.lineColoring && i % 2 === 0 ? elementModel.lineColoringColor : ''"
-            [style.grid-column-start]="1"
-            [style.grid-column-end]="elementModel.columns.length + 2"
-            [style.grid-row-start]="2 + i"
-            [style.grid-row-end]="3 + i"
-            [style.padding.px]="3"
-            [elementModel]="row"
-            [firstColumnSizeRatio]="elementModel.firstColumnSizeRatio"
-            [parentForm]="parentForm"
-            (elementValueChanged)="elementValueChanged.emit($event)">
-        </aspect-likert-radio-button-group>
-      </ng-container>
-    </div>
+          <ng-container *ngFor="let row of elementModel.rows; let i = index">
+            <aspect-likert-radio-button-group
+                [style.background-color]="elementModel.lineColoring && i % 2 === 0 ?
+                  elementModel.lineColoringColor : ''"
+                [style.grid-column-start]="1"
+                [style.grid-column-end]="elementModel.columns.length + 2"
+                [style.grid-row-start]="2 + i"
+                [style.grid-row-end]="3 + i"
+                [style.padding.px]="3"
+                [elementModel]="row"
+                [firstColumnSizeRatio]="elementModel.firstColumnSizeRatio"
+                [parentForm]="parentForm"
+                (elementValueChanged)="elementValueChanged.emit($event)">
+            </aspect-likert-radio-button-group>
+          </ng-container>
+        </div>
+      </div>
     </div>
   `,
   styles: [

@@ -24,12 +24,17 @@
             "tsConfig": "projects/editor/tsconfig.app.json",
             "assets": [
               "projects/editor/src/favicon.ico",
-              "projects/editor/src/assets"
+              "projects/editor/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/common/assets",
+                "output": "assets"
+              }
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/editor/src/styles.css",
-              "projects/editor/src/assets/customTheme.scss"
+              "projects/common/assets/customTheme.scss"
             ],
             "scripts": []
           },
@@ -93,11 +98,16 @@
             "karmaConfig": "projects/editor/karma.conf.js",
             "assets": [
               "projects/editor/src/favicon.ico",
-              "projects/editor/src/assets"
+              "projects/editor/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/common/assets",
+                "output": "assets"
+              }
             ],
             "styles": [
               "projects/editor/src/styles.css",
-              "projects/editor/src/assets/customTheme.scss"
+              "projects/common/assets/customTheme.scss"
             ],
             "scripts": []
           }
@@ -125,12 +135,17 @@
             "tsConfig": "projects/player/tsconfig.app.json",
             "assets": [
               "projects/player/src/favicon.ico",
-              "projects/player/src/assets"
+              "projects/player/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/common/assets",
+                "output": "assets"
+              }
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/player/src/styles.css",
-              "projects/player/src/assets/customTheme.scss"
+              "projects/common/assets/customTheme.scss"
             ],
             "scripts": []
           },
@@ -194,7 +209,12 @@
             "karmaConfig": "projects/player/karma.conf.js",
             "assets": [
               "projects/player/src/favicon.ico",
-              "projects/player/src/assets"
+              "projects/player/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./projects/common/assets",
+                "output": "assets"
+              }
             ],
             "styles": [
               "projects/player/src/styles.css"

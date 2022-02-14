@@ -1,15 +1,20 @@
-/*This is part of a hack to set the bodys cursor to grabbing while
-  elements are being dragged with relative positioning. The element is taken out
-  of the DOM and pointer events don't work, including cursors. This is why
-  the body needs to be cursor styled.
-  This class and the cursor are set in the component when dragging starts
-  and removed when it ends. See dynamic canvas overlay. */
+@import './roboto.css';
+@import './material-icons.css';
+@import './ptsans.css';
+@import './notoSansSymbols2.css';
+
 
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif
 }
 
+/*This is part of a hack to set the bodys cursor to grabbing while
+  elements are being dragged with relative positioning. The element is taken out
+  of the DOM and pointer events don't work, including cursors. This is why
+  the body needs to be cursor styled.
+  This class and the cursor are set in the component when dragging starts
+  and removed when it ends. See dynamic canvas overlay. */
 body.inheritCursors * {
   cursor: inherit !important;
 }

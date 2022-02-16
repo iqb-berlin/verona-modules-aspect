@@ -7,37 +7,35 @@ import { TextAreaElement } from './text-area-element';
 @Component({
   selector: 'aspect-text-area',
   template: `
-    <div class="element-content-wrapper">
-      <mat-form-field [ngClass]="{ 'no-label' : !elementModel.label}"
-                      [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                      [style.min-height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                      [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <mat-form-field [ngClass]="{ 'no-label' : !elementModel.label}"
+                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+                    [style.min-height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-                      aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
-                      [style.color]="elementModel.fontProps.fontColor"
-                      [style.font-family]="elementModel.fontProps.font"
-                      [style.font-size.px]="elementModel.fontProps.fontSize"
-                      [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                      [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                      [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                      [appearance]="$any(elementModel.appearance)">
-        <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
-        <textarea matInput #input
-                  autocomplete="off" rows="{{elementModel.rowCount}}"
-                  [formControl]="elementFormControl"
-                  [value]="$any(elementModel.value)"
-                  [readonly]="elementModel.readOnly"
-                  [style.min-width.%]="100"
-                  [style.line-height.%]="elementModel.fontProps.lineHeight"
-                  [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
-                  (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
-                  (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
+                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+                    [style.color]="elementModel.fontProps.fontColor"
+                    [style.font-family]="elementModel.fontProps.font"
+                    [style.font-size.px]="elementModel.fontProps.fontSize"
+                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                    [appearance]="$any(elementModel.appearance)">
+      <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
+      <textarea matInput #input
+                autocomplete="off" rows="{{elementModel.rowCount}}"
+                [formControl]="elementFormControl"
+                [value]="$any(elementModel.value)"
+                [readonly]="elementModel.readOnly"
+                [style.min-width.%]="100"
+                [style.line-height.%]="elementModel.fontProps.lineHeight"
+                [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
+                (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
+                (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
       </textarea>
-        <mat-error *ngIf="elementFormControl.errors">
-          {{elementFormControl.errors | errorTransform: elementModel}}
-        </mat-error>
-      </mat-form-field>
-    </div>
+      <mat-error *ngIf="elementFormControl.errors">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
+    </mat-form-field>
   `,
   styles: [
     ':host ::ng-deep div.mat-form-field-infix {padding-top: 0.2em; padding-bottom: 0.2em;}',

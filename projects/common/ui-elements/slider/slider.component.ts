@@ -7,90 +7,88 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-slider',
   template: `
-    <div class="element-content-wrapper">
-      <div fxLayout="column"
-           [style.background-color]="elementModel.surfaceProps.backgroundColor"
-           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div fxLayout="column"
+         [style.background-color]="elementModel.surfaceProps.backgroundColor"
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize">
-        <div *ngIf="elementModel.label"
-             [style.color]="elementModel.fontProps.fontColor"
-             [style.font-family]="elementModel.fontProps.font"
-             [style.font-size.px]="elementModel.fontProps.fontSize"
-             [style.line-height.%]="elementModel.fontProps.lineHeight"
-             [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-             [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-             [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-          {{elementModel.label}}
-        </div>
-        <div #valueContainer
-             [class.values]="elementModel.label && !elementModel.showValues">
-          <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
-            <div #valueMin
-                 class="value-container-min">
-              <div *ngIf="elementModel.showValues"
-                   class="value-container">
-                <div
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.line-height.%]="elementModel.fontProps.lineHeight"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-                  {{elementModel.minValue | number:'':'de'}}
-                </div>
-                <div *ngIf="elementModel.barStyle" class="number-marker"></div>
+      <div *ngIf="elementModel.label"
+           [style.color]="elementModel.fontProps.fontColor"
+           [style.font-family]="elementModel.fontProps.font"
+           [style.font-size.px]="elementModel.fontProps.fontSize"
+           [style.line-height.%]="elementModel.fontProps.lineHeight"
+           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+        {{elementModel.label}}
+      </div>
+      <div #valueContainer
+           [class.values]="elementModel.label && !elementModel.showValues">
+        <div fxFlex fxLayout="row" fxLayoutAlign="space-between">
+          <div #valueMin
+               class="value-container-min">
+            <div *ngIf="elementModel.showValues"
+                 class="value-container">
+              <div
+                  [style.color]="elementModel.fontProps.fontColor"
+                  [style.font-family]="elementModel.fontProps.font"
+                  [style.font-size.px]="elementModel.fontProps.fontSize"
+                  [style.line-height.%]="elementModel.fontProps.lineHeight"
+                  [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+                  [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+                  [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+                {{elementModel.minValue | number:'':'de'}}
               </div>
+              <div *ngIf="elementModel.barStyle" class="number-marker"></div>
             </div>
-            <div #valueMax
-                 [class.value-container-max]="elementModel.barStyle">
-              <div *ngIf="elementModel.showValues"
-                   class="value-container">
-                <div
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.line-height.%]="elementModel.fontProps.lineHeight"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
-                  {{elementModel.maxValue | number:'':'de'}}
-                </div>
-                <div *ngIf="elementModel.barStyle"
-                     class="number-marker">
-                </div>
+          </div>
+          <div #valueMax
+               [class.value-container-max]="elementModel.barStyle">
+            <div *ngIf="elementModel.showValues"
+                 class="value-container">
+              <div
+                  [style.color]="elementModel.fontProps.fontColor"
+                  [style.font-family]="elementModel.fontProps.font"
+                  [style.font-size.px]="elementModel.fontProps.fontSize"
+                  [style.line-height.%]="elementModel.fontProps.lineHeight"
+                  [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+                  [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+                  [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+                {{elementModel.maxValue | number:'':'de'}}
+              </div>
+              <div *ngIf="elementModel.barStyle"
+                   class="number-marker">
               </div>
             </div>
           </div>
         </div>
-        <div *ngIf="elementModel.barStyle"
-             fxFlex fxLayout="row" fxLayoutAlign="space-between center"
-             [style.margin-top.px]="elementModel.showValues ? -18 : 0"
-             [style.margin-left.px]="valueMin.offsetWidth/2">
-          <div class="arrow-line"></div>
-          <div class="arrow-head"></div>
-        </div>
-        <div *ngIf="valueMax && valueMin"
-             [style.display]="'flex'"
-             [style.flex-direction]="'column'"
-             [style.height.%]="100"
-             [style.margin-right.px]="elementModel.barStyle ? valueMax.offsetWidth/2 - 8 : valueMax.offsetWidth"
-             [style.margin-left.px]="elementModel.barStyle ? valueMin.offsetWidth/2 - 8: valueMin.offsetWidth"
-             [style.margin-top.px]="elementModel.barStyle ? -32 : -valueContainer.offsetHeight">
-          <mat-slider
-              [class]="elementModel.barStyle ? 'bar-style' : ''"
-              [thumbLabel]="elementModel.thumbLabel"
-              [formControl]="elementFormControl"
-              [style.width.%]="100"
-              [max]="elementModel.maxValue"
-              [min]="elementModel.minValue">
-          </mat-slider>
-          <mat-error *ngIf="elementFormControl.touched && elementFormControl.errors">
-            {{elementModel.requiredWarnMessage}}
-          </mat-error>
-        </div>
+      </div>
+      <div *ngIf="elementModel.barStyle"
+           fxFlex fxLayout="row" fxLayoutAlign="space-between center"
+           [style.margin-top.px]="elementModel.showValues ? -18 : 0"
+           [style.margin-left.px]="valueMin.offsetWidth/2">
+        <div class="arrow-line"></div>
+        <div class="arrow-head"></div>
+      </div>
+      <div *ngIf="valueMax && valueMin"
+           [style.display]="'flex'"
+           [style.flex-direction]="'column'"
+           [style.height.%]="100"
+           [style.margin-right.px]="elementModel.barStyle ? valueMax.offsetWidth/2 - 8 : valueMax.offsetWidth"
+           [style.margin-left.px]="elementModel.barStyle ? valueMin.offsetWidth/2 - 8: valueMin.offsetWidth"
+           [style.margin-top.px]="elementModel.barStyle ? -32 : -valueContainer.offsetHeight">
+        <mat-slider
+            [class]="elementModel.barStyle ? 'bar-style' : ''"
+            [thumbLabel]="elementModel.thumbLabel"
+            [formControl]="elementFormControl"
+            [style.width.%]="100"
+            [max]="elementModel.maxValue"
+            [min]="elementModel.minValue">
+        </mat-slider>
+        <mat-error *ngIf="elementFormControl.touched && elementFormControl.errors">
+          {{elementModel.requiredWarnMessage}}
+        </mat-error>
       </div>
     </div>
   `,

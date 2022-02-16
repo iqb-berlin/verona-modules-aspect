@@ -6,30 +6,28 @@ import { CheckboxElement } from './checkbox-element';
 @Component({
   selector: 'aspect-checkbox',
   template: `
-    <div class="element-content-wrapper">
-      <div class="mat-form-field"
-           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div class="mat-form-field"
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-           [style.background-color]="elementModel.surfaceProps.backgroundColor">
-        <mat-checkbox #checkbox class="example-margin"
-                      [formControl]="elementFormControl"
-                      [checked]="$any(elementModel.value)"
-                      [style.color]="elementModel.fontProps.fontColor"
-                      [style.font-family]="elementModel.fontProps.font"
-                      [style.font-size.px]="elementModel.fontProps.fontSize"
-                      [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                      [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                      [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                      (click)="elementModel.readOnly ? $event.preventDefault() : null">
-          <div [style.line-height.%]="elementModel.lineHeight" [innerHTML]="elementModel.label"></div>
-        </mat-checkbox>
-        <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-                   class="error-message">
-          {{elementFormControl.errors | errorTransform: elementModel}}
-        </mat-error>
-      </div>
+         [style.background-color]="elementModel.surfaceProps.backgroundColor">
+      <mat-checkbox #checkbox class="example-margin"
+                    [formControl]="elementFormControl"
+                    [checked]="$any(elementModel.value)"
+                    [style.color]="elementModel.fontProps.fontColor"
+                    [style.font-family]="elementModel.fontProps.font"
+                    [style.font-size.px]="elementModel.fontProps.fontSize"
+                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                    (click)="elementModel.readOnly ? $event.preventDefault() : null">
+        <div [style.line-height.%]="elementModel.lineHeight" [innerHTML]="elementModel.label"></div>
+      </mat-checkbox>
+      <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+                 class="error-message">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
     </div>
   `,
   styles: [

@@ -7,36 +7,34 @@ import { ButtonElement } from './button-element';
 @Component({
   selector: 'aspect-button',
   template: `
-    <div class="element-content-wrapper">
-      <button *ngIf="!elementModel.imageSrc" mat-button
-              type='button'
-              [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <button *ngIf="!elementModel.imageSrc" mat-button
+            type='button'
+            [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                       elementModel.positionProps.fixedSize"
-              [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-              [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-              [style.background-color]="elementModel.surfaceProps.backgroundColor"
-              [style.color]="elementModel.fontProps.fontColor"
-              [style.font-family]="elementModel.fontProps.font"
-              [style.font-size.px]="elementModel.fontProps.fontSize"
-              [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-              [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-              [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-              [style.border-radius.px]="elementModel.borderRadius"
-              (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
-        {{elementModel.label}}
-      </button>
-      <input *ngIf="elementModel.imageSrc" type="image"
-             [src]="elementModel.imageSrc | safeResourceUrl"
-             [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+            [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+            [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+            [style.background-color]="elementModel.surfaceProps.backgroundColor"
+            [style.color]="elementModel.fontProps.fontColor"
+            [style.font-family]="elementModel.fontProps.font"
+            [style.font-size.px]="elementModel.fontProps.fontSize"
+            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+            [style.border-radius.px]="elementModel.borderRadius"
+            (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
+      {{elementModel.label}}
+    </button>
+    <input *ngIf="elementModel.imageSrc" type="image"
+           [src]="elementModel.imageSrc | safeResourceUrl"
+           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                       elementModel.positionProps.fixedSize"
-             [class.fixed-size-dynamic-image]="elementModel.positionProps.dynamicPositioning &&
+           [class.fixed-size-dynamic-image]="elementModel.positionProps.dynamicPositioning &&
                                       elementModel.positionProps.fixedSize"
-             [class]="elementModel.positionProps.dynamicPositioning ? 'dynamic-image' : 'static-image'"
-             [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : null"
-             [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : null"
-             [alt]="'imageNotFound' | translate"
-             (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
-    </div>
+           [class]="elementModel.positionProps.dynamicPositioning ? 'dynamic-image' : 'static-image'"
+           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : null"
+           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : null"
+           [alt]="'imageNotFound' | translate"
+           (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
   `,
   styles: [
     '.dynamic-image {width: 100%; height: fit-content;}',

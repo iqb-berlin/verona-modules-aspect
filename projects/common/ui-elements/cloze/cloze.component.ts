@@ -13,40 +13,38 @@ import { ElementComponent } from '../../directives/element-component.directive';
     <ng-container *ngIf="elementModel.document.content.length == 0">
       Kein Dokument vorhanden
     </ng-container>
-    <div class="element-content-wrapper">
-      <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                    elementModel.positionProps.fixedSize"
-           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
-        <ng-container *ngFor="let part of elementModel.document.content">
-          <ul *ngIf="part.type === 'bulletList'"
-              [style.font-size]="part.attrs.fontSize"
-              [style.list-style]="part.attrs.listStyle">
-            <li *ngFor="let listItem of part.content">
-              <ng-container *ngFor="let listItemPart of $any(listItem).content"
-                            [ngTemplateOutlet]="paragraphs"
-                            [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
-            </li>
-          </ul>
-          <ol *ngIf="part.type === 'orderedList'"
-              [style.font-size]="part.attrs.fontSize"
-              [style.list-style]="part.attrs.listStyle">
-            <li *ngFor="let listItem of part.content">
-              <ng-container *ngFor="let listItemPart of $any(listItem).content"
-                            [ngTemplateOutlet]="paragraphs"
-                            [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
-            </li>
-          </ol>
-          <blockquote *ngIf="part.type === 'blockquote'">
-            <ng-container *ngFor="let blockquotePart of $any(part).content"
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
+      <ng-container *ngFor="let part of elementModel.document.content">
+        <ul *ngIf="part.type === 'bulletList'"
+            [style.font-size]="part.attrs.fontSize"
+            [style.list-style]="part.attrs.listStyle">
+          <li *ngFor="let listItem of part.content">
+            <ng-container *ngFor="let listItemPart of $any(listItem).content"
                           [ngTemplateOutlet]="paragraphs"
-                          [ngTemplateOutletContext]="{ $implicit: blockquotePart }"></ng-container>
-          </blockquote>
-          <ng-container *ngIf="part.type === 'paragraph' || part.type === 'heading'"
+                          [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
+          </li>
+        </ul>
+        <ol *ngIf="part.type === 'orderedList'"
+            [style.font-size]="part.attrs.fontSize"
+            [style.list-style]="part.attrs.listStyle">
+          <li *ngFor="let listItem of part.content">
+            <ng-container *ngFor="let listItemPart of $any(listItem).content"
+                          [ngTemplateOutlet]="paragraphs"
+                          [ngTemplateOutletContext]="{ $implicit: listItemPart }"></ng-container>
+          </li>
+        </ol>
+        <blockquote *ngIf="part.type === 'blockquote'">
+          <ng-container *ngFor="let blockquotePart of $any(part).content"
                         [ngTemplateOutlet]="paragraphs"
-                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
-        </ng-container>
-      </div>
+                        [ngTemplateOutletContext]="{ $implicit: blockquotePart }"></ng-container>
+        </blockquote>
+        <ng-container *ngIf="part.type === 'paragraph' || part.type === 'heading'"
+                      [ngTemplateOutlet]="paragraphs"
+                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+      </ng-container>
     </div>
 
     <ng-template #paragraphs let-part>

@@ -8,35 +8,33 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'aspect-text',
   template: `
-    <div class="element-content-wrapper">
-      <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                    elementModel.positionProps.fixedSize"
-           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
-        <aspect-marking-bar
-            *ngIf="elementModel.highlightableYellow ||
+         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
+      <aspect-marking-bar
+          *ngIf="elementModel.highlightableYellow ||
               elementModel.highlightableTurquoise ||
               elementModel.highlightableOrange"
-            [elementModel]="elementModel"
-            (selectionChanged)="onSelectionChanged($event)">
-        </aspect-marking-bar>
-        <div #textContainerRef class="text-container"
-             [class.orange-selection]="selectedColor === 'orange'"
-             [class.yellow-selection]="selectedColor === 'yellow'"
-             [class.turquoise-selection]="selectedColor === 'turquoise'"
-             [class.delete-selection]="selectedColor === 'delete'"
-             [style.background-color]="elementModel.surfaceProps.backgroundColor"
-             [style.color]="elementModel.fontProps.fontColor"
-             [style.font-family]="elementModel.fontProps.font"
-             [style.font-size.px]="elementModel.fontProps.fontSize"
-             [style.line-height.%]="elementModel.fontProps.lineHeight"
-             [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-             [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-             [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-             [innerHTML]="elementModel.text | safeResourceHTML"
-             (touchstart)="emitStartSelection($event)"
-             (mousedown)="emitStartSelection($event)">
-        </div>
+          [elementModel]="elementModel"
+          (selectionChanged)="onSelectionChanged($event)">
+      </aspect-marking-bar>
+      <div #textContainerRef class="text-container"
+           [class.orange-selection]="selectedColor === 'orange'"
+           [class.yellow-selection]="selectedColor === 'yellow'"
+           [class.turquoise-selection]="selectedColor === 'turquoise'"
+           [class.delete-selection]="selectedColor === 'delete'"
+           [style.background-color]="elementModel.surfaceProps.backgroundColor"
+           [style.color]="elementModel.fontProps.fontColor"
+           [style.font-family]="elementModel.fontProps.font"
+           [style.font-size.px]="elementModel.fontProps.fontSize"
+           [style.line-height.%]="elementModel.fontProps.lineHeight"
+           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+           [innerHTML]="elementModel.text | safeResourceHTML"
+           (touchstart)="emitStartSelection($event)"
+           (mousedown)="emitStartSelection($event)">
       </div>
     </div>
   `,

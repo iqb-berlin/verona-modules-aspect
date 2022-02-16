@@ -8,8 +8,7 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'aspect-image',
   template: `
-    <div class="element-content-wrapper">
-      <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
+    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
          [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
@@ -17,19 +16,18 @@ import { ValueChangeElement } from '../../models/uI-element';
          (mouseover)="magnifierVisible = true"
          (mouseenter)="magnifierVisible = true"
          (mouseleave)="magnifierVisible = false">
-        <img #image
-             [src]="elementModel.src | safeResourceUrl"
-             [alt]="'imageNotFound' | translate"
-             [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">
-        <aspect-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
-                       [imageId]="elementModel.id"
-                       [size]="elementModel.magnifierSize"
-                       [zoom]="elementModel.magnifierZoom"
-                       [used]="elementModel.magnifierUsed"
-                       [image]=image
-                       (elementValueChanged)="elementValueChanged.emit($event)">
-        </aspect-magnifier>
-      </div>
+      <img #image
+           [src]="elementModel.src | safeResourceUrl"
+           [alt]="'imageNotFound' | translate"
+           [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">
+      <aspect-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
+                        [imageId]="elementModel.id"
+                        [size]="elementModel.magnifierSize"
+                        [zoom]="elementModel.magnifierZoom"
+                        [used]="elementModel.magnifierUsed"
+                        [image]=image
+                        (elementValueChanged)="elementValueChanged.emit($event)">
+      </aspect-magnifier>
     </div>
   `,
   styles: [

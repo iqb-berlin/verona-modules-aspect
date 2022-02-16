@@ -11,6 +11,8 @@ import { UIElement } from '../../../../../../../../common/models/uI-element';
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
     <div #draggableElement class="draggable-element"
+         [class.fixed-size-content-wrapper]="element.positionProps?.dynamicPositioning &&
+            element.positionProps?.fixedSize"
          [class.temporaryHighlight]="temporaryHighlight"
          [style.display]="dragging ? 'none' : ''"
          tabindex="-1"

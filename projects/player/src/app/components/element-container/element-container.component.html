@@ -1,4 +1,5 @@
-<div class="element-container"
+<div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+         'fixed-size-content-wrapper' : 'element-container'"
      cdkOverlayOrigin #overlayOrigin="cdkOverlayOrigin">
   <ng-template #elementComponentContainer></ng-template>
 </div>

@@ -14,11 +14,11 @@ import { ValueChangeElement } from '../../models/uI-element';
            [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
            [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
         <aspect-marking-bar
-          *ngIf="elementModel.highlightableYellow ||
+            *ngIf="elementModel.highlightableYellow ||
               elementModel.highlightableTurquoise ||
               elementModel.highlightableOrange"
-          [elementModel]="elementModel"
-          (selectionChanged)="onSelectionChanged($event)">
+            [elementModel]="elementModel"
+            (selectionChanged)="onSelectionChanged($event)">
         </aspect-marking-bar>
         <div #textContainerRef class="text-container"
              [class.orange-selection]="selectedColor === 'orange'"
@@ -34,9 +34,8 @@ import { ValueChangeElement } from '../../models/uI-element';
              [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
              [innerHTML]="elementModel.text | safeResourceHTML"
-             (mousedown)="elementModel.highlightableYellow ||
-               elementModel.highlightableTurquoise ||
-               elementModel.highlightableOrange ? startSelection.emit($event) : null">
+             (touchstart)="emitStartSelection($event)"
+             (mousedown)="emitStartSelection($event)">
         </div>
       </div>
     </div>
@@ -59,7 +58,7 @@ import { ValueChangeElement } from '../../models/uI-element';
 export class TextComponent extends ElementComponent {
   @Input() elementModel!: TextElement;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() startSelection = new EventEmitter<MouseEvent>();
+  @Output() startSelection = new EventEmitter<MouseEvent | TouchEvent>();
   @Output() applySelection = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
@@ -70,6 +69,14 @@ export class TextComponent extends ElementComponent {
   selectedColor!: string | undefined;
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
+
+  emitStartSelection(event: TouchEvent | MouseEvent): void {
+    if (this.elementModel.highlightableYellow ||
+      this.elementModel.highlightableTurquoise ||
+      this.elementModel.highlightableOrange) {
+      this.startSelection.emit(event);
+    }
+  }
 
   onSelectionChanged(selection: {
     active: boolean,

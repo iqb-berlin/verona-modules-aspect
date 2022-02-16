@@ -194,35 +194,58 @@ export class ElementContainerComponent implements OnInit {
     if (elementComponent.startSelection) {
       elementComponent.startSelection
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((mouseDown: MouseEvent) => {
+        .subscribe((pointerDown: MouseEvent | TouchEvent) => {
           this.isMarkingBarOpen = false;
-          this.nativeEventService.mouseUp
+
+          this.nativeEventService.pointerUp
             .pipe(takeUntil(this.ngUnsubscribe), first())
-            .subscribe((mouseUp: MouseEvent) => this.stopSelection(mouseUp, mouseDown, elementComponent));
+            .subscribe((pointerUp: TouchEvent | MouseEvent) => {
+              if (pointerUp.cancelable) {
+                pointerUp.preventDefault();
+              }
+              this.stopSelection(
+                this.getClientPointFromEvent(pointerUp),
+                pointerUp.ctrlKey,
+                this.getClientPointFromEvent(pointerDown),
+                elementComponent
+              );
+            });
         });
     }
   }
 
-  private stopSelection(mouseUp: MouseEvent, mouseDown: MouseEvent, elementComponent: TextComponent) {
+  private stopSelection(
+    mouseUp: { clientX: number, clientY: number },
+    ctrlKey: boolean,
+    downPosition: { clientX: number, clientY: number },
+    elementComponent: TextComponent
+  ) {
     const selection = window.getSelection();
     if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
-      if (!TextMarker.isRangeInside(selection.getRangeAt(0),
-        elementComponent.textContainerRef.nativeElement) ||
-        (mouseUp.ctrlKey)) {
+      if (!TextMarker.isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) ||
+        (ctrlKey)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
         this.applySelectionToText(this.selectedMode, this.selectedColor);
       } else if (!this.isMarkingBarOpen) {
-        this.openMarkingBar(mouseUp, mouseDown);
+        this.openMarkingBar(mouseUp, downPosition);
       }
     }
   }
 
-  private openMarkingBar(mouseUp: MouseEvent, mouseDown: MouseEvent) {
-    this.markingBarPosition.left = mouseDown.clientY > mouseUp.clientY ? mouseDown.clientX : mouseUp.clientX;
-    this.markingBarPosition.top = mouseDown.clientY > mouseUp.clientY ? mouseDown.clientY : mouseUp.clientY;
+  private getClientPointFromEvent = (event: MouseEvent | TouchEvent): { clientX: number, clientY: number } => ({
+    clientX: (event instanceof MouseEvent) ? event.clientX : event.changedTouches[0].clientX,
+    clientY: (event instanceof MouseEvent) ? event.clientY : event.changedTouches[0].clientY
+  });
+
+  private openMarkingBar(
+    mouseUp: { clientX: number, clientY: number },
+    downPosition: { clientX: number, clientY: number }
+  ) {
+    this.markingBarPosition.left = downPosition.clientY > mouseUp.clientY ? downPosition.clientX : mouseUp.clientX;
+    this.markingBarPosition.top = downPosition.clientY > mouseUp.clientY ? downPosition.clientY : mouseUp.clientY;
     this.isMarkingBarOpen = true;
-    this.nativeEventService.mouseDown
+    this.nativeEventService.pointerDown
       .pipe(takeUntil(this.ngUnsubscribe), first())
       .subscribe(() => this.closeMarkingBar());
   }
@@ -235,12 +258,13 @@ export class ElementContainerComponent implements OnInit {
     if (elementComponent.applySelection) {
       elementComponent.applySelection
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((selection:
-        {
-          active: boolean,
-          mode: 'mark' | 'delete',
-          color: string;
-        }) => {
+        .subscribe((
+          selection: {
+            active: boolean,
+            mode: 'mark' | 'delete',
+            color: string;
+          }
+        ) => {
           if (selection.active) {
             this.selectedColor = selection.color;
             this.selectedMode = selection.mode;

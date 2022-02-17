@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Unit } from '../../../../common/models/unit';
-import {
-  DragNDropValueObject, InputElement, InputElementValue, UIElement
-} from '../../../../common/models/uI-element';
-import { ImageElement } from '../../../../common/ui-elements/image/image-element';
-import { VideoElement } from '../../../../common/ui-elements/video/video-element';
-import { AudioElement } from '../../../../common/ui-elements/audio/audio-element';
-import { DropListElement } from '../../../../common/ui-elements/drop-list/drop-list';
 import { UnitStateElementCode } from '../models/verona';
 import { TextMarker } from '../classes/text-marker';
+import { Unit } from '../../../../common/interfaces/unit';
+import {
+  AudioElement, DragNDropValueObject, DropListElement,
+  ImageElement, InputElement,
+  InputElementValue, TextElement,
+  UIElement,
+  VideoElement
+} from '../../../../common/interfaces/elements';
+import { UnitUtils } from '../../../../common/util/unit-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -17,28 +18,11 @@ export class UnitStateElementMapperService {
   dropListValueIds!: DragNDropValueObject[];
 
   registerDropListValueIds(unitDefinition: Unit): void {
-    this.dropListValueIds = UnitStateElementMapperService.findNestedUIElement(unitDefinition.pages, 'drop-list')
+    this.dropListValueIds = UnitUtils.findUIElements(unitDefinition.pages, 'drop-list')
       .reduce(
         (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
-          (currentValue.value && currentValue.value.length) ? accumulator.concat(currentValue.value) : accumulator), []
+          (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ? accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []
       );
-  }
-
-  static findNestedUIElement(value: any | unknown[], type: string): UIElement[] {
-    const elements: UIElement[] = [];
-    if (value && typeof value === 'object') {
-      if (Array.isArray(value)) {
-        value.forEach((node: unknown) => elements
-          .push(...UnitStateElementMapperService.findNestedUIElement(node, type)));
-      } else if (value.type === type) {
-        elements.push(value);
-      } else {
-        const keys = (Object.keys(value));
-        keys.forEach((key: string) => elements
-          .push(...UnitStateElementMapperService.findNestedUIElement(value[key], type)));
-      }
-    }
-    return elements;
   }
 
   mapToElementValue(
@@ -49,7 +33,7 @@ export class UnitStateElementMapperService {
       switch (elementModel.type) {
         case 'text':
           elementModel.text = TextMarker
-            .restoreMarkings(unitStateElement.value as string[], elementModel.text);
+            .restoreMarkings(unitStateElement.value as string[], (elementModel as TextElement).text);
           break;
         case 'image':
           elementModel.magnifierUsed = unitStateElement.value;
@@ -61,8 +45,8 @@ export class UnitStateElementMapperService {
           }
           break;
         case 'drop-list':
-          elementModel.value = (unitStateElement.value as string[])
-            .map(id => this.getDropListValueById(id));
+          (elementModel as DropListElement).value = (unitStateElement.value as string[])
+            .map(id => this.getDropListValueById(id)) as DragNDropValueObject[];
           break;
         default:
           elementModel.value = unitStateElement.value;

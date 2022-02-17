@@ -4,7 +4,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
 import { FormService } from '../../services/form.service';
-import { Section } from '../../../../../common/models/section';
+import { Section } from '../../../../../common/interfaces/unit';
 
 @Component({
   selector: 'aspect-section',

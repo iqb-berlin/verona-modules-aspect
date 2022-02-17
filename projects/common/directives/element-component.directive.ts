@@ -2,7 +2,7 @@ import {
   AfterContentChecked,
   Directive, ElementRef
 } from '@angular/core';
-import { UIElement } from '../models/uI-element';
+import { UIElement } from '../interfaces/elements';
 
 @Directive()
 export abstract class ElementComponent implements AfterContentChecked {

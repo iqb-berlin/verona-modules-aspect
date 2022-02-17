@@ -7,7 +7,7 @@ import {
 import { Subject } from 'rxjs';
 import { pairwise, startWith, takeUntil } from 'rxjs/operators';
 import { ElementComponent } from './element-component.directive';
-import { InputElement, InputElementValue, ValueChangeElement } from '../models/uI-element';
+import { InputElement, InputElementValue, ValueChangeElement } from '../interfaces/elements';
 
 @Directive()
 export abstract class FormElementComponent extends ElementComponent implements OnInit, OnDestroy {

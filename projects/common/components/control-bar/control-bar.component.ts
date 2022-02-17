@@ -2,7 +2,7 @@ import {
   OnInit, OnChanges, SimpleChanges, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
-import { PlayerProperties, ValueChangeElement } from '../../models/uI-element';
+import { PlayerProperties, ValueChangeElement } from '../../interfaces/elements';
 
 @Component({
   selector: 'aspect-control-bar',

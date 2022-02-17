@@ -2,10 +2,9 @@ import {
   Component, ElementRef, Input, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
 import { UnitService } from '../../../../services/unit.service';
-import { Section } from '../../../../../../../common/models/section';
-import { UIElementType } from '../../../../../../../common/models/uI-element';
-import { SectionDynamicComponent } from './section-dynamic.component';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
+import { Section } from '../../../../../../../common/interfaces/unit';
+import { UIElementType } from '../../../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-section-static',

@@ -4,12 +4,11 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
-import { Page } from '../../../../../../../common/models/page';
-import { PositionedElement, UIElement } from '../../../../../../../common/models/uI-element';
-import { Section } from '../../../../../../../common/models/section';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';
+import { Page, Section } from '../../../../../../../common/interfaces/unit';
+import { PositionedElement, UIElement } from '../../../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-page-canvas',

@@ -2,7 +2,7 @@ import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { TextFieldNodeviewComponent } from './text-field-nodeview.component';
-import { TextFieldSimpleElement } from '../../../../../common/ui-elements/textfield-simple/text-field-simple-element';
+import { ElementFactory } from '../../../../../common/util/element.factory';
 
 const TextFieldComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -13,7 +13,7 @@ const TextFieldComponentExtension = (injector: Injector): Node => {
     addAttributes() {
       return {
         model: {
-          default: new TextFieldSimpleElement({ type: 'text-field' })
+          default: ElementFactory.createElement('text-field', { height: 25, width: 100 })
         }
       };
     },

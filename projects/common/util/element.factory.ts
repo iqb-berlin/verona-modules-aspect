@@ -1,101 +1,169 @@
 import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
-import { UIElement } from '../models/uI-element';
-import { TextElement } from '../ui-elements/text/text-element';
-import { ButtonElement } from '../ui-elements/button/button-element';
-import { TextFieldElement } from '../ui-elements/text-field/text-field-element';
-import { TextAreaElement } from '../ui-elements/text-area/text-area-element';
-import { CheckboxElement } from '../ui-elements/checkbox/checkbox-element';
-import { DropdownElement } from '../ui-elements/dropdown/dropdown-element';
-import { RadioButtonGroupElement } from '../ui-elements/radio/radio-button-group-element';
-import { ImageElement } from '../ui-elements/image/image-element';
-import { AudioElement } from '../ui-elements/audio/audio-element';
-import { VideoElement } from '../ui-elements/video/video-element';
-import { TextComponent } from '../ui-elements/text/text.component';
-import { ButtonComponent } from '../ui-elements/button/button.component';
-import { TextFieldComponent } from '../ui-elements/text-field/text-field.component';
-import { TextAreaComponent } from '../ui-elements/text-area/text-area.component';
-import { CheckboxComponent } from '../ui-elements/checkbox/checkbox.component';
-import { DropdownComponent } from '../ui-elements/dropdown/dropdown.component';
-import { RadioButtonGroupComponent } from '../ui-elements/radio/radio-button-group.component';
-import { ImageComponent } from '../ui-elements/image/image.component';
-import { AudioComponent } from '../ui-elements/audio/audio.component';
-import { VideoComponent } from '../ui-elements/video/video.component';
-import { LikertElement } from '../ui-elements/likert/likert-element';
-import { LikertComponent } from '../ui-elements/likert/likert.component';
-import { RadioGroupImagesComponent } from '../ui-elements/radio-with-images/radio-group-images.component';
-import { RadioGroupImagesElement } from '../ui-elements/radio-with-images/radio-group-images';
-import { DropListComponent } from '../ui-elements/drop-list/drop-list.component';
-import { DropListElement } from '../ui-elements/drop-list/drop-list';
-import { ClozeComponent } from '../ui-elements/cloze/cloze.component';
-import { ClozeElement } from '../ui-elements/cloze/cloze-element';
-import { SliderElement } from '../ui-elements/slider/slider-element';
-import { SpellCorrectElement } from '../ui-elements/spell-correct/spell-correct-element';
-import { SliderComponent } from '../ui-elements/slider/slider.component';
-import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correct.component';
-import { FrameComponent } from '../ui-elements/frame/frame.component';
-import { FrameElement } from '../ui-elements/frame/frame-element';
+import { TextComponent } from '../components/ui-elements/text.component';
+import { ButtonComponent } from '../components/ui-elements/button.component';
+import { TextFieldComponent } from '../components/ui-elements/text-field.component';
+import { TextAreaComponent } from '../components/ui-elements/text-area.component';
+import { CheckboxComponent } from '../components/ui-elements/checkbox.component';
+import { DropdownComponent } from '../components/ui-elements/dropdown.component';
+import { RadioButtonGroupComponent } from '../components/ui-elements/radio-button-group.component';
+import { ImageComponent } from '../components/ui-elements/image.component';
+import { AudioComponent } from '../components/ui-elements/audio.component';
+import { VideoComponent } from '../components/ui-elements/video.component';
+import { LikertComponent } from '../components/ui-elements/likert.component';
+import { RadioGroupImagesComponent } from '../components/ui-elements/radio-group-images.component';
+import { DropListComponent } from '../components/ui-elements/drop-list.component';
+import { ClozeComponent } from '../components/ui-elements/cloze.component';
+import { SliderComponent } from '../components/ui-elements/slider.component';
+import { SpellCorrectComponent } from '../components/ui-elements/spell-correct.component';
+import { FrameComponent } from '../components/ui-elements/frame.component';
 import { ElementComponent } from '../directives/element-component.directive';
+import {
+  AudioElement,
+  ButtonElement,
+  CheckboxElement,
+  ClozeElement,
+  DropdownElement,
+  DropListElement,
+  DropListSimpleElement, FontProperties,
+  FrameElement,
+  ImageElement,
+  InputElement, LikertElement, LikertRowElement, PlayerProperties, PositionProperties,
+  RadioButtonGroupComplexElement,
+  RadioButtonGroupElement, SliderElement, SpellCorrectElement, SurfaceProperties,
+  TextAreaElement,
+  TextElement,
+  TextFieldElement, TextFieldSimpleElement, ToggleButtonElement,
+  UIElement, UIElementType,
+  VideoElement
+} from '../interfaces/elements';
+import { IdService } from '../../editor/src/app/services/id.service';
 
 export abstract class ElementFactory {
-  static createElement(elementModel: Partial<UIElement>): UIElement {
-    let newElement: UIElement;
-    switch (elementModel.type) {
+  static createElement(elementType: string, defaults?: Record<string, any>): UIElement {
+    switch (elementType) {
       case 'text':
-        newElement = new TextElement(elementModel);
-        break;
+        return ElementFactory.createTextElement(defaults);
       case 'button':
-        newElement = new ButtonElement(elementModel);
-        break;
+        return ElementFactory.createButtonElement(defaults);
       case 'text-field':
-        newElement = new TextFieldElement(elementModel);
-        break;
+        return ElementFactory.createTextFieldElement(defaults);
+      case 'text-field-simple':
+        return ElementFactory.createTextFieldSimpleElement(defaults);
       case 'text-area':
-        newElement = new TextAreaElement(elementModel);
-        break;
+        return ElementFactory.createTextAreaElement(defaults);
       case 'checkbox':
-        newElement = new CheckboxElement(elementModel);
-        break;
+        return ElementFactory.createCheckboxElement(defaults);
       case 'dropdown':
-        newElement = new DropdownElement(elementModel);
-        break;
+        return ElementFactory.createDropdownElement(defaults);
       case 'radio':
-        newElement = new RadioButtonGroupElement(elementModel);
-        break;
+        return ElementFactory.createRadioButtonGroupElement(defaults);
       case 'image':
-        newElement = new ImageElement(elementModel);
-        break;
+        return ElementFactory.createImageElement(defaults);
       case 'audio':
-        newElement = new AudioElement(elementModel);
-        break;
+        return ElementFactory.createAudioElement(defaults);
       case 'video':
-        newElement = new VideoElement(elementModel);
-        break;
+        return ElementFactory.createVideoElement(defaults);
       case 'likert':
-        newElement = new LikertElement(elementModel);
-        break;
+        return ElementFactory.createLikertElement(defaults);
       case 'radio-group-images':
-        newElement = new RadioGroupImagesElement(elementModel);
-        break;
+        return ElementFactory.createRadioButtonGroupComplexElement(defaults);
       case 'drop-list':
-        newElement = new DropListElement(elementModel);
-        break;
+        return ElementFactory.createDropListElement(defaults);
       case 'cloze':
-        newElement = new ClozeElement(elementModel);
-        break;
+        return ElementFactory.createClozeElement(defaults);
       case 'slider':
-        newElement = new SliderElement(elementModel);
-        break;
+        return ElementFactory.createSliderElement(defaults);
       case 'spell-correct':
-        newElement = new SpellCorrectElement(elementModel);
-        break;
+        return ElementFactory.createSpellCorrectElement(defaults);
       case 'frame':
-        newElement = new FrameElement(elementModel);
-        break;
+        return ElementFactory.createFrameElement(defaults);
+      case 'toggle-button':
+        return ElementFactory.createToggleButtonElement(defaults);
       default:
-        throw new Error(`ElementType ${elementModel.type} not found!`);
+        throw new Error(`ElementType ${elementType} not found!`);
     }
-    // console.log('newElement', newElement);
-    return newElement;
+  }
+
+  static initElement(elementType: string, defaults: Record<string, number>): UIElement {
+    return <UIElement>{
+      type: elementType as UIElementType,
+      id: defaults.id || 'id_placeholder',
+      width: defaults.width || 190,
+      height: defaults.height || 60
+    };
+  }
+
+  static initInputElement(elementType: string, defaults: Record<string, any>): InputElement {
+    return {
+      ...ElementFactory.initElement(elementType, defaults),
+      label: defaults.label || 'Beispielbeschriftung',
+      value: defaults.value || null,
+      required: defaults.required || false,
+      requiredWarnMessage: defaults.requiredWarnMessage || 'Eingabe erforderlich',
+      readOnly: defaults.readOnly || false
+    };
+  }
+
+  static initPositionProps(defaults: Record<string, any> = {}): PositionProperties {
+    return {
+      fixedSize: defaults.fixedSize || false,
+      dynamicPositioning: defaults.dynamicPositioning || false,
+      xPosition: defaults.xPosition || 0,
+      yPosition: defaults.yPosition || 0,
+      useMinHeight: defaults.useMinHeight || false,
+      gridColumnStart: defaults.gridColumnStart || 1,
+      gridColumnEnd: defaults.gridColumnEnd || 2,
+      gridRowStart: defaults.gridRowStart || 1,
+      gridRowEnd: defaults.gridRowEnd || 2,
+      marginLeft: defaults.marginLeft || 0,
+      marginRight: defaults.marginRight || 0,
+      marginTop: defaults.marginTop || 0,
+      marginBottom: defaults.marginBottom || 0,
+      zIndex: defaults.zIndex || 0
+    };
+  }
+
+  static initFontProps(defaults: Record<string, any> = {}): FontProperties {
+    return {
+      fontColor: defaults.fontColor || '#000000',
+      font: defaults.font || 'Roboto',
+      fontSize: defaults.fontSize || 20,
+      lineHeight: defaults.lineHeight || 120,
+      bold: defaults.bold || false,
+      italic: defaults.italic || false,
+      underline: defaults.underline || false
+    };
+  }
+
+  static initSurfaceProps(defaults: Record<string, any> = {}): SurfaceProperties {
+    return {
+      backgroundColor: defaults.backgroundColor || '#d3d3d3'
+    };
+  }
+
+  static initPlayerProps(defaults: Record<string, any> = {}): PlayerProperties {
+    return {
+      autostart: defaults.autostart || false,
+      autostartDelay: defaults.autostartDelay || 0,
+      loop: defaults.loop || false,
+      startControl: defaults.startControl || true,
+      pauseControl: defaults.pauseControl || false,
+      progressBar: defaults.progressBar || true,
+      interactiveProgressbar: defaults.interactiveProgressbar || undefined,
+      volumeControl: defaults.volumeControl || true,
+      defaultVolume: defaults.defaultVolume || 8,
+      minVolume: defaults.minVolume || 0,
+      muteControl: defaults.muteControl || true,
+      interactiveMuteControl: defaults.interactiveMuteControl || undefined,
+      hintLabel: defaults.hintLabel || '',
+      hintLabelDelay: defaults.hintLabelDelay || 0,
+      activeAfterID: defaults.activeAfterID || '',
+      minRuns: defaults.minRuns || 1,
+      maxRuns: defaults.maxRuns || null,
+      showRestRuns: defaults.showRestRuns || false,
+      showRestTime: defaults.showRestTime || true,
+      playbackTime: defaults.playbackTime || 0
+    };
   }
 
   static getComponentFactory(
@@ -139,5 +207,280 @@ export abstract class ElementFactory {
       default:
         throw new Error('unknown element');
     }
+  }
+
+  private static createButtonElement(defaults: Record<string, any> = {}): ButtonElement {
+    return {
+      ...ElementFactory.initElement('button', defaults),
+      type: 'button',
+      label: 'Knopf',
+      imageSrc: null,
+      borderRadius: 0,
+      action: null,
+      positionProps: ElementFactory.initPositionProps(defaults.positionProps),
+      fontProps: ElementFactory.initFontProps(defaults.fontProps),
+      surfaceProps: ElementFactory.initSurfaceProps(defaults.surfaceProps)
+    };
+  }
+
+  private static createCheckboxElement(defaults: Record<string, any> = {}): CheckboxElement {
+    return {
+      ...ElementFactory.initInputElement('checkbox', { width: 215, ...defaults }),
+      type: 'checkbox',
+      value: false,
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createClozeElement(defaults: Record<string, any> = {}): ClozeElement {
+    return {
+      ...ElementFactory.initElement('cloze', { width: 450, height: 200, ...defaults }),
+      type: 'cloze',
+      document: { type: 'doc', content: [] },
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults)
+    };
+  }
+
+  private static createDropdownElement(defaults: Record<string, any> = {}): DropdownElement {
+    return {
+      ...ElementFactory.initInputElement('dropdown', { width: 240, height: 83, ...defaults }),
+      type: 'dropdown',
+      options: [],
+      allowUnset: false,
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps(defaults)
+    };
+  }
+
+  private static createDropListElement(defaults: Record<string, any> = {}): DropListElement {
+    return {
+      ...ElementFactory.initInputElement('drop-list', { height: 100, ...defaults }),
+      type: 'drop-list',
+      value: [],
+      onlyOneItem: false,
+      connectedTo: [],
+      orientation: 'vertical',
+      itemBackgroundColor: '#c9e0e0',
+      highlightReceivingDropList: false,
+      highlightReceivingDropListColor: '#006064',
+      positionProps: ElementFactory.initPositionProps({ useMinHeight: true, ...defaults }),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: '#f4f4f2', ...defaults })
+    };
+  }
+
+  private static createDropListSimpleElement(defaults: Record<string, any> = {}): DropListSimpleElement {
+    return {
+      ...ElementFactory.initInputElement('drop-list-simple', { height: 100, ...defaults }),
+      type: 'drop-list',
+      value: [],
+      connectedTo: [],
+      itemBackgroundColor: '#add8e6',
+      highlightReceivingDropList: false,
+      highlightReceivingDropListColor: '#add8e6',
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: '#eeeeec', ...defaults })
+    };
+  }
+
+  private static createFrameElement(defaults: Record<string, any> = {}): FrameElement {
+    return {
+      ...ElementFactory.initElement('frame', {}),
+      type: 'frame',
+      borderWidth: 1,
+      borderColor: 'black',
+      borderStyle: 'solid',
+      borderRadius: 0,
+      positionProps: ElementFactory.initPositionProps({ zIndex: -1, ...defaults }),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createImageElement(defaults: Record<string, any> = {}): ImageElement {
+    return {
+      ...ElementFactory.initElement('image', { height: 100, ...defaults }),
+      type: 'image',
+      src: '', // TODO eigentlich undefined
+      scale: false,
+      magnifier: false,
+      magnifierSize: 100,
+      magnifierZoom: 1.5,
+      magnifierUsed: false,
+      positionProps: ElementFactory.initPositionProps({})
+    };
+  }
+
+  private static createLikertElement(defaults: Record<string, any> = {}): LikertElement {
+    return {
+      ...ElementFactory.initElement('likert', { width: 250, height: 200, ...defaults }),
+      type: 'likert',
+      rows: [],
+      columns: [],
+      firstColumnSizeRatio: 5,
+      lineColoring: true,
+      lineColoringColor: '#c9e0e0',
+      readOnly: false,
+      positionProps: ElementFactory.initPositionProps({ marginBottom: 30, ...defaults }),
+      fontProps: ElementFactory.initFontProps({ lineHeight: 135, ...defaults }),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  static createLikertRowElement(defaults: Record<string, any>): LikertRowElement {
+    return {
+      ...ElementFactory.initInputElement('likert_row', defaults),
+      type: 'likert-row',
+      text: defaults.text || '',
+      columnCount: defaults.columnCount || 0,
+      firstColumnSizeRatio: defaults.firstColumnSizeRatio || 5
+    };
+  }
+
+  private static createRadioButtonGroupElement(defaults: Record<string, any> = {}): RadioButtonGroupElement {
+    return {
+      ...ElementFactory.initInputElement('radio', { height: 85, ...defaults }),
+      type: 'radio',
+      options: [],
+      alignment: 'column',
+      strikeOtherOptions: false,
+      positionProps: ElementFactory.initPositionProps({ marginBottom: 30, ...defaults }),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createRadioButtonGroupComplexElement(defaults: Record<string, any> = {}): RadioButtonGroupComplexElement {
+    return {
+      ...ElementFactory.initInputElement('radio-group-images', { height: 100, ...defaults }), // TODO better name
+      type: 'radio-group-images',
+      columns: [],
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createSliderElement(defaults: Record<string, any> = {}): SliderElement {
+    return {
+      ...ElementFactory.initElement('slider', { width: 300, height: 75, ...defaults }),
+      type: 'slider',
+      minValue: 0,
+      maxValue: 100,
+      showValues: true,
+      barStyle: false,
+      thumbLabel: false,
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createSpellCorrectElement(defaults: Record<string, any> = {}): SpellCorrectElement {
+    return {
+      ...ElementFactory.initInputElement('spell-correct', { width: 230, height: 80, ...defaults }),
+      type: 'spell-correct',
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createTextElement(defaults: Record<string, any> = {}): TextElement {
+    return {
+      ...ElementFactory.initElement('text', { height: 98, ...defaults }),
+      type: 'text',
+      text: 'Lorem ipsum dolor sit amet',
+      highlightableOrange: false,
+      highlightableTurquoise: false,
+      highlightableYellow: false,
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps({ lineHeight: 135, ...defaults }),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createTextAreaElement(defaults: Record<string, any> = {}): TextAreaElement {
+    return {
+      ...ElementFactory.initInputElement('text-area', { width: 230, height: 132, ...defaults }),
+      type: 'text-area',
+      appearance: 'outline',
+      resizeEnabled: false,
+      rowCount: 3,
+      inputAssistancePreset: 'none',
+      inputAssistancePosition: 'floating',
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createTextFieldElement(defaults: Record<string, any> = {}): TextFieldElement {
+    return {
+      ...ElementFactory.initInputElement('text-field', { width: 230, height: 100, ...defaults }),
+      type: 'text-field',
+      appearance: 'outline',
+      minLength: 0,
+      minLengthWarnMessage: 'Eingabe zu kurz',
+      maxLength: 0,
+      maxLengthWarnMessage: 'Eingabe zu lang',
+      pattern: '',
+      patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
+      inputAssistancePreset: 'none',
+      inputAssistancePosition: 'floating',
+      clearable: false,
+      positionProps: ElementFactory.initPositionProps(defaults),
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createTextFieldSimpleElement(defaults: Record<string, any> = {}): TextFieldSimpleElement {
+    return {
+      ...ElementFactory.initInputElement('text-field', { height: 25, ...defaults }),
+      type: 'text-field',
+      label: undefined,
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps(defaults)
+    };
+  }
+
+  private static createToggleButtonElement(defaults: Record<string, any> = {}): ToggleButtonElement {
+    return {
+      ...ElementFactory.initInputElement('toggle-button', { height: 25, ...defaults }),
+      type: 'toggle-button',
+      options: [],
+      strikeOtherOptions: false,
+      selectionColor: 'lightgreen',
+      verticalOrientation: false,
+      dynamicWidth: true,
+      fontProps: ElementFactory.initFontProps(defaults),
+      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+    };
+  }
+
+  private static createAudioElement(defaults: Record<string, any> = {}): AudioElement {
+    return {
+      ...ElementFactory.initElement('audio', { width: 250, height: 90, ...defaults }),
+      type: 'audio',
+      src: '', // TODO eigentlich undefined
+      positionProps: ElementFactory.initPositionProps(defaults),
+      playerProps: ElementFactory.initPlayerProps(defaults)
+    };
+  }
+
+  private static createVideoElement(defaults: Record<string, any> = {}): VideoElement {
+    return {
+      ...ElementFactory.initElement('video', { width: 280, height: 230, ...defaults }),
+      type: 'video',
+      src: '', // TODO eigentlich undefined
+      scale: false,
+      positionProps: ElementFactory.initPositionProps(defaults),
+      playerProps: ElementFactory.initPlayerProps(defaults)
+    };
   }
 }

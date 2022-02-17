@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-element-row';
 import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -9,11 +8,14 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertColumnEditDialogComponent } from '../components/dialogs/likert-column-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
-import {
-  ClozeDocument,
-  DragNDropValueObject, LikertColumn, PlayerProperties
-} from '../../../../common/models/uI-element';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
+import {
+  DragNDropValueObject,
+  LikertRowElement,
+  PlayerProperties
+} from '../../../../common/interfaces/elements';
+import { ClozeDocument } from '../../../../common/interfaces/cloze';
+import { LikertColumn } from '../../../../common/interfaces/likert';
 
 @Injectable({
   providedIn: 'root'
@@ -83,7 +85,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertRowEditDialog(row: LikertElementRow, columns: LikertColumn[]): Observable<LikertElementRow> {
+  showLikertRowEditDialog(row: LikertRowElement, columns: LikertColumn[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
       data: { row, columns }
     });

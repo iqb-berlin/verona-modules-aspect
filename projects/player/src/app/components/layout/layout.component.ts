@@ -12,7 +12,7 @@ import {
 import { KeyboardService } from '../../services/keyboard.service';
 import { NativeEventService } from '../../services/native-event.service';
 import { PlayerConfig } from '../../models/verona';
-import { Page } from '../../../../../common/models/page';
+import { Page } from '../../../../../common/interfaces/unit';
 
 @Component({
   selector: 'aspect-layout',

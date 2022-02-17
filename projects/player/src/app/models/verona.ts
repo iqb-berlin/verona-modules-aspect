@@ -1,4 +1,4 @@
-import { InputElementValue } from '../../../../common/models/uI-element';
+import { InputElementValue } from '../../../../common/interfaces/elements';
 
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 

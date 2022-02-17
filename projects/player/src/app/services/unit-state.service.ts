@@ -8,8 +8,8 @@ import {
   UnitStateElementCodeStatus,
   UnitStateElementCodeStatusValue
 } from '../models/verona';
-import { InputElementValue, ValueChangeElement } from '../../../../common/models/uI-element';
 import { IntersectionDetector } from '../classes/intersection-detector';
+import { InputElementValue, ValueChangeElement } from '../../../../common/interfaces/elements';
 
 @Injectable({
   providedIn: 'root'

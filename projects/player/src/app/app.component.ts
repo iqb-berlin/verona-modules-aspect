@@ -3,7 +3,6 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Unit } from '../../../common/models/unit';
 import { PlayerConfig, VopStartCommand } from './models/verona';
 import { UnitStateElementMapperService } from './services/unit-state-element-mapper.service';
 import { VeronaSubscriptionService } from './services/verona-subscription.service';
@@ -13,7 +12,7 @@ import { MetaDataService } from './services/meta-data.service';
 import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
-import { Page } from '../../../common/models/page';
+import { Page, Unit } from '../../../common/interfaces/unit';
 
 @Component({
   selector: 'aspect-player',
@@ -60,7 +59,7 @@ export class AppComponent implements OnInit {
       // eslint-disable-next-line no-console
       console.log('player: onStart', message);
       if (message.unitDefinition) {
-        const unitDefinition: Unit = new Unit(JSON.parse(message.unitDefinition));
+        const unitDefinition: Unit = JSON.parse(message.unitDefinition);
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
         if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.unitDefinitionType)) {
           this.playerConfig = message.playerConfig || {};

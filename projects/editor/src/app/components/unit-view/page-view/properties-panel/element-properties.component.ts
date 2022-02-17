@@ -9,12 +9,8 @@ import { merge } from 'lodash';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { MessageService } from '../../../../../../../common/services/message.service';
-import {
-  DragNDropValueObject,
-  LikertColumn,
-  LikertRow,
-  UIElement
-} from '../../../../../../../common/models/uI-element';
+import { DragNDropValueObject, UIElement } from '../../../../../../../common/interfaces/elements';
+import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/likert';
 
 @Component({
   selector: 'aspect-element-properties',

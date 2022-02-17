@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ClozeDocument } from '../../../../../common/models/uI-element';
 
 @Component({
   selector: 'aspect-rich-text-edit-dialog',

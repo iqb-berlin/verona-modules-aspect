@@ -26,7 +26,6 @@ import { FileService } from '../services/file.service';
 import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
-import { ClozeDocument } from '../../../../common/models/uI-element';
 
 @Component({
   selector: 'aspect-rich-text-editor',

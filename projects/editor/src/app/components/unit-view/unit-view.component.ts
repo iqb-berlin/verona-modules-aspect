@@ -5,8 +5,7 @@ import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from '../../../../../common/services/message.service';
-import { Page } from '../../../../../common/models/page';
-import { Unit } from '../../../../../common/models/unit';
+import { Page } from '../../../../../common/interfaces/unit';
 
 @Component({
   selector: 'aspect-unit-view',

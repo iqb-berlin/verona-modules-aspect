@@ -6,20 +6,16 @@ import {
 } from '@angular/forms';
 import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import {
-  InputElement, UIElement, ValueChangeElement
-} from '../../../../../common/models/uI-element';
 import { FormElementComponent } from '../../../../../common/directives/form-element-component.directive';
 import { CompoundElementComponent }
   from '../../../../../common/directives/compound-element.directive';
 import { MediaPlayerElementComponent } from '../../../../../common/directives/media-player-element-component.directive';
-import { TextComponent } from '../../../../../common/ui-elements/text/text.component';
-import { TextFieldElement } from '../../../../../common/ui-elements/text-field/text-field-element';
+import { TextComponent } from '../../../../../common/components/ui-elements/text.component';
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
-import { ImageComponent } from '../../../../../common/ui-elements/image/image.component';
-import { ButtonComponent } from '../../../../../common/ui-elements/button/button.component';
-import { TextFieldComponent } from '../../../../../common/ui-elements/text-field/text-field.component';
-import { TextAreaComponent } from '../../../../../common/ui-elements/text-area/text-area.component';
+import { ImageComponent } from '../../../../../common/components/ui-elements/image.component';
+import { ButtonComponent } from '../../../../../common/components/ui-elements/button.component';
+import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
+import { TextAreaComponent } from '../../../../../common/components/ui-elements/text-area.component';
 import { ElementFactory } from '../../../../../common/util/element.factory';
 import { KeyboardService } from '../../services/keyboard.service';
 import { FormService } from '../../services/form.service';
@@ -30,6 +26,12 @@ import { UnitStateElementMapperService } from '../../services/unit-state-element
 import { VeronaPostService } from '../../services/verona-post.service';
 import { NativeEventService } from '../../services/native-event.service';
 import { TextMarker } from '../../classes/text-marker';
+import {
+  InputElement, InputElementValue,
+  TextFieldElement,
+  UIElement,
+  ValueChangeElement
+} from '../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-element-container',
@@ -181,7 +183,7 @@ export class ElementContainerComponent implements OnInit {
             const formChild = (child as FormElementComponent);
             if (formChild) {
               this.subscribeSetValidators(formChild, elementForm);
-              formChild.setFormValue(child.elementModel.value, { emitEvent: false });
+              formChild.setFormValue(child.elementModel.value as InputElementValue, { emitEvent: false });
               formChild.setFormControlValidator();
             }
           });

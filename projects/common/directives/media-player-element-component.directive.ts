@@ -1,6 +1,6 @@
 import { Directive, EventEmitter, Output } from '@angular/core';
-import { ValueChangeElement } from '../models/uI-element';
 import { ElementComponent } from './element-component.directive';
+import { ValueChangeElement } from '../interfaces/elements';
 
 @Directive()
 export abstract class MediaPlayerElementComponent extends ElementComponent {

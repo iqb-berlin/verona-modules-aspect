@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { UIElement } from '../../../../../../../common/models/uI-element';
+import { UIElement } from '../../../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-element-style-properties',

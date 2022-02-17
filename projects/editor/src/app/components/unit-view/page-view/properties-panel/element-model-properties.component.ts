@@ -4,14 +4,15 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-  DragNDropValueObject,
-  InputElementValue, LikertColumn, LikertRow, UIElement
-} from '../../../../../../../common/models/uI-element';
-import { LikertElement } from '../../../../../../../common/ui-elements/likert/likert-element';
-import { LikertElementRow } from '../../../../../../../common/ui-elements/likert/likert-element-row';
 import { UnitService } from '../../../../services/unit.service';
 import { FileService } from '../../../../services/file.service';
+import {
+  DragNDropValueObject,
+  InputElementValue,
+  LikertElement, LikertRowElement,
+  UIElement
+} from '../../../../../../../common/interfaces/elements';
+import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/likert';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -44,7 +45,7 @@ export class ElementModelPropertiesComponent {
   /* Putting the actual types for option does not work because indexOf throws an error
      about the types not being assignable. */
   removeOption(property: string, option: any): void {
-    const valueList = this.combinedProperties[property] as string[] | LikertElementRow[] | LikertColumn[];
+    const valueList = this.combinedProperties[property] as string[] | LikertRowElement[] | LikertColumn[];
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel.emit({ property: property, value: valueList });
   }
@@ -56,7 +57,10 @@ export class ElementModelPropertiesComponent {
   addDropListOption(value: string): void {
     this.updateModel.emit({
       property: 'value',
-      value: [...this.combinedProperties.value, { stringValue: value, id: this.unitService.getNewValueID() }]
+      value: [
+        ...this.combinedProperties.value as DragNDropValueObject[],
+        { stringValue: value, id: this.unitService.getNewValueID() }
+      ]
     });
   }
 
@@ -70,7 +74,7 @@ export class ElementModelPropertiesComponent {
 
   async editRowOption(optionIndex: number): Promise<void> {
     await this.unitService.editLikertRow(
-      (this.combinedProperties.rows as LikertElementRow[])[optionIndex] as LikertElementRow,
+      (this.combinedProperties.rows as LikertRowElement[])[optionIndex] as LikertRowElement,
       this.combinedProperties.columns as LikertColumn[]
     );
   }
@@ -86,8 +90,8 @@ export class ElementModelPropertiesComponent {
       question,
       (this.combinedProperties.columns as LikertColumn[]).length
     );
-    (this.combinedProperties.rows as LikertElementRow[]).push(newRow);
-    this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertElementRow[] });
+    (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
+    this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
   }
 
   async loadImage(): Promise<void> {

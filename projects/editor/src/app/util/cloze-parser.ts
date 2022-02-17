@@ -1,8 +1,7 @@
-import { ClozeDocument, InputElement, UIElement } from '../../../../common/models/uI-element';
 import { IdService } from '../services/id.service';
-import { TextFieldSimpleElement } from '../../../../common/ui-elements/textfield-simple/text-field-simple-element';
-import { DropListSimpleElement } from '../../../../common/ui-elements/drop-list-simple/drop-list-simple';
-import { ToggleButtonElement } from '../../../../common/ui-elements/toggle-button/toggle-button';
+import { ElementFactory } from '../../../../common/util/element.factory';
+import { ClozeDocument } from '../../../../common/interfaces/cloze';
+import { InputElement, UIElement } from '../../../../common/interfaces/elements';
 
 export abstract class ClozeParser {
   static setMissingIDs(clozeJSON: ClozeDocument, idService: IdService): ClozeDocument {
@@ -39,13 +38,13 @@ export abstract class ClozeParser {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field':
-        newElement = new TextFieldSimpleElement(elementModel);
+        newElement = ElementFactory.createElement('text-field-simple', elementModel) as InputElement;
         break;
       case 'drop-list':
-        newElement = new DropListSimpleElement(elementModel);
+        newElement = ElementFactory.createElement('drop-list', elementModel) as InputElement;
         break;
       case 'toggle-button':
-        newElement = new ToggleButtonElement(elementModel);
+        newElement = ElementFactory.createElement('toggle-button', elementModel) as InputElement;
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

@@ -7,26 +7,25 @@ import { MessageService } from '../../../../common/services/message.service';
 import { IdService } from './id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
-import { Unit } from '../../../../common/models/unit';
-import { Page } from '../../../../common/models/page';
-import { Section } from '../../../../common/models/section';
-import {
-  DragNDropValueObject,
-  InputElement, InputElementValue,
-  LikertColumn,
-  LikertRow, PlayerElement,
-  PlayerProperties, PositionedElement, ClozeDocument,
-  UIElement,
-  UIElementType
-} from '../../../../common/models/uI-element';
-import { TextElement } from '../../../../common/ui-elements/text/text-element';
-import { LikertElement } from '../../../../common/ui-elements/likert/likert-element';
-import { LikertElementRow } from '../../../../common/ui-elements/likert/likert-element-row';
 import { SelectionService } from './selection.service';
 import { ElementFactory } from '../../../../common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
 import { Copy } from '../../../../common/util/copy';
-import { ClozeElement } from '../../../../common/ui-elements/cloze/cloze-element';
+import { UnitFactory } from '../../../../common/util/unit.factory';
+import { Page, Section, Unit } from '../../../../common/interfaces/unit';
+import { moveArrayItem } from '../../../../common/util/array';
+import {
+  ClozeElement, DragNDropValueObject,
+  DropListElement, InputElement, InputElementValue, LikertElement,
+  LikertRowElement, PlayerElement, PlayerProperties,
+  PositionedElement, TextElement,
+  UIElement, UIElementType
+} from '../../../../common/interfaces/elements';
+import { UnitDefinitionSanitizer } from '../../../../common/util/unit-definition-sanitizer';
+import { LikertColumn, LikertRow } from '../../../../common/interfaces/likert';
+import { ClozeDocument } from '../../../../common/interfaces/cloze';
+import { getClozeChildElements } from '../../../../common/util/cloze';
+import { UnitUtils } from '../../../../common/util/unit-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -44,39 +43,39 @@ export class UnitService {
               private dialogService: DialogService,
               private sanitizer: DomSanitizer,
               private translateService: TranslateService) {
-    this.unit = new Unit();
+    this.unit = UnitFactory.generateEmptyUnit();
   }
 
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
-    let error = false;
-    if (!unitDefinition) {
-      error = true;
-    } else {
-      try {
-        this.unit = new Unit(JSON.parse(unitDefinition));
-      } catch (e) {
-        error = true;
-      }
-    }
-    if (error) {
-      this.messageService.showError('Unit konnte nicht geladen werden!');
-      this.unit = new Unit({});
-    }
+    this.unit = UnitDefinitionSanitizer.sanitize(JSON.parse(unitDefinition));
+    this.readIDs(this.unit);
+  }
+
+  private readIDs(unit: Unit): void {
+    // console.log('READ:', UnitUtils.findUIElements(unit, 'drop-list'));
+    UnitUtils.findUIElements(unit).forEach(element => {
+      IdService.getInstance().addID(element.id);
+    });
   }
 
   addPage(): void {
-    this.unit.addPage();
+    this.unit.pages.push(UnitFactory.generateEmptyPage());
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deletePage(page: Page): void {
-    this.unit.deletePage(page);
+    this.unit.pages.splice(this.unit.pages.indexOf(page), 1);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   movePage(selectedPage: Page, direction: 'up' | 'down'): void {
-    this.unit.movePage(selectedPage, direction);
+    if (direction === 'up' &&
+      this.unit.pages.indexOf(selectedPage) === 1 &&
+      this.unit.pages[0].alwaysVisible) {
+      return;
+    }
+    moveArrayItem(selectedPage, this.unit.pages, direction);
     this.pageMoved.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -92,24 +91,28 @@ export class UnitService {
   private handlePageAlwaysVisiblePropertyChange(page: Page): void {
     const pageIndex = this.unit.pages.indexOf(page);
     if (pageIndex !== 0) {
-      this.unit.movePageToTop(pageIndex, page);
+      this.unit.pages.splice(pageIndex, 1);
+      this.unit.pages.splice(0, 0, page);
       this.pageMoved.next();
     }
     page.alwaysVisible = true;
   }
 
   addSection(page: Page): void {
-    page.addSection();
+    page.sections.push(UnitFactory.generateEmptySection());
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deleteSection(section: Section): void {
-    this.unit.pages[this.selectionService.selectedPageIndex].deleteSection(section);
+    this.unit.pages[this.selectionService.selectedPageIndex].sections.splice(
+      this.unit.pages[this.selectionService.selectedPageIndex].sections.indexOf(section),
+      1
+    );
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
-    const newSection = new Section(section);
+    const newSection = JSON.parse(JSON.stringify(section));
     newSection.elements.forEach((element: UIElement) => {
       element.id = this.idService.getNewID(element.type);
     });
@@ -118,7 +121,7 @@ export class UnitService {
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
-    page.moveSection(section, direction);
+    moveArrayItem(section, page.sections, direction);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -146,8 +149,7 @@ export class UnitService {
           break;
         // no default
       }
-      newElement = ElementFactory.createElement({
-        type: elementType,
+      newElement = ElementFactory.createElement(elementType, { // TODO
         id: this.idService.getNewID(elementType),
         src: mediaSrc,
         positionProps: {
@@ -155,14 +157,16 @@ export class UnitService {
         }
       } as unknown as Partial<UIElement>) as PositionedElement;
     } else {
-      newElement = ElementFactory.createElement({
-        type: elementType,
+      newElement = ElementFactory.createElement(elementType, {
         id: this.idService.getNewID(elementType),
         positionProps: {
           dynamicPositioning: section.dynamicPositioning
         }
       } as unknown as Partial<UIElement>) as PositionedElement;
     }
+    console.log('newElement', newElement);
+    console.log('ccord', coordinates);
+    console.log('section', section);
     if (coordinates && section.dynamicPositioning) {
       newElement.positionProps.gridColumnStart = coordinates.x;
       newElement.positionProps.gridColumnEnd = coordinates.x + 1;
@@ -172,14 +176,14 @@ export class UnitService {
       newElement.positionProps.xPosition = coordinates.x;
       newElement.positionProps.yPosition = coordinates.y;
     }
-    section.addElement(newElement as PositionedElement);
+    section.elements.push(newElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
   deleteElements(elements: UIElement[]): void {
     this.freeUpIds(elements);
     this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
-      section.deleteElements(elements);
+      section.elements = section.elements.filter(element => !elements.includes(element));
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -187,7 +191,7 @@ export class UnitService {
   private freeUpIds(elements: UIElement[]): void {
     elements.forEach(element => {
       if (element.type === 'drop-list') {
-        element.value.forEach((value: DragNDropValueObject) => {
+        ((element as DropListElement).value as DragNDropValueObject[]).forEach((value: DragNDropValueObject) => {
           this.idService.removeId(value.id);
         });
       }
@@ -205,36 +209,32 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  duplicateElementsInSection(elements: UIElement[],
-                             pageIndex: number,
-                             sectionIndex: number): void {
+  duplicateElementsInSection(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
     const section = this.unit.pages[pageIndex].sections[sectionIndex];
 
     (elements as PositionedElement[]).forEach((element: PositionedElement) => {
-      const newElement = ElementFactory.createElement({
-        ...JSON.parse(JSON.stringify(element)),
-        id: this.idService.getNewID(element.type),
-        positionProps: {
-          ...element.positionProps,
-          xPosition: element.positionProps.xPosition + 10,
-          yPosition: element.positionProps.yPosition + 10
-        }
-      } as unknown as Partial<PositionedElement>);
-      if (newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
+      const newElement = JSON.parse(JSON.stringify(element));
+      newElement.id = this.idService.getNewID(element.type);
+      newElement.positionProps.xPosition = element.positionProps.xPosition + 10;
+      newElement.positionProps.yPosition = element.positionProps.yPosition + 10;
+
+      if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
         newElement.value.forEach((valueObject: { id: string }) => {
           valueObject.id = this.idService.getNewID('value');
         });
       }
-      if (newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
+
+      if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
         newElement.rows.forEach((rowObject: { id: string }) => {
           rowObject.id = this.idService.getNewID('likert_row');
         });
       }
+
       if (newElement.type === 'cloze') {
-        (newElement as ClozeElement).getChildElements().forEach((childElement: InputElement) => {
+        getClozeChildElements(newElement).forEach((childElement: InputElement) => {
           childElement.id = this.idService.getNewID(childElement.type);
-          if ((childElement as UIElement).value instanceof Object) { // replace value Ids with fresh ones (dropList)
-            (childElement as UIElement).value.forEach((valueObject: { id: string }) => {
+          if (typeof childElement.value === 'object') { // replace value Ids with fresh ones (dropList)
+            (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
               valueObject.id = this.idService.getNewID('value');
             });
           }
@@ -247,7 +247,14 @@ export class UnitService {
   }
 
   updateSectionProperty(section: Section, property: string, value: string | number | boolean): void {
-    section.updateProperty(property, value);
+    if (property === 'dynamicPositioning') {
+      section.dynamicPositioning = value as boolean;
+      section.elements.forEach((element: PositionedElement) => {
+        element.positionProps.dynamicPositioning = value as boolean;
+      });
+    } else {
+      section[property] = value;
+    }
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -255,25 +262,41 @@ export class UnitService {
   updateElementProperty(elements: UIElement[], property: string,
                         value: InputElementValue | LikertColumn[] | LikertRow[] | ClozeDocument |
                         DragNDropValueObject[] | null): boolean {
-    // console.log('updateElementProperty', elements, property, value);
-    for (const element of elements) {
+    console.log('updateElementProperty', elements, property, value);
+    elements.forEach(element => {
       if (property === 'id') {
         if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError(this.translateService.instant('idTaken'));
-          return false;
+        } else {
+          this.idService.removeId(element.id);
+          this.idService.addID(value as string);
+          element.id = value as string;
         }
-        this.idService.removeId(element.id);
-        this.idService.addID(value as string);
-        element.setProperty('id', value);
       } else if (property === 'document') {
-        element.setProperty('document', ClozeParser.setMissingIDs(
-          value as ClozeDocument,
-          this.idService
-        ));
+        element[property] = ClozeParser.setMissingIDs(value as ClozeDocument, this.idService);
+      } else if (element.type === 'likert') {
+        if (property === 'columns') {
+          (element as LikertElement).rows.forEach(row => {
+            row.columnCount = (element as LikertElement).columns.length;
+          });
+        } else if (property === 'readOnly') {
+          (element as LikertElement).rows.forEach(row => {
+            row.readOnly = value as boolean;
+          });
+        }
+      } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumnStart',
+        'gridColumnEnd', 'gridRowStart', 'gridRowEnd', 'marginLeft', 'marginRight', 'marginTop',
+        'marginBottom', 'zIndex'].includes(property)) {
+        element.positionProps![property] = Copy.getCopy(value);
+      } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline'].includes(property)) {
+        element.fontProps![property] = Copy.getCopy(value);
+      } else if (['backgroundColor'].includes(property)) {
+        element.surfaceProps![property] = Copy.getCopy(value);
       } else {
-        element.setProperty(property, Copy.getCopy(value));
+        element[property] = Copy.getCopy(value);
       }
-    }
+    });
+    console.log('fffff');
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
     return true;
@@ -305,9 +328,9 @@ export class UnitService {
       });
   }
 
-  async editLikertRow(row: LikertElementRow, columns: LikertColumn[]): Promise<void> {
+  async editLikertRow(row: LikertRowElement, columns: LikertColumn[]): Promise<void> {
     await this.dialogService.showLikertRowEditDialog(row, columns)
-      .subscribe((result: LikertElementRow) => {
+      .subscribe((result: LikertRowElement) => {
         if (result) {
           if (result.id !== row.id) {
             this.updateElementProperty(
@@ -356,15 +379,12 @@ export class UnitService {
     };
   }
 
-  createLikertRow(question: string, columnCount: number): LikertElementRow {
-    return new LikertElementRow(
-      {
-        type: 'likert_row',
-        id: this.idService.getNewID('likert_row'),
-        text: question,
-        columnCount: columnCount
-      } as LikertElementRow
-    );
+  createLikertRow(question: string, columnCount: number): LikertRowElement {
+    return ElementFactory.createLikertRowElement({
+      id: this.idService.getNewID('likert_row'),
+      text: question,
+      columnCount: columnCount
+    });
   }
 
   alignElements(elements: PositionedElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
@@ -417,7 +437,7 @@ export class UnitService {
       case 'dropdown':
       case 'checkbox':
       case 'radio':
-        this.dialogService.showTextEditDialog(element.label).subscribe((result: string) => {
+        this.dialogService.showTextEditDialog(element.label as string).subscribe((result: string) => {
           if (result) {
             this.updateElementProperty([element], 'label', result);
           }
@@ -440,7 +460,7 @@ export class UnitService {
         break;
       case 'cloze':
         this.dialogService.showClozeTextEditDialog(
-          element.document,
+          (element as ClozeElement).document,
           (element as ClozeElement).fontProps.fontSize as number
         ).subscribe((result: string) => {
           if (result) {
@@ -454,11 +474,12 @@ export class UnitService {
         });
         break;
       case 'text-field':
-        this.dialogService.showTextEditDialog((element as InputElement).value as string).subscribe((result: string) => {
-          if (result) {
-            this.updateElementProperty([element], 'value', result);
-          }
-        });
+        this.dialogService.showTextEditDialog((element as InputElement).value as string)
+          .subscribe((result: string) => {
+            if (result) {
+              this.updateElementProperty([element], 'value', result);
+            }
+          });
         break;
       case 'text-area':
         this.dialogService.showMultilineTextEditDialog((element as InputElement).value as string)
@@ -472,12 +493,7 @@ export class UnitService {
       case 'video':
         this.dialogService.showPlayerEditDialog((element as PlayerElement).playerProps)
           .subscribe((result: PlayerProperties) => {
-            if (result) {
-              for (const key in result) {
-                // @ts-ignore
-                this.updateElementProperty([element], key, result[key]);
-              }
-            }
+            Object.keys(result).forEach(key => this.updateElementProperty([element], key, result[key]));
           });
         break;
       // no default

@@ -4,7 +4,7 @@ import {
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FormService } from '../../services/form.service';
 import { UnitStateService } from '../../services/unit-state.service';
-import { Page } from '../../../../../common/models/page';
+import { Page } from '../../../../../common/interfaces/unit';
 
 @Component({
   selector: 'aspect-page',

@@ -3,9 +3,9 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { UnitService } from '../../../../services/unit.service';
-import { Section } from '../../../../../../../common/models/section';
-import { UIElement, UIElementType } from '../../../../../../../common/models/uI-element';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
+import { Section } from '../../../../../../../common/interfaces/unit';
+import { UIElement, UIElementType } from '../../../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-section-dynamic',

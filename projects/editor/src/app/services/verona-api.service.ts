@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import { EXPORTED_MODULE_VERSION } from '../../../../common/models/unit';
+import packageJSON from '../../../../../package.json';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +47,7 @@ export class VeronaAPIService {
       type: 'voeReadyNotification',
       apiVersion: '1.1.0',
       notSupportedApiFeatures: '',
-      supportedUnitDefinitionTypes: EXPORTED_MODULE_VERSION
+      supportedUnitDefinitionTypes: packageJSON.config.unit_definition_version
     });
   }
 
@@ -57,7 +57,7 @@ export class VeronaAPIService {
       sessionId: this.sessionID,
       timeStamp: String(Date.now()),
       unitDefinition: unitDefinition,
-      unitDefinitionType: EXPORTED_MODULE_VERSION
+      unitDefinitionType: packageJSON.config.unit_definition_version
     });
   }
 

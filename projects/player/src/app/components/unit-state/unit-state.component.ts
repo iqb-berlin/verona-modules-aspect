@@ -19,8 +19,8 @@ import {
   PlayerConfig, Progress, UnitState, VopNavigationDeniedNotification
 } from '../../models/verona';
 import { UnitStateService } from '../../services/unit-state.service';
-import { Page } from '../../../../../common/models/page';
 import { MediaPlayerService } from '../../services/media-player.service';
+import { Page } from '../../../../../common/interfaces/unit';
 
 @Component({
   selector: 'aspect-unit-state',

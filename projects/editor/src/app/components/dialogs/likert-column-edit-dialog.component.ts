@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from '../../services/file.service';
-import { LikertColumn } from '../../../../../common/models/uI-element';
+import { LikertColumn } from '../../../../../common/interfaces/likert';
 
 @Component({
   selector: 'aspect-likert-column-edit-dialog',

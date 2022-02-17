@@ -16,6 +16,7 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
   @Input() overlayOrigin!: CdkOverlayOrigin;
   @Input() isMarkingBarOpen!: boolean;
   @Input() position!: { top: number, left: number };
+  @Input() markingBarElementRect!: DOMRect;
 
   @Output() applySelection = new EventEmitter<{
     active: boolean,
@@ -53,14 +54,16 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
   }
 
   private calculatePosition(): void {
-    const rect = (this.elementComponent.domElement.getBoundingClientRect());
     const viewConstraint = {
-      top: window.innerHeight - rect.top > rect.height ? rect.height : window.innerHeight - rect.top,
-      left: rect.width
+      top: window.innerHeight - this.markingBarElementRect.top > this.markingBarElementRect.height ?
+        this.markingBarElementRect.height :
+        window.innerHeight - this.markingBarElementRect.top,
+      left: this.markingBarElementRect.width
     };
+
     const barConstraint = { top: viewConstraint.top - 100, left: viewConstraint.left - this.calculateOffset() };
-    const left = this.position.left - rect.left;
-    const top = this.position.top - rect.top + 15;
+    const left = this.position.left - this.markingBarElementRect.left;
+    const top = this.position.top - this.markingBarElementRect.top + 15;
     this.positions[0].offsetX = barConstraint.left < left ? barConstraint.left : left;
     this.positions[0].offsetY = barConstraint.top < top ? barConstraint.top - 50 : top;
   }

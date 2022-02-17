@@ -4,6 +4,7 @@ Player
 - Implement readonly fot text fields of cloze elements
 - Fix height of elements with dynamic positioning and fixed size
 - Fix dimensions of image elements with dynamic positioning and fixed size
+- Fix positioning of floating marking bar when text element is dynamically positioned and has fixed size
 - Fix display of fixed size dynamic elements on iPad
 - Fix selecting and marking of text on iPad
 

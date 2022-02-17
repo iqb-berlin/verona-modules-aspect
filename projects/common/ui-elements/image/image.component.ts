@@ -8,10 +8,10 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'aspect-image',
   template: `
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
+    <div [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.height + 'px' : '100%'"
          class="image-container"
          (mouseover)="magnifierVisible = true"
          (mouseenter)="magnifierVisible = true"
@@ -33,7 +33,6 @@ import { ValueChangeElement } from '../../models/uI-element';
   styles: [
     '.image-container {position: relative}',
     '.max-size-image {max-width: 100%; max-height: 100%}',
-    '.center-content .max-size-image { object-fit: contain; width: 100%; height: 100%}',
     '.fit-image {width: 100%; height: 100%; object-fit: contain}'
   ]
 })

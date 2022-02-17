@@ -5,11 +5,13 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
 @Component({
   selector: 'aspect-video',
   template: `
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div [class]="elementModel.scale ? 'fit-video' : 'max-size-video'"
+         [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
              elementModel.positionProps.fixedSize"
-         [class]="elementModel.scale ? 'fit-video' : 'max-size-video'">
+         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.height + 'px' : '100%'">
       <video #player
              (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
              (pause)="onMediaPlayStatusChanged.emit(null)"

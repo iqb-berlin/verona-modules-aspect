@@ -6,10 +6,12 @@ import { SpellCorrectElement } from './spell-correct-element';
 @Component({
   selector: 'aspect-spell-correct',
   template: `
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-             elementModel.positionProps.fixedSize">
+    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
+             elementModel.positionProps.fixedSize"
+         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+          elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.height + 'px' : '100%'">
       <div fxFlex
            fxLayout="column"
            aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"

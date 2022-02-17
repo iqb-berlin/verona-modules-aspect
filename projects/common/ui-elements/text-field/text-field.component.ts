@@ -8,19 +8,22 @@ import { TextFieldElement } from './text-field-element';
 @Component({
   selector: 'aspect-text-field',
   template: `
-    <mat-form-field *ngIf="elementModel.label !== ''"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <mat-form-field
+        *ngIf="elementModel.label !== ''"
+        [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
-                    [appearance]="$any(elementModel.appearance)">
+        [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+                      elementModel.width + 'px' : '100%'"
+        [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+                      elementModel.height + 'px' : '100%'"
+        [style.color]="elementModel.fontProps.fontColor"
+        [style.font-family]="elementModel.fontProps.font"
+        [style.font-size.px]="elementModel.fontProps.fontSize"
+        [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+        [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
@@ -39,19 +42,22 @@ import { TextFieldElement } from './text-field-element';
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
     </mat-form-field>
-    <mat-form-field *ngIf="elementModel.label === ''" class="small-input"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <mat-form-field
+        *ngIf="elementModel.label === ''" class="small-input"
+        [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
-                    [appearance]="$any(elementModel.appearance)">
+        [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+                      elementModel.width + 'px' : '100%'"
+        [style.height]="elementModel.positionProps.dynamicPositioning &&  elementModel.positionProps.fixedSize ?
+                      elementModel.height + 'px' : '100%'"
+        [style.color]="elementModel.fontProps.fontColor"
+        [style.font-family]="elementModel.fontProps.font"
+        [style.font-size.px]="elementModel.fontProps.fontSize"
+        [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+        [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
              [value]="$any(elementModel.value)"

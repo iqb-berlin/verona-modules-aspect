@@ -8,11 +8,13 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   selector: 'aspect-slider',
   template: `
     <div fxLayout="column"
-         [style.background-color]="elementModel.surfaceProps.backgroundColor"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize">
+         [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
+                                    elementModel.positionProps.fixedSize"
+         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.height + 'px' : '100%'"
+         [style.background-color]="elementModel.surfaceProps.backgroundColor">
       <div *ngIf="elementModel.label"
            [style.color]="elementModel.fontProps.fontColor"
            [style.font-family]="elementModel.fontProps.font"

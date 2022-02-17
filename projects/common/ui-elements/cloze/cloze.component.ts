@@ -13,10 +13,12 @@ import { ElementComponent } from '../../directives/element-component.directive';
     <ng-container *ngIf="elementModel.document.content.length == 0">
       Kein Dokument vorhanden
     </ng-container>
-    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
                                    elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
+         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.height + 'px' : 'auto'">
       <ng-container *ngFor="let part of elementModel.document.content">
         <ul *ngIf="part.type === 'bulletList'"
             [style.font-size]="part.attrs.fontSize"

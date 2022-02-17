@@ -14,10 +14,12 @@ import { DragNDropValueObject } from '../../models/uI-element';
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
       <div class="list"
-           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+           [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
+           [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+             elementModel.width + 'px' : '100%'"
+           [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+             elementModel.height + 'px' : '100%'"
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"

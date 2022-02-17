@@ -1,5 +1,9 @@
 Editor
 ======
+1.26.0
+- Fix height of elements with dynamic positioning and fixed size
+- Fix dimensions of image elements with dynamic positioning and fixed size
+
 1.25.0
 - Remove border of slider rectangle in number line mode at position 0
 - Fix coloring of the slider rectangle in number line mode at position 0

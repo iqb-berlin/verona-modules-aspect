@@ -13,10 +13,12 @@ import { ElementComponent } from '../../directives/element-component.directive';
     <div *ngIf="elementModel.rows.length === 0 && elementModel.columns.length === 0">
       Keine Zeilen oder Spalten vorhanden
     </div>
-    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
                                  elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'">
+         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.width + 'px' : '100%'"
+         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+           elementModel.height + 'px' : '100%'">
       <div class="mat-typography"
            [style.display]="'grid'"
            [style.grid-template-columns]="elementModel.firstColumnSizeRatio + 'fr ' +

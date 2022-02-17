@@ -7,19 +7,24 @@ import { TextAreaElement } from './text-area-element';
 @Component({
   selector: 'aspect-text-area',
   template: `
-    <mat-form-field [ngClass]="{ 'no-label' : !elementModel.label}"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.min-height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
+    <mat-form-field
+        [ngClass]="{ 'no-label' : !elementModel.label}"
+        [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                    [appearance]="$any(elementModel.appearance)">
+        [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+          elementModel.width + 'px' : '100%'"
+        [style.min-height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+          elementModel.height + 'px' : '100%'"
+        [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
+          elementModel.height + 'px' : '100%'"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+        [style.color]="elementModel.fontProps.fontColor"
+        [style.font-family]="elementModel.fontProps.font"
+        [style.font-size.px]="elementModel.fontProps.fontSize"
+        [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+        [appearance]="$any(elementModel.appearance)">
       <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
       <textarea matInput #input
                 autocomplete="off" rows="{{elementModel.rowCount}}"

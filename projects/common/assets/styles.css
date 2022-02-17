@@ -57,6 +57,6 @@ blockquote p {
   height: 100%;
 }
 
-.center-content {
-  margin: auto
+.fixed-size-element {
+  overflow: auto;
 }

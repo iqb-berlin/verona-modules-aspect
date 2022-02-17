@@ -1,7 +1,8 @@
 Player
 ======
 1.20.0
-- Fix dimensions of images with dynamicPositioning and fixedSize
+- Fix height of elements with dynamic positioning and fixed size
+- Fix dimensions of image elements with dynamic positioning and fixed size
 - Fix display of fixed size dynamic elements on iPad
 - Fix selecting and marking of text on iPad
 

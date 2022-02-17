@@ -1,6 +1,7 @@
 Player
 ======
 1.20.0
+- Implement readonly fot text fields of cloze elements
 - Fix height of elements with dynamic positioning and fixed size
 - Fix dimensions of image elements with dynamic positioning and fixed size
 - Fix display of fixed size dynamic elements on iPad

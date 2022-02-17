@@ -15,6 +15,7 @@ import { TextFieldSimpleElement } from './text-field-simple-element';
            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+           [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
            value="{{elementModel.value}}">
   `,

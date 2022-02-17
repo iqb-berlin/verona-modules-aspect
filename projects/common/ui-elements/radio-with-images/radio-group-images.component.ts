@@ -5,12 +5,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-radio-group-images',
   template: `
-    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.height + 'px' : '100%'"
+    <div [style.width.%]="100"
+         [style.height.%]="100"
          [style.display]="'grid !important'"
          [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)"
          [style.background-color]="elementModel.surfaceProps.backgroundColor"

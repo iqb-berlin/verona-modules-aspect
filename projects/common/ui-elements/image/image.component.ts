@@ -8,10 +8,8 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'aspect-image',
   template: `
-    <div [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.height + 'px' : '100%'"
+    <div [style.width.%]="100"
+         [style.height.%]="100"
          class="image-container"
          (mouseover)="magnifierVisible = true"
          (mouseenter)="magnifierVisible = true"

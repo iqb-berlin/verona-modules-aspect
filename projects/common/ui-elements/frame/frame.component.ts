@@ -5,14 +5,8 @@ import { ElementComponent } from '../../directives/element-component.directive';
 @Component({
   selector: 'aspect-frame',
   template: `
-    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                   elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-              elementModel.width + 'px' :
-              'calc(100% - ' + (elementModel.borderWidth * 2) + 'px)'"
-         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-              elementModel.height + 'px' :
-              'calc(100% - ' + (elementModel.borderWidth * 2) + 'px)'"
+    <div [style.width]="'calc(100% - ' + (elementModel.borderWidth * 2) + 'px)'"
+         [style.height]="'calc(100% - ' + (elementModel.borderWidth * 2) + 'px)'"
          [style.border-style]="elementModel.borderStyle"
          [style.border-width.px]="elementModel.borderWidth"
          [style.border-color]="elementModel.borderColor"

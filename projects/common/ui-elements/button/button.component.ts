@@ -7,12 +7,8 @@ import { ButtonElement } from './button-element';
 @Component({
   selector: 'aspect-button',
   template: `
-    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                      elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.height + 'px' : '100%'">
+    <div [style.width.%]="100"
+         [style.height.%]="100">
       <button *ngIf="!elementModel.imageSrc" mat-button
               type='button'
               class="fill-container"

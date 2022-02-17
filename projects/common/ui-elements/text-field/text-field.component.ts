@@ -10,12 +10,8 @@ import { TextFieldElement } from './text-field-element';
   template: `
     <mat-form-field
         *ngIf="elementModel.label !== ''"
-        [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-        [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-                      elementModel.width + 'px' : '100%'"
-        [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-                      elementModel.height + 'px' : '100%'"
+        [style.width.%]="100"
+        [style.height.%]="100"
         [style.color]="elementModel.fontProps.fontColor"
         [style.font-family]="elementModel.fontProps.font"
         [style.font-size.px]="elementModel.fontProps.fontSize"
@@ -44,12 +40,8 @@ import { TextFieldElement } from './text-field-element';
     </mat-form-field>
     <mat-form-field
         *ngIf="elementModel.label === ''" class="small-input"
-        [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-        [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-                      elementModel.width + 'px' : '100%'"
-        [style.height]="elementModel.positionProps.dynamicPositioning &&  elementModel.positionProps.fixedSize ?
-                      elementModel.height + 'px' : '100%'"
+        [style.width.%]="100"
+        [style.height.%]="100"
         [style.color]="elementModel.fontProps.fontColor"
         [style.font-family]="elementModel.fontProps.font"
         [style.font-size.px]="elementModel.fontProps.fontSize"
@@ -90,13 +82,13 @@ export class TextFieldComponent extends FormElementComponent {
       validators.push(Validators.required);
     }
     if (this.elementModel.minLength) {
-      validators.push(Validators.minLength(<number>this.elementModel.minLength));
+      validators.push(Validators.minLength(<number> this.elementModel.minLength));
     }
     if (this.elementModel.maxLength) {
-      validators.push(Validators.maxLength(<number>this.elementModel.maxLength));
+      validators.push(Validators.maxLength(<number> this.elementModel.maxLength));
     }
     if (this.elementModel.pattern) {
-      validators.push(Validators.pattern(<string>this.elementModel.pattern));
+      validators.push(Validators.pattern(<string> this.elementModel.pattern));
     }
     return validators;
   }

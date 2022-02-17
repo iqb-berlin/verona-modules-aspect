@@ -5,12 +5,8 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
 @Component({
   selector: 'aspect-audio',
   template: `
-    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                      elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.height + 'px' : '100%'">
+    <div [style.width.%]="100"
+         [style.height.%]="100">
       <audio #player
              (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
              (pause)="onMediaPlayStatusChanged.emit(null)"

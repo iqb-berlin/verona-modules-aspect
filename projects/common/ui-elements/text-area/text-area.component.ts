@@ -9,14 +9,9 @@ import { TextAreaElement } from './text-area-element';
   template: `
     <mat-form-field
         [ngClass]="{ 'no-label' : !elementModel.label}"
-        [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-        [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-          elementModel.width + 'px' : '100%'"
-        [style.min-height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-          elementModel.height + 'px' : '100%'"
-        [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-          elementModel.height + 'px' : '100%'"
+        [style.width.%]="100"
+        [style.height.%]="100"
+        [style.min-height.%]="100"
         aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
         [style.color]="elementModel.fontProps.fontColor"
         [style.font-family]="elementModel.fontProps.font"

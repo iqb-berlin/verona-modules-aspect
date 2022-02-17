@@ -7,12 +7,8 @@ import { DropdownElement } from './dropdown-element';
   template: `
     <mat-form-field
         appearance="fill"
-        [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-        [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-                      elementModel.width + 'px' : '100%'"
-        [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-                      elementModel.height + 'px' : '100%'"
+        [style.width.%]="100"
+        [style.height.%]="100"
         aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor">
       <mat-label [style.color]="elementModel.fontProps.fontColor"
                  [style.font-family]="elementModel.fontProps.font"

@@ -8,12 +8,8 @@ import { ValueChangeElement } from '../../models/uI-element';
 @Component({
   selector: 'aspect-text',
   template: `
-    <div [class.fixed-size-element]="elementModel.positionProps.dynamicPositioning &&
-                                   elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize ?
-           elementModel.height + 'px' : 'auto'">
+    <div [style.width.%]="100"
+         [style.height.%]="100">
       <aspect-marking-bar
           *ngIf="elementModel.highlightableYellow ||
               elementModel.highlightableTurquoise ||

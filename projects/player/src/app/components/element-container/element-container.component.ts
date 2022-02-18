@@ -244,11 +244,7 @@ export class ElementContainerComponent implements OnInit {
   ) {
     this.markingBarPosition.left = downPosition.clientY > mouseUp.clientY ? downPosition.clientX : mouseUp.clientX;
     this.markingBarPosition.top = downPosition.clientY > mouseUp.clientY ? downPosition.clientY : mouseUp.clientY;
-    this.markingBarElementRect = this.elementModel.positionProps?.dynamicPositioning &&
-    this.elementModel.positionProps?.fixedSize &&
-    this.elementComponent.domElement.parentElement ?
-      this.elementComponent.domElement.parentElement.getBoundingClientRect() :
-      this.elementComponent.domElement.getBoundingClientRect();
+    this.markingBarElementRect = this.elementComponent.domElement.getBoundingClientRect();
     this.isMarkingBarOpen = true;
     this.nativeEventService.pointerDown
       .pipe(takeUntil(this.ngUnsubscribe), first())

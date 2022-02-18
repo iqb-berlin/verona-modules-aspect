@@ -1,5 +1,3 @@
-@import '../../common/assets/styles.css';
-
 html, body { height: 100%; }
 
 .mat-expansion-panel-content {font: unset !important;}

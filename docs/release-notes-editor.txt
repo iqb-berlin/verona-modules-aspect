@@ -1,6 +1,7 @@
 Editor
 ======
 1.26.0
+- Set the default language of the editor to German
 - Fix height of elements with dynamic positioning and fixed size
 - Fix dimensions of image elements with dynamic positioning and fixed size
 

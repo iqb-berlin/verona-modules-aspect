@@ -2,6 +2,9 @@ Editor
 ======
 1.26.0
 - Set the default language of the editor to German
+- Add handling of empty and invalid unit definitions
+  Show error but continue on with empty unit.
+- Remove TextEditor window scaling (this makes unwanted scrollbars go away)
 - Fix height of elements with dynamic positioning and fixed size
 - Fix dimensions of image elements with dynamic positioning and fixed size
 

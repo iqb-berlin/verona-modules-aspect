@@ -8,19 +8,19 @@ import { SliderElement } from '../../interfaces/elements';
   selector: 'aspect-slider',
   template: `
     <div fxLayout="column"
-         [style.background-color]="elementModel.surfaceProps.backgroundColor"
+         [style.background-color]="elementModel.styles.backgroundColor"
          [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
          [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
          [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize">
       <div *ngIf="elementModel.label"
-           [style.color]="elementModel.fontProps.fontColor"
-           [style.font-family]="elementModel.fontProps.font"
-           [style.font-size.px]="elementModel.fontProps.fontSize"
-           [style.line-height.%]="elementModel.fontProps.lineHeight"
-           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+           [style.color]="elementModel.styles.fontColor"
+           [style.font-family]="elementModel.styles.font"
+           [style.font-size.px]="elementModel.styles.fontSize"
+           [style.line-height.%]="elementModel.styles.lineHeight"
+           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
         {{elementModel.label}}
       </div>
       <div #valueContainer
@@ -31,13 +31,13 @@ import { SliderElement } from '../../interfaces/elements';
             <div *ngIf="elementModel.showValues"
                  class="value-container">
               <div
-                  [style.color]="elementModel.fontProps.fontColor"
-                  [style.font-family]="elementModel.fontProps.font"
-                  [style.font-size.px]="elementModel.fontProps.fontSize"
-                  [style.line-height.%]="elementModel.fontProps.lineHeight"
-                  [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                  [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                  [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+                  [style.color]="elementModel.styles.fontColor"
+                  [style.font-family]="elementModel.styles.font"
+                  [style.font-size.px]="elementModel.styles.fontSize"
+                  [style.line-height.%]="elementModel.styles.lineHeight"
+                  [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+                  [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+                  [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
                 {{elementModel.minValue | number:'':'de'}}
               </div>
               <div *ngIf="elementModel.barStyle" class="number-marker"></div>
@@ -48,13 +48,13 @@ import { SliderElement } from '../../interfaces/elements';
             <div *ngIf="elementModel.showValues"
                  class="value-container">
               <div
-                  [style.color]="elementModel.fontProps.fontColor"
-                  [style.font-family]="elementModel.fontProps.font"
-                  [style.font-size.px]="elementModel.fontProps.fontSize"
-                  [style.line-height.%]="elementModel.fontProps.lineHeight"
-                  [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                  [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                  [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+                  [style.color]="elementModel.styles.fontColor"
+                  [style.font-family]="elementModel.styles.font"
+                  [style.font-size.px]="elementModel.styles.fontSize"
+                  [style.line-height.%]="elementModel.styles.lineHeight"
+                  [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+                  [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+                  [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
                 {{elementModel.maxValue | number:'':'de'}}
               </div>
               <div *ngIf="elementModel.barStyle"

@@ -20,13 +20,13 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"
-           [style.color]="elementModel.fontProps.fontColor"
-           [style.font-family]="elementModel.fontProps.font"
-           [style.font-size.px]="elementModel.fontProps.fontSize"
-           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-           [style.backgroundColor]="elementModel.surfaceProps.backgroundColor"
+           [style.color]="elementModel.styles.fontColor"
+           [style.font-family]="elementModel.styles.font"
+           [style.font-size.px]="elementModel.styles.fontSize"
+           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+           [style.backgroundColor]="elementModel.styles.backgroundColor"
            [style.display]="elementModel.orientation === 'horizontal' ? 'flex' : ''"
            [style.flex-direction]="elementModel.orientation === 'horizontal' ? 'row' : ''"
            cdkDropList
@@ -43,11 +43,11 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
                [style.background-color]="elementModel.itemBackgroundColor"
                (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
             <div *cdkDragPreview
-                 [style.font-size.px]="elementModel.fontProps.fontSize"
-                 [style.background-color]="elementModel.itemBackgroundColor">
+                 [style.font-size.px]="elementModel.styles.fontSize"
+                 [style.background-color]="elementModel.styles.itemBackgroundColor">
               {{value.stringValue}}
             </div>
-            <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.fontProps.fontSize">
+            <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.styles.fontSize">
             </div>
             {{value.stringValue}}
           </div>

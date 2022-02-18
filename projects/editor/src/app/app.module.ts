@@ -40,8 +40,8 @@ import { SectionDynamicComponent } from './components/unit-view/page-view/canvas
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
 import { ElementStylePropertiesComponent } from
   './components/unit-view/page-view/properties-panel/element-style-properties.component';
-import { ElementSizingPropertiesComponent } from
-  './components/unit-view/page-view/properties-panel/element-sizing-properties.component';
+import { ElementPositionPropertiesComponent } from
+    './components/unit-view/page-view/properties-panel/element-position-properties.component';
 import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
@@ -76,7 +76,7 @@ import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop
     TextFieldNodeviewComponent,
     DropListNodeviewComponent,
     ElementStylePropertiesComponent,
-    ElementSizingPropertiesComponent,
+    ElementPositionPropertiesComponent,
     ConfirmationDialogComponent,
     TextEditDialogComponent,
     TextEditMultilineDialogComponent,

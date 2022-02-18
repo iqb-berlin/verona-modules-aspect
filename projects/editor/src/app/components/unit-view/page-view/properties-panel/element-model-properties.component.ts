@@ -20,7 +20,7 @@ import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/
   styleUrls: ['./element-model-properties.component.css']
 })
 export class ElementModelPropertiesComponent {
-  @Input() combinedProperties: UIElement = {} as UIElement;
+  @Input() combinedProperties: Partial<UIElement> = {};
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;

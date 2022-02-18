@@ -5,11 +5,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { merge } from 'lodash';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { MessageService } from '../../../../../../../common/services/message.service';
-import { DragNDropValueObject, UIElement } from '../../../../../../../common/interfaces/elements';
+import {
+  DragNDropValueObject,
+  UIElement,
+  UIElementValue
+} from '../../../../../../../common/interfaces/elements';
 import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/likert';
 
 @Component({
@@ -25,7 +28,7 @@ import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/
 })
 export class ElementPropertiesComponent implements OnInit, OnDestroy {
   selectedElements!: UIElement[];
-  combinedProperties: UIElement = {} as UIElement;
+  combinedProperties: Partial<UIElement> = {};
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
@@ -38,7 +41,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         () => {
-          this.createCombinedProperties();
+          this.combinedProperties = ElementPropertiesComponent.createCombinedProperties(this.selectedElements);
         }
       );
     this.selectionService.selectedElements
@@ -46,46 +49,36 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
       .subscribe(
         (selectedElements: UIElement[]) => {
           this.selectedElements = selectedElements;
-          this.createCombinedProperties();
+          this.combinedProperties = ElementPropertiesComponent.createCombinedProperties(this.selectedElements);
         }
       );
   }
 
-  /* Create new object with properties of all selected elements. When values differ set prop to undefined. */
-  createCombinedProperties(): void {
-    // Flatten all elements first, to make it easier to combine them
-    const flattenedSelectedElements =
-      this.selectedElements.map(element => ElementPropertiesComponent.flattenInterfaceProps(element));
+  static createCombinedProperties(elements: Record<string, UIElementValue>[]): Record<string, UIElementValue> {
+    const combinedProperties: Record<string, UIElementValue> = { ...elements[0] };
 
-    if (flattenedSelectedElements.length === 0) {
-      this.combinedProperties = {} as UIElement;
-    } else {
-      this.combinedProperties = { ...flattenedSelectedElements[0] } as UIElement;
-
-      for (let i = 1; i < flattenedSelectedElements.length; i++) {
-        Object.keys(this.combinedProperties).forEach((property: keyof UIElement) => {
-          if (Object.prototype.hasOwnProperty.call(flattenedSelectedElements[i], property)) {
-            if (Array.isArray(flattenedSelectedElements[i][property])) {
-              if (flattenedSelectedElements[i][property]?.toString() === this.combinedProperties[property]?.toString()) {
-                this.combinedProperties[property] = flattenedSelectedElements[i][property];
-              }
-            }
-            if (flattenedSelectedElements[i][property] !== this.combinedProperties[property]) {
-              this.combinedProperties[property] = null;
-            }
-          } else {
-            delete this.combinedProperties[property];
+    for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
+      const elementToMerge = elements[elementCounter];
+      Object.keys(combinedProperties).forEach((property: keyof UIElement) => {
+        if (Object.prototype.hasOwnProperty.call(elementToMerge, property)) {
+          if (typeof combinedProperties[property] === 'object' &&
+            !Array.isArray(combinedProperties[property]) &&
+            combinedProperties[property] !== null) {
+            (combinedProperties[property] as Record<string, UIElementValue>) =
+              ElementPropertiesComponent.createCombinedProperties(
+                [(combinedProperties[property] as Record<string, UIElementValue>),
+                  (elementToMerge[property] as Record<string, UIElementValue>)]
+              );
+          } else if (JSON.stringify(combinedProperties[property]) !== JSON.stringify(elementToMerge[property])) {
+            combinedProperties[property] = null;
           }
-        });
-      }
+        } else {
+          delete combinedProperties[property];
+        }
+      });
     }
-    // console.log('combined', this.combinedProperties);
-  }
-
-  private static flattenInterfaceProps(element: UIElement): UIElement {
-    let flatElement = merge({ ...element }, element.positionProps);
-    flatElement = merge(flatElement, element.fontProps);
-    return merge(flatElement, element.surfaceProps) as unknown as UIElement;
+    // console.log('combined', combinedProperties);
+    return combinedProperties;
   }
 
   updateModel(property: string,

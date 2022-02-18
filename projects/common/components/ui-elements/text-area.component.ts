@@ -12,13 +12,13 @@ import { TextAreaElement } from '../../interfaces/elements';
                     [style.min-height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
                     [class.center-content]="elementModel.positionProps.dynamicPositioning &&
                                     elementModel.positionProps.fixedSize"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
-                    [style.color]="elementModel.fontProps.fontColor"
-                    [style.font-family]="elementModel.fontProps.font"
-                    [style.font-size.px]="elementModel.fontProps.fontSize"
-                    [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                    aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
+                    [style.color]="elementModel.styles.fontColor"
+                    [style.font-family]="elementModel.styles.font"
+                    [style.font-size.px]="elementModel.styles.fontSize"
+                    [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+                    [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+                    [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
                     [appearance]="elementModel.appearance">
       <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
       <textarea matInput #input
@@ -27,7 +27,7 @@ import { TextAreaElement } from '../../interfaces/elements';
                 [value]="elementModel.value"
                 [readonly]="elementModel.readOnly"
                 [style.min-width.%]="100"
-                [style.line-height.%]="elementModel.fontProps.lineHeight"
+                [style.line-height.%]="elementModel.styles.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
                 (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
                 (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">

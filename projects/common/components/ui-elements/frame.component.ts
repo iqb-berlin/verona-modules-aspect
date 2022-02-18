@@ -9,15 +9,15 @@ import { FrameElement } from '../../interfaces/elements';
                                  elementModel.positionProps.fixedSize"
          [style.width]="elementModel.positionProps.fixedSize ?
             elementModel.width + 'px' :
-            'calc(100% - ' + (elementModel.borderWidth * 2) + 'px)'"
+            'calc(100% - ' + (elementModel.styles.borderWidth * 2) + 'px)'"
          [style.height]="elementModel.positionProps.fixedSize ?
             elementModel.height + 'px' :
-            'calc(100% - ' + (elementModel.borderWidth * 2) + 'px)'"
-         [style.border-style]="elementModel.borderStyle"
-         [style.border-width.px]="elementModel.borderWidth"
-         [style.border-color]="elementModel.borderColor"
-         [style.border-radius.px]="elementModel.borderRadius"
-         [style.background-color]="elementModel.surfaceProps.backgroundColor">
+            'calc(100% - ' + (elementModel.styles.borderWidth * 2) + 'px)'"
+         [style.border-style]="elementModel.styles.borderStyle"
+         [style.border-width.px]="elementModel.styles.borderWidth"
+         [style.border-color]="elementModel.styles.borderColor"
+         [style.border-radius.px]="elementModel.styles.borderRadius"
+         [style.background-color]="elementModel.styles.backgroundColor">
   </div>
   `
 })

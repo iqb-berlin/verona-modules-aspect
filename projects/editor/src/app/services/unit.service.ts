@@ -164,9 +164,6 @@ export class UnitService {
         }
       } as unknown as Partial<UIElement>) as PositionedElement;
     }
-    console.log('newElement', newElement);
-    console.log('ccord', coordinates);
-    console.log('section', section);
     if (coordinates && section.dynamicPositioning) {
       newElement.positionProps.gridColumnStart = coordinates.x;
       newElement.positionProps.gridColumnEnd = coordinates.x + 1;
@@ -259,7 +256,8 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
-  updateElementProperty(elements: UIElement[], property: string,
+  updateElementProperty(elements: UIElement[],
+                        property: string,
                         value: InputElementValue | LikertColumn[] | LikertRow[] | ClozeDocument |
                         DragNDropValueObject[] | null): boolean {
     console.log('updateElementProperty', elements, property, value);
@@ -288,15 +286,14 @@ export class UnitService {
         'gridColumnEnd', 'gridRowStart', 'gridRowEnd', 'marginLeft', 'marginRight', 'marginTop',
         'marginBottom', 'zIndex'].includes(property)) {
         element.positionProps![property] = Copy.getCopy(value);
-      } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline'].includes(property)) {
-        element.fontProps![property] = Copy.getCopy(value);
-      } else if (['backgroundColor'].includes(property)) {
-        element.surfaceProps![property] = Copy.getCopy(value);
+      } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',
+        'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor',
+        'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
+        element.styles![property] = Copy.getCopy(value);
       } else {
         element[property] = Copy.getCopy(value);
       }
     });
-    console.log('fffff');
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification();
     return true;
@@ -446,7 +443,7 @@ export class UnitService {
       case 'text':
         this.dialogService.showRichTextEditDialog(
           (element as TextElement).text,
-          (element as TextElement).fontProps.fontSize as number
+          (element as TextElement).styles.fontSize
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
@@ -461,7 +458,7 @@ export class UnitService {
       case 'cloze':
         this.dialogService.showClozeTextEditDialog(
           (element as ClozeElement).document,
-          (element as ClozeElement).fontProps.fontSize as number
+          (element as ClozeElement).styles.fontSize
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization

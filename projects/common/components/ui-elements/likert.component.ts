@@ -20,14 +20,14 @@ import { LikertElement, LikertRowElement } from '../../interfaces/elements';
          [style.display]="'grid'"
          [style.grid-template-columns]="elementModel.firstColumnSizeRatio + 'fr ' +
                                         '1fr '.repeat(elementModel.columns.length)"
-         [style.background-color]="elementModel.surfaceProps.backgroundColor"
-         [style.color]="elementModel.fontProps.fontColor"
-         [style.font-family]="elementModel.fontProps.font"
-         [style.font-size.px]="elementModel.fontProps.fontSize"
-         [style.line-height.%]="elementModel.fontProps.lineHeight"
-         [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''">
+         [style.background-color]="elementModel.styles.backgroundColor"
+         [style.color]="elementModel.styles.fontColor"
+         [style.font-family]="elementModel.styles.font"
+         [style.font-size.px]="elementModel.styles.fontSize"
+         [style.line-height.%]="elementModel.styles.lineHeight"
+         [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
         <div *ngFor="let column of elementModel.columns; let i = index"
              class="columns" fxLayout="column" fxLayoutAlign="end center"
              [style.grid-column-start]="2 + i"

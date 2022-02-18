@@ -12,28 +12,24 @@ export type DragNDropValueObject = {
   stringValue?: string;
   imgSrcValue?: string;
 };
+export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
+LikertColumn[] | ClozeDocument |
+PositionProperties | ElementStyles | PlayerProperties | BasicStyles;
 
 export interface UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
+  [index: string]: UIElementValue;
   type: UIElementType;
   id: string;
   width: number;
   height: number;
   positionProps?: PositionProperties;
-  fontProps?: FontProperties;
-  surfaceProps?: SurfaceProperties;
+  styles: ElementStyles;
   playerProps?: PlayerProperties;
 }
 
 export interface InputElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   label?: string;
-  // value: InputElementValue;
-  value: string[] | string | number | boolean | DragNDropValueObject[] | null;
+  value: InputElementValue;
   required: boolean;
   requiredWarnMessage: string;
   readOnly: boolean;
@@ -70,7 +66,7 @@ export interface PositionProperties {
   zIndex: number;
 }
 
-export interface FontProperties {
+export interface ElementStyles {
   [index: string]: string | number | boolean | undefined;
   fontColor?: string;
   font?: string;
@@ -79,10 +75,23 @@ export interface FontProperties {
   bold?: boolean;
   italic?: boolean;
   underline?: boolean;
+  backgroundColor?: string;
+  borderRadius?: number;
+  itemBackgroundColor?: string;
+  borderWidth?: number;
+  borderColor?: string;
+  borderStyle?: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
+  lineColoring?: boolean;
+  lineColoringColor?: string;
 }
 
-export interface SurfaceProperties {
-  [index: string]: string;
+export interface BasicStyles extends ElementStyles {
+  fontColor: string;
+  font: string;
+  fontSize: number;
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
   backgroundColor: string;
 }
 
@@ -111,97 +120,74 @@ export interface PlayerProperties {
 }
 
 export interface ButtonElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'button';
   label: string;
   imageSrc: string | null;
-  borderRadius: number;
   action: null | 'previous' | 'next' | 'first' | 'last' | 'end';
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles & {
+    borderRadius: number;
+  }
 }
 
 export interface CheckboxElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'checkbox';
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles;
 }
 
 export interface ClozeElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'cloze';
   document: ClozeDocument;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
+  styles: BasicStyles & {
+    lineHeight: number;
+  }
 }
 
 export interface DropdownElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'dropdown';
   options: string[];
   allowUnset: boolean;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles
 }
 
 export interface DropListElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'drop-list';
   onlyOneItem: boolean;
   connectedTo: string[];
   orientation: 'vertical' | 'horizontal' | 'flex';
-  itemBackgroundColor: string;
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles & {
+    itemBackgroundColor: string;
+  }
 }
 
 export interface DropListSimpleElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'drop-list';
   connectedTo: string[];
-  itemBackgroundColor: string;
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles & {
+    itemBackgroundColor: string;
+  }
 }
 
 export interface FrameElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'frame';
-  borderWidth: number;
-  borderColor: string;
-  borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
-  borderRadius: number;
   positionProps: PositionProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles & {
+    borderWidth: number;
+    borderColor: string;
+    borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
+    borderRadius: number;
+  }
 }
 
 export interface ImageElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'image';
   src: string;
   scale: boolean;
@@ -213,25 +199,20 @@ export interface ImageElement extends UIElement {
 }
 
 export interface LikertElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'likert';
   rows: LikertRowElement[];
   columns: LikertColumn[];
   firstColumnSizeRatio: number;
-  lineColoring: boolean;
-  lineColoringColor: string;
   readOnly: boolean;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles & {
+    lineHeight: number;
+    lineColoring: boolean;
+    lineColoringColor: string;
+  };
 }
 
 export interface LikertRowElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'likert-row';
   text: string;
   columnCount: number;
@@ -239,33 +220,22 @@ export interface LikertRowElement extends InputElement {
 }
 
 export interface RadioButtonGroupElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'radio';
   options: string[];
   alignment: 'column' | 'row';
   strikeOtherOptions: boolean;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles;
 }
 
 export interface RadioButtonGroupComplexElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'radio-group-images'
   columns: LikertColumn[];
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles;
 }
 
 export interface SliderElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'slider';
   minValue: number;
   maxValue: number;
@@ -273,24 +243,16 @@ export interface SliderElement extends UIElement {
   barStyle: boolean; // TODO besserer name
   thumbLabel: boolean;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles;
 }
 
 export interface SpellCorrectElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'spell-correct';
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles;
 }
 
 export interface TextFieldElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'text-field';
   appearance: 'fill' | 'outline';
   minLength: number;
@@ -303,14 +265,10 @@ export interface TextFieldElement extends InputElement {
   inputAssistancePosition: 'floating' | 'right';
   clearable: boolean;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles;
 }
 
 export interface TextAreaElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'text-area';
   appearance: 'fill' | 'outline';
   resizeEnabled: boolean;
@@ -318,50 +276,41 @@ export interface TextAreaElement extends InputElement {
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles & {
+    lineHeight: number;
+  };
 }
 
 export interface TextFieldSimpleElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'text-field';
-  fontProps: FontProperties;
+  styles: BasicStyles; // TODO okay? bg-color?
 }
 
 export interface TextElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'text';
   text: string;
   highlightableOrange: boolean;
   highlightableTurquoise: boolean;
   highlightableYellow: boolean;
   positionProps: PositionProperties;
-  fontProps: FontProperties;
-  surfaceProps: SurfaceProperties;
+  styles: BasicStyles & {
+    lineHeight: number;
+  }
 }
 
 export interface ToggleButtonElement extends InputElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'toggle-button';
   options: string[];
   strikeOtherOptions: boolean;
   selectionColor: string;
   verticalOrientation: boolean;
   dynamicWidth: boolean;
-  fontProps: FontProperties,
-  surfaceProps: SurfaceProperties,
+  styles: BasicStyles & {
+    lineHeight: number;
+  };
 }
 
 export interface AudioElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'audio';
   src: string;
   positionProps: PositionProperties;
@@ -369,9 +318,6 @@ export interface AudioElement extends UIElement {
 }
 
 export interface VideoElement extends UIElement {
-  [index: string]: string | number | boolean | undefined | UIElementType | InputElementValue |
-  LikertColumn[] | ClozeDocument |
-  PositionProperties | FontProperties | SurfaceProperties | PlayerProperties;
   type: 'video';
   src: string;
   scale: boolean; // TODO besserer name

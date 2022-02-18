@@ -18,25 +18,24 @@ import { SpellCorrectComponent } from '../components/ui-elements/spell-correct.c
 import { FrameComponent } from '../components/ui-elements/frame.component';
 import { ElementComponent } from '../directives/element-component.directive';
 import {
-  AudioElement,
+  AudioElement, BasicStyles,
   ButtonElement,
   CheckboxElement,
   ClozeElement,
   DropdownElement,
   DropListElement,
-  DropListSimpleElement, FontProperties,
+  DropListSimpleElement,
   FrameElement,
   ImageElement,
   InputElement, LikertElement, LikertRowElement, PlayerProperties, PositionProperties,
   RadioButtonGroupComplexElement,
-  RadioButtonGroupElement, SliderElement, SpellCorrectElement, SurfaceProperties,
+  RadioButtonGroupElement, SliderElement, SpellCorrectElement,
   TextAreaElement,
   TextElement,
   TextFieldElement, TextFieldSimpleElement, ToggleButtonElement,
   UIElement, UIElementType,
   VideoElement
 } from '../interfaces/elements';
-import { IdService } from '../../editor/src/app/services/id.service';
 
 export abstract class ElementFactory {
   static createElement(elementType: string, defaults?: Record<string, any>): UIElement {
@@ -85,11 +84,12 @@ export abstract class ElementFactory {
   }
 
   static initElement(elementType: string, defaults: Record<string, number>): UIElement {
-    return <UIElement>{
+    return {
       type: elementType as UIElementType,
-      id: defaults.id || 'id_placeholder',
+      id: String(defaults.id) || 'id_placeholder',
       width: defaults.width || 190,
-      height: defaults.height || 60
+      height: defaults.height || 60,
+      styles: {}
     };
   }
 
@@ -123,20 +123,14 @@ export abstract class ElementFactory {
     };
   }
 
-  static initFontProps(defaults: Record<string, any> = {}): FontProperties {
+  static initBasicStyles(defaults: Record<string, any>): BasicStyles {
     return {
       fontColor: defaults.fontColor || '#000000',
       font: defaults.font || 'Roboto',
       fontSize: defaults.fontSize || 20,
-      lineHeight: defaults.lineHeight || 120,
       bold: defaults.bold || false,
       italic: defaults.italic || false,
-      underline: defaults.underline || false
-    };
-  }
-
-  static initSurfaceProps(defaults: Record<string, any> = {}): SurfaceProperties {
-    return {
+      underline: defaults.underline || false,
       backgroundColor: defaults.backgroundColor || '#d3d3d3'
     };
   }
@@ -166,7 +160,7 @@ export abstract class ElementFactory {
     };
   }
 
-  static getComponentFactory(
+  static getComponentFactory( // TODO weg hier
     elementType: string, componentFactoryResolver: ComponentFactoryResolver
   ): ComponentFactory<ElementComponent> {
     switch (elementType) {
@@ -215,11 +209,12 @@ export abstract class ElementFactory {
       type: 'button',
       label: 'Knopf',
       imageSrc: null,
-      borderRadius: 0,
       action: null,
       positionProps: ElementFactory.initPositionProps(defaults.positionProps),
-      fontProps: ElementFactory.initFontProps(defaults.fontProps),
-      surfaceProps: ElementFactory.initSurfaceProps(defaults.surfaceProps)
+      styles: {
+        ...ElementFactory.initBasicStyles(defaults),
+        borderRadius: 0
+      }
     };
   }
 
@@ -229,8 +224,7 @@ export abstract class ElementFactory {
       type: 'checkbox',
       value: false,
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: ElementFactory.initBasicStyles(defaults)
     };
   }
 
@@ -240,7 +234,10 @@ export abstract class ElementFactory {
       type: 'cloze',
       document: { type: 'doc', content: [] },
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults)
+      styles: {
+        ...ElementFactory.initBasicStyles(defaults),
+        lineHeight: 135
+      }
     };
   }
 
@@ -251,8 +248,7 @@ export abstract class ElementFactory {
       options: [],
       allowUnset: false,
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps(defaults)
+      styles: ElementFactory.initBasicStyles(defaults)
     };
   }
 
@@ -264,12 +260,13 @@ export abstract class ElementFactory {
       onlyOneItem: false,
       connectedTo: [],
       orientation: 'vertical',
-      itemBackgroundColor: '#c9e0e0',
       highlightReceivingDropList: false,
       highlightReceivingDropListColor: '#006064',
       positionProps: ElementFactory.initPositionProps({ useMinHeight: true, ...defaults }),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: '#f4f4f2', ...defaults })
+      styles: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: '#f4f4f2', ...defaults }),
+        itemBackgroundColor: '#c9e0e0'
+      }
     };
   }
 
@@ -279,11 +276,12 @@ export abstract class ElementFactory {
       type: 'drop-list',
       value: [],
       connectedTo: [],
-      itemBackgroundColor: '#add8e6',
       highlightReceivingDropList: false,
       highlightReceivingDropListColor: '#add8e6',
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: '#eeeeec', ...defaults })
+      styles: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: '#eeeeec', ...defaults }),
+        itemBackgroundColor: '#add8e6'
+      }
     };
   }
 
@@ -291,13 +289,14 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initElement('frame', {}),
       type: 'frame',
-      borderWidth: 1,
-      borderColor: 'black',
-      borderStyle: 'solid',
-      borderRadius: 0,
       positionProps: ElementFactory.initPositionProps({ zIndex: -1, ...defaults }),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
+        borderWidth: 1,
+        borderColor: 'black',
+        borderStyle: 'solid',
+        borderRadius: 0
+      }
     };
   }
 
@@ -322,12 +321,14 @@ export abstract class ElementFactory {
       rows: [],
       columns: [],
       firstColumnSizeRatio: 5,
-      lineColoring: true,
-      lineColoringColor: '#c9e0e0',
       readOnly: false,
       positionProps: ElementFactory.initPositionProps({ marginBottom: 30, ...defaults }),
-      fontProps: ElementFactory.initFontProps({ lineHeight: 135, ...defaults }),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
+        lineHeight: 135,
+        lineColoring: true,
+        lineColoringColor: '#c9e0e0'
+      }
     };
   }
 
@@ -349,8 +350,7 @@ export abstract class ElementFactory {
       alignment: 'column',
       strikeOtherOptions: false,
       positionProps: ElementFactory.initPositionProps({ marginBottom: 30, ...defaults }),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
     };
   }
 
@@ -360,8 +360,7 @@ export abstract class ElementFactory {
       type: 'radio-group-images',
       columns: [],
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
     };
   }
 
@@ -375,8 +374,7 @@ export abstract class ElementFactory {
       barStyle: false,
       thumbLabel: false,
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
     };
   }
 
@@ -385,8 +383,7 @@ export abstract class ElementFactory {
       ...ElementFactory.initInputElement('spell-correct', { width: 230, height: 80, ...defaults }),
       type: 'spell-correct',
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
     };
   }
 
@@ -399,8 +396,10 @@ export abstract class ElementFactory {
       highlightableTurquoise: false,
       highlightableYellow: false,
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps({ lineHeight: 135, ...defaults }),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
+        lineHeight: 135
+      }
     };
   }
 
@@ -414,8 +413,10 @@ export abstract class ElementFactory {
       inputAssistancePreset: 'none',
       inputAssistancePosition: 'floating',
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
+        lineHeight: 135
+      }
     };
   }
 
@@ -434,8 +435,7 @@ export abstract class ElementFactory {
       inputAssistancePosition: 'floating',
       clearable: false,
       positionProps: ElementFactory.initPositionProps(defaults),
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
     };
   }
 
@@ -444,8 +444,7 @@ export abstract class ElementFactory {
       ...ElementFactory.initInputElement('text-field', { height: 25, ...defaults }),
       type: 'text-field',
       label: undefined,
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps(defaults)
+      styles: ElementFactory.initBasicStyles(defaults)
     };
   }
 
@@ -458,8 +457,10 @@ export abstract class ElementFactory {
       selectionColor: 'lightgreen',
       verticalOrientation: false,
       dynamicWidth: true,
-      fontProps: ElementFactory.initFontProps(defaults),
-      surfaceProps: ElementFactory.initSurfaceProps({ backgroundColor: 'transparent', ...defaults })
+      styles: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
+        lineHeight: 135
+      }
     };
   }
 

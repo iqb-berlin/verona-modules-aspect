@@ -16,17 +16,17 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                            [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                    elementFormControl.value !== null &&
                                                    elementFormControl.value !== i + 1 }"
-                           [style.color]="elementModel.fontProps.fontColor"
-                           [style.font-size.px]="elementModel.fontProps.fontSize"
-                           [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                           [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                           [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-                           [style.font-family]="elementModel.fontProps.font"
+                           [style.color]="elementModel.styles.fontColor"
+                           [style.font-size.px]="elementModel.styles.fontSize"
+                           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+                           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+                           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+                           [style.font-family]="elementModel.styles.font"
                            [style.background-color]="elementFormControl.value !== null &&
                                                    elementFormControl.value === i + 1 ?
                                                    elementModel.selectionColor :
-                                                   elementModel.surfaceProps.backgroundColor"
-                           [style.line-height.%]="elementModel.fontProps.lineHeight">
+                                                   elementModel.styles.backgroundColor"
+                           [style.line-height.%]="elementModel.styles.lineHeight">
                            <!--Background color does not show in editor-->
           {{option}}
         </mat-button-toggle>

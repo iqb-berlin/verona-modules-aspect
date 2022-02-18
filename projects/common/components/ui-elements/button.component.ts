@@ -13,14 +13,14 @@ import { ButtonElement } from '../../interfaces/elements';
                                     elementModel.positionProps.fixedSize"
             [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
             [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-            [style.background-color]="elementModel.surfaceProps.backgroundColor"
-            [style.color]="elementModel.fontProps.fontColor"
-            [style.font-family]="elementModel.fontProps.font"
-            [style.font-size.px]="elementModel.fontProps.fontSize"
-            [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-            [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-            [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
-            [style.border-radius.px]="elementModel.borderRadius"
+            [style.background-color]="elementModel.styles.backgroundColor"
+            [style.color]="elementModel.styles.fontColor"
+            [style.font-family]="elementModel.styles.font"
+            [style.font-size.px]="elementModel.styles.fontSize"
+            [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+            [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+            [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+            [style.border-radius.px]="elementModel.styles.borderRadius"
             (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
       {{elementModel.label}}
     </button>

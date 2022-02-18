@@ -11,7 +11,7 @@ import { SpellCorrectElement } from '../../interfaces/elements';
          [class.center-content]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize">
       <div fxFlex
            fxLayout="column"
-           aspectInputBackgroundColor [backgroundColor]="elementModel.surfaceProps.backgroundColor"
+           aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
            [style.width.%]="100"
            [style.height.%]="100">
         <mat-form-field class="small-input">
@@ -19,12 +19,12 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                  [style.text-align]="'center'"
                  autocomplete="off"
                  [readonly]="elementModel.readOnly"
-                 [style.color]="elementModel.fontProps.fontColor"
-                 [style.font-family]="elementModel.fontProps.font"
-                 [style.font-size.px]="elementModel.fontProps.fontSize"
-                 [style.font-weight]="elementModel.fontProps.bold ? 'bold' : ''"
-                 [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                 [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                 [style.color]="elementModel.styles.fontColor"
+                 [style.font-family]="elementModel.styles.font"
+                 [style.font-size.px]="elementModel.styles.fontSize"
+                 [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+                 [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+                 [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
                  [value]="elementModel.value"
                  [formControl]="elementFormControl">
         </mat-form-field>
@@ -32,12 +32,12 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                 mat-button
                 type="button"
                 [disabled]="elementModel.readOnly"
-                [style.color]="elementModel.fontProps.fontColor"
-                [style.font-family]="elementModel.fontProps.font"
-                [style.font-size.px]="elementModel.fontProps.fontSize"
-                [style.font-weight]="elementModel.fontProps.bold ? 'bold' : '400'"
-                [style.font-style]="elementModel.fontProps.italic ? 'italic' : ''"
-                [style.text-decoration]="elementModel.fontProps.underline ? 'underline' : ''"
+                [style.color]="elementModel.styles.fontColor"
+                [style.font-family]="elementModel.styles.font"
+                [style.font-size.px]="elementModel.styles.fontSize"
+                [style.font-weight]="elementModel.styles.bold ? 'bold' : '400'"
+                [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+                [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
                 [style.width.%]="100"
                 [style.margin-top]="'-20px'"
                 [style.text-decoration-line]=

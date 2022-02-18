@@ -17,6 +17,7 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
   @Input() isMarkingBarOpen!: boolean;
   @Input() position!: { top: number, left: number };
   @Input() markingBarElementRect!: DOMRect;
+  @Input() markingBarContainerScrollPosition!: number;
 
   @Output() applySelection = new EventEmitter<{
     active: boolean,
@@ -60,11 +61,12 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
         window.innerHeight - this.markingBarElementRect.top,
       left: this.markingBarElementRect.width
     };
-
     const barConstraint = { top: viewConstraint.top - 100, left: viewConstraint.left - this.calculateOffset() };
     const left = this.position.left - this.markingBarElementRect.left;
     const top = this.position.top - this.markingBarElementRect.top + 15;
     this.positions[0].offsetX = barConstraint.left < left ? barConstraint.left : left;
-    this.positions[0].offsetY = barConstraint.top < top ? barConstraint.top - 50 : top;
+    this.positions[0].offsetY = barConstraint.top < top ?
+      barConstraint.top - 50 + this.markingBarContainerScrollPosition :
+      top + this.markingBarContainerScrollPosition;
   }
 }

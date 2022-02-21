@@ -40,13 +40,13 @@ import { RadioButtonGroupElement } from './radio-button-group-element';
     </div>
   `,
   styles: [
-    '::ng-deep app-radio-button-group .mat-radio-label {white-space: normal}',
-    '::ng-deep app-radio-button-group .mat-radio-label .mat-radio-label-content {padding-left: 10px}',
+    ':host ::ng-deep .mat-radio-label {white-space: normal}',
+    ':host ::ng-deep .mat-radio-label .mat-radio-label-content {padding-left: 10px}',
     'mat-radio-button {margin-bottom: 6px; margin-right: 15px}',
     '.error-message { font-size: 75% }',
-    '::ng-deep app-radio-button-group .strike .mat-radio-label {text-decoration: line-through}',
-    '::ng-deep app-radio-button-group .mat-radio-label {align-items: baseline}',
-    '::ng-deep app-radio-button-group mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}'
+    ':host ::ng-deep .strike .mat-radio-label {text-decoration: line-through}',
+    ':host ::ng-deep .mat-radio-label {align-items: baseline}',
+    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}'
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

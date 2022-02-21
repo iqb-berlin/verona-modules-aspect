@@ -16,10 +16,10 @@ const DropListExtension =
     },
 
     parseHTML() {
-      return [{ tag: 'app-nodeview-drop-list' }];
+      return [{ tag: 'aspect-nodeview-drop-list' }];
     },
     renderHTML({ HTMLAttributes }) {
-      return ['app-nodeview-drop-list', mergeAttributes(HTMLAttributes)];
+      return ['aspect-nodeview-drop-list', mergeAttributes(HTMLAttributes)];
     }
   });
 

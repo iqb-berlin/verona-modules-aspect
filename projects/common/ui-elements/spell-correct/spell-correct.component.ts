@@ -55,7 +55,7 @@ import { SpellCorrectElement } from './spell-correct-element';
     </div>
   `,
   styles: [
-    '::ng-deep app-spell-correct .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
+    ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
   ]
 })
 export class SpellCorrectComponent extends FormElementComponent {

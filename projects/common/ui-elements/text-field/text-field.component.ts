@@ -69,7 +69,7 @@ import { TextFieldElement } from './text-field-element';
     </mat-form-field>
   `,
   styles: [
-    '::ng-deep app-text-field .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}' // TODO
+    ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}'
   ]
 })
 export class TextFieldComponent extends FormElementComponent {

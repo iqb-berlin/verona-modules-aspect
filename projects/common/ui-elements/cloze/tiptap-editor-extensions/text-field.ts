@@ -16,10 +16,10 @@ const TextFieldExtension =
     },
 
     parseHTML() {
-      return [{ tag: 'app-nodeview-text-field' }];
+      return [{ tag: 'aspect-nodeview-text-field' }];
     },
     renderHTML({ HTMLAttributes }) {
-      return ['app-nodeview-text-field', mergeAttributes(HTMLAttributes)];
+      return ['aspect-nodeview-text-field', mergeAttributes(HTMLAttributes)];
     }
   });
 

@@ -63,7 +63,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
   styles: [
     'img {object-fit: contain; max-height: 100%; max-width: 100%; margin: 10px}',
     '.columns {text-align: center;}',
-    '::ng-deep app-likert mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}'
+    ':host ::ng-deep mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}'
   ]
 })
 export class LikertComponent extends CompoundElementComponent {

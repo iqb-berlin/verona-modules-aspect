@@ -304,7 +304,7 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initElement('image', { height: 100, ...defaults }),
       type: 'image',
-      src: '', // TODO eigentlich undefined
+      src: defaults.src || '', // TODO eigentlich undefined
       scale: false,
       magnifier: false,
       magnifierSize: 100,
@@ -468,7 +468,7 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initElement('audio', { width: 250, height: 90, ...defaults }),
       type: 'audio',
-      src: '', // TODO eigentlich undefined
+      src: defaults.src || '', // TODO eigentlich undefined
       positionProps: ElementFactory.initPositionProps(defaults),
       playerProps: ElementFactory.initPlayerProps(defaults)
     };
@@ -478,7 +478,7 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initElement('video', { width: 280, height: 230, ...defaults }),
       type: 'video',
-      src: '', // TODO eigentlich undefined
+      src: defaults.src || '', // TODO eigentlich undefined
       scale: false,
       positionProps: ElementFactory.initPositionProps(defaults),
       playerProps: ElementFactory.initPlayerProps(defaults)

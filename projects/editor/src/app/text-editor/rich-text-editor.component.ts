@@ -30,8 +30,7 @@ import TextFieldComponentExtension from './angular-node-views/text-field-compone
 @Component({
   selector: 'aspect-rich-text-editor',
   templateUrl: './rich-text-editor.component.html',
-  styleUrls: ['./rich-text-editor.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./rich-text-editor.component.css']
 })
 export class RichTextEditorComponent implements AfterViewInit {
   @Input() content!: string | Record<string, any>;

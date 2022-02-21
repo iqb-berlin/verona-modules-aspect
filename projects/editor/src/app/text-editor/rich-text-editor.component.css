@@ -1,26 +1,26 @@
-div.ProseMirror {
+:host ::ng-deep div.ProseMirror {
   min-height: 300px;
   border: 1px solid;
 }
 
-.ProseMirror p strong {
+:host ::ng-deep .ProseMirror p strong {
   letter-spacing: 0.04em !important;
   font-weight: 600 !important;
 }
 
-.ProseMirror h1 {
+:host ::ng-deep .ProseMirror h1 {
   font-weight: bold;
   font-size: 20px;
 }
-.ProseMirror h2 {
+:host ::ng-deep .ProseMirror h2 {
   font-weight: bold;
   font-size: 18px;
 }
-.ProseMirror h3 {
+:host ::ng-deep .ProseMirror h3 {
   font-weight: bold;
   font-size: 16px;
 }
-.ProseMirror h4 {
+:host ::ng-deep .ProseMirror h4 {
   font-weight: normal;
   font-size: 16px;
 }
@@ -29,7 +29,7 @@ mark {
   color: inherit;
 }
 
-aspect-rich-text-editor button.active {
+button.active {
   background-color: lightgrey;
 }
 
@@ -62,15 +62,15 @@ aspect-rich-text-editor button.active {
   top: -7px;
 }
 
-.indent-size-input .mat-form-field-flex {
+:host ::ng-deep .indent-size-input .mat-form-field-flex {
   padding: 5px;
 }
 
-.indent-size-input .mat-form-field-infix {
+:host ::ng-deep .indent-size-input .mat-form-field-infix {
   padding: .25em 0 .15em 0;
 }
 
-fieldset {
+:host fieldset {
   height: 55px;
   box-sizing: content-box !important;
   border-radius: 3px;

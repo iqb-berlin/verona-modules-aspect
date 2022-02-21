@@ -17,18 +17,18 @@ import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/
 
 @Component({
   selector: 'aspect-element-properties',
-  templateUrl: './element-properties.component.html',
+  templateUrl: './element-properties-panel.component.html',
   styles: [
-    '.element-button {margin: 5px 10px;}',
+    '.button-group button {margin: 5px 10px;}',
     'mat-divider {margin: 20px; border-top-width: 9px; border-top-style: dotted;}',
     '.properties-panel {height: 100%; padding-bottom: 20px}',
     '.properties-panel .mat-tab-group {height: 100%; overflow: auto}',
     ':host ::ng-deep .mat-tab-body-wrapper {height: 100%}'
   ]
 })
-export class ElementPropertiesComponent implements OnInit, OnDestroy {
+export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   selectedElements!: UIElement[];
-  combinedProperties: Partial<UIElement> = {};
+  combinedProperties: UIElement = {} as UIElement;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
@@ -41,7 +41,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         () => {
-          this.combinedProperties = ElementPropertiesComponent.createCombinedProperties(this.selectedElements);
+          this.combinedProperties =
+            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements) as UIElement;
         }
       );
     this.selectionService.selectedElements
@@ -49,7 +50,8 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
       .subscribe(
         (selectedElements: UIElement[]) => {
           this.selectedElements = selectedElements;
-          this.combinedProperties = ElementPropertiesComponent.createCombinedProperties(this.selectedElements);
+          this.combinedProperties =
+            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements) as UIElement;
         }
       );
   }
@@ -65,7 +67,7 @@ export class ElementPropertiesComponent implements OnInit, OnDestroy {
             !Array.isArray(combinedProperties[property]) &&
             combinedProperties[property] !== null) {
             (combinedProperties[property] as Record<string, UIElementValue>) =
-              ElementPropertiesComponent.createCombinedProperties(
+              ElementPropertiesPanelComponent.createCombinedProperties(
                 [(combinedProperties[property] as Record<string, UIElementValue>),
                   (elementToMerge[property] as Record<string, UIElementValue>)]
               );

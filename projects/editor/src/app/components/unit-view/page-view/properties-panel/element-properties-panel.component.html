@@ -16,7 +16,8 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">format_shapes</mat-icon>
       </ng-template>
-      <aspect-element-postion-properties [positionProperties]="$any(combinedProperties.positionProps)"
+      <aspect-element-postion-properties [dimensions]="{ width: combinedProperties.width, height: combinedProperties.height }"
+                                         [positionProperties]="combinedProperties.positionProps"
                                          (updateModel)="updateModel($event.property, $event.value, $event.isInputValid)">
       </aspect-element-postion-properties>
     </mat-tab>
@@ -31,13 +32,13 @@
     </mat-tab>
   </mat-tab-group>
 
-  <div fxLayout="column">
+  <div fxLayout="column" class="button-group">
     <mat-divider></mat-divider>
-    <button mat-raised-button class="element-button"
+    <button mat-raised-button
             (click)="duplicateElement()">
       {{'propertiesPanel.duplicateElement' | translate }}
     </button>
-    <button mat-raised-button class="element-button" color="warn"
+    <button mat-raised-button color="warn"
             (click)="deleteElement()">
       {{'propertiesPanel.deleteElement' | translate }}
     </button>

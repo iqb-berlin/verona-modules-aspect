@@ -32,16 +32,10 @@ import { DynamicCanvasOverlayComponent } from
   './components/unit-view/page-view/canvas/overlays/dynamic-canvas-overlay.component';
 import { SharedModule } from '../../../common/shared.module';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import { ElementPropertiesComponent } from
-  './components/unit-view/page-view/properties-panel/element-properties.component';
 import { SectionMenuComponent } from './components/unit-view/page-view/canvas/section-menu.component';
 import { SectionStaticComponent } from './components/unit-view/page-view/canvas/section-static.component';
 import { SectionDynamicComponent } from './components/unit-view/page-view/canvas/section-dynamic.component';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
-import { ElementStylePropertiesComponent } from
-  './components/unit-view/page-view/properties-panel/element-style-properties.component';
-import { ElementPositionPropertiesComponent } from
-    './components/unit-view/page-view/properties-panel/element-position-properties.component';
 import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
@@ -49,13 +43,23 @@ import { PlayerEditDialogComponent } from './components/dialogs/player-edit-dial
 import { LikertColumnEditDialogComponent } from './components/dialogs/likert-column-edit-dialog.component';
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
 import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
-import { ElementModelPropertiesComponent } from
-  './components/unit-view/page-view/properties-panel/element-model-properties.component';
 import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
 
 import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/toggle-button-nodeview.component';
 import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
 import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
+import { PositionFieldSetComponent } from
+  './components/unit-view/page-view/properties-panel/position-properties-tab/input-groups/position-field-set.component';
+import { DimensionFieldSetComponent } from
+  './components/unit-view/page-view/properties-panel/position-properties-tab/input-groups/dimension-field-set.component';
+import { ElementPropertiesPanelComponent }
+  from './components/unit-view/page-view/properties-panel/element-properties-panel.component';
+import { ElementPositionPropertiesComponent } from
+  './components/unit-view/page-view/properties-panel/position-properties-tab/element-position-properties.component';
+import { ElementStylePropertiesComponent } from
+  './components/unit-view/page-view/properties-panel/style-properties-tab/element-style-properties.component';
+import { ElementModelPropertiesComponent } from
+  './components/unit-view/page-view/properties-panel/model-properties-tab/element-model-properties.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +71,7 @@ import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop
     CanvasComponent,
     StaticCanvasOverlayComponent,
     DynamicCanvasOverlayComponent,
-    ElementPropertiesComponent,
+    ElementPropertiesPanelComponent,
     SectionMenuComponent,
     SectionStaticComponent,
     SectionDynamicComponent,
@@ -85,7 +89,9 @@ import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop
     LikertRowEditDialogComponent,
     RichTextEditDialogComponent,
     ElementModelPropertiesComponent,
-    DropListOptionEditDialogComponent
+    DropListOptionEditDialogComponent,
+    PositionFieldSetComponent,
+    DimensionFieldSetComponent
   ],
   imports: [
     BrowserModule,

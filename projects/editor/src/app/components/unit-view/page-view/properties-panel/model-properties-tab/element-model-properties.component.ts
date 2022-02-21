@@ -4,15 +4,15 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { UnitService } from '../../../../services/unit.service';
-import { FileService } from '../../../../services/file.service';
+import { UnitService } from '../../../../../services/unit.service';
+import { FileService } from '../../../../../services/file.service';
 import {
   DragNDropValueObject,
   InputElementValue,
   LikertElement, LikertRowElement,
   UIElement
-} from '../../../../../../../common/interfaces/elements';
-import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/likert';
+} from '../../../../../../../../common/interfaces/elements';
+import { LikertColumn, LikertRow } from '../../../../../../../../common/interfaces/likert';
 
 @Component({
   selector: 'aspect-element-model-properties-component',

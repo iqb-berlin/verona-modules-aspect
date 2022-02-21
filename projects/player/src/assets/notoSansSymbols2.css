@@ -1,5 +1,0 @@
-@font-face {
-  font-family: 'Roboto'; /* Extend the Roboto font family */
-  src: url(fonts/noto-sans-symbols-2-v13-symbols-regular.woff2) format('woff2');
-  unicode-range: U+2B1C, U+2758, U+2219; /* Square, Dot, Point*/
-}

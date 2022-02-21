@@ -5,10 +5,8 @@ import { AudioElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-audio',
   template: `
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize">
+    <div [style.width.%]="100"
+         [style.height.%]="100">
       <audio #player
              (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
              (pause)="onMediaPlayStatusChanged.emit(null)"

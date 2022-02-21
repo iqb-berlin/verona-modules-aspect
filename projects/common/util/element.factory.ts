@@ -366,7 +366,7 @@ export abstract class ElementFactory {
 
   private static createSliderElement(defaults: Record<string, any> = {}): SliderElement {
     return {
-      ...ElementFactory.initElement('slider', { width: 300, height: 75, ...defaults }),
+      ...ElementFactory.initInputElement('slider', { width: 300, height: 75, ...defaults }),
       type: 'slider',
       minValue: 0,
       maxValue: 100,

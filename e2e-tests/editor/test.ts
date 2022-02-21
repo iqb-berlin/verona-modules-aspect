@@ -12,7 +12,7 @@ test('Button existence', async t => {
 });
 
 test('Add button to canvas', async t => {
-  const canvasElementButton = Page.getCanvasElementSelector('app-button');
+  const canvasElementButton = Page.getCanvasElementSelector('aspect-button');
 
   await t
     .click(page.newButtonElement)
@@ -20,7 +20,7 @@ test('Add button to canvas', async t => {
 });
 
 test('Change button label', async t => {
-  const canvasElementButton = Page.getCanvasElementSelector('app-button');
+  const canvasElementButton = Page.getCanvasElementSelector('aspect-button');
 
   await t
     .click(page.newButtonElement)

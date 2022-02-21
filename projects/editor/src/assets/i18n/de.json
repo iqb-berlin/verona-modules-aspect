@@ -141,7 +141,7 @@
     "fixedSize": "Feste Abmessungen"
   },
   "player": {
-    "autoStart": "Autostart",
+    "autoStart": "Autostart (nicht für Tablets)",
     "autoStartDelay": "Autostart Verzögerung (ms)",
     "loop": "Wiederholt abspielen",
     "startControl": "Startknopf",

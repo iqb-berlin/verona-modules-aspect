@@ -6,9 +6,8 @@ import { SpellCorrectElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-spell-correct',
   template: `
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps.fixedSize">
+    <div [style.width.%]="100"
+         [style.height.%]="100">
       <div fxFlex
            fxLayout="column"
            aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
@@ -41,22 +40,22 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                 [style.width.%]="100"
                 [style.margin-top]="'-20px'"
                 [style.text-decoration-line]=
-                  "(inputElement && inputElement.focused) ||
-                  (inputElement && !!inputElement.value) ||
-                  (elementFormControl && elementFormControl.value === '') ? 'line-through' : ''"
+                    "(inputElement && inputElement.focused) ||
+                    (inputElement && !!inputElement.value) ||
+                    (elementFormControl && elementFormControl.value === '') ? 'line-through' : ''"
                 (click)="
-              elementFormControl.value === null ?
-              inputElement.focus() :
-              buttonElement.focus();
-              elementFormControl.value === null ?
-              (elementFormControl.setValue('')) :
-              elementFormControl.setValue(null)">{{elementModel.label}}
+                elementFormControl.value === null ?
+                inputElement.focus() :
+                buttonElement.focus();
+                elementFormControl.value === null ?
+                (elementFormControl.setValue('')) :
+                elementFormControl.setValue(null)">{{elementModel.label}}
         </button>
       </div>
     </div>
   `,
   styles: [
-    '::ng-deep app-spell-correct .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
+    ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
   ]
 })
 export class SpellCorrectComponent extends FormElementComponent {

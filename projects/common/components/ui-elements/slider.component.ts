@@ -8,11 +8,9 @@ import { SliderElement } from '../../interfaces/elements';
   selector: 'aspect-slider',
   template: `
     <div fxLayout="column"
-         [style.background-color]="elementModel.styles.backgroundColor"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize">
+         [style.width.%]="100"
+         [style.height.%]="100"
+         [style.background-color]="elementModel.styles.backgroundColor">
       <div *ngIf="elementModel.label"
            [style.color]="elementModel.styles.fontColor"
            [style.font-family]="elementModel.styles.font"

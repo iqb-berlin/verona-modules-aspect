@@ -1,7 +1,17 @@
 Player
 ======
+1.20.1
+- Fix styling issues with some elements in version 1.20.0
+
 1.20.0
-- Fix dimensions of images with dynamicPositioning and fixedSize
+- Implement readonly for text fields of cloze elements
+- Set the default language of the player to German
+- Fix height of elements with dynamic positioning and fixed size
+- Fix dimensions of image elements with dynamic positioning and fixed size
+- Fix positioning of floating virtual keyboard for fixed size elements
+- Fix positioning of floating marking bar when text element is dynamically positioned and has fixed size
+- Fix display of fixed size dynamic elements on iPad
+- Fix selecting and marking of text on iPad
 
 1.19.0
 - Remove border of slider rectangle in number line mode at position 0

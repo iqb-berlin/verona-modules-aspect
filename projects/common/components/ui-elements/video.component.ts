@@ -5,10 +5,9 @@ import { VideoElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-video',
   template: `
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning && elementModel.positionProps!.fixedSize"
-         [class]="elementModel.scale ? 'fit-video' : 'max-size-video'">
+    <div [class]="elementModel.scale ? 'fit-video' : 'max-size-video'"
+         [style.width.%]="100"
+         [style.height.%]="100">
       <video #player
              (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
              (pause)="onMediaPlayStatusChanged.emit(null)"

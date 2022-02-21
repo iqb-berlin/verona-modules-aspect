@@ -13,10 +13,8 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
       <div class="list"
-           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
+           [style.width.%]="100"
+           [style.height.%]="100"
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"
@@ -84,8 +82,7 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
     '.dropList-highlight.cdk-drop-list-receiving {outline: solid;}',
     '.dropList-highlight.cdk-drop-list-dragging {outline: solid;}',
 
-    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
-    '.center-content {top: unset; transform: unset;}'
+    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}'
   ]
 })
 export class DropListComponent extends FormElementComponent {

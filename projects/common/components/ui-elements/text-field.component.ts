@@ -8,19 +8,18 @@ import { TextFieldElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-text-field',
   template: `
-    <mat-form-field *ngIf="elementModel.label !== ''"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [style.color]="elementModel.styles.fontColor"
-                    [style.font-family]="elementModel.styles.font"
-                    [style.font-size.px]="elementModel.styles.fontSize"
-                    [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
-                    [appearance]="elementModel.appearance">
+    <mat-form-field
+        *ngIf="elementModel.label !== ''"
+        [style.width.%]="100"
+        [style.height.%]="100"
+        [style.color]="elementModel.styles.fontColor"
+        [style.font-family]="elementModel.styles.font"
+        [style.font-size.px]="elementModel.styles.fontSize"
+        [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
+        [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
@@ -39,19 +38,18 @@ import { TextFieldElement } from '../../interfaces/elements';
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
     </mat-form-field>
-    <mat-form-field *ngIf="elementModel.label === ''" class="small-input"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [style.color]="elementModel.styles.fontColor"
-                    [style.font-family]="elementModel.styles.font"
-                    [style.font-size.px]="elementModel.styles.fontSize"
-                    [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
-                    [appearance]="$any(elementModel.appearance)">
+    <mat-form-field
+        *ngIf="elementModel.label === ''" class="small-input"
+        [style.width.%]="100"
+        [style.height.%]="100"
+        [style.color]="elementModel.styles.fontColor"
+        [style.font-family]="elementModel.styles.font"
+        [style.font-size.px]="elementModel.styles.fontSize"
+        [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
+        [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
              [value]="$any(elementModel.value)"
@@ -71,8 +69,7 @@ import { TextFieldElement } from '../../interfaces/elements';
     </mat-form-field>
   `,
   styles: [
-    '.center-content {display: block; margin: auto; top: 50%; transform: translateY(-50%);}',
-    '::ng-deep app-text-field .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}' // TODO
+    ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}'
   ]
 })
 export class TextFieldComponent extends FormElementComponent {

@@ -1,25 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
-
 html, body { height: 100%; }
-body {
-  margin: 0;
-  font-family: 'Roboto', sans-serif
-}
 
 .mat-expansion-panel-content {font: unset !important;}
 
 .snackbar-warning {border: 3px double #ff4d4d}
 .snackbar-error {background-color: #ff4d4d}
 
-/*This is part of a hack to set the bodys cursor to grabbing while
-  elements are being dragged with relative positioning. The element is taken out
-  of the DOM and pointer events don't work, including cursors. This is why
-  the body needs to be cursor styled.
-  This class and the cursor are set in the component when dragging starts
-  and removed when it ends. See dynamic canvas overlay. */
-body.inheritCursors * {
-  cursor: inherit !important;
-}
 .cdk-drag {
   cursor: grab;
 }
@@ -39,41 +24,4 @@ body.inheritCursors * {
 
 input[type=color] {
   cursor: pointer;
-}
-
-blockquote {
-  quotes: "\201E" "\201C";
-  text-indent: -1em;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-blockquote:before {
-  content: open-quote;
-  font-size: 2.5em;
-  padding-right: 3px;
-  font-family: 'PT Sans', sans-serif;
-  line-height: 0;
-}
-
-blockquote:after {
-  content: close-quote;
-  font-size: 2.5em;
-  vertical-align: middle;
-  padding-top: 0.3em;
-  padding-left: 3px;
-  font-family: 'PT Sans', sans-serif;
-  line-height: 0;
-}
-
-blockquote p {
-  display: inline;
-}
-
-.center-content {
-  position: relative;
-  display: block !important;
-  margin: auto !important;
-  top: 50%;
-  transform: translateY(-50%);
 }

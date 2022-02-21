@@ -3,7 +3,7 @@
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">
     <aspect-element-container
-        class="static-element"
+        class="static-element fixed-size-content"
         [style.width.px]="element.width"
         [style.height.px]="element.height"
         [style.left.px]="element.positionProps.xPosition"

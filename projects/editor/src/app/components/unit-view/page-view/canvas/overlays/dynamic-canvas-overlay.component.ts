@@ -11,6 +11,8 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
     <div #draggableElement class="draggable-element"
+         [class.fixed-size-content-wrapper]="element.positionProps?.dynamicPositioning &&
+            element.positionProps?.fixedSize"
          [class.temporaryHighlight]="temporaryHighlight"
          [style.display]="dragging ? 'none' : ''"
          tabindex="-1"
@@ -32,7 +34,14 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
           <div *cdkDragPlaceholder></div>
         </div>
       </div>
-      <ng-template #elementContainer></ng-template>
+      <div [class.fixed-size-content]="element.positionProps?.dynamicPositioning &&
+            element.positionProps?.fixedSize"
+           [style.width]="element.positionProps?.dynamicPositioning && element.positionProps?.fixedSize ?
+                      element.width + 'px' : '100%'"
+           [style.height]="element.positionProps?.dynamicPositioning && element.positionProps?.fixedSize ?
+                      element.height + 'px' : '100%'">
+        <ng-template #elementContainer></ng-template>
+      </div>
     </div>
     <div class="resize-preview"
          [style.position]="'relative'"

@@ -5,10 +5,8 @@ import { RadioButtonGroupComplexElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-radio-group-images',
   template: `
-    <div [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
+    <div [style.width.%]="100"
+         [style.height.%]="100"
          [style.display]="'grid !important'"
          [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)"
          [style.background-color]="elementModel.styles.backgroundColor"
@@ -70,7 +68,7 @@ import { RadioButtonGroupComplexElement } from '../../interfaces/elements';
   styles: [
     '.columns {text-align: center; margin: 0 5px;}',
     '.grid-layout .columns img {cursor: pointer;}',
-    '::ng-deep app-radio-group-images mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
+    ':host ::ng-deep mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
     'mat-radio-group {margin-top: 10px}',
     '.error-message { font-size: 75% }',
     '.grid-layout mat-radio-button {margin-top: 15px}'

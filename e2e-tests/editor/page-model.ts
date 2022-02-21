@@ -6,14 +6,14 @@ class Page {
   labelPropertyField;
 
   constructor() {
-    this.newInvalidElemnt = Selector('app-ui-element-toolbox')
+    this.newInvalidElemnt = Selector('aspect-ui-element-toolbox')
       .find('button')
       .withText('invalid');
-    this.newButtonElement = Selector('app-ui-element-toolbox')
+    this.newButtonElement = Selector('aspect-ui-element-toolbox')
       .find('button')
       .withText('Knopf');
-    this.labelPropertyField = Selector('app-unit-view')
-      .find('app-element-properties')
+    this.labelPropertyField = Selector('aspect-unit-view')
+      .find('aspect-element-properties')
       .child('mat-tab-group')
       .find('.mat-form-field')
       .find('label').withText('Beschriftung')

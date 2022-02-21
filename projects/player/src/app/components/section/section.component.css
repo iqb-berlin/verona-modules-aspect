@@ -7,5 +7,4 @@
 .static-element {
   display: block;
   position: absolute;
-  overflow: auto;
 }

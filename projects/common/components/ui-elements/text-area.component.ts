@@ -7,19 +7,19 @@ import { TextAreaElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-text-area',
   template: `
-    <mat-form-field [ngClass]="{ 'no-label' : !elementModel.label}"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.min-height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
-                    [style.color]="elementModel.styles.fontColor"
-                    [style.font-family]="elementModel.styles.font"
-                    [style.font-size.px]="elementModel.styles.fontSize"
-                    [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-                    [appearance]="elementModel.appearance">
+    <mat-form-field
+        [ngClass]="{ 'no-label' : !elementModel.label}"
+        [style.width.%]="100"
+        [style.height.%]="100"
+        [style.min-height.%]="100"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
+        [style.color]="elementModel.styles.fontColor"
+        [style.font-family]="elementModel.styles.font"
+        [style.font-size.px]="elementModel.styles.fontSize"
+        [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+        [appearance]="$any(elementModel.appearance)">
       <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
       <textarea matInput #input
                 autocomplete="off" rows="{{elementModel.rowCount}}"

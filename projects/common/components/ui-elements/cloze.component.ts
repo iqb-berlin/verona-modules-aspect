@@ -15,10 +15,8 @@ import { getClozeChildElements } from '../../util/cloze';
     <ng-container *ngIf="elementModel.document.content.length == 0">
       Kein Dokument vorhanden
     </ng-container>
-    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                 elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
+    <div [style.width.%]="100"
+         [style.height]="'auto'">
       <ng-container *ngFor="let part of elementModel.document.content">
         <ul *ngIf="part.type === 'bulletList'"
             [style.font-size]="part.attrs.fontSize"
@@ -167,10 +165,10 @@ import { getClozeChildElements } from '../../util/cloze';
     </ng-template>
   `,
   styles: [
-    ':host ::ng-deep app-text-field {vertical-align: middle}',
-    ':host ::ng-deep app-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}',
-    ':host ::ng-deep app-text-field .mat-form-field {height: 100%}',
-    ':host ::ng-deep app-text-field .mat-form-field-flex {height: 100%}',
+    ':host ::ng-deep aspect-text-field {vertical-align: middle}',
+    ':host ::ng-deep aspect-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}',
+    ':host ::ng-deep aspect-text-field .mat-form-field {height: 100%}',
+    ':host ::ng-deep aspect-text-field .mat-form-field-flex {height: 100%}',
     'p {margin: 0}',
     ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
     ':host ::ng-deep p:empty::after {content: "\\00A0"}', // render empty p

@@ -7,10 +7,8 @@ import { CheckboxElement } from '../../interfaces/elements';
   selector: 'aspect-checkbox',
   template: `
     <div class="mat-form-field"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-         [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
+         [style.width.%]="100"
+         [style.height.%]="100"
          [style.background-color]="elementModel.styles.backgroundColor">
       <mat-checkbox #checkbox class="example-margin"
                     [formControl]="elementFormControl"

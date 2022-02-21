@@ -7,16 +7,14 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-text',
   template: `
-    <div [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                 elementModel.positionProps.fixedSize"
-         [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-         [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : 'auto'">
+    <div [style.width.%]="100"
+         [style.height.%]="100">
       <aspect-marking-bar
-        *ngIf="elementModel.highlightableYellow ||
-            elementModel.highlightableTurquoise ||
-            elementModel.highlightableOrange"
-        [elementModel]="elementModel"
-        (selectionChanged)="onSelectionChanged($event)">
+          *ngIf="elementModel.highlightableYellow ||
+              elementModel.highlightableTurquoise ||
+              elementModel.highlightableOrange"
+          [elementModel]="elementModel"
+          (selectionChanged)="onSelectionChanged($event)">
       </aspect-marking-bar>
       <div #textContainerRef class="text-container"
            [class.orange-selection]="selectedColor === 'orange'"
@@ -32,9 +30,8 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
            [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
            [innerHTML]="elementModel.text | safeResourceHTML"
-           (mousedown)="elementModel.highlightableYellow ||
-             elementModel.highlightableTurquoise ||
-             elementModel.highlightableOrange ? startSelection.emit($event) : null">
+           (touchstart)="emitStartSelection($event)"
+           (mousedown)="emitStartSelection($event)">
       </div>
     </div>
   `,
@@ -56,7 +53,7 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
 export class TextComponent extends ElementComponent {
   @Input() elementModel!: TextElement;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() startSelection = new EventEmitter<MouseEvent>();
+  @Output() startSelection = new EventEmitter<MouseEvent | TouchEvent>();
   @Output() applySelection = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
@@ -67,6 +64,14 @@ export class TextComponent extends ElementComponent {
   selectedColor!: string | undefined;
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
+
+  emitStartSelection(event: TouchEvent | MouseEvent): void {
+    if (this.elementModel.highlightableYellow ||
+      this.elementModel.highlightableTurquoise ||
+      this.elementModel.highlightableOrange) {
+      this.startSelection.emit(event);
+    }
+  }
 
   onSelectionChanged(selection: {
     active: boolean,

@@ -235,7 +235,7 @@ export interface RadioButtonGroupComplexElement extends InputElement {
   styles: BasicStyles;
 }
 
-export interface SliderElement extends UIElement {
+export interface SliderElement extends InputElement {
   type: 'slider';
   minValue: number;
   maxValue: number;

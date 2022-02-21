@@ -9,10 +9,8 @@ import { ButtonElement } from '../../interfaces/elements';
   template: `
     <button *ngIf="!elementModel.imageSrc" mat-button
             type='button'
-            [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-            [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-            [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
+            [style.width.%]="100"
+            [style.height.%]="100"
             [style.background-color]="elementModel.styles.backgroundColor"
             [style.color]="elementModel.styles.fontColor"
             [style.font-family]="elementModel.styles.font"
@@ -26,20 +24,15 @@ import { ButtonElement } from '../../interfaces/elements';
     </button>
     <input *ngIf="elementModel.imageSrc" type="image"
            [src]="elementModel.imageSrc | safeResourceUrl"
-           [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-           [class.fixed-size-dynamic-image]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-           [class]="elementModel.positionProps.dynamicPositioning ? 'dynamic-image' : 'static-image'"
-           [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : null"
-           [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : null"
+           [class]="elementModel.positionProps.dynamicPositioning &&
+                    !elementModel.positionProps.fixedSize ? 'dynamic-image' : 'static-image'"
            [alt]="'imageNotFound' | translate"
            (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
   `,
   styles: [
     '.dynamic-image {width: 100%; height: fit-content;}',
     '.static-image {max-width: 100%; max-height: 100%; display: grid;}', // grid: to prevent scrollbars
-    '.fixed-size-dynamic-image {position: relative; object-fit: scale-down;}'
+    '.fill-container {width: 100%; height: 100%;}'
   ]
 })
 export class ButtonComponent extends ElementComponent {

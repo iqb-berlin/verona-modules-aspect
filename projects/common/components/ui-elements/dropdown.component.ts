@@ -5,12 +5,11 @@ import { DropdownElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-dropdown',
   template: `
-    <mat-form-field appearance="fill"
-                    [style.width]="elementModel.positionProps.fixedSize ? elementModel.width + 'px' : '100%'"
-                    [style.height]="elementModel.positionProps.fixedSize ? elementModel.height + 'px' : '100%'"
-                    [class.center-content]="elementModel.positionProps.dynamicPositioning &&
-                                    elementModel.positionProps.fixedSize"
-                    aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor">
+    <mat-form-field
+        appearance="fill"
+        [style.width.%]="100"
+        [style.height.%]="100"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor">
       <mat-label [style.color]="elementModel.styles.fontColor"
                  [style.font-family]="elementModel.styles.font"
                  [style.font-size.px]="elementModel.styles.fontSize"

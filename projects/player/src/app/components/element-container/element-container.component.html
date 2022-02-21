@@ -1,6 +1,15 @@
-<div class="element-container"
-     cdkOverlayOrigin #overlayOrigin="cdkOverlayOrigin">
-  <ng-template #elementComponentContainer></ng-template>
+<div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+         'fixed-size-content-wrapper' : 'element-container'">
+  <div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+            'fixed-size-content' : 'element-container'"
+       [style.width]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+                      elementModel.width + 'px' : '100%'"
+       [style.height]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+                      elementModel.height + 'px' : '100%'">
+    <div class="element-container" cdkOverlayOrigin #overlayOrigin="cdkOverlayOrigin">
+      <ng-template #elementComponentContainer></ng-template>
+    </div>
+  </div>
 </div>
 
 <aspect-floating-keyboard
@@ -21,6 +30,8 @@
     [elementComponent]="elementComponent"
     [overlayOrigin]="overlayOrigin"
     [isMarkingBarOpen]="isMarkingBarOpen"
+    [textComponentRect]="textComponentRect"
+    [textComponentContainerScrollTop]="textComponentContainerScrollTop"
     [position]="markingBarPosition"
     (applySelection)="applySelectionToText($event.mode, $event.color)">
 </aspect-floating-marking-bar>

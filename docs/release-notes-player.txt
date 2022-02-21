@@ -1,5 +1,8 @@
 Player
 ======
+1.20.1
+- Fix styling issues with some elements in version 1.20.0
+
 1.20.0
 - Implement readonly for text fields of cloze elements
 - Set the default language of the player to German

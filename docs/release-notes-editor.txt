@@ -1,5 +1,8 @@
 Editor
 ======
+1.26.1
+- Fix styling issues with some elements in version 1.26.0
+
 1.26.0
 - Set the default language of the editor to German
 - Add handling of empty and invalid unit definitions

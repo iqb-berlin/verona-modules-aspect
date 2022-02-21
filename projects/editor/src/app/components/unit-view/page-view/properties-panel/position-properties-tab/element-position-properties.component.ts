@@ -37,7 +37,11 @@ import { PositionedElement, PositionProperties } from '../../../../../../../../c
         </div>
       </ng-container>
     </div>
-  `
+  `,
+  styles: [
+    'aspect-position-field-set {margin-bottom: 20px;}',
+    ':host ::ng-deep fieldset {padding-bottom: 0;}'
+  ]
 })
 export class ElementPositionPropertiesComponent {
   @Input() dimensions!: { width: number; height: number; };

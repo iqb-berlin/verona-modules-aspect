@@ -49,8 +49,8 @@ export class ElementContainerComponent implements OnInit {
 
   isMarkingBarOpen!: boolean;
   markingBarPosition: { top: number, left: number } = { top: 0, left: 0 };
-  markingBarElementRect!: DOMRect;
-  markingBarContainerScrollPosition!: number;
+  textComponentRect!: DOMRect;
+  textComponentContainerScrollTop!: number;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -245,9 +245,9 @@ export class ElementContainerComponent implements OnInit {
   ) {
     this.markingBarPosition.left = downPosition.clientY > mouseUp.clientY ? downPosition.clientX : mouseUp.clientX;
     this.markingBarPosition.top = downPosition.clientY > mouseUp.clientY ? downPosition.clientY : mouseUp.clientY;
-    this.markingBarContainerScrollPosition =
+    this.textComponentContainerScrollTop =
       this.elementComponent.domElement.closest('.fixed-size-content')?.scrollTop || 0;
-    this.markingBarElementRect = this.elementComponent.domElement.getBoundingClientRect();
+    this.textComponentRect = this.elementComponent.domElement.getBoundingClientRect();
     this.isMarkingBarOpen = true;
     this.nativeEventService.pointerDown
       .pipe(takeUntil(this.ngUnsubscribe), first())

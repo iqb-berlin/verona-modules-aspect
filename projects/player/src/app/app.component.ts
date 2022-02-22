@@ -13,6 +13,7 @@ import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { Page, Unit } from '../../../common/interfaces/unit';
+import { UnitDefinitionSanitizer } from '../../../common/util/unit-definition-sanitizer';
 
 @Component({
   selector: 'aspect-player',
@@ -59,7 +60,7 @@ export class AppComponent implements OnInit {
       // eslint-disable-next-line no-console
       console.log('player: onStart', message);
       if (message.unitDefinition) {
-        const unitDefinition: Unit = JSON.parse(message.unitDefinition);
+        const unitDefinition: Unit = UnitDefinitionSanitizer.sanitize(JSON.parse(message.unitDefinition));
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
         if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.unitDefinitionType)) {
           this.playerConfig = message.playerConfig || {};

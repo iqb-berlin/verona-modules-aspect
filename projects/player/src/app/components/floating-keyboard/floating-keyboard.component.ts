@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CdkOverlayOrigin } from '@angular/cdk/overlay';
-import { InputAssistancePreset } from '../../../../../common/models/uI-element';
+import { InputAssistancePreset } from '../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-floating-keyboard',

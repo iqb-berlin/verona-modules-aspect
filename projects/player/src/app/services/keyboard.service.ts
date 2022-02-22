@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TextFieldComponent } from '../../../../common/components/ui-elements/text-field.component';
 import { TextAreaComponent } from '../../../../common/components/ui-elements/text-area.component';
-import { InputAssistancePreset } from '../../../../common/models/uI-element';
+import { InputAssistancePreset } from '../../../../common/interfaces/elements';
 
 @Injectable({
   providedIn: 'root'

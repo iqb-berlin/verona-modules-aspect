@@ -94,7 +94,7 @@ export class UnitDefinitionSanitizer {
    */
   private static handleClozeElements(elementList: UIElement[]): void {
     const clozeElements = elementList.filter(element => element.type === 'cloze');
-    if (clozeElements[0].text) {
+    if (clozeElements.length && clozeElements[0].text) {
       clozeElements.forEach((element: Record<string, any>) => {
         const replacedText = element.text.replace(/\\i|\\z|\\r/g, (match: string) => {
           switch (match) {

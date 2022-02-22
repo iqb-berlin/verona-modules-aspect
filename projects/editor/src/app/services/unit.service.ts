@@ -24,8 +24,9 @@ import {
 import { UnitDefinitionSanitizer } from '../../../../common/util/unit-definition-sanitizer';
 import { LikertColumn, LikertRow } from '../../../../common/interfaces/likert';
 import { ClozeDocument } from '../../../../common/interfaces/cloze';
-import { getClozeChildElements } from '../../../../common/util/cloze';
 import { UnitUtils } from '../../../../common/util/unit-utils';
+import { ArrayUtils } from '../../../../common/util/array';
+import { ClozeUtils } from '../../../../common/util/cloze';
 
 @Injectable({
   providedIn: 'root'
@@ -121,7 +122,7 @@ export class UnitService {
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
-    moveArrayItem(section, page.sections, direction);
+    ArrayUtils.moveArrayItem(section, page.sections, direction);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -228,7 +229,7 @@ export class UnitService {
       }
 
       if (newElement.type === 'cloze') {
-        getClozeChildElements(newElement).forEach((childElement: InputElement) => {
+        ClozeUtils.getClozeChildElements(newElement).forEach((childElement: InputElement) => {
           childElement.id = this.idService.getNewID(childElement.type);
           if (typeof childElement.value === 'object') { // replace value Ids with fresh ones (dropList)
             (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {

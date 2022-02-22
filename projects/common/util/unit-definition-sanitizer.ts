@@ -7,7 +7,7 @@ import DropListExtension from '../tiptap-editor-extensions/drop-list';
 import TextFieldExtension from '../tiptap-editor-extensions/text-field';
 import { IdService } from '../../editor/src/app/services/id.service';
 
-export class UnitDefinitionSanitizer {
+export abstract class UnitDefinitionSanitizer {
   static campatibilityHandlers: { (s: UIElement[]): void; }[] = [
     UnitDefinitionSanitizer.handlePositionProps,
     UnitDefinitionSanitizer.handleFontProps,

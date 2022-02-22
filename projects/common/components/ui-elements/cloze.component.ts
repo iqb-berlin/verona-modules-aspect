@@ -5,8 +5,7 @@ import { CompoundElementComponent } from '../../directives/compound-element.dire
 import { CompoundChildOverlayComponent } from '../compound-child-overlay.component';
 import { ElementComponent } from '../../directives/element-component.directive';
 import { ClozeElement, InputElement } from '../../interfaces/elements';
-import { ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../../interfaces/cloze';
-import { getClozeChildElements } from '../../util/cloze';
+import { ClozeUtils } from '../../util/cloze';
 
 // TODO background color implementieren
 @Component({
@@ -184,7 +183,7 @@ export class ClozeComponent extends CompoundElementComponent {
   editorMode: boolean = false;
 
   getFormElementModelChildren(): InputElement[] {
-    return getClozeChildElements(this.elementModel.document);
+    return ClozeUtils.getClozeChildElements(this.elementModel.document);
   }
 
   getFormElementChildrenComponents(): ElementComponent[] {

@@ -1,6 +1,6 @@
 import { Page, Section, Unit } from '../interfaces/unit';
 
-export class UnitFactory {
+export abstract class UnitFactory {
   static generateEmptyUnit(): Unit {
     return {
       unitDefinitionType: 'TODO',

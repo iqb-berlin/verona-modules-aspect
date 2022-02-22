@@ -5,7 +5,9 @@ import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from '../../../../../common/services/message.service';
-import { Page } from '../../../../../common/interfaces/unit';
+import { Page, Unit } from '../../../../../common/interfaces/unit';
+import { ArrayUtils } from '../../../../../common/util/array';
+import { UnitFactory } from '../../../../../common/util/unit.factory';
 
 @Component({
   selector: 'aspect-unit-view',
@@ -13,6 +15,7 @@ import { Page } from '../../../../../common/interfaces/unit';
   styleUrls: ['./unit-view.component.css']
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
+  unit!: Unit;
   selectedPageIndex: number = 0;
   pagesLoaded = true;
   private ngUnsubscribe = new Subject<void>();
@@ -23,16 +26,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
               private messageService: MessageService) { }
 
   ngOnInit(): void {
-    // The following is a hack. The tab element gets bugged when changing the underlying array.
-    // With this we can temporarily remove it from the DOM and then add it again, re-initializing it.
-    this.unitService.pageMoved
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.pagesLoaded = false;
-        setTimeout(() => {
-          this.pagesLoaded = true;
-        });
-      });
+    this.unit = this.unitService.unit;
   }
 
   selectPage(newIndex: number): void {
@@ -42,14 +36,26 @@ export class UnitViewComponent implements OnInit, OnDestroy {
   }
 
   addPage(): void {
-    this.unitService.addPage();
+    this.unit.pages.push(UnitFactory.generateEmptyPage());
+
     this.selectedPageIndex = this.unitService.unit.pages.length - 1;
     this.selectionService.selectedPageIndex = this.selectedPageIndex;
     this.selectionService.selectedPageSectionIndex = 0;
+
+    this.unitService.unitUpdated();
   }
 
   movePage(page: Page, direction: 'up' | 'down'): void {
-    this.unitService.movePage(page, direction);
+    if ((direction === 'up' && this.unit.pages.indexOf(page) === 1 && this.unit.pages[0].alwaysVisible) ||
+        (direction === 'up' && this.unit.pages.indexOf(page) === 0) ||
+        (direction === 'down' && this.unit.pages.indexOf(page) === this.unit.pages.length - 1)) {
+      this.messageService.showWarning('page can\'t be moved'); // TODO translate
+      return;
+    }
+    ArrayUtils.moveArrayItem(page, this.unitService.unit.pages, direction);
+    this.refreshTabs();
+    direction === 'up' ? this.selectedPageIndex -= 1 : this.selectedPageIndex += 1;
+    this.unitService.unitUpdated();
   }
 
   deletePage(page: Page): void {
@@ -57,7 +63,8 @@ export class UnitViewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result: boolean) => {
         if (result) {
-          this.unitService.deletePage(page);
+          this.unit.pages.splice(this.unit.pages.indexOf(page), 1);
+          this.unitService.unitUpdated();
           this.selectedPageIndex -= 1;
         }
       });
@@ -67,13 +74,34 @@ export class UnitViewComponent implements OnInit, OnDestroy {
 
   updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
     if (isInputValid && value != null) {
-      this.unitService.updatePageProperty(page, property, value);
-      if (property === 'alwaysVisible') {
+      if (property === 'alwaysVisible' && value === true) {
+        this.movePageToFront(page);
+        page.alwaysVisible = true;
         this.selectedPageIndex = 0;
+        this.refreshTabs();
       }
+      page[property] = value;
+      this.unitService.unitUpdated();
     } else {
       this.messageService.showWarning('Eingabe ungültig');
     }
+  }
+
+  private movePageToFront(page: Page): void {
+    const pageIndex = this.unit.pages.indexOf(page);
+    if (pageIndex !== 0) {
+      this.unit.pages.splice(pageIndex, 1);
+      this.unit.pages.splice(0, 0, page);
+    }
+  }
+
+  /* This is a hack. The tab element gets bugged when changing the underlying array.
+     With this we can temporarily remove it from the DOM and then add it again, re-initializing it. */
+  private refreshTabs(): void {
+    this.pagesLoaded = false;
+    setTimeout(() => {
+      this.pagesLoaded = true;
+    });
   }
 
   ngOnDestroy(): void {

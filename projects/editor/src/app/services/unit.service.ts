@@ -35,7 +35,6 @@ export class UnitService {
   unit: Unit;
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
-  pageMoved: Subject<void> = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
               private idService: IdService,
@@ -60,43 +59,8 @@ export class UnitService {
     });
   }
 
-  addPage(): void {
-    this.unit.pages.push(UnitFactory.generateEmptyPage());
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
-  }
-
-  deletePage(page: Page): void {
-    this.unit.pages.splice(this.unit.pages.indexOf(page), 1);
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
-  }
-
-  movePage(selectedPage: Page, direction: 'up' | 'down'): void {
-    if (direction === 'up' &&
-      this.unit.pages.indexOf(selectedPage) === 1 &&
-      this.unit.pages[0].alwaysVisible) {
-      return;
-    }
-    moveArrayItem(selectedPage, this.unit.pages, direction);
-    this.pageMoved.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
-  }
-
-  updatePageProperty(page: Page, property: string, value: number | boolean): void {
-    if (property === 'alwaysVisible' && value === true) {
-      this.handlePageAlwaysVisiblePropertyChange(page);
-    }
-    page[property] = value;
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
-  }
-
-  private handlePageAlwaysVisiblePropertyChange(page: Page): void {
-    const pageIndex = this.unit.pages.indexOf(page);
-    if (pageIndex !== 0) {
-      this.unit.pages.splice(pageIndex, 1);
-      this.unit.pages.splice(0, 0, page);
-      this.pageMoved.next();
-    }
-    page.alwaysVisible = true;
+  unitUpdated(): void {
+    this.veronaApiService.sendVoeDefinitionChangedNotification(JSON.stringify(this.unit));
   }
 
   addSection(page: Page): void {

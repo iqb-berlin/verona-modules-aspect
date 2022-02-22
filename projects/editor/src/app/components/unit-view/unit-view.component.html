@@ -15,7 +15,7 @@
                      [style.height.%]="100" mat-align-tabs="start"
                      [selectedIndex]="selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)">
-        <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
+        <mat-tab *ngFor="let page of unit.pages; let i = index">
           <ng-template mat-tab-label>
             <ng-container *ngIf="page.alwaysVisible">
             <mat-icon class="page-alwaysVisible-icon">assignment</mat-icon>
@@ -102,7 +102,7 @@
             </mat-menu>
 
           </ng-template>
-          <aspect-page-canvas [page]="page" fxLayout="column"></aspect-page-canvas>
+          <aspect-page-canvas *ngIf="pagesLoaded" [page]="page" fxLayout="column"></aspect-page-canvas>
         </mat-tab>
         <mat-tab disabled>
           <ng-template mat-tab-label>

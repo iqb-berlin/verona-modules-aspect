@@ -51,7 +51,7 @@ export class VeronaAPIService {
     });
   }
 
-  sendVoeDefinitionChangedNotification(unitDefinition: string = ''): void {
+  sendVoeDefinitionChangedNotification(unitDefinition: string = ''): void { // TODO empty string?!
     this.send({
       type: 'voeDefinitionChangedNotification',
       sessionId: this.sessionID,

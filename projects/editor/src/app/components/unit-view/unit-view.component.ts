@@ -10,21 +10,7 @@ import { Page } from '../../../../../common/interfaces/unit';
 @Component({
   selector: 'aspect-unit-view',
   templateUrl: './unit-view.component.html',
-  styles: [
-    '.toolbox_drawer {width: 248px}',
-    '.properties_drawer {width: 320px}',
-    '.drawer-button {font-size: large;background-color: lightgray; min-width: 0; width: 2%;}',
-    '.drawer-button {border: none; cursor: pointer}',
-    '.show-elements-button span {transform: rotate(-90deg); display: inherit}',
-    '.show-properties-button {padding-bottom: 140px}',
-    '.show-properties-button span {transform: rotate(90deg); display: inherit;}',
-    '::ng-deep .mat-drawer-content .mat-tab-body-wrapper {height: 100%}',
-    '.menuItem {padding: 0 16px}',
-    'mat-checkbox.menuItem {padding: 0 16px 10px 16px}',
-    'mat-divider {margin-bottom: 10px}',
-    '::ng-deep .mat-tab-label:hover .menu-button {visibility: visible}',
-    '.menu-button {position: absolute; left: 130px; bottom: 6px; visibility: hidden}'
-  ]
+  styleUrls: ['./unit-view.component.css']
 })
 export class UnitViewComponent implements OnInit, OnDestroy {
   selectedPageIndex: number = 0;

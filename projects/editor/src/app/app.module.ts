@@ -24,7 +24,6 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
   './components/unit-view/page-view/new-ui-element-panel/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { PageViewComponent } from './components/unit-view/page-view/page-view.component';
 import { CanvasComponent } from './components/unit-view/page-view/canvas/canvas.component';
 import { StaticCanvasOverlayComponent } from
   './components/unit-view/page-view/canvas/overlays/static-canvas-overlay.component';
@@ -67,7 +66,6 @@ import { ElementModelPropertiesComponent } from
     ToolbarComponent,
     UiElementToolboxComponent,
     UnitViewComponent,
-    PageViewComponent,
     CanvasComponent,
     StaticCanvasOverlayComponent,
     DynamicCanvasOverlayComponent,

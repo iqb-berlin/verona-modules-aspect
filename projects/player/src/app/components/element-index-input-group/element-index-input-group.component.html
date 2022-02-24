@@ -14,9 +14,10 @@
       [parentForm]="form"
       [elementModel]="elementModel | cast: ToggleButtonElement">
   </aspect-toggle-button>
-  <aspect-drop-list
-      *ngIf="elementModel.type === 'drop-list'"
+  <aspect-dropdown
+      *ngIf="elementModel.type === 'dropdown'"
       [parentForm]="form"
-      [elementModel]="elementModel | cast: DropListElement">
-  </aspect-drop-list>
+      [elementModel]="elementModel | cast: DropdownElement">
+  </aspect-dropdown>
+
 </form>

@@ -40,8 +40,8 @@ export class ElementSplitterComponent implements OnInit {
     //
     this.textInputGroup = ['text-field', 'text-area'].includes(type);
     this.mediaPlayerGroup = ['audio', 'video'].includes(type);
-    this.inputGroup = ['checkbox', 'spell-correct', 'slider', 'dropdown'].includes(type);
-    this.indexInputGroup = ['radio', 'radio-group-images', 'toggle-button', 'drop-list'].includes(type);
+    this.inputGroup = ['checkbox', 'spell-correct', 'slider', 'drop-list'].includes(type);
+    this.indexInputGroup = ['radio', 'radio-group-images', 'toggle-button', 'dropdown'].includes(type);
     this.compoundGroup = ['cloze', 'likert'].includes(type);
     this.textGroup = ['text'].includes(type);
     this.baseGroup = ['button', 'image', 'frame'].includes(type);

@@ -1,4 +1,3 @@
-<!--this.inputGroup = ['checkbox', 'spell-correct', 'slider', 'dropdown'].includes(type);&ndash;&gt;-->
 <form [formGroup]="form">
   <aspect-checkbox
       *ngIf="elementModel.type === 'checkbox'"
@@ -15,9 +14,9 @@
       [parentForm]="form"
       [elementModel]="elementModel | cast: SliderElement">
   </aspect-slider>
-  <aspect-dropdown
-      *ngIf="elementModel.type === 'dropdown'"
+  <aspect-drop-list
+      *ngIf="elementModel.type === 'drop-list'"
       [parentForm]="form"
-      [elementModel]="elementModel | cast: DropdownElement">
-  </aspect-dropdown>
+      [elementModel]="elementModel | cast: DropListElement">
+  </aspect-drop-list>
 </form>

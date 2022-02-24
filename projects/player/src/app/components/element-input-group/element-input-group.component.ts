@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  CheckboxElement, DropdownElement,
+  CheckboxElement, DropListElement,
   SliderElement,
   SpellCorrectElement,
   UIElement
@@ -17,7 +17,7 @@ export class ElementInputGroupComponent implements OnInit {
   CheckboxElement!: CheckboxElement;
   SpellCorrectElement!: SpellCorrectElement;
   SliderElement!: SliderElement;
-  DropdownElement!: DropdownElement;
+  DropListElement!: DropListElement;
 
   form!: FormGroup;
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  DropListElement,
+  DropdownElement,
   RadioButtonGroupComplexElement,
   RadioButtonGroupElement, ToggleButtonElement,
   UIElement
@@ -17,11 +17,9 @@ export class ElementIndexInputGroupComponent implements OnInit {
   RadioButtonGroupElement!: RadioButtonGroupElement;
   RadioButtonGroupComplexElement!: RadioButtonGroupComplexElement;
   ToggleButtonElement!: ToggleButtonElement;
-  DropListElement!: DropListElement;
-
+  DropdownElement!: DropdownElement;
 
   form!: FormGroup;
-
 
   constructor() { }
 

@@ -1,0 +1,23 @@
+<!--this.inputGroup = ['checkbox', 'spell-correct', 'slider', 'dropdown'].includes(type);&ndash;&gt;-->
+<form [formGroup]="form">
+  <aspect-checkbox
+      *ngIf="elementModel.type === 'checkbox'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: CheckboxElement">
+  </aspect-checkbox>
+  <aspect-spell-correct
+      *ngIf="elementModel.type === 'spell-correct'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: SpellCorrectElement">
+  </aspect-spell-correct>
+  <aspect-slider
+      *ngIf="elementModel.type === 'slider'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: SliderElement">
+  </aspect-slider>
+  <aspect-dropdown
+      *ngIf="elementModel.type === 'dropdown'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: DropdownElement">
+  </aspect-dropdown>
+</form>

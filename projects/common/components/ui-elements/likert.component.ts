@@ -1,5 +1,5 @@
 import {
-  Component, QueryList, ViewChildren
+  Component, Input, QueryList, ViewChildren
 } from '@angular/core';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
@@ -67,7 +67,7 @@ import { LikertElement, LikertRowElement } from '../../interfaces/elements';
 })
 export class LikertComponent extends CompoundElementComponent {
   @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;
-  elementModel!: LikertElement;
+  @Input() elementModel!: LikertElement;
 
   getFormElementModelChildren(): LikertRowElement[] {
     return this.elementModel.rows;

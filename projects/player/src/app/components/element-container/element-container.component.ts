@@ -98,13 +98,13 @@ export class ElementContainerComponent implements OnInit {
   }
 
   applySelectionToText(mode: 'mark' | 'delete', color: string): void {
-    TextMarker
-      .applySelection(
-        mode,
-        color,
-        this.elementComponent as TextComponent
-      );
-    this.isMarkingBarOpen = false;
+    // TextMarker
+    //   .applySelection(
+    //     mode,
+    //     color,
+    //     this.elementComponent as TextComponent
+    //   );
+    // this.isMarkingBarOpen = false;
   }
 
   private initElementComponent(): ElementComponent {
@@ -194,27 +194,27 @@ export class ElementContainerComponent implements OnInit {
   }
 
   private subscribeStartSelection(elementComponent: TextComponent): void {
-    if (elementComponent.startSelection) {
-      elementComponent.startSelection
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((pointerDown: MouseEvent | TouchEvent) => {
-          this.isMarkingBarOpen = false;
-
-          this.nativeEventService.pointerUp
-            .pipe(takeUntil(this.ngUnsubscribe), first())
-            .subscribe((pointerUp: TouchEvent | MouseEvent) => {
-              if (pointerUp.cancelable) {
-                pointerUp.preventDefault();
-              }
-              this.stopSelection(
-                this.getClientPointFromEvent(pointerUp),
-                pointerUp.ctrlKey,
-                this.getClientPointFromEvent(pointerDown),
-                elementComponent
-              );
-            });
-        });
-    }
+    // if (elementComponent.startSelection) {
+    //   elementComponent.startSelection
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((pointerDown: MouseEvent | TouchEvent) => {
+    //       this.isMarkingBarOpen = false;
+    //
+    //       this.nativeEventService.pointerUp
+    //         .pipe(takeUntil(this.ngUnsubscribe), first())
+    //         .subscribe((pointerUp: TouchEvent | MouseEvent) => {
+    //           if (pointerUp.cancelable) {
+    //             pointerUp.preventDefault();
+    //           }
+    //           this.stopSelection(
+    //             this.getClientPointFromEvent(pointerUp),
+    //             pointerUp.ctrlKey,
+    //             this.getClientPointFromEvent(pointerDown),
+    //             elementComponent
+    //           );
+    //         });
+    //     });
+    // }
   }
 
   private stopSelection(
@@ -223,17 +223,17 @@ export class ElementContainerComponent implements OnInit {
     downPosition: { clientX: number, clientY: number },
     elementComponent: TextComponent
   ) {
-    const selection = window.getSelection();
-    if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
-      if (!TextMarker.isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) ||
-        (ctrlKey)) {
-        selection.removeAllRanges();
-      } else if (this.selectedMode && this.selectedColor) {
-        this.applySelectionToText(this.selectedMode, this.selectedColor);
-      } else if (!this.isMarkingBarOpen) {
-        this.openMarkingBar(mouseUp, downPosition);
-      }
-    }
+  //   const selection = window.getSelection();
+  //   if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
+  //     if (!TextMarker.isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) ||
+  //       (ctrlKey)) {
+  //       selection.removeAllRanges();
+  //     } else if (this.selectedMode && this.selectedColor) {
+  //       this.applySelectionToText(this.selectedMode, this.selectedColor);
+  //     } else if (!this.isMarkingBarOpen) {
+  //       this.openMarkingBar(mouseUp, downPosition);
+  //     }
+  //   }
   }
 
   private getClientPointFromEvent = (event: MouseEvent | TouchEvent): { clientX: number, clientY: number } => ({
@@ -245,72 +245,72 @@ export class ElementContainerComponent implements OnInit {
     mouseUp: { clientX: number, clientY: number },
     downPosition: { clientX: number, clientY: number }
   ) {
-    this.markingBarPosition.left = downPosition.clientY > mouseUp.clientY ? downPosition.clientX : mouseUp.clientX;
-    this.markingBarPosition.top = downPosition.clientY > mouseUp.clientY ? downPosition.clientY : mouseUp.clientY;
-    this.textComponentContainerScrollTop =
-      this.elementComponent.domElement.closest('.fixed-size-content')?.scrollTop || 0;
-    this.textComponentRect = this.elementComponent.domElement.getBoundingClientRect();
-    this.isMarkingBarOpen = true;
-    this.nativeEventService.pointerDown
-      .pipe(takeUntil(this.ngUnsubscribe), first())
-      .subscribe(() => this.closeMarkingBar());
+  //   this.markingBarPosition.left = downPosition.clientY > mouseUp.clientY ? downPosition.clientX : mouseUp.clientX;
+  //   this.markingBarPosition.top = downPosition.clientY > mouseUp.clientY ? downPosition.clientY : mouseUp.clientY;
+  //   this.textComponentContainerScrollTop =
+  //     this.elementComponent.domElement.closest('.fixed-size-content')?.scrollTop || 0;
+  //   this.textComponentRect = this.elementComponent.domElement.getBoundingClientRect();
+  //   this.isMarkingBarOpen = true;
+  //   this.nativeEventService.pointerDown
+  //     .pipe(takeUntil(this.ngUnsubscribe), first())
+  //     .subscribe(() => this.closeMarkingBar());
   }
 
   private closeMarkingBar() {
-    this.isMarkingBarOpen = false;
+    // this.isMarkingBarOpen = false;
   }
 
   private subscribeApplySelection(elementComponent: TextComponent): void {
-    if (elementComponent.applySelection) {
-      elementComponent.applySelection
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((
-          selection: {
-            active: boolean,
-            mode: 'mark' | 'delete',
-            color: string;
-          }
-        ) => {
-          if (selection.active) {
-            this.selectedColor = selection.color;
-            this.selectedMode = selection.mode;
-            this.applySelectionToText(selection.mode, selection.color);
-          } else {
-            this.selectedColor = null;
-            this.selectedMode = null;
-          }
-        });
-    }
+    // if (elementComponent.applySelection) {
+    //   elementComponent.applySelection
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((
+    //       selection: {
+    //         active: boolean,
+    //         mode: 'mark' | 'delete',
+    //         color: string;
+    //       }
+    //     ) => {
+    //       if (selection.active) {
+    //         this.selectedColor = selection.color;
+    //         this.selectedMode = selection.mode;
+    //         this.applySelectionToText(selection.mode, selection.color);
+    //       } else {
+    //         this.selectedColor = null;
+    //         this.selectedMode = null;
+    //       }
+    //     });
+    // }
   }
 
   private subscribeMediaPlayStatusChanged(elementComponent: MediaPlayerElementComponent): void {
-    if (elementComponent.onMediaPlayStatusChanged) {
-      elementComponent.onMediaPlayStatusChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((playStatus: string | null) => {
-          this.mediaPlayerService.setActualPlayingMediaId(playStatus);
-        });
-    }
+    // if (elementComponent.onMediaPlayStatusChanged) {
+    //   elementComponent.onMediaPlayStatusChanged
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((playStatus: string | null) => {
+    //       this.mediaPlayerService.setActualPlayingMediaId(playStatus);
+    //     });
+    // }
   }
 
   private subscribeMediaValidStatusChanged(elementComponent: MediaPlayerElementComponent): void {
-    if (elementComponent.onMediaValidStatusChanged) {
-      elementComponent.onMediaValidStatusChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((validId: string) => {
-          this.mediaPlayerService.setValidStatusChanged(validId);
-        });
-    }
+    // if (elementComponent.onMediaValidStatusChanged) {
+    //   elementComponent.onMediaValidStatusChanged
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((validId: string) => {
+    //       this.mediaPlayerService.setValidStatusChanged(validId);
+    //     });
+    // }
   }
 
   private subscribeNavigationRequested(elementComponent: ButtonComponent): void {
-    if (elementComponent.navigationRequested) {
-      elementComponent.navigationRequested
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((target: 'previous' | 'next' | 'first' | 'last' | 'end') => {
-          this.veronaPostService.sendVopUnitNavigationRequestedNotification(target);
-        });
-    }
+    // if (elementComponent.navigationRequested) {
+    //   elementComponent.navigationRequested
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((target: 'previous' | 'next' | 'first' | 'last' | 'end') => {
+    //       this.veronaPostService.sendVopUnitNavigationRequestedNotification(target);
+    //     });
+    // }
   }
 
   private subscribeElementValueChanged(
@@ -340,23 +340,23 @@ export class ElementContainerComponent implements OnInit {
   }
 
   private subscribeForKeyboardEvents(elementComponent: TextFieldComponent | TextAreaComponent): void {
-    if (elementComponent.onFocusChanged) {
-      elementComponent.onFocusChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((focussedElement: HTMLElement | null): void => {
-          if (focussedElement) {
-            const focussedInputElement = this.elementModel.type === 'text-area' ?
-              focussedElement as HTMLTextAreaElement :
-              focussedElement as HTMLInputElement;
-            const preset = (this.elementModel as TextFieldElement).inputAssistancePreset;
-            const position = (this.elementModel as TextFieldElement).inputAssistancePosition;
-            this.isKeyboardOpen = this.keyboardService
-              .openKeyboard(focussedInputElement, preset, position, elementComponent);
-          } else {
-            this.isKeyboardOpen = this.keyboardService.closeKeyboard();
-          }
-        });
-    }
+    // if (elementComponent.onFocusChanged) {
+    //   elementComponent.onFocusChanged
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((focussedElement: HTMLElement | null): void => {
+    //       if (focussedElement) {
+    //         const focussedInputElement = this.elementModel.type === 'text-area' ?
+    //           focussedElement as HTMLTextAreaElement :
+    //           focussedElement as HTMLInputElement;
+    //         const preset = (this.elementModel as TextFieldElement).inputAssistancePreset;
+    //         const position = (this.elementModel as TextFieldElement).inputAssistancePosition;
+    //         this.isKeyboardOpen = this.keyboardService
+    //           .openKeyboard(focussedInputElement, preset, position, elementComponent);
+    //       } else {
+    //         this.isKeyboardOpen = this.keyboardService.closeKeyboard();
+    //       }
+    //     });
+    // }
   }
 
   private registerFormGroup(elementForm: FormGroup): void {

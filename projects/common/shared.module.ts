@@ -128,7 +128,23 @@ import { CompoundChildOverlayComponent } from './components/compound-child-overl
     ToggleButtonComponent,
     TextFieldComponent,
     DropListSimpleComponent,
-    TextFieldSimpleComponent
+    TextFieldSimpleComponent,
+    TextAreaComponent,
+    AudioComponent,
+    VideoComponent,
+    TextComponent,
+    CheckboxComponent,
+    SpellCorrectComponent,
+    SliderComponent,
+    DropdownComponent,
+    RadioButtonGroupComponent,
+    RadioGroupImagesComponent,
+    DropListComponent,
+    ClozeComponent,
+    LikertComponent,
+    ButtonComponent,
+    FrameComponent,
+    ImageComponent
   ]
 })
 export class SharedModule {

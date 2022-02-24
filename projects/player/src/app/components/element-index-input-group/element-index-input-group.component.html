@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <aspect-radio-button-group
+      *ngIf="elementModel.type === 'radio'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: RadioButtonGroupElement">
+  </aspect-radio-button-group>
+  <aspect-radio-group-images
+      *ngIf="elementModel.type === 'radio-group-images'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: RadioButtonGroupComplexElement">
+  </aspect-radio-group-images>
+  <aspect-toggle-button
+      *ngIf="elementModel.type === 'toggle-button'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: ToggleButtonElement">
+  </aspect-toggle-button>
+  <aspect-drop-list
+      *ngIf="elementModel.type === 'drop-list'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: DropListElement">
+  </aspect-drop-list>
+</form>

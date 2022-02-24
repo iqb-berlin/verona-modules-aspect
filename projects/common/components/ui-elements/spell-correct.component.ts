@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { SpellCorrectElement } from '../../interfaces/elements';
@@ -59,7 +59,6 @@ import { SpellCorrectElement } from '../../interfaces/elements';
   ]
 })
 export class SpellCorrectComponent extends FormElementComponent {
-  elementModel!: SpellCorrectElement;
-
+  @Input() elementModel!: SpellCorrectElement;
   @ViewChild(MatInput) inputElement!: MatInput;
 }

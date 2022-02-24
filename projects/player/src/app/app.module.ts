@@ -24,6 +24,15 @@ import { FrenchKeyboardComponent } from './components/french-keyboard/french-key
 import { MathKeyboardComponent } from './components/math-keyboard/math-keyboard.component';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
 import { FloatingKeyboardComponent } from './components/floating-keyboard/floating-keyboard.component';
+import { ElementSplitterComponent } from './components/element-splitter/element-splitter.component';
+import { ElementInputGroupComponent } from './components/element-input-group/element-input-group.component';
+import { ElementMediaPlayerGroupComponent } from './components/element-media-player-group/element-media-player-group.component';
+import { ElementIndexInputGroupComponent } from './components/element-index-input-group/element-index-input-group.component';
+import { ElementTextInputGroupComponent } from './components/element-text-input-group/element-text-input-group.component';
+import { ElementCompoundGroupComponent } from './components/element-compound-group/element-compound-group.component';
+import { CastPipe } from './pipes/cast.pipe';
+import { ElementTextGroupComponent } from './components/element-text-group/element-text-group.component';
+import { ElementBaseGroupComponent } from './components/element-base-group/element-base-group.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +52,16 @@ import { FloatingKeyboardComponent } from './components/floating-keyboard/floati
     FrenchKeyboardComponent,
     MathKeyboardComponent,
     FloatingMarkingBarComponent,
-    FloatingKeyboardComponent
+    FloatingKeyboardComponent,
+    ElementSplitterComponent,
+    ElementInputGroupComponent,
+    ElementMediaPlayerGroupComponent,
+    ElementIndexInputGroupComponent,
+    ElementTextInputGroupComponent,
+    ElementCompoundGroupComponent,
+    CastPipe,
+    ElementTextGroupComponent,
+    ElementBaseGroupComponent
   ],
   imports: [
     BrowserModule,

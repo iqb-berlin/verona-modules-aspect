@@ -1,0 +1,32 @@
+<div class="element-container" cdkOverlayOrigin #overlayOrigin="cdkOverlayOrigin">
+  <form [formGroup]="form">
+    <aspect-text-area
+        *ngIf="elementModel.type === 'text-area'"
+        #elementComponent
+        [parentForm]="form"
+        [elementModel]="elementModel | cast: TextAreaElement"
+        (onFocusChanged)="onFocusChanged($event, elementComponent)">
+    </aspect-text-area>
+    <aspect-text-field
+        *ngIf="elementModel.type === 'text-field'"
+        #elementComponent
+        [parentForm]="form"
+        [elementModel]="elementModel | cast: TextFieldElement"
+        (onFocusChanged)="onFocusChanged($event, elementComponent)">
+    </aspect-text-field>
+  </form>
+</div>
+
+<aspect-floating-keyboard
+    *ngIf="keyboardService.preset !== 'none' &&
+    (elementModel.type === 'text-area' || elementModel.type === 'text-field')"
+    [isKeyboardOpen]="isKeyboardOpen && keyboardService.position === 'floating'"
+    [overlayOrigin]="overlayOrigin"
+    [inputElement]="keyboardService.inputElement"
+    [position]="keyboardService.position"
+    [preset]="keyboardService.preset"
+    [positionOffset]="elementModel.type === 'text-field' ? 20 : 0"
+    (deleteCharacter)="keyboardService.deleterCharacters()"
+    (enterKey)="keyboardService.enterKey($event)">
+</aspect-floating-keyboard>
+

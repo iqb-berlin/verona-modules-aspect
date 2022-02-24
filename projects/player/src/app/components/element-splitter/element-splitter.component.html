@@ -1,0 +1,37 @@
+<div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+         'fixed-size-content-wrapper' : 'element-container'">
+  <div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+            'fixed-size-content' : 'element-container'"
+       [style.width]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+                      elementModel.width + 'px' : '100%'"
+       [style.height]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+                      elementModel.height + 'px' : '100%'">
+
+    <aspect-element-text-input-group *ngIf="textInputGroup" [elementModel]="elementModel">
+    </aspect-element-text-input-group>
+    <aspect-element-media-player-group *ngIf="mediaPlayerGroup" [elementModel]="elementModel">
+    </aspect-element-media-player-group>
+    <aspect-element-input-group *ngIf="inputGroup" [elementModel]="elementModel">
+    </aspect-element-input-group>
+    <aspect-element-index-input-group *ngIf="indexInputGroup" [elementModel]="elementModel">
+    </aspect-element-index-input-group>
+    <aspect-element-compound-group *ngIf="indexInputGroup" [elementModel]="elementModel">
+    </aspect-element-compound-group>
+    <aspect-element-text-group *ngIf="textGroup" [elementModel]="elementModel">
+    </aspect-element-text-group>
+    <aspect-element-base-group *ngIf="textGroup" [elementModel]="elementModel">
+    </aspect-element-base-group>
+
+
+<!--    this.textInputGroup = ['text-field', 'text-area'].includes(type);-->
+<!--    this.mediaPlayerGroup = ['audio', 'video'].includes(type);-->
+<!--    this.inputGroup = ['checkbox', 'spell-correct', 'slider', 'dropdown'].includes(type);-->
+<!--    this.indexInputGroup = ['radio', 'radio-group-images', 'toggle-button', 'drop-list'].includes(type);-->
+<!--    this.compoundGroup = ['cloze', 'likert'].includes(type);-->
+<!--    this.textGroup = ['text'].includes(type);-->
+<!--    this.baseGroup = ['button', 'image', 'frame'].includes(type);-->
+
+
+  </div>
+</div>
+

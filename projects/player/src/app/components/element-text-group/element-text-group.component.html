@@ -1,0 +1,19 @@
+<div class="element-container" cdkOverlayOrigin #overlayOrigin="cdkOverlayOrigin">
+  <aspect-text
+      #elementComponent
+      [elementModel]="elementModel | cast: TextElement"
+      (applySelection)="applySelection($event, elementComponent)"
+      (startSelection)="startSelection($event, elementComponent)">
+  </aspect-text>
+</div>
+
+<aspect-floating-marking-bar
+    *ngIf="elementModel.type === 'text'"
+    [elementComponent]="elementComponent"
+    [overlayOrigin]="overlayOrigin"
+    [isMarkingBarOpen]="isMarkingBarOpen"
+    [textComponentRect]="textComponentRect"
+    [textComponentContainerScrollTop]="textComponentContainerScrollTop"
+    [position]="markingBarPosition"
+    (applySelection)="applySelectionToText($event.mode, $event.color, elementComponent)">
+</aspect-floating-marking-bar>

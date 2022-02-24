@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <aspect-cloze
+      *ngIf="elementModel.type === 'cloze'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: ClozeElement">
+  </aspect-cloze>
+  <aspect-likert
+      *ngIf="elementModel.type === 'likert'"
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: LikertElement">
+  </aspect-likert>
+</form>

@@ -2,18 +2,15 @@
 
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">
-    <aspect-element-container
+    <aspect-element-splitter
         class="static-element fixed-size-content"
         [style.width.px]="element.width"
         [style.height.px]="element.height"
         [style.left.px]="element.positionProps.xPosition"
         [style.top.px]="element.positionProps.yPosition"
         [style.z-index]="element.positionProps?.zIndex"
-        [elementModel]="element"
-        [parentForm]="sectionForm"
-        [pageIndex]="pageIndex"
-        [parentArrayIndex]="i">
-    </aspect-element-container>
+        [elementModel]="element">
+    </aspect-element-splitter>
   </ng-container>
 </ng-template>
 
@@ -26,7 +23,7 @@
       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
       [style.backgroundColor]="section.backgroundColor">
     <ng-container *ngFor="let element of section.elements; let i = index">
-      <aspect-element-container
+      <aspect-element-splitter
           [style.min-width.px]="element.width"
           [style.min-height.px]="element.positionProps.useMinHeight ? element.height : 0"
           [style.margin-left.px]="element.positionProps.marginLeft"
@@ -38,11 +35,8 @@
           [style.grid-row-start]="element.positionProps.gridRowStart"
           [style.grid-row-end]="element.positionProps.gridRowEnd"
           [style.z-index]="element.positionProps?.zIndex"
-          [elementModel]="element"
-          [parentForm]="sectionForm"
-          [pageIndex]="pageIndex"
-          [parentArrayIndex]="i">
-      </aspect-element-container>
+          [elementModel]="element">
+      </aspect-element-splitter>
     </ng-container>
   </div>
 </ng-template>

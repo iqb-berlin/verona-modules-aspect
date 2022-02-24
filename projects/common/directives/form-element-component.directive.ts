@@ -19,7 +19,9 @@ export abstract class FormElementComponent extends ElementComponent implements O
   private ngUnsubscribe = new Subject<void>();
 
   ngOnInit(): void {
-    this.elementFormControl = this.formControl;
+    console.log(this.elementModel);
+    this.elementFormControl = new FormControl({}); //this.formControl;
+    console.log(this.elementFormControl);
     this.elementFormControl?.setValue((this.elementModel as InputElement).value, { emitEvent: false });
     this.setFormControlValidator();
     this.elementFormControl.valueChanges
@@ -43,6 +45,9 @@ export abstract class FormElementComponent extends ElementComponent implements O
 
   private get formControl(): FormControl {
     // workaround for editor
+    console.log(this.parentForm);
+
+
     return (this.parentForm) ?
       this.parentForm.controls[this.elementModel.id] as FormControl :
       new FormControl({});

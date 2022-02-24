@@ -18,10 +18,10 @@ import { UnitDefinitionSanitizer } from '../../../common/util/unit-definition-sa
 @Component({
   selector: 'aspect-player',
   template: `
-      <aspect-unit-state *ngIf="playerConfig && pages?.length"
+      <aspect-player-state *ngIf="playerConfig && pages?.length"
                          [pages]="pages"
                          [playerConfig]="playerConfig">
-      </aspect-unit-state>
+      </aspect-player-state>
   `
 })
 export class AppComponent implements OnInit {
@@ -61,6 +61,7 @@ export class AppComponent implements OnInit {
       console.log('player: onStart', message);
       if (message.unitDefinition) {
         const unitDefinition: Unit = UnitDefinitionSanitizer.sanitize(JSON.parse(message.unitDefinition));
+        console.log('unitDefinition', unitDefinition);
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
         if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.unitDefinitionType)) {
           this.playerConfig = message.playerConfig || {};

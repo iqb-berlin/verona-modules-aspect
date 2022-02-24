@@ -145,7 +145,7 @@ export abstract class ElementFactory {
       progressBar: defaults.progressBar || true,
       interactiveProgressbar: defaults.interactiveProgressbar || undefined,
       volumeControl: defaults.volumeControl || true,
-      defaultVolume: defaults.defaultVolume || 8,
+      defaultVolume: defaults.defaultVolume || 0.8,
       minVolume: defaults.minVolume || 0,
       muteControl: defaults.muteControl || true,
       interactiveMuteControl: defaults.interactiveMuteControl || undefined,

@@ -40,7 +40,6 @@
           {{'alwaysVisiblePage' | translate}}
         </div>
         <aspect-page [parentArrayIndex]="alwaysVisibleUnitPageIndex"
-                     [parentForm]="parentForm"
                      [isLastPage]="false"
                      [pagesContainer]="alwaysVisiblePageContainer"
                      [page]="alwaysVisiblePage">
@@ -83,7 +82,6 @@
              [style.padding.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
           <aspect-page [parentArrayIndex]="scrollPagesIndices[i]"
-                       [parentForm]="parentForm"
                        [isLastPage]="last"
                        [pagesContainer]="pagesContainer"
                        [page]="page">
@@ -110,7 +108,6 @@
         {{'pageIndication' | translate: {index: i + 1} }}
       </div>
       <aspect-page [parentArrayIndex]="scrollPagesIndices[i]"
-                   [parentForm]="parentForm"
                    [pagesContainer]="pagesContainer"
                    [page]="page"
                    [isLastPage]="last"

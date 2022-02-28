@@ -108,7 +108,6 @@ export class UnitStateService {
       unitStateElementCode.value = value;
       this._unitStateElementCodeChanged.next(unitStateElementCode);
     }
-    console.log(this.unitStateElementCodes);
   }
 
   private setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus): void {

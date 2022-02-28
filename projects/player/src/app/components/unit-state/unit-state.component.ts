@@ -7,7 +7,6 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { FormService } from '../../services/form.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import { VeronaPostService } from '../../services/verona-post.service';
 import { MessageService } from '../../../../../common/services/message.service';
@@ -36,7 +35,6 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private formBuilder: FormBuilder,
-              private formService: FormService,
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
               private veronaSubscriptionService: VeronaSubscriptionService,
@@ -55,15 +53,15 @@ export class UnitStateComponent implements OnInit, OnDestroy {
   }
 
   private initSubscriptions(): void {
-    this.formService.groupAdded
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((group: ChildFormGroup): void => this.addGroup(group));
-    this.formService.controlAdded
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((control: FormControlElement): void => this.addControl(control));
-    this.formService.validatorsAdded
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
+    // this.formService.groupAdded
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((group: ChildFormGroup): void => this.addGroup(group));
+    // this.formService.controlAdded
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((control: FormControlElement): void => this.addControl(control));
+    // this.formService.validatorsAdded
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((validations: FormControlValidators): void => this.setValidators(validations));
     this.mediaPlayerService.mediaStatusChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => this.onMediaStatusChanged());

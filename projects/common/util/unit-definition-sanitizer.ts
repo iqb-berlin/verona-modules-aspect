@@ -1,13 +1,17 @@
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import { Unit } from '../interfaces/unit';
-import { DragNDropValueObject, DropListElement, UIElement } from '../interfaces/elements';
+import { Page, Unit } from '../interfaces/unit';
+import {
+  DragNDropValueObject, DropListElement, PlayerElement, UIElement, UIElementValue
+} from '../interfaces/elements';
 import ToggleButtonExtension from '../tiptap-editor-extensions/toggle-button';
 import DropListExtension from '../tiptap-editor-extensions/drop-list';
 import TextFieldExtension from '../tiptap-editor-extensions/text-field';
 import { IdService } from '../../editor/src/app/services/id.service';
 
 export abstract class UnitDefinitionSanitizer {
+  private static unitVersion: [number, number, number] = [0, 0, 0];
+
   static campatibilityHandlers: { (s: UIElement[]): void; }[] = [
     UnitDefinitionSanitizer.handlePositionProps,
     UnitDefinitionSanitizer.handleFontProps,
@@ -15,13 +19,18 @@ export abstract class UnitDefinitionSanitizer {
     UnitDefinitionSanitizer.handlePlayerProps,
     UnitDefinitionSanitizer.handleTextElements,
     UnitDefinitionSanitizer.handleClozeElements,
-    UnitDefinitionSanitizer.handleDropListElements
+    UnitDefinitionSanitizer.handleDropListElements,
+    UnitDefinitionSanitizer.handlePlusOne
   ];
 
-  static sanitize(unitDefinition: Unit): Unit {
-    const elementList = UnitDefinitionSanitizer.getElementList(unitDefinition);
+  static sanitize(unitDefinition: Partial<Unit> & { pages: Page[], veronaModuleVersion?: string }): Unit {
+    UnitDefinitionSanitizer.unitVersion = unitDefinition.unitDefinitionType?.split('.')
+      .map(el => Number(el)) as [number, number, number] ||
+      unitDefinition.veronaModuleVersion?.split('.')
+        .map(el => Number(el)) as [number, number, number];
+    const elementList = UnitDefinitionSanitizer.getElementList(unitDefinition as Unit);
     UnitDefinitionSanitizer.campatibilityHandlers.forEach(handler => handler(elementList));
-    return unitDefinition;
+    return unitDefinition as Unit;
   }
 
   private static getElementList(unitDefinition: Unit): UIElement[] {
@@ -29,20 +38,25 @@ export abstract class UnitDefinitionSanitizer {
   }
 
   private static handlePositionProps(elementList: UIElement[]): void {
-    const positionProps = ['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition',
+    const positionProps = ['xPosition', 'yPosition',
       'useMinHeight', 'gridColumnStart', 'gridColumnEnd', 'gridRowStart', 'gridRowEnd', 'marginLeft',
-      'marginRight', 'marginTop', 'marginBottom', 'zIndex'];
+      'marginRight', 'marginTop', 'marginBottom', 'zIndex', 'fixedSize', 'dynamicPositioning'];
     UnitDefinitionSanitizer.movePropertiesToSubObject(elementList, 'positionProps', positionProps);
   }
 
   private static handleFontProps(elementList: UIElement[]): void {
     const fontProps = ['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline'];
-    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList, 'fontProps', fontProps);
+    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList,
+      'styles',
+      fontProps,
+      'fontProps');
   }
 
   private static handleSurfaceProps(elementList: UIElement[]): void {
-    const surfaceProps = ['backgroundColor'];
-    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList, 'surfaceProps', surfaceProps);
+    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList,
+      'styles',
+      ['backgroundColor'],
+      'surfaceProps');
   }
 
   private static handlePlayerProps(elementList: UIElement[]): void {
@@ -50,22 +64,41 @@ export abstract class UnitDefinitionSanitizer {
       'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
       'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
       'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'];
-    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList, 'playerProps', playerProps);
+    const filteredElementList: PlayerElement[] =
+      elementList.filter(element => ['audio', 'video'].includes(element.type)) as PlayerElement[];
+    UnitDefinitionSanitizer.movePropertiesToSubObject(filteredElementList,'playerProps', playerProps);
+    filteredElementList.forEach((element: PlayerElement) => {
+      element.playerProps.defaultVolume = element.playerProps.defaultVolume || 0.8;
+      element.playerProps.minVolume = element.playerProps.minVolume || 0;
+    });
   }
 
-  /* Use the first prop as indicator for existence of all. */
   private static movePropertiesToSubObject(elementList: UIElement[],
-                                           propertyName: string,
-                                           propertyList: string[]): void {
+                                           targetPropertyGroup: string,
+                                           propertyList: string[],
+                                           alternativeSourceGroup?: string): void {
     elementList.forEach((element: UIElement) => {
-      if (element[propertyList[0]] !== undefined) {
-        if (!element[propertyName]) {
-          element[propertyName] = {};
-          Object.keys(propertyList).forEach(prop => {
-            (element[propertyName] as Record<string, unknown>)[prop] = element[prop];
-            delete element[prop];
-          });
-        }
+      let actualValues: Record<string, UIElementValue> = {};
+      if (element[targetPropertyGroup]) {
+        actualValues = element[targetPropertyGroup] as Record<string, UIElementValue>;
+      } else if (alternativeSourceGroup && alternativeSourceGroup in element) {
+        actualValues = element[alternativeSourceGroup] as Record<string, UIElementValue>;
+        delete element[alternativeSourceGroup];
+      } else {
+        actualValues = Object.keys(element)
+          .filter(key => propertyList.includes(key))
+          .reduce((obj, key) => {
+            (obj as any)[key] = element[key];
+            return obj;
+          }, {});
+      }
+
+      // delete old values
+      if (alternativeSourceGroup) delete element[alternativeSourceGroup];
+      propertyList.forEach(prop => delete element[prop]);
+
+      if (Object.keys(actualValues).length > 0) {
+        (element[targetPropertyGroup] as Record<string, UIElementValue>) = actualValues;
       }
     });
   }
@@ -150,5 +183,17 @@ export abstract class UnitDefinitionSanitizer {
     });
   }
 
-  // TODO dropdown + 1
+  // version 1.1.0 is the only version where there was a plus one for values, which we rolled back afterwards
+  private static handlePlusOne(elementList: UIElement[]): void {
+    if (UnitDefinitionSanitizer.unitVersion === [1, 1, 0]) {
+      elementList.filter(el => (
+        ['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button'].includes(el.type)
+      ))
+        .forEach(element => {
+          if (element.value && element.value > 0) {
+            (element.value as number) -= 1;
+          }
+        });
+    }
+  }
 }

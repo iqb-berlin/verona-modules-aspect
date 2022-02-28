@@ -17,7 +17,7 @@ import { TextFieldSimpleElement } from '../../interfaces/elements';
            [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
            [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
-           value="{{elementModel.value}}">
+           [value]="elementModel.value">
   `,
   styles: [
     'input {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}'

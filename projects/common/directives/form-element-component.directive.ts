@@ -8,8 +8,8 @@ export abstract class FormElementComponent extends ElementComponent implements O
   elementFormControl!: FormControl;
 
   ngOnInit(): void {
-    this.elementFormControl = (this.parentForm) ?
+    this.elementFormControl = this.parentForm ?
       this.parentForm.controls[this.elementModel.id] as FormControl :
-      new FormControl({});
+      new FormControl(this.elementModel.value);
   }
 }

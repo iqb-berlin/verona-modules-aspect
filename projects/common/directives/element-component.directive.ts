@@ -16,6 +16,6 @@ export abstract class ElementComponent implements AfterContentChecked {
   }
 
   ngAfterContentChecked(): void {
-    this.project = this.elementRef.nativeElement.closest('aspect-element-container') ? 'player' : 'editor';
+    this.project = this.elementRef.nativeElement.closest('aspect-element-splitter') ? 'player' : 'editor';
   }
 }

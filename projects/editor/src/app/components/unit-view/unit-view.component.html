@@ -15,7 +15,7 @@
                      [style.height.%]="100" mat-align-tabs="start"
                      [selectedIndex]="selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)">
-        <mat-tab *ngFor="let page of unit.pages; let i = index">
+        <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
           <ng-template mat-tab-label>
             <ng-container *ngIf="page.alwaysVisible">
             <mat-icon class="page-alwaysVisible-icon">assignment</mat-icon>

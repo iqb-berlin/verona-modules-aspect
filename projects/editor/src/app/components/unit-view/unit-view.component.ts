@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../services/unit.service';
@@ -14,7 +14,7 @@ import { UnitFactory } from '../../../../../common/util/unit.factory';
   templateUrl: './unit-view.component.html',
   styleUrls: ['./unit-view.component.css']
 })
-export class UnitViewComponent implements OnInit, OnDestroy {
+export class UnitViewComponent implements OnDestroy {
   unit!: Unit;
   selectedPageIndex: number = 0;
   pagesLoaded = true;
@@ -25,10 +25,6 @@ export class UnitViewComponent implements OnInit, OnDestroy {
               private dialogService: DialogService,
               private messageService: MessageService) { }
 
-  ngOnInit(): void {
-    this.unit = this.unitService.unit;
-  }
-
   selectPage(newIndex: number): void {
     this.selectedPageIndex = newIndex;
     this.selectionService.selectedPageIndex = this.selectedPageIndex;
@@ -36,7 +32,7 @@ export class UnitViewComponent implements OnInit, OnDestroy {
   }
 
   addPage(): void {
-    this.unit.pages.push(UnitFactory.generateEmptyPage());
+    this.unitService.unit.pages.push(UnitFactory.generateEmptyPage());
 
     this.selectedPageIndex = this.unitService.unit.pages.length - 1;
     this.selectionService.selectedPageIndex = this.selectedPageIndex;

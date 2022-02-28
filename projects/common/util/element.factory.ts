@@ -86,7 +86,7 @@ export abstract class ElementFactory {
   static initElement(elementType: string, defaults: Record<string, number>): UIElement {
     return {
       type: elementType as UIElementType,
-      id: String(defaults.id) || 'id_placeholder',
+      id: defaults.id ? String(defaults.id) : 'id_placeholder',
       width: defaults.width || 190,
       height: defaults.height || 60,
       styles: {}

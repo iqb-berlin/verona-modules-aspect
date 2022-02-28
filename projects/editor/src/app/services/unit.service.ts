@@ -13,7 +13,6 @@ import { ClozeParser } from '../util/cloze-parser';
 import { Copy } from '../../../../common/util/copy';
 import { UnitFactory } from '../../../../common/util/unit.factory';
 import { Page, Section, Unit } from '../../../../common/interfaces/unit';
-//import { moveArrayItem } from '../../../../common/util/array';
 import {
   ClozeElement, DragNDropValueObject,
   DropListElement, InputElement, InputElementValue, LikertElement,
@@ -49,11 +48,10 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
     this.unit = UnitDefinitionSanitizer.sanitize(JSON.parse(unitDefinition));
-    this.readIDs(this.unit);
+    UnitService.readIDs(this.unit);
   }
 
-  private readIDs(unit: Unit): void {
-    // console.log('READ:', UnitUtils.findUIElements(unit, 'drop-list'));
+  private static readIDs(unit: Unit): void {
     UnitUtils.findUIElements(unit).forEach(element => {
       IdService.getInstance().addID(element.id);
     });
@@ -261,7 +259,6 @@ export class UnitService {
         'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'].includes(property)) {
         element.playerProps![property] = Copy.getCopy(value);
       } else {
-        // TODO playerProps behandeln
         element[property] = Copy.getCopy(value);
       }
     });

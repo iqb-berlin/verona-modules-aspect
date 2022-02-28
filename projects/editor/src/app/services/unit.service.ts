@@ -255,7 +255,13 @@ export class UnitService {
         'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor',
         'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
         element.styles![property] = Copy.getCopy(value);
+      } else if (['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',
+        'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
+        'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
+        'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'].includes(property)) {
+        element.playerProps![property] = Copy.getCopy(value);
       } else {
+        // TODO playerProps behandeln
         element[property] = Copy.getCopy(value);
       }
     });

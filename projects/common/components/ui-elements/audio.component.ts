@@ -16,6 +16,7 @@ import { AudioElement } from '../../interfaces/elements';
       <aspect-control-bar [player]="player"
                           [project]="project"
                           [id]="elementModel.id"
+                          [savedPlaybackTime]="savedPlaybackTime"
                           [playerProperties]="elementModel.playerProps"
                           [active]="active"
                           [dependencyDissolved]="dependencyDissolved"

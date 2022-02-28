@@ -29,7 +29,7 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
            [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
            [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-           [innerHTML]="elementModel.text | safeResourceHTML"
+           [innerHTML]="savedText || elementModel.text | safeResourceHTML"
            (touchstart)="emitStartSelection($event)"
            (mousedown)="emitStartSelection($event)">
       </div>
@@ -52,6 +52,7 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
 })
 export class TextComponent extends ElementComponent {
   @Input() elementModel!: TextElement;
+  @Input() savedText!: string;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() startSelection = new EventEmitter<MouseEvent | TouchEvent>();
   @Output() applySelection = new EventEmitter<{

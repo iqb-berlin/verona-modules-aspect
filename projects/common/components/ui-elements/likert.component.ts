@@ -52,8 +52,7 @@ import { LikertElement, LikertRowElement } from '../../interfaces/elements';
               [style.padding.px]="3"
               [elementModel]="row"
               [firstColumnSizeRatio]="elementModel.firstColumnSizeRatio"
-              [parentForm]="parentForm"
-              (elementValueChanged)="elementValueChanged.emit($event)">
+              [parentForm]="parentForm">
           </aspect-likert-radio-button-group>
         </ng-container>
       </div>

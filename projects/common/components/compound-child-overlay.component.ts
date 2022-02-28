@@ -22,22 +22,20 @@ import {
                          [style.display]="'inline-block'"
                          [style.vertical-align]="'middle'"
                          [elementModel]="$any(element)"
-                         (elementValueChanged)="elementValueChanged.emit($event)">
+      >
       </aspect-toggle-button>
       <aspect-text-field-simple *ngIf="element.type === 'text-field'" #childComponent
                              [style.pointer-events]="editorMode ? 'none' : 'auto'"
                              [parentForm]="parentForm"
                              [style.display]="'inline-block'"
-                             [elementModel]="$any(element)"
-                             (elementValueChanged)="elementValueChanged.emit($event)">
+                             [elementModel]="$any(element)">
       </aspect-text-field-simple>
       <aspect-drop-list-simple *ngIf="element.type === 'drop-list'" #childComponent
                             [style.pointer-events]="editorMode ? 'none' : 'auto'"
                             [parentForm]="parentForm"
                             [style.display]="'inline-block'"
                             [style.vertical-align]="'middle'"
-                            [elementModel]="$any(element)"
-                            (elementValueChanged)="elementValueChanged.emit($event)">
+                            [elementModel]="$any(element)">
       </aspect-drop-list-simple>
     </div>
   `

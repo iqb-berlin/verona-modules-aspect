@@ -156,8 +156,7 @@ import { ClozeUtils } from '../../util/cloze';
                                          [parentForm]="parentForm"
                                          [element]="$any(subPart).attrs.model"
                                          [editorMode]="editorMode"
-                                         (elementSelected)="childElementSelected.emit($event)"
-                                         (elementValueChanged)="elementValueChanged.emit($event)">
+                                         (elementSelected)="childElementSelected.emit($event)">
           </aspect-compound-child-overlay>
         </span>
       </ng-container>

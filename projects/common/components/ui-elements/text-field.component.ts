@@ -1,7 +1,6 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ValidatorFn, Validators } from '@angular/forms';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { TextFieldElement } from '../../interfaces/elements';
 
@@ -23,7 +22,7 @@ import { TextFieldElement } from '../../interfaces/elements';
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
-             [value]="elementModel.value"
+             value="{{elementModel.value}}"
              [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
@@ -75,21 +74,4 @@ import { TextFieldElement } from '../../interfaces/elements';
 export class TextFieldComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldElement;
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
-
-  get validators(): ValidatorFn[] {
-    const validators: ValidatorFn[] = [];
-    if (this.elementModel.required) {
-      validators.push(Validators.required);
-    }
-    if (this.elementModel.minLength) {
-      validators.push(Validators.minLength(<number> this.elementModel.minLength));
-    }
-    if (this.elementModel.maxLength) {
-      validators.push(Validators.maxLength(<number> this.elementModel.maxLength));
-    }
-    if (this.elementModel.pattern) {
-      validators.push(Validators.pattern(<string> this.elementModel.pattern));
-    }
-    return validators;
-  }
 }

@@ -1,12 +1,16 @@
 <form [formGroup]="form">
   <aspect-cloze
       *ngIf="elementModel.type === 'cloze'"
+      #elementComponent
       [parentForm]="form"
-      [elementModel]="elementModel | cast: ClozeElement">
+      [elementModel]="elementModel | cast: ClozeElement"
+      (childrenAdded)="onChildrenAdded($event)">
   </aspect-cloze>
   <aspect-likert
       *ngIf="elementModel.type === 'likert'"
+      #elementComponent
       [parentForm]="form"
-      [elementModel]="elementModel | cast: LikertElement">
+      [elementModel]="elementModel | cast: LikertElement"
+      (childrenAdded)="onChildrenAdded($event)">
   </aspect-likert>
 </form>

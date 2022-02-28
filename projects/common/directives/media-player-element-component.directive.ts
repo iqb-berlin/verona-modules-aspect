@@ -1,9 +1,12 @@
-import { Directive, EventEmitter, Output } from '@angular/core';
+import {
+  Directive, EventEmitter, Input, Output
+} from '@angular/core';
 import { ElementComponent } from './element-component.directive';
 import { ValueChangeElement } from '../interfaces/elements';
 
 @Directive()
 export abstract class MediaPlayerElementComponent extends ElementComponent {
+  @Input() savedPlaybackTime!: number;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() onMediaPlayStatusChanged = new EventEmitter<string | null>();
   @Output() onMediaValidStatusChanged = new EventEmitter<string>();

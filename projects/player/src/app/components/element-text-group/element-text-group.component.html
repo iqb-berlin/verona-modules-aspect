@@ -2,8 +2,10 @@
   <aspect-text
       #elementComponent
       [elementModel]="elementModel | cast: TextElement"
+      [savedText]="initialValue"
       (applySelection)="applySelection($event, elementComponent)"
-      (startSelection)="startSelection($event, elementComponent)">
+      (startSelection)="startSelection($event, elementComponent)"
+      (elementValueChanged)="unitStateService.changeElementValue($event)">
   </aspect-text>
 </div>
 

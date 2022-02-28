@@ -11,7 +11,6 @@ import { InputElement, ValueChangeElement } from '../interfaces/elements';
 @Directive()
 export abstract class CompoundElementComponent extends ElementComponent implements AfterViewInit {
   @Output() childrenAdded = new EventEmitter<ElementComponent[]>();
-  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Input() parentForm!: FormGroup;
   compoundChildren!: QueryList<CompoundChildOverlayComponent | LikertRadioButtonGroupComponent>;
 

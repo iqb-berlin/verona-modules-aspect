@@ -1,22 +1,27 @@
 import {
-  Component, Input, OnDestroy, OnInit
+  AfterViewInit, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { TextElement, UIElement } from '../../../../../common/interfaces/elements';
+import { TextElement } from '../../../../../common/interfaces/elements';
 import { TextComponent } from '../../../../../common/components/ui-elements/text.component';
 import { TextMarker } from '../../classes/text-marker';
 import { NativeEventService } from '../../services/native-event.service';
+import { UnitStateService } from '../../services/unit-state.service';
+import { ElementGroupDirective } from '../../directives/element-group.directive';
+import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
+import { ElementComponent } from '../../../../../common/directives/element-component.directive';
 
 @Component({
   selector: 'aspect-element-text-group',
   templateUrl: './element-text-group.component.html',
   styleUrls: ['./element-text-group.component.scss']
 })
-export class ElementTextGroupComponent implements OnInit, OnDestroy {
-  @Input() elementModel!: UIElement;
+export class ElementTextGroupComponent extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('elementComponent') elementComponent!: ElementComponent;
   TextElement!: TextElement;
 
+  initialValue!: string;
   isMarkingBarOpen!: boolean;
   selectedColor!: string | null;
   selectedMode!: 'mark' | 'delete' | null;
@@ -26,9 +31,23 @@ export class ElementTextGroupComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private nativeEventService: NativeEventService) { }
+  constructor(
+    private nativeEventService: NativeEventService,
+    private unitStateElementMapperService: UnitStateElementMapperService,
+    public unitStateService: UnitStateService
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
+    this.initialValue = this.unitStateElementMapperService
+      .fromUnitState(
+        this.unitStateService.getUnitStateElement(this.elementModel.id)?.value, this.elementModel
+      ) as string;
+  }
+
+  ngAfterViewInit(): void {
+    this.registerAtUnitStateService(this.elementModel.id, [], this.elementComponent, this.pageIndex);
   }
 
   applySelection(

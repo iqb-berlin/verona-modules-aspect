@@ -31,12 +31,8 @@ export class UnitStateService {
       .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
   }
 
-  setUnitStateElementCodeValue(id: string, value: InputElementValue): void {
-    const unitStateElementCode = this.getUnitStateElement(id);
-    if (unitStateElementCode) {
-      unitStateElementCode.value = value;
-      this._unitStateElementCodeChanged.next(unitStateElementCode);
-    }
+  isRegistered(id: string): boolean {
+    return !!(this.getUnitStateElement(id));
   }
 
   set unitStateElementCodes(unitStateElementCodes: UnitStateElementCode[]) {
@@ -64,12 +60,13 @@ export class UnitStateService {
     ) ? 'complete' : 'some';
   }
 
-  registerElement(element: { id: string, value: InputElementValue },
+  registerElement(elementId: string,
+                  elementValue: InputElementValue,
                   domElement: Element,
                   pageIndex: number): void {
-    this.elementPageMap[element.id] = pageIndex;
-    this.addUnitStateElementCode(element.id, element.value);
-    this.intersectionDetector.observe(domElement, element.id);
+    this.elementPageMap[elementId] = pageIndex;
+    this.addUnitStateElementCode(elementId, elementValue);
+    this.intersectionDetector.observe(domElement, elementId);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
         this.changeElementStatus({ id: id, status: 'DISPLAYED' });
@@ -77,12 +74,11 @@ export class UnitStateService {
       });
   }
 
-  changeElementValue(elementValues: ValueChangeElement): void {
+  changeElementValue(elementValue: ValueChangeElement): void {
     // eslint-disable-next-line no-console
-    console.log(`player: changeElementValue ${elementValues.id}:
-     old: ${elementValues.values[0]}, new: ${elementValues.values[1]}`);
-    this.setUnitStateElementCodeStatus(elementValues.id, 'VALUE_CHANGED');
-    this.setUnitStateElementCodeValue(elementValues.id, elementValues.values[1]);
+    console.log(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
+    this.setUnitStateElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
+    this.setUnitStateElementCodeValue(elementValue.id, elementValue.value);
   }
 
   changeElementStatus(elementStatus: StatusChangeElement): void {
@@ -104,6 +100,15 @@ export class UnitStateService {
       }
       return elementPageIndices;
     }, []);
+  }
+
+  private setUnitStateElementCodeValue(id: string, value: InputElementValue): void {
+    const unitStateElementCode = this.getUnitStateElement(id);
+    if (unitStateElementCode) {
+      unitStateElementCode.value = value;
+      this._unitStateElementCodeChanged.next(unitStateElementCode);
+    }
+    console.log(this.unitStateElementCodes);
   }
 
   private setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus): void {

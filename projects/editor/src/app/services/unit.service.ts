@@ -13,7 +13,7 @@ import { ClozeParser } from '../util/cloze-parser';
 import { Copy } from '../../../../common/util/copy';
 import { UnitFactory } from '../../../../common/util/unit.factory';
 import { Page, Section, Unit } from '../../../../common/interfaces/unit';
-import { moveArrayItem } from '../../../../common/util/array';
+//import { moveArrayItem } from '../../../../common/util/array';
 import {
   ClozeElement, DragNDropValueObject,
   DropListElement, InputElement, InputElementValue, LikertElement,

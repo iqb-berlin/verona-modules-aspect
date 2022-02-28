@@ -31,19 +31,37 @@ import { DragNDropValueObject, DropListSimpleElement } from '../../interfaces/el
            [cdkDropListConnectedTo]="elementModel.connectedTo"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
-        <div class="item" *ngFor="let value of $any(elementModel.value)"
-             [style.line-height.px]="elementModel.height - 4"
-             [style.background-color]="elementModel.styles.itemBackgroundColor"
-             cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
-          <div *cdkDragPreview
-               [style.font-size.px]="elementModel.styles.fontSize"
-               [style.background-color]="elementModel.styles.itemBackgroundColor">
+        <ng-container *ngIf="!parentForm">
+          <ng-container *ngFor="let value of $any(elementModel.value)">
+            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="parentForm">
+          <ng-container *ngFor="let value of elementFormControl.value">
+            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-template #dropObject let-value>
+          <div class="item"
+               [style.line-height.px]="elementModel.height - 4"
+               [style.background-color]="elementModel.styles.itemBackgroundColor"
+               cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
+
+            <div *cdkDragPreview
+                 [style.font-size.px]="elementModel.styles.fontSize"
+                 [style.background-color]="elementModel.styles.itemBackgroundColor">
+              {{value.stringValue}}
+            </div>
+
+            <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.styles.fontSize">
+            </div>
             {{value.stringValue}}
           </div>
-          <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.styles.fontSize">
-          </div>
-          {{value.stringValue}}
-        </div>
+         </ng-template>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">
@@ -84,28 +102,26 @@ export class DropListSimpleComponent extends FormElementComponent {
   drop(event: CdkDragDrop<DropListSimpleComponent>): void {
     if (!this.elementModel.readOnly) {
       if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data.elementModel.value as unknown as DragNDropValueObject[],
+        moveItemInArray(event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
           event.previousIndex, event.currentIndex);
       } else {
         transferArrayItem(
-          event.previousContainer.data.elementModel.value as unknown as DragNDropValueObject[],
-          event.container.data.elementModel.value as unknown as DragNDropValueObject[],
+          event.previousContainer.data.elementFormControl.value as unknown as DragNDropValueObject[],
+          event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
           event.previousIndex,
           event.currentIndex
         );
         event.previousContainer.data.elementFormControl.setValue(
-          (event.previousContainer.data.elementModel.value as DragNDropValueObject[])
-            .map((valueObject: DragNDropValueObject) => valueObject.id)
+          (event.previousContainer.data.elementFormControl.value as DragNDropValueObject[])
         );
       }
       this.elementFormControl.setValue(
-        (event.container.data.elementModel.value as DragNDropValueObject[])
-          .map((valueObject: DragNDropValueObject) => valueObject.id)
+        (event.container.data.elementFormControl.value as DragNDropValueObject[])
       );
     }
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
-    drop.data.elementModel.value.length < 1
+    drop.data.elementFormControl.value.length < 1
   );
 }

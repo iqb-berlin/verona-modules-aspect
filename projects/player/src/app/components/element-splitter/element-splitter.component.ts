@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UIElement, UIElementType } from '../../../../../common/interfaces/elements';
+import {
+  UIElement, UIElementType
+} from '../../../../../common/interfaces/elements';
+import { ElementGroup, ElementGroupName } from '../../models/groups';
 
 @Component({
   selector: 'aspect-element-splitter',
@@ -8,42 +11,27 @@ import { UIElement, UIElementType } from '../../../../../common/interfaces/eleme
 })
 export class ElementSplitterComponent implements OnInit {
   @Input() elementModel!: UIElement;
+  @Input() pageIndex!: number;
 
-  textInputGroup!: boolean;
-  mediaPlayerGroup!: boolean;
-  inputGroup!: boolean;
-  indexInputGroup!: boolean;
-  compoundGroup!: boolean;
-  textGroup!: boolean;
-  baseGroup!: boolean;
+  groups: ElementGroup[] = [
+    { name: 'textInputGroup', types: ['text-field', 'text-area'] },
+    { name: 'mediaPlayerGroup', types: ['audio', 'video'] },
+    {
+      name: 'inputGroup',
+      types: ['checkbox', 'spell-correct', 'slider', 'drop-list', 'radio', 'radio-group-images', 'dropdown']
+    },
+    { name: 'compoundGroup', types: ['cloze', 'likert'] },
+    { name: 'textGroup', types: ['text'] },
+    { name: 'interactiveGroup', types: ['button', 'image'] }
+  ];
 
-  constructor() {
-  }
+  selectedGroup!: ElementGroupName;
 
   ngOnInit(): void {
-    this.initGroup(this.elementModel.type);
+    this.selectedGroup = this.selectGroup(this.elementModel.type);
   }
 
-  getInstance<T>(obj: any, keys: (keyof T)[]): obj is T {
-    if (!obj) {
-      return false;
-    }
-    const implementKeys = keys.reduce((impl, key) => impl && key in obj, true);
-
-    return implementKeys;
-  }
-
-  initGroup(type: UIElementType): void {
-    // export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
-    //   | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
-    //   | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
-    //
-    this.textInputGroup = ['text-field', 'text-area'].includes(type);
-    this.mediaPlayerGroup = ['audio', 'video'].includes(type);
-    this.inputGroup = ['checkbox', 'spell-correct', 'slider', 'drop-list'].includes(type);
-    this.indexInputGroup = ['radio', 'radio-group-images', 'toggle-button', 'dropdown'].includes(type);
-    this.compoundGroup = ['cloze', 'likert'].includes(type);
-    this.textGroup = ['text'].includes(type);
-    this.baseGroup = ['button', 'image', 'frame'].includes(type);
+  selectGroup(type: UIElementType): ElementGroupName {
+    return this.groups.find(group => group.types.includes(type))?.name as ElementGroupName;
   }
 }

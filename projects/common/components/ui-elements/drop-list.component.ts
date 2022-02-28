@@ -34,30 +34,45 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
            [cdkDropListOrientation]="elementModel.orientation !== 'flex' ? $any(elementModel.orientation) : ''"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
-        <ng-container *ngFor="let value of $any(elementModel.value)">
-          <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
-               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                            'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               [style.background-color]="elementModel.itemBackgroundColor"
-               (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
-            <div *cdkDragPreview
-                 [style.font-size.px]="elementModel.styles.fontSize"
-                 [style.background-color]="elementModel.styles.itemBackgroundColor">
+
+        <ng-container *ngIf="!parentForm">
+          <ng-container *ngFor="let value of $any(elementModel.value)">
+            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+            </ng-container>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="parentForm">
+          <ng-container *ngFor="let value of elementFormControl.value">
+            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+            </ng-container>
+          </ng-container>
+        </ng-container>
+          <!--Leave template within the dom to ensure dragNdrop-->
+          <ng-template #dropObject let-value>
+            <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
+                 [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                              'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
+                 [style.background-color]="elementModel.itemBackgroundColor"
+                 (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
+              <div *cdkDragPreview
+                   [style.font-size.px]="elementModel.styles.fontSize"
+                   [style.background-color]="elementModel.styles.itemBackgroundColor">
+                {{value.stringValue}}
+              </div>
+              <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.styles.fontSize">
+              </div>
               {{value.stringValue}}
             </div>
-            <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.styles.fontSize">
-            </div>
-            {{value.stringValue}}
-          </div>
-          <img *ngIf="value.imgSrcValue"
-               [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
-               [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
-               class="item"
-               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                            'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
-               [style.object-fit]="'scale-down'">
-        </ng-container>
+            <img *ngIf="value.imgSrcValue"
+                 [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
+                 [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
+                 class="item"
+                 [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                              'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
+                 cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
+                 [style.object-fit]="'scale-down'">
+          </ng-template>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">
@@ -103,28 +118,26 @@ export class DropListComponent extends FormElementComponent {
   drop(event: CdkDragDrop<DropListComponent>): void {
     if (!this.elementModel.readOnly) {
       if (event.previousContainer === event.container) {
-        moveItemInArray(event.container.data.elementModel.value as unknown as DragNDropValueObject[],
+        moveItemInArray(event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
           event.previousIndex, event.currentIndex);
       } else {
         transferArrayItem(
-          event.previousContainer.data.elementModel.value as unknown as DragNDropValueObject[],
-          event.container.data.elementModel.value as unknown as DragNDropValueObject[],
+          event.previousContainer.data.elementFormControl.value as unknown as DragNDropValueObject[],
+          event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
           event.previousIndex,
           event.currentIndex
         );
         event.previousContainer.data.elementFormControl.setValue(
-          (event.previousContainer.data.elementModel.value as DragNDropValueObject[])
-            .map((valueObject: DragNDropValueObject) => valueObject.id)
+          (event.previousContainer.data.elementFormControl.value as DragNDropValueObject[])
         );
       }
       this.elementFormControl.setValue(
-        (event.container.data.elementModel.value as DragNDropValueObject[])
-          .map((valueObject: DragNDropValueObject) => valueObject.id)
+        (event.container.data.elementFormControl.value as DragNDropValueObject[])
       );
     }
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
-    !drop.data.elementModel.onlyOneItem || drop.data.elementModel.value.length < 1
+    !drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1
   );
 }

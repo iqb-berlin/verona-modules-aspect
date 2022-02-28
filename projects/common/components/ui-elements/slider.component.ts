@@ -1,7 +1,6 @@
 import {
   Component, Input, OnInit, ViewChild
 } from '@angular/core';
-import { ValidatorFn, Validators } from '@angular/forms';
 import { MatSlider } from '@angular/material/slider';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { SliderElement } from '../../interfaces/elements';
@@ -111,14 +110,6 @@ import { SliderElement } from '../../interfaces/elements';
 export class SliderComponent extends FormElementComponent implements OnInit {
   @ViewChild(MatSlider) inputElement!: MatSlider;
   @Input() elementModel!: SliderElement;
-
-  get validators(): ValidatorFn[] {
-    const validators: ValidatorFn[] = [];
-    if (this.elementModel.required) {
-      validators.push(Validators.min(this.elementModel.minValue + 1));
-    }
-    return validators;
-  }
 
   ngOnInit(): void {
     super.ngOnInit();

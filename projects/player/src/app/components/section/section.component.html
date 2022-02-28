@@ -9,7 +9,8 @@
         [style.left.px]="element.positionProps.xPosition"
         [style.top.px]="element.positionProps.yPosition"
         [style.z-index]="element.positionProps?.zIndex"
-        [elementModel]="element">
+        [elementModel]="element"
+        [pageIndex]="pageIndex">
     </aspect-element-splitter>
   </ng-container>
 </ng-template>
@@ -35,7 +36,8 @@
           [style.grid-row-start]="element.positionProps.gridRowStart"
           [style.grid-row-end]="element.positionProps.gridRowEnd"
           [style.z-index]="element.positionProps?.zIndex"
-          [elementModel]="element">
+          [elementModel]="element"
+          [pageIndex]="pageIndex">
       </aspect-element-splitter>
     </ng-container>
   </div>

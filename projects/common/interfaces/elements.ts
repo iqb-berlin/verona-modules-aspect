@@ -1,11 +1,6 @@
 import { ClozeDocument } from './cloze';
 import { LikertColumn } from './likert';
 
-export type Element = ButtonElement | CheckboxElement | ClozeElement | DropdownElement | DropListElement |
-DropListSimpleElement | FrameElement | ImageElement | LikertElement | LikertRowElement | RadioButtonGroupElement |
-RadioButtonGroupComplexElement | SliderElement | SpellCorrectElement | TextFieldElement | TextAreaElement |
-TextFieldSimpleElement | TextElement | ToggleButtonElement | AudioElement | VideoElement;
-
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
@@ -48,9 +43,9 @@ export interface PlayerElement {
   playerProps: PlayerProperties;
 }
 
-export interface ValueChangeElement { // TODO weg
+export interface ValueChangeElement {
   id: string;
-  values: [InputElementValue, InputElementValue];
+  value: InputElementValue;
 }
 
 export interface PositionProperties {
@@ -158,7 +153,7 @@ export interface DropdownElement extends InputElement {
   styles: BasicStyles
 }
 
-export interface DropListElement extends UIElement {
+export interface DropListElement extends InputElement {
   type: 'drop-list';
   onlyOneItem: boolean;
   connectedTo: string[];

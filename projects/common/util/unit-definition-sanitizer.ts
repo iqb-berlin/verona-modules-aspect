@@ -128,7 +128,7 @@ export abstract class UnitDefinitionSanitizer {
       elementList.filter(element => element.type === 'drop-list') as DropListElement[];
     dropListElements.forEach((element: DropListElement) => {
       if (element.options) {
-        element.value = {};
+        element.value = [];
         (element.options as string[]).forEach(option => {
           (element.value as DragNDropValueObject[]).push({
             id: IdService.getInstance().getNewID('value'),

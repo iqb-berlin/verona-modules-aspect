@@ -72,29 +72,29 @@ export class ElementContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.elementComponent = this.initElementComponent();
-    this.registerAtUnitStateService(this.elementComponent);
-    if (this.elementComponent instanceof FormElementComponent) {
-      this.initFormElement(this.elementComponent);
-    } else if (this.elementComponent instanceof CompoundElementComponent) {
-      this.initCompoundElement(this.elementComponent);
-    } else if (this.elementComponent instanceof MediaPlayerElementComponent) {
-      this.mediaPlayerService.registerMediaElement(
-        this.elementModel.id,
-        this.elementComponent,
-        this.elementModel.playerProps?.activeAfterID as string,
-        this.elementModel.playerProps?.minRuns as number === 0
-      );
-    }
-    this.subscribeStartSelection(this.elementComponent as TextComponent);
-    this.subscribeApplySelection(this.elementComponent as TextComponent);
-    this.subscribeMediaPlayStatusChanged(this.elementComponent as MediaPlayerElementComponent);
-    this.subscribeMediaValidStatusChanged(this.elementComponent as MediaPlayerElementComponent);
-    this.subscribeNavigationRequested(this.elementComponent as ButtonComponent);
-    this.subscribeElementValueChanged(
-      this.elementComponent as FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
-    );
-    this.subscribeForKeyboardEvents(this.elementComponent as TextFieldComponent | TextAreaComponent);
+    // this.elementComponent = this.initElementComponent();
+    // this.registerAtUnitStateService(this.elementComponent);
+    // if (this.elementComponent instanceof FormElementComponent) {
+    //   this.initFormElement(this.elementComponent);
+    // } else if (this.elementComponent instanceof CompoundElementComponent) {
+    //   this.initCompoundElement(this.elementComponent);
+    // } else if (this.elementComponent instanceof MediaPlayerElementComponent) {
+    //   this.mediaPlayerService.registerMediaElement(
+    //     this.elementModel.id,
+    //     this.elementComponent,
+    //     this.elementModel.playerProps?.activeAfterID as string,
+    //     this.elementModel.playerProps?.minRuns as number === 0
+    //   );
+    // }
+    // this.subscribeStartSelection(this.elementComponent as TextComponent);
+    // this.subscribeApplySelection(this.elementComponent as TextComponent);
+    // this.subscribeMediaPlayStatusChanged(this.elementComponent as MediaPlayerElementComponent);
+    // this.subscribeMediaValidStatusChanged(this.elementComponent as MediaPlayerElementComponent);
+    // this.subscribeNavigationRequested(this.elementComponent as ButtonComponent);
+    // this.subscribeElementValueChanged(
+    //   this.elementComponent as FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
+    // );
+    // this.subscribeForKeyboardEvents(this.elementComponent as TextFieldComponent | TextAreaComponent);
   }
 
   applySelectionToText(mode: 'mark' | 'delete', color: string): void {
@@ -107,90 +107,90 @@ export class ElementContainerComponent implements OnInit {
     // this.isMarkingBarOpen = false;
   }
 
-  private initElementComponent(): ElementComponent {
-    const elementComponentFactory =
-      ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
-    const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
-    elementComponent.elementModel = this.unitStateElementMapperService
-      .mapToElementValue(
-        this.elementModel,
-        this.unitStateService.getUnitStateElement(this.elementModel.id)
-      );
-    return elementComponent;
-  }
+  // private initElementComponent(): ElementComponent {
+  //   // const elementComponentFactory =
+  //   //   ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
+  //   // const elementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
+  //   // elementComponent.elementModel = this.unitStateElementMapperService
+  //   //   .mapToElementValue(
+  //   //     this.elementModel,
+  //   //     this.unitStateService.getUnitStateElement(this.elementModel.id)
+  //   //   );
+  //   // return elementComponent;
+  // }
 
   private initFormElement(elementComponent: FormElementComponent): void {
-    const elementForm = this.formBuilder.group({});
-    elementComponent.parentForm = elementForm;
-    this.subscribeSetValidators(elementComponent, elementForm);
-    this.registerFormGroup(elementForm);
-    this.formService.registerFormControl({
-      id: this.elementModel.id,
-      formControl: new FormControl((this.elementModel as InputElement).value),
-      formGroup: elementForm
-    });
+    // const elementForm = this.formBuilder.group({});
+    // elementComponent.parentForm = elementForm;
+    // this.subscribeSetValidators(elementComponent, elementForm);
+    // this.registerFormGroup(elementForm);
+    // this.formService.registerFormControl({
+    //   id: this.elementModel.id,
+    //   formControl: new FormControl((this.elementModel as InputElement).value),
+    //   formGroup: elementForm
+    // });
   }
 
   private initCompoundElement(elementComponent: CompoundElementComponent): void {
-    const elementForm = this.formBuilder.group({});
-    elementComponent.parentForm = elementForm;
-    const compoundChildren = elementComponent.getFormElementModelChildren();
-    this.subscribeCompoundChildren(elementComponent, compoundChildren, elementForm);
-    this.registerFormGroup(elementForm);
-    compoundChildren.forEach((element: InputElement) => {
-      this.formService.registerFormControl({
-        id: element.id,
-        formControl: new FormControl(element.value),
-        formGroup: elementForm
-      });
-    });
+    // const elementForm = this.formBuilder.group({});
+    // elementComponent.parentForm = elementForm;
+    // const compoundChildren = elementComponent.getFormElementModelChildren();
+    // this.subscribeCompoundChildren(elementComponent, compoundChildren, elementForm);
+    // this.registerFormGroup(elementForm);
+    // compoundChildren.forEach((element: InputElement) => {
+    //   this.formService.registerFormControl({
+    //     id: element.id,
+    //     formControl: new FormControl(element.value),
+    //     formGroup: elementForm
+    //   });
+    // });
   }
 
   private registerAtUnitStateService(elementComponent: ElementComponent): void {
-    if (!(elementComponent instanceof CompoundElementComponent)) {
-      this.unitStateService.registerElement(
-        this.unitStateElementMapperService.mapToUnitStateValue(
-          elementComponent.elementModel,
-          this.unitStateService.getUnitStateElement(elementComponent.elementModel.id)
-        ),
-        elementComponent.domElement,
-        this.pageIndex
-      );
-    }
+    // if (!(elementComponent instanceof CompoundElementComponent)) {
+    //   this.unitStateService.registerElement(
+    //     this.unitStateElementMapperService.mapToUnitStateValue(
+    //       elementComponent.elementModel,
+    //       this.unitStateService.getUnitStateElement(elementComponent.elementModel.id)
+    //     ),
+    //     elementComponent.domElement,
+    //     this.pageIndex
+    //   );
+    // }
   }
 
   private subscribeCompoundChildren(
     elementComponent: CompoundElementComponent, compoundChildren: InputElement[], elementForm: FormGroup
   ): void {
-    if (elementComponent.childrenAdded) {
-      elementComponent.childrenAdded
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((children: ElementComponent[]) => {
-          children.forEach((child, index) => {
-            const childModel = compoundChildren[index];
-            child.elementModel = this.unitStateElementMapperService
-              .mapToElementValue(
-                childModel,
-                this.unitStateService.getUnitStateElement(child.elementModel.id)
-              );
-            this.unitStateService.registerElement(
-              this.unitStateElementMapperService.mapToUnitStateValue(
-                child.elementModel,
-                this.unitStateService.getUnitStateElement(child.elementModel.id)
-              ),
-              child.domElement,
-              this.pageIndex
-            );
-            const formChild = (child as FormElementComponent);
-            if (formChild) {
-              this.subscribeSetValidators(formChild, elementForm);
-              formChild.setFormValue(child.elementModel.value as InputElementValue, { emitEvent: false });
-              formChild.setFormControlValidator();
-            }
-          });
-          this.changeDetectorRef.detectChanges();
-        });
-    }
+    // if (elementComponent.childrenAdded) {
+    //   elementComponent.childrenAdded
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((children: ElementComponent[]) => {
+          // children.forEach((child, index) => {
+          //   const childModel = compoundChildren[index];
+          //   child.elementModel = this.unitStateElementMapperService
+          //     .mapToElementValue(
+          //       childModel,
+          //       this.unitStateService.getUnitStateElement(child.elementModel.id)
+          //     );
+          //   this.unitStateService.registerElement(
+          //     this.unitStateElementMapperService.mapToUnitStateValue(
+          //       child.elementModel,
+          //       this.unitStateService.getUnitStateElement(child.elementModel.id)
+          //     ),
+          //     child.domElement,
+          //     this.pageIndex
+          //   );
+          //   const formChild = (child as FormElementComponent);
+          //   if (formChild) {
+          //     this.subscribeSetValidators(formChild, elementForm);
+          //     formChild.setFormValue(child.elementModel.value as InputElementValue, { emitEvent: false });
+          //     formChild.setFormControlValidator();
+          //   }
+          // });
+        //   this.changeDetectorRef.detectChanges();
+        // });
+    //}
   }
 
   private subscribeStartSelection(elementComponent: TextComponent): void {
@@ -236,10 +236,10 @@ export class ElementContainerComponent implements OnInit {
   //   }
   }
 
-  private getClientPointFromEvent = (event: MouseEvent | TouchEvent): { clientX: number, clientY: number } => ({
-    clientX: (event instanceof MouseEvent) ? event.clientX : event.changedTouches[0].clientX,
-    clientY: (event instanceof MouseEvent) ? event.clientY : event.changedTouches[0].clientY
-  });
+  // private getClientPointFromEvent = (event: MouseEvent | TouchEvent): { clientX: number, clientY: number } => ({
+  //   clientX: (event instanceof MouseEvent) ? event.clientX : event.changedTouches[0].clientX,
+  //   clientY: (event instanceof MouseEvent) ? event.clientY : event.changedTouches[0].clientY
+  // });
 
   private openMarkingBar(
     mouseUp: { clientX: number, clientY: number },
@@ -316,27 +316,27 @@ export class ElementContainerComponent implements OnInit {
   private subscribeElementValueChanged(
     elementComponent: FormElementComponent | TextComponent | ImageComponent | MediaPlayerElementComponent
   ): void {
-    if (elementComponent.elementValueChanged) {
-      elementComponent.elementValueChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((playbackTimeChanged: ValueChangeElement) => {
-          this.unitStateService.changeElementValue(playbackTimeChanged);
-        });
-    }
+    // if (elementComponent.elementValueChanged) {
+    //   elementComponent.elementValueChanged
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((playbackTimeChanged: ValueChangeElement) => {
+    //       this.unitStateService.changeElementValue(playbackTimeChanged);
+    //     });
+    // }
   }
 
   private subscribeSetValidators(elementComponent: FormElementComponent, elementForm: FormGroup): void {
-    if (elementComponent.setValidators) {
-      elementComponent.setValidators
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((validators: ValidatorFn[]) => {
-          this.formService.setValidators({
-            id: elementComponent.elementModel.id,
-            validators: validators,
-            formGroup: elementForm
-          });
-        });
-    }
+    // if (elementComponent.setValidators) {
+    //   elementComponent.setValidators
+    //     .pipe(takeUntil(this.ngUnsubscribe))
+    //     .subscribe((validators: ValidatorFn[]) => {
+    //       this.formService.setValidators({
+    //         id: elementComponent.elementModel.id,
+    //         validators: validators,
+    //         formGroup: elementForm
+    //       });
+    //     });
+    // }
   }
 
   private subscribeForKeyboardEvents(elementComponent: TextFieldComponent | TextAreaComponent): void {
@@ -360,12 +360,12 @@ export class ElementContainerComponent implements OnInit {
   }
 
   private registerFormGroup(elementForm: FormGroup): void {
-    this.formService.registerFormGroup({
-      formGroup: elementForm,
-      parentForm: this.parentForm,
-      parentArray: 'elements',
-      parentArrayIndex: this.parentArrayIndex
-    });
+    // this.formService.registerFormGroup({
+    //   formGroup: elementForm,
+    //   parentForm: this.parentForm,
+    //   parentArray: 'elements',
+    //   parentArrayIndex: this.parentArrayIndex
+    // });
   }
 
   ngOnDestroy(): void {

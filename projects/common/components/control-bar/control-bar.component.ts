@@ -12,6 +12,7 @@ import { PlayerProperties, ValueChangeElement } from '../../interfaces/elements'
 export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() id!: string;
+  @Input() savedPlaybackTime!: number;
   @Input() playerProperties!: PlayerProperties;
   @Input() project!: 'player' | 'editor';
   @Input() active!: boolean;
@@ -35,7 +36,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.dependencyDissolved = !this.playerProperties.activeAfterID;
-    this.playbackTime = this.playerProperties.playbackTime;
+    this.playbackTime = this.savedPlaybackTime || this.playerProperties.playbackTime;
     this.started = this.playbackTime > 0;
     this.runCounter = Math.floor(this.playbackTime);
     this.player.ondurationchange = () => this.initTimeValues();
@@ -158,7 +159,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   private sendPlaybackTimeChanged() {
     this.elementValueChanged.emit({
       id: this.id,
-      values: [this.playbackTime, this.toPlaybackTime()]
+      value: this.toPlaybackTime()
     });
   }
 
@@ -172,7 +173,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.duration) {
       if ((this.player.duration !== Infinity) && this.player.duration) {
         this.duration = this.player.duration / 60;
-        this.player.currentTime = (this.playerProperties.playbackTime - this.runCounter) * this.player.duration;
+        this.player.currentTime = (this.playbackTime - this.runCounter) * this.player.duration;
         this.currentRestTime = (this.player.duration - this.player.currentTime) / 60;
         this.checkDisabledState(this.runCounter);
         this.checkValidState(this.runCounter);

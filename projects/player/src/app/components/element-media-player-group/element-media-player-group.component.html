@@ -1,13 +1,19 @@
 <aspect-audio
     *ngIf="elementModel.type === 'audio'"
+    #elementComponent
     [elementModel]="elementModel | cast: AudioElement"
+    [savedPlaybackTime]="initialValue"
     (onMediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
-    (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingMediaId($event)">
+    (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingMediaId($event)"
+    (elementValueChanged)="unitStateService.changeElementValue($event)">
 </aspect-audio>
 
 <aspect-video
     *ngIf="elementModel.type === 'video'"
+    #elementComponent
     [elementModel]="elementModel | cast: VideoElement"
+    [savedPlaybackTime]="initialValue"
     (onMediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
-    (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingMediaId($event)">
+    (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingMediaId($event)"
+    (elementValueChanged)="unitStateService.changeElementValue($event)">
 </aspect-video>

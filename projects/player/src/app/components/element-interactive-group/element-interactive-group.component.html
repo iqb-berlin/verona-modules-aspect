@@ -1,0 +1,18 @@
+<aspect-button
+    *ngIf="elementModel.type === 'button'"
+    #elementComponent
+    [elementModel]="elementModel | cast: ButtonElement"
+    (navigationRequested)="veronaPostService.sendVopUnitNavigationRequestedNotification($event)">
+</aspect-button>
+<aspect-frame
+    *ngIf="elementModel.type === 'frame'"
+    #elementComponent
+    [elementModel]="elementModel | cast: FrameElement">
+</aspect-frame>
+<aspect-image
+    *ngIf="elementModel.type === 'image'"
+    #elementComponent
+    [elementModel]="elementModel | cast: ImageElement"
+    (elementValueChanged)="unitStateService.changeElementValue($event)">
+</aspect-image>
+

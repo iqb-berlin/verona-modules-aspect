@@ -61,7 +61,6 @@ export class AppComponent implements OnInit {
       console.log('player: onStart', message);
       if (message.unitDefinition) {
         const unitDefinition: Unit = UnitDefinitionSanitizer.sanitize(JSON.parse(message.unitDefinition));
-        console.log('unitDefinition', unitDefinition);
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
         if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.unitDefinitionType)) {
           this.playerConfig = message.playerConfig || {};

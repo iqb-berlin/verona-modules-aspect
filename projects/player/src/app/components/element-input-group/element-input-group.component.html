@@ -1,22 +1,44 @@
 <form [formGroup]="form">
   <aspect-checkbox
       *ngIf="elementModel.type === 'checkbox'"
+      #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: CheckboxElement">
   </aspect-checkbox>
   <aspect-spell-correct
       *ngIf="elementModel.type === 'spell-correct'"
+      #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: SpellCorrectElement">
   </aspect-spell-correct>
   <aspect-slider
       *ngIf="elementModel.type === 'slider'"
+      #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: SliderElement">
   </aspect-slider>
   <aspect-drop-list
       *ngIf="elementModel.type === 'drop-list'"
+      #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: DropListElement">
   </aspect-drop-list>
+  <aspect-radio-button-group
+      *ngIf="elementModel.type === 'radio'"
+      #elementComponent
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: RadioButtonGroupElement">
+  </aspect-radio-button-group>
+  <aspect-radio-group-images
+      *ngIf="elementModel.type === 'radio-group-images'"
+      #elementComponent
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: RadioButtonGroupComplexElement">
+  </aspect-radio-group-images>
+  <aspect-dropdown
+      *ngIf="elementModel.type === 'dropdown'"
+      #elementComponent
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: DropdownElement">
+  </aspect-dropdown>
 </form>

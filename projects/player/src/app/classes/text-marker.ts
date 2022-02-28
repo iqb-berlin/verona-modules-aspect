@@ -16,10 +16,9 @@ export class TextMarker {
         TextMarker.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
-          values: [TextMarker.getMarkingData(textComponent.elementModel.text as string),
-            TextMarker.getMarkingData(element.innerHTML)]
+          value: TextMarker.getMarkingData(element.innerHTML)
         });
-        textComponent.elementModel.text = element.innerHTML;
+        textComponent.savedText = element.innerHTML;
       } else {
         // eslint-disable-next-line no-console
         console.warn('Selection contains elements that are outside the text component!');

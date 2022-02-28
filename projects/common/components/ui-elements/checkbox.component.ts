@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ValidatorFn, Validators } from '@angular/forms';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { CheckboxElement } from '../../interfaces/elements';
 
@@ -35,12 +34,4 @@ import { CheckboxElement } from '../../interfaces/elements';
 })
 export class CheckboxComponent extends FormElementComponent {
   @Input() elementModel!: CheckboxElement;
-
-  get validators(): ValidatorFn[] {
-    const validators: ValidatorFn[] = [];
-    if (this.elementModel.required) {
-      validators.push(Validators.requiredTrue);
-    }
-    return validators;
-  }
 }

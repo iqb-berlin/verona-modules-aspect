@@ -41,7 +41,7 @@ export class Magnifier {
   onMousemove(event: MouseEvent): void {
     if (!this.used) {
       this.used = true;
-      this.elementValueChanged.emit({ id: this.imageId, values: [false, true] });
+      this.elementValueChanged.emit({ id: this.imageId, value: this.used });
     }
     this.left = this.calculateGlassPosition(this.image.width, event.offsetX) - 2;
     this.top = this.calculateGlassPosition(this.image.height, event.offsetY) - 2;

@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from '../../../common/shared.module';
-import { UnitStateComponent } from './components/unit-state/unit-state.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { LayoutComponent } from './components/layout/layout.component';
@@ -44,7 +43,6 @@ import {
     AppComponent,
     PageComponent,
     SectionComponent,
-    UnitStateComponent,
     PlayerStateComponent,
     LayoutComponent,
     AlertDialogComponent,

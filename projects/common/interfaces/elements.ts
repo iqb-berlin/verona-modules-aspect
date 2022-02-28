@@ -39,7 +39,7 @@ export interface PositionedElement extends UIElement {
   positionProps: PositionProperties;
 }
 
-export interface PlayerElement {
+export interface PlayerElement extends UIElement {
   playerProps: PlayerProperties;
 }
 
@@ -229,7 +229,7 @@ export interface RadioButtonGroupElement extends InputElement {
 }
 
 export interface RadioButtonGroupComplexElement extends InputElement {
-  type: 'radio-group-images'
+  type: 'radio-group-images' // TODO better name
   columns: LikertColumn[];
   positionProps: PositionProperties;
   styles: BasicStyles;

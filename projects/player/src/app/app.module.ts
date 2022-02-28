@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from '../../../common/shared.module';
-import { ElementContainerComponent } from './components/element-container/element-container.component';
 import { UnitStateComponent } from './components/unit-state/unit-state.component';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
@@ -36,14 +35,15 @@ import { ElementCompoundGroupComponent } from './components/element-compound-gro
 import { CastPipe } from './pipes/cast.pipe';
 import { ElementTextGroupComponent } from './components/element-text-group/element-text-group.component';
 import { ElementBaseGroupComponent } from './components/element-base-group/element-base-group.component';
-import { ElementInteractiveGroupComponent } from './components/element-interactive-group/element-interactive-group.component';
+import {
+  ElementInteractiveGroupComponent
+} from './components/element-interactive-group/element-interactive-group.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageComponent,
     SectionComponent,
-    ElementContainerComponent,
     UnitStateComponent,
     PlayerStateComponent,
     LayoutComponent,

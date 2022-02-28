@@ -2,3 +2,7 @@ body {
   overflow: hidden;
   margin: 0 !important;
 }
+
+.inline-container{
+  display: inline;
+}

@@ -1,7 +1,7 @@
 <div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
-         'fixed-size-content-wrapper' : 'element-container'">
+         'fixed-size-content-wrapper' : 'inline-container'">
   <div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
-            'fixed-size-content' : 'element-container'"
+            'fixed-size-content' : 'inline-container'"
        [style.width]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
                       elementModel.width + 'px' : '100%'"
        [style.height]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?

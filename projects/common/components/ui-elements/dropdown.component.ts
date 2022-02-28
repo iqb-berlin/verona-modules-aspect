@@ -23,7 +23,7 @@ import { DropdownElement } from '../../interfaces/elements';
                     [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                     (click)="$event.preventDefault()">
         </mat-option>
-        <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i + 1"
+        <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i"
                     [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'">
           {{option}}
         </mat-option>

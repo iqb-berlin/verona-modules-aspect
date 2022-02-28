@@ -29,7 +29,7 @@ import { RadioButtonGroupComplexElement } from '../../interfaces/elements';
            [style.grid-column-end]="2 + i"
            [style.grid-row-start]="2"
            [style.grid-row-end]="3"
-           (click)="selectOption(i + 1)">
+           (click)="selectOption(i)">
         <img *ngIf="option.imgSrc && option.position === 'above'"
              [style.object-fit]="'scale-down'"
              [style.max-width.%]="100"
@@ -52,7 +52,7 @@ import { RadioButtonGroupComplexElement } from '../../interfaces/elements';
         <mat-radio-button *ngFor="let option of elementModel.columns; let i = index"
                           aria-labelledby="radio-group-label"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                          [value]="i + 1"
+                          [value]="i"
                           [style.grid-column-start]="1 + i"
                           [style.grid-column-end]="2 + i"
                           [style.grid-row-start]="1"

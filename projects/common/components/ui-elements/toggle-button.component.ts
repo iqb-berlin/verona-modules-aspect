@@ -12,10 +12,10 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                                [style.width]="elementModel.dynamicWidth ? 'unset' : elementModel.width+'px'"
                                [vertical]="elementModel.verticalOrientation">
         <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
-                           [value]="i + 1"
+                           [value]="i"
                            [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                    elementFormControl.value !== null &&
-                                                   elementFormControl.value !== i + 1 }"
+                                                   elementFormControl.value !== i }"
                            [style.color]="elementModel.styles.fontColor"
                            [style.font-size.px]="elementModel.styles.fontSize"
                            [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
@@ -23,7 +23,7 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                            [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
                            [style.font-family]="elementModel.styles.font"
                            [style.background-color]="elementFormControl.value !== null &&
-                                                   elementFormControl.value === i + 1 ?
+                                                   elementFormControl.value === i ?
                                                    elementModel.selectionColor :
                                                    elementModel.styles.backgroundColor"
                            [style.line-height.%]="elementModel.styles.lineHeight">

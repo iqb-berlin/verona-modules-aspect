@@ -20,10 +20,12 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
   operators!: string[][];
   private allowedKeys!: string[];
 
+  // U+2022
   readonly placeValue: string[][] = [
     ['•']
   ];
 
+  // U+2B1C, U+2758, U+2219
   readonly squareDashDot: string[][] = [
     ['⬜', '❘', '∙']
   ];
@@ -39,6 +41,7 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
     ['0']
   ];
 
+  // '·' = U+00B7
   readonly basicOperators: string[][] = [
     ['+', '-'],
     ['·', ':']

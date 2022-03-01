@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { PlayerConfig, VopStartCommand } from './models/verona';
 import { UnitStateElementMapperService } from './services/unit-state-element-mapper.service';
@@ -11,7 +10,6 @@ import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
 import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
-import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { Page, Unit } from '../../../common/interfaces/unit';
 import { UnitDefinitionSanitizer } from '../../../common/util/unit-definition-sanitizer';
 import { ValidatorService } from './services/validator.service';
@@ -38,8 +36,7 @@ export class AppComponent implements OnInit {
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
               private unitStateElementMapperService: UnitStateElementMapperService,
-              private validatorService: ValidatorService,
-              private dialog: MatDialog) {
+              private validatorService: ValidatorService) {
   }
 
   ngOnInit(): void {
@@ -65,24 +62,14 @@ export class AppComponent implements OnInit {
       if (message.unitDefinition) {
         const unitDefinition: Unit = UnitDefinitionSanitizer.sanitize(JSON.parse(message.unitDefinition));
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
-        if (this.metaDataService.verifyUnitDefinitionVersion(unitDefinition.unitDefinitionType)) {
-          this.playerConfig = message.playerConfig || {};
-          this.veronaPostService.sessionId = message.sessionId;
-          this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
-          this.pages = unitDefinition.pages;
-          this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
-            JSON.parse(message.unitState.dataParts.elementCodes) : [];
-          // eslint-disable-next-line no-console
-          console.log('player: unitStateElementCodes', this.unitStateService.unitStateElementCodes);
-        } else {
-          this.dialog.open(AlertDialogComponent, {
-            data: {
-              title: this.translateService.instant('dialogTitle.wrongUnitDefinitionType'),
-              content: this.translateService.instant('dialogContent.wrongUnitDefinitionType',
-                { version: this.metaDataService.playerMetadata.supportedUnitDefinitionTypes })
-            }
-          });
-        }
+        this.playerConfig = message.playerConfig || {};
+        this.veronaPostService.sessionId = message.sessionId;
+        this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
+        this.pages = unitDefinition.pages;
+        this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
+          JSON.parse(message.unitState.dataParts.elementCodes) : [];
+        // eslint-disable-next-line no-console
+        console.log('player: unitStateElementCodes', this.unitStateService.unitStateElementCodes);
       } else {
         // eslint-disable-next-line no-console
         console.warn('player: message has no unitDefinition');

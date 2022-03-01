@@ -14,7 +14,6 @@ import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { LayoutComponent } from './components/layout/layout.component';
 import { HideFirstChildDirective } from './directives/hide-first-child.directive';
 import { ScrollIndexDirective } from './directives/scroll-index.directive';
-import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
 import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { KeyComponent } from './components/key/key.component';
@@ -46,7 +45,6 @@ import { UnitStateComponent } from './components/unit-state/unit-state.component
     SectionComponent,
     PlayerStateComponent,
     LayoutComponent,
-    AlertDialogComponent,
     HideFirstChildDirective,
     ScrollIndexDirective,
     IntersectionDetectionDirective,

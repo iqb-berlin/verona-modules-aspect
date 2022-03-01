@@ -13,16 +13,4 @@ export class MetaDataService {
       this.playerMetadata = JSON.parse(playerMetadata);
     }
   }
-
-  // eslint-disable-next-line class-methods-use-this
-  verifyUnitDefinitionVersion(unitDefinition: string | undefined): boolean {
-    return true;
-    // return (!!unitDefinition && unitDefinition === this.playerMetadata.supportedUnitDefinitionTypes);
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  verifyUnitStateDataType(unitStateDataType: string | undefined): boolean {
-    return true;
-    // return (!!unitStateDataType && unitStateDataType === this.playerMetadata.supportedUnitStateDataTypes);
-  }
 }

@@ -1,9 +1,9 @@
 <div *ngIf="!running" class='stopped-overlay'></div>
-<aspect-layout [parentForm]="parentForm"
-               [pages]="pages"
-               [playerConfig]="playerConfig"
-               [(selectedIndex)]="currentPlayerPageIndex"
-               [selectIndex]="selectIndex"
-               (validPagesDetermined)="onValidPagesDetermined($event)"
-               (selectedIndexChange)="onSelectedIndexChange()">
+<aspect-layout
+    [pages]="pages"
+    [playerConfig]="playerConfig"
+    [(selectedIndex)]="currentPlayerPageIndex"
+    [selectIndex]="selectIndex"
+    (validPagesDetermined)="onValidPagesDetermined($event)"
+    (selectedIndexChange)="onSelectedIndexChange()">
 </aspect-layout>

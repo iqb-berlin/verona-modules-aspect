@@ -1,17 +1,11 @@
 import { InputElementValue } from '../../../../common/interfaces/elements';
 
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
-
 export type RunningState = 'running' | 'stopped';
-
 export type Progress = 'none' | 'some' | 'complete';
-
 export type PagingMode = 'separate' | 'concat-scroll' | 'concat-scroll-snap';
-
 export type StateReportPolicy = 'none' | 'eager' | 'on-demand';
-
 export type UnitStateElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
-
 export enum UnitStateElementCodeStatusValue { NOT_REACHED = 0, DISPLAYED = 1, VALUE_CHANGED = 2}
 
 export interface StatusChangeElement {

@@ -1,7 +1,6 @@
 import {
-  Component, Input, OnInit, Output, EventEmitter
+  Component, Input, Output, EventEmitter
 } from '@angular/core';
-import { UnitStateService } from '../../services/unit-state.service';
 import { Page } from '../../../../../common/interfaces/unit';
 
 @Component({
@@ -10,16 +9,14 @@ import { Page } from '../../../../../common/interfaces/unit';
   styleUrls: ['./page.component.css']
 })
 
-export class PageComponent{
+export class PageComponent {
   @Input() page!: Page;
   @Input() isLastPage!: boolean;
-  @Input() parentArrayIndex!: number;
+  @Input() pageIndex!: number;
   @Input() pagesContainer!: HTMLElement;
   @Output() selectedIndexChange = new EventEmitter<number>();
 
-  constructor(private unitStateService: UnitStateService) {}
-
   onIntersection(): void {
-    this.selectedIndexChange.emit(this.parentArrayIndex);
+    this.selectedIndexChange.emit(this.pageIndex);
   }
 }

@@ -1,7 +1,6 @@
 import {
   Component, Input, OnDestroy, OnInit
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
@@ -18,7 +17,6 @@ import { Page } from '../../../../../common/interfaces/unit';
   styleUrls: ['./player-state.component.css']
 })
 export class PlayerStateComponent implements OnInit, OnDestroy {
-  @Input() parentForm!: FormGroup;
   @Input() pages!: Page[];
   @Input() playerConfig!: PlayerConfig;
 

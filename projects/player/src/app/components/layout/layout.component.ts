@@ -2,7 +2,6 @@ import {
   AfterViewInit, ChangeDetectorRef,
   Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,7 +31,6 @@ import { Page } from '../../../../../common/interfaces/unit';
 })
 
 export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Input() parentForm!: FormGroup;
   @Input() pages!: Page[];
   @Input() selectedIndex!: number;
   @Input() selectIndex!: Subject<number>;

@@ -37,6 +37,7 @@ import { ElementBaseGroupComponent } from './components/element-base-group/eleme
 import {
   ElementInteractiveGroupComponent
 } from './components/element-interactive-group/element-interactive-group.component';
+import { UnitStateComponent } from './components/unit-state/unit-state.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {
     CastPipe,
     ElementTextGroupComponent,
     ElementBaseGroupComponent,
-    ElementInteractiveGroupComponent
+    ElementInteractiveGroupComponent,
+    UnitStateComponent
   ],
   imports: [
     BrowserModule,

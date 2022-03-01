@@ -14,14 +14,16 @@ import { MediaPlayerService } from './services/media-player.service';
 import { AlertDialogComponent } from './components/alert-dialog/alert-dialog.component';
 import { Page, Unit } from '../../../common/interfaces/unit';
 import { UnitDefinitionSanitizer } from '../../../common/util/unit-definition-sanitizer';
+import { ValidatorService } from './services/validator.service';
 
 @Component({
   selector: 'aspect-player',
   template: `
-      <aspect-player-state *ngIf="playerConfig && pages?.length"
-                         [pages]="pages"
-                         [playerConfig]="playerConfig">
-      </aspect-player-state>
+      <aspect-unit-state
+          *ngIf="playerConfig && pages?.length"
+          [pages]="pages"
+          [playerConfig]="playerConfig">
+      </aspect-unit-state>
   `
 })
 export class AppComponent implements OnInit {
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
               private unitStateElementMapperService: UnitStateElementMapperService,
+              private validatorService: ValidatorService,
               private dialog: MatDialog) {
   }
 
@@ -100,6 +103,7 @@ export class AppComponent implements OnInit {
     this.playerConfig = {};
     this.unitStateService.reset();
     this.mediaPlayerService.reset();
+    this.validatorService.reset();
     this.unitStateElementMapperService.reset();
   }
 }

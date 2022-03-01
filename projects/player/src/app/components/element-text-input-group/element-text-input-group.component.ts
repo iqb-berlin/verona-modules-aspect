@@ -14,6 +14,7 @@ import { ElementFormGroupDirective } from '../../directives/element-form-group.d
 import { MessageService } from '../../../../../common/services/message.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ValidatorService } from '../../services/validator.service';
 
 @Component({
   selector: 'aspect-element-text-input-group',
@@ -32,7 +33,8 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     public unitStateElementMapperService: UnitStateElementMapperService,
     public translateService: TranslateService,
     public messageService: MessageService,
-    public veronaSubscriptionService: VeronaSubscriptionService
+    public veronaSubscriptionService: VeronaSubscriptionService,
+    public validatorService: ValidatorService
   ) {
     super();
   }
@@ -41,7 +43,7 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     this.createForm([this.elementModel as InputElement]);
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id, (this.elementModel as InputElement).value, this.elementComponent, this.pageIndex
     );

@@ -55,9 +55,7 @@ export class UnitStateService {
     if (this.elementPageIndices.length && !this.presentedPages.length) {
       return 'none';
     }
-    return (
-      this.elementPageIndices.length === this.presentedPages.length
-    ) ? 'complete' : 'some';
+    return (this.elementPageIndices.length === this.presentedPages.length) ? 'complete' : 'some';
   }
 
   registerElement(elementId: string,

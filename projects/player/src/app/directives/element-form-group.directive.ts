@@ -12,6 +12,7 @@ import { ElementGroupDirective } from './element-group.directive';
 import { VopNavigationDeniedNotification } from '../models/verona';
 import { MessageService } from '../../../../common/services/message.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
+import { ValidatorService } from '../services/validator.service';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
@@ -21,6 +22,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   abstract translateService: TranslateService;
   abstract messageService: MessageService;
   abstract veronaSubscriptionService: VeronaSubscriptionService;
+  abstract validatorService: ValidatorService;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -29,14 +31,17 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
     elementModels.forEach(elementModel => {
       const initialValue = this.unitStateElementMapperService
         .fromUnitState(this.unitStateService.getUnitStateElement(elementModel.id)?.value, elementModel);
-      this.form
-        .addControl(elementModel.id, new FormControl(initialValue, this.getValidators(elementModel)));
-      this.form.get(elementModel.id)?.valueChanges.subscribe((inputValue: InputElementValue) => {
+      const formControl = new FormControl(initialValue, this.getValidators(elementModel));
+      this.form.addControl(elementModel.id, formControl);
+      formControl.valueChanges.subscribe((inputValue: InputElementValue) => {
         this.unitStateService.changeElementValue({
           id: elementModel.id,
           value: this.unitStateElementMapperService.toUnitState(inputValue, elementModel.type)
         });
       });
+      if (this.needsValidation(elementModel)) {
+        this.validatorService.registerFormControl(formControl);
+      }
     });
     this.veronaSubscriptionService.vopNavigationDeniedNotification
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -52,6 +57,10 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
       this.form.markAllAsTouched();
     }
   }
+
+  private needsValidation = (elementModel: InputElement): boolean => [
+    elementModel.required, !!elementModel.minLength, !!elementModel.maxLength, !!elementModel.pattern
+  ].some(validator => validator);
 
   private getValidators = (elementModel: InputElement) => {
     const validators: ValidatorFn[] = [];

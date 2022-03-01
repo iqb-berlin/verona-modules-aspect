@@ -10,6 +10,7 @@ import { UnitStateElementMapperService } from '../../services/unit-state-element
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { MessageService } from '../../../../../common/services/message.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
+import { ValidatorService } from '../../services/validator.service';
 
 @Component({
   selector: 'aspect-element-compound-group',
@@ -26,7 +27,8 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
     public unitStateElementMapperService: UnitStateElementMapperService,
     public translateService: TranslateService,
     public messageService: MessageService,
-    public veronaSubscriptionService: VeronaSubscriptionService
+    public veronaSubscriptionService: VeronaSubscriptionService,
+    public validatorService: ValidatorService
   ) {
     super();
   }

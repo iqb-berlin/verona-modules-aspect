@@ -51,8 +51,15 @@ export class UnitService {
     UnitService.readIDs(this.unit);
   }
 
-  private static readIDs(unit: Unit): void { // TODO likert and cloze children
+  private static readIDs(unit: Unit): void {
     UnitUtils.findUIElements(unit).forEach(element => {
+      if (element.type === 'likert') {
+        (element as LikertElement).rows.forEach(row => IdService.getInstance().addID(row.id));
+      }
+      if (element.type === 'cloze') {
+        ClozeUtils.getClozeChildElements((element as ClozeElement).document)
+          .forEach(child => IdService.getInstance().addID(child.id));
+      }
       IdService.getInstance().addID(element.id);
     });
   }

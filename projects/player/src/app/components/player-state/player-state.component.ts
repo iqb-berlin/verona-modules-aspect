@@ -10,6 +10,7 @@ import {
 } from '../../models/verona';
 import { VeronaPostService } from '../../services/verona-post.service';
 import { Page } from '../../../../../common/interfaces/unit';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'aspect-player-state',
@@ -27,18 +28,23 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private veronaSubscriptionService: VeronaSubscriptionService,
-              private veronaPostService: VeronaPostService) {
-  }
+  constructor(
+    private veronaSubscriptionService: VeronaSubscriptionService,
+    private veronaPostService: VeronaPostService,
+    private navigationService: NavigationService
+  ) {}
 
   ngOnInit(): void {
     this.initSubscriptions();
   }
 
   private initSubscriptions(): void {
+    this.navigationService.pageIndex
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((pageIndex: number): void => this.selectIndex.next(pageIndex));
     this.veronaSubscriptionService.vopPageNavigationCommand
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((message: VopPageNavigationCommand): void => this.onPageNavigation(message));
+      .subscribe((message: VopPageNavigationCommand): void => this.selectIndex.next(Number(message.target)));
     this.veronaSubscriptionService.vopContinueCommand
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopContinueCommand): void => this.onContinue(message));
@@ -84,12 +90,6 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
       this.running = false;
     }
     this.sendVopStateChangedNotification(true);
-  }
-
-  private onPageNavigation(message: VopPageNavigationCommand): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onPageNavigation', message);
-    this.selectIndex.next(parseInt(message.target, 10));
   }
 
   private sendVopStateChangedNotification(requested:boolean = false): void {

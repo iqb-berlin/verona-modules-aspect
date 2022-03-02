@@ -19,15 +19,26 @@ import { ButtonElement } from '../../interfaces/elements';
             [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
             [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
             [style.border-radius.px]="elementModel.styles.borderRadius"
-            (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
+            (click)="elementModel.action && elementModel.actionParam !== null ?
+               navigateTo.emit({
+                  action: elementModel.action,
+                  param: elementModel.actionParam
+               }) :
+               false">
       {{elementModel.label}}
     </button>
-    <input *ngIf="elementModel.imageSrc" type="image"
-           [src]="elementModel.imageSrc | safeResourceUrl"
-           [class]="elementModel.positionProps.dynamicPositioning &&
+    <input
+        *ngIf="elementModel.imageSrc" type="image"
+        [src]="elementModel.imageSrc | safeResourceUrl"
+        [class]="elementModel.positionProps.dynamicPositioning &&
                     !elementModel.positionProps.fixedSize ? 'dynamic-image' : 'static-image'"
-           [alt]="'imageNotFound' | translate"
-           (click)="elementModel.action ? navigationRequested.emit(elementModel.action) : false">
+        [alt]="'imageNotFound' | translate"
+        (click)="elementModel.action && elementModel.actionParam !== null?
+           navigateTo.emit({
+              action: elementModel.action,
+              param: elementModel.actionParam
+           }) :
+           false">
   `,
   styles: [
     '.dynamic-image {width: 100%; height: fit-content;}',
@@ -37,5 +48,8 @@ import { ButtonElement } from '../../interfaces/elements';
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
-  @Output() navigationRequested = new EventEmitter<'previous' | 'next' | 'first' | 'last' | 'end'>();
+  @Output() navigateTo = new EventEmitter<{
+    action: 'unitNav' | 'pageNav';
+    param: 'previous' | 'next' | 'first' | 'last' | 'end' | number
+  }>();
 }

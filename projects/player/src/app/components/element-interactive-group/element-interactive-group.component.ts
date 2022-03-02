@@ -8,6 +8,7 @@ import { VeronaPostService } from '../../services/verona-post.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { NavigationService } from '../../services/navigation.service';
 
 @Component({
   selector: 'aspect-element-interactive-group',
@@ -21,8 +22,9 @@ export class ElementInteractiveGroupComponent extends ElementGroupDirective impl
   ImageElement!: ImageElement;
 
   constructor(
+    public unitStateService: UnitStateService,
     public veronaPostService: VeronaPostService,
-    public unitStateService: UnitStateService
+    public navigationService: NavigationService
   ) {
     super();
   }

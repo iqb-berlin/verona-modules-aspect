@@ -210,6 +210,7 @@ export abstract class ElementFactory {
       label: 'Knopf',
       imageSrc: null,
       action: null,
+      actionParam: null,
       positionProps: ElementFactory.initPositionProps(defaults.positionProps),
       styles: {
         ...ElementFactory.initBasicStyles(defaults),

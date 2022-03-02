@@ -123,7 +123,8 @@ export interface ButtonElement extends UIElement {
   type: 'button';
   label: string;
   imageSrc: string | null;
-  action: null | 'previous' | 'next' | 'first' | 'last' | 'end';
+  action: null | 'unitNav' | 'pageNav'
+  actionParam: null | 'previous' | 'next' | 'first' | 'last' | 'end' | number;
   positionProps: PositionProperties;
   styles: BasicStyles & {
     borderRadius: number;

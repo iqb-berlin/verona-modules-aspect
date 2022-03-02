@@ -10,54 +10,54 @@ import { UIElement, UIElementType } from '../../../../../../../common/interfaces
 @Component({
   selector: 'aspect-section-dynamic',
   template: `
-      <div [style.display]="'grid'"
-           [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes"
-           [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes"
-           [style.height.%]="100"
-           cdkDropListGroup
-           [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
-           [style.height.px]="section.height"
-           [style.background-color]="section.backgroundColor">
+    <div [style.display]="'grid'"
+         [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes"
+         [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes"
+         [style.height.%]="100"
+         cdkDropListGroup
+         [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
+         [style.height.px]="section.height"
+         [style.background-color]="section.backgroundColor">
 
-          <!-- Dynamic sections have the droplists for the grid cells next to the actual elements. Elements can not
-               be children of the grid cells because they can span over multiple cells. -->
-          <ng-container *ngFor="let column of this.section.gridColumnSizes.split(' '); let x = index">
-              <ng-container *ngFor="let row of this.section.gridRowSizes.split(' '); let y = index">
-                  <div class="grid-placeholder"
-                       [style.grid-column-start]="x + 1"
-                       [style.grid-column-end]="x + 1"
-                       [style.grid-row-start]="y + 1"
-                       [style.grid-row-end]="y + 1"
-                       cdkDropList [cdkDropListData]="{ sectionIndex: sectionIndex, gridCoordinates: [x + 1, y + 1] }"
-                       (cdkDropListDropped)="drop($any($event))"
-                       id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}"
-                       (dragover)="$event.preventDefault()" (drop)="newElementDropped($event, x + 1, y + 1)">
-                      {{x + 1}} / {{y + 1}}
-                  </div>
-              </ng-container>
-          </ng-container>
+      <!-- Dynamic sections have the droplists for the grid cells next to the actual elements. Elements can not
+           be children of the grid cells because they can span over multiple cells. -->
+      <ng-container *ngFor="let column of this.section.gridColumnSizes.split(' '); let x = index">
+        <ng-container *ngFor="let row of this.section.gridRowSizes.split(' '); let y = index">
+          <div class="grid-placeholder"
+               [style.grid-column-start]="x + 1"
+               [style.grid-column-end]="x + 1"
+               [style.grid-row-start]="y + 1"
+               [style.grid-row-end]="y + 1"
+               cdkDropList [cdkDropListData]="{ sectionIndex: sectionIndex, gridCoordinates: [x + 1, y + 1] }"
+               (cdkDropListDropped)="drop($any($event))"
+               id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}"
+               (dragover)="$event.preventDefault()" (drop)="newElementDropped($event, x + 1, y + 1)">
+              {{x + 1}} / {{y + 1}}
+          </div>
+        </ng-container>
+      </ng-container>
 
-          <aspect-dynamic-canvas-overlay *ngFor="let element of section.elements"
-                                         #elementComponent
-                                         [element]="$any(element)"
-                                         [style.min-width.px]="element.width"
-                                         [style.min-height.px]="element.height"
-                                         [style.margin-left.px]="element.positionProps.marginLeft"
-                                         [style.margin-right.px]="element.positionProps.marginRight"
-                                         [style.margin-top.px]="element.positionProps.marginTop"
-                                         [style.margin-bottom.px]="element.positionProps.marginBottom"
-                                         [style.grid-column-start]="element.positionProps.gridColumnStart"
-                                         [style.grid-column-end]="element.positionProps.gridColumnEnd"
-                                         [style.grid-row-start]="element.positionProps.gridRowStart"
-                                         [style.grid-row-end]="element.positionProps.gridRowEnd"
-                                         cdkDropList cdkDropListSortingDisabled
-                                         [cdkDropListData]="{ sectionIndex: sectionIndex }"
-                                         [cdkDropListConnectedTo]="dropListList"
-                                         (resize)="resizeOverlay($event)"
-                                         [style.position]="'relative'"
-                                         [style.pointer-events]="dragging ? 'none' : 'auto'">
-          </aspect-dynamic-canvas-overlay>
-      </div>
+      <aspect-dynamic-canvas-overlay *ngFor="let element of section.elements"
+                                     #elementComponent
+                                     [element]="$any(element)"
+                                     [style.min-width.px]="element.width"
+                                     [style.min-height.px]="element.height"
+                                     [style.margin-left.px]="element.position.marginLeft"
+                                     [style.margin-right.px]="element.position.marginRight"
+                                     [style.margin-top.px]="element.position.marginTop"
+                                     [style.margin-bottom.px]="element.position.marginBottom"
+                                     [style.grid-column-start]="element.position.gridColumnStart"
+                                     [style.grid-column-end]="element.position.gridColumnEnd"
+                                     [style.grid-row-start]="element.position.gridRowStart"
+                                     [style.grid-row-end]="element.position.gridRowEnd"
+                                     cdkDropList cdkDropListSortingDisabled
+                                     [cdkDropListData]="{ sectionIndex: sectionIndex }"
+                                     [cdkDropListConnectedTo]="dropListList"
+                                     (resize)="resizeOverlay($event)"
+                                     [style.position]="'relative'"
+                                     [style.pointer-events]="dragging ? 'none' : 'auto'">
+      </aspect-dynamic-canvas-overlay>
+    </div>
   `,
   styles: [
     '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center;}'

@@ -14,7 +14,7 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement('toggle-button', { height: 25, width: 100 })
+          default: ElementFactory.createElement({ type: 'toggle-button', height: 25, width: 100 })
         }
       };
     },

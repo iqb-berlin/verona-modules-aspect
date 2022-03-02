@@ -80,7 +80,7 @@ export class CanvasComponent {
         event.container.data.sectionIndex);
     } else {
       selectedElements.forEach((element: PositionedElement) => {
-        let newXPosition = element.positionProps.xPosition + event.distance.x;
+        let newXPosition = element.position.xPosition + event.distance.x;
         if (newXPosition < 0) {
           newXPosition = 0;
         }
@@ -89,7 +89,7 @@ export class CanvasComponent {
         }
         this.unitService.updateElementProperty([element], 'xPosition', newXPosition);
 
-        let newYPosition = element.positionProps.yPosition + event.distance.y;
+        let newYPosition = element.position.yPosition + event.distance.y;
         if (newYPosition < 0) {
           newYPosition = 0;
         }

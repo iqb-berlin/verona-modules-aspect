@@ -35,11 +35,11 @@ export class UnitStateElementMapperService {
       case 'audio':
         return unitStateValue !== undefined ?
           unitStateValue as number :
-          (elementModel as AudioElement).playerProps.playbackTime;
+          (elementModel as AudioElement).player.playbackTime;
       case 'video':
         return unitStateValue !== undefined ?
           unitStateValue as number :
-          (elementModel as VideoElement).playerProps.playbackTime;
+          (elementModel as VideoElement).player.playbackTime;
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':

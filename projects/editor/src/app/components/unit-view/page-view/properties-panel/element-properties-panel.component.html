@@ -12,21 +12,21 @@
       </aspect-element-model-properties-component>
     </mat-tab>
 
-    <mat-tab *ngIf="combinedProperties.positionProps">
+    <mat-tab *ngIf="combinedProperties.position">
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">format_shapes</mat-icon>
       </ng-template>
       <aspect-element-postion-properties [dimensions]="{ width: combinedProperties.width, height: combinedProperties.height }"
-                                         [positionProperties]="combinedProperties.positionProps"
+                                         [positionProperties]="combinedProperties.position"
                                          (updateModel)="updateModel($event.property, $event.value, $event.isInputValid)">
       </aspect-element-postion-properties>
     </mat-tab>
 
-    <mat-tab *ngIf="combinedProperties.styles">
+    <mat-tab *ngIf="combinedProperties.styling">
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">palette</mat-icon>
       </ng-template>
-      <aspect-element-style-properties [styles]="$any(combinedProperties.styles)"
+      <aspect-element-style-properties [styles]="$any(combinedProperties.styling)"
                                        (updateModel)="updateModel($event.property, $event.value)">
       </aspect-element-style-properties>
     </mat-tab>

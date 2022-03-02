@@ -1,10 +1,10 @@
-<div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+<div [class]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
          'fixed-size-content-wrapper' : 'inline-container'">
-  <div [class]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+  <div [class]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
             'fixed-size-content' : 'inline-container'"
-       [style.width]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+       [style.width]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
                       elementModel.width + 'px' : '100%'"
-       [style.height]="elementModel.positionProps?.dynamicPositioning && elementModel.positionProps?.fixedSize ?
+       [style.height]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
                       elementModel.height + 'px' : '100%'">
           <aspect-element-text-input-group
               *ngIf="'textInputGroup' === selectedGroup"
@@ -43,4 +43,3 @@
           </aspect-element-base-group>
   </div>
 </div>
-

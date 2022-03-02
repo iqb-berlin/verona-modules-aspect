@@ -34,20 +34,20 @@ export class ElementMediaPlayerGroupComponent extends ElementGroupDirective impl
   ngOnInit(): void {
     const unitStateValue = this.unitStateService.getUnitStateElement(this.elementModel.id)?.value;
     this.initialValue = unitStateValue !== undefined ?
-      unitStateValue as number : (this.elementModel as AudioElement).playerProps.playbackTime;
+      unitStateValue as number : (this.elementModel as AudioElement).player.playbackTime;
 
     this.mediaPlayerService.registerMediaElement(
       this.elementModel.id,
       this.elementComponent,
-      this.elementModel.playerProps?.activeAfterID as string,
-      this.elementModel.playerProps?.minRuns as number === 0
+      this.elementModel.player?.activeAfterID as string,
+      this.elementModel.player?.minRuns as number === 0
     );
   }
 
   ngAfterViewInit(): void {
     const initialValue = this.elementModel.type === 'audio' ?
-      (this.elementModel as AudioElement).playerProps.playbackTime :
-      (this.elementModel as VideoElement).playerProps.playbackTime;
+      (this.elementModel as AudioElement).player.playbackTime :
+      (this.elementModel as VideoElement).player.playbackTime;
     this.registerAtUnitStateService(this.elementModel.id, initialValue, this.elementComponent, this.pageIndex);
   }
 }

@@ -6,16 +6,16 @@ import { DropdownElement } from '../../interfaces/elements';
   selector: 'aspect-dropdown',
   template: `
     <mat-form-field
-        appearance="fill"
-        [style.width.%]="100"
-        [style.height.%]="100"
-        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor">
-      <mat-label [style.color]="elementModel.styles.fontColor"
-                 [style.font-family]="elementModel.styles.font"
-                 [style.font-size.px]="elementModel.styles.fontSize"
-                 [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                 [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                 [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
+            appearance="fill"
+            [style.width.%]="100"
+            [style.height.%]="100"
+            aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor">
+      <mat-label [style.color]="elementModel.styling.fontColor"
+                 [style.font-family]="elementModel.styling.font"
+                 [style.font-size.px]="elementModel.styling.fontSize"
+                 [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                 [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                 [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
         {{$any(elementModel).label}}
       </mat-label>
       <mat-select [formControl]="elementFormControl" [value]="elementModel.value">

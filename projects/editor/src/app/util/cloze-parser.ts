@@ -38,13 +38,13 @@ export abstract class ClozeParser {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field':
-        newElement = ElementFactory.createElement('text-field-simple', elementModel) as InputElement;
+        newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
         break;
       case 'drop-list':
-        newElement = ElementFactory.createElement('drop-list', elementModel) as InputElement;
+        newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
         break;
       case 'toggle-button':
-        newElement = ElementFactory.createElement('toggle-button', elementModel) as InputElement;
+        newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

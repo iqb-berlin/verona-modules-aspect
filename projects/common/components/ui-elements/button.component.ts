@@ -11,14 +11,14 @@ import { ButtonElement } from '../../interfaces/elements';
             type='button'
             [style.width.%]="100"
             [style.height.%]="100"
-            [style.background-color]="elementModel.styles.backgroundColor"
-            [style.color]="elementModel.styles.fontColor"
-            [style.font-family]="elementModel.styles.font"
-            [style.font-size.px]="elementModel.styles.fontSize"
-            [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-            [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-            [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-            [style.border-radius.px]="elementModel.styles.borderRadius"
+            [style.background-color]="elementModel.styling.backgroundColor"
+            [style.color]="elementModel.styling.fontColor"
+            [style.font-family]="elementModel.styling.font"
+            [style.font-size.px]="elementModel.styling.fontSize"
+            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+            [style.border-radius.px]="elementModel.styling.borderRadius"
             (click)="elementModel.action && elementModel.actionParam !== null ?
                navigateTo.emit({
                   action: elementModel.action,
@@ -30,8 +30,8 @@ import { ButtonElement } from '../../interfaces/elements';
     <input
         *ngIf="elementModel.imageSrc" type="image"
         [src]="elementModel.imageSrc | safeResourceUrl"
-        [class]="elementModel.positionProps.dynamicPositioning &&
-                    !elementModel.positionProps.fixedSize ? 'dynamic-image' : 'static-image'"
+        [class]="elementModel.position.dynamicPositioning &&
+                    !elementModel.position.fixedSize ? 'dynamic-image' : 'static-image'"
         [alt]="'imageNotFound' | translate"
         (click)="elementModel.action && elementModel.actionParam !== null?
            navigateTo.emit({

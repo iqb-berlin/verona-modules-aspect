@@ -8,13 +8,13 @@ import { RadioButtonGroupElement } from '../../interfaces/elements';
     <div class="mat-form-field"
          [style.width.%]="100"
          [style.height.%]="100"
-         [style.background-color]="elementModel.styles.backgroundColor"
-         [style.color]="elementModel.styles.fontColor"
-         [style.font-family]="elementModel.styles.font"
-         [style.font-size.px]="elementModel.styles.fontSize"
-         [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
+         [style.background-color]="elementModel.styling.backgroundColor"
+         [style.color]="elementModel.styling.fontColor"
+         [style.font-family]="elementModel.styling.font"
+         [style.font-size.px]="elementModel.styling.fontSize"
+         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
       <label id="radio-group-label"
              [innerHTML]="elementModel.label">
       </label>
@@ -29,7 +29,7 @@ import { RadioButtonGroupElement } from '../../interfaces/elements';
                                                   elementFormControl.value !== i }"
                           [value]="i"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                          [style.line-height.%]="elementModel.styles.lineHeight">
+                          [style.line-height.%]="elementModel.styling.lineHeight">
           {{option}}
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"

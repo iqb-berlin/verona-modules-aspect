@@ -16,17 +16,17 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                            [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                    elementFormControl.value !== null &&
                                                    elementFormControl.value !== i }"
-                           [style.color]="elementModel.styles.fontColor"
-                           [style.font-size.px]="elementModel.styles.fontSize"
-                           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-                           [style.font-family]="elementModel.styles.font"
+                           [style.color]="elementModel.styling.fontColor"
+                           [style.font-size.px]="elementModel.styling.fontSize"
+                           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+                           [style.font-family]="elementModel.styling.font"
                            [style.background-color]="elementFormControl.value !== null &&
                                                    elementFormControl.value === i ?
                                                    elementModel.selectionColor :
-                                                   elementModel.styles.backgroundColor"
-                           [style.line-height.%]="elementModel.styles.lineHeight">
+                                                   elementModel.styling.backgroundColor"
+                           [style.line-height.%]="elementModel.styling.lineHeight">
                            <!--Background color does not show in editor-->
           {{option}}
         </mat-button-toggle>

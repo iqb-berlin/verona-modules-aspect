@@ -32,7 +32,7 @@ export class UnitViewComponent implements OnDestroy {
   }
 
   addPage(): void {
-    this.unitService.unit.pages.push(UnitFactory.generateEmptyPage());
+    this.unitService.unit.pages.push(UnitFactory.createPage());
 
     this.selectedPageIndex = this.unitService.unit.pages.length - 1;
     this.selectionService.selectedPageIndex = this.selectedPageIndex;

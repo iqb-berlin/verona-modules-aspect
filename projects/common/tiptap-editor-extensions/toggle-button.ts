@@ -10,7 +10,7 @@ const ToggleButtonExtension =
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement('toggle-button')
+          default: ElementFactory.createElement({ type: 'toggle-button' })
         }
       };
     },

@@ -12,13 +12,13 @@ import { TextAreaElement } from '../../interfaces/elements';
         [style.width.%]="100"
         [style.height.%]="100"
         [style.min-height.%]="100"
-        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
-        [style.color]="elementModel.styles.fontColor"
-        [style.font-family]="elementModel.styles.font"
-        [style.font-size.px]="elementModel.styles.fontSize"
-        [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-        [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-        [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+        aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
+        [style.color]="elementModel.styling.fontColor"
+        [style.font-family]="elementModel.styling.font"
+        [style.font-size.px]="elementModel.styling.fontSize"
+        [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
         [appearance]="$any(elementModel.appearance)">
       <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
       <textarea matInput #input
@@ -27,7 +27,7 @@ import { TextAreaElement } from '../../interfaces/elements';
                 [value]="elementModel.value"
                 [readonly]="elementModel.readOnly"
                 [style.min-width.%]="100"
-                [style.line-height.%]="elementModel.styles.lineHeight"
+                [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
                 (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
                 (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">

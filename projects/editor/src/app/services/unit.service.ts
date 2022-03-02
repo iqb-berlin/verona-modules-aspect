@@ -42,16 +42,16 @@ export class UnitService {
               private dialogService: DialogService,
               private sanitizer: DomSanitizer,
               private translateService: TranslateService) {
-    this.unit = UnitFactory.generateEmptyUnit();
+    this.unit = UnitFactory.createUnit({} as Unit);
   }
 
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
-    this.unit = UnitDefinitionSanitizer.sanitize(JSON.parse(unitDefinition));
+    this.unit = UnitFactory.createUnit(UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(unitDefinition)));
     UnitService.readIDs(this.unit);
   }
 
-  private static readIDs(unit: Unit): void {
+  private static readIDs(unit: Unit): void { // TODO likert and cloze children
     UnitUtils.findUIElements(unit).forEach(element => {
       IdService.getInstance().addID(element.id);
     });
@@ -62,7 +62,7 @@ export class UnitService {
   }
 
   addSection(page: Page): void {
-    page.sections.push(UnitFactory.generateEmptySection());
+    page.sections.push(UnitFactory.createSection());
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
 
@@ -112,29 +112,31 @@ export class UnitService {
           break;
         // no default
       }
-      newElement = ElementFactory.createElement(elementType, { // TODO
+      newElement = ElementFactory.createElement({
+        type: elementType,
         id: this.idService.getNewID(elementType),
         src: mediaSrc,
         positionProps: {
           dynamicPositioning: section.dynamicPositioning
         }
-      } as unknown as Partial<UIElement>) as PositionedElement;
+      } as unknown as UIElement) as PositionedElement;
     } else {
-      newElement = ElementFactory.createElement(elementType, {
+      newElement = ElementFactory.createElement({
+        type: elementType,
         id: this.idService.getNewID(elementType),
         positionProps: {
           dynamicPositioning: section.dynamicPositioning
         }
-      } as unknown as Partial<UIElement>) as PositionedElement;
+      } as unknown as UIElement) as PositionedElement;
     }
     if (coordinates && section.dynamicPositioning) {
-      newElement.positionProps.gridColumnStart = coordinates.x;
-      newElement.positionProps.gridColumnEnd = coordinates.x + 1;
-      newElement.positionProps.gridRowStart = coordinates.y;
-      newElement.positionProps.gridRowEnd = coordinates.y + 1;
+      newElement.position.gridColumnStart = coordinates.x;
+      newElement.position.gridColumnEnd = coordinates.x + 1;
+      newElement.position.gridRowStart = coordinates.y;
+      newElement.position.gridRowEnd = coordinates.y + 1;
     } else if (coordinates && !section.dynamicPositioning) {
-      newElement.positionProps.xPosition = coordinates.x;
-      newElement.positionProps.yPosition = coordinates.y;
+      newElement.position.xPosition = coordinates.x;
+      newElement.position.yPosition = coordinates.y;
     }
     section.elements.push(newElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification();
@@ -164,7 +166,7 @@ export class UnitService {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {
       newSection.elements.push(element as PositionedElement);
-      (element as PositionedElement).positionProps.dynamicPositioning = newSection.dynamicPositioning;
+      (element as PositionedElement).position.dynamicPositioning = newSection.dynamicPositioning;
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification();
   }
@@ -175,8 +177,8 @@ export class UnitService {
     (elements as PositionedElement[]).forEach((element: PositionedElement) => {
       const newElement = JSON.parse(JSON.stringify(element));
       newElement.id = this.idService.getNewID(element.type);
-      newElement.positionProps.xPosition = element.positionProps.xPosition + 10;
-      newElement.positionProps.yPosition = element.positionProps.yPosition + 10;
+      newElement.positionProps.xPosition = element.position.xPosition + 10;
+      newElement.positionProps.yPosition = element.position.yPosition + 10;
 
       if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
         newElement.value.forEach((valueObject: { id: string }) => {
@@ -210,7 +212,7 @@ export class UnitService {
     if (property === 'dynamicPositioning') {
       section.dynamicPositioning = value as boolean;
       section.elements.forEach((element: PositionedElement) => {
-        element.positionProps.dynamicPositioning = value as boolean;
+        element.position.dynamicPositioning = value as boolean;
       });
     } else {
       section[property] = value;
@@ -248,16 +250,16 @@ export class UnitService {
       } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumnStart',
         'gridColumnEnd', 'gridRowStart', 'gridRowEnd', 'marginLeft', 'marginRight', 'marginTop',
         'marginBottom', 'zIndex'].includes(property)) {
-        element.positionProps![property] = Copy.getCopy(value);
+        element.position![property] = Copy.getCopy(value);
       } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',
         'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor',
         'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
-        element.styles![property] = Copy.getCopy(value);
+        element.styling![property] = Copy.getCopy(value);
       } else if (['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',
         'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
         'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
         'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'].includes(property)) {
-        element.playerProps![property] = Copy.getCopy(value);
+        element.player![property] = Copy.getCopy(value);
       } else {
         element[property] = Copy.getCopy(value);
       }
@@ -358,28 +360,28 @@ export class UnitService {
         this.updateElementProperty(
           elements,
           'xPosition',
-          Math.min(...elements.map(element => element.positionProps.xPosition))
+          Math.min(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'right':
         this.updateElementProperty(
           elements,
           'xPosition',
-          Math.max(...elements.map(element => element.positionProps.xPosition))
+          Math.max(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'top':
         this.updateElementProperty(
           elements,
           'yPosition',
-          Math.min(...elements.map(element => element.positionProps.yPosition))
+          Math.min(...elements.map(element => element.position.yPosition))
         );
         break;
       case 'bottom':
         this.updateElementProperty(
           elements,
           'yPosition',
-          Math.max(...elements.map(element => element.positionProps.yPosition))
+          Math.max(...elements.map(element => element.position.yPosition))
         );
         break;
       // no default
@@ -411,7 +413,7 @@ export class UnitService {
       case 'text':
         this.dialogService.showRichTextEditDialog(
           (element as TextElement).text,
-          (element as TextElement).styles.fontSize
+          (element as TextElement).styling.fontSize
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
@@ -426,7 +428,7 @@ export class UnitService {
       case 'cloze':
         this.dialogService.showClozeTextEditDialog(
           (element as ClozeElement).document,
-          (element as ClozeElement).styles.fontSize
+          (element as ClozeElement).styling.fontSize
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
@@ -456,7 +458,7 @@ export class UnitService {
         break;
       case 'audio':
       case 'video':
-        this.dialogService.showPlayerEditDialog((element as PlayerElement).playerProps)
+        this.dialogService.showPlayerEditDialog((element as PlayerElement).player)
           .subscribe((result: PlayerProperties) => {
             Object.keys(result).forEach(key => this.updateElementProperty([element], key, result[key]));
           });

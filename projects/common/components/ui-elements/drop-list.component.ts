@@ -18,13 +18,13 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"
-           [style.color]="elementModel.styles.fontColor"
-           [style.font-family]="elementModel.styles.font"
-           [style.font-size.px]="elementModel.styles.fontSize"
-           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-           [style.backgroundColor]="elementModel.styles.backgroundColor"
+           [style.color]="elementModel.styling.fontColor"
+           [style.font-family]="elementModel.styling.font"
+           [style.font-size.px]="elementModel.styling.fontSize"
+           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+           [style.backgroundColor]="elementModel.styling.backgroundColor"
            [style.display]="elementModel.orientation === 'horizontal' ? 'flex' : ''"
            [style.flex-direction]="elementModel.orientation === 'horizontal' ? 'row' : ''"
            cdkDropList
@@ -48,31 +48,32 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
             </ng-container>
           </ng-container>
         </ng-container>
-          <!--Leave template within the dom to ensure dragNdrop-->
-          <ng-template #dropObject let-value>
-            <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
-                 [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                              'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-                 [style.background-color]="elementModel.itemBackgroundColor"
-                 (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
-              <div *cdkDragPreview
-                   [style.font-size.px]="elementModel.styles.fontSize"
-                   [style.background-color]="elementModel.styles.itemBackgroundColor">
+        <!--Leave template within the dom to ensure dragNdrop-->
+        <ng-template #dropObject let-value>
+          <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
+               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                      'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
+               [style.background-color]="elementModel.itemBackgroundColor"
+               (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
+            <div *cdkDragPreview
+                 [style.font-size.px]="elementModel.styling.fontSize"
+                 [style.background-color]="elementModel.styling.itemBackgroundColor">
                 {{value.stringValue}}
-              </div>
-              <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.styles.fontSize">
-              </div>
-              {{value.stringValue}}
             </div>
-            <img *ngIf="value.imgSrcValue"
-                 [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
-                 [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
-                 class="item"
-                 [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                              'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-                 cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
-                 [style.object-fit]="'scale-down'">
-          </ng-template>
+            <div class="drag-placeholder" *cdkDragPlaceholder
+                 [style.min-height.px]="elementModel.styling.fontSize">
+            </div>
+            {{value.stringValue}}
+          </div>
+          <img *ngIf="value.imgSrcValue"
+               [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
+               [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
+               class="item"
+               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                      'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
+               cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
+               [style.object-fit]="'scale-down'">
+        </ng-template>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">

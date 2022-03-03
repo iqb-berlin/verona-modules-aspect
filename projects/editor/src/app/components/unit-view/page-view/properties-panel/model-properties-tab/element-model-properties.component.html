@@ -193,8 +193,8 @@
     <mat-select [value]="combinedProperties.value"
                 (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
       <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-      <mat-option *ngFor="let option of $any(combinedProperties.options); let i = index" [value]="i + 1">
-        {{option}} (Index: {{i + 1}})
+      <mat-option *ngFor="let option of $any(combinedProperties.options); let i = index" [value]="i">
+        {{option}} (Index: {{i}})
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -206,8 +206,8 @@
     <mat-select [value]="combinedProperties.value"
                 (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
       <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-      <mat-option *ngFor="let column of $any(combinedProperties.columns); let i = index" [value]="i + 1">
-        {{column.name}} (Index: {{i + 1}})
+      <mat-option *ngFor="let column of $any(combinedProperties.columns); let i = index" [value]="i">
+        {{column.name}} (Index: {{i}})
       </mat-option>
     </mat-select>
   </mat-form-field>

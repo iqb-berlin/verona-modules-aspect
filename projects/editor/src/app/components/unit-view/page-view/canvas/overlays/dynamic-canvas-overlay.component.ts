@@ -8,47 +8,47 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
 @Component({
   selector: 'aspect-dynamic-canvas-overlay',
   template: `
-    <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
-    <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
-    <div #draggableElement class="draggable-element"
-         [class.fixed-size-content-wrapper]="element.positionProps?.dynamicPositioning &&
-            element.positionProps?.fixedSize"
-         [class.temporaryHighlight]="temporaryHighlight"
-         [style.display]="dragging ? 'none' : ''"
-         tabindex="-1"
-         cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
-         (click)="selectElement($event.shiftKey); $event.stopPropagation()" (dblclick)="openEditDialog()"
-         (cdkDragStarted)="moveDragStart()"
-         (cdkDragEnded)="moveDragEnd()"
-         [style.outline]="isSelected ? 'purple solid 1px' : ''"
-         [style.z-index]="isSelected ? 2 : 1">
-      <div *cdkDragPlaceholder></div>
-      <div *ngIf="isSelected"
-           [style.width.%]="dragging ? 100 : 0"
-           [style.height.%]="dragging ? 100 : 0"
-           cdkDrag [cdkDragData]="{dragType: 'resize', element: element}"
-           (cdkDragStarted)="resizeDragStart()" (cdkDragEnded)="resizeDragEnd()"
-           (cdkDragMoved)="resizeDragMove($event)">
-        <div class="resizeHandle">
-          <mat-icon>aspect_ratio</mat-icon>
+      <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
+      <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
+      <div #draggableElement class="draggable-element"
+           [class.fixed-size-content-wrapper]="element.position?.dynamicPositioning &&
+            element.position?.fixedSize"
+           [class.temporaryHighlight]="temporaryHighlight"
+           [style.display]="dragging ? 'none' : ''"
+           tabindex="-1"
+           cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
+           (click)="selectElement($event.shiftKey); $event.stopPropagation()" (dblclick)="openEditDialog()"
+           (cdkDragStarted)="moveDragStart()"
+           (cdkDragEnded)="moveDragEnd()"
+           [style.outline]="isSelected ? 'purple solid 1px' : ''"
+           [style.z-index]="isSelected ? 2 : 1">
           <div *cdkDragPlaceholder></div>
-        </div>
-      </div>
-      <div [class.fixed-size-content]="element.positionProps?.dynamicPositioning &&
-            element.positionProps?.fixedSize"
-           [style.width]="element.positionProps?.dynamicPositioning && element.positionProps?.fixedSize ?
+          <div *ngIf="isSelected"
+               [style.width.%]="dragging ? 100 : 0"
+               [style.height.%]="dragging ? 100 : 0"
+               cdkDrag [cdkDragData]="{dragType: 'resize', element: element}"
+               (cdkDragStarted)="resizeDragStart()" (cdkDragEnded)="resizeDragEnd()"
+               (cdkDragMoved)="resizeDragMove($event)">
+              <div class="resizeHandle">
+                  <mat-icon>aspect_ratio</mat-icon>
+                  <div *cdkDragPlaceholder></div>
+              </div>
+          </div>
+          <div [class.fixed-size-content]="element.position?.dynamicPositioning &&
+            element.position?.fixedSize"
+               [style.width]="element.position?.dynamicPositioning && element.position?.fixedSize ?
                       element.width + 'px' : '100%'"
-           [style.height]="element.positionProps?.dynamicPositioning && element.positionProps?.fixedSize ?
+               [style.height]="element.position?.dynamicPositioning && element.position?.fixedSize ?
                       element.height + 'px' : '100%'">
-        <ng-template #elementContainer></ng-template>
+              <ng-template #elementContainer></ng-template>
+          </div>
       </div>
-    </div>
-    <div class="resize-preview"
-         [style.position]="'relative'"
-         [style.width.px]="dragging ? elementWidth : 0"
-         [style.height.px]="dragging ? elementHeight : 0"
-         [style.border]="'1px dashed purple'">
-    </div>
+      <div class="resize-preview"
+           [style.position]="'relative'"
+           [style.width.px]="dragging ? elementWidth : 0"
+           [style.height.px]="dragging ? elementHeight : 0"
+           [style.border]="'1px dashed purple'">
+      </div>
   `,
   styles: [
     '.draggable-element {position: relative; width: 100%; height: 100%}',

@@ -9,30 +9,30 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
   template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
-      <aspect-marking-bar
-          *ngIf="elementModel.highlightableYellow ||
-              elementModel.highlightableTurquoise ||
-              elementModel.highlightableOrange"
-          [elementModel]="elementModel"
-          (selectionChanged)="onSelectionChanged($event)">
-      </aspect-marking-bar>
-      <div #textContainerRef class="text-container"
-           [class.orange-selection]="selectedColor === 'orange'"
-           [class.yellow-selection]="selectedColor === 'yellow'"
-           [class.turquoise-selection]="selectedColor === 'turquoise'"
-           [class.delete-selection]="selectedColor === 'delete'"
-           [style.background-color]="elementModel.styles.backgroundColor"
-           [style.color]="elementModel.styles.fontColor"
-           [style.font-family]="elementModel.styles.font"
-           [style.font-size.px]="elementModel.styles.fontSize"
-           [style.line-height.%]="elementModel.styles.lineHeight"
-           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-           [innerHTML]="savedText || elementModel.text | safeResourceHTML"
-           (touchstart)="emitStartSelection($event)"
-           (mousedown)="emitStartSelection($event)">
-      </div>
+        <aspect-marking-bar
+                *ngIf="elementModel.highlightableYellow ||
+            elementModel.highlightableTurquoise ||
+            elementModel.highlightableOrange"
+                [elementModel]="elementModel"
+                (selectionChanged)="onSelectionChanged($event)">
+        </aspect-marking-bar>
+        <div #textContainerRef class="text-container"
+             [class.orange-selection]="selectedColor === 'orange'"
+             [class.yellow-selection]="selectedColor === 'yellow'"
+             [class.turquoise-selection]="selectedColor === 'turquoise'"
+             [class.delete-selection]="selectedColor === 'delete'"
+             [style.background-color]="elementModel.styling.backgroundColor"
+             [style.color]="elementModel.styling.fontColor"
+             [style.font-family]="elementModel.styling.font"
+             [style.font-size.px]="elementModel.styling.fontSize"
+             [style.line-height.%]="elementModel.styling.lineHeight"
+             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+             [innerHTML]="savedText || elementModel.text | safeResourceHTML"
+             (touchstart)="emitStartSelection($event)"
+             (mousedown)="emitStartSelection($event)">
+        </div>
     </div>
   `,
   styles: [

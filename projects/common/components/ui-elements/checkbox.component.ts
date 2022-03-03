@@ -8,16 +8,16 @@ import { CheckboxElement } from '../../interfaces/elements';
     <div class="mat-form-field"
          [style.width.%]="100"
          [style.height.%]="100"
-         [style.background-color]="elementModel.styles.backgroundColor">
+         [style.background-color]="elementModel.styling.backgroundColor">
       <mat-checkbox #checkbox class="example-margin"
                     [formControl]="elementFormControl"
                     [checked]="$any(elementModel.value)"
-                    [style.color]="elementModel.styles.fontColor"
-                    [style.font-family]="elementModel.styles.font"
-                    [style.font-size.px]="elementModel.styles.fontSize"
-                    [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                    [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                    [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+                    [style.color]="elementModel.styling.fontColor"
+                    [style.font-family]="elementModel.styling.font"
+                    [style.font-size.px]="elementModel.styling.fontSize"
+                    [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                    [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                    [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                     (click)="elementModel.readOnly ? $event.preventDefault() : null">
         <div [innerHTML]="elementModel.label"></div>
       </mat-checkbox>

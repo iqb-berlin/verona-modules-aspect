@@ -8,9 +8,8 @@ import { SpellCorrectElement } from '../../interfaces/elements';
   template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
-      <div fxFlex
-           fxLayout="column"
-           aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
+      <div fxFlex fxLayout="column"
+           aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
            [style.width.%]="100"
            [style.height.%]="100">
         <mat-form-field class="small-input">
@@ -18,12 +17,12 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                  [style.text-align]="'center'"
                  autocomplete="off"
                  [readonly]="elementModel.readOnly"
-                 [style.color]="elementModel.styles.fontColor"
-                 [style.font-family]="elementModel.styles.font"
-                 [style.font-size.px]="elementModel.styles.fontSize"
-                 [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                 [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                 [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+                 [style.color]="elementModel.styling.fontColor"
+                 [style.font-family]="elementModel.styling.font"
+                 [style.font-size.px]="elementModel.styling.fontSize"
+                 [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                 [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                 [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                  [value]="elementModel.value"
                  [formControl]="elementFormControl">
         </mat-form-field>
@@ -31,25 +30,23 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                 mat-button
                 type="button"
                 [disabled]="elementModel.readOnly"
-                [style.color]="elementModel.styles.fontColor"
-                [style.font-family]="elementModel.styles.font"
-                [style.font-size.px]="elementModel.styles.fontSize"
-                [style.font-weight]="elementModel.styles.bold ? 'bold' : '400'"
-                [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+                [style.color]="elementModel.styling.fontColor"
+                [style.font-family]="elementModel.styling.font"
+                [style.font-size.px]="elementModel.styling.fontSize"
+                [style.font-weight]="elementModel.styling.bold ? 'bold' : '400'"
+                [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                 [style.width.%]="100"
                 [style.margin-top]="'-20px'"
-                [style.text-decoration-line]=
-                    "(inputElement && inputElement.focused) ||
-                    (inputElement && !!inputElement.value) ||
-                    (elementFormControl && elementFormControl.value === '') ? 'line-through' : ''"
-                (click)="
-                elementFormControl.value === null ?
-                inputElement.focus() :
-                buttonElement.focus();
-                elementFormControl.value === null ?
-                (elementFormControl.setValue('')) :
-                elementFormControl.setValue(null)">{{elementModel.label}}
+                [style.text-decoration-line]="(inputElement && inputElement.focused) ||
+                                              (inputElement && !!inputElement.value) ||
+                                              (elementFormControl && elementFormControl.value === '') ? 'line-through' : ''"
+                (click)="elementFormControl.value === null ?
+                           inputElement.focus() :
+                           buttonElement.focus();
+                        elementFormControl.value === null ?
+                            (elementFormControl.setValue('')) :
+                            elementFormControl.setValue(null)">{{elementModel.label}}
         </button>
       </div>
     </div>

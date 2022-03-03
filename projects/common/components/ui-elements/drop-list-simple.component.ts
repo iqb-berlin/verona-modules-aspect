@@ -10,21 +10,21 @@ import { DragNDropValueObject, DropListSimpleElement } from '../../interfaces/el
   selector: 'aspect-drop-list-simple',
   template: `
     <div class="list-container">
-      <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
-      <!-- class style.-->
+        <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
+        <!-- class style.-->
       <div class="list"
            [style.height.px]="elementModel.height"
            [style.width.px]="elementModel.width"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.border-color]="elementModel.highlightReceivingDropListColor"
            [style.border-width.px]="elementModel.highlightReceivingDropList ? 2 : 0"
-           [style.color]="elementModel.styles.fontColor"
-           [style.font-family]="elementModel.styles.font"
-           [style.font-size.px]="elementModel.styles.fontSize"
-           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-           [style.backgroundColor]="elementModel.styles.backgroundColor"
+           [style.color]="elementModel.styling.fontColor"
+           [style.font-family]="elementModel.styling.font"
+           [style.font-size.px]="elementModel.styling.fontSize"
+           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+           [style.backgroundColor]="elementModel.styling.backgroundColor"
            cdkDropList
            [id]="elementModel.id"
            [cdkDropListData]="this"
@@ -32,36 +32,37 @@ import { DragNDropValueObject, DropListSimpleElement } from '../../interfaces/el
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
         <ng-container *ngIf="!parentForm">
-          <ng-container *ngFor="let value of $any(elementModel.value)">
-            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+            <ng-container *ngFor="let value of $any(elementModel.value)">
+                <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+                </ng-container>
             </ng-container>
-          </ng-container>
         </ng-container>
 
         <ng-container *ngIf="parentForm">
-          <ng-container *ngFor="let value of elementFormControl.value">
-            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+            <ng-container *ngFor="let value of elementFormControl.value">
+                <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+                </ng-container>
             </ng-container>
-          </ng-container>
         </ng-container>
 
         <ng-template #dropObject let-value>
           <div class="item"
                [style.line-height.px]="elementModel.height - 4"
-               [style.background-color]="elementModel.styles.itemBackgroundColor"
+               [style.background-color]="elementModel.styling.itemBackgroundColor"
                cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
 
             <div *cdkDragPreview
-                 [style.font-size.px]="elementModel.styles.fontSize"
-                 [style.background-color]="elementModel.styles.itemBackgroundColor">
+                 [style.font-size.px]="elementModel.styling.fontSize"
+                 [style.background-color]="elementModel.styling.itemBackgroundColor">
               {{value.stringValue}}
             </div>
 
-            <div class="drag-placeholder" *cdkDragPlaceholder [style.min-height.px]="elementModel.styles.fontSize">
+            <div class="drag-placeholder" *cdkDragPlaceholder
+                 [style.min-height.px]="elementModel.styling.fontSize">
             </div>
             {{value.stringValue}}
           </div>
-         </ng-template>
+        </ng-template>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">

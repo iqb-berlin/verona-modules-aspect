@@ -24,139 +24,145 @@ import {
   ClozeElement,
   DropdownElement,
   DropListElement,
-  DropListSimpleElement,
+  DropListSimpleElement, ElementStyling,
   FrameElement,
   ImageElement,
-  InputElement, LikertElement, LikertRowElement, PlayerProperties, PositionProperties,
+  InputElement, InputElementValue, LikertElement, LikertRowElement, PlayerProperties, PositionProperties,
   RadioButtonGroupComplexElement,
   RadioButtonGroupElement, SliderElement, SpellCorrectElement,
   TextAreaElement,
   TextElement,
   TextFieldElement, TextFieldSimpleElement, ToggleButtonElement,
-  UIElement, UIElementType,
+  UIElement, UIElementType, UIElementValue,
   VideoElement
 } from '../interfaces/elements';
 
 export abstract class ElementFactory {
-  static createElement(elementType: string, defaults?: Record<string, any>): UIElement {
-    switch (elementType) {
+  static createElement(element: Partial<UIElement>): UIElement {
+    // console.log('createElement', element);
+    switch (element.type) {
       case 'text':
-        return ElementFactory.createTextElement(defaults);
+        return ElementFactory.createTextElement(element as Partial<TextElement>);
       case 'button':
-        return ElementFactory.createButtonElement(defaults);
+        return ElementFactory.createButtonElement(element as Partial<ButtonElement>);
       case 'text-field':
-        return ElementFactory.createTextFieldElement(defaults);
+        return ElementFactory.createTextFieldElement(element as Partial<TextFieldElement>);
       case 'text-field-simple':
-        return ElementFactory.createTextFieldSimpleElement(defaults);
+        return ElementFactory.createTextFieldSimpleElement(element as Partial<TextFieldSimpleElement>);
       case 'text-area':
-        return ElementFactory.createTextAreaElement(defaults);
+        return ElementFactory.createTextAreaElement(element as Partial<TextAreaElement>);
       case 'checkbox':
-        return ElementFactory.createCheckboxElement(defaults);
+        return ElementFactory.createCheckboxElement(element as Partial<CheckboxElement>);
       case 'dropdown':
-        return ElementFactory.createDropdownElement(defaults);
+        return ElementFactory.createDropdownElement(element as Partial<DropdownElement>);
       case 'radio':
-        return ElementFactory.createRadioButtonGroupElement(defaults);
+        return ElementFactory.createRadioButtonGroupElement(element as Partial<RadioButtonGroupElement>);
       case 'image':
-        return ElementFactory.createImageElement(defaults);
+        return ElementFactory.createImageElement(element as Partial<ImageElement>);
       case 'audio':
-        return ElementFactory.createAudioElement(defaults);
+        return ElementFactory.createAudioElement(element as Partial<AudioElement>);
       case 'video':
-        return ElementFactory.createVideoElement(defaults);
+        return ElementFactory.createVideoElement(element as Partial<VideoElement>);
       case 'likert':
-        return ElementFactory.createLikertElement(defaults);
+        return ElementFactory.createLikertElement(element as Partial<LikertElement>);
       case 'radio-group-images':
-        return ElementFactory.createRadioButtonGroupComplexElement(defaults);
+        return ElementFactory.createRadioButtonGroupComplexElement(element as Partial<RadioButtonGroupComplexElement>);
       case 'drop-list':
-        return ElementFactory.createDropListElement(defaults);
+        return ElementFactory.createDropListElement(element as Partial<DropListElement>);
       case 'cloze':
-        return ElementFactory.createClozeElement(defaults);
+        return ElementFactory.createClozeElement(element as Partial<ClozeElement>);
       case 'slider':
-        return ElementFactory.createSliderElement(defaults);
+        return ElementFactory.createSliderElement(element as Partial<SliderElement>);
       case 'spell-correct':
-        return ElementFactory.createSpellCorrectElement(defaults);
+        return ElementFactory.createSpellCorrectElement(element as Partial<SpellCorrectElement>);
       case 'frame':
-        return ElementFactory.createFrameElement(defaults);
+        return ElementFactory.createFrameElement(element as Partial<FrameElement>);
       case 'toggle-button':
-        return ElementFactory.createToggleButtonElement(defaults);
+        return ElementFactory.createToggleButtonElement(element as Partial<ToggleButtonElement>);
       default:
-        throw new Error(`ElementType ${elementType} not found!`);
+        throw new Error(`ElementType ${element.type} not found!`);
     }
   }
 
-  static initElement(elementType: string, defaults: Record<string, number>): UIElement {
+  static initElement(element: Partial<UIElement>): UIElement {
     return {
-      type: elementType as UIElementType,
-      id: defaults.id ? String(defaults.id) : 'id_placeholder',
-      width: defaults.width || 190,
-      height: defaults.height || 60,
-      styles: {}
+      type: element.type as UIElementType,
+      id: element.id ? String(element.id) : 'id_placeholder',
+      width: element.width || 190,
+      height: element.height || 60
     };
   }
 
-  static initInputElement(elementType: string, defaults: Record<string, any>): InputElement {
+  static initInputElement(element: Partial<UIElement>): InputElement {
     return {
-      ...ElementFactory.initElement(elementType, defaults),
-      label: defaults.label || 'Beispielbeschriftung',
-      value: defaults.value || null,
-      required: defaults.required || false,
-      requiredWarnMessage: defaults.requiredWarnMessage || 'Eingabe erforderlich',
-      readOnly: defaults.readOnly || false
+      ...ElementFactory.initElement(element),
+      label: element.label as string || 'Beispielbeschriftung',
+      value: element.value !== undefined ? element.value as InputElementValue : null,
+      required: element.required !== undefined ? element.required as boolean : false,
+      requiredWarnMessage: element.requiredWarnMessage !== undefined ?
+        element.requiredWarnMessage as string :
+        'Eingabe erforderlich',
+      readOnly: element.readOnly !== undefined ? element.readOnly as boolean : false
     };
   }
 
-  static initPositionProps(defaults: Record<string, any> = {}): PositionProperties {
+  static initPositionProps(defaults: Record<string, UIElementValue> = {}): PositionProperties {
     return {
-      fixedSize: defaults.fixedSize || false,
-      dynamicPositioning: defaults.dynamicPositioning || false,
-      xPosition: defaults.xPosition || 0,
-      yPosition: defaults.yPosition || 0,
-      useMinHeight: defaults.useMinHeight || false,
-      gridColumnStart: defaults.gridColumnStart || 1,
-      gridColumnEnd: defaults.gridColumnEnd || 2,
-      gridRowStart: defaults.gridRowStart || 1,
-      gridRowEnd: defaults.gridRowEnd || 2,
-      marginLeft: defaults.marginLeft || 0,
-      marginRight: defaults.marginRight || 0,
-      marginTop: defaults.marginTop || 0,
-      marginBottom: defaults.marginBottom || 0,
-      zIndex: defaults.zIndex || 0
+      fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,
+      dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : false,
+      xPosition: defaults.xPosition !== undefined ? defaults.xPosition as number : 0,
+      yPosition: defaults.yPosition !== undefined ? defaults.yPosition as number : 0,
+      useMinHeight: defaults.useMinHeight !== undefined ? defaults.useMinHeight as boolean : false,
+      gridColumnStart: defaults.gridColumnStart !== undefined ? defaults.gridColumnStart as number : 1,
+      gridColumnEnd: defaults.gridColumnEnd !== undefined ? defaults.gridColumnEnd as number : 2,
+      gridRowStart: defaults.gridRowStart !== undefined ? defaults.gridRowStart as number : 1,
+      gridRowEnd: defaults.gridRowEnd !== undefined ? defaults.gridRowEnd as number : 2,
+      marginLeft: defaults.marginLeft !== undefined ? defaults.marginLeft as number : 0,
+      marginRight: defaults.marginRight !== undefined ? defaults.marginRight as number : 0,
+      marginTop: defaults.marginTop !== undefined ? defaults.marginTop as number : 0,
+      marginBottom: defaults.marginBottom !== undefined ? defaults.marginBottom as number : 0,
+      zIndex: defaults.zIndex !== undefined ? defaults.zIndex as number : 0
     };
   }
 
-  static initBasicStyles(defaults: Record<string, any>): BasicStyles {
+  static initBasicStyles(defaults: Record<string, UIElementValue> = {}): BasicStyles {
     return {
-      fontColor: defaults.fontColor || '#000000',
-      font: defaults.font || 'Roboto',
-      fontSize: defaults.fontSize || 20,
-      bold: defaults.bold || false,
-      italic: defaults.italic || false,
-      underline: defaults.underline || false,
-      backgroundColor: defaults.backgroundColor || '#d3d3d3'
+      fontColor: defaults.fontColor !== undefined ? defaults.fontColor as string : '#000000',
+      font: defaults.font !== undefined ? defaults.font as string : 'Roboto',
+      fontSize: defaults.fontSize !== undefined ? defaults.fontSize as number : 20,
+      bold: defaults.bold !== undefined ? defaults.bold as boolean : false,
+      italic: defaults.italic !== undefined ? defaults.italic as boolean : false,
+      underline: defaults.underline !== undefined ? defaults.underline as boolean : false,
+      backgroundColor: defaults.backgroundColor !== undefined ? defaults.backgroundColor as string : '#d3d3d3'
     };
   }
 
-  static initPlayerProps(defaults: Record<string, any> = {}): PlayerProperties {
+  static initPlayerProps(defaults: Record<string, UIElementValue> = {}): PlayerProperties {
     return {
-      autostart: defaults.autostart || false,
-      autostartDelay: defaults.autostartDelay || 0,
-      loop: defaults.loop || false,
-      startControl: defaults.startControl || true,
-      pauseControl: defaults.pauseControl || false,
-      progressBar: defaults.progressBar || true,
-      interactiveProgressbar: defaults.interactiveProgressbar || undefined,
-      volumeControl: defaults.volumeControl || true,
-      defaultVolume: defaults.defaultVolume || 0.8,
-      minVolume: defaults.minVolume || 0,
-      muteControl: defaults.muteControl || true,
-      interactiveMuteControl: defaults.interactiveMuteControl || undefined,
-      hintLabel: defaults.hintLabel || '',
-      hintLabelDelay: defaults.hintLabelDelay || 0,
-      activeAfterID: defaults.activeAfterID || '',
-      minRuns: defaults.minRuns || 1,
-      maxRuns: defaults.maxRuns || null,
-      showRestRuns: defaults.showRestRuns || false,
-      showRestTime: defaults.showRestTime || true,
-      playbackTime: defaults.playbackTime || 0
+      autostart: defaults.autostart !== undefined ? defaults.autostart as boolean : false,
+      autostartDelay: defaults.autostartDelay !== undefined ? defaults.autostartDelay as number : 0,
+      loop: defaults.loop !== undefined ? defaults.loop as boolean : false,
+      startControl: defaults.startControl !== undefined ? defaults.startControl as boolean : true,
+      pauseControl: defaults.pauseControl !== undefined ? defaults.pauseControl as boolean : false,
+      progressBar: defaults.progressBar !== undefined ? defaults.progressBar as boolean : true,
+      interactiveProgressbar: defaults.interactiveProgressbar !== undefined ?
+        defaults.interactiveProgressbar as boolean :
+        false, // TODO default?
+      volumeControl: defaults.volumeControl !== undefined ? defaults.volumeControl as boolean : true,
+      defaultVolume: defaults.defaultVolume !== undefined ? defaults.defaultVolume as number : 0.8,
+      minVolume: defaults.minVolume !== undefined ? defaults.minVolume as number : 0,
+      muteControl: defaults.muteControl !== undefined ? defaults.muteControl as boolean : true,
+      interactiveMuteControl: defaults.interactiveMuteControl !== undefined ?
+        defaults.interactiveMuteControl as boolean :
+        false, // TODO default?
+      hintLabel: defaults.hintLabel !== undefined ? defaults.hintLabel as string : '',
+      hintLabelDelay: defaults.hintLabelDelay !== undefined ? defaults.hintLabelDelay as number : 0,
+      activeAfterID: defaults.activeAfterID !== undefined ? defaults.activeAfterID as string : '',
+      minRuns: defaults.minRuns !== undefined ? defaults.minRuns as number : 1,
+      maxRuns: defaults.maxRuns !== undefined ? defaults.maxRuns as number | null : null,
+      showRestRuns: defaults.showRestRuns !== undefined ? defaults.showRestRuns as boolean : false,
+      showRestTime: defaults.showRestTime !== undefined ? defaults.showRestTime as boolean : true,
+      playbackTime: defaults.playbackTime !== undefined ? defaults.playbackTime as number : 0
     };
   }
 
@@ -203,286 +209,302 @@ export abstract class ElementFactory {
     }
   }
 
-  private static createButtonElement(defaults: Record<string, any> = {}): ButtonElement {
+  private static createButtonElement(element: Partial<ButtonElement>): ButtonElement {
     return {
-      ...ElementFactory.initElement('button', defaults),
+      ...ElementFactory.initElement(element),
       type: 'button',
-      label: 'Knopf',
-      imageSrc: null,
-      action: null,
-      actionParam: null,
-      positionProps: ElementFactory.initPositionProps(defaults.positionProps),
-      styles: {
-        ...ElementFactory.initBasicStyles(defaults),
-        borderRadius: 0
+      label: element.label !== undefined ? element.label : 'Knopf',
+      imageSrc: element.imageSrc || null,
+      action: element.action || null,
+      actionParam: element.actionParam || null,
+      position: ElementFactory.initPositionProps(element.positionProps as Record<string, UIElementValue>),
+      styling: {
+        ...ElementFactory.initBasicStyles(element.styling),
+        borderRadius: element.borderRadius !== undefined ? element.borderRadius as number : 0
       }
     };
   }
 
-  private static createCheckboxElement(defaults: Record<string, any> = {}): CheckboxElement {
+  private static createCheckboxElement(element: Partial<CheckboxElement>): CheckboxElement {
     return {
-      ...ElementFactory.initInputElement('checkbox', { width: 215, ...defaults }),
+      ...ElementFactory.initInputElement({ width: 215, ...element }),
       type: 'checkbox',
-      value: false,
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: ElementFactory.initBasicStyles(defaults)
+      value: element.value !== undefined ? element.value : false,
+      position: ElementFactory.initPositionProps(element.position),
+      styling: ElementFactory.initBasicStyles(element.styling)
     };
   }
 
-  private static createClozeElement(defaults: Record<string, any> = {}): ClozeElement {
+  private static createClozeElement(element: Partial<ClozeElement>): ClozeElement {
     return {
-      ...ElementFactory.initElement('cloze', { width: 450, height: 200, ...defaults }),
+      ...ElementFactory.initElement({ width: 450, height: 200, ...element }),
       type: 'cloze',
-      document: { type: 'doc', content: [] },
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: {
-        ...ElementFactory.initBasicStyles(defaults),
-        lineHeight: 135
+      document: element.document !== undefined ? element.document : { type: 'doc', content: [] },
+      position: ElementFactory.initPositionProps(element.position),
+      styling: {
+        ...ElementFactory.initBasicStyles(element.styling),
+        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
       }
     };
   }
 
-  private static createDropdownElement(defaults: Record<string, any> = {}): DropdownElement {
+  private static createDropdownElement(element: Partial<DropdownElement>): DropdownElement {
     return {
-      ...ElementFactory.initInputElement('dropdown', { width: 240, height: 83, ...defaults }),
+      ...ElementFactory.initInputElement({ width: 240, height: 83, ...element }),
       type: 'dropdown',
-      options: [],
-      allowUnset: false,
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: ElementFactory.initBasicStyles(defaults)
+      options: element.options !== undefined ? element.options : [],
+      allowUnset: element.allowUnset !== undefined ? element.allowUnset : false,
+      position: ElementFactory.initPositionProps(element),
+      styling: ElementFactory.initBasicStyles(element.styling)
     };
   }
 
-  private static createDropListElement(defaults: Record<string, any> = {}): DropListElement {
+  private static createDropListElement(element: Partial<DropListElement>): DropListElement {
     return {
-      ...ElementFactory.initInputElement('drop-list', { height: 100, ...defaults }),
+      ...ElementFactory.initInputElement({ height: 100, ...element }),
       type: 'drop-list',
-      value: [],
-      onlyOneItem: false,
-      connectedTo: [],
-      orientation: 'vertical',
-      highlightReceivingDropList: false,
-      highlightReceivingDropListColor: '#006064',
-      positionProps: ElementFactory.initPositionProps({ useMinHeight: true, ...defaults }),
-      styles: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: '#f4f4f2', ...defaults }),
-        itemBackgroundColor: '#c9e0e0'
+      value: element.value !== undefined ? element.value : [],
+      onlyOneItem: element.onlyOneItem !== undefined ? element.onlyOneItem : false,
+      connectedTo: element.connectedTo !== undefined ? element.connectedTo : [],
+      orientation: element.orientation !== undefined ? element.orientation : 'vertical',
+      highlightReceivingDropList: element.highlightReceivingDropList !== undefined ?
+        element.highlightReceivingDropList :
+        false,
+      highlightReceivingDropListColor: element.highlightReceivingDropListColor !== undefined ?
+        element.highlightReceivingDropListColor : '#006064',
+      position: ElementFactory.initPositionProps({ useMinHeight: true, ...element }),
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: '#f4f4f2', ...element.styling }),
+        itemBackgroundColor: element.itemBackgroundColor !== undefined ?
+          element.itemBackgroundColor as string : '#c9e0e0'
       }
     };
   }
 
-  private static createDropListSimpleElement(defaults: Record<string, any> = {}): DropListSimpleElement {
+  private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement {
     return {
-      ...ElementFactory.initInputElement('drop-list-simple', { height: 100, ...defaults }),
+      ...ElementFactory.initInputElement({ height: 100, ...element }),
       type: 'drop-list',
-      value: [],
-      connectedTo: [],
-      highlightReceivingDropList: false,
-      highlightReceivingDropListColor: '#add8e6',
-      styles: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: '#eeeeec', ...defaults }),
-        itemBackgroundColor: '#add8e6'
+      value: element.value !== undefined ? element.value : [],
+      connectedTo: element.connectedTo !== undefined ? element.connectedTo : [],
+      highlightReceivingDropList: element.highlightReceivingDropList !== undefined ?
+        element.highlightReceivingDropList : false,
+      highlightReceivingDropListColor: element.highlightReceivingDropListColor !== undefined ?
+        element.highlightReceivingDropListColor : '#add8e6',
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: '#eeeeec', ...element.styling }),
+        itemBackgroundColor: element.itemBackgroundColor !== undefined ?
+          element.itemBackgroundColor as string : '#add8e6'
       }
     };
   }
 
-  private static createFrameElement(defaults: Record<string, any> = {}): FrameElement {
+  private static createFrameElement(element: Partial<FrameElement>): FrameElement {
     return {
-      ...ElementFactory.initElement('frame', {}),
+      ...ElementFactory.initElement({}),
       type: 'frame',
-      positionProps: ElementFactory.initPositionProps({ zIndex: -1, ...defaults }),
-      styles: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
-        borderWidth: 1,
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderRadius: 0
+      position: ElementFactory.initPositionProps({ zIndex: -1, ...element }),
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }) as BasicStyles,
+        borderWidth: element.borderWidth !== undefined ? element.borderWidth as number : 1,
+        borderColor: element.borderColor !== undefined ? element.borderColor as string : 'black',
+        borderStyle: element.borderStyle !== undefined ?
+          element.borderStyle as 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' |
+          'ridge' | 'inset' | 'outset' :
+          'solid',
+        borderRadius: element.borderRadius !== undefined ? element.borderRadius as number : 0
       }
     };
   }
 
-  private static createImageElement(defaults: Record<string, any> = {}): ImageElement {
+  private static createImageElement(element: Partial<ImageElement>): ImageElement {
     return {
-      ...ElementFactory.initElement('image', { height: 100, ...defaults }),
+      ...ElementFactory.initElement({ height: 100, ...element }),
       type: 'image',
-      src: defaults.src || '', // TODO eigentlich undefined
-      scale: false,
-      magnifier: false,
-      magnifierSize: 100,
-      magnifierZoom: 1.5,
-      magnifierUsed: false,
-      positionProps: ElementFactory.initPositionProps({})
+      src: element.src || '', // TODO eigentlich undefined
+      scale: element.scale !== undefined ? element.scale : false,
+      magnifier: element.magnifier !== undefined ? element.magnifier : false,
+      magnifierSize: element.magnifierSize !== undefined ? element.magnifierSize : 100,
+      magnifierZoom: element.magnifierZoom !== undefined ? element.magnifierZoom : 1.5,
+      magnifierUsed: element.magnifierUsed !== undefined ? element.magnifierUsed : false,
+      position: ElementFactory.initPositionProps({})
     };
   }
 
-  private static createLikertElement(defaults: Record<string, any> = {}): LikertElement {
+  private static createLikertElement(element: Partial<LikertElement>): LikertElement {
     return {
-      ...ElementFactory.initElement('likert', { width: 250, height: 200, ...defaults }),
+      ...ElementFactory.initElement({ width: 250, height: 200, ...element }),
       type: 'likert',
-      rows: [],
-      columns: [],
-      firstColumnSizeRatio: 5,
-      readOnly: false,
-      positionProps: ElementFactory.initPositionProps({ marginBottom: 30, ...defaults }),
-      styles: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
-        lineHeight: 135,
-        lineColoring: true,
-        lineColoringColor: '#c9e0e0'
+      rows: element.rows !== undefined ? element.rows : [],
+      columns: element.columns !== undefined ? element.columns : [],
+      firstColumnSizeRatio: element.firstColumnSizeRatio !== undefined ? element.firstColumnSizeRatio : 5,
+      readOnly: element.readOnly !== undefined ? element.readOnly : false,
+      position: ElementFactory.initPositionProps({ marginBottom: 30, ...element }),
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element }),
+        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135,
+        lineColoring: element.lineColoring !== undefined ? element.lineColoring as boolean : true,
+        lineColoringColor: element.lineColoringColor !== undefined ? element.lineColoringColor as string : '#c9e0e0'
       }
     };
   }
 
-  static createLikertRowElement(defaults: Record<string, any>): LikertRowElement {
+  static createLikertRowElement(element: Partial<LikertRowElement>): LikertRowElement {
     return {
-      ...ElementFactory.initInputElement('likert_row', defaults),
+      ...ElementFactory.initInputElement(element),
       type: 'likert-row',
-      text: defaults.text || '',
-      columnCount: defaults.columnCount || 0,
-      firstColumnSizeRatio: defaults.firstColumnSizeRatio || 5
+      text: element.text !== undefined ? element.text : '',
+      columnCount: element.columnCount !== undefined ? element.columnCount : 0,
+      firstColumnSizeRatio: element.firstColumnSizeRatio !== undefined ? element.firstColumnSizeRatio : 5
     };
   }
 
-  private static createRadioButtonGroupElement(defaults: Record<string, any> = {}): RadioButtonGroupElement {
+  private static createRadioButtonGroupElement(element: Partial<RadioButtonGroupElement>): RadioButtonGroupElement {
     return {
-      ...ElementFactory.initInputElement('radio', { height: 85, ...defaults }),
+      ...ElementFactory.initInputElement({ height: 85, ...element }),
       type: 'radio',
-      options: [],
-      alignment: 'column',
-      strikeOtherOptions: false,
-      positionProps: ElementFactory.initPositionProps({ marginBottom: 30, ...defaults }),
-      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
+      options: element.options !== undefined ? element.options : [],
+      alignment: element.alignment !== undefined ? element.alignment : 'column',
+      strikeOtherOptions: element.strikeOtherOptions !== undefined ? element.strikeOtherOptions : false,
+      position: ElementFactory.initPositionProps({ marginBottom: 30, ...element.position }),
+      styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
     };
   }
 
-  private static createRadioButtonGroupComplexElement(defaults: Record<string, any> = {}): RadioButtonGroupComplexElement {
+  private static createRadioButtonGroupComplexElement(element: Partial<RadioButtonGroupComplexElement>):
+  RadioButtonGroupComplexElement {
     return {
-      ...ElementFactory.initInputElement('radio-group-images', { height: 100, ...defaults }), // TODO better name
+      ...ElementFactory.initInputElement({ height: 100, ...element }), // TODO better name
       type: 'radio-group-images',
-      columns: [],
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
+      columns: element.columns !== undefined ? element.columns : [],
+      position: ElementFactory.initPositionProps(element.position),
+      styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
     };
   }
 
-  private static createSliderElement(defaults: Record<string, any> = {}): SliderElement {
+  private static createSliderElement(element: Partial<SliderElement>): SliderElement {
     return {
-      ...ElementFactory.initInputElement('slider', { width: 300, height: 75, ...defaults }),
+      ...ElementFactory.initInputElement({ width: 300, height: 75, ...element }),
       type: 'slider',
-      minValue: 0,
-      maxValue: 100,
-      showValues: true,
-      barStyle: false,
-      thumbLabel: false,
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
+      minValue: element.minValue !== undefined ? element.minValue : 0,
+      maxValue: element.maxValue !== undefined ? element.maxValue : 100,
+      showValues: element.showValues !== undefined ? element.showValues : true,
+      barStyle: element.barStyle !== undefined ? element.barStyle : false,
+      thumbLabel: element.thumbLabel !== undefined ? element.thumbLabel : false,
+      position: ElementFactory.initPositionProps(element.position),
+      styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
     };
   }
 
-  private static createSpellCorrectElement(defaults: Record<string, any> = {}): SpellCorrectElement {
+  private static createSpellCorrectElement(element: Partial<SpellCorrectElement>): SpellCorrectElement {
     return {
-      ...ElementFactory.initInputElement('spell-correct', { width: 230, height: 80, ...defaults }),
+      ...ElementFactory.initInputElement({ width: 230, height: 80, ...element }),
       type: 'spell-correct',
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
+      position: ElementFactory.initPositionProps(element.position),
+      styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
     };
   }
 
-  private static createTextElement(defaults: Record<string, any> = {}): TextElement {
+  private static createTextElement(element: Partial<TextElement>): TextElement {
     return {
-      ...ElementFactory.initElement('text', { height: 98, ...defaults }),
+      ...ElementFactory.initElement({ height: 98, ...element }),
       type: 'text',
-      text: 'Lorem ipsum dolor sit amet',
-      highlightableOrange: false,
-      highlightableTurquoise: false,
-      highlightableYellow: false,
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
-        lineHeight: 135
+      text: element.text !== undefined ? element.text : 'Lorem ipsum dolor sit amet',
+      highlightableOrange: element.highlightableOrange !== undefined ? element.highlightableOrange : false,
+      highlightableTurquoise: element.highlightableTurquoise !== undefined ? element.highlightableTurquoise : false,
+      highlightableYellow: element.highlightableYellow !== undefined ? element.highlightableYellow : false,
+      position: ElementFactory.initPositionProps(element.position),
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
+        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
       }
     };
   }
 
-  private static createTextAreaElement(defaults: Record<string, any> = {}): TextAreaElement {
+  private static createTextAreaElement(element: Partial<TextAreaElement>): TextAreaElement {
     return {
-      ...ElementFactory.initInputElement('text-area', { width: 230, height: 132, ...defaults }),
+      ...ElementFactory.initInputElement({ width: 230, height: 132, ...element }),
       type: 'text-area',
-      appearance: 'outline',
-      resizeEnabled: false,
-      rowCount: 3,
-      inputAssistancePreset: 'none',
-      inputAssistancePosition: 'floating',
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
-        lineHeight: 135
+      appearance: element.appearance !== undefined ? element.appearance : 'outline',
+      resizeEnabled: element.resizeEnabled !== undefined ? element.resizeEnabled : false,
+      rowCount: element.rowCount !== undefined ? element.rowCount : 3,
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePosition: element.inputAssistancePosition !== undefined ?
+        element.inputAssistancePosition : 'floating',
+      position: ElementFactory.initPositionProps(element.position),
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
+        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
       }
     };
   }
 
-  private static createTextFieldElement(defaults: Record<string, any> = {}): TextFieldElement {
+  private static createTextFieldElement(element: Partial<TextFieldElement>): TextFieldElement {
     return {
-      ...ElementFactory.initInputElement('text-field', { width: 230, height: 100, ...defaults }),
+      ...ElementFactory.initInputElement({ width: 230, height: 100, ...element }),
       type: 'text-field',
-      appearance: 'outline',
-      minLength: 0,
-      minLengthWarnMessage: 'Eingabe zu kurz',
-      maxLength: 0,
-      maxLengthWarnMessage: 'Eingabe zu lang',
-      pattern: '',
-      patternWarnMessage: 'Eingabe entspricht nicht der Vorgabe',
-      inputAssistancePreset: 'none',
-      inputAssistancePosition: 'floating',
-      clearable: false,
-      positionProps: ElementFactory.initPositionProps(defaults),
-      styles: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults })
+      appearance: element.appearance !== undefined ? element.appearance : 'outline',
+      minLength: element.minLength !== undefined ? element.minLength : 0,
+      minLengthWarnMessage: element.minLengthWarnMessage !== undefined ?
+        element.minLengthWarnMessage : 'Eingabe zu kurz',
+      maxLength: element.maxLength !== undefined ? element.maxLength : 0,
+      maxLengthWarnMessage: element.maxLengthWarnMessage !== undefined ?
+        element.maxLengthWarnMessage : 'Eingabe zu lang',
+      pattern: element.pattern !== undefined ? element.pattern : '',
+      patternWarnMessage: element.patternWarnMessage !== undefined ?
+        element.patternWarnMessage : 'Eingabe entspricht nicht der Vorgabe',
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePosition: element.inputAssistancePosition !== undefined ?
+        element.inputAssistancePosition : 'floating',
+      clearable: element.clearable !== undefined ? element.clearable : false,
+      position: ElementFactory.initPositionProps(element.position),
+      styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
     };
   }
 
-  private static createTextFieldSimpleElement(defaults: Record<string, any> = {}): TextFieldSimpleElement {
+  private static createTextFieldSimpleElement(element: Partial<TextFieldSimpleElement>): TextFieldSimpleElement {
     return {
-      ...ElementFactory.initInputElement('text-field', { height: 25, ...defaults }),
+      ...ElementFactory.initInputElement({ height: 25, ...element }),
       type: 'text-field',
-      label: undefined,
-      styles: ElementFactory.initBasicStyles(defaults)
+      label: element.label !== undefined ? element.label : undefined,
+      styling: ElementFactory.initBasicStyles(element.styling)
     };
   }
 
-  private static createToggleButtonElement(defaults: Record<string, any> = {}): ToggleButtonElement {
+  private static createToggleButtonElement(element: Partial<ToggleButtonElement>): ToggleButtonElement {
     return {
-      ...ElementFactory.initInputElement('toggle-button', { height: 25, ...defaults }),
+      ...ElementFactory.initInputElement({ height: 25, ...element }),
       type: 'toggle-button',
-      options: [],
-      strikeOtherOptions: false,
-      selectionColor: 'lightgreen',
-      verticalOrientation: false,
-      dynamicWidth: true,
-      styles: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...defaults }),
-        lineHeight: 135
+      options: element.options !== undefined ? element.options : [],
+      strikeOtherOptions: element.strikeOtherOptions !== undefined ? element.strikeOtherOptions : false,
+      selectionColor: element.selectionColor !== undefined ? element.selectionColor : 'lightgreen',
+      verticalOrientation: element.verticalOrientation !== undefined ? element.verticalOrientation : false,
+      dynamicWidth: element.dynamicWidth !== undefined ? element.dynamicWidth : true,
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element }),
+        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
       }
     };
   }
 
-  private static createAudioElement(defaults: Record<string, any> = {}): AudioElement {
+  private static createAudioElement(element: Partial<AudioElement>): AudioElement {
     return {
-      ...ElementFactory.initElement('audio', { width: 250, height: 90, ...defaults }),
+      ...ElementFactory.initElement({ width: 250, height: 90, ...element }),
       type: 'audio',
-      src: defaults.src || '', // TODO eigentlich undefined
-      positionProps: ElementFactory.initPositionProps(defaults),
-      playerProps: ElementFactory.initPlayerProps(defaults)
+      src: element.src !== undefined ? element.src : '', // TODO eigentlich undefined
+      position: ElementFactory.initPositionProps(element.position),
+      player: ElementFactory.initPlayerProps(element.player)
     };
   }
 
-  private static createVideoElement(defaults: Record<string, any> = {}): VideoElement {
+  private static createVideoElement(element: Partial<VideoElement>): VideoElement {
     return {
-      ...ElementFactory.initElement('video', { width: 280, height: 230, ...defaults }),
+      ...ElementFactory.initElement({ width: 280, height: 230, ...element }),
       type: 'video',
-      src: defaults.src || '', // TODO eigentlich undefined
-      scale: false,
-      positionProps: ElementFactory.initPositionProps(defaults),
-      playerProps: ElementFactory.initPlayerProps(defaults)
+      src: element.src !== undefined ? element.src : '', // TODO eigentlich undefined
+      scale: element.scale !== undefined ? element.scale : false,
+      position: ElementFactory.initPositionProps(element.position),
+      player: ElementFactory.initPlayerProps(element.player)
     };
   }
 }

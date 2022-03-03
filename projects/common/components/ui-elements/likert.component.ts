@@ -17,15 +17,15 @@ import { LikertElement, LikertRowElement } from '../../interfaces/elements';
       <div class="mat-typography"
            [style.display]="'grid'"
            [style.grid-template-columns]="elementModel.firstColumnSizeRatio + 'fr ' +
-                                        '1fr '.repeat(elementModel.columns.length)"
-         [style.background-color]="elementModel.styles.backgroundColor"
-         [style.color]="elementModel.styles.fontColor"
-         [style.font-family]="elementModel.styles.font"
-         [style.font-size.px]="elementModel.styles.fontSize"
-         [style.line-height.%]="elementModel.styles.lineHeight"
-         [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
+                                    '1fr '.repeat(elementModel.columns.length)"
+           [style.background-color]="elementModel.styling.backgroundColor"
+           [style.color]="elementModel.styling.fontColor"
+           [style.font-family]="elementModel.styling.font"
+           [style.font-size.px]="elementModel.styling.fontSize"
+           [style.line-height.%]="elementModel.styling.lineHeight"
+           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
         <div *ngFor="let column of elementModel.columns; let i = index"
              class="columns" fxLayout="column" fxLayoutAlign="end center"
              [style.grid-column-start]="2 + i"
@@ -43,16 +43,16 @@ import { LikertElement, LikertRowElement } from '../../interfaces/elements';
 
         <ng-container *ngFor="let row of elementModel.rows; let i = index">
           <aspect-likert-radio-button-group
-              [style.background-color]="elementModel.lineColoring && i % 2 === 0 ?
-                  elementModel.lineColoringColor : ''"
-              [style.grid-column-start]="1"
-              [style.grid-column-end]="elementModel.columns.length + 2"
-              [style.grid-row-start]="2 + i"
-              [style.grid-row-end]="3 + i"
-              [style.padding.px]="3"
-              [elementModel]="row"
-              [firstColumnSizeRatio]="elementModel.firstColumnSizeRatio"
-              [parentForm]="parentForm">
+            [style.background-color]="elementModel.lineColoring && i % 2 === 0 ?
+                                      elementModel.lineColoringColor : ''"
+            [style.grid-column-start]="1"
+            [style.grid-column-end]="elementModel.columns.length + 2"
+            [style.grid-row-start]="2 + i"
+            [style.grid-row-end]="3 + i"
+            [style.padding.px]="3"
+            [elementModel]="row"
+            [firstColumnSizeRatio]="elementModel.firstColumnSizeRatio"
+            [parentForm]="parentForm">
           </aspect-likert-radio-button-group>
         </ng-container>
       </div>

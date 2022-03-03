@@ -17,7 +17,7 @@ import { AudioElement } from '../../interfaces/elements';
                           [project]="project"
                           [id]="elementModel.id"
                           [savedPlaybackTime]="savedPlaybackTime"
-                          [playerProperties]="elementModel.playerProps"
+                          [playerProperties]="elementModel.player"
                           [active]="active"
                           [dependencyDissolved]="dependencyDissolved"
                           (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"

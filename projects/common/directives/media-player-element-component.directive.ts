@@ -35,7 +35,7 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
 
   private setActivatedAfterID(id: string): void {
     if (!this.dependencyDissolved) {
-      this.dependencyDissolved = id === (this.elementModel).playerProps.activeAfterID;
+      this.dependencyDissolved = id === (this.elementModel).player.activeAfterID;
     }
   }
 }

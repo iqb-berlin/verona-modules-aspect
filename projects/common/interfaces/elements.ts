@@ -4,7 +4,7 @@ import { LikertColumn } from './likert';
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
-| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
+| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'text-field-simple';
 export type InputAssistancePreset = 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue';
 export type DragNDropValueObject = {
@@ -14,7 +14,7 @@ export type DragNDropValueObject = {
 };
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 LikertColumn[] | ClozeDocument |
-PositionProperties | ElementStyles | PlayerProperties | BasicStyles;
+PositionProperties | ElementStyling | PlayerProperties | BasicStyles;
 
 export interface UIElement {
   [index: string]: UIElementValue;
@@ -22,9 +22,9 @@ export interface UIElement {
   id: string;
   width: number;
   height: number;
-  positionProps?: PositionProperties;
-  styles: ElementStyles;
-  playerProps?: PlayerProperties;
+  position?: PositionProperties; // position
+  styling?: ElementStyling; // styling
+  player?: PlayerProperties; // player
 }
 
 export interface InputElement extends UIElement {
@@ -36,11 +36,11 @@ export interface InputElement extends UIElement {
 }
 
 export interface PositionedElement extends UIElement {
-  positionProps: PositionProperties;
+  position: PositionProperties;
 }
 
 export interface PlayerElement extends UIElement {
-  playerProps: PlayerProperties;
+  player: PlayerProperties;
 }
 
 export interface ValueChangeElement {
@@ -66,7 +66,7 @@ export interface PositionProperties {
   zIndex: number;
 }
 
-export interface ElementStyles {
+export interface ElementStyling {
   [index: string]: string | number | boolean | undefined;
   fontColor?: string;
   font?: string;
@@ -85,7 +85,7 @@ export interface ElementStyles {
   lineColoringColor?: string;
 }
 
-export interface BasicStyles extends ElementStyles {
+export interface BasicStyles extends ElementStyling {
   fontColor: string;
   font: string;
   fontSize: number;
@@ -125,23 +125,23 @@ export interface ButtonElement extends UIElement {
   imageSrc: string | null;
   action: null | 'unitNav' | 'pageNav'
   actionParam: null | 'previous' | 'next' | 'first' | 'last' | 'end' | number;
-  positionProps: PositionProperties;
-  styles: BasicStyles & {
+  position: PositionProperties;
+  styling: BasicStyles & {
     borderRadius: number;
   }
 }
 
 export interface CheckboxElement extends InputElement {
   type: 'checkbox';
-  positionProps: PositionProperties;
-  styles: BasicStyles;
+  position: PositionProperties;
+  styling: BasicStyles;
 }
 
 export interface ClozeElement extends UIElement {
   type: 'cloze';
   document: ClozeDocument;
-  positionProps: PositionProperties;
-  styles: BasicStyles & {
+  position: PositionProperties;
+  styling: BasicStyles & {
     lineHeight: number;
   }
 }
@@ -150,8 +150,8 @@ export interface DropdownElement extends InputElement {
   type: 'dropdown';
   options: string[];
   allowUnset: boolean;
-  positionProps: PositionProperties;
-  styles: BasicStyles
+  position: PositionProperties;
+  styling: BasicStyles
 }
 
 export interface DropListElement extends InputElement {
@@ -161,8 +161,8 @@ export interface DropListElement extends InputElement {
   orientation: 'vertical' | 'horizontal' | 'flex';
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
-  positionProps: PositionProperties;
-  styles: BasicStyles & {
+  position: PositionProperties;
+  styling: BasicStyles & {
     itemBackgroundColor: string;
   }
 }
@@ -172,15 +172,15 @@ export interface DropListSimpleElement extends InputElement {
   connectedTo: string[];
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
-  styles: BasicStyles & {
+  styling: BasicStyles & {
     itemBackgroundColor: string;
   }
 }
 
 export interface FrameElement extends UIElement {
   type: 'frame';
-  positionProps: PositionProperties;
-  styles: BasicStyles & {
+  position: PositionProperties;
+  styling: BasicStyles & {
     borderWidth: number;
     borderColor: string;
     borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
@@ -196,7 +196,7 @@ export interface ImageElement extends UIElement {
   magnifierSize: number;
   magnifierZoom: number;
   magnifierUsed: boolean;
-  positionProps: PositionProperties;
+  position: PositionProperties;
 }
 
 export interface LikertElement extends UIElement {
@@ -205,8 +205,8 @@ export interface LikertElement extends UIElement {
   columns: LikertColumn[];
   firstColumnSizeRatio: number;
   readOnly: boolean;
-  positionProps: PositionProperties;
-  styles: BasicStyles & {
+  position: PositionProperties;
+  styling: BasicStyles & {
     lineHeight: number;
     lineColoring: boolean;
     lineColoringColor: string;
@@ -225,15 +225,15 @@ export interface RadioButtonGroupElement extends InputElement {
   options: string[];
   alignment: 'column' | 'row';
   strikeOtherOptions: boolean;
-  positionProps: PositionProperties;
-  styles: BasicStyles;
+  position: PositionProperties;
+  styling: BasicStyles;
 }
 
 export interface RadioButtonGroupComplexElement extends InputElement {
   type: 'radio-group-images' // TODO better name
   columns: LikertColumn[];
-  positionProps: PositionProperties;
-  styles: BasicStyles;
+  position: PositionProperties;
+  styling: BasicStyles;
 }
 
 export interface SliderElement extends InputElement {
@@ -243,14 +243,14 @@ export interface SliderElement extends InputElement {
   showValues: boolean;
   barStyle: boolean; // TODO besserer name
   thumbLabel: boolean;
-  positionProps: PositionProperties;
-  styles: BasicStyles;
+  position: PositionProperties;
+  styling: BasicStyles;
 }
 
 export interface SpellCorrectElement extends InputElement {
   type: 'spell-correct';
-  positionProps: PositionProperties;
-  styles: BasicStyles;
+  position: PositionProperties;
+  styling: BasicStyles;
 }
 
 export interface TextFieldElement extends InputElement {
@@ -265,8 +265,8 @@ export interface TextFieldElement extends InputElement {
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';
   clearable: boolean;
-  positionProps: PositionProperties;
-  styles: BasicStyles;
+  position: PositionProperties;
+  styling: BasicStyles;
 }
 
 export interface TextAreaElement extends InputElement {
@@ -276,15 +276,15 @@ export interface TextAreaElement extends InputElement {
   rowCount: number;
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';
-  positionProps: PositionProperties;
-  styles: BasicStyles & {
+  position: PositionProperties;
+  styling: BasicStyles & {
     lineHeight: number;
   };
 }
 
 export interface TextFieldSimpleElement extends InputElement {
   type: 'text-field';
-  styles: BasicStyles; // TODO okay? bg-color?
+  styling: BasicStyles; // TODO okay? bg-color?
 }
 
 export interface TextElement extends UIElement {
@@ -293,8 +293,8 @@ export interface TextElement extends UIElement {
   highlightableOrange: boolean;
   highlightableTurquoise: boolean;
   highlightableYellow: boolean;
-  positionProps: PositionProperties;
-  styles: BasicStyles & {
+  position: PositionProperties;
+  styling: BasicStyles & {
     lineHeight: number;
   }
 }
@@ -306,7 +306,7 @@ export interface ToggleButtonElement extends InputElement {
   selectionColor: string;
   verticalOrientation: boolean;
   dynamicWidth: boolean;
-  styles: BasicStyles & {
+  styling: BasicStyles & {
     lineHeight: number;
   };
 }
@@ -314,14 +314,14 @@ export interface ToggleButtonElement extends InputElement {
 export interface AudioElement extends UIElement {
   type: 'audio';
   src: string;
-  positionProps: PositionProperties;
-  playerProps: PlayerProperties;
+  position: PositionProperties;
+  player: PlayerProperties;
 }
 
 export interface VideoElement extends UIElement {
   type: 'video';
   src: string;
   scale: boolean; // TODO besserer name
-  positionProps: PositionProperties;
-  playerProps: PlayerProperties;
+  position: PositionProperties;
+  player: PlayerProperties;
 }

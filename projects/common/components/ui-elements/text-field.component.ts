@@ -8,17 +8,17 @@ import { TextFieldElement } from '../../interfaces/elements';
   selector: 'aspect-text-field',
   template: `
     <mat-form-field
-        *ngIf="elementModel.label !== ''"
-        [style.width.%]="100"
-        [style.height.%]="100"
-        [style.color]="elementModel.styles.fontColor"
-        [style.font-family]="elementModel.styles.font"
-        [style.font-size.px]="elementModel.styles.fontSize"
-        [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-        [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-        [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
-        [appearance]="$any(elementModel.appearance)">
+            *ngIf="elementModel.label !== ''"
+            [style.width.%]="100"
+            [style.height.%]="100"
+            [style.color]="elementModel.styling.fontColor"
+            [style.font-family]="elementModel.styling.font"
+            [style.font-size.px]="elementModel.styling.fontSize"
+            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+            aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
+            [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
@@ -37,18 +37,17 @@ import { TextFieldElement } from '../../interfaces/elements';
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
     </mat-form-field>
-    <mat-form-field
-        *ngIf="elementModel.label === ''" class="small-input"
-        [style.width.%]="100"
-        [style.height.%]="100"
-        [style.color]="elementModel.styles.fontColor"
-        [style.font-family]="elementModel.styles.font"
-        [style.font-size.px]="elementModel.styles.fontSize"
-        [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-        [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-        [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
-        aspectInputBackgroundColor [backgroundColor]="elementModel.styles.backgroundColor"
-        [appearance]="$any(elementModel.appearance)">
+    <mat-form-field *ngIf="elementModel.label === ''" class="small-input"
+                    [style.width.%]="100"
+                    [style.height.%]="100"
+                    [style.color]="elementModel.styling.fontColor"
+                    [style.font-family]="elementModel.styling.font"
+                    [style.font-size.px]="elementModel.styling.fontSize"
+                    [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                    [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                    [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+                    aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
+                    [appearance]="$any(elementModel.appearance)">
       <input matInput type="text" #input autocomplete="off"
              [formControl]="elementFormControl"
              [value]="elementModel.value"

@@ -13,6 +13,7 @@ import { MediaPlayerService } from './services/media-player.service';
 import { Page, Unit } from '../../../common/interfaces/unit';
 import { UnitDefinitionSanitizer } from '../../../common/util/unit-definition-sanitizer';
 import { ValidatorService } from './services/validator.service';
+import { UnitFactory } from '../../../common/util/unit.factory';
 
 @Component({
   selector: 'aspect-player',
@@ -60,7 +61,9 @@ export class AppComponent implements OnInit {
       // eslint-disable-next-line no-console
       console.log('player: onStart', message);
       if (message.unitDefinition) {
-        const unitDefinition: Unit = UnitDefinitionSanitizer.sanitize(JSON.parse(message.unitDefinition));
+        const unitDefinition: Unit = UnitFactory.createUnit(
+          UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
+        );
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
         this.playerConfig = message.playerConfig || {};
         this.veronaPostService.sessionId = message.sessionId;

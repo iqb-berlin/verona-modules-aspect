@@ -1,199 +1,241 @@
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import { Page, Unit } from '../interfaces/unit';
+import { Page, Section, Unit } from '../interfaces/unit';
 import {
-  DragNDropValueObject, DropListElement, PlayerElement, UIElement, UIElementValue
+  ClozeElement,
+  DragNDropValueObject,
+  DropListElement,
+  ElementStyling, InputElement,
+  PlayerProperties, PositionedElement,
+  PositionProperties, TextElement,
+  UIElement,
+  UIElementValue
 } from '../interfaces/elements';
+import { IdService } from '../../editor/src/app/services/id.service';
+import packageJSON from '../../../package.json';
+import { MessageService } from '../services/message.service';
 import ToggleButtonExtension from '../tiptap-editor-extensions/toggle-button';
 import DropListExtension from '../tiptap-editor-extensions/drop-list';
 import TextFieldExtension from '../tiptap-editor-extensions/text-field';
-import { IdService } from '../../editor/src/app/services/id.service';
+import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../interfaces/cloze';
 
 export abstract class UnitDefinitionSanitizer {
-  private static unitVersion: [number, number, number] = [0, 0, 0];
+  private static unitVersion: [number, number, number] =
+  packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
 
-  static campatibilityHandlers: { (s: UIElement[]): void; }[] = [
-    UnitDefinitionSanitizer.handlePositionProps,
-    UnitDefinitionSanitizer.handleFontProps,
-    UnitDefinitionSanitizer.handleSurfaceProps,
-    UnitDefinitionSanitizer.handlePlayerProps,
-    UnitDefinitionSanitizer.handleTextElements,
-    UnitDefinitionSanitizer.handleClozeElements,
-    UnitDefinitionSanitizer.handleDropListElements,
-    UnitDefinitionSanitizer.handlePlusOne
-  ];
+  static sanitizeUnitDefinition(unitDefinition: Unit & { veronaModuleVersion?: string }): Unit {
+    if (UnitDefinitionSanitizer.checkVersion(unitDefinition)) return unitDefinition;
 
-  static sanitize(unitDefinition: Partial<Unit> & { pages: Page[], veronaModuleVersion?: string }): Unit {
-    UnitDefinitionSanitizer.unitVersion = unitDefinition.unitDefinitionType?.split('.')
-      .map(el => Number(el)) as [number, number, number] ||
-      unitDefinition.veronaModuleVersion?.split('.')
-        .map(el => Number(el)) as [number, number, number];
-    const elementList = UnitDefinitionSanitizer.getElementList(unitDefinition as Unit);
-    UnitDefinitionSanitizer.campatibilityHandlers.forEach(handler => handler(elementList));
-    return unitDefinition as Unit;
+    const x = {
+      ...unitDefinition,
+      pages: unitDefinition.pages.map((page: Page) => UnitDefinitionSanitizer.sanatizePage(page))
+    };
+    return x as Unit;
   }
 
-  private static getElementList(unitDefinition: Unit): UIElement[] {
-    return unitDefinition.pages.flat().map(page => page.sections.map(section => section.elements)).flat(2);
+  private static checkVersion(unitDefinition: Unit & { veronaModuleVersion?: string }) : boolean {
+    const defVersion: [number, number, number] =
+      unitDefinition.veronaModuleVersion?.split('@')[1].split('.') as unknown as [number, number, number];
+    if (!UnitDefinitionSanitizer.isVersionOlderThanCurrent(defVersion)) {
+      return true;
+    }
+    MessageService.getInstance().showWarning('Loaded an outdated unit definition');
+    return false;
   }
 
-  private static handlePositionProps(elementList: UIElement[]): void {
-    const positionProps = ['xPosition', 'yPosition',
-      'useMinHeight', 'gridColumnStart', 'gridColumnEnd', 'gridRowStart', 'gridRowEnd', 'marginLeft',
-      'marginRight', 'marginTop', 'marginBottom', 'zIndex', 'fixedSize', 'dynamicPositioning'];
-    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList, 'positionProps', positionProps);
+  private static isVersionOlderThanCurrent(version: [number, number, number]): boolean {
+    if (version[0] < UnitDefinitionSanitizer.unitVersion[0]) {
+      return true;
+    }
+    if (version[1] < UnitDefinitionSanitizer.unitVersion[1]) {
+      return true;
+    }
+    return version[2] < UnitDefinitionSanitizer.unitVersion[2];
   }
 
-  private static handleFontProps(elementList: UIElement[]): void {
-    const fontProps = ['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline'];
-    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList,
-      'styles',
-      fontProps,
-      'fontProps');
+  static sanatizePage(page: Page): Page {
+    return {
+      ...page,
+      sections: page.sections.map((section: Section) => UnitDefinitionSanitizer.sanatizeSection(section))
+    };
   }
 
-  private static handleSurfaceProps(elementList: UIElement[]): void {
-    UnitDefinitionSanitizer.movePropertiesToSubObject(elementList,
-      'styles',
-      ['backgroundColor'],
-      'surfaceProps');
+  static sanatizeSection(section: Section): Section {
+    return {
+      ...section,
+      elements: section.elements.map((element: UIElement) => (
+        UnitDefinitionSanitizer.sanatizeElement(element))) as PositionedElement[]
+    };
   }
 
-  private static handlePlayerProps(elementList: UIElement[]): void {
-    const playerProps = ['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',
-      'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
-      'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
-      'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'];
-    const filteredElementList: PlayerElement[] =
-      elementList.filter(element => ['audio', 'video'].includes(element.type)) as PlayerElement[];
-    UnitDefinitionSanitizer.movePropertiesToSubObject(filteredElementList,'playerProps', playerProps);
-    filteredElementList.forEach((element: PlayerElement) => {
-      element.playerProps.defaultVolume = element.playerProps.defaultVolume || 0.8;
-      element.playerProps.minVolume = element.playerProps.minVolume || 0;
-    });
+  static sanatizeElement(element: Record<string, UIElementValue>): UIElement {
+    let newElement: Partial<UIElement> = {
+      ...element,
+      position: UnitDefinitionSanitizer.getPositionProps(element),
+      styling: UnitDefinitionSanitizer.getStyleProps(element),
+      player: UnitDefinitionSanitizer.getPlayerProps(element)
+    };
+    if (newElement.type === 'text') {
+      newElement = UnitDefinitionSanitizer.handleTextElement(newElement);
+    }
+    if (newElement.type === 'cloze') {
+      newElement = UnitDefinitionSanitizer.handleClozeElement(newElement as Record<string, UIElementValue>);
+    }
+    if (newElement.type === 'drop-list') {
+      newElement = UnitDefinitionSanitizer.handleDropListElement(newElement as Record<string, UIElementValue>);
+    }
+    if (['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button']
+      .includes(newElement.type as string)) {
+      newElement = UnitDefinitionSanitizer.handlePlusOne(newElement as InputElement);
+    }
+    return newElement as unknown as UIElement;
   }
 
-  private static movePropertiesToSubObject(elementList: UIElement[],
-                                           targetPropertyGroup: string,
-                                           propertyList: string[],
-                                           alternativeSourceGroup?: string): void {
-    elementList.forEach((element: UIElement) => {
-      let actualValues: Record<string, UIElementValue> = {};
-      if (element[targetPropertyGroup]) {
-        actualValues = element[targetPropertyGroup] as Record<string, UIElementValue>;
-      } else if (alternativeSourceGroup && alternativeSourceGroup in element) {
-        actualValues = element[alternativeSourceGroup] as Record<string, UIElementValue>;
-        delete element[alternativeSourceGroup];
-      } else {
-        actualValues = Object.keys(element)
-          .filter(key => propertyList.includes(key))
-          .reduce((obj, key) => {
-            (obj as any)[key] = element[key];
-            return obj;
-          }, {});
-      }
-
-      // delete old values
-      if (alternativeSourceGroup) delete element[alternativeSourceGroup];
-      propertyList.forEach(prop => delete element[prop]);
-
-      if (Object.keys(actualValues).length > 0) {
-        (element[targetPropertyGroup] as Record<string, UIElementValue>) = actualValues;
-      }
-    });
+  private static getPositionProps(element: Record<string, UIElementValue>): PositionProperties {
+    if (element.position !== undefined) {
+      return element.position as PositionProperties;
+    }
+    if (element.positionProps !== undefined) {
+      return element.positionProps as PositionProperties;
+    }
+    return element as unknown as PositionProperties;
   }
 
-  private static handleTextElements(elementList: UIElement[]): void {
-    const textElements = elementList.filter(element => element.type === 'text');
-    textElements.forEach((element: Record<string, unknown>) => {
-      if (element.highlightable || element.interaction === 'highlightable') {
-        element.highlightableYellow = true;
-        element.highlightableTurquoise = true;
-        element.highlightableOrange = true;
-        delete element.interaction;
-        delete element.highlightable;
-      }
-      if (element.interaction === 'underlinable') {
-        element.highlightableYellow = true;
-        delete element.interaction;
-      }
-    });
+  /* Style properties are expected to be in 'stylings'. If not they may be in fontProps and/or
+  *  surfaceProps. Even older versions had them in the root of the object, which is uses as last resort.
+  *  The styles object then has all other properties of the element, but that is not a problem
+  *  since the factory methods only use the values they care for and all others are discarded. */
+  private static getStyleProps(element: Record<string, UIElementValue>): ElementStyling {
+    if (element.styling !== undefined) {
+      return element.styling as ElementStyling;
+    }
+    if (element.fontProps !== undefined) {
+      return {
+        ...(element.fontProps as Record<string, any>),
+        backgroundColor: (element.surfaceProps as Record<string, any>)?.backgroundColor,
+        borderRadius: element.borderRadius as number | undefined,
+        itemBackgroundColor: element.itemBackgroundColor as string | undefined,
+        borderWidth: element.borderWidth as number | undefined,
+        borderColor: element.borderColor as string | undefined,
+        borderStyle: element.borderStyle as
+          'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset' | undefined,
+        lineColoring: element.lineColoring as boolean | undefined,
+        lineColoringColor: element.lineColoringColor as string | undefined
+      };
+    }
+    return element as ElementStyling;
+  }
+
+  private static getPlayerProps(element: Record<string, UIElementValue>): PlayerProperties {
+    if (element.playerProps !== undefined) {
+      return element.playerProps as PlayerProperties;
+    }
+    return element as unknown as PlayerProperties;
+  }
+
+  private static handleTextElement(element: Record<string, UIElementValue>): TextElement {
+    const newElement = { ...element };
+    if (newElement.highlightable || newElement.interaction === 'highlightable') {
+      newElement.highlightableYellow = true;
+      newElement.highlightableTurquoise = true;
+      newElement.highlightableOrange = true;
+    }
+    if (newElement.interaction === 'underlinable') {
+      newElement.highlightableYellow = true;
+    }
+    return newElement as TextElement;
   }
 
   /*
-  Replace raw text with backslash-markers with JSON representation.
-  The TipTap editor module can automate that. It needs plugins though to be able
+  Replace raw text with backslash-markers with HTML tags.
+  The TipTap editor module can create JSOM from the HTML. It needs plugins though to be able
   to create ui-elements.
+  Afterwards element models are added to the JSON.
    */
-  private static handleClozeElements(elementList: UIElement[]): void {
-    const clozeElements = elementList.filter(element => element.type === 'cloze');
-    if (clozeElements.length && clozeElements[0].text) {
-      clozeElements.forEach((element: Record<string, any>) => {
-        const replacedText = element.text.replace(/\\i|\\z|\\r/g, (match: string) => {
-          switch (match) {
-            case '\\i':
-              return '<aspect-nodeview-text-field></aspect-nodeview-text-field>';
-            case '\\z':
-              return '<aspect-nodeview-drop-list></aspect-nodeview-drop-list>';
-            case '\\r':
-              return '<aspect-nodeview-toggle-button></aspect-nodeview-toggle-button>';
-            default:
-              throw Error('error in match');
-          }
-        });
-        const editor = new Editor({
-          extensions: [
-            StarterKit,
-            ToggleButtonExtension,
-            DropListExtension,
-            TextFieldExtension
-          ],
-          content: replacedText
-        });
-        element.document = editor.getJSON();
-        delete element.text;
-      });
-    }
-  }
+  private static handleClozeElement(element: Record<string, UIElementValue>): ClozeElement {
+    if (!element.parts || !element.text) throw Error('Can\'t read Cloze Element');
+    const uiElementParts = (element.parts as any[])
+      .map((el: any) => el
+        .filter((el2: { type: string; }) => ['text-field', 'drop-list', 'toggle-button'].includes(el2.type)))
+      .flat();
 
-  private static handleDropListElements(elementList: UIElement[]): void {
-    const dropListElements: DropListElement[] =
-      elementList.filter(element => element.type === 'drop-list') as DropListElement[];
-    dropListElements.forEach((element: DropListElement) => {
-      if (element.options) {
-        element.value = [];
-        (element.options as string[]).forEach(option => {
-          (element.value as DragNDropValueObject[]).push({
-            id: IdService.getInstance().getNewID('value'),
-            stringValue: option
-          });
-        });
-        delete element.options;
-      }
-      if (element.value && !((element.value as DragNDropValueObject[])[0] instanceof Object)) {
-        const newValues: DragNDropValueObject[] = [];
-        (element.value as string[]).forEach(value => {
-          newValues.push({
-            id: IdService.getInstance().getNewID('value'),
-            stringValue: value
-          });
-        });
-        element.value = newValues;
+    const replacedText = (element.text as string).replace(/\\i|\\z|\\r/g, (match: string) => {
+      switch (match) {
+        case '\\i':
+          return '<aspect-nodeview-text-field></aspect-nodeview-text-field>';
+        case '\\z':
+          return '<aspect-nodeview-drop-list></aspect-nodeview-drop-list>';
+        case '\\r':
+          return '<aspect-nodeview-toggle-button></aspect-nodeview-toggle-button>';
+        default:
+          throw Error('error in match');
       }
     });
+
+    const editor = new Editor({
+      extensions: [StarterKit, ToggleButtonExtension, DropListExtension, TextFieldExtension],
+      content: replacedText
+    });
+    const doc: { type: string, content: ClozeDocumentParagraph[] } =
+      editor.getJSON() as { type: string, content: ClozeDocumentParagraph[] };
+
+    return {
+      ...element,
+      document: {
+        ...doc,
+        content: doc.content
+          .map((paragraph: ClozeDocumentParagraph) => ({
+            ...paragraph,
+            content: paragraph.content
+              .map((paraPart: ClozeDocumentParagraphPart) => (
+                ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
+                  {
+                    ...paraPart,
+                    attrs: {
+                      ...paraPart.attrs,
+                      model: UnitDefinitionSanitizer.sanatizeElement(uiElementParts.shift().value)
+                    }
+                  } :
+                  {
+                    ...paraPart
+                  }
+              ))
+          }))
+      } as ClozeDocument
+    } as ClozeElement;
   }
 
-  // version 1.1.0 is the only version where there was a plus one for values, which we rolled back afterwards
-  private static handlePlusOne(elementList: UIElement[]): void {
-    if (UnitDefinitionSanitizer.unitVersion === [1, 1, 0]) {
-      elementList.filter(el => (
-        ['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button'].includes(el.type)
-      ))
-        .forEach(element => {
-          if (element.value && element.value > 0) {
-            (element.value as number) -= 1;
-          }
+  private static handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
+    const newElement = element;
+    if (newElement.options) {
+      newElement.value = [];
+      (newElement.options as string[]).forEach(option => {
+        (newElement.value as DragNDropValueObject[]).push({
+          id: IdService.getInstance().getNewID('value'),
+          stringValue: option
         });
+      });
     }
+    if (newElement.value && !((newElement.value as DragNDropValueObject[])[0] instanceof Object)) {
+      const newValues: DragNDropValueObject[] = [];
+      (newElement.value as string[]).forEach(value => {
+        newValues.push({
+          id: IdService.getInstance().getNewID('value'),
+          stringValue: value
+        });
+      });
+      newElement.value = newValues;
+    }
+    return newElement as DropListElement;
+  }
+
+  // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.
+  private static handlePlusOne(element: InputElement): InputElement {
+    return ((UnitDefinitionSanitizer.unitVersion === [1, 1, 0]) && (element.value && element.value > 0)) ?
+      {
+        ...element,
+        value: (element.value as number) - 1
+      } :
+      element;
   }
 }

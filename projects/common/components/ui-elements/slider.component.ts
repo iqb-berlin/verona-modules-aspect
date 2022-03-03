@@ -11,16 +11,16 @@ import { SliderElement } from '../../interfaces/elements';
     <div fxLayout="column"
          [style.width.%]="100"
          [style.height.%]="100"
-         [style.background-color]="elementModel.styles.backgroundColor">
+         [style.background-color]="elementModel.styling.backgroundColor">
       <div *ngIf="elementModel.label"
-           [style.color]="elementModel.styles.fontColor"
-           [style.font-family]="elementModel.styles.font"
-           [style.font-size.px]="elementModel.styles.fontSize"
-           [style.line-height.%]="elementModel.styles.lineHeight"
-           [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-        {{elementModel.label}}
+           [style.color]="elementModel.styling.fontColor"
+           [style.font-family]="elementModel.styling.font"
+           [style.font-size.px]="elementModel.styling.fontSize"
+           [style.line-height.%]="elementModel.styling.lineHeight"
+           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          {{elementModel.label}}
       </div>
       <div #valueContainer
            [class.values]="elementModel.label && !elementModel.showValues">
@@ -29,36 +29,34 @@ import { SliderElement } from '../../interfaces/elements';
                class="value-container-min">
             <div *ngIf="elementModel.showValues"
                  class="value-container">
-              <div
-                  [style.color]="elementModel.styles.fontColor"
-                  [style.font-family]="elementModel.styles.font"
-                  [style.font-size.px]="elementModel.styles.fontSize"
-                  [style.line-height.%]="elementModel.styles.lineHeight"
-                  [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                  [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                  [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-                {{elementModel.minValue | number:'':'de'}}
-              </div>
-              <div *ngIf="elementModel.barStyle" class="number-marker"></div>
+                <div [style.color]="elementModel.styling.fontColor"
+                     [style.font-family]="elementModel.styling.font"
+                     [style.font-size.px]="elementModel.styling.fontSize"
+                     [style.line-height.%]="elementModel.styling.lineHeight"
+                     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+                  {{elementModel.minValue | number:'':'de'}}
+                </div>
+                <div *ngIf="elementModel.barStyle" class="number-marker"></div>
             </div>
           </div>
           <div #valueMax
                [class.value-container-max]="elementModel.barStyle">
             <div *ngIf="elementModel.showValues"
                  class="value-container">
-              <div
-                  [style.color]="elementModel.styles.fontColor"
-                  [style.font-family]="elementModel.styles.font"
-                  [style.font-size.px]="elementModel.styles.fontSize"
-                  [style.line-height.%]="elementModel.styles.lineHeight"
-                  [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-                  [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-                  [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-                {{elementModel.maxValue | number:'':'de'}}
-              </div>
-              <div *ngIf="elementModel.barStyle"
-                   class="number-marker">
-              </div>
+                <div [style.color]="elementModel.styling.fontColor"
+                     [style.font-family]="elementModel.styling.font"
+                     [style.font-size.px]="elementModel.styling.fontSize"
+                     [style.line-height.%]="elementModel.styling.lineHeight"
+                     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+                  {{elementModel.maxValue | number:'':'de'}}
+                </div>
+                <div *ngIf="elementModel.barStyle"
+                     class="number-marker">
+                </div>
             </div>
           </div>
         </div>
@@ -77,13 +75,12 @@ import { SliderElement } from '../../interfaces/elements';
            [style.margin-right.px]="elementModel.barStyle ? valueMax.offsetWidth/2 - 8 : valueMax.offsetWidth"
            [style.margin-left.px]="elementModel.barStyle ? valueMin.offsetWidth/2 - 8: valueMin.offsetWidth"
            [style.margin-top.px]="elementModel.barStyle ? -32 : -valueContainer.offsetHeight">
-        <mat-slider
-            [class]="elementModel.barStyle ? 'bar-style' : ''"
-            [thumbLabel]="elementModel.thumbLabel"
-            [formControl]="elementFormControl"
-            [style.width.%]="100"
-            [max]="elementModel.maxValue"
-            [min]="elementModel.minValue">
+        <mat-slider [class]="elementModel.barStyle ? 'bar-style' : ''"
+                    [thumbLabel]="elementModel.thumbLabel"
+                    [formControl]="elementFormControl"
+                    [style.width.%]="100"
+                    [max]="elementModel.maxValue"
+                    [min]="elementModel.minValue">
         </mat-slider>
         <mat-error *ngIf="elementFormControl.touched && elementFormControl.errors">
           {{elementModel.requiredWarnMessage}}

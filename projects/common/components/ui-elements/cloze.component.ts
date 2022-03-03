@@ -48,93 +48,93 @@ import { ClozeUtils } from '../../util/cloze';
 
     <ng-template #paragraphs let-part>
       <p *ngIf="part.type === 'paragraph'"
-         [style.line-height.%]="elementModel.styles.lineHeight"
-         [style.color]="elementModel.styles.fontColor"
-         [style.font-family]="elementModel.styles.font"
-         [style.font-size.px]="elementModel.styles.fontSize"
-         [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''"
+         [style.line-height.%]="elementModel.styling.lineHeight"
+         [style.color]="elementModel.styling.fontColor"
+         [style.font-family]="elementModel.styling.font"
+         [style.font-size.px]="elementModel.styling.fontSize"
+         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [style.margin-bottom]="part.attrs?.margin + 'px'"
          [style.margin-left]="part.attrs?.hangingIndent ? '' :
-               ($any(part.attrs?.indentSize) * $any(part.attrs?.indent)) + 'px'"
+           ($any(part.attrs?.indentSize) * $any(part.attrs?.indent)) + 'px'"
          [style.text-align]="part.attrs?.textAlign"
          [style.text-indent]="part.attrs?.hangingIndent ?
-               ($any(part.attrs?.indentSize) * $any(part.attrs?.indent)) + 'px' : ''">
-        <ng-container [ngTemplateOutlet]="paragraphChildren"
-                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+           ($any(part.attrs?.indentSize) * $any(part.attrs?.indent)) + 'px' : ''">
+          <ng-container [ngTemplateOutlet]="paragraphChildren"
+                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </p>
       <h1 *ngIf="part.type === 'heading' && part.attrs.level === 1"
           [style.display]="'inline'"
-          [style.line-height.%]="elementModel.styles.lineHeight"
-          [style.color]="elementModel.styles.fontColor"
-          [style.font-family]="elementModel.styles.font"
-          [style.font-size.px]="elementModel.styles.fontSize"
-          [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-          [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-          [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-        <ng-container [ngTemplateOutlet]="paragraphChildren"
-                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+          [style.line-height.%]="elementModel.styling.lineHeight"
+          [style.color]="elementModel.styling.fontColor"
+          [style.font-family]="elementModel.styling.font"
+          [style.font-size.px]="elementModel.styling.fontSize"
+          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          <ng-container [ngTemplateOutlet]="paragraphChildren"
+                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </h1>
       <h2 *ngIf="part.type === 'heading' && part.attrs.level === 2"
           [style.display]="'inline'"
-          [style.line-height.%]="elementModel.styles.lineHeight"
-          [style.color]="elementModel.styles.fontColor"
-          [style.font-family]="elementModel.styles.font"
-          [style.font-size.px]="elementModel.styles.fontSize"
-          [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-          [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-          [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-        <ng-container [ngTemplateOutlet]="paragraphChildren"
-                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+          [style.line-height.%]="elementModel.styling.lineHeight"
+          [style.color]="elementModel.styling.fontColor"
+          [style.font-family]="elementModel.styling.font"
+          [style.font-size.px]="elementModel.styling.fontSize"
+          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          <ng-container [ngTemplateOutlet]="paragraphChildren"
+                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </h2>
       <h3 *ngIf="part.type === 'heading' && part.attrs.level === 3"
           [style.display]="'inline'"
-          [style.line-height.%]="elementModel.styles.lineHeight"
-          [style.color]="elementModel.styles.fontColor"
-          [style.font-family]="elementModel.styles.font"
-          [style.font-size.px]="elementModel.styles.fontSize"
-          [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-          [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-          [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-        <ng-container [ngTemplateOutlet]="paragraphChildren"
-                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+          [style.line-height.%]="elementModel.styling.lineHeight"
+          [style.color]="elementModel.styling.fontColor"
+          [style.font-family]="elementModel.styling.font"
+          [style.font-size.px]="elementModel.styling.fontSize"
+          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          <ng-container [ngTemplateOutlet]="paragraphChildren"
+                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </h3>
       <h4 *ngIf="part.type === 'heading' && part.attrs.level === 4"
           [style.display]="'inline'"
-          [style.line-height.%]="elementModel.styles.lineHeight"
-          [style.color]="elementModel.styles.fontColor"
-          [style.font-family]="elementModel.styles.font"
-          [style.font-size.px]="elementModel.styles.fontSize"
-          [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-          [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-          [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-        <ng-container [ngTemplateOutlet]="paragraphChildren"
-                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+          [style.line-height.%]="elementModel.styling.lineHeight"
+          [style.color]="elementModel.styling.fontColor"
+          [style.font-family]="elementModel.styling.font"
+          [style.font-size.px]="elementModel.styling.fontSize"
+          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          <ng-container [ngTemplateOutlet]="paragraphChildren"
+                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </h4>
       <h5 *ngIf="part.type === 'heading' && part.attrs.level === 5"
           [style.display]="'inline'"
-          [style.line-height.%]="elementModel.styles.lineHeight"
-          [style.color]="elementModel.styles.fontColor"
-          [style.font-family]="elementModel.styles.font"
-          [style.font-size.px]="elementModel.styles.fontSize"
-          [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-          [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-          [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-        <ng-container [ngTemplateOutlet]="paragraphChildren"
-                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+          [style.line-height.%]="elementModel.styling.lineHeight"
+          [style.color]="elementModel.styling.fontColor"
+          [style.font-family]="elementModel.styling.font"
+          [style.font-size.px]="elementModel.styling.fontSize"
+          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          <ng-container [ngTemplateOutlet]="paragraphChildren"
+                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </h5>
       <h6 *ngIf="part.type === 'heading' && part.attrs.level === 6"
           [style.display]="'inline'"
-          [style.line-height.%]="elementModel.styles.lineHeight"
-          [style.color]="elementModel.styles.fontColor"
-          [style.font-family]="elementModel.styles.font"
-          [style.font-size.px]="elementModel.styles.fontSize"
-          [style.font-weight]="elementModel.styles.bold ? 'bold' : ''"
-          [style.font-style]="elementModel.styles.italic ? 'italic' : ''"
-          [style.text-decoration]="elementModel.styles.underline ? 'underline' : ''">
-        <ng-container [ngTemplateOutlet]="paragraphChildren"
-                      [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+          [style.line-height.%]="elementModel.styling.lineHeight"
+          [style.color]="elementModel.styling.fontColor"
+          [style.font-family]="elementModel.styling.font"
+          [style.font-size.px]="elementModel.styling.fontSize"
+          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          <ng-container [ngTemplateOutlet]="paragraphChildren"
+                        [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
       </h6>
     </ng-template>
 

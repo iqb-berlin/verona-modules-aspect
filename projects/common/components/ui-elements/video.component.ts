@@ -20,7 +20,7 @@ import { VideoElement } from '../../interfaces/elements';
                           [active]="active"
                           [id]="elementModel.id"
                           [savedPlaybackTime]="savedPlaybackTime"
-                          [playerProperties]="elementModel.playerProps"
+                          [playerProperties]="elementModel.player"
                           [dependencyDissolved]="dependencyDissolved"
                           (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"
                           (elementValueChanged)="elementValueChanged.emit($event)">

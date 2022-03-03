@@ -19,7 +19,9 @@ export abstract class UnitFactory {
       margin: page && page.margin !== undefined ? page.margin : 30,
       backgroundColor: page && page.backgroundColor !== undefined ? page.backgroundColor : '#ffffff',
       alwaysVisible: page && page.alwaysVisible !== undefined ? page.alwaysVisible : false,
-      alwaysVisiblePagePosition: 'left',
+      alwaysVisiblePagePosition: page && page.alwaysVisiblePagePosition !== undefined ?
+        page.alwaysVisiblePagePosition :
+        'left',
       alwaysVisibleAspectRatio: page && page.alwaysVisibleAspectRatio !== undefined ? page.alwaysVisibleAspectRatio : 50
     };
   }

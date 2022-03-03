@@ -17,7 +17,7 @@ export abstract class UnitFactory {
       hasMaxWidth: page && page.hasMaxWidth !== undefined ? page.hasMaxWidth : false,
       maxWidth: page && page.hasMaxWidth !== undefined ? page.maxWidth : 900,
       margin: page && page.margin !== undefined ? page.margin : 30,
-      backgroundColor: '#ffffff',
+      backgroundColor: page && page.backgroundColor !== undefined ? page.backgroundColor : '#ffffff',
       alwaysVisible: page && page.alwaysVisible !== undefined ? page.alwaysVisible : false,
       alwaysVisiblePagePosition: 'left',
       alwaysVisibleAspectRatio: page && page.alwaysVisibleAspectRatio !== undefined ? page.alwaysVisibleAspectRatio : 50
@@ -30,7 +30,7 @@ export abstract class UnitFactory {
         section.elements.map(element => ElementFactory.createElement(element) as PositionedElement) :
         [],
       height: section && section.height !== undefined ? section.height : 400,
-      backgroundColor: 'white',
+      backgroundColor: section && section.backgroundColor !== undefined ? section.backgroundColor : '#ffffff',
       dynamicPositioning: section && section.dynamicPositioning !== undefined ? section.dynamicPositioning : false,
       autoColumnSize: section && section.autoColumnSize !== undefined ? section.autoColumnSize : true,
       autoRowSize: section && section.autoRowSize !== undefined ? section.autoRowSize : true,

@@ -38,8 +38,6 @@ export class ElementMediaPlayerGroupComponent extends ElementGroupDirective impl
 
     this.mediaPlayerService.registerMediaElement(
       this.elementModel.id,
-      this.elementComponent,
-      this.elementModel.playerProps?.activeAfterID as string,
       this.elementModel.playerProps?.minRuns as number === 0
     );
   }

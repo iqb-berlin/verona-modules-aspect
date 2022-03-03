@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { MediaPlayerElementComponent } from '../../../../common/directives/media-player-element-component.directive';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MediaPlayerService {
-  mediaElements: { id: string; mediaComponent: MediaPlayerElementComponent; dependOn: string; valid: boolean }[] = [];
-  private _mediaStatusChanged = new Subject<string>();
+  mediaElements: { id: string; valid: boolean }[] = [];
+  mediaStatusChanged = new Subject<string>();
+  actualPlayingId: Subject<string | null> = new Subject();
 
   get mediaStatus(): string {
     const validMediaElements = this.mediaElements.filter(mediaElement => mediaElement.valid);
@@ -17,37 +17,27 @@ export class MediaPlayerService {
     return this.mediaElements.length ? 'none' : 'complete';
   }
 
-  get mediaStatusChanged(): Observable<string> {
-    return this._mediaStatusChanged.asObservable();
-  }
-
   registerMediaElement(
-    id: string, mediaComponent: MediaPlayerElementComponent, dependOn: string, valid: boolean
+    id: string, valid: boolean
   ): void {
     this.mediaElements.push({
-      id, mediaComponent, dependOn, valid
+      id, valid
     });
   }
 
   setActualPlayingMediaId(actualId: string | null): void {
-    this.mediaElements.forEach(mediaElement => mediaElement.mediaComponent.setActualPlayingMediaId(actualId));
+    this.actualPlayingId.next(actualId);
   }
 
   setValidStatusChanged(validId: string): void {
     const validMediaElement = this.mediaElements.find(mediaElement => mediaElement.id === validId);
     if (validMediaElement) {
       validMediaElement.valid = true;
+      this.mediaStatusChanged.next(validId);
     }
-    this._mediaStatusChanged.next(validId);
-    this.broadcastValidStatusChanged(validId);
   }
 
   reset(): void {
     this.mediaElements = [];
-  }
-
-  private broadcastValidStatusChanged(validId: string): void {
-    const dependingMediaElements = this.mediaElements.filter(mediaElement => mediaElement.dependOn === validId);
-    dependingMediaElements.forEach(mediaElement => mediaElement.mediaComponent.setActivatedAfterID());
   }
 }

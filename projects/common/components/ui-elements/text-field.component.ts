@@ -20,9 +20,13 @@ import { TextFieldElement } from '../../interfaces/elements';
             aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
             [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
-      <input matInput type="text" #input autocomplete="off"
+      <input matInput type="text" #input
+             autocomplete="off"
+             autocapitalize="none"
+             autocorrect="off"
+             spellcheck="false"
+             value="{{elementModel.value}}"
              [formControl]="elementFormControl"
-             [value]="elementModel.value"
              [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
@@ -48,9 +52,13 @@ import { TextFieldElement } from '../../interfaces/elements';
                     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                     aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
-      <input matInput type="text" #input autocomplete="off"
+      <input matInput type="text" #input
+             autocomplete="off"
+             autocapitalize="none"
+             autocorrect="off"
+             spellcheck="false"
+             value="{{elementModel.value}}"
              [formControl]="elementFormControl"
-             [value]="elementModel.value"
              [readonly]="elementModel.readOnly"
              [pattern]="elementModel.pattern"
              (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"

@@ -22,9 +22,13 @@ import { TextAreaElement } from '../../interfaces/elements';
         [appearance]="$any(elementModel.appearance)">
       <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
       <textarea matInput #input
-                autocomplete="off" rows="{{elementModel.rowCount}}"
+                autocomplete="off"
+                autocapitalize="none"
+                autocorrect="off"
+                spellcheck="false"
+                rows="{{elementModel.rowCount}}"
+                value="{{elementModel.value}}"
                 [formControl]="elementFormControl"
-                [value]="elementModel.value"
                 [readonly]="elementModel.readOnly"
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"

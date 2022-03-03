@@ -6,6 +6,10 @@ import { TextFieldSimpleElement } from '../../interfaces/elements';
   selector: 'aspect-text-field-simple',
   template: `
     <input type="text" form="parentForm"
+           autocomplete="off"
+           autocapitalize="none"
+           autocorrect="off"
+           spellcheck="false"
            [style.width.px]="elementModel.width"
            [style.height.px]="elementModel.height"
            [style.line-height.px]="elementModel.styling.fontSize"

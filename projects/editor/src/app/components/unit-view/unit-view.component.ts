@@ -5,7 +5,7 @@ import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from '../../../../../common/services/message.service';
-import { Page, Unit } from '../../../../../common/interfaces/unit';
+import { Page } from '../../../../../common/interfaces/unit';
 import { ArrayUtils } from '../../../../../common/util/array';
 import { UnitFactory } from '../../../../../common/util/unit.factory';
 
@@ -15,7 +15,6 @@ import { UnitFactory } from '../../../../../common/util/unit.factory';
   styleUrls: ['./unit-view.component.css']
 })
 export class UnitViewComponent implements OnDestroy {
-  unit!: Unit;
   selectedPageIndex: number = 0;
   pagesLoaded = true;
   private ngUnsubscribe = new Subject<void>();
@@ -42,9 +41,11 @@ export class UnitViewComponent implements OnDestroy {
   }
 
   movePage(page: Page, direction: 'up' | 'down'): void {
-    if ((direction === 'up' && this.unit.pages.indexOf(page) === 1 && this.unit.pages[0].alwaysVisible) ||
-        (direction === 'up' && this.unit.pages.indexOf(page) === 0) ||
-        (direction === 'down' && this.unit.pages.indexOf(page) === this.unit.pages.length - 1)) {
+    if ((direction === 'up' && this.unitService.unit.pages.indexOf(page) === 1 &&
+        this.unitService.unit.pages[0].alwaysVisible) ||
+        (direction === 'up' && this.unitService.unit.pages.indexOf(page) === 0) ||
+        (direction === 'down' &&
+          this.unitService.unit.pages.indexOf(page) === this.unitService.unit.pages.length - 1)) {
       this.messageService.showWarning('page can\'t be moved'); // TODO translate
       return;
     }
@@ -59,7 +60,7 @@ export class UnitViewComponent implements OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((result: boolean) => {
         if (result) {
-          this.unit.pages.splice(this.unit.pages.indexOf(page), 1);
+          this.unitService.unit.pages.splice(this.unitService.unit.pages.indexOf(page), 1);
           this.unitService.unitUpdated();
           this.selectedPageIndex -= 1;
         }
@@ -84,10 +85,10 @@ export class UnitViewComponent implements OnDestroy {
   }
 
   private movePageToFront(page: Page): void {
-    const pageIndex = this.unit.pages.indexOf(page);
+    const pageIndex = this.unitService.unit.pages.indexOf(page);
     if (pageIndex !== 0) {
-      this.unit.pages.splice(pageIndex, 1);
-      this.unit.pages.splice(0, 0, page);
+      this.unitService.unit.pages.splice(pageIndex, 1);
+      this.unitService.unit.pages.splice(0, 0, page);
     }
   }
 

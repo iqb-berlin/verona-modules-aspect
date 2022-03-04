@@ -13,6 +13,7 @@ import {
   UIElement
 } from '../../../../../../../../common/interfaces/elements';
 import { LikertColumn, LikertRow } from '../../../../../../../../common/interfaces/likert';
+import { SelectionService } from '../../../../../services/selection.service';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -28,7 +29,7 @@ export class ElementModelPropertiesComponent {
     isInputValid?: boolean | null
   }>();
 
-  constructor(public unitService: UnitService) { }
+  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
 
   addOption(property: string, value: string): void {
     this.updateModel.emit({

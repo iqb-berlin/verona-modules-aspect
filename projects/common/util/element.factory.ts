@@ -24,7 +24,7 @@ import {
   ClozeElement,
   DropdownElement,
   DropListElement,
-  DropListSimpleElement, ElementStyling,
+  DropListSimpleElement,
   FrameElement,
   ImageElement,
   InputElement, InputElementValue, LikertElement, LikertRowElement, PlayerProperties, PositionProperties,
@@ -96,7 +96,7 @@ export abstract class ElementFactory {
   static initInputElement(element: Partial<UIElement>): InputElement {
     return {
       ...ElementFactory.initElement(element),
-      label: element.label as string || 'Beispielbeschriftung',
+      label: element.value !== undefined ? element.label as string : 'Beispielbeschriftung',
       value: element.value !== undefined ? element.value as InputElementValue : null,
       required: element.required !== undefined ? element.required as boolean : false,
       requiredWarnMessage: element.requiredWarnMessage !== undefined ?

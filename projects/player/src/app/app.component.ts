@@ -65,12 +65,12 @@ export class AppComponent implements OnInit {
           UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
         );
         this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
-        this.playerConfig = message.playerConfig || {};
+        this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
+          JSON.parse(message.unitState.dataParts.elementCodes) : [];
         this.veronaPostService.sessionId = message.sessionId;
         this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
         this.pages = unitDefinition.pages;
-        this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
-          JSON.parse(message.unitState.dataParts.elementCodes) : [];
+        this.playerConfig = message.playerConfig || {};
         // eslint-disable-next-line no-console
         console.log('player: unitStateElementCodes', this.unitStateService.unitStateElementCodes);
       } else {

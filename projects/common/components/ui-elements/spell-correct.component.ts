@@ -14,8 +14,12 @@ import { SpellCorrectElement } from '../../interfaces/elements';
            [style.height.%]="100">
         <mat-form-field class="small-input">
           <input matInput type="text"
-                 [style.text-align]="'center'"
                  autocomplete="off"
+                 autocapitalize="none"
+                 autocorrect="off"
+                 spellcheck="false"
+                 value="{{elementModel.value}}"
+                 [style.text-align]="'center'"
                  [readonly]="elementModel.readOnly"
                  [style.color]="elementModel.styling.fontColor"
                  [style.font-family]="elementModel.styling.font"
@@ -23,7 +27,6 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                  [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-                 [value]="elementModel.value"
                  [formControl]="elementFormControl">
         </mat-form-field>
         <button #buttonElement
@@ -40,7 +43,8 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                 [style.margin-top]="'-20px'"
                 [style.text-decoration-line]="(inputElement && inputElement.focused) ||
                                               (inputElement && !!inputElement.value) ||
-                                              (elementFormControl && elementFormControl.value === '') ? 'line-through' : ''"
+                                              (elementFormControl && elementFormControl.value === '') ?
+                                              'line-through' : ''"
                 (click)="elementFormControl.value === null ?
                            inputElement.focus() :
                            buttonElement.focus();

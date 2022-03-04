@@ -11,8 +11,7 @@ import { DragNDropValueObject } from '../../../../../common/interfaces/elements'
         <mat-label>{{'text' | translate }}</mat-label>
         <input #textField matInput type="text" [value]="data.value.stringValue">
       </mat-form-field>
-      <input #imageUpload type="file" hidden (click)="loadImage()">
-      <button mat-raised-button (click)="imageUpload.click()">{{ 'loadImage' | translate }}</button>
+      <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
       <button mat-raised-button (click)="imgSrc = undefined">{{ 'removeImage' | translate }}</button>
       <img [src]="imgSrc"
            [style.object-fit]="'scale-down'"

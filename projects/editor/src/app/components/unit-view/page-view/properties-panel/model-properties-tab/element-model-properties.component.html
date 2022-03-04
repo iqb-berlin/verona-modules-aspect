@@ -172,11 +172,38 @@
     <mat-label>{{'propertiesPanel.action' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.action"
                 (selectionChange)="updateModel.emit({ property: 'action', value: $event.value })">
-      <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
+      <mat-option [value]="null">
+        {{ 'propertiesPanel.none' | translate }}
+      </mat-option>
+      <mat-option *ngFor="let option of ['unitNav', 'pageNav']"
                   [value]="option">
         {{ 'propertiesPanel.' + option | translate }}
       </mat-option>
     </mat-select>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.action" appearance="fill">
+    <mat-label>{{'propertiesPanel.actionParam' | translate }}</mat-label>
+    <ng-container *ngIf="combinedProperties.action === 'unitNav'">
+      <mat-select [value]="combinedProperties.actionParam"
+                  (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
+        <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
+                    [value]="option">
+          {{ 'propertiesPanel.' + option | translate }}
+        </mat-option>
+      </mat-select>
+    </ng-container>
+    <ng-container *ngIf="combinedProperties.action === 'pageNav'">
+      <mat-select [value]="combinedProperties.actionParam"
+                  (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
+        <ng-container *ngFor="let page of unitService.unit.pages; index as i">
+          <mat-option *ngIf="!page.alwaysVisible && selectionService.selectedPageIndex !== i"
+                      [value]="i">
+            {{ unitService.unit.pages[0].alwaysVisible ? i : i + 1 }}
+          </mat-option>
+        </ng-container>
+      </mat-select>
+    </ng-container>
   </mat-form-field>
 
   <ng-container *ngIf="combinedProperties.imageSrc !== undefined">

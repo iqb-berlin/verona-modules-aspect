@@ -1,0 +1,9 @@
+key: veronaModuleVersion        -> unitDefinitionType                 -> neuerName
+inhalt: iqb-aspect-module@0.1.1 -> iqb-aspect-definition@1.0.0(1.1.0) -> aspect-definition-version@2.0.0
+
+===============================
+
+type: aspect-unit-definition
+version: 2.0.0
+
+unitDefinitionType: aspect-unit-definition@2.0.0

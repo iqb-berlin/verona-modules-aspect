@@ -1,27 +1,25 @@
-<div class="inline-container" cdkOverlayOrigin #overlayOrigin="cdkOverlayOrigin">
-  <form [formGroup]="form">
-    <aspect-text-area
-        *ngIf="elementModel.type === 'text-area'"
-        #elementComponent
-        [parentForm]="form"
-        [elementModel]="elementModel | cast: TextAreaElement"
-        (onFocusChanged)="onFocusChanged($event, elementComponent)">
-    </aspect-text-area>
-    <aspect-text-field
-        *ngIf="elementModel.type === 'text-field'"
-        #elementComponent
-        [parentForm]="form"
-        [elementModel]="elementModel | cast: TextFieldElement"
-        (onFocusChanged)="onFocusChanged($event, elementComponent)">
-    </aspect-text-field>
-  </form>
-</div>
+<form class="inline-container"
+      [formGroup]="form">
+  <aspect-text-area
+      *ngIf="elementModel.type === 'text-area'"
+      #elementComponent
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: TextAreaElement"
+      (onFocusChanged)="onFocusChanged($event, elementComponent)">
+  </aspect-text-area>
+  <aspect-text-field
+      *ngIf="elementModel.type === 'text-field'"
+      #elementComponent
+      [parentForm]="form"
+      [elementModel]="elementModel | cast: TextFieldElement"
+      (onFocusChanged)="onFocusChanged($event, elementComponent)">
+  </aspect-text-field>
+</form>
 
 <aspect-floating-keyboard
-    *ngIf="keyboardService.preset !== 'none' &&
-    (elementModel.type === 'text-area' || elementModel.type === 'text-field')"
+    *ngIf="keyboardService.preset !== 'none'"
     [isKeyboardOpen]="isKeyboardOpen && keyboardService.position === 'floating'"
-    [overlayOrigin]="overlayOrigin"
+    [overlayOrigin]="elementComponent"
     [inputElement]="keyboardService.inputElement"
     [position]="keyboardService.position"
     [preset]="keyboardService.preset"

@@ -1,11 +1,13 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { TextFieldSimpleElement } from '../../interfaces/elements';
 
 @Component({
   selector: 'aspect-text-field-simple',
   template: `
-    <input type="text" form="parentForm"
+    <input #input type="text"
            autocomplete="off"
            autocapitalize="none"
            autocorrect="off"
@@ -21,7 +23,9 @@ import { TextFieldSimpleElement } from '../../interfaces/elements';
            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
            [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
-           [value]="elementModel.value">
+           [value]="elementModel.value"
+           (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
+           (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
   `,
   styles: [
     'input {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}'
@@ -29,4 +33,5 @@ import { TextFieldSimpleElement } from '../../interfaces/elements';
 })
 export class TextFieldSimpleComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldSimpleElement;
+  @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
 }

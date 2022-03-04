@@ -9,7 +9,7 @@ export abstract class ElementComponent implements AfterContentChecked {
   abstract elementModel: UIElement;
   project!: 'player' | 'editor';
 
-  constructor(private elementRef: ElementRef) {}
+  constructor(public elementRef: ElementRef) {}
 
   get domElement(): Element {
     return this.elementRef.nativeElement;

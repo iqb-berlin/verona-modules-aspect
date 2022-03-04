@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  ClozeElement, InputElement, LikertElement
+  ClozeElement, InputElement, LikertElement, TextFieldElement
 } from '../../../../../common/interfaces/elements';
 import { ClozeUtils } from '../../../../../common/util/cloze';
 import { UnitStateService } from '../../services/unit-state.service';
@@ -11,6 +11,10 @@ import { ElementFormGroupDirective } from '../../directives/element-form-group.d
 import { MessageService } from '../../../../../common/services/message.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import { ValidatorService } from '../../services/validator.service';
+import { KeyboardService } from '../../services/keyboard.service';
+import { TextAreaComponent } from '../../../../../common/components/ui-elements/text-area.component';
+import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
+import { TextFieldSimpleComponent } from '../../../../../common/components/ui-elements/text-field-simple.component';
 
 @Component({
   selector: 'aspect-element-compound-group',
@@ -19,10 +23,12 @@ import { ValidatorService } from '../../services/validator.service';
 })
 export class ElementCompoundGroupComponent extends ElementFormGroupDirective implements OnInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
+  isKeyboardOpen!: boolean;
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;
 
   constructor(
+    public keyboardService: KeyboardService,
     public unitStateService: UnitStateService,
     public unitStateElementMapperService: UnitStateElementMapperService,
     public translateService: TranslateService,
@@ -44,6 +50,24 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
     children.forEach(child => {
       const childModel = child.elementModel as InputElement;
       this.registerAtUnitStateService(childModel.id, childModel.value, child, this.pageIndex);
+      if (childModel.type === 'text-field') {
+        (child as TextFieldSimpleComponent)
+          .onFocusChanged.subscribe(element => this.onFocusChanged(element, child as TextFieldComponent));
+      }
     });
+  }
+
+  onFocusChanged(focussedElement: HTMLElement | null, elementComponent: TextAreaComponent | TextFieldComponent): void {
+    if (focussedElement) {
+      const focussedInputElement = this.elementModel.type === 'text-area' ?
+        focussedElement as HTMLTextAreaElement :
+        focussedElement as HTMLInputElement;
+      const preset = (elementComponent.elementModel as TextFieldElement).inputAssistancePreset;
+      const position = (elementComponent.elementModel as TextFieldElement).inputAssistancePosition;
+      this.isKeyboardOpen = this.keyboardService
+        .openKeyboard(focussedInputElement, preset, position, elementComponent);
+    } else {
+      this.isKeyboardOpen = this.keyboardService.closeKeyboard();
+    }
   }
 }

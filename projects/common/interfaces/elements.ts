@@ -284,6 +284,8 @@ export interface TextAreaElement extends InputElement {
 
 export interface TextFieldSimpleElement extends InputElement {
   type: 'text-field';
+  inputAssistancePreset: InputAssistancePreset;
+  inputAssistancePosition: 'floating' | 'right';
   styling: BasicStyles; // TODO okay? bg-color?
 }
 

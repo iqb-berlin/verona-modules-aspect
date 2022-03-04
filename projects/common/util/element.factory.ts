@@ -467,6 +467,9 @@ export abstract class ElementFactory {
       ...ElementFactory.initInputElement({ height: 25, ...element }),
       type: 'text-field',
       label: element.label !== undefined ? element.label : undefined,
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePosition: element.inputAssistancePosition !== undefined ?
+        element.inputAssistancePosition : 'floating',
       styling: ElementFactory.initBasicStyles(element.styling)
     };
   }

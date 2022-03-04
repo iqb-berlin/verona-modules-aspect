@@ -125,7 +125,7 @@ export class UnitService {
         type: elementType,
         id: this.idService.getNewID(elementType),
         src: mediaSrc,
-        positionProps: {
+        position: {
           dynamicPositioning: section.dynamicPositioning
         }
       } as unknown as UIElement) as PositionedElement;
@@ -186,8 +186,8 @@ export class UnitService {
     (elements as PositionedElement[]).forEach((element: PositionedElement) => {
       const newElement = JSON.parse(JSON.stringify(element));
       newElement.id = this.idService.getNewID(element.type);
-      newElement.positionProps.xPosition = element.position.xPosition + 10;
-      newElement.positionProps.yPosition = element.position.yPosition + 10;
+      newElement.position.xPosition = element.position.xPosition + 10;
+      newElement.position.yPosition = element.position.yPosition + 10;
 
       if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
         newElement.value.forEach((valueObject: { id: string }) => {

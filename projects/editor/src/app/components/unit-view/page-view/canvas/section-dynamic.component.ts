@@ -88,9 +88,9 @@ export class SectionDynamicComponent {
     }
     if (dragItemData.dragType === 'move') {
       const elementColumnRange: number =
-        event.item.data.element.positionProps.gridColumnEnd - event.item.data.element.positionProps.gridColumnStart;
+        event.item.data.element.position.gridColumnEnd - event.item.data.element.position.gridColumnStart;
       const elementRowRange: number =
-        event.item.data.element.positionProps.gridRowEnd - event.item.data.element.positionProps.gridRowStart;
+        event.item.data.element.position.gridRowEnd - event.item.data.element.position.gridRowStart;
       this.unitService.updateElementProperty(
         [event.item.data.element],
         'gridColumnStart',

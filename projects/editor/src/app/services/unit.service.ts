@@ -133,7 +133,7 @@ export class UnitService {
       newElement = ElementFactory.createElement({
         type: elementType,
         id: this.idService.getNewID(elementType),
-        positionProps: {
+        position: {
           dynamicPositioning: section.dynamicPositioning
         }
       } as unknown as UIElement) as PositionedElement;

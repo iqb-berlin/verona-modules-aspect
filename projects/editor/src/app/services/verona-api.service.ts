@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import packageJSON from '../../../../../package.json';
+import { Unit } from '../../../../common/interfaces/unit';
 
 @Injectable({
   providedIn: 'root'
@@ -51,13 +52,13 @@ export class VeronaAPIService {
     });
   }
 
-  sendVoeDefinitionChangedNotification(unitDefinition: string = ''): void { // TODO empty string?!
+  sendVoeDefinitionChangedNotification(unit: Unit): void {
     this.send({
       type: 'voeDefinitionChangedNotification',
       sessionId: this.sessionID,
       timeStamp: String(Date.now()),
-      unitDefinition: unitDefinition,
-      unitDefinitionType: packageJSON.config.unit_definition_version
+      unitDefinition: JSON.stringify(unit),
+      unitDefinitionType: `${unit.type}@${unit.version}`
     });
   }
 

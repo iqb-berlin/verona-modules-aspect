@@ -6,7 +6,8 @@ import packageJSON from '../../../package.json';
 export abstract class UnitFactory {
   static createUnit(unit?: Unit): Unit {
     return {
-      unitDefinitionType: `veronaModuleVersion@${packageJSON.config.unit_definition_version}`,
+      type: 'aspect-unit-definition',
+      version: packageJSON.config.unit_definition_version,
       pages: unit?.pages ? unit.pages.map(page => UnitFactory.createPage(page)) : [UnitFactory.createPage()]
     };
   }

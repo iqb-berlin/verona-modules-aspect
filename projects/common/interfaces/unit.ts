@@ -1,7 +1,8 @@
 import { PositionedElement } from './elements';
 
 export interface Unit {
-  unitDefinitionType: string;
+  type: 'aspect-unit-definition';
+  version: string;
   pages: Page[];
 }
 

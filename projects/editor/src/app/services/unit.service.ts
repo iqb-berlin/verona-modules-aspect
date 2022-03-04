@@ -47,7 +47,9 @@ export class UnitService {
 
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
-    this.unit = UnitFactory.createUnit(UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(unitDefinition)));
+    const sanatizationResult = UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(unitDefinition));
+    if (sanatizationResult[1]) this.messageService.showWarning('Loaded outdated unit definition.');
+    this.unit = UnitFactory.createUnit(sanatizationResult[0]);
     UnitService.readIDs(this.unit);
   }
 
@@ -65,12 +67,12 @@ export class UnitService {
   }
 
   unitUpdated(): void {
-    this.veronaApiService.sendVoeDefinitionChangedNotification(JSON.stringify(this.unit));
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   addSection(page: Page): void {
     page.sections.push(UnitFactory.createSection());
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   deleteSection(section: Section): void {
@@ -78,7 +80,7 @@ export class UnitService {
       this.unit.pages[this.selectionService.selectedPageIndex].sections.indexOf(section),
       1
     );
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
@@ -87,12 +89,12 @@ export class UnitService {
       element.id = this.idService.getNewID(element.type);
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
     ArrayUtils.moveArrayItem(section, page.sections, direction);
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   addElementToSectionByIndex(elementType: UIElementType,
@@ -146,7 +148,7 @@ export class UnitService {
       newElement.position.yPosition = coordinates.y;
     }
     section.elements.push(newElement);
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   deleteElements(elements: UIElement[]): void {
@@ -154,7 +156,7 @@ export class UnitService {
     this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
       section.elements = section.elements.filter(element => !elements.includes(element));
     });
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   private freeUpIds(elements: UIElement[]): void {
@@ -175,7 +177,7 @@ export class UnitService {
       newSection.elements.push(element as PositionedElement);
       (element as PositionedElement).position.dynamicPositioning = newSection.dynamicPositioning;
     });
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   duplicateElementsInSection(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
@@ -212,7 +214,7 @@ export class UnitService {
       section.elements.push(newElement as PositionedElement);
     });
 
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   updateSectionProperty(section: Section, property: string, value: string | number | boolean): void {
@@ -225,7 +227,7 @@ export class UnitService {
       section[property] = value;
     }
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   updateElementProperty(elements: UIElement[],
@@ -272,7 +274,7 @@ export class UnitService {
       }
     });
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
     return true;
   }
 
@@ -394,7 +396,7 @@ export class UnitService {
       // no default
     }
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   saveUnit(): void {

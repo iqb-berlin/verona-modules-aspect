@@ -5,15 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class MessageService {
-  private static instance: MessageService;
-
-  constructor(private _snackBar: MatSnackBar) {
-    MessageService.instance = this;
-  }
-
-  static getInstance(): MessageService {
-    return MessageService.instance;
-  }
+  constructor(private _snackBar: MatSnackBar) {}
 
   showWarning(text: string): void {
     this._snackBar.open(text, undefined, { duration: 2000, panelClass: 'snackbar-warning' });

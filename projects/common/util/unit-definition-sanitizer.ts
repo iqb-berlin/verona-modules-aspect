@@ -13,44 +13,55 @@ import {
 } from '../interfaces/elements';
 import { IdService } from '../../editor/src/app/services/id.service';
 import packageJSON from '../../../package.json';
-import { MessageService } from '../services/message.service';
 import ToggleButtonExtension from '../tiptap-editor-extensions/toggle-button';
 import DropListExtension from '../tiptap-editor-extensions/drop-list';
 import TextFieldExtension from '../tiptap-editor-extensions/text-field';
 import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../interfaces/cloze';
 
 export abstract class UnitDefinitionSanitizer {
-  private static unitVersion: [number, number, number] =
+  private static expectedUnitVersion: [number, number, number] =
   packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
 
-  static sanitizeUnitDefinition(unitDefinition: Unit & { veronaModuleVersion?: string }): Unit {
-    if (UnitDefinitionSanitizer.checkVersion(unitDefinition)) return unitDefinition;
+  private static unitDefinitionVersion: [number, number, number] | undefined;
 
-    const x = {
-      ...unitDefinition,
-      pages: unitDefinition.pages.map((page: Page) => UnitDefinitionSanitizer.sanatizePage(page))
-    };
-    return x as Unit;
+  /* Second return value is for signaling if sanatization happened or not */
+  static sanitizeUnitDefinition(unitDefinition: Unit & { veronaModuleVersion?: string }): [Unit, boolean] {
+    try {
+      UnitDefinitionSanitizer.unitDefinitionVersion =
+        UnitDefinitionSanitizer.getUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
+    } catch (e) {
+      console.error('Could not read unit defintion');
+      return [unitDefinition, true];
+    }
+
+    if (UnitDefinitionSanitizer.isVersionOlderThanCurrent(UnitDefinitionSanitizer.unitDefinitionVersion)) {
+      console.log('SANATIZING');
+      const x = {
+        ...unitDefinition,
+        pages: unitDefinition.pages.map((page: Page) => UnitDefinitionSanitizer.sanatizePage(page))
+      };
+      return [x as Unit, true];
+    }
+    return [unitDefinition, false];
   }
 
-  private static checkVersion(unitDefinition: Unit & { veronaModuleVersion?: string }) : boolean {
-    const defVersion: [number, number, number] =
-      unitDefinition.veronaModuleVersion?.split('@')[1].split('.') as unknown as [number, number, number];
-    if (!UnitDefinitionSanitizer.isVersionOlderThanCurrent(defVersion)) {
-      return true;
-    }
-    MessageService.getInstance().showWarning('Loaded an outdated unit definition');
-    return false;
+  private static getUnitDefinitionVersion(unitDefinition: Record<string, string>): [number, number, number] {
+    return (
+      unitDefinition.version ||
+      (unitDefinition.unitDefinitionType && unitDefinition.unitDefinitionType.split('@')[1]) ||
+      (unitDefinition.veronaModuleVersion && unitDefinition.veronaModuleVersion.split('@')[1]))
+      .split('.') as unknown as [number, number, number];
   }
 
   private static isVersionOlderThanCurrent(version: [number, number, number]): boolean {
-    if (version[0] < UnitDefinitionSanitizer.unitVersion[0]) {
+    if (!version) return true;
+    if (version[0] < UnitDefinitionSanitizer.expectedUnitVersion[0]) {
       return true;
     }
-    if (version[1] < UnitDefinitionSanitizer.unitVersion[1]) {
+    if (version[1] < UnitDefinitionSanitizer.expectedUnitVersion[1]) {
       return true;
     }
-    return version[2] < UnitDefinitionSanitizer.unitVersion[2];
+    return version[2] < UnitDefinitionSanitizer.expectedUnitVersion[2];
   }
 
   static sanatizePage(page: Page): Page {
@@ -231,7 +242,7 @@ export abstract class UnitDefinitionSanitizer {
 
   // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.
   private static handlePlusOne(element: InputElement): InputElement {
-    return ((UnitDefinitionSanitizer.unitVersion === [1, 1, 0]) && (element.value && element.value > 0)) ?
+    return ((UnitDefinitionSanitizer.unitDefinitionVersion === [1, 1, 0]) && (element.value && element.value > 0)) ?
       {
         ...element,
         value: (element.value as number) - 1

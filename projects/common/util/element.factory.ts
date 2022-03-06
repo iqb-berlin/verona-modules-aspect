@@ -47,8 +47,8 @@ export abstract class ElementFactory {
         return ElementFactory.createButtonElement(element as Partial<ButtonElement>);
       case 'text-field':
         return ElementFactory.createTextFieldElement(element as Partial<TextFieldElement>);
-      case 'text-field-simple':
-        return ElementFactory.createTextFieldSimpleElement(element as Partial<TextFieldSimpleElement>);
+      // case 'text-field-simple':
+      //   return ElementFactory.createTextFieldSimpleElement(element as Partial<TextFieldSimpleElement>);
       case 'text-area':
         return ElementFactory.createTextAreaElement(element as Partial<TextAreaElement>);
       case 'checkbox':
@@ -243,7 +243,7 @@ export abstract class ElementFactory {
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles(element.styling),
-        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
       }
     };
   }
@@ -342,7 +342,7 @@ export abstract class ElementFactory {
       position: ElementFactory.initPositionProps({ marginBottom: 30, ...element }),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element }),
-        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135,
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135,
         lineColoring: element.lineColoring !== undefined ? element.lineColoring as boolean : true,
         lineColoringColor: element.lineColoringColor !== undefined ? element.lineColoringColor as string : '#c9e0e0'
       }
@@ -416,7 +416,7 @@ export abstract class ElementFactory {
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
-        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
       }
     };
   }
@@ -434,7 +434,7 @@ export abstract class ElementFactory {
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
-        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
       }
     };
   }
@@ -458,7 +458,10 @@ export abstract class ElementFactory {
         element.inputAssistancePosition : 'floating',
       clearable: element.clearable !== undefined ? element.clearable : false,
       position: ElementFactory.initPositionProps(element.position),
-      styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
+      }
     };
   }
 
@@ -485,7 +488,7 @@ export abstract class ElementFactory {
       dynamicWidth: element.dynamicWidth !== undefined ? element.dynamicWidth : true,
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element }),
-        lineHeight: element.lineHeight !== undefined ? element.lineHeight as number : 135
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
       }
     };
   }

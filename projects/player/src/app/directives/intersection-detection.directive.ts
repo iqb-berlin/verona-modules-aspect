@@ -4,7 +4,7 @@ import {
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Directive({
-  selector: '[appIntersectionDetection]'
+  selector: '[aspectIntersectionDetection]'
 })
 export class IntersectionDetectionDirective implements OnInit, OnDestroy {
   @Input() detectionType!: 'top' | 'bottom';

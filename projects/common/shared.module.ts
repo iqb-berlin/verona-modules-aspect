@@ -43,7 +43,6 @@ import { Magnifier } from './components/magnifier.component';
 import { RadioGroupImagesComponent } from './components/ui-elements/radio-group-images.component';
 import { DropListComponent } from './components/ui-elements/drop-list.component';
 import { ClozeComponent } from './components/ui-elements/cloze.component';
-import { TextFieldSimpleComponent } from './components/ui-elements/text-field-simple.component';
 import { SliderComponent } from './components/ui-elements/slider.component';
 import { SpellCorrectComponent } from './components/ui-elements/spell-correct.component';
 import { DropListSimpleComponent } from './components/ui-elements/drop-list-simple.component';
@@ -97,11 +96,9 @@ import { CompoundChildOverlayComponent } from './components/compound-child-overl
     RadioGroupImagesComponent,
     DropListComponent,
     ClozeComponent,
-    TextFieldSimpleComponent,
     DropListSimpleComponent,
     SliderComponent,
     SpellCorrectComponent,
-    TextFieldSimpleComponent,
     FrameComponent,
     ToggleButtonComponent,
     MarkingBarComponent,
@@ -128,7 +125,6 @@ import { CompoundChildOverlayComponent } from './components/compound-child-overl
     ToggleButtonComponent,
     TextFieldComponent,
     DropListSimpleComponent,
-    TextFieldSimpleComponent,
     TextAreaComponent,
     AudioComponent,
     VideoComponent,

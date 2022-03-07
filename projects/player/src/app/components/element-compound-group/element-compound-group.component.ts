@@ -14,7 +14,6 @@ import { ValidatorService } from '../../services/validator.service';
 import { KeyboardService } from '../../services/keyboard.service';
 import { TextAreaComponent } from '../../../../../common/components/ui-elements/text-area.component';
 import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
-import { TextFieldSimpleComponent } from '../../../../../common/components/ui-elements/text-field-simple.component';
 
 @Component({
   selector: 'aspect-element-compound-group',
@@ -51,7 +50,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
       const childModel = child.elementModel as InputElement;
       this.registerAtUnitStateService(childModel.id, childModel.value, child, this.pageIndex);
       if (childModel.type === 'text-field') {
-        (child as TextFieldSimpleComponent)
+        (child as TextFieldComponent)
           .onFocusChanged.subscribe(element => this.onFocusChanged(element, child as TextFieldComponent));
       }
     });

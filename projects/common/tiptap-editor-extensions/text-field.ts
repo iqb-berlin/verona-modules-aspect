@@ -10,7 +10,7 @@ const TextFieldExtension =
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement({ type: 'text-field-simple' })
+          default: ElementFactory.createElement({ type: 'text-field' })
         }
       };
     },

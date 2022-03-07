@@ -13,7 +13,7 @@ const TextFieldComponentExtension = (injector: Injector): Node => {
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement({ type: 'text-field-simple', height: 25, width: 100 })
+          default: ElementFactory.createElement({ type: 'text-field', height: 25, width: 100 })
         }
       };
     },

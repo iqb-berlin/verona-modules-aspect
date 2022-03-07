@@ -32,7 +32,7 @@ import {
   RadioButtonGroupElement, SliderElement, SpellCorrectElement,
   TextAreaElement,
   TextElement,
-  TextFieldElement, TextFieldSimpleElement, ToggleButtonElement,
+  TextFieldElement, ToggleButtonElement,
   UIElement, UIElementType, UIElementValue,
   VideoElement
 } from '../interfaces/elements';
@@ -47,8 +47,6 @@ export abstract class ElementFactory {
         return ElementFactory.createButtonElement(element as Partial<ButtonElement>);
       case 'text-field':
         return ElementFactory.createTextFieldElement(element as Partial<TextFieldElement>);
-      // case 'text-field-simple':
-      //   return ElementFactory.createTextFieldSimpleElement(element as Partial<TextFieldSimpleElement>);
       case 'text-area':
         return ElementFactory.createTextAreaElement(element as Partial<TextAreaElement>);
       case 'checkbox':
@@ -462,18 +460,6 @@ export abstract class ElementFactory {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
         lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
       }
-    };
-  }
-
-  private static createTextFieldSimpleElement(element: Partial<TextFieldSimpleElement>): TextFieldSimpleElement {
-    return {
-      ...ElementFactory.initInputElement({ height: 25, ...element }),
-      type: 'text-field',
-      label: element.label !== undefined ? element.label : undefined,
-      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
-      inputAssistancePosition: element.inputAssistancePosition !== undefined ?
-        element.inputAssistancePosition : 'floating',
-      styling: ElementFactory.initBasicStyles(element.styling)
     };
   }
 

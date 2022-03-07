@@ -4,7 +4,7 @@ import { LikertColumn } from './likert';
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
-| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'text-field-simple';
+| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
 export type InputAssistancePreset = 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue';
 export type DragNDropValueObject = {
@@ -266,7 +266,9 @@ export interface TextFieldElement extends InputElement {
   inputAssistancePosition: 'floating' | 'right';
   clearable: boolean;
   position: PositionProperties;
-  styling: BasicStyles;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
 }
 
 export interface TextAreaElement extends InputElement {
@@ -280,13 +282,6 @@ export interface TextAreaElement extends InputElement {
   styling: BasicStyles & {
     lineHeight: number;
   };
-}
-
-export interface TextFieldSimpleElement extends InputElement {
-  type: 'text-field';
-  inputAssistancePreset: InputAssistancePreset;
-  inputAssistancePosition: 'floating' | 'right';
-  styling: BasicStyles; // TODO okay? bg-color?
 }
 
 export interface TextElement extends UIElement {

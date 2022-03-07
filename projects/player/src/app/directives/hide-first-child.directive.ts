@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { NativeEventService } from '../services/native-event.service';
 
 @Directive({
-  selector: '[appHideFirstChild]'
+  selector: '[aspectHideFirstChild]'
 })
 export class HideFirstChildDirective implements OnInit, AfterViewInit, OnDestroy {
   @Input() hideFirstChild!: boolean;

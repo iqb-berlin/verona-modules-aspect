@@ -214,7 +214,7 @@ export abstract class ElementFactory {
       label: element.label !== undefined ? element.label : 'Knopf',
       imageSrc: element.imageSrc || null,
       action: element.action || null,
-      actionParam: element.actionParam || null,
+      actionParam: element.actionParam !== undefined ? element.actionParam : null,
       position: ElementFactory.initPositionProps(element.positionProps as Record<string, UIElementValue>),
       styling: {
         ...ElementFactory.initBasicStyles(element.styling),

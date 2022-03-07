@@ -1,14 +1,15 @@
 <ng-template
+    *ngIf="keyboardService.preset !== 'none'"
     cdkConnectedOverlay
-    [cdkConnectedOverlayOrigin]="overlayOrigin"
-    [cdkConnectedOverlayOpen]="isKeyboardOpen">
+    [cdkConnectedOverlayOrigin]="keyboardService.elementComponent"
+    [cdkConnectedOverlayOpen]="isKeyboardOpen && keyboardService.position === 'floating'">
   <aspect-keyboard
       cdkDrag
-      [positionOffset]="positionOffset"
-      [inputElement]="inputElement"
-      [position]="position"
-      [preset]="preset"
-      (deleteCharacter)="deleteCharacter.emit($event)"
-      (enterKey)="enterKey.emit($event)">
+      [positionOffset]="keyboardService.elementComponent.elementModel.type === 'text-field' ? 20 : 0"
+      [inputElement]="keyboardService.inputElement"
+      [position]="keyboardService.position"
+      [preset]="keyboardService.preset"
+      (deleteCharacter)="keyboardService.deleterCharacters()"
+      (enterKey)="keyboardService.enterKey($event)">
   </aspect-keyboard>
 </ng-template>

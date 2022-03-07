@@ -1,8 +1,7 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, Input
 } from '@angular/core';
-import { CdkOverlayOrigin } from '@angular/cdk/overlay';
-import { InputAssistancePreset } from '../../../../../common/interfaces/elements';
+import { KeyboardService } from '../../services/keyboard.service';
 
 @Component({
   selector: 'aspect-floating-keyboard',
@@ -10,13 +9,7 @@ import { InputAssistancePreset } from '../../../../../common/interfaces/elements
   styleUrls: ['./floating-keyboard.component.scss']
 })
 export class FloatingKeyboardComponent {
-  @Input() preset!: InputAssistancePreset;
-  @Input() position!: 'floating' | 'right';
-  @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
-  @Input() positionOffset!: number;
   @Input() isKeyboardOpen!: boolean;
 
-  @Input() overlayOrigin!: CdkOverlayOrigin;
-  @Output() deleteCharacter = new EventEmitter();
-  @Output() enterKey = new EventEmitter<string>();
+  constructor(public keyboardService: KeyboardService) {}
 }

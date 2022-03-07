@@ -17,13 +17,5 @@
 </form>
 
 <aspect-floating-keyboard
-    *ngIf="keyboardService.preset !== 'none'"
-    [isKeyboardOpen]="isKeyboardOpen && keyboardService.position === 'floating'"
-    [overlayOrigin]="keyboardService.elementComponent"
-    [inputElement]="keyboardService.inputElement"
-    [position]="keyboardService.position"
-    [preset]="keyboardService.preset"
-    [positionOffset]="0"
-    (deleteCharacter)="keyboardService.deleterCharacters()"
-    (enterKey)="keyboardService.enterKey($event)">
+    [isKeyboardOpen]="isKeyboardOpen && keyboardService.position === 'floating'">
 </aspect-floating-keyboard>

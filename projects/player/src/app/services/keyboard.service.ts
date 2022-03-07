@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TextFieldComponent } from '../../../../common/components/ui-elements/text-field.component';
 import { TextAreaComponent } from '../../../../common/components/ui-elements/text-area.component';
-import { InputAssistancePreset } from '../../../../common/interfaces/elements';
+import { InputAssistancePreset, TextFieldElement } from '../../../../common/interfaces/elements';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +13,21 @@ export class KeyboardService {
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
   elementComponent!: TextFieldComponent | TextAreaComponent;
 
+  toggleKeyboard(focussedElement: HTMLElement | null,
+                 elementComponent: TextAreaComponent | TextFieldComponent): boolean {
+    if (focussedElement) {
+      const focussedInputElement = elementComponent.elementModel.type === 'text-area' ?
+        focussedElement as HTMLTextAreaElement :
+        focussedElement as HTMLInputElement;
+      const preset = (elementComponent.elementModel as TextFieldElement).inputAssistancePreset;
+      const position = (elementComponent.elementModel as TextFieldElement).inputAssistancePosition;
+      this.openKeyboard(focussedInputElement, preset, position, elementComponent);
+    } else {
+      this.closeKeyboard();
+    }
+    return this.isOpen;
+  }
+
   enterKey = (key: string): void => {
     const selectionStart = this.inputElement.selectionStart || 0;
     const selectionEnd = this.inputElement.selectionEnd || 0;
@@ -20,7 +35,7 @@ export class KeyboardService {
     this.insert(selectionStart, selectionEnd, newSelection, key);
   };
 
-  deleterCharacters():void {
+  deleterCharacters(): void {
     let selectionStart = this.inputElement.selectionStart || 0;
     const selectionEnd = this.inputElement.selectionEnd || 0;
     if (selectionEnd > 0) {
@@ -31,10 +46,10 @@ export class KeyboardService {
     }
   }
 
-  openKeyboard(inputElement: HTMLTextAreaElement | HTMLInputElement,
-               preset: InputAssistancePreset,
-               position: 'floating' | 'right',
-               elementComponent: TextFieldComponent | TextAreaComponent): boolean {
+  private openKeyboard(inputElement: HTMLTextAreaElement | HTMLInputElement,
+                       preset: InputAssistancePreset,
+                       position: 'floating' | 'right',
+                       elementComponent: TextFieldComponent | TextAreaComponent): boolean {
     this.inputElement = inputElement;
     this.preset = preset;
     this.position = position;
@@ -43,7 +58,7 @@ export class KeyboardService {
     return true;
   }
 
-  closeKeyboard(): boolean {
+  private closeKeyboard(): boolean {
     this.isOpen = false;
     return false;
   }

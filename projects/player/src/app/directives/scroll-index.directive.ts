@@ -4,7 +4,7 @@ import {
 import { Subject } from 'rxjs';
 
 @Directive({
-  selector: '[appScrollIndex]'
+  selector: '[aspectScrollIndex]'
 })
 export class ScrollIndexDirective implements OnInit {
   @Input() selectIndex!: Subject<number>;

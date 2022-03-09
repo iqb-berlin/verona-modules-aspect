@@ -90,6 +90,7 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.inputElement) {
       this.inputElement.addEventListener('keydown', this.restrict.bind(this));
+      this.inputElement.addEventListener('paste', event => event.preventDefault());
     }
   }
 

@@ -24,7 +24,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   abstract veronaSubscriptionService: VeronaSubscriptionService;
   abstract validatorService: ValidatorService;
 
-  private ngUnsubscribe = new Subject<void>();
+  ngUnsubscribe = new Subject<void>();
 
   createForm(elementModels: InputElement[]): void {
     this.form = new FormGroup({});
@@ -33,12 +33,14 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
         .fromUnitState(this.unitStateService.getUnitStateElement(elementModel.id)?.value, elementModel);
       const formControl = new FormControl(initialValue, this.getValidators(elementModel));
       this.form.addControl(elementModel.id, formControl);
-      formControl.valueChanges.subscribe((inputValue: InputElementValue) => {
-        this.unitStateService.changeElementValue({
-          id: elementModel.id,
-          value: this.unitStateElementMapperService.toUnitState(inputValue, elementModel.type)
+      formControl.valueChanges
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((inputValue: InputElementValue) => {
+          this.unitStateService.changeElementValue({
+            id: elementModel.id,
+            value: this.unitStateElementMapperService.toUnitState(inputValue, elementModel.type)
+          });
         });
-      });
       if (this.needsValidation(elementModel)) {
         this.validatorService.registerFormControl(formControl);
       }

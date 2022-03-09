@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
 import {
   ClozeElement, InputElement, LikertElement
 } from '../../../../../common/interfaces/elements';
@@ -51,7 +52,9 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
       this.registerAtUnitStateService(childModel.id, childModel.value, child, this.pageIndex);
       if (childModel.type === 'text-field') {
         (child as TextFieldComponent)
-          .onFocusChanged.subscribe(element => {
+          .onFocusChanged
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(element => {
             this.isKeyboardOpen = this.keyboardService.toggleKeyboard(element, child as TextFieldComponent);
           });
       }

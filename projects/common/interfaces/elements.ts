@@ -123,6 +123,7 @@ export interface ButtonElement extends UIElement {
   type: 'button';
   label: string;
   imageSrc: string | null;
+  asLink: boolean;
   action: null | 'unitNav' | 'pageNav'
   actionParam: null | 'previous' | 'next' | 'first' | 'last' | 'end' | number;
   position: PositionProperties;

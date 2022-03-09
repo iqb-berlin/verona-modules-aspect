@@ -213,6 +213,7 @@ export abstract class ElementFactory {
       type: 'button',
       label: element.label !== undefined ? element.label : 'Knopf',
       imageSrc: element.imageSrc || null,
+      asLink: element.asLink !== undefined ? element.asLink : false,
       action: element.action || null,
       actionParam: element.actionParam !== undefined ? element.actionParam : null,
       position: ElementFactory.initPositionProps(element.positionProps as Record<string, UIElementValue>),

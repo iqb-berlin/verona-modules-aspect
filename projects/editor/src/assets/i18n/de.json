@@ -37,6 +37,7 @@
     "alwaysVisibleAspectRatio": "Seitenverhältnis (in Prozent)"
   },
   "propertiesPanel": {
+    "asLink": "als Link",
     "backgroundColor": "Hintergrundfarbe",
     "fontColor": "Schriftfarbe",
     "font": "Schriftart",

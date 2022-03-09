@@ -7,7 +7,25 @@ import { ButtonElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-button',
   template: `
-    <button *ngIf="!elementModel.imageSrc" mat-button
+    <a *ngIf="!elementModel.imageSrc && elementModel.asLink"
+       href="{{elementModel.action+'-'+elementModel.actionParam}}"
+       [style.width.%]="100"
+       [style.height.%]="100"
+       [style.background-color]="elementModel.styling.backgroundColor"
+       [style.color]="elementModel.styling.fontColor"
+       [style.font-family]="elementModel.styling.font"
+       [style.font-size.px]="elementModel.styling.fontSize"
+       [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+       [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+       [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+       [style.border-radius.px]="elementModel.styling.borderRadius"
+       (click)="$event.preventDefault(); elementModel.action && elementModel.actionParam !== null ?
+         navigateTo.emit({
+            action: elementModel.action,
+            param: elementModel.actionParam
+         }) :
+         false">{{elementModel.label}}</a>
+    <button *ngIf="!elementModel.imageSrc && !elementModel.asLink" mat-button
             type='button'
             [style.width.%]="100"
             [style.height.%]="100"

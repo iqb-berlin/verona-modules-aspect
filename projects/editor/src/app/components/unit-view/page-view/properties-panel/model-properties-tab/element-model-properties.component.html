@@ -206,6 +206,12 @@
     </ng-container>
   </mat-form-field>
 
+  <mat-checkbox *ngIf="combinedProperties.asLink !== undefined"
+                [checked]="$any(combinedProperties.asLink)"
+                (change)="updateModel.emit({ property: 'asLink', value: $event.checked })">
+    {{'propertiesPanel.asLink' | translate }}
+  </mat-checkbox>
+
   <ng-container *ngIf="combinedProperties.imageSrc !== undefined">
     <button mat-raised-button (click)="loadImage()">{{'loadImage' | translate }}</button>
     <button mat-raised-button (click)="removeImage()">{{'removeImage' | translate }}</button>

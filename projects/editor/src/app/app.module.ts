@@ -59,6 +59,8 @@ import { ElementStylePropertiesComponent } from
   './components/unit-view/page-view/properties-panel/style-properties-tab/element-style-properties.component';
 import { ElementModelPropertiesComponent } from
   './components/unit-view/page-view/properties-panel/model-properties-tab/element-model-properties.component';
+import { DynamicSectionHelperGridComponent } from './components/unit-view/page-view/canvas/dynamic-section-helper-grid.component';
+import { ElementGridChangeListenerDirective } from './components/unit-view/page-view/canvas/element-grid-change-listener.directive';
 
 @NgModule({
   declarations: [
@@ -89,7 +91,9 @@ import { ElementModelPropertiesComponent } from
     ElementModelPropertiesComponent,
     DropListOptionEditDialogComponent,
     PositionFieldSetComponent,
-    DimensionFieldSetComponent
+    DimensionFieldSetComponent,
+    DynamicSectionHelperGridComponent,
+    ElementGridChangeListenerDirective
   ],
   imports: [
     BrowserModule,

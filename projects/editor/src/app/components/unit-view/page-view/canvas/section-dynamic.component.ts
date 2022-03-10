@@ -1,11 +1,14 @@
 import {
-  Component, Input, Output, EventEmitter, ViewChildren, QueryList
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChildren,
+  QueryList, ViewChild, ElementRef
 } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { UnitService } from '../../../../services/unit.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { Section } from '../../../../../../../common/interfaces/unit';
-import { UIElement, UIElementType } from '../../../../../../../common/interfaces/elements';
+import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
 @Component({
   selector: 'aspect-section-dynamic',
@@ -13,30 +16,23 @@ import { UIElement, UIElementType } from '../../../../../../../common/interfaces
     <div [style.display]="'grid'"
          [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes"
          [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes"
-         [style.height.%]="100"
+         [style.grid-auto-columns]="'auto'"
+         [style.grid-auto-rows]="'auto'"
          cdkDropListGroup
          [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
-         [style.height.px]="section.height"
-         [style.background-color]="section.backgroundColor">
+         [style.min-height.px]="section.autoRowSize ? 50 : section.height"
+         [style.background-color]="section.backgroundColor"
+         app-dynamic-section-helper-grid
+         [autoColumnSize]="section.autoColumnSize"
+         [autoRowSize]="section.autoRowSize"
+         [gridColumnSizes]="section.gridColumnSizes"
+         [gridRowSizes]="section.gridRowSizes"
+         [section]="section"
+         [sectionIndex]="sectionIndex"
+         (transferElement)="transferElement.emit($event)">
 
-      <!-- Dynamic sections have the droplists for the grid cells next to the actual elements. Elements can not
-           be children of the grid cells because they can span over multiple cells. -->
-      <ng-container *ngFor="let column of this.section.gridColumnSizes.split(' '); let x = index">
-        <ng-container *ngFor="let row of this.section.gridRowSizes.split(' '); let y = index">
-          <div class="grid-placeholder"
-               [style.grid-column-start]="x + 1"
-               [style.grid-column-end]="x + 1"
-               [style.grid-row-start]="y + 1"
-               [style.grid-row-end]="y + 1"
-               cdkDropList [cdkDropListData]="{ sectionIndex: sectionIndex, gridCoordinates: [x + 1, y + 1] }"
-               (cdkDropListDropped)="drop($any($event))"
-               id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}"
-               (dragover)="$event.preventDefault()" (drop)="newElementDropped($event, x + 1, y + 1)">
-              {{x + 1}} / {{y + 1}}
-          </div>
-        </ng-container>
-      </ng-container>
-
+      <!-- Angular content projection is used in the helper grid component, where the following
+           is the content.-->
       <aspect-dynamic-canvas-overlay *ngFor="let element of section.elements"
                                      #elementComponent
                                      [element]="$any(element)"
@@ -53,15 +49,18 @@ import { UIElement, UIElementType } from '../../../../../../../common/interfaces
                                      cdkDropList cdkDropListSortingDisabled
                                      [cdkDropListData]="{ sectionIndex: sectionIndex }"
                                      [cdkDropListConnectedTo]="dropListList"
-                                     (resize)="resizeOverlay($event)"
                                      [style.position]="'relative'"
-                                     [style.pointer-events]="dragging ? 'none' : 'auto'">
+                                     [style.pointer-events]="dragging ? 'none' : 'auto'"
+                                     appElementGridChangeListener
+                                     [gridColumnStart]="element.position.gridColumnStart"
+                                     [gridColumnEnd]="element.position.gridColumnEnd"
+                                     [gridRowStart]="element.position.gridRowStart"
+                                     [gridRowEnd]="element.position.gridRowEnd"
+                                     (resize)="resizeOverlay($event)"
+                                     (elementChanged)="helperGrid?.refresh()">
       </aspect-dynamic-canvas-overlay>
     </div>
-  `,
-  styles: [
-    '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center;}'
-  ]
+  `
 })
 export class SectionDynamicComponent {
   @Input() section!: Section;
@@ -70,72 +69,10 @@ export class SectionDynamicComponent {
   @Input() isSelected!: boolean;
   @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
 
+  @ViewChild(DynamicSectionHelperGridComponent) helperGrid!: DynamicSectionHelperGridComponent;
   @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
 
   dragging = false;
-
-  constructor(public unitService: UnitService) { }
-
-  drop(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {
-    const dragItemData: { dragType: string; element: UIElement; } = event.item.data;
-
-    // Move element to other section - handled by parent (page-canvas).
-    if (event.previousContainer.data.sectionIndex !== event.container.data.sectionIndex) {
-      this.transferElement.emit({
-        previousSectionIndex: event.previousContainer.data.sectionIndex,
-        newSectionIndex: event.container.data.sectionIndex
-      });
-    }
-    if (dragItemData.dragType === 'move') {
-      const elementColumnRange: number =
-        event.item.data.element.position.gridColumnEnd - event.item.data.element.position.gridColumnStart;
-      const elementRowRange: number =
-        event.item.data.element.position.gridRowEnd - event.item.data.element.position.gridRowStart;
-      this.unitService.updateElementProperty(
-        [event.item.data.element],
-        'gridColumnStart',
-        event.container.data.gridCoordinates![0]
-      );
-      // Ensure the end value is at least the same as the start, otherwise the grid breaks.
-      this.unitService.updateElementProperty(
-        [dragItemData.element],
-        'gridColumnEnd',
-        event.container.data.gridCoordinates![0] + elementColumnRange
-      );
-      this.unitService.updateElementProperty(
-        [dragItemData.element],
-        'gridRowStart',
-        event.container.data.gridCoordinates![1]
-      );
-      this.unitService.updateElementProperty(
-        [dragItemData.element],
-        'gridRowEnd',
-        event.container.data.gridCoordinates![1] + elementRowRange
-      );
-    } else if (event.item.data.dragType === 'resize') {
-      this.unitService.updateElementProperty(
-        [dragItemData.element],
-        'gridColumnEnd',
-        event.container.data.gridCoordinates![0] + 1
-      );
-      this.unitService.updateElementProperty(
-        [dragItemData.element],
-        'gridRowEnd',
-        event.container.data.gridCoordinates![1] + 1
-      );
-    } else {
-      throw new Error('Unknown drop event');
-    }
-  }
-
-  newElementDropped(event: DragEvent, gridX: number, gridY: number): void {
-    event.preventDefault();
-    this.unitService.addElementToSection(
-      event.dataTransfer?.getData('elementType') as UIElementType,
-      this.section,
-      { x: gridX, y: gridY }
-    );
-  }
 
   resizeOverlay(event: { dragging: boolean, elementWidth?: number, elementHeight?: number }): void {
     this.dragging = event.dragging;

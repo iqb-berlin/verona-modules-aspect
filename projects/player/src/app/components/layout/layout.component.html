@@ -17,6 +17,7 @@
       [inputElement]="keyboardService.inputElement"
       [position]="keyboardService.position"
       [preset]="keyboardService.preset"
+      [restrictToAllowedKeys]="keyboardService.elementComponent.elementModel.restrictedToInputAssistanceChars"
       (deleteCharacter)="keyboardService.deleterCharacters()"
       (enterKey)="keyboardService.enterKey($event)">
   </aspect-keyboard>

@@ -89,6 +89,10 @@ export abstract class UnitDefinitionSanitizer {
     if (newElement.type === 'text') {
       newElement = UnitDefinitionSanitizer.handleTextElement(newElement);
     }
+    if (['text-field', 'text-area']
+      .includes(newElement.type as string)) {
+      newElement = UnitDefinitionSanitizer.handleTextInputElement(newElement);
+    }
     if (newElement.type === 'cloze') {
       newElement = UnitDefinitionSanitizer.handleClozeElement(newElement as Record<string, UIElementValue>);
     }
@@ -155,6 +159,14 @@ export abstract class UnitDefinitionSanitizer {
       newElement.highlightableYellow = true;
     }
     return newElement as TextElement;
+  }
+
+  private static handleTextInputElement(element: Record<string, UIElementValue>): InputElement {
+    const newElement = { ...element };
+    if (newElement.restrictedToInputAssistanceChars === undefined && newElement.inputAssistancePreset === 'french') {
+      newElement.restrictedToInputAssistanceChars = false;
+    }
+    return newElement as InputElement;
   }
 
   /*

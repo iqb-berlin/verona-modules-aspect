@@ -1,24 +1,23 @@
 import {
-  AfterViewInit, Component, EventEmitter, Input, OnInit, Output
+  Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { InputAssistancePreset } from '../../../../../common/interfaces/elements';
+import { KeyboardInputRestrictionDirective } from '../../directives/keyboard-input-restriction.directive';
 
 @Component({
   selector: 'aspect-math-keyboard',
   templateUrl: './math-keyboard.component.html',
   styleUrls: ['./math-keyboard.component.css']
 })
-export class MathKeyboardComponent implements OnInit, AfterViewInit {
+export class MathKeyboardComponent extends KeyboardInputRestrictionDirective implements OnInit {
   @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
-  @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
 
   @Output() deleteCharacter = new EventEmitter();
   @Output() enterKey = new EventEmitter<string>();
 
   mainKeys!: string[][];
   operators!: string[][];
-  private allowedKeys!: string[];
 
   // U+2022
   readonly placeValue: string[][] = [
@@ -54,55 +53,36 @@ export class MathKeyboardComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     switch (this.preset) {
       case 'comparisonOperators': {
-        this.allowedKeys = this.getAllowedKeys(this.comparisonOperators);
+        this.allowedKeys = this.comparisonOperators.flat();
         this.mainKeys = this.comparisonOperators;
         break;
       }
       case 'numbersAndOperators': {
         this.operators = [...this.basicOperators, ...this.additionalOperators];
-        this.allowedKeys = [...this.getAllowedKeys(this.operators), ...this.getAllowedKeys(this.numbers)];
+        this.allowedKeys = [...this.operators.flat(), ...this.numbers.flat()];
         this.mainKeys = this.numbers;
         break;
       }
       case 'numbersAndBasicOperators': {
         this.operators = this.basicOperators;
-        this.allowedKeys = [...this.getAllowedKeys(this.operators), ...this.getAllowedKeys(this.numbers)];
+        this.allowedKeys = [...this.operators.flat(), ...this.numbers.flat()];
         this.mainKeys = this.numbers;
         break;
       }
       case 'squareDashDot': {
-        this.allowedKeys = this.getAllowedKeys(this.squareDashDot);
+        this.allowedKeys = this.squareDashDot.flat();
         this.mainKeys = this.squareDashDot;
         break;
       }
       case 'placeValue': {
-        this.allowedKeys = this.getAllowedKeys(this.placeValue);
+        this.allowedKeys = this.placeValue.flat();
         this.mainKeys = this.placeValue;
         break;
       }
       default: {
-        this.allowedKeys = this.getAllowedKeys(this.numbers);
+        this.allowedKeys = this.numbers.flat();
         this.mainKeys = this.numbers;
       }
     }
   }
-
-  ngAfterViewInit(): void {
-    if (this.inputElement) {
-      this.inputElement.addEventListener('keydown', this.restrict.bind(this));
-      this.inputElement.addEventListener('paste', event => event.preventDefault());
-    }
-  }
-
-  private restrict(event: Event): void {
-    const keyboardEvent: KeyboardEvent = event as KeyboardEvent;
-    if (!keyboardEvent ||
-      (!this.allowedKeys.includes(keyboardEvent.key) && keyboardEvent.key !== 'Backspace')) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  }
-
-  private getAllowedKeys = (keys: string[][]): string[] => keys
-    .reduce((accumulator: string[], currentValue: string[]): string[] => accumulator.concat(currentValue));
 }

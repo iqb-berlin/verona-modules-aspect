@@ -399,6 +399,13 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== 'none' &&
+                       combinedProperties.restrictedToInputAssistanceChars !== undefined"
+                [checked]="$any(combinedProperties.restrictedToInputAssistanceChars)"
+                (change)="updateModel.emit({ property: 'restrictedToInputAssistanceChars', value: $event.checked })">
+    {{'propertiesPanel.restrictedToInputAssistanceChars' | translate }}
+  </mat-checkbox>
+
   <mat-form-field disabled="true" *ngIf="combinedProperties.rows !== undefined">
     <ng-container>
       <mat-label>{{'rows' | translate }}</mat-label>

@@ -265,6 +265,7 @@ export interface TextFieldElement extends InputElement {
   patternWarnMessage: string;
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';
+  restrictedToInputAssistanceChars: boolean;
   clearable: boolean;
   position: PositionProperties;
   styling: BasicStyles & {
@@ -279,6 +280,7 @@ export interface TextAreaElement extends InputElement {
   rowCount: number;
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';
+  restrictedToInputAssistanceChars: boolean;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;

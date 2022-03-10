@@ -1,13 +1,14 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
+import { KeyboardInputRestrictionDirective } from '../../directives/keyboard-input-restriction.directive';
 
 @Component({
   selector: 'aspect-french-keyboard',
   templateUrl: './french-keyboard.component.html',
   styleUrls: ['./french-keyboard.component.css']
 })
-export class FrenchKeyboardComponent implements OnInit {
+export class FrenchKeyboardComponent extends KeyboardInputRestrictionDirective implements OnInit {
   @Input() position!: 'floating' | 'right';
   @Output() enterKey = new EventEmitter<string>();
 
@@ -26,6 +27,7 @@ export class FrenchKeyboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.rows = this.lowerCharacterRows;
+    this.allowedKeys = [...this.upperCharacterRows.flat(), ...this.lowerCharacterRows.flat()];
     this.lowerCharacters = true;
   }
 

@@ -111,6 +111,7 @@
     "patternWarnMessage": "Muster Warnmeldung",
     "clearable": "Knopf zum Leeren anzeigen",
     "inputAssistance": "Eingabehilfe",
+    "restrictedToInputAssistanceChars": "Andere Zeichen verhindern",
     "none": "keine",
     "french": "Französische Sonderzeichen",
     "numbers": "Ziffern",

@@ -9,6 +9,8 @@
        (mousedown)="onMouseDown($event, true)">
     <aspect-french-keyboard
         *ngIf="preset === 'french'"
+        [inputElement]="inputElement"
+        [restrictToAllowedKeys]="restrictToAllowedKeys"
         [position]="position"
         (enterKey)="enterKey.emit($event)">
     </aspect-french-keyboard>
@@ -17,6 +19,7 @@
         [inputElement]="inputElement"
         [preset]="preset"
         [position]="position"
+        [restrictToAllowedKeys]="restrictToAllowedKeys"
         (deleteCharacter)="deleteCharacter.emit()"
         (enterKey)="enterKey.emit($event)">
     </aspect-math-keyboard>

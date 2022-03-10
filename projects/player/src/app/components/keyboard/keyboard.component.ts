@@ -13,6 +13,7 @@ export class KeyboardComponent {
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
   @Input() positionOffset!: number;
+  @Input() restrictToAllowedKeys!: boolean;
 
   @Output() deleteCharacter = new EventEmitter();
   @Output() enterKey = new EventEmitter<string>();

@@ -430,6 +430,8 @@ export abstract class ElementFactory {
       inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
       inputAssistancePosition: element.inputAssistancePosition !== undefined ?
         element.inputAssistancePosition : 'floating',
+      restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
+        element.restrictedToInputAssistanceChars : true,
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
@@ -455,6 +457,8 @@ export abstract class ElementFactory {
       inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
       inputAssistancePosition: element.inputAssistancePosition !== undefined ?
         element.inputAssistancePosition : 'floating',
+      restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
+        element.restrictedToInputAssistanceChars : true,
       clearable: element.clearable !== undefined ? element.clearable : false,
       position: ElementFactory.initPositionProps(element.position),
       styling: {

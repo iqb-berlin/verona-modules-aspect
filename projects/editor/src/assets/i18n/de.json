@@ -29,7 +29,8 @@
   },
   "pageProperties": {
     "maxWidth": "Maximalbreite",
-    "typeAreaWidth": "Satzspiegelbreite",
+    "sectionWidth": "Abschnittbreite",
+    "pageWidth": "Seitenbreite",
     "marginWidth": "Randbreite",
     "backgroundColor": "Hintergrundfarbe",
     "alwaysVisible": "Immer angezeigt",

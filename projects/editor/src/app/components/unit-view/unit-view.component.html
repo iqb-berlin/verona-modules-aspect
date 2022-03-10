@@ -52,8 +52,11 @@
                               (change)="updateModel(page, 'hasMaxWidth', $any($event.source).checked)">
                   {{'pageProperties.maxWidth' | translate }}
                 </mat-checkbox>
+                <div *ngIf="page.hasMaxWidth" class="menuItem">
+                  {{'pageProperties.pageWidth' | translate}}: {{page.maxWidth + 2 * page.margin}}px
+                </div>
                 <mat-form-field *ngIf="page.hasMaxWidth" class="menuItem" appearance="fill">
-                  <mat-label>{{'pageProperties.typeAreaWidth' | translate }}</mat-label>
+                  <mat-label>{{'pageProperties.sectionWidth' | translate }}</mat-label>
                   <input matInput type="number" min="0" #maxWidth="ngModel"
                          [ngModel]="page.maxWidth"
                          (click)="$any($event).stopPropagation()"

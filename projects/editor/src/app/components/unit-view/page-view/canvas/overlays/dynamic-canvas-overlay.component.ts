@@ -12,7 +12,7 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
       <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
       <div #draggableElement class="draggable-element"
            [class.fixed-size-content-wrapper]="element.position?.dynamicPositioning &&
-            element.position?.fixedSize"
+                                               element.position?.fixedSize"
            [class.temporaryHighlight]="temporaryHighlight"
            [style.display]="dragging ? 'none' : ''"
            tabindex="-1"
@@ -61,7 +61,8 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
 })
 export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {
   @Input() dynamicPositioning!: boolean;
-  @Output() resize = new EventEmitter<{ dragging: boolean, elementWidth?: number, elementHeight?: number }>();
+  @Output() dragStart = new EventEmitter();
+  @Output() dragEnd = new EventEmitter();
 
   @ViewChild('draggableElement') dragElement!: ElementRef;
   private gridElementWidth: number = 0;
@@ -81,32 +82,20 @@ export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {
     this.gridElementHeight = this.dragElement.nativeElement.offsetHeight - 2;
     this.elementWidth = this.dragElement.nativeElement.offsetWidth - 2;
     this.elementHeight = this.dragElement.nativeElement.offsetHeight - 2;
-
-    this.resize.emit({
-      dragging: true,
-      elementWidth: this.dragElement.nativeElement.offsetWidth - 2,
-      elementHeight: this.dragElement.nativeElement.offsetHeight - 2
-    });
+    this.dragStart.emit();
   }
 
   resizeDragMove(event: CdkDragMove<{ dragType: string; element: UIElement }>): void {
     this.dragging = true;
     this.elementWidth = this.gridElementWidth + event.distance.x;
     this.elementHeight = this.gridElementHeight + event.distance.y;
-    this.resize.emit({
-      dragging: true,
-      elementWidth: this.gridElementWidth + event.distance.x,
-      elementHeight: this.gridElementHeight + event.distance.y
-    });
   }
 
   resizeDragEnd(): void {
     this.bodyElement.classList.remove('inheritCursors');
     this.bodyElement.style.cursor = 'unset';
     this.dragging = false;
-    this.resize.emit({
-      dragging: false
-    });
+    this.dragEnd.emit();
   }
 
   moveDragStart(): void {

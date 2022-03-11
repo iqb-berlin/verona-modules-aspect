@@ -1,10 +1,6 @@
 import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  ViewChildren,
-  QueryList, ViewChild, ElementRef
+  Component, Input, Output, EventEmitter,
+  ViewChildren, QueryList, ViewChild
 } from '@angular/core';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { Section } from '../../../../../../../common/interfaces/unit';
@@ -20,7 +16,8 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
          [style.grid-auto-rows]="'auto'"
          cdkDropListGroup
          [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
-         [style.min-height.px]="section.autoRowSize ? 50 : section.height"
+         [style.min-height.px]="section.autoRowSize ? 50 : null"
+         [style.height.px]="section.autoRowSize ? dragging ? currentHeight : null : section.height"
          [style.background-color]="section.backgroundColor"
          app-dynamic-section-helper-grid
          [autoColumnSize]="section.autoColumnSize"
@@ -56,7 +53,8 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [gridColumnEnd]="element.position.gridColumnEnd"
                                      [gridRowStart]="element.position.gridRowStart"
                                      [gridRowEnd]="element.position.gridRowEnd"
-                                     (resize)="resizeOverlay($event)"
+                                     (dragStart)="dragging = true"
+                                     (dragEnd)="dragging = false"
                                      (elementChanged)="helperGrid?.refresh()">
       </aspect-dynamic-canvas-overlay>
     </div>
@@ -73,8 +71,5 @@ export class SectionDynamicComponent {
   @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
 
   dragging = false;
-
-  resizeOverlay(event: { dragging: boolean, elementWidth?: number, elementHeight?: number }): void {
-    this.dragging = event.dragging;
-  }
+  currentHeight: number = 0;
 }

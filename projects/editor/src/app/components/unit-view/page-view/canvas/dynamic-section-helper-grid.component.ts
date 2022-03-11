@@ -1,7 +1,7 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
   ChangeDetectorRef,
-  Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
+  Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
 import { UIElement, UIElementType } from '../../../../../../../common/interfaces/elements';
 import { UnitService } from '../../../../services/unit.service';
@@ -45,7 +45,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   columnCountArray: unknown[] = [];
   rowCountArray: unknown[] = [];
 
-  constructor(public unitService: UnitService) {}
+  constructor(public unitService: UnitService, public ele: ElementRef) {}
 
   ngOnInit(): void {
     this.calculateColumnCount();

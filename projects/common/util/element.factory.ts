@@ -303,7 +303,7 @@ export abstract class ElementFactory {
     };
   }
 
-  private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement {
+  private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement { // TODO unused
     return {
       ...ElementFactory.initInputElement({ height: 100, ...element }),
       type: 'drop-list',
@@ -357,7 +357,9 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initElement({ width: 250, height: 200, ...element }),
       type: 'likert',
-      rows: element.rows !== undefined ? element.rows : [],
+      rows: element.rows !== undefined ?
+        element.rows.map(row => ElementFactory.createLikertRowElement(row)) :
+        [],
       columns: element.columns !== undefined ? element.columns : [],
       firstColumnSizeRatio: element.firstColumnSizeRatio !== undefined ? element.firstColumnSizeRatio : 5,
       readOnly: element.readOnly !== undefined ? element.readOnly : false,

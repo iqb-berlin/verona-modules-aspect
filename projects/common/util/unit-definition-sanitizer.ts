@@ -35,7 +35,7 @@ export abstract class UnitDefinitionSanitizer {
     }
 
     if (UnitDefinitionSanitizer.isVersionOlderThanCurrent(UnitDefinitionSanitizer.unitDefinitionVersion)) {
-      console.log('SANATIZING');
+      console.log('Sanatizing unit definition...');
       const x = {
         ...unitDefinition,
         pages: unitDefinition.pages.map((page: Page) => UnitDefinitionSanitizer.sanatizePage(page))
@@ -106,8 +106,17 @@ export abstract class UnitDefinitionSanitizer {
     return newElement as unknown as UIElement;
   }
 
-  private static getPositionProps(element: Record<string, UIElementValue>): PositionProperties {
+  private static getPositionProps(element: Record<string, any>): PositionProperties {
     if (element.position !== undefined) {
+      if (element.position?.gridColumnStart !== undefined) {
+        return {
+          ...element.position,
+          gridColumn: element.position.gridColumnStart,
+          gridColumnRange: element.position.gridColumnEnd - element.position.gridColumnStart,
+          gridRow: element.position.gridRowStart,
+          gridRowRange: element.position.gridRowEnd - element.position.gridRowStart
+        };
+      }
       return element.position as PositionProperties;
     }
     if (element.positionProps !== undefined) {

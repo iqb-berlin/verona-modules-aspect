@@ -7,10 +7,10 @@ import {
 })
 export class ElementGridChangeListenerDirective implements OnChanges {
   @Input() autoColumnSize!: boolean;
-  @Input() gridColumnStart!: number;
-  @Input() gridColumnEnd!: number;
-  @Input() gridRowStart!: number;
-  @Input() gridRowEnd!: number;
+  @Input() gridColumn!: number;
+  @Input() gridColumnRange!: number;
+  @Input() gridRow!: number;
+  @Input() gridRowRange!: number;
 
   @Output() elementChanged = new EventEmitter();
 

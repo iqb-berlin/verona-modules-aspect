@@ -47,7 +47,7 @@ export class ElementPositionPropertiesComponent {
   @Input() dimensions!: { width: number; height: number; };
   @Input() positionProperties!: PositionProperties;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
+  new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
 
   constructor(private unitService: UnitService, public selectionService: SelectionService) { }
 

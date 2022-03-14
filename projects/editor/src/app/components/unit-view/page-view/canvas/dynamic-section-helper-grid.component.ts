@@ -1,6 +1,5 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
-  ChangeDetectorRef,
   Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
 import { UIElement, UIElementType } from '../../../../../../../common/interfaces/elements';
@@ -70,11 +69,12 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
     let numberOfColumns;
     if (this.autoColumnSize) {
       numberOfColumns = this.section.elements
-        .reduce((accumulator, currentValue) => Math.max(accumulator, currentValue.position.gridColumnEnd as number),
+        .reduce((accumulator, currentValue) => Math.max(accumulator, currentValue.position.gridColumn + currentValue.position.gridColumnRange),
           0) - 1;
     } else {
       numberOfColumns = this.gridColumnSizes.split(' ').length;
     }
+    console.log('numberOfColumns', numberOfColumns);
     this.columnCountArray = Array(Math.max(numberOfColumns, 1));
   }
 
@@ -82,7 +82,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
     let numberOfRows;
     if (this.autoRowSize) {
       numberOfRows = this.section.elements
-        .reduce((accumulator, currentValue) => Math.max(accumulator, currentValue.position.gridRowEnd as number),
+        .reduce((accumulator, currentValue) => Math.max(accumulator, currentValue.position.gridRow + currentValue.position.gridRowRange),
           0) - 1;
     } else {
       numberOfRows = this.gridRowSizes.split(' ').length;

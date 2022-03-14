@@ -111,10 +111,10 @@ export abstract class ElementFactory {
       xPosition: defaults.xPosition !== undefined ? defaults.xPosition as number : 0,
       yPosition: defaults.yPosition !== undefined ? defaults.yPosition as number : 0,
       useMinHeight: defaults.useMinHeight !== undefined ? defaults.useMinHeight as boolean : false,
-      gridColumnStart: defaults.gridColumnStart !== undefined ? defaults.gridColumnStart as number : 1,
-      gridColumnEnd: defaults.gridColumnEnd !== undefined ? defaults.gridColumnEnd as number : 2,
-      gridRowStart: defaults.gridRowStart !== undefined ? defaults.gridRowStart as number : 1,
-      gridRowEnd: defaults.gridRowEnd !== undefined ? defaults.gridRowEnd as number : 2,
+      gridColumn: defaults.gridColumn !== undefined ? defaults.gridColumn as number : 1,
+      gridColumnRange: defaults.gridColumnRange !== undefined ? defaults.gridColumnRange as number : 1,
+      gridRow: defaults.gridRow !== undefined ? defaults.gridRow as number : 1,
+      gridRowRange: defaults.gridRowRange !== undefined ? defaults.gridRowRange as number : 1,
       marginLeft: defaults.marginLeft !== undefined ? defaults.marginLeft as number : 0,
       marginRight: defaults.marginRight !== undefined ? defaults.marginRight as number : 0,
       marginTop: defaults.marginTop !== undefined ? defaults.marginTop as number : 0,
@@ -216,7 +216,7 @@ export abstract class ElementFactory {
       asLink: element.asLink !== undefined ? element.asLink : false,
       action: element.action || null,
       actionParam: element.actionParam !== undefined ? element.actionParam : null,
-      position: ElementFactory.initPositionProps(element.positionProps as Record<string, UIElementValue>),
+      position: ElementFactory.initPositionProps(element.position as Record<string, UIElementValue>),
       styling: {
         ...ElementFactory.initBasicStyles(element.styling),
         borderRadius: element.borderRadius !== undefined ? element.borderRadius as number : 0

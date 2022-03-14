@@ -139,10 +139,10 @@ export class UnitService {
       } as unknown as UIElement) as PositionedElement;
     }
     if (coordinates && section.dynamicPositioning) {
-      newElement.position.gridColumnStart = coordinates.x;
-      newElement.position.gridColumnEnd = coordinates.x + 1;
-      newElement.position.gridRowStart = coordinates.y;
-      newElement.position.gridRowEnd = coordinates.y + 1;
+      newElement.position.gridColumn = coordinates.x;
+      newElement.position.gridColumnRange = 1;
+      newElement.position.gridRow = coordinates.y;
+      newElement.position.gridRowRange = 1;
     } else if (coordinates && !section.dynamicPositioning) {
       newElement.position.xPosition = coordinates.x;
       newElement.position.yPosition = coordinates.y;
@@ -256,8 +256,8 @@ export class UnitService {
             row.readOnly = value as boolean;
           });
         }
-      } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumnStart',
-        'gridColumnEnd', 'gridRowStart', 'gridRowEnd', 'marginLeft', 'marginRight', 'marginTop',
+      } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumn',
+        'gridColumnRange', 'gridRow', 'gridRowRange', 'marginLeft', 'marginRight', 'marginTop',
         'marginBottom', 'zIndex'].includes(property)) {
         element.position![property] = Copy.getCopy(value);
       } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',

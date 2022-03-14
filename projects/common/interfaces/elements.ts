@@ -55,10 +55,10 @@ export interface PositionProperties {
   xPosition: number;
   yPosition: number;
   useMinHeight: boolean;
-  gridColumnStart: number;
-  gridColumnEnd: number;
-  gridRowStart: number;
-  gridRowEnd: number;
+  gridColumn: number;
+  gridColumnRange: number;
+  gridRow: number;
+  gridRowRange: number;
   marginLeft: number;
   marginRight: number;
   marginTop: number;

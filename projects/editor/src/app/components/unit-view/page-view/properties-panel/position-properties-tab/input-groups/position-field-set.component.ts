@@ -30,30 +30,29 @@ import { PositionProperties } from '../../../../../../../../../common/interfaces
       <ng-template #elseBlock>
         {{'propertiesPanel.grid' | translate }}
         <div class="input-group">
-          <div fxLayoutAlign="row">
-            <mat-form-field class="small-input">
-              <mat-label>{{'propertiesPanel.startColumn' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="positionProperties.gridColumnStart"
-                     (ngModelChange)="updateModel.emit({ property: 'gridColumnStart', value: $event })">
-            </mat-form-field>
-            <mat-form-field class="small-input">
-              <mat-label>{{'propertiesPanel.endColumn' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="positionProperties.gridColumnEnd"
-                     (ngModelChange)="updateModel.emit({ property: 'gridColumnEnd', value: $event })">
-            </mat-form-field>
-          </div>
-          <div fxLayoutAlign="row">
-            <mat-form-field class="small-input">
-              <mat-label>{{'propertiesPanel.startRow' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="positionProperties.gridRowStart"
-                     (ngModelChange)="updateModel.emit({ property: 'gridRowStart', value: $event })">
-            </mat-form-field>
-            <mat-form-field class="small-input">
-              <mat-label>{{'propertiesPanel.endRow' | translate }}</mat-label>
-              <input matInput type="number" [ngModel]="positionProperties.gridRowEnd"
-                     (ngModelChange)="updateModel.emit({ property: 'gridRowEnd', value: $event })">
-            </mat-form-field>
-          </div>
+          <mat-form-field>
+            <mat-label>{{'propertiesPanel.column' | translate }}</mat-label>
+            <input matInput type="number" [ngModel]="positionProperties.gridColumn"
+                   (ngModelChange)="updateModel.emit({ property: 'gridColumn', value: $event })">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{'propertiesPanel.row' | translate }}</mat-label>
+            <input matInput type="number" [ngModel]="positionProperties.gridRow"
+                   (ngModelChange)="updateModel.emit({ property: 'gridRow', value: $event })">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
+            <input matInput type="number"
+                   [ngModel]="positionProperties.gridColumnRange"
+                   (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
+            <input matInput type="number"
+                   [ngModel]="positionProperties.gridRowRange"
+                   (ngModelChange)="updateModel.emit({ property: 'gridRowRange', value: $event })">
+          </mat-form-field>
         </div>
 
         {{'propertiesPanel.margin' | translate }}
@@ -70,8 +69,11 @@ import { PositionProperties } from '../../../../../../../../../common/interfaces
               <mat-label>{{'propertiesPanel.left' | translate }}</mat-label>
               <input matInput type="number" #marginLeft="ngModel"
                      [ngModel]="positionProperties.marginLeft"
-                     (ngModelChange)="updateModel.emit(
-                            { property: 'marginLeft', value: $event, isInputValid: marginLeft.valid && $event !== null })">
+                     (ngModelChange)="updateModel.emit({
+                       property: 'marginLeft',
+                       value: $event,
+                       isInputValid: marginLeft.valid && $event !== null
+                     })">
             </mat-form-field>
             <mat-form-field class="right-form-field small-input">
               <mat-label>{{'propertiesPanel.right' | translate }}</mat-label>
@@ -119,5 +121,5 @@ import { PositionProperties } from '../../../../../../../../../common/interfaces
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
+  new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
 }

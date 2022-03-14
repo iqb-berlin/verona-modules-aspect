@@ -64,14 +64,11 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
     }
   }
 
-  startSelection(pointerDown: MouseEvent | TouchEvent, elementComponent: TextComponent): void {
+  startSelection(pointerDown: PointerEvent, elementComponent: TextComponent): void {
     this.isMarkingBarOpen = false;
     this.nativeEventService.pointerUp
       .pipe(takeUntil(this.ngUnsubscribe), first())
-      .subscribe((pointerUp: TouchEvent | MouseEvent) => {
-        if (pointerUp.cancelable) {
-          pointerUp.preventDefault();
-        }
+      .subscribe((pointerUp: PointerEvent) => {
         this.stopSelection(
           this.getClientPointFromEvent(pointerUp),
           pointerUp.ctrlKey,
@@ -110,9 +107,9 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
     }
   }
 
-  private getClientPointFromEvent = (event: MouseEvent | TouchEvent): { clientX: number, clientY: number } => ({
-    clientX: (event instanceof MouseEvent) ? event.clientX : event.changedTouches[0].clientX,
-    clientY: (event instanceof MouseEvent) ? event.clientY : event.changedTouches[0].clientY
+  private getClientPointFromEvent = (event: PointerEvent): { clientX: number, clientY: number } => ({
+    clientX: event.clientX,
+    clientY: event.clientY
   });
 
   private openMarkingBar(
@@ -120,7 +117,7 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
     downPosition: { clientX: number, clientY: number },
     elementComponent: TextComponent
   ) {
-    this.markingBarPosition.left = downPosition.clientY > mouseUp.clientY ? downPosition.clientX : mouseUp.clientX;
+    this.markingBarPosition.left = downPosition.clientX > mouseUp.clientX ? downPosition.clientX : mouseUp.clientX;
     this.markingBarPosition.top = downPosition.clientY > mouseUp.clientY ? downPosition.clientY : mouseUp.clientY;
     this.textComponentContainerScrollTop =
       elementComponent.domElement.closest('.fixed-size-content')?.scrollTop || 0;

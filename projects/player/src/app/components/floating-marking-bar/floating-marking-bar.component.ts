@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
-import { CdkOverlayOrigin, ConnectedPosition } from '@angular/cdk/overlay';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
 import { TextComponent } from '../../../../../common/components/ui-elements/text.component';
 import { TextElement } from '../../../../../common/interfaces/elements';
@@ -13,7 +13,6 @@ import { TextElement } from '../../../../../common/interfaces/elements';
 })
 export class FloatingMarkingBarComponent implements OnInit, OnChanges {
   @Input() elementComponent!: ElementComponent;
-  @Input() overlayOrigin!: CdkOverlayOrigin;
   @Input() isMarkingBarOpen!: boolean;
   @Input() position!: { top: number, left: number };
   @Input() textComponentRect!: DOMRect;

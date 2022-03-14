@@ -10,8 +10,7 @@ import {
             [style.border-color]="selected ? 'black' : color"
             mat-mini-fab
             [style.background-color]="color"
-            (mousedown)="emitSelectedChanged($event)"
-            (touchstart)="emitSelectedChanged($event)">
+            (pointerdown)="emitSelectedChanged()">
       <mat-icon *ngIf="mode === 'mark'"
                 class="marking-icon">border_color
       </mat-icon>
@@ -36,11 +35,7 @@ export class MarkingButtonComponent {
     color: string,
   }>();
 
-  emitSelectedChanged(event: TouchEvent | MouseEvent): void {
-    if (event instanceof TouchEvent && event.cancelable) {
-      event.preventDefault();
-    }
-    event.stopPropagation();
+  emitSelectedChanged(): void {
     this.selected = !this.selected;
     this.selectedChanged.emit({ selected: this.selected, mode: this.mode, color: this.color });
   }

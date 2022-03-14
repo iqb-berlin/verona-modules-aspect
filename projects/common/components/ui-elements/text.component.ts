@@ -30,8 +30,7 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
              [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
              [innerHTML]="savedText || elementModel.text | safeResourceHTML"
-             (touchstart)="emitStartSelection($event)"
-             (mousedown)="emitStartSelection($event)">
+             (pointerdown)="emitStartSelection($event)">
         </div>
     </div>
   `,
@@ -54,7 +53,7 @@ export class TextComponent extends ElementComponent {
   @Input() elementModel!: TextElement;
   @Input() savedText!: string;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() startSelection = new EventEmitter<MouseEvent | TouchEvent>();
+  @Output() startSelection = new EventEmitter<PointerEvent>();
   @Output() applySelection = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
@@ -66,7 +65,7 @@ export class TextComponent extends ElementComponent {
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
-  emitStartSelection(event: TouchEvent | MouseEvent): void {
+  emitStartSelection(event: PointerEvent): void {
     if (this.elementModel.highlightableYellow ||
       this.elementModel.highlightableTurquoise ||
       this.elementModel.highlightableOrange) {

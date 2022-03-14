@@ -36,6 +36,7 @@ import {
   UIElement, UIElementType, UIElementValue,
   VideoElement
 } from '../interfaces/elements';
+import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../interfaces/cloze';
 
 export abstract class ElementFactory {
   static createElement(element: Partial<UIElement>): UIElement {
@@ -238,7 +239,29 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initElement({ width: 450, height: 200, ...element }),
       type: 'cloze',
-      document: element.document !== undefined ? element.document : { type: 'doc', content: [] },
+      document: element.document !== undefined ?
+        {
+          ...element.document,
+          content: element.document.content
+            .map((paragraph: ClozeDocumentParagraph) => ({
+              ...paragraph,
+              content: paragraph.content
+                .map((paraPart: ClozeDocumentParagraphPart) => (
+                  ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
+                    {
+                      ...paraPart,
+                      attrs: {
+                        ...paraPart.attrs,
+                        model: ElementFactory.createElement(paraPart.attrs!.model as InputElement)
+                      }
+                    } :
+                    {
+                      ...paraPart
+                    }
+                ))
+            }))
+        } as ClozeDocument :
+        { type: 'doc', content: [] },
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles(element.styling),

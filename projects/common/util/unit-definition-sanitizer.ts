@@ -17,6 +17,7 @@ import ToggleButtonExtension from '../tiptap-editor-extensions/toggle-button';
 import DropListExtension from '../tiptap-editor-extensions/drop-list';
 import TextFieldExtension from '../tiptap-editor-extensions/text-field';
 import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../interfaces/cloze';
+import { ClozeUtils } from './cloze';
 
 export abstract class UnitDefinitionSanitizer {
   private static expectedUnitVersion: [number, number, number] =
@@ -103,6 +104,7 @@ export abstract class UnitDefinitionSanitizer {
       .includes(newElement.type as string)) {
       newElement = UnitDefinitionSanitizer.handlePlusOne(newElement as InputElement);
     }
+
     return newElement as unknown as UIElement;
   }
 
@@ -185,12 +187,54 @@ export abstract class UnitDefinitionSanitizer {
   Afterwards element models are added to the JSON.
    */
   private static handleClozeElement(element: Record<string, UIElementValue>): ClozeElement {
-    if (!element.parts || !element.text) throw Error('Can\'t read Cloze Element');
-    const uiElementParts = (element.parts as any[])
-      .map((el: any) => el
-        .filter((el2: { type: string; }) => ['text-field', 'drop-list', 'toggle-button'].includes(el2.type)))
-      .flat();
+    if (!element.document && (!element.parts || !element.text)) throw Error('Can\'t read Cloze Element');
 
+    // Version 2.0.0 needs to be sanatized as well because child elements were not sanatized before
+    if (UnitDefinitionSanitizer.unitDefinitionVersion && UnitDefinitionSanitizer.unitDefinitionVersion[0] >= 3) {
+      return element as ClozeElement;
+    }
+
+    let childElements: UIElement[];
+    let doc: ClozeDocument;
+
+    if (element.document) {
+      childElements = ClozeUtils.getClozeChildElements((element as ClozeElement).document);
+      doc = element.document as ClozeDocument;
+    } else {
+      childElements = (element.parts as any[])
+        .map((el: any) => el
+          .filter((el2: { type: string; }) => ['text-field', 'drop-list', 'toggle-button'].includes(el2.type)).value)
+        .flat();
+      doc = UnitDefinitionSanitizer.createClozeDocument(element);
+    }
+
+    return {
+      ...element,
+      document: {
+        ...doc,
+        content: doc.content
+          .map((paragraph: ClozeDocumentParagraph) => ({
+            ...paragraph,
+            content: paragraph.content
+              .map((paraPart: ClozeDocumentParagraphPart) => (
+                ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
+                  {
+                    ...paraPart,
+                    attrs: {
+                      ...paraPart.attrs,
+                      model: UnitDefinitionSanitizer.sanatizeElement(childElements.shift()!)
+                    }
+                  } :
+                  {
+                    ...paraPart
+                  }
+              ))
+          }))
+      } as ClozeDocument
+    } as ClozeElement;
+  }
+
+  private static createClozeDocument(element: Record<string, UIElementValue>): ClozeDocument {
     const replacedText = (element.text as string).replace(/\\i|\\z|\\r/g, (match: string) => {
       switch (match) {
         case '\\i':
@@ -208,33 +252,7 @@ export abstract class UnitDefinitionSanitizer {
       extensions: [StarterKit, ToggleButtonExtension, DropListExtension, TextFieldExtension],
       content: replacedText
     });
-    const doc: { type: string, content: ClozeDocumentParagraph[] } =
-      editor.getJSON() as { type: string, content: ClozeDocumentParagraph[] };
-
-    return {
-      ...element,
-      document: {
-        ...doc,
-        content: doc.content
-          .map((paragraph: ClozeDocumentParagraph) => ({
-            ...paragraph,
-            content: paragraph.content
-              .map((paraPart: ClozeDocumentParagraphPart) => (
-                ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
-                  {
-                    ...paraPart,
-                    attrs: {
-                      ...paraPart.attrs,
-                      model: UnitDefinitionSanitizer.sanatizeElement(uiElementParts.shift().value)
-                    }
-                  } :
-                  {
-                    ...paraPart
-                  }
-              ))
-          }))
-      } as ClozeDocument
-    } as ClozeElement;
+    return editor.getJSON() as ClozeDocument;
   }
 
   private static handleDropListElement(element: Record<string, UIElementValue>): DropListElement {

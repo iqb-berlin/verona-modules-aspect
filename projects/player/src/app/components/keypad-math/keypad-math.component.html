@@ -8,12 +8,8 @@
         (keyClicked)="keyClicked.emit($event)">
     </aspect-keypad-key>
     <span *ngIf="last && lastRowKey"
-          [class.clear-button-container-floating-keypad]="(
-          preset === 'comparisonOperators' || preset === 'squareDashDot'
-          ) && position === 'floating'"
-          [class.clear-button-container-fixed-keypad]="(
-          preset === 'comparisonOperators' || preset === 'squareDashDot'
-          ) && position !== 'floating'">
+          [class.clear-button-container-floating-keypad]="row.length === 3 && position === 'floating'"
+          [class.clear-button-container-fixed-keypad]="row.length === 3 && position !== 'floating'">
       <button type="button"
               mat-mini-fab
               [class]="position === 'floating' ? 'delete-characters-floating-keypad' : 'delete-characters-fixed-keypad'"
@@ -24,7 +20,7 @@
   </ng-container>
 </div>
 
-<div *ngIf="preset === 'numbersAndOperators' || preset === 'numbersAndBasicOperators'"
+<div *ngIf="additionalRows.length"
      class="grid-layout"
      [class.floating-3-column-grid-layout]="position === 'floating' && preset === 'numbersAndOperators'"
      [class.floating-2-column-grid-layout]="position === 'floating' && preset === 'numbersAndBasicOperators'"
@@ -41,18 +37,16 @@
                   [style.grid-row-end]="rowIndex + 2"
                   (keyClicked)="keyClicked.emit($event)">
       </aspect-keypad-key>
-        <ng-container *ngIf="preset === 'numbersAndOperators'">
-          <aspect-keypad-key *ngIf="key === '='"
-                      [key]="key"
-                      [position]="position"
-                      [oval]="true"
-                      [style.grid-column-start]="3"
-                      [style.grid-column-end]="3"
-                      [style.grid-row-start]="1"
-                      [style.grid-row-end]="3"
-                      (keyClicked)="keyClicked.emit($event)">
-          </aspect-keypad-key>
-        </ng-container>
-      </ng-container>
+      <aspect-keypad-key *ngIf="key === '='"
+                  [key]="key"
+                  [position]="position"
+                  [oval]="true"
+                  [style.grid-column-start]="3"
+                  [style.grid-column-end]="3"
+                  [style.grid-row-start]="1"
+                  [style.grid-row-end]="3"
+                  (keyClicked)="keyClicked.emit($event)">
+      </aspect-keypad-key>
     </ng-container>
+  </ng-container>
 </div>

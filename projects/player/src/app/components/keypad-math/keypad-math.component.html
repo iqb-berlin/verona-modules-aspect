@@ -1,11 +1,11 @@
-<div *ngFor="let row of mainKeys; let last = last">
+<div *ngFor="let row of rows; let last = last">
   <ng-container *ngFor="let key of row; let lastRowKey = last">
     <aspect-keypad-key
         [key]="key"
         [preset]="preset"
         [last]="!last && lastRowKey"
         [position]="position"
-        (enterKey)="enterKey.emit($event)">
+        (keyClicked)="keyClicked.emit($event)">
     </aspect-keypad-key>
     <span *ngIf="last && lastRowKey"
           [class.clear-button-container-floating-keypad]="(
@@ -17,7 +17,7 @@
       <button type="button"
               mat-mini-fab
               [class]="position === 'floating' ? 'delete-characters-floating-keypad' : 'delete-characters-fixed-keypad'"
-              (click)="deleteCharacter.emit()">
+              (click)="backSpaceClicked.emit()">
         <mat-icon>keyboard_backspace</mat-icon>
       </button>
     </span>
@@ -30,7 +30,7 @@
      [class.floating-2-column-grid-layout]="position === 'floating' && preset === 'numbersAndBasicOperators'"
      [class.fixed-3-column-grid-layout]="position !== 'floating' && preset === 'numbersAndOperators'"
      [class.fixed-2-column-grid-layout]="position !== 'floating' && preset === 'numbersAndBasicOperators'">
-  <ng-container *ngFor="let row of operators; let rowIndex = index ">
+  <ng-container *ngFor="let row of additionalRows; let rowIndex = index ">
     <ng-container *ngFor="let key of row; let columnIndex = index">
       <aspect-keypad-key *ngIf="key !== '='"
                   [key]="key"
@@ -39,7 +39,7 @@
                   [style.grid-column-end]="columnIndex+2"
                   [style.grid-row-start]="rowIndex + 1"
                   [style.grid-row-end]="rowIndex + 2"
-                  (enterKey)="enterKey.emit($event)">
+                  (keyClicked)="keyClicked.emit($event)">
       </aspect-keypad-key>
         <ng-container *ngIf="preset === 'numbersAndOperators'">
           <aspect-keypad-key *ngIf="key === '='"
@@ -50,7 +50,7 @@
                       [style.grid-column-end]="3"
                       [style.grid-row-start]="1"
                       [style.grid-row-end]="3"
-                      (enterKey)="enterKey.emit($event)">
+                      (keyClicked)="keyClicked.emit($event)">
           </aspect-keypad-key>
         </ng-container>
       </ng-container>

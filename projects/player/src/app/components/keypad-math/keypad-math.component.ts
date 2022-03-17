@@ -14,15 +14,15 @@ export class KeypadMathComponent extends KeyboardInputRestrictionDirective imple
   @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
 
-  @Output() deleteCharacter = new EventEmitter();
-  @Output() enterKey = new EventEmitter<string>();
+  @Output() backSpaceClicked = new EventEmitter();
+  @Output() keyClicked = new EventEmitter<string>();
 
-  mainKeys!: string[][];
-  operators!: string[][];
+  rows!: string[][];
+  additionalRows!: string[][];
 
   ngOnInit(): void {
-    this.mainKeys = KeyLayout.get(this.preset).default;
-    this.operators = KeyLayout.get(this.preset).additional;
-    this.allowedKeys = [...this.mainKeys.flat(), ...this.operators.flat()];
+    this.rows = KeyLayout.get(this.preset).default;
+    this.additionalRows = KeyLayout.get(this.preset).additional;
+    this.allowedKeys = [...this.rows.flat(), ...this.additionalRows.flat()];
   }
 }

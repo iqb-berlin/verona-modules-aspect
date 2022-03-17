@@ -11,8 +11,8 @@
         [position]="keypadService.position"
         [preset]="keypadService.preset"
         [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
-        (deleteCharacter)="keypadService.deleterCharacters(true)"
-        (enterKey)="keypadService.enterKey($event)">
+        (backSpaceClicked)="keypadService.deleterCharacters(true)"
+        (keyClicked)="keypadService.enterKey($event)">
     </aspect-keypad>
   </div>
   <aspect-keyboard

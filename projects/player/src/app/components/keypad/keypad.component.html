@@ -12,7 +12,7 @@
         [inputElement]="inputElement"
         [restrictToAllowedKeys]="restrictToAllowedKeys"
         [position]="position"
-        (enterKey)="enterKey.emit($event)">
+        (keyClicked)="keyClicked.emit($event)">
     </aspect-keypad-french>
     <aspect-keypad-math
         *ngIf="preset !== 'french'"
@@ -20,8 +20,8 @@
         [preset]="preset"
         [position]="position"
         [restrictToAllowedKeys]="restrictToAllowedKeys"
-        (deleteCharacter)="deleteCharacter.emit()"
-        (enterKey)="enterKey.emit($event)">
+        (backSpaceClicked)="backSpaceClicked.emit()"
+        (keyClicked)="keyClicked.emit($event)">
     </aspect-keypad-math>
   </div>
 </div>

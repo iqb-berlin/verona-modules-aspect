@@ -5,7 +5,7 @@
           [key]="key"
           [position]="position"
           [last]="lastRowKey"
-          (enterKey)="enterKey.emit($event)">
+          (keyClicked)="keyClicked.emit($event)">
       </aspect-keypad-key>
     </ng-container>
   </div>
@@ -15,9 +15,9 @@
         class="keypad-capslock"
         mat-mini-fab
         [class.fixed-keypad-key]="position === 'right'"
-        (click)="toggleCharacterCase()">
-      <mat-icon *ngIf="lowerCharacters">keyboard_arrow_up</mat-icon>
-      <mat-icon *ngIf="!lowerCharacters">keyboard_capslock</mat-icon>
+        (click)="toggleShift()">
+      <mat-icon *ngIf="!shift">keyboard_arrow_up</mat-icon>
+      <mat-icon *ngIf="shift">keyboard_capslock</mat-icon>
     </button>
   </div>
 </div>

@@ -15,6 +15,6 @@ export class KeypadComponent {
   @Input() positionOffset!: number;
   @Input() restrictToAllowedKeys!: boolean;
 
-  @Output() deleteCharacter = new EventEmitter();
-  @Output() enterKey = new EventEmitter<string>();
+  @Output() backSpaceClicked = new EventEmitter();
+  @Output() keyClicked = new EventEmitter<string>();
 }

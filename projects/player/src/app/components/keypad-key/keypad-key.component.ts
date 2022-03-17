@@ -15,5 +15,5 @@ export class KeypadKeyComponent {
   @Input() last!: boolean;
   @Input() preset!: InputAssistancePreset;
 
-  @Output() enterKey = new EventEmitter<string>();
+  @Output() keyClicked = new EventEmitter<string>();
 }

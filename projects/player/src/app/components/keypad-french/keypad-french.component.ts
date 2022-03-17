@@ -11,19 +11,19 @@ import { KeyLayout } from '../../configs/key-layout';
 })
 export class KeypadFrenchComponent extends KeyboardInputRestrictionDirective implements OnInit {
   @Input() position!: 'floating' | 'right';
-  @Output() enterKey = new EventEmitter<string>();
+  @Output() keyClicked = new EventEmitter<string>();
 
   rows!: string[][];
-  lowerCharacters!: boolean;
+  shift!: boolean;
 
   ngOnInit(): void {
     this.allowedKeys = [...KeyLayout.get('french').default.flat(), ...KeyLayout.get('french').shift.flat()];
-    this.toggleCharacterCase();
+    this.rows = KeyLayout.get('french').default;
   }
 
-  toggleCharacterCase(): void {
-    this.lowerCharacters = !this.lowerCharacters;
-    if (this.lowerCharacters) {
+  toggleShift(): void {
+    this.shift = !this.shift;
+    if (this.shift) {
       this.rows = KeyLayout.get('french').shift;
     } else {
       this.rows = KeyLayout.get('french').default;

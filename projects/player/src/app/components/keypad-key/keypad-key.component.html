@@ -7,5 +7,5 @@
     [class.not-last-key]="!last"
     [class.oval-floating-keypad-key]="oval && position === 'floating'"
     [class.oval-fixed-keypad-key]="oval && position !== 'floating'"
-    (click)="enterKey.emit(key);">{{key}}
+    (click)="keyClicked.emit(key);">{{key}}
 </button>

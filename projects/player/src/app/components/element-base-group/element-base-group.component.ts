@@ -4,7 +4,7 @@ import {
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementFactory } from '../../../../../common/util/element.factory';
-import { ElementComponent } from "../../../../../common/directives/element-component.directive";
+import { ElementComponent } from '../../../../../common/directives/element-component.directive';
 
 @Component({
   selector: 'aspect-element-base-group',
@@ -25,13 +25,13 @@ export class ElementBaseGroupComponent extends ElementGroupDirective implements 
   }
 
   ngOnInit(): void {
-    const elementComponentFactory = ElementFactory.getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
+    const elementComponentFactory = ElementFactory
+      .getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
     this.baseElementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
     this.baseElementComponent.elementModel = this.elementModel;
   }
 
   ngAfterViewInit(): void {
-    console.log(this.baseElementComponent.domElement);
     this.registerAtUnitStateService(this.elementModel.id, null, this.baseElementComponent, this.pageIndex);
   }
 }

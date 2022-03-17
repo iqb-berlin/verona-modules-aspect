@@ -4,11 +4,11 @@ import {
 import { KeyboardInputRestrictionDirective } from '../../directives/keyboard-input-restriction.directive';
 
 @Component({
-  selector: 'aspect-french-keyboard',
-  templateUrl: './french-keyboard.component.html',
-  styleUrls: ['./french-keyboard.component.css']
+  selector: 'aspect-keypad-french',
+  templateUrl: './keypad-french.component.html',
+  styleUrls: ['./keypad-french.component.css']
 })
-export class FrenchKeyboardComponent extends KeyboardInputRestrictionDirective implements OnInit {
+export class KeypadFrenchComponent extends KeyboardInputRestrictionDirective implements OnInit {
   @Input() position!: 'floating' | 'right';
   @Output() enterKey = new EventEmitter<string>();
 

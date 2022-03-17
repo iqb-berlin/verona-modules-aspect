@@ -5,18 +5,18 @@
       #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: TextAreaElement"
-      (onFocusChanged)="this.isKeyboardOpen = keyboardService.toggleKeyboard($event, elementComponent)">
+      (onFocusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-area>
   <aspect-text-field
       *ngIf="elementModel.type === 'text-field'"
       #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: TextFieldElement"
-      (onFocusChanged)="this.isKeyboardOpen = keyboardService.toggleKeyboard($event, elementComponent)">
+      (onFocusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-field>
 </form>
 
-<aspect-floating-keyboard
-    [isKeyboardOpen]="isKeyboardOpen && keyboardService.position === 'floating'">
-</aspect-floating-keyboard>
+<aspect-floating-keypad
+    [isKeypadOpen]="isKeypadOpen && keypadService.position === 'floating'">
+</aspect-floating-keypad>
 

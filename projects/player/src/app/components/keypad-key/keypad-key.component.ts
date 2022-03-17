@@ -4,11 +4,11 @@ import {
 import { InputAssistancePreset } from '../../../../../common/interfaces/elements';
 
 @Component({
-  selector: 'aspect-key',
-  templateUrl: './key.component.html',
-  styleUrls: ['./key.component.css']
+  selector: 'aspect-keypad-key',
+  templateUrl: './keypad-key.component.html',
+  styleUrls: ['./keypad-key.component.css']
 })
-export class KeyComponent {
+export class KeypadKeyComponent {
   @Input() key!: string;
   @Input() oval!: boolean;
   @Input() position!: 'floating' | 'right';

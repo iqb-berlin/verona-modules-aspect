@@ -33,8 +33,8 @@ import { TextAreaElement } from '../../interfaces/elements';
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
-                (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
-                (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
+                (focus)="onFocusChanged.emit(input)"
+                (blur)="onFocusChanged.emit(null)">
       </textarea>
       <mat-error *ngIf="elementFormControl.errors">
         {{elementFormControl.errors | errorTransform: elementModel}}

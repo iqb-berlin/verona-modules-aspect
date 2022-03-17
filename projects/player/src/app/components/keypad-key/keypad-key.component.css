@@ -5,7 +5,7 @@
   color: black;
 }
 
-.fixed-keyboard-key{
+.fixed-keypad-key{
   width: 65px;
   height: 65px;
 }
@@ -14,12 +14,12 @@
   margin-right: 5px;
 }
 
-.oval-floating-keyboard-key{
+.oval-floating-keypad-key{
   height: 85px;
   border-radius: 20px;
 }
 
-.oval-fixed-keyboard-key{
+.oval-fixed-keypad-key{
   height: 135px;
   border-radius: 65px;
 }

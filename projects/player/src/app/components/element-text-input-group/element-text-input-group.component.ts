@@ -2,7 +2,7 @@ import {
   AfterViewInit, Component, OnInit, ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { KeyboardService } from '../../services/keyboard.service';
+import { KeypadService } from '../../services/keypad.service';
 import {
   InputElement, TextAreaElement, TextFieldElement
 } from '../../../../../common/interfaces/elements';
@@ -13,6 +13,9 @@ import { VeronaSubscriptionService } from '../../services/verona-subscription.se
 import { ElementComponent } from '../../../../../common/directives/element-component.directive';
 import { ValidatorService } from '../../services/validator.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
+import { TextAreaComponent } from '../../../../../common/components/ui-elements/text-area.component';
+import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
+import { KeyboardService } from '../../services/keyboard.service';
 
 @Component({
   selector: 'aspect-element-text-input-group',
@@ -24,10 +27,11 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
   TextAreaElement!: TextAreaElement;
   TextFieldElement!: TextFieldElement;
 
-  isKeyboardOpen!: boolean;
+  isKeypadOpen!: boolean;
 
   constructor(
-    public keyboardService: KeyboardService,
+    private keyboardService: KeyboardService,
+    public keypadService: KeypadService,
     public unitStateService: UnitStateService,
     public unitStateElementMapperService: UnitStateElementMapperService,
     public translateService: TranslateService,
@@ -46,5 +50,13 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     this.registerAtUnitStateService(
       this.elementModel.id, (this.elementModel as InputElement).value, this.elementComponent, this.pageIndex
     );
+  }
+
+  onFocusChanged(inputElement: HTMLElement | null, elementComponent: TextAreaComponent | TextFieldComponent): void {
+    if (this.elementModel.inputAssistance !== 'none') {
+      this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
+    }
+    // if Mobil and no Hardware Keyboard
+    // this.keyboardService.toggle(inputElement, elementComponent);
   }
 }

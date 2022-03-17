@@ -5,32 +5,17 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  trigger, style, transition, animate
-} from '@angular/animations';
-import { KeyboardService } from '../../services/keyboard.service';
 import { NativeEventService } from '../../services/native-event.service';
 import { PlayerConfig } from '../../models/verona';
 import { Page } from '../../../../../common/interfaces/unit';
 
 @Component({
-  selector: 'aspect-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
-  animations: [
-    trigger('keyboardSlideInOut', [
-      transition(':enter', [
-        style({ width: 0 }),
-        animate(200, style({ width: '*' }))
-      ]),
-      transition(':leave', [
-        animate(200, style({ width: 0 }))
-      ])
-    ])
-  ]
+  selector: '[aspect-layout-pages]',
+  templateUrl: './layout-pages.component.html',
+  styleUrls: ['./layout-pages.component.css']
 })
 
-export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pages!: Page[];
   @Input() selectedIndex!: number;
   @Input() selectIndex!: Subject<number>;
@@ -65,7 +50,6 @@ export class LayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
   constructor(
-    public keyboardService: KeyboardService,
     private translateService: TranslateService,
     private nativeEventService: NativeEventService,
     private changeDetectorRef: ChangeDetectorRef

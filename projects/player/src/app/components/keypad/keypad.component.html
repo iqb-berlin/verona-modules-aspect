@@ -1,20 +1,20 @@
-<div [class]="position === 'floating' ? 'floating-keyboard-container' : 'fixed-keyboard-container'"
+<div [class]="position === 'floating' ? 'floating-keypad-container' : 'fixed-keypad-container'"
      [style.margin-bottom.px]="inputElement.clientHeight + positionOffset"
-     (mousedown)="onMouseDown($event, false)">
+     (mousedown)="$event.preventDefault()">
   <div *ngIf="position === 'floating'"
-       class="keyboard-header">
+       class="keypad-header">
   </div>
-  <div class="keyboard-inner-container"
-      [class.fixed-keyboard-inner-container]="position === 'right'"
-       (mousedown)="onMouseDown($event, true)">
-    <aspect-french-keyboard
+  <div class="keypad-inner-container"
+       [class.fixed-keypad-inner-container]="position === 'right'"
+       (mousedown)="$event.preventDefault(); $event.stopPropagation()">
+    <aspect-keypad-french
         *ngIf="preset === 'french'"
         [inputElement]="inputElement"
         [restrictToAllowedKeys]="restrictToAllowedKeys"
         [position]="position"
         (enterKey)="enterKey.emit($event)">
-    </aspect-french-keyboard>
-    <aspect-math-keyboard
+    </aspect-keypad-french>
+    <aspect-keypad-math
         *ngIf="preset !== 'french'"
         [inputElement]="inputElement"
         [preset]="preset"
@@ -22,6 +22,6 @@
         [restrictToAllowedKeys]="restrictToAllowedKeys"
         (deleteCharacter)="deleteCharacter.emit()"
         (enterKey)="enterKey.emit($event)">
-    </aspect-math-keyboard>
+    </aspect-keypad-math>
   </div>
 </div>

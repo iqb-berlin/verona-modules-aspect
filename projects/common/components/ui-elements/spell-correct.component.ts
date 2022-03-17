@@ -1,4 +1,6 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output, ViewChild
+} from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { SpellCorrectElement } from '../../interfaces/elements';
@@ -13,7 +15,8 @@ import { SpellCorrectElement } from '../../interfaces/elements';
            [style.width.%]="100"
            [style.height.%]="100">
         <mat-form-field class="small-input">
-          <input matInput type="text"
+          <input matInput #input
+                 type="text"
                  autocomplete="off"
                  autocapitalize="none"
                  autocorrect="off"
@@ -27,7 +30,9 @@ import { SpellCorrectElement } from '../../interfaces/elements';
                  [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-                 [formControl]="elementFormControl">
+                 [formControl]="elementFormControl"
+                 (focus)="onFocusChanged.emit(input)"
+                 (blur)="onFocusChanged.emit(null)">
         </mat-form-field>
         <button #buttonElement
                 mat-button
@@ -61,5 +66,6 @@ import { SpellCorrectElement } from '../../interfaces/elements';
 })
 export class SpellCorrectComponent extends FormElementComponent {
   @Input() elementModel!: SpellCorrectElement;
+  @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
   @ViewChild(MatInput) inputElement!: MatInput;
 }

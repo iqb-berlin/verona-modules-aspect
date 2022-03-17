@@ -11,16 +11,16 @@ import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from '../../../common/shared.module';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
-import { LayoutComponent } from './components/layout/layout.component';
+import { LayoutPagesComponent } from './components/layout-pages/layout-pages.component';
 import { HideFirstChildDirective } from './directives/hide-first-child.directive';
 import { ScrollIndexDirective } from './directives/scroll-index.directive';
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
-import { KeyboardComponent } from './components/keyboard/keyboard.component';
-import { KeyComponent } from './components/key/key.component';
-import { FrenchKeyboardComponent } from './components/french-keyboard/french-keyboard.component';
-import { MathKeyboardComponent } from './components/math-keyboard/math-keyboard.component';
+import { KeypadComponent } from './components/keypad/keypad.component';
+import { KeypadKeyComponent } from './components/keypad-key/keypad-key.component';
+import { KeypadFrenchComponent } from './components/keypad-french/keypad-french.component';
+import { KeypadMathComponent } from './components/keypad-math/keypad-math.component';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
-import { FloatingKeyboardComponent } from './components/floating-keyboard/floating-keyboard.component';
+import { FloatingKeypadComponent } from './components/floating-keypad/floating-keypad.component';
 import { ElementSplitterComponent } from './components/element-splitter/element-splitter.component';
 import { ElementInputGroupComponent } from './components/element-input-group/element-input-group.component';
 import {
@@ -37,6 +37,8 @@ import {
   ElementInteractiveGroupComponent
 } from './components/element-interactive-group/element-interactive-group.component';
 import { UnitStateComponent } from './components/unit-state/unit-state.component';
+import { LayoutPlayerComponent } from './components/layout-player/layout-player.component';
+import { KeyboardComponent } from './components/keyboard/keyboard.component';
 
 @NgModule({
   declarations: [
@@ -44,16 +46,16 @@ import { UnitStateComponent } from './components/unit-state/unit-state.component
     PageComponent,
     SectionComponent,
     PlayerStateComponent,
-    LayoutComponent,
+    LayoutPagesComponent,
     HideFirstChildDirective,
     ScrollIndexDirective,
     IntersectionDetectionDirective,
-    KeyboardComponent,
-    KeyComponent,
-    FrenchKeyboardComponent,
-    MathKeyboardComponent,
+    KeypadComponent,
+    KeypadKeyComponent,
+    KeypadFrenchComponent,
+    KeypadMathComponent,
     FloatingMarkingBarComponent,
-    FloatingKeyboardComponent,
+    FloatingKeypadComponent,
     ElementSplitterComponent,
     ElementInputGroupComponent,
     ElementMediaPlayerGroupComponent,
@@ -63,7 +65,9 @@ import { UnitStateComponent } from './components/unit-state/unit-state.component
     ElementTextGroupComponent,
     ElementBaseGroupComponent,
     ElementInteractiveGroupComponent,
-    UnitStateComponent
+    UnitStateComponent,
+    LayoutPlayerComponent,
+    KeyboardComponent
   ],
   imports: [
     BrowserModule,

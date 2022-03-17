@@ -20,24 +20,8 @@
   margin: auto;
 }
 
-.layout-container{
-  margin: auto;
-  display: flex;
-}
-
-.layout-flex-container{
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-}
-
 .pages-container{
   height: 100%;
   overflow: auto;
 }
 
-.keyboard {
-  width: 100%;
-}

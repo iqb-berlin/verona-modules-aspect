@@ -4,11 +4,11 @@ import {
 import { InputAssistancePreset } from '../../../../../common/interfaces/elements';
 
 @Component({
-  selector: 'aspect-keyboard',
-  templateUrl: './keyboard.component.html',
-  styleUrls: ['./keyboard.component.css']
+  selector: 'aspect-keypad',
+  templateUrl: './keypad.component.html',
+  styleUrls: ['./keypad.component.css']
 })
-export class KeyboardComponent {
+export class KeypadComponent {
   @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
@@ -17,11 +17,4 @@ export class KeyboardComponent {
 
   @Output() deleteCharacter = new EventEmitter();
   @Output() enterKey = new EventEmitter<string>();
-
-  onMouseDown = (event: MouseEvent, stopPropagation: boolean): void => {
-    event.preventDefault();
-    if (stopPropagation) {
-      event.stopPropagation();
-    }
-  };
 }

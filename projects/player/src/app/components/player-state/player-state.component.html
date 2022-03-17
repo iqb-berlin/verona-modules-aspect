@@ -1,9 +1,13 @@
 <div *ngIf="!running" class='stopped-overlay'></div>
-<aspect-layout
+<aspect-layout-player>
+  <div
+    aspect-layout-pages
+    [style.height.%]="100"
     [pages]="pages"
     [playerConfig]="playerConfig"
     [(selectedIndex)]="currentPlayerPageIndex"
     [selectIndex]="selectIndex"
     (validPagesDetermined)="onValidPagesDetermined($event)"
     (selectedIndexChange)="onSelectedIndexChange()">
-</aspect-layout>
+  </div>
+</aspect-layout-player>

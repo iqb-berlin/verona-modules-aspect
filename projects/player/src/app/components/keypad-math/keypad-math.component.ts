@@ -5,11 +5,11 @@ import { InputAssistancePreset } from '../../../../../common/interfaces/elements
 import { KeyboardInputRestrictionDirective } from '../../directives/keyboard-input-restriction.directive';
 
 @Component({
-  selector: 'aspect-math-keyboard',
-  templateUrl: './math-keyboard.component.html',
-  styleUrls: ['./math-keyboard.component.css']
+  selector: 'aspect-keypad-math',
+  templateUrl: './keypad-math.component.html',
+  styleUrls: ['./keypad-math.component.css']
 })
-export class MathKeyboardComponent extends KeyboardInputRestrictionDirective implements OnInit {
+export class KeypadMathComponent extends KeyboardInputRestrictionDirective implements OnInit {
   @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
 

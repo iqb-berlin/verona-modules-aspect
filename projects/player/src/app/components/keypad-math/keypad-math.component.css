@@ -1,4 +1,4 @@
-.delete-characters-floating-keyboard{
+.delete-characters-floating-keypad{
   font-size: x-large;
   width: 85px;
   height: 40px;
@@ -7,7 +7,7 @@
   color: #fff;
 }
 
-.delete-characters-fixed-keyboard{
+.delete-characters-fixed-keypad{
   font-size: x-large;
   width: 135px;
   height: 65px;
@@ -16,17 +16,17 @@
   color: #fff;
 }
 
-.fixed-keyboard-key{
+.fixed-keypad-key{
   width: 65px;
   height: 65px;
 }
 
-.clear-button-container-floating-keyboard{
+.clear-button-container-floating-keypad{
   display: block;
   margin-left: 40px;
 }
 
-.clear-button-container-fixed-keyboard{
+.clear-button-container-fixed-keypad{
   margin-left: 65px;
   display: block;
 }

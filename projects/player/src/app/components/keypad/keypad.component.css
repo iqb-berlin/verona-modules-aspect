@@ -1,4 +1,4 @@
-.floating-keyboard-container{
+.floating-keypad-container{
   margin-top: 20px;
   background-color: white;
   border: lightgray solid 1px;
@@ -6,8 +6,8 @@
   overflow-wrap: break-word;
 }
 
-.fixed-keyboard-container{
-  height: 100vh;
+.fixed-keypad-container{
+  height: 100%;
   min-width: 300px;
   width: 25vw;
   border-left: lightgray solid 1px;
@@ -16,7 +16,7 @@
   overflow-y: auto;
 }
 
-.keyboard-header{
+.keypad-header{
   cursor: move;
   height: 40px;
   background-color: #f1f1f1;
@@ -24,12 +24,12 @@
   border-bottom: lightgray;
 }
 
-.keyboard-inner-container{
+.keypad-inner-container{
   padding: 10px;
   text-align: center;
 }
 
-.fixed-keyboard-inner-container{
+.fixed-keypad-inner-container{
   padding-top: 10vh;
 }
 

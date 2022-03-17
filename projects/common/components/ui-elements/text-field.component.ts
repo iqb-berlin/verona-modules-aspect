@@ -30,8 +30,8 @@ import { TextFieldElement } from '../../interfaces/elements';
              [formControl]="elementFormControl"
              [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"
-             (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
-             (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
+             (focus)="onFocusChanged.emit(input)"
+             (blur)="onFocusChanged.emit(null)">
       <button *ngIf="elementModel.clearable"
               type="button"
               matSuffix mat-icon-button aria-label="Clear"
@@ -61,8 +61,8 @@ import { TextFieldElement } from '../../interfaces/elements';
            [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
            [value]="elementModel.value"
-           (focus)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(input) : null"
-           (blur)="elementModel.inputAssistancePreset !== 'none' ? onFocusChanged.emit(null): null">
+           (focus)="onFocusChanged.emit(input)"
+           (blur)="onFocusChanged.emit(null)">
   `,
   styles: [
     ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}',

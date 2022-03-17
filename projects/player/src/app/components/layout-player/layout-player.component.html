@@ -1,0 +1,24 @@
+<div class="layout-container">
+  <div class="unit-layout-container">
+    <div class="pages-layout-container">
+      <ng-content></ng-content>
+    </div>
+    <aspect-keypad
+        *ngIf="keypadService.isOpen && keypadService.position === 'right'"
+        @keypadSlideInOut
+        [positionOffset]="0"
+        [inputElement]="keypadService.inputElement"
+        [position]="keypadService.position"
+        [preset]="keypadService.preset"
+        [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
+        (deleteCharacter)="keypadService.deleterCharacters(true)"
+        (enterKey)="keypadService.enterKey($event)">
+    </aspect-keypad>
+  </div>
+  <aspect-keyboard
+      *ngIf="keyboardService.isOpen"
+      @keyboardSlideInOut
+      (deleteCharacter)="keyboardService.deleterCharacters(true)"
+      (enterKey)="keyboardService.enterKey($event)">
+  </aspect-keyboard>
+</div>

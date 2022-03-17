@@ -11,9 +11,10 @@ import { UnitStateElementMapperService } from '../../services/unit-state-element
 import { MessageService } from '../../../../../common/services/message.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import { ValidatorService } from '../../services/validator.service';
-import { KeyboardService } from '../../services/keyboard.service';
+import { KeypadService } from '../../services/keypad.service';
 import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
+import { KeyboardService } from '../../services/keyboard.service';
 
 @Component({
   selector: 'aspect-element-compound-group',
@@ -25,10 +26,11 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;
 
-  isKeyboardOpen!: boolean;
+  isKeypadOpen!: boolean;
 
   constructor(
-    public keyboardService: KeyboardService,
+    private keyboardService: KeyboardService,
+    public keypadService: KeypadService,
     public unitStateService: UnitStateService,
     public unitStateElementMapperService: UnitStateElementMapperService,
     public translateService: TranslateService,
@@ -55,7 +57,11 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
           .onFocusChanged
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(element => {
-            this.isKeyboardOpen = this.keyboardService.toggleKeyboard(element, child as TextFieldComponent);
+            if (childModel.inputAssistance !== 'none') {
+              this.isKeypadOpen = this.keypadService.toggle(element, child as TextFieldComponent);
+            }
+            // if Mobil and no Hardware Keyboard
+            // this.keyboardService.toggle(inputElement, elementComponent);
           });
       }
     });

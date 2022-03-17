@@ -1,22 +1,22 @@
 <div *ngFor="let row of mainKeys; let last = last">
   <ng-container *ngFor="let key of row; let lastRowKey = last">
-    <aspect-key
+    <aspect-keypad-key
         [key]="key"
         [preset]="preset"
         [last]="!last && lastRowKey"
         [position]="position"
         (enterKey)="enterKey.emit($event)">
-    </aspect-key>
+    </aspect-keypad-key>
     <span *ngIf="last && lastRowKey"
-          [class.clear-button-container-floating-keyboard]="(
+          [class.clear-button-container-floating-keypad]="(
           preset === 'comparisonOperators' || preset === 'squareDashDot'
           ) && position === 'floating'"
-          [class.clear-button-container-fixed-keyboard]="(
+          [class.clear-button-container-fixed-keypad]="(
           preset === 'comparisonOperators' || preset === 'squareDashDot'
           ) && position !== 'floating'">
       <button type="button"
               mat-mini-fab
-              [class]="position === 'floating' ? 'delete-characters-floating-keyboard' : 'delete-characters-fixed-keyboard'"
+              [class]="position === 'floating' ? 'delete-characters-floating-keypad' : 'delete-characters-fixed-keypad'"
               (click)="deleteCharacter.emit()">
         <mat-icon>keyboard_backspace</mat-icon>
       </button>
@@ -32,7 +32,7 @@
      [class.fixed-2-column-grid-layout]="position !== 'floating' && preset === 'numbersAndBasicOperators'">
   <ng-container *ngFor="let row of operators; let rowIndex = index ">
     <ng-container *ngFor="let key of row; let columnIndex = index">
-      <aspect-key *ngIf="key !== '='"
+      <aspect-keypad-key *ngIf="key !== '='"
                   [key]="key"
                   [position]="position"
                   [style.grid-column-start]="columnIndex+1"
@@ -40,9 +40,9 @@
                   [style.grid-row-start]="rowIndex + 1"
                   [style.grid-row-end]="rowIndex + 2"
                   (enterKey)="enterKey.emit($event)">
-      </aspect-key>
+      </aspect-keypad-key>
         <ng-container *ngIf="preset === 'numbersAndOperators'">
-          <aspect-key *ngIf="key === '='"
+          <aspect-keypad-key *ngIf="key === '='"
                       [key]="key"
                       [position]="position"
                       [oval]="true"
@@ -51,7 +51,7 @@
                       [style.grid-row-start]="1"
                       [style.grid-row-end]="3"
                       (enterKey)="enterKey.emit($event)">
-          </aspect-key>
+          </aspect-keypad-key>
         </ng-container>
       </ng-container>
     </ng-container>

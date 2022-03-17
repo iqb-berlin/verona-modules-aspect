@@ -1,0 +1,22 @@
+.layout-container{
+  margin: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.unit-layout-container {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  display: flex;
+}
+
+.pages-layout-container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+

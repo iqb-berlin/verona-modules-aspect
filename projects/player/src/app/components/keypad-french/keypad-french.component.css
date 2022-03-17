@@ -3,16 +3,16 @@
   margin: auto;
 }
 
-.fixed-keyboard-key{
+.fixed-keypad-key{
   width: 65px;
   height: 65px;
 }
 
-.keyboard-capslock{
+.keypad-capslock{
   background-color: dimgray;
 }
 
-.keyboard-capslock-container{
+.keypad-capslock-container{
   margin-right: 100%;
 }
 

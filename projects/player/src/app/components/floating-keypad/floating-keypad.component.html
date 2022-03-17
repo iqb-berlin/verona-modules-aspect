@@ -1,0 +1,16 @@
+<ng-template
+    *ngIf="keypadService.preset !== 'none'"
+    cdkConnectedOverlay
+    [cdkConnectedOverlayOrigin]="keypadService.elementComponent"
+    [cdkConnectedOverlayOpen]="isKeypadOpen && keypadService.position === 'floating'">
+  <aspect-keypad
+      cdkDrag
+      [positionOffset]="keypadService.elementComponent.elementModel.type === 'text-field' ? 20 : 0"
+      [inputElement]="keypadService.inputElement"
+      [position]="keypadService.position"
+      [preset]="keypadService.preset"
+      [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
+      (deleteCharacter)="keypadService.deleterCharacters(true)"
+      (enterKey)="keypadService.enterKey($event)">
+  </aspect-keypad>
+</ng-template>

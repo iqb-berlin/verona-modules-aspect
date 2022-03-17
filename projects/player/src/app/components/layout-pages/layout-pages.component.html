@@ -1,26 +1,11 @@
-<div class="layout-container">
-  <div class="layout-flex-container">
-    <div class="pages-container"
-         [fxLayout]="layoutAlignment">
-      <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
-        alwaysVisiblePageView :
-        scrollPagesView"></ng-container>
-      <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
-        alwaysVisiblePageView :
-        scrollPagesView"></ng-container>
-    </div>
-  </div>
-  <aspect-keyboard
-      *ngIf="keyboardService.isOpen && keyboardService.position === 'right'"
-      @keyboardSlideInOut
-      [positionOffset]="0"
-      [inputElement]="keyboardService.inputElement"
-      [position]="keyboardService.position"
-      [preset]="keyboardService.preset"
-      [restrictToAllowedKeys]="keyboardService.elementComponent.elementModel.restrictedToInputAssistanceChars"
-      (deleteCharacter)="keyboardService.deleterCharacters()"
-      (enterKey)="keyboardService.enterKey($event)">
-  </aspect-keyboard>
+<div class="pages-container"
+     [fxLayout]="layoutAlignment">
+  <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
+    alwaysVisiblePageView :
+    scrollPagesView"></ng-container>
+  <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
+    alwaysVisiblePageView :
+    scrollPagesView"></ng-container>
 </div>
 
 <ng-template #alwaysVisiblePageView>

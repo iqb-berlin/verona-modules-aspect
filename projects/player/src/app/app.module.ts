@@ -15,10 +15,6 @@ import { LayoutPagesComponent } from './components/layout-pages/layout-pages.com
 import { HideFirstChildDirective } from './directives/hide-first-child.directive';
 import { ScrollIndexDirective } from './directives/scroll-index.directive';
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
-import { KeypadComponent } from './components/keypad/keypad.component';
-import { KeypadKeyComponent } from './components/keypad-key/keypad-key.component';
-import { KeypadFrenchComponent } from './components/keypad-french/keypad-french.component';
-import { KeypadMathComponent } from './components/keypad-math/keypad-math.component';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
 import { FloatingKeypadComponent } from './components/floating-keypad/floating-keypad.component';
 import { ElementSplitterComponent } from './components/element-splitter/element-splitter.component';
@@ -39,6 +35,7 @@ import {
 import { UnitStateComponent } from './components/unit-state/unit-state.component';
 import { LayoutPlayerComponent } from './components/layout-player/layout-player.component';
 import { KeyboardComponent } from './components/keyboard/keyboard.component';
+import { KeyInputModule } from '../../key-input/key-input.module';
 
 @NgModule({
   declarations: [
@@ -50,10 +47,6 @@ import { KeyboardComponent } from './components/keyboard/keyboard.component';
     HideFirstChildDirective,
     ScrollIndexDirective,
     IntersectionDetectionDirective,
-    KeypadComponent,
-    KeypadKeyComponent,
-    KeypadFrenchComponent,
-    KeypadMathComponent,
     FloatingMarkingBarComponent,
     FloatingKeypadComponent,
     ElementSplitterComponent,
@@ -74,6 +67,7 @@ import { KeyboardComponent } from './components/keyboard/keyboard.component';
     BrowserAnimationsModule,
     CommonModule,
     SharedModule,
+    KeyInputModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

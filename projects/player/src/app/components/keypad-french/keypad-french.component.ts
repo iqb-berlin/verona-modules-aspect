@@ -2,6 +2,7 @@ import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { KeyboardInputRestrictionDirective } from '../../directives/keyboard-input-restriction.directive';
+import { KeyLayout } from '../../configs/key-layout';
 
 @Component({
   selector: 'aspect-keypad-french',
@@ -15,28 +16,17 @@ export class KeypadFrenchComponent extends KeyboardInputRestrictionDirective imp
   rows!: string[][];
   lowerCharacters!: boolean;
 
-  private readonly upperCharacterRows: string[][] = [
-    ['Â', 'À', 'Æ', 'Ê', 'È', 'É', 'Ë', 'Î'],
-    ['Ï', 'Ô', 'Ò', 'Œ', 'Û', 'Ù', 'Ü', 'Ç']
-  ];
-
-  private readonly lowerCharacterRows: string[][] = [
-    ['â', 'à', 'æ', 'ê', 'è', 'é', 'ë', 'î'],
-    ['ï', 'ô', 'ò', 'œ', 'û', 'ù', 'ü', 'ç']
-  ];
-
   ngOnInit(): void {
-    this.rows = this.lowerCharacterRows;
-    this.allowedKeys = [...this.upperCharacterRows.flat(), ...this.lowerCharacterRows.flat()];
-    this.lowerCharacters = true;
+    this.allowedKeys = [...KeyLayout.get('french').default.flat(), ...KeyLayout.get('french').shift.flat()];
+    this.toggleCharacterCase();
   }
 
   toggleCharacterCase(): void {
     this.lowerCharacters = !this.lowerCharacters;
     if (this.lowerCharacters) {
-      this.rows = this.lowerCharacterRows;
+      this.rows = KeyLayout.get('french').shift;
     } else {
-      this.rows = this.upperCharacterRows;
+      this.rows = KeyLayout.get('french').default;
     }
   }
 }

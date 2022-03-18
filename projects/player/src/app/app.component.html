@@ -1,4 +1,6 @@
 <aspect-player-state
+    *ngIf="playerConfig && pages?.length"
+    aspectUnitState
     [pages]="pages"
     [playerConfig]="playerConfig">
 </aspect-player-state>

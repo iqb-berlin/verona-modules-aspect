@@ -1,25 +1,17 @@
-import {
-  Component, Input, OnDestroy, OnInit
-} from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Page } from '../../../../../common/interfaces/unit';
-import { PlayerConfig, Progress, UnitState } from '../../models/verona';
-import { UnitStateService } from '../../services/unit-state.service';
-import { MediaPlayerService } from '../../services/media-player.service';
-import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
-import { VeronaPostService } from '../../services/verona-post.service';
-import { ValidatorService } from '../../services/validator.service';
+import { takeUntil } from 'rxjs/operators';
+import { Progress, UnitState } from '../models/verona';
+import { UnitStateService } from '../services/unit-state.service';
+import { MediaPlayerService } from '../services/media-player.service';
+import { VeronaSubscriptionService } from '../services/verona-subscription.service';
+import { VeronaPostService } from '../services/verona-post.service';
+import { ValidatorService } from '../services/validator.service';
 
-@Component({
-  selector: 'aspect-unit-state',
-  templateUrl: './unit-state.component.html',
-  styleUrls: ['./unit-state.component.scss']
+@Directive({
+  selector: '[aspectUnitState]'
 })
-export class UnitStateComponent implements OnInit, OnDestroy {
-  @Input() pages!: Page[];
-  @Input() playerConfig!: PlayerConfig;
-
+export class UnitStateDirective implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -28,8 +20,7 @@ export class UnitStateComponent implements OnInit, OnDestroy {
     private veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
     private validatorService: ValidatorService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.mediaPlayerService.mediaStatusChanged

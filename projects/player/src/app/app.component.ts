@@ -17,13 +17,7 @@ import { UnitFactory } from '../../../common/util/unit.factory';
 
 @Component({
   selector: 'aspect-player',
-  template: `
-      <aspect-unit-state
-          *ngIf="playerConfig && pages?.length"
-          [pages]="pages"
-          [playerConfig]="playerConfig">
-      </aspect-unit-state>
-  `
+  templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit {
   pages!: Page[];

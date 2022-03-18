@@ -32,10 +32,10 @@ import { ElementBaseGroupComponent } from './components/element-base-group/eleme
 import {
   ElementInteractiveGroupComponent
 } from './components/element-interactive-group/element-interactive-group.component';
-import { UnitStateComponent } from './components/unit-state/unit-state.component';
 import { LayoutPlayerComponent } from './components/layout-player/layout-player.component';
 import { KeyboardComponent } from './components/keyboard/keyboard.component';
-import { KeyInputModule } from '../../key-input/key-input.module';
+import { KeyInputModule } from '../../modules/key-input/key-input.module';
+import { UnitStateDirective } from './directives/unit-state.directive';
 
 @NgModule({
   declarations: [
@@ -58,9 +58,9 @@ import { KeyInputModule } from '../../key-input/key-input.module';
     ElementTextGroupComponent,
     ElementBaseGroupComponent,
     ElementInteractiveGroupComponent,
-    UnitStateComponent,
     LayoutPlayerComponent,
-    KeyboardComponent
+    KeyboardComponent,
+    UnitStateDirective
   ],
   imports: [
     BrowserModule,

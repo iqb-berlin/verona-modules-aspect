@@ -6,7 +6,8 @@
        [style.background-color]="page.backgroundColor">
     <div cdkDropListGroup>
       <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
-        <aspect-section-menu [class.open]="hoveredSection === i" class="section-menu" fxLayout="column"
+        <aspect-section-menu [class.open]="selectionService.selectedPageSectionIndex === i && hoveredSection === i"
+                             class="section-menu" fxLayout="column"
                              [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
                              [section]="section" [sectionIndex]="i"
                              [allowMoveUp]="i != 0"

@@ -49,11 +49,12 @@ import { UIElement } from '../../../../../../../common/interfaces/elements';
         <ng-container *ngIf="!section.dynamicPositioning">
           <mat-form-field appearance="fill">
             <mat-label>{{'section-menu.height' | translate }}</mat-label>
-            <input matInput mat-menu-item type="number"
+            <input matInput  type="number"
                    [value]="$any(section.height)"
-                   (click)="$any($event).stopPropagation()"
                    (change)="updateModel('height', $any($event.target).value)">
           </mat-form-field>
+<!--          mat-menu-item-->
+<!--                   (click)="$any($event).stopPropagation()"-->
         </ng-container>
         <div *ngIf="section.dynamicPositioning">
           <fieldset>

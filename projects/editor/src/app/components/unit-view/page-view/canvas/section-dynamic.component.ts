@@ -55,6 +55,7 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [gridRowRange]="element.position.gridRowRange"
                                      (dragStart)="dragging = true"
                                      (dragEnd)="dragging = false"
+                                     (elementSelected)="elementSelected.emit()"
                                      (elementChanged)="helperGrid?.refresh()">
       </aspect-dynamic-canvas-overlay>
     </div>
@@ -66,6 +67,7 @@ export class SectionDynamicComponent {
   @Input() dropListList!: string[];
   @Input() isSelected!: boolean;
   @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
+  @Output() elementSelected = new EventEmitter();
 
   @ViewChild(DynamicSectionHelperGridComponent) helperGrid!: DynamicSectionHelperGridComponent;
   @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;

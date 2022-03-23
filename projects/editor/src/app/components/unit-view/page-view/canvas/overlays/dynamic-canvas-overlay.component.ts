@@ -17,7 +17,7 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
            [style.display]="dragging ? 'none' : ''"
            tabindex="-1"
            cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
-           (click)="selectElement($event.shiftKey); $event.stopPropagation()" (dblclick)="openEditDialog()"
+           (click)="elementClicked($event)" (dblclick)="openEditDialog()"
            (cdkDragStarted)="moveDragStart()"
            (cdkDragEnded)="moveDragEnd()"
            [style.outline]="isSelected ? 'purple solid 1px' : ''"

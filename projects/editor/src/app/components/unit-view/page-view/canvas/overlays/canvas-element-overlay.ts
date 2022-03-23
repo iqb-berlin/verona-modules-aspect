@@ -19,7 +19,7 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   @Input() element!: UIElement;
   @Input() viewMode: boolean = false;
-  @Output() elementSelected = new EventEmitter<unknown>();
+  @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;
   protected childComponent!: ComponentRef<ElementComponent | CompoundElementComponent>;
@@ -72,6 +72,14 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     } else {
       this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
     }
+  }
+
+  elementClicked(event: MouseEvent): void {
+    if (!this.isSelected) {
+      this.selectElement(event.shiftKey);
+    }
+    event.stopPropagation();
+    this.elementSelected.emit();
   }
 
   openEditDialog(): void {

@@ -86,12 +86,4 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
       })
       .unsubscribe();
   }
-
-  elementClicked(event: any): void {
-    if (!this.isSelected) {
-      this.selectElement(event.shiftKey);
-    }
-    event.stopPropagation();
-    this.elementSelected.emit();
-  }
 }

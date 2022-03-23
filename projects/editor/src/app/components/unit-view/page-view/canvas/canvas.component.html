@@ -39,6 +39,7 @@
                                 [section]="section" [sectionIndex]="i"
                                 [isSelected]="selectionService.selectedPageSectionIndex === i"
                                 [dropListList]="dropListList"
+                                (elementSelected)="selectionService.selectedPageSectionIndex = i"
                                 (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
                                                            $event.previousSectionIndex,
                                                            $event.newSectionIndex)"

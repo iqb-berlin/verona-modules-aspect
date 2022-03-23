@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, Input, QueryList, ViewChild, ViewChildren
+  Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
 import { UnitService } from '../../../../services/unit.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
@@ -17,7 +17,8 @@ import { UIElementType } from '../../../../../../../common/interfaces/elements';
          (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
       <aspect-static-canvas-overlay #elementComponent
                                     *ngFor="let element of section.elements"
-                                    [element]="$any(element)">
+                                    [element]="$any(element)"
+                                    (elementSelected)="elementSelected.emit($event)">
       </aspect-static-canvas-overlay>
     </div>
   `,
@@ -28,6 +29,7 @@ import { UIElementType } from '../../../../../../../common/interfaces/elements';
 export class SectionStaticComponent {
   @Input() section!: Section;
   @Input() isSelected!: boolean;
+  @Output() elementSelected = new EventEmitter<unknown>();
   @ViewChild('sectionElement') sectionElement!: ElementRef;
   @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
 

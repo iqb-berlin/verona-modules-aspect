@@ -11,7 +11,7 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <div class="draggable-element"
          [class.temporaryHighlight]="temporaryHighlight"
-         (click)="!isSelected && selectElement($event.shiftKey); $event.stopPropagation()"
+         (click)="elementClicked($event)"
          (dblclick)="openEditDialog()"
          (keyup.delete)="deleteSelectedElements()" tabindex="-1"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
@@ -85,5 +85,13 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
         this.selectionService.clearElementSelection();
       })
       .unsubscribe();
+  }
+
+  elementClicked(event: any): void {
+    if (!this.isSelected) {
+      this.selectElement(event.shiftKey);
+    }
+    event.stopPropagation();
+    this.elementSelected.emit();
   }
 }

@@ -24,6 +24,7 @@
                                class="section drop-list" id="section-{{i}}"
                                [section]="section"
                                [isSelected]="selectionService.selectedPageSectionIndex === i"
+                               (elementSelected)="selectionService.selectedPageSectionIndex = i"
                                cdkDropList cdkDropListSortingDisabled
                                [cdkDropListData]="{ sectionIndex: i }"
                                (cdkDropListDropped)="elementDropped($event)"

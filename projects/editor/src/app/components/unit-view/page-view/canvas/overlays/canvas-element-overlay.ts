@@ -1,7 +1,7 @@
 import {
   Directive, Input,
   ComponentFactoryResolver, ComponentRef,
-  ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef
+  ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef, Output, EventEmitter
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { UIElement } from '../../../../../../../../common/interfaces/elements';
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   @Input() element!: UIElement;
   @Input() viewMode: boolean = false;
+  @Output() elementSelected = new EventEmitter<unknown>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;
   protected childComponent!: ComponentRef<ElementComponent | CompoundElementComponent>;

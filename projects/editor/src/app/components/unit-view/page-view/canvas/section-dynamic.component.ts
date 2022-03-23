@@ -34,7 +34,7 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      #elementComponent
                                      [element]="$any(element)"
                                      [style.min-width.px]="element.width"
-                                     [style.min-height.px]="element.height"
+                                     [style.min-height.px]="element.position.useMinHeight ? element.height : null"
                                      [style.margin-left.px]="element.position.marginLeft"
                                      [style.margin-right.px]="element.position.marginRight"
                                      [style.margin-top.px]="element.position.marginTop"

@@ -46,7 +46,8 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
     '::ng-deep .text-container h3 {font-weight: bold; font-size: 16px;}',
     '::ng-deep .text-container h4 {font-weight: normal; font-size: 16px;}',
     ':host ::ng-deep mark {color: inherit}',
-    'sup, sub {line-height: 0;}'
+    '::ng-deep sup {vertical-align: baseline; position: relative; top: -0.4em;}',
+    '::ng-deep sub {vertical-align: baseline; position: relative; top: 0.4em;}'
   ]
 })
 export class TextComponent extends ElementComponent {

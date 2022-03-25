@@ -56,8 +56,6 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [gridColumnRange]="element.position.gridColumnRange"
                                      [gridRow]="element.position.gridRow"
                                      [gridRowRange]="element.position.gridRowRange"
-                                     (dragStart)="dragging = true"
-                                     (dragEnd)="dragging = false"
                                      (elementSelected)="elementSelected.emit()"
                                      (elementChanged)="helperGrid?.refresh()">
       </aspect-dynamic-canvas-overlay>

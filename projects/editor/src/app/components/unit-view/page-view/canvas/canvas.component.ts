@@ -24,46 +24,12 @@ import { PositionedElement, UIElement } from '../../../../../../../common/interf
 })
 export class CanvasComponent {
   @Input() page!: Page;
-  dropListList: string[] = [];
   hoveredSection: number = -1;
 
   @ViewChildren('sectionComponent')
   childSectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
 
   constructor(public selectionService: SelectionService, public unitService: UnitService) { }
-
-  /*
-  To make it work that the section itself can handle drop events, but also have the canvas to handle drops
-  when outside of the section, all the allowed dropLists have to be connected. Because the lists are not properly
-  nested (see below), this needs to be done manually by IDs.
-  This list is given to the necessary dropLists to make it possible to drop items not only into them
-  but also any other connected dropLists.
-
-  Dynamic sections have droplists for the grid cells next to the actual elements. Elements can not
-  be children of the grid cells because they can span over multiple cells.
-
-  Dynamic sections don't have a general drop area, like static sections. They have grid placeholder elements
-  which are droplists. Therefore they have no parent dropList to add to the list but themselves.
-  Static elements only have the parent, which is added to the list.
-
-  Resizing in dynamic sections is handled by the section/element-overlays themselves.
-   */
-  generateDropListList(): void {
-    setTimeout(() => {
-      this.dropListList = [];
-      this.page.sections.forEach((section: Section, index: number) => {
-        if (!section.dynamicPositioning) {
-          this.dropListList.push(`section-${index}`);
-        } else {
-          section.gridColumnSizes.split(' ').forEach((columnSize: string, columnIndex: number) => {
-            section.gridRowSizes.split(' ').forEach((rowSize: string, rowIndex: number) => {
-              this.dropListList.push(`list-${index}-${columnIndex + 1}-${rowIndex + 1}`); // grid starts counting at 1
-            });
-          });
-        }
-      });
-    });
-  }
 
   moveElementsBetweenSections(elements: UIElement[], previousSectionIndex: number, newSectionIndex: number): void {
     this.unitService.transferElement(elements,

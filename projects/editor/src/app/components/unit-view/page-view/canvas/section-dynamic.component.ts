@@ -14,7 +14,6 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
          [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes"
          [style.grid-auto-columns]="'auto'"
          [style.grid-auto-rows]="'auto'"
-         cdkDropListGroup
          [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
          [style.min-height.px]="section.autoRowSize ? 50 : null"
          [style.height.px]="section.autoRowSize ? dragging ? currentHeight : null : section.height"

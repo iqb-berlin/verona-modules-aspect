@@ -74,7 +74,6 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
     } else {
       numberOfColumns = this.gridColumnSizes.split(' ').length;
     }
-    console.log('numberOfColumns', numberOfColumns);
     this.columnCountArray = Array(Math.max(numberOfColumns, 1));
   }
 
@@ -101,30 +100,15 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
       });
     }
     if (dragItemData.dragType === 'move') {
-      const elementColumnRange: number =
-        event.item.data.element.position.gridColumnEnd - event.item.data.element.position.gridColumnStart;
-      const elementRowRange: number =
-        event.item.data.element.position.gridRowEnd - event.item.data.element.position.gridRowStart;
       this.unitService.updateElementProperty(
         [event.item.data.element],
-        'gridColumnStart',
+        'gridColumn',
         event.container.data.gridCoordinates![0]
       );
-      // Ensure the end value is at least the same as the start, otherwise the grid breaks.
       this.unitService.updateElementProperty(
         [dragItemData.element],
-        'gridColumnEnd',
-        event.container.data.gridCoordinates![0] + elementColumnRange
-      );
-      this.unitService.updateElementProperty(
-        [dragItemData.element],
-        'gridRowStart',
+        'gridRow',
         event.container.data.gridCoordinates![1]
-      );
-      this.unitService.updateElementProperty(
-        [dragItemData.element],
-        'gridRowEnd',
-        event.container.data.gridCoordinates![1] + elementRowRange
       );
     } else if (event.item.data.dragType === 'resize') {
       this.unitService.updateElementProperty(

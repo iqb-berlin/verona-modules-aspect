@@ -39,9 +39,13 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [style.margin-top.px]="element.position.marginTop"
                                      [style.margin-bottom.px]="element.position.marginBottom"
                                      [style.grid-column-start]="element.position.gridColumn"
-                                     [style.grid-column-end]="element.position.gridColumn + element.position.gridColumnRange"
+                                     [style.grid-column-end]="element.position.gridColumn ?
+                                       element.position.gridColumn + element.position.gridColumnRange :
+                                       null"
                                      [style.grid-row-start]="element.position.gridRow"
-                                     [style.grid-row-end]="element.position.gridRow + element.position.gridRowRange"
+                                     [style.grid-row-end]="element.position.gridRow ?
+                                       element.position.gridRow + element.position.gridRowRange :
+                                       null"
                                      cdkDropList cdkDropListSortingDisabled
                                      [cdkDropListData]="{ sectionIndex: sectionIndex }"
                                      [cdkDropListConnectedTo]="dropListList"

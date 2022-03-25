@@ -7,9 +7,9 @@ import {
 })
 export class ElementGridChangeListenerDirective implements OnChanges {
   @Input() autoColumnSize!: boolean;
-  @Input() gridColumn!: number;
+  @Input() gridColumn!: number | null;
   @Input() gridColumnRange!: number;
-  @Input() gridRow!: number;
+  @Input() gridRow!: number | null;
   @Input() gridRowRange!: number;
 
   @Output() elementChanged = new EventEmitter();

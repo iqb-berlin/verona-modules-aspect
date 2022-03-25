@@ -69,8 +69,12 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
     let numberOfColumns;
     if (this.autoColumnSize) {
       numberOfColumns = this.section.elements
-        .reduce((accumulator, currentValue) => Math.max(accumulator, currentValue.position.gridColumn + currentValue.position.gridColumnRange),
-          0) - 1;
+        .reduce((accumulator, currentValue) => (
+          currentValue.position.gridColumn ?
+            Math.max(accumulator, currentValue.position.gridColumn + currentValue.position.gridColumnRange) :
+            accumulator
+        ),
+        0) - 1;
     } else {
       numberOfColumns = this.gridColumnSizes.split(' ').length;
     }
@@ -81,8 +85,12 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
     let numberOfRows;
     if (this.autoRowSize) {
       numberOfRows = this.section.elements
-        .reduce((accumulator, currentValue) => Math.max(accumulator, currentValue.position.gridRow + currentValue.position.gridRowRange),
-          0) - 1;
+        .reduce((accumulator, currentValue) => (
+          currentValue.position.gridRow ?
+            Math.max(accumulator, currentValue.position.gridRow + currentValue.position.gridRowRange) :
+            accumulator
+        ),
+        0) - 1;
     } else {
       numberOfRows = this.gridRowSizes.split(' ').length;
     }

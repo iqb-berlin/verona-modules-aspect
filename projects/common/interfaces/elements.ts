@@ -49,15 +49,15 @@ export interface ValueChangeElement {
 }
 
 export interface PositionProperties {
-  [index: string]: string | number | boolean;
+  [index: string]: string | number | boolean | null;
   fixedSize: boolean;
   dynamicPositioning: boolean;
   xPosition: number;
   yPosition: number;
   useMinHeight: boolean;
-  gridColumn: number;
+  gridColumn: number | null;
   gridColumnRange: number;
-  gridRow: number;
+  gridRow: number | null;
   gridRowRange: number;
   marginLeft: number;
   marginRight: number;

@@ -50,7 +50,7 @@ export class CanvasComponent {
         if (newXPosition < 0) {
           newXPosition = 0;
         }
-        if (newXPosition > this.page.maxWidth - element.width) {
+        if (this.page.hasMaxWidth && newXPosition > this.page.maxWidth - element.width) {
           newXPosition = this.page.maxWidth - element.width;
         }
         this.unitService.updateElementProperty([element], 'xPosition', newXPosition);

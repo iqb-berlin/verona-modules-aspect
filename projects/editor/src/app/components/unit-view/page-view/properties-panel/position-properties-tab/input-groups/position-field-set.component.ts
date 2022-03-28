@@ -115,7 +115,7 @@ import { PositionProperties } from '../../../../../../../../../common/interfaces
     '.input-group {background-color: rgba(0,0,0,.04); margin-bottom: 10px;}',
     '.mat-form-field {display: inline;}',
     '.small-input {display: inline-block;}',
-    ':host ::ng-deep .small-input .mat-form-field-infix {width: 100px; margin: 0 5px;}'
+    '::ng-deep aspect-position-field-set .small-input .mat-form-field-infix {width: 100px; margin: 0 5px;}'
   ]
 })
 export class PositionFieldSetComponent {

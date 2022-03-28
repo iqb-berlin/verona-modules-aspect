@@ -60,7 +60,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
             if (childModel.inputAssistance !== 'none') {
               this.isKeypadOpen = this.keypadService.toggle(element, child as TextFieldComponent);
             }
-            if (this.elementModel.showSoftwareKeyboard) {
+            if (childModel.showSoftwareKeyboard) {
               this.keyboardService.toggle(element, child as TextFieldComponent);
             }
           });

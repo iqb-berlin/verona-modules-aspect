@@ -60,8 +60,9 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
             if (childModel.inputAssistance !== 'none') {
               this.isKeypadOpen = this.keypadService.toggle(element, child as TextFieldComponent);
             }
-            // if Mobil and no Hardware Keyboard
-            // this.keyboardService.toggle(inputElement, elementComponent);
+            if (this.elementModel.showSoftwareKeyboard) {
+              this.keyboardService.toggle(element, child as TextFieldComponent);
+            }
           });
       }
     });

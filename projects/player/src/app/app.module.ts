@@ -33,9 +33,9 @@ import {
   ElementInteractiveGroupComponent
 } from './components/element-interactive-group/element-interactive-group.component';
 import { LayoutPlayerComponent } from './components/layout-player/layout-player.component';
-import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { KeyInputModule } from '../../modules/key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
+import { KeyboardModule } from '../../modules/keyboard/keyboard.module';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,6 @@ import { UnitStateDirective } from './directives/unit-state.directive';
     ElementBaseGroupComponent,
     ElementInteractiveGroupComponent,
     LayoutPlayerComponent,
-    KeyboardComponent,
     UnitStateDirective
   ],
   imports: [
@@ -74,7 +73,8 @@ import { UnitStateDirective } from './directives/unit-state.directive';
         useClass: PlayerTranslateLoader
       }
     }),
-    OverlayModule
+    OverlayModule,
+    KeyboardModule
   ],
   providers: []
 })

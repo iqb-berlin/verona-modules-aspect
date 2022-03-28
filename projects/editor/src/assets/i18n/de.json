@@ -119,6 +119,8 @@
     "comparisonOperators": "Vergleichsoperatoren",
     "inputAssistancePosition": "Eingabehilfeposition",
     "floating": "schwebend",
+    "showSoftwareKeyboard": "Tastatur einblenden",
+    "softwareKeyboardShowFrench": "Französische Sonderzeichen",
     "lineColoring": "Zeilenfärbung",
     "lineColoringColor": "Zeilenfarbe",
     "scale": "Skalieren",

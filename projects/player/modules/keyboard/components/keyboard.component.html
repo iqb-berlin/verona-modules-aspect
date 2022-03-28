@@ -1,0 +1,75 @@
+<div (mousedown)="$event.preventDefault(); $event.stopPropagation()">
+
+  <div *ngIf="showFrenchCharacters" fxLayout="row wrap" fxLayoutAlign="space-around center"
+       class="specialCharacters">
+    <button *ngFor="let key of ['â', 'à', 'æ', 'ê', 'è', 'é', 'ë', 'î', 'ï', 'ô', 'ò', 'œ', 'û', 'ù', 'ü', 'ç']; let i = index"
+            mat-raised-button
+            (click)="enterCharacter(key)">
+      {{shift ? key.toUpperCase() : key}}
+    </button>
+  </div>
+
+  <div class="keyboard-container">
+      <button *ngFor="let key of ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']"
+              mat-raised-button
+              [style.grid-row-start]="2"
+              [style.grid-column-start]="key"
+              (click)="enterCharacter(key)">{{key}}</button>
+      <button mat-raised-button
+              [style.grid-row-start]="2"
+              [style.grid-column-start]="11"
+              [style.grid-column-end]="13"
+              (click)="backspaceClicked.emit()">
+        <mat-icon>keyboard_backspace</mat-icon>
+      </button>
+
+      <button *ngFor="let key of ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p', 'ü']; let i = index"
+              mat-raised-button
+              [style.grid-row-start]="3"
+              [style.grid-column-start]="i + 1"
+              (click)="enterCharacter(key)">
+        {{shift ? key.toUpperCase() : key}}
+      </button>
+      <button *ngFor="let key of ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ö', 'ä']; let i = index"
+              mat-raised-button
+              [style.grid-row-start]="4"
+              [style.grid-column-start]="i + 1"
+              (click)="enterCharacter(key)">
+        {{shift ? key.toUpperCase() : key}}
+      </button>
+
+      <button mat-raised-button
+              [style.grid-row-start]="3"
+              [style.grid-row-end]="5"
+              [style.grid-column-start]="12"
+              [style.grid-column-end]="13"
+              (click)="enterClicked.emit()">
+        <mat-icon>keyboard_return</mat-icon>
+      </button>
+
+      <button mat-raised-button
+              [style.background-color]="shift ? 'lightgrey' : null"
+              [style.grid-row-start]="5"
+              [style.grid-row-end]="6"
+              [style.grid-column-start]="1"
+              [style.grid-column-end]="3"
+              (click)="toggleShift()">
+        <mat-icon *ngIf="!shift">keyboard_arrow_up</mat-icon>
+        <mat-icon *ngIf="shift">keyboard_capslock</mat-icon>
+      </button>
+
+      <button *ngFor="let key of ['y', 'x', 'c', 'v', 'b', 'n', 'm']; let i = index"
+              mat-raised-button
+              [style.grid-row-start]="5"
+              [style.grid-column-start]="i + 3"
+              (click)="enterCharacter(key)">{{shift ? key.toUpperCase() : key}}</button>
+
+      <button mat-raised-button
+              [style.grid-row-start]="6"
+              [style.grid-column-start]="1"
+              [style.grid-column-end]="13"
+      (click)="spaceClicked.emit()">
+        <mat-icon>space_bar</mat-icon>
+      </button>
+  </div>
+</div>

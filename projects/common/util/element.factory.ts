@@ -457,6 +457,10 @@ export abstract class ElementFactory {
         element.inputAssistancePosition : 'floating',
       restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
         element.restrictedToInputAssistanceChars : true,
+      showSoftwareKeyboard: element.showSoftwareKeyboard !== undefined ?
+        element.showSoftwareKeyboard : false,
+      softwareKeyboardShowFrench: element.softwareKeyboardShowFrench !== undefined ?
+        element.softwareKeyboardShowFrench : false,
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
@@ -484,6 +488,10 @@ export abstract class ElementFactory {
         element.inputAssistancePosition : 'floating',
       restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
         element.restrictedToInputAssistanceChars : true,
+      showSoftwareKeyboard: element.showSoftwareKeyboard !== undefined ?
+        element.showSoftwareKeyboard : false,
+      softwareKeyboardShowFrench: element.softwareKeyboardShowFrench !== undefined ?
+        element.softwareKeyboardShowFrench : false,
       clearable: element.clearable !== undefined ? element.clearable : false,
       position: ElementFactory.initPositionProps(element.position),
       styling: {

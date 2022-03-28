@@ -56,7 +56,8 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     if (this.elementModel.inputAssistance !== 'none') {
       this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
     }
-    // if Mobil and no Hardware Keyboard
-    // this.keyboardService.toggle(inputElement, elementComponent);
+    if (this.elementModel.showSoftwareKeyboard) {
+      this.keyboardService.toggle(inputElement, elementComponent);
+    }
   }
 }

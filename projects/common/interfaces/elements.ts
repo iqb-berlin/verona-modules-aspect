@@ -266,6 +266,8 @@ export interface TextFieldElement extends InputElement {
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';
   restrictedToInputAssistanceChars: boolean;
+  showSoftwareKeyboard: boolean;
+  softwareKeyboardShowFrench: boolean;
   clearable: boolean;
   position: PositionProperties;
   styling: BasicStyles & {
@@ -281,6 +283,8 @@ export interface TextAreaElement extends InputElement {
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';
   restrictedToInputAssistanceChars: boolean;
+  showSoftwareKeyboard: boolean;
+  softwareKeyboardShowFrench: boolean;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;

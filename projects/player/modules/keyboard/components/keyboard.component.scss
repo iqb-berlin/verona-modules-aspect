@@ -1,7 +1,5 @@
-.keyboard-container {
+.character-rows {
   background-color: lightgray;
-  margin-left: 10%;
-  margin-right: 10%;
   padding: 0 50px;
   display: grid;
 }
@@ -13,5 +11,21 @@
 }
 
 button {
-  margin: 10px;
+  margin: 4px;
+  font-size: 2vw;
+  min-height: 50px;
+  min-width: unset;
+}
+
+::ng-deep .keyboard-container .iconButton mat-icon {
+  font-size: 2vw;
+  width: unset;
+}
+
+.alternativeKey {
+  color: grey;
+  position: absolute;
+  top: -5px;
+  font-size: 1.4vw;
+  padding-left: 10px;
 }

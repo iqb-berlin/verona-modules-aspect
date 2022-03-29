@@ -109,20 +109,27 @@ export abstract class UnitDefinitionSanitizer {
   }
 
   private static getPositionProps(element: Record<string, any>): PositionProperties {
-    if (element.position !== undefined) {
-      if (element.position?.gridColumnStart !== undefined) {
-        return {
-          ...element.position,
-          gridColumn: element.position.gridColumnStart,
-          gridColumnRange: element.position.gridColumnEnd - element.position.gridColumnStart,
-          gridRow: element.position.gridRowStart,
-          gridRowRange: element.position.gridRowEnd - element.position.gridRowStart
-        };
-      }
-      return element.position as PositionProperties;
+    if (element.position) {
+      return {
+        ...element.position,
+        gridColumn: element.position.gridColumn !== undefined ?
+          element.position.gridColumn : element.position.gridColumnStart,
+        gridColumnRange: element.position.gridColumnEnd - element.position.gridColumnStart,
+        gridRow: element.position.gridRow !== undefined ?
+          element.position.gridRow : element.position.gridRowStart,
+        gridRowRange: element.position.gridRowEnd - element.position.gridRowStart
+      };
     }
-    if (element.positionProps !== undefined) {
-      return element.positionProps as PositionProperties;
+    if (element.positionProps) {
+      return {
+        ...element.positionProps,
+        gridColumn: element.positionProps.gridColumn !== undefined ?
+          element.positionProps.gridColumn : element.positionProps.gridColumnStart,
+        gridColumnRange: element.positionProps.gridColumnEnd - element.positionProps.gridColumnStart,
+        gridRow: element.positionProps.gridRow !== undefined ?
+          element.positionProps.gridRow : element.positionProps.gridRowStart,
+        gridRowRange: element.positionProps.gridRowEnd - element.positionProps.gridRowStart
+      };
     }
     return element as unknown as PositionProperties;
   }

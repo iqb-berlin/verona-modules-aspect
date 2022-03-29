@@ -1,5 +1,46 @@
 Editor
 ======
+1.27.0
+- Implement page navigation action for buttons
+- Improve wording for page width setting and show actual resulting page width
+- Add link variant to button
+  This makes the button look like a text element.
+- Add textfield option that restricts input to chars of the selected assistance
+- Fix and Rework dynamic grid view
+  Dynamically layouted sections with dynamic row and columns sizes no longer
+  mistakenly show a predefined grid. (For a grid to be shown, info about either
+  existing elements within or explicit column/row sizes is needed. So the
+  dynamic grid can only be built after there are elements (with coordinates)
+  within.)
+  New elements no longer have initial grid coordinates and are therefore placed
+  outside (i.e. under) the grid.
+  Setting and manipulating element grid coordinates now has to be done mainly in
+  the properties panel.
+  The upside of this slight usability reduction is that it is now possible
+  to see an appropriate representation of the layout as it will appear in the
+  player.
+
+  The grid coordinates have been simplified. Instead of defining the grid end
+  column/row you can now directly enter the column/row span.
+
+  Drag-and-Drop-Resizing of grid elements was bugged beyond redemption and is
+  removed (for now).
+- Fix text element's sub- and superscript to not implicitly increase line height
+- Fix element selection to also select underlying section
+- Make section menu only appear on selected sections
+- Add option to show a software keyboard for text fields and text areas
+  This is an intermediary solution for mobile devices where the system keyboard
+  is not used. Note that setting this option does NOT automatically set the
+  field to read-only, which would be necessary to prevent the system keyboard
+  from appearing.
+
+  There is an additional setting for showing french special characters on the
+  keyboard as well. This is to remove the necessity of using the keyboard AND
+  input assistance overlays. This might be extended to other character groups in
+  the future.
+- Fix text fields within cloze elements to support all properties normal
+  text fields have, including input assistance and software keyboard.
+
 1.26.1
 - Fix styling issues with some elements in version 1.26.0
 

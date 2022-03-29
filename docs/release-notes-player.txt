@@ -1,5 +1,13 @@
 Player
 ======
+1.21.0
+- Implement page navigation action for buttons
+- Prevent pasting in text fields and areas with math keyboard
+- Implement link variant of the button component
+- Implement textfield option to restrict characters of the selected assistance
+- Add support for reworked grid parameters
+  Refer to Editor patch notes for 1.27.0 for additional info on reworked systems
+
 1.20.1
 - Fix styling issues with some elements in version 1.20.0
 

@@ -1,6 +1,16 @@
 <div *ngIf="selectedElements.length > 0"
      class="properties-panel"
      fxLayout="column" fxLayoutAlign="space-between stretch">
+  <div class="panel-title" fxLayout="column">
+    <ng-container *ngIf="combinedProperties.type">
+      {{'toolbox.' + combinedProperties.type | translate}}
+      <span>{{combinedProperties.id}}</span>
+    </ng-container>
+    <ng-container *ngIf="!combinedProperties.type">
+      <i>Mehrfachauswahl</i>
+    </ng-container>
+  </div>
+  <mat-divider [style.margin-bottom]="0"></mat-divider>
   <mat-tab-group mat-stretch-tabs>
     <mat-tab>
       <ng-template mat-tab-label>

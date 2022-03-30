@@ -23,7 +23,9 @@ import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/
     'mat-divider {margin: 20px; border-top-width: 9px; border-top-style: dotted;}',
     '.properties-panel {height: 100%; padding-bottom: 20px}',
     '.properties-panel .mat-tab-group {height: 100%; overflow: auto}',
-    ':host ::ng-deep .mat-tab-body-wrapper {height: 100%}'
+    ':host ::ng-deep .mat-tab-body-wrapper {height: 100%}',
+    '.panel-title {font-size: x-large; text-align: center;}',
+    '.panel-title span {font-size: medium;}'
   ]
 })
 export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {

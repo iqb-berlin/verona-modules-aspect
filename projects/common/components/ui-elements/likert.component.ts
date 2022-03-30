@@ -43,8 +43,8 @@ import { LikertElement, LikertRowElement } from '../../interfaces/elements';
 
         <ng-container *ngFor="let row of elementModel.rows; let i = index">
           <aspect-likert-radio-button-group
-            [style.background-color]="elementModel.lineColoring && i % 2 === 0 ?
-                                      elementModel.lineColoringColor : ''"
+            [style.background-color]="elementModel.styling.lineColoring && i % 2 === 0 ?
+                                      elementModel.styling.lineColoringColor : ''"
             [style.grid-column-start]="1"
             [style.grid-column-end]="elementModel.columns.length + 2"
             [style.grid-row-start]="2 + i"

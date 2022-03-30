@@ -248,16 +248,14 @@ export class UnitService {
         }
       } else if (property === 'document') {
         element[property] = ClozeParser.setMissingIDs(value as ClozeDocument, this.idService);
-      } else if (element.type === 'likert') {
-        if (property === 'columns') {
-          (element as LikertElement).rows.forEach(row => {
-            row.columnCount = (element as LikertElement).columns.length;
-          });
-        } else if (property === 'readOnly') {
-          (element as LikertElement).rows.forEach(row => {
-            row.readOnly = value as boolean;
-          });
-        }
+      } else if (element.type === 'likert' && property === 'columns') {
+        (element as LikertElement).rows.forEach(row => {
+          row.columnCount = (element as LikertElement).columns.length;
+        });
+      } else if (element.type === 'likert' && property === 'readOnly') {
+        (element as LikertElement).rows.forEach(row => {
+          row.readOnly = value as boolean;
+        });
       } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumn',
         'gridColumnRange', 'gridRow', 'gridRowRange', 'marginLeft', 'marginRight', 'marginTop',
         'marginBottom', 'zIndex'].includes(property)) {

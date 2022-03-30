@@ -7,6 +7,26 @@ import { ElementStyling } from '../../../../../../../../common/interfaces/elemen
   selector: 'aspect-element-style-properties',
   template: `
     <div fxLayout="column">
+
+      <mat-checkbox *ngIf="styles.lineColoring !== undefined"
+                    [checked]="$any(styles.lineColoring)"
+                    (change)="updateModel.emit({ property: 'lineColoring', value: $event.checked })">
+        {{'propertiesPanel.lineColoring' | translate }}
+      </mat-checkbox>
+
+      <mat-form-field *ngIf="styles.lineColoring && styles.lineColoringColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.lineColoringColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="styles.lineColoringColor"
+               (input)="updateModel.emit({ property: 'lineColoringColor', value: $any($event.target).value })">
+        <button mat-icon-button matSuffix (click)="lineColorInput.click()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-form-field>
+      <input matInput type="color" hidden #lineColorInput
+             [value]="styles.lineColoringColor"
+             (input)="updateModel.emit({ property: 'lineColoringColor', value: $any($event.target).value })">
+
       <mat-form-field *ngIf="styles.selectionColor !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.selectionColor' | translate }}</mat-label>
         <input matInput type="text" [value]="styles.selectionColor"

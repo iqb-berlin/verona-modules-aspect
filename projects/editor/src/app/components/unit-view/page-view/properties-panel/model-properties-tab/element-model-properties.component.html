@@ -483,25 +483,6 @@
     </div>
   </mat-form-field>
 
-  <mat-checkbox *ngIf="combinedProperties.lineColoring !== undefined"
-                [checked]="$any(combinedProperties.lineColoring)"
-                (change)="updateModel.emit({ property: 'lineColoring', value: $event.checked })">
-    {{'propertiesPanel.lineColoring' | translate }}
-  </mat-checkbox>
-
-  <mat-form-field *ngIf="combinedProperties.lineColoring && combinedProperties.lineColoringColor !== undefined"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'propertiesPanel.lineColoringColor' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.lineColoringColor"
-           (input)="updateModel.emit({ property: 'lineColoringColor', value: $any($event.target).value })">
-    <button mat-icon-button matSuffix (click)="lineColorInput.click()">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </mat-form-field>
-  <input matInput type="color" hidden #lineColorInput
-         [value]="combinedProperties.lineColoringColor"
-         (input)="updateModel.emit({ property: 'lineColoringColor', value: $any($event.target).value })">
-
   <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
                 [checked]="$any(combinedProperties.scale)"
                 (change)="updateModel.emit({ property: 'scale', value: $event.checked })">

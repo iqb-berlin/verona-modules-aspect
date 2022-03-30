@@ -363,9 +363,9 @@ export abstract class ElementFactory {
       columns: element.columns !== undefined ? element.columns : [],
       firstColumnSizeRatio: element.firstColumnSizeRatio !== undefined ? element.firstColumnSizeRatio : 5,
       readOnly: element.readOnly !== undefined ? element.readOnly : false,
-      position: ElementFactory.initPositionProps({ marginBottom: 30, ...element }),
+      position: ElementFactory.initPositionProps({ marginBottom: 30, ...element.position }),
       styling: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element }),
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
         lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135,
         lineColoring: element.lineColoring !== undefined ? element.lineColoring as boolean : true,
         lineColoringColor: element.lineColoringColor !== undefined ? element.lineColoringColor as string : '#c9e0e0'

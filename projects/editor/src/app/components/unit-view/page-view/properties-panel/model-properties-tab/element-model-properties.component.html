@@ -300,7 +300,7 @@
   <!-- TODO wtf-->
   <mat-form-field *ngIf="combinedProperties.value !== undefined &&
                          !combinedProperties.options && !combinedProperties.columns &&
-                         combinedProperties.connectedTo === undefined &&
+                         combinedProperties.connectedTo === undefined && combinedProperties.minValue === undefined &&
                          combinedProperties.value !== true && combinedProperties.value !== false"
                   appearance="fill">
     <mat-label>{{'preset' | translate }}</mat-label>

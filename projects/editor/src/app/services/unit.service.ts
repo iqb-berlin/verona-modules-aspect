@@ -96,6 +96,11 @@ export class UnitService {
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
     ArrayUtils.moveArrayItem(section, page.sections, direction);
+    if (direction === 'up' && this.selectionService.selectedPageSectionIndex > 0) {
+      this.selectionService.selectedPageSectionIndex -= 1;
+    } else if (direction === 'down') {
+      this.selectionService.selectedPageSectionIndex += 1;
+    }
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 

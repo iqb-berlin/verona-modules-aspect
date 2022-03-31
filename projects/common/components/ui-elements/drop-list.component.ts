@@ -53,7 +53,7 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
           <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                       'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               [style.background-color]="elementModel.itemBackgroundColor"
+               [style.background-color]="elementModel.styling.itemBackgroundColor"
                (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
             <div *cdkDragPreview
                  [style.font-size.px]="elementModel.styling.fontSize"

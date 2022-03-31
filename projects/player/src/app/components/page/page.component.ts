@@ -18,8 +18,4 @@ export class PageComponent {
   @Output() selectedIndexChange = new EventEmitter<number>();
 
   constructor(public mediaPlayerService: MediaPlayerService) {}
-
-  onIntersection(): void {
-    this.selectedIndexChange.emit(this.pageIndex);
-  }
 }

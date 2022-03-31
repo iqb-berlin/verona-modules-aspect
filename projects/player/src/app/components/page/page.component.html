@@ -1,7 +1,7 @@
 <div aspectIntersectionDetection
      detectionType="top"
      [intersectionContainer]="pagesContainer"
-     (intersecting)="onIntersection()">
+     (intersecting)="selectedIndexChange.emit(pageIndex)">
   <aspect-section *ngFor="let section of page.sections"
                   class="section"
                   [class.static-section]="!section.dynamicPositioning"
@@ -15,5 +15,5 @@
 <div aspectIntersectionDetection
      detectionType="bottom"
      [intersectionContainer]="pagesContainer"
-     (intersecting)="onIntersection()">
+     (intersecting)="selectedIndexChange.emit(pageIndex)">
 </div>

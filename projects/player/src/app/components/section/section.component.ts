@@ -1,7 +1,4 @@
-import {
-  Component, Inject, Input
-} from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { Section } from '../../../../../common/interfaces/unit';
 
 @Component({
@@ -12,6 +9,4 @@ import { Section } from '../../../../../common/interfaces/unit';
 export class SectionComponent {
   @Input() section!: Section;
   @Input() pageIndex!: number;
-
-  constructor(@Inject(DOCUMENT) public document: Document) {}
 }

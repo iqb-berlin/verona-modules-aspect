@@ -1,12 +1,13 @@
 import {
-  Directive, EventEmitter, Input, OnInit, Output
+  Directive, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from './element-component.directive';
 import { AudioElement, ValueChangeElement, VideoElement } from '../interfaces/elements';
 
 @Directive()
-export abstract class MediaPlayerElementComponent extends ElementComponent implements OnInit {
+export abstract class MediaPlayerElementComponent extends ElementComponent implements OnInit, OnDestroy {
   @Input() savedPlaybackTime!: number;
   @Input() actualPlayingId!: Subject<string | null>;
   @Input() mediaStatusChanged!: Subject<string>;
@@ -17,14 +18,17 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
   abstract elementModel: AudioElement | VideoElement;
   active: boolean = true;
   dependencyDissolved!: boolean;
+  ngUnsubscribe = new Subject<void>();
 
   ngOnInit(): void {
     if (this.actualPlayingId) {
       this.actualPlayingId
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((actualID: string | null): void => this.setActualPlayingMediaId(actualID));
     }
     if (this.mediaStatusChanged) {
       this.mediaStatusChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((id: string): void => this.setActivatedAfterID(id));
     }
   }
@@ -37,5 +41,10 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
     if (!this.dependencyDissolved) {
       this.dependencyDissolved = id === (this.elementModel).player.activeAfterID;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

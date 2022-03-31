@@ -141,6 +141,7 @@ export interface CheckboxElement extends InputElement {
 export interface ClozeElement extends UIElement {
   type: 'cloze';
   document: ClozeDocument;
+  columnCount: number;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -297,6 +298,7 @@ export interface TextElement extends UIElement {
   highlightableOrange: boolean;
   highlightableTurquoise: boolean;
   highlightableYellow: boolean;
+  columnCount: number;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;

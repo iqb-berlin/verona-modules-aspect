@@ -15,7 +15,8 @@ import { ClozeUtils } from '../../util/cloze';
       Kein Dokument vorhanden
     </ng-container>
     <div [style.width.%]="100"
-         [style.height]="'auto'">
+         [style.height]="'auto'"
+         [style.column-count]="elementModel.columnCount">
       <ng-container *ngFor="let part of elementModel.document.content">
         <ul *ngIf="part.type === 'bulletList'"
             [style.font-size]="part.attrs.fontSize"

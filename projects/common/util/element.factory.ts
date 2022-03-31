@@ -262,6 +262,7 @@ export abstract class ElementFactory {
             }))
         } as ClozeDocument :
         { type: 'doc', content: [] },
+      columnCount: element.columnCount !== undefined ? element.columnCount : 1,
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles(element.styling),
@@ -437,6 +438,7 @@ export abstract class ElementFactory {
       highlightableOrange: element.highlightableOrange !== undefined ? element.highlightableOrange : false,
       highlightableTurquoise: element.highlightableTurquoise !== undefined ? element.highlightableTurquoise : false,
       highlightableYellow: element.highlightableYellow !== undefined ? element.highlightableYellow : false,
+      columnCount: element.columnCount !== undefined ? element.columnCount : 1,
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),

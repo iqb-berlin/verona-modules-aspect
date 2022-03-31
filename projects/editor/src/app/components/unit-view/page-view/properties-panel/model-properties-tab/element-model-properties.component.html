@@ -31,6 +31,13 @@
     </button>
   </ng-container>
 
+  <mat-form-field *ngIf="combinedProperties.columnCount != null"
+                  appearance="fill" class="mdInput textsingleline">
+    <mat-label>{{'propertiesPanel.columnCount' | translate }}</mat-label>
+    <input matInput type="number" [value]="combinedProperties.columnCount"
+           (input)="updateModel.emit({ property: 'columnCount', value: $any($event.target).value })">
+  </mat-form-field>
+
   <div *ngIf="combinedProperties.highlightableYellow !== undefined ||
               combinedProperties.highlightableTurquoise !== undefined ||
               combinedProperties.highlightableOrange !== undefined">

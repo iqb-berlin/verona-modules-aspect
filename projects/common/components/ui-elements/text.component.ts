@@ -29,6 +29,7 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
              [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
              [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+             [style.column-count]="elementModel.columnCount"
              [innerHTML]="savedText || elementModel.text | safeResourceHTML"
              (pointerdown)="emitStartSelection($event)">
         </div>

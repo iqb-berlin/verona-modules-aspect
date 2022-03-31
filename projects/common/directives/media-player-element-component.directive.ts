@@ -18,7 +18,7 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
   abstract elementModel: AudioElement | VideoElement;
   active: boolean = true;
   dependencyDissolved!: boolean;
-  ngUnsubscribe = new Subject<void>();
+  private ngUnsubscribe = new Subject<void>();
 
   ngOnInit(): void {
     if (this.actualPlayingId) {

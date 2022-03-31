@@ -28,4 +28,5 @@ export interface Section {
   autoRowSize: boolean;
   gridColumnSizes: string;
   gridRowSizes: string;
+  activeAfterID: string;
 }

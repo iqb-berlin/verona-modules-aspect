@@ -2,18 +2,18 @@
      detectionType="top"
      [intersectionContainer]="pagesContainer"
      (intersecting)="onIntersection()">
-  <aspect-section
-      *ngFor="let section of page.sections; let i = index"
-      class="section"
-      [class.static-section]="!section.dynamicPositioning"
-      [style.backgroundColor]="section.dynamicPositioning ? null : section.backgroundColor"
-      [style.minHeight]="section.dynamicPositioning ? 'auto' : section.height + 'px'"
-      [pageIndex]=pageIndex
-      [section]="section">
+  <aspect-section *ngFor="let section of page.sections"
+                  class="section"
+                  [class.static-section]="!section.dynamicPositioning"
+                  [style.backgroundColor]="section.dynamicPositioning ? null : section.backgroundColor"
+                  [style.minHeight]="section.dynamicPositioning ? 'auto' : section.height + 'px'"
+                  [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
+                  [pageIndex]=pageIndex
+                  [section]="section">
   </aspect-section>
 </div>
 <div aspectIntersectionDetection
      detectionType="bottom"
      [intersectionContainer]="pagesContainer"
-     (intersecting)="onIntersection()"
-></div>
+     (intersecting)="onIntersection()">
+</div>

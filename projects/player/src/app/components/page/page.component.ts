@@ -2,6 +2,7 @@ import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
 import { Page } from '../../../../../common/interfaces/unit';
+import { MediaPlayerService } from '../../services/media-player.service';
 
 @Component({
   selector: 'aspect-page',
@@ -15,6 +16,8 @@ export class PageComponent {
   @Input() pageIndex!: number;
   @Input() pagesContainer!: HTMLElement;
   @Output() selectedIndexChange = new EventEmitter<number>();
+
+  constructor(public mediaPlayerService: MediaPlayerService) {}
 
   onIntersection(): void {
     this.selectedIndexChange.emit(this.pageIndex);

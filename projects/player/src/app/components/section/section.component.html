@@ -1,4 +1,6 @@
-<ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
+<ng-container *ngIf="visible">
+  <ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
+</ng-container>
 
 <ng-template #staticElements>
   <ng-container *ngFor="let element of section.elements; let i = index">

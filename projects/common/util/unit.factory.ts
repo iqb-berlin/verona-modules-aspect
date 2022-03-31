@@ -38,7 +38,8 @@ export abstract class UnitFactory {
       autoColumnSize: section && section.autoColumnSize !== undefined ? section.autoColumnSize : true,
       autoRowSize: section && section.autoRowSize !== undefined ? section.autoRowSize : true,
       gridColumnSizes: section && section.gridColumnSizes !== undefined ? section.gridColumnSizes : '1fr 1fr',
-      gridRowSizes: section && section.gridRowSizes !== undefined ? section.gridRowSizes : '1fr'
+      gridRowSizes: section && section.gridRowSizes !== undefined ? section.gridRowSizes : '1fr',
+      activeAfterID: section && section.activeAfterID !== undefined ? section.activeAfterID : ''
     };
   }
 }

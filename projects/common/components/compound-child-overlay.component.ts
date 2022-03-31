@@ -20,7 +20,7 @@ import {
                             [style.pointer-events]="editorMode ? 'none' : 'auto'"
                             [parentForm]="parentForm"
                             [style.display]="'inline-block'"
-                            [style.vertical-align]="'middle'"
+                            [style.vertical-align]="'top'"
                             [elementModel]="$any(element)">
       </aspect-toggle-button>
       <aspect-text-field *ngIf="element.type === 'text-field'" #childComponent

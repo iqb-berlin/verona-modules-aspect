@@ -1,9 +1,7 @@
-<ng-container *ngIf="visible">
-  <ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
-</ng-container>
+<ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
 
 <ng-template #staticElements>
-  <ng-container *ngFor="let element of section.elements; let i = index">
+  <ng-container *ngFor="let element of section.elements">
     <aspect-element-splitter
         class="static-element fixed-size-content"
         [style.width.px]="element.width"
@@ -25,7 +23,7 @@
       [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
       [style.backgroundColor]="section.backgroundColor">
-    <ng-container *ngFor="let element of section.elements; let i = index">
+    <ng-container *ngFor="let element of section.elements">
       <aspect-element-splitter
           [style.min-width.px]="element.width"
           [style.min-height.px]="element.position.useMinHeight ? element.height : 0"

@@ -7,6 +7,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
+import { SectionContainerComponent } from './components/section-container/section-container.component';
 import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from '../../../common/shared.module';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
@@ -41,6 +42,7 @@ import { KeyboardModule } from '../../modules/keyboard/keyboard.module';
   declarations: [
     AppComponent,
     PageComponent,
+    SectionContainerComponent,
     SectionComponent,
     PlayerStateComponent,
     LayoutPagesComponent,

@@ -1,0 +1,8 @@
+<aspect-section *ngIf="visible"
+                class="section"
+                [class.static-section]="!section.dynamicPositioning"
+                [style.backgroundColor]="section.dynamicPositioning ? null : section.backgroundColor"
+                [style.minHeight]="section.dynamicPositioning ? 'auto' : section.height + 'px'"
+                [pageIndex]=pageIndex
+                [section]="section">
+</aspect-section>

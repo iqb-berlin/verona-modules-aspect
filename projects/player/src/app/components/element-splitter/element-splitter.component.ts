@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   UIElement, UIElementType
 } from '../../../../../common/interfaces/elements';
-import { ElementGroup, ElementGroupName } from '../../models/groups';
+import { ElementGroup, ElementGroupName } from '../../models/element-group';
 
 @Component({
   selector: 'aspect-element-splitter',

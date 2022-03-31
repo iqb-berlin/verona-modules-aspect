@@ -1,4 +1,4 @@
-<div fxLayout="column" class="editor-control-panel">
+<div fxLayout="column" class="editor-control-panel" mat-dialog-title>
   <div fxLayout="row" fxLayoutAlign="space-between">
     <fieldset fxLayout="row">
       <legend>Schriftauszeichnung</legend>
@@ -275,7 +275,7 @@
     </button>
   </div>
 </div>
-<tiptap-editor [editor]="editor" [ngModel]="content"
+<tiptap-editor [editor]="editor" [ngModel]="content" mat-dialog-content
                [outputFormat]="clozeMode ? 'json' : 'html'"
                [style.font-size.px]="defaultFontSize"
                (ngModelChange)="contentChange.emit($event)">

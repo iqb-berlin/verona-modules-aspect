@@ -4,12 +4,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'aspect-rich-text-edit-dialog',
   template: `
-    <mat-dialog-content>
-      <aspect-rich-text-editor [(content)]="data.content"
-                               [clozeMode]="data.clozeMode"
-                               [defaultFontSize]="data.defaultFontSize">
-      </aspect-rich-text-editor>
-    </mat-dialog-content>
+    <aspect-rich-text-editor [(content)]="data.content"
+                             [clozeMode]="data.clozeMode"
+                             [defaultFontSize]="data.defaultFontSize">
+    </aspect-rich-text-editor>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="data.content">{{'save' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>

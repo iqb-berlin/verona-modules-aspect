@@ -277,7 +277,7 @@ export abstract class ElementFactory {
       type: 'dropdown',
       options: element.options !== undefined ? element.options : [],
       allowUnset: element.allowUnset !== undefined ? element.allowUnset : false,
-      position: ElementFactory.initPositionProps(element),
+      position: ElementFactory.initPositionProps(element.position),
       styling: ElementFactory.initBasicStyles(element.styling)
     };
   }
@@ -295,7 +295,7 @@ export abstract class ElementFactory {
         false,
       highlightReceivingDropListColor: element.highlightReceivingDropListColor !== undefined ?
         element.highlightReceivingDropListColor : '#006064',
-      position: ElementFactory.initPositionProps({ useMinHeight: true, ...element }),
+      position: ElementFactory.initPositionProps({ useMinHeight: true, ...element.position }),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: '#f4f4f2', ...element.styling }),
         itemBackgroundColor: element.itemBackgroundColor !== undefined ?
@@ -326,7 +326,7 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initElement({}),
       type: 'frame',
-      position: ElementFactory.initPositionProps({ zIndex: -1, ...element }),
+      position: ElementFactory.initPositionProps({ zIndex: -1, ...element.position }),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }) as BasicStyles,
         borderWidth: element.borderWidth !== undefined ? element.borderWidth as number : 1,
@@ -350,7 +350,7 @@ export abstract class ElementFactory {
       magnifierSize: element.magnifierSize !== undefined ? element.magnifierSize : 100,
       magnifierZoom: element.magnifierZoom !== undefined ? element.magnifierZoom : 1.5,
       magnifierUsed: element.magnifierUsed !== undefined ? element.magnifierUsed : false,
-      position: ElementFactory.initPositionProps({})
+      position: ElementFactory.initPositionProps({ ...element.position })
     };
   }
 

@@ -145,6 +145,18 @@ import { ClozeUtils } from '../../util/cloze';
             {{subPart.text}}
           </span>
         </ng-container>
+
+        <ng-container *ngIf="$any(subPart).type === 'text' && (subPart.marks | markList).includes('superscript')">
+          <sup [ngStyle]="subPart.marks | styleMarks">
+            {{subPart.text}}
+          </sup>
+        </ng-container>
+        <ng-container *ngIf="$any(subPart).type === 'text' && (subPart.marks | markList).includes('subscript')">
+          <sub [ngStyle]="subPart.marks | styleMarks">
+            {{subPart.text}}
+          </sub>
+        </ng-container>
+
         <ng-container *ngIf="$any(subPart).type === 'image'">
           <img [src]="subPart.attrs.src" [alt]="subPart.attrs.alt"
                [style.display]="'inline-block'"

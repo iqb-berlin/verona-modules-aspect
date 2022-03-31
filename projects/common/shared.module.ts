@@ -52,6 +52,7 @@ import { MarkingBarComponent } from './components/marking-bar/marking-bar.compon
 import { StyleMarksPipe } from './pipes/styleMarks.pipe';
 import { MarkingButtonComponent } from './components/marking-bar/marking-button.component';
 import { CompoundChildOverlayComponent } from './components/compound-child-overlay.component';
+import { MarkListPipe } from './pipes/mark-list.pipe';
 
 @NgModule({
   imports: [
@@ -104,7 +105,8 @@ import { CompoundChildOverlayComponent } from './components/compound-child-overl
     MarkingBarComponent,
     StyleMarksPipe,
     MarkingButtonComponent,
-    CompoundChildOverlayComponent
+    CompoundChildOverlayComponent,
+    MarkListPipe
   ],
   exports: [
     CommonModule,

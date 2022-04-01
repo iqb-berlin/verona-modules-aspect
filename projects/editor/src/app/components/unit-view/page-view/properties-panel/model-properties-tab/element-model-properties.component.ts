@@ -14,6 +14,7 @@ import {
 } from '../../../../../../../../common/interfaces/elements';
 import { LikertColumn, LikertRow } from '../../../../../../../../common/interfaces/likert';
 import { SelectionService } from '../../../../../services/selection.service';
+import { DialogService } from '../../../../../services/dialog.service';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -29,30 +30,37 @@ export class ElementModelPropertiesComponent {
     isInputValid?: boolean | null
   }>();
 
-  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
+  constructor(public unitService: UnitService,
+              public selectionService: SelectionService,
+              public dialogService: DialogService) { }
 
-  addOption(property: string, value: string): void {
+  addListValue(property: string, value: string): void {
     this.updateModel.emit({
       property: property,
       value: [...(this.combinedProperties[property] as string[]), value]
     });
   }
 
-  reorderOptions(property: string, event: CdkDragDrop<string[]>): void {
+  moveListValue(property: string, event: CdkDragDrop<string[]>): void {
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     this.updateModel.emit({ property: property, value: event.container.data });
   }
 
-  /* Putting the actual types for option does not work because indexOf throws an error
-     about the types not being assignable. */
-  removeOption(property: string, option: any): void {
+  removeListValue(property: string, option: any): void {
     const valueList = this.combinedProperties[property] as string[] | LikertRowElement[] | LikertColumn[];
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel.emit({ property: property, value: valueList });
   }
 
   async editTextOption(property: string, optionIndex: number): Promise<void> {
-    await this.unitService.editTextOption(property, optionIndex);
+    const oldOptions = this.selectionService.getSelectedElements()[0][property] as string[];
+    await this.dialogService.showTextEditDialog(oldOptions[optionIndex])
+      .subscribe((result: string) => {
+        if (result) {
+          oldOptions[optionIndex] = result;
+          this.updateModel.emit({ property, value: oldOptions });
+        }
+      });
   }
 
   addDropListOption(value: string): void {
@@ -93,13 +101,5 @@ export class ElementModelPropertiesComponent {
     );
     (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
-  }
-
-  async loadImage(): Promise<void> {
-    this.updateModel.emit({ property: 'imageSrc', value: await FileService.loadImage() });
-  }
-
-  removeImage(): void {
-    this.updateModel.emit({ property: 'imageSrc', value: null });
   }
 }

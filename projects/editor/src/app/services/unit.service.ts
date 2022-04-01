@@ -283,17 +283,6 @@ export class UnitService {
     return true;
   }
 
-  async editTextOption(property: string, optionIndex: number): Promise<void> {
-    const oldOptions = this.selectionService.getSelectedElements()[0][property] as string[];
-    await this.dialogService.showTextEditDialog(oldOptions[optionIndex])
-      .subscribe((result: string) => {
-        if (result) {
-          oldOptions[optionIndex] = result;
-          this.updateElementProperty(this.selectionService.getSelectedElements(), property, oldOptions);
-        }
-      });
-  }
-
   async editDropListOption(optionIndex: number): Promise<void> {
     const oldOptions = this.selectionService.getSelectedElements()[0].value as DragNDropValueObject[];
     await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])

@@ -7,7 +7,6 @@ import { ElementStyling } from '../../../../../../../../common/interfaces/elemen
   selector: 'aspect-element-style-properties',
   template: `
     <div fxLayout="column">
-
       <mat-checkbox *ngIf="styles.lineColoring !== undefined"
                     [checked]="$any(styles.lineColoring)"
                     (change)="updateModel.emit({ property: 'lineColoring', value: $event.checked })">
@@ -137,6 +136,29 @@ import { ElementStyling } from '../../../../../../../../common/interfaces/elemen
                     (change)="updateModel.emit({ property: 'underline', value: $event.checked })">
         {{'propertiesPanel.underline' | translate }}
       </mat-checkbox>
+
+      <mat-form-field *ngIf="styles.borderStyle !== undefined"
+                      appearance="fill">
+        <mat-label>{{'propertiesPanel.borderStyle' | translate }}</mat-label>
+        <mat-select [value]="styles.borderStyle"
+                    (selectionChange)="updateModel.emit({ property: 'borderStyle', value: $event.value })">
+          <mat-option *ngFor="let option of ['solid', 'dotted', 'dashed',
+                                         'double', 'groove', 'ridge', 'inset', 'outset']"
+                      [value]="option">
+            {{option}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="styles.borderWidth !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
+        <input matInput type="number" #borderWidth="ngModel" min="0"
+               [ngModel]="styles.borderWidth"
+               (ngModelChange)="updateModel.emit({ property: 'borderWidth',
+                                                     value: $event,
+                                                     isInputValid: borderWidth.valid && $event !== null })">
+      </mat-form-field>
     </div>
   `
 })

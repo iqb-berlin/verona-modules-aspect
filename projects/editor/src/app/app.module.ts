@@ -61,6 +61,13 @@ import { ElementModelPropertiesComponent } from
   './components/unit-view/page-view/properties-panel/model-properties-tab/element-model-properties.component';
 import { DynamicSectionHelperGridComponent } from './components/unit-view/page-view/canvas/dynamic-section-helper-grid.component';
 import { ElementGridChangeListenerDirective } from './components/unit-view/page-view/canvas/element-grid-change-listener.directive';
+import { OptionsFieldSetComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/options-field-set.component';
+import { TextPropertiesFieldSetComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
+import { ButtonPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/button-properties.component';
+import { SliderPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/slider-properties.component';
+import { InputElementPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
+import { ImagePropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/image-properties.component';
+import { DropListPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +100,14 @@ import { ElementGridChangeListenerDirective } from './components/unit-view/page-
     PositionFieldSetComponent,
     DimensionFieldSetComponent,
     DynamicSectionHelperGridComponent,
-    ElementGridChangeListenerDirective
+    ElementGridChangeListenerDirective,
+    OptionsFieldSetComponent,
+    TextPropertiesFieldSetComponent,
+    ButtonPropertiesComponent,
+    SliderPropertiesComponent,
+    InputElementPropertiesComponent,
+    ImagePropertiesComponent,
+    DropListPropertiesComponent
   ],
   imports: [
     BrowserModule,

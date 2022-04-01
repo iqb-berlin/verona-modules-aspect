@@ -8,7 +8,7 @@
 
   <mat-form-field *ngIf="combinedProperties.label !== undefined" appearance="fill">
     <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.label"
+    <input matInput type="text" [value]="$any(combinedProperties.label)"
            (input)="updateModel.emit({property: 'label', value: $any($event.target).value })">
   </mat-form-field>
 
@@ -34,29 +34,13 @@
   <mat-form-field *ngIf="combinedProperties.columnCount != null"
                   appearance="fill" class="mdInput textsingleline">
     <mat-label>{{'propertiesPanel.columnCount' | translate }}</mat-label>
-    <input matInput type="number" [value]="combinedProperties.columnCount"
+    <input matInput type="number" [value]="$any(combinedProperties.columnCount)"
            (input)="updateModel.emit({ property: 'columnCount', value: $any($event.target).value })">
   </mat-form-field>
 
-  <div *ngIf="combinedProperties.highlightableYellow !== undefined ||
-              combinedProperties.highlightableTurquoise !== undefined ||
-              combinedProperties.highlightableOrange !== undefined">
-    {{'propertiesPanel.highlightable' | translate }}</div>
-  <mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
-                [checked]="$any(combinedProperties.highlightableYellow)"
-                (change)="updateModel.emit({ property: 'highlightableYellow', value: $event.checked })">
-    {{'propertiesPanel.highlightableYellow' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
-                [checked]="$any(combinedProperties.highlightableTurquoise)"
-                (change)="updateModel.emit({ property: 'highlightableTurquoise', value: $event.checked })">
-    {{'propertiesPanel.highlightableTurquoise' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
-                [checked]="$any(combinedProperties.highlightableOrange)"
-                (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
-    {{'propertiesPanel.highlightableOrange' | translate }}
-  </mat-checkbox>
+  <aspect-text-properties-field-set [combinedProperties]="combinedProperties"
+                                    (updateModel)="updateModel.emit($event)">
+  </aspect-text-properties-field-set>
 
   <mat-checkbox *ngIf="combinedProperties.strikeOtherOptions !== undefined"
                 [checked]="$any(combinedProperties.strikeOtherOptions)"
@@ -82,46 +66,19 @@
   <mat-form-field *ngIf="combinedProperties.required"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.requiredWarnMessage' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.requiredWarnMessage"
+    <input matInput type="text" [value]="$any(combinedProperties.requiredWarnMessage)"
            (input)="updateModel.emit({ property: 'requiredWarnMessage', value: $any($event.target).value })">
   </mat-form-field>
 
-  <mat-form-field disabled="true" *ngIf="combinedProperties.options !== undefined">
-    <ng-container>
-      <mat-label>{{'propertiesPanel.options' | translate }}</mat-label>
-      <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.options"
-           (cdkDropListDropped)="reorderOptions('options', $any($event))">
-        <div *ngFor="let option of $any(combinedProperties.options); let i = index" cdkDrag
-             class="list-items" fxLayout="row" fxLayoutAlign="end center">
-          <div fxFlex="70">
-            {{option}}
-          </div>
-          <button mat-icon-button color="primary"
-                  (click)="editTextOption('options', i)">
-            <mat-icon>build</mat-icon>
-          </button>
-          <button mat-icon-button color="primary"
-                  (click)="removeOption('options', option)">
-            <mat-icon>clear</mat-icon>
-          </button>
-        </div>
-      </div>
-    </ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <button mat-icon-button matPrefix
-              (click)="addOption('options', newOption.value); newOption.select()">
-        <mat-icon>add</mat-icon>
-      </button>
-      <input #newOption matInput type="text" placeholder="Optionstext"
-             (keyup.enter)="addOption('options', newOption.value); newOption.select()">
-    </div>
-  </mat-form-field>
+  <aspect-options-field-set [combinedProperties]="combinedProperties"
+                            (updateModel)="updateModel.emit($event)">
+  </aspect-options-field-set>
 
   <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
     <ng-container>
       <mat-label>{{'preset' | translate }}</mat-label>
       <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
-           (cdkDropListDropped)="reorderOptions('value', $any($event))">
+           (cdkDropListDropped)="moveListValue('value', $any($event))">
         <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
              class="list-items" fxLayout="row" fxLayoutAlign="end center">
           <div fxFlex="70">
@@ -135,7 +92,7 @@
             <mat-icon>build</mat-icon>
           </button>
           <button mat-icon-button color="primary"
-                  (click)="removeOption('value', value)">
+                  (click)="removeListValue('value', value)">
             <mat-icon>clear</mat-icon>
           </button>
         </div>
@@ -171,61 +128,13 @@
   <mat-form-field *ngIf="combinedProperties.rowCount != null"
                   appearance="fill" class="mdInput textsingleline">
     <mat-label>{{'rows' | translate }}</mat-label>
-    <input matInput type="number" [value]="combinedProperties.rowCount"
+    <input matInput type="number" [value]="$any(combinedProperties.rowCount)"
            (input)="updateModel.emit({ property: 'rowCount', value: $any($event.target).value })">
   </mat-form-field>
 
-  <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.action' | translate }}</mat-label>
-    <mat-select [value]="combinedProperties.action"
-                (selectionChange)="updateModel.emit({ property: 'action', value: $event.value })">
-      <mat-option [value]="null">
-        {{ 'propertiesPanel.none' | translate }}
-      </mat-option>
-      <mat-option *ngFor="let option of ['unitNav', 'pageNav']"
-                  [value]="option">
-        {{ 'propertiesPanel.' + option | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.action" appearance="fill">
-    <mat-label>{{'propertiesPanel.actionParam' | translate }}</mat-label>
-    <ng-container *ngIf="combinedProperties.action === 'unitNav'">
-      <mat-select [value]="combinedProperties.actionParam"
-                  (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
-        <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
-                    [value]="option">
-          {{ 'propertiesPanel.' + option | translate }}
-        </mat-option>
-      </mat-select>
-    </ng-container>
-    <ng-container *ngIf="combinedProperties.action === 'pageNav'">
-      <mat-select [value]="combinedProperties.actionParam"
-                  (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
-        <ng-container *ngFor="let page of unitService.unit.pages; index as i">
-          <mat-option *ngIf="!page.alwaysVisible && selectionService.selectedPageIndex !== i"
-                      [value]="i">
-            {{ unitService.unit.pages[0].alwaysVisible ? i : i + 1 }}
-          </mat-option>
-        </ng-container>
-      </mat-select>
-    </ng-container>
-  </mat-form-field>
-
-  <mat-checkbox *ngIf="combinedProperties.asLink !== undefined"
-                [checked]="$any(combinedProperties.asLink)"
-                (change)="updateModel.emit({ property: 'asLink', value: $event.checked })">
-    {{'propertiesPanel.asLink' | translate }}
-  </mat-checkbox>
-
-  <ng-container *ngIf="combinedProperties.imageSrc !== undefined">
-    <button mat-raised-button (click)="loadImage()">{{'loadImage' | translate }}</button>
-    <button mat-raised-button (click)="removeImage()">{{'removeImage' | translate }}</button>
-    <img [src]="combinedProperties.imageSrc"
-         [style.object-fit]="'scale-down'"
-         [width]="200">
-  </ng-container>
+  <aspect-button-properties [combinedProperties]="combinedProperties"
+                            (updateModel)="updateModel.emit($event)">
+  </aspect-button-properties>
 
   <mat-form-field *ngIf="combinedProperties.options !== undefined && !combinedProperties.connectedTo"
                   appearance="fill">
@@ -252,39 +161,9 @@
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>
-    <input matInput type="number" #minValue="ngModel"
-           [ngModel]="combinedProperties.minValue"
-           (ngModelChange)="updateModel.emit({
-                    property: 'minValue',
-                    value: $event,
-                    isInputValid: minValue.valid})">
-  </mat-form-field>
-  <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
-    <input matInput type="number" #maxValue="ngModel"
-           [ngModel]="combinedProperties.maxValue"
-           (ngModelChange)="updateModel.emit({
-                    property: 'maxValue',
-                    value: $event,
-                    isInputValid: maxValue.valid})">
-  </mat-form-field>
-  <mat-checkbox *ngIf="combinedProperties.showValues !== undefined"
-                [checked]="$any(combinedProperties.showValues)"
-                (change)="updateModel.emit({ property: 'showValues', value: $event.checked })">
-    {{'propertiesPanel.showValues' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.barStyle !== undefined"
-                [checked]="$any(combinedProperties.barStyle)"
-                (change)="updateModel.emit({ property: 'barStyle', value: $event.checked })">
-    {{'propertiesPanel.barStyle' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.thumbLabel !== undefined"
-                [checked]="$any(combinedProperties.thumbLabel)"
-                (change)="updateModel.emit({ property: 'thumbLabel', value: $event.checked })">
-    {{'propertiesPanel.thumbLabel' | translate }}
-  </mat-checkbox>
+  <aspect-slider-properties [combinedProperties]="combinedProperties"
+                            (updateModel)="updateModel.emit($event)">
+  </aspect-slider-properties>
 
   <ng-container *ngIf="combinedProperties.value === true || combinedProperties.value === false">
     {{'preset' | translate }}
@@ -317,119 +196,15 @@
             </textarea>
   </mat-form-field>
 
-  <mat-form-field *ngIf="combinedProperties.appearance !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.appearance' | translate }}</mat-label>
-    <mat-select [value]="combinedProperties.appearance"
-                (selectionChange)="updateModel.emit({ property: 'appearance', value: $event.value })">
-      <mat-option *ngFor="let option of [{displayValue: 'fill', value: 'fill'},
-                                         {displayValue: 'outline', value: 'outline'}]"
-                  [value]="option.value">
-        {{option.displayValue}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.minLength !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.minLength' | translate }}</mat-label>
-    <input matInput type="number" #minLength="ngModel" min="0"
-           [ngModel]="combinedProperties.minLength"
-           (ngModelChange)="updateModel.emit({
-                  property: 'minLength',
-                  value: $event,
-                  isInputValid: minLength.valid })">
-  </mat-form-field>
-  <mat-form-field *ngIf="combinedProperties.minLength &&
-                                     $any(combinedProperties.minLength) > 0"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.minLengthWarnMessage' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.minLengthWarnMessage"
-           (input)="updateModel.emit({ property: 'minLengthWarnMessage', value: $any($event.target).value })">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.maxLength !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.maxLength' | translate }}</mat-label>
-    <input matInput type="number" #maxLength="ngModel" min="0"
-           [ngModel]="combinedProperties.maxLength"
-           (ngModelChange)="updateModel.emit({
-                  property: 'maxLength',
-                  value: $event,
-                  isInputValid: maxLength.valid })">
-  </mat-form-field>
-  <mat-form-field *ngIf="combinedProperties.maxLength &&
-                                     $any(combinedProperties.maxLength) > 0"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.maxLengthWarnMessage' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.maxLengthWarnMessage"
-           (input)="updateModel.emit({ property: 'maxLengthWarnMessage', value: $any($event.target).value })">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.pattern !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.pattern' | translate }}</mat-label>
-    <input matInput [value]="combinedProperties.pattern"
-           (input)="updateModel.emit({ property: 'pattern', value: $any($event.target).value })">
-  </mat-form-field>
-  <mat-form-field *ngIf="combinedProperties.pattern && $any(combinedProperties.pattern) !== ''"
-                  appearance="fill"
-                  matTooltip="Angabe als regulärer Ausdruck.">
-    <mat-label>{{'propertiesPanel.patternWarnMessage' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.patternWarnMessage"
-           (input)="updateModel.emit({ property: 'patternWarnMessage', value: $any($event.target).value })">
-  </mat-form-field>
-
-  <mat-checkbox *ngIf="combinedProperties.clearable !== undefined"
-                [checked]="$any(combinedProperties.clearable)"
-                (change)="updateModel.emit({ property: 'clearable', value: $event.checked })">
-    {{'propertiesPanel.clearable' | translate }}
-  </mat-checkbox>
-
-  <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== undefined" appearance="fill">
-    <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
-    <mat-select [value]="combinedProperties.inputAssistancePreset"
-                (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
-      <mat-option *ngFor="let option of ['none', 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators',
-       'comparisonOperators', 'squareDashDot', 'placeValue']"
-                  [value]="option">
-        {{ 'propertiesPanel.' + option | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== 'none' &&
-                                 combinedProperties.inputAssistancePosition !== undefined"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.inputAssistancePosition' | translate }}</mat-label>
-    <mat-select [value]="combinedProperties.inputAssistancePosition"
-                (selectionChange)="updateModel.emit({ property: 'inputAssistancePosition', value: $event.value })">
-      <mat-option *ngFor="let option of ['floating', 'right']"
-                  [value]="option">
-        {{ 'propertiesPanel.' + option | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== 'none' &&
-                       combinedProperties.restrictedToInputAssistanceChars !== undefined"
-                [checked]="$any(combinedProperties.restrictedToInputAssistanceChars)"
-                (change)="updateModel.emit({ property: 'restrictedToInputAssistanceChars', value: $event.checked })">
-    {{'propertiesPanel.restrictedToInputAssistanceChars' | translate }}
-  </mat-checkbox>
-
-  <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
-                [checked]="$any(combinedProperties.showSoftwareKeyboard)"
-                (change)="updateModel.emit({ property: 'showSoftwareKeyboard', value: $event.checked })">
-    {{'propertiesPanel.showSoftwareKeyboard' | translate }}
-  </mat-checkbox>
-
-  <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard"
-                [checked]="$any(combinedProperties.softwareKeyboardShowFrench)"
-                (change)="updateModel.emit({ property: 'softwareKeyboardShowFrench', value: $event.checked })">
-    {{'propertiesPanel.softwareKeyboardShowFrench' | translate }}
-  </mat-checkbox>
+  <aspect-input-element-properties [combinedProperties]="combinedProperties"
+                                   (updateModel)="updateModel.emit($event)">
+  </aspect-input-element-properties>
 
   <mat-form-field disabled="true" *ngIf="combinedProperties.rows !== undefined">
     <ng-container>
       <mat-label>{{'rows' | translate }}</mat-label>
       <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.rows"
-           (cdkDropListDropped)="reorderOptions('rows', $any($event))">
+           (cdkDropListDropped)="moveListValue('rows', $any($event))">
         <div *ngFor="let row of $any(combinedProperties.rows); let i = index" cdkDrag
              class="list-items" fxLayout="row" fxLayoutAlign="end center">
           <div fxFlex="70">
@@ -440,7 +215,7 @@
             <mat-icon>build</mat-icon>
           </button>
           <button mat-icon-button color="primary"
-                  (click)="removeOption('rows', row)">
+                  (click)="removeListValue('rows', row)">
             <mat-icon>clear</mat-icon>
           </button>
         </div>
@@ -460,7 +235,7 @@
     <ng-container>
       <mat-label>{{'columns' | translate }}</mat-label>
       <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.columns"
-           (cdkDropListDropped)="reorderOptions('columns', $any($event))">
+           (cdkDropListDropped)="moveListValue('columns', $any($event))">
         <div *ngFor="let column of $any(combinedProperties.columns); let i = index" cdkDrag
              class="list-items" fxLayout="row" fxLayoutAlign="end center">
           <div fxFlex="70">
@@ -474,7 +249,7 @@
             <mat-icon>build</mat-icon>
           </button>
           <button mat-icon-button color="primary"
-                  (click)="removeOption('columns', column)">
+                  (click)="removeListValue('columns', column)">
             <mat-icon>clear</mat-icon>
           </button>
         </div>
@@ -490,42 +265,15 @@
     </div>
   </mat-form-field>
 
-  <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
-                [checked]="$any(combinedProperties.scale)"
-                (change)="updateModel.emit({ property: 'scale', value: $event.checked })">
-    {{'propertiesPanel.scale' | translate }}
-  </mat-checkbox>
-
-  <mat-checkbox *ngIf="combinedProperties.magnifier !== undefined"
-                [checked]="$any(combinedProperties.magnifier)"
-                (change)="updateModel.emit({ property: 'magnifier', value: $event.checked })">
-    {{'propertiesPanel.magnifier' | translate }}
-  </mat-checkbox>
-  <mat-form-field *ngIf="combinedProperties.magnifier" appearance="fill">
-    <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>
-    <input matInput type="number" #magnifierSize="ngModel" min="0"
-           [ngModel]="combinedProperties.magnifierSize"
-           (ngModelChange)="updateModel.emit({
-                  property: 'magnifierSize',
-                  value: $event,
-                  isInputValid: magnifierSize.valid})">
-  </mat-form-field>
-
-  <ng-container *ngIf="combinedProperties.magnifier">
-    {{'propertiesPanel.magnifierZoom' | translate }}
-    <mat-slider min="1" max="3" step="0.1" [ngModel]="combinedProperties.magnifierZoom"
-                (change)="updateModel.emit({ property: 'magnifierZoom', value: $event.value })">
-    </mat-slider>
-    <div *ngIf="combinedProperties.magnifier">
-      {{combinedProperties.magnifierZoom}}
-    </div>
-  </ng-container>
+  <aspect-image-properties [combinedProperties]="combinedProperties"
+                           (updateModel)="updateModel.emit($event)">
+  </aspect-image-properties>
 
   <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
     <ng-container>
       <mat-label>{{'propertiesPanel.connectedDropList' | translate }}</mat-label>
       <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.connectedTo"
-           (cdkDropListDropped)="reorderOptions('connectedTo', $any($event))">
+           (cdkDropListDropped)="moveListValue('connectedTo', $any($event))">
         <div *ngFor="let connectedTo of $any(combinedProperties.connectedTo); let i = index" cdkDrag
              class="list-items" fxLayout="row" fxLayoutAlign="end center">
           <div fxFlex="70">
@@ -536,7 +284,7 @@
             <mat-icon>build</mat-icon>
           </button>
           <button mat-icon-button color="primary"
-                  (click)="removeOption('connectedTo', connectedTo)">
+                  (click)="removeListValue('connectedTo', connectedTo)">
             <mat-icon>clear</mat-icon>
           </button>
         </div>
@@ -544,11 +292,11 @@
     </ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-icon-button matPrefix
-              (click)="addOption('connectedTo', newconnectedTo.value); newconnectedTo.select()">
+              (click)="addListValue('connectedTo', newconnectedTo.value); newconnectedTo.select()">
         <mat-icon>add</mat-icon>
       </button>
       <input #newconnectedTo matInput type="text"
-             (keyup.enter)="addOption('connectedTo', newconnectedTo.value); newconnectedTo.select()">
+             (keyup.enter)="addListValue('connectedTo', newconnectedTo.value); newconnectedTo.select()">
     </div>
   </mat-form-field>
 
@@ -570,53 +318,15 @@
     {{'propertiesPanel.verticalOrientation' | translate }}
   </mat-checkbox>
 
-  <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
-                [checked]="$any(combinedProperties.onlyOneItem)"
-                (change)="updateModel.emit({ property: 'onlyOneItem', value: $event.checked })">
-    {{'propertiesPanel.onlyOneItem' | translate }}
-  </mat-checkbox>
+  <aspect-drop-list-properties [combinedProperties]="combinedProperties"
+                               (updateModel)="updateModel.emit($event)">
+  </aspect-drop-list-properties>
 
-  <mat-checkbox *ngIf="combinedProperties.highlightReceivingDropList !== undefined"
-                [checked]="$any(combinedProperties.highlightReceivingDropList)"
-                (change)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event.checked })">
-    {{'propertiesPanel.highlightReceivingDropList' | translate }}
-  </mat-checkbox>
-  <mat-form-field *ngIf="combinedProperties.highlightReceivingDropList"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'propertiesPanel.highlightReceivingDropListColor' | translate }}</mat-label>
-    <input matInput type="text" [value]="combinedProperties.highlightReceivingDropListColor"
-           (input)="updateModel.emit({
-                   property: 'highlightReceivingDropListColor',
-                   value: $any($event.target).value })">
-  </mat-form-field>
   <mat-form-field *ngIf="combinedProperties.firstColumnSizeRatio != null"
                   matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
                   appearance="fill" class="mdInput textsingleline">
     <mat-label>{{'propertiesPanel.firstColumnSizeRatio' | translate }}</mat-label>
-    <input matInput type="number" [value]="combinedProperties.firstColumnSizeRatio"
+    <input matInput type="number" [value]="$any(combinedProperties.firstColumnSizeRatio)"
            (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: $any($event.target).value })">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.borderStyle !== undefined"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.borderStyle' | translate }}</mat-label>
-    <mat-select [value]="combinedProperties.borderStyle"
-                (selectionChange)="updateModel.emit({ property: 'borderStyle', value: $event.value })">
-      <mat-option *ngFor="let option of ['solid', 'dotted', 'dashed',
-                                         'double', 'groove', 'ridge', 'inset', 'outset']"
-                  [value]="option">
-        {{option}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.borderWidth !== undefined"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
-    <input matInput type="number" #borderWidth="ngModel" min="0"
-           [ngModel]="combinedProperties.borderWidth"
-           (ngModelChange)="updateModel.emit({ property: 'borderWidth',
-                                                     value: $event,
-                                                     isInputValid: borderWidth.valid && $event !== null })">
   </mat-form-field>
 </div>

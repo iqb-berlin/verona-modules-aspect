@@ -35,7 +35,6 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   valid!: boolean;
 
   ngOnInit(): void {
-    this.dependencyDissolved = !this.playerProperties.activeAfterID;
     this.playbackTime = this.savedPlaybackTime || this.playerProperties.playbackTime;
     this.started = this.playbackTime > 0;
     this.runCounter = Math.floor(this.playbackTime);
@@ -72,7 +71,7 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes.project || changes.dependencyDissolved) && this.project === 'player') {
+    if (this.project !== 'editor' && changes.dependencyDissolved && changes.dependencyDissolved.currentValue) {
       this.initDelays();
     }
   }
@@ -122,11 +121,9 @@ export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initDelays(): void {
-    if (this.dependencyDissolved || this.dependencyDissolved === undefined) {
-      this.initAutostart();
-      if (!this.started) {
-        this.initHint();
-      }
+    this.initAutostart();
+    if (!this.started) {
+      this.initHint();
     }
   }
 

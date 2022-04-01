@@ -21,6 +21,7 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
   private ngUnsubscribe = new Subject<void>();
 
   ngOnInit(): void {
+    this.dependencyDissolved = !this.elementModel.player.activeAfterID;
     if (this.actualPlayingId) {
       this.actualPlayingId
         .pipe(takeUntil(this.ngUnsubscribe))

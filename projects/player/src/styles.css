@@ -6,3 +6,7 @@ body {
 .inline-container{
   display: inline;
 }
+
+form {
+  display: inline;
+}

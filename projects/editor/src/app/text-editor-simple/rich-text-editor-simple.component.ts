@@ -10,7 +10,6 @@ import { Paragraph } from '@tiptap/extension-paragraph';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
-import { FontSize } from '../text-editor/extensions/font-size';
 
 @Component({
   selector: 'aspect-rich-text-editor-simple',
@@ -28,7 +27,6 @@ export class RichTextEditorSimpleComponent {
   editor = new Editor({
     extensions: [StarterKit, Underline, Superscript, Subscript,
       TextStyle, Color,
-      FontSize,
       Highlight.configure({
         multicolor: true
       }),
@@ -64,11 +62,6 @@ export class RichTextEditorSimpleComponent {
 
   toggleSubscript(): void {
     this.editor.chain().toggleSubscript().focus().run();
-  }
-
-  applyFontSize(size: string): void {
-    this.selectedFontSize = size;
-    this.editor.commands.setFontSize(size);
   }
 
   applyFontColor(): void {

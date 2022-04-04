@@ -37,24 +37,6 @@
 
   <fieldset fxLayout="row">
     <legend>Schrift</legend>
-    <mat-form-field class="small-dropdown">
-      <mat-label>Schriftgröße</mat-label>
-      <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize">
-        <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
-        <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
-        <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
-        <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
-        <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
-        <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
-        <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
-        <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
-        <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
-        <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
-        <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
-        <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
-        <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
-      </mat-select>
-    </mat-form-field>
     <div class="combo-button" fxLayout="row"
          [style.background-color]="selectedFontColor">
       <button mat-icon-button matTooltip="Textfarbe"

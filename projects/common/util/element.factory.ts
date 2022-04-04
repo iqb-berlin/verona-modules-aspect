@@ -388,7 +388,7 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initInputElement({ height: 85, ...element }),
       type: 'radio',
-      options: element.options !== undefined ? element.options : [],
+      richTextOptions: element.richTextOptions !== undefined ? element.richTextOptions : [],
       alignment: element.alignment !== undefined ? element.alignment : 'column',
       strikeOtherOptions: element.strikeOtherOptions !== undefined ? element.strikeOtherOptions : false,
       position: ElementFactory.initPositionProps({ marginBottom: 30, ...element.position }),

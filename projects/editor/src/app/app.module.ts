@@ -68,6 +68,8 @@ import { SliderPropertiesComponent } from './components/unit-view/page-view/prop
 import { InputElementPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
 import { ImagePropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/image-properties.component';
 import { DropListPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
+import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
+import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +109,9 @@ import { DropListPropertiesComponent } from './components/unit-view/page-view/pr
     SliderPropertiesComponent,
     InputElementPropertiesComponent,
     ImagePropertiesComponent,
-    DropListPropertiesComponent
+    DropListPropertiesComponent,
+    RichTextEditorSimpleComponent,
+    RichTextSimpleEditDialogComponent
   ],
   imports: [
     BrowserModule,

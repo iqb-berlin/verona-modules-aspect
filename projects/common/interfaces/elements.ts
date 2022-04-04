@@ -224,7 +224,7 @@ export interface LikertRowElement extends InputElement {
 
 export interface RadioButtonGroupElement extends InputElement {
   type: 'radio';
-  options: string[];
+  richTextOptions: string[];
   alignment: 'column' | 'row';
   strikeOtherOptions: boolean;
   position: PositionProperties;

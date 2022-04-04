@@ -23,14 +23,14 @@ import { RadioButtonGroupElement } from '../../interfaces/elements';
                        [formControl]="elementFormControl"
                        [value]="elementModel.value"
                        [style.margin-top.px]="elementModel.label !== '' ? 10 : 0">
-        <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
+        <mat-radio-button *ngFor="let option of elementModel.richTextOptions; let i = index"
                           [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                   elementFormControl.value !== null &&
                                                   elementFormControl.value !== i }"
                           [value]="i"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [style.line-height.%]="elementModel.styling.lineHeight">
-          {{option}}
+          <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(option)"></div>
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                    class="error-message">

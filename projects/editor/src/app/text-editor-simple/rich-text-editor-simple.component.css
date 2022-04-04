@@ -1,0 +1,38 @@
+:host ::ng-deep div.ProseMirror {
+  min-height: 300px;
+  border: 1px solid;
+}
+
+:host ::ng-deep .ProseMirror p strong {
+  letter-spacing: 0.04em !important;
+  font-weight: 600 !important;
+}
+
+.editor-control-panel {
+  margin-bottom: 20px;
+  background: linear-gradient(to top right, #FFF5F8, #FAFAFA);
+  font: unset;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.combo-button {
+  margin-top: -2px;
+  margin-left: 10px;
+}
+.combo-button mat-select {
+  margin-top: 20%;
+}
+
+:host fieldset {
+  height: 55px;
+  box-sizing: content-box !important;
+  border-radius: 3px;
+  padding-bottom: 7px;
+}
+
+.small-dropdown {
+  width: 70px;
+  top: -7px;
+}

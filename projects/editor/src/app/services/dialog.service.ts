@@ -16,6 +16,8 @@ import {
 } from '../../../../common/interfaces/elements';
 import { ClozeDocument } from '../../../../common/interfaces/cloze';
 import { LikertColumn } from '../../../../common/interfaces/likert';
+import { RichTextEditorSimpleComponent } from '../text-editor-simple/rich-text-editor-simple.component';
+import { RichTextSimpleEditDialogComponent } from '../components/dialogs/rich-text-simple-edit-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -57,6 +59,17 @@ export class DialogService {
         content: text,
         defaultFontSize,
         clozeMode: false
+      },
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showRichTextSimpleEditDialog(text: string, defaultFontSize: number): Observable<string> {
+    const dialogRef = this.dialog.open(RichTextSimpleEditDialogComponent, {
+      data: {
+        content: text,
+        defaultFontSize
       },
       autoFocus: false
     });

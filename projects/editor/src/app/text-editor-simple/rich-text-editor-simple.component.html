@@ -1,0 +1,136 @@
+<div fxLayout="row" class="editor-control-panel" mat-dialog-title>
+  <div fxLayout="row">
+    <fieldset fxLayout="row">
+      <legend>Schriftauszeichnung</legend>
+      <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('bold')"
+              (click)="toggleBold()">
+        <mat-icon>format_bold</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Kursiv" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('italic')"
+              (click)="toggleItalic()">
+        <mat-icon>format_italic</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Unterstrichen" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('underline')"
+              (click)="toggleUnderline()" style="text-decoration: underline">
+        <mat-icon>format_underlined</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Hochgestellt" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('superscript')"
+              (click)="toggleSuperscript()">
+        <mat-icon>superscript</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Tiefgestellt" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('subscript')"
+              (click)="toggleSubscript()">
+        <mat-icon>subscript</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Durchgestrichen" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('strike')"
+              (click)="toggleStrike()">
+        <mat-icon>strikethrough_s</mat-icon>
+      </button>
+    </fieldset>
+  </div>
+
+  <fieldset fxLayout="row">
+    <legend>Schrift</legend>
+    <mat-form-field class="small-dropdown">
+      <mat-label>Schriftgröße</mat-label>
+      <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize">
+        <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
+        <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
+        <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
+        <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
+        <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
+        <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
+        <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
+        <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
+        <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
+        <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
+        <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
+        <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
+        <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="combo-button" fxLayout="row"
+         [style.background-color]="selectedFontColor">
+      <button mat-icon-button matTooltip="Textfarbe"
+              (click)="applyFontColor()">
+        <mat-icon>format_color_text</mat-icon>
+      </button>
+      <mat-select (click)="textColorInput.click()"></mat-select>
+      <input matInput type="color" #textColorInput hidden
+             (input)="selectedFontColor = $any($event.target).value; applyFontColor()">
+    </div>
+    <div class="combo-button" fxLayout="row"
+         [style.background-color]="selectedHighlightColor">
+      <button mat-icon-button matTooltip="Texthintergrund"
+              (click)="applyHighlightColor()">
+        <mat-icon>format_color_fill</mat-icon>
+      </button>
+      <mat-select (click)="textHighlightColorInput.click()"></mat-select>
+      <input matInput type="color" #textHighlightColorInput hidden
+             (input)="selectedHighlightColor = $any($event.target).value; applyHighlightColor()">
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Sonderelemente</legend>
+    <button mat-icon-button class="special-chars-button" matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
+            [matMenuTriggerFor]="specialCharsMenu">
+      <mat-icon>emoji_symbols</mat-icon>
+    </button>
+    <mat-menu #specialCharsMenu="matMenu" yPosition="above">
+      <button mat-button (click)="insertSpecialChar('&nbsp;')"
+              [matTooltip]="'Geschütztes Leerzeichen'">&blank;</button>
+      <button mat-button (click)="insertSpecialChar('&ndash;')">&ndash;</button>
+      <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
+      <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
+      <br>
+      <button mat-button (click)="insertSpecialChar('&rsquo;')">&rsquo;</button>
+      <button mat-button (click)="insertSpecialChar('&bdquo;')">&bdquo;</button>
+      <button mat-button (click)="insertSpecialChar('&ldquo;')">&ldquo;</button>
+      <button mat-button (click)="insertSpecialChar('&rdquo;')">&rdquo;</button>
+      <button mat-button (click)="insertSpecialChar('&micro;')">&micro;</button>
+      <br>
+      <button mat-button (click)="insertSpecialChar('&ccedil;')">&ccedil;</button>
+      <button mat-button (click)="insertSpecialChar('&Ccedil;')">&Ccedil;</button>
+      <button mat-button (click)="insertSpecialChar('&AElig;')">&AElig;</button>
+      <br>
+      <button mat-button (click)="insertSpecialChar('&lsaquo;')">&lsaquo;</button>
+      <button mat-button (click)="insertSpecialChar('&rsaquo;')">&rsaquo;</button>
+      <button mat-button (click)="insertSpecialChar('&laquo;')">&laquo;</button>
+      <button mat-button (click)="insertSpecialChar('&raquo;')">&raquo;</button>
+      <br>
+      <button mat-button (click)="insertSpecialChar('&cent;')">&cent;</button>
+      <button mat-button (click)="insertSpecialChar('&pound;')">&pound;</button>
+      <button mat-button (click)="insertSpecialChar('&yen;')">&yen;</button>
+      <br>
+      <button mat-button (click)="insertSpecialChar('&copy;')">&copy;</button>
+      <button mat-button (click)="insertSpecialChar('&reg;')">&reg;</button>
+      <button mat-button (click)="insertSpecialChar('&trade;')">&trade;</button>
+      <br>
+      <button mat-button (click)="insertSpecialChar('&le;')">&le;</button>
+      <button mat-button (click)="insertSpecialChar('&ge;')">&ge;</button>
+      <button mat-button (click)="insertSpecialChar('&fpartint;')">&fpartint;</button>
+      <button mat-button (click)="insertSpecialChar('&sum;')">&sum;</button>
+      <button mat-button (click)="insertSpecialChar('&isin;')">&isin;</button>
+      <button mat-button (click)="insertSpecialChar('&notin;')">&notin;</button>
+      <button mat-button (click)="insertSpecialChar('&radic;')">&radic;</button>
+      <button mat-button (click)="insertSpecialChar('&infin;')">&infin;</button>
+      <br>
+      <button mat-button (click)="insertSpecialChar('&spades;')">&spades;</button>
+      <button mat-button (click)="insertSpecialChar('&clubs;')">&clubs;</button>
+      <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
+      <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
+    </mat-menu>
+  </fieldset>
+</div>
+
+<tiptap-editor [editor]="editor" [ngModel]="content" mat-dialog-content
+               [style.font-size.px]="defaultFontSize"
+               (ngModelChange)="contentChange.emit($event)">
+</tiptap-editor>

@@ -4,6 +4,7 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { DialogService } from '../../../../../../services/dialog.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'aspect-options-field-set',
@@ -38,6 +39,36 @@ import { DialogService } from '../../../../../../services/dialog.service';
                (keyup.enter)="addOption('options', newOption.value); newOption.select()">
       </div>
     </mat-form-field>
+
+    <mat-form-field disabled="true" *ngIf="combinedProperties.richTextOptions !== undefined">
+      <ng-container>
+        <mat-label>{{'propertiesPanel.options' | translate }}</mat-label>
+        <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.richTextOptions"
+             (cdkDropListDropped)="reorderOptions('richTextOptions', $any($event))">
+          <div *ngFor="let option of $any(combinedProperties.richTextOptions); let i = index" cdkDrag
+               fxLayout="row" fxLayoutAlign="end center">
+            <div fxFlex="70" [innerHTML]="sanitizer.bypassSecurityTrustHtml(option)">
+            </div>
+            <button mat-icon-button color="primary"
+                    (click)="editTextOption('richTextOptions', i)">
+              <mat-icon>build</mat-icon>
+            </button>
+            <button mat-icon-button color="primary"
+                    (click)="removeOption('richTextOptions', option)">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <button mat-icon-button matPrefix
+                (click)="addOption('richTextOptions', newOption.value); newOption.select()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <input #newOption matInput type="text" placeholder="Optionstext"
+               (keyup.enter)="addOption('richTextOptions', newOption.value); newOption.select()">
+      </div>
+    </mat-form-field>
   `,
   styles: [
     '.mat-form-field {width: 100%;}'
@@ -48,7 +79,7 @@ export class OptionsFieldSetComponent {
   @Output() updateModel =
   new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
 
-  constructor(public dialogService: DialogService) { }
+  constructor(public dialogService: DialogService, public sanitizer: DomSanitizer) { }
 
   addOption(property: string, value: string): void {
     this.updateModel.emit({
@@ -65,7 +96,8 @@ export class OptionsFieldSetComponent {
 
   async editTextOption(property: string, optionIndex: number): Promise<void> {
     const oldOptions = this.combinedProperties[property] as string[];
-    await this.dialogService.showTextEditDialog(oldOptions[optionIndex])
+    await this.dialogService
+      .showRichTextSimpleEditDialog(oldOptions[optionIndex], this.combinedProperties.styling.fontSize)
       .subscribe((result: string) => {
         if (result) {
           oldOptions[optionIndex] = result;

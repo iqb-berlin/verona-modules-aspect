@@ -6,7 +6,7 @@ import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
 import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edit-dialog.component';
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
-import { LikertColumnEditDialogComponent } from '../components/dialogs/likert-column-edit-dialog.component';
+import { ColumnHeaderEditDialogComponent } from '../components/dialogs/column-header-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import {
@@ -91,9 +91,9 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertColumnEditDialog(column: ColumnHeader): Observable<ColumnHeader> {
-    const dialogRef = this.dialog.open(LikertColumnEditDialogComponent, {
-      data: { column }
+  showLikertColumnEditDialog(column: ColumnHeader, defaultFontSize: number): Observable<ColumnHeader> {
+    const dialogRef = this.dialog.open(ColumnHeaderEditDialogComponent, {
+      data: { column, defaultFontSize }
     });
     return dialogRef.afterClosed();
   }

@@ -34,7 +34,7 @@ import { RadioButtonGroupComplexElement } from '../../interfaces/elements';
              [style.object-fit]="'scale-down'"
              [style.max-width.%]="100"
              [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
-        <div>{{option.text}}</div>
+        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(option.text)"></div>
         <img *ngIf="option.imgSrc && option.position === 'below'"
              [style.object-fit]="'scale-down'"
              [style.max-width.%]="100"

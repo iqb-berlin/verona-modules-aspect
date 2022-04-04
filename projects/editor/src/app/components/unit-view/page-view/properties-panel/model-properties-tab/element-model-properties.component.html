@@ -238,8 +238,7 @@
            (cdkDropListDropped)="moveListValue('columns', $any($event))">
         <div *ngFor="let column of $any(combinedProperties.columns); let i = index" cdkDrag
              class="list-items" fxLayout="row" fxLayoutAlign="end center">
-          <div fxFlex="70">
-            {{column.text}}
+          <div fxFlex="70" [innerHTML]="sanitizer.bypassSecurityTrustHtml(column.text)">
           </div>
           <img [src]="column.imgSrc"
                [style.object-fit]="'scale-down'"

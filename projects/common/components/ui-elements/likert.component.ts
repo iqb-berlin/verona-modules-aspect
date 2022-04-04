@@ -35,7 +35,7 @@ import { LikertElement, LikertRowElement } from '../../interfaces/elements';
           <img *ngIf="column.imgSrc && column.position === 'above'"
                [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'">
-          {{column.text}}
+          <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(column.text)"></div>
           <img *ngIf="column.imgSrc && column.position === 'below'"
                [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'">

@@ -326,28 +326,6 @@ export class UnitService {
       });
   }
 
-  async editLikertColumn(likertElements: LikertElement[], columnIndex: number): Promise<void> {
-    await this.dialogService.showLikertColumnEditDialog(likertElements[0].columns[columnIndex])
-      .subscribe((result: ColumnHeader) => {
-        if (result) {
-          likertElements[0].columns[columnIndex] = result;
-          this.updateElementProperty(
-            likertElements,
-            'columns',
-            likertElements[0].columns
-          );
-        }
-      });
-  }
-
-  static createLikertColumn(value: string): ColumnHeader {
-    return {
-      text: value,
-      imgSrc: null,
-      position: 'above'
-    };
-  }
-
   createLikertRow(question: string, columnCount: number): LikertRowElement {
     return ElementFactory.createLikertRowElement({
       id: this.idService.getNewID('likert_row'),

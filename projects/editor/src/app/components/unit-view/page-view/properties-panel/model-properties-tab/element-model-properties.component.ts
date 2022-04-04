@@ -15,6 +15,7 @@ import {
 } from '../../../../../../../../common/interfaces/elements';
 import { SelectionService } from '../../../../../services/selection.service';
 import { DialogService } from '../../../../../services/dialog.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -32,7 +33,8 @@ export class ElementModelPropertiesComponent {
 
   constructor(public unitService: UnitService,
               public selectionService: SelectionService,
-              public dialogService: DialogService) { }
+              public dialogService: DialogService,
+              public sanitizer: DomSanitizer) { }
 
   addListValue(property: string, value: string): void {
     this.updateModel.emit({
@@ -78,7 +80,16 @@ export class ElementModelPropertiesComponent {
   }
 
   async editColumnOption(optionIndex: number): Promise<void> {
-    await this.unitService.editLikertColumn(this.selectedElements as LikertElement[], optionIndex);
+    const firstElement = (this.selectedElements as LikertElement[])[0];
+    await this.dialogService
+      .showLikertColumnEditDialog(firstElement.columns[optionIndex],
+        (this.combinedProperties as LikertElement).styling.fontSize)
+      .subscribe((result: ColumnHeader) => {
+        if (result) {
+          firstElement.columns[optionIndex] = result;
+          this.updateModel.emit({ property: 'columns', value: firstElement.columns });
+        }
+      });
   }
 
   async editRowOption(optionIndex: number): Promise<void> {
@@ -89,7 +100,11 @@ export class ElementModelPropertiesComponent {
   }
 
   addColumn(value: string): void {
-    const column = UnitService.createLikertColumn(value);
+    const column: ColumnHeader = {
+      text: value,
+      imgSrc: null,
+      position: 'above'
+    };
     (this.combinedProperties.columns as ColumnHeader[]).push(column);
     this.updateModel.emit({ property: 'columns', value: this.combinedProperties.columns as ColumnHeader[] });
   }

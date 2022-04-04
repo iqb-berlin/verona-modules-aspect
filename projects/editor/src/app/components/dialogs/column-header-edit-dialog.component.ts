@@ -7,10 +7,11 @@ import { ColumnHeader } from '../../../../../common/interfaces/elements';
   selector: 'aspect-likert-column-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="column">
-      <mat-form-field>
-        <mat-label>{{'text' | translate }}</mat-label>
-        <input #textInput matInput type="text" [value]="data.column.text">
-      </mat-form-field>
+      <aspect-rich-text-editor-simple [content]="data.column.text"
+                                      [defaultFontSize]="data.defaultFontSize"
+                                      (contentChange)="this.textContent = $event">
+      </aspect-rich-text-editor-simple>
+
       <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
       <button mat-raised-button (click)="imgSrc = null">{{ 'removeImage' | translate }}</button>
       <img [src]="imgSrc"
@@ -28,17 +29,21 @@ import { ColumnHeader } from '../../../../../common/interfaces/elements';
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="{
-                         text: textInput.value,
+                         text: textContent,
                          imgSrc: imgSrc,
                          position: positionSelect.value }">
         {{'save' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-  `
+  `,
+  styles: [
+    'aspect-rich-text-editor-simple {margin-bottom: 20px;}'
+  ]
 })
-export class LikertColumnEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { column: ColumnHeader }) { }
+export class ColumnHeaderEditDialogComponent {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { column: ColumnHeader, defaultFontSize: number }) { }
+  textContent: string = this.data.column.text;
   imgSrc: string | null = this.data.column.imgSrc;
 
   async loadImage(): Promise<void> {

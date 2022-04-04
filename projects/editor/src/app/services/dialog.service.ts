@@ -10,12 +10,12 @@ import { LikertColumnEditDialogComponent } from '../components/dialogs/likert-co
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import {
+  ColumnHeader,
   DragNDropValueObject,
   LikertRowElement,
   PlayerProperties
 } from '../../../../common/interfaces/elements';
 import { ClozeDocument } from '../../../../common/interfaces/cloze';
-import { LikertColumn } from '../../../../common/interfaces/likert';
 import { RichTextEditorSimpleComponent } from '../text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from '../components/dialogs/rich-text-simple-edit-dialog.component';
 
@@ -91,14 +91,14 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertColumnEditDialog(column: LikertColumn): Observable<LikertColumn> {
+  showLikertColumnEditDialog(column: ColumnHeader): Observable<ColumnHeader> {
     const dialogRef = this.dialog.open(LikertColumnEditDialogComponent, {
       data: { column }
     });
     return dialogRef.afterClosed();
   }
 
-  showLikertRowEditDialog(row: LikertRowElement, columns: LikertColumn[]): Observable<LikertRowElement> {
+  showLikertRowEditDialog(row: LikertRowElement, columns: ColumnHeader[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
       data: { row, columns }
     });

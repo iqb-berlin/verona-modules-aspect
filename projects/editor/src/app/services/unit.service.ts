@@ -14,14 +14,13 @@ import { Copy } from '../../../../common/util/copy';
 import { UnitFactory } from '../../../../common/util/unit.factory';
 import { Page, Section, Unit } from '../../../../common/interfaces/unit';
 import {
-  ClozeElement, DragNDropValueObject,
+  ClozeElement, ColumnHeader, DragNDropValueObject,
   DropListElement, InputElement, InputElementValue, LikertElement,
   LikertRowElement, PlayerElement, PlayerProperties,
   PositionedElement, TextElement,
   UIElement, UIElementType
 } from '../../../../common/interfaces/elements';
 import { UnitDefinitionSanitizer } from '../../../../common/util/unit-definition-sanitizer';
-import { LikertColumn, LikertRow } from '../../../../common/interfaces/likert';
 import { ClozeDocument } from '../../../../common/interfaces/cloze';
 import { UnitUtils } from '../../../../common/util/unit-utils';
 import { ArrayUtils } from '../../../../common/util/array';
@@ -239,7 +238,7 @@ export class UnitService {
 
   updateElementProperty(elements: UIElement[],
                         property: string,
-                        value: InputElementValue | LikertColumn[] | LikertRow[] | ClozeDocument |
+                        value: InputElementValue | ColumnHeader[] | ClozeDocument |
                         DragNDropValueObject[] | null): boolean {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
@@ -298,7 +297,7 @@ export class UnitService {
       });
   }
 
-  async editLikertRow(row: LikertRowElement, columns: LikertColumn[]): Promise<void> {
+  async editLikertRow(row: LikertRowElement, columns: ColumnHeader[]): Promise<void> {
     await this.dialogService.showLikertRowEditDialog(row, columns)
       .subscribe((result: LikertRowElement) => {
         if (result) {
@@ -329,7 +328,7 @@ export class UnitService {
 
   async editLikertColumn(likertElements: LikertElement[], columnIndex: number): Promise<void> {
     await this.dialogService.showLikertColumnEditDialog(likertElements[0].columns[columnIndex])
-      .subscribe((result: LikertColumn) => {
+      .subscribe((result: ColumnHeader) => {
         if (result) {
           likertElements[0].columns[columnIndex] = result;
           this.updateElementProperty(
@@ -341,7 +340,7 @@ export class UnitService {
       });
   }
 
-  static createLikertColumn(value: string): LikertColumn {
+  static createLikertColumn(value: string): ColumnHeader {
     return {
       text: value,
       imgSrc: null,

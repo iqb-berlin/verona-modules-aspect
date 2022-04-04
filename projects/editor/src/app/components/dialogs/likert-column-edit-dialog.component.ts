@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from '../../services/file.service';
-import { LikertColumn } from '../../../../../common/interfaces/likert';
+import { ColumnHeader } from '../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-likert-column-edit-dialog',
@@ -38,7 +38,7 @@ import { LikertColumn } from '../../../../../common/interfaces/likert';
   `
 })
 export class LikertColumnEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { column: LikertColumn }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { column: ColumnHeader }) { }
   imgSrc: string | null = this.data.column.imgSrc;
 
   async loadImage(): Promise<void> {

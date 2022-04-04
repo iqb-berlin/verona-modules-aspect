@@ -1,5 +1,4 @@
 import { ClozeDocument } from './cloze';
-import { LikertColumn } from './likert';
 
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
@@ -12,8 +11,9 @@ export type DragNDropValueObject = {
   stringValue?: string;
   imgSrcValue?: string;
 };
+
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-LikertColumn[] | ClozeDocument |
+ColumnHeader[] | ClozeDocument |
 PositionProperties | ElementStyling | PlayerProperties | BasicStyles;
 
 export interface UIElement {
@@ -46,6 +46,12 @@ export interface PlayerElement extends UIElement {
 export interface ValueChangeElement {
   id: string;
   value: InputElementValue;
+}
+
+export interface ColumnHeader {
+  text: string;
+  imgSrc: string | null;
+  position: 'above' | 'below';
 }
 
 export interface PositionProperties {
@@ -204,7 +210,7 @@ export interface ImageElement extends UIElement {
 export interface LikertElement extends UIElement {
   type: 'likert';
   rows: LikertRowElement[];
-  columns: LikertColumn[];
+  columns: ColumnHeader[];
   firstColumnSizeRatio: number;
   readOnly: boolean;
   position: PositionProperties;
@@ -233,7 +239,7 @@ export interface RadioButtonGroupElement extends InputElement {
 
 export interface RadioButtonGroupComplexElement extends InputElement {
   type: 'radio-group-images' // TODO better name
-  columns: LikertColumn[];
+  columns: ColumnHeader[];
   position: PositionProperties;
   styling: BasicStyles;
 }

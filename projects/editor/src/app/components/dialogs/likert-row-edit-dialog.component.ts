@@ -1,7 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { LikertRowElement } from '../../../../../common/interfaces/elements';
-import { LikertColumn } from '../../../../../common/interfaces/likert';
+import { ColumnHeader, LikertRowElement } from '../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-likert-row-edit-dialog',
@@ -33,5 +32,5 @@ import { LikertColumn } from '../../../../../common/interfaces/likert';
   `
 })
 export class LikertRowEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, columns: LikertColumn[] }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, columns: ColumnHeader[] }) { }
 }

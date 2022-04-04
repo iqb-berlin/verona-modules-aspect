@@ -7,12 +7,12 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitService } from '../../../../../services/unit.service';
 import { FileService } from '../../../../../services/file.service';
 import {
+  ColumnHeader,
   DragNDropValueObject,
   InputElementValue,
   LikertElement, LikertRowElement,
   UIElement
 } from '../../../../../../../../common/interfaces/elements';
-import { LikertColumn, LikertRow } from '../../../../../../../../common/interfaces/likert';
 import { SelectionService } from '../../../../../services/selection.service';
 import { DialogService } from '../../../../../services/dialog.service';
 
@@ -26,7 +26,7 @@ export class ElementModelPropertiesComponent {
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
-    value: InputElementValue | LikertColumn[] | LikertRow[] | DragNDropValueObject[],
+    value: InputElementValue | ColumnHeader[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();
 
@@ -47,7 +47,7 @@ export class ElementModelPropertiesComponent {
   }
 
   removeListValue(property: string, option: any): void {
-    const valueList = this.combinedProperties[property] as string[] | LikertRowElement[] | LikertColumn[];
+    const valueList = this.combinedProperties[property] as string[] | LikertRowElement[] | ColumnHeader[];
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel.emit({ property: property, value: valueList });
   }
@@ -84,20 +84,20 @@ export class ElementModelPropertiesComponent {
   async editRowOption(optionIndex: number): Promise<void> {
     await this.unitService.editLikertRow(
       (this.combinedProperties.rows as LikertRowElement[])[optionIndex] as LikertRowElement,
-      this.combinedProperties.columns as LikertColumn[]
+      this.combinedProperties.columns as ColumnHeader[]
     );
   }
 
   addColumn(value: string): void {
     const column = UnitService.createLikertColumn(value);
-    (this.combinedProperties.columns as LikertColumn[]).push(column);
-    this.updateModel.emit({ property: 'columns', value: this.combinedProperties.columns as LikertColumn[] });
+    (this.combinedProperties.columns as ColumnHeader[]).push(column);
+    this.updateModel.emit({ property: 'columns', value: this.combinedProperties.columns as ColumnHeader[] });
   }
 
   addRow(question: string): void {
     const newRow = this.unitService.createLikertRow(
       question,
-      (this.combinedProperties.columns as LikertColumn[]).length
+      (this.combinedProperties.columns as ColumnHeader[]).length
     );
     (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });

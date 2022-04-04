@@ -9,11 +9,11 @@ import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { MessageService } from '../../../../../../../common/services/message.service';
 import {
+  ColumnHeader,
   DragNDropValueObject,
   UIElement,
   UIElementValue
 } from '../../../../../../../common/interfaces/elements';
-import { LikertColumn, LikertRow } from '../../../../../../../common/interfaces/likert';
 
 @Component({
   selector: 'aspect-element-properties',
@@ -87,7 +87,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
 
   updateModel(property: string,
               value: string | number | boolean | string[] |
-              LikertColumn[] | LikertRow[] | DragNDropValueObject[] | null,
+              ColumnHeader[] | DragNDropValueObject[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);

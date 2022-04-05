@@ -104,6 +104,12 @@ export abstract class UnitDefinitionSanitizer {
       .includes(newElement.type as string)) {
       newElement = UnitDefinitionSanitizer.handlePlusOne(newElement as InputElement);
     }
+    if (['radio'].includes(newElement.type as string)) {
+      newElement = {
+        ...newElement,
+        richTextOptions: newElement.options
+      };
+    }
 
     return newElement as unknown as UIElement;
   }

@@ -1,5 +1,7 @@
 Player
 ======
+1.22.1
+- Fix reading of old radio button group options
 1.22.0
 - Fix drop list appearance
   Should no show up even without any contained items; shows outline etc.

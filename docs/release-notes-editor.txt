@@ -1,5 +1,8 @@
 Editor
 ======
+1.28.1
+- Fix reading of old radio button group options
+
 1.28.0
 - Add rich text functionality for radio button group and likert
   When editing option items a reduced variant of the TextEditor is used.

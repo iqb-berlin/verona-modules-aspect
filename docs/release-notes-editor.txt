@@ -1,5 +1,26 @@
 Editor
 ======
+1.28.0
+- Add rich text functionality for radio button group and likert
+  When editing option items a reduced variant of the TextEditor is used.
+- Add new property column count to text elements
+- Add section menu element for new section parameter "activeAfterID"
+- Implement subscript and superscript text formatting in cloze elements
+- Show selected element type and ID on top of properties panel
+- Keep selection on moved section
+- Fix likert element
+  There were several issues with this element. Now it should be possible again
+  to change properties and show the line colouring.
+- Fix toolbar to top of the TextEditor dialog
+  This way it does not scroll out of view when editing very long texts.
+- Show only number input for slider default value
+  Was mistakenly showing an additional text area.
+- Fix initial position parameters for dropdown, frame and drop list
+- Fix alignment of toggle buttons in cloze element
+- Fix styling issues with drop list
+  Missing item color; half hidden outline etc.
+- Add some missing translations
+
 1.27.0
 - Implement page navigation action for buttons
 - Improve wording for page width setting and show actual resulting page width

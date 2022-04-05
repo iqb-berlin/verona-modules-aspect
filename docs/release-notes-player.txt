@@ -1,5 +1,12 @@
 Player
 ======
+1.22.0
+- Fix drop list appearance
+  Should no show up even without any contained items; shows outline etc.
+- Implement ability to display sections depending on the status of audios/videos
+- Fix delay of hints for audios and videos
+-> Contains fixes and support for editor release 1.28.0
+
 1.21.0
 - Implement page navigation action for buttons
 - Prevent pasting in text fields and areas with math keyboard

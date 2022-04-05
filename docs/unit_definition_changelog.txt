@@ -4,3 +4,7 @@ iqb-aspect-module@0.1.0 -> iqb-aspect-module@0.1.1:
 iqb-aspect-definition@1.0.0
   - Rename variable
   - raise version to 1.0.0
+
+3.1.0
+- radio and likert now have "richTextOptions" instead of options
+- text element has new property: columnCount

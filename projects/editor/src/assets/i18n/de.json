@@ -204,6 +204,7 @@
     "autoRowSize": "dynamische Höhe",
     "width": "Breite",
     "fraction": "Anteile",
-    "pixel": "Bildpunkte"
+    "pixel": "Bildpunkte",
+    "activeAfterID": "Sichtbar nach ID"
   }
 }

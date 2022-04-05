@@ -36,6 +36,19 @@ import { UIElement } from '../../../../../../../common/interfaces/elements';
            [value]="$any(section.backgroundColor)"
            (change)="updateModel('backgroundColor', $any($event.target).value)">
 
+    <button mat-mini-fab [matMenuTriggerFor]="activeAfterIDMenu">
+      <mat-icon>disabled_visible</mat-icon>
+    </button>
+    <mat-menu #activeAfterIDMenu="matMenu" xPosition="before">
+      <mat-form-field appearance="fill">
+        <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>
+        <input matInput
+               [value]="$any(section.activeAfterID)"
+               (click)="$any($event).stopPropagation()"
+               (change)="updateModel('activeAfterID', $any($event.target).value)">
+      </mat-form-field>
+    </mat-menu>
+
     <button mat-mini-fab [matMenuTriggerFor]="layoutMenu">
       <mat-icon>space_dashboard</mat-icon>
     </button>

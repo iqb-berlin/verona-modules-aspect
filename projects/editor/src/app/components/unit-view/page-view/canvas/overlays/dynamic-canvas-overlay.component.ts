@@ -31,7 +31,7 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
       </div>
   `,
   styles: [
-    '.draggable-element {position: relative; width: 100%; height: 100%}',
+    '.draggable-element {width: 100%; height: 100%}',
     '.draggable-element:active {cursor: grabbing}',
     '.temporaryHighlight {z-index: 100}'
   ]

@@ -13,8 +13,6 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
       <div class="list"
-           [style.width.%]="100"
-           [style.height.%]="100"
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"
@@ -83,7 +81,7 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
   `,
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
-    '.list {border-radius: 10px; margin-bottom: 3px;}', // extra margin to reserve for outline
+    '.list {border-radius: 10px; width: calc(100% - 6px); height: calc(100% - 6px); margin-top: 3px; margin-left: 3px;}',
     '.text-item {border-radius: 10px; padding: 10px;}',
     '.item {cursor: grab}',
     '.item:active {cursor: grabbing}',

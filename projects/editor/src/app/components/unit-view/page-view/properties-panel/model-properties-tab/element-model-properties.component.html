@@ -12,13 +12,6 @@
            (input)="updateModel.emit({property: 'label', value: $any($event.target).value })">
   </mat-form-field>
 
-  <ng-container *ngIf="combinedProperties.text">
-    {{'propertiesPanel.text' | translate }}
-    <div class="text-text" [innerHTML]="$any(combinedProperties.text) | safeResourceHTML"
-         (click)="unitService.showDefaultEditDialog(selectedElements[0])">
-    </div>
-  </ng-container>
-
   <ng-container *ngIf="combinedProperties.document">
     <button (click)="unitService.showDefaultEditDialog(selectedElements[0])">
       <mat-icon>build_circle</mat-icon>
@@ -30,13 +23,6 @@
       <mat-icon>build_circle</mat-icon>
     </button>
   </ng-container>
-
-  <mat-form-field *ngIf="combinedProperties.columnCount != null"
-                  appearance="fill" class="mdInput textsingleline">
-    <mat-label>{{'propertiesPanel.columnCount' | translate }}</mat-label>
-    <input matInput type="number" [value]="$any(combinedProperties.columnCount)"
-           (input)="updateModel.emit({ property: 'columnCount', value: $any($event.target).value })">
-  </mat-form-field>
 
   <aspect-text-properties-field-set [combinedProperties]="combinedProperties"
                                     (updateModel)="updateModel.emit($event)">

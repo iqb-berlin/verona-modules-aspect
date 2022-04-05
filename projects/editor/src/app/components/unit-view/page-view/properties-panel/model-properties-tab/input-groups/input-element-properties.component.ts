@@ -10,7 +10,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
         <mat-option *ngFor="let option of [{displayValue: 'fill', value: 'fill'},
                                          {displayValue: 'outline', value: 'outline'}]"
                     [value]="option.value">
-          {{option.displayValue}}
+          {{'propertiesPanel.' + option.displayValue | translate}}
         </mat-option>
       </mat-select>
     </mat-form-field>

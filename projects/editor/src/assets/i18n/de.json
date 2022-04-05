@@ -144,7 +144,11 @@
     "selectionColor": "Auswahlfarbe",
     "flex": "Dynamisch zentriert",
     "fixedSize": "Feste Abmessungen",
-    "columnCount": "Anzahl der Spalten"
+    "columnCount": "Anzahl der Spalten",
+    "vertical": "vertikal",
+    "horizontal": "horizontal",
+    "fill": "Ausgefüllt",
+    "outline": "Umrandet"
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",

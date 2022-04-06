@@ -297,39 +297,10 @@ export class UnitService {
       });
   }
 
-  async editLikertRow(row: LikertRowElement, columns: TextImageLabel[]): Promise<void> {
-    await this.dialogService.showLikertRowEditDialog(row, columns)
-      .subscribe((result: LikertRowElement) => {
-        if (result) {
-          if (result.id !== row.id) {
-            this.updateElementProperty(
-              [row],
-              'id',
-              result.id
-            );
-          }
-          if (result.text !== row.text) {
-            this.updateElementProperty(
-              [row],
-              'text',
-              result.text
-            );
-          }
-          if (result.value !== row.value) {
-            this.updateElementProperty(
-              [row],
-              'value',
-              result.value
-            );
-          }
-        }
-      });
-  }
-
-  createLikertRow(question: string, columnCount: number): LikertRowElement {
+  createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
     return ElementFactory.createLikertRowElement({
       id: this.idService.getNewID('likert_row'),
-      text: question,
+      text: rowLabelText,
       columnCount: columnCount
     });
   }

@@ -92,13 +92,6 @@ export class ElementModelPropertiesComponent {
       });
   }
 
-  async editRowOption(optionIndex: number): Promise<void> {
-    await this.unitService.editLikertRow(
-      (this.combinedProperties.rows as LikertRowElement[])[optionIndex] as LikertRowElement,
-      this.combinedProperties.columns as TextImageLabel[]
-    );
-  }
-
   addColumn(value: string): void {
     const column: TextImageLabel = {
       text: value,
@@ -109,12 +102,44 @@ export class ElementModelPropertiesComponent {
     this.updateModel.emit({ property: 'columns', value: this.combinedProperties.columns as TextImageLabel[] });
   }
 
-  addRow(question: string): void {
-    const newRow = this.unitService.createLikertRow(
-      question,
+  addLikertRow(rowLabelText: string): void {
+    const newRow = this.unitService.createLikertRowElement(
+      rowLabelText,
       (this.combinedProperties.columns as TextImageLabel[]).length
     );
     (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
+  }
+
+  async editLikertRow(rowIndex: number): Promise<void> {
+    const row = (this.combinedProperties.rows as LikertRowElement[])[rowIndex] as LikertRowElement;
+    const columns = this.combinedProperties.columns as TextImageLabel[];
+
+    await this.dialogService.showLikertRowEditDialog(row, columns)
+      .subscribe((result: LikertRowElement) => {
+        if (result) {
+          if (result.id !== row.id) {
+            this.unitService.updateElementProperty(
+              [row],
+              'id',
+              result.id
+            );
+          }
+          if (result.text !== row.text) {
+            this.unitService.updateElementProperty(
+              [row],
+              'text',
+              result.text
+            );
+          }
+          if (result.value !== row.value) {
+            this.unitService.updateElementProperty(
+              [row],
+              'value',
+              result.value
+            );
+          }
+        }
+      });
   }
 }

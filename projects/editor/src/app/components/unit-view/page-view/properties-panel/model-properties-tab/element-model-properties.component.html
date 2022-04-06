@@ -197,7 +197,7 @@
             {{row.text}}
           </div>
           <button mat-icon-button color="primary"
-                  (click)="editRowOption(i)">
+                  (click)="editLikertRow(i)">
             <mat-icon>build</mat-icon>
           </button>
           <button mat-icon-button color="primary"
@@ -209,11 +209,11 @@
     </ng-container>
     <div fxLayout="row" fxLayoutAlign="center center">
       <button mat-icon-button matPrefix
-              (click)="addRow(newRow.value); newRow.select()">
+              (click)="addLikertRow(newRow.value); newRow.select()">
         <mat-icon>add</mat-icon>
       </button>
       <input #newRow matInput type="text" placeholder="Fragetext"
-             (keyup.enter)="addRow(newRow.value); newRow.select()">
+             (keyup.enter)="addLikertRow(newRow.value); newRow.select()">
     </div>
   </mat-form-field>
 

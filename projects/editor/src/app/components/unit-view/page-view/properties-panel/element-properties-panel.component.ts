@@ -9,7 +9,7 @@ import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { MessageService } from '../../../../../../../common/services/message.service';
 import {
-  ColumnHeader,
+  TextImageLabel,
   DragNDropValueObject,
   UIElement,
   UIElementValue
@@ -87,7 +87,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
 
   updateModel(property: string,
               value: string | number | boolean | string[] |
-              ColumnHeader[] | DragNDropValueObject[] | null,
+              TextImageLabel[] | DragNDropValueObject[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.unitService.updateElementProperty(this.selectedElements, property, value);

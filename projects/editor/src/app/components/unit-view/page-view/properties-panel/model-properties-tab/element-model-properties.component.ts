@@ -7,7 +7,7 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitService } from '../../../../../services/unit.service';
 import { FileService } from '../../../../../services/file.service';
 import {
-  ColumnHeader,
+  TextImageLabel,
   DragNDropValueObject,
   InputElementValue,
   LikertElement, LikertRowElement,
@@ -27,7 +27,7 @@ export class ElementModelPropertiesComponent {
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
-    value: InputElementValue | ColumnHeader[] | DragNDropValueObject[],
+    value: InputElementValue | TextImageLabel[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();
 
@@ -49,7 +49,7 @@ export class ElementModelPropertiesComponent {
   }
 
   removeListValue(property: string, option: any): void {
-    const valueList = this.combinedProperties[property] as string[] | LikertRowElement[] | ColumnHeader[];
+    const valueList = this.combinedProperties[property] as string[] | LikertRowElement[] | TextImageLabel[];
     valueList.splice(valueList.indexOf(option), 1);
     this.updateModel.emit({ property: property, value: valueList });
   }
@@ -84,7 +84,7 @@ export class ElementModelPropertiesComponent {
     await this.dialogService
       .showLikertColumnEditDialog(firstElement.columns[optionIndex],
         (this.combinedProperties as LikertElement).styling.fontSize)
-      .subscribe((result: ColumnHeader) => {
+      .subscribe((result: TextImageLabel) => {
         if (result) {
           firstElement.columns[optionIndex] = result;
           this.updateModel.emit({ property: 'columns', value: firstElement.columns });
@@ -95,24 +95,24 @@ export class ElementModelPropertiesComponent {
   async editRowOption(optionIndex: number): Promise<void> {
     await this.unitService.editLikertRow(
       (this.combinedProperties.rows as LikertRowElement[])[optionIndex] as LikertRowElement,
-      this.combinedProperties.columns as ColumnHeader[]
+      this.combinedProperties.columns as TextImageLabel[]
     );
   }
 
   addColumn(value: string): void {
-    const column: ColumnHeader = {
+    const column: TextImageLabel = {
       text: value,
       imgSrc: null,
       position: 'above'
     };
-    (this.combinedProperties.columns as ColumnHeader[]).push(column);
-    this.updateModel.emit({ property: 'columns', value: this.combinedProperties.columns as ColumnHeader[] });
+    (this.combinedProperties.columns as TextImageLabel[]).push(column);
+    this.updateModel.emit({ property: 'columns', value: this.combinedProperties.columns as TextImageLabel[] });
   }
 
   addRow(question: string): void {
     const newRow = this.unitService.createLikertRow(
       question,
-      (this.combinedProperties.columns as ColumnHeader[]).length
+      (this.combinedProperties.columns as TextImageLabel[]).length
     );
     (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });

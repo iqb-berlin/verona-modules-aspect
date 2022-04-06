@@ -10,7 +10,7 @@ import { ColumnHeaderEditDialogComponent } from '../components/dialogs/column-he
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import {
-  ColumnHeader,
+  TextImageLabel,
   DragNDropValueObject,
   LikertRowElement,
   PlayerProperties
@@ -91,14 +91,14 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertColumnEditDialog(column: ColumnHeader, defaultFontSize: number): Observable<ColumnHeader> {
+  showLikertColumnEditDialog(column: TextImageLabel, defaultFontSize: number): Observable<TextImageLabel> {
     const dialogRef = this.dialog.open(ColumnHeaderEditDialogComponent, {
       data: { column, defaultFontSize }
     });
     return dialogRef.afterClosed();
   }
 
-  showLikertRowEditDialog(row: LikertRowElement, columns: ColumnHeader[]): Observable<LikertRowElement> {
+  showLikertRowEditDialog(row: LikertRowElement, columns: TextImageLabel[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
       data: { row, columns }
     });

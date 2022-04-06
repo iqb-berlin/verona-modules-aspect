@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from '../../services/file.service';
-import { ColumnHeader } from '../../../../../common/interfaces/elements';
+import { TextImageLabel } from '../../../../../common/interfaces/elements';
 
 @Component({
   selector: 'aspect-likert-column-edit-dialog',
@@ -42,7 +42,7 @@ import { ColumnHeader } from '../../../../../common/interfaces/elements';
   ]
 })
 export class ColumnHeaderEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { column: ColumnHeader, defaultFontSize: number }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { column: TextImageLabel, defaultFontSize: number }) { }
   textContent: string = this.data.column.text;
   imgSrc: string | null = this.data.column.imgSrc;
 

@@ -13,7 +13,7 @@ export type DragNDropValueObject = {
 };
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-ColumnHeader[] | ClozeDocument |
+TextImageLabel[] | ClozeDocument |
 PositionProperties | ElementStyling | PlayerProperties | BasicStyles;
 
 export interface UIElement {
@@ -48,7 +48,7 @@ export interface ValueChangeElement {
   value: InputElementValue;
 }
 
-export interface ColumnHeader {
+export interface TextImageLabel {
   text: string;
   imgSrc: string | null;
   position: 'above' | 'below';
@@ -210,7 +210,7 @@ export interface ImageElement extends UIElement {
 export interface LikertElement extends UIElement {
   type: 'likert';
   rows: LikertRowElement[];
-  columns: ColumnHeader[];
+  columns: TextImageLabel[];
   firstColumnSizeRatio: number;
   readOnly: boolean;
   position: PositionProperties;
@@ -239,7 +239,7 @@ export interface RadioButtonGroupElement extends InputElement {
 
 export interface RadioButtonGroupComplexElement extends InputElement {
   type: 'radio-group-images' // TODO better name
-  columns: ColumnHeader[];
+  columns: TextImageLabel[];
   position: PositionProperties;
   styling: BasicStyles;
 }

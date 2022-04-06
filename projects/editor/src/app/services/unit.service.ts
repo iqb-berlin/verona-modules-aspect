@@ -14,7 +14,7 @@ import { Copy } from '../../../../common/util/copy';
 import { UnitFactory } from '../../../../common/util/unit.factory';
 import { Page, Section, Unit } from '../../../../common/interfaces/unit';
 import {
-  ClozeElement, ColumnHeader, DragNDropValueObject,
+  ClozeElement, TextImageLabel, DragNDropValueObject,
   DropListElement, InputElement, InputElementValue, LikertElement,
   LikertRowElement, PlayerElement, PlayerProperties,
   PositionedElement, TextElement,
@@ -238,7 +238,7 @@ export class UnitService {
 
   updateElementProperty(elements: UIElement[],
                         property: string,
-                        value: InputElementValue | ColumnHeader[] | ClozeDocument |
+                        value: InputElementValue | TextImageLabel[] | ClozeDocument |
                         DragNDropValueObject[] | null): boolean {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
@@ -297,7 +297,7 @@ export class UnitService {
       });
   }
 
-  async editLikertRow(row: LikertRowElement, columns: ColumnHeader[]): Promise<void> {
+  async editLikertRow(row: LikertRowElement, columns: TextImageLabel[]): Promise<void> {
     await this.dialogService.showLikertRowEditDialog(row, columns)
       .subscribe((result: LikertRowElement) => {
         if (result) {

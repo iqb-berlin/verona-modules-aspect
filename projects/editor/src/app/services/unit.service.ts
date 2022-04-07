@@ -238,7 +238,7 @@ export class UnitService {
 
   updateElementProperty(elements: UIElement[],
                         property: string,
-                        value: InputElementValue | TextImageLabel[] | ClozeDocument |
+                        value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
                         DragNDropValueObject[] | null): boolean {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
@@ -300,7 +300,11 @@ export class UnitService {
   createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
     return ElementFactory.createLikertRowElement({
       id: this.idService.getNewID('likert_row'),
-      text: rowLabelText,
+      rowLabel: {
+        text: rowLabelText,
+        imgSrc: null,
+        position: 'above'
+      },
       columnCount: columnCount
     });
   }

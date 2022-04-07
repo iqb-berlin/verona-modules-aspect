@@ -13,7 +13,7 @@ export type DragNDropValueObject = {
 };
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-TextImageLabel[] | ClozeDocument |
+TextImageLabel[] | ClozeDocument | TextImageLabel |
 PositionProperties | ElementStyling | PlayerProperties | BasicStyles;
 
 export interface UIElement {
@@ -51,7 +51,7 @@ export interface ValueChangeElement {
 export interface TextImageLabel {
   text: string;
   imgSrc: string | null;
-  position: 'above' | 'below';
+  position: 'above' | 'below' | 'left' | 'right';
 }
 
 export interface PositionProperties {
@@ -223,9 +223,10 @@ export interface LikertElement extends UIElement {
 
 export interface LikertRowElement extends InputElement {
   type: 'likert-row';
-  text: string;
+  rowLabel: TextImageLabel;
   columnCount: number;
   firstColumnSizeRatio: number;
+  verticalButtonAlignment: 'auto' | 'center';
 }
 
 export interface RadioButtonGroupElement extends InputElement {

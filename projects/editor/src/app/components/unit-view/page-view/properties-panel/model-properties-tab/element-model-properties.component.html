@@ -194,8 +194,11 @@
         <div *ngFor="let row of $any(combinedProperties.rows); let i = index" cdkDrag
              class="list-items" fxLayout="row" fxLayoutAlign="end center">
           <div fxFlex="70">
-            {{row.text}}
+            {{row.rowLabel.text}}
           </div>
+          <img [src]="row.rowLabel.imgSrc"
+               [style.object-fit]="'scale-down'"
+               [style.height.px]="40">
           <button mat-icon-button color="primary"
                   (click)="editLikertRow(i)">
             <mat-icon>build</mat-icon>

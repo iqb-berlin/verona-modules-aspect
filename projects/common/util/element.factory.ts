@@ -378,9 +378,15 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initInputElement(element),
       type: 'likert-row',
-      text: element.text !== undefined ? element.text : '',
+      rowLabel: element.rowLabel !== undefined ? element.rowLabel : {
+        text: '',
+        imgSrc: null,
+        position: 'above'
+      },
       columnCount: element.columnCount !== undefined ? element.columnCount : 0,
-      firstColumnSizeRatio: element.firstColumnSizeRatio !== undefined ? element.firstColumnSizeRatio : 5
+      firstColumnSizeRatio: element.firstColumnSizeRatio !== undefined ? element.firstColumnSizeRatio : 5,
+      verticalButtonAlignment:
+        element.verticalButtonAlignment !== undefined ? element.verticalButtonAlignment : 'center'
     };
   }
 

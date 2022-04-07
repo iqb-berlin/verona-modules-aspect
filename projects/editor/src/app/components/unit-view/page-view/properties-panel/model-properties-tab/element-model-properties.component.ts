@@ -125,18 +125,21 @@ export class ElementModelPropertiesComponent {
               result.id
             );
           }
-          if (result.text !== row.text) {
-            this.unitService.updateElementProperty(
-              [row],
-              'text',
-              result.text
-            );
+          if (result.rowLabel !== row.rowLabel) {
+            this.unitService.updateElementProperty([row], 'rowLabel', result.rowLabel);
           }
           if (result.value !== row.value) {
             this.unitService.updateElementProperty(
               [row],
               'value',
               result.value
+            );
+          }
+          if (result.verticalButtonAlignment !== row.verticalButtonAlignment) {
+            this.unitService.updateElementProperty(
+              [row],
+              'verticalButtonAlignment',
+              result.verticalButtonAlignment
             );
           }
         }

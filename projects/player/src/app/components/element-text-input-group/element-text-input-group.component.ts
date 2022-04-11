@@ -4,7 +4,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { KeypadService } from '../../services/keypad.service';
 import {
-  InputElement, TextAreaElement, TextFieldElement
+  InputElement, TextAreaElement, TextFieldElement, SpellCorrectElement
 } from '../../../../../common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
@@ -16,6 +16,7 @@ import { ElementFormGroupDirective } from '../../directives/element-form-group.d
 import { TextAreaComponent } from '../../../../../common/components/ui-elements/text-area.component';
 import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
 import { KeyboardService } from '../../services/keyboard.service';
+import { SpellCorrectComponent } from '../../../../../common/components/ui-elements/spell-correct.component';
 
 @Component({
   selector: 'aspect-element-text-input-group',
@@ -26,6 +27,7 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   TextAreaElement!: TextAreaElement;
   TextFieldElement!: TextFieldElement;
+  SpellCorrectElement!: SpellCorrectElement;
 
   isKeypadOpen!: boolean;
 
@@ -52,7 +54,8 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     );
   }
 
-  onFocusChanged(inputElement: HTMLElement | null, elementComponent: TextAreaComponent | TextFieldComponent): void {
+  onFocusChanged(inputElement: HTMLElement | null,
+                 elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
     if (this.elementModel.inputAssistance !== 'none') {
       this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
     }

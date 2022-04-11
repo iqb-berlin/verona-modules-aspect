@@ -431,6 +431,15 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initInputElement({ width: 230, height: 80, ...element }),
       type: 'spell-correct',
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePosition: element.inputAssistancePosition !== undefined ?
+        element.inputAssistancePosition : 'floating',
+      restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
+        element.restrictedToInputAssistanceChars : true,
+      showSoftwareKeyboard: element.showSoftwareKeyboard !== undefined ?
+        element.showSoftwareKeyboard : false,
+      softwareKeyboardShowFrench: element.softwareKeyboardShowFrench !== undefined ?
+        element.softwareKeyboardShowFrench : false,
       position: ElementFactory.initPositionProps(element.position),
       styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
     };

@@ -258,6 +258,11 @@ export interface SliderElement extends InputElement {
 
 export interface SpellCorrectElement extends InputElement {
   type: 'spell-correct';
+  inputAssistancePreset: InputAssistancePreset;
+  inputAssistancePosition: 'floating' | 'right';
+  restrictedToInputAssistanceChars: boolean;
+  showSoftwareKeyboard: boolean;
+  softwareKeyboardShowFrench: boolean;
   position: PositionProperties;
   styling: BasicStyles;
 }

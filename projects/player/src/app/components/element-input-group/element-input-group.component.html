@@ -5,12 +5,6 @@
       [parentForm]="form"
       [elementModel]="elementModel | cast: CheckboxElement">
   </aspect-checkbox>
-  <aspect-spell-correct
-      *ngIf="elementModel.type === 'spell-correct'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: SpellCorrectElement">
-  </aspect-spell-correct>
   <aspect-slider
       *ngIf="elementModel.type === 'slider'"
       #elementComponent

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  CheckboxElement, DropListElement, InputElement, SliderElement, SpellCorrectElement,
+  CheckboxElement, DropListElement, InputElement, SliderElement,
   RadioButtonGroupElement, RadioButtonGroupComplexElement, DropdownElement
 } from '../../../../../common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
@@ -22,7 +22,6 @@ import { ValidatorService } from '../../services/validator.service';
 export class ElementInputGroupComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   CheckboxElement!: CheckboxElement;
-  SpellCorrectElement!: SpellCorrectElement;
   SliderElement!: SliderElement;
   DropListElement!: DropListElement;
   RadioButtonGroupElement!: RadioButtonGroupElement;

@@ -16,12 +16,12 @@ import { SpellCorrectElement } from '../../interfaces/elements';
            [style.height.%]="100">
         <mat-form-field class="small-input">
           <input matInput #input
-                 type="text"
                  autocomplete="off"
                  autocapitalize="none"
                  autocorrect="off"
                  spellcheck="false"
                  value="{{elementModel.value}}"
+                 [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
                  [style.text-align]="'center'"
                  [readonly]="elementModel.readOnly"
                  [style.color]="elementModel.styling.fontColor"

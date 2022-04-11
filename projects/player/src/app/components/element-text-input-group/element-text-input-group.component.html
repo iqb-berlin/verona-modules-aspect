@@ -1,22 +1,29 @@
 <form class="inline-container"
       [formGroup]="form">
   <aspect-text-area
-      *ngIf="elementModel.type === 'text-area'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: TextAreaElement"
-      (onFocusChanged)="onFocusChanged($event, elementComponent)">
+    *ngIf="elementModel.type === 'text-area'"
+    #elementComponent
+    [parentForm]="form"
+    [elementModel]="elementModel | cast: TextAreaElement"
+    (onFocusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-area>
   <aspect-text-field
-      *ngIf="elementModel.type === 'text-field'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: TextFieldElement"
-      (onFocusChanged)="onFocusChanged($event, elementComponent)">
+    *ngIf="elementModel.type === 'text-field'"
+    #elementComponent
+    [parentForm]="form"
+    [elementModel]="elementModel | cast: TextFieldElement"
+    (onFocusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-field>
+  <aspect-spell-correct
+    *ngIf="elementModel.type === 'spell-correct'"
+    #elementComponent
+    [parentForm]="form"
+    [elementModel]="elementModel | cast: SpellCorrectElement"
+    (onFocusChanged)="onFocusChanged($event, elementComponent)">
+  </aspect-spell-correct>
 </form>
 
 <aspect-floating-keypad
-    [isKeypadOpen]="isKeypadOpen && keypadService.position === 'floating'">
+  [isKeypadOpen]="isKeypadOpen && keypadService.position === 'floating'">
 </aspect-floating-keypad>
 

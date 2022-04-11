@@ -14,11 +14,11 @@ export class ElementSplitterComponent implements OnInit {
   @Input() pageIndex!: number;
 
   groups: ElementGroup[] = [
-    { name: 'textInputGroup', types: ['text-field', 'text-area'] },
+    { name: 'textInputGroup', types: ['text-field', 'text-area', 'spell-correct'] },
     { name: 'mediaPlayerGroup', types: ['audio', 'video'] },
     {
       name: 'inputGroup',
-      types: ['checkbox', 'spell-correct', 'slider', 'drop-list', 'radio', 'radio-group-images', 'dropdown']
+      types: ['checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images', 'dropdown']
     },
     { name: 'compoundGroup', types: ['cloze', 'likert'] },
     { name: 'textGroup', types: ['text'] },

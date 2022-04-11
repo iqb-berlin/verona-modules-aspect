@@ -1,8 +1,9 @@
 import { TextFieldComponent } from '../../../../common/components/ui-elements/text-field.component';
 import { TextAreaComponent } from '../../../../common/components/ui-elements/text-area.component';
+import { SpellCorrectComponent } from '../../../../common/components/ui-elements/spell-correct.component';
 
 export abstract class InputService {
-  elementComponent!: TextFieldComponent | TextAreaComponent;
+  elementComponent!: TextFieldComponent | TextAreaComponent | SpellCorrectComponent;
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
   isOpen!: boolean;
 
@@ -17,7 +18,7 @@ export abstract class InputService {
   }
 
   protected open(focussedElement: HTMLElement | null,
-                 elementComponent: TextAreaComponent | TextFieldComponent): boolean {
+                 elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): boolean {
     this.inputElement = elementComponent.elementModel.type === 'text-area' ?
       focussedElement as HTMLTextAreaElement :
       focussedElement as HTMLInputElement;

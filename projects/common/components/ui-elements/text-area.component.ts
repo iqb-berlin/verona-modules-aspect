@@ -28,6 +28,7 @@ import { TextAreaElement } from '../../interfaces/elements';
                 spellcheck="false"
                 rows="{{elementModel.rowCount}}"
                 value="{{elementModel.value}}"
+                [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
                 [formControl]="elementFormControl"
                 [readonly]="elementModel.readOnly"
                 [style.min-width.%]="100"

@@ -3,7 +3,6 @@
     <div class="pages-layout-container">
       <ng-content></ng-content>
     </div>
-<!-- TODO toggle is called on all fields, regardless of parameter? Better to check first?-->
     <aspect-keypad
         *ngIf="keypadService.isOpen && keypadService.position === 'right'"
         @keypadSlideInOut
@@ -17,7 +16,7 @@
     </aspect-keypad>
   </div>
   <aspect-keyboard
-      *ngIf="keyboardService.isOpen"
+      *ngIf="keyboardService.isOpen && deviceService.isTouch"
       @keyboardSlideInOut
       [showFrenchCharacters]="keyboardService.elementComponent.elementModel.softwareKeyboardShowFrench"
       (characterClicked)="keyboardService.enterKey($event)"

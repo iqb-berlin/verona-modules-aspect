@@ -4,6 +4,7 @@ import {
 } from '@angular/animations';
 import { KeypadService } from '../../services/keypad.service';
 import { KeyboardService } from '../../services/keyboard.service';
+import { DeviceService } from '../../services/device.service';
 
 @Component({
   selector: 'aspect-layout-player',
@@ -33,6 +34,7 @@ import { KeyboardService } from '../../services/keyboard.service';
 export class LayoutPlayerComponent {
   constructor(
     public keypadService: KeypadService,
-    public keyboardService: KeyboardService
+    public keyboardService: KeyboardService,
+    public deviceService: DeviceService
   ) { }
 }

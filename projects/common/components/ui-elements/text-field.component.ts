@@ -21,12 +21,13 @@ import { TextFieldElement } from '../../interfaces/elements';
                     aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
-      <input matInput type="text" #input
+      <input matInput #input
              autocomplete="off"
              autocapitalize="none"
              autocorrect="off"
              spellcheck="false"
              value="{{elementModel.value}}"
+             [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
              [formControl]="elementFormControl"
              [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"

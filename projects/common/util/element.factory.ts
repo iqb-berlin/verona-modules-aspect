@@ -324,7 +324,7 @@ export abstract class ElementFactory {
 
   private static createFrameElement(element: Partial<FrameElement>): FrameElement {
     return {
-      ...ElementFactory.initElement({}),
+      ...ElementFactory.initElement(element),
       type: 'frame',
       position: ElementFactory.initPositionProps({ zIndex: -1, ...element.position }),
       styling: {

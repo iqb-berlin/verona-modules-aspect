@@ -12,12 +12,12 @@ export class KeypadService extends InputService {
   preset!: InputAssistancePreset;
   position!: 'floating' | 'right';
 
-  toggle(focussedElement: HTMLElement | null,
+  toggle(focusedElement: HTMLElement | null,
          elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): boolean {
-    if (focussedElement) {
+    if (focusedElement) {
       this.preset = (elementComponent.elementModel as TextFieldElement).inputAssistancePreset;
       this.position = (elementComponent.elementModel as TextFieldElement).inputAssistancePosition;
-      this.isOpen = this.open(focussedElement, elementComponent);
+      this.isOpen = this.open(focusedElement, elementComponent);
     } else {
       this.isOpen = false;
     }

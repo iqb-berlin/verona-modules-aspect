@@ -7,11 +7,11 @@ export abstract class InputService {
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
   isOpen!: boolean;
 
-  protected open(focussedElement: HTMLElement | null,
+  protected open(focusedElement: HTMLElement | null,
                  elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): boolean {
     this.inputElement = elementComponent.elementModel.type === 'text-area' ?
-      focussedElement as HTMLTextAreaElement :
-      focussedElement as HTMLInputElement;
+      focusedElement as HTMLTextAreaElement :
+      focusedElement as HTMLInputElement;
     this.elementComponent = elementComponent;
     return true;
   }

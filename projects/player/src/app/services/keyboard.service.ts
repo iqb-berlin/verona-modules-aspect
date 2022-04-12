@@ -12,14 +12,14 @@ export class KeyboardService extends InputService {
   alternativeKeyboard!: boolean;
   alternativeKeyboardShowFrench!: boolean;
 
-  toggle(focussedElement: HTMLElement | null,
+  toggle(focusedElement: HTMLElement | null,
          elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent,
          isMobileWithoutHardwareKeyboard: boolean): boolean {
-    if (focussedElement && isMobileWithoutHardwareKeyboard) {
+    if (focusedElement && isMobileWithoutHardwareKeyboard) {
       this.alternativeKeyboard = (elementComponent.elementModel as TextFieldElement).showSoftwareKeyboard;
       this.alternativeKeyboardShowFrench =
         (elementComponent.elementModel as TextFieldElement).softwareKeyboardShowFrench;
-      this.isOpen = this.open(focussedElement, elementComponent);
+      this.isOpen = this.open(focusedElement, elementComponent);
     } else {
       this.isOpen = false;
     }

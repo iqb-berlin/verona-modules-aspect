@@ -18,14 +18,11 @@ import { PositionedElement, UIElement } from '../../../../../../../common/interf
     '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin-top: 10px; border-radius: 10%}',
     '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
     '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}',
-    '.section-menu {opacity:0; transition: opacity 0.5s linear; transition-delay:0.3s;}',
-    '.section-menu.open {opacity:1; transition-delay:0s;}'
+    '.hidden {display: none !important;}'
   ]
 })
 export class CanvasComponent {
   @Input() page!: Page;
-  hoveredSection: number = -1;
-
   @ViewChildren('sectionComponent')
   childSectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
 

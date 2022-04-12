@@ -31,6 +31,7 @@ import { TextFieldElement } from '../../interfaces/elements';
              [formControl]="elementFormControl"
              [pattern]="elementModel.pattern"
              [readonly]="elementModel.readOnly"
+             (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
              (focus)="onFocusChanged.emit(input)"
              (blur)="onFocusChanged.emit(null)">
       <button *ngIf="elementModel.clearable"
@@ -50,6 +51,7 @@ import { TextFieldElement } from '../../interfaces/elements';
            autocapitalize="none"
            autocorrect="off"
            spellcheck="false"
+           [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
            [style.width.px]="elementModel.width"
            [style.height.px]="elementModel.height"
            [style.line-height.%]="elementModel.styling.lineHeight"
@@ -62,6 +64,7 @@ import { TextFieldElement } from '../../interfaces/elements';
            [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
            [value]="elementModel.value"
+           (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
            (focus)="onFocusChanged.emit(input)"
            (blur)="onFocusChanged.emit(null)">
   `,
@@ -74,6 +77,6 @@ import { TextFieldElement } from '../../interfaces/elements';
 export class TextFieldComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldElement;
   @Input() isClozeChild!: boolean;
-
+  @Output() onKeyDown = new EventEmitter<HTMLElement>();
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
 }

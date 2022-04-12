@@ -7,16 +7,6 @@ export abstract class InputService {
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
   isOpen!: boolean;
 
-  toggle(focussedElement: HTMLElement | null,
-         elementComponent: TextAreaComponent | TextFieldComponent): boolean {
-    if (focussedElement) {
-      this.isOpen = this.open(focussedElement, elementComponent);
-    } else {
-      this.isOpen = false;
-    }
-    return this.isOpen;
-  }
-
   protected open(focussedElement: HTMLElement | null,
                  elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): boolean {
     this.inputElement = elementComponent.elementModel.type === 'text-area' ?

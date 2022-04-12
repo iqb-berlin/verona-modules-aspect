@@ -5,6 +5,7 @@
     #elementComponent
     [parentForm]="form"
     [elementModel]="elementModel | cast: TextAreaElement"
+    (onKeyDown)="registerHardwareKeyboard($event, elementComponent)"
     (onFocusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-area>
   <aspect-text-field
@@ -12,6 +13,7 @@
     #elementComponent
     [parentForm]="form"
     [elementModel]="elementModel | cast: TextFieldElement"
+    (onKeyDown)="registerHardwareKeyboard($event, elementComponent)"
     (onFocusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-field>
   <aspect-spell-correct
@@ -19,6 +21,7 @@
     #elementComponent
     [parentForm]="form"
     [elementModel]="elementModel | cast: SpellCorrectElement"
+    (onKeyDown)="registerHardwareKeyboard($event, elementComponent)"
     (onFocusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-spell-correct>
 </form>

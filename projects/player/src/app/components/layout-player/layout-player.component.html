@@ -16,7 +16,7 @@
     </aspect-keypad>
   </div>
   <aspect-keyboard
-      *ngIf="keyboardService.isOpen && deviceService.isTouch"
+      *ngIf="keyboardService.isOpen"
       @keyboardSlideInOut
       [showFrenchCharacters]="keyboardService.elementComponent.elementModel.softwareKeyboardShowFrench"
       (characterClicked)="keyboardService.enterKey($event)"

@@ -15,6 +15,7 @@ import { KeypadService } from '../../services/keypad.service';
 import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { KeyboardService } from '../../services/keyboard.service';
+import { DeviceService } from '../../services/device.service';
 
 @Component({
   selector: 'aspect-element-compound-group',
@@ -30,6 +31,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
 
   constructor(
     private keyboardService: KeyboardService,
+    private deviceService: DeviceService,
     public keypadService: KeypadService,
     public unitStateService: UnitStateService,
     public unitStateElementMapperService: UnitStateElementMapperService,
@@ -53,18 +55,37 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
       const childModel = child.elementModel as InputElement;
       this.registerAtUnitStateService(childModel.id, childModel.value, child, this.pageIndex);
       if (childModel.type === 'text-field') {
+        const textFieldComponent = child as TextFieldComponent;
         (child as TextFieldComponent)
           .onFocusChanged
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(element => {
-            if (childModel.inputAssistance !== 'none') {
-              this.isKeypadOpen = this.keypadService.toggle(element, child as TextFieldComponent);
-            }
-            if (childModel.showSoftwareKeyboard && !childModel.readOnly) {
-              this.keyboardService.toggle(element, child as TextFieldComponent);
-            }
+            this.onFocusChanged(element, textFieldComponent, childModel);
+          });
+        (child as TextFieldComponent)
+          .onKeyDown
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe(element => {
+            this.registerHardwareKeyboard(element, textFieldComponent);
           });
       }
     });
+  }
+
+  private onFocusChanged(inputElement: HTMLElement | null,
+                         elementComponent: TextFieldComponent,
+                         elementModel: InputElement): void {
+    if (elementModel.inputAssistance !== 'none') {
+      this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
+    }
+    if (elementModel.showSoftwareKeyboard && !elementModel.readOnly) {
+      this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
+    }
+  }
+
+  private registerHardwareKeyboard(inputElement: HTMLElement | null,
+                                   elementComponent: TextFieldComponent): void {
+    this.deviceService.registerHardwareKeyboard();
+    this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
   }
 }

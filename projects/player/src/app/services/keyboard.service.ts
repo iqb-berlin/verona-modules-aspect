@@ -13,8 +13,9 @@ export class KeyboardService extends InputService {
   alternativeKeyboardShowFrench!: boolean;
 
   toggle(focussedElement: HTMLElement | null,
-         elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): boolean {
-    if (focussedElement) {
+         elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent,
+         isMobileWithoutHardwareKeyboard: boolean): boolean {
+    if (focussedElement && isMobileWithoutHardwareKeyboard) {
       this.alternativeKeyboard = (elementComponent.elementModel as TextFieldElement).showSoftwareKeyboard;
       this.alternativeKeyboardShowFrench =
         (elementComponent.elementModel as TextFieldElement).softwareKeyboardShowFrench;

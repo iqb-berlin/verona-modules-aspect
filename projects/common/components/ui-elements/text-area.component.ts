@@ -34,6 +34,7 @@ import { TextAreaElement } from '../../interfaces/elements';
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
+                (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
                 (focus)="onFocusChanged.emit(input)"
                 (blur)="onFocusChanged.emit(null)">
       </textarea>
@@ -50,4 +51,5 @@ import { TextAreaElement } from '../../interfaces/elements';
 export class TextAreaComponent extends FormElementComponent {
   @Input() elementModel!: TextAreaElement;
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
+  @Output() onKeyDown = new EventEmitter<HTMLElement>();
 }

@@ -17,6 +17,7 @@ import { TextAreaComponent } from '../../../../../common/components/ui-elements/
 import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
 import { KeyboardService } from '../../services/keyboard.service';
 import { SpellCorrectComponent } from '../../../../../common/components/ui-elements/spell-correct.component';
+import { DeviceService } from '../../services/device.service';
 
 @Component({
   selector: 'aspect-element-text-input-group',
@@ -39,7 +40,8 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
-    public validatorService: ValidatorService
+    public validatorService: ValidatorService,
+    public deviceService: DeviceService
   ) {
     super();
   }
@@ -60,7 +62,13 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
       this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
     }
     if (this.elementModel.showSoftwareKeyboard && !this.elementModel.readOnly) {
-      this.keyboardService.toggle(inputElement, elementComponent);
+      this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
     }
+  }
+
+  registerHardwareKeyboard(inputElement: HTMLElement | null,
+                           elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
+    this.deviceService.registerHardwareKeyboard();
+    this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
   }
 }

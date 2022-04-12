@@ -12,3 +12,10 @@ iqb-aspect-definition@1.0.0
 3.2.0
 - LikertRowElement: +verticalButtonAlignment
 - TextImageLabel: position: 'above' | 'below' | 'left' | 'right';
+
+3.3.0
+- SpellCorrectElement: +inputAssistancePreset: InputAssistancePreset;
+                       +inputAssistancePosition: 'floating' | 'right';
+                       +restrictedToInputAssistanceChars: boolean;
+                       +showSoftwareKeyboard: boolean;
+                       +softwareKeyboardShowFrench: boolean;

@@ -7,11 +7,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class MessageService {
   constructor(private _snackBar: MatSnackBar) {}
 
+  showMessage(text: string): void {
+    this._snackBar.open(text, undefined, { duration: 3000 });
+  }
+
   showWarning(text: string): void {
-    this._snackBar.open(text, undefined, { duration: 2000, panelClass: 'snackbar-warning' });
+    this._snackBar.open(text, undefined, { duration: 3000, panelClass: 'snackbar-warning' });
   }
 
   showError(text: string): void {
-    this._snackBar.open(text, undefined, { duration: 2000, panelClass: 'snackbar-error' });
+    this._snackBar.open(text, undefined, { duration: 3000, panelClass: 'snackbar-error' });
   }
 }

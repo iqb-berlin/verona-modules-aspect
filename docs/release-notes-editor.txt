@@ -1,5 +1,10 @@
 Editor
 ======
+1.29.0
+- To enable the virtual software keyboard on mobile devices,
+  the use of the read-only field is no longer required
+- Activate the input assistance features and the virtual software keyboard for the 'correct word' element
+
 1.28.1
 - Fix reading of old radio button group options
 

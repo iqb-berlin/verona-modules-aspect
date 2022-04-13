@@ -15,7 +15,6 @@ import { LikertRowElement } from '../../interfaces/elements';
            [style.grid-column-end]="2"
            [style.grid-row-start]="1"
            [style.grid-row-end]="2"
-           [style.text-align]="'center'"
            [style.place-self]="'start'"
            [style.align-items]="'center'"
            [fxLayout]="elementModel.rowLabel.position === 'left' ||

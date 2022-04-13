@@ -176,7 +176,6 @@ import { ClozeUtils } from '../../util/cloze';
     </ng-template>
   `,
   styles: [
-    ':host ::ng-deep aspect-text-field {vertical-align: middle}',
     ':host ::ng-deep aspect-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}',
     ':host ::ng-deep aspect-text-field .mat-form-field {height: 100%}',
     ':host ::ng-deep aspect-text-field .mat-form-field-flex {height: 100%}',

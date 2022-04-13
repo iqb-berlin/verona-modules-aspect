@@ -14,7 +14,7 @@ export interface ClozeDocumentParagraph {
 export interface ClozeDocumentParagraphPart {
   type: string;
   text?: string;
-  marks?: any[];
+  marks?: Record<string, any>[];
   attrs?: Record<string, string | number | boolean | InputElement>;
 }
 

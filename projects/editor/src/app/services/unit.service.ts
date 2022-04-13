@@ -48,7 +48,7 @@ export class UnitService {
     this.idService.reset();
     const sanatizationResult = UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(unitDefinition));
     if (unitDefinition) {
-      if (sanatizationResult[1]) this.messageService.showWarning('Loaded outdated unit definition.');
+      if (sanatizationResult[1]) this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
     }
     this.unit = UnitFactory.createUnit(sanatizationResult[0]);
     UnitService.readIDs(this.unit);

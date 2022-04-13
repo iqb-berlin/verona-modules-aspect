@@ -19,10 +19,17 @@ export class KeyboardService extends InputService {
       this.alternativeKeyboard = (elementComponent.elementModel as TextFieldElement).showSoftwareKeyboard;
       this.alternativeKeyboardShowFrench =
         (elementComponent.elementModel as TextFieldElement).softwareKeyboardShowFrench;
+      this.scrollElement(focusedElement);
       this.isOpen = this.open(focusedElement, elementComponent);
     } else {
       this.isOpen = false;
     }
     return this.isOpen;
   }
+
+  private scrollElement = (element: HTMLElement): void => {
+    if (window.innerHeight - element.getBoundingClientRect().top < 300) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 }

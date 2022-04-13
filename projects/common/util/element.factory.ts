@@ -298,8 +298,8 @@ export abstract class ElementFactory {
       position: ElementFactory.initPositionProps({ useMinHeight: true, ...element.position }),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: '#f4f4f2', ...element.styling }),
-        itemBackgroundColor: element.itemBackgroundColor !== undefined ?
-          element.itemBackgroundColor as string : '#c9e0e0'
+        itemBackgroundColor: element.styling?.itemBackgroundColor !== undefined ?
+          element.styling.itemBackgroundColor as string : '#c9e0e0'
       }
     };
   }

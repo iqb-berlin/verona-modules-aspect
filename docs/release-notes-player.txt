@@ -1,5 +1,9 @@
 Player
 ======
+1.23.0
+- Show virtual keyboard only on mobile devices. If a hardware keyboard is connected,
+  the virtual keyboard is disabled after pressing the first hardware key.
+
 1.22.1
 - Fix reading of old radio button group options
 1.22.0

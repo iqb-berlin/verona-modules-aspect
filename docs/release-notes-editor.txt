@@ -1,9 +1,16 @@
 Editor
 ======
 1.29.0
-- To enable the virtual software keyboard on mobile devices,
-  the use of the read-only field is no longer required
-- Activate the input assistance features and the virtual software keyboard for the 'correct word' element
+- Extend likert rows to have text and/or an image
+- Add switch likert row label to set the image postion relative to the text
+- Rework software keyboard settings
+  To enable the virtual software keyboard on mobile devices, the use of the
+  read-only field is no longer required.
+- Add input assistance and virtual software keyboard to spell-correct element
+- Fix frame initialisation
+- Fix section menu disappearing on short sections
+  The solution is to always show the section menu of the selected section.
+- Fix droplist item background color initialization
 
 1.28.1
 - Fix reading of old radio button group options

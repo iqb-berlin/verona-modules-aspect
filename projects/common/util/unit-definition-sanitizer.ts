@@ -5,7 +5,7 @@ import {
   ClozeElement,
   DragNDropValueObject,
   DropListElement,
-  ElementStyling, InputElement,
+  ElementStyling, InputElement, LikertElement, LikertRowElement,
   PlayerProperties, PositionedElement,
   PositionProperties, TextElement,
   UIElement,
@@ -76,14 +76,14 @@ export abstract class UnitDefinitionSanitizer {
     return {
       ...section,
       elements: section.elements.map((element: UIElement) => (
-        UnitDefinitionSanitizer.sanatizeElement(element))) as PositionedElement[]
+        UnitDefinitionSanitizer.sanatizeElement(element, section.dynamicPositioning))) as PositionedElement[]
     };
   }
 
-  static sanatizeElement(element: Record<string, UIElementValue>): UIElement {
+  static sanatizeElement(element: Record<string, UIElementValue>, sectionDynamicPositioning?: boolean): UIElement {
     let newElement: Partial<UIElement> = {
       ...element,
-      position: UnitDefinitionSanitizer.getPositionProps(element),
+      position: UnitDefinitionSanitizer.getPositionProps(element, sectionDynamicPositioning),
       styling: UnitDefinitionSanitizer.getStyleProps(element),
       player: UnitDefinitionSanitizer.getPlayerProps(element)
     };
@@ -110,14 +110,21 @@ export abstract class UnitDefinitionSanitizer {
         richTextOptions: newElement.options
       };
     }
+    if (['likert'].includes(newElement.type as string)) {
+      newElement = UnitDefinitionSanitizer.handleLikertElement(newElement as LikertElement);
+    }
+    if (['likert-row', 'likert_row'].includes(newElement.type as string)) {
+      newElement = UnitDefinitionSanitizer.handleLikertRowElement(newElement as LikertRowElement);
+    }
 
     return newElement as unknown as UIElement;
   }
 
-  private static getPositionProps(element: Record<string, any>): PositionProperties {
-    if (element.position) {
+  private static getPositionProps(element: Record<string, any>, sectionDynamicPositioning?: boolean): PositionProperties {
+    if (element.position && element.position.gridColumnEnd) {
       return {
         ...element.position,
+        dynamicPositioning: sectionDynamicPositioning,
         gridColumn: element.position.gridColumn !== undefined ?
           element.position.gridColumn : element.position.gridColumnStart,
         gridColumnRange: element.position.gridColumnEnd - element.position.gridColumnStart,
@@ -129,6 +136,7 @@ export abstract class UnitDefinitionSanitizer {
     if (element.positionProps) {
       return {
         ...element.positionProps,
+        dynamicPositioning: sectionDynamicPositioning,
         gridColumn: element.positionProps.gridColumn !== undefined ?
           element.positionProps.gridColumn : element.positionProps.gridColumnStart,
         gridColumnRange: element.positionProps.gridColumnEnd - element.positionProps.gridColumnStart,
@@ -137,7 +145,10 @@ export abstract class UnitDefinitionSanitizer {
         gridRowRange: element.positionProps.gridRowEnd - element.positionProps.gridRowStart
       };
     }
-    return element as unknown as PositionProperties;
+    return {
+      ...element.position,
+      dynamicPositioning: sectionDynamicPositioning
+    };
   }
 
   /* Style properties are expected to be in 'stylings'. If not they may be in fontProps and/or
@@ -290,6 +301,28 @@ export abstract class UnitDefinitionSanitizer {
       newElement.value = newValues;
     }
     return newElement as DropListElement;
+  }
+
+  private static handleLikertElement(element: LikertElement): LikertElement {
+    return {
+      ...element,
+      rows: element.rows.map((row: LikertRowElement) => UnitDefinitionSanitizer.sanatizeElement(row))
+    } as LikertElement;
+  }
+
+  private static handleLikertRowElement(element: LikertRowElement): LikertRowElement {
+    const newElement = element;
+    if (newElement.rowLabel) {
+      return newElement;
+    }
+    return {
+      ...newElement,
+      rowLabel: {
+        text: newElement.text,
+        imgSrc: null,
+        position: 'above'
+      }
+    } as LikertRowElement;
   }
 
   // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.

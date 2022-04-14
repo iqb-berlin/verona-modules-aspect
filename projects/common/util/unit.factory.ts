@@ -34,7 +34,7 @@ export abstract class UnitFactory {
         [],
       height: section && section.height !== undefined ? section.height : 400,
       backgroundColor: section && section.backgroundColor !== undefined ? section.backgroundColor : '#ffffff',
-      dynamicPositioning: section && section.dynamicPositioning !== undefined ? section.dynamicPositioning : false,
+      dynamicPositioning: section && section.dynamicPositioning !== undefined ? section.dynamicPositioning : true,
       autoColumnSize: section && section.autoColumnSize !== undefined ? section.autoColumnSize : true,
       autoRowSize: section && section.autoRowSize !== undefined ? section.autoRowSize : true,
       gridColumnSizes: section && section.gridColumnSizes !== undefined ? section.gridColumnSizes : '1fr 1fr',

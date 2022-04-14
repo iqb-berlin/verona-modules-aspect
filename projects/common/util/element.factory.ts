@@ -89,7 +89,7 @@ export abstract class ElementFactory {
     return {
       type: element.type as UIElementType,
       id: element.id ? String(element.id) : 'id_placeholder',
-      width: element.width || 190,
+      width: element.width || 180,
       height: element.height || 60
     };
   }
@@ -97,7 +97,7 @@ export abstract class ElementFactory {
   static initInputElement(element: Partial<UIElement>): InputElement {
     return {
       ...ElementFactory.initElement(element),
-      label: element.value !== undefined ? element.label as string : 'Beispielbeschriftung',
+      label: element.value !== undefined ? element.label as string : 'Beschriftung',
       value: element.value !== undefined ? element.value as InputElementValue : null,
       required: element.required !== undefined ? element.required as boolean : false,
       requiredWarnMessage: element.requiredWarnMessage !== undefined ?
@@ -110,7 +110,7 @@ export abstract class ElementFactory {
   static initPositionProps(defaults: Record<string, UIElementValue> = {}): PositionProperties {
     return {
       fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,
-      dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : false,
+      dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : true,
       xPosition: defaults.xPosition !== undefined ? defaults.xPosition as number : 0,
       yPosition: defaults.yPosition !== undefined ? defaults.yPosition as number : 0,
       useMinHeight: defaults.useMinHeight !== undefined ? defaults.useMinHeight as boolean : false,
@@ -239,7 +239,7 @@ export abstract class ElementFactory {
 
   private static createClozeElement(element: Partial<ClozeElement>): ClozeElement {
     return {
-      ...ElementFactory.initElement({ width: 450, height: 200, ...element }),
+      ...ElementFactory.initElement({ height: 200, ...element }),
       type: 'cloze',
       document: element.document !== undefined ?
         {
@@ -268,7 +268,7 @@ export abstract class ElementFactory {
       position: ElementFactory.initPositionProps(element.position),
       styling: {
         ...ElementFactory.initBasicStyles(element.styling),
-        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 150
       }
     };
   }
@@ -317,9 +317,9 @@ export abstract class ElementFactory {
       highlightReceivingDropListColor: element.highlightReceivingDropListColor !== undefined ?
         element.highlightReceivingDropListColor : '#add8e6',
       styling: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: '#eeeeec', ...element.styling }),
+        ...ElementFactory.initBasicStyles({ backgroundColor: '#f4f4f2', ...element.styling }),
         itemBackgroundColor: element.itemBackgroundColor !== undefined ?
-          element.itemBackgroundColor as string : '#add8e6'
+          element.itemBackgroundColor as string : '#c9e0e0'
       }
     };
   }
@@ -394,7 +394,7 @@ export abstract class ElementFactory {
 
   private static createRadioButtonGroupElement(element: Partial<RadioButtonGroupElement>): RadioButtonGroupElement {
     return {
-      ...ElementFactory.initInputElement({ height: 85, ...element }),
+      ...ElementFactory.initInputElement({ height: 100, ...element }),
       type: 'radio',
       richTextOptions: element.richTextOptions !== undefined ? element.richTextOptions : [],
       alignment: element.alignment !== undefined ? element.alignment : 'column',
@@ -413,7 +413,7 @@ export abstract class ElementFactory {
       ...ElementFactory.initInputElement({ height: 100, ...element }), // TODO better name
       type: 'radio-group-images',
       columns: element.columns !== undefined ? element.columns : [],
-      position: ElementFactory.initPositionProps(element.position),
+      position: ElementFactory.initPositionProps({ marginBottom: 40, ...element.position }),
       styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
     };
   }
@@ -493,7 +493,7 @@ export abstract class ElementFactory {
 
   private static createTextFieldElement(element: Partial<TextFieldElement>): TextFieldElement {
     return {
-      ...ElementFactory.initInputElement({ width: 230, height: 100, ...element }),
+      ...ElementFactory.initInputElement({ width: 180, height: 120, ...element }),
       type: 'text-field',
       appearance: element.appearance !== undefined ? element.appearance : 'outline',
       minLength: element.minLength !== undefined ? element.minLength : 0,
@@ -534,7 +534,7 @@ export abstract class ElementFactory {
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
         lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135,
-        selectionColor: element.styling?.selectionColor !== undefined ? element.styling.selectionColor : 'lightgreen'
+        selectionColor: element.styling?.selectionColor !== undefined ? element.styling.selectionColor : '#c7f3d0'
       }
     };
   }

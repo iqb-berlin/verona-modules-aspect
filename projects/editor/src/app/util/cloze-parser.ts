@@ -1,7 +1,7 @@
 import { IdService } from '../services/id.service';
-import { ElementFactory } from '../../../../common/util/element.factory';
-import { ClozeDocument } from '../../../../common/interfaces/cloze';
-import { InputElement, UIElement } from '../../../../common/interfaces/elements';
+import { ElementFactory } from 'common/util/element.factory';
+import { ClozeDocument } from 'common/interfaces/cloze';
+import { InputElement, UIElement } from 'common/interfaces/elements';
 
 export abstract class ClozeParser {
   static setMissingIDs(clozeJSON: ClozeDocument, idService: IdService): ClozeDocument {

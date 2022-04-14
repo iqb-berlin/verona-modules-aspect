@@ -3,28 +3,28 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from './file.service';
-import { MessageService } from '../../../../common/services/message.service';
+import { MessageService } from 'common/services/message.service';
 import { IdService } from './id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
-import { ElementFactory } from '../../../../common/util/element.factory';
+import { ElementFactory } from 'common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
-import { Copy } from '../../../../common/util/copy';
-import { UnitFactory } from '../../../../common/util/unit.factory';
-import { Page, Section, Unit } from '../../../../common/interfaces/unit';
+import { Copy } from 'common/util/copy';
+import { UnitFactory } from 'common/util/unit.factory';
+import { Page, Section, Unit } from 'common/interfaces/unit';
 import {
   ClozeElement, TextImageLabel, DragNDropValueObject,
   DropListElement, InputElement, InputElementValue, LikertElement,
   LikertRowElement, PlayerElement, PlayerProperties,
   PositionedElement, TextElement,
   UIElement, UIElementType
-} from '../../../../common/interfaces/elements';
-import { UnitDefinitionSanitizer } from '../../../../common/util/unit-definition-sanitizer';
-import { ClozeDocument } from '../../../../common/interfaces/cloze';
-import { UnitUtils } from '../../../../common/util/unit-utils';
-import { ArrayUtils } from '../../../../common/util/array';
-import { ClozeUtils } from '../../../../common/util/cloze';
+} from 'common/interfaces/elements';
+import { UnitDefinitionSanitizer } from 'common/util/unit-definition-sanitizer';
+import { ClozeDocument } from 'common/interfaces/cloze';
+import { UnitUtils } from 'common/util/unit-utils';
+import { ArrayUtils } from 'common/util/array';
+import { ClozeUtils } from 'common/util/cloze';
 
 @Injectable({
   providedIn: 'root'

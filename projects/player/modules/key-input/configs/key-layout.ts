@@ -1,4 +1,4 @@
-import { InputAssistancePreset } from '../../../../common/interfaces/elements';
+import { InputAssistancePreset } from 'common/interfaces/elements';
 
 export class KeyLayout {
   static get = (preset: InputAssistancePreset): { default: string[][], shift: string[][], additional: string[][] } => {

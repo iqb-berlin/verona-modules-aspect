@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { PositionProperties } from '../../../../../../../../../common/interfaces/elements';
+import { PositionProperties } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-dimension-field-set',

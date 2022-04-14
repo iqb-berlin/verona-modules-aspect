@@ -10,10 +10,10 @@ import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
 import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
-import { Page, Unit } from '../../../common/interfaces/unit';
-import { UnitDefinitionSanitizer } from '../../../common/util/unit-definition-sanitizer';
+import { Page, Unit } from 'common/interfaces/unit';
+import { UnitDefinitionSanitizer } from 'common/util/unit-definition-sanitizer';
 import { ValidatorService } from './services/validator.service';
-import { UnitFactory } from '../../../common/util/unit.factory';
+import { UnitFactory } from 'common/util/unit.factory';
 
 @Component({
   selector: 'aspect-player',

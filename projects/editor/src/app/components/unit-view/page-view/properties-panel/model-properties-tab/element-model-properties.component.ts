@@ -12,7 +12,7 @@ import {
   InputElementValue,
   LikertElement, LikertRowElement,
   UIElement
-} from '../../../../../../../../common/interfaces/elements';
+} from 'common/interfaces/elements';
 import { SelectionService } from '../../../../../services/selection.service';
 import { DialogService } from '../../../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';

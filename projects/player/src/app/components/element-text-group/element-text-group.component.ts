@@ -3,14 +3,14 @@ import {
 } from '@angular/core';
 import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { TextElement } from '../../../../../common/interfaces/elements';
-import { TextComponent } from '../../../../../common/components/ui-elements/text.component';
+import { TextElement } from 'common/interfaces/elements';
+import { TextComponent } from 'common/components/ui-elements/text.component';
 import { TextMarker } from '../../classes/text-marker';
 import { NativeEventService } from '../../services/native-event.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
-import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({
   selector: 'aspect-element-text-group',

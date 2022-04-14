@@ -7,8 +7,8 @@ import { SelectionService } from '../../../../services/selection.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';
-import { Page, Section } from '../../../../../../../common/interfaces/unit';
-import { PositionedElement, UIElement } from '../../../../../../../common/interfaces/elements';
+import { Page, Section } from 'common/interfaces/unit';
+import { PositionedElement, UIElement } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-page-canvas',

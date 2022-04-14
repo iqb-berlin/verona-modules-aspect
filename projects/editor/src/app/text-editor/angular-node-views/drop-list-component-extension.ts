@@ -3,7 +3,7 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { DropListNodeviewComponent } from './drop-list-nodeview.component';
 
-import { ElementFactory } from '../../../../../common/util/element.factory';
+import { ElementFactory } from 'common/util/element.factory';
 
 const DropListComponentExtension = (injector: Injector): Node => {
   return Node.create({

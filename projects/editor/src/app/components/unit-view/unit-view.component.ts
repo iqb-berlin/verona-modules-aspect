@@ -4,10 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
-import { MessageService } from '../../../../../common/services/message.service';
-import { Page } from '../../../../../common/interfaces/unit';
-import { ArrayUtils } from '../../../../../common/util/array';
-import { UnitFactory } from '../../../../../common/util/unit.factory';
+import { MessageService } from 'common/services/message.service';
+import { Page } from 'common/interfaces/unit';
+import { ArrayUtils } from 'common/util/array';
+import { UnitFactory } from 'common/util/unit.factory';
 
 @Component({
   selector: 'aspect-unit-view',

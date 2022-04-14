@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from '../../services/file.service';
-import { TextImageLabel } from '../../../../../common/interfaces/elements';
+import { TextImageLabel } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-likert-column-edit-dialog',

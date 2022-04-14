@@ -5,12 +5,12 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
-import { InputElement, InputElementValue, SliderElement } from '../../../../common/interfaces/elements';
+import { InputElement, InputElementValue, SliderElement } from 'common/interfaces/elements';
 import { UnitStateService } from '../services/unit-state.service';
 import { UnitStateElementMapperService } from '../services/unit-state-element-mapper.service';
 import { ElementGroupDirective } from './element-group.directive';
 import { VopNavigationDeniedNotification } from '../models/verona';
-import { MessageService } from '../../../../common/services/message.service';
+import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from '../services/verona-subscription.service';
 import { ValidatorService } from '../services/validator.service';
 

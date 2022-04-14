@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ElementStyling } from '../../../../../../../../common/interfaces/elements';
+import { ElementStyling } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-element-style-properties',

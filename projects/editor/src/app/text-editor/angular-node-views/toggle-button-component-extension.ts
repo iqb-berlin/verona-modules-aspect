@@ -3,7 +3,7 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 
 import { ToggleButtonNodeviewComponent } from './toggle-button-nodeview.component';
-import { ElementFactory } from '../../../../../common/util/element.factory';
+import { ElementFactory } from 'common/util/element.factory';
 
 const ToggleButtonComponentExtension = (injector: Injector): Node => {
   return Node.create({

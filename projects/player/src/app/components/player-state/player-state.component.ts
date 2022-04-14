@@ -9,7 +9,7 @@ import {
   VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
 } from '../../models/verona';
 import { VeronaPostService } from '../../services/verona-post.service';
-import { Page } from '../../../../../common/interfaces/unit';
+import { Page } from 'common/interfaces/unit';
 import { NavigationService } from '../../services/navigation.service';
 
 @Component({

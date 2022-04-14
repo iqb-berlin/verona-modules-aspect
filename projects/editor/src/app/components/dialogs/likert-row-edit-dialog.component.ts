@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TextImageLabel, LikertRowElement } from '../../../../../common/interfaces/elements';
+import { TextImageLabel, LikertRowElement } from 'common/interfaces/elements';
 import { FileService } from '../../services/file.service';
 
 @Component({

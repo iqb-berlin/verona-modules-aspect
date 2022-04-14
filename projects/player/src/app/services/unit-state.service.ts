@@ -9,7 +9,7 @@ import {
   UnitStateElementCodeStatusValue
 } from '../models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
-import { InputElementValue, ValueChangeElement } from '../../../../common/interfaces/elements';
+import { InputElementValue, ValueChangeElement } from 'common/interfaces/elements';
 
 @Injectable({
   providedIn: 'root'

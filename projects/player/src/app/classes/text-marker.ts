@@ -1,4 +1,4 @@
-import { TextComponent } from '../../../../common/components/ui-elements/text.component';
+import { TextComponent } from 'common/components/ui-elements/text.component';
 
 export class TextMarker {
   private static readonly MARKING_TAG = 'ASPECT-MARKED';

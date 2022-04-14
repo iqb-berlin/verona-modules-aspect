@@ -3,11 +3,11 @@ import {
 } from '@angular/core';
 import {
   ButtonElement, FrameElement, ImageElement
-} from '../../../../../common/interfaces/elements';
+} from 'common/interfaces/elements';
 import { VeronaPostService } from '../../services/verona-post.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
-import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ElementComponent } from 'common/directives/element-component.directive';
 import { NavigationService } from '../../services/navigation.service';
 
 @Component({

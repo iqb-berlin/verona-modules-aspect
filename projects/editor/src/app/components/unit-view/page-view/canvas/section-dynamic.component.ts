@@ -3,7 +3,7 @@ import {
   ViewChildren, QueryList, ViewChild
 } from '@angular/core';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
-import { Section } from '../../../../../../../common/interfaces/unit';
+import { Section } from 'common/interfaces/unit';
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
 @Component({

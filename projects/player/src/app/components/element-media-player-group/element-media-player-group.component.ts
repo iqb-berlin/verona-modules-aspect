@@ -3,10 +3,10 @@ import {
 } from '@angular/core';
 import {
   AudioElement, VideoElement, UIElement
-} from '../../../../../common/interfaces/elements';
+} from 'common/interfaces/elements';
 import { MediaPlayerService } from '../../services/media-player.service';
 import { UnitStateService } from '../../services/unit-state.service';
-import { MediaPlayerElementComponent } from '../../../../../common/directives/media-player-element-component.directive';
+import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 
 @Component({

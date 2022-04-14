@@ -7,13 +7,13 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
-import { MessageService } from '../../../../../../../common/services/message.service';
+import { MessageService } from 'common/services/message.service';
 import {
   TextImageLabel,
   DragNDropValueObject,
   UIElement,
   UIElementValue
-} from '../../../../../../../common/interfaces/elements';
+} from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-element-properties',

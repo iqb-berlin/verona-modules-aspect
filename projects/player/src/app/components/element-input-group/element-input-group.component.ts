@@ -5,13 +5,13 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   CheckboxElement, DropListElement, InputElement, SliderElement,
   RadioButtonGroupElement, RadioButtonGroupComplexElement, DropdownElement
-} from '../../../../../common/interfaces/elements';
+} from 'common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
-import { MessageService } from '../../../../../common/services/message.service';
+import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
-import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValidatorService } from '../../services/validator.service';
 
 @Component({

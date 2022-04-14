@@ -2,7 +2,7 @@ import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { TextFieldNodeviewComponent } from './text-field-nodeview.component';
-import { ElementFactory } from '../../../../../common/util/element.factory';
+import { ElementFactory } from 'common/util/element.factory';
 
 const TextFieldComponentExtension = (injector: Injector): Node => {
   return Node.create({

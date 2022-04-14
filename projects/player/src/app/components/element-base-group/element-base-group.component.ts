@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
-import { ElementFactory } from '../../../../../common/util/element.factory';
-import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ElementFactory } from 'common/util/element.factory';
+import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({
   selector: 'aspect-element-base-group',

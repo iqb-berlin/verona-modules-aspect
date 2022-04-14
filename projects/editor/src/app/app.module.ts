@@ -29,7 +29,7 @@ import { StaticCanvasOverlayComponent } from
   './components/unit-view/page-view/canvas/overlays/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from
   './components/unit-view/page-view/canvas/overlays/dynamic-canvas-overlay.component';
-import { SharedModule } from '../../../common/shared.module';
+import { SharedModule } from 'common/shared.module';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { SectionMenuComponent } from './components/unit-view/page-view/canvas/section-menu.component';
 import { SectionStaticComponent } from './components/unit-view/page-view/canvas/section-static.component';

@@ -14,8 +14,8 @@ import {
   DragNDropValueObject,
   LikertRowElement,
   PlayerProperties
-} from '../../../../common/interfaces/elements';
-import { ClozeDocument } from '../../../../common/interfaces/cloze';
+} from 'common/interfaces/elements';
+import { ClozeDocument } from 'common/interfaces/cloze';
 import { RichTextEditorSimpleComponent } from '../text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from '../components/dialogs/rich-text-simple-edit-dialog.component';
 

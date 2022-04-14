@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { NativeEventService } from '../../services/native-event.service';
 import { PlayerConfig } from '../../models/verona';
-import { Page } from '../../../../../common/interfaces/unit';
+import { Page } from 'common/interfaces/unit';
 
 @Component({
   selector: '[aspect-layout-pages]',

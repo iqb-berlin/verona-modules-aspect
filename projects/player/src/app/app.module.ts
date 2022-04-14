@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionContainerComponent } from './components/section-container/section-container.component';
 import { SectionComponent } from './components/section/section.component';
-import { SharedModule } from '../../../common/shared.module';
+import { SharedModule } from 'common/shared.module';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { LayoutPagesComponent } from './components/layout-pages/layout-pages.component';

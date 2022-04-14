@@ -7,8 +7,8 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../../services/unit.service';
 import { DialogService } from '../../../../services/dialog.service';
 import { SelectionService } from '../../../../services/selection.service';
-import { Section } from '../../../../../../../common/interfaces/unit';
-import { UIElement } from '../../../../../../../common/interfaces/elements';
+import { Section } from 'common/interfaces/unit';
+import { UIElement } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-section-menu',

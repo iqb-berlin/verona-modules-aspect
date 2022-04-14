@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TextMarker } from '../classes/text-marker';
-import { Unit } from '../../../../common/interfaces/unit';
+import { Unit } from 'common/interfaces/unit';
 import {
   AudioElement, DragNDropValueObject, InputElement, InputElementValue,
   TextElement, UIElement, UIElementType, VideoElement
-} from '../../../../common/interfaces/elements';
-import { UnitUtils } from '../../../../common/util/unit-utils';
+} from 'common/interfaces/elements';
+import { UnitUtils } from 'common/util/unit-utils';
 
 @Injectable({
   providedIn: 'root'

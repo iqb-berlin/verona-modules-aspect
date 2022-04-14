@@ -3,16 +3,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
 import {
   ClozeElement, InputElement, LikertElement
-} from '../../../../../common/interfaces/elements';
-import { ClozeUtils } from '../../../../../common/util/cloze';
+} from 'common/interfaces/elements';
+import { ClozeUtils } from 'common/util/cloze';
 import { UnitStateService } from '../../services/unit-state.service';
-import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ElementComponent } from 'common/directives/element-component.directive';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
-import { MessageService } from '../../../../../common/services/message.service';
+import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
 import { ValidatorService } from '../../services/validator.service';
 import { KeypadService } from '../../services/keypad.service';
-import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
+import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { KeyboardService } from '../../services/keyboard.service';
 import { DeviceService } from '../../services/device.service';

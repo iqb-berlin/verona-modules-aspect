@@ -5,18 +5,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { KeypadService } from '../../services/keypad.service';
 import {
   InputElement, TextAreaElement, TextFieldElement, SpellCorrectElement
-} from '../../../../../common/interfaces/elements';
+} from 'common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
-import { MessageService } from '../../../../../common/services/message.service';
+import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
-import { ElementComponent } from '../../../../../common/directives/element-component.directive';
+import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValidatorService } from '../../services/validator.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
-import { TextAreaComponent } from '../../../../../common/components/ui-elements/text-area.component';
-import { TextFieldComponent } from '../../../../../common/components/ui-elements/text-field.component';
+import { TextAreaComponent } from 'common/components/ui-elements/text-area.component';
+import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
 import { KeyboardService } from '../../services/keyboard.service';
-import { SpellCorrectComponent } from '../../../../../common/components/ui-elements/spell-correct.component';
+import { SpellCorrectComponent } from 'common/components/ui-elements/spell-correct.component';
 import { DeviceService } from '../../services/device.service';
 
 @Component({

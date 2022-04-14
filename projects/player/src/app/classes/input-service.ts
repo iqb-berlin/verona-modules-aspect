@@ -1,6 +1,6 @@
-import { TextFieldComponent } from '../../../../common/components/ui-elements/text-field.component';
-import { TextAreaComponent } from '../../../../common/components/ui-elements/text-area.component';
-import { SpellCorrectComponent } from '../../../../common/components/ui-elements/spell-correct.component';
+import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
+import { TextAreaComponent } from 'common/components/ui-elements/text-area.component';
+import { SpellCorrectComponent } from 'common/components/ui-elements/spell-correct.component';
 
 export abstract class InputService {
   elementComponent!: TextFieldComponent | TextAreaComponent | SpellCorrectComponent;

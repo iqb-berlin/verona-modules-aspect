@@ -308,7 +308,7 @@ export abstract class ElementFactory {
 
   private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement {
     return {
-      ...ElementFactory.initInputElement({ height: 100, ...element }),
+      ...ElementFactory.initInputElement({ height: 28, ...element }),
       type: 'drop-list-simple',
       value: element.value !== undefined ? element.value : [],
       connectedTo: element.connectedTo !== undefined ? element.connectedTo : [],

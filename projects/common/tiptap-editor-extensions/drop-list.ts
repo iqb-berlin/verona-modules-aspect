@@ -10,7 +10,7 @@ const DropListExtension =
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement({ type: 'drop-list', height: 25, width: 100 })
+          default: ElementFactory.createElement({ type: 'drop-list' })
         }
       };
     },

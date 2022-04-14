@@ -22,7 +22,7 @@ import {
     '.button-group button {margin: 5px 10px;}',
     'mat-divider {margin: 20px; border-top-width: 9px; border-top-style: dotted;}',
     '.properties-panel {height: 100%; padding-bottom: 20px}',
-    '.properties-panel .mat-tab-group {height: 100%; overflow: auto}',
+    '.properties-panel .mat-tab-group {height: 100%; overflow: auto; padding: 0 15px;}',
     ':host ::ng-deep .mat-tab-body-wrapper {height: 100%}',
     '.panel-title {font-size: x-large; text-align: center;}',
     '.panel-title span {font-size: medium;}'

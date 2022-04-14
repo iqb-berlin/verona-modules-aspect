@@ -24,7 +24,7 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                            [style.font-family]="elementModel.styling.font"
                            [style.background-color]="elementFormControl.value !== null &&
                                                    elementFormControl.value === i ?
-                                                   elementModel.selectionColor :
+                                                   elementModel.styling.selectionColor :
                                                    elementModel.styling.backgroundColor"
                            [style.line-height.%]="elementModel.styling.lineHeight">
                            <!--Background color does not show in editor-->

@@ -265,7 +265,7 @@ export class UnitService {
         'marginBottom', 'zIndex'].includes(property)) {
         element.position![property] = Copy.getCopy(value);
       } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',
-        'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor',
+        'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor', 'selectionColor',
         'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
         element.styling![property] = Copy.getCopy(value);
       } else if (['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',

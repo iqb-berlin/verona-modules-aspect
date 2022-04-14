@@ -527,12 +527,12 @@ export abstract class ElementFactory {
       type: 'toggle-button',
       options: element.options !== undefined ? element.options : [],
       strikeOtherOptions: element.strikeOtherOptions !== undefined ? element.strikeOtherOptions : false,
-      selectionColor: element.selectionColor !== undefined ? element.selectionColor : 'lightgreen',
       verticalOrientation: element.verticalOrientation !== undefined ? element.verticalOrientation : false,
       dynamicWidth: element.dynamicWidth !== undefined ? element.dynamicWidth : true,
       styling: {
-        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element }),
-        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135,
+        selectionColor: element.styling?.selectionColor !== undefined ? element.styling.selectionColor : 'lightgreen'
       }
     };
   }

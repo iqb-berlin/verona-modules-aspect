@@ -321,11 +321,11 @@ export interface ToggleButtonElement extends InputElement {
   type: 'toggle-button';
   options: string[];
   strikeOtherOptions: boolean;
-  selectionColor: string;
   verticalOrientation: boolean;
   dynamicWidth: boolean;
   styling: BasicStyles & {
     lineHeight: number;
+    selectionColor: string;
   };
 }
 

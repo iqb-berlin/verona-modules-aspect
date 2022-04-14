@@ -398,7 +398,10 @@ export abstract class ElementFactory {
       alignment: element.alignment !== undefined ? element.alignment : 'column',
       strikeOtherOptions: element.strikeOtherOptions !== undefined ? element.strikeOtherOptions : false,
       position: ElementFactory.initPositionProps({ marginBottom: 30, ...element.position }),
-      styling: ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling })
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
+      }
     };
   }
 

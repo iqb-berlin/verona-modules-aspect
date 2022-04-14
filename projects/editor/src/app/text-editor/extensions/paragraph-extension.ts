@@ -14,7 +14,7 @@ export const ParagraphExtension = Paragraph.extend({
   addAttributes() {
     return {
       margin: {
-        default: 10,
+        default: 0,
         parseHTML: element => Number(element.style.marginBottom.slice(0, -2)),
         renderHTML: attributes => ({
           style: `margin-bottom: ${attributes.margin}px; margin-top: 0`

@@ -49,9 +49,9 @@ import { SpellCorrectComponent } from './components/ui-elements/spell-correct.co
 import { DropListSimpleComponent } from './components/ui-elements/drop-list-simple.component';
 import { FrameComponent } from './components/ui-elements/frame.component';
 import { ToggleButtonComponent } from './components/ui-elements/toggle-button.component';
-import { MarkingBarComponent } from './components/marking-bar/marking-bar.component';
+import { TextMarkingBarComponent } from './components/text-marking-bar/text-marking-bar.component';
 import { StyleMarksPipe } from './pipes/styleMarks.pipe';
-import { MarkingButtonComponent } from './components/marking-bar/marking-button.component';
+import { TextMarkingButtonComponent } from './components/text-marking-bar/text-marking-button.component';
 import { CompoundChildOverlayComponent } from './components/compound-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
 
@@ -103,9 +103,9 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     SpellCorrectComponent,
     FrameComponent,
     ToggleButtonComponent,
-    MarkingBarComponent,
+    TextMarkingBarComponent,
     StyleMarksPipe,
-    MarkingButtonComponent,
+    TextMarkingButtonComponent,
     CompoundChildOverlayComponent,
     MarkListPipe
   ],
@@ -124,7 +124,7 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     MatDialogModule,
     TranslateModule,
     SafeResourceHTMLPipe,
-    MarkingBarComponent,
+    TextMarkingBarComponent,
     ToggleButtonComponent,
     TextFieldComponent,
     DropListSimpleComponent,

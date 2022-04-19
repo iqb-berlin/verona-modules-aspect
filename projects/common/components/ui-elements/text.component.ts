@@ -9,13 +9,13 @@ import { TextElement, ValueChangeElement } from '../../interfaces/elements';
   template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
-        <aspect-marking-bar
+        <aspect-text-marking-bar
                 *ngIf="elementModel.highlightableYellow ||
             elementModel.highlightableTurquoise ||
             elementModel.highlightableOrange"
                 [elementModel]="elementModel"
                 (selectionChanged)="onSelectionChanged($event)">
-        </aspect-marking-bar>
+        </aspect-text-marking-bar>
         <div #textContainerRef class="text-container"
              [class.orange-selection]="selectedColor === 'orange'"
              [class.yellow-selection]="selectedColor === 'yellow'"

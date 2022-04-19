@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'aspect-marking-button',
+  selector: 'aspect-text-marking-button',
   template: `
     <button type="button"
             class="marking-button"
@@ -24,7 +24,7 @@ import {
     '.marking-icon {margin-top: -4px}'
   ]
 })
-export class MarkingButtonComponent {
+export class TextMarkingButtonComponent {
   @Input() selected!: boolean;
   @Input() color!: string;
   @Input() mode!: 'mark' | 'delete';

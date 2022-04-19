@@ -4,38 +4,38 @@ import {
 import { TextElement } from '../../interfaces/elements';
 
 @Component({
-  selector: 'aspect-marking-bar',
+  selector: 'aspect-text-marking-bar',
   template: `
     <div class="marking-bar">
-      <aspect-marking-button *ngIf="elementModel.highlightableYellow"
+      <aspect-text-marking-button *ngIf="elementModel.highlightableYellow"
                              [color]="selectionColors.yellow"
                              [selected]="selectedColor === selectionColors.yellow"
                              mode="mark"
                              (selectedChanged)="onSelectionChange($event)">
-      </aspect-marking-button>
-      <aspect-marking-button *ngIf="elementModel.highlightableTurquoise"
+      </aspect-text-marking-button>
+      <aspect-text-marking-button *ngIf="elementModel.highlightableTurquoise"
                              [color]="selectionColors.turquoise"
                              [selected]="selectedColor === selectionColors.turquoise"
                              mode="mark"
                              (selectedChanged)="onSelectionChange($event)">
-      </aspect-marking-button>
-      <aspect-marking-button *ngIf="elementModel.highlightableOrange"
+      </aspect-text-marking-button>
+      <aspect-text-marking-button *ngIf="elementModel.highlightableOrange"
                              [color]="selectionColors.orange"
                              [selected]="selectedColor === selectionColors.orange"
                              mode="mark"
                              (selectedChanged)="onSelectionChange($event)">
-      </aspect-marking-button>
-      <aspect-marking-button [color]="selectionColors.delete"
+      </aspect-text-marking-button>
+      <aspect-text-marking-button [color]="selectionColors.delete"
                              [selected]="selectedColor === selectionColors.delete"
                              mode="delete"
                              (selectedChanged)="onSelectionChange($event)">
-      </aspect-marking-button>
+      </aspect-text-marking-button>
     </div>`,
   styles: [
     '.marking-bar {position: sticky; top: 0; margin-bottom: 13px;}'
   ]
 })
-export class MarkingBarComponent {
+export class TextMarkingBarComponent {
   @Input() elementModel!: TextElement;
   @Output() selectionChanged = new EventEmitter<{
     active: boolean,

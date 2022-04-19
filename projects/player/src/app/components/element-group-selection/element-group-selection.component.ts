@@ -5,11 +5,11 @@ import {
 import { ElementGroup, ElementGroupName } from '../../models/element-group';
 
 @Component({
-  selector: 'aspect-element-splitter',
-  templateUrl: './element-splitter.component.html',
-  styleUrls: ['./element-splitter.component.scss']
+  selector: 'aspect-element-group-selection',
+  templateUrl: './element-group-selection.component.html',
+  styleUrls: ['./element-group-selection.component.scss']
 })
-export class ElementSplitterComponent implements OnInit {
+export class ElementGroupSelectionComponent implements OnInit {
   @Input() elementModel!: UIElement;
   @Input() pageIndex!: number;
 

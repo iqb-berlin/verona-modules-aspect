@@ -18,7 +18,7 @@ import { ScrollIndexDirective } from './directives/scroll-index.directive';
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
 import { FloatingKeypadComponent } from './components/floating-keypad/floating-keypad.component';
-import { ElementSplitterComponent } from './components/element-splitter/element-splitter.component';
+import { ElementGroupSelectionComponent } from './components/element-group-selection/element-group-selection.component';
 import { ElementInputGroupComponent } from './components/element-input-group/element-input-group.component';
 import {
   ElementMediaPlayerGroupComponent
@@ -51,7 +51,7 @@ import { KeyboardModule } from '../../modules/keyboard/keyboard.module';
     IntersectionDetectionDirective,
     FloatingMarkingBarComponent,
     FloatingKeypadComponent,
-    ElementSplitterComponent,
+    ElementGroupSelectionComponent,
     ElementInputGroupComponent,
     ElementMediaPlayerGroupComponent,
     ElementTextInputGroupComponent,

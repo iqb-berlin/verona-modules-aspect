@@ -141,7 +141,9 @@ import { ClozeUtils } from '../../util/cloze';
 
     <ng-template #paragraphChildren let-part>
       <ng-container *ngFor="let subPart of part.content">
-        <ng-container *ngIf="$any(subPart).type === 'text'">
+        <ng-container *ngIf="$any(subPart).type === 'text' &&
+                             (!(subPart.marks | markList).includes('superscript')) &&
+                             (!(subPart.marks | markList).includes('subscript'))">
           <span [ngStyle]="subPart.marks | styleMarks">
             {{subPart.text}}
           </span>

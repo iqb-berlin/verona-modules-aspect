@@ -23,7 +23,6 @@ export class IdService { // TODO rename: capitalize
     'spell-correct': 0,
     'radio-group-images': 0,
     'drop-list': 0,
-    'drop-list-simple': 0,
     cloze: 0,
     frame: 0,
     'toggle-button': 0,

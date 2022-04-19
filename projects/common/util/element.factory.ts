@@ -68,8 +68,6 @@ export abstract class ElementFactory {
         return ElementFactory.createRadioButtonGroupComplexElement(element as Partial<RadioButtonGroupComplexElement>);
       case 'drop-list':
         return ElementFactory.createDropListElement(element as Partial<DropListElement>);
-      case 'drop-list-simple':
-        return ElementFactory.createDropListSimpleElement(element as Partial<DropListSimpleElement>);
       case 'cloze':
         return ElementFactory.createClozeElement(element as Partial<ClozeElement>);
       case 'slider':
@@ -306,10 +304,10 @@ export abstract class ElementFactory {
     };
   }
 
-  private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement {
+  private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement { // TODO unused
     return {
-      ...ElementFactory.initInputElement({ height: 28, ...element }),
-      type: 'drop-list-simple',
+      ...ElementFactory.initInputElement({ height: 100, ...element }),
+      type: 'drop-list',
       value: element.value !== undefined ? element.value : [],
       connectedTo: element.connectedTo !== undefined ? element.connectedTo : [],
       highlightReceivingDropList: element.highlightReceivingDropList !== undefined ?

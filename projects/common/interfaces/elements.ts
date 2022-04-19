@@ -3,7 +3,7 @@ import { ClozeDocument } from './cloze';
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
-| 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
+| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
 export type InputAssistancePreset = 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue';
 export type DragNDropValueObject = {
@@ -176,7 +176,7 @@ export interface DropListElement extends InputElement {
 }
 
 export interface DropListSimpleElement extends InputElement {
-  type: 'drop-list-simple';
+  type: 'drop-list';
   connectedTo: string[];
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;

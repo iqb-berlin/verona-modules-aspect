@@ -40,7 +40,7 @@ export abstract class ClozeParser {
       case 'text-field':
         newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
         break;
-      case 'drop-list-simple':
+      case 'drop-list':
         newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
         break;
       case 'toggle-button':

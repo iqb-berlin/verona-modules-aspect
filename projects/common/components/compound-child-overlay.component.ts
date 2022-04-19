@@ -30,7 +30,7 @@ import {
                          [style.display]="'inline-block'"
                          [elementModel]="$any(element)">
       </aspect-text-field>
-      <aspect-drop-list-simple *ngIf="element.type === 'drop-list-simple'" #childComponent
+      <aspect-drop-list-simple *ngIf="element.type === 'drop-list'" #childComponent
                                [style.pointer-events]="editorMode ? 'none' : 'auto'"
                                [parentForm]="parentForm"
                                [style.display]="'inline-block'"

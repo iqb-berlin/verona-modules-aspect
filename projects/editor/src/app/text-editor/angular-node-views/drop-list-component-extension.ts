@@ -14,7 +14,7 @@ const DropListComponentExtension = (injector: Injector): Node => {
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement({ type: 'drop-list-simple' })
+          default: ElementFactory.createElement({ type: 'drop-list', height: 25, width: 100 })
         }
       };
     },

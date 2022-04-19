@@ -21,7 +21,7 @@ import { ClozeUtils } from './cloze';
 
 export abstract class UnitDefinitionSanitizer {
   private static expectedUnitVersion: [number, number, number] =
-  packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
+    packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
 
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
@@ -179,6 +179,8 @@ export abstract class UnitDefinitionSanitizer {
   private static getPlayerProps(element: Record<string, UIElementValue>): PlayerProperties {
     if (element.playerProps !== undefined) {
       return element.playerProps as PlayerProperties;
+    } else if (element.player !== undefined) {
+      return element.player as PlayerProperties;
     }
     return element as unknown as PlayerProperties;
   }

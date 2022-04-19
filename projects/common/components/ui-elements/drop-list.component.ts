@@ -12,8 +12,11 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
     <div class="list-container">
       <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
       <!-- class style.-->
+      <!-- min-height for the following div is important for iOS 14!
+      iOS 14 is not able to determine the height of the flex container-->
       <div class="list"
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
+           [style.min-height.px]="elementModel.position.useMinHeight ? elementModel.height - 6 : null"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"
            [style.color]="elementModel.styling.fontColor"

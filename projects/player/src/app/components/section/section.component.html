@@ -26,7 +26,7 @@
     <ng-container *ngFor="let element of section.elements">
       <aspect-element-splitter
           [style.min-width.px]="element.width"
-          [style.min-height.px]="element.position.useMinHeight ? element.height : 0"
+          [style.min-height.px]="element.position.useMinHeight ? element.height : null"
           [style.margin-left.px]="element.position.marginLeft"
           [style.margin-right.px]="element.position.marginRight"
           [style.margin-top.px]="element.position.marginTop"

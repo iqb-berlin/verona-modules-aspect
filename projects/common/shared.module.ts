@@ -35,8 +35,9 @@ import { SafeResourceUrlPipe } from './pipes/safe-resource-url.pipe';
 import { InputBackgroundColorDirective } from './directives/input-background-color.directive';
 import { ErrorTransformPipe } from './pipes/error-transform.pipe';
 import { SafeResourceHTMLPipe } from './pipes/safe-resource-html.pipe';
-import { ControlBarComponent } from './components/control-bar/control-bar.component';
-import { PlayerTimeFormatPipe } from './components/control-bar/player-time-format.pipe';
+import { MediaPlayerControlBarComponent }
+  from './components/media-player-control-bar/media-player-control-bar.component';
+import { PlayerTimeFormatPipe } from './components/media-player-control-bar/player-time-format.pipe';
 import { LikertComponent } from './components/ui-elements/likert.component';
 import { LikertRadioButtonGroupComponent } from './components/ui-elements/likert-radio-button-group.component';
 import { Magnifier } from './components/magnifier.component';
@@ -89,7 +90,7 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     InputBackgroundColorDirective,
     ErrorTransformPipe,
     SafeResourceHTMLPipe,
-    ControlBarComponent,
+    MediaPlayerControlBarComponent,
     PlayerTimeFormatPipe,
     LikertComponent,
     LikertRadioButtonGroupComponent,

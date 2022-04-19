@@ -13,7 +13,7 @@ import { AudioElement } from '../../interfaces/elements';
              [style.width.%]="100"
              [src]="elementModel.src | safeResourceUrl">
       </audio>
-      <aspect-control-bar [player]="player"
+      <aspect-media-player-control-bar [player]="player"
                           [project]="project"
                           [id]="elementModel.id"
                           [savedPlaybackTime]="savedPlaybackTime"
@@ -22,7 +22,7 @@ import { AudioElement } from '../../interfaces/elements';
                           [dependencyDissolved]="dependencyDissolved"
                           (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"
                           (elementValueChanged)="elementValueChanged.emit($event)">
-      </aspect-control-bar>
+      </aspect-media-player-control-bar>
     </div>
   `
 })

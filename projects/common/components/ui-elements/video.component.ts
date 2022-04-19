@@ -14,7 +14,7 @@ import { VideoElement } from '../../interfaces/elements';
              [style.width.%]="100"
              [src]="elementModel.src | safeResourceUrl">
       </video>
-      <aspect-control-bar class="correct-position"
+      <aspect-media-player-control-bar class="correct-position"
                           [player]="player"
                           [project]="project"
                           [active]="active"
@@ -24,7 +24,7 @@ import { VideoElement } from '../../interfaces/elements';
                           [dependencyDissolved]="dependencyDissolved"
                           (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"
                           (elementValueChanged)="elementValueChanged.emit($event)">
-      </aspect-control-bar>
+      </aspect-media-player-control-bar>
     </div>
   `,
   styles: [

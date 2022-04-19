@@ -5,11 +5,11 @@ import { MatSliderChange } from '@angular/material/slider';
 import { PlayerProperties, ValueChangeElement } from '../../interfaces/elements';
 
 @Component({
-  selector: 'aspect-control-bar',
-  templateUrl: './control-bar.component.html',
-  styleUrls: ['./control-bar.component.css']
+  selector: 'aspect-media-player-control-bar',
+  templateUrl: './media-player-control-bar.component.html',
+  styleUrls: ['./media-player-control-bar.component.css']
 })
-export class ControlBarComponent implements OnInit, OnChanges, OnDestroy {
+export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;
   @Input() id!: string;
   @Input() savedPlaybackTime!: number;

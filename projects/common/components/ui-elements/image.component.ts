@@ -17,14 +17,14 @@ import { ImageElement, ValueChangeElement } from '../../interfaces/elements';
            [src]="elementModel.src | safeResourceUrl"
            [alt]="'imageNotFound' | translate"
            [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">
-      <aspect-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
+      <aspect-image-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
                         [imageId]="elementModel.id"
                         [size]="elementModel.magnifierSize"
                         [zoom]="elementModel.magnifierZoom"
                         [used]="elementModel.magnifierUsed"
                         [image]=image
                         (elementValueChanged)="elementValueChanged.emit($event)">
-      </aspect-magnifier>
+      </aspect-image-magnifier>
     </div>
   `,
   styles: [

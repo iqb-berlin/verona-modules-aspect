@@ -40,7 +40,7 @@ import { MediaPlayerControlBarComponent }
 import { MediaPlayerTimeFormatPipe } from './components/media-player-control-bar/media-player-time-format.pipe';
 import { LikertComponent } from './components/ui-elements/likert.component';
 import { LikertRadioButtonGroupComponent } from './components/ui-elements/likert-radio-button-group.component';
-import { Magnifier } from './components/magnifier.component';
+import { ImageMagnifierComponent } from './components/image-magnifier.component';
 import { RadioGroupImagesComponent } from './components/ui-elements/radio-group-images.component';
 import { DropListComponent } from './components/ui-elements/drop-list.component';
 import { ClozeComponent } from './components/ui-elements/cloze.component';
@@ -94,7 +94,7 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     MediaPlayerTimeFormatPipe,
     LikertComponent,
     LikertRadioButtonGroupComponent,
-    Magnifier,
+    ImageMagnifierComponent,
     RadioGroupImagesComponent,
     DropListComponent,
     ClozeComponent,

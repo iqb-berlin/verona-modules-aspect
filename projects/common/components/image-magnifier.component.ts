@@ -4,7 +4,7 @@ import {
 import { ValueChangeElement } from '../interfaces/elements';
 
 @Component({
-  selector: 'aspect-magnifier',
+  selector: 'aspect-image-magnifier',
   template: `
     <div class="hide-cursor">
       <div class="magnifier-glass"
@@ -25,7 +25,7 @@ import { ValueChangeElement } from '../interfaces/elements';
     '.hide-cursor{ width: 100%; height: 100%; cursor: none }'
   ]
 })
-export class Magnifier {
+export class ImageMagnifierComponent {
   @Input() image!: HTMLImageElement;
   @Input() imageId!: string;
   @Input() zoom!: number;

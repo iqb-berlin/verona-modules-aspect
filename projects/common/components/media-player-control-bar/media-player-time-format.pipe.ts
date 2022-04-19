@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'playerTimeFormat'
+  name: 'mediaPlayerTimeFormat'
 })
-export class PlayerTimeFormatPipe implements PipeTransform {
+export class MediaPlayerTimeFormatPipe implements PipeTransform {
   // eslint-disable-next-line class-methods-use-this
   transform(value: number = 0): string {
     const minutes: number = Math.floor(value);

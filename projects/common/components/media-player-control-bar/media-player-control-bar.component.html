@@ -50,12 +50,12 @@
     <div *ngIf="!restTimeMode"
          class="time mat-typography"
          (click)="toggleTime()">
-      {{currentTime | playerTimeFormat}} / {{duration | playerTimeFormat }}
+      {{currentTime | mediaPlayerTimeFormat}} / {{duration | mediaPlayerTimeFormat }}
     </div>
     <div *ngIf="restTimeMode"
          class="time mat-typography"
          (click)="toggleTime()">
-      {{currentRestTime ? '-' : ''}}{{currentRestTime | playerTimeFormat}}
+      {{currentRestTime ? '-' : ''}}{{currentRestTime | mediaPlayerTimeFormat}}
     </div>
   </ng-container>
   <ng-container *ngIf="playerProperties.muteControl">

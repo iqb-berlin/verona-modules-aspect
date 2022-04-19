@@ -37,7 +37,7 @@ import { ErrorTransformPipe } from './pipes/error-transform.pipe';
 import { SafeResourceHTMLPipe } from './pipes/safe-resource-html.pipe';
 import { MediaPlayerControlBarComponent }
   from './components/media-player-control-bar/media-player-control-bar.component';
-import { PlayerTimeFormatPipe } from './components/media-player-control-bar/player-time-format.pipe';
+import { MediaPlayerTimeFormatPipe } from './components/media-player-control-bar/media-player-time-format.pipe';
 import { LikertComponent } from './components/ui-elements/likert.component';
 import { LikertRadioButtonGroupComponent } from './components/ui-elements/likert-radio-button-group.component';
 import { Magnifier } from './components/magnifier.component';
@@ -91,7 +91,7 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     ErrorTransformPipe,
     SafeResourceHTMLPipe,
     MediaPlayerControlBarComponent,
-    PlayerTimeFormatPipe,
+    MediaPlayerTimeFormatPipe,
     LikertComponent,
     LikertRadioButtonGroupComponent,
     Magnifier,

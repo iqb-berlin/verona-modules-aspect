@@ -134,6 +134,18 @@
     </mat-select>
   </mat-form-field>
 
+  <mat-form-field *ngIf="combinedProperties.richTextOptions !== undefined && !combinedProperties.connectedTo"
+                  appearance="fill">
+    <mat-label>{{'preset' | translate }}</mat-label>
+    <mat-select [value]="combinedProperties.value"
+                (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
+      <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
+      <mat-option *ngFor="let option of $any(combinedProperties.richTextOptions); let i = index" [value]="i"
+      [innerHTML]="option + '&nbsp;(Index: ' + i + ')'">
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <!-- This is for radio with images-->
   <mat-form-field *ngIf="combinedProperties.columns !== undefined && combinedProperties.rows === undefined"
                   appearance="fill">
@@ -171,7 +183,7 @@
 
   <!-- TODO wtf-->
   <mat-form-field *ngIf="combinedProperties.value !== undefined &&
-                         !combinedProperties.options && !combinedProperties.columns &&
+                         !combinedProperties.options && !combinedProperties.richTextOptions && !combinedProperties.columns &&
                          combinedProperties.connectedTo === undefined && combinedProperties.minValue === undefined &&
                          combinedProperties.value !== true && combinedProperties.value !== false"
                   appearance="fill">

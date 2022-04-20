@@ -3,7 +3,7 @@
   "config": {
     "player_version": "1.23.0",
     "editor_version": "1.30.0",
-    "unit_definition_version": "3.3.0"
+    "unit_definition_version": "3.4.0"
   },
   "scripts": {
     "ng": "ng",

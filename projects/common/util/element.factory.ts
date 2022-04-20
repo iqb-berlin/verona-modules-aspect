@@ -525,7 +525,7 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initInputElement({ height: 25, ...element }),
       type: 'toggle-button',
-      options: element.options !== undefined ? element.options : [],
+      richTextOptions: element.richTextOptions !== undefined ? element.richTextOptions : [],
       strikeOtherOptions: element.strikeOtherOptions !== undefined ? element.strikeOtherOptions : false,
       verticalOrientation: element.verticalOrientation !== undefined ? element.verticalOrientation : false,
       dynamicWidth: element.dynamicWidth !== undefined ? element.dynamicWidth : true,

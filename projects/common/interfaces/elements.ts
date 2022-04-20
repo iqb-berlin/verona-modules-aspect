@@ -319,7 +319,7 @@ export interface TextElement extends UIElement {
 
 export interface ToggleButtonElement extends InputElement {
   type: 'toggle-button';
-  options: string[];
+  richTextOptions: string[];
   strikeOtherOptions: boolean;
   verticalOrientation: boolean;
   dynamicWidth: boolean;

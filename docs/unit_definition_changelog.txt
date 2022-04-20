@@ -6,7 +6,7 @@ iqb-aspect-definition@1.0.0
   - raise version to 1.0.0
 
 3.1.0
-- radio and likert now have "richTextOptions" instead of options
+- radio now has "richTextOptions" instead of options
 - text element has new property: columnCount
 
 3.2.0
@@ -20,3 +20,5 @@ iqb-aspect-definition@1.0.0
                        +restrictedToInputAssistanceChars: boolean;
                        +showSoftwareKeyboard: boolean;
                        +softwareKeyboardShowFrench: boolean;
+3.4.0
+- ToggleButton now have "richTextOptions" instead of options

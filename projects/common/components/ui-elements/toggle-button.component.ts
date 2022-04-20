@@ -11,7 +11,7 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                                [style.height.px]="elementModel.height"
                                [style.width]="elementModel.dynamicWidth ? 'unset' : elementModel.width+'px'"
                                [vertical]="elementModel.verticalOrientation">
-        <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
+        <mat-button-toggle *ngFor="let option of elementModel.richTextOptions; let i = index"
                            [value]="i"
                            [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
                                                    elementFormControl.value !== null &&
@@ -26,9 +26,9 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                                                    elementFormControl.value === i ?
                                                    elementModel.styling.selectionColor :
                                                    elementModel.styling.backgroundColor"
-                           [style.line-height.%]="elementModel.styling.lineHeight">
+                           [style.line-height.%]="elementModel.styling.lineHeight"
+                           [innerHTML]="option">
                            <!--Background color does not show in editor-->
-          {{option}}
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

@@ -7,7 +7,7 @@ import {
   DropListElement,
   ElementStyling, InputElement, LikertElement, LikertRowElement,
   PlayerProperties, PositionedElement,
-  PositionProperties, RadioButtonGroupElement, TextElement,
+  PositionProperties, RadioButtonGroupElement, TextElement, ToggleButtonElement,
   UIElement,
   UIElementValue
 } from '../interfaces/elements';
@@ -97,6 +97,9 @@ export abstract class UnitDefinitionSanitizer {
     if (newElement.type === 'cloze') {
       newElement = UnitDefinitionSanitizer.handleClozeElement(newElement as Record<string, UIElementValue>);
     }
+    if (newElement.type === 'toggle-button') {
+      newElement = UnitDefinitionSanitizer.handleToggleButtonElement(newElement as ToggleButtonElement);
+    }
     if (newElement.type === 'drop-list') {
       newElement = UnitDefinitionSanitizer.handleDropListElement(newElement as Record<string, UIElementValue>);
     }
@@ -118,14 +121,13 @@ export abstract class UnitDefinitionSanitizer {
   }
 
   private static handleRadioButtonGroupElement(element: RadioButtonGroupElement): RadioButtonGroupElement {
-    const newElement = { ...element };
-    if (newElement.richTextOptions) {
-      return newElement as RadioButtonGroupElement;
+    if (element.richTextOptions) {
+      return element;
     }
     return {
       ...element,
-      richTextOptions: element.options
-    } as RadioButtonGroupElement;
+      richTextOptions: element.options as string[]
+    };
   }
 
   private static getPositionProps(element: Record<string, any>, sectionDynamicPositioning?: boolean): PositionProperties {
@@ -343,5 +345,15 @@ export abstract class UnitDefinitionSanitizer {
         value: (element.value as number) - 1
       } :
       element;
+  }
+
+  private static handleToggleButtonElement(element: ToggleButtonElement): ToggleButtonElement {
+    if (element.richTextOptions) {
+      return element;
+    }
+    return {
+      ...element,
+      richTextOptions: element.options as string[]
+    };
   }
 }

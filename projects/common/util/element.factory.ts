@@ -245,7 +245,7 @@ export abstract class ElementFactory {
           content: element.document.content
             .map((paragraph: ClozeDocumentParagraph) => ({
               ...paragraph,
-              content: paragraph.content
+              content: paragraph.content ? paragraph.content
                 .map((paraPart: ClozeDocumentParagraphPart) => (
                   ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
                     {
@@ -258,7 +258,7 @@ export abstract class ElementFactory {
                     {
                       ...paraPart
                     }
-                ))
+                )) : undefined
             }))
         } as ClozeDocument :
         { type: 'doc', content: [] },

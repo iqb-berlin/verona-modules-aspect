@@ -1,5 +1,8 @@
 Player
 ======
+1.24.0
+- Fix display of empty dynamic drop lists on iOS 14
+
 1.23.0
 - Show virtual keyboard only on mobile devices. If a hardware keyboard is connected,
   the virtual keyboard is disabled after pressing the first hardware key.

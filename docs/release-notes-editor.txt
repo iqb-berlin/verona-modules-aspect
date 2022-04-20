@@ -1,5 +1,8 @@
 Editor
 ======
+1.30.0
+- Fix backwards compatibility to radio, audio and video elements
+
 1.29.0
 - Extend likert rows to have text and/or an image
 - Add switch likert row label to set the image postion relative to the text

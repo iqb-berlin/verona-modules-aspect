@@ -251,7 +251,7 @@ export abstract class UnitDefinitionSanitizer {
         content: doc.content
           .map((paragraph: ClozeDocumentParagraph) => ({
             ...paragraph,
-            content: paragraph.content
+            content: paragraph.content ? paragraph.content
               .map((paraPart: ClozeDocumentParagraphPart) => (
                 ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
                   {
@@ -264,7 +264,7 @@ export abstract class UnitDefinitionSanitizer {
                   {
                     ...paraPart
                   }
-              ))
+              )) : undefined
           }))
       } as ClozeDocument
     } as ClozeElement;

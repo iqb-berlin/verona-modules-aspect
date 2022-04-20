@@ -7,7 +7,7 @@ import {
   DropListElement,
   ElementStyling, InputElement, LikertElement, LikertRowElement,
   PlayerProperties, PositionedElement,
-  PositionProperties, TextElement,
+  PositionProperties, RadioButtonGroupElement, TextElement,
   UIElement,
   UIElementValue
 } from '../interfaces/elements';
@@ -105,10 +105,7 @@ export abstract class UnitDefinitionSanitizer {
       newElement = UnitDefinitionSanitizer.handlePlusOne(newElement as InputElement);
     }
     if (['radio'].includes(newElement.type as string)) {
-      newElement = {
-        ...newElement,
-        richTextOptions: newElement.options !== undefined ? newElement.options : newElement.richTextOptions
-      };
+      newElement = UnitDefinitionSanitizer.handleRadioButtonGroupElement(newElement as RadioButtonGroupElement);
     }
     if (['likert'].includes(newElement.type as string)) {
       newElement = UnitDefinitionSanitizer.handleLikertElement(newElement as LikertElement);
@@ -118,6 +115,17 @@ export abstract class UnitDefinitionSanitizer {
     }
 
     return newElement as unknown as UIElement;
+  }
+
+  private static handleRadioButtonGroupElement(element: RadioButtonGroupElement): RadioButtonGroupElement {
+    const newElement = { ...element };
+    if (newElement.richTextOptions) {
+      return newElement as RadioButtonGroupElement;
+    }
+    return {
+      ...element,
+      richTextOptions: element.options
+    } as RadioButtonGroupElement;
   }
 
   private static getPositionProps(element: Record<string, any>, sectionDynamicPositioning?: boolean): PositionProperties {

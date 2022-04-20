@@ -26,9 +26,8 @@ import { ToggleButtonElement } from '../../interfaces/elements';
                                                    elementFormControl.value === i ?
                                                    elementModel.styling.selectionColor :
                                                    elementModel.styling.backgroundColor"
-                           [style.line-height.%]="elementModel.styling.lineHeight"
-                           [innerHTML]="option">
-                           <!--Background color does not show in editor-->
+                           [style.line-height.%]="elementModel.styling.lineHeight">
+          <div [innerHTML]="option"></div>
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>

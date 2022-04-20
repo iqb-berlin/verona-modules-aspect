@@ -1,7 +1,21 @@
 Editor
 ======
 1.30.0
-- Fix backwards compatibility to radio, audio and video elements
+- Improve aligmnent of elements within cloze
+- Re-Add line-height property to radio button group
+- Change default values for various fields
+  - sections start in dynamic layout mode
+  - default width of most elements to 180
+  - cloze now uses default width
+  - cloze line-height to 150
+  - text element default paragraph margin to 0
+  - drop list ion cloze context:
+    background color to #f4f4f2; itemBackgroundColor to #c9e0e0
+  - radio button group height to 100
+  - radio button group margin-bottom to 40
+  - text field dimensions to width: 180, height: 120
+- Fix cloze text to not show sub- and superscript twice
+- Fix (cloze element's) toggle button styling
 
 1.29.0
 - Extend likert rows to have text and/or an image

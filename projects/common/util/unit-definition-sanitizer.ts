@@ -107,7 +107,7 @@ export abstract class UnitDefinitionSanitizer {
     if (['radio'].includes(newElement.type as string)) {
       newElement = {
         ...newElement,
-        richTextOptions: newElement.options
+        richTextOptions: newElement.options !== undefined ? newElement.options : newElement.richTextOptions
       };
     }
     if (['likert'].includes(newElement.type as string)) {

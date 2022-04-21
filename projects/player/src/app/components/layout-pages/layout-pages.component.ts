@@ -38,16 +38,16 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   tabHeaderHeight: number = 0;
 
   maxWidth: { alwaysVisiblePage: number, scrollPages: number, allPages: number } =
-  { alwaysVisiblePage: 0, scrollPages: 0, allPages: 0 };
+    { alwaysVisiblePage: 0, scrollPages: 0, allPages: 0 };
 
   aspectRatioRow: { alwaysVisiblePage: number, scrollPages: number } =
-  { alwaysVisiblePage: 0, scrollPages: 0 };
+    { alwaysVisiblePage: 0, scrollPages: 0 };
 
   aspectRatioColumn: { alwaysVisiblePage: number, scrollPages: number } =
-  { alwaysVisiblePage: 0, scrollPages: 0 };
+    { alwaysVisiblePage: 0, scrollPages: 0 };
 
   containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
-  { alwaysVisiblePage: '0px', scrollPages: '0px' };
+    { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
   constructor(
     private translateService: TranslateService,
@@ -148,7 +148,7 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.layoutAlignment === 'row' ? `${maxWidth}px` : `${this.maxWidth.allPages}px`;
   }
 
-  private getAspectRatio(alignment: string, offset: number) : number {
+  private getAspectRatio(alignment: string, offset: number): number {
     return this.alwaysVisiblePage && this.hasScrollPages && this.layoutAlignment === alignment ?
       Math.abs(this.alwaysVisiblePage.alwaysVisibleAspectRatio - offset) : 100;
   }

@@ -5,6 +5,11 @@ iqb-aspect-definition@1.0.0
   - Rename variable
   - raise version to 1.0.0
 
+2.0.0
+- positionProps -> position
+- playerProps -> player
+- styles -> styling
+
 3.1.0
 - radio now has "richTextOptions" instead of options
 - text element has new property: columnCount

@@ -1,0 +1,65 @@
+{
+  "unitDefinitionType": "iqb-aspect-definition@1.1.0",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "id": "text_1",
+              "width": 190,
+              "height": 98,
+              "type": "text",
+              "positionProps": {
+                "dynamicPositioning": false,
+                "fixedSize": false,
+                "xPosition": 0,
+                "yPosition": 0,
+                "useMinHeight": false,
+                "gridColumnStart": 1,
+                "gridColumnEnd": 2,
+                "gridRowStart": 1,
+                "gridRowEnd": 2,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "marginTop": 0,
+                "marginBottom": 0,
+                "zIndex": 0
+              },
+              "text": "Lorem ipsum dolor sit amet",
+              "highlightableOrange": false,
+              "highlightableTurquoise": false,
+              "highlightableYellow": false,
+              "fontProps": {
+                "fontColor": "#000000",
+                "font": "Roboto",
+                "fontSize": 20,
+                "lineHeight": 135,
+                "bold": false,
+                "italic": false,
+                "underline": false
+              },
+              "surfaceProps": {
+                "backgroundColor": "transparent"
+              }
+            }
+          ],
+          "height": 400,
+          "backgroundColor": "white",
+          "dynamicPositioning": false,
+          "autoColumnSize": true,
+          "autoRowSize": true,
+          "gridColumnSizes": "1fr 1fr",
+          "gridRowSizes": "1fr"
+        }
+      ],
+      "hasMaxWidth": false,
+      "maxWidth": 900,
+      "margin": 30,
+      "backgroundColor": "#ffffff",
+      "alwaysVisible": false,
+      "alwaysVisiblePagePosition": "left",
+      "alwaysVisibleAspectRatio": 50
+    }
+  ]
+}

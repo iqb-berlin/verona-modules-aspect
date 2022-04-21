@@ -223,6 +223,22 @@
           }
         }
       }
+    },
+    "common": {
+      "projectType": "application",
+      "root": "projects/common",
+      "sourceRoot": "projects/common",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/common/test.ts",
+            "tsConfig": "projects/common/tsconfig.spec.json",
+            "karmaConfig": "projects/common/karma.conf.js",
+            "polyfills": "projects/common/polyfills.ts"
+          }
+        }
+      }
     }
   },
   "schematics": {

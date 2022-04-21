@@ -1,0 +1,77 @@
+{
+  "veronaModuleVersion": "iqb-aspect-module@0.0.1",
+  "pages": [
+    {
+      "id": "page0",
+      "sections": [
+        {
+          "elements": [
+            {
+              "text": "Example Text",
+              "type": "text",
+              "id": "text_1",
+              "zIndex": 0,
+              "width": 180,
+              "height": 60,
+              "dynamicPositioning": false,
+              "xPosition": 420,
+              "yPosition": 69,
+              "gridColumnStart": 2,
+              "gridColumnEnd": 4,
+              "gridRowStart": 3,
+              "gridRowEnd": 4,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "marginTop": 0,
+              "marginBottom": 0,
+              "fontColor": "black",
+              "font": "Arial",
+              "fontSize": 18,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "backgroundColor": "transparent"
+            },
+            {
+              "label": "Button Text",
+              "type": "button",
+              "id": "button_2",
+              "zIndex": 0,
+              "width": 180,
+              "height": 60,
+              "dynamicPositioning": false,
+              "xPosition": 63,
+              "yPosition": 134,
+              "gridColumnStart": 1,
+              "gridColumnEnd": 2,
+              "gridRowStart": 1,
+              "gridRowEnd": 2,
+              "marginLeft": 0,
+              "marginRight": 0,
+              "marginTop": 0,
+              "marginBottom": 0,
+              "fontColor": "black",
+              "font": "Arial",
+              "fontSize": 18,
+              "bold": false,
+              "italic": false,
+              "underline": false,
+              "backgroundColor": "transparent"
+            }
+          ],
+          "width": 1100,
+          "height": 400,
+          "backgroundColor": "#FFFAF0",
+          "dynamicPositioning": false,
+          "gridColumnSizes": "1fr 1fr",
+          "gridRowSizes": "1fr"
+        }
+      ],
+      "width": 1100,
+      "margin": 8,
+      "backgroundColor": "white",
+      "alwaysVisible": false,
+      "alwaysVisiblePagePosition": "left"
+    }
+  ]
+}

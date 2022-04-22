@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class MediaPlayerService {
-  mediaElements: { id: string; valid: boolean }[] = [];
+  mediaElements: { id: string; valid: boolean }[] = []; // TODO besser isValid
   mediaStatusChanged = new Subject<string>();
   actualPlayingId: Subject<string | null> = new Subject();
 
@@ -17,19 +17,15 @@ export class MediaPlayerService {
     return this.mediaElements.length ? 'none' : 'complete';
   }
 
-  registerMediaElement(
-    id: string, valid: boolean
-  ): void {
-    this.mediaElements.push({
-      id, valid
-    });
+  registerMediaElement(id: string, valid: boolean): void {
+    this.mediaElements.push({ id, valid });
   }
 
   setActualPlayingMediaId(actualId: string | null): void {
     this.actualPlayingId.next(actualId);
   }
 
-  setValidStatusChanged(validId: string): void {
+  setValidStatusChanged(validId: string): void { // TODO validId? komischer name
     const validMediaElement = this.mediaElements.find(mediaElement => mediaElement.id === validId);
     if (validMediaElement) {
       validMediaElement.valid = true;

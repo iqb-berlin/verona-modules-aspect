@@ -12,7 +12,7 @@ export class KeypadService extends InputService {
   preset!: InputAssistancePreset;
   position!: 'floating' | 'right';
 
-  toggle(focusedElement: HTMLElement | null,
+  toggle(focusedElement: HTMLElement | null,  // TODO boolean als Rückgabewert? toggle schlechter name
          elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): boolean {
     if (focusedElement) {
       this.preset = (elementComponent.elementModel as TextFieldElement).inputAssistancePreset;

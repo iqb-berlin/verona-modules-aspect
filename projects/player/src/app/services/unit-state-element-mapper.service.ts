@@ -10,7 +10,7 @@ import { UnitUtils } from 'common/util/unit-utils';
 @Injectable({
   providedIn: 'root'
 })
-export class UnitStateElementMapperService {
+export class UnitStateElementMapperService { // TODO besser mapping service
   dropListValueIds!: DragNDropValueObject[];
 
   registerDropListValueIds(unitDefinition: Unit): void {
@@ -22,6 +22,7 @@ export class UnitStateElementMapperService {
       );
   }
 
+  // TODO komischer methodenname
   fromUnitState = (unitStateValue: InputElementValue | undefined, elementModel: UIElement): InputElementValue => {
     switch (elementModel.type) {
       case 'drop-list':

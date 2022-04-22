@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class DeviceService {
   private readonly isTouch!: boolean;
-  private hasHardwareKeyboard!: boolean;
+  private hasHardwareKeyboard!: boolean; // TODO
 
   constructor() {
     this.isTouch = (('ontouchstart' in window) || (navigator && navigator.maxTouchPoints > 0));

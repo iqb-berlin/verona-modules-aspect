@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class NavigationService {
+export class NavigationService { // TODO lohnt für das bischen ein Service?
   private _pageIndex = new Subject<number>();
 
   setPage(pageIndex: number): void {

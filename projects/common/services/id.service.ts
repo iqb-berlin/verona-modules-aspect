@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class IdService { // TODO rename: capitalize
+export class IDService {
   private givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,
@@ -28,16 +28,6 @@ export class IdService { // TODO rename: capitalize
     'toggle-button': 0,
     value: 0
   };
-
-  // private static instance: IdService;
-  //
-  // constructor() {
-  //   IdService.instance = this;
-  // }
-  //
-  // static getInstance(): IdService {
-  //   return IdService.instance;
-  // }
 
   getNewID(type: string): string {
     if (!type) {

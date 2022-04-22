@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { IdService } from 'common/services/id.service';
+import { IDService } from 'common/services/i-d.service';
 
 describe('IDService', () => {
-  let service: IdService;
+  let service: IDService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ providers: [IdService] });
-    service = TestBed.inject(IdService);
+    TestBed.configureTestingModule({ providers: [IDService] });
+    service = TestBed.inject(IDService);
   });
 
   it('getNewID should fail on empty string param', () => {

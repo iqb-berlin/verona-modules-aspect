@@ -1,10 +1,10 @@
-import { IdService } from 'common/services/id.service';
+import { IDService } from 'common/services/id.service';
 import { ElementFactory } from 'common/util/element.factory';
 import { ClozeDocument } from 'common/interfaces/cloze';
 import { InputElement, UIElement } from 'common/interfaces/elements';
 
 export abstract class ClozeParser {
-  static setMissingIDs(clozeJSON: ClozeDocument, idService: IdService): ClozeDocument {
+  static setMissingIDs(clozeJSON: ClozeDocument, idService: IDService): ClozeDocument {
     clozeJSON.content.forEach((node: any) => {
       if (node.type === 'paragraph' || node.type === 'heading') {
         ClozeParser.createSubNodeElements(node, idService);
@@ -24,7 +24,7 @@ export abstract class ClozeParser {
   }
 
   // create element anew because the TextEditor can't create multiple element instances
-  private static createSubNodeElements(node: any, idService: IdService) {
+  private static createSubNodeElements(node: any, idService: IDService) {
     node.content?.forEach((subNode: any) => {
       if (['ToggleButton', 'DropList', 'TextField'].includes(subNode.type) &&
         subNode.attrs.model.id === 'id_placeholder') {

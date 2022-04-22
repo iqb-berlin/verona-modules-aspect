@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
-import { IdService } from 'common/services/id.service';
+import { IDService } from 'common/services/id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
@@ -35,7 +35,7 @@ export class UnitService {
   elementPropertyUpdated: Subject<void> = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
-              private idService: IdService,
+              private idService: IDService,
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,

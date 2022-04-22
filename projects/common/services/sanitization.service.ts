@@ -17,14 +17,14 @@ import StarterKit from '@tiptap/starter-kit';
 import ToggleButtonExtension from 'common/tiptap-editor-extensions/toggle-button';
 import DropListExtension from 'common/tiptap-editor-extensions/drop-list';
 import TextFieldExtension from 'common/tiptap-editor-extensions/text-field';
-import { IdService } from './id.service';
+import { IDService } from './id.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SanitizationService {
 
-  constructor(private iDService: IdService) { }
+  constructor(private iDService: IDService) { }
 
   private static expectedUnitVersion: [number, number, number] =
     packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];

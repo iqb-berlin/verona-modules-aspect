@@ -37,7 +37,7 @@ import { LayoutPlayerComponent } from './components/layout-player/layout-player.
 import { KeyInputModule } from 'key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
 import { KeyboardModule } from '../../modules/keyboard/keyboard.module';
-import { UnitDefinitionMenuModule } from '../../modules/unit-definition-menu/unit-definition-menu.module';
+import { UnitDefinitionMenuModule } from 'unit-definition-menu/unit-definition-menu.module';
 
 @NgModule({
   declarations: [

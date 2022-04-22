@@ -5,7 +5,7 @@ iqb-aspect-definition@1.0.0
   - Rename variable
   - raise version to 1.0.0
 
-2.0.0
+2.0.0 (editor 1.26)
 - positionProps -> position
 - playerProps -> player
 - styles -> styling
@@ -25,5 +25,5 @@ iqb-aspect-definition@1.0.0
                        +restrictedToInputAssistanceChars: boolean;
                        +showSoftwareKeyboard: boolean;
                        +softwareKeyboardShowFrench: boolean;
-3.4.0
+3.4.0 (editor 1.30)
 - ToggleButton now have "richTextOptions" instead of options

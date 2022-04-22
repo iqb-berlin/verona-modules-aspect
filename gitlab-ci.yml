@@ -1,0 +1,7 @@
+stages:
+  - test
+
+test-unit:
+  stage: test
+  script:
+    - npm run test

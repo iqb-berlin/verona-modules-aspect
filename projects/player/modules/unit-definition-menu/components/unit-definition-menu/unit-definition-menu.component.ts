@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FileService } from '../../../../../editor/src/app/services/file.service';
+import { FileService } from 'common/services/file.service';
 import { Page } from 'common/interfaces/unit';
 import { PagingMode } from '../../../verona/models/verona';
 

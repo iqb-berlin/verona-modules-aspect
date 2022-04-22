@@ -21,7 +21,7 @@ import { FontSize } from './extensions/font-size';
 import { BulletListExtension } from './extensions/bullet-list';
 import { OrderedListExtension } from './extensions/ordered-list';
 
-import { FileService } from '../services/file.service';
+import { FileService } from 'common/services/file.service';
 
 import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';

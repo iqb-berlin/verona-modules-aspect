@@ -5,7 +5,7 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitService } from '../../../../../services/unit.service';
-import { FileService } from '../../../../../services/file.service';
+import { FileService } from 'common/services/file.service';
 import {
   TextImageLabel,
   DragNDropValueObject,

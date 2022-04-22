@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../../../../../services/unit.service';
 import { SelectionService } from '../../../../../../services/selection.service';
-import { FileService } from '../../../../../../services/file.service';
+import { FileService } from 'common/services/file.service';
 
 @Component({
   selector: 'aspect-button-properties',

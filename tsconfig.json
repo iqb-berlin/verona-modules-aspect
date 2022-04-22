@@ -23,7 +23,10 @@
       "dom"
     ],
     "paths": {
-      "common/*": ["./projects/common/*"]
+      "common/*": ["./projects/common/*"],
+      "unit-definition-menu/*": ["./projects/player/modules/unit-definition-menu/*"],
+      "verona/*": ["./projects/player/modules/verona/*"],
+      "key-input/*": ["./projects/player/modules/key-input/*"]
     }
   },
   "angularCompilerOptions": {

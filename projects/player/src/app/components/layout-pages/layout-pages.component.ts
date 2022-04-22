@@ -5,7 +5,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NativeEventService } from '../../services/native-event.service';
-import { PlayerConfig } from '../../../../modules/verona/models/verona';
+import { PlayerConfig } from 'verona/models/verona';
 import { Page } from 'common/interfaces/unit';
 
 @Component({

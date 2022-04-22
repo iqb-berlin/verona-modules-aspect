@@ -9,7 +9,7 @@ import { UnitStateService } from '../../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
 import { MessageService } from 'common/services/message.service';
-import { VeronaSubscriptionService } from '../../../../modules/verona/services/verona-subscription.service';
+import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ValidatorService } from '../../services/validator.service';
 import { KeypadService } from '../../services/keypad.service';
 import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';

@@ -1,11 +1,11 @@
 import { Directive, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Progress, UnitState } from '../../../modules/verona/models/verona';
+import { Progress, UnitState } from 'verona/models/verona';
 import { UnitStateService } from '../services/unit-state.service';
 import { MediaPlayerService } from '../services/media-player.service';
-import { VeronaSubscriptionService } from '../../../modules/verona/services/verona-subscription.service';
-import { VeronaPostService } from '../../../modules/verona/services/verona-post.service';
+import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
+import { VeronaPostService } from 'verona/services/verona-post.service';
 import { ValidatorService } from '../services/validator.service';
 
 @Directive({

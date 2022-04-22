@@ -9,9 +9,9 @@ import { InputElement, InputElementValue, SliderElement } from 'common/interface
 import { UnitStateService } from '../services/unit-state.service';
 import { UnitStateElementMapperService } from '../services/unit-state-element-mapper.service';
 import { ElementGroupDirective } from './element-group.directive';
-import { VopNavigationDeniedNotification } from '../models/verona';
+import { VopNavigationDeniedNotification } from '../../../modules/verona/models/verona';
 import { MessageService } from 'common/services/message.service';
-import { VeronaSubscriptionService } from '../services/verona-subscription.service';
+import { VeronaSubscriptionService } from '../../../modules/verona/services/verona-subscription.service';
 import { ValidatorService } from '../services/validator.service';
 
 @Directive()

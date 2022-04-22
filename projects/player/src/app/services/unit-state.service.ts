@@ -7,7 +7,7 @@ import {
   UnitStateElementCode,
   UnitStateElementCodeStatus,
   UnitStateElementCodeStatusValue
-} from '../models/verona';
+} from '../../../modules/verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
 import { InputElementValue, ValueChangeElement } from 'common/interfaces/elements';
 

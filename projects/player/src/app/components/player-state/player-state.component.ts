@@ -3,12 +3,12 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { VeronaSubscriptionService } from '../../services/verona-subscription.service';
+import { VeronaSubscriptionService } from '../../../../modules/verona/services/verona-subscription.service';
 import {
   PlayerConfig, PlayerState, RunningState,
   VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
-} from '../../models/verona';
-import { VeronaPostService } from '../../services/verona-post.service';
+} from '../../../../modules/verona/models/verona';
+import { VeronaPostService } from '../../../../modules/verona/services/verona-post.service';
 import { Page } from 'common/interfaces/unit';
 import { NavigationService } from '../../services/navigation.service';
 
@@ -19,6 +19,9 @@ import { NavigationService } from '../../services/navigation.service';
 })
 export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() pages!: Page[];
+  @Input() alwaysVisiblePage!: Page | undefined;
+  @Input() alwaysVisibleUnitPageIndex!: number;
+  @Input() scrollPages!: Page[];
   @Input() playerConfig!: PlayerConfig;
 
   currentPlayerPageIndex: number = 0;

@@ -37,6 +37,7 @@ import { LayoutPlayerComponent } from './components/layout-player/layout-player.
 import { KeyInputModule } from '../../modules/key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
 import { KeyboardModule } from '../../modules/keyboard/keyboard.module';
+import { UnitDefinitionMenuModule } from '../../modules/unit-definition-menu/unit-definition-menu.module';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { KeyboardModule } from '../../modules/keyboard/keyboard.module';
       }
     }),
     OverlayModule,
-    KeyboardModule
+    KeyboardModule,
+    UnitDefinitionMenuModule
   ],
   providers: []
 })

@@ -1,5 +1,8 @@
 {
   "pageIndication": "Seite {{index}}",
   "close": "Schließen",
-  "imageNotFound": "Bild nicht gefunden"
+  "imageNotFound": "Bild nicht gefunden",
+  "load_separate": "Unit im 'Blätter'-Modus laden",
+  "load_scroll": "Unit im 'Scroll'-Modus laden",
+  "load_snap": "Unit im 'Snap'-Modus laden"
 }

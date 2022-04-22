@@ -43,7 +43,7 @@ export interface PlayerState {
   currentPage?: string;
 }
 
-export interface LogData{
+export interface LogData {
   timeStamp: number,
   key: string,
   content?: string
@@ -86,7 +86,7 @@ export interface VopContinueCommand {
   sessionId: string;
 }
 
-export interface VopReadyNotification extends VopMetaData{
+export interface VopReadyNotification extends VopMetaData {
   type: 'vopReadyNotification';
 }
 

@@ -14,6 +14,7 @@ import {
   providedIn: 'root'
 })
 export class VeronaPostService {
+  private _isStandalone!: boolean;
   private _sessionId!: string;
   private _stateReportPolicy!: StateReportPolicy;
   private cachedVopStateChangedNotificationValues: {
@@ -22,10 +23,12 @@ export class VeronaPostService {
     log?: LogData[]
   } = {};
 
-  private isStandalone = (): boolean => window === window.parent;
-
   set sessionId(sessionId: string) {
     this._sessionId = sessionId;
+  }
+
+  set isStandalone(isStandalone: boolean) {
+    this._isStandalone = isStandalone;
   }
 
   set stateReportPolicy(stateReportPolicy: StateReportPolicy) {
@@ -34,7 +37,7 @@ export class VeronaPostService {
 
   private send(message: VopMessage): void {
     // prevent posts in local (dev) mode
-    if (!this.isStandalone()) {
+    if (!this._isStandalone) {
       window.parent.postMessage(message, '*');
     } else {
       // eslint-disable-next-line no-console

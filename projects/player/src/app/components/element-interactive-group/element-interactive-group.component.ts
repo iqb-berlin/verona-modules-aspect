@@ -4,7 +4,7 @@ import {
 import {
   ButtonElement, FrameElement, ImageElement
 } from 'common/interfaces/elements';
-import { VeronaPostService } from '../../services/verona-post.service';
+import { VeronaPostService } from '../../../../modules/verona/services/verona-post.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';

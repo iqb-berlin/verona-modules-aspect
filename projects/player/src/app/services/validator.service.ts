@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Progress } from '../models/verona';
+import { Progress } from '../../../modules/verona/models/verona';
 
 @Injectable({
   providedIn: 'root'

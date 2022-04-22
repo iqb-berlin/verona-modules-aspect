@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { NativeEventService } from '../../services/native-event.service';
-import { PlayerConfig } from '../../models/verona';
+import { PlayerConfig } from '../../../../modules/verona/models/verona';
 import { Page } from 'common/interfaces/unit';
 
 @Component({
@@ -20,6 +20,9 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() selectedIndex!: number;
   @Input() selectIndex!: Subject<number>;
   @Input() playerConfig!: PlayerConfig;
+  @Input() alwaysVisiblePage!: Page | undefined;
+  @Input() alwaysVisibleUnitPageIndex!: number;
+  @Input() scrollPages!: Page[];
 
   @Output() selectedIndexChange = new EventEmitter<number>();
   @Output() validPagesDetermined = new EventEmitter<Record<string, string>>();
@@ -27,10 +30,7 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   scrollPagesIndices!: number[];
-  scrollPages!: Page[];
   hasScrollPages!: boolean;
-  alwaysVisiblePage!: Page | undefined;
-  alwaysVisibleUnitPageIndex!: number;
   alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right' ;
   layoutAlignment!: 'row' | 'column';
   scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
@@ -97,9 +97,9 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initPages(): void {
-    this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
-    this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
-    this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
+    // this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
+    // this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
+    // this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
     this.hasScrollPages = this.scrollPages?.length > 0;
     this.scrollPagesIndices = this.scrollPages.map(
       (scrollPage: Page): number => this.pages.indexOf(scrollPage)

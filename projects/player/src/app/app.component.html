@@ -1,6 +1,14 @@
+<aspect-unit-definition-menu
+  *ngIf="isStandalone"
+  class="unit-definition-menu"
+  [scrollPages]="scrollPages">
+</aspect-unit-definition-menu>
 <aspect-player-state
-    *ngIf="playerConfig && pages?.length"
-    aspectUnitState
-    [pages]="pages"
-    [playerConfig]="playerConfig">
+  *ngIf="playerConfig && pages?.length"
+  aspectUnitState
+  [pages]="pages"
+  [alwaysVisiblePage]="alwaysVisiblePage"
+  [alwaysVisibleUnitPageIndex]="alwaysVisibleUnitPageIndex"
+  [scrollPages]="scrollPages"
+  [playerConfig]="playerConfig">
 </aspect-player-state>

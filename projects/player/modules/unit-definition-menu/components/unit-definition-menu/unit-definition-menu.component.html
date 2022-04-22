@@ -1,0 +1,32 @@
+<button mat-icon-button
+        [matMenuTriggerFor]="menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item
+          (click)="load('separate')">
+    <mat-icon>file_upload</mat-icon>
+    <span>{{ 'load_separate' | translate }}</span>
+  </button>
+  <button mat-menu-item
+          (click)="load('concat-scroll')">
+    <mat-icon>file_upload</mat-icon>
+    <span>{{ 'load_scroll' | translate }}</span>
+  </button>
+  <button mat-menu-item
+          (click)="load('concat-scroll-snap')">
+    <mat-icon>file_upload</mat-icon>
+    <span>{{ 'load_snap' | translate }}</span>
+  </button>
+
+  <ng-container *ngIf="scrollPages && scrollPages.length > 1">
+    <mat-divider></mat-divider>
+    <button mat-menu-item *ngFor="let page of scrollPages; let i = index;"
+            (click)="goToPage(i)">
+      <mat-icon>web_stories</mat-icon>
+      <span>{{ 'pageIndication' | translate: {index: i + 1} }}</span>
+    </button>
+  </ng-container>
+
+</mat-menu>

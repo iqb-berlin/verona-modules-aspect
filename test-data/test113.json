@@ -1,5 +1,4 @@
 {
-  "unitDefinitionType": "iqb-aspect-definition@1.1.0",
   "pages": [
     {
       "sections": [
@@ -7,14 +6,18 @@
           "elements": [
             {
               "id": "text_1",
-              "width": 190,
-              "height": 98,
+              "width": 291,
+              "height": 124,
               "type": "text",
+              "dynamicPositioning": false,
+              "text": "<p>Lorem ipsum dolor sit amet</p>",
+              "highlightableOrange": false,
+              "highlightableTurquoise": false,
+              "highlightableYellow": true,
               "positionProps": {
                 "dynamicPositioning": false,
-                "fixedSize": false,
-                "xPosition": 0,
-                "yPosition": 0,
+                "xPosition": 66,
+                "yPosition": 37,
                 "useMinHeight": false,
                 "gridColumnStart": 1,
                 "gridColumnEnd": 2,
@@ -26,21 +29,16 @@
                 "marginBottom": 0,
                 "zIndex": 0
               },
-              "text": "Lorem ipsum dolor sit amet",
-              "highlightableOrange": false,
-              "highlightableTurquoise": false,
-              "highlightableYellow": false,
               "fontProps": {
                 "fontColor": "#000000",
                 "font": "Roboto",
-                "fontSize": 20,
-                "lineHeight": 135,
+                "lineHeight": 120,
                 "bold": false,
                 "italic": false,
                 "underline": false
               },
               "surfaceProps": {
-                "backgroundColor": "red"
+                "backgroundColor": "transparent"
               }
             }
           ],
@@ -61,5 +59,6 @@
       "alwaysVisiblePagePosition": "left",
       "alwaysVisibleAspectRatio": 50
     }
-  ]
+  ],
+  "veronaModuleVersion": "iqb-aspect-module@0.1.1"
 }

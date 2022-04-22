@@ -3,5 +3,8 @@ stages:
 
 test-unit:
   stage: test
+  image: iqbberlin/ci-node-chromium:latest
+  before_script:
+    - npm install
   script:
     - npm run test

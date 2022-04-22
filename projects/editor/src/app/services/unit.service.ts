@@ -46,11 +46,14 @@ export class UnitService {
 
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
-    const sanatizationResult = UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(unitDefinition));
-    if (unitDefinition) {
-      if (sanatizationResult[1]) this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
+    const unitDef = JSON.parse(unitDefinition);
+    if (UnitDefinitionSanitizer.isUnitDefinitionOutdated(unitDef)) {
+      // console.log('sanatized: ', UnitDefinitionSanitizer.sanitizeUnitDefinition(unitDef));
+      this.unit = UnitFactory.createUnit(UnitDefinitionSanitizer.sanitizeUnitDefinition(unitDef));
+      this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
+    } else {
+      this.unit = UnitFactory.createUnit(unitDef);
     }
-    this.unit = UnitFactory.createUnit(sanatizationResult[0]);
     UnitService.readIDs(this.unit);
   }
 

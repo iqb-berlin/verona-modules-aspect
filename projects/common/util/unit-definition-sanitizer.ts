@@ -25,28 +25,20 @@ export abstract class UnitDefinitionSanitizer {
 
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
-  /* Second return value is for signaling if sanatization happened or not */
-  static sanitizeUnitDefinition(unitDefinition: Unit & { veronaModuleVersion?: string }): [Unit, boolean] {
-    try {
-      UnitDefinitionSanitizer.unitDefinitionVersion =
-        UnitDefinitionSanitizer.getUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
-    } catch (e) {
-      console.error('Could not read unit defintion');
-      return [unitDefinition, true];
-    }
-
-    if (UnitDefinitionSanitizer.isVersionOlderThanCurrent(UnitDefinitionSanitizer.unitDefinitionVersion)) {
-      console.log('Sanatizing unit definition...');
-      const x = {
-        ...unitDefinition,
-        pages: unitDefinition.pages.map((page: Page) => UnitDefinitionSanitizer.sanatizePage(page))
-      };
-      return [x as Unit, true];
-    }
-    return [unitDefinition, false];
+  static isUnitDefinitionOutdated(unitDefinition: Unit): boolean {
+    UnitDefinitionSanitizer.unitDefinitionVersion =
+      UnitDefinitionSanitizer.readUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
+    return UnitDefinitionSanitizer.isVersionOlderThanCurrent(UnitDefinitionSanitizer.unitDefinitionVersion);
   }
 
-  private static getUnitDefinitionVersion(unitDefinition: Record<string, string>): [number, number, number] {
+  static sanitizeUnitDefinition(unitDefinition: Unit): Unit {
+    return {
+      ...unitDefinition,
+      pages: unitDefinition.pages.map((page: Page) => UnitDefinitionSanitizer.sanatizePage(page))
+    };
+  }
+
+  private static readUnitDefinitionVersion(unitDefinition: Record<string, string>): [number, number, number] {
     return (
       unitDefinition.version ||
       (unitDefinition.unitDefinitionType && unitDefinition.unitDefinitionType.split('@')[1]) ||
@@ -65,14 +57,14 @@ export abstract class UnitDefinitionSanitizer {
     return version[2] < UnitDefinitionSanitizer.expectedUnitVersion[2];
   }
 
-  static sanatizePage(page: Page): Page {
+  private static sanatizePage(page: Page): Page {
     return {
       ...page,
       sections: page.sections.map((section: Section) => UnitDefinitionSanitizer.sanatizeSection(section))
     };
   }
 
-  static sanatizeSection(section: Section): Section {
+  private static sanatizeSection(section: Section): Section {
     return {
       ...section,
       elements: section.elements.map((element: UIElement) => (
@@ -80,7 +72,8 @@ export abstract class UnitDefinitionSanitizer {
     };
   }
 
-  static sanatizeElement(element: Record<string, UIElementValue>, sectionDynamicPositioning?: boolean): UIElement {
+  private static sanatizeElement(element: Record<string, UIElementValue>,
+                                 sectionDynamicPositioning?: boolean): UIElement {
     let newElement: Partial<UIElement> = {
       ...element,
       position: UnitDefinitionSanitizer.getPositionProps(element, sectionDynamicPositioning),
@@ -92,7 +85,7 @@ export abstract class UnitDefinitionSanitizer {
     }
     if (['text-field', 'text-area']
       .includes(newElement.type as string)) {
-      newElement = UnitDefinitionSanitizer.handleTextInputElement(newElement);
+      newElement = UnitDefinitionSanitizer.sanitizeTextFieldElement(newElement);
     }
     if (newElement.type === 'cloze') {
       newElement = UnitDefinitionSanitizer.handleClozeElement(newElement as Record<string, UIElementValue>);
@@ -120,17 +113,8 @@ export abstract class UnitDefinitionSanitizer {
     return newElement as unknown as UIElement;
   }
 
-  private static handleRadioButtonGroupElement(element: RadioButtonGroupElement): RadioButtonGroupElement {
-    if (element.richTextOptions) {
-      return element;
-    }
-    return {
-      ...element,
-      richTextOptions: element.options as string[]
-    };
-  }
-
-  private static getPositionProps(element: Record<string, any>, sectionDynamicPositioning?: boolean): PositionProperties {
+  private static getPositionProps(element: Record<string, any>,
+                                  sectionDynamicPositioning?: boolean): PositionProperties {
     if (element.position && element.position.gridColumnEnd) {
       return {
         ...element.position,
@@ -141,6 +125,12 @@ export abstract class UnitDefinitionSanitizer {
         gridRow: element.position.gridRow !== undefined ?
           element.position.gridRow : element.position.gridRowStart,
         gridRowRange: element.position.gridRowEnd - element.position.gridRowStart
+      };
+    }
+    if (element.position) {
+      return {
+        ...element.position,
+        dynamicPositioning: sectionDynamicPositioning
       };
     }
     if (element.positionProps) {
@@ -156,9 +146,15 @@ export abstract class UnitDefinitionSanitizer {
       };
     }
     return {
-      ...element.position,
-      dynamicPositioning: sectionDynamicPositioning
-    };
+      ...element,
+      dynamicPositioning: sectionDynamicPositioning,
+      gridColumn: element.gridColumn !== undefined ?
+        element.gridColumn : element.gridColumnStart,
+      gridColumnRange: element.gridColumnEnd - element.gridColumnStart,
+      gridRow: element.gridRow !== undefined ?
+        element.gridRow : element.gridRowStart,
+      gridRowRange: element.gridRowEnd - element.gridRowStart
+    } as PositionProperties;
   }
 
   /* Style properties are expected to be in 'stylings'. If not they may be in fontProps and/or
@@ -172,6 +168,7 @@ export abstract class UnitDefinitionSanitizer {
     if (element.fontProps !== undefined) {
       return {
         ...(element.fontProps as Record<string, any>),
+        // additional props that were neither fontProp nor surfaceProp before
         backgroundColor: (element.surfaceProps as Record<string, any>)?.backgroundColor,
         borderRadius: element.borderRadius as number | undefined,
         itemBackgroundColor: element.itemBackgroundColor as string | undefined,
@@ -208,7 +205,7 @@ export abstract class UnitDefinitionSanitizer {
     return newElement as TextElement;
   }
 
-  private static handleTextInputElement(element: Record<string, UIElementValue>): InputElement {
+  private static sanitizeTextFieldElement(element: Record<string, UIElementValue>): InputElement {
     const newElement = { ...element };
     if (newElement.restrictedToInputAssistanceChars === undefined && newElement.inputAssistancePreset === 'french') {
       newElement.restrictedToInputAssistanceChars = false;
@@ -291,6 +288,8 @@ export abstract class UnitDefinitionSanitizer {
     return editor.getJSON() as ClozeDocument;
   }
 
+  /* before: simple string[]; after: DragNDropValueObject with ID and value.
+  * Needs to be done to selectable options and the possibly set preset (value). */
   private static handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
     const newElement = element;
     if (newElement.options) {
@@ -345,6 +344,16 @@ export abstract class UnitDefinitionSanitizer {
         value: (element.value as number) - 1
       } :
       element;
+  }
+
+  private static handleRadioButtonGroupElement(element: RadioButtonGroupElement): RadioButtonGroupElement {
+    if (element.richTextOptions) {
+      return element;
+    }
+    return {
+      ...element,
+      richTextOptions: element.options as string[]
+    };
   }
 
   private static handleToggleButtonElement(element: ToggleButtonElement): ToggleButtonElement {

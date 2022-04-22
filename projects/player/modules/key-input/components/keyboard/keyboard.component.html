@@ -4,8 +4,8 @@
        class="specialCharacters">
     <button *ngFor="let key of frenchSpecialCharacters; let i = index"
             mat-raised-button
-            (click)="enterCharacter(key)">
-      {{shift ? key.toUpperCase() : key}}
+            (click)="enterCharacter(key[0])">
+      {{shift ? key[1] : key[0]}}
     </button>
   </div>
 

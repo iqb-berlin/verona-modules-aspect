@@ -19,7 +19,9 @@ export class KeyboardComponent {
   numberKeys: [string, string][] = [['1', '!'], ['2', '"'], ['3', '§'], ['4', '$'], ['5', '%'], ['6', '&'],
     ['7', '/'], ['8', '('], ['9', ')'], ['0', '='], ['ß', '?']];
 
-  frenchSpecialCharacters = KeyLayout.get('french').default.flat();
+  frenchSpecialCharacters: [string, string][] = KeyLayout.get('french').default.flat()
+    .map( (e, i) => [e, KeyLayout.get('french').shift.flat()[i]]);
+
 
   enterCharacter(pressedCharacter: string): void {
     this.characterClicked.emit(this.shift ? pressedCharacter.toUpperCase() : pressedCharacter);

@@ -34,7 +34,7 @@ import {
   ElementInteractiveGroupComponent
 } from './components/element-interactive-group/element-interactive-group.component';
 import { LayoutPlayerComponent } from './components/layout-player/layout-player.component';
-import { KeyInputModule } from '../../modules/key-input/key-input.module';
+import { KeyInputModule } from 'key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
 import { KeyboardModule } from '../../modules/keyboard/keyboard.module';
 import { UnitDefinitionMenuModule } from '../../modules/unit-definition-menu/unit-definition-menu.module';

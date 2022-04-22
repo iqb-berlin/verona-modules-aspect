@@ -4,7 +4,7 @@ import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
-import { IdService } from './id.service';
+import { IdService } from 'common/services/id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
@@ -20,11 +20,11 @@ import {
   PositionedElement, TextElement,
   UIElement, UIElementType
 } from 'common/interfaces/elements';
-import { UnitDefinitionSanitizer } from 'common/util/unit-definition-sanitizer';
 import { ClozeDocument } from 'common/interfaces/cloze';
 import { UnitUtils } from 'common/util/unit-utils';
 import { ArrayUtils } from 'common/util/array';
 import { ClozeUtils } from 'common/util/cloze';
+import { SanitizationService } from 'common/services/sanitization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,7 @@ export class UnitService {
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
+              private sanitizationService: SanitizationService,
               private sanitizer: DomSanitizer,
               private translateService: TranslateService) {
     this.unit = UnitFactory.createUnit({} as Unit);
@@ -47,26 +48,25 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
     const unitDef = JSON.parse(unitDefinition);
-    if (UnitDefinitionSanitizer.isUnitDefinitionOutdated(unitDef)) {
-      // console.log('sanatized: ', UnitDefinitionSanitizer.sanitizeUnitDefinition(unitDef));
-      this.unit = UnitFactory.createUnit(UnitDefinitionSanitizer.sanitizeUnitDefinition(unitDef));
+    if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
+      this.unit = UnitFactory.createUnit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
       this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
     } else {
       this.unit = UnitFactory.createUnit(unitDef);
     }
-    UnitService.readIDs(this.unit);
+    this.readIDs(this.unit);
   }
 
-  private static readIDs(unit: Unit): void {
+  private readIDs(unit: Unit): void {
     UnitUtils.findUIElements(unit).forEach(element => {
       if (element.type === 'likert') {
-        (element as LikertElement).rows.forEach(row => IdService.getInstance().addID(row.id));
+        (element as LikertElement).rows.forEach(row => this.idService.addID(row.id));
       }
       if (element.type === 'cloze') {
         ClozeUtils.getClozeChildElements((element as ClozeElement).document)
-          .forEach(child => IdService.getInstance().addID(child.id));
+          .forEach(child => this.idService.addID(child.id));
       }
-      IdService.getInstance().addID(element.id);
+      this.idService.addID(element.id);
     });
   }
 

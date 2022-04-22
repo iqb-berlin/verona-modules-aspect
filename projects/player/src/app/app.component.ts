@@ -11,9 +11,9 @@ import { MetaDataService } from './services/meta-data.service';
 import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
 import { Page, Unit } from 'common/interfaces/unit';
-import { UnitDefinitionSanitizer } from 'common/util/unit-definition-sanitizer';
 import { ValidatorService } from './services/validator.service';
 import { UnitFactory } from 'common/util/unit.factory';
+import { SanitizationService } from 'common/services/sanitization.service';
 
 @Component({
   selector: 'aspect-player',
@@ -36,7 +36,8 @@ export class AppComponent implements OnInit {
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
               private unitStateElementMapperService: UnitStateElementMapperService,
-              private validatorService: ValidatorService) {
+              private validatorService: ValidatorService,
+              private sanitizationService: SanitizationService) {
     this.isStandalone =  window === window.parent;
   }
 
@@ -63,7 +64,7 @@ export class AppComponent implements OnInit {
       console.log('player: onStart', message);
       if (message.unitDefinition) {
         const unitDefinition: Unit = UnitFactory.createUnit(
-          UnitDefinitionSanitizer.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))[0]
+          this.sanitizationService.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
         );
         this.initSession(message, unitDefinition);
       } else {

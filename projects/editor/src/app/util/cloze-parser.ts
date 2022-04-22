@@ -1,4 +1,4 @@
-import { IdService } from '../services/id.service';
+import { IdService } from 'common/services/id.service';
 import { ElementFactory } from 'common/util/element.factory';
 import { ClozeDocument } from 'common/interfaces/cloze';
 import { InputElement, UIElement } from 'common/interfaces/elements';

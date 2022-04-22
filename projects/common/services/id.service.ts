@@ -29,15 +29,15 @@ export class IdService { // TODO rename: capitalize
     value: 0
   };
 
-  private static instance: IdService;
-
-  constructor() {
-    IdService.instance = this;
-  }
-
-  static getInstance(): IdService {
-    return IdService.instance;
-  }
+  // private static instance: IdService;
+  //
+  // constructor() {
+  //   IdService.instance = this;
+  // }
+  //
+  // static getInstance(): IdService {
+  //   return IdService.instance;
+  // }
 
   getNewID(type: string): string {
     if (!type) {

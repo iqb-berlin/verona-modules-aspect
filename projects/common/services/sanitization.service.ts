@@ -1,40 +1,46 @@
-import { Editor } from '@tiptap/core';
-import StarterKit from '@tiptap/starter-kit';
-import { Page, Section, Unit } from '../interfaces/unit';
+import { Injectable } from '@angular/core';
+import packageJSON from '../../../package.json';
+import { Page, Section, Unit } from 'common/interfaces/unit';
 import {
-  ClozeElement,
-  DragNDropValueObject,
-  DropListElement,
-  ElementStyling, InputElement, LikertElement, LikertRowElement,
-  PlayerProperties, PositionedElement,
-  PositionProperties, RadioButtonGroupElement, TextElement, ToggleButtonElement,
+  ClozeElement, DragNDropValueObject, DropListElement,
+  ElementStyling,
+  InputElement, LikertElement, LikertRowElement, PlayerProperties,
+  PositionedElement, PositionProperties, RadioButtonGroupElement, TextElement,
+  ToggleButtonElement,
   UIElement,
   UIElementValue
-} from '../interfaces/elements';
-import { IdService } from '../../editor/src/app/services/id.service';
-import packageJSON from '../../../package.json';
-import ToggleButtonExtension from '../tiptap-editor-extensions/toggle-button';
-import DropListExtension from '../tiptap-editor-extensions/drop-list';
-import TextFieldExtension from '../tiptap-editor-extensions/text-field';
-import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../interfaces/cloze';
-import { ClozeUtils } from './cloze';
+} from 'common/interfaces/elements';
+import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from 'common/interfaces/cloze';
+import { ClozeUtils } from 'common/util/cloze';
+import { Editor } from '@tiptap/core';
+import StarterKit from '@tiptap/starter-kit';
+import ToggleButtonExtension from 'common/tiptap-editor-extensions/toggle-button';
+import DropListExtension from 'common/tiptap-editor-extensions/drop-list';
+import TextFieldExtension from 'common/tiptap-editor-extensions/text-field';
+import { IdService } from './id.service';
 
-export abstract class UnitDefinitionSanitizer {
+@Injectable({
+  providedIn: 'root'
+})
+export class SanitizationService {
+
+  constructor(private iDService: IdService) { }
+
   private static expectedUnitVersion: [number, number, number] =
     packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
 
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
   static isUnitDefinitionOutdated(unitDefinition: Unit): boolean {
-    UnitDefinitionSanitizer.unitDefinitionVersion =
-      UnitDefinitionSanitizer.readUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
-    return UnitDefinitionSanitizer.isVersionOlderThanCurrent(UnitDefinitionSanitizer.unitDefinitionVersion);
+    SanitizationService.unitDefinitionVersion =
+      SanitizationService.readUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
+    return SanitizationService.isVersionOlderThanCurrent(SanitizationService.unitDefinitionVersion);
   }
 
-  static sanitizeUnitDefinition(unitDefinition: Unit): Unit {
+  sanitizeUnitDefinition(unitDefinition: Unit): Unit {
     return {
       ...unitDefinition,
-      pages: unitDefinition.pages.map((page: Page) => UnitDefinitionSanitizer.sanatizePage(page))
+      pages: unitDefinition.pages.map((page: Page) => this.sanitizePage(page))
     };
   }
 
@@ -48,66 +54,66 @@ export abstract class UnitDefinitionSanitizer {
 
   private static isVersionOlderThanCurrent(version: [number, number, number]): boolean {
     if (!version) return true;
-    if (version[0] < UnitDefinitionSanitizer.expectedUnitVersion[0]) {
+    if (version[0] < SanitizationService.expectedUnitVersion[0]) {
       return true;
     }
-    if (version[1] < UnitDefinitionSanitizer.expectedUnitVersion[1]) {
+    if (version[1] < SanitizationService.expectedUnitVersion[1]) {
       return true;
     }
-    return version[2] < UnitDefinitionSanitizer.expectedUnitVersion[2];
+    return version[2] < SanitizationService.expectedUnitVersion[2];
   }
 
-  private static sanatizePage(page: Page): Page {
+  private sanitizePage(page: Page): Page {
     return {
       ...page,
-      sections: page.sections.map((section: Section) => UnitDefinitionSanitizer.sanatizeSection(section))
+      sections: page.sections.map((section: Section) => this.sanitizeSection(section))
     };
   }
 
-  private static sanatizeSection(section: Section): Section {
+  private sanitizeSection(section: Section): Section {
     return {
       ...section,
       elements: section.elements.map((element: UIElement) => (
-        UnitDefinitionSanitizer.sanatizeElement(element, section.dynamicPositioning))) as PositionedElement[]
+        this.sanitizeElement(element, section.dynamicPositioning))) as PositionedElement[]
     };
   }
 
-  private static sanatizeElement(element: Record<string, UIElementValue>,
-                                 sectionDynamicPositioning?: boolean): UIElement {
+  private sanitizeElement(element: Record<string, UIElementValue>,
+                          sectionDynamicPositioning?: boolean): UIElement {
     let newElement: Partial<UIElement> = {
       ...element,
-      position: UnitDefinitionSanitizer.getPositionProps(element, sectionDynamicPositioning),
-      styling: UnitDefinitionSanitizer.getStyleProps(element),
-      player: UnitDefinitionSanitizer.getPlayerProps(element)
+      position: SanitizationService.getPositionProps(element, sectionDynamicPositioning),
+      styling: SanitizationService.getStyleProps(element),
+      player: SanitizationService.getPlayerProps(element)
     };
     if (newElement.type === 'text') {
-      newElement = UnitDefinitionSanitizer.handleTextElement(newElement);
+      newElement = SanitizationService.handleTextElement(newElement);
     }
     if (['text-field', 'text-area']
       .includes(newElement.type as string)) {
-      newElement = UnitDefinitionSanitizer.sanitizeTextFieldElement(newElement);
+      newElement = SanitizationService.sanitizeTextFieldElement(newElement);
     }
     if (newElement.type === 'cloze') {
-      newElement = UnitDefinitionSanitizer.handleClozeElement(newElement as Record<string, UIElementValue>);
+      newElement = this.handleClozeElement(newElement as Record<string, UIElementValue>);
     }
     if (newElement.type === 'toggle-button') {
-      newElement = UnitDefinitionSanitizer.handleToggleButtonElement(newElement as ToggleButtonElement);
+      newElement = SanitizationService.handleToggleButtonElement(newElement as ToggleButtonElement);
     }
     if (newElement.type === 'drop-list') {
-      newElement = UnitDefinitionSanitizer.handleDropListElement(newElement as Record<string, UIElementValue>);
+      newElement = this.handleDropListElement(newElement as Record<string, UIElementValue>);
     }
     if (['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button']
       .includes(newElement.type as string)) {
-      newElement = UnitDefinitionSanitizer.handlePlusOne(newElement as InputElement);
+      newElement = SanitizationService.handlePlusOne(newElement as InputElement);
     }
     if (['radio'].includes(newElement.type as string)) {
-      newElement = UnitDefinitionSanitizer.handleRadioButtonGroupElement(newElement as RadioButtonGroupElement);
+      newElement = SanitizationService.handleRadioButtonGroupElement(newElement as RadioButtonGroupElement);
     }
     if (['likert'].includes(newElement.type as string)) {
-      newElement = UnitDefinitionSanitizer.handleLikertElement(newElement as LikertElement);
+      newElement = this.handleLikertElement(newElement as LikertElement);
     }
     if (['likert-row', 'likert_row'].includes(newElement.type as string)) {
-      newElement = UnitDefinitionSanitizer.handleLikertRowElement(newElement as LikertRowElement);
+      newElement = SanitizationService.handleLikertRowElement(newElement as LikertRowElement);
     }
 
     return newElement as unknown as UIElement;
@@ -219,11 +225,11 @@ export abstract class UnitDefinitionSanitizer {
   to create ui-elements.
   Afterwards element models are added to the JSON.
    */
-  private static handleClozeElement(element: Record<string, UIElementValue>): ClozeElement {
+  private handleClozeElement(element: Record<string, UIElementValue>): ClozeElement {
     if (!element.document && (!element.parts || !element.text)) throw Error('Can\'t read Cloze Element');
 
     // Version 2.0.0 needs to be sanatized as well because child elements were not sanatized before
-    if (UnitDefinitionSanitizer.unitDefinitionVersion && UnitDefinitionSanitizer.unitDefinitionVersion[0] >= 3) {
+    if (SanitizationService.unitDefinitionVersion && SanitizationService.unitDefinitionVersion[0] >= 3) {
       return element as ClozeElement;
     }
 
@@ -238,7 +244,7 @@ export abstract class UnitDefinitionSanitizer {
         .map((el: any) => el
           .filter((el2: { type: string; }) => ['text-field', 'drop-list', 'toggle-button'].includes(el2.type)).value)
         .flat();
-      doc = UnitDefinitionSanitizer.createClozeDocument(element);
+      doc = SanitizationService.createClozeDocument(element);
     }
 
     return {
@@ -255,7 +261,7 @@ export abstract class UnitDefinitionSanitizer {
                     ...paraPart,
                     attrs: {
                       ...paraPart.attrs,
-                      model: UnitDefinitionSanitizer.sanatizeElement(childElements.shift()!)
+                      model: this.sanitizeElement(childElements.shift()!)
                     }
                   } :
                   {
@@ -290,13 +296,13 @@ export abstract class UnitDefinitionSanitizer {
 
   /* before: simple string[]; after: DragNDropValueObject with ID and value.
   * Needs to be done to selectable options and the possibly set preset (value). */
-  private static handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
+  private handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
     const newElement = element;
     if (newElement.options) {
       newElement.value = [];
       (newElement.options as string[]).forEach(option => {
         (newElement.value as DragNDropValueObject[]).push({
-          id: IdService.getInstance().getNewID('value'),
+          id: this.iDService.getNewID('value'),
           stringValue: option
         });
       });
@@ -305,7 +311,7 @@ export abstract class UnitDefinitionSanitizer {
       const newValues: DragNDropValueObject[] = [];
       (newElement.value as string[]).forEach(value => {
         newValues.push({
-          id: IdService.getInstance().getNewID('value'),
+          id: this.iDService.getNewID('value'),
           stringValue: value
         });
       });
@@ -314,10 +320,10 @@ export abstract class UnitDefinitionSanitizer {
     return newElement as DropListElement;
   }
 
-  private static handleLikertElement(element: LikertElement): LikertElement {
+  private handleLikertElement(element: LikertElement): LikertElement {
     return {
       ...element,
-      rows: element.rows.map((row: LikertRowElement) => UnitDefinitionSanitizer.sanatizeElement(row))
+      rows: element.rows.map((row: LikertRowElement) => this.sanitizeElement(row))
     } as LikertElement;
   }
 
@@ -338,7 +344,7 @@ export abstract class UnitDefinitionSanitizer {
 
   // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.
   private static handlePlusOne(element: InputElement): InputElement {
-    return ((UnitDefinitionSanitizer.unitDefinitionVersion === [1, 1, 0]) && (element.value && element.value > 0)) ?
+    return ((SanitizationService.unitDefinitionVersion === [1, 1, 0]) && (element.value && element.value > 0)) ?
       {
         ...element,
         value: (element.value as number) - 1

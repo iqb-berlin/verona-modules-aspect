@@ -15,17 +15,6 @@ import * as sampleUnit112Droplists from 'test-data/test112-droplist.json';
 
 describe('SanitizationService', () => {
   let service: SanitizationService;
-
-  const basicUnitDefinition: Unit = {
-    'type': 'aspect-unit-definition',
-    'version': packageJSON.config.unit_definition_version,
-    'pages': []
-  };
-  const sanitizedUnit100 = SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit100)));
-  const sanitizedUnit126 = SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit126)));
-  const sanitizedUnit129 = SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit129)));
-  const sanitizedUnit130 = SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130)));
-
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(SanitizationService);
@@ -36,6 +25,11 @@ describe('SanitizationService', () => {
   });
 
   it('isUnitDefinitionOutdated should return false on current version', () => {
+    const basicUnitDefinition: Unit = {
+      'type': 'aspect-unit-definition',
+      'version': packageJSON.config.unit_definition_version,
+      'pages': []
+    };
     expect(SanitizationService.isUnitDefinitionOutdated(basicUnitDefinition)).toBe(false);
   });
 
@@ -49,7 +43,12 @@ describe('SanitizationService', () => {
   });
 
   it('sanitizeUnitDefinition should return basic unit definition', () => {
-    expect(SanitizationService.sanitizeUnitDefinition(basicUnitDefinition)).toEqual(basicUnitDefinition);
+    const basicUnitDefinition: Unit = {
+      'type': 'aspect-unit-definition',
+      'version': packageJSON.config.unit_definition_version,
+      'pages': []
+    };
+    expect(service.sanitizeUnitDefinition(basicUnitDefinition)).toEqual(basicUnitDefinition);
   });
 
   it('sanitizeUnitDefinition should return position', () => {
@@ -72,7 +71,7 @@ describe('SanitizationService', () => {
         'zIndex': 0
       }
     };
-    expect(SanitizationService.sanitizeUnitDefinition(testData130).pages[0].sections[0].elements[0])
+    expect(service.sanitizeUnitDefinition(testData130).pages[0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining(expectedPositionProps));
   });
 
@@ -85,6 +84,7 @@ describe('SanitizationService', () => {
       'gridRow': 1,
       'gridRowRange': 1
     };
+    const sanitizedUnit126 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit126)));
     expect(Object.keys(sanitizedUnit126.pages[0].sections[0].elements[0]))
       .toContain('position');
     expect(sanitizedUnit126.pages[0].sections[0].elements[0].position)
@@ -101,6 +101,7 @@ describe('SanitizationService', () => {
       'gridRow': 3,
       'gridRowRange': 1
     };
+    const sanitizedUnit100 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit100)));
     expect(Object.keys(sanitizedUnit100.pages[0].sections[0].elements[0]))
       .toContain('position');
     expect(sanitizedUnit100.pages[0].sections[0].elements[0].position)
@@ -111,13 +112,14 @@ describe('SanitizationService', () => {
     // manipulate section prop first, so element needs to be corrected
     const unit = sampleUnit126;
     unit.pages[0].sections[0].dynamicPositioning = true;
-    const sanitizedUnit = SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(unit)));
+    const sanitizedUnit = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(unit)));
     expect(sanitizedUnit.pages[0].sections[0].elements[0].position)
       .toEqual(jasmine.objectContaining({
         'dynamicPositioning': true
       }));
 
     // no change necessary
+    const sanitizedUnit129 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit129)));
     expect(sanitizedUnit129.pages[0].sections[0].elements[0].position)
       .toEqual(jasmine.objectContaining({
         'dynamicPositioning': false
@@ -135,6 +137,7 @@ describe('SanitizationService', () => {
       'backgroundColor': 'transparent',
       'lineHeight': 135
     };
+    const sanitizedUnit130 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130)));
     expect(Object.keys(sanitizedUnit130.pages[0].sections[0].elements[0]))
       .toContain('styling');
     expect(sanitizedUnit130.pages[0].sections[0].elements[0].styling)
@@ -152,6 +155,7 @@ describe('SanitizationService', () => {
       'underline': false,
       'backgroundColor': 'red'
     };
+    const sanitizedUnit126 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit126)));
     expect(Object.keys(sanitizedUnit126.pages[0].sections[0].elements[0]))
       .toContain('styling');
     expect(sanitizedUnit126.pages[0].sections[0].elements[0].styling)
@@ -160,7 +164,7 @@ describe('SanitizationService', () => {
 
   it('sanitizeUnitDefinition should return player properties', () => {
     const sanitizedUnit130Audio =
-      SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130Audio)));
+      service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130Audio)));
     const expectedPlayerProps = {
       'autostart': false,
       'autostartDelay': 0,
@@ -179,7 +183,7 @@ describe('SanitizationService', () => {
 
   it('sanitizeUnitDefinition should repair playerProps', () => {
     const sanitizedUnit126Audio =
-      SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit126Audio)));
+      service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit126Audio)));
     const expectedPlayerProps = {
       'autostart': false,
       'autostartDelay': 0,
@@ -201,7 +205,7 @@ describe('SanitizationService', () => {
 
   it('sanitizeUnitDefinition should repair text element - interaction: "none"', () => {
     const sanitizedUnit112Texts =
-      SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112Texts)));
+      service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112Texts)));
     const expectedTextProps = {
       highlightableYellow: false,
       highlightableTurquoise: false,
@@ -213,7 +217,7 @@ describe('SanitizationService', () => {
 
   it('sanitizeUnitDefinition should repair text element - interaction: "highlightable"', () => {
     const sanitizedUnit112Texts =
-      SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112Texts)));
+      service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112Texts)));
     const expectedTextProps = {
       highlightableYellow: true,
       highlightableTurquoise: true,
@@ -225,7 +229,7 @@ describe('SanitizationService', () => {
 
   it('sanitizeUnitDefinition should repair text element - interaction: "strikable"', () => {
     const sanitizedUnit112Texts =
-      SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112Texts)));
+      service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112Texts)));
     const expectedTextProps = {
       highlightableYellow: true,
       highlightableTurquoise: false,
@@ -237,7 +241,7 @@ describe('SanitizationService', () => {
 
   it('sanitizeUnitDefinition should return text field element', () => {
     const sanitizedUnit130TextFields =
-      SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130TextFields)));
+      service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130TextFields)));
     expect(sanitizedUnit130TextFields.pages[0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': 'none',
@@ -261,7 +265,7 @@ describe('SanitizationService', () => {
   // only french inputAssistance is corrected to false, since the default is true
   it('sanitizeUnitDefinition should repair text field and area elements', () => {
     const sanitizedUnit112TextFields =
-      SanitizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112TextFields)));
+      service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112TextFields)));
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': 'none',

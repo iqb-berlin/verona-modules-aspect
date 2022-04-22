@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { IDService } from 'common/services/i-d.service';
+import { IDService } from 'common/services/id.service';
 
 describe('IDService', () => {
   let service: IDService;

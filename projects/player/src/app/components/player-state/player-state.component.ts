@@ -11,6 +11,7 @@ import {
 import { VeronaPostService } from '../../../../modules/verona/services/verona-post.service';
 import { Page } from 'common/interfaces/unit';
 import { NavigationService } from '../../services/navigation.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'aspect-player-state',
@@ -34,11 +35,25 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   constructor(
     private veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.initSubscriptions();
+    this.setValidPages();
+  }
+
+  private setValidPages(): void {
+    this.validPages = this.scrollPages.reduce(
+      (validPages: Record<string, string>, page: Page, index: number) => ({
+        ...validPages,
+        [index.toString(10)]: `${this.translateService.instant(
+          'pageIndication', { index: index + 1 }
+        )}`
+      }), {}
+    );
+    this.sendVopStateChangedNotification();
   }
 
   private initSubscriptions(): void {
@@ -67,10 +82,6 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     this.sendVopStateChangedNotification();
   }
 
-  onValidPagesDetermined(validPages: Record<string, string>): void {
-    this.validPages = validPages;
-    this.sendVopStateChangedNotification();
-  }
 
   private onContinue(message: VopContinueCommand): void {
     // eslint-disable-next-line no-console

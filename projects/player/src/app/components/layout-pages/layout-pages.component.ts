@@ -4,7 +4,6 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { NativeEventService } from '../../services/native-event.service';
 import { PlayerConfig } from '../../../../modules/verona/models/verona';
 import { Page } from 'common/interfaces/unit';
@@ -25,7 +24,6 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() scrollPages!: Page[];
 
   @Output() selectedIndexChange = new EventEmitter<number>();
-  @Output() validPagesDetermined = new EventEmitter<Record<string, string>>();
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -50,7 +48,6 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
     { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
   constructor(
-    private translateService: TranslateService,
     private nativeEventService: NativeEventService,
     private changeDetectorRef: ChangeDetectorRef
   ) {
@@ -97,22 +94,10 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initPages(): void {
-    // this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
-    // this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
-    // this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
     this.hasScrollPages = this.scrollPages?.length > 0;
     this.scrollPagesIndices = this.scrollPages.map(
       (scrollPage: Page): number => this.pages.indexOf(scrollPage)
     );
-    this.validPagesDetermined
-      .emit(this.scrollPages.reduce(
-        (validPages: Record<string, string>, page: Page, index: number) => ({
-          ...validPages,
-          [index.toString(10)]: `${this.translateService.instant(
-            'pageIndication', { index: index + 1 }
-          )}`
-        }), {}
-      ));
   }
 
   private initLayout(): void {

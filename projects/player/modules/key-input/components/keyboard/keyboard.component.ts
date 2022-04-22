@@ -1,6 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { KeyLayout } from 'key-input/configs/key-layout';
 
 @Component({
   selector: 'aspect-keyboard',
@@ -18,7 +19,7 @@ export class KeyboardComponent {
   numberKeys: [string, string][] = [['1', '!'], ['2', '"'], ['3', '§'], ['4', '$'], ['5', '%'], ['6', '&'],
     ['7', '/'], ['8', '('], ['9', ')'], ['0', '='], ['ß', '?']];
 
-  frenchSpecialCharacters = ['â', 'à', 'æ', 'ê', 'è', 'é', 'ë', 'î', 'ï', 'ô', 'ò', 'œ', 'û', 'ù', 'ü', 'ç'];
+  frenchSpecialCharacters = KeyLayout.get('french').default.flat();
 
   enterCharacter(pressedCharacter: string): void {
     this.characterClicked.emit(this.shift ? pressedCharacter.toUpperCase() : pressedCharacter);

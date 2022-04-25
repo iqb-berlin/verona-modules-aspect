@@ -45,7 +45,10 @@ export class ElementInputGroupComponent extends ElementFormGroupDirective implem
 
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
-      this.elementModel.id, (this.elementModel as InputElement).value, this.elementComponent, this.pageIndex
+      this.elementModel.id,
+      this.unitStateElementMapperService.toUnitState((this.elementModel as InputElement).value, this.elementModel.type),
+      this.elementComponent,
+      this.pageIndex
     );
   }
 }

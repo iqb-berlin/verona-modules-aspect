@@ -53,7 +53,11 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
   onChildrenAdded(children: ElementComponent[]): void {
     children.forEach(child => {
       const childModel = child.elementModel as InputElement;
-      this.registerAtUnitStateService(childModel.id, childModel.value, child, this.pageIndex);
+      this.registerAtUnitStateService(
+        childModel.id,
+        this.unitStateElementMapperService.toUnitState(childModel.value, childModel.type),
+        child,
+        this.pageIndex);
       if (childModel.type === 'text-field') {
         const textFieldComponent = child as TextFieldComponent;
         (child as TextFieldComponent)

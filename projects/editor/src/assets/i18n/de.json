@@ -43,7 +43,7 @@
     "alwaysVisibleAspectRatio": "Seitenverhältnis (in Prozent)"
   },
   "propertiesPanel": {
-    "asLink": "als Link",
+    "asLink": "als Hyperlink-Text darstellen",
     "backgroundColor": "Hintergrundfarbe",
     "fontColor": "Schriftfarbe",
     "font": "Schriftart",
@@ -95,6 +95,7 @@
     "last": "Letzte Unit",
     "end": "Beenden",
     "undefined": "undefiniert",
+    "pageNavSelectionHint": "Hier erscheinen nur Seiten, welche als Ziel zu Verfügung stehen.",
     "preset": "Vorbelegung",
     "true": "wahr",
     "false": "falsch",

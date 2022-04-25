@@ -83,7 +83,7 @@ export abstract class ElementFactory {
     }
   }
 
-  static initElement(element: Partial<UIElement>): UIElement {
+  private static initElement(element: Partial<UIElement>): UIElement {
     return {
       type: element.type as UIElementType,
       id: element.id ? String(element.id) : 'id_placeholder',
@@ -92,7 +92,7 @@ export abstract class ElementFactory {
     };
   }
 
-  static initInputElement(element: Partial<UIElement>): InputElement {
+  private static initInputElement(element: Partial<UIElement>): InputElement {
     return {
       ...ElementFactory.initElement(element),
       label: element.value !== undefined ? element.label as string : 'Beschriftung',
@@ -105,7 +105,7 @@ export abstract class ElementFactory {
     };
   }
 
-  static initPositionProps(defaults: Record<string, UIElementValue> = {}): PositionProperties {
+  private static initPositionProps(defaults: Record<string, UIElementValue> = {}): PositionProperties {
     return {
       fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,
       dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : true,
@@ -124,7 +124,7 @@ export abstract class ElementFactory {
     };
   }
 
-  static initBasicStyles(defaults: Record<string, UIElementValue> = {}): BasicStyles {
+  private static initBasicStyles(defaults: Record<string, UIElementValue> = {}): BasicStyles {
     return {
       fontColor: defaults.fontColor !== undefined ? defaults.fontColor as string : '#000000',
       font: defaults.font !== undefined ? defaults.font as string : 'Roboto',
@@ -136,7 +136,7 @@ export abstract class ElementFactory {
     };
   }
 
-  static initPlayerProps(defaults: Record<string, UIElementValue> = {}): PlayerProperties {
+  private static initPlayerProps(defaults: Record<string, UIElementValue> = {}): PlayerProperties {
     return {
       autostart: defaults.autostart !== undefined ? defaults.autostart as boolean : false,
       autostartDelay: defaults.autostartDelay !== undefined ? defaults.autostartDelay as number : 0,

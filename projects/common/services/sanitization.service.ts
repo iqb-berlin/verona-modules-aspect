@@ -299,6 +299,7 @@ export class SanitizationService {
   private handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
     const newElement = element;
     if (newElement.options) {
+      console.warn('New dropList value IDs have been generated');
       newElement.value = [];
       (newElement.options as string[]).forEach(option => {
         (newElement.value as DragNDropValueObject[]).push({

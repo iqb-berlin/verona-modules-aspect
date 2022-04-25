@@ -10,28 +10,51 @@ import { KeyLayout } from 'key-input/configs/key-layout';
 })
 export class KeyboardComponent {
   @Input() showFrenchCharacters!: boolean;
-  @Output() characterClicked: EventEmitter<string> = new EventEmitter<string>();
-  @Output() enterClicked = new EventEmitter();
-  @Output() spaceClicked = new EventEmitter();
+  @Output() keyClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() backspaceClicked = new EventEmitter();
 
   shift = false;
-  numberKeys: [string, string][] = [['1', '!'], ['2', '"'], ['3', '§'], ['4', '$'], ['5', '%'], ['6', '&'],
-    ['7', '/'], ['8', '('], ['9', ')'], ['0', '='], ['ß', '?']];
 
-  frenchSpecialCharacters: [string, string][] = KeyLayout.get('french').default.flat()
-    .map( (e, i) => [e, KeyLayout.get('french').shift.flat()[i]]);
+  frenchSpecialCharacters: [string, string, 'letter' | 'sign' | 'control'][] = KeyLayout.get('french').default.flat()
+    .map( (key, index) => [
+      key,
+      KeyLayout.get('french').shift.flat()[index],
+      key.length > 1 ?
+        'control' :
+        key.toUpperCase() === KeyLayout.get('french').shift.flat()[index] ? 'letter' : 'sign'
+    ]);
 
+  rows: [string, string, 'letter' | 'sign' | 'control'][][] = KeyLayout.get('keyboard').default
+    .map((row, rowIndex) => row
+      .map((key, keyIndex) => [
+        key,
+        KeyLayout.get('keyboard').shift[rowIndex][keyIndex],
+        key.length > 1 ?
+          'control' :
+          key.toUpperCase() === KeyLayout.get('keyboard').shift[rowIndex][keyIndex] ? 'letter' : 'sign'
+      ]));
 
-  enterCharacter(pressedCharacter: string): void {
-    this.characterClicked.emit(this.shift ? pressedCharacter.toUpperCase() : pressedCharacter);
-  }
-
-  enterAltCharacter(pressedCharacter: [string, string]): void {
-    this.characterClicked.emit(this.shift ? pressedCharacter[1] : pressedCharacter[0]);
-  }
-
-  toggleShift(): void {
-    this.shift = !this.shift;
+  enterKey(key: [string, string, 'letter' | 'sign' | 'control']): void {
+    switch (key[1]) {
+      case 'SHIFT': {
+        this.shift = !this.shift;
+        break;
+      }
+      case 'BACKSPACE': {
+        this.backspaceClicked.emit();
+        break;
+      }
+      case 'RETURN': {
+        this.keyClicked.emit('\n');
+        break;
+      }
+      case 'SPACE': {
+        this.keyClicked.emit(' ');
+        break;
+      }
+      default: {
+        this.keyClicked.emit(this.shift ? key[1] : key[0]);
+      }
+    }
   }
 }

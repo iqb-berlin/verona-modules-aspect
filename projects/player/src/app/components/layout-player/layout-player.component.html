@@ -19,9 +19,7 @@
       *ngIf="keyboardService.isOpen"
       @keyboardSlideInOut
       [showFrenchCharacters]="keyboardService.elementComponent.elementModel.softwareKeyboardShowFrench"
-      (characterClicked)="keyboardService.enterKey($event)"
-      (backspaceClicked)="keyboardService.deleterCharacters(true)"
-      (enterClicked)="keyboardService.enterKey('\n')"
-      (spaceClicked)="keyboardService.enterKey(' ')">
+      (keyClicked)="keyboardService.enterKey($event)"
+      (backspaceClicked)="keyboardService.deleterCharacters(true)">
   </aspect-keyboard>
 </div>

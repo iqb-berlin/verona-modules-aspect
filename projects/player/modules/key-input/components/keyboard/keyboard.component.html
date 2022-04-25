@@ -1,98 +1,42 @@
-<div class="keyboard-container" (mousedown)="$event.preventDefault(); $event.stopPropagation()">
-
-  <div *ngIf="showFrenchCharacters" fxLayout="row wrap" fxLayoutAlign="space-around center"
+<div class="keyboard-container"
+     (mousedown)="$event.preventDefault(); $event.stopPropagation()">
+  <div *ngIf="showFrenchCharacters"
+       fxLayout="row wrap"
+       fxLayoutAlign="space-around center"
        class="specialCharacters">
     <button *ngFor="let key of frenchSpecialCharacters; let i = index"
             mat-raised-button
-            (click)="enterCharacter(key[0])">
+            (click)="enterKey(key)">
       {{shift ? key[1] : key[0]}}
     </button>
   </div>
 
   <div class="character-rows">
-      <button *ngFor="let key of numberKeys; let i = index"
-              mat-raised-button
-              [style.grid-row-start]="2"
-              [style.grid-column-start]="i + 1"
-              (click)="enterAltCharacter(key)">
-        <ng-container *ngIf="!shift">
-          {{key[0]}}
-          <span class="alternativeKey">{{key[1]}}</span>
-        </ng-container>
-        <ng-container *ngIf="shift">
-          {{key[1]}}
-          <span class="alternativeKey">{{key[0]}}</span>
-        </ng-container>
-      </button>
-      <button mat-raised-button
-              [style.grid-row-start]="2"
-              [style.grid-column-start]="12"
-              [style.grid-column-end]="13"
-              (click)="backspaceClicked.emit()">
-        <mat-icon>keyboard_backspace</mat-icon>
-      </button>
-
-      <button *ngFor="let key of ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p', 'ü']; let i = index"
-              mat-raised-button
-              [style.grid-row-start]="3"
-              [style.grid-column-start]="i + 1"
-              (click)="enterCharacter(key)">
-        {{shift ? key.toUpperCase() : key}}
-      </button>
-      <button *ngFor="let key of ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ö', 'ä']; let i = index"
-              mat-raised-button
-              [style.grid-row-start]="4"
-              [style.grid-column-start]="i + 1"
-              (click)="enterCharacter(key)">
-        {{shift ? key.toUpperCase() : key}}
-      </button>
-
-      <button mat-raised-button
-              [style.grid-row-start]="3"
-              [style.grid-row-end]="5"
-              [style.grid-column-start]="12"
-              [style.grid-column-end]="13"
-              (click)="enterClicked.emit()">
-        <mat-icon>keyboard_return</mat-icon>
-      </button>
-
-      <button mat-raised-button class="iconButton"
-              [style.background-color]="shift ? 'lightgrey' : null"
-              [style.grid-row-start]="5"
-              [style.grid-row-end]="6"
-              [style.grid-column-start]="1"
-              [style.grid-column-end]="2"
-              (click)="toggleShift()">
-        <mat-icon *ngIf="!shift">keyboard_arrow_up</mat-icon>
-        <mat-icon *ngIf="shift">keyboard_capslock</mat-icon>
-      </button>
-
-      <button *ngFor="let key of ['y', 'x', 'c', 'v', 'b', 'n', 'm']; let i = index"
-              mat-raised-button
-              [style.grid-row-start]="5"
-              [style.grid-column-start]="i + 2"
-              (click)="enterCharacter(key)">{{shift ? key.toUpperCase() : key}}</button>
-      <button *ngFor="let key of [[',', ';'], ['.', ':'], ['-', '_']]; let i = index"
-              mat-raised-button
-              [style.grid-row-start]="5"
-              [style.grid-column-start]="i + 9"
-              (click)="enterAltCharacter($any(key))">
-        <ng-container *ngIf="!shift">
-          {{key[0]}}
-          <span class="alternativeKey">{{key[1]}}</span>
-        </ng-container>
-        <ng-container *ngIf="shift">
-          {{key[1]}}
-          <span class="alternativeKey">{{key[0]}}</span>
-        </ng-container>
-      </button>
-
-      <button mat-raised-button
-              [style.grid-row-start]="6"
-              [style.grid-column-start]="2"
-              [style.grid-column-end]="12"
-      (click)="spaceClicked.emit()">
-        <mat-icon>space_bar</mat-icon>
-      </button>
+    <ng-container *ngFor="let row of rows; let rowIndex = index">
+      <ng-container *ngFor="let key of row; let i = index">
+        <button mat-raised-button
+                [style.grid-row-start]="rowIndex + 2"
+                [style.grid-row-end]="key[1] === 'RETURN' ? rowIndex + 4 : rowIndex + 3"
+                [style.grid-column-start]="key[1] === 'SPACE' ? i + 2 : i + 1"
+                [style.grid-column-end]="key[1] === 'SPACE' ? i + 12 : i + 2"
+                (click)="enterKey(key)">
+          <ng-container *ngIf="key[2] !== 'control'">
+            <ng-container *ngIf="!shift">
+             {{key[0]}}
+              <span *ngIf="key[2] === 'sign'" class="alternativeKey">{{key[1]}}</span>
+            </ng-container>
+            <ng-container *ngIf="shift">
+              {{key[1]}}
+              <span *ngIf="key[2] === 'sign'" class="alternativeKey">{{key[0]}}</span>
+            </ng-container>
+          </ng-container>
+          <mat-icon *ngIf="key[1] === 'RETURN'">keyboard_return</mat-icon>
+          <mat-icon *ngIf="key[1] === 'BACKSPACE'">keyboard_backspace</mat-icon>
+          <mat-icon *ngIf="key[1] === 'SHIFT' && !shift">keyboard_arrow_up</mat-icon>
+          <mat-icon *ngIf="key[1] === 'SHIFT' && shift">keyboard_capslock</mat-icon>
+          <mat-icon *ngIf="key[1] === 'SPACE'">space_bar</mat-icon>
+        </button>
+      </ng-container>
+    </ng-container>
   </div>
 </div>

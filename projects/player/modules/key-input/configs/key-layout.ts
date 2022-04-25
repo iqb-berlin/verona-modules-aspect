@@ -1,7 +1,11 @@
 import { InputAssistancePreset } from 'common/interfaces/elements';
 
 export class KeyLayout {
-  static get = (preset: InputAssistancePreset): { default: string[][], shift: string[][], additional: string[][] } => {
+  static get = (preset: InputAssistancePreset | 'keyboard'): {
+    default: string[][],
+    shift: string[][],
+    additional: string[][]
+  } => {
     switch (preset) {
       case 'french': {
         return {
@@ -74,7 +78,7 @@ export class KeyLayout {
           additional: [[]]
         };
       }
-      default: { // numbers
+      case 'numbers': {
         return {
           default: [
             ['7', '8', '9'],
@@ -83,6 +87,25 @@ export class KeyLayout {
             ['0']
           ],
           shift: [[]],
+          additional: [[]]
+        };
+      }
+      default: { // keyboard
+        return {
+          default: [
+            ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'ß', 'BACKSPACE'],
+            ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p', 'ü', 'RETURN'],
+            ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ö', 'ä'],
+            ['SHIFT', 'y', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '-'],
+            ['SPACE']
+          ],
+          shift: [
+            ['!', '"', '§', '$', '%', '&', '/', '(', ')', '=', '?', 'BACKSPACE'],
+            ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P', 'Ü', 'RETURN'],
+            ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ö', 'Ä'],
+            ['SHIFT', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', ';', ':', '_'],
+            ['SPACE']
+          ],
           additional: [[]]
         };
       }

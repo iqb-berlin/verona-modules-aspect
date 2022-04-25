@@ -329,13 +329,13 @@ export abstract class ElementFactory {
       position: ElementFactory.initPositionProps({ zIndex: -1, ...element.position }),
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }) as BasicStyles,
-        borderWidth: element.borderWidth !== undefined ? element.borderWidth as number : 1,
-        borderColor: element.borderColor !== undefined ? element.borderColor as string : 'black',
-        borderStyle: element.borderStyle !== undefined ?
-          element.borderStyle as 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' |
+        borderWidth: element.styling?.borderWidth !== undefined ? element.styling.borderWidth as number : 1,
+        borderColor: element.styling?.borderColor !== undefined ? element.styling.borderColor as string : 'black',
+        borderStyle: element.styling?.borderStyle !== undefined ?
+          element.styling.borderStyle as 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' |
           'ridge' | 'inset' | 'outset' :
           'solid',
-        borderRadius: element.borderRadius !== undefined ? element.borderRadius as number : 0
+        borderRadius: element.styling?.borderRadius !== undefined ? element.styling.borderRadius as number : 0
       }
     };
   }

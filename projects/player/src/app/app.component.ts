@@ -11,7 +11,7 @@ import { MetaDataService } from './services/meta-data.service';
 import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
 import { Page, Unit } from 'common/interfaces/unit';
-import { ValidatorService } from './services/validator.service';
+import { ValidationService } from './services/validation.service';
 import { UnitFactory } from 'common/util/unit.factory';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { UnitUtils } from 'common/util/unit-utils';
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-              private validatorService: ValidatorService,
+              private validatorService: ValidationService,
               private sanitizationService: SanitizationService) {
     this.isStandalone =  window === window.parent;
   }

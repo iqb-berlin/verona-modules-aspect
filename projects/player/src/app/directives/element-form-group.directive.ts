@@ -12,7 +12,7 @@ import { ElementGroupDirective } from './element-group.directive';
 import { VopNavigationDeniedNotification } from 'verona/models/verona';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
-import { ValidatorService } from '../services/validator.service';
+import { ValidationService } from '../services/validation.service';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
@@ -22,7 +22,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   abstract translateService: TranslateService;
   abstract messageService: MessageService;
   abstract veronaSubscriptionService: VeronaSubscriptionService;
-  abstract validatorService: ValidatorService;
+  abstract validatorService: ValidationService;
 
   ngUnsubscribe = new Subject<void>();
 

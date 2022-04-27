@@ -6,7 +6,7 @@ import { UnitStateService } from '../services/unit-state.service';
 import { MediaPlayerService } from '../services/media-player.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { VeronaPostService } from 'verona/services/verona-post.service';
-import { ValidatorService } from '../services/validator.service';
+import { ValidationService } from '../services/validation.service';
 
 @Directive({
   selector: '[aspectUnitState]'
@@ -19,7 +19,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
     private mediaPlayerService: MediaPlayerService,
     private veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
-    private validatorService: ValidatorService
+    private validatorService: ValidationService
   ) {}
 
   ngOnInit(): void {

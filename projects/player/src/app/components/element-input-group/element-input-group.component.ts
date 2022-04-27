@@ -12,7 +12,7 @@ import { ElementFormGroupDirective } from '../../directives/element-form-group.d
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ValidatorService } from '../../services/validator.service';
+import { ValidationService } from '../../services/validation.service';
 
 @Component({
   selector: 'aspect-element-input-group',
@@ -34,7 +34,7 @@ export class ElementInputGroupComponent extends ElementFormGroupDirective implem
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
-    public validatorService: ValidatorService
+    public validatorService: ValidationService
   ) {
     super();
   }

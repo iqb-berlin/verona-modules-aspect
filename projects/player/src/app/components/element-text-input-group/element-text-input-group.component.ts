@@ -11,7 +11,7 @@ import { ElementModelElementCodeMappingService } from '../../services/element-mo
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ValidatorService } from '../../services/validator.service';
+import { ValidationService } from '../../services/validation.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { TextAreaComponent } from 'common/components/ui-elements/text-area.component';
 import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
@@ -40,7 +40,7 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
-    public validatorService: ValidatorService,
+    public validatorService: ValidationService,
     public deviceService: DeviceService
   ) {
     super();

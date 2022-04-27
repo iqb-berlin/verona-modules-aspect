@@ -10,7 +10,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
-import { ValidatorService } from '../../services/validator.service';
+import { ValidationService } from '../../services/validation.service';
 import { KeypadService } from '../../services/keypad.service';
 import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
@@ -38,7 +38,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
-    public validatorService: ValidatorService
+    public validatorService: ValidationService
   ) {
     super();
   }

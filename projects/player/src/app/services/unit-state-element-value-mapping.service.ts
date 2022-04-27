@@ -1,33 +1,21 @@
 import { Injectable } from '@angular/core';
 import { TextMarker } from '../classes/text-marker';
-import { Unit } from 'common/interfaces/unit';
 import {
   AudioElement, DragNDropValueObject, InputElement, InputElementValue,
   TextElement, UIElement, UIElementType, VideoElement
 } from 'common/interfaces/elements';
-import { UnitUtils } from 'common/util/unit-utils';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnitStateElementMapperService { // TODO besser mapping service
-  dropListValueIds!: DragNDropValueObject[];
+export class UnitStateElementValueMappingService {
+  dragNDropValueObjects!: DragNDropValueObject[];
 
-  registerDropListValueIds(unitDefinition: Unit): void {
-    this.dropListValueIds = UnitUtils.findUIElements(unitDefinition.pages, 'drop-list')
-      .reduce(
-        (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
-          (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
-            accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []
-      );
-  }
-
-  // TODO komischer methodenname
-  fromUnitState = (unitStateValue: InputElementValue | undefined, elementModel: UIElement): InputElementValue => {
+  mapToElementValue = (unitStateValue: InputElementValue | undefined, elementModel: UIElement): InputElementValue => {
     switch (elementModel.type) {
       case 'drop-list':
         return (unitStateValue !== undefined) ?
-          (unitStateValue as string[]).map(id => this.getDropListValueById(id)) as DragNDropValueObject[] :
+          (unitStateValue as string[]).map(id => this.getDragNDropValueObjectById(id)) as DragNDropValueObject[] :
           (elementModel as InputElement).value;
       case 'text':
         return (unitStateValue !== undefined) ?
@@ -52,7 +40,7 @@ export class UnitStateElementMapperService { // TODO besser mapping service
     }
   };
 
-  toUnitState = (value: InputElementValue, elementType: UIElementType): InputElementValue => {
+  mapToUnitState = (value: InputElementValue, elementType: UIElementType): InputElementValue => {
     switch (elementType) {
       case 'drop-list':
         return (value as DragNDropValueObject[]).map(object => object.id);
@@ -68,10 +56,10 @@ export class UnitStateElementMapperService { // TODO besser mapping service
   };
 
   reset(): void {
-    this.dropListValueIds = [];
+    this.dragNDropValueObjects = [];
   }
 
-  private getDropListValueById(id: string): DragNDropValueObject | undefined {
-    return this.dropListValueIds.find(dropListValue => dropListValue.id === id);
+  private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {
+    return this.dragNDropValueObjects.find(dropListValue => dropListValue.id === id);
   }
 }

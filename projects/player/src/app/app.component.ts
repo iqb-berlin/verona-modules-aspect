@@ -3,7 +3,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TranslateService } from '@ngx-translate/core';
 import { PlayerConfig, VopStartCommand } from 'verona/models/verona';
-import { UnitStateElementMapperService } from './services/unit-state-element-mapper.service';
+import { UnitStateElementValueMappingService } from './services/unit-state-element-value-mapping.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { VeronaPostService } from 'verona/services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
@@ -14,6 +14,8 @@ import { Page, Unit } from 'common/interfaces/unit';
 import { ValidatorService } from './services/validator.service';
 import { UnitFactory } from 'common/util/unit.factory';
 import { SanitizationService } from 'common/services/sanitization.service';
+import { UnitUtils } from 'common/util/unit-utils';
+import { DragNDropValueObject, UIElement } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-player',
@@ -35,7 +37,7 @@ export class AppComponent implements OnInit {
               private nativeEventService: NativeEventService,
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
-              private unitStateElementMapperService: UnitStateElementMapperService,
+              private unitStateElementValueMappingService: UnitStateElementValueMappingService,
               private validatorService: ValidatorService,
               private sanitizationService: SanitizationService) {
     this.isStandalone =  window === window.parent;
@@ -75,7 +77,7 @@ export class AppComponent implements OnInit {
   }
 
   private initSession(message: VopStartCommand, unitDefinition: Unit): void {
-    this.unitStateElementMapperService.registerDropListValueIds(unitDefinition);
+    this.initUnitStateElementValueMappingService(unitDefinition.pages);
     this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
       JSON.parse(message.unitState.dataParts.elementCodes) : [];
     this.veronaPostService.sessionId = message.sessionId;
@@ -87,6 +89,15 @@ export class AppComponent implements OnInit {
     this.playerConfig = message.playerConfig || {};
     // eslint-disable-next-line no-console
     console.log('player: unitStateElementCodes', this.unitStateService.unitStateElementCodes);
+  }
+
+  private initUnitStateElementValueMappingService(pages: Page[]): void {
+    this.unitStateElementValueMappingService.dragNDropValueObjects = (
+      UnitUtils.findUIElements(pages, 'drop-list').reduce(
+        (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
+          (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
+            accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []));
+    console.log(this.unitStateElementValueMappingService.dragNDropValueObjects);
   }
 
   private onFocus(focused: boolean): void {
@@ -106,6 +117,6 @@ export class AppComponent implements OnInit {
     this.unitStateService.reset();
     this.mediaPlayerService.reset();
     this.validatorService.reset();
-    this.unitStateElementMapperService.reset();
+    this.unitStateElementValueMappingService.reset();
   }
 }

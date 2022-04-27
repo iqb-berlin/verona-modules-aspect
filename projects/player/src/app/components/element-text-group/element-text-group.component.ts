@@ -9,7 +9,7 @@ import { TextMarker } from '../../classes/text-marker';
 import { NativeEventService } from '../../services/native-event.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
-import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
+import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({
@@ -33,17 +33,18 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
 
   constructor(
     private nativeEventService: NativeEventService,
-    private unitStateElementMapperService: UnitStateElementMapperService,
+    private unitStateElementValueMappingService: UnitStateElementValueMappingService,
     public unitStateService: UnitStateService
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.initialValue = this.unitStateElementMapperService
-      .fromUnitState(
+    this.initialValue = this.unitStateElementValueMappingService
+      .mapToElementValue(
         this.unitStateService.getUnitStateElement(this.elementModel.id)?.value, this.elementModel
       ) as string;
+    console.log(this.initialValue);
   }
 
   ngAfterViewInit(): void {

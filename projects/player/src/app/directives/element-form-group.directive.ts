@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { InputElement, InputElementValue, SliderElement } from 'common/interfaces/elements';
 import { UnitStateService } from '../services/unit-state.service';
-import { UnitStateElementMapperService } from '../services/unit-state-element-mapper.service';
+import { UnitStateElementValueMappingService } from '../services/unit-state-element-value-mapping.service';
 import { ElementGroupDirective } from './element-group.directive';
 import { VopNavigationDeniedNotification } from 'verona/models/verona';
 import { MessageService } from 'common/services/message.service';
@@ -18,7 +18,7 @@ import { ValidatorService } from '../services/validator.service';
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
   form!: FormGroup;
   abstract unitStateService: UnitStateService;
-  abstract unitStateElementMapperService: UnitStateElementMapperService;
+  abstract unitStateElementValueMappingService: UnitStateElementValueMappingService;
   abstract translateService: TranslateService;
   abstract messageService: MessageService;
   abstract veronaSubscriptionService: VeronaSubscriptionService;
@@ -29,8 +29,8 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   createForm(elementModels: InputElement[]): void {
     this.form = new FormGroup({});
     elementModels.forEach(elementModel => {
-      const initialValue = this.unitStateElementMapperService
-        .fromUnitState(this.unitStateService.getUnitStateElement(elementModel.id)?.value, elementModel);
+      const initialValue = this.unitStateElementValueMappingService
+        .mapToElementValue(this.unitStateService.getUnitStateElement(elementModel.id)?.value, elementModel);
       const formControl = new FormControl(initialValue, this.getValidators(elementModel));
       this.form.addControl(elementModel.id, formControl);
       formControl.valueChanges
@@ -38,7 +38,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
         .subscribe((inputValue: InputElementValue) => {
           this.unitStateService.changeElementValue({
             id: elementModel.id,
-            value: this.unitStateElementMapperService.toUnitState(inputValue, elementModel.type)
+            value: this.unitStateElementValueMappingService.mapToUnitState(inputValue, elementModel.type)
           });
         });
       if (this.needsValidation(elementModel)) {

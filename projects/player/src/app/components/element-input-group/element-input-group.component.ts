@@ -7,7 +7,7 @@ import {
   RadioButtonGroupElement, RadioButtonGroupComplexElement, DropdownElement
 } from 'common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
-import { UnitStateElementMapperService } from '../../services/unit-state-element-mapper.service';
+import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
@@ -30,7 +30,7 @@ export class ElementInputGroupComponent extends ElementFormGroupDirective implem
 
   constructor(
     public unitStateService: UnitStateService,
-    public unitStateElementMapperService: UnitStateElementMapperService,
+    public unitStateElementValueMappingService: UnitStateElementValueMappingService,
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
@@ -46,7 +46,8 @@ export class ElementInputGroupComponent extends ElementFormGroupDirective implem
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
-      this.unitStateElementMapperService.toUnitState((this.elementModel as InputElement).value, this.elementModel.type),
+      this.unitStateElementValueMappingService
+        .mapToUnitState((this.elementModel as InputElement).value, this.elementModel.type),
       this.elementComponent,
       this.pageIndex
     );

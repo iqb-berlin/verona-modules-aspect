@@ -2,13 +2,14 @@ import {
   AfterViewInit, Component, ViewChild
 } from '@angular/core';
 import {
-  ButtonElement, FrameElement, ImageElement
+  ButtonElement, FrameElement, ImageElement, InputElementValue
 } from 'common/interfaces/elements';
 import { VeronaPostService } from 'verona/services/verona-post.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { NavigationService } from '../../services/navigation.service';
+import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
 
 @Component({
   selector: 'aspect-element-interactive-group',
@@ -24,15 +25,21 @@ export class ElementInteractiveGroupComponent extends ElementGroupDirective impl
   constructor(
     public unitStateService: UnitStateService,
     public veronaPostService: VeronaPostService,
-    public navigationService: NavigationService
+    public navigationService: NavigationService,
+    private unitStateElementValueMappingService: UnitStateElementValueMappingService
   ) {
     super();
   }
 
   ngAfterViewInit(): void {
-    const initialValue = this.elementModel.type === 'image' ?
-      (this.elementModel as ImageElement).magnifierUsed :
+    const initialValue: InputElementValue = this.elementModel.type === 'image' ?
+      this.unitStateElementValueMappingService.mapToUnitState(
+        (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type) :
       null;
-    this.registerAtUnitStateService(this.elementModel.id, initialValue, this.elementComponent, this.pageIndex);
+    this.registerAtUnitStateService(
+      this.elementModel.id,
+      initialValue,
+      this.elementComponent,
+      this.pageIndex);
   }
 }

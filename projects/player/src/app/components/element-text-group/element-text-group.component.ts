@@ -33,22 +33,25 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
 
   constructor(
     private nativeEventService: NativeEventService,
-    private unitStateElementValueMappingService: UnitStateElementValueMappingService,
+    private unitStateElementMapperService: UnitStateElementValueMappingService,
     public unitStateService: UnitStateService
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.initialValue = this.unitStateElementValueMappingService
+    this.initialValue = this.unitStateElementMapperService
       .mapToElementValue(
         this.unitStateService.getUnitStateElement(this.elementModel.id)?.value, this.elementModel
       ) as string;
-    console.log(this.initialValue);
   }
 
   ngAfterViewInit(): void {
-    this.registerAtUnitStateService(this.elementModel.id, [], this.elementComponent, this.pageIndex);
+    this.registerAtUnitStateService(
+      this.elementModel.id,
+      this.unitStateElementMapperService.mapToUnitState(this.initialValue, this.elementModel.type),
+      this.elementComponent,
+      this.pageIndex);
   }
 
   applySelection(

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TextMarker } from '../classes/text-marker';
 import {
-  AudioElement, DragNDropValueObject, InputElement, InputElementValue,
+  AudioElement, DragNDropValueObject, ImageElement, InputElement, InputElementValue,
   TextElement, UIElement, UIElementType, VideoElement
 } from 'common/interfaces/elements';
 
@@ -29,6 +29,10 @@ export class UnitStateElementValueMappingService {
         return unitStateValue !== undefined ?
           unitStateValue as number :
           (elementModel as VideoElement).player.playbackTime;
+      case 'image':
+        return unitStateValue !== undefined ?
+          unitStateValue as boolean :
+          (elementModel as ImageElement).magnifierUsed;
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':
@@ -40,18 +44,20 @@ export class UnitStateElementValueMappingService {
     }
   };
 
-  mapToUnitState = (value: InputElementValue, elementType: UIElementType): InputElementValue => {
+  mapToUnitState = (elementValue: InputElementValue, elementType: UIElementType): InputElementValue => {
     switch (elementType) {
       case 'drop-list':
-        return (value as DragNDropValueObject[]).map(object => object.id);
+        return (elementValue as DragNDropValueObject[]).map(object => object.id);
+      case 'text':
+        return TextMarker.getMarkingData(elementValue as string);
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':
       case 'toggle-button':
       case 'likert-row':
-        return value as number + 1;
+        return elementValue as number + 1;
       default:
-        return value;
+        return elementValue;
     }
   };
 

@@ -8,6 +8,7 @@ import { MediaPlayerService } from '../../services/media-player.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
+import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
 
 @Component({
   selector: 'aspect-element-media-player-group',
@@ -26,16 +27,15 @@ export class ElementMediaPlayerGroupComponent extends ElementGroupDirective impl
 
   constructor(
     public mediaPlayerService: MediaPlayerService,
-    public unitStateService: UnitStateService
+    public unitStateService: UnitStateService,
+    private unitStateElementValueMappingService: UnitStateElementValueMappingService
   ) {
     super();
   }
 
   ngOnInit(): void {
-    const unitStateValue = this.unitStateService.getUnitStateElement(this.elementModel.id)?.value;
-    this.initialValue = unitStateValue !== undefined ?
-      unitStateValue as number : (this.elementModel as AudioElement).player.playbackTime;
-
+    this.initialValue = this.unitStateElementValueMappingService.mapToElementValue(
+      this.unitStateService.getUnitStateElement(this.elementModel.id)?.value, this.elementModel) as number;
     this.mediaPlayerService.registerMediaElement(
       this.elementModel.id,
       this.elementModel.player?.minRuns as number === 0
@@ -43,9 +43,9 @@ export class ElementMediaPlayerGroupComponent extends ElementGroupDirective impl
   }
 
   ngAfterViewInit(): void {
-    const initialValue = this.elementModel.type === 'audio' ?
-      (this.elementModel as AudioElement).player.playbackTime :
-      (this.elementModel as VideoElement).player.playbackTime;
-    this.registerAtUnitStateService(this.elementModel.id, initialValue, this.elementComponent, this.pageIndex);
+    this.registerAtUnitStateService(this.elementModel.id,
+      this.unitStateElementValueMappingService.mapToUnitState(this.initialValue, this.elementModel.type),
+      this.elementComponent,
+      this.pageIndex);
   }
 }

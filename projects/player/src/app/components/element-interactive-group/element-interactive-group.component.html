@@ -15,6 +15,6 @@
     *ngIf="elementModel.type === 'image'"
     #elementComponent
     [elementModel]="elementModel | cast: ImageElement"
-    (elementValueChanged)="unitStateService.changeElementValue($event)">
+    (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
 </aspect-image>
 

@@ -9,7 +9,7 @@ import { TextMarker } from '../../classes/text-marker';
 import { NativeEventService } from '../../services/native-event.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
-import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({
@@ -33,7 +33,7 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
 
   constructor(
     private nativeEventService: NativeEventService,
-    private unitStateElementMapperService: UnitStateElementValueMappingService,
+    private unitStateElementMapperService: ElementModelElementCodeMappingService,
     public unitStateService: UnitStateService
   ) {
     super();
@@ -41,15 +41,15 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
 
   ngOnInit(): void {
     this.initialValue = this.unitStateElementMapperService
-      .mapToElementValue(
-        this.unitStateService.getUnitStateElement(this.elementModel.id)?.value, this.elementModel
+      .mapToElementModelValue(
+        this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
       ) as string;
   }
 
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
-      this.unitStateElementMapperService.mapToUnitState(this.initialValue, this.elementModel.type),
+      this.unitStateElementMapperService.mapToElementCodeValue(this.initialValue, this.elementModel.type),
       this.elementComponent,
       this.pageIndex);
   }

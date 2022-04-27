@@ -8,7 +8,7 @@ import { MediaPlayerService } from '../../services/media-player.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
-import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 
 @Component({
   selector: 'aspect-element-media-player-group',
@@ -28,14 +28,14 @@ export class ElementMediaPlayerGroupComponent extends ElementGroupDirective impl
   constructor(
     public mediaPlayerService: MediaPlayerService,
     public unitStateService: UnitStateService,
-    private unitStateElementValueMappingService: UnitStateElementValueMappingService
+    private elementModelElementCodeMappingService: ElementModelElementCodeMappingService
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.initialValue = this.unitStateElementValueMappingService.mapToElementValue(
-      this.unitStateService.getUnitStateElement(this.elementModel.id)?.value, this.elementModel) as number;
+    this.initialValue = this.elementModelElementCodeMappingService.mapToElementModelValue(
+      this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel) as number;
     this.mediaPlayerService.registerMediaElement(
       this.elementModel.id,
       this.elementModel.player?.minRuns as number === 0
@@ -44,7 +44,7 @@ export class ElementMediaPlayerGroupComponent extends ElementGroupDirective impl
 
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(this.elementModel.id,
-      this.unitStateElementValueMappingService.mapToUnitState(this.initialValue, this.elementModel.type),
+      this.elementModelElementCodeMappingService.mapToElementCodeValue(this.initialValue, this.elementModel.type),
       this.elementComponent,
       this.pageIndex);
   }

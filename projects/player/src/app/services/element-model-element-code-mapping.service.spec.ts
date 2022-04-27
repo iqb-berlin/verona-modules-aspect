@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { UnitStateElementValueMappingService } from './unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 import {
   AudioElement,
   DragNDropValueObject,
@@ -8,20 +8,20 @@ import {
 } from 'common/interfaces/elements';
 
 
-describe('UnitStateElementValueMappingService', () => {
-  let service: UnitStateElementValueMappingService;
+describe('ElementModelElementCodeMappingService', () => {
+  let service: ElementModelElementCodeMappingService;
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(UnitStateElementValueMappingService);
+    service = TestBed.inject(ElementModelElementCodeMappingService);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  // mapToUnitState
+  // mapToElementCodeValue
 
-  it('should map the value of a drop-list element to its unitState value', () => {
+  it('should map the value of a drop-list elementModel to its elementCode value', () => {
     const dropListValue: DragNDropValueObject[] = [
       {
         stringValue: 'a',
@@ -38,92 +38,92 @@ describe('UnitStateElementValueMappingService', () => {
         id: 'value_3'
       }
     ];
-    expect(service.mapToUnitState(dropListValue, 'drop-list'))
+    expect(service.mapToElementCodeValue(dropListValue, 'drop-list'))
       .toEqual( ['value_1', 'value_2', 'value_3']);
   });
 
-  it('should map the value of a text element to its unitState value', () => {
+  it('should map the value of a text elementModel to its elementCode value', () => {
     const textValue =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
-    expect(service.mapToUnitState(textValue, 'text'))
+    expect(service.mapToElementCodeValue(textValue, 'text'))
       .toEqual( ['6-11-#f9f871']);
   });
 
-  it('should map the value of a text element to its unitState value - empty Array', () => {
+  it('should map the value of a text elementModel to its elementCode value - empty Array', () => {
     const textValue =
       'Lorem dolor sit amet';
-    expect(service.mapToUnitState(textValue, 'text'))
+    expect(service.mapToElementCodeValue(textValue, 'text'))
       .toEqual( []);
   });
 
-  it('should map the value of a audio element to its unitState value', () => {
-    const inputElementValue = service.mapToUnitState(2, 'audio');
-    expect(inputElementValue).toEqual(2);
+  it('should map the value of a audio elementModel to its elementCode value', () => {
+    expect(service.mapToElementCodeValue(2, 'audio'))
+      .toEqual(2);
   });
 
-  it('should map the value of a iamge element to its unitState value', () => {
-    const inputElementValue = service.mapToUnitState(true, 'audio');
-    expect(inputElementValue).toEqual(true);
+  it('should map the value of a iamge elementModel to its elementCode value', () => {
+    expect(service.mapToElementCodeValue(true, 'audio'))
+      .toEqual(true);
   });
 
-  it('should map the value of a iamge element to its unitState value', () => {
-    const inputElementValue = service.mapToUnitState(false, 'audio');
-    expect(inputElementValue).toEqual(false);
+  it('should map the value of a iamge elementModel to its elementCode value', () => {
+    expect(service.mapToElementCodeValue(false, 'audio'))
+      .toEqual(false);
   });
 
-  it('should map the value of a radio element to its unitState value', () => {
+  it('should map the value of a radio elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
-      const inputElementValue = service.mapToUnitState(i, 'radio');
-      expect(inputElementValue).toEqual(i + 1);
+      expect(service.mapToElementCodeValue(i, 'radio'))
+        .toEqual(i + 1);
     }
   });
 
-  it('should map the value of a radio-group-images element to its unitState value', () => {
+  it('should map the value of a radio-group-images elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
-      const inputElementValue = service.mapToUnitState(i, 'radio-group-images');
-      expect(inputElementValue).toEqual(i + 1);
+      expect(service.mapToElementCodeValue(i, 'radio-group-images'))
+        .toEqual(i + 1);
     }
   });
 
-  it('should map the value of a dropdown element to its unitState value', () => {
+  it('should map the value of a dropdown elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
-      const inputElementValue = service.mapToUnitState(i, 'dropdown');
-      expect(inputElementValue).toEqual(i + 1);
+      expect(service.mapToElementCodeValue(i, 'dropdown'))
+        .toEqual(i + 1);
     }
   });
 
-  it('should map the value of a toggle-button element to its unitState value', () => {
+  it('should map the value of a toggle-button elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
-      const inputElementValue = service.mapToUnitState(i, 'toggle-button');
-      expect(inputElementValue).toEqual(i + 1);
+      expect(service.mapToElementCodeValue(i, 'toggle-button'))
+        .toEqual(i + 1);
     }
   });
 
-  it('should map the value of a likert-row element to its unitState value', () => {
+  it('should map the value of a likert-row elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
-      const inputElementValue = service.mapToUnitState(i, 'likert-row');
-      expect(inputElementValue).toEqual(i + 1);
+      expect(service.mapToElementCodeValue(i, 'likert-row'))
+        .toEqual(i + 1);
     }
   });
 
-  it('should map the value of a text-field element to its unitState value', () => {
+  it('should map the value of a text-field elementModel to its elementCode value', () => {
     const textFieldValue =
       'TEST';
-    expect(service.mapToUnitState(textFieldValue, 'text-field'))
+    expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
       .toEqual( 'TEST');
   });
 
-  it('should map the value of a text-field element to its unitState value', () => {
+  it('should map the value of a text-field elementModel to its elementCode value', () => {
     const textFieldValue =
       null;
-    expect(service.mapToUnitState(textFieldValue, 'text-field'))
+    expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
       .toEqual( null);
   });
 
 
   // mapToElementValue
 
-  it('should map a unitState value to drop-list element value', () => {
+  it('should map a elementCode value to drop-list elementModel value', () => {
     service.dragNDropValueObjects =  [
       {
         'stringValue': 'a',
@@ -194,11 +194,11 @@ describe('UnitStateElementValueMappingService', () => {
         'id': 'value_5'
       }
     ];
-    expect(service.mapToElementValue(['value_5'], elementModel))
+    expect(service.mapToElementModelValue(['value_5'], elementModel))
       .toEqual(expectedValue);
   });
 
-  it('should not map but return the drop-list element value', () => {
+  it('should not map but return the drop-list elementModel value', () => {
     service.dragNDropValueObjects =  [
       {
         'stringValue': 'a',
@@ -263,11 +263,11 @@ describe('UnitStateElementValueMappingService', () => {
         'itemBackgroundColor': '#c9e0e0'
       }
     };
-    expect(service.mapToElementValue(undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(elementModel.value);
   });
 
-  it('should map a unitState value to drop-list element value with imageSrc', () => {
+  it('should map a elementCode value to drop-list elementModel value with imageSrc', () => {
     service.dragNDropValueObjects = [
       {
         'stringValue': 'a',
@@ -349,11 +349,11 @@ describe('UnitStateElementValueMappingService', () => {
         id: 'value_2'
       }
     ];
-    expect(service.mapToElementValue(['value_1', 'value_2'], elementModel))
+    expect(service.mapToElementModelValue(['value_1', 'value_2'], elementModel))
       .toEqual(expectedValue);
   });
 
-  it('should map a unitState value to drop-list element value - an empty array', () => {
+  it('should map a elementCode value to drop-list elementModel value - an empty array', () => {
     service.dragNDropValueObjects = [
       {
         'stringValue': 'a',
@@ -423,11 +423,11 @@ describe('UnitStateElementValueMappingService', () => {
         'itemBackgroundColor': '#c9e0e0'
       }
     };
-    expect(service.mapToElementValue([], elementModel ))
+    expect(service.mapToElementModelValue([], elementModel ))
       .toEqual([]);
   });
 
-  it('should map a unitState value to text element value (text)', () => {
+  it('should map a elementCode value to text elementModel value (text)', () => {
     const elementModel: TextElement = {
       'type': 'text',
       'id': 'text_1',
@@ -467,11 +467,11 @@ describe('UnitStateElementValueMappingService', () => {
     };
     const expectedValue =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
-    expect(service.mapToElementValue(['6-11-#f9f871'], elementModel))
+    expect(service.mapToElementModelValue(['6-11-#f9f871'], elementModel))
       .toEqual(expectedValue);
   });
 
-  it('should not map but return the text element value (text)', () => {
+  it('should not map but return the text elementModel value (text)', () => {
     const elementModel: TextElement = {
       'type': 'text',
       'id': 'text_1',
@@ -509,11 +509,11 @@ describe('UnitStateElementValueMappingService', () => {
         'lineHeight': 135
       }
     };
-    expect(service.mapToElementValue([], elementModel))
+    expect(service.mapToElementModelValue([], elementModel))
       .toEqual(elementModel.text);
   });
 
-  it('should not map but return the text element value (text)', () => {
+  it('should not map but return the text elementModel value (text)', () => {
     const elementModel: TextElement = {
       'type': 'text',
       'id': 'text_1',
@@ -551,11 +551,11 @@ describe('UnitStateElementValueMappingService', () => {
         'lineHeight': 135
       }
     };
-    expect(service.mapToElementValue(undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(elementModel.text);
   });
 
-  it('should map a unitState value to audio element value', () => {
+  it('should map a elementCode value to audio elementModel value', () => {
     const elementModel: AudioElement =  {
       'type': 'audio',
       'id': 'audio_2',
@@ -601,11 +601,11 @@ describe('UnitStateElementValueMappingService', () => {
         'playbackTime': 0
       }
     };
-    expect(service.mapToElementValue( 2, elementModel))
+    expect(service.mapToElementModelValue( 2, elementModel))
       .toEqual(2);
   });
 
-  it('should not map but return the audio element value (player.playbackTime)', () => {
+  it('should not map but return the audio elementModel value (player.playbackTime)', () => {
     const elementModel: AudioElement =  {
       'type': 'audio',
       'id': 'audio_2',
@@ -651,11 +651,11 @@ describe('UnitStateElementValueMappingService', () => {
         'playbackTime': 0
       }
     };
-    expect(service.mapToElementValue( undefined, elementModel))
+    expect(service.mapToElementModelValue( undefined, elementModel))
       .toEqual(0);
   });
 
-  it('should map a unitState value to image element value', () => {
+  it('should map a elementCode value to image elementModel value', () => {
     const elementModel: ImageElement =  {
       'type': 'image',
       'id': 'image_1',
@@ -684,11 +684,11 @@ describe('UnitStateElementValueMappingService', () => {
         'zIndex': 0
       }
     };
-    expect(service.mapToElementValue( true, elementModel))
+    expect(service.mapToElementModelValue( true, elementModel))
       .toEqual(true);
   });
 
-  it('should not map but return the image element value (magnifierUsed)', () => {
+  it('should not map but return the image elementModel value (magnifierUsed)', () => {
     const elementModel: ImageElement =  {
       'type': 'image',
       'id': 'image_1',
@@ -717,11 +717,11 @@ describe('UnitStateElementValueMappingService', () => {
         'zIndex': 0
       }
     };
-    expect(service.mapToElementValue( undefined, elementModel))
+    expect(service.mapToElementModelValue( undefined, elementModel))
       .toEqual(false);
   });
 
-  it('should map a unitState value to text-field element value', () => {
+  it('should map a elementCode value to text-field elementModel value', () => {
     const elementModel: TextFieldElement = {
       'type': 'text-field',
       'id': 'text-field_1',
@@ -772,11 +772,11 @@ describe('UnitStateElementValueMappingService', () => {
         'lineHeight': 135
       }
     };
-    expect(service.mapToElementValue( 'TEST', elementModel))
+    expect(service.mapToElementModelValue( 'TEST', elementModel))
       .toEqual('TEST');
   });
 
-  it('should not map but return the text-field element value', () => {
+  it('should not map but return the text-field elementModel value', () => {
     const elementModel: TextFieldElement = {
       'type': 'text-field',
       'id': 'text-field_1',
@@ -827,7 +827,7 @@ describe('UnitStateElementValueMappingService', () => {
         'lineHeight': 135
       }
     };
-    expect(service.mapToElementValue( undefined, elementModel))
+    expect(service.mapToElementModelValue( undefined, elementModel))
       .toEqual(null);
   });
 

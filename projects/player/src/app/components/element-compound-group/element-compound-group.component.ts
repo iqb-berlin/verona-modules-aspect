@@ -7,7 +7,7 @@ import {
 import { ClozeUtils } from 'common/util/cloze';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ValidatorService } from '../../services/validator.service';
@@ -34,7 +34,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
     private deviceService: DeviceService,
     public keypadService: KeypadService,
     public unitStateService: UnitStateService,
-    public unitStateElementValueMappingService: UnitStateElementValueMappingService,
+    public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
@@ -55,7 +55,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
       const childModel = child.elementModel as InputElement;
       this.registerAtUnitStateService(
         childModel.id,
-        this.unitStateElementValueMappingService.mapToUnitState(childModel.value, childModel.type),
+        this.elementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type),
         child,
         this.pageIndex);
       if (childModel.type === 'text-field') {

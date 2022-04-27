@@ -29,7 +29,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
     this.unitStateService.presentedPageAdded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => this.sendVopStateChangedNotification());
-    this.unitStateService.unitStateElementCodeChanged
+    this.unitStateService.elementCodeChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((): void => this.sendVopStateChangedNotification());
   }
@@ -42,10 +42,10 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   private sendVopStateChangedNotification(): void {
     // eslint-disable-next-line no-console
     console.log('player: this.unitStateService.unitStateElementCodes',
-      this.unitStateService.unitStateElementCodes);
+      this.unitStateService.elementCodes);
     const unitState: UnitState = {
       dataParts: {
-        elementCodes: JSON.stringify(this.unitStateService.unitStateElementCodes)
+        elementCodes: JSON.stringify(this.unitStateService.elementCodes)
       },
       presentationProgress: this.presentationProgress,
       responseProgress: this.validatorService.responseProgress,

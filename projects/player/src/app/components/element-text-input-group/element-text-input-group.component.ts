@@ -7,7 +7,7 @@ import {
   InputElement, TextAreaElement, TextFieldElement, SpellCorrectElement
 } from 'common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
-import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -36,7 +36,7 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     private keyboardService: KeyboardService,
     public keypadService: KeypadService,
     public unitStateService: UnitStateService,
-    public unitStateElementValueMappingService: UnitStateElementValueMappingService,
+    public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
@@ -53,8 +53,8 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
-      this.unitStateElementValueMappingService
-        .mapToUnitState((this.elementModel as InputElement).value, this.elementModel.type),
+      this.elementModelElementCodeMappingService
+        .mapToElementCodeValue((this.elementModel as InputElement).value, this.elementModel.type),
       this.elementComponent,
       this.pageIndex
     );

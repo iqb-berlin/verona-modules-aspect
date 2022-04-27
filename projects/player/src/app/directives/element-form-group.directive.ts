@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { InputElement, InputElementValue, SliderElement } from 'common/interfaces/elements';
 import { UnitStateService } from '../services/unit-state.service';
-import { UnitStateElementValueMappingService } from '../services/unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from '../services/element-model-element-code-mapping.service';
 import { ElementGroupDirective } from './element-group.directive';
 import { VopNavigationDeniedNotification } from 'verona/models/verona';
 import { MessageService } from 'common/services/message.service';
@@ -18,7 +18,7 @@ import { ValidatorService } from '../services/validator.service';
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
   form!: FormGroup;
   abstract unitStateService: UnitStateService;
-  abstract unitStateElementValueMappingService: UnitStateElementValueMappingService;
+  abstract elementModelElementCodeMappingService: ElementModelElementCodeMappingService;
   abstract translateService: TranslateService;
   abstract messageService: MessageService;
   abstract veronaSubscriptionService: VeronaSubscriptionService;
@@ -29,16 +29,16 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   createForm(elementModels: InputElement[]): void {
     this.form = new FormGroup({});
     elementModels.forEach(elementModel => {
-      const initialValue = this.unitStateElementValueMappingService
-        .mapToElementValue(this.unitStateService.getUnitStateElement(elementModel.id)?.value, elementModel);
+      const initialValue = this.elementModelElementCodeMappingService
+        .mapToElementModelValue(this.unitStateService.getElementCodeById(elementModel.id)?.value, elementModel);
       const formControl = new FormControl(initialValue, this.getValidators(elementModel));
       this.form.addControl(elementModel.id, formControl);
       formControl.valueChanges
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((inputValue: InputElementValue) => {
-          this.unitStateService.changeElementValue({
+          this.unitStateService.changeElementCodeValue({
             id: elementModel.id,
-            value: this.unitStateElementValueMappingService.mapToUnitState(inputValue, elementModel.type)
+            value: this.elementModelElementCodeMappingService.mapToElementCodeValue(inputValue, elementModel.type)
           });
         });
       if (this.needsValidation(elementModel)) {

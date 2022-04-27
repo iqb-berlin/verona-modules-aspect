@@ -3,7 +3,7 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TranslateService } from '@ngx-translate/core';
 import { PlayerConfig, VopStartCommand } from 'verona/models/verona';
-import { UnitStateElementValueMappingService } from './services/unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from './services/element-model-element-code-mapping.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { VeronaPostService } from 'verona/services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
               private nativeEventService: NativeEventService,
               private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
-              private unitStateElementValueMappingService: UnitStateElementValueMappingService,
+              private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
               private validatorService: ValidatorService,
               private sanitizationService: SanitizationService) {
     this.isStandalone =  window === window.parent;
@@ -77,8 +77,8 @@ export class AppComponent implements OnInit {
   }
 
   private initSession(message: VopStartCommand, unitDefinition: Unit): void {
-    this.initUnitStateElementValueMappingService(unitDefinition.pages);
-    this.unitStateService.unitStateElementCodes = message.unitState?.dataParts?.elementCodes ?
+    this.initElementModelElementCodeMappingService(unitDefinition.pages);
+    this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
       JSON.parse(message.unitState.dataParts.elementCodes) : [];
     this.veronaPostService.sessionId = message.sessionId;
     this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
@@ -88,16 +88,16 @@ export class AppComponent implements OnInit {
     this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
     this.playerConfig = message.playerConfig || {};
     // eslint-disable-next-line no-console
-    console.log('player: unitStateElementCodes', this.unitStateService.unitStateElementCodes);
+    console.log('player: unitStateElementCodes', this.unitStateService.elementCodes);
   }
 
-  private initUnitStateElementValueMappingService(pages: Page[]): void {
-    this.unitStateElementValueMappingService.dragNDropValueObjects = (
+  private initElementModelElementCodeMappingService(pages: Page[]): void {
+    this.elementModelElementCodeMappingService.dragNDropValueObjects = (
       UnitUtils.findUIElements(pages, 'drop-list').reduce(
         (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
           (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
             accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []));
-    console.log(this.unitStateElementValueMappingService.dragNDropValueObjects);
+    console.log(this.elementModelElementCodeMappingService.dragNDropValueObjects);
   }
 
   private onFocus(focused: boolean): void {
@@ -117,6 +117,6 @@ export class AppComponent implements OnInit {
     this.unitStateService.reset();
     this.mediaPlayerService.reset();
     this.validatorService.reset();
-    this.unitStateElementValueMappingService.reset();
+    this.elementModelElementCodeMappingService.reset();
   }
 }

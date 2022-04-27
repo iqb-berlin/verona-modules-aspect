@@ -9,7 +9,7 @@ import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { NavigationService } from '../../services/navigation.service';
-import { UnitStateElementValueMappingService } from '../../services/unit-state-element-value-mapping.service';
+import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 
 @Component({
   selector: 'aspect-element-interactive-group',
@@ -26,14 +26,14 @@ export class ElementInteractiveGroupComponent extends ElementGroupDirective impl
     public unitStateService: UnitStateService,
     public veronaPostService: VeronaPostService,
     public navigationService: NavigationService,
-    private unitStateElementValueMappingService: UnitStateElementValueMappingService
+    private elementModelElementCodeMappingService: ElementModelElementCodeMappingService
   ) {
     super();
   }
 
   ngAfterViewInit(): void {
     const initialValue: InputElementValue = this.elementModel.type === 'image' ?
-      this.unitStateElementValueMappingService.mapToUnitState(
+      this.elementModelElementCodeMappingService.mapToElementCodeValue(
         (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type) :
       null;
     this.registerAtUnitStateService(

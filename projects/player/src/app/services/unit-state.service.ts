@@ -4,9 +4,9 @@ import { DOCUMENT } from '@angular/common';
 import {
   Progress,
   StatusChangeElement,
-  UnitStateElementCode,
-  UnitStateElementCodeStatus,
-  UnitStateElementCodeStatusValue
+  ElementCode,
+  ElementCodeStatus,
+  ElementCodeStatusValue
 } from 'verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
 import { InputElementValue, ValueChangeElement } from 'common/interfaces/elements';
@@ -15,9 +15,9 @@ import { InputElementValue, ValueChangeElement } from 'common/interfaces/element
   providedIn: 'root'
 })
 export class UnitStateService {
-  private _unitStateElementCodes!: UnitStateElementCode[];
+  private _elementCodes!: ElementCode[];
   private _presentedPageAdded = new Subject<number>();
-  private _unitStateElementCodeChanged = new Subject<UnitStateElementCode>();
+  private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
   private elementPageMap: { [elementId: string]: number } = {};
   private intersectionDetector!: IntersectionDetector;
@@ -26,25 +26,25 @@ export class UnitStateService {
     this.intersectionDetector = new IntersectionDetector(document, '0px 0px 0px 0px');
   }
 
-  getUnitStateElement(id: string): UnitStateElementCode | undefined {
-    return this.unitStateElementCodes
-      .find((elementCode: UnitStateElementCode): boolean => elementCode.id === id);
+  getElementCodeById(id: string): ElementCode | undefined {
+    return this.elementCodes
+      .find((elementCode: ElementCode): boolean => elementCode.id === id);
   }
 
   isRegistered(id: string): boolean {
-    return !!(this.getUnitStateElement(id));
+    return !!(this.getElementCodeById(id));
   }
 
-  set unitStateElementCodes(unitStateElementCodes: UnitStateElementCode[]) {
-    this._unitStateElementCodes = unitStateElementCodes;
+  set elementCodes(unitStateElementCodes: ElementCode[]) {
+    this._elementCodes = unitStateElementCodes;
   }
 
-  get unitStateElementCodes(): UnitStateElementCode[] {
-    return this._unitStateElementCodes;
+  get elementCodes(): ElementCode[] {
+    return this._elementCodes;
   }
 
-  get unitStateElementCodeChanged(): Observable<UnitStateElementCode> {
-    return this._unitStateElementCodeChanged.asObservable();
+  get elementCodeChanged(): Observable<ElementCode> {
+    return this._elementCodeChanged.asObservable();
   }
 
   get presentedPageAdded(): Observable<number> {
@@ -63,31 +63,31 @@ export class UnitStateService {
                   domElement: Element,
                   pageIndex: number): void {
     this.elementPageMap[elementId] = pageIndex;
-    this.addUnitStateElementCode(elementId, elementValue);
+    this.addElementCode(elementId, elementValue);
     this.intersectionDetector.observe(domElement, elementId);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
-        this.changeElementStatus({ id: id, status: 'DISPLAYED' });
+        this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
         this.intersectionDetector.unobserve(id);
       });
   }
 
-  changeElementValue(elementValue: ValueChangeElement): void {
+  changeElementCodeValue(elementValue: ValueChangeElement): void {
     // eslint-disable-next-line no-console
     console.log(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
-    this.setUnitStateElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
-    this.setUnitStateElementCodeValue(elementValue.id, elementValue.value);
+    this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
+    this.setElementCodeValue(elementValue.id, elementValue.value);
   }
 
-  changeElementStatus(elementStatus: StatusChangeElement): void {
+  changeElementCodeStatus(elementStatus: StatusChangeElement): void {
     // eslint-disable-next-line no-console
     console.log(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
-    this.setUnitStateElementCodeStatus(elementStatus.id, elementStatus.status);
+    this.setElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
   reset(): void {
     this.elementPageMap = {};
-    this.unitStateElementCodes = [];
+    this.elementCodes = [];
     this.presentedPages = [];
   }
 
@@ -100,21 +100,21 @@ export class UnitStateService {
     }, []);
   }
 
-  private setUnitStateElementCodeValue(id: string, value: InputElementValue): void {
-    const unitStateElementCode = this.getUnitStateElement(id);
+  private setElementCodeValue(id: string, value: InputElementValue): void {
+    const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;
-      this._unitStateElementCodeChanged.next(unitStateElementCode);
+      this._elementCodeChanged.next(unitStateElementCode);
     }
   }
 
-  private setUnitStateElementCodeStatus(id: string, status: UnitStateElementCodeStatus): void {
-    const unitStateElementCode = this.getUnitStateElement(id);
+  private setElementCodeStatus(id: string, status: ElementCodeStatus): void {
+    const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       // Set status only if it is higher than the old status
-      if (UnitStateElementCodeStatusValue[status] >= UnitStateElementCodeStatusValue[unitStateElementCode.status]) {
+      if (ElementCodeStatusValue[status] >= ElementCodeStatusValue[unitStateElementCode.status]) {
         unitStateElementCode.status = status;
-        this._unitStateElementCodeChanged.next(unitStateElementCode);
+        this._elementCodeChanged.next(unitStateElementCode);
         this.checkPresentedPageStatus(id);
       }
     }
@@ -125,10 +125,10 @@ export class UnitStateService {
     if (this.presentedPages.indexOf(pageIndex) === -1) {
       const notDisplayedElements = Object.entries(this.elementPageMap)
         .filter((map: [string, number]): boolean => map[1] === pageIndex)
-        .map((pageElement: [string, number]): UnitStateElementCode | undefined => this
-          .getUnitStateElement(pageElement[0]))
-        .filter(pageElement => pageElement && UnitStateElementCodeStatusValue[pageElement.status] <
-          UnitStateElementCodeStatusValue.DISPLAYED);
+        .map((pageElement: [string, number]): ElementCode | undefined => this
+          .getElementCodeById(pageElement[0]))
+        .filter(pageElement => pageElement && ElementCodeStatusValue[pageElement.status] <
+          ElementCodeStatusValue.DISPLAYED);
       if (notDisplayedElements.length === 0) {
         this.presentedPages.push(pageIndex);
         this._presentedPageAdded.next(pageIndex);
@@ -139,11 +139,11 @@ export class UnitStateService {
     }
   }
 
-  private addUnitStateElementCode(id: string, value: InputElementValue): void {
-    if (!this.getUnitStateElement(id)) {
-      const unitStateElementCode: UnitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
-      this.unitStateElementCodes.push(unitStateElementCode);
-      this._unitStateElementCodeChanged.next(unitStateElementCode);
+  private addElementCode(id: string, value: InputElementValue): void {
+    if (!this.getElementCodeById(id)) {
+      const unitStateElementCode: ElementCode = { id: id, value: value, status: 'NOT_REACHED' };
+      this.elementCodes.push(unitStateElementCode);
+      this._elementCodeChanged.next(unitStateElementCode);
     } else {
       this.checkPresentedPageStatus(id);
     }

@@ -7,7 +7,7 @@
     [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
     (onMediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
     (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingMediaId($event)"
-    (elementValueChanged)="unitStateService.changeElementValue($event)">
+    (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
 </aspect-audio>
 
 <aspect-video
@@ -19,5 +19,5 @@
     [savedPlaybackTime]="initialValue"
     (onMediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
     (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingMediaId($event)"
-    (elementValueChanged)="unitStateService.changeElementValue($event)">
+    (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
 </aspect-video>

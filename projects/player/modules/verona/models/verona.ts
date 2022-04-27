@@ -5,12 +5,12 @@ export type RunningState = 'running' | 'stopped';
 export type Progress = 'none' | 'some' | 'complete';
 export type PagingMode = 'separate' | 'concat-scroll' | 'concat-scroll-snap';
 export type StateReportPolicy = 'none' | 'eager' | 'on-demand';
-export type UnitStateElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
-export enum UnitStateElementCodeStatusValue { NOT_REACHED = 0, DISPLAYED = 1, VALUE_CHANGED = 2}
+export type ElementCodeStatus = 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
+export enum ElementCodeStatusValue { NOT_REACHED = 0, DISPLAYED = 1, VALUE_CHANGED = 2}
 
 export interface StatusChangeElement {
   id: string;
-  status: UnitStateElementCodeStatus;
+  status: ElementCodeStatus;
 }
 
 export interface PlayerConfig {
@@ -24,9 +24,9 @@ export interface PlayerConfig {
   enabledNavigationTargets?: NavigationTarget[]
 }
 
-export interface UnitStateElementCode {
+export interface ElementCode {
   id: string;
-  status: UnitStateElementCodeStatus;
+  status: ElementCodeStatus;
   value: InputElementValue;
 }
 

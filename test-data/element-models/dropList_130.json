@@ -1,0 +1,42 @@
+{
+  "type": "drop-list",
+  "id": "drop-list_6",
+  "width": 180,
+  "height": 100,
+  "label": "Beschriftung",
+  "value": [],
+  "required": false,
+  "requiredWarnMessage": "Eingabe erforderlich",
+  "readOnly": false,
+  "onlyOneItem": false,
+  "connectedTo": [],
+  "orientation": "vertical",
+  "highlightReceivingDropList": false,
+  "highlightReceivingDropListColor": "#006064",
+  "position": {
+    "fixedSize": false,
+    "dynamicPositioning": true,
+    "xPosition": 0,
+    "yPosition": 0,
+    "useMinHeight": true,
+    "gridColumn": 1,
+    "gridColumnRange": 1,
+    "gridRow": 1,
+    "gridRowRange": 1,
+    "marginLeft": 0,
+    "marginRight": 0,
+    "marginTop": 0,
+    "marginBottom": 0,
+    "zIndex": 0
+  },
+  "styling": {
+    "fontColor": "#000000",
+    "font": "Roboto",
+    "fontSize": 20,
+    "bold": false,
+    "italic": false,
+    "underline": false,
+    "backgroundColor": "#f4f4f2",
+    "itemBackgroundColor": "#c9e0e0"
+  }
+}

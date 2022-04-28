@@ -16,17 +16,20 @@ export class SectionContainerComponent implements OnInit, OnDestroy {
   @Input() pageIndex!: number;
   @Input() pageSections!: Section[];
 
-  visible!: boolean;
+  isVisible!: boolean;
+  private isScrollSection!: boolean;
   private ngUnsubscribe = new Subject<void>();
-  private activeAfterIDSiblings!: Section[];
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    this.visible = !this.section.activeAfterID;
-    this.activeAfterIDSiblings = this.visible ?
-      [] :
-      this.pageSections.filter(section => section.activeAfterID === this.section.activeAfterID);
+    this.isVisible = !this.section.activeAfterID;
+    this.isScrollSection = this.isVisible ?
+      false :
+      this.pageSections
+        .filter(pageSection => pageSection.activeAfterID === this.section.activeAfterID)
+        .findIndex(section => section === this.section) === 0;
+
     if (this.mediaStatusChanged) {
       this.mediaStatusChanged
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -35,9 +38,9 @@ export class SectionContainerComponent implements OnInit, OnDestroy {
   }
 
   private setActiveAfterID(id: string): void {
-    if (!this.visible) {
-      this.visible = id === this.section.activeAfterID;
-      if (this.activeAfterIDSiblings.findIndex(section => section === this.section) === 0) {
+    if (!this.isVisible) {
+      this.isVisible = id === this.section.activeAfterID;
+      if (this.isScrollSection) {
         this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }

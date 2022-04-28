@@ -54,6 +54,7 @@ export class KeyboardComponent {
       }
       default: {
         this.keyClicked.emit(this.shift ? key[1] : key[0]);
+        this.shift = false;
       }
     }
   }

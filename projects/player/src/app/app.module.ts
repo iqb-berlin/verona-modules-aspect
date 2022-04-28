@@ -14,7 +14,7 @@ import { PlayerStateComponent } from './components/player-state/player-state.com
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { LayoutPagesComponent } from './components/layout-pages/layout-pages.component';
 import { HideFirstChildDirective } from './directives/hide-first-child.directive';
-import { ScrollIndexDirective } from './directives/scroll-index.directive';
+import { ScrollToIndexDirective } from './directives/scroll-to-index.directive';
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
 import { FloatingKeypadComponent } from './components/floating-keypad/floating-keypad.component';
@@ -47,7 +47,7 @@ import { UnitDefinitionMenuModule } from 'unit-definition-menu/unit-definition-m
     PlayerStateComponent,
     LayoutPagesComponent,
     HideFirstChildDirective,
-    ScrollIndexDirective,
+    ScrollToIndexDirective,
     IntersectionDetectionDirective,
     FloatingMarkingBarComponent,
     FloatingKeypadComponent,

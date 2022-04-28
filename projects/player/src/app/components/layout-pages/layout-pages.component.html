@@ -89,8 +89,7 @@
         [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap'"
         [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
         [style.padding.px]="page.margin"
-        aspectScrollIndex
-        [pagesContainer]="pagesContainer"
+        aspectScrollToIndex
         [selectIndex]="selectIndex"
         [index]="i">
       <div *ngIf="!hidePageLabels"

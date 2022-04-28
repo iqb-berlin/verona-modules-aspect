@@ -5,31 +5,32 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class MediaPlayerService {
-  mediaElements: { id: string; valid: boolean }[] = []; // TODO besser isValid
   mediaStatusChanged = new Subject<string>();
   actualPlayingId: Subject<string | null> = new Subject();
 
+  private mediaElements: { id: string; isValid: boolean }[] = [];
+
   get mediaStatus(): string {
-    const validMediaElements = this.mediaElements.filter(mediaElement => mediaElement.valid);
+    const validMediaElements = this.mediaElements.filter(mediaElement => mediaElement.isValid);
     if (validMediaElements.length) {
       return validMediaElements.length === this.mediaElements.length ? 'complete' : 'some';
     }
     return this.mediaElements.length ? 'none' : 'complete';
   }
 
-  registerMediaElement(id: string, valid: boolean): void {
-    this.mediaElements.push({ id, valid });
+  registerMediaElement(id: string, isValid: boolean): void {
+    this.mediaElements.push({ id, isValid });
   }
 
-  setActualPlayingMediaId(actualId: string | null): void {
+  setActualPlayingId(actualId: string | null): void {
     this.actualPlayingId.next(actualId);
   }
 
-  setValidStatusChanged(validId: string): void { // TODO validId? komischer name
-    const validMediaElement = this.mediaElements.find(mediaElement => mediaElement.id === validId);
+  setValidStatusChanged(validMediaId: string): void {
+    const validMediaElement = this.mediaElements.find(mediaElement => mediaElement.id === validMediaId);
     if (validMediaElement) {
-      validMediaElement.valid = true;
-      this.mediaStatusChanged.next(validId);
+      validMediaElement.isValid = true;
+      this.mediaStatusChanged.next(validMediaId);
     }
   }
 

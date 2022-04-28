@@ -2,16 +2,15 @@ import { TestBed } from '@angular/core/testing';
 import { SanitizationService } from './sanitization.service';
 import { Unit } from 'common/interfaces/unit';
 import packageJSON from '../../../package.json';
-import * as sampleUnit100 from 'test-data/test100.json';
-import * as sampleUnit126 from 'test-data/test126.json';
-import * as sampleUnit129 from 'test-data/test129.json';
-import * as sampleUnit130 from 'test-data/test130.json';
-import * as sampleUnit126Audio from 'test-data/test126-audio.json';
-import * as sampleUnit130Audio from 'test-data/test130-audio.json';
-import * as sampleUnit112Texts from 'test-data/test112-texts.json';
-import * as sampleUnit112TextFields from 'test-data/test112-Textfields.json';
-import * as sampleUnit130TextFields from 'test-data/test130-textfields.json';
-import * as sampleUnit112Droplists from 'test-data/test112-droplist.json';
+import * as sampleUnit100 from 'test-data/unit-definitions/test100.json';
+import * as sampleUnit126 from 'test-data/unit-definitions/test126.json';
+import * as sampleUnit129 from 'test-data/unit-definitions/test129.json';
+import * as sampleUnit130 from 'test-data/unit-definitions/test130.json';
+import * as sampleUnit126Audio from 'test-data/unit-definitions/test126-audio.json';
+import * as sampleUnit130Audio from 'test-data/unit-definitions/test130-audio.json';
+import * as sampleUnit112Texts from 'test-data/unit-definitions/test112-texts.json';
+import * as sampleUnit112TextFields from 'test-data/unit-definitions/test112-Textfields.json';
+import * as sampleUnit130TextFields from 'test-data/unit-definitions/test130-textfields.json';
 
 describe('SanitizationService', () => {
   let service: SanitizationService;

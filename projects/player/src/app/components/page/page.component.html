@@ -4,6 +4,7 @@
      (intersecting)="selectedIndexChange.emit(pageIndex)">
   <aspect-section-container *ngFor="let section of page.sections"
                             [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
+                            [pageSections]="page.sections"
                             [pageIndex]=pageIndex
                             [section]="section">
   </aspect-section-container>

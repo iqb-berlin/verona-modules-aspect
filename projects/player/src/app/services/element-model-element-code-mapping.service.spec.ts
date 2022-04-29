@@ -3,8 +3,15 @@ import { ElementModelElementCodeMappingService } from './element-model-element-c
 import {
   AudioElement,
   DragNDropValueObject,
-  DropListElement, ImageElement, LikertRowElement, RadioButtonGroupComplexElement, RadioButtonGroupElement,
-  TextElement, TextFieldElement, ToggleButtonElement
+  DropListElement,
+  ImageElement,
+  LikertRowElement,
+  RadioButtonGroupComplexElement,
+  RadioButtonGroupElement, SpellCorrectElement,
+  TextAreaElement,
+  TextElement,
+  TextFieldElement,
+  ToggleButtonElement
 } from 'common/interfaces/elements';
 import * as dropList_130 from 'test-data/element-models/dropList_130.json';
 import * as textField_130 from 'test-data/element-models/text-field_130.json';
@@ -15,6 +22,8 @@ import * as likertRow_130 from 'test-data/element-models/likert-row_130.json';
 import * as radio_130 from 'test-data/element-models/radio_130.json';
 import * as radioGroupImages_130 from 'test-data/element-models/radio-group-images_130.json';
 import * as toggleButton_130 from 'test-data/element-models/toggle-button_130.json';
+import * as textArea_130 from 'test-data/element-models/text-area_130.json';
+import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
 import * as dropListValues_01_130 from 'test-data/values/dropListValues_01_130.json';
 import * as dropListValues_02_130 from 'test-data/values/dropListValues_02_130.json';
 
@@ -112,6 +121,34 @@ describe('ElementModelElementCodeMappingService', () => {
     const textFieldValue =
       null;
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
+      .toEqual( null);
+  });
+
+  it('should map the value of a spell-correct elementModel to its elementCode value', () => {
+    const spellCorrectValue =
+      'TEST';
+    expect(service.mapToElementCodeValue(spellCorrectValue, 'spell-correct'))
+      .toEqual( 'TEST');
+  });
+
+  it('should map the value of a spell-correct elementModel to its elementCode value', () => {
+    const spellCorrectValue =
+      null;
+    expect(service.mapToElementCodeValue(spellCorrectValue, 'spell-correct'))
+      .toEqual( null);
+  });
+
+  it('should map the value of a text-area elementModel to its elementCode value', () => {
+    const textAreaValue =
+      'TEST';
+    expect(service.mapToElementCodeValue(textAreaValue, 'text-area'))
+      .toEqual( 'TEST');
+  });
+
+  it('should map the value of a text-area elementModel to its elementCode value', () => {
+    const textAreaValue =
+      null;
+    expect(service.mapToElementCodeValue(textAreaValue, 'text-area'))
       .toEqual( null);
   });
 
@@ -247,6 +284,30 @@ describe('ElementModelElementCodeMappingService', () => {
 
   it('should not map but return the text-field elementModel value', () => {
     const elementModel: TextFieldElement = JSON.parse(JSON.stringify(textField_130));
+    expect(service.mapToElementModelValue( undefined, elementModel))
+      .toEqual(null);
+  });
+
+  it('should map an elementCode value to text-area elementModel value', () => {
+    const elementModel: TextAreaElement = JSON.parse(JSON.stringify(textArea_130));
+    expect(service.mapToElementModelValue( 'TEST', elementModel))
+      .toEqual('TEST');
+  });
+
+  it('should not map but return the text-area elementModel value', () => {
+    const elementModel: TextAreaElement = JSON.parse(JSON.stringify(textArea_130));
+    expect(service.mapToElementModelValue( undefined, elementModel))
+      .toEqual(null);
+  });
+
+  it('should map an elementCode value to spell-correct elementModel value', () => {
+    const elementModel: SpellCorrectElement = JSON.parse(JSON.stringify(spellCorrect_130));
+    expect(service.mapToElementModelValue( 'TEST', elementModel))
+      .toEqual('TEST');
+  });
+
+  it('should not map but return the spell-correct elementModel value', () => {
+    const elementModel: SpellCorrectElement = JSON.parse(JSON.stringify(spellCorrect_130));
     expect(service.mapToElementModelValue( undefined, elementModel))
       .toEqual(null);
   });

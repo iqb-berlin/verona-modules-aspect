@@ -75,8 +75,8 @@ export class UnitStateService {
   changeElementCodeValue(elementValue: ValueChangeElement): void {
     // eslint-disable-next-line no-console
     console.log(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
-    this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
     this.setElementCodeValue(elementValue.id, elementValue.value);
+    this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
   }
 
   changeElementCodeStatus(elementStatus: StatusChangeElement): void {
@@ -104,14 +104,12 @@ export class UnitStateService {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;
-      this._elementCodeChanged.next(unitStateElementCode);
     }
   }
 
   private setElementCodeStatus(id: string, status: ElementCodeStatus): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
-      // Set status only if it is higher than the old status
       if (ElementCodeStatusValue[status] >= ElementCodeStatusValue[unitStateElementCode.status]) {
         unitStateElementCode.status = status;
         this._elementCodeChanged.next(unitStateElementCode);

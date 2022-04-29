@@ -1,0 +1,43 @@
+{
+  "type": "radio",
+  "id": "radio_1",
+  "width": 193,
+  "height": 137,
+  "label": "Beschriftung",
+  "value": null,
+  "required": false,
+  "requiredWarnMessage": "Eingabe erforderlich",
+  "readOnly": false,
+  "richTextOptions": [
+    "a",
+    "b"
+  ],
+  "alignment": "column",
+  "strikeOtherOptions": false,
+  "position": {
+    "fixedSize": false,
+    "dynamicPositioning": false,
+    "xPosition": 0,
+    "yPosition": 0,
+    "useMinHeight": false,
+    "gridColumn": null,
+    "gridColumnRange": 1,
+    "gridRow": null,
+    "gridRowRange": 1,
+    "marginLeft": 0,
+    "marginRight": 0,
+    "marginTop": 0,
+    "marginBottom": 30,
+    "zIndex": 0
+  },
+  "styling": {
+    "fontColor": "#000000",
+    "font": "Roboto",
+    "fontSize": 20,
+    "bold": false,
+    "italic": false,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "lineHeight": 135
+  }
+}

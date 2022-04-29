@@ -1,0 +1,41 @@
+{
+  "type": "dropdown",
+  "id": "dropdown_1",
+  "width": 264,
+  "height": 144,
+  "label": "Beschriftung",
+  "value": null,
+  "required": false,
+  "requiredWarnMessage": "Eingabe erforderlich",
+  "readOnly": false,
+  "options": [
+    "a",
+    "b"
+  ],
+  "allowUnset": false,
+  "position": {
+    "fixedSize": false,
+    "dynamicPositioning": false,
+    "xPosition": 7,
+    "yPosition": 173,
+    "useMinHeight": false,
+    "gridColumn": null,
+    "gridColumnRange": 1,
+    "gridRow": null,
+    "gridRowRange": 1,
+    "marginLeft": 0,
+    "marginRight": 0,
+    "marginTop": 0,
+    "marginBottom": 0,
+    "zIndex": 0
+  },
+  "styling": {
+    "fontColor": "#000000",
+    "font": "Roboto",
+    "fontSize": 20,
+    "bold": false,
+    "italic": false,
+    "underline": false,
+    "backgroundColor": "#d3d3d3"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "toggle-button",
+  "id": "toggle-button_1",
+  "width": 100,
+  "height": 25,
+  "label": "Beschriftung",
+  "value": null,
+  "required": false,
+  "requiredWarnMessage": "Eingabe erforderlich",
+  "readOnly": false,
+  "richTextOptions": [
+    "a",
+    "b"
+  ],
+  "strikeOtherOptions": false,
+  "verticalOrientation": false,
+  "dynamicWidth": true,
+  "styling": {
+    "fontColor": "#000000",
+    "font": "Roboto",
+    "fontSize": 20,
+    "bold": false,
+    "italic": false,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "lineHeight": 135,
+    "selectionColor": "#c7f3d0"
+  }
+}

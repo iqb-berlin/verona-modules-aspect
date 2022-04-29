@@ -97,7 +97,6 @@ export class AppComponent implements OnInit {
         (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
           (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
             accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []));
-    console.log(this.elementModelElementCodeMappingService.dragNDropValueObjects);
   }
 
   private onFocus(focused: boolean): void {

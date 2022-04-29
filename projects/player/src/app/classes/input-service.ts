@@ -26,13 +26,15 @@ export abstract class InputService {
   deleterCharacters(backspace: boolean): void {
     let selectionStart = this.inputElement.selectionStart || 0;
     let selectionEnd = this.inputElement.selectionEnd || 0;
-    if (selectionEnd > 0) {
+    if (backspace && selectionEnd > 0) {
       if (selectionStart === selectionEnd) {
-        if (backspace) {
-          selectionStart -= 1;
-        } else {
-          selectionEnd += 1;
-        }
+        selectionStart -= 1;
+      }
+      this.insert(selectionStart, selectionEnd, selectionStart, '');
+    }
+    if (!backspace && selectionEnd <= this.inputElement.value.length) {
+      if (selectionStart === selectionEnd) {
+        selectionEnd += 1;
       }
       this.insert(selectionStart, selectionEnd, selectionStart, '');
     }

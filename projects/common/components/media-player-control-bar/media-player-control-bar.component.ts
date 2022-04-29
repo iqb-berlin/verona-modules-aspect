@@ -154,10 +154,12 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private sendPlaybackTimeChanged() {
-    this.elementValueChanged.emit({
-      id: this.id,
-      value: this.toPlaybackTime()
-    });
+    if (this.player.currentTime > 0 || this.runCounter > 0) {
+      this.elementValueChanged.emit({
+        id: this.id,
+        value: this.toPlaybackTime()
+      });
+    }
   }
 
   private toPlaybackTime(): number {

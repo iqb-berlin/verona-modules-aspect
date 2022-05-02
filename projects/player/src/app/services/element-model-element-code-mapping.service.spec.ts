@@ -3,7 +3,7 @@ import { ElementModelElementCodeMappingService } from './element-model-element-c
 import {
   AudioElement,
   DragNDropValueObject,
-  DropListElement,
+  DropListElement, DropListSimpleElement,
   ImageElement,
   LikertRowElement,
   RadioButtonGroupComplexElement,
@@ -14,6 +14,7 @@ import {
   ToggleButtonElement
 } from 'common/interfaces/elements';
 import * as dropList_130 from 'test-data/element-models/dropList_130.json';
+import * as dropListSimple_131 from 'test-data/element-models/dropListSimple_131.json';
 import * as textField_130 from 'test-data/element-models/text-field_130.json';
 import * as image_130 from 'test-data/element-models/image_130.json';
 import * as audio_130 from 'test-data/element-models/audio_130.json';
@@ -24,8 +25,8 @@ import * as radioGroupImages_130 from 'test-data/element-models/radio-group-imag
 import * as toggleButton_130 from 'test-data/element-models/toggle-button_130.json';
 import * as textArea_130 from 'test-data/element-models/text-area_130.json';
 import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
-import * as dropListValues_01_130 from 'test-data/values/dropListValues_01_130.json';
-import * as dropListValues_02_130 from 'test-data/values/dropListValues_02_130.json';
+import * as dragNDropValues_01_130 from 'test-data/values/dragNDropValues_01_130.json';
+import * as dragNDropValues_02_130 from 'test-data/values/dragNDropValues_02_130.json';
 
 describe('ElementModelElementCodeMappingService', () => {
   let service: ElementModelElementCodeMappingService;
@@ -41,8 +42,14 @@ describe('ElementModelElementCodeMappingService', () => {
   // mapToElementCodeValue
 
   it('should map the value of a drop-list elementModel to its elementCode value', () => {
-    const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dropListValues_01_130)).default;
+    const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     expect(service.mapToElementCodeValue(dragNDropValueObjects, 'drop-list'))
+      .toEqual( ['value_1', 'value_2', 'value_3']);
+  });
+
+  it('should map the value of a drop-list-simple elementModel to its elementCode value', () => {
+    const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
+    expect(service.mapToElementCodeValue(dragNDropValueObjects, 'drop-list-simple'))
       .toEqual( ['value_1', 'value_2', 'value_3']);
   });
 
@@ -189,7 +196,7 @@ describe('ElementModelElementCodeMappingService', () => {
       .toEqual(expectedValue);
   });
 
-  it('should not map but return the drop-list elementModel value', () => {
+  it('should map an elementCode value to drop-list elementModel value', () => {
     service.dragNDropValueObjects =  [
       {
         'stringValue': 'a',
@@ -213,21 +220,70 @@ describe('ElementModelElementCodeMappingService', () => {
       }
     ];
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
+    const expectedValue = [
+      {
+        'stringValue': 'e',
+        'id': 'value_5'
+      }
+    ];
+    expect(service.mapToElementModelValue(['value_5'], elementModel))
+      .toEqual(expectedValue);
+  });
+
+  it('should not map but return the drop-list-simple elementModel value', () => {
+    service.dragNDropValueObjects =  [
+      {
+        'stringValue': 'a',
+        'id': 'value_1'
+      },
+      {
+        'stringValue': 'b',
+        'id': 'value_2'
+      },
+      {
+        'stringValue': 'c',
+        'id': 'value_3'
+      },
+      {
+        'stringValue': 'd',
+        'id': 'value_4'
+      },
+      {
+        'stringValue': 'e',
+        'id': 'value_5'
+      }
+    ];
+    const elementModel: DropListSimpleElement = JSON.parse(JSON.stringify(dropListSimple_131));
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(elementModel.value);
   });
 
   it('should map an elementCode value to drop-list elementModel value with imageSrc', () => {
-    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dropListValues_01_130)).default;
+    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
-    const expectedValue = JSON.parse(JSON.stringify(dropListValues_02_130)).default;
+    const expectedValue = JSON.parse(JSON.stringify(dragNDropValues_02_130)).default;
     expect(service.mapToElementModelValue(['value_1', 'value_2'], elementModel))
       .toEqual(expectedValue);
   });
 
-  it('should map an elementCode value to drop-list elementModel value - an empty array', () => {
-    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dropListValues_01_130)).default;
+  it('should map an elementCode value to drop-list-simple elementModel value with imageSrc', () => {
+    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
+    const elementModel: DropListSimpleElement = JSON.parse(JSON.stringify(dropListSimple_131));
+    const expectedValue = JSON.parse(JSON.stringify(dragNDropValues_02_130)).default;
+    expect(service.mapToElementModelValue(['value_1', 'value_2'], elementModel))
+      .toEqual(expectedValue);
+  });
+
+  it('should map an elementCode value to drop-list-simple elementModel value - an empty array', () => {
+    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
+    expect(service.mapToElementModelValue([], elementModel ))
+      .toEqual([]);
+  });
+
+  it('should map an elementCode value to drop-list elementModel value - an empty array', () => {
+    service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
+    const elementModel: DropListSimpleElement = JSON.parse(JSON.stringify(dropListSimple_131));
     expect(service.mapToElementModelValue([], elementModel ))
       .toEqual([]);
   });

@@ -4,6 +4,7 @@ import { TextAreaComponent } from 'common/components/ui-elements/text-area.compo
 import { InputAssistancePreset } from 'common/interfaces/elements';
 import { InputService } from '../classes/input-service';
 import { SpellCorrectComponent } from 'common/components/ui-elements/spell-correct.component';
+import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-field-simple.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class KeypadService extends InputService {
   position!: 'floating' | 'right';
 
   toggle(focusedElement: HTMLElement | null,
-         elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): boolean {
+         elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
+    boolean {
     if (focusedElement) {
       this.preset = elementComponent.elementModel.inputAssistancePreset;
       this.position = elementComponent.elementModel.inputAssistancePosition;

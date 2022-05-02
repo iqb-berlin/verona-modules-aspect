@@ -12,10 +12,10 @@ import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ValidationService } from '../../services/validation.service';
 import { KeypadService } from '../../services/keypad.service';
-import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { KeyboardService } from '../../services/keyboard.service';
 import { DeviceService } from '../../services/device.service';
+import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-field-simple.component';
 
 @Component({
   selector: 'aspect-element-compound-group',
@@ -58,26 +58,26 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
         this.elementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type),
         child,
         this.pageIndex);
-      if (childModel.type === 'text-field') {
-        const textFieldComponent = child as TextFieldComponent;
-        (child as TextFieldComponent)
+      if (childModel.type === 'text-field-simple') {
+        const textFieldSimpleComponent = child as TextFieldSimpleComponent;
+        (child as TextFieldSimpleComponent)
           .onFocusChanged
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(element => {
-            this.onFocusChanged(element, textFieldComponent, childModel);
+            this.onFocusChanged(element, textFieldSimpleComponent, childModel);
           });
-        (child as TextFieldComponent)
+        (child as TextFieldSimpleComponent)
           .onKeyDown
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(element => {
-            this.registerHardwareKeyboard(element, textFieldComponent);
+            this.registerHardwareKeyboard(element, textFieldSimpleComponent);
           });
       }
     });
   }
 
   private onFocusChanged(inputElement: HTMLElement | null,
-                         elementComponent: TextFieldComponent,
+                         elementComponent: TextFieldSimpleComponent,
                          elementModel: InputElement): void {
     if (elementModel.inputAssistance !== 'none') {
       this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
@@ -88,7 +88,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
   }
 
   private registerHardwareKeyboard(inputElement: HTMLElement | null,
-                                   elementComponent: TextFieldComponent): void {
+                                   elementComponent: TextFieldSimpleComponent): void {
     this.deviceService.registerHardwareKeyboard();
     this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
   }

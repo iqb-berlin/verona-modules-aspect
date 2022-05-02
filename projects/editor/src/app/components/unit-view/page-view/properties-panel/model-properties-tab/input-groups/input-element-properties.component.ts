@@ -110,7 +110,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
                   (change)="updateModel.emit({ property: 'softwareKeyboardShowFrench', value: $event.checked })">
       {{'propertiesPanel.softwareKeyboardShowFrench' | translate }}
     </mat-checkbox>
-  `
+  `,
+  styles: [
+    'mat-form-field {width: 100%;}'
+  ]
 })
 export class InputElementPropertiesComponent {
   @Input() combinedProperties!: any;

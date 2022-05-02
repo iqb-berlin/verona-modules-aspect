@@ -237,7 +237,7 @@ export class SanitizationService {
     let doc: ClozeDocument;
 
     if (element.document) {
-      childElements = ClozeUtils.getClozeChildElements((element as ClozeElement).document);
+      childElements = ClozeUtils.getClozeChildElements((element as ClozeElement));
       doc = element.document as ClozeDocument;
     } else {
       childElements = (element.parts as any[])

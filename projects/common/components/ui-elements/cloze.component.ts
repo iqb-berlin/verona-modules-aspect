@@ -196,7 +196,7 @@ export class ClozeComponent extends CompoundElementComponent {
   editorMode: boolean = false;
 
   getFormElementModelChildren(): InputElement[] {
-    return ClozeUtils.getClozeChildElements(this.elementModel.document);
+    return ClozeUtils.getClozeChildElements(this.elementModel);
   }
 
   getFormElementChildrenComponents(): ElementComponent[] {

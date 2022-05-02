@@ -1,8 +1,9 @@
-import { InputElement } from '../interfaces/elements';
+import { ClozeElement, InputElement } from '../interfaces/elements';
 import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../interfaces/cloze';
 
 export abstract class ClozeUtils {
-  static getClozeChildElements(clozeDocument: ClozeDocument): InputElement[] {
+  static getClozeChildElements(clozeElement: ClozeElement): InputElement[] {
+    const clozeDocument: ClozeDocument = clozeElement.document;
     const elementList: InputElement[] = [];
     clozeDocument.content.forEach((documentPart: ClozeDocumentParagraph) => {
       if (documentPart.type === 'paragraph' || documentPart.type === 'heading') {

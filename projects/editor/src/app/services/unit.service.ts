@@ -63,7 +63,7 @@ export class UnitService {
         (element as LikertElement).rows.forEach(row => this.idService.addID(row.id));
       }
       if (element.type === 'cloze') {
-        ClozeUtils.getClozeChildElements((element as ClozeElement).document)
+        ClozeUtils.getClozeChildElements((element as ClozeElement))
           .forEach(child => this.idService.addID(child.id));
       }
       this.idService.addID(element.id);
@@ -213,7 +213,7 @@ export class UnitService {
       if (newElement.type === 'cloze') {
         ClozeUtils.getClozeChildElements(newElement).forEach((childElement: InputElement) => {
           childElement.id = this.idService.getNewID(childElement.type);
-          if (typeof childElement.value === 'object') { // replace value Ids with fresh ones (dropList)
+          if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
             (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
               valueObject.id = this.idService.getNewID('value');
             });

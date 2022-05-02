@@ -30,7 +30,7 @@ import { RadioButtonGroupElement } from '../../interfaces/elements';
                           [value]="i"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [style.line-height.%]="elementModel.styling.lineHeight">
-          <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(option)"></div>
+          <div class="radio-button-label" [innerHTML]="sanitizer.bypassSecurityTrustHtml(option)"></div>
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                    class="error-message">
@@ -46,7 +46,8 @@ import { RadioButtonGroupElement } from '../../interfaces/elements';
     '.error-message { font-size: 75% }',
     ':host ::ng-deep .strike .mat-radio-label {text-decoration: line-through}',
     ':host ::ng-deep .mat-radio-label {align-items: baseline}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}'
+    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}',
+    '.radio-button-label {pointer-events: none;}'
   ]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {

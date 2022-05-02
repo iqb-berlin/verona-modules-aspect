@@ -171,7 +171,6 @@ import { ClozeUtils } from '../../util/cloze';
                                          [parentForm]="parentForm"
                                          [element]="$any(subPart).attrs.model"
                                          [editorMode]="editorMode"
-                                         [lineHeight]="elementModel.styling.lineHeight"
                                          (elementSelected)="childElementSelected.emit($event)">
           </aspect-compound-child-overlay>
         </span>

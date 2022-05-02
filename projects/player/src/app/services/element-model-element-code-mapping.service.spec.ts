@@ -10,12 +10,13 @@ import {
   RadioButtonGroupElement, SpellCorrectElement,
   TextAreaElement,
   TextElement,
-  TextFieldElement,
+  TextFieldElement, TextFieldSimpleElement,
   ToggleButtonElement
 } from 'common/interfaces/elements';
-import * as dropList_130 from 'test-data/element-models/dropList_130.json';
-import * as dropListSimple_131 from 'test-data/element-models/dropListSimple_131.json';
+import * as dropList_130 from 'test-data/element-models/drop-list_130.json';
+import * as dropListSimple_131 from 'test-data/element-models/drop-list-simple_131.json';
 import * as textField_130 from 'test-data/element-models/text-field_130.json';
+import * as textFieldSimple_131 from 'test-data/element-models/text-field-simple_131.json';
 import * as image_130 from 'test-data/element-models/image_130.json';
 import * as audio_130 from 'test-data/element-models/audio_130.json';
 import * as text_130 from 'test-data/element-models/text_130.json';
@@ -128,6 +129,20 @@ describe('ElementModelElementCodeMappingService', () => {
     const textFieldValue =
       null;
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
+      .toEqual( null);
+  });
+
+  it('should map the value of a text-field-simple elementModel to its elementCode value', () => {
+    const textFieldValue =
+      'TEST';
+    expect(service.mapToElementCodeValue(textFieldValue, 'text-field-simple'))
+      .toEqual( 'TEST');
+  });
+
+  it('should map the value of a text-field-simple elementModel to its elementCode value', () => {
+    const textFieldValue =
+      null;
+    expect(service.mapToElementCodeValue(textFieldValue, 'text-field-simple'))
       .toEqual( null);
   });
 
@@ -340,6 +355,18 @@ describe('ElementModelElementCodeMappingService', () => {
 
   it('should not map but return the text-field elementModel value', () => {
     const elementModel: TextFieldElement = JSON.parse(JSON.stringify(textField_130));
+    expect(service.mapToElementModelValue( undefined, elementModel))
+      .toEqual(null);
+  });
+
+  it('should map an elementCode value to text-field-simple elementModel value', () => {
+    const elementModel: TextFieldSimpleElement = JSON.parse(JSON.stringify(textFieldSimple_131));
+    expect(service.mapToElementModelValue( 'TEST', elementModel))
+      .toEqual('TEST');
+  });
+
+  it('should not map but return the text-field-simple elementModel value', () => {
+    const elementModel: TextFieldSimpleElement = JSON.parse(JSON.stringify(textFieldSimple_131));
     expect(service.mapToElementModelValue( undefined, elementModel))
       .toEqual(null);
   });

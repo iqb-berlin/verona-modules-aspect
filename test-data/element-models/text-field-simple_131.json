@@ -1,0 +1,33 @@
+ {
+  "type": "text-field-simple",
+  "id": "text-field-simple_1",
+  "width": 150,
+  "height": 30,
+  "label": "Beschriftung",
+  "value": null,
+  "required": false,
+  "requiredWarnMessage": "Eingabe erforderlich",
+  "readOnly": false,
+  "minLength": 0,
+  "minLengthWarnMessage": "Eingabe zu kurz",
+  "maxLength": 0,
+  "maxLengthWarnMessage": "Eingabe zu lang",
+  "pattern": "",
+  "patternWarnMessage": "Eingabe entspricht nicht der Vorgabe",
+  "inputAssistancePreset": "french",
+  "inputAssistancePosition": "floating",
+  "restrictedToInputAssistanceChars": true,
+  "showSoftwareKeyboard": true,
+  "softwareKeyboardShowFrench": true,
+  "clearable": false,
+  "styling": {
+    "fontColor": "#000000",
+    "font": "Roboto",
+    "fontSize": 20,
+    "bold": false,
+    "italic": false,
+    "underline": false,
+    "backgroundColor": "transparent",
+    "lineHeight": 135
+  }
+}

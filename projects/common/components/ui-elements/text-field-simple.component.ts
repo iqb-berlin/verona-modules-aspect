@@ -2,12 +2,12 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { TextFieldElement } from '../../interfaces/elements';
+import { TextFieldSimpleElement } from '../../interfaces/elements';
 
 @Component({
   selector: 'aspect-text-field-simple',
   template: `
-    <input #input type="text"
+    <input #input
            class="clozeChild"
            autocomplete="off"
            autocapitalize="none"
@@ -34,7 +34,7 @@ import { TextFieldElement } from '../../interfaces/elements';
   ]
 })
 export class TextFieldSimpleComponent extends FormElementComponent {
-  @Input() elementModel!: TextFieldElement;
+  @Input() elementModel!: TextFieldSimpleElement;
   @Output() onKeyDown = new EventEmitter<HTMLElement>();
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
 }

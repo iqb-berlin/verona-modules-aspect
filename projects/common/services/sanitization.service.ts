@@ -242,7 +242,8 @@ export class SanitizationService {
     } else {
       childElements = (element.parts as any[])
         .map((el: any) => el
-          .filter((el2: { type: string; }) => ['text-field', 'drop-list', 'toggle-button'].includes(el2.type)).value)
+          .filter((el2: { type: string; }) => ['text-field', 'text-field-simple', 'drop-list', 'drop-list-simple', 'toggle-button']
+            .includes(el2.type)).value)
         .flat();
       doc = SanitizationService.createClozeDocument(element);
     }

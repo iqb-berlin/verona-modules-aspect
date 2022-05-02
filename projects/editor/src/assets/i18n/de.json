@@ -154,7 +154,8 @@
     "vertical": "vertikal",
     "horizontal": "horizontal",
     "fill": "Ausgefüllt",
-    "outline": "Umrandet"
+    "outline": "Umrandet",
+    "copyOnDrop": "Elemente beim Ablegen kopieren"
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",

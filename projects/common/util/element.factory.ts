@@ -289,6 +289,7 @@ export abstract class ElementFactory {
       value: element.value !== undefined ? element.value : [],
       onlyOneItem: element.onlyOneItem !== undefined ? element.onlyOneItem : false,
       connectedTo: element.connectedTo !== undefined ? element.connectedTo : [],
+      copyOnDrop: element.copyOnDrop !== undefined ? element.copyOnDrop : false,
       orientation: element.orientation !== undefined ? element.orientation : 'vertical',
       highlightReceivingDropList: element.highlightReceivingDropList !== undefined ?
         element.highlightReceivingDropList :
@@ -310,6 +311,7 @@ export abstract class ElementFactory {
       type: 'drop-list',
       value: element.value !== undefined ? element.value : [],
       connectedTo: element.connectedTo !== undefined ? element.connectedTo : [],
+      copyOnDrop: element.copyOnDrop !== undefined ? element.copyOnDrop : false,
       highlightReceivingDropList: element.highlightReceivingDropList !== undefined ?
         element.highlightReceivingDropList : false,
       highlightReceivingDropListColor: element.highlightReceivingDropListColor !== undefined ?

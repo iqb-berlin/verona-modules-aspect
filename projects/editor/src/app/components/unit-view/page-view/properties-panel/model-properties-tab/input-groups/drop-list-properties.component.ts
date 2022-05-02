@@ -11,6 +11,12 @@ import {
       {{'propertiesPanel.onlyOneItem' | translate }}
     </mat-checkbox>
 
+    <mat-checkbox *ngIf="combinedProperties.copyOnDrop !== undefined"
+                  [checked]="$any(combinedProperties.copyOnDrop)"
+                  (change)="updateModel.emit({ property: 'copyOnDrop', value: $event.checked })">
+      {{'propertiesPanel.copyOnDrop' | translate }}
+    </mat-checkbox>
+
     <mat-checkbox *ngIf="combinedProperties.highlightReceivingDropList !== undefined"
                   [checked]="$any(combinedProperties.highlightReceivingDropList)"
                   (change)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event.checked })">

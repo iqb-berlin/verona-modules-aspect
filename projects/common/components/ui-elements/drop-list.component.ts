@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
-  CdkDrag, CdkDropList, moveItemInArray, transferArrayItem
+  CdkDrag, CdkDropList, moveItemInArray, transferArrayItem, copyArrayItem
 } from '@angular/cdk/drag-drop';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { DragNDropValueObject, DropListElement } from '../../interfaces/elements';
@@ -15,7 +15,7 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
       <!-- min-height for the following div is important for iOS 14!
       iOS 14 is not able to determine the height of the flex container-->
       <div class="list"
-           [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex' }"
+           [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex', 'copyOnDrop': elementModel.copyOnDrop }"
            [style.min-height.px]="elementModel.position.useMinHeight ? elementModel.height - 6 : null"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"
@@ -28,7 +28,7 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
            [style.backgroundColor]="elementModel.styling.backgroundColor"
            [style.display]="elementModel.orientation === 'horizontal' ? 'flex' : ''"
            [style.flex-direction]="elementModel.orientation === 'horizontal' ? 'row' : ''"
-           cdkDropList
+           cdkDropList cdkDropListSortingDisabled
            [id]="elementModel.id"
            [cdkDropListData]="this"
            [cdkDropListConnectedTo]="elementModel.connectedTo"
@@ -37,42 +37,55 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
            (cdkDropListDropped)="drop($event)">
 
         <ng-container *ngIf="!parentForm">
-          <ng-container *ngFor="let value of $any(elementModel.value)">
-            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+          <ng-container *ngFor="let dropListValueElement of $any(elementModel.value); let index = index;">
+            <ng-container [ngTemplateOutlet]="dropObject"
+                          [ngTemplateOutletContext]="{ $implicit: dropListValueElement, index: index }">
             </ng-container>
           </ng-container>
         </ng-container>
 
         <ng-container *ngIf="parentForm">
-          <ng-container *ngFor="let value of elementFormControl.value">
-            <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+          <ng-container *ngFor="let dropListValueElement of elementFormControl.value; let index = index;">
+            <ng-container [ngTemplateOutlet]="dropObject"
+                          [ngTemplateOutletContext]="{ $implicit: dropListValueElement, index: index }">
             </ng-container>
           </ng-container>
         </ng-container>
         <!--Leave template within the dom to ensure dragNdrop-->
-        <ng-template #dropObject let-value>
-          <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
+        <ng-template #dropObject let-dropListValueElement let-index="index">
+          <div class="item text-item" *ngIf="!dropListValueElement.imgSrcValue" cdkDrag
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                       'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
                [style.background-color]="elementModel.styling.itemBackgroundColor"
-               (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
+               [cdkDragData]="dropListValueElement"
+               (cdkDragStarted)=dragStart(index) (cdkDragEnded)="dragEnd()">
             <div *cdkDragPreview
                  [style.font-size.px]="elementModel.styling.fontSize"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
-                {{value.stringValue}}
+                {{dropListValueElement.stringValue}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
                  [style.min-height.px]="elementModel.styling.fontSize">
             </div>
-            {{value.stringValue}}
+            {{dropListValueElement.stringValue}}
           </div>
-          <img *ngIf="value.imgSrcValue"
-               [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
+
+          <!-- actual placeholder when item is being dragged from copy-list -->
+          <div *ngIf="draggedItemIndex === index" class="item text-item"
+               [style.font-size.px]="elementModel.styling.fontSize"
+               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                            'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
+               [style.background-color]="elementModel.styling.itemBackgroundColor">
+            {{dropListValueElement.stringValue}}
+          </div>
+
+          <img *ngIf="dropListValueElement.imgSrcValue"
+               [src]="dropListValueElement.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
                [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
                class="item"
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                       'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()"
+               cdkDrag (cdkDragStarted)=dragStart(index) (cdkDragEnded)="dragEnd()"
                [style.object-fit]="'scale-down'">
         </ng-template>
       </div>
@@ -99,20 +112,24 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
     '.dropList-highlight.cdk-drop-list-receiving {outline: solid;}',
     '.dropList-highlight.cdk-drop-list-dragging {outline: solid;}',
 
-    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}'
+    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
+    ':host .copyOnDrop .cdk-drag-placeholder {display: none;}'
   ]
 })
 export class DropListComponent extends FormElementComponent {
   @Input() elementModel!: DropListElement;
 
   bodyElement: HTMLElement = document.body;
+  draggedItemIndex: number | null = null;
 
-  dragStart(): void {
+  dragStart(itemIndex: number): void {
+    this.draggedItemIndex = itemIndex;
     this.bodyElement.classList.add('inheritCursors');
     this.bodyElement.style.cursor = 'grabbing';
   }
 
   dragEnd(): void {
+    this.draggedItemIndex = null;
     this.bodyElement.classList.remove('inheritCursors');
     this.bodyElement.style.cursor = 'unset';
   }
@@ -123,15 +140,29 @@ export class DropListComponent extends FormElementComponent {
         moveItemInArray(event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
           event.previousIndex, event.currentIndex);
       } else {
-        transferArrayItem(
-          event.previousContainer.data.elementFormControl.value as unknown as DragNDropValueObject[],
-          event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
-          event.previousIndex,
-          event.currentIndex
-        );
-        event.previousContainer.data.elementFormControl.setValue(
-          (event.previousContainer.data.elementFormControl.value as DragNDropValueObject[])
-        );
+        const presentValueIDs = event.container.data.elementFormControl.value
+          .map((value2: DragNDropValueObject) => value2.id);
+        if (!presentValueIDs.includes(event.item.data.id)) {
+          if (event.previousContainer.data.elementModel.copyOnDrop) {
+            copyArrayItem(
+              event.previousContainer.data.elementFormControl.value as unknown as DragNDropValueObject[],
+              event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
+              event.previousIndex,
+              event.currentIndex
+            );
+          } else {
+            transferArrayItem(
+              event.previousContainer.data.elementFormControl.value as unknown as DragNDropValueObject[],
+              event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
+              event.previousIndex,
+              event.currentIndex
+            );
+          }
+          event.previousContainer.data.elementFormControl.setValue(
+            (event.previousContainer.data.elementFormControl.value as DragNDropValueObject[])
+          );
+        }
+
       }
       this.elementFormControl.setValue(
         (event.container.data.elementFormControl.value as DragNDropValueObject[])

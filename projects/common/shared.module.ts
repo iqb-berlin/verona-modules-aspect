@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TextComponent } from './components/ui-elements/text.component';
 import { ButtonComponent } from './components/ui-elements/button.component';
 import { TextFieldComponent } from './components/ui-elements/text-field.component';
+import { TextFieldSimpleComponent } from './components/ui-elements/text-field-simple.component';
 import { TextAreaComponent } from './components/ui-elements/text-area.component';
 import { CheckboxComponent } from './components/ui-elements/checkbox.component';
 import { DropdownComponent } from './components/ui-elements/dropdown.component';
@@ -79,6 +80,7 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     ButtonComponent,
     TextComponent,
     TextFieldComponent,
+    TextFieldSimpleComponent,
     TextAreaComponent,
     ImageComponent,
     AudioComponent,
@@ -127,6 +129,7 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     TextMarkingBarComponent,
     ToggleButtonComponent,
     TextFieldComponent,
+    TextFieldSimpleComponent,
     DropListSimpleComponent,
     TextAreaComponent,
     AudioComponent,

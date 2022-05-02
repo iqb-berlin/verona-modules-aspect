@@ -10,11 +10,8 @@ import { DragNDropValueObject, DropListSimpleElement } from '../../interfaces/el
   selector: 'aspect-drop-list-simple',
   template: `
     <div class="list-container">
-        <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
-        <!-- class style.-->
+        <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving class style.-->
       <div class="list"
-           [style.height.px]="elementModel.height"
-           [style.width.px]="elementModel.width"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.border-color]="elementModel.highlightReceivingDropListColor"
            [style.border-width.px]="elementModel.highlightReceivingDropList ? 2 : 0"
@@ -47,16 +44,13 @@ import { DragNDropValueObject, DropListSimpleElement } from '../../interfaces/el
 
         <ng-template #dropObject let-value>
           <div class="item"
-               [style.line-height.px]="elementModel.height - 4"
                [style.background-color]="elementModel.styling.itemBackgroundColor"
                cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
-
             <div *cdkDragPreview
                  [style.font-size.px]="elementModel.styling.fontSize"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
               {{value.stringValue}}
             </div>
-
             <div class="drag-placeholder" *cdkDragPlaceholder
                  [style.min-height.px]="elementModel.styling.fontSize">
             </div>

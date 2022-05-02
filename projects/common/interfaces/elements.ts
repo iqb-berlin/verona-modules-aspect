@@ -1,9 +1,9 @@
 import { ClozeDocument } from './cloze';
 
 export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
-export type UIElementType = 'text' | 'button' | 'text-field' | 'text-area' | 'checkbox'
+export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
-| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
+| 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
 export type InputAssistancePreset = 'none' | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue';
 export type DragNDropValueObject = {
@@ -176,7 +176,7 @@ export interface DropListElement extends InputElement {
 }
 
 export interface DropListSimpleElement extends InputElement {
-  type: 'drop-list';
+  type: 'drop-list-simple';
   connectedTo: string[];
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
@@ -283,6 +283,25 @@ export interface TextFieldElement extends InputElement {
   softwareKeyboardShowFrench: boolean;
   clearable: boolean;
   position: PositionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
+}
+
+export interface TextFieldSimpleElement extends InputElement {
+  type: 'text-field-simple';
+  minLength: number;
+  minLengthWarnMessage: string;
+  maxLength: number;
+  maxLengthWarnMessage: string;
+  pattern: string;
+  patternWarnMessage: string;
+  inputAssistancePreset: InputAssistancePreset;
+  inputAssistancePosition: 'floating' | 'right';
+  restrictedToInputAssistanceChars: boolean;
+  showSoftwareKeyboard: boolean;
+  softwareKeyboardShowFrench: boolean;
+  clearable: boolean;
   styling: BasicStyles & {
     lineHeight: number;
   };

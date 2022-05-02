@@ -37,10 +37,10 @@ export abstract class ClozeParser {
   private static createElement(elementModel: Partial<UIElement>): InputElement {
     let newElement: InputElement;
     switch (elementModel.type) {
-      case 'text-field':
+      case 'text-field-simple':
         newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
         break;
-      case 'drop-list':
+      case 'drop-list-simple':
         newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
         break;
       case 'toggle-button':

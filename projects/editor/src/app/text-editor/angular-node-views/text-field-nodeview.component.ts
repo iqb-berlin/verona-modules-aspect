@@ -4,11 +4,10 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
 @Component({
   selector: 'aspect-nodeview-text-field',
   template: `
-    <aspect-text-field [style.display]="'inline-block'"
-                       [isClozeChild]="true"
-                       [elementModel]="node.attrs.model"
-                       [matTooltip]="'ID: ' + node.attrs.model.id">
-    </aspect-text-field>
+    <aspect-text-field-simple [style.display]="'inline-block'"
+                              [elementModel]="node.attrs.model"
+                              [matTooltip]="'ID: ' + node.attrs.model.id">
+    </aspect-text-field-simple>
   `
 })
 export class TextFieldNodeviewComponent extends AngularNodeViewComponent {

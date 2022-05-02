@@ -5,8 +5,9 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
   selector: 'aspect-nodeview-toggle-button',
   template: `
     <aspect-toggle-button [style.display]="'inline-block'"
-                       [elementModel]="node.attrs.model"
-                       [matTooltip]="'ID: ' + node.attrs.model.id">
+                          [style.vertical-align]="'middle'"
+                          [elementModel]="node.attrs.model"
+                          [matTooltip]="'ID: ' + node.attrs.model.id">
     </aspect-toggle-button>
   `
 })

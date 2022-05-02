@@ -9,7 +9,8 @@ import { PositionedElement, PositionProperties } from 'common/interfaces/element
   selector: 'aspect-element-postion-properties',
   template: `
     <div fxLayout="column">
-      <aspect-position-field-set [positionProperties]="positionProperties"
+      <aspect-position-field-set *ngIf="positionProperties"
+                                 [positionProperties]="positionProperties"
                                  (updateModel)="this.updateModel.emit($event)">
       </aspect-position-field-set>
 
@@ -44,8 +45,8 @@ import { PositionedElement, PositionProperties } from 'common/interfaces/element
   ]
 })
 export class ElementPositionPropertiesComponent {
-  @Input() dimensions!: { width: number; height: number; };
-  @Input() positionProperties!: PositionProperties;
+  @Input() dimensions!: { width: number; height: number; dynamicWidth: boolean; };
+  @Input() positionProperties: PositionProperties | undefined;
   @Output() updateModel =
   new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
 

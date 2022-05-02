@@ -8,49 +8,50 @@ import { PositionProperties } from 'common/interfaces/elements';
   template: `
     <fieldset>
       <legend>Dimensionen</legend>
-      <mat-checkbox *ngIf="positionProperties.dynamicWidth !== undefined"
-                    [checked]="$any(positionProperties.dynamicWidth)"
+      <mat-checkbox *ngIf="dimensions.dynamicWidth !== undefined"
+                    [checked]="$any(dimensions?.dynamicWidth)"
                     (change)="updateModel.emit({ property: 'dynamicWidth', value: $event.checked })">
         {{'propertiesPanel.dynamicWidth' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox *ngIf="positionProperties.dynamicPositioning"
+      <mat-checkbox *ngIf="positionProperties?.dynamicPositioning"
                     matTooltip="Element ist nicht mehr dynamisch. Die eingestellte Größe wird benutzt."
-                    [checked]="$any(positionProperties.fixedSize)"
+                    [checked]="$any(positionProperties?.fixedSize)"
                     (change)="updateModel.emit({ property: 'fixedSize', value: $event.checked })">
         {{'propertiesPanel.fixedSize' | translate }}
       </mat-checkbox>
 
       <mat-form-field appearance="fill">
-        <mat-label *ngIf="positionProperties.dynamicPositioning && !positionProperties.fixedSize">
+        <mat-label *ngIf="positionProperties?.dynamicPositioning && !positionProperties?.fixedSize">
           {{'propertiesPanel.minWidth' | translate }}
         </mat-label>
-        <mat-label *ngIf="!positionProperties.dynamicPositioning ||
-                          (positionProperties.dynamicPositioning && positionProperties.fixedSize)">
+        <mat-label *ngIf="!positionProperties?.dynamicPositioning ||
+                          (positionProperties?.dynamicPositioning && positionProperties?.fixedSize)">
           {{'propertiesPanel.width' | translate }}
         </mat-label>
         <input matInput type="number" #width="ngModel" min="0"
+               [disabled]="$any(dimensions.dynamicWidth)"
                [ngModel]="dimensions.width"
                (ngModelChange)="updateModel.emit({ property: 'width',
                                                      value: $event,
                                                      isInputValid: width.valid && $event !== null })">
       </mat-form-field>
 
-      <mat-checkbox *ngIf="positionProperties.dynamicPositioning && !positionProperties.fixedSize"
-                    [checked]="$any(positionProperties.useMinHeight)"
+      <mat-checkbox *ngIf="positionProperties?.dynamicPositioning && !positionProperties?.fixedSize"
+                    [checked]="$any(positionProperties?.useMinHeight)"
                     (change)="updateModel.emit({ property: 'useMinHeight', value: $event.checked })">
         {{'propertiesPanel.useMinHeight' | translate }}
       </mat-checkbox>
-      <mat-form-field *ngIf="!positionProperties.dynamicPositioning ||
-                             (positionProperties.dynamicPositioning && positionProperties.useMinHeight ||
-                             positionProperties.fixedSize)"
+      <mat-form-field *ngIf="!positionProperties?.dynamicPositioning ||
+                             (positionProperties?.dynamicPositioning && positionProperties?.useMinHeight ||
+                             positionProperties?.fixedSize)"
                       appearance="fill">
-        <mat-label *ngIf="positionProperties.dynamicPositioning && positionProperties.useMinHeight">
+        <mat-label *ngIf="positionProperties?.dynamicPositioning && positionProperties?.useMinHeight">
           {{'propertiesPanel.minHeight' | translate }}
         </mat-label>
-        <mat-label *ngIf="!positionProperties.dynamicPositioning ||
-                          (positionProperties.dynamicPositioning &&
-                          (positionProperties.fixedSize || positionProperties.useMinHeight))">
+        <mat-label *ngIf="!positionProperties?.dynamicPositioning ||
+                          (positionProperties?.dynamicPositioning &&
+                          (positionProperties?.fixedSize || positionProperties?.useMinHeight))">
           {{'propertiesPanel.height' | translate }}
         </mat-label>
         <input matInput type="number" #height="ngModel" min="0"
@@ -66,8 +67,8 @@ import { PositionProperties } from 'common/interfaces/elements';
   ]
 })
 export class DimensionFieldSetComponent {
-  @Input() positionProperties!: PositionProperties;
-  @Input() dimensions!: { width: number; height: number; };
+  @Input() positionProperties: PositionProperties | undefined;
+  @Input() dimensions!: { width: number; height: number; dynamicWidth?: boolean };
   @Output() updateModel =
   new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
 }

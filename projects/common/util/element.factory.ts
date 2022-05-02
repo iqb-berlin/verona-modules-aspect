@@ -32,7 +32,7 @@ import {
   RadioButtonGroupElement, SliderElement, SpellCorrectElement,
   TextAreaElement,
   TextElement,
-  TextFieldElement, ToggleButtonElement,
+  TextFieldElement, TextFieldSimpleElement, ToggleButtonElement,
   UIElement, UIElementType, UIElementValue,
   VideoElement
 } from '../interfaces/elements';
@@ -48,6 +48,8 @@ export abstract class ElementFactory {
         return ElementFactory.createButtonElement(element as Partial<ButtonElement>);
       case 'text-field':
         return ElementFactory.createTextFieldElement(element as Partial<TextFieldElement>);
+      case 'text-field-simple':
+        return ElementFactory.createTextFieldSimpleElement(element as Partial<TextFieldSimpleElement>);
       case 'text-area':
         return ElementFactory.createTextAreaElement(element as Partial<TextAreaElement>);
       case 'checkbox':
@@ -68,6 +70,8 @@ export abstract class ElementFactory {
         return ElementFactory.createRadioButtonGroupComplexElement(element as Partial<RadioButtonGroupComplexElement>);
       case 'drop-list':
         return ElementFactory.createDropListElement(element as Partial<DropListElement>);
+      case 'drop-list-simple':
+        return ElementFactory.createDropListSimpleElement(element as Partial<DropListSimpleElement>);
       case 'cloze':
         return ElementFactory.createClozeElement(element as Partial<ClozeElement>);
       case 'slider':
@@ -304,10 +308,10 @@ export abstract class ElementFactory {
     };
   }
 
-  private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement { // TODO unused
+  private static createDropListSimpleElement(element: Partial<DropListSimpleElement>): DropListSimpleElement {
     return {
-      ...ElementFactory.initInputElement({ height: 100, ...element }),
-      type: 'drop-list',
+      ...ElementFactory.initInputElement({ width: 150, height: 30, ...element }),
+      type: 'drop-list-simple',
       value: element.value !== undefined ? element.value : [],
       connectedTo: element.connectedTo !== undefined ? element.connectedTo : [],
       highlightReceivingDropList: element.highlightReceivingDropList !== undefined ?
@@ -514,6 +518,36 @@ export abstract class ElementFactory {
         element.softwareKeyboardShowFrench : false,
       clearable: element.clearable !== undefined ? element.clearable : false,
       position: ElementFactory.initPositionProps(element.position),
+      styling: {
+        ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
+        lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135
+      }
+    };
+  }
+
+  private static createTextFieldSimpleElement(element: Partial<TextFieldSimpleElement>): TextFieldSimpleElement {
+    return {
+      ...ElementFactory.initInputElement({ width: 150, height: 30, ...element }),
+      type: 'text-field-simple',
+      minLength: element.minLength !== undefined ? element.minLength : 0,
+      minLengthWarnMessage: element.minLengthWarnMessage !== undefined ?
+        element.minLengthWarnMessage : 'Eingabe zu kurz',
+      maxLength: element.maxLength !== undefined ? element.maxLength : 0,
+      maxLengthWarnMessage: element.maxLengthWarnMessage !== undefined ?
+        element.maxLengthWarnMessage : 'Eingabe zu lang',
+      pattern: element.pattern !== undefined ? element.pattern : '',
+      patternWarnMessage: element.patternWarnMessage !== undefined ?
+        element.patternWarnMessage : 'Eingabe entspricht nicht der Vorgabe',
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePosition: element.inputAssistancePosition !== undefined ?
+        element.inputAssistancePosition : 'floating',
+      restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
+        element.restrictedToInputAssistanceChars : true,
+      showSoftwareKeyboard: element.showSoftwareKeyboard !== undefined ?
+        element.showSoftwareKeyboard : false,
+      softwareKeyboardShowFrench: element.softwareKeyboardShowFrench !== undefined ?
+        element.softwareKeyboardShowFrench : false,
+      clearable: element.clearable !== undefined ? element.clearable : false,
       styling: {
         ...ElementFactory.initBasicStyles({ backgroundColor: 'transparent', ...element.styling }),
         lineHeight: element.styling?.lineHeight !== undefined ? element.styling?.lineHeight as number : 135

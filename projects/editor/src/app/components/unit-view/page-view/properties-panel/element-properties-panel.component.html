@@ -22,11 +22,13 @@
       </aspect-element-model-properties-component>
     </mat-tab>
 
-    <mat-tab *ngIf="combinedProperties.position">
+    <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">format_shapes</mat-icon>
       </ng-template>
-      <aspect-element-postion-properties [dimensions]="{ width: combinedProperties.width, height: combinedProperties.height }"
+      <aspect-element-postion-properties [dimensions]="{ width: combinedProperties.width,
+                                                         height: combinedProperties.height,
+                                                         dynamicWidth: $any(combinedProperties.dynamicWidth)}"
                                          [positionProperties]="combinedProperties.position"
                                          (updateModel)="updateModel($event.property, $event.value, $event.isInputValid)">
       </aspect-element-postion-properties>

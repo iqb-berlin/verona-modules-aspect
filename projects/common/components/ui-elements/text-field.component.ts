@@ -7,8 +7,7 @@ import { TextFieldElement } from '../../interfaces/elements';
 @Component({
   selector: 'aspect-text-field',
   template: `
-    <mat-form-field *ngIf="!isClozeChild"
-                    [class.small-input]="elementModel.label === ''"
+    <mat-form-field [class.small-input]="elementModel.label === ''"
                     [style.width.%]="100"
                     [style.height.%]="100"
                     [style.line-height.%]="elementModel.styling.lineHeight"
@@ -44,39 +43,14 @@ import { TextFieldElement } from '../../interfaces/elements';
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>
     </mat-form-field>
-    <input *ngIf="isClozeChild"
-           #input type="text"
-           class="clozeChild"
-           autocomplete="off"
-           autocapitalize="none"
-           autocorrect="off"
-           spellcheck="false"
-           [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
-           [style.width.px]="elementModel.width"
-           [style.height.px]="elementModel.height"
-           [style.line-height.%]="elementModel.styling.lineHeight"
-           [style.color]="elementModel.styling.fontColor"
-           [style.font-family]="elementModel.styling.font"
-           [style.font-size.px]="elementModel.styling.fontSize"
-           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-           [readonly]="elementModel.readOnly"
-           [formControl]="elementFormControl"
-           [value]="elementModel.value"
-           (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
-           (focus)="onFocusChanged.emit(input)"
-           (blur)="onFocusChanged.emit(null)">
   `,
   styles: [
     ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}',
-    ':host ::ng-deep .small-input .mat-form-field-outline-gap {display: none; }',
-    '.clozeChild {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}'
+    ':host ::ng-deep .small-input .mat-form-field-outline-gap {display: none; }'
   ]
 })
 export class TextFieldComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldElement;
-  @Input() isClozeChild!: boolean;
   @Output() onKeyDown = new EventEmitter<HTMLElement>();
   @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
 }

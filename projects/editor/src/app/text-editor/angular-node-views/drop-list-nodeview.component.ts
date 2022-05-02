@@ -9,7 +9,7 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
          [style.width.px]="node.attrs.model.width"
          [style.height.px]="node.attrs.model.height">
       <aspect-drop-list-simple [elementModel]="node.attrs.model"
-                            [matTooltip]="'ID: ' + node.attrs.model.id">
+                               [matTooltip]="'ID: ' + node.attrs.model.id">
       </aspect-drop-list-simple>
     </div>
   `

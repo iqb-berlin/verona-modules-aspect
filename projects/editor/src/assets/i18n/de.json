@@ -154,7 +154,9 @@
     "vertical": "vertikal",
     "horizontal": "horizontal",
     "fill": "Ausgefüllt",
-    "outline": "Umrandet"
+    "outline": "Umrandet",
+    "dynamicWidth": "Dynamische Breite",
+    "verticalOrientation": "vertikale Ausrichtung"
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",

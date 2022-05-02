@@ -27,3 +27,7 @@ iqb-aspect-definition@1.0.0
                        +softwareKeyboardShowFrench: boolean;
 3.4.0 (editor 1.30)
 - ToggleButton now have "richTextOptions" instead of options
+
+3.5.0 (editor 1.31)
+- +DropListSimpleElement
+- +TextFieldSimpleElement

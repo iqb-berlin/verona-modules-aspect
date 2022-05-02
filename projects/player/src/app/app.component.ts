@@ -93,10 +93,11 @@ export class AppComponent implements OnInit {
 
   private initElementModelElementCodeMappingService(pages: Page[]): void {
     this.elementModelElementCodeMappingService.dragNDropValueObjects = (
-      UnitUtils.findUIElements(pages, 'drop-list').reduce(
-        (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
-          (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
-            accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []));
+      UnitUtils.findUIElements(pages, 'drop-list')
+        .concat(UnitUtils.findUIElements(pages, 'drop-list-simple')).reduce(
+          (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
+            (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
+              accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []));
   }
 
   private onFocus(focused: boolean): void {

@@ -61,10 +61,27 @@ describe('KeypadService', () => {
     expect(service.isOpen).toBeTruthy();
   });
 
+  it('should toggle keypad to open', () => {
+    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    expect(service.toggle(input, textFieldComponent)).toBeTruthy();
+  });
+
   it('should toggle keypad to close', () => {
     service.isOpen = true;
     service.toggle(null, textFieldComponent);
     expect(service.isOpen).toBeFalse();
+  });
+
+  it('should toggle keypad to close', () => {
+    service.isOpen = true;
+    expect(service.toggle(null, textFieldComponent)).toBeFalse();
+  });
+
+  it('should set the inputElement of the service', () => {
+    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggle(input, textFieldComponent);
+    service.enterKey('n');
+    expect(service.inputElement).toEqual(input);
   });
 
   it('enter "n" should set the inputElement.value of the service value to "n"', () => {
@@ -126,6 +143,18 @@ describe('KeypadService', () => {
     service.toggle(input, textFieldComponent);
     service.deleterCharacters(false);
     expect(service.inputElement.value).toEqual('');
+  });
+
+  it('preset should be set to "french"', () => {
+    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggle(input, textFieldComponent);
+    expect(service.preset).toEqual('french');
+  });
+
+  it('position should be set to "floating"', () => {
+    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggle(input, textFieldComponent);
+    expect(service.position).toEqual('floating');
   });
 
   // textArea
@@ -136,10 +165,27 @@ describe('KeypadService', () => {
     expect(service.isOpen).toBeTruthy();
   });
 
+  it('should toggle keypad to open', () => {
+    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    expect(service.toggle(input, textAreaComponent)).toBeTruthy();
+  });
+
   it('should toggle keypad to close', () => {
     service.isOpen = true;
     service.toggle(null, textAreaComponent);
     expect(service.isOpen).toBeFalse();
+  });
+
+  it('should toggle keypad to close', () => {
+    service.isOpen = true;
+    expect( service.toggle(null, textAreaComponent)).toBeFalse();
+  });
+
+  it('should set the inputElement of the service', () => {
+    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    service.toggle(input, textFieldComponent);
+    service.enterKey('n');
+    expect(service.inputElement).toEqual(input);
   });
 
   it('enter "n" should set the inputElement.value of the service value to "n"', () => {
@@ -201,6 +247,18 @@ describe('KeypadService', () => {
     service.toggle(input, textAreaComponent);
     service.deleterCharacters(false);
     expect(service.inputElement.value).toEqual('');
+  });
+
+  it('preset should be set to "french"', () => {
+    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    service.toggle(input, textAreaComponent);
+    expect(service.preset).toEqual('french');
+  });
+
+  it('position should be set to "floating"', () => {
+    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    service.toggle(input, textAreaComponent);
+    expect(service.position).toEqual('floating');
   });
 
   // spellCorrect
@@ -211,10 +269,27 @@ describe('KeypadService', () => {
     expect(service.isOpen).toBeTruthy();
   });
 
+  it('should toggle keypad to open', () => {
+    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    expect( service.toggle(input, textFieldComponent)).toBeTruthy();
+  });
+
   it('should toggle keypad to close', () => {
     service.isOpen = true;
     service.toggle(null, spellCorrectComponent);
     expect(service.isOpen).toBeFalse();
+  });
+
+  it('should toggle keypad to close', () => {
+    service.isOpen = true;
+    expect(service.toggle(null, spellCorrectComponent)).toBeFalse();
+  });
+
+  it('should set the inputElement of the service', () => {
+    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggle(input, textFieldComponent);
+    service.enterKey('n');
+    expect(service.inputElement).toEqual(input);
   });
 
   it('enter "n" should set the inputElement.value of the service value to "n"', () => {
@@ -276,5 +351,17 @@ describe('KeypadService', () => {
     service.toggle(input, spellCorrectComponent);
     service.deleterCharacters(false);
     expect(service.inputElement.value).toEqual('');
+  });
+
+  it('preset should be set to "french"', () => {
+    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggle(input, spellCorrectComponent);
+    expect(service.preset).toEqual('french');
+  });
+
+  it('position should be set to "floating"', () => {
+    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    service.toggle(input, spellCorrectComponent);
+    expect(service.position).toEqual('floating');
   });
 });

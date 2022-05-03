@@ -16,8 +16,8 @@ export class SectionContainerComponent implements OnInit, OnDestroy {
   @Input() pageIndex!: number;
   @Input() pageSections!: Section[];
 
-  isVisible!: boolean;
-  private isScrollSection!: boolean;
+  isVisible: boolean = true;
+  private isScrollSection: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private elementRef: ElementRef) {}

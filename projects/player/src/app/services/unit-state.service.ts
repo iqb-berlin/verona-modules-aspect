@@ -15,12 +15,12 @@ import { InputElementValue, ValueChangeElement } from 'common/interfaces/element
   providedIn: 'root'
 })
 export class UnitStateService {
-  private _elementCodes!: ElementCode[];
+  private _elementCodes: ElementCode[] = [];
   private _presentedPageAdded = new Subject<number>();
   private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
   private elementPageMap: { [elementId: string]: number } = {};
-  private intersectionDetector!: IntersectionDetector;
+  private intersectionDetector: IntersectionDetector;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
     this.intersectionDetector = new IntersectionDetector(document, '0px 0px 0px 0px');

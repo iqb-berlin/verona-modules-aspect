@@ -27,11 +27,11 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  scrollPagesIndices!: number[];
-  hasScrollPages!: boolean;
-  alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right' ;
-  layoutAlignment!: 'row' | 'column';
-  scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
+  scrollPagesIndices: number[] = [];
+  hasScrollPages: boolean = false;
+  alwaysVisiblePagePosition: 'top' | 'bottom' | 'left' | 'right' = 'left';
+  layoutAlignment: 'row' | 'column' = 'row';
+  scrollPageMode: 'separate' | 'concat-scroll' | 'concat-scroll-snap' = 'separate';
   hidePageLabels: boolean = true;
   tabHeaderHeight: number = 0;
 

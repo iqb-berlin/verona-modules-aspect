@@ -14,9 +14,9 @@ import {
   providedIn: 'root'
 })
 export class VeronaPostService {
-  private _isStandalone!: boolean;
-  private _sessionId!: string;
-  private _stateReportPolicy!: StateReportPolicy;
+  private _isStandalone: boolean = true;
+  private _sessionId: string = 'unKnown';
+  private _stateReportPolicy: StateReportPolicy = 'eager';
   private cachedVopStateChangedNotificationValues: {
     unitState?: UnitState,
     playerState?: PlayerState,

@@ -6,7 +6,7 @@ import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-fie
 export abstract class InputService {
   elementComponent!: TextFieldComponent | TextAreaComponent | SpellCorrectComponent | TextFieldSimpleComponent;
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
-  isOpen!: boolean;
+  isOpen: boolean = false;
 
   protected open(focusedElement: HTMLElement | null, elementComponent:
   TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent

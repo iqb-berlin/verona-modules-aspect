@@ -9,7 +9,7 @@ import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-fie
   providedIn: 'root'
 })
 export class KeyboardService extends InputService {
-  alternativeKeyboardShowFrench!: boolean;
+  alternativeKeyboardShowFrench: boolean = false;
 
   toggle(focusedElement: HTMLElement | null,
          elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent,
@@ -25,8 +25,12 @@ export class KeyboardService extends InputService {
   }
 
   private scrollElement = (element: HTMLElement): void => {
-    if (window.innerHeight - element.getBoundingClientRect().top < 300) {
+    if (this.isHiddenByKeyboard(element)) {
       element.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
+
+  private isHiddenByKeyboard = (element: HTMLElement): boolean => (
+    window.innerHeight - element.getBoundingClientRect().top < 300
+  );
 }

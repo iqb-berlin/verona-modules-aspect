@@ -10,8 +10,8 @@ import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-fie
   providedIn: 'root'
 })
 export class KeypadService extends InputService {
-  preset!: InputAssistancePreset;
-  position!: 'floating' | 'right';
+  preset: InputAssistancePreset = 'none';
+  position: 'floating' | 'right' = 'floating';
 
   toggle(focusedElement: HTMLElement | null,
          elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):

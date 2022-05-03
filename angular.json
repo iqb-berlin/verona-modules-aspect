@@ -239,6 +239,22 @@
           }
         }
       }
+    },
+    "playerModules": {
+      "projectType": "application",
+      "root": "projects/player/modules",
+      "sourceRoot": "projects/player/modules",
+      "architect": {
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/player/modules/test.ts",
+            "tsConfig": "projects/player/modules/tsconfig.spec.json",
+            "karmaConfig": "projects/player/modules/karma.conf.js",
+            "polyfills": "projects/player/modules/polyfills.ts"
+          }
+        }
+      }
     }
   },
   "schematics": {

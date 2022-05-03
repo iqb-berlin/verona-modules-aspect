@@ -23,12 +23,12 @@ import { DragNDropValueObject, UIElement } from 'common/interfaces/elements';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  isStandalone!: boolean;
-  pages!: Page[];
-  scrollPages!: Page[];
-  alwaysVisiblePage!: Page | undefined;
-  alwaysVisibleUnitPageIndex!: number;
-  playerConfig!: PlayerConfig | undefined;
+  isStandalone: boolean;
+  pages: Page[] = [];
+  scrollPages: Page[] = [];
+  alwaysVisibleUnitPageIndex: number = -1;
+  alwaysVisiblePage: Page | undefined = undefined;
+  playerConfig: PlayerConfig | undefined = undefined;
 
   constructor(private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,

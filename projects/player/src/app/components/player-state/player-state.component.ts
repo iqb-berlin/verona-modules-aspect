@@ -28,7 +28,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   currentPlayerPageIndex: number = 0;
   selectIndex: Subject<number> = new Subject();
   running: boolean = true;
-  validPages!: Record<string, string>;
+  validPages: Record<string, string> = {};
 
   private ngUnsubscribe = new Subject<void>();
 

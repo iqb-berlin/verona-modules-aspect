@@ -10,7 +10,7 @@ import {
 })
 
 export class ElementModelElementCodeMappingService {
-  dragNDropValueObjects!: DragNDropValueObject[];
+  dragNDropValueObjects: DragNDropValueObject[] = [];
 
   mapToElementModelValue = (
     elementCodeValue: InputElementValue | undefined, elementModel: UIElement

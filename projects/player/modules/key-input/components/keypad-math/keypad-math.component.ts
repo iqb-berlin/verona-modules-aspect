@@ -17,8 +17,8 @@ export class KeypadMathComponent extends KeyboardInputRestrictionDirective imple
   @Output() backSpaceClicked = new EventEmitter();
   @Output() keyClicked = new EventEmitter<string>();
 
-  rows!: string[][];
-  additionalRows!: string[][];
+  rows: string[][] = [];
+  additionalRows: string[][] = [];
 
   ngOnInit(): void {
     this.rows = KeyLayout.get(this.preset).default;

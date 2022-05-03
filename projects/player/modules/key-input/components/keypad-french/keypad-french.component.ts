@@ -13,8 +13,8 @@ export class KeypadFrenchComponent extends KeyboardInputRestrictionDirective imp
   @Input() position!: 'floating' | 'right';
   @Output() keyClicked = new EventEmitter<string>();
 
-  rows!: string[][];
-  shift!: boolean;
+  rows: string[][] = [];
+  shift: boolean = false;
 
   ngOnInit(): void {
     this.allowedKeys = [...KeyLayout.get('french').default.flat(), ...KeyLayout.get('french').shift.flat()];

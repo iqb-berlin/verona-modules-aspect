@@ -6,7 +6,7 @@ import {
 export abstract class KeyboardInputRestrictionDirective implements AfterViewInit, OnDestroy {
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
   @Input() restrictToAllowedKeys!: boolean;
-  allowedKeys!: string[];
+  allowedKeys: string[] = [];
 
   ngAfterViewInit(): void {
     if (this.inputElement && this.restrictToAllowedKeys) {

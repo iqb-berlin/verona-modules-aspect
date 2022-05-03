@@ -27,7 +27,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;
 
-  isKeypadOpen!: boolean;
+  isKeypadOpen: boolean = false;
 
   constructor(
     private keyboardService: KeyboardService,

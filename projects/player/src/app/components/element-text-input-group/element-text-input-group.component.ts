@@ -30,7 +30,7 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
   TextFieldElement!: TextFieldElement;
   SpellCorrectElement!: SpellCorrectElement;
 
-  isKeypadOpen!: boolean;
+  isKeypadOpen: boolean = false;
 
   constructor(
     private keyboardService: KeyboardService,

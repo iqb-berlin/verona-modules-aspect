@@ -20,7 +20,7 @@ export class ElementMediaPlayerGroupComponent extends ElementGroupDirective impl
   @Input() elementModel!: UIElement;
   @Input() pageIndex!: number;
 
-  initialValue!: number;
+  initialValue: number = 0;
 
   AudioElement!: AudioElement;
   VideoElement!: VideoElement;

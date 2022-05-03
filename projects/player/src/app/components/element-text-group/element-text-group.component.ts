@@ -21,13 +21,13 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   TextElement!: TextElement;
 
-  initialValue!: string;
-  isMarkingBarOpen!: boolean;
-  selectedColor!: string | null;
-  selectedMode!: 'mark' | 'delete' | null;
+  initialValue: string = '';
+  isMarkingBarOpen: boolean = false;
+  selectedColor: string | null = null;
+  selectedMode: 'mark' | 'delete' | null = null;
   markingBarPosition: { top: number, left: number } = { top: 0, left: 0 };
+  textComponentContainerScrollTop: number = 0;
   textComponentRect!: DOMRect;
-  textComponentContainerScrollTop!: number;
 
   private ngUnsubscribe = new Subject<void>();
 

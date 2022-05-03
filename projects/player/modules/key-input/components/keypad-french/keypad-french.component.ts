@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { KeyboardInputRestrictionDirective } from '../../directives/keyboard-input-restriction.directive';
+import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
 import { KeyLayout } from '../../configs/key-layout';
 
 @Component({
@@ -9,7 +9,7 @@ import { KeyLayout } from '../../configs/key-layout';
   templateUrl: './keypad-french.component.html',
   styleUrls: ['./keypad-french.component.css']
 })
-export class KeypadFrenchComponent extends KeyboardInputRestrictionDirective implements OnInit {
+export class KeypadFrenchComponent extends KeyInputRestrictionDirective implements OnInit {
   @Input() position!: 'floating' | 'right';
   @Output() keyClicked = new EventEmitter<string>();
 

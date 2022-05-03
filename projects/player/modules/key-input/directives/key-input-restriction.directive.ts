@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 @Directive()
-export abstract class KeyboardInputRestrictionDirective implements AfterViewInit, OnDestroy {
+export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnDestroy {
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
   @Input() restrictToAllowedKeys!: boolean;
   allowedKeys: string[] = [];

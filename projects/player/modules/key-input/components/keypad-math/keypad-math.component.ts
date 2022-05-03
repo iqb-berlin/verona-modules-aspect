@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { InputAssistancePreset } from 'common/interfaces/elements';
-import { KeyboardInputRestrictionDirective } from '../../directives/keyboard-input-restriction.directive';
+import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
 import { KeyLayout } from '../../configs/key-layout';
 
 @Component({
@@ -10,7 +10,7 @@ import { KeyLayout } from '../../configs/key-layout';
   templateUrl: './keypad-math.component.html',
   styleUrls: ['./keypad-math.component.css']
 })
-export class KeypadMathComponent extends KeyboardInputRestrictionDirective implements OnInit {
+export class KeypadMathComponent extends KeyInputRestrictionDirective implements OnInit {
   @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
 

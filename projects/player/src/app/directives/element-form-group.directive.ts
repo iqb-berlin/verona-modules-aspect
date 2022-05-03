@@ -16,7 +16,7 @@ import { ValidationService } from '../services/validation.service';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
-  form!: FormGroup;
+  form: FormGroup = new FormGroup({});
   abstract unitStateService: UnitStateService;
   abstract elementModelElementCodeMappingService: ElementModelElementCodeMappingService;
   abstract translateService: TranslateService;
@@ -27,7 +27,6 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   ngUnsubscribe = new Subject<void>();
 
   createForm(elementModels: InputElement[]): void {
-    this.form = new FormGroup({});
     elementModels.forEach(elementModel => {
       const initialValue = this.elementModelElementCodeMappingService
         .mapToElementModelValue(this.unitStateService.getElementCodeById(elementModel.id)?.value, elementModel);

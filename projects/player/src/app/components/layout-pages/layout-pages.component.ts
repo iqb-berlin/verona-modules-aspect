@@ -19,7 +19,7 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() selectedIndex!: number;
   @Input() selectIndex!: Subject<number>;
   @Input() playerConfig!: PlayerConfig;
-  @Input() alwaysVisiblePage!: Page | undefined;
+  @Input() alwaysVisiblePage!: Page | null;
   @Input() alwaysVisibleUnitPageIndex!: number;
   @Input() scrollPages!: Page[];
 
@@ -143,7 +143,7 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
       Math.max(...this.scrollPages.map((page: Page): number => this.getAbsolutePageWidth(page))) : 0;
   }
 
-  private getAbsolutePageWidth = (page: Page | undefined): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
+  private getAbsolutePageWidth = (page: Page | null): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

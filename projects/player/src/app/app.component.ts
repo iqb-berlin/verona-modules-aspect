@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   pages: Page[] = [];
   scrollPages: Page[] = [];
   alwaysVisibleUnitPageIndex: number = -1;
-  alwaysVisiblePage: Page | undefined = undefined;
+  alwaysVisiblePage: Page | null = null;
   playerConfig: PlayerConfig | undefined = undefined;
 
   constructor(private translateService: TranslateService,
@@ -102,7 +102,8 @@ export class AppComponent implements OnInit {
   configureUnit(message: VopStartCommand, pages: Page[]): void {
     this.pages = pages;
     this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
-    this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
+    this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex] ?
+      this.pages[this.alwaysVisibleUnitPageIndex] : null;
     this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
     this.playerConfig = message.playerConfig || {};
   }
@@ -128,7 +129,7 @@ export class AppComponent implements OnInit {
     this.pages = [];
     this.scrollPages = [];
     this.alwaysVisibleUnitPageIndex = -1;
-    this.alwaysVisiblePage = undefined;
+    this.alwaysVisiblePage = null;
     this.playerConfig = {};
     this.unitStateService.reset();
     this.mediaPlayerService.reset();

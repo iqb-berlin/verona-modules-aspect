@@ -20,7 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() pages!: Page[];
-  @Input() alwaysVisiblePage!: Page | undefined;
+  @Input() alwaysVisiblePage!: Page | null;
   @Input() alwaysVisibleUnitPageIndex!: number;
   @Input() scrollPages!: Page[];
   @Input() playerConfig!: PlayerConfig;

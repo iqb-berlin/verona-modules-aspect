@@ -45,11 +45,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initSubscriptions();
-    this.veronaPostService.isStandalone = this.isStandalone;
-    this.veronaPostService.sendVopReadyNotification(this.metaDataService.playerMetadata);
-    this.translateService.addLangs(['de']);
-    this.translateService.setDefaultLang('de');
-    registerLocaleData(localeDe);
+    this.initVeronaPostService();
+    this.setLocales();
   }
 
   private initSubscriptions(): void {
@@ -57,6 +54,17 @@ export class AppComponent implements OnInit {
       .subscribe((message: VopStartCommand): void => this.onStart(message));
     this.nativeEventService.focus
       .subscribe((focused: boolean): void => this.onFocus(focused));
+  }
+
+  private initVeronaPostService(): void {
+    this.veronaPostService.isStandalone = this.isStandalone;
+    this.veronaPostService.sendVopReadyNotification(this.metaDataService.playerMetadata);
+  }
+
+  private setLocales(): void {
+    this.translateService.addLangs(['de']);
+    this.translateService.setDefaultLang('de');
+    registerLocaleData(localeDe);
   }
 
   private onStart(message: VopStartCommand): void {
@@ -68,7 +76,7 @@ export class AppComponent implements OnInit {
         const unitDefinition: Unit = UnitFactory.createUnit(
           this.sanitizationService.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
         );
-        this.initSession(message, unitDefinition);
+        this.configureSession(message, unitDefinition);
       } else {
         // eslint-disable-next-line no-console
         console.warn('player: message has no unitDefinition');
@@ -76,22 +84,30 @@ export class AppComponent implements OnInit {
     });
   }
 
-  private initSession(message: VopStartCommand, unitDefinition: Unit): void {
-    this.initElementModelElementCodeMappingService(unitDefinition.pages);
-    this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
-      JSON.parse(message.unitState.dataParts.elementCodes) : [];
-    this.veronaPostService.sessionId = message.sessionId;
-    this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
-    this.pages = unitDefinition.pages;
-    this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
-    this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
-    this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
-    this.playerConfig = message.playerConfig || {};
+  private configureSession(message: VopStartCommand, unitDefinition: Unit): void {
+    this.configureServices(message, unitDefinition.pages);
+    this.configureUnit(message, unitDefinition.pages);
     // eslint-disable-next-line no-console
     console.log('player: unitStateElementCodes', this.unitStateService.elementCodes);
   }
 
-  private initElementModelElementCodeMappingService(pages: Page[]): void {
+  private configureServices(message: VopStartCommand, pages: Page[]): void {
+    this.configureElementModelElementCodeMappingService(pages);
+    this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
+      JSON.parse(message.unitState.dataParts.elementCodes) : [];
+    this.veronaPostService.sessionId = message.sessionId;
+    this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
+  }
+
+  configureUnit(message: VopStartCommand, pages: Page[]): void {
+    this.pages = pages;
+    this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
+    this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex];
+    this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
+    this.playerConfig = message.playerConfig || {};
+  }
+
+  private configureElementModelElementCodeMappingService(pages: Page[]): void {
     this.elementModelElementCodeMappingService.dragNDropValueObjects = (
       UnitUtils.findUIElements(pages, 'drop-list')
         .concat(UnitUtils.findUIElements(pages, 'drop-list-simple')).reduce(

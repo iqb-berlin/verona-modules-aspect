@@ -22,10 +22,7 @@ export class VeronaSubscriptionService {
 
   constructor() {
     fromEvent(window, 'message')
-      .subscribe((e: Event): void => {
-        const message = (e as MessageEvent).data as VopMessage;
-        this.handleMessage(message);
-      });
+      .subscribe((event: Event): void => this.handleMessage((event as MessageEvent).data as VopMessage));
   }
 
   private handleMessage(messageData: VopMessage): void {

@@ -20,7 +20,7 @@ describe('VeronaPostService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should post a VopStateChangedNotification', () => {
+  it('should post a VopStateChangedNotification', done => {
     const expectedStateChangedNotification: VopStateChangedNotification = {
       type: 'vopStateChangedNotification',
       sessionId: 'test',
@@ -28,14 +28,17 @@ describe('VeronaPostService', () => {
     };
     const eventSubscription = fromEvent(window.parent, 'message')
       .subscribe(event => {
-        expect((event as MessageEvent).data as VopStateChangedNotification)
-          .toEqual(expectedStateChangedNotification);
+        const data = ((event as MessageEvent).data as VopStateChangedNotification);
+        expect(data.type).toEqual(expectedStateChangedNotification.type);
+        expect(data.sessionId).toEqual(expectedStateChangedNotification.sessionId);
+        expect(Object.prototype.hasOwnProperty.call(data, 'timeStamp')).toBeTruthy();
         eventSubscription.unsubscribe();
+        done();
       });
     service.sendVopStateChangedNotification({});
   });
 
-  it('should post a VopReadyNotification', () => {
+  it('should post a VopReadyNotification', done => {
     const expectedReadyNotification: VopReadyNotification = {
       type: 'vopReadyNotification',
       apiVersion: 'test'
@@ -45,11 +48,12 @@ describe('VeronaPostService', () => {
         expect((event as MessageEvent).data as VopReadyNotification)
           .toEqual(expectedReadyNotification);
         eventSubscription.unsubscribe();
+        done();
       } );
     service.sendVopReadyNotification({ apiVersion: 'test' });
   });
 
-  it('should post a VopUnitNavigationRequestedNotification', () => {
+  it('should post a VopUnitNavigationRequestedNotification', done => {
     const expectedUnitNavigationRequestedNotification: VopUnitNavigationRequestedNotification = {
       type: 'vopUnitNavigationRequestedNotification',
       sessionId: 'test',
@@ -60,12 +64,13 @@ describe('VeronaPostService', () => {
         expect((event as MessageEvent).data as VopUnitNavigationRequestedNotification)
           .toEqual(expectedUnitNavigationRequestedNotification);
         eventSubscription.unsubscribe();
+        done();
       } );
     service.sendVopUnitNavigationRequestedNotification('next');
   });
 
 
-  it('should post a VopUnitNavigationRequestedNotification', () => {
+  it('should post a VopUnitNavigationRequestedNotification', done => {
     const expectedWindowFocusChangedNotification: VopWindowFocusChangedNotification = {
       type: 'vopWindowFocusChangedNotification',
       timeStamp: Date.now(),
@@ -73,9 +78,12 @@ describe('VeronaPostService', () => {
     };
     const eventSubscription = fromEvent(window.parent, 'message')
       .subscribe(event => {
-        expect((event as MessageEvent).data as VopWindowFocusChangedNotification)
-          .toEqual(expectedWindowFocusChangedNotification);
+        const data = ((event as MessageEvent).data as VopWindowFocusChangedNotification);
+        expect(data.type).toEqual(expectedWindowFocusChangedNotification.type);
+        expect(data.hasFocus).toEqual(expectedWindowFocusChangedNotification.hasFocus);
+        expect(Object.prototype.hasOwnProperty.call(data, 'timeStamp')).toBeTruthy();
         eventSubscription.unsubscribe();
+        done();
       } );
     service.sendVopWindowFocusChangedNotification(true);
   });

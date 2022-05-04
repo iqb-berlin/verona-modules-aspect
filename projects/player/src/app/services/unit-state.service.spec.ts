@@ -48,19 +48,23 @@ describe('UnitStateService', () => {
     expect(service.elementCodes).toEqual([ { id: 'element', status: 'NOT_REACHED', value: 'TEST' } ]);
   });
 
-  it('elementCode of an element should change', () => {
+  it('elementCode of an element should change', done => {
     service.elementCodes = [{ id: 'element_1', status: 'NOT_REACHED', value: 'TEST1' }];
     service.elementCodeChanged
-      .subscribe( code => expect(code.status).toEqual('DISPLAYED'));
+      .subscribe( code => {
+        expect(code.status).toEqual('DISPLAYED');
+        done();
+      });
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
   });
 
-  it('elementCode of an element should change', () => {
+  it('elementCode of an element should change', done => {
     service.elementCodes = [{ id: 'element_1', status: 'NOT_REACHED', value: 'TEST1' }];
     service.elementCodeChanged
       .subscribe( code =>  {
         expect(code.status).toEqual('VALUE_CHANGED');
         expect(code.value).toEqual('NEU');
+        done();
       }) ;
     service.changeElementCodeValue({ id: 'element_1', value: 'NEU' });
   });
@@ -113,21 +117,27 @@ describe('UnitStateService', () => {
     expect(service.presentedPagesProgress).toEqual('complete');
   });
 
-  it('presented page with index 1 should be added', () => {
+  it('presented page with index 1 should be added', done => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElement('element_1', 'TEST1', element, 1);
     service.presentedPageAdded
-      .subscribe( index => expect(index).toEqual(1));
+      .subscribe( index => {
+        expect(index).toEqual(1);
+        done();
+      });
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
   });
 
-  it('presented page with index 1 should be added', () => {
+  it('presented page with index 1 should be added', done => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElement('element_1', 'TEST1', element, 1);
     service.presentedPageAdded
-      .subscribe( index => expect(index).toEqual(1));
+      .subscribe( index => {
+        expect(index).toEqual(1);
+        done();
+      });
     service.changeElementCodeValue({ id: 'element_1', value: 'NEU' });
   });
 

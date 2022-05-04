@@ -16,7 +16,7 @@ describe('VeronaSubscriptionService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should get a vopStartCommand', () => {
+  it('should get a vopStartCommand', done => {
     const startMessage: VopStartCommand = {
       type: 'vopStartCommand',
       sessionId: 'test',
@@ -27,12 +27,14 @@ describe('VeronaSubscriptionService', () => {
     };
     service.vopStartCommand
       .subscribe(
-        message =>
-          expect(message).toEqual(startMessage));
+        message => {
+          expect(message).toEqual(startMessage);
+          done();
+        });
     window.postMessage(startMessage, '*');
   });
 
-  it('should get a VopGetStateRequest', () => {
+  it('should get a VopGetStateRequest', done => {
     const StateRequestMessage: VopGetStateRequest = {
       type: 'vopGetStateRequest',
       sessionId: 'test',
@@ -40,25 +42,29 @@ describe('VeronaSubscriptionService', () => {
     };
     service.vopGetStateRequest
       .subscribe(
-        message =>
-          expect(message).toEqual(StateRequestMessage));
+        message => {
+          expect(message).toEqual(StateRequestMessage);
+          done();
+        });
     window.postMessage(StateRequestMessage, '*');
   });
 
-  it('should get a VopContinueCommand', () => {
+  it('should get a VopContinueCommand', done => {
     const continueCommandMessage: VopContinueCommand = {
       type: 'vopContinueCommand',
       sessionId: 'test'
     };
     service.vopContinueCommand
       .subscribe(
-        message =>
-          expect(message).toEqual(continueCommandMessage));
+        message => {
+          expect(message).toEqual(continueCommandMessage);
+          done();
+        });
     window.postMessage(continueCommandMessage, '*');
   });
 
 
-  it('should get a VopNavigationDeniedNotification', () => {
+  it('should get a VopNavigationDeniedNotification', done => {
     const navigationDeniedNotificationMessage: VopNavigationDeniedNotification = {
       type: 'vopNavigationDeniedNotification',
       sessionId: 'test',
@@ -66,12 +72,14 @@ describe('VeronaSubscriptionService', () => {
     };
     service.vopNavigationDeniedNotification
       .subscribe(
-        message =>
-          expect(message).toEqual(navigationDeniedNotificationMessage));
+        message => {
+          expect(message).toEqual(navigationDeniedNotificationMessage);
+          done();
+        });
     window.postMessage(navigationDeniedNotificationMessage, '*');
   });
 
-  it('should get a VopPageNavigationCommand', () => {
+  it('should get a VopPageNavigationCommand', done => {
     const pageNavigationCommandMessage: VopPageNavigationCommand = {
       type: 'vopPageNavigationCommand',
       sessionId: 'test',
@@ -79,20 +87,24 @@ describe('VeronaSubscriptionService', () => {
     };
     service.vopPageNavigationCommand
       .subscribe(
-        message =>
-          expect(message).toEqual(pageNavigationCommandMessage));
+        message => {
+          expect(message).toEqual(pageNavigationCommandMessage);
+          done();
+        });
     window.postMessage(pageNavigationCommandMessage, '*');
   });
 
-  it('should get a VopPageNavigationCommand', () => {
+  it('should get a VopPageNavigationCommand', done => {
     const startCommandMessage: VopStopCommand = {
       type: 'vopStopCommand',
       sessionId: 'test'
     };
     service.vopStopCommand
       .subscribe(
-        message =>
-          expect(message).toEqual(startCommandMessage));
+        message => {
+          expect(message).toEqual(startCommandMessage);
+          done();
+        });
     window.postMessage(startCommandMessage, '*');
   });
 });

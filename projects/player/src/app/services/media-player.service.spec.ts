@@ -13,30 +13,39 @@ describe('MediaPlayerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('mediaStatus of audio_1 should be changed', () => {
+  it('mediaStatus of audio_1 should be changed', done => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);
-    service.setValidStatusChanged(mediaId);
     service.mediaStatusChanged
-      .subscribe( id => expect(id).toEqual(mediaId));
+      .subscribe( id => {
+        expect(id).toEqual(mediaId);
+        done();
+      });
+    service.setValidStatusChanged(mediaId);
   });
 
-  it('mediaStatus of audio_1 should be changed', () => {
+  it('mediaStatus of audio_1 should be changed', done => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);
     service.registerMediaElement('audio_2', false);
-    service.setValidStatusChanged(mediaId);
     service.mediaStatusChanged
-      .subscribe( id => expect(id).toEqual(mediaId));
+      .subscribe( id => {
+        expect(id).toEqual(mediaId);
+        done();
+      });
+    service.setValidStatusChanged(mediaId);
   });
 
-  it('mediaStatus of audio_2 should not be changed', () => {
+  it('mediaStatus of audio_2 should not be changed', done => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);
     service.registerMediaElement('audio_2', false);
+    service.mediaStatusChanged
+      .subscribe( id => {
+        expect(id).not.toEqual(mediaId);
+        done();
+      });
     service.setValidStatusChanged('audio_2');
-    service.mediaStatusChanged
-      .subscribe( id => expect(id).not.toEqual(mediaId));
   });
 
   it('mediaStatus should be complete', () => {
@@ -65,17 +74,23 @@ describe('MediaPlayerService', () => {
     expect(service.mediaStatus).toEqual('complete');
   });
 
-  it('actualPlayingMediaId should be audio_1', () => {
+  it('actualPlayingMediaId should be audio_1', done => {
     const mediaId = 'audio_1';
     service.actualPlayingId
-      .subscribe( id => expect(id).toEqual(mediaId));
+      .subscribe( id => {
+        expect(id).toEqual(mediaId);
+        done();
+      });
     service.setActualPlayingId(mediaId);
   });
 
-  it('pageIndex should not be audio_1', () => {
+  it('pageIndex should not be audio_1', done => {
     const mediaId = 'audio_1';
     service.actualPlayingId
-      .subscribe( id => expect(id).not.toEqual(mediaId));
+      .subscribe( id => {
+        expect(id).not.toEqual(mediaId);
+        done();
+      });
     service.setActualPlayingId('audio_2');
   });
 });

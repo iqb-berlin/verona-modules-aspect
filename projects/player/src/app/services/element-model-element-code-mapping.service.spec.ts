@@ -62,8 +62,7 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map the value of a text elementModel to its elementCode value - empty Array', () => {
-    const textValue =
-      'Lorem dolor sit amet';
+    const textValue = 'Lorem dolor sit amet';
     expect(service.mapToElementCodeValue(textValue, 'text'))
       .toEqual( []);
   });
@@ -119,57 +118,49 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map the value of a text-field elementModel to its elementCode value', () => {
-    const textFieldValue =
-      'TEST';
+    const textFieldValue = 'TEST';
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
       .toEqual( 'TEST');
   });
 
   it('should map the value of a text-field elementModel to its elementCode value', () => {
-    const textFieldValue =
-      null;
+    const textFieldValue = null;
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
       .toEqual( null);
   });
 
   it('should map the value of a text-field-simple elementModel to its elementCode value', () => {
-    const textFieldValue =
-      'TEST';
+    const textFieldValue = 'TEST';
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field-simple'))
       .toEqual( 'TEST');
   });
 
   it('should map the value of a text-field-simple elementModel to its elementCode value', () => {
-    const textFieldValue =
-      null;
+    const textFieldValue = null;
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field-simple'))
       .toEqual( null);
   });
 
   it('should map the value of a spell-correct elementModel to its elementCode value', () => {
-    const spellCorrectValue =
-      'TEST';
+    const spellCorrectValue = 'TEST';
     expect(service.mapToElementCodeValue(spellCorrectValue, 'spell-correct'))
       .toEqual( 'TEST');
   });
 
   it('should map the value of a spell-correct elementModel to its elementCode value', () => {
-    const spellCorrectValue =
-      null;
+    const spellCorrectValue = null;
     expect(service.mapToElementCodeValue(spellCorrectValue, 'spell-correct'))
       .toEqual( null);
   });
 
   it('should map the value of a text-area elementModel to its elementCode value', () => {
-    const textAreaValue =
-      'TEST';
+    const textAreaValue = 'TEST';
     expect(service.mapToElementCodeValue(textAreaValue, 'text-area'))
       .toEqual( 'TEST');
   });
 
   it('should map the value of a text-area elementModel to its elementCode value', () => {
-    const textAreaValue =
-      null;
+    const textAreaValue = null;
     expect(service.mapToElementCodeValue(textAreaValue, 'text-area'))
       .toEqual( null);
   });

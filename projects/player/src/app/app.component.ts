@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   scrollPages: Page[] = [];
   alwaysVisibleUnitPageIndex: number = -1;
   alwaysVisiblePage: Page | null = null;
-  playerConfig: PlayerConfig | undefined = undefined;
+  playerConfig: PlayerConfig | null = null;
 
   constructor(private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
@@ -130,7 +130,7 @@ export class AppComponent implements OnInit {
     this.scrollPages = [];
     this.alwaysVisibleUnitPageIndex = -1;
     this.alwaysVisiblePage = null;
-    this.playerConfig = {};
+    this.playerConfig = null;
     this.unitStateService.reset();
     this.mediaPlayerService.reset();
     this.validatorService.reset();

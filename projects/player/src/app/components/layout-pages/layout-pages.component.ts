@@ -1,11 +1,9 @@
 import {
-  AfterViewInit, ChangeDetectorRef,
-  Component, EventEmitter, Input, OnDestroy, OnInit, Output
+  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NativeEventService } from '../../services/native-event.service';
-import { PlayerConfig } from 'verona/models/verona';
 import { Page } from 'common/interfaces/unit';
 
 @Component({
@@ -18,19 +16,15 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pages!: Page[];
   @Input() selectedIndex!: number;
   @Input() selectIndex!: Subject<number>;
-  @Input() playerConfig!: PlayerConfig;
+  @Input() scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
   @Input() alwaysVisiblePage!: Page | null;
   @Input() scrollPages!: Page[];
+  @Input() hasScrollPages!: boolean;
+  @Input() alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right';
 
   @Output() selectedIndexChange = new EventEmitter<number>();
 
-  private ngUnsubscribe = new Subject<void>();
-
-  scrollPagesIndices: number[] = [];
-  hasScrollPages: boolean = false;
-  alwaysVisiblePagePosition: 'top' | 'bottom' | 'left' | 'right' = 'left';
   layoutAlignment: 'row' | 'column' = 'row';
-  scrollPageMode: 'separate' | 'concat-scroll' | 'concat-scroll-snap' = 'separate';
   hidePageLabels: boolean = true;
   tabHeaderHeight: number = 0;
 
@@ -46,6 +40,8 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
     { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(
     private nativeEventService: NativeEventService,
     private changeDetectorRef: ChangeDetectorRef
@@ -53,7 +49,6 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.initPages();
     this.initLayout();
     this.selectIndex
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -61,6 +56,14 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+    this.calculateCenterPositionInRowLayout();
+  }
+
+  onSelectedIndexChange(selectedIndex: number): void {
+    this.selectedIndexChange.emit(selectedIndex);
+  }
+
+  private calculateCenterPositionInRowLayout(): void {
     if (this.alwaysVisiblePage &&
       this.alwaysVisiblePage.hasMaxWidth &&
       this.layoutAlignment === 'row') {
@@ -68,10 +71,6 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe((windowWidth: number): void => this.calculateMargin(windowWidth));
       this.calculateMargin(window.innerWidth);
     }
-  }
-
-  onSelectedIndexChange(selectedIndex: number): void {
-    this.selectedIndexChange.emit(selectedIndex);
   }
 
   private calculateMargin(windowWidth:number): void {
@@ -92,29 +91,19 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private initPages(): void {
-    this.hasScrollPages = this.scrollPages?.length > 0;
-    this.scrollPagesIndices = this.scrollPages.map(
-      (scrollPage: Page): number => this.pages.indexOf(scrollPage)
-    );
+  private initLayout(): void {
+    this.setLayoutAlignment();
+    this.calculatePagesMaxWidth();
+    this.calculatePagesAspectRatio();
+    this.calculatePagesContainerMaxWidth();
   }
 
-  private initLayout(): void {
-    this.alwaysVisiblePagePosition = this.alwaysVisiblePage?.alwaysVisiblePagePosition ?
-      this.alwaysVisiblePage.alwaysVisiblePagePosition : 'left';
+  private setLayoutAlignment(): void {
     this.layoutAlignment = (this.alwaysVisiblePagePosition === 'left' || this.alwaysVisiblePagePosition === 'right') ?
       'row' : 'column';
-    this.scrollPageMode = this.playerConfig.pagingMode ? this.playerConfig.pagingMode : 'separate';
+  }
 
-    this.maxWidth.alwaysVisiblePage = this.getAbsolutePageWidth(this.alwaysVisiblePage);
-    this.maxWidth.scrollPages = this.getScrollPagesWidth();
-    this.maxWidth.allPages = Math.max(this.maxWidth.alwaysVisiblePage, this.maxWidth.scrollPages);
-
-    this.aspectRatioRow.alwaysVisiblePage = this.getAspectRatio('row', 0);
-    this.aspectRatioRow.scrollPages = this.getAspectRatio('row', 100);
-    this.aspectRatioColumn.alwaysVisiblePage = this.getAspectRatio('column', 0);
-    this.aspectRatioColumn.scrollPages = this.getAspectRatio('column', 100);
-
+  private calculatePagesContainerMaxWidth(): void {
     this.containerMaxWidth.alwaysVisiblePage = this.getContainerMaxWidth(
       !(this.alwaysVisiblePage?.hasMaxWidth),
       this.maxWidth.alwaysVisiblePage
@@ -123,6 +112,20 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
       this.scrollPages.findIndex((page: Page): boolean => !page.hasMaxWidth) > -1,
       this.maxWidth.scrollPages
     );
+  }
+
+  private calculatePagesAspectRatio(): void {
+    this.aspectRatioRow.alwaysVisiblePage = this.getAspectRatio('row', 0);
+    this.aspectRatioRow.scrollPages = this.getAspectRatio('row', 100);
+
+    this.aspectRatioColumn.alwaysVisiblePage = this.getAspectRatio('column', 0);
+    this.aspectRatioColumn.scrollPages = this.getAspectRatio('column', 100);
+  }
+
+  private calculatePagesMaxWidth(): void {
+    this.maxWidth.alwaysVisiblePage = this.getAbsolutePageWidth(this.alwaysVisiblePage);
+    this.maxWidth.scrollPages = this.getScrollPagesWidth();
+    this.maxWidth.allPages = Math.max(this.maxWidth.alwaysVisiblePage, this.maxWidth.scrollPages);
   }
 
   private getContainerMaxWidth(condition: boolean, maxWidth: number): string {

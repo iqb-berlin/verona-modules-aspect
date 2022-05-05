@@ -5,8 +5,10 @@
     [style.height.%]="100"
     [pages]="pages"
     [alwaysVisiblePage]="pages | alwaysVisiblePage"
+    [alwaysVisiblePagePosition]="(pages | alwaysVisiblePage)?.alwaysVisiblePagePosition || 'left'"
     [scrollPages]="pages | scrollPages"
-    [playerConfig]="playerConfig"
+    [hasScrollPages]="(pages | scrollPages).length > 0"
+    [scrollPageMode]="playerConfig.pagingMode || 'separate'"
     [(selectedIndex)]="currentPlayerPageIndex"
     [selectIndex]="selectIndex"
     (selectedIndexChange)="onSelectedIndexChange()">

@@ -6,9 +6,7 @@
     (startSelection)="startSelection($event, elementComponent)"
     (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
 </aspect-text>
-
 <aspect-floating-marking-bar
-    *ngIf="elementModel.type === 'text'"
     [elementComponent]="elementComponent"
     [isMarkingBarOpen]="isMarkingBarOpen"
     [textComponentRect]="textComponentRect"

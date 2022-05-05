@@ -45,7 +45,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
 
   ngOnInit(): void {
     const childModels = this.elementModel.type === 'cloze' ?
-      ClozeUtils.getClozeChildElements((this.elementModel as ClozeElement).document) :
+      ClozeUtils.getClozeChildElements(this.elementModel as ClozeElement) :
       (this.elementModel as LikertElement).rows;
     this.createForm(childModels);
   }

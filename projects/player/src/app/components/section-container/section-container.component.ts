@@ -15,15 +15,14 @@ export class SectionContainerComponent implements OnInit, OnDestroy {
   @Input() section!: Section;
   @Input() pageIndex!: number;
   @Input() pageSections!: Section[];
+  @Input() isVisible!: boolean;
 
-  isVisible: boolean = true;
   private isScrollSection: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    this.isVisible = !this.section.activeAfterID;
     this.isScrollSection = this.isVisible ?
       false :
       this.pageSections

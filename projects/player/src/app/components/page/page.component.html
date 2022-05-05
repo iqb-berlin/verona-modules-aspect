@@ -6,7 +6,8 @@
                             [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
                             [pageSections]="page.sections"
                             [pageIndex]=pageIndex
-                            [section]="section">
+                            [section]="section"
+                            [isVisible]="!section.activeAfterID">
   </aspect-section-container>
 </div>
 <div aspectIntersectionDetection

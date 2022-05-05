@@ -285,20 +285,6 @@ export class UnitService {
     return true;
   }
 
-  async editDropListOption(optionIndex: number): Promise<void> {
-    const oldOptions = this.selectionService.getSelectedElements()[0].value as DragNDropValueObject[];
-    await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])
-      .subscribe((result: DragNDropValueObject) => {
-        if (result) {
-          if (result.id !== oldOptions[optionIndex].id && !this.idService.isIdAvailable(result.id)) {
-            this.messageService.showError(this.translateService.instant('idTaken'));
-            return;
-          }
-          oldOptions[optionIndex] = result;
-          this.updateElementProperty(this.selectionService.getSelectedElements(), 'value', oldOptions);
-        }
-      });
-  }
 
   createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
     return ElementFactory.createLikertRowElement({

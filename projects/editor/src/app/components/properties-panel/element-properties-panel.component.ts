@@ -5,8 +5,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { UnitService } from '../../../../services/unit.service';
-import { SelectionService } from '../../../../services/selection.service';
+import { UnitService } from '../../services/unit.service';
+import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
 import {
   TextImageLabel,

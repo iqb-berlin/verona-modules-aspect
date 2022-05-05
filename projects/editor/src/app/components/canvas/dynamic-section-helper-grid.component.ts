@@ -3,7 +3,7 @@ import {
   Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
 import { UIElement, UIElementType } from 'common/interfaces/elements';
-import { UnitService } from '../../../../services/unit.service';
+import { UnitService } from '../../services/unit.service';
 import { Section } from 'common/interfaces/unit';
 
 @Component({

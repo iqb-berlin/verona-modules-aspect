@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { UnitService } from '../../../../../../services/unit.service';
-import { SelectionService } from '../../../../../../services/selection.service';
+import { UnitService } from '../../../../services/unit.service';
+import { SelectionService } from '../../../../services/selection.service';
 import { FileService } from 'common/services/file.service';
 
 @Component({

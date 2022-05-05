@@ -1,7 +1,7 @@
 import {
   Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
-import { UnitService } from '../../../../services/unit.service';
+import { UnitService } from '../../services/unit.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { Section } from 'common/interfaces/unit';
 import { UIElementType } from 'common/interfaces/elements';

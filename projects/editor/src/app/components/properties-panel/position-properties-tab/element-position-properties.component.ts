@@ -1,8 +1,8 @@
 import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
-import { UnitService } from '../../../../../services/unit.service';
-import { SelectionService } from '../../../../../services/selection.service';
+import { UnitService } from '../../../services/unit.service';
+import { SelectionService } from '../../../services/selection.service';
 import { PositionedElement, PositionProperties } from 'common/interfaces/elements';
 
 @Component({

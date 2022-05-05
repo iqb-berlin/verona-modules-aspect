@@ -5,12 +5,12 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../../../../services/unit.service';
+import { UnitService } from '../../../services/unit.service';
 import { ElementFactory } from 'common/util/element.factory';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { SelectionService } from '../../../../../services/selection.service';
+import { SelectionService } from '../../../services/selection.service';
 import { CompoundElementComponent } from
-  'common/directives/compound-element.directive';
+    'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/ui-elements/cloze.component';
 import { CompoundChildOverlayComponent } from 'common/components/compound-child-overlay.component';
 import { UIElement } from 'common/interfaces/elements';

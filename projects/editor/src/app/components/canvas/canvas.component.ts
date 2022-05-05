@@ -2,8 +2,8 @@ import {
   Component, Input, QueryList, ViewChildren
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { UnitService } from '../../../../services/unit.service';
-import { SelectionService } from '../../../../services/selection.service';
+import { UnitService } from '../../services/unit.service';
+import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';

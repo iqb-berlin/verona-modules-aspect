@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { DialogService } from '../../../../../../services/dialog.service';
+import { DialogService } from '../../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({

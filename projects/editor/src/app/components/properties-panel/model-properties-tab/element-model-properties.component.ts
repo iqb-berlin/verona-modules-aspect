@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { UnitService } from '../../../../../services/unit.service';
+import { UnitService } from '../../../services/unit.service';
 import {
   TextImageLabel,
   DragNDropValueObject,
@@ -12,8 +12,8 @@ import {
   LikertElement, LikertRowElement,
   UIElement
 } from 'common/interfaces/elements';
-import { SelectionService } from '../../../../../services/selection.service';
-import { DialogService } from '../../../../../services/dialog.service';
+import { SelectionService } from '../../../services/selection.service';
+import { DialogService } from '../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({

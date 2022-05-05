@@ -22,18 +22,18 @@ import { MatListModule } from '@angular/material/list';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
-  './components/unit-view/page-view/new-ui-element-panel/ui-element-toolbox.component';
+    './components/new-ui-element-panel/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { CanvasComponent } from './components/unit-view/page-view/canvas/canvas.component';
+import { CanvasComponent } from './components/canvas/canvas.component';
 import { StaticCanvasOverlayComponent } from
-  './components/unit-view/page-view/canvas/overlays/static-canvas-overlay.component';
+    './components/canvas/overlays/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from
-  './components/unit-view/page-view/canvas/overlays/dynamic-canvas-overlay.component';
+    './components/canvas/overlays/dynamic-canvas-overlay.component';
 import { SharedModule } from 'common/shared.module';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import { SectionMenuComponent } from './components/unit-view/page-view/canvas/section-menu.component';
-import { SectionStaticComponent } from './components/unit-view/page-view/canvas/section-static.component';
-import { SectionDynamicComponent } from './components/unit-view/page-view/canvas/section-dynamic.component';
+import { SectionMenuComponent } from './components/canvas/section-menu.component';
+import { SectionStaticComponent } from './components/canvas/section-static.component';
+import { SectionDynamicComponent } from './components/canvas/section-dynamic.component';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
 import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
@@ -48,26 +48,26 @@ import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/
 import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
 import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
 import { PositionFieldSetComponent } from
-  './components/unit-view/page-view/properties-panel/position-properties-tab/input-groups/position-field-set.component';
+    './components/properties-panel/position-properties-tab/input-groups/position-field-set.component';
 import { DimensionFieldSetComponent } from
-  './components/unit-view/page-view/properties-panel/position-properties-tab/input-groups/dimension-field-set.component';
+    './components/properties-panel/position-properties-tab/input-groups/dimension-field-set.component';
 import { ElementPropertiesPanelComponent }
-  from './components/unit-view/page-view/properties-panel/element-properties-panel.component';
+  from './components/properties-panel/element-properties-panel.component';
 import { ElementPositionPropertiesComponent } from
-  './components/unit-view/page-view/properties-panel/position-properties-tab/element-position-properties.component';
+    './components/properties-panel/position-properties-tab/element-position-properties.component';
 import { ElementStylePropertiesComponent } from
-  './components/unit-view/page-view/properties-panel/style-properties-tab/element-style-properties.component';
+    './components/properties-panel/style-properties-tab/element-style-properties.component';
 import { ElementModelPropertiesComponent } from
-  './components/unit-view/page-view/properties-panel/model-properties-tab/element-model-properties.component';
-import { DynamicSectionHelperGridComponent } from './components/unit-view/page-view/canvas/dynamic-section-helper-grid.component';
-import { ElementGridChangeListenerDirective } from './components/unit-view/page-view/canvas/element-grid-change-listener.directive';
-import { OptionsFieldSetComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/options-field-set.component';
-import { TextPropertiesFieldSetComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
-import { ButtonPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/button-properties.component';
-import { SliderPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/slider-properties.component';
-import { InputElementPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
-import { ImagePropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/image-properties.component';
-import { DropListPropertiesComponent } from './components/unit-view/page-view/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
+    './components/properties-panel/model-properties-tab/element-model-properties.component';
+import { DynamicSectionHelperGridComponent } from './components/canvas/dynamic-section-helper-grid.component';
+import { ElementGridChangeListenerDirective } from './components/canvas/element-grid-change-listener.directive';
+import { OptionsFieldSetComponent } from './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
+import { TextPropertiesFieldSetComponent } from './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
+import { ButtonPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
+import { SliderPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
+import { InputElementPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
+import { ImagePropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/image-properties.component';
+import { DropListPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
 import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
 

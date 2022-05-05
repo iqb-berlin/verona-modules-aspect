@@ -4,9 +4,9 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../../../services/unit.service';
-import { DialogService } from '../../../../services/dialog.service';
-import { SelectionService } from '../../../../services/selection.service';
+import { UnitService } from '../../services/unit.service';
+import { DialogService } from '../../services/dialog.service';
+import { SelectionService } from '../../services/selection.service';
 import { Section } from 'common/interfaces/unit';
 import { UIElement } from 'common/interfaces/elements';
 

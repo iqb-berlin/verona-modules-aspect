@@ -2,8 +2,8 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { TextElement } from 'common/interfaces/elements';
-import { DialogService } from '../../../../../../services/dialog.service';
-import { SelectionService } from '../../../../../../services/selection.service';
+import { DialogService } from '../../../../services/dialog.service';
+import { SelectionService } from '../../../../services/selection.service';
 
 @Component({
   selector: 'aspect-text-properties-field-set',

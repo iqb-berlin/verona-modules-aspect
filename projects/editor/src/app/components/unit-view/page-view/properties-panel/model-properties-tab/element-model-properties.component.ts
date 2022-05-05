@@ -5,7 +5,6 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitService } from '../../../../../services/unit.service';
-import { FileService } from 'common/services/file.service';
 import {
   TextImageLabel,
   DragNDropValueObject,
@@ -63,20 +62,6 @@ export class ElementModelPropertiesComponent {
           this.updateModel.emit({ property, value: oldOptions });
         }
       });
-  }
-
-  addDropListOption(value: string): void {
-    this.updateModel.emit({
-      property: 'value',
-      value: [
-        ...this.combinedProperties.value as DragNDropValueObject[],
-        { stringValue: value, id: this.unitService.getNewValueID() }
-      ]
-    });
-  }
-
-  async editDropListOption(optionIndex: number): Promise<void> {
-    await this.unitService.editDropListOption(optionIndex);
   }
 
   async editColumnOption(optionIndex: number): Promise<void> {

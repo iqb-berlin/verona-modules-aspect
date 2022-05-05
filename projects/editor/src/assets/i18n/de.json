@@ -157,6 +157,7 @@
     "outline": "Umrandet",
     "dynamicWidth": "Dynamische Breite",
     "verticalOrientation": "vertikale Ausrichtung"
+    "copyOnDrop": "Elemente beim Ablegen kopieren"
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",

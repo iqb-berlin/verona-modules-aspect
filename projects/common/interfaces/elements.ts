@@ -166,6 +166,7 @@ export interface DropListElement extends InputElement {
   type: 'drop-list';
   onlyOneItem: boolean;
   connectedTo: string[];
+  copyOnDrop: boolean;
   orientation: 'vertical' | 'horizontal' | 'flex';
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
@@ -178,6 +179,7 @@ export interface DropListElement extends InputElement {
 export interface DropListSimpleElement extends InputElement {
   type: 'drop-list-simple';
   connectedTo: string[];
+  copyOnDrop: boolean;
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
   styling: BasicStyles & {

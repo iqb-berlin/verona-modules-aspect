@@ -60,40 +60,6 @@
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
-  <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
-    <ng-container>
-      <mat-label>{{'preset' | translate }}</mat-label>
-      <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
-           (cdkDropListDropped)="moveListValue('value', $any($event))">
-        <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
-             class="list-items" fxLayout="row" fxLayoutAlign="end center">
-          <div fxFlex="70">
-            {{value.stringValue}} ({{value.id}})
-          </div>
-          <img [src]="value.imgSrcValue"
-               [style.object-fit]="'scale-down'"
-               [style.height.px]="40">
-          <button mat-icon-button color="primary"
-                  (click)="editDropListOption(i)">
-            <mat-icon>build</mat-icon>
-          </button>
-          <button mat-icon-button color="primary"
-                  (click)="removeListValue('value', value)">
-            <mat-icon>clear</mat-icon>
-          </button>
-        </div>
-      </div>
-    </ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <button mat-icon-button matPrefix
-              (click)="addDropListOption(newValue.value); newValue.select()">
-        <mat-icon>add</mat-icon>
-      </button>
-      <input #newValue matInput type="text"
-             (keyup.enter)="addDropListOption(newValue.value); newValue.select()">
-    </div>
-  </mat-form-field>
-
   <mat-form-field *ngIf="combinedProperties.alignment" appearance="fill">
     <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
     <mat-select [value]="combinedProperties.alignment"
@@ -181,17 +147,20 @@
                     isInputValid: presetValue.valid})">
   </mat-form-field>
 
-  <!-- TODO wtf-->
-  <mat-form-field *ngIf="combinedProperties.value !== undefined &&
-                         !combinedProperties.options && !combinedProperties.richTextOptions && !combinedProperties.columns &&
-                         combinedProperties.connectedTo === undefined && combinedProperties.minValue === undefined &&
-                         combinedProperties.value !== true && combinedProperties.value !== false"
+  <mat-form-field *ngIf="combinedProperties.type === 'text-area'"
                   appearance="fill">
     <mat-label>{{'preset' | translate }}</mat-label>
     <textarea matInput type="text"
-              [value]="combinedProperties.value"
+              [value]="$any(combinedProperties.value)"
               (input)="updateModel.emit({ property: 'value', value: $any($event.target).value })">
             </textarea>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.type === 'text-field'"
+                  appearance="fill">
+    <mat-label>{{'preset' | translate }}</mat-label>
+    <input matInput type="text" [value]="$any(combinedProperties.value)"
+           (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
   </mat-form-field>
 
   <aspect-input-element-properties [combinedProperties]="combinedProperties"

@@ -414,4 +414,16 @@ export class UnitService {
   getNewValueID(): string {
     return this.idService.getNewID('value');
   }
+
+  /* Used by props panel to show available dropLists to connect */
+  getDropListElementIDs(): string[] {
+    return this.unit.pages
+      .map(page => page.sections
+        .map(section => section.elements
+          .reduce((accumulator: any[], currentValue: any) => (
+            currentValue.type === 'drop-list' ? accumulator.concat(currentValue.id) : accumulator), [])
+          .flat()
+        )
+        .flat()).flat();
+  }
 }

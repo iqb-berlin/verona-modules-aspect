@@ -238,49 +238,6 @@
                            (updateModel)="updateModel.emit($event)">
   </aspect-image-properties>
 
-  <mat-form-field disabled="true" *ngIf="combinedProperties.connectedTo !== undefined">
-    <ng-container>
-      <mat-label>{{'propertiesPanel.connectedDropList' | translate }}</mat-label>
-      <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.connectedTo"
-           (cdkDropListDropped)="moveListValue('connectedTo', $any($event))">
-        <div *ngFor="let connectedTo of $any(combinedProperties.connectedTo); let i = index" cdkDrag
-             class="list-items" fxLayout="row" fxLayoutAlign="end center">
-          <div fxFlex="70">
-            {{connectedTo}}
-          </div>
-          <button mat-icon-button color="primary"
-                  (click)="editTextOption('connectedTo', i)">
-            <mat-icon>build</mat-icon>
-          </button>
-          <button mat-icon-button color="primary"
-                  (click)="removeListValue('connectedTo', connectedTo)">
-            <mat-icon>clear</mat-icon>
-          </button>
-        </div>
-      </div>
-    </ng-container>
-    <div fxLayout="row" fxLayoutAlign="center center">
-      <button mat-icon-button matPrefix
-              (click)="addListValue('connectedTo', newconnectedTo.value); newconnectedTo.select()">
-        <mat-icon>add</mat-icon>
-      </button>
-      <input #newconnectedTo matInput type="text"
-             (keyup.enter)="addListValue('connectedTo', newconnectedTo.value); newconnectedTo.select()">
-    </div>
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.orientation !== undefined"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
-    <mat-select [value]="combinedProperties.orientation"
-                (selectionChange)="updateModel.emit({ property: 'orientation', value: $event.value })">
-      <mat-option *ngFor="let option of ['vertical', 'horizontal', 'flex']"
-                  [value]="option">
-        {{ 'propertiesPanel.' + option | translate }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
   <mat-checkbox *ngIf="combinedProperties.verticalOrientation !== undefined"
                 [checked]="$any(combinedProperties.verticalOrientation)"
                 (change)="updateModel.emit({ property: 'verticalOrientation', value: $event.checked })">

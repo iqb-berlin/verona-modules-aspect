@@ -133,8 +133,8 @@
     "magnifier": "Lupe",
     "magnifierSize": "Größe der Lupe",
     "magnifierZoom": "Vergrößerungsfaktor",
-    "connectedDropList": "Verbundene Ablegelisten",
-    "onlyOneItem": "Nur ein erlaubtes Element",
+    "connectedDropLists": "Verbundene Ablegelisten",
+    "onlyOneItem": "Nur ein Element",
     "itemBackgroundColor": "Hintergrundfarbe der Elemente",
     "highlightReceivingDropList": "Potentielle Ablagen hervorheben",
     "highlightReceivingDropListColor": "Farbe der Hervorhebung",
@@ -156,8 +156,8 @@
     "fill": "Ausgefüllt",
     "outline": "Umrandet",
     "dynamicWidth": "Dynamische Breite",
-    "verticalOrientation": "vertikale Ausrichtung"
-    "copyOnDrop": "Elemente beim Ablegen kopieren"
+    "verticalOrientation": "vertikale Ausrichtung",
+    "copyOnDrop": "Elemente kopieren"
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",

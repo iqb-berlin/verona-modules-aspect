@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { DragNDropValueObject } from 'common/interfaces/elements';
 import { UnitService } from '../../../../services/unit.service';
@@ -53,12 +53,11 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
         </div>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" *ngIf="combinedProperties.type === 'drop-list' ||
-                                               combinedProperties.type === 'drop-list-sorting'">
+      <mat-form-field appearance="fill" *ngIf="combinedProperties.connectedTo !== null">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.connectedTo"
                     (ngModelChange)="toggleConnectedDropList($event)"
-                    (click)="this.dropListIDs = this.unitService.getDropListElementIDs()">
+                    (click)="generateValidDropLists()">
           <mat-select-trigger>
             {{'propertiesPanel.connectedDropLists' | translate }} ({{combinedProperties.connectedTo.length}})
           </mat-select-trigger>
@@ -109,7 +108,8 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
   `,
   styles: [
     'mat-form-field {width: 100%;}',
-    '.draggable-element-label {overflow-wrap: anywhere;}'
+    '.draggable-element-label {overflow-wrap: anywhere;}',
+    'mat-select {height: 100%;}'
   ]
 })
 export class DropListPropertiesComponent {
@@ -171,5 +171,10 @@ export class DropListPropertiesComponent {
       property: 'connectedTo',
       value: connectedDropListList
     });
+  }
+
+  generateValidDropLists() {
+    this.dropListIDs = this.unitService.getDropListElementIDs()
+      .filter(dropListID => !this.combinedProperties.id.includes(dropListID));
   }
 }

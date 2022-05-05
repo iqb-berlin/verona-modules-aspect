@@ -59,7 +59,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   static createCombinedProperties(elements: Record<string, UIElementValue>[]): Record<string, UIElementValue> {
-    const combinedProperties: Record<string, UIElementValue> = { ...elements[0] };
+    const combinedProperties: Record<string, UIElementValue> = { ...elements[0], id: [elements[0]?.id as string] };
 
     for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
       const elementToMerge = elements[elementCounter];
@@ -74,7 +74,11 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
                   (elementToMerge[property] as Record<string, UIElementValue>)]
               );
           } else if (JSON.stringify(combinedProperties[property]) !== JSON.stringify(elementToMerge[property])) {
-            combinedProperties[property] = null;
+            if (property === 'id') {
+              (combinedProperties.id as string[]).push(elementToMerge.id as string);
+            } else {
+              combinedProperties[property] = null;
+            }
           }
         } else {
           delete combinedProperties[property];

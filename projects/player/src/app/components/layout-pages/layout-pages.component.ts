@@ -20,7 +20,6 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() selectIndex!: Subject<number>;
   @Input() playerConfig!: PlayerConfig;
   @Input() alwaysVisiblePage!: Page | null;
-  @Input() alwaysVisibleUnitPageIndex!: number;
   @Input() scrollPages!: Page[];
 
   @Output() selectedIndexChange = new EventEmitter<number>();

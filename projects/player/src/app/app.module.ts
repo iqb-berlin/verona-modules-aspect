@@ -37,6 +37,10 @@ import { LayoutPlayerComponent } from './components/layout-player/layout-player.
 import { KeyInputModule } from 'key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
 import { UnitDefinitionMenuModule } from 'unit-definition-menu/unit-definition-menu.module';
+import { ValidPagesPipe } from './pipes/valid-pages.pipe';
+import { ScrollPagesPipe } from './pipes/scroll-pages.pipe';
+import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';
+import { PageIndexPipe } from './pipes/page-index.pipe';
 
 @NgModule({
   declarations: [
@@ -61,7 +65,11 @@ import { UnitDefinitionMenuModule } from 'unit-definition-menu/unit-definition-m
     ElementBaseGroupComponent,
     ElementInteractiveGroupComponent,
     LayoutPlayerComponent,
-    UnitStateDirective
+    UnitStateDirective,
+    ValidPagesPipe,
+    AlwaysVisiblePagePipe,
+    ScrollPagesPipe,
+    PageIndexPipe
   ],
   imports: [
     BrowserModule,

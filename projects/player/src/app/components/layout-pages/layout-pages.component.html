@@ -26,7 +26,7 @@
           {{'alwaysVisiblePage' | translate}}
         </div>
         <aspect-page
-            [pageIndex]="alwaysVisibleUnitPageIndex"
+            [pageIndex]="pages | pageIndex: alwaysVisiblePage"
             [isLastPage]="false"
             [pagesContainer]="alwaysVisiblePageContainer"
             [page]="alwaysVisiblePage">

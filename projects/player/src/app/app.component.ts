@@ -25,9 +25,6 @@ import { DragNDropValueObject, UIElement } from 'common/interfaces/elements';
 export class AppComponent implements OnInit {
   isStandalone: boolean;
   pages: Page[] = [];
-  scrollPages: Page[] = [];
-  alwaysVisibleUnitPageIndex: number = -1;
-  alwaysVisiblePage: Page | null = null;
   playerConfig: PlayerConfig | null = null;
 
   constructor(private translateService: TranslateService,
@@ -40,7 +37,7 @@ export class AppComponent implements OnInit {
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
               private validatorService: ValidationService,
               private sanitizationService: SanitizationService) {
-    this.isStandalone =  window === window.parent;
+    this.isStandalone = window === window.parent;
   }
 
   ngOnInit(): void {
@@ -101,10 +98,6 @@ export class AppComponent implements OnInit {
 
   configureUnit(message: VopStartCommand, pages: Page[]): void {
     this.pages = pages;
-    this.alwaysVisibleUnitPageIndex = this.pages.findIndex((page: Page): boolean => page.alwaysVisible);
-    this.alwaysVisiblePage = this.pages[this.alwaysVisibleUnitPageIndex] ?
-      this.pages[this.alwaysVisibleUnitPageIndex] : null;
-    this.scrollPages = this.pages.filter((page: Page): boolean => !page.alwaysVisible);
     this.playerConfig = message.playerConfig || {};
   }
 
@@ -127,9 +120,6 @@ export class AppComponent implements OnInit {
     // eslint-disable-next-line no-console
     console.log('player: reset');
     this.pages = [];
-    this.scrollPages = [];
-    this.alwaysVisibleUnitPageIndex = -1;
-    this.alwaysVisiblePage = null;
     this.playerConfig = null;
     this.unitStateService.reset();
     this.mediaPlayerService.reset();

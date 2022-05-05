@@ -11,7 +11,6 @@ import {
 import { VeronaPostService } from 'verona/services/verona-post.service';
 import { Page } from 'common/interfaces/unit';
 import { NavigationService } from '../../services/navigation.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'aspect-player-state',
@@ -20,39 +19,23 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class PlayerStateComponent implements OnInit, OnDestroy {
   @Input() pages!: Page[];
-  @Input() alwaysVisiblePage!: Page | null;
-  @Input() alwaysVisibleUnitPageIndex!: number;
-  @Input() scrollPages!: Page[];
+  @Input() validPages!: Record<string, string>;
   @Input() playerConfig!: PlayerConfig;
 
   currentPlayerPageIndex: number = 0;
   selectIndex: Subject<number> = new Subject();
   running: boolean = true;
-  validPages: Record<string, string> = {};
 
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
-    private navigationService: NavigationService,
-    private translateService: TranslateService
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit(): void {
     this.initSubscriptions();
-    this.setValidPages();
-  }
-
-  private setValidPages(): void {
-    this.validPages = this.scrollPages.reduce(
-      (validPages: Record<string, string>, page: Page, index: number) => ({
-        ...validPages,
-        [index.toString(10)]: `${this.translateService.instant(
-          'pageIndication', { index: index + 1 }
-        )}`
-      }), {}
-    );
     this.sendVopStateChangedNotification();
   }
 

@@ -13,7 +13,7 @@ import { SharedModule } from 'common/shared.module';
 import { PlayerStateComponent } from './components/player-state/player-state.component';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { LayoutPagesComponent } from './components/layout-pages/layout-pages.component';
-import { HideFirstChildDirective } from './directives/hide-first-child.directive';
+import { PageLabelDirective } from './directives/page-label.directive';
 import { ScrollToIndexDirective } from './directives/scroll-to-index.directive';
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
@@ -50,7 +50,7 @@ import { PageIndexPipe } from './pipes/page-index.pipe';
     SectionComponent,
     PlayerStateComponent,
     LayoutPagesComponent,
-    HideFirstChildDirective,
+    PageLabelDirective,
     ScrollToIndexDirective,
     IntersectionDetectionDirective,
     FloatingMarkingBarComponent,

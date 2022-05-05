@@ -1,17 +1,16 @@
 import {
-  AfterViewInit,
-  Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
+  AfterViewInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NativeEventService } from '../services/native-event.service';
 
 @Directive({
-  selector: '[aspectHideFirstChild]'
+  selector: '[aspectPageLabel]'
 })
-export class HideFirstChildDirective implements OnInit, AfterViewInit, OnDestroy {
-  @Input() hideFirstChild!: boolean;
-  @Output() childHeight = new EventEmitter<number>();
+export class PageLabelDirective implements OnInit, AfterViewInit, OnDestroy {
+  @Input() isHidden!: boolean;
+  @Output() getHeight = new EventEmitter<number>();
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -22,7 +21,7 @@ export class HideFirstChildDirective implements OnInit, AfterViewInit, OnDestroy
 
   ngOnInit(): void {
     if (this.elementRef.nativeElement.firstChild) {
-      if (this.hideFirstChild) {
+      if (this.isHidden) {
         // default usage: hide element!
         this.elementRef.nativeElement.firstChild.style.display = 'none';
       } else {
@@ -35,13 +34,13 @@ export class HideFirstChildDirective implements OnInit, AfterViewInit, OnDestroy
   }
 
   ngAfterViewInit(): void {
-    if (this.elementRef.nativeElement.firstChild && !this.hideFirstChild) {
+    if (this.elementRef.nativeElement.firstChild && !this.isHidden) {
       this.emitHeight();
     }
   }
 
   private emitHeight(): void {
-    this.childHeight.emit(this.elementRef.nativeElement.firstChild.offsetHeight);
+    this.getHeight.emit(this.elementRef.nativeElement.firstChild.offsetHeight);
   }
 
   ngOnDestroy(): void {

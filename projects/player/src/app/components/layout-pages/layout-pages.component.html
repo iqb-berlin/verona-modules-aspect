@@ -57,9 +57,9 @@
 
 <ng-template #scrollPagesSeparatedView let-pagesContainer>
   <mat-tab-group
-      aspectHideFirstChild
-      [hideFirstChild]="hidePageLabels"
-      (childHeight)="tabHeaderHeight = $event"
+      aspectPageLabel
+      [isHidden]="hidePageLabels"
+      (getHeight)="tabHeaderHeight = $event"
       mat-align-tabs="start"
       [(selectedIndex)]="selectedIndex"
       (selectedIndexChange)="onSelectedIndexChange($event)">

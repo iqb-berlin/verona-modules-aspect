@@ -19,13 +19,12 @@ describe('TextMarkingService', () => {
     expect(TextMarkingService.getMarkingData(text)).toEqual(expectedArray);
   });
 
-  it('should get an array with selections ', () => {
+  it('should mark a text with given selections ', () => {
     const text = 'Lorem ipsum dolor sit amet';
     const expectedText =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     const markings = ['6-11-#f9f871'];
     expect(TextMarkingService.restoreMarkings(markings, text)).toEqual(expectedText);
   });
-
 
 });

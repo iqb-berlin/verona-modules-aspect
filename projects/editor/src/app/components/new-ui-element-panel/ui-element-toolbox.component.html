@@ -1,107 +1,133 @@
-<mat-tab-group mat-stretch-tabs>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">highlight_alt</mat-icon>
-    </ng-template>
-    <div fxLayout="column">
-      <button mat-raised-button (click)="addUIElement('text')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text');">
-        <mat-icon>text_snippet</mat-icon>
-        {{'toolbox.text' | translate }}
+<mat-accordion multi>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        Stimulus
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button mat-stroked-button (click)="addUIElement('text')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text');">
+      <mat-icon>text_snippet</mat-icon>
+      {{'toolbox.text' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('image')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
+      <mat-icon>image</mat-icon>
+      {{'toolbox.image' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('audio')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','audio')">
+      <mat-icon>volume_up</mat-icon>
+      {{'toolbox.audio' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('video')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','video')">
+      <mat-icon>ondemand_video</mat-icon>
+      {{'toolbox.video' | translate }}
+    </button>
+  </mat-expansion-panel>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        Eingabe
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button mat-stroked-button (click)="addUIElement('text-field')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
+      <mat-icon>text_fields</mat-icon>
+      {{'toolbox.text-field' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('text-area')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area')">
+      <mat-icon>notes</mat-icon>
+      {{'toolbox.text-area' | translate }}
+    </button>
+  </mat-expansion-panel>
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        Auswahl
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button mat-stroked-button (click)="addUIElement('checkbox')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','checkbox')">
+      <mat-icon>check_box</mat-icon>
+      {{'toolbox.checkbox' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('dropdown')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','dropdown')">
+      <mat-icon>menu_open</mat-icon>
+      {{'toolbox.dropdown' | translate }}
+    </button>
+    <div (mouseover)="hoverRadioButton = true" (mouseleave)="hoverRadioButton = false" fxLayout="row">
+      <button *ngIf="!hoverRadioButton" class="radio-button-placeholder" mat-stroked-button>
+        <mat-icon>radio_button_checked</mat-icon>
+        {{'toolbox.radio' | translate }}
       </button>
-      <button mat-raised-button (click)="addUIElement('button')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','button')">
-        <mat-icon>smart_button</mat-icon>
-        {{'toolbox.button' | translate }}
+      <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
+        {{'toolbox.simple' | translate }}
       </button>
-      <button mat-raised-button (click)="addUIElement('frame')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','frame')">
-        <mat-icon>crop_square</mat-icon>
-        {{'toolbox.frame' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('text-field')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
-        <mat-icon>text_fields</mat-icon>
-        {{'toolbox.text-field' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('text-area')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area')">
-        <mat-icon>notes</mat-icon>
-        {{'toolbox.text-area' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('checkbox')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','checkbox')">
-        <mat-icon>check_box</mat-icon>
-        {{'toolbox.checkbox' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('dropdown')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','dropdown')">
-        <mat-icon>menu_open</mat-icon>
-        {{'toolbox.dropdown' | translate }}
-      </button>
-
-      <div (mouseover)="hoverRadioButton = true" (mouseleave)="hoverRadioButton = false">
-        <button *ngIf="!hoverRadioButton" class="radio-button-placeholder" mat-raised-button>
-          <mat-icon>radio_button_checked</mat-icon>
-          {{'toolbox.radio' | translate }}
-        </button>
-        <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio')"
-                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
-          {{'toolbox.simple' | translate }}
-        </button>
-        <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio-group-images')"
-                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
-          {{'toolbox.complex' | translate }}
-        </button>
-      </div>
-
-      <button mat-raised-button (click)="addUIElement('drop-list')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','drop-list')">
-        <mat-icon>drag_indicator</mat-icon>
-        {{'toolbox.drop-list' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('image')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
-        <mat-icon>image</mat-icon>
-        {{'toolbox.image' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('audio')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','audio')">
-        <mat-icon>volume_up</mat-icon>
-        {{'toolbox.audio' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('video')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','video')">
-        <mat-icon>ondemand_video</mat-icon>
-        {{'toolbox.video' | translate }}
+      <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio-group-images')"
+              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
+        {{'toolbox.complex' | translate }}
       </button>
     </div>
-  </mat-tab>
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">widgets</mat-icon>
-    </ng-template>
-    <div fxLayout="column">
-      <button mat-raised-button (click)="addUIElement('likert')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','likert')">
-        <mat-icon>toc</mat-icon>
-        {{'toolbox.likert' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('cloze')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','cloze')">
-        <mat-icon>vertical_split</mat-icon>
-        {{'toolbox.cloze' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('slider')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','slider')">
-        <mat-icon>linear_scale</mat-icon>
-        {{'toolbox.slider' | translate }}
-      </button>
-      <button mat-raised-button (click)="addUIElement('spell-correct')"
-              draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','spell-correct')">
-        <mat-icon>format_strikethrough</mat-icon>
-        {{'toolbox.spell-correct' | translate }}
-      </button>
-    </div>
-  </mat-tab>
-</mat-tab-group>
+    <button mat-stroked-button (click)="addUIElement('likert')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','likert')">
+      <mat-icon>toc</mat-icon>
+      {{'toolbox.likert' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('slider')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','slider')">
+      <mat-icon>linear_scale</mat-icon>
+      {{'toolbox.slider' | translate }}
+    </button>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        (Zu)Ordnung
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button mat-stroked-button (click)="addUIElement('drop-list')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','drop-list')">
+      <mat-icon>drag_indicator</mat-icon>
+      {{'toolbox.drop-list' | translate }}
+    </button>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        Verbund
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button mat-stroked-button (click)="addUIElement('cloze')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','cloze')">
+      <mat-icon>vertical_split</mat-icon>
+      {{'toolbox.cloze' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('spell-correct')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','spell-correct')">
+      <mat-icon>format_strikethrough</mat-icon>
+      {{'toolbox.spell-correct' | translate }}
+    </button>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-description>
+        Sonstige
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <button mat-stroked-button (click)="addUIElement('button')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','button')">
+      <mat-icon>smart_button</mat-icon>
+      {{'toolbox.button' | translate }}
+    </button>
+    <button mat-stroked-button (click)="addUIElement('frame')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','frame')">
+      <mat-icon>crop_square</mat-icon>
+      {{'toolbox.frame' | translate }}
+    </button>
+  </mat-expansion-panel>
+</mat-accordion>

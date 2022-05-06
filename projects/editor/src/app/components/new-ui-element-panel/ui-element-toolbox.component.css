@@ -5,16 +5,9 @@
 
 :host button {
   text-align: left;
-  font-size: large;
-  margin: 5px;
-}
-
-:host ::ng-deep .mat-tab-label {
-  min-width: 0;
-}
-
-mat-tab-group {
-  padding: 10px;
+  font-size: medium;
+  margin-bottom: 3px;
+  width: 100%;
 }
 
 ::ng-deep aspect-ui-element-toolbox .mat-button-wrapper {
@@ -22,6 +15,13 @@ mat-tab-group {
   display: inline-block;
 }
 
-.radio-button-placeholder {
-  width: 96%;
+.mat-expansion-panel-header {
+  font-size: large;
+}
+.mat-expansion-panel-header.mat-expanded {
+  height: 40px;
+}
+
+:host ::ng-deep .mat-expansion-panel-body {
+  padding: 0 10px 10px;
 }

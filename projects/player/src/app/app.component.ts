@@ -16,6 +16,7 @@ import { UnitFactory } from 'common/util/unit.factory';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { UnitUtils } from 'common/util/unit-utils';
 import { DragNDropValueObject, UIElement } from 'common/interfaces/elements';
+import { LogService } from 'logging/services/log.service';
 
 @Component({
   selector: 'aspect-player',
@@ -67,16 +68,14 @@ export class AppComponent implements OnInit {
   private onStart(message: VopStartCommand): void {
     this.reset();
     setTimeout(() => {
-      // eslint-disable-next-line no-console
-      console.log('player: onStart', message);
+      LogService.info('player: onStart', message);
       if (message.unitDefinition) {
         const unitDefinition: Unit = UnitFactory.createUnit(
           this.sanitizationService.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
         );
         this.configureSession(message, unitDefinition);
       } else {
-        // eslint-disable-next-line no-console
-        console.warn('player: message has no unitDefinition');
+        LogService.warn('player: message has no unitDefinition');
       }
     });
   }
@@ -85,8 +84,7 @@ export class AppComponent implements OnInit {
     this.pages = unitDefinition.pages;
     this.playerConfig = message.playerConfig || {};
     this.configureServices(message);
-    // eslint-disable-next-line no-console
-    console.log('player: unitStateElementCodes', this.unitStateService.elementCodes);
+    LogService.info('player: unitStateElementCodes', this.unitStateService.elementCodes);
   }
 
   private configureServices(message: VopStartCommand): void {
@@ -111,14 +109,12 @@ export class AppComponent implements OnInit {
   }
 
   private onFocus(focused: boolean): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onFocus', focused);
+    LogService.info('player: onFocus', focused);
     this.veronaPostService.sendVopWindowFocusChangedNotification(focused);
   }
 
   private reset(): void {
-    // eslint-disable-next-line no-console
-    console.log('player: reset');
+    LogService.info('player: reset');
     this.pages = [];
     this.playerConfig = null;
     this.unitStateService.reset();

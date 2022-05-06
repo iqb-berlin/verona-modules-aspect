@@ -7,6 +7,7 @@ import { MediaPlayerService } from '../services/media-player.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { VeronaPostService } from 'verona/services/verona-post.service';
 import { ValidationService } from '../services/validation.service';
+import { LogService } from 'logging/services/log.service';
 
 @Directive({
   selector: '[aspectUnitState]'
@@ -40,8 +41,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   private sendVopStateChangedNotification(): void {
-    // eslint-disable-next-line no-console
-    console.log('player: this.unitStateService.unitStateElementCodes',
+    LogService.info('player: this.unitStateService.unitStateElementCodes',
       this.unitStateService.elementCodes);
     const unitState: UnitState = {
       dataParts: {
@@ -51,8 +51,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
       responseProgress: this.validatorService.responseProgress,
       unitStateDataType: 'iqb-standard@1.0'
     };
-    // eslint-disable-next-line no-console
-    console.log('player: unitState sendVopStateChangedNotification', unitState);
+    LogService.info('player: unitState sendVopStateChangedNotification', unitState);
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }
 

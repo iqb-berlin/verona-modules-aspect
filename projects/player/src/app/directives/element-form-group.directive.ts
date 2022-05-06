@@ -13,6 +13,7 @@ import { VopNavigationDeniedNotification } from 'verona/models/verona';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ValidationService } from '../services/validation.service';
+import { LogService } from 'logging/services/log.service';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
@@ -50,8 +51,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   }
 
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onNavigationDenied', message);
+    LogService.info('player: onNavigationDenied', message);
     const reasons = message.reason?.map((reason: string) => this.translateService.instant(reason));
     this.messageService.showWarning(reasons?.join(', ') || this.translateService.instant('noReason'));
     if (message.reason && message.reason.find(reason => reason === 'responsesIncomplete')) {

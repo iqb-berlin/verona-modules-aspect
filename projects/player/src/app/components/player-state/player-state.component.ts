@@ -11,6 +11,7 @@ import {
 import { VeronaPostService } from 'verona/services/verona-post.service';
 import { Page } from 'common/interfaces/unit';
 import { NavigationService } from '../../services/navigation.service';
+import { LogService } from 'logging/services/log.service';
 
 @Component({
   selector: 'aspect-player-state',
@@ -67,22 +68,19 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
 
 
   private onContinue(message: VopContinueCommand): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onContinue', message);
+    LogService.info('player: onContinue', message);
     this.running = true;
     this.sendVopStateChangedNotification();
   }
 
   private onStop(message: VopStopCommand): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onStop', message);
+    LogService.info('player: onStop', message);
     this.running = false;
     this.sendVopStateChangedNotification();
   }
 
   private onGetStateRequest(message: VopGetStateRequest): void {
-    // eslint-disable-next-line no-console
-    console.log('player: onGetStateRequest', message);
+    LogService.info('player: onGetStateRequest', message);
     if (message.stop) {
       this.running = false;
     }
@@ -95,8 +93,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
       currentPage: this.currentPlayerPageIndex.toString(10),
       validPages: this.validPages
     };
-    // eslint-disable-next-line no-console
-    console.log('player: playerState sendVopStateChangedNotification', playerState);
+    LogService.info('player: playerState sendVopStateChangedNotification', playerState);
     this.veronaPostService.sendVopStateChangedNotification({ playerState }, requested);
   }
 

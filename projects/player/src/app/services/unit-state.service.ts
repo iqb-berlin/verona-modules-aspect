@@ -10,6 +10,7 @@ import {
 } from 'verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
 import { InputElementValue, ValueChangeElement } from 'common/interfaces/elements';
+import { LogService } from 'logging/services/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -73,15 +74,13 @@ export class UnitStateService {
   }
 
   changeElementCodeValue(elementValue: ValueChangeElement): void {
-    // eslint-disable-next-line no-console
-    console.log(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
+    LogService.info(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
     this.setElementCodeValue(elementValue.id, elementValue.value);
     this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
   }
 
   changeElementCodeStatus(elementStatus: StatusChangeElement): void {
-    // eslint-disable-next-line no-console
-    console.log(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
+    LogService.info(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
     this.setElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
@@ -132,8 +131,7 @@ export class UnitStateService {
         this._presentedPageAdded.next(pageIndex);
       }
     } else {
-      // eslint-disable-next-line no-console
-      console.log(`player: page ${pageIndex} is already presented`);
+      LogService.info(`player: page ${pageIndex} is already presented`);
     }
   }
 

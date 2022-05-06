@@ -7,6 +7,7 @@ import {
   VopPageNavigationCommand,
   VopStartCommand, VopStopCommand
 } from '../models/verona';
+import { LogService } from 'logging/services/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,38 +29,31 @@ export class VeronaSubscriptionService {
   private handleMessage(messageData: VopMessage): void {
     switch (messageData.type) {
       case 'vopStartCommand':
-        // eslint-disable-next-line no-console
-        console.log('player: _vopStartCommand ', messageData);
+        LogService.info('player: _vopStartCommand ', messageData);
         this._vopStartCommand.next(messageData);
         break;
       case 'vopNavigationDeniedNotification':
-        // eslint-disable-next-line no-console
-        console.log('player: _vopNavigationDeniedNotification ', messageData);
+        LogService.info('player: _vopNavigationDeniedNotification ', messageData);
         this._vopNavigationDeniedNotification.next(messageData);
         break;
       case 'vopPageNavigationCommand':
-        // eslint-disable-next-line no-console
-        console.log('player: _vopPageNavigationCommand ', messageData);
+        LogService.info('player: _vopPageNavigationCommand ', messageData);
         this._vopPageNavigationCommand.next(messageData);
         break;
       case 'vopStopCommand':
-        // eslint-disable-next-line no-console
-        console.log('player: _vopStopCommand ', messageData);
+        LogService.info('player: _vopStopCommand ', messageData);
         this._vopStopCommand.next(messageData);
         break;
       case 'vopContinueCommand':
-        // eslint-disable-next-line no-console
-        console.log('player: _vopContinueCommand ', messageData);
+        LogService.info('player: _vopContinueCommand ', messageData);
         this._vopContinueCommand.next(messageData);
         break;
       case 'vopGetStateRequest':
-        // eslint-disable-next-line no-console
-        console.log('player: _vopGetStateRequest ', messageData);
+        LogService.info('player: _vopGetStateRequest ', messageData);
         this._vopGetStateRequest.next(messageData);
         break;
       default:
-        // eslint-disable-next-line no-console
-        console.warn(`player: got message of unknown type ${messageData.type}`);
+        LogService.warn(`player: got message of unknown type ${messageData.type}`);
     }
   }
 

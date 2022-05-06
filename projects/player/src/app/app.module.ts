@@ -85,8 +85,7 @@ import { PageIndexPipe } from './pipes/page-index.pipe';
     }),
     OverlayModule,
     UnitDefinitionMenuModule
-  ],
-  providers: []
+  ]
 })
 
 export class AppModule implements DoBootstrap {

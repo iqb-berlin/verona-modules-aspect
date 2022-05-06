@@ -9,6 +9,7 @@ import {
   VopMetaData,
   VopStateChangedNotification
 } from '../models/verona';
+import { LogService } from 'logging/services/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -40,8 +41,7 @@ export class VeronaPostService {
     if (!this._isStandalone) {
       window.parent.postMessage(message, '*');
     } else {
-      // eslint-disable-next-line no-console
-      console.warn('player: no host detected');
+      LogService.warn('player: no host detected');
     }
   }
 
@@ -74,15 +74,13 @@ export class VeronaPostService {
 
   sendVopReadyNotification(playerMetadata: VopMetaData): void {
     if (playerMetadata) {
-      // eslint-disable-next-line no-console
-      console.log('player: sendVopReadyNotification', playerMetadata);
+      LogService.info('player: sendVopReadyNotification', playerMetadata);
       this.send({
         type: 'vopReadyNotification',
         ...playerMetadata
       });
     } else {
-      // eslint-disable-next-line no-console
-      console.warn('player: no playerMetadata defined');
+      LogService.warn('player: no playerMetadata defined');
     }
   }
 

@@ -1,5 +1,6 @@
 import { TextComponent } from 'common/components/ui-elements/text.component';
 import { Injectable } from '@angular/core';
+import { LogService } from 'logging/services/log.service';
 
 
 @Injectable({
@@ -26,8 +27,7 @@ export class TextMarkingService {
         });
         textComponent.savedText = element.innerHTML;
       } else {
-        // eslint-disable-next-line no-console
-        console.warn('Selection contains elements that are outside the text component!');
+        LogService.warn('Selection contains elements that are outside the text component!');
       }
       selection.removeAllRanges();
     } // nothing to do!
@@ -197,8 +197,7 @@ export class TextMarkingService {
         if (nodeValues.text) {
           TextMarkingService.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
         } else {
-          // eslint-disable-next-line no-console
-          console.warn('Cannot recreate node for text', nodeValues);
+          LogService.warn('Cannot recreate node for text', nodeValues);
         }
       }
     });

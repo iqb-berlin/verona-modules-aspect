@@ -5,7 +5,7 @@ import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TextElement } from 'common/interfaces/elements';
 import { TextComponent } from 'common/components/ui-elements/text.component';
-import { TextMarker } from '../../classes/text-marker';
+import { TextMarkingService } from '../../services/text-marking.service';
 import { NativeEventService } from '../../services/native-event.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
@@ -83,7 +83,7 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
   }
 
   applySelectionToText(mode: 'mark' | 'delete', color: string, elementComponent: TextComponent): void {
-    TextMarker
+    TextMarkingService
       .applySelection(
         mode,
         color,
@@ -99,8 +99,8 @@ export class ElementTextGroupComponent extends ElementGroupDirective implements 
     elementComponent: TextComponent
   ) {
     const selection = window.getSelection();
-    if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
-      if (!TextMarker.isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) ||
+    if (selection && TextMarkingService.isSelectionValid(selection) && selection.rangeCount > 0) {
+      if (!TextMarkingService.isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) ||
         (ctrlKey)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {

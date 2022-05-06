@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TextMarker } from '../classes/text-marker';
+import { TextMarkingService } from './text-marking.service';
 import {
   AudioElement, DragNDropValueObject, ImageElement, InputElement, InputElementValue,
   TextElement, UIElement, UIElementType, VideoElement
@@ -23,7 +23,7 @@ export class ElementModelElementCodeMappingService {
           (elementModel as InputElement).value;
       case 'text':
         return (elementCodeValue !== undefined) ?
-          TextMarker.restoreMarkings(elementCodeValue as string[], (elementModel as TextElement).text) :
+          TextMarkingService.restoreMarkings(elementCodeValue as string[], (elementModel as TextElement).text) :
           (elementModel as TextElement).text;
       case 'audio':
         return elementCodeValue !== undefined ?
@@ -54,7 +54,7 @@ export class ElementModelElementCodeMappingService {
       case 'drop-list-simple':
         return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
       case 'text':
-        return TextMarker.getMarkingData(elementModelValue as string);
+        return TextMarkingService.getMarkingData(elementModelValue as string);
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':

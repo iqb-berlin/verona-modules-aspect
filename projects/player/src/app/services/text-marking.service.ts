@@ -1,6 +1,12 @@
 import { TextComponent } from 'common/components/ui-elements/text.component';
+import { Injectable } from '@angular/core';
 
-export class TextMarker {
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TextMarkingService {
+
   private static readonly MARKING_TAG = 'ASPECT-MARKED';
 
   static applySelection(
@@ -9,14 +15,14 @@ export class TextMarker {
     textComponent: TextComponent
   ): void {
     const selection = window.getSelection();
-    if (selection && TextMarker.isSelectionValid(selection) && selection.rangeCount > 0) {
+    if (selection && TextMarkingService.isSelectionValid(selection) && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const element = textComponent.textContainerRef.nativeElement;
-      if (TextMarker.isRangeInside(range, element)) {
-        TextMarker.applyRange(range, selection, mode === 'delete', color);
+      if (TextMarkingService.isRangeInside(range, element)) {
+        TextMarkingService.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
-          value: TextMarker.getMarkingData(element.innerHTML)
+          value: TextMarkingService.getMarkingData(element.innerHTML)
         });
         textComponent.savedText = element.innerHTML;
       } else {
@@ -30,14 +36,14 @@ export class TextMarker {
   static isSelectionValid = (selection: Selection): boolean => selection.toString().length > 0;
 
   static isRangeInside(range: Range, element: HTMLElement): boolean {
-    return (TextMarker.isDescendantOf(range.startContainer, element) &&
-      TextMarker.isDescendantOf(range.endContainer, element));
+    return (TextMarkingService.isDescendantOf(range.startContainer, element) &&
+      TextMarkingService.isDescendantOf(range.endContainer, element));
   }
 
   static getMarkingData = (htmlText: string): string[] => {
     const markingStartPattern =
-      new RegExp(`<${TextMarker.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
-    const markingClosingTag = `</${TextMarker.MARKING_TAG.toLowerCase()}>`;
+      new RegExp(`<${TextMarkingService.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
+    const markingClosingTag = `</${TextMarkingService.MARKING_TAG.toLowerCase()}>`;
     let newHtmlText = htmlText;
     const markCollection = [];
     let matchesArray;
@@ -53,7 +59,7 @@ export class TextMarker {
           newHtmlText = newHtmlText.replace(startMatch, '');
           const endIndex = newHtmlText.search(endMatch);
           newHtmlText = newHtmlText.replace(endMatch, '');
-          markCollection.push(`${startIndex}-${endIndex}-${TextMarker.getMarkingColor(startMatch)}`);
+          markCollection.push(`${startIndex}-${endIndex}-${TextMarkingService.getMarkingColor(startMatch)}`);
         }
       }
     } while (matchesArray);
@@ -65,13 +71,13 @@ export class TextMarker {
     if (markings.length) {
       const markCollectionReversed = [...markings].reverse();
       const markingDataPattern = /^(\d+)-(\d+)-(.+)$/;
-      const markingClosingTag = `</${TextMarker.MARKING_TAG.toLowerCase()}>`;
+      const markingClosingTag = `</${TextMarkingService.MARKING_TAG.toLowerCase()}>`;
       markCollectionReversed.forEach(markingData => {
         const matchesArray = markingData.match(markingDataPattern);
         if (matchesArray) {
           const startIndex = Number(matchesArray[1]);
           const endIndex = Number(matchesArray[2]);
-          const startMatch = TextMarker.createMarkingStartTag(matchesArray[3]);
+          const startMatch = TextMarkingService.createMarkingStartTag(matchesArray[3]);
           newHtmlText = newHtmlText.substring(0, endIndex) + markingClosingTag + newHtmlText.substr(endIndex);
           newHtmlText = newHtmlText.substring(0, startIndex) + startMatch + newHtmlText.substr(startIndex);
         }
@@ -87,18 +93,18 @@ export class TextMarker {
     if (node.parentElement === element) {
       return true;
     }
-    return TextMarker.isDescendantOf(node.parentNode, element);
+    return TextMarkingService.isDescendantOf(node.parentNode, element);
   }
 
   private static getMarkingColor = (tag: string): string => {
     const colors = tag.match(/\d{1,3}, \d{1,3}, \d{1,3}/);
-    return (colors) ? TextMarker.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
+    return (colors) ? TextMarkingService.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
   };
 
   private static createMarkingStartTag(color: string): string {
-    const rgb = TextMarker.hexToRgb(color);
+    const rgb = TextMarkingService.hexToRgb(color);
     return `<${
-      TextMarker.MARKING_TAG.toLowerCase()
+      TextMarkingService.MARKING_TAG.toLowerCase()
     } style="background-color: rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]});">`;
   }
 
@@ -107,22 +113,22 @@ export class TextMarker {
   ): void {
     if (range.startContainer === range.endContainer) {
       if (clear) {
-        TextMarker.clearMarkingFromNode(range);
+        TextMarkingService.clearMarkingFromNode(range);
       } else {
-        TextMarker.markNode(range, color);
+        TextMarkingService.markNode(range, color);
       }
     } else {
-      const nodes: Node[] = TextMarker.getSelectedNodes(range, selection);
+      const nodes: Node[] = TextMarkingService.getSelectedNodes(range, selection);
       if (clear) {
-        TextMarker.clearNodes(nodes, range);
+        TextMarkingService.clearNodes(nodes, range);
       } else {
-        TextMarker.markNodes(nodes, range, color);
+        TextMarkingService.markNodes(nodes, range, color);
       }
     }
   }
 
   private static getSelectedNodes = (range: Range, selection: Selection): Node[] => {
-    const nodes: Node[] = TextMarker.findNodes(range.commonAncestorContainer.childNodes, selection);
+    const nodes: Node[] = TextMarkingService.findNodes(range.commonAncestorContainer.childNodes, selection);
     // When the user finishes selecting between paragraphs and the selection happens from
     // back to front, Firefox does not consider the start container as a selected child node.
     // Therefore, it is added to the list of selected nodes at the beginning.
@@ -132,7 +138,7 @@ export class TextMarker {
     // When the user finishes selecting between paragraphs the browser does not consider the end container
     // as a selected child node. Therefore, it is added to the list of selected nodes at the end.
     if (range.endOffset === 0) {
-      const endContainer = TextMarker.getEndContainer(range.endContainer);
+      const endContainer = TextMarkingService.getEndContainer(range.endContainer);
       if (endContainer && !nodes.includes(endContainer)) {
         nodes.push(endContainer);
       }
@@ -154,12 +160,12 @@ export class TextMarker {
   };
 
   private static clearMarkingFromNode(range: Range): void {
-    if (range.startContainer.parentElement?.tagName?.toUpperCase() === TextMarker.MARKING_TAG) {
+    if (range.startContainer.parentElement?.tagName?.toUpperCase() === TextMarkingService.MARKING_TAG) {
       const previousText = range.startContainer.nodeValue?.substring(0, range.startOffset) || '';
       const text = range.startContainer.nodeValue?.substring(range.startOffset, range.endOffset) || '';
       const nextText = range.startContainer.nodeValue?.substring(range.endOffset) || '';
       if (text) {
-        TextMarker.clearMarking(range.startContainer, text, previousText, nextText);
+        TextMarkingService.clearMarking(range.startContainer, text, previousText, nextText);
       }
     }
   }
@@ -171,12 +177,12 @@ export class TextMarker {
       const color = (node.parentNode as HTMLElement).style.backgroundColor || 'none';
       parentNode?.replaceChild(textElement, node.parentNode);
       if (previousText) {
-        const prev = TextMarker.createMarkedElement(color);
+        const prev = TextMarkingService.createMarkedElement(color);
         prev.append(document.createTextNode(previousText));
         parentNode?.insertBefore(prev, textElement);
       }
       if (nextText) {
-        const end = TextMarker.createMarkedElement(color);
+        const end = TextMarkingService.createMarkedElement(color);
         end.append(document.createTextNode(nextText));
         parentNode?.insertBefore(end, textElement.nextSibling);
       }
@@ -186,10 +192,10 @@ export class TextMarker {
   private static clearNodes(nodes: Node[], range: Range): void {
     nodes.forEach((node: Node) => {
       const index = nodes.findIndex(rangeNode => rangeNode === node);
-      if (node.parentElement?.tagName.toUpperCase() === TextMarker.MARKING_TAG) {
-        const nodeValues = TextMarker.getNodeValues(node, nodes, index, range);
+      if (node.parentElement?.tagName.toUpperCase() === TextMarkingService.MARKING_TAG) {
+        const nodeValues = TextMarkingService.getNodeValues(node, nodes, index, range);
         if (nodeValues.text) {
-          TextMarker.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
+          TextMarkingService.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
         } else {
           // eslint-disable-next-line no-console
           console.warn('Cannot recreate node for text', nodeValues);
@@ -201,7 +207,7 @@ export class TextMarker {
   private static mark(
     node: Node, text: string, previousText: string, nextText: string, color: string
   ): void {
-    const markedElement: HTMLElement = TextMarker.createMarkedElement(color);
+    const markedElement: HTMLElement = TextMarkingService.createMarkedElement(color);
     markedElement.append(document.createTextNode(text));
     // important!
     const { parentNode } = node;
@@ -237,23 +243,23 @@ export class TextMarker {
   };
 
   private static markNode(range: Range, color: string): void {
-    if (range.startContainer.parentElement?.tagName.toUpperCase() !== TextMarker.MARKING_TAG) {
-      const markedElement: HTMLElement = TextMarker.createMarkedElement(color);
+    if (range.startContainer.parentElement?.tagName.toUpperCase() !== TextMarkingService.MARKING_TAG) {
+      const markedElement: HTMLElement = TextMarkingService.createMarkedElement(color);
       range.surroundContents(markedElement);
     }
   }
 
   private static markNodes(nodes: Node[], range: Range, color: string): void {
     nodes.forEach((node, index) => {
-      const nodeValues = TextMarker.getNodeValues(node, nodes, index, range);
-      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== TextMarker.MARKING_TAG) {
-        TextMarker.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
+      const nodeValues = TextMarkingService.getNodeValues(node, nodes, index, range);
+      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== TextMarkingService.MARKING_TAG) {
+        TextMarkingService.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
       }
     });
   }
 
   private static createMarkedElement = (color: string): HTMLElement => {
-    const markedElement = document.createElement(TextMarker.MARKING_TAG);
+    const markedElement = document.createElement(TextMarkingService.MARKING_TAG);
     markedElement.style.backgroundColor = color;
     return markedElement;
   };
@@ -267,7 +273,7 @@ export class TextMarker {
         }
         if (node.nodeType === Node.ELEMENT_NODE) {
           if (node.childNodes.length) {
-            nodes.push(...TextMarker.findNodes(node.childNodes, selection));
+            nodes.push(...TextMarkingService.findNodes(node.childNodes, selection));
           } else if (!nodes.includes(node)) {
             nodes.push(node);
           }

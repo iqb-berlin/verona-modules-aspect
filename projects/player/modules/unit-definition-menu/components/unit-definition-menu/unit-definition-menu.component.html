@@ -20,6 +20,15 @@
     <span>{{ 'load_snap' | translate }}</span>
   </button>
 
+  <ng-container *ngIf="elementCodes && elementCodes.length">
+    <mat-divider></mat-divider>
+    <button mat-menu-item
+            (click)="reloadUnit()">
+      <mat-icon>refresh</mat-icon>
+      <span>{{ 'reload_unit' | translate }}</span>
+    </button>
+  </ng-container>
+
   <ng-container *ngIf="scrollPages && scrollPages.length > 1">
     <mat-divider></mat-divider>
     <button mat-menu-item *ngFor="let page of scrollPages; let i = index;"

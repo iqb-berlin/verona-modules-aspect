@@ -27,12 +27,12 @@ export class AppComponent implements OnInit {
   pages: Page[] = [];
   playerConfig: PlayerConfig | null = null;
 
-  constructor(private translateService: TranslateService,
+  constructor(public unitStateService: UnitStateService,
+              private translateService: TranslateService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private veronaPostService: VeronaPostService,
               private metaDataService: MetaDataService,
               private nativeEventService: NativeEventService,
-              private unitStateService: UnitStateService,
               private mediaPlayerService: MediaPlayerService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
               private validatorService: ValidationService,

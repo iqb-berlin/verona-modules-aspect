@@ -1,7 +1,8 @@
 <aspect-unit-definition-menu
   *ngIf="isStandalone"
   class="unit-definition-menu"
-  [scrollPages]="pages | scrollPages">
+  [scrollPages]="pages | scrollPages"
+  [elementCodes]="unitStateService.elementCodes">
 </aspect-unit-definition-menu>
 <aspect-player-state
   *ngIf="playerConfig && pages?.length"

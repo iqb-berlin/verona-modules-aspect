@@ -82,32 +82,32 @@ export class AppComponent implements OnInit {
   }
 
   private configureSession(message: VopStartCommand, unitDefinition: Unit): void {
-    this.configureServices(message, unitDefinition.pages);
-    this.configureUnit(message, unitDefinition.pages);
+    this.pages = unitDefinition.pages;
+    this.playerConfig = message.playerConfig || {};
+    this.configureServices(message);
     // eslint-disable-next-line no-console
     console.log('player: unitStateElementCodes', this.unitStateService.elementCodes);
   }
 
-  private configureServices(message: VopStartCommand, pages: Page[]): void {
-    this.configureElementModelElementCodeMappingService(pages);
+  private configureServices(message: VopStartCommand): void {
+    this.configureElementModelElementCodeMappingService();
     this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
       JSON.parse(message.unitState.dataParts.elementCodes) : [];
     this.veronaPostService.sessionId = message.sessionId;
     this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
   }
 
-  configureUnit(message: VopStartCommand, pages: Page[]): void {
-    this.pages = pages;
-    this.playerConfig = message.playerConfig || {};
-  }
-
-  private configureElementModelElementCodeMappingService(pages: Page[]): void {
+  private configureElementModelElementCodeMappingService(): void {
     this.elementModelElementCodeMappingService.dragNDropValueObjects = (
-      UnitUtils.findUIElements(pages, 'drop-list')
-        .concat(UnitUtils.findUIElements(pages, 'drop-list-simple')).reduce(
+      UnitUtils
+        .findUIElements(this.pages, 'drop-list')
+        .concat(UnitUtils.findUIElements(this.pages, 'drop-list-simple'))
+        .reduce(
           (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
             (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
-              accumulator.concat(currentValue.value as DragNDropValueObject) : accumulator), []));
+              accumulator.concat(currentValue.value as DragNDropValueObject) :
+              accumulator), []
+        ));
   }
 
   private onFocus(focused: boolean): void {

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { LogLevels, LogService } from './log.service';
+import { LogLevel, LogService } from './log.service';
 
 describe('LoggerService', () => {
   let service: LogService;
@@ -47,24 +47,24 @@ describe('LoggerService', () => {
 
   it('should set LogService.level to "LOG"', () => {
     LogService.level = 0;
-    expect(LogService.level).toEqual(LogLevels.LOG);
+    expect(LogService.level).toEqual(LogLevel.LOG);
   });
 
   it('should set LogService.level to "INFO"', () => {
     LogService.level = 1;
-    expect(LogService.level).toEqual(LogLevels.INFO);
+    expect(LogService.level).toEqual(LogLevel.INFO);
   });
   it('should set LogService.level to "WARN"', () => {
     LogService.level = 2;
-    expect(LogService.level).toEqual(LogLevels.WARN);
+    expect(LogService.level).toEqual(LogLevel.WARN);
   });
   it('should set LogService.level to "ERROR"', () => {
     LogService.level = 3;
-    expect(LogService.level).toEqual(LogLevels.ERROR);
+    expect(LogService.level).toEqual(LogLevel.ERROR);
   });
   it('should set LogService.level to "NONE"', () => {
     LogService.level = 4;
-    expect(LogService.level).toEqual(LogLevels.NONE);
+    expect(LogService.level).toEqual(LogLevel.NONE);
   });
 
 });

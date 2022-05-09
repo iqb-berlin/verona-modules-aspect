@@ -88,10 +88,10 @@ export class UnitService {
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
-    const newSection = JSON.parse(JSON.stringify(section));
-    newSection.elements.forEach((element: UIElement) => {
-      element.id = this.idService.getNewID(element.type);
-    });
+    const newSection: Section = {
+      ...section,
+      elements: section.elements.map(element => this.duplicateElement(element) as PositionedElement)
+    };
     page.sections.splice(sectionIndex + 1, 0, newSection);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
@@ -191,39 +191,43 @@ export class UnitService {
 
   duplicateElementsInSection(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
     const section = this.unit.pages[pageIndex].sections[sectionIndex];
-
-    (elements as PositionedElement[]).forEach((element: PositionedElement) => {
-      const newElement = JSON.parse(JSON.stringify(element));
-      newElement.id = this.idService.getNewID(element.type);
-      newElement.position.xPosition = element.position.xPosition + 10;
-      newElement.position.yPosition = element.position.yPosition + 10;
-
-      if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
-        newElement.value.forEach((valueObject: { id: string }) => {
-          valueObject.id = this.idService.getNewID('value');
-        });
-      }
-
-      if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
-        newElement.rows.forEach((rowObject: { id: string }) => {
-          rowObject.id = this.idService.getNewID('likert_row');
-        });
-      }
-
-      if (newElement.type === 'cloze') {
-        ClozeUtils.getClozeChildElements(newElement).forEach((childElement: InputElement) => {
-          childElement.id = this.idService.getNewID(childElement.type);
-          if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
-            (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
-              valueObject.id = this.idService.getNewID('value');
-            });
-          }
-        });
-      }
-      section.elements.push(newElement as PositionedElement);
+    elements.forEach((element: UIElement) => {
+      section.elements.push(this.duplicateElement(element) as PositionedElement);
     });
-
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  private duplicateElement(element: UIElement): UIElement {
+    const newElement = JSON.parse(JSON.stringify(element));
+    newElement.id = this.idService.getNewID(element.type);
+    if (newElement.position) {
+      newElement.position.xPosition += 10;
+      newElement.position.yPosition += 10;
+    }
+
+    if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
+      newElement.value.forEach((valueObject: { id: string }) => {
+        valueObject.id = this.idService.getNewID('value');
+      });
+    }
+
+    if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
+      newElement.rows.forEach((rowObject: { id: string }) => {
+        rowObject.id = this.idService.getNewID('likert_row');
+      });
+    }
+
+    if (newElement.type === 'cloze') {
+      ClozeUtils.getClozeChildElements(newElement).forEach((childElement: InputElement) => {
+        childElement.id = this.idService.getNewID(childElement.type);
+        if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
+          (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
+            valueObject.id = this.idService.getNewID('value');
+          });
+        }
+      });
+    }
+    return newElement;
   }
 
   updateSectionProperty(section: Section, property: string, value: string | number | boolean): void {

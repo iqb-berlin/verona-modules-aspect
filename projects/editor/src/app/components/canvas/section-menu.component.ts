@@ -4,11 +4,14 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
 import { Section } from 'common/interfaces/unit';
 import { UIElement } from 'common/interfaces/elements';
+import { UnitFactory } from 'common/util/unit.factory';
+import { MessageService } from 'common/services/message.service';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -157,6 +160,22 @@ import { UIElement } from 'common/interfaces/elements';
       </div>
     </mat-menu>
 
+    <button mat-mini-fab
+            (click)="copySectionToClipboard()">
+      <mat-icon>content_copy</mat-icon>
+    </button>
+
+    <button mat-mini-fab [matMenuTriggerFor]="pasteSectionMenu">
+      <mat-icon>content_paste</mat-icon>
+    </button>
+    <mat-menu #pasteSectionMenu="matMenu" xPosition="before">
+      <mat-form-field appearance="fill" (click)="$any($event).stopPropagation()">
+<!--        <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>-->
+        <input matInput (click)="$any($event).stopPropagation()"
+               (paste)="pasteSectionFromClipboard($event);">
+      </mat-form-field>
+    </mat-menu>
+
     <button *ngIf="allowMoveUp" mat-mini-fab
             (click)="this.moveSection.emit('up')">
       <mat-icon>north</mat-icon>
@@ -167,7 +186,7 @@ import { UIElement } from 'common/interfaces/elements';
     </button>
     <button mat-mini-fab
             (click)="duplicateSection.emit()">
-      <mat-icon>content_copy</mat-icon>
+      <mat-icon>control_point_duplicate</mat-icon>
     </button>
     <button *ngIf="allowDelete" mat-mini-fab
             (click)="deleteSection()">
@@ -198,7 +217,9 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
 
   constructor(public unitService: UnitService,
               private selectionService: SelectionService,
-              private dialogService: DialogService) { }
+              private dialogService: DialogService,
+              private messageService: MessageService,
+              private clipboard: Clipboard) { }
 
   ngOnInit(): void {
     this.updateGridSizes();
@@ -280,5 +301,27 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  copySectionToClipboard() {
+    this.clipboard.copy(JSON.stringify(this.section));
+    console.log('bla', navigator.clipboard);
+  }
+
+  pasteSectionFromClipboard(event: ClipboardEvent) {
+    console.log('paste', event);
+    console.log('paste2', event.clipboardData?.getData('Text'));
+    const pastedText = event.clipboardData?.getData('Text');
+    // TODO try catch
+    if (!pastedText) return;
+    try {
+      const newSection = UnitFactory.createSection(JSON.parse(pastedText) as Section);
+      this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
+    } catch (e) {
+      this.messageService.showError('Fehler beim Lesen der Sektion');
+    }
+    // console.log('evvv', event.target);
+    // (event.target as HTMLInputElement).value = 'abc';
+    event.stopPropagation();
   }
 }

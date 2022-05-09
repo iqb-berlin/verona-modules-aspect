@@ -246,7 +246,7 @@ export class UnitService {
   updateElementProperty(elements: UIElement[],
                         property: string,
                         value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
-                        DragNDropValueObject[] | null): boolean {
+                        DragNDropValueObject[] | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
@@ -286,9 +286,7 @@ export class UnitService {
     });
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
-    return true;
   }
-
 
   createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
     return ElementFactory.createLikertRowElement({
@@ -429,5 +427,9 @@ export class UnitService {
           .flat()
         )
         .flat()).flat();
+  }
+
+  replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
+    this.unit.pages[pageIndex].sections[sectionIndex] = newSection;
   }
 }

@@ -89,9 +89,9 @@ export class SanitizationService {
     if (newElement.type === 'text') {
       newElement = SanitizationService.handleTextElement(newElement);
     }
-    if (['text-field', 'text-area']
+    if (['text-field', 'text-area', 'text-field-simple', 'spell-correct']
       .includes(newElement.type as string)) {
-      newElement = SanitizationService.sanitizeTextFieldElement(newElement);
+      newElement = SanitizationService.sanitizeTextInputElement(newElement);
     }
     if (newElement.type === 'cloze') {
       newElement = this.handleClozeElement(newElement as Record<string, UIElementValue>);
@@ -211,10 +211,13 @@ export class SanitizationService {
     return newElement as TextElement;
   }
 
-  private static sanitizeTextFieldElement(element: Record<string, UIElementValue>): InputElement {
+  private static sanitizeTextInputElement(element: Record<string, UIElementValue>): InputElement {
     const newElement = { ...element };
     if (newElement.restrictedToInputAssistanceChars === undefined && newElement.inputAssistancePreset === 'french') {
       newElement.restrictedToInputAssistanceChars = false;
+    }
+    if (newElement.inputAssistancePreset === 'none') {
+      newElement.inputAssistancePreset = null;
     }
     return newElement as InputElement;
   }

@@ -254,7 +254,7 @@ describe('SanitizationService', () => {
       service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130TextFields)));
     expect(sanitizedUnit130TextFields.pages[0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
-        'inputAssistancePreset': 'none',
+        'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating',
         'restrictedToInputAssistanceChars': false
       }));
@@ -278,7 +278,7 @@ describe('SanitizationService', () => {
       service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112TextFields)));
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
-        'inputAssistancePreset': 'none',
+        'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating'
       }));
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[0])
@@ -303,7 +303,7 @@ describe('SanitizationService', () => {
     // text areas
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[3])
       .toEqual(jasmine.objectContaining({
-        'inputAssistancePreset': 'none',
+        'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating'
       }));
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[3])

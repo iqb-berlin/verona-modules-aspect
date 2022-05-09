@@ -15,34 +15,34 @@ describe('LoggerService', () => {
 
   it('should call LogService.log', () => {
     spyOn(LogService, 'log')
-      .withArgs('test');
-    LogService.log('test');
+      .withArgs('test', 'test2');
+    LogService.log('test', 'test2');
     expect(LogService.log).toHaveBeenCalled();
-    expect(LogService.log).toHaveBeenCalledWith('test');
+    expect(LogService.log).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.info', () => {
     spyOn(LogService, 'info')
-      .withArgs('test');
-    LogService.info('test');
+      .withArgs('test', 'test2');
+    LogService.info('test', 'test2');
     expect(LogService.info).toHaveBeenCalled();
-    expect(LogService.info).toHaveBeenCalledWith('test');
+    expect(LogService.info).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.warn', () => {
     spyOn(LogService, 'warn')
-      .withArgs('test');
-    LogService.warn('test');
+      .withArgs('test', 'test2');
+    LogService.warn('test', 'test2');
     expect(LogService.warn).toHaveBeenCalled();
-    expect(LogService.warn).toHaveBeenCalledWith('test');
+    expect(LogService.warn).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.error', () => {
     spyOn(LogService, 'error')
-      .withArgs('test');
-    LogService.error('test');
+      .withArgs('test', 'test2');
+    LogService.error('test', 'test2');
     expect(LogService.error).toHaveBeenCalled();
-    expect(LogService.error).toHaveBeenCalledWith('test');
+    expect(LogService.error).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should set LogService.level to "LOG"', () => {

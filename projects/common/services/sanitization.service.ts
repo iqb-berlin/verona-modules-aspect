@@ -242,11 +242,17 @@ export class SanitizationService {
     } else {
       childElements = (element.parts as any[])
         .map((el: any) => el
-          .filter((el2: { type: string; }) => ['text-field', 'text-field-simple', 'drop-list', 'drop-list-simple', 'toggle-button']
+          .filter((el2: { type: string; }) => ['text-field', 'text-field-simple', 'drop-list', 'drop-list', 'toggle-button']
             .includes(el2.type)).value)
         .flat();
       doc = SanitizationService.createClozeDocument(element);
     }
+
+    // repair child element types
+    childElements.forEach(childElement => {
+      childElement.type = childElement.type === 'text-field' ? 'text-field-simple' : childElement.type;
+      childElement.type = childElement.type === 'drop-list' ? 'drop-list-simple' : childElement.type;
+    });
 
     return {
       ...element,

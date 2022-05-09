@@ -11,6 +11,17 @@ import * as sampleUnit130Audio from 'test-data/unit-definitions/test130-audio.js
 import * as sampleUnit112Texts from 'test-data/unit-definitions/test112-texts.json';
 import * as sampleUnit112TextFields from 'test-data/unit-definitions/test112-Textfields.json';
 import * as sampleUnit130TextFields from 'test-data/unit-definitions/test130-textfields.json';
+import { ClozeElement } from 'common/interfaces/elements';
+
+const unitDefStub: Record<string, any> = {
+  'unitDefinitionType': 'iqb-aspect-definition@1.1.0',
+  'pages': [{
+    'sections': [
+      {
+        'elements': []
+      }]
+  }]
+};
 
 describe('SanitizationService', () => {
   let service: SanitizationService;
@@ -307,13 +318,71 @@ describe('SanitizationService', () => {
       }));
   });
 
-  // it('sanitizeUnitDefinition should repair drop lists', () => {
-  //   const sanitizedUnit112Droplists =
-  //     SantizationService.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112Droplists)));
-  //
-  //   expect(sanitizedUnit112Droplists.pages[0].sections[0].elements[0])
-  //     .toEqual(jasmine.objectContaining({
-  //       'value': []
-  //     }));
-  // });
+  it('should rename cloze children with "simple" affix', () => {
+    const unitDef = {
+      ...unitDefStub,
+      'pages': [{
+        'sections': [
+          {
+            'elements': [{
+              'id': 'cloze_1',
+              'type': 'cloze',
+              'document': {
+                'type': 'doc',
+                'content': [
+                  {
+                    'type': 'paragraph',
+                    'content': [
+                      {
+                        'type': 'TextField',
+                        'attrs': {
+                          'model': {
+                            'id': 'text-field_1',
+                            'type': 'text-field' } } },
+                      {
+                        'type': 'DropList',
+                        'attrs': {
+                          'model': {
+                            'id': 'drop-list_1',
+                            'type': 'drop-list' } } },
+                      {
+                        'type': 'ToggleButton',
+                        'attrs': {
+                          'model': {
+                            'id': 'toggle_button_1',
+                            'type': 'toggle-button' } } }] }] } }
+            ] }] }]
+    };
+    const sanitizedUnitDefinition = service.sanitizeUnitDefinition(unitDef as unknown as Unit);
+
+    expect(sanitizedUnitDefinition.pages[0].sections[0].elements[0])
+      .toEqual(jasmine.objectContaining({
+        'id': 'cloze_1',
+        'type': 'cloze'
+      }));
+
+    const sanatizedClozeChild1 = (sanitizedUnitDefinition.pages[0].sections[0].elements[0] as ClozeElement)
+      .document.content[0].content[0]?.attrs?.model;
+    expect(sanatizedClozeChild1)
+      .toEqual(jasmine.objectContaining({
+        'id': 'text-field_1',
+        'type': 'text-field-simple'
+      }));
+
+    const sanatizedClozeChild2 = (sanitizedUnitDefinition.pages[0].sections[0].elements[0] as ClozeElement)
+      .document.content[0].content[1]?.attrs?.model;
+    expect(sanatizedClozeChild2)
+      .toEqual(jasmine.objectContaining({
+        'id': 'drop-list_1',
+        'type': 'drop-list-simple'
+      }));
+
+    const sanatizedClozeChild3 = (sanitizedUnitDefinition.pages[0].sections[0].elements[0] as ClozeElement)
+      .document.content[0].content[2]?.attrs?.model;
+    expect(sanatizedClozeChild3)
+      .toEqual(jasmine.objectContaining({
+        'id': 'toggle_button_1',
+        'type': 'toggle-button'
+      }));
+  });
 });

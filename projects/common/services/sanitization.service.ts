@@ -307,7 +307,7 @@ export class SanitizationService {
   /* before: simple string[]; after: DragNDropValueObject with ID and value.
   * Needs to be done to selectable options and the possibly set preset (value). */
   private handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
-    const newElement = element;
+    const newElement = { ...element };
     if (newElement.options) {
       console.warn('New dropList value IDs have been generated');
       newElement.value = [];
@@ -339,14 +339,13 @@ export class SanitizationService {
   }
 
   private static handleLikertRowElement(element: LikertRowElement): LikertRowElement {
-    const newElement = element;
-    if (newElement.rowLabel) {
-      return newElement;
+    if (element.rowLabel) {
+      return element;
     }
     return {
-      ...newElement,
+      ...element,
       rowLabel: {
-        text: newElement.text,
+        text: element.text,
         imgSrc: null,
         position: 'above'
       }

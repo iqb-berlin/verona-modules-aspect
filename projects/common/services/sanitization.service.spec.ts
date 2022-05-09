@@ -13,16 +13,6 @@ import * as sampleUnit112TextFields from 'test-data/unit-definitions/test112-Tex
 import * as sampleUnit130TextFields from 'test-data/unit-definitions/test130-textfields.json';
 import { ClozeElement } from 'common/interfaces/elements';
 
-const unitDefStub: Record<string, any> = {
-  'unitDefinitionType': 'iqb-aspect-definition@1.1.0',
-  'pages': [{
-    'sections': [
-      {
-        'elements': []
-      }]
-  }]
-};
-
 describe('SanitizationService', () => {
   let service: SanitizationService;
   beforeEach(() => {
@@ -319,6 +309,17 @@ describe('SanitizationService', () => {
   });
 
   it('should rename cloze children with "simple" affix', () => {
+    const unitDefStub: Record<string, any> = {
+      'type': 'aspect-unit-definition',
+      'version': '3.4.0',
+      'pages': [{
+        'sections': [
+          {
+            'elements': []
+          }]
+      }]
+    };
+
     const unitDef = {
       ...unitDefStub,
       'pages': [{

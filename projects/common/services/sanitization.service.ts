@@ -31,6 +31,7 @@ export class SanitizationService {
 
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
+  // TODO: isUnitDefinitionOutdated must not set the unitDefinitionVersion
   static isUnitDefinitionOutdated(unitDefinition: Unit): boolean {
     SanitizationService.unitDefinitionVersion =
       SanitizationService.readUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
@@ -234,6 +235,7 @@ export class SanitizationService {
     let childElements: UIElement[];
     let doc: ClozeDocument;
 
+    // TODO: Put this after repair child element types and create a sub method
     if (element.document) {
       childElements = ClozeUtils.getClozeChildElements((element as ClozeElement));
       doc = element.document as ClozeDocument;
@@ -246,12 +248,14 @@ export class SanitizationService {
       doc = SanitizationService.createClozeDocument(element);
     }
 
+    // TODO: Put this before the previous section and create a sub method
     // repair child element types
     childElements.forEach(childElement => {
       childElement.type = childElement.type === 'text-field' ? 'text-field-simple' : childElement.type;
       childElement.type = childElement.type === 'drop-list' ? 'drop-list-simple' : childElement.type;
     });
 
+    // TODO: create a sub method
     return {
       ...element,
       document: {

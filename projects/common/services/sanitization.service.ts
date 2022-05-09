@@ -231,11 +231,6 @@ export class SanitizationService {
   private handleClozeElement(element: Record<string, UIElementValue>): ClozeElement {
     if (!element.document && (!element.parts || !element.text)) throw Error('Can\'t read Cloze Element');
 
-    // Version 2.0.0 needs to be sanatized as well because child elements were not sanatized before
-    if (SanitizationService.unitDefinitionVersion && SanitizationService.unitDefinitionVersion[0] >= 3) {
-      return element as ClozeElement;
-    }
-
     let childElements: UIElement[];
     let doc: ClozeDocument;
 

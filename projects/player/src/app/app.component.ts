@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { TranslateService } from '@ngx-translate/core';
-import { PlayerConfig, VopStartCommand } from 'verona/models/verona';
+import { PlayerConfig, VopStartCommand } from 'player/modules/verona/models/verona';
 import { ElementModelElementCodeMappingService } from './services/element-model-element-code-mapping.service';
-import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
-import { VeronaPostService } from 'verona/services/verona-post.service';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
+import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
 import { UnitStateService } from './services/unit-state.service';
@@ -16,7 +16,7 @@ import { UnitFactory } from 'common/util/unit.factory';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { UnitUtils } from 'common/util/unit-utils';
 import { DragNDropValueObject, UIElement } from 'common/interfaces/elements';
-import { LogService } from 'logging/services/log.service';
+import { LogService } from 'player/modules/logging/services/log.service';
 
 @Component({
   selector: 'aspect-player',

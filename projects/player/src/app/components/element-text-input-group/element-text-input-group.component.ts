@@ -62,7 +62,7 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
 
   onFocusChanged(inputElement: HTMLElement | null,
                  elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
-    if (this.elementModel.inputAssistance !== 'none') {
+    if (this.elementModel) {
       this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
     }
     if (this.elementModel.showSoftwareKeyboard && !this.elementModel.readOnly) {

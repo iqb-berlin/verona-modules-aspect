@@ -100,6 +100,7 @@ export class SanitizationService {
     if (newElement.type === 'toggle-button') {
       newElement = SanitizationService.handleToggleButtonElement(newElement as ToggleButtonElement);
     }
+    // TODO: drop-list-simple?
     if (newElement.type === 'drop-list') {
       newElement = this.handleDropListElement(newElement as Record<string, UIElementValue>);
     }

@@ -236,7 +236,7 @@ export class SanitizationService {
     let childElements: UIElement[];
     let doc: ClozeDocument;
 
-    // TODO: Put this after repair child element types and create a sub method
+    // TODO: create a sub method
     if (element.document) {
       childElements = ClozeUtils.getClozeChildElements((element as ClozeElement));
       doc = element.document as ClozeDocument;
@@ -250,7 +250,7 @@ export class SanitizationService {
       doc = SanitizationService.createClozeDocument(element);
     }
 
-    // TODO: Put this before the previous section and create a sub method
+    // TODO: and create a sub method
     // repair child element types
     childElements.forEach(childElement => {
       childElement.type = childElement.type === 'text-field' ? 'text-field-simple' : childElement.type;

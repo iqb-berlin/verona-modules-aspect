@@ -43,8 +43,8 @@ or
 ### Build
 This produces an HTML file in the `dist` folder, named `verona-{module}-aspect-{version}.html`.
 
->npm run build-editor-prod
+>npm run build-editor
 
 or
 
->npm run build-player-prod
+>npm run build-player

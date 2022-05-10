@@ -10,10 +10,10 @@ import { VeronaSubscriptionService } from 'verona/services/verona-subscription.s
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValidationService } from '../../services/validation.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
-import { TextAreaComponent } from 'common/components/ui-elements/text-area.component';
-import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
+import { TextAreaComponent } from 'common/ui-elements/text-area/text-area.component';
+import { TextFieldComponent } from 'common/ui-elements/text-field/text-field.component';
 import { KeyboardService } from '../../services/keyboard.service';
-import { SpellCorrectComponent } from 'common/components/ui-elements/spell-correct.component';
+import { SpellCorrectComponent } from 'common/ui-elements/spell-correct/spell-correct.component';
 import { DeviceService } from '../../services/device.service';
 import { InputElement, SpellCorrectElement, TextAreaElement, TextFieldElement } from 'common/classes/element';
 

@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ElementStyling } from 'common/interfaces/elements';
+import { BasicStyles, ExtendedStyles } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-style-properties',
@@ -163,7 +163,7 @@ import { ElementStyling } from 'common/interfaces/elements';
   `
 })
 export class ElementStylePropertiesComponent {
-  @Input() styles: ElementStyling = {};
+  @Input() styles!: BasicStyles & ExtendedStyles;
   @Output() updateModel = new EventEmitter<{
     property: string;
     value: string | boolean,

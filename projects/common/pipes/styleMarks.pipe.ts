@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ClozeMarks } from '../interfaces/cloze';
+import { ClozeMarks } from 'common/ui-elements/cloze/cloze';
 
 @Pipe({
   name: 'styleMarks'

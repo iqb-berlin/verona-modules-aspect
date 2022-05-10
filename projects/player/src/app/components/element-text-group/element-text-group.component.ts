@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { TextComponent } from 'common/components/ui-elements/text.component';
+import { TextComponent } from 'common/ui-elements/text/text.component';
 import { TextMarkingService } from '../../services/text-marking.service';
 import { NativeEventService } from '../../services/native-event.service';
 import { UnitStateService } from '../../services/unit-state.service';

@@ -5,7 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from './element-component.directive';
 import { ValueChangeElement } from 'common/interfaces/elements';
-import { AudioElement, VideoElement } from 'common/classes/element';
+import { AudioElement } from 'common/ui-elements/audio/audio';
+import { VideoElement } from 'common/ui-elements/video/video';
 
 @Directive()
 export abstract class MediaPlayerElementComponent extends ElementComponent implements OnInit, OnDestroy {

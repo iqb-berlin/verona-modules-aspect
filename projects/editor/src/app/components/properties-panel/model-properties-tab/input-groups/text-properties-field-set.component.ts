@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { DialogService } from '../../../../services/dialog.service';
 import { SelectionService } from '../../../../services/selection.service';
-import { TextElement } from 'common/classes/element';
+import { TextElement } from 'common/ui-elements/text/text';
 
 @Component({
   selector: 'aspect-text-properties-field-set',

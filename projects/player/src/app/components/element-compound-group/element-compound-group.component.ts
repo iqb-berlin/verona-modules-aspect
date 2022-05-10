@@ -12,7 +12,7 @@ import { KeypadService } from '../../services/keypad.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { KeyboardService } from '../../services/keyboard.service';
 import { DeviceService } from '../../services/device.service';
-import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-field-simple.component';
+import { TextFieldSimpleComponent } from 'common/ui-elements/cloze/text-field-simple.component';
 import { ClozeElement, InputElement, LikertElement } from 'common/classes/element';
 
 @Component({

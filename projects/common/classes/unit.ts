@@ -43,7 +43,9 @@ export class Section {
   activeAfterID: string | null = null;
 
   constructor(section?: Partial<Section>) {
-    this.elements = section?.elements?.map(element => ElementFactory.createElement(element) as PositionedUIElement) || [];
+    this.elements =
+      section?.elements?.map(element => ElementFactory.createElement(element.type, element) as PositionedUIElement) ||
+      [];
     Object.assign(this, section);
   }
 

@@ -1,90 +1,98 @@
 import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
-import { TextComponent } from '../components/ui-elements/text.component';
-import { ButtonComponent } from '../components/ui-elements/button.component';
-import { TextFieldComponent } from '../components/ui-elements/text-field.component';
-import { TextAreaComponent } from '../components/ui-elements/text-area.component';
-import { CheckboxComponent } from '../components/ui-elements/checkbox.component';
-import { DropdownComponent } from '../components/ui-elements/dropdown.component';
-import { RadioButtonGroupComponent } from '../components/ui-elements/radio-button-group.component';
-import { ImageComponent } from '../components/ui-elements/image.component';
-import { AudioComponent } from '../components/ui-elements/audio.component';
-import { VideoComponent } from '../components/ui-elements/video.component';
-import { LikertComponent } from '../components/ui-elements/likert.component';
-import { RadioGroupImagesComponent } from '../components/ui-elements/radio-group-images.component';
-import { DropListComponent } from '../components/ui-elements/drop-list.component';
-import { ClozeComponent } from '../components/ui-elements/cloze.component';
-import { SliderComponent } from '../components/ui-elements/slider.component';
-import { SpellCorrectComponent } from '../components/ui-elements/spell-correct.component';
-import { FrameComponent } from '../components/ui-elements/frame.component';
+import { TextComponent } from '../ui-elements/text/text.component';
+import { ButtonComponent } from '../ui-elements/button/button.component';
+import { TextFieldComponent } from '../ui-elements/text-field/text-field.component';
+import { TextAreaComponent } from '../ui-elements/text-area/text-area.component';
+import { CheckboxComponent } from '../ui-elements/checkbox/checkbox.component';
+import { DropdownComponent } from '../ui-elements/dropdown/dropdown.component';
+import { RadioButtonGroupComponent } from '../ui-elements/radio/radio-button-group.component';
+import { ImageComponent } from '../ui-elements/image/image.component';
+import { AudioComponent } from '../ui-elements/audio/audio.component';
+import { VideoComponent } from '../ui-elements/video/video.component';
+import { LikertComponent } from '../ui-elements/likert/likert.component';
+import { RadioGroupImagesComponent } from '../ui-elements/radio-complex/radio-group-images.component';
+import { DropListComponent } from '../ui-elements/drop-list/drop-list.component';
+import { ClozeComponent } from '../ui-elements/cloze/cloze.component';
+import { SliderComponent } from '../ui-elements/slider/slider.component';
+import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correct.component';
+import { FrameComponent } from '../ui-elements/frame/frame.component';
 import { ElementComponent } from '../directives/element-component.directive';
 import {
-  AudioElement,
-  ButtonElement,
-  CheckboxElement, ClozeElement,
-  DropdownElement, DropListElement, DropListSimpleElement, FrameElement,
-  ImageElement,
-  LikertElement, RadioButtonGroupComplexElement,
-  RadioButtonGroupElement, SliderElement, SpellCorrectElement,
-  TextAreaElement,
-  TextElement,
-  TextFieldElement,
-  TextFieldSimpleElement, ToggleButtonElement,
-  UIElement,
-  VideoElement
+  BasicStyles, ExtendedStyles, PlayerProperties, PositionProperties,
+  UIElement
 } from 'common/classes/element';
 import {
-  BasicStyles,
-  PlayerProperties,
-  PositionProperties,
   TextImageLabel,
   UIElementValue
 } from 'common/interfaces/elements';
+import { TextElement } from 'common/ui-elements/text/text';
+import { ButtonElement } from 'common/ui-elements/button/button';
+import { TextFieldElement } from 'common/ui-elements/text-field/text-field';
+import { TextFieldSimpleElement } from 'common/ui-elements/cloze/text-field-simple';
+import { CheckboxElement } from 'common/ui-elements/checkbox/checkbox';
+import { TextAreaElement } from 'common/ui-elements/text-area/text-area';
+import { DropdownElement } from 'common/ui-elements/dropdown/dropdown';
+import { RadioButtonGroupElement } from 'common/ui-elements/radio/radio-button-group';
+import { VideoElement } from 'common/ui-elements/video/video';
+import { ImageElement } from 'common/ui-elements/image/image';
+import { AudioElement } from 'common/ui-elements/audio/audio';
+import { LikertElement } from 'common/ui-elements/likert/likert';
+import { RadioButtonGroupComplexElement } from 'common/ui-elements/radio-complex/radio-button-group-complex';
+import { DropListElement } from 'common/ui-elements/drop-list/drop-list';
+import { DropListSimpleElement } from 'common/ui-elements/cloze/drop-list-simple';
+import { ClozeElement } from 'common/ui-elements/cloze/cloze';
+import { SliderElement } from 'common/ui-elements/slider/slider';
+import { SpellCorrectElement } from 'common/ui-elements/spell-correct/spell-correct';
+import { FrameElement } from 'common/ui-elements/frame/frame';
+import { ToggleButtonElement } from 'common/ui-elements/cloze/toggle-button';
 
 export abstract class ElementFactory {
-  static createElement(element: Partial<UIElement>): UIElement {
-    switch (element.type) {
+  // static createElement(element: Partial<UIElement>): UIElement {
+  static createElement(elementType: string, defaultValues: Partial<UIElement> = {}): UIElement {
+    console.log('createElement', elementType, defaultValues);
+    switch (elementType) {
       case 'text':
-        return new TextElement(element as TextElement);
+        return new TextElement(defaultValues as TextElement);
       case 'button':
-        return new ButtonElement(element as ButtonElement);
+        return new ButtonElement(defaultValues as ButtonElement);
       case 'text-field':
-        return new TextFieldElement(element as TextFieldElement);
+        return new TextFieldElement(defaultValues as TextFieldElement);
       case 'text-field-simple':
-        return new TextFieldSimpleElement(element as TextFieldSimpleElement);
+        return new TextFieldSimpleElement(defaultValues as TextFieldSimpleElement);
       case 'text-area':
-        return new TextAreaElement(element as TextAreaElement);
+        return new TextAreaElement(defaultValues as TextAreaElement);
       case 'checkbox':
-        return new CheckboxElement(element as CheckboxElement);
+        return new CheckboxElement(defaultValues as CheckboxElement);
       case 'dropdown':
-        return new DropdownElement(element as DropdownElement);
+        return new DropdownElement(defaultValues as DropdownElement);
       case 'radio':
-        return new RadioButtonGroupElement(element as RadioButtonGroupElement);
+        return new RadioButtonGroupElement(defaultValues as RadioButtonGroupElement);
       case 'image':
-        return new ImageElement(element as ImageElement);
+        return new ImageElement(defaultValues as ImageElement);
       case 'audio':
-        return new AudioElement(element as AudioElement);
+        return new AudioElement(defaultValues as AudioElement);
       case 'video':
-        return new VideoElement(element as VideoElement);
+        return new VideoElement(defaultValues as VideoElement);
       case 'likert':
-        return new LikertElement(element as LikertElement);
+        return new LikertElement(defaultValues as LikertElement);
       case 'radio-group-images':
-        return new RadioButtonGroupComplexElement(element as RadioButtonGroupComplexElement);
+        return new RadioButtonGroupComplexElement(defaultValues as RadioButtonGroupComplexElement);
       case 'drop-list':
-        return new DropListElement(element as DropListElement);
+        return new DropListElement(defaultValues as DropListElement);
       case 'drop-list-simple':
-        return new DropListSimpleElement(element as DropListSimpleElement);
+        return new DropListSimpleElement(defaultValues as DropListSimpleElement);
       case 'cloze':
-        return new ClozeElement(element as ClozeElement);
+        return new ClozeElement(defaultValues as ClozeElement);
       case 'slider':
-        return new SliderElement(element as SliderElement);
+        return new SliderElement(defaultValues as SliderElement);
       case 'spell-correct':
-        return new SpellCorrectElement(element as SpellCorrectElement);
+        return new SpellCorrectElement(defaultValues as SpellCorrectElement);
       case 'frame':
-        return new FrameElement(element as FrameElement);
+        return new FrameElement(defaultValues as FrameElement);
       case 'toggle-button':
-        return new ToggleButtonElement(element as ToggleButtonElement);
+        return new ToggleButtonElement(defaultValues as ToggleButtonElement);
       default:
-        throw new Error(`ElementType ${element.type} not found!`);
+        throw new Error(`ElementType ${elementType} not found!`);
     }
   }
 
@@ -107,16 +115,16 @@ export abstract class ElementFactory {
     };
   }
 
-  static initStylingProps(defaults?: Record<string, UIElementValue>): BasicStyles {
-    if (!defaults) return {} as BasicStyles;
+  // static initStylingProps(defaults?: BasicStyles & ExtendedStyles): BasicStyles {
+  static initStylingProps(defaults?: any): BasicStyles {
     return {
-      fontColor: defaults.fontColor !== undefined ? defaults.fontColor as string : '#000000',
-      font: defaults.font !== undefined ? defaults.font as string : 'Roboto',
-      fontSize: defaults.fontSize !== undefined ? defaults.fontSize as number : 20,
-      bold: defaults.bold !== undefined ? defaults.bold as boolean : false,
-      italic: defaults.italic !== undefined ? defaults.italic as boolean : false,
-      underline: defaults.underline !== undefined ? defaults.underline as boolean : false,
-      backgroundColor: defaults.backgroundColor !== undefined ? defaults.backgroundColor as string : '#d3d3d3'
+      fontColor: defaults?.fontColor !== undefined ? defaults.fontColor as string : '#000000',
+      font: defaults?.font !== undefined ? defaults.font as string : 'Roboto',
+      fontSize: defaults?.fontSize !== undefined ? defaults.fontSize as number : 20,
+      bold: defaults?.bold !== undefined ? defaults.bold as boolean : false,
+      italic: defaults?.italic !== undefined ? defaults.italic as boolean : false,
+      underline: defaults?.underline !== undefined ? defaults.underline as boolean : false,
+      backgroundColor: defaults?.backgroundColor !== undefined ? defaults.backgroundColor as string : '#d3d3d3'
     };
   }
 
@@ -196,7 +204,7 @@ export abstract class ElementFactory {
       case 'frame':
         return componentFactoryResolver.resolveComponentFactory(FrameComponent);
       default:
-        throw new Error('unknown element');
+        throw new Error('unknown element: ' + elementType);
     }
   }
 }

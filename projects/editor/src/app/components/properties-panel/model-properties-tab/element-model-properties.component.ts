@@ -13,7 +13,9 @@ import {
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { LikertElement, LikertRowElement, UIElement } from 'common/classes/element';
+import { UIElement } from 'common/classes/element';
+import { LikertRowElement } from 'common/ui-elements/likert/likert-row';
+import { LikertElement } from 'common/ui-elements/likert/likert';
 
 @Component({
   selector: 'aspect-element-model-properties-component',

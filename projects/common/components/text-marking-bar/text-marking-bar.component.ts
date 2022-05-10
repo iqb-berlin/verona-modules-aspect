@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { TextElement } from 'common/classes/element';
+import { TextElement } from 'common/ui-elements/text/text';
 
 @Component({
   selector: 'aspect-text-marking-bar',

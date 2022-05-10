@@ -3,8 +3,7 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
-import { PositionProperties } from 'common/interfaces/elements';
-import { PositionedUIElement } from 'common/classes/element';
+import { PositionedUIElement, PositionProperties } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-postion-properties',
@@ -49,7 +48,7 @@ export class ElementPositionPropertiesComponent {
   @Input() dimensions!: { width: number; height: number; dynamicWidth: boolean; };
   @Input() positionProperties: PositionProperties | undefined;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
+    new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
 
   constructor(private unitService: UnitService, public selectionService: SelectionService) { }
 

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextComponent } from 'common/components/ui-elements/text.component';
+import { TextComponent } from 'common/ui-elements/text/text.component';
 import { TextElement } from 'common/classes/element';
 
 @Component({

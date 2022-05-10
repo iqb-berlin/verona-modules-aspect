@@ -1,29 +1,35 @@
 import { Injectable } from '@angular/core';
 import packageJSON from '../../../package.json';
-import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from 'common/interfaces/cloze';
 import { ClozeUtils } from 'common/util/cloze';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import ToggleButtonExtension from 'common/tiptap-editor-extensions/toggle-button';
-import DropListExtension from 'common/tiptap-editor-extensions/drop-list';
-import TextFieldExtension from 'common/tiptap-editor-extensions/text-field';
+import ToggleButtonExtension from 'common/ui-elements/cloze/tiptap-editor-extensions/toggle-button';
+import DropListExtension from 'common/ui-elements/cloze/tiptap-editor-extensions/drop-list';
+import TextFieldExtension from 'common/ui-elements/cloze/tiptap-editor-extensions/text-field';
 import { IDService } from './id.service';
 import { Page, Section, Unit } from 'common/classes/unit';
 import {
-  ClozeElement, DropListElement,
-  InputElement,
-  LikertElement, LikertRowElement,
-  PositionedUIElement,
-  RadioButtonGroupElement, TextElement, ToggleButtonElement,
+  BasicStyles, ExtendedStyles,
+  InputElement, PlayerProperties,
+  PositionedUIElement, PositionProperties,
   UIElement
 } from 'common/classes/element';
 import {
   DragNDropValueObject,
-  ElementStyling,
-  PlayerProperties,
-  PositionProperties,
   UIElementValue
 } from 'common/interfaces/elements';
+import { LikertElement } from 'common/ui-elements/likert/likert';
+import { RadioButtonGroupElement } from 'common/ui-elements/radio/radio-button-group';
+import { ToggleButtonElement } from 'common/ui-elements/cloze/toggle-button';
+import { LikertRowElement } from 'common/ui-elements/likert/likert-row';
+import { TextElement } from 'common/ui-elements/text/text';
+import {
+  ClozeDocument,
+  ClozeDocumentParagraph,
+  ClozeDocumentParagraphPart,
+  ClozeElement
+} from 'common/ui-elements/cloze/cloze';
+import { DropListElement } from 'common/ui-elements/drop-list/drop-list';
 
 @Injectable({
   providedIn: 'root'
@@ -89,7 +95,7 @@ export class SanitizationService {
     let newElement: Partial<UIElement> = {
       ...element,
       position: SanitizationService.getPositionProps(element, sectionDynamicPositioning),
-      styling: SanitizationService.getStyleProps(element),
+      styling: SanitizationService.getStyleProps(element) as unknown as BasicStyles & ExtendedStyles,
       player: SanitizationService.getPlayerProps(element)
     };
     if (newElement.type === 'text') {
@@ -173,9 +179,9 @@ export class SanitizationService {
   *  surfaceProps. Even older versions had them in the root of the object, which is uses as last resort.
   *  The styles object then has all other properties of the element, but that is not a problem
   *  since the factory methods only use the values they care for and all others are discarded. */
-  private static getStyleProps(element: Record<string, UIElementValue>): ElementStyling {
+  private static getStyleProps(element: Record<string, UIElementValue>): Record<string, UIElementValue> {
     if (element.styling !== undefined) {
-      return element.styling as ElementStyling;
+      return element.styling as Record<string, UIElementValue>;
     }
     if (element.fontProps !== undefined) {
       return {
@@ -192,7 +198,7 @@ export class SanitizationService {
         lineColoringColor: element.lineColoringColor as string | undefined
       };
     }
-    return element as ElementStyling;
+    return element;
   }
 
   private static getPlayerProps(element: Record<string, UIElementValue>): PlayerProperties {

@@ -11,7 +11,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { SelectionService } from '../../../services/selection.service';
 import { CompoundElementComponent } from
     'common/directives/compound-element.directive';
-import { ClozeComponent } from 'common/components/ui-elements/cloze.component';
+import { ClozeComponent } from 'common/ui-elements/cloze/cloze.component';
 import { CompoundChildOverlayComponent } from 'common/components/compound-child-overlay.component';
 import { UIElement } from 'common/classes/element';
 
@@ -33,6 +33,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    console.log('t1', this.element);
     const componentFactory = ElementFactory.getComponentFactory(this.element.type, this.componentFactoryResolver);
     this.childComponent = this.elementContainer.createComponent(componentFactory);
     this.childComponent.instance.elementModel = this.element;

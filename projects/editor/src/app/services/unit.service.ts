@@ -10,27 +10,26 @@ import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { ElementFactory } from 'common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
-import { Copy } from 'common/util/copy';
-import { ClozeDocument } from 'common/interfaces/cloze';
 import { UnitUtils } from 'common/util/unit-utils';
 import { ArrayUtils } from 'common/util/array';
 import { ClozeUtils } from 'common/util/cloze';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Page, Section, Unit } from 'common/classes/unit';
 import {
-  ClozeElement, DropListElement, InputElement,
-  InputElementValue,
-  LikertElement,
-  LikertRowElement, PositionedUIElement,
-  TextElement,
+  InputElement,
+  InputElementValue, PlayerProperties, PositionedUIElement,
   UIElement
 } from 'common/classes/element';
 import {
   DragNDropValueObject, PlayerElement,
-  PlayerProperties,
   TextImageLabel,
   UIElementType
 } from 'common/interfaces/elements';
+import { LikertElement } from 'common/ui-elements/likert/likert';
+import { ClozeDocument, ClozeElement } from 'common/ui-elements/cloze/cloze';
+import { LikertRowElement } from 'common/ui-elements/likert/likert-row';
+import { TextElement } from 'common/ui-elements/text/text';
+import { DropListElement } from 'common/ui-elements/drop-list/drop-list';
 
 @Injectable({
   providedIn: 'root'
@@ -122,6 +121,7 @@ export class UnitService {
   async addElementToSection(elementType: UIElementType,
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
+    console.log('addElementToSection', elementType);
     let newElement: PositionedUIElement;
     if (['audio', 'video', 'image'].includes(elementType)) {
       let mediaSrc = '';
@@ -137,22 +137,24 @@ export class UnitService {
           break;
         // no default
       }
-      newElement = ElementFactory.createElement({
-        type: elementType,
-        id: this.idService.getNewID(elementType),
-        src: mediaSrc,
-        position: {
-          dynamicPositioning: section.dynamicPositioning
-        }
-      } as unknown as UIElement) as PositionedUIElement;
+      newElement = ElementFactory.createElement(
+        elementType, {
+          type: elementType,
+          id: this.idService.getNewID(elementType),
+          src: mediaSrc,
+          position: {
+            dynamicPositioning: section.dynamicPositioning
+          }
+        } as unknown as UIElement) as PositionedUIElement;
     } else {
-      newElement = ElementFactory.createElement({
-        type: elementType,
-        id: this.idService.getNewID(elementType),
-        position: {
-          dynamicPositioning: section.dynamicPositioning
-        }
-      } as unknown as UIElement) as PositionedUIElement;
+      newElement = ElementFactory.createElement(
+        elementType, {
+          type: elementType,
+          id: this.idService.getNewID(elementType),
+          position: {
+            dynamicPositioning: section.dynamicPositioning
+          }
+        } as unknown as UIElement) as PositionedUIElement;
     }
     if (coordinates && section.dynamicPositioning) {
       newElement.position.gridColumn = coordinates.x;
@@ -275,21 +277,22 @@ export class UnitService {
         (element as LikertElement).rows.forEach(row => {
           row.readOnly = value as boolean;
         });
-      } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumn',
-        'gridColumnRange', 'gridRow', 'gridRowRange', 'marginLeft', 'marginRight', 'marginTop',
-        'marginBottom', 'zIndex'].includes(property)) {
-        element.position![property] = Copy.getCopy(value);
-      } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',
-        'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor', 'selectionColor',
-        'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
-        element.styling![property] = Copy.getCopy(value);
-      } else if (['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',
-        'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
-        'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
-        'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'].includes(property)) {
-        element.player![property] = Copy.getCopy(value);
+      // } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumn',
+      //   'gridColumnRange', 'gridRow', 'gridRowRange', 'marginLeft', 'marginRight', 'marginTop',
+      //   'marginBottom', 'zIndex'].includes(property)) {
+      //   element.position![property] = Copy.getCopy(value);
+      // } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',
+      //   'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor', 'selectionColor',
+      //   'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
+      //   element.styling![property] = Copy.getCopy(value);
+      // } else if (['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',
+      //   'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
+      //   'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
+      //   'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'].includes(property)) {
+      //   element.player![property] = Copy.getCopy(value);
       } else {
-        element[property] = Copy.getCopy(value);
+        // element[property] = Copy.getCopy(value);
+        element.setProperty(property, value);
       }
     });
     this.elementPropertyUpdated.next();

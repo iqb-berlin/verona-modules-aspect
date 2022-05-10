@@ -4,8 +4,10 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ElementComponent } from '../directives/element-component.directive';
-import { DropListSimpleElement, TextFieldSimpleElement, ToggleButtonElement } from 'common/classes/element';
 import { ValueChangeElement } from 'common/interfaces/elements';
+import { ToggleButtonElement } from 'common/ui-elements/cloze/toggle-button';
+import { TextFieldSimpleElement } from 'common/ui-elements/cloze/text-field-simple';
+import { DropListSimpleElement } from 'common/ui-elements/cloze/drop-list-simple';
 
 @Component({
   selector: 'aspect-compound-child-overlay',

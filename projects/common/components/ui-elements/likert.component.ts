@@ -4,7 +4,7 @@ import {
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
 import { ElementComponent } from '../../directives/element-component.directive';
-import { LikertElement, LikertRowElement } from '../../interfaces/elements';
+import { LikertElement, LikertRowElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-likert',

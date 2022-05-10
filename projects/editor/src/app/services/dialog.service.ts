@@ -12,12 +12,12 @@ import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-li
 import {
   TextImageLabel,
   DragNDropValueObject,
-  LikertRowElement,
   PlayerProperties
 } from 'common/interfaces/elements';
 import { ClozeDocument } from 'common/interfaces/cloze';
 import { RichTextEditorSimpleComponent } from '../text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from '../components/dialogs/rich-text-simple-edit-dialog.component';
+import { LikertRowElement } from 'common/classes/element';
 
 @Injectable({
   providedIn: 'root'

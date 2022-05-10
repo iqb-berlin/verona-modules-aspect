@@ -8,13 +8,12 @@ import { UnitService } from '../../../services/unit.service';
 import {
   TextImageLabel,
   DragNDropValueObject,
-  InputElementValue,
-  LikertElement, LikertRowElement,
-  UIElement
+  InputElementValue
 } from 'common/interfaces/elements';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LikertElement, LikertRowElement, UIElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-model-properties-component',

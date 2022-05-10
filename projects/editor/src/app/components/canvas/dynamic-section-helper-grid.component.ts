@@ -2,9 +2,10 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
   Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
-import { UIElement, UIElementType } from 'common/interfaces/elements';
 import { UnitService } from '../../services/unit.service';
-import { Section } from 'common/interfaces/unit';
+import { UIElementType } from 'common/interfaces/elements';
+import { UIElement } from 'common/classes/element';
+import { Section } from 'common/classes/unit';
 
 @Component({
   selector: '[app-dynamic-section-helper-grid]',

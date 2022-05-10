@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { SpellCorrectElement } from '../../interfaces/elements';
+import { SpellCorrectElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-spell-correct',

@@ -1,9 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
-import {
-  ClozeElement, InputElement, LikertElement
-} from 'common/interfaces/elements';
 import { ClozeUtils } from 'common/util/cloze';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -16,6 +13,7 @@ import { ElementFormGroupDirective } from '../../directives/element-form-group.d
 import { KeyboardService } from '../../services/keyboard.service';
 import { DeviceService } from '../../services/device.service';
 import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-field-simple.component';
+import { ClozeElement, InputElement, LikertElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-compound-group',

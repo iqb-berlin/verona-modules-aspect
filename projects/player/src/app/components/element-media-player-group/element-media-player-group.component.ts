@@ -1,14 +1,12 @@
 import {
   AfterViewInit, Component, Input, OnInit, ViewChild
 } from '@angular/core';
-import {
-  AudioElement, VideoElement, UIElement
-} from 'common/interfaces/elements';
 import { MediaPlayerService } from '../../services/media-player.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
+import { AudioElement, UIElement, VideoElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-media-player-group',

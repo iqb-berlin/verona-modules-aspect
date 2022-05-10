@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { CheckboxElement } from '../../interfaces/elements';
+import { CheckboxElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-checkbox',

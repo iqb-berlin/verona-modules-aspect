@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { MatSlider } from '@angular/material/slider';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { SliderElement } from '../../interfaces/elements';
+import { SliderElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-slider',

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ElementComponent } from '../../directives/element-component.directive';
-import { FrameElement } from '../../interfaces/elements';
+import { FrameElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-frame',

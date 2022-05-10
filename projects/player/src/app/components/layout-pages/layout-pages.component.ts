@@ -4,7 +4,7 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NativeEventService } from '../../services/native-event.service';
-import { Page } from 'common/interfaces/unit';
+import { Page } from 'common/classes/unit';
 
 @Component({
   selector: '[aspect-layout-pages]',

@@ -4,7 +4,7 @@ import {
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/ui-elements/text.component';
-import { TextElement } from 'common/interfaces/elements';
+import { TextElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-floating-marking-bar',

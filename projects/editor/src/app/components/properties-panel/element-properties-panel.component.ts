@@ -11,9 +11,9 @@ import { MessageService } from 'common/services/message.service';
 import {
   TextImageLabel,
   DragNDropValueObject,
-  UIElement,
   UIElementValue
 } from 'common/interfaces/elements';
+import { UIElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-properties',

@@ -2,7 +2,7 @@ import {
   Component, Output, EventEmitter, Input
 } from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { TextAreaElement } from '../../interfaces/elements';
+import { TextAreaElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-text-area',

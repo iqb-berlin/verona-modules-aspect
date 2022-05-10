@@ -8,10 +8,9 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
-import { Section } from 'common/interfaces/unit';
-import { UIElement } from 'common/interfaces/elements';
-import { UnitFactory } from 'common/util/unit.factory';
 import { MessageService } from 'common/services/message.service';
+import { Section } from 'common/classes/unit';
+import { UIElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -315,7 +314,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
     // TODO try catch
     if (!pastedText) return;
     try {
-      const newSection = UnitFactory.createSection(JSON.parse(pastedText) as Section);
+      const newSection = new Section(JSON.parse(pastedText) as Section);
       this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
     } catch (e) {
       this.messageService.showError('Fehler beim Lesen der Sektion');

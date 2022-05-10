@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  UIElement, UIElementType
-} from 'common/interfaces/elements';
 import { ElementGroup, ElementGroupName } from '../../models/element-group';
+import { UIElement } from 'common/classes/element';
+import { UIElementType } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-element-group-selection',

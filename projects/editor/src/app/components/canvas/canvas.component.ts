@@ -7,8 +7,8 @@ import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';
-import { Page, Section } from 'common/interfaces/unit';
-import { PositionedElement, UIElement } from 'common/interfaces/elements';
+import { Page, Section } from 'common/classes/unit';
+import { PositionedUIElement, UIElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-page-canvas',
@@ -35,14 +35,14 @@ export class CanvasComponent {
   }
 
   elementDropped(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {
-    const selectedElements = this.selectionService.getSelectedElements() as PositionedElement[];
+    const selectedElements = this.selectionService.getSelectedElements() as PositionedUIElement[];
 
     if (event.previousContainer !== event.container) {
       this.moveElementsBetweenSections(selectedElements,
         event.previousContainer.data.sectionIndex,
         event.container.data.sectionIndex);
     } else {
-      selectedElements.forEach((element: PositionedElement) => {
+      selectedElements.forEach((element: PositionedUIElement) => {
         let newXPosition = element.position.xPosition + event.distance.x;
         if (newXPosition < 0) {
           newXPosition = 0;

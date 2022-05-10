@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { TextElement } from 'common/interfaces/elements';
 import { TextComponent } from 'common/components/ui-elements/text.component';
 import { TextMarkingService } from '../../services/text-marking.service';
 import { NativeEventService } from '../../services/native-event.service';
@@ -11,6 +10,7 @@ import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
+import { TextElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-text-group',

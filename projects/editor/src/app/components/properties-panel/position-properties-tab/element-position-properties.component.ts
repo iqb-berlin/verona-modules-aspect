@@ -3,7 +3,8 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
-import { PositionedElement, PositionProperties } from 'common/interfaces/elements';
+import { PositionProperties } from 'common/interfaces/elements';
+import { PositionedUIElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-postion-properties',
@@ -53,6 +54,6 @@ export class ElementPositionPropertiesComponent {
   constructor(private unitService: UnitService, public selectionService: SelectionService) { }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
-    this.unitService.alignElements(this.selectionService.getSelectedElements() as PositionedElement[], direction);
+    this.unitService.alignElements(this.selectionService.getSelectedElements() as PositionedUIElement[], direction);
   }
 }

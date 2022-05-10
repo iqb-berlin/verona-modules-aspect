@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
-  CdkDrag, CdkDropList, moveItemInArray, transferArrayItem, copyArrayItem
+  CdkDrag, CdkDropList, moveItemInArray
 } from '@angular/cdk/drag-drop';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { DragNDropValueObject, DropListElement } from '../../interfaces/elements';
+import { DropListElement } from 'common/classes/element';
+import { DragNDropValueObject } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-drop-list',

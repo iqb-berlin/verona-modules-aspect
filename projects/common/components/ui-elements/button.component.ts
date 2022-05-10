@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ElementComponent } from '../../directives/element-component.directive';
-import { ButtonElement } from '../../interfaces/elements';
+import { ButtonElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-button',

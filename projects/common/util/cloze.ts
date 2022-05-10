@@ -1,5 +1,5 @@
-import { ClozeElement, InputElement } from '../interfaces/elements';
 import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from '../interfaces/cloze';
+import { ClozeElement, InputElement } from 'common/classes/element';
 
 export abstract class ClozeUtils {
   static getClozeChildElements(clozeElement: ClozeElement): InputElement[] {

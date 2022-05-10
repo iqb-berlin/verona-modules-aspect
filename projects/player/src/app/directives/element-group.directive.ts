@@ -1,7 +1,7 @@
 import { Directive, Input } from '@angular/core';
-import { InputElementValue, UIElement } from 'common/interfaces/elements';
 import { UnitStateService } from '../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
+import { InputElementValue, UIElement } from 'common/classes/element';
 
 @Directive()
 export abstract class ElementGroupDirective {

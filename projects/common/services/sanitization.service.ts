@@ -1,15 +1,5 @@
 import { Injectable } from '@angular/core';
 import packageJSON from '../../../package.json';
-import { Page, Section, Unit } from 'common/interfaces/unit';
-import {
-  ClozeElement, DragNDropValueObject, DropListElement,
-  ElementStyling,
-  InputElement, LikertElement, LikertRowElement, PlayerProperties,
-  PositionedElement, PositionProperties, RadioButtonGroupElement, TextElement,
-  ToggleButtonElement,
-  UIElement,
-  UIElementValue
-} from 'common/interfaces/elements';
 import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from 'common/interfaces/cloze';
 import { ClozeUtils } from 'common/util/cloze';
 import { Editor } from '@tiptap/core';
@@ -18,6 +8,22 @@ import ToggleButtonExtension from 'common/tiptap-editor-extensions/toggle-button
 import DropListExtension from 'common/tiptap-editor-extensions/drop-list';
 import TextFieldExtension from 'common/tiptap-editor-extensions/text-field';
 import { IDService } from './id.service';
+import { Page, Section, Unit } from 'common/classes/unit';
+import {
+  ClozeElement, DropListElement,
+  InputElement,
+  LikertElement, LikertRowElement,
+  PositionedUIElement,
+  RadioButtonGroupElement, TextElement, ToggleButtonElement,
+  UIElement
+} from 'common/classes/element';
+import {
+  DragNDropValueObject,
+  ElementStyling,
+  PlayerProperties,
+  PositionProperties,
+  UIElementValue
+} from 'common/interfaces/elements';
 
 @Injectable({
   providedIn: 'root'
@@ -74,8 +80,8 @@ export class SanitizationService {
     return {
       ...section,
       elements: section.elements.map((element: UIElement) => (
-        this.sanitizeElement(element, section.dynamicPositioning))) as PositionedElement[]
-    };
+        this.sanitizeElement(element, section.dynamicPositioning))) as PositionedUIElement[]
+    } as Section;
   }
 
   private sanitizeElement(element: Record<string, UIElementValue>,
@@ -254,7 +260,7 @@ export class SanitizationService {
       childElement.type = childElement.type === 'drop-list' ? 'drop-list-simple' : childElement.type;
     });
 
-    return {
+    return new ClozeElement({
       ...element,
       document: {
         ...doc,
@@ -277,7 +283,7 @@ export class SanitizationService {
               )) : undefined
           }))
       } as ClozeDocument
-    } as ClozeElement;
+    });
   }
 
   private static createClozeDocument(element: Record<string, UIElementValue>): ClozeDocument {
@@ -329,10 +335,10 @@ export class SanitizationService {
   }
 
   private handleLikertElement(element: LikertElement): LikertElement {
-    return {
+    return new LikertElement({
       ...element,
-      rows: element.rows.map((row: LikertRowElement) => this.sanitizeElement(row))
-    } as LikertElement;
+      rows: element.rows.map((row: LikertRowElement) => this.sanitizeElement(row) as LikertRowElement)
+    });
   }
 
   private static handleLikertRowElement(element: LikertRowElement): LikertRowElement {
@@ -340,14 +346,14 @@ export class SanitizationService {
     if (newElement.rowLabel) {
       return newElement;
     }
-    return {
+    return new LikertRowElement({
       ...newElement,
       rowLabel: {
         text: newElement.text,
         imgSrc: null,
         position: 'above'
       }
-    } as LikertRowElement;
+    });
   }
 
   // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.
@@ -356,7 +362,7 @@ export class SanitizationService {
       {
         ...element,
         value: (element.value as number) - 1
-      } :
+      } as InputElement :
       element;
   }
 
@@ -364,19 +370,19 @@ export class SanitizationService {
     if (element.richTextOptions) {
       return element;
     }
-    return {
+    return new RadioButtonGroupElement({
       ...element,
       richTextOptions: element.options as string[]
-    };
+    });
   }
 
   private static handleToggleButtonElement(element: ToggleButtonElement): ToggleButtonElement {
     if (element.richTextOptions) {
       return element;
     }
-    return {
+    return new ToggleButtonElement({
       ...element,
       richTextOptions: element.options as string[]
-    };
+    });
   }
 }

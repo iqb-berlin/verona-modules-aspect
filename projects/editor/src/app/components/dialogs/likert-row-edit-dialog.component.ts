@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TextImageLabel, LikertRowElement } from 'common/interfaces/elements';
+import { TextImageLabel } from 'common/interfaces/elements';
 import { FileService } from 'common/services/file.service';
+import { LikertRowElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-likert-row-edit-dialog',

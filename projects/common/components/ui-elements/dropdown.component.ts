@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { DropdownElement } from '../../interfaces/elements';
+import { DropdownElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-dropdown',

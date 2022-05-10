@@ -3,9 +3,6 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { KeypadService } from '../../services/keypad.service';
-import {
-  InputElement, TextAreaElement, TextFieldElement, SpellCorrectElement
-} from 'common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { MessageService } from 'common/services/message.service';
@@ -18,6 +15,7 @@ import { TextFieldComponent } from 'common/components/ui-elements/text-field.com
 import { KeyboardService } from '../../services/keyboard.service';
 import { SpellCorrectComponent } from 'common/components/ui-elements/spell-correct.component';
 import { DeviceService } from '../../services/device.service';
+import { InputElement, SpellCorrectElement, TextAreaElement, TextFieldElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-text-input-group',

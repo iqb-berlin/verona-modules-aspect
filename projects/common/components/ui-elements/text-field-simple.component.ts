@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { TextFieldSimpleElement } from '../../interfaces/elements';
+import { TextFieldSimpleElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-text-field-simple',

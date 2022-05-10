@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { RadioButtonGroupElement } from '../../interfaces/elements';
+import { RadioButtonGroupElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-radio-button-group',

@@ -2,7 +2,8 @@ import {
   Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { ElementComponent } from '../../directives/element-component.directive';
-import { TextElement, ValueChangeElement } from '../../interfaces/elements';
+import { TextElement } from 'common/classes/element';
+import { ValueChangeElement } from 'common/interfaces/elements';
 
 @Component({
   selector: 'aspect-text',

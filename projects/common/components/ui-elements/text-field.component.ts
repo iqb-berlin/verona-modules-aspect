@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
-import { TextFieldElement } from '../../interfaces/elements';
+import { TextFieldElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-text-field',
@@ -28,7 +28,7 @@ import { TextFieldElement } from '../../interfaces/elements';
              value="{{elementModel.value}}"
              [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
              [formControl]="elementFormControl"
-             [pattern]="elementModel.pattern"
+             [pattern]="$any(elementModel.pattern)"
              [readonly]="elementModel.readOnly"
              (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
              (focus)="onFocusChanged.emit(input)"

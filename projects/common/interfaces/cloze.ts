@@ -1,4 +1,4 @@
-import { InputElement } from './elements';
+import { InputElement } from 'common/classes/element';
 
 export interface ClozeDocument {
   type: string;

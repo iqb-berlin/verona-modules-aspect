@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import packageJSON from '../../../../../package.json';
-import { Unit } from 'common/interfaces/unit';
+import { Unit } from 'common/classes/unit';
 
 @Injectable({
   providedIn: 'root'

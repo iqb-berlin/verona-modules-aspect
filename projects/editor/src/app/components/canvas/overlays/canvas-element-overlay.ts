@@ -13,7 +13,7 @@ import { CompoundElementComponent } from
     'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/ui-elements/cloze.component';
 import { CompoundChildOverlayComponent } from 'common/components/compound-child-overlay.component';
-import { UIElement } from 'common/interfaces/elements';
+import { UIElement } from 'common/classes/element';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {

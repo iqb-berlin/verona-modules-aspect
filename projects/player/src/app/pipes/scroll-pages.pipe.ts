@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Page } from 'common/interfaces/unit';
+import { Page } from 'common/classes/unit';
 
 @Pipe({
   name: 'scrollPages'

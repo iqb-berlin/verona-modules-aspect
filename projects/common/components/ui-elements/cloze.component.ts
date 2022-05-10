@@ -4,7 +4,7 @@ import {
 import { CompoundElementComponent } from '../../directives/compound-element.directive';
 import { CompoundChildOverlayComponent } from '../compound-child-overlay.component';
 import { ElementComponent } from '../../directives/element-component.directive';
-import { ClozeElement, InputElement } from '../../interfaces/elements';
+import { ClozeElement, InputElement } from 'common/classes/element';
 import { ClozeUtils } from '../../util/cloze';
 
 // TODO background color implementieren

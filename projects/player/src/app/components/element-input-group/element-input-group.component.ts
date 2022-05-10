@@ -2,10 +2,6 @@ import {
   AfterViewInit, Component, OnInit, ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import {
-  CheckboxElement, DropListElement, InputElement, SliderElement,
-  RadioButtonGroupElement, RadioButtonGroupComplexElement, DropdownElement
-} from 'common/interfaces/elements';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
@@ -13,6 +9,15 @@ import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValidationService } from '../../services/validation.service';
+import {
+  CheckboxElement,
+  DropdownElement,
+  DropListElement,
+  InputElement,
+  RadioButtonGroupComplexElement,
+  RadioButtonGroupElement,
+  SliderElement
+} from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-input-group',

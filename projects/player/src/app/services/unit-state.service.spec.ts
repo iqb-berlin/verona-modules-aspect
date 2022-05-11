@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { UnitStateService } from './unit-state.service';
-import { ElementCode } from 'verona/models/verona';
+import { ElementCode } from 'player/modules/verona/models/verona';
 
 describe('UnitStateService', () => {
   let service: UnitStateService;

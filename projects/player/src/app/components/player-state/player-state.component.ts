@@ -3,15 +3,15 @@ import {
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import {
   PlayerConfig, PlayerState, RunningState,
   VopContinueCommand, VopGetStateRequest, VopPageNavigationCommand, VopStopCommand
-} from 'verona/models/verona';
-import { VeronaPostService } from 'verona/services/verona-post.service';
+} from 'player/modules/verona/models/verona';
+import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { Page } from 'common/interfaces/unit';
 import { NavigationService } from '../../services/navigation.service';
-import { LogService } from 'logging/services/log.service';
+import { LogService } from 'player/modules/logging/services/log.service';
 
 @Component({
   selector: 'aspect-player-state',

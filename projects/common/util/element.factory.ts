@@ -440,7 +440,7 @@ export abstract class ElementFactory {
     return {
       ...ElementFactory.initInputElement({ width: 230, height: 80, ...element }),
       type: 'spell-correct',
-      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : null,
       inputAssistancePosition: element.inputAssistancePosition !== undefined ?
         element.inputAssistancePosition : 'floating',
       restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
@@ -478,7 +478,7 @@ export abstract class ElementFactory {
       appearance: element.appearance !== undefined ? element.appearance : 'outline',
       resizeEnabled: element.resizeEnabled !== undefined ? element.resizeEnabled : false,
       rowCount: element.rowCount !== undefined ? element.rowCount : 3,
-      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : null,
       inputAssistancePosition: element.inputAssistancePosition !== undefined ?
         element.inputAssistancePosition : 'floating',
       restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
@@ -509,7 +509,7 @@ export abstract class ElementFactory {
       pattern: element.pattern !== undefined ? element.pattern : '',
       patternWarnMessage: element.patternWarnMessage !== undefined ?
         element.patternWarnMessage : 'Eingabe entspricht nicht der Vorgabe',
-      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : null,
       inputAssistancePosition: element.inputAssistancePosition !== undefined ?
         element.inputAssistancePosition : 'floating',
       restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?
@@ -540,7 +540,7 @@ export abstract class ElementFactory {
       pattern: element.pattern !== undefined ? element.pattern : '',
       patternWarnMessage: element.patternWarnMessage !== undefined ?
         element.patternWarnMessage : 'Eingabe entspricht nicht der Vorgabe',
-      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : 'none',
+      inputAssistancePreset: element.inputAssistancePreset !== undefined ? element.inputAssistancePreset : null,
       inputAssistancePosition: element.inputAssistancePosition !== undefined ?
         element.inputAssistancePosition : 'floating',
       restrictedToInputAssistanceChars: element.restrictedToInputAssistanceChars !== undefined ?

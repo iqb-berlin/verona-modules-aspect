@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { KeyInputModule } from 'key-input/key-input.module';
+import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { KeypadService } from './keypad.service';
 import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
 import { TextAreaComponent } from 'common/components/ui-elements/text-area.component';

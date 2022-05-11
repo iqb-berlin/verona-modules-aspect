@@ -9,7 +9,7 @@ import {
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { MessageService } from 'common/services/message.service';
-import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValidationService } from '../../services/validation.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
@@ -62,7 +62,7 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
 
   onFocusChanged(inputElement: HTMLElement | null,
                  elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
-    if (this.elementModel.inputAssistance !== 'none') {
+    if (this.elementModel) {
       this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
     }
     if (this.elementModel.showSoftwareKeyboard && !this.elementModel.readOnly) {

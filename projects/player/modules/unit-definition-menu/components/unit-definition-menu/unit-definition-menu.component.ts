@@ -3,7 +3,7 @@ import { FileService } from 'common/services/file.service';
 import { Page } from 'common/interfaces/unit';
 import {
   ElementCode, PagingMode, UnitState, VopPageNavigationCommand, VopStartCommand
-} from 'verona/models/verona';
+} from 'player/modules/verona/models/verona';
 
 @Component({
   selector: 'aspect-unit-definition-menu',

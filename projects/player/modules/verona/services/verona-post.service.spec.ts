@@ -4,7 +4,7 @@ import { fromEvent } from 'rxjs';
 import {
   VopReadyNotification, VopStateChangedNotification, VopUnitNavigationRequestedNotification,
   VopWindowFocusChangedNotification
-} from 'verona/models/verona';
+} from 'player/modules/verona/models/verona';
 
 describe('VeronaPostService', () => {
   let service: VeronaPostService;

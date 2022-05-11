@@ -15,7 +15,10 @@ import { TextFieldComponent } from 'common/ui-elements/text-field/text-field.com
 import { KeyboardService } from '../../services/keyboard.service';
 import { SpellCorrectComponent } from 'common/ui-elements/spell-correct/spell-correct.component';
 import { DeviceService } from '../../services/device.service';
-import { InputElement, SpellCorrectElement, TextAreaElement, TextFieldElement } from 'common/classes/element';
+import { TextAreaElement } from 'common/ui-elements/text-area/text-area';
+import { TextFieldElement } from 'common/ui-elements/text-field/text-field';
+import { SpellCorrectElement } from 'common/ui-elements/spell-correct/spell-correct';
+import { InputElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-text-input-group',

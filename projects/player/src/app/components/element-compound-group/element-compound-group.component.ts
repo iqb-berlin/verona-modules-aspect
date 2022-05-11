@@ -13,7 +13,9 @@ import { ElementFormGroupDirective } from '../../directives/element-form-group.d
 import { KeyboardService } from '../../services/keyboard.service';
 import { DeviceService } from '../../services/device.service';
 import { TextFieldSimpleComponent } from 'common/ui-elements/cloze/text-field-simple.component';
-import { ClozeElement, InputElement, LikertElement } from 'common/classes/element';
+import { ClozeElement } from 'common/ui-elements/cloze/cloze';
+import { LikertElement } from 'common/ui-elements/likert/likert';
+import { InputElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-compound-group',

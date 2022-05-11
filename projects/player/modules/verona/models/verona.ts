@@ -1,4 +1,4 @@
-import { InputElementValue } from 'common/interfaces/elements';
+import { InputElementValue } from 'common/classes/element';
 
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 export type RunningState = 'running' | 'stopped';

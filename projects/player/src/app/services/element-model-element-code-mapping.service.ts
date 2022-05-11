@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { TextMarkingService } from './text-marking.service';
 import { DragNDropValueObject, UIElementType } from 'common/interfaces/elements';
-import {
-  AudioElement,
-  ImageElement,
-  InputElement,
-  InputElementValue,
-  TextElement, UIElement,
-  VideoElement
-} from 'common/classes/element';
+import { InputElement, InputElementValue, UIElement } from 'common/classes/element';
+import { TextElement } from 'common/ui-elements/text/text';
+import { AudioElement } from 'common/ui-elements/audio/audio';
+import { VideoElement } from 'common/ui-elements/video/video';
+import { ImageElement } from 'common/ui-elements/image/image';
 
 @Injectable({
   providedIn: 'root'

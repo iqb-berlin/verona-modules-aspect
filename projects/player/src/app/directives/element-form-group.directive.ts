@@ -13,7 +13,8 @@ import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ValidationService } from '../services/validation.service';
 import { LogService } from 'logging/services/log.service';
-import { InputElement, InputElementValue, SliderElement } from 'common/classes/element';
+import { InputElement, InputElementValue } from 'common/classes/element';
+import { SliderElement } from 'common/ui-elements/slider/slider';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {

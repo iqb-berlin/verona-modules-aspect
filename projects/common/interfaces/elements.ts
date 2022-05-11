@@ -1,7 +1,6 @@
 import { ClozeDocument } from 'common/ui-elements/cloze/cloze';
-import { BasicStyles, PlayerProperties, PositionProperties } from 'common/classes/element';
+import { BasicStyles, InputElementValue, PlayerProperties, PositionProperties } from 'common/classes/element';
 
-export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
 | 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';

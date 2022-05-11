@@ -9,8 +9,9 @@ import {
   ElementCodeStatusValue
 } from 'verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
-import { InputElementValue, ValueChangeElement } from 'common/interfaces/elements';
 import { LogService } from 'logging/services/log.service';
+import { InputElementValue } from 'common/classes/element';
+import { ValueChangeElement } from 'common/interfaces/elements';
 
 @Injectable({
   providedIn: 'root'

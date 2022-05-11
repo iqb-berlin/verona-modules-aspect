@@ -10,7 +10,7 @@ import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { TextElement } from 'common/classes/element';
+import { TextElement } from 'common/ui-elements/text/text';
 
 @Component({
   selector: 'aspect-element-text-group',

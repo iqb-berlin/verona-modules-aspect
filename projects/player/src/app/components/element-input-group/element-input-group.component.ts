@@ -9,15 +9,13 @@ import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValidationService } from '../../services/validation.service';
-import {
-  CheckboxElement,
-  DropdownElement,
-  DropListElement,
-  InputElement,
-  RadioButtonGroupComplexElement,
-  RadioButtonGroupElement,
-  SliderElement
-} from 'common/classes/element';
+import { CheckboxElement } from 'common/ui-elements/checkbox/checkbox';
+import { SliderElement } from 'common/ui-elements/slider/slider';
+import { DropListElement } from 'common/ui-elements/drop-list/drop-list';
+import { RadioButtonGroupElement } from 'common/ui-elements/radio/radio-button-group';
+import { RadioButtonGroupComplexElement } from 'common/ui-elements/radio-complex/radio-button-group-complex';
+import { DropdownElement } from 'common/ui-elements/dropdown/dropdown';
+import { InputElement } from 'common/classes/element';
 
 @Component({
   selector: 'aspect-element-input-group',

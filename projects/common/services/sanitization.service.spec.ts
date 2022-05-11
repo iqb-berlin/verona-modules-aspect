@@ -13,16 +13,6 @@ import * as sampleUnit112TextFields from 'test-data/unit-definitions/test112-Tex
 import * as sampleUnit130TextFields from 'test-data/unit-definitions/test130-textfields.json';
 import { ClozeElement } from 'common/interfaces/elements';
 
-const unitDefStub: Record<string, any> = {
-  'unitDefinitionType': 'iqb-aspect-definition@1.1.0',
-  'pages': [{
-    'sections': [
-      {
-        'elements': []
-      }]
-  }]
-};
-
 describe('SanitizationService', () => {
   let service: SanitizationService;
   beforeEach(() => {
@@ -254,7 +244,7 @@ describe('SanitizationService', () => {
       service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130TextFields)));
     expect(sanitizedUnit130TextFields.pages[0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
-        'inputAssistancePreset': 'none',
+        'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating',
         'restrictedToInputAssistanceChars': false
       }));
@@ -278,7 +268,7 @@ describe('SanitizationService', () => {
       service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112TextFields)));
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
-        'inputAssistancePreset': 'none',
+        'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating'
       }));
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[0])
@@ -303,7 +293,7 @@ describe('SanitizationService', () => {
     // text areas
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[3])
       .toEqual(jasmine.objectContaining({
-        'inputAssistancePreset': 'none',
+        'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating'
       }));
     expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[3])
@@ -319,6 +309,17 @@ describe('SanitizationService', () => {
   });
 
   it('should rename cloze children with "simple" affix', () => {
+    const unitDefStub: Record<string, any> = {
+      'type': 'aspect-unit-definition',
+      'version': '3.4.0',
+      'pages': [{
+        'sections': [
+          {
+            'elements': []
+          }]
+      }]
+    };
+
     const unitDef = {
       ...unitDefStub,
       'pages': [{

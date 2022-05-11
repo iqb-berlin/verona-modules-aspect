@@ -10,7 +10,7 @@ import { TextFieldSimpleComponent } from 'common/ui-elements/cloze/text-field-si
   providedIn: 'root'
 })
 export class KeypadService extends InputService {
-  preset: InputAssistancePreset = 'none';
+  preset: InputAssistancePreset = null;
   position: 'floating' | 'right' = 'floating';
 
   toggle(focusedElement: HTMLElement | null,

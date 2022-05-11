@@ -8,11 +8,11 @@ import { Subject } from 'rxjs';
 import { UnitStateService } from '../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../services/element-model-element-code-mapping.service';
 import { ElementGroupDirective } from './element-group.directive';
-import { VopNavigationDeniedNotification } from 'verona/models/verona';
+import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { MessageService } from 'common/services/message.service';
-import { VeronaSubscriptionService } from 'verona/services/verona-subscription.service';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { ValidationService } from '../services/validation.service';
-import { LogService } from 'logging/services/log.service';
+import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement, InputElementValue } from 'common/classes/element';
 import { SliderElement } from 'common/ui-elements/slider/slider';
 

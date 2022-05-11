@@ -3,7 +3,7 @@ import { BasicStyles, InputElement, PositionedUIElement, PositionProperties } fr
 import { InputAssistancePreset } from 'common/interfaces/elements';
 
 export class SpellCorrectElement extends InputElement implements PositionedUIElement {
-  inputAssistancePreset: InputAssistancePreset = 'none';
+  inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true;
   showSoftwareKeyboard: boolean = false;

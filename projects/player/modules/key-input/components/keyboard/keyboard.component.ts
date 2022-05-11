@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { KeyLayout } from 'key-input/configs/key-layout';
+import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
 
 @Component({
   selector: 'aspect-keyboard',

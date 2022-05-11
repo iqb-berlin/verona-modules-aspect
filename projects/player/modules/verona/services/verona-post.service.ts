@@ -9,7 +9,7 @@ import {
   VopMetaData,
   VopStateChangedNotification
 } from '../models/verona';
-import { LogService } from 'logging/services/log.service';
+import { LogService } from 'player/modules/logging/services/log.service';
 
 @Injectable({
   providedIn: 'root'

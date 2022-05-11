@@ -1,7 +1,6 @@
 import {
   AfterViewInit, Component, ViewChild
 } from '@angular/core';
-import { VeronaPostService } from 'verona/services/verona-post.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -11,6 +10,7 @@ import { ButtonElement } from 'common/ui-elements/button/button';
 import { FrameElement } from 'common/ui-elements/frame/frame';
 import { ImageElement } from 'common/ui-elements/image/image';
 import { InputElementValue } from 'common/classes/element';
+import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 
 @Component({
   selector: 'aspect-element-interactive-group',

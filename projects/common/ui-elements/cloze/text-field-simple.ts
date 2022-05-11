@@ -9,7 +9,7 @@ export class TextFieldSimpleElement extends InputElement {
   maxLengthWarnMessage: string = 'Eingabe zu lang';
   pattern: string | undefined;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
-  inputAssistancePreset: InputAssistancePreset = 'none';
+  inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true;
   showSoftwareKeyboard: boolean = false;

@@ -6,7 +6,7 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
   rowCount: number = 3;
-  inputAssistancePreset: InputAssistancePreset = 'none';
+  inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true;
   showSoftwareKeyboard: boolean = false;

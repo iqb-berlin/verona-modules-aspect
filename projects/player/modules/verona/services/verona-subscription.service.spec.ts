@@ -3,7 +3,7 @@ import { VeronaSubscriptionService } from './verona-subscription.service';
 import {
   VopContinueCommand, VopGetStateRequest, VopNavigationDeniedNotification, VopPageNavigationCommand, VopStartCommand,
   VopStopCommand
-} from 'verona/models/verona';
+} from 'player/modules/verona/models/verona';
 
 describe('VeronaSubscriptionService', () => {
   let service: VeronaSubscriptionService;

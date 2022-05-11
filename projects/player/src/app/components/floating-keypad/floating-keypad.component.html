@@ -1,5 +1,5 @@
 <ng-template
-    *ngIf="keypadService.preset !== 'none'"
+    *ngIf="keypadService.preset"
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="keypadService.elementComponent"
     [cdkConnectedOverlayOpen]="isKeypadOpen && keypadService.position === 'floating'">

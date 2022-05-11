@@ -26,10 +26,6 @@
       "common/*": ["./projects/common/*"],
       "editor/*": ["./projects/editor/*"],
       "player/*": ["./projects/player/*"],
-      "unit-definition-menu/*": ["./projects/player/modules/unit-definition-menu/*"],
-      "verona/*": ["./projects/player/modules/verona/*"],
-      "key-input/*": ["./projects/player/modules/key-input/*"],
-      "logging/*": ["./projects/player/modules/logging/*"]
     }
   },
   "angularCompilerOptions": {

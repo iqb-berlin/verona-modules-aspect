@@ -7,9 +7,9 @@ import {
   ElementCode,
   ElementCodeStatus,
   ElementCodeStatusValue
-} from 'verona/models/verona';
+} from 'player/modules/verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
-import { LogService } from 'logging/services/log.service';
+import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElementValue } from 'common/classes/element';
 import { ValueChangeElement } from 'common/interfaces/elements';
 

@@ -10,7 +10,7 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
   maxLengthWarnMessage: string = 'Eingabe zu lang';
   pattern: string | undefined;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
-  inputAssistancePreset: InputAssistancePreset = 'none';
+  inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true; // TODO refactor
   showSoftwareKeyboard: boolean = false;

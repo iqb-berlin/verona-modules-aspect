@@ -43,6 +43,7 @@ export class SanitizationService {
 
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
+  // TODO: isUnitDefinitionOutdated must not set the unitDefinitionVersion
   static isUnitDefinitionOutdated(unitDefinition: Unit): boolean {
     SanitizationService.unitDefinitionVersion =
       SanitizationService.readUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
@@ -101,9 +102,9 @@ export class SanitizationService {
     if (newElement.type === 'text') {
       newElement = SanitizationService.handleTextElement(newElement);
     }
-    if (['text-field', 'text-area']
+    if (['text-field', 'text-area', 'text-field-simple', 'spell-correct']
       .includes(newElement.type as string)) {
-      newElement = SanitizationService.sanitizeTextFieldElement(newElement);
+      newElement = SanitizationService.sanitizeTextInputElement(newElement);
     }
     if (newElement.type === 'cloze') {
       newElement = this.handleClozeElement(newElement as Record<string, UIElementValue>);
@@ -111,6 +112,7 @@ export class SanitizationService {
     if (newElement.type === 'toggle-button') {
       newElement = SanitizationService.handleToggleButtonElement(newElement as ToggleButtonElement);
     }
+    // TODO: drop-list-simple?
     if (newElement.type === 'drop-list') {
       newElement = this.handleDropListElement(newElement as Record<string, UIElementValue>);
     }
@@ -223,10 +225,13 @@ export class SanitizationService {
     return newElement as TextElement;
   }
 
-  private static sanitizeTextFieldElement(element: Record<string, UIElementValue>): InputElement {
+  private static sanitizeTextInputElement(element: Record<string, UIElementValue>): InputElement {
     const newElement = { ...element };
     if (newElement.restrictedToInputAssistanceChars === undefined && newElement.inputAssistancePreset === 'french') {
       newElement.restrictedToInputAssistanceChars = false;
+    }
+    if (newElement.inputAssistancePreset === 'none') {
+      newElement.inputAssistancePreset = null;
     }
     return newElement as InputElement;
   }
@@ -240,26 +245,24 @@ export class SanitizationService {
   private handleClozeElement(element: Record<string, UIElementValue>): ClozeElement {
     if (!element.document && (!element.parts || !element.text)) throw Error('Can\'t read Cloze Element');
 
-    // Version 2.0.0 needs to be sanatized as well because child elements were not sanatized before
-    if (SanitizationService.unitDefinitionVersion && SanitizationService.unitDefinitionVersion[0] >= 3) {
-      return element as ClozeElement;
-    }
-
     let childElements: UIElement[];
     let doc: ClozeDocument;
 
+    // TODO: create a sub method
     if (element.document) {
       childElements = ClozeUtils.getClozeChildElements((element as ClozeElement));
       doc = element.document as ClozeDocument;
     } else {
       childElements = (element.parts as any[])
         .map((el: any) => el
-          .filter((el2: { type: string; }) => ['text-field', 'text-field-simple', 'drop-list', 'drop-list', 'toggle-button']
-            .includes(el2.type)).value)
+          .filter((el2: { type: string; }) => [
+            'text-field', 'text-field-simple', 'drop-list', 'drop-list-simple', 'toggle-button'
+          ].includes(el2.type)).value)
         .flat();
       doc = SanitizationService.createClozeDocument(element);
     }
 
+    // TODO: and create a sub method
     // repair child element types
     childElements.forEach(childElement => {
       childElement.type = childElement.type === 'text-field' ? 'text-field-simple' : childElement.type;
@@ -316,7 +319,7 @@ export class SanitizationService {
   /* before: simple string[]; after: DragNDropValueObject with ID and value.
   * Needs to be done to selectable options and the possibly set preset (value). */
   private handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
-    const newElement = element;
+    const newElement = { ...element };
     if (newElement.options) {
       console.warn('New dropList value IDs have been generated');
       newElement.value = [];
@@ -348,14 +351,13 @@ export class SanitizationService {
   }
 
   private static handleLikertRowElement(element: LikertRowElement): LikertRowElement {
-    const newElement = element;
-    if (newElement.rowLabel) {
-      return newElement;
+    if (element.rowLabel) {
+      return element;
     }
     return new LikertRowElement({
-      ...newElement,
+      ...element,
       rowLabel: {
-        text: newElement.text,
+        text: element.text,
         imgSrc: null,
         position: 'above'
       }

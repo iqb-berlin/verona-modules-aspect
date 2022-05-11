@@ -72,14 +72,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.inputAssistancePreset"
                   (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
-        <mat-option *ngFor="let option of ['none', 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators',
+        <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators',
        'comparisonOperators', 'squareDashDot', 'placeValue']"
                     [value]="option">
-          {{ 'propertiesPanel.' + option | translate }}
+          {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== 'none' &&
+    <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
                                  combinedProperties.inputAssistancePosition !== undefined"
                     appearance="fill">
       <mat-label>{{'propertiesPanel.inputAssistancePosition' | translate }}</mat-label>
@@ -92,7 +92,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
       </mat-select>
     </mat-form-field>
 
-    <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== 'none' &&
+    <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
                        combinedProperties.restrictedToInputAssistanceChars !== undefined"
                   [checked]="$any(combinedProperties.restrictedToInputAssistanceChars)"
                   (change)="updateModel.emit({ property: 'restrictedToInputAssistanceChars', value: $event.checked })">

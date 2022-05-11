@@ -34,9 +34,9 @@ import {
   ElementInteractiveGroupComponent
 } from './components/element-interactive-group/element-interactive-group.component';
 import { LayoutPlayerComponent } from './components/layout-player/layout-player.component';
-import { KeyInputModule } from 'key-input/key-input.module';
+import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
-import { UnitDefinitionMenuModule } from 'unit-definition-menu/unit-definition-menu.module';
+import { UnitDefinitionMenuModule } from 'player/modules/unit-definition-menu/unit-definition-menu.module';
 import { ValidPagesPipe } from './pipes/valid-pages.pipe';
 import { ScrollPagesPipe } from './pipes/scroll-pages.pipe';
 import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';

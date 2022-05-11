@@ -7,22 +7,22 @@ import { AudioElement } from 'common/ui-elements/audio/audio';
   template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
-<!--      <audio #player-->
-<!--             (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"-->
-<!--             (pause)="onMediaPlayStatusChanged.emit(null)"-->
-<!--             [style.width.%]="100"-->
-<!--             [src]="elementModel.src | safeResourceUrl">-->
-<!--      </audio>-->
-<!--      <aspect-media-player-control-bar [player]="player"-->
-<!--                          [project]="project"-->
-<!--                          [id]="elementModel.id"-->
-<!--                          [savedPlaybackTime]="savedPlaybackTime"-->
-<!--                          [playerProperties]="elementModel.player"-->
-<!--                          [active]="active"-->
-<!--                          [dependencyDissolved]="dependencyDissolved"-->
-<!--                          (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"-->
-<!--                          (elementValueChanged)="elementValueChanged.emit($event)">-->
-<!--      </aspect-media-player-control-bar>-->
+      <aspect-media-player-control-bar [player]="player" *ngIf="elementModel.src"
+                          [project]="project"
+                          [id]="elementModel.id"
+                          [savedPlaybackTime]="savedPlaybackTime"
+                          [playerProperties]="elementModel.player"
+                          [active]="active"
+                          [dependencyDissolved]="dependencyDissolved"
+                          (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"
+                          (elementValueChanged)="elementValueChanged.emit($event)">
+        <audio #player
+               (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
+               (pause)="onMediaPlayStatusChanged.emit(null)"
+               [style.width.%]="100"
+               [src]="elementModel.src | safeResourceUrl">
+        </audio>
+      </aspect-media-player-control-bar>
     </div>
   `
 })

@@ -8,24 +8,25 @@ import { ValueChangeElement } from 'common/interfaces/elements';
 @Component({
   selector: 'aspect-image',
   template: `
-    <div [style.width.%]="100"
+    <div *ngIf="elementModel.src"
+         [style.width.%]="100"
          [style.height.%]="100"
          class="image-container"
          (mouseover)="magnifierVisible = true"
          (mouseenter)="magnifierVisible = true"
          (mouseleave)="magnifierVisible = false">
-<!--      <img #image-->
-<!--           [src]="elementModel.src | safeResourceUrl"-->
-<!--           [alt]="'imageNotFound' | translate"-->
-<!--           [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">-->
-<!--      <aspect-image-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"-->
-<!--                        [imageId]="elementModel.id"-->
-<!--                        [size]="elementModel.magnifierSize"-->
-<!--                        [zoom]="elementModel.magnifierZoom"-->
-<!--                        [used]="elementModel.magnifierUsed"-->
-<!--                        [image]=image-->
-<!--                        (elementValueChanged)="elementValueChanged.emit($event)">-->
-<!--      </aspect-image-magnifier>-->
+      <img #image
+           [src]="elementModel.src | safeResourceUrl"
+           [alt]="'imageNotFound' | translate"
+           [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">
+      <aspect-image-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
+                        [imageId]="elementModel.id"
+                        [size]="elementModel.magnifierSize"
+                        [zoom]="elementModel.magnifierZoom"
+                        [used]="elementModel.magnifierUsed"
+                        [image]=image
+                        (elementValueChanged)="elementValueChanged.emit($event)">
+      </aspect-image-magnifier>
     </div>
   `,
   styles: [

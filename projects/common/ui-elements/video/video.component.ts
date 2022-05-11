@@ -8,23 +8,23 @@ import { VideoElement } from 'common/ui-elements/video/video';
     <div [class]="elementModel.scale ? 'fit-video' : 'max-size-video'"
          [style.width.%]="100"
          [style.height.%]="100">
-<!--      <video #player-->
-<!--             (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"-->
-<!--             (pause)="onMediaPlayStatusChanged.emit(null)"-->
-<!--             [style.width.%]="100"-->
-<!--             [src]="elementModel.src | safeResourceUrl">-->
-<!--      </video>-->
-<!--      <aspect-media-player-control-bar class="correct-position"-->
-<!--                          [player]="player"-->
-<!--                          [project]="project"-->
-<!--                          [active]="active"-->
-<!--                          [id]="elementModel.id"-->
-<!--                          [savedPlaybackTime]="savedPlaybackTime"-->
-<!--                          [playerProperties]="elementModel.player"-->
-<!--                          [dependencyDissolved]="dependencyDissolved"-->
-<!--                          (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"-->
-<!--                          (elementValueChanged)="elementValueChanged.emit($event)">-->
-<!--      </aspect-media-player-control-bar>-->
+      <aspect-media-player-control-bar class="correct-position" *ngIf="elementModel.src"
+                          [player]="player"
+                          [project]="project"
+                          [active]="active"
+                          [id]="elementModel.id"
+                          [savedPlaybackTime]="savedPlaybackTime"
+                          [playerProperties]="elementModel.player"
+                          [dependencyDissolved]="dependencyDissolved"
+                          (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"
+                          (elementValueChanged)="elementValueChanged.emit($event)">
+        <video #player
+               (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
+               (pause)="onMediaPlayStatusChanged.emit(null)"
+               [style.width.%]="100"
+               [src]="elementModel.src | safeResourceUrl">
+        </video>
+      </aspect-media-player-control-bar>
     </div>
   `,
   styles: [

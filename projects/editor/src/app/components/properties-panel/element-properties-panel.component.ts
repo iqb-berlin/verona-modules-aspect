@@ -94,7 +94,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
               TextImageLabel[] | DragNDropValueObject[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
-      this.unitService.updateElementProperty(this.selectedElements, property, value);
+      this.unitService.updateElementsProperty(this.selectedElements, property, value);
     } else {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));
     }

@@ -1,5 +1,5 @@
 import {
-  Component, Input, Output, EventEmitter
+  Component, Input
 } from '@angular/core';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
@@ -9,14 +9,17 @@ import { PositionedUIElement, PositionProperties } from 'common/classes/element'
   selector: 'aspect-element-postion-properties',
   template: `
     <div fxLayout="column">
-      <aspect-position-field-set *ngIf="positionProperties"
-                                 [positionProperties]="positionProperties"
-                                 (updateModel)="this.updateModel.emit($event)">
+      <aspect-position-field-set
+        *ngIf="positionProperties"
+        [positionProperties]="positionProperties"
+        (updateModel)="unitService.updateSelectedElementsPositionProperty($event.property, $event.value)">
       </aspect-position-field-set>
 
-      <aspect-dimension-field-set [positionProperties]="positionProperties"
-                                  [dimensions]="dimensions"
-                                  (updateModel)="this.updateModel.emit($event)">
+      <aspect-dimension-field-set
+        [positionProperties]="positionProperties"
+        [dimensions]="dimensions"
+        (updateModel)="unitService.updateElementsProperty(
+                         this.selectionService.getSelectedElements(), $event.property, $event.value)">
       </aspect-dimension-field-set>
 
       <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">
@@ -47,10 +50,8 @@ import { PositionedUIElement, PositionProperties } from 'common/classes/element'
 export class ElementPositionPropertiesComponent {
   @Input() dimensions!: { width: number; height: number; dynamicWidth: boolean; };
   @Input() positionProperties: PositionProperties | undefined;
-  @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
 
-  constructor(private unitService: UnitService, public selectionService: SelectionService) { }
+  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
     this.unitService.alignElements(this.selectionService.getSelectedElements() as PositionedUIElement[], direction);

@@ -8,12 +8,11 @@ import { UnitService } from '../../../services/unit.service';
 import {
   TextImageLabel,
   DragNDropValueObject,
-  InputElementValue
 } from 'common/interfaces/elements';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UIElement } from 'common/classes/element';
+import { InputElementValue, UIElement } from 'common/classes/element';
 import { LikertRowElement } from 'common/ui-elements/likert/likert-row';
 import { LikertElement } from 'common/ui-elements/likert/likert';
 
@@ -105,24 +104,24 @@ export class ElementModelPropertiesComponent {
       .subscribe((result: LikertRowElement) => {
         if (result) {
           if (result.id !== row.id) {
-            this.unitService.updateElementProperty(
+            this.unitService.updateElementsProperty(
               [row],
               'id',
               result.id
             );
           }
           if (result.rowLabel !== row.rowLabel) {
-            this.unitService.updateElementProperty([row], 'rowLabel', result.rowLabel);
+            this.unitService.updateElementsProperty([row], 'rowLabel', result.rowLabel);
           }
           if (result.value !== row.value) {
-            this.unitService.updateElementProperty(
+            this.unitService.updateElementsProperty(
               [row],
               'value',
               result.value
             );
           }
           if (result.verticalButtonAlignment !== row.verticalButtonAlignment) {
-            this.unitService.updateElementProperty(
+            this.unitService.updateElementsProperty(
               [row],
               'verticalButtonAlignment',
               result.verticalButtonAlignment

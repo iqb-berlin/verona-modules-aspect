@@ -52,45 +52,45 @@ export abstract class ElementFactory {
     console.log('createElement', elementType, defaultValues);
     switch (elementType) {
       case 'text':
-        return new TextElement(defaultValues as TextElement);
+        return new TextElement({ type: elementType, ...defaultValues } as TextElement);
       case 'button':
-        return new ButtonElement(defaultValues as ButtonElement);
+        return new ButtonElement({ type: elementType, ...defaultValues } as ButtonElement);
       case 'text-field':
-        return new TextFieldElement(defaultValues as TextFieldElement);
+        return new TextFieldElement({ type: elementType, ...defaultValues } as TextFieldElement);
       case 'text-field-simple':
-        return new TextFieldSimpleElement(defaultValues as TextFieldSimpleElement);
+        return new TextFieldSimpleElement({ type: elementType, ...defaultValues } as TextFieldSimpleElement);
       case 'text-area':
-        return new TextAreaElement(defaultValues as TextAreaElement);
+        return new TextAreaElement({ type: elementType, ...defaultValues } as TextAreaElement);
       case 'checkbox':
-        return new CheckboxElement(defaultValues as CheckboxElement);
+        return new CheckboxElement({ type: elementType, ...defaultValues } as CheckboxElement);
       case 'dropdown':
-        return new DropdownElement(defaultValues as DropdownElement);
+        return new DropdownElement({ type: elementType, ...defaultValues } as DropdownElement);
       case 'radio':
-        return new RadioButtonGroupElement(defaultValues as RadioButtonGroupElement);
+        return new RadioButtonGroupElement({ type: elementType, ...defaultValues } as RadioButtonGroupElement);
       case 'image':
-        return new ImageElement(defaultValues as ImageElement);
+        return new ImageElement({ type: elementType, ...defaultValues } as ImageElement);
       case 'audio':
-        return new AudioElement(defaultValues as AudioElement);
+        return new AudioElement({ type: elementType, ...defaultValues } as AudioElement);
       case 'video':
-        return new VideoElement(defaultValues as VideoElement);
+        return new VideoElement({ type: elementType, ...defaultValues } as VideoElement);
       case 'likert':
-        return new LikertElement(defaultValues as LikertElement);
+        return new LikertElement({ type: elementType, ...defaultValues } as LikertElement);
       case 'radio-group-images':
-        return new RadioButtonGroupComplexElement(defaultValues as RadioButtonGroupComplexElement);
+        return new RadioButtonGroupComplexElement({ type: elementType, ...defaultValues } as RadioButtonGroupComplexElement);
       case 'drop-list':
-        return new DropListElement(defaultValues as DropListElement);
+        return new DropListElement({ type: elementType, ...defaultValues } as DropListElement);
       case 'drop-list-simple':
-        return new DropListSimpleElement(defaultValues as DropListSimpleElement);
+        return new DropListSimpleElement({ type: elementType, ...defaultValues } as DropListSimpleElement);
       case 'cloze':
-        return new ClozeElement(defaultValues as ClozeElement);
+        return new ClozeElement({ type: elementType, ...defaultValues } as ClozeElement);
       case 'slider':
-        return new SliderElement(defaultValues as SliderElement);
+        return new SliderElement({ type: elementType, ...defaultValues } as SliderElement);
       case 'spell-correct':
-        return new SpellCorrectElement(defaultValues as SpellCorrectElement);
+        return new SpellCorrectElement({ type: elementType, ...defaultValues } as SpellCorrectElement);
       case 'frame':
-        return new FrameElement(defaultValues as FrameElement);
+        return new FrameElement({ type: elementType, ...defaultValues } as FrameElement);
       case 'toggle-button':
-        return new ToggleButtonElement(defaultValues as ToggleButtonElement);
+        return new ToggleButtonElement({ type: elementType, ...defaultValues } as ToggleButtonElement);
       default:
         throw new Error(`ElementType ${elementType} not found!`);
     }

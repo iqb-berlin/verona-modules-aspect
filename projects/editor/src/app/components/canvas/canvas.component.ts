@@ -50,7 +50,7 @@ export class CanvasComponent {
         if (this.page.hasMaxWidth && newXPosition > this.page.maxWidth - element.width) {
           newXPosition = this.page.maxWidth - element.width;
         }
-        this.unitService.updateElementProperty([element], 'xPosition', newXPosition);
+        this.unitService.updateElementsPositionProperty([element], 'xPosition', newXPosition);
 
         let newYPosition = element.position.yPosition + event.distance.y;
         if (newYPosition < 0) {
@@ -59,7 +59,7 @@ export class CanvasComponent {
         if (newYPosition > this.getPageHeight() - element.height) {
           newYPosition = this.getPageHeight() - element.height;
         }
-        this.unitService.updateElementProperty([element], 'yPosition', newYPosition);
+        this.unitService.updateElementsPositionProperty([element], 'yPosition', newYPosition);
       });
     }
   }

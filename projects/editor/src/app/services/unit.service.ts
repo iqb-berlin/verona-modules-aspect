@@ -139,7 +139,6 @@ export class UnitService {
       }
       newElement = ElementFactory.createElement(
         elementType, {
-          type: elementType,
           id: this.idService.getNewID(elementType),
           src: mediaSrc,
           position: {
@@ -149,7 +148,6 @@ export class UnitService {
     } else {
       newElement = ElementFactory.createElement(
         elementType, {
-          type: elementType,
           id: this.idService.getNewID(elementType),
           position: {
             dynamicPositioning: section.dynamicPositioning
@@ -253,10 +251,10 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  updateElementProperty(elements: UIElement[],
-                        property: string,
-                        value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
-                        DragNDropValueObject[] | null): void {
+  updateElementsProperty(elements: UIElement[],
+                         property: string,
+                         value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
+                         DragNDropValueObject[] | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
@@ -277,23 +275,38 @@ export class UnitService {
         (element as LikertElement).rows.forEach(row => {
           row.readOnly = value as boolean;
         });
-      // } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumn',
-      //   'gridColumnRange', 'gridRow', 'gridRowRange', 'marginLeft', 'marginRight', 'marginTop',
-      //   'marginBottom', 'zIndex'].includes(property)) {
-      //   element.position![property] = Copy.getCopy(value);
-      // } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',
-      //   'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor', 'selectionColor',
-      //   'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
-      //   element.styling![property] = Copy.getCopy(value);
-      // } else if (['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',
-      //   'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
-      //   'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
-      //   'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'].includes(property)) {
-      //   element.player![property] = Copy.getCopy(value);
       } else {
-        // element[property] = Copy.getCopy(value);
         element.setProperty(property, value);
       }
+    });
+    this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  updateSelectedElementsPositionProperty(property: string, value: any): void {
+    this.updateElementsPositionProperty(this.selectionService.getSelectedElements(), property, value);
+  }
+
+  updateElementsPositionProperty(elements: UIElement[], property: string, value: any): void {
+    elements.forEach(element => {
+      element.setPositionProperty(property, value);
+    });
+    this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  updateSelectedElementsStyleProperty(property: string, value: any): void {
+    const elements = this.selectionService.getSelectedElements();
+    elements.forEach(element => {
+      element.setStyleProperty(property, value);
+    });
+    this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  updateElementsPlayerProperty(elements: UIElement[], property: string, value: any): void {
+    elements.forEach(element => {
+      element.setPlayerProperty(property, value);
     });
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
@@ -314,28 +327,28 @@ export class UnitService {
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     switch (alignmentDirection) {
       case 'left':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'xPosition',
           Math.min(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'right':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'xPosition',
           Math.max(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'top':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'yPosition',
           Math.min(...elements.map(element => element.position.yPosition))
         );
         break;
       case 'bottom':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'yPosition',
           Math.max(...elements.map(element => element.position.yPosition))
@@ -363,7 +376,7 @@ export class UnitService {
       case 'radio':
         this.dialogService.showTextEditDialog(element.label as string).subscribe((result: string) => {
           if (result) {
-            this.updateElementProperty([element], 'label', result);
+            this.updateElementsProperty([element], 'label', result);
           }
         });
         break;
@@ -374,7 +387,7 @@ export class UnitService {
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
-            this.updateElementProperty(
+            this.updateElementsProperty(
               [element],
               'text',
               (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
@@ -389,7 +402,7 @@ export class UnitService {
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
-            this.updateElementProperty(
+            this.updateElementsProperty(
               [element],
               'document',
               (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
@@ -401,7 +414,7 @@ export class UnitService {
         this.dialogService.showTextEditDialog((element as InputElement).value as string)
           .subscribe((result: string) => {
             if (result) {
-              this.updateElementProperty([element], 'value', result);
+              this.updateElementsProperty([element], 'value', result);
             }
           });
         break;
@@ -409,7 +422,7 @@ export class UnitService {
         this.dialogService.showMultilineTextEditDialog((element as InputElement).value as string)
           .subscribe((result: string) => {
             if (result) {
-              this.updateElementProperty([element], 'value', result);
+              this.updateElementsProperty([element], 'value', result);
             }
           });
         break;
@@ -417,7 +430,7 @@ export class UnitService {
       case 'video':
         this.dialogService.showPlayerEditDialog((element as PlayerElement).player)
           .subscribe((result: PlayerProperties) => {
-            Object.keys(result).forEach(key => this.updateElementProperty([element], key, result[key]));
+            Object.keys(result).forEach(key => this.updateElementsPlayerProperty([element], key, result[key]));
           });
         break;
       // no default

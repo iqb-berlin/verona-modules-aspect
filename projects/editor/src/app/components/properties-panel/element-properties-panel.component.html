@@ -29,8 +29,7 @@
       <aspect-element-postion-properties [dimensions]="{ width: combinedProperties.width,
                                                          height: combinedProperties.height,
                                                          dynamicWidth: $any(combinedProperties.dynamicWidth)}"
-                                         [positionProperties]="combinedProperties.position"
-                                         (updateModel)="updateModel($event.property, $event.value, $event.isInputValid)">
+                                         [positionProperties]="combinedProperties.position">
       </aspect-element-postion-properties>
     </mat-tab>
 
@@ -38,8 +37,7 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">palette</mat-icon>
       </ng-template>
-      <aspect-element-style-properties [styles]="$any(combinedProperties.styling)"
-                                       (updateModel)="updateModel($event.property, $event.value)">
+      <aspect-element-style-properties [styles]="$any(combinedProperties.styling)">
       </aspect-element-style-properties>
     </mat-tab>
   </mat-tab-group>

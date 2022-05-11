@@ -21,7 +21,19 @@ export abstract class UIElement {
   }
 
   setProperty(property: string, value: UIElementValue): void {
-    (this as UIElement)[property] = value;
+    this[property] = value;
+  }
+
+  setStyleProperty(property: string, value: any): void {
+    (this.styling as { [key: string]: any })[property] = value;
+  }
+
+  setPositionProperty(property: string, value: any): void {
+    (this.position as { [key: string]: any })[property] = value;
+  }
+
+  setPlayerProperty(property: string, value: any): void {
+    (this.player as { [key: string]: any })[property] = value;
   }
 }
 

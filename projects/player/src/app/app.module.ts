@@ -36,7 +36,7 @@ import {
 import { LayoutPlayerComponent } from './components/layout-player/layout-player.component';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
-import { UnitDefinitionMenuModule } from 'player/modules/unit-definition-menu/unit-definition-menu.module';
+import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
 import { ValidPagesPipe } from './pipes/valid-pages.pipe';
 import { ScrollPagesPipe } from './pipes/scroll-pages.pipe';
 import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';
@@ -84,7 +84,7 @@ import { PageIndexPipe } from './pipes/page-index.pipe';
       }
     }),
     OverlayModule,
-    UnitDefinitionMenuModule
+    UnitMenuModule
   ]
 })
 

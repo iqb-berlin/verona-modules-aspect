@@ -6,12 +6,12 @@ import {
 } from 'player/modules/verona/models/verona';
 
 @Component({
-  selector: 'aspect-unit-definition-menu',
-  templateUrl: './unit-definition-menu.component.html',
-  styleUrls: ['./unit-definition-menu.component.scss'],
+  selector: 'aspect-unit-menu',
+  templateUrl: './unit-menu.component.html',
+  styleUrls: ['./unit-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UnitDefinitionMenuComponent {
+export class UnitMenuComponent {
   @Input() scrollPages!: Page[];
   @Input() elementCodes!: ElementCode[];
 

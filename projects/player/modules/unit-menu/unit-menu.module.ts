@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UnitDefinitionMenuComponent } from './components/unit-definition-menu/unit-definition-menu.component';
+import { UnitMenuComponent } from './components/unit-menu/unit-menu.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from 'common/shared.module';
 import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
-    UnitDefinitionMenuComponent
+    UnitMenuComponent
   ],
   exports: [
-    UnitDefinitionMenuComponent
+    UnitMenuComponent
   ],
   imports: [
     CommonModule,
@@ -19,4 +19,4 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDividerModule
   ]
 })
-export class UnitDefinitionMenuModule { }
+export class UnitMenuModule { }

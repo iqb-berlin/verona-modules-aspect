@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Section } from 'common/classes/unit';
+import { Section } from 'common/models/section';
 
 @Component({
   selector: 'aspect-section-container',

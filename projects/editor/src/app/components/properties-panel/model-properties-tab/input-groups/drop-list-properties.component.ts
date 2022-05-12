@@ -1,7 +1,6 @@
 import {
   Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
-import { DragNDropValueObject } from 'common/interfaces/elements';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
@@ -10,6 +9,7 @@ import { MessageService } from 'common/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { DragNDropValueObject } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-drop-list-properties',

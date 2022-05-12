@@ -1,18 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
-import {
-  AudioElement,
-  DragNDropValueObject,
-  DropListElement, DropListSimpleElement,
-  ImageElement,
-  LikertRowElement,
-  RadioButtonGroupComplexElement,
-  RadioButtonGroupElement, SpellCorrectElement,
-  TextAreaElement,
-  TextElement,
-  TextFieldElement, TextFieldSimpleElement,
-  ToggleButtonElement
-} from 'common/interfaces/elements';
 import * as dropList_130 from 'test-data/element-models/drop-list_130.json';
 import * as dropListSimple_131 from 'test-data/element-models/drop-list-simple_131.json';
 import * as textField_130 from 'test-data/element-models/text-field_130.json';
@@ -28,6 +15,20 @@ import * as textArea_130 from 'test-data/element-models/text-area_130.json';
 import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
 import * as dragNDropValues_01_130 from 'test-data/values/dragNDropValues_01_130.json';
 import * as dragNDropValues_02_130 from 'test-data/values/dragNDropValues_02_130.json';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
+import { TextElement } from 'common/models/elements/text/text';
+import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { ImageElement } from 'common/models/elements/media-elements/image';
+import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
+import { TextFieldSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
+import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
+import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { DragNDropValueObject } from 'common/models/elements/element';
 
 describe('ElementModelElementCodeMappingService', () => {
   let service: ElementModelElementCodeMappingService;

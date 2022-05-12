@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
-import { Section } from 'common/classes/unit';
+import { Section } from 'common/models/section';
 
 @Component({
   selector: 'aspect-section-dynamic',

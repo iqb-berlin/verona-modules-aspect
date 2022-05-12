@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { SanitizationService } from './sanitization.service';
-import { Unit } from 'common/interfaces/unit';
 import packageJSON from '../../../package.json';
 import * as sampleUnit100 from 'test-data/unit-definitions/test100.json';
 import * as sampleUnit126 from 'test-data/unit-definitions/test126.json';
@@ -11,7 +10,8 @@ import * as sampleUnit130Audio from 'test-data/unit-definitions/test130-audio.js
 import * as sampleUnit112Texts from 'test-data/unit-definitions/test112-texts.json';
 import * as sampleUnit112TextFields from 'test-data/unit-definitions/test112-Textfields.json';
 import * as sampleUnit130TextFields from 'test-data/unit-definitions/test130-textfields.json';
-import { ClozeElement } from 'common/interfaces/elements';
+import { Unit } from 'common/models/unit';
+import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 
 describe('SanitizationService', () => {
   let service: SanitizationService;

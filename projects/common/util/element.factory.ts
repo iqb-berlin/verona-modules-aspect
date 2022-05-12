@@ -1,53 +1,31 @@
-import { ComponentFactory, ComponentFactoryResolver } from '@angular/core';
-import { TextComponent } from '../ui-elements/text/text.component';
-import { ButtonComponent } from '../ui-elements/button/button.component';
-import { TextFieldComponent } from '../ui-elements/text-field/text-field.component';
-import { TextAreaComponent } from '../ui-elements/text-area/text-area.component';
-import { CheckboxComponent } from '../ui-elements/checkbox/checkbox.component';
-import { DropdownComponent } from '../ui-elements/dropdown/dropdown.component';
-import { RadioButtonGroupComponent } from '../ui-elements/radio/radio-button-group.component';
-import { ImageComponent } from '../ui-elements/image/image.component';
-import { AudioComponent } from '../ui-elements/audio/audio.component';
-import { VideoComponent } from '../ui-elements/video/video.component';
-import { LikertComponent } from '../ui-elements/likert/likert.component';
-import { RadioGroupImagesComponent } from '../ui-elements/radio-complex/radio-group-images.component';
-import { DropListComponent } from '../ui-elements/drop-list/drop-list.component';
-import { ClozeComponent } from '../ui-elements/cloze/cloze.component';
-import { SliderComponent } from '../ui-elements/slider/slider.component';
-import { SpellCorrectComponent } from '../ui-elements/spell-correct/spell-correct.component';
-import { FrameComponent } from '../ui-elements/frame/frame.component';
-import { ElementComponent } from '../directives/element-component.directive';
 import {
-  BasicStyles, ExtendedStyles, PlayerProperties, PositionProperties,
-  UIElement
-} from 'common/classes/element';
-import {
-  TextImageLabel,
-  UIElementValue
-} from 'common/interfaces/elements';
-import { TextElement } from 'common/ui-elements/text/text';
-import { ButtonElement } from 'common/ui-elements/button/button';
-import { TextFieldElement } from 'common/ui-elements/text-field/text-field';
-import { TextFieldSimpleElement } from 'common/ui-elements/cloze/text-field-simple';
-import { CheckboxElement } from 'common/ui-elements/checkbox/checkbox';
-import { TextAreaElement } from 'common/ui-elements/text-area/text-area';
-import { DropdownElement } from 'common/ui-elements/dropdown/dropdown';
-import { RadioButtonGroupElement } from 'common/ui-elements/radio/radio-button-group';
-import { VideoElement } from 'common/ui-elements/video/video';
-import { ImageElement } from 'common/ui-elements/image/image';
-import { AudioElement } from 'common/ui-elements/audio/audio';
-import { LikertElement } from 'common/ui-elements/likert/likert';
-import { RadioButtonGroupComplexElement } from 'common/ui-elements/radio-complex/radio-button-group-complex';
-import { DropListElement } from 'common/ui-elements/drop-list/drop-list';
-import { DropListSimpleElement } from 'common/ui-elements/cloze/drop-list-simple';
-import { ClozeElement } from 'common/ui-elements/cloze/cloze';
-import { SliderElement } from 'common/ui-elements/slider/slider';
-import { SpellCorrectElement } from 'common/ui-elements/spell-correct/spell-correct';
-import { FrameElement } from 'common/ui-elements/frame/frame';
-import { ToggleButtonElement } from 'common/ui-elements/cloze/toggle-button';
+  BasicStyles, PlayerProperties, PositionProperties, TextImageLabel,
+  UIElement, UIElementValue
+} from 'common/models/elements/element';
+import { TextElement } from 'common/models/elements/text/text';
+import { ButtonElement } from 'common/models/elements/button/button';
+import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
+import { TextFieldSimpleElement } from
+  'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
+import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
+import { DropdownElement } from 'common/models/elements/input-elements/dropdown';
+import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { VideoElement } from 'common/models/elements/media-elements/video';
+import { ImageElement } from 'common/models/elements/media-elements/image';
+import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DropListSimpleElement } from
+  'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
+import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { SliderElement } from 'common/models/elements/input-elements/slider';
+import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
+import { FrameElement } from 'common/models/elements/frame/frame';
+import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 
 export abstract class ElementFactory {
-  // static createElement(element: Partial<UIElement>): UIElement {
   static createElement(elementType: string, defaultValues: Partial<UIElement> = {}): UIElement {
     console.log('createElement', elementType, defaultValues);
     switch (elementType) {
@@ -76,7 +54,8 @@ export abstract class ElementFactory {
       case 'likert':
         return new LikertElement({ type: elementType, ...defaultValues } as LikertElement);
       case 'radio-group-images':
-        return new RadioButtonGroupComplexElement({ type: elementType, ...defaultValues } as RadioButtonGroupComplexElement);
+        return new RadioButtonGroupComplexElement({
+          type: elementType, ...defaultValues } as RadioButtonGroupComplexElement);
       case 'drop-list':
         return new DropListElement({ type: elementType, ...defaultValues } as DropListElement);
       case 'drop-list-simple':
@@ -115,9 +94,9 @@ export abstract class ElementFactory {
     };
   }
 
-  // static initStylingProps(defaults?: BasicStyles & ExtendedStyles): BasicStyles {
-  static initStylingProps(defaults?: any): BasicStyles {
+  static initStylingProps<T>(defaults?: Partial<BasicStyles> & T): BasicStyles & T {
     return {
+      ...defaults as T,
       fontColor: defaults?.fontColor !== undefined ? defaults.fontColor as string : '#000000',
       font: defaults?.font !== undefined ? defaults.font as string : 'Roboto',
       fontSize: defaults?.fontSize !== undefined ? defaults.fontSize as number : 20,
@@ -146,14 +125,14 @@ export abstract class ElementFactory {
       progressBar: defaults.progressBar !== undefined ? defaults.progressBar as boolean : true,
       interactiveProgressbar: defaults.interactiveProgressbar !== undefined ?
         defaults.interactiveProgressbar as boolean :
-        false, // TODO default?
+        false,
       volumeControl: defaults.volumeControl !== undefined ? defaults.volumeControl as boolean : true,
       defaultVolume: defaults.defaultVolume !== undefined ? defaults.defaultVolume as number : 0.8,
       minVolume: defaults.minVolume !== undefined ? defaults.minVolume as number : 0,
       muteControl: defaults.muteControl !== undefined ? defaults.muteControl as boolean : true,
       interactiveMuteControl: defaults.interactiveMuteControl !== undefined ?
         defaults.interactiveMuteControl as boolean :
-        false, // TODO default?
+        false,
       hintLabel: defaults.hintLabel !== undefined ? defaults.hintLabel as string : '',
       hintLabelDelay: defaults.hintLabelDelay !== undefined ? defaults.hintLabelDelay as number : 0,
       activeAfterID: defaults.activeAfterID !== undefined ? defaults.activeAfterID as string : '',
@@ -163,48 +142,5 @@ export abstract class ElementFactory {
       showRestTime: defaults.showRestTime !== undefined ? defaults.showRestTime as boolean : true,
       playbackTime: defaults.playbackTime !== undefined ? defaults.playbackTime as number : 0
     };
-  }
-
-  static getComponentFactory( // TODO weg hier
-    elementType: string, componentFactoryResolver: ComponentFactoryResolver
-  ): ComponentFactory<ElementComponent> {
-    switch (elementType) {
-      case 'text':
-        return componentFactoryResolver.resolveComponentFactory(TextComponent);
-      case 'button':
-        return componentFactoryResolver.resolveComponentFactory(ButtonComponent);
-      case 'text-field':
-        return componentFactoryResolver.resolveComponentFactory(TextFieldComponent);
-      case 'text-area':
-        return componentFactoryResolver.resolveComponentFactory(TextAreaComponent);
-      case 'checkbox':
-        return componentFactoryResolver.resolveComponentFactory(CheckboxComponent);
-      case 'dropdown':
-        return componentFactoryResolver.resolveComponentFactory(DropdownComponent);
-      case 'radio':
-        return componentFactoryResolver.resolveComponentFactory(RadioButtonGroupComponent);
-      case 'image':
-        return componentFactoryResolver.resolveComponentFactory(ImageComponent);
-      case 'audio':
-        return componentFactoryResolver.resolveComponentFactory(AudioComponent);
-      case 'video':
-        return componentFactoryResolver.resolveComponentFactory(VideoComponent);
-      case 'likert':
-        return componentFactoryResolver.resolveComponentFactory(LikertComponent);
-      case 'radio-group-images':
-        return componentFactoryResolver.resolveComponentFactory(RadioGroupImagesComponent);
-      case 'drop-list':
-        return componentFactoryResolver.resolveComponentFactory(DropListComponent);
-      case 'cloze':
-        return componentFactoryResolver.resolveComponentFactory(ClozeComponent);
-      case 'slider':
-        return componentFactoryResolver.resolveComponentFactory(SliderComponent);
-      case 'spell-correct':
-        return componentFactoryResolver.resolveComponentFactory(SpellCorrectComponent);
-      case 'frame':
-        return componentFactoryResolver.resolveComponentFactory(FrameComponent);
-      default:
-        throw new Error('unknown element: ' + elementType);
-    }
   }
 }

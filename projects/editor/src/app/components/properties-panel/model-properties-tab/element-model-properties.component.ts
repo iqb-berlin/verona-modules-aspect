@@ -5,16 +5,12 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitService } from '../../../services/unit.service';
-import {
-  TextImageLabel,
-  DragNDropValueObject,
-} from 'common/interfaces/elements';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { InputElementValue, UIElement } from 'common/classes/element';
-import { LikertRowElement } from 'common/ui-elements/likert/likert-row';
-import { LikertElement } from 'common/ui-elements/likert/likert';
+import { DragNDropValueObject, InputElementValue, TextImageLabel, UIElement } from 'common/models/elements/element';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 
 @Component({
   selector: 'aspect-element-model-properties-component',

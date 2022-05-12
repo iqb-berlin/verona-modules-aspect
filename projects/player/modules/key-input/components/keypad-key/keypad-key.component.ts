@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { InputAssistancePreset } from 'common/interfaces/elements';
+import { InputAssistancePreset } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-keypad-key',

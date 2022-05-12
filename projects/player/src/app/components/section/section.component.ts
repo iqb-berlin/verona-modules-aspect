@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Section } from 'common/classes/unit';
+import { Section } from 'common/models/section';
 
 @Component({
   selector: 'aspect-section',

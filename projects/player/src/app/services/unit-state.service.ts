@@ -10,8 +10,7 @@ import {
 } from 'player/modules/verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { InputElementValue } from 'common/classes/element';
-import { ValueChangeElement } from 'common/interfaces/elements';
+import { InputElementValue, ValueChangeElement } from 'common/models/elements/element';
 
 @Injectable({
   providedIn: 'root'

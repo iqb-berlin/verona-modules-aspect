@@ -9,8 +9,8 @@ import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
-import { Section } from 'common/classes/unit';
-import { UIElement } from 'common/classes/element';
+import { UIElement } from 'common/models/elements/element';
+import { Section } from 'common/models/section';
 
 @Component({
   selector: 'aspect-section-menu',

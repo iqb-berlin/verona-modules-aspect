@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { PositionProperties } from 'common/classes/element';
+import { PositionProperties } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-position-field-set',

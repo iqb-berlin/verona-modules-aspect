@@ -1,4 +1,4 @@
-import { InputAssistancePreset } from 'common/interfaces/elements';
+import { InputAssistancePreset } from 'common/models/elements/element';
 
 export class KeyLayout {
   static get = (preset: InputAssistancePreset | 'keyboard'): {

@@ -8,12 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
-import {
-  TextImageLabel,
-  DragNDropValueObject,
-  UIElementValue
-} from 'common/interfaces/elements';
-import { UIElement } from 'common/classes/element';
+import { DragNDropValueObject, TextImageLabel, UIElement, UIElementValue } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-properties',

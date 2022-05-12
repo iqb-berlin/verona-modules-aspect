@@ -6,7 +6,7 @@ import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
 import { ArrayUtils } from 'common/util/array';
-import { Page } from 'common/classes/unit';
+import { Page } from 'common/models/page';
 
 @Component({
   selector: 'aspect-unit-view',

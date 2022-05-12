@@ -1,19 +1,17 @@
 import {
-  Directive, Input,
-  ComponentFactoryResolver, ComponentRef,
+  Directive, Input, ComponentRef,
   ViewChild, ViewContainerRef, OnInit, OnDestroy, ChangeDetectorRef, Output, EventEmitter
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UnitService } from '../../../services/unit.service';
-import { ElementFactory } from 'common/util/element.factory';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SelectionService } from '../../../services/selection.service';
-import { CompoundElementComponent } from
-    'common/directives/compound-element.directive';
-import { ClozeComponent } from 'common/ui-elements/cloze/cloze.component';
-import { CompoundChildOverlayComponent } from 'common/components/compound-child-overlay.component';
-import { UIElement } from 'common/classes/element';
+import { CompoundElementComponent } from 'common/directives/compound-element.directive';
+import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
+import { CompoundChildOverlayComponent } from
+    'common/components/compound-elements/cloze/compound-child-overlay.component';
+import { UIElement } from 'common/models/elements/element';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -29,13 +27,10 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   constructor(public selectionService: SelectionService,
               protected unitService: UnitService,
-              private componentFactoryResolver: ComponentFactoryResolver,
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    console.log('t1', this.element);
-    const componentFactory = ElementFactory.getComponentFactory(this.element.type, this.componentFactoryResolver);
-    this.childComponent = this.elementContainer.createComponent(componentFactory);
+    this.childComponent = this.elementContainer.createComponent(this.element.getComponentFactory());
     this.childComponent.instance.elementModel = this.element;
 
     // Make children not clickable. This way the only relevant events are managed by the overlay.

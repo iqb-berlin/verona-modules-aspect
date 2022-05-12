@@ -6,9 +6,9 @@ import { UnitStateService } from '../../services/unit-state.service';
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
-import { AudioElement } from 'common/ui-elements/audio/audio';
-import { VideoElement } from 'common/ui-elements/video/video';
-import { UIElement } from 'common/classes/element';
+import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { VideoElement } from 'common/models/elements/media-elements/video';
+import { UIElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-media-player-group',

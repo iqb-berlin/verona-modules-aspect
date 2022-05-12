@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Page } from 'common/classes/unit';
+import { Page } from 'common/models/page';
 
 @Pipe({
   name: 'pageIndex'

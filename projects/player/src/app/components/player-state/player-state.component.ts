@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { NavigationService } from '../../services/navigation.service';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { Page } from 'common/classes/unit';
 import {
   PlayerConfig, PlayerState, RunningState,
   VopContinueCommand, VopGetStateRequest,
@@ -14,6 +13,7 @@ import {
   VopStopCommand
 } from 'player/modules/verona/models/verona';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
+import { Page } from 'common/models/page';
 
 @Component({
   selector: 'aspect-player-state',

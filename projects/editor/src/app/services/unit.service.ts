@@ -12,24 +12,21 @@ import { ElementFactory } from 'common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
 import { UnitUtils } from 'common/util/unit-utils';
 import { ArrayUtils } from 'common/util/array';
-import { ClozeUtils } from 'common/util/cloze';
 import { SanitizationService } from 'common/services/sanitization.service';
-import { Page, Section, Unit } from 'common/classes/unit';
+import { Unit } from 'common/models/unit';
 import {
+  DragNDropValueObject,
   InputElement,
-  InputElementValue, PlayerProperties, PositionedUIElement,
-  UIElement
-} from 'common/classes/element';
-import {
-  DragNDropValueObject, PlayerElement,
-  TextImageLabel,
-  UIElementType
-} from 'common/interfaces/elements';
-import { LikertElement } from 'common/ui-elements/likert/likert';
-import { ClozeDocument, ClozeElement } from 'common/ui-elements/cloze/cloze';
-import { LikertRowElement } from 'common/ui-elements/likert/likert-row';
-import { TextElement } from 'common/ui-elements/text/text';
-import { DropListElement } from 'common/ui-elements/drop-list/drop-list';
+  InputElementValue, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
+  UIElement, UIElementType
+} from 'common/models/elements/element';
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { TextElement } from 'common/models/elements/text/text';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { Page } from 'common/models/page';
+import { Section } from 'common/models/section';
 
 @Injectable({
   providedIn: 'root'
@@ -66,10 +63,10 @@ export class UnitService {
   private readIDs(unit: Unit): void {
     UnitUtils.findUIElements(unit).forEach(element => {
       if (element.type === 'likert') {
-        (element as LikertElement).rows.forEach(row => this.idService.addID(row.id));
+        (element as LikertElement).getChildElements().forEach(row => this.idService.addID(row.id));
       }
       if (element.type === 'cloze') {
-        ClozeUtils.getClozeChildElements((element as ClozeElement))
+        (element as ClozeElement).getChildElements()
           .forEach(child => this.idService.addID(child.id));
       }
       this.idService.addID(element.id);
@@ -225,7 +222,7 @@ export class UnitService {
     }
 
     if (newElement.type === 'cloze') {
-      ClozeUtils.getClozeChildElements(newElement).forEach((childElement: InputElement) => {
+      element.getChildElements().forEach((childElement: InputElement) => {
         childElement.id = this.idService.getNewID(childElement.type);
         if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
           (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
@@ -397,7 +394,7 @@ export class UnitService {
         break;
       case 'cloze':
         this.dialogService.showClozeTextEditDialog(
-          (element as ClozeElement).document,
+          (element as ClozeElement).document!,
           (element as ClozeElement).styling.fontSize
         ).subscribe((result: string) => {
           if (result) {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
-import { UIElementType } from 'common/interfaces/elements';
+import { UIElementType } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-ui-element-toolbox',

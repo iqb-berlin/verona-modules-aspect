@@ -6,10 +6,10 @@ import { ElementGroupDirective } from '../../directives/element-group.directive'
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { NavigationService } from '../../services/navigation.service';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
-import { ButtonElement } from 'common/ui-elements/button/button';
-import { FrameElement } from 'common/ui-elements/frame/frame';
-import { ImageElement } from 'common/ui-elements/image/image';
-import { InputElementValue } from 'common/classes/element';
+import { ButtonElement } from 'common/models/elements/button/button';
+import { FrameElement } from 'common/models/elements/frame/frame';
+import { ImageElement } from 'common/models/elements/media-elements/image';
+import { InputElementValue } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 
 @Component({

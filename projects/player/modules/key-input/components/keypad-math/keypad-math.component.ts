@@ -1,9 +1,9 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { InputAssistancePreset } from 'common/interfaces/elements';
 import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
 import { KeyLayout } from '../../configs/key-layout';
+import { InputAssistancePreset } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-keypad-math',

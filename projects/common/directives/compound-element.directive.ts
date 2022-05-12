@@ -4,9 +4,9 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ElementComponent } from './element-component.directive';
-import { CompoundChildOverlayComponent } from '../components/compound-child-overlay.component';
-import { LikertRadioButtonGroupComponent } from '../ui-elements/likert/likert-radio-button-group.component';
-import { InputElement } from 'common/classes/element';
+import { CompoundChildOverlayComponent } from '../components/compound-elements/cloze/compound-child-overlay.component';
+import { LikertRadioButtonGroupComponent } from
+  '../components/compound-elements/likert/likert-radio-button-group.component';
 
 @Directive()
 export abstract class CompoundElementComponent extends ElementComponent implements AfterViewInit {
@@ -18,6 +18,5 @@ export abstract class CompoundElementComponent extends ElementComponent implemen
     this.childrenAdded.emit(this.getFormElementChildrenComponents());
   }
 
-  abstract getFormElementModelChildren(): InputElement[];
   abstract getFormElementChildrenComponents(): ElementComponent[];
 }

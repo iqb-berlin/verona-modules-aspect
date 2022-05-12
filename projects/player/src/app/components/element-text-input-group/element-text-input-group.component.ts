@@ -10,15 +10,15 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValidationService } from '../../services/validation.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
-import { TextAreaComponent } from 'common/ui-elements/text-area/text-area.component';
-import { TextFieldComponent } from 'common/ui-elements/text-field/text-field.component';
+import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
+import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { KeyboardService } from '../../services/keyboard.service';
-import { SpellCorrectComponent } from 'common/ui-elements/spell-correct/spell-correct.component';
+import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
 import { DeviceService } from '../../services/device.service';
-import { TextAreaElement } from 'common/ui-elements/text-area/text-area';
-import { TextFieldElement } from 'common/ui-elements/text-field/text-field';
-import { SpellCorrectElement } from 'common/ui-elements/spell-correct/spell-correct';
-import { InputElement } from 'common/classes/element';
+import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
+import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
+import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
+import { InputElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-text-input-group',

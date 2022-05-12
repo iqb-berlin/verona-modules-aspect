@@ -1,35 +1,32 @@
 import { Injectable } from '@angular/core';
 import packageJSON from '../../../package.json';
-import { ClozeUtils } from 'common/util/cloze';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import ToggleButtonExtension from 'common/ui-elements/cloze/tiptap-editor-extensions/toggle-button';
-import DropListExtension from 'common/ui-elements/cloze/tiptap-editor-extensions/drop-list';
-import TextFieldExtension from 'common/ui-elements/cloze/tiptap-editor-extensions/text-field';
+import ToggleButtonExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
+import DropListExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/drop-list';
+import TextFieldExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/text-field';
 import { IDService } from './id.service';
-import { Page, Section, Unit } from 'common/classes/unit';
+import { Unit } from 'common/models/unit';
 import {
-  BasicStyles, ExtendedStyles,
+  BasicStyles, DragNDropValueObject, ExtendedStyles,
   InputElement, PlayerProperties,
   PositionedUIElement, PositionProperties,
-  UIElement
-} from 'common/classes/element';
-import {
-  DragNDropValueObject,
-  UIElementValue
-} from 'common/interfaces/elements';
-import { LikertElement } from 'common/ui-elements/likert/likert';
-import { RadioButtonGroupElement } from 'common/ui-elements/radio/radio-button-group';
-import { ToggleButtonElement } from 'common/ui-elements/cloze/toggle-button';
-import { LikertRowElement } from 'common/ui-elements/likert/likert-row';
-import { TextElement } from 'common/ui-elements/text/text';
+  UIElement, UIElementValue
+} from 'common/models/elements/element';
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { TextElement } from 'common/models/elements/text/text';
 import {
   ClozeDocument,
   ClozeDocumentParagraph,
   ClozeDocumentParagraphPart,
   ClozeElement
-} from 'common/ui-elements/cloze/cloze';
-import { DropListElement } from 'common/ui-elements/drop-list/drop-list';
+} from 'common/models/elements/compound-elements/cloze/cloze';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { Page } from 'common/models/page';
+import { Section } from 'common/models/section';
 
 @Injectable({
   providedIn: 'root'
@@ -250,7 +247,8 @@ export class SanitizationService {
 
     // TODO: create a sub method
     if (element.document) {
-      childElements = ClozeUtils.getClozeChildElements((element as ClozeElement));
+      // childElements = ClozeUtils.getClozeChildElements((element as ClozeElement));
+      childElements = new ClozeElement(element).getClozeChildElements();
       doc = element.document as ClozeDocument;
     } else {
       childElements = (element.parts as any[])

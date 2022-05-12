@@ -14,9 +14,9 @@ import { ValidationService } from './services/validation.service';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { UnitUtils } from 'common/util/unit-utils';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { Page, Unit } from 'common/classes/unit';
-import { DragNDropValueObject } from 'common/interfaces/elements';
-import { UIElement } from 'common/classes/element';
+import { Unit } from 'common/models/unit';
+import { DragNDropValueObject, UIElement } from 'common/models/elements/element';
+import { Page } from 'common/models/page';
 
 @Component({
   selector: 'aspect-player',

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
-import { UIElement } from 'common/classes/element';
+import { UIElement } from 'common/models/elements/element';
 
 @Pipe({
   name: 'errorTransform'

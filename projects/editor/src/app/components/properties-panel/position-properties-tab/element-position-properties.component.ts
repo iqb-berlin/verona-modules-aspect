@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
-import { PositionedUIElement, PositionProperties } from 'common/classes/element';
+import { PositionedUIElement, PositionProperties } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-postion-properties',

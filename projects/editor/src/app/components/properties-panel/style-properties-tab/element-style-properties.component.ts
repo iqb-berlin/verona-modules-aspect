@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { BasicStyles, ExtendedStyles } from 'common/classes/element';
+import { BasicStyles, ExtendedStyles } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({

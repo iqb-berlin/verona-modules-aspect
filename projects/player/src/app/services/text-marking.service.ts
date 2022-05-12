@@ -1,4 +1,4 @@
-import { TextComponent } from 'common/ui-elements/text/text.component';
+import { TextComponent } from 'common/components/text/text.component';
 import { Injectable } from '@angular/core';
 import { LogService } from 'player/modules/logging/services/log.service';
 

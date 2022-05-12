@@ -17,6 +17,7 @@ import { SanitizationService } from 'common/services/sanitization.service';
 import { UnitUtils } from 'common/util/unit-utils';
 import { DragNDropValueObject, UIElement } from 'common/interfaces/elements';
 import { LogService } from 'player/modules/logging/services/log.service';
+import { DeviceService } from './services/device.service';
 
 @Component({
   selector: 'aspect-player',
@@ -37,6 +38,7 @@ export class AppComponent implements OnInit {
               private mediaPlayerService: MediaPlayerService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
               private validatorService: ValidationService,
+              private deviceService: DeviceService,
               private sanitizationService: SanitizationService) {
     this.isStandalone = window === window.parent;
   }
@@ -52,6 +54,8 @@ export class AppComponent implements OnInit {
       .subscribe((message: VopStartCommand): void => this.onStart(message));
     this.nativeEventService.focus
       .subscribe((focused: boolean): void => this.onFocus(focused));
+    this.nativeEventService.pointerDown
+      .subscribe( () => this.deviceService.dontSleep());
   }
 
   private initVeronaPostService(): void {

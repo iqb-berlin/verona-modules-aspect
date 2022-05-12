@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import NoSleep from 'nosleep.js';
+import { LogService } from 'player/modules/logging/services/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,8 @@ export class DeviceService {
   dontSleep(): void {
     if (this.isTouch && (!this.noSleep || !this.noSleep.isEnabled )) {
       this.noSleep = new NoSleep();
-      this.noSleep.enable();
+      this.noSleep.enable().then(() => {},
+        () => LogService.error('player: enabling noSleep instance failed'));
     }
   }
 

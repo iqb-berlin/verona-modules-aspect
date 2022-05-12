@@ -25,13 +25,13 @@ export class ElementGroupSelectionComponent implements OnInit {
     { name: 'interactiveGroup', types: ['button', 'image'] }
   ];
 
-  selectedGroup!: ElementGroupName;
+  selectedGroup!: ElementGroupName | undefined;
 
   ngOnInit(): void {
     this.selectedGroup = this.selectGroup(this.elementModel.type);
   }
 
-  selectGroup(type: UIElementType): ElementGroupName {
+  private selectGroup(type: UIElementType): ElementGroupName {
     return this.groups.find(group => group.types.includes(type))?.name as ElementGroupName;
   }
 }

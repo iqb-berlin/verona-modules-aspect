@@ -52,7 +52,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
                 }
             ))
         }))
-    };
+    } as ClozeDocument;
   }
 
   getComponentFactory(): Type<ElementComponent> {

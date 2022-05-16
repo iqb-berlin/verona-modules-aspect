@@ -23,7 +23,7 @@ describe('ValidPagesPipe', () => {
     alwaysVisibleAspectRatio: 50,
     sections: []
   };
-  
+
   beforeEach(() => {
     TestBed
       .configureTestingModule({

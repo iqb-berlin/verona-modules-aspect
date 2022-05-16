@@ -1,6 +1,6 @@
 import {
   Component, EventEmitter, Input, Output,
-  AfterViewInit, Injector
+  AfterViewInit, Injector, OnInit
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
@@ -32,7 +32,7 @@ import TextFieldComponentExtension from './angular-node-views/text-field-compone
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.css']
 })
-export class RichTextEditorComponent implements AfterViewInit {
+export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() content!: string | Record<string, any>;
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
@@ -75,16 +75,17 @@ export class RichTextEditorComponent implements AfterViewInit {
     Blockquote
   ];
 
-  editor: Editor;
+  editor: Editor = new Editor({ extensions: this.defaultExtensions });
 
-  constructor(private injector: Injector) {
+  constructor(private injector: Injector) { }
+
+  ngOnInit(): void {
     const activeExtensions = this.defaultExtensions;
     if (this.clozeMode) {
       activeExtensions.push(ToggleButtonComponentExtension(this.injector));
       activeExtensions.push(DropListComponentExtension(this.injector));
       activeExtensions.push(TextFieldComponentExtension(this.injector));
     }
-
     this.editor = new Editor({ extensions: activeExtensions });
   }
 

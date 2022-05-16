@@ -16,9 +16,9 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
   styling: BasicStyles;
 
   constructor(element: Partial<RadioButtonGroupComplexElement>) {
-    super(element);
+    super({ height: 100, ...element });
     Object.assign(this, element);
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = ElementFactory.initPositionProps({ marginBottom: 40, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
     };

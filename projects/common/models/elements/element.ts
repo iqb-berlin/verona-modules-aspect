@@ -71,7 +71,7 @@ export abstract class CompoundElement extends UIElement {
 export abstract class PlayerElement extends UIElement {
   player: PlayerProperties;
 
-  protected constructor(element: PlayerElement) {
+  protected constructor(element: Partial<PlayerElement>) {
     super(element);
     this.player = ElementFactory.initPlayerProps(element.player);
   }

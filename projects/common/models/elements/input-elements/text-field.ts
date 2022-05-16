@@ -17,7 +17,7 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
-  restrictedToInputAssistanceChars: boolean = true; // TODO refactor
+  restrictedToInputAssistanceChars: boolean = true;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
   clearable: boolean = false;
@@ -27,7 +27,7 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
   };
 
   constructor(element: Partial<TextFieldElement>) {
-    super(element);
+    super({ width: 180, height: 120, ...element });
     Object.assign(this, element);
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {

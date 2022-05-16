@@ -25,7 +25,7 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
   };
 
   constructor(element: Partial<TextAreaElement>) {
-    super(element);
+    super({ width: 230, height: 132, ...element });
     Object.assign(this, element);
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {

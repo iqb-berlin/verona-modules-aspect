@@ -21,7 +21,7 @@ export class TextElement extends UIElement implements PositionedUIElement {
   };
 
   constructor(element: Partial<TextElement>) {
-    super(element);
+    super({ height: 98, ...element });
     Object.assign(this, element);
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {

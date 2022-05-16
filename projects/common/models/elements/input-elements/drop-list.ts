@@ -17,9 +17,10 @@ export class DropListElement extends InputElement implements PositionedUIElement
   };
 
   constructor(element: Partial<DropListElement>) {
-    super(element);
+    super({ height: 100, ...element });
     Object.assign(this, element);
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.value = element.value || [];
+    this.position = ElementFactory.initPositionProps({ useMinHeight: true, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({
         backgroundColor: '#f4f4f2',

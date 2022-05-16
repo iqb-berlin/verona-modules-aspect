@@ -18,6 +18,7 @@ export class DropListSimpleElement extends InputElement {
   constructor(element: Partial<DropListSimpleElement>) {
     super({ width: 150, height: 30, ...element });
     Object.assign(this, element);
+    this.value = element.value || [];
     this.styling = {
       ...ElementFactory.initStylingProps({
         backgroundColor: '#f4f4f2',

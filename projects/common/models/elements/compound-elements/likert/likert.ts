@@ -23,8 +23,9 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   };
 
   constructor(element: Partial<LikertElement>) {
-    super(element);
+    super({ width: 250, height: 200, ...element });
     Object.assign(this, element);
+    this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row)) : [];
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
       ...ElementFactory.initStylingProps({

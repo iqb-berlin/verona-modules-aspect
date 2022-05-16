@@ -16,7 +16,7 @@ export class FrameElement extends UIElement implements PositionedUIElement {
   constructor(element: Partial<FrameElement>) {
     super(element);
     Object.assign(this, element);
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = ElementFactory.initPositionProps({ zIndex: -1, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({
         backgroundColor: 'transparent',

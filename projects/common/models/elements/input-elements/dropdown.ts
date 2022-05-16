@@ -10,8 +10,8 @@ export class DropdownElement extends InputElement implements PositionedUIElement
   position: PositionProperties;
   styling: BasicStyles;
 
-  constructor(element: DropdownElement) {
-    super(element);
+  constructor(element: Partial<DropdownElement>) {
+    super({ width: 240, height: 83, ...element });
     Object.assign(this, element);
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {

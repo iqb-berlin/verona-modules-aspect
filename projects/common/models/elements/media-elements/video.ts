@@ -6,11 +6,11 @@ import { VideoComponent } from 'common/components/media-elements/video.component
 
 export class VideoElement extends PlayerElement implements PositionedUIElement {
   src: string | null = null;
-  scale: boolean = false; // TODO besserer name
+  scale: boolean = false;
   position: PositionProperties;
 
-  constructor(element: VideoElement) {
-    super(element);
+  constructor(element: Partial<VideoElement>) {
+    super({ width: 280, height: 230, ...element });
     Object.assign(this, element);
     this.position = ElementFactory.initPositionProps(element.position);
   }

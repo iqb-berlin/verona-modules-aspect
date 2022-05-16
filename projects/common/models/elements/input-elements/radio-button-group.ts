@@ -14,9 +14,9 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
   };
 
   constructor(element: Partial<RadioButtonGroupElement>) {
-    super(element);
+    super({ height: 100, ...element });
     Object.assign(this, element);
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = ElementFactory.initPositionProps({ marginBottom: 30, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({
         backgroundColor: 'transparent',

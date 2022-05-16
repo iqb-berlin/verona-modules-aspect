@@ -20,7 +20,7 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
   styling: BasicStyles;
 
   constructor(element: Partial<SpellCorrectElement>) {
-    super(element);
+    super({ width: 230, height: 80, ...element });
     Object.assign(this, element);
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {

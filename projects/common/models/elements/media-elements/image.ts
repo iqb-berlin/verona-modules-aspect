@@ -2,7 +2,6 @@ import { ElementFactory } from 'common/util/element.factory';
 import { PositionedUIElement, PositionProperties, UIElement } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { AudioComponent } from 'common/components/media-elements/audio.component';
 import { ImageComponent } from 'common/components/media-elements/image.component';
 
 export class ImageElement extends UIElement implements PositionedUIElement {
@@ -14,8 +13,8 @@ export class ImageElement extends UIElement implements PositionedUIElement {
   magnifierUsed: boolean = false;
   position: PositionProperties;
 
-  constructor(element: ImageElement) {
-    super(element);
+  constructor(element: Partial<ImageElement>) {
+    super({ height: 100, ...element });
     Object.assign(this, element);
     this.position = ElementFactory.initPositionProps(element.position);
   }

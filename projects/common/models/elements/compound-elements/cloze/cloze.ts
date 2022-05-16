@@ -32,7 +32,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
   private initDocument(element: Partial<ClozeElement>): ClozeDocument {
     return {
       ...element.document,
-      content: element.document?.content
+      content: element.document?.content ? element.document.content
         .map((paragraph: ClozeDocumentParagraph) => ({
           ...paragraph,
           content: paragraph.content
@@ -51,7 +51,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
                   ...paraPart
                 }
             ))
-        }))
+        })) : []
     } as ClozeDocument;
   }
 

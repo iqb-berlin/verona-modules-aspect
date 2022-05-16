@@ -11,7 +11,7 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
 @Component({
   selector: 'aspect-cloze',
   template: `
-    <ng-container *ngIf="!elementModel.document"> TODO
+    <ng-container *ngIf="elementModel.document.content.length < 1">
       Kein Dokument vorhanden
     </ng-container>
     <div [style.width.%]="100"

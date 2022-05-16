@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, Output, ViewEncapsulation,
+  Component, EventEmitter, Input, Output,
   AfterViewInit, Injector
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
@@ -45,42 +45,48 @@ export class RichTextEditorComponent implements AfterViewInit {
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
 
-  editor = new Editor({
-    extensions: [StarterKit, Underline, Superscript, Subscript,
-      TextStyle, Color,
-      Highlight.configure({
-        multicolor: true
-      }),
-      TextAlign.configure({
-        types: ['paragraph', 'heading']
-      }),
-      Indent.configure({
-        types: ['listItem', 'paragraph'],
-        minLevel: 0,
-        maxLevel: 4
-      }),
-      Heading.configure({
-        levels: [1, 2, 3, 4]
-      }),
-      ParagraphExtension,
-      FontSize,
-      BulletListExtension,
-      OrderedListExtension,
-      HangingIndent,
-      Image.configure({
-        inline: true,
-        HTMLAttributes: {
-          style: 'display: inline-block; height: 1em; vertical-align: middle'
-        }
-      }),
-      Blockquote,
-      ToggleButtonComponentExtension(this.injector),
-      DropListComponentExtension(this.injector),
-      TextFieldComponentExtension(this.injector)
-    ]
-  });
+  defaultExtensions = [StarterKit, Underline, Superscript, Subscript,
+    TextStyle, Color,
+    Highlight.configure({
+      multicolor: true
+    }),
+    TextAlign.configure({
+      types: ['paragraph', 'heading']
+    }),
+    Indent.configure({
+      types: ['listItem', 'paragraph'],
+      minLevel: 0,
+      maxLevel: 4
+    }),
+    Heading.configure({
+      levels: [1, 2, 3, 4]
+    }),
+    ParagraphExtension,
+    FontSize,
+    BulletListExtension,
+    OrderedListExtension,
+    HangingIndent,
+    Image.configure({
+      inline: true,
+      HTMLAttributes: {
+        style: 'display: inline-block; height: 1em; vertical-align: middle'
+      }
+    }),
+    Blockquote
+  ];
 
-  constructor(private injector: Injector) { }
+  editor: Editor;
+
+  constructor(private injector: Injector) {
+    const activeExtensions = this.defaultExtensions;
+    if (this.clozeMode) {
+      activeExtensions.push(ToggleButtonComponentExtension(this.injector));
+      activeExtensions.push(DropListComponentExtension(this.injector));
+      activeExtensions.push(TextFieldComponentExtension(this.injector));
+    }
+
+    this.editor = new Editor({ extensions: activeExtensions });
+  }
 
   ngAfterViewInit(): void {
     this.editor.commands.focus();

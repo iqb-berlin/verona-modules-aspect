@@ -10,14 +10,14 @@ import { NativeEventService } from './services/native-event.service';
 import { MetaDataService } from './services/meta-data.service';
 import { UnitStateService } from './services/unit-state.service';
 import { MediaPlayerService } from './services/media-player.service';
-import { Page, Unit } from 'common/interfaces/unit';
 import { ValidationService } from './services/validation.service';
-import { UnitFactory } from 'common/util/unit.factory';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { UnitUtils } from 'common/util/unit-utils';
-import { DragNDropValueObject, UIElement } from 'common/interfaces/elements';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { DeviceService } from './services/device.service';
+import { Unit } from 'common/models/unit';
+import { DragNDropValueObject, UIElement } from 'common/models/elements/element';
+import { Page } from 'common/models/page';
 
 @Component({
   selector: 'aspect-player',
@@ -74,7 +74,7 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       LogService.info('player: onStart', message);
       if (message.unitDefinition) {
-        const unitDefinition: Unit = UnitFactory.createUnit(
+        const unitDefinition: Unit = new Unit(
           this.sanitizationService.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
         );
         this.configureSession(message, unitDefinition);

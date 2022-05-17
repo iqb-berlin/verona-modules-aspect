@@ -4,11 +4,11 @@ stages:
   - build
   - deploy
 
+default:
+  image: iqbberlin/ci-node-chromium:latest
+
 install-npm-packages:
   stage: install
-  image: iqbberlin/ci-node-chromium:latest
-  tags:
-    - npm
   script:
     - npm ci --cache .npm  --prefer-offline
   cache:
@@ -20,9 +20,6 @@ test-unit:
   stage: test
   needs:
     - install-npm-packages
-  image: iqbberlin/ci-node-chromium:latest
-  tags:
-    - chromium
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
@@ -34,9 +31,6 @@ test-unit:
 
 build-packages:
   stage: build
-  tags:
-    - npm
-  image: iqbberlin/ci-node-chromium:latest
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
@@ -50,9 +44,6 @@ build-packages:
 
 deploy:
   stage: deploy
-  tags:
-    - npm
-  image: iqbberlin/ci-node-chromium:latest
   script:
     - ./scripts/deploy.sh $TESTSTUDIO_USERNAME $TESTSTUDIO_PASSWORD
   only:

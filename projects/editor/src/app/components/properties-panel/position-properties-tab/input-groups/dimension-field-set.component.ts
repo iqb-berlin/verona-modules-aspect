@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { PositionProperties } from 'common/interfaces/elements';
+import { PositionProperties } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-dimension-field-set',
@@ -70,5 +70,5 @@ export class DimensionFieldSetComponent {
   @Input() positionProperties: PositionProperties | undefined;
   @Input() dimensions!: { width: number; height: number; dynamicWidth?: boolean };
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
+    new EventEmitter<{ property: string; value: string | boolean, isInputValid?: boolean | null }>();
 }

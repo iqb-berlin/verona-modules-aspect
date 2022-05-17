@@ -3,7 +3,7 @@ import {
   Directive, ElementRef
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { UIElement } from '../interfaces/elements';
+import { UIElement } from 'common/models/elements/element';
 
 @Directive()
 export abstract class ElementComponent implements AfterContentChecked {

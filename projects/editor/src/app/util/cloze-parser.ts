@@ -1,7 +1,7 @@
 import { IDService } from 'common/services/id.service';
 import { ElementFactory } from 'common/util/element.factory';
-import { ClozeDocument } from 'common/interfaces/cloze';
-import { InputElement, UIElement } from 'common/interfaces/elements';
+import { InputElement, UIElement } from 'common/models/elements/element';
+import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 
 export abstract class ClozeParser {
   static setMissingIDs(clozeJSON: ClozeDocument, idService: IDService): ClozeDocument {
@@ -38,13 +38,13 @@ export abstract class ClozeParser {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field-simple':
-        newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
+        newElement = ElementFactory.createElement(elementModel.type, elementModel as UIElement) as InputElement;
         break;
       case 'drop-list-simple':
-        newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
+        newElement = ElementFactory.createElement(elementModel.type, elementModel as UIElement) as InputElement;
         break;
       case 'toggle-button':
-        newElement = ElementFactory.createElement(elementModel as UIElement) as InputElement;
+        newElement = ElementFactory.createElement(elementModel.type, elementModel as UIElement) as InputElement;
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

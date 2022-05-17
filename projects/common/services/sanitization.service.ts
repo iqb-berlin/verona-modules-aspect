@@ -1,23 +1,32 @@
 import { Injectable } from '@angular/core';
 import packageJSON from '../../../package.json';
-import { Page, Section, Unit } from 'common/interfaces/unit';
-import {
-  ClozeElement, DragNDropValueObject, DropListElement,
-  ElementStyling,
-  InputElement, LikertElement, LikertRowElement, PlayerProperties,
-  PositionedElement, PositionProperties, RadioButtonGroupElement, TextElement,
-  ToggleButtonElement,
-  UIElement,
-  UIElementValue
-} from 'common/interfaces/elements';
-import { ClozeDocument, ClozeDocumentParagraph, ClozeDocumentParagraphPart } from 'common/interfaces/cloze';
-import { ClozeUtils } from 'common/util/cloze';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import ToggleButtonExtension from 'common/tiptap-editor-extensions/toggle-button';
-import DropListExtension from 'common/tiptap-editor-extensions/drop-list';
-import TextFieldExtension from 'common/tiptap-editor-extensions/text-field';
+import ToggleButtonExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
+import DropListExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/drop-list';
+import TextFieldExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/text-field';
 import { IDService } from './id.service';
+import { Unit } from 'common/models/unit';
+import {
+  BasicStyles, DragNDropValueObject, ExtendedStyles,
+  InputElement, PlayerProperties,
+  PositionedUIElement, PositionProperties,
+  UIElement, UIElementValue
+} from 'common/models/elements/element';
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { TextElement } from 'common/models/elements/text/text';
+import {
+  ClozeDocument,
+  ClozeDocumentParagraph,
+  ClozeDocumentParagraphPart,
+  ClozeElement
+} from 'common/models/elements/compound-elements/cloze/cloze';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { Page } from 'common/models/page';
+import { Section } from 'common/models/section';
 
 @Injectable({
   providedIn: 'root'
@@ -75,8 +84,8 @@ export class SanitizationService {
     return {
       ...section,
       elements: section.elements.map((element: UIElement) => (
-        this.sanitizeElement(element, section.dynamicPositioning))) as PositionedElement[]
-    };
+        this.sanitizeElement(element, section.dynamicPositioning))) as PositionedUIElement[]
+    } as Section;
   }
 
   private sanitizeElement(element: Record<string, UIElementValue>,
@@ -84,7 +93,7 @@ export class SanitizationService {
     let newElement: Partial<UIElement> = {
       ...element,
       position: SanitizationService.getPositionProps(element, sectionDynamicPositioning),
-      styling: SanitizationService.getStyleProps(element),
+      styling: SanitizationService.getStyleProps(element) as unknown as BasicStyles & ExtendedStyles,
       player: SanitizationService.getPlayerProps(element)
     };
     if (newElement.type === 'text') {
@@ -169,9 +178,9 @@ export class SanitizationService {
   *  surfaceProps. Even older versions had them in the root of the object, which is uses as last resort.
   *  The styles object then has all other properties of the element, but that is not a problem
   *  since the factory methods only use the values they care for and all others are discarded. */
-  private static getStyleProps(element: Record<string, UIElementValue>): ElementStyling {
+  private static getStyleProps(element: Record<string, UIElementValue>): Record<string, UIElementValue> {
     if (element.styling !== undefined) {
-      return element.styling as ElementStyling;
+      return element.styling as Record<string, UIElementValue>;
     }
     if (element.fontProps !== undefined) {
       return {
@@ -188,7 +197,7 @@ export class SanitizationService {
         lineColoringColor: element.lineColoringColor as string | undefined
       };
     }
-    return element as ElementStyling;
+    return element;
   }
 
   private static getPlayerProps(element: Record<string, UIElementValue>): PlayerProperties {
@@ -238,7 +247,7 @@ export class SanitizationService {
 
     // TODO: create a sub method
     if (element.document) {
-      childElements = ClozeUtils.getClozeChildElements((element as ClozeElement));
+      childElements = new ClozeElement(element).getChildElements();
       doc = element.document as ClozeDocument;
     } else {
       childElements = (element.parts as any[])
@@ -257,8 +266,7 @@ export class SanitizationService {
       childElement.type = childElement.type === 'drop-list' ? 'drop-list-simple' : childElement.type;
     });
 
-    // TODO: create a sub method
-    return {
+    return new ClozeElement({
       ...element,
       document: {
         ...doc,
@@ -281,7 +289,7 @@ export class SanitizationService {
               )) : undefined
           }))
       } as ClozeDocument
-    } as ClozeElement;
+    });
   }
 
   private static createClozeDocument(element: Record<string, UIElementValue>): ClozeDocument {
@@ -333,24 +341,24 @@ export class SanitizationService {
   }
 
   private handleLikertElement(element: LikertElement): LikertElement {
-    return {
+    return new LikertElement({
       ...element,
-      rows: element.rows.map((row: LikertRowElement) => this.sanitizeElement(row))
-    } as LikertElement;
+      rows: element.rows.map((row: LikertRowElement) => this.sanitizeElement(row) as LikertRowElement)
+    });
   }
 
   private static handleLikertRowElement(element: LikertRowElement): LikertRowElement {
     if (element.rowLabel) {
       return element;
     }
-    return {
+    return new LikertRowElement({
       ...element,
       rowLabel: {
         text: element.text,
         imgSrc: null,
         position: 'above'
       }
-    } as LikertRowElement;
+    });
   }
 
   // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.
@@ -359,7 +367,7 @@ export class SanitizationService {
       {
         ...element,
         value: (element.value as number) - 1
-      } :
+      } as InputElement :
       element;
   }
 
@@ -367,19 +375,19 @@ export class SanitizationService {
     if (element.richTextOptions) {
       return element;
     }
-    return {
+    return new RadioButtonGroupElement({
       ...element,
       richTextOptions: element.options as string[]
-    };
+    });
   }
 
   private static handleToggleButtonElement(element: ToggleButtonElement): ToggleButtonElement {
     if (element.richTextOptions) {
       return element;
     }
-    return {
+    return new ToggleButtonElement({
       ...element,
       richTextOptions: element.options as string[]
-    };
+    });
   }
 }

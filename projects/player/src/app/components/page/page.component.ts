@@ -1,8 +1,8 @@
 import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
-import { Page } from 'common/interfaces/unit';
 import { MediaPlayerService } from '../../services/media-player.service';
+import { Page } from 'common/models/page';
 
 @Component({
   selector: 'aspect-page',

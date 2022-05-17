@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { UnitService } from '../../services/unit.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
-import { Section } from 'common/interfaces/unit';
-import { UIElementType } from 'common/interfaces/elements';
+import { Section } from 'common/models/section';
+import { UIElementType } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-section-static',

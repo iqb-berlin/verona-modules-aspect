@@ -1,15 +1,16 @@
 import {
   AfterViewInit, Component, ViewChild
 } from '@angular/core';
-import {
-  ButtonElement, FrameElement, ImageElement, InputElementValue
-} from 'common/interfaces/elements';
-import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { NavigationService } from '../../services/navigation.service';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
+import { ButtonElement } from 'common/models/elements/button/button';
+import { FrameElement } from 'common/models/elements/frame/frame';
+import { ImageElement } from 'common/models/elements/media-elements/image';
+import { InputElementValue } from 'common/models/elements/element';
+import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 
 @Component({
   selector: 'aspect-element-interactive-group',

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Page } from 'common/interfaces/unit';
+import { Page } from 'common/models/page';
 
 @Pipe({
   name: 'validPages'

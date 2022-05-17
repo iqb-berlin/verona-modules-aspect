@@ -5,7 +5,6 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
-import { InputElement, InputElementValue, SliderElement } from 'common/interfaces/elements';
 import { UnitStateService } from '../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../services/element-model-element-code-mapping.service';
 import { ElementGroupDirective } from './element-group.directive';
@@ -14,6 +13,8 @@ import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { ValidationService } from '../services/validation.service';
 import { LogService } from 'player/modules/logging/services/log.service';
+import { InputElement, InputElementValue } from 'common/models/elements/element';
+import { SliderElement } from 'common/models/elements/input-elements/slider';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {

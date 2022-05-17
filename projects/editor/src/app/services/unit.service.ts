@@ -10,21 +10,23 @@ import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { ElementFactory } from 'common/util/element.factory';
 import { ClozeParser } from '../util/cloze-parser';
-import { Copy } from 'common/util/copy';
-import { UnitFactory } from 'common/util/unit.factory';
-import { Page, Section, Unit } from 'common/interfaces/unit';
-import {
-  ClozeElement, TextImageLabel, DragNDropValueObject,
-  DropListElement, InputElement, InputElementValue, LikertElement,
-  LikertRowElement, PlayerElement, PlayerProperties,
-  PositionedElement, TextElement,
-  UIElement, UIElementType
-} from 'common/interfaces/elements';
-import { ClozeDocument } from 'common/interfaces/cloze';
 import { UnitUtils } from 'common/util/unit-utils';
 import { ArrayUtils } from 'common/util/array';
-import { ClozeUtils } from 'common/util/cloze';
 import { SanitizationService } from 'common/services/sanitization.service';
+import { Unit } from 'common/models/unit';
+import {
+  DragNDropValueObject,
+  InputElement,
+  InputElementValue, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
+  UIElement, UIElementType
+} from 'common/models/elements/element';
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { TextElement } from 'common/models/elements/text/text';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { Page } from 'common/models/page';
+import { Section } from 'common/models/section';
 
 @Injectable({
   providedIn: 'root'
@@ -42,17 +44,18 @@ export class UnitService {
               private sanitizationService: SanitizationService,
               private sanitizer: DomSanitizer,
               private translateService: TranslateService) {
-    this.unit = UnitFactory.createUnit({} as Unit);
+    this.unit = new Unit();
   }
 
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
     const unitDef = JSON.parse(unitDefinition);
     if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
-      this.unit = UnitFactory.createUnit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
+      // this.unit = UnitFactory.createUnit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
+      this.unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
       this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
     } else {
-      this.unit = UnitFactory.createUnit(unitDef);
+      this.unit = new Unit(unitDef);
     }
     this.readIDs(this.unit);
   }
@@ -60,10 +63,10 @@ export class UnitService {
   private readIDs(unit: Unit): void {
     UnitUtils.findUIElements(unit).forEach(element => {
       if (element.type === 'likert') {
-        (element as LikertElement).rows.forEach(row => this.idService.addID(row.id));
+        (element as LikertElement).getChildElements().forEach(row => this.idService.addID(row.id));
       }
       if (element.type === 'cloze') {
-        ClozeUtils.getClozeChildElements((element as ClozeElement))
+        (element as ClozeElement).getChildElements()
           .forEach(child => this.idService.addID(child.id));
       }
       this.idService.addID(element.id);
@@ -75,7 +78,7 @@ export class UnitService {
   }
 
   addSection(page: Page): void {
-    page.sections.push(UnitFactory.createSection());
+    page.sections.push(new Section());
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
@@ -88,10 +91,10 @@ export class UnitService {
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
-    const newSection: Section = {
+    const newSection: Section = new Section({
       ...section,
-      elements: section.elements.map(element => this.duplicateElement(element) as PositionedElement)
-    };
+      elements: section.elements.map(element => this.duplicateElement(element) as PositionedUIElement)
+    });
     page.sections.splice(sectionIndex + 1, 0, newSection);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
@@ -115,7 +118,8 @@ export class UnitService {
   async addElementToSection(elementType: UIElementType,
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    let newElement: PositionedElement;
+    console.log('addElementToSection', elementType);
+    let newElement: PositionedUIElement;
     if (['audio', 'video', 'image'].includes(elementType)) {
       let mediaSrc = '';
       switch (elementType) {
@@ -130,22 +134,22 @@ export class UnitService {
           break;
         // no default
       }
-      newElement = ElementFactory.createElement({
-        type: elementType,
-        id: this.idService.getNewID(elementType),
-        src: mediaSrc,
-        position: {
-          dynamicPositioning: section.dynamicPositioning
-        }
-      } as unknown as UIElement) as PositionedElement;
+      newElement = ElementFactory.createElement(
+        elementType, {
+          id: this.idService.getNewID(elementType),
+          src: mediaSrc,
+          position: {
+            dynamicPositioning: section.dynamicPositioning
+          }
+        } as unknown as UIElement) as PositionedUIElement;
     } else {
-      newElement = ElementFactory.createElement({
-        type: elementType,
-        id: this.idService.getNewID(elementType),
-        position: {
-          dynamicPositioning: section.dynamicPositioning
-        }
-      } as unknown as UIElement) as PositionedElement;
+      newElement = ElementFactory.createElement(
+        elementType, {
+          id: this.idService.getNewID(elementType),
+          position: {
+            dynamicPositioning: section.dynamicPositioning
+          }
+        } as unknown as UIElement) as PositionedUIElement;
     }
     if (coordinates && section.dynamicPositioning) {
       newElement.position.gridColumn = coordinates.x;
@@ -183,8 +187,8 @@ export class UnitService {
   transferElement(elements: UIElement[], previousSection: Section, newSection: Section): void {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {
-      newSection.elements.push(element as PositionedElement);
-      (element as PositionedElement).position.dynamicPositioning = newSection.dynamicPositioning;
+      newSection.elements.push(element as PositionedUIElement);
+      (element as PositionedUIElement).position.dynamicPositioning = newSection.dynamicPositioning;
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
@@ -192,14 +196,14 @@ export class UnitService {
   duplicateElementsInSection(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
     const section = this.unit.pages[pageIndex].sections[sectionIndex];
     elements.forEach((element: UIElement) => {
-      section.elements.push(this.duplicateElement(element) as PositionedElement);
+      section.elements.push(this.duplicateElement(element) as PositionedUIElement);
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   private duplicateElement(element: UIElement): UIElement {
-    const newElement = JSON.parse(JSON.stringify(element));
-    newElement.id = this.idService.getNewID(element.type);
+    const newElement = ElementFactory
+      .createElement(element.type, { ...element, id: this.idService.getNewID(element.type) });
     if (newElement.position) {
       newElement.position.xPosition += 10;
       newElement.position.yPosition += 10;
@@ -218,7 +222,7 @@ export class UnitService {
     }
 
     if (newElement.type === 'cloze') {
-      ClozeUtils.getClozeChildElements(newElement).forEach((childElement: InputElement) => {
+      element.getChildElements().forEach((childElement: InputElement) => {
         childElement.id = this.idService.getNewID(childElement.type);
         if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
           (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
@@ -233,20 +237,21 @@ export class UnitService {
   updateSectionProperty(section: Section, property: string, value: string | number | boolean): void {
     if (property === 'dynamicPositioning') {
       section.dynamicPositioning = value as boolean;
-      section.elements.forEach((element: PositionedElement) => {
-        element.position.dynamicPositioning = value as boolean;
+      section.elements.forEach((element: UIElement) => {
+        (element as PositionedUIElement).position.dynamicPositioning = value as boolean;
       });
     } else {
-      section[property] = value;
+      // section[property] = value;
+      section.setProperty(property, value);
     }
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  updateElementProperty(elements: UIElement[],
-                        property: string,
-                        value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
-                        DragNDropValueObject[] | null): boolean {
+  updateElementsProperty(elements: UIElement[],
+                         property: string,
+                         value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
+                         DragNDropValueObject[] | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
@@ -267,31 +272,45 @@ export class UnitService {
         (element as LikertElement).rows.forEach(row => {
           row.readOnly = value as boolean;
         });
-      } else if (['fixedSize', 'dynamicPositioning', 'xPosition', 'yPosition', 'useMinHeight', 'gridColumn',
-        'gridColumnRange', 'gridRow', 'gridRowRange', 'marginLeft', 'marginRight', 'marginTop',
-        'marginBottom', 'zIndex'].includes(property)) {
-        element.position![property] = Copy.getCopy(value);
-      } else if (['fontColor', 'font', 'fontSize', 'lineHeight', 'bold', 'italic', 'underline',
-        'backgroundColor', 'borderRadius', 'itemBackgroundColor', 'borderWidth', 'borderColor', 'selectionColor',
-        'borderStyle', 'lineColoring', 'lineColoringColor'].includes(property)) {
-        element.styling![property] = Copy.getCopy(value);
-      } else if (['autostart', 'autostartDelay', 'loop', 'startControl', 'pauseControl',
-        'progressBar', 'interactiveProgressbar', 'volumeControl', 'defaultVolume', 'minVolume',
-        'muteControl', 'interactiveMuteControl', 'hintLabel', 'hintLabelDelay', 'activeAfterID',
-        'minRuns', 'maxRuns', 'showRestRuns', 'showRestTime', 'playbackTime'].includes(property)) {
-        element.player![property] = Copy.getCopy(value);
       } else {
-        element[property] = Copy.getCopy(value);
+        element.setProperty(property, value);
       }
     });
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
-    return true;
   }
 
+  updateSelectedElementsPositionProperty(property: string, value: any): void {
+    this.updateElementsPositionProperty(this.selectionService.getSelectedElements(), property, value);
+  }
+
+  updateElementsPositionProperty(elements: UIElement[], property: string, value: any): void {
+    elements.forEach(element => {
+      element.setPositionProperty(property, value);
+    });
+    this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  updateSelectedElementsStyleProperty(property: string, value: any): void {
+    const elements = this.selectionService.getSelectedElements();
+    elements.forEach(element => {
+      element.setStyleProperty(property, value);
+    });
+    this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  updateElementsPlayerProperty(elements: UIElement[], property: string, value: any): void {
+    elements.forEach(element => {
+      element.setPlayerProperty(property, value);
+    });
+    this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
 
   createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
-    return ElementFactory.createLikertRowElement({
+    return new LikertRowElement({
       id: this.idService.getNewID('likert_row'),
       rowLabel: {
         text: rowLabelText,
@@ -299,34 +318,34 @@ export class UnitService {
         position: 'above'
       },
       columnCount: columnCount
-    });
+    } as Partial<LikertRowElement>);
   }
 
-  alignElements(elements: PositionedElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
+  alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     switch (alignmentDirection) {
       case 'left':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'xPosition',
           Math.min(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'right':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'xPosition',
           Math.max(...elements.map(element => element.position.xPosition))
         );
         break;
       case 'top':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'yPosition',
           Math.min(...elements.map(element => element.position.yPosition))
         );
         break;
       case 'bottom':
-        this.updateElementProperty(
+        this.updateElementsProperty(
           elements,
           'yPosition',
           Math.max(...elements.map(element => element.position.yPosition))
@@ -354,7 +373,7 @@ export class UnitService {
       case 'radio':
         this.dialogService.showTextEditDialog(element.label as string).subscribe((result: string) => {
           if (result) {
-            this.updateElementProperty([element], 'label', result);
+            this.updateElementsProperty([element], 'label', result);
           }
         });
         break;
@@ -365,7 +384,7 @@ export class UnitService {
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
-            this.updateElementProperty(
+            this.updateElementsProperty(
               [element],
               'text',
               (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
@@ -375,12 +394,12 @@ export class UnitService {
         break;
       case 'cloze':
         this.dialogService.showClozeTextEditDialog(
-          (element as ClozeElement).document,
+          (element as ClozeElement).document!,
           (element as ClozeElement).styling.fontSize
         ).subscribe((result: string) => {
           if (result) {
             // TODO add proper sanitization
-            this.updateElementProperty(
+            this.updateElementsProperty(
               [element],
               'document',
               (this.sanitizer.bypassSecurityTrustHtml(result) as any).changingThisBreaksApplicationSecurity as string
@@ -392,7 +411,7 @@ export class UnitService {
         this.dialogService.showTextEditDialog((element as InputElement).value as string)
           .subscribe((result: string) => {
             if (result) {
-              this.updateElementProperty([element], 'value', result);
+              this.updateElementsProperty([element], 'value', result);
             }
           });
         break;
@@ -400,7 +419,7 @@ export class UnitService {
         this.dialogService.showMultilineTextEditDialog((element as InputElement).value as string)
           .subscribe((result: string) => {
             if (result) {
-              this.updateElementProperty([element], 'value', result);
+              this.updateElementsProperty([element], 'value', result);
             }
           });
         break;
@@ -408,7 +427,7 @@ export class UnitService {
       case 'video':
         this.dialogService.showPlayerEditDialog((element as PlayerElement).player)
           .subscribe((result: PlayerProperties) => {
-            Object.keys(result).forEach(key => this.updateElementProperty([element], key, result[key]));
+            Object.keys(result).forEach(key => this.updateElementsPlayerProperty([element], key, result[key]));
           });
         break;
       // no default
@@ -429,5 +448,9 @@ export class UnitService {
           .flat()
         )
         .flat()).flat();
+  }
+
+  replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
+    this.unit.pages[pageIndex].sections[sectionIndex] = newSection;
   }
 }

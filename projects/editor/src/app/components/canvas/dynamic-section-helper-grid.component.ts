@@ -2,9 +2,9 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
   Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
-import { UIElement, UIElementType } from 'common/interfaces/elements';
 import { UnitService } from '../../services/unit.service';
-import { Section } from 'common/interfaces/unit';
+import { UIElement, UIElementType } from 'common/models/elements/element';
+import { Section } from 'common/models/section';
 
 @Component({
   selector: '[app-dynamic-section-helper-grid]',
@@ -108,23 +108,23 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
       });
     }
     if (dragItemData.dragType === 'move') {
-      this.unitService.updateElementProperty(
+      this.unitService.updateElementsProperty(
         [event.item.data.element],
         'gridColumn',
         event.container.data.gridCoordinates![0]
       );
-      this.unitService.updateElementProperty(
+      this.unitService.updateElementsProperty(
         [dragItemData.element],
         'gridRow',
         event.container.data.gridCoordinates![1]
       );
     } else if (event.item.data.dragType === 'resize') {
-      this.unitService.updateElementProperty(
+      this.unitService.updateElementsProperty(
         [dragItemData.element],
         'gridColumnEnd',
         event.container.data.gridCoordinates![0] + 1
       );
-      this.unitService.updateElementProperty(
+      this.unitService.updateElementsProperty(
         [dragItemData.element],
         'gridRowEnd',
         event.container.data.gridCoordinates![1] + 1

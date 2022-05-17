@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { InputService } from '../classes/input-service';
-import { TextAreaComponent } from 'common/components/ui-elements/text-area.component';
-import { TextFieldComponent } from 'common/components/ui-elements/text-field.component';
-import { SpellCorrectComponent } from 'common/components/ui-elements/spell-correct.component';
-import { TextFieldSimpleComponent } from 'common/components/ui-elements/text-field-simple.component';
+import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
+import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
+import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
+import { TextFieldSimpleComponent } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 
 @Injectable({
   providedIn: 'root'

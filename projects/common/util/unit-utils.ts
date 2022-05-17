@@ -1,4 +1,4 @@
-import { UIElement } from '../interfaces/elements';
+import { UIElement } from 'common/models/elements/element';
 
 export abstract class UnitUtils {
   static findUIElements(value: any | unknown[], type?: string): UIElement[] {

@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { PositionProperties } from 'common/interfaces/elements';
+import { PositionProperties } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-position-field-set',
@@ -121,5 +121,5 @@ import { PositionProperties } from 'common/interfaces/elements';
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
+    new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
 }

@@ -9,15 +9,10 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { ColumnHeaderEditDialogComponent } from '../components/dialogs/column-header-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
-import {
-  TextImageLabel,
-  DragNDropValueObject,
-  LikertRowElement,
-  PlayerProperties
-} from 'common/interfaces/elements';
-import { ClozeDocument } from 'common/interfaces/cloze';
-import { RichTextEditorSimpleComponent } from '../text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from '../components/dialogs/rich-text-simple-edit-dialog.component';
+import { DragNDropValueObject, PlayerProperties, TextImageLabel } from 'common/models/elements/element';
+import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
 @Injectable({
   providedIn: 'root'

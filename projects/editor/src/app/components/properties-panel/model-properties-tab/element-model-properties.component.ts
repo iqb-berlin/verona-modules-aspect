@@ -5,16 +5,12 @@ import {
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { UnitService } from '../../../services/unit.service';
-import {
-  TextImageLabel,
-  DragNDropValueObject,
-  InputElementValue,
-  LikertElement, LikertRowElement,
-  UIElement
-} from 'common/interfaces/elements';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DragNDropValueObject, InputElementValue, TextImageLabel, UIElement } from 'common/models/elements/element';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -104,24 +100,24 @@ export class ElementModelPropertiesComponent {
       .subscribe((result: LikertRowElement) => {
         if (result) {
           if (result.id !== row.id) {
-            this.unitService.updateElementProperty(
+            this.unitService.updateElementsProperty(
               [row],
               'id',
               result.id
             );
           }
           if (result.rowLabel !== row.rowLabel) {
-            this.unitService.updateElementProperty([row], 'rowLabel', result.rowLabel);
+            this.unitService.updateElementsProperty([row], 'rowLabel', result.rowLabel);
           }
           if (result.value !== row.value) {
-            this.unitService.updateElementProperty(
+            this.unitService.updateElementsProperty(
               [row],
               'value',
               result.value
             );
           }
           if (result.verticalButtonAlignment !== row.verticalButtonAlignment) {
-            this.unitService.updateElementProperty(
+            this.unitService.updateElementsProperty(
               [row],
               'verticalButtonAlignment',
               result.verticalButtonAlignment

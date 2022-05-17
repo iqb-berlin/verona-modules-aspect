@@ -7,8 +7,9 @@ import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';
-import { Page, Section } from 'common/interfaces/unit';
-import { PositionedElement, UIElement } from 'common/interfaces/elements';
+import { PositionedUIElement, UIElement } from 'common/models/elements/element';
+import { Page } from 'common/models/page';
+import { Section } from 'common/models/section';
 
 @Component({
   selector: 'aspect-page-canvas',
@@ -35,14 +36,14 @@ export class CanvasComponent {
   }
 
   elementDropped(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {
-    const selectedElements = this.selectionService.getSelectedElements() as PositionedElement[];
+    const selectedElements = this.selectionService.getSelectedElements() as PositionedUIElement[];
 
     if (event.previousContainer !== event.container) {
       this.moveElementsBetweenSections(selectedElements,
         event.previousContainer.data.sectionIndex,
         event.container.data.sectionIndex);
     } else {
-      selectedElements.forEach((element: PositionedElement) => {
+      selectedElements.forEach((element: PositionedUIElement) => {
         let newXPosition = element.position.xPosition + event.distance.x;
         if (newXPosition < 0) {
           newXPosition = 0;
@@ -50,7 +51,7 @@ export class CanvasComponent {
         if (this.page.hasMaxWidth && newXPosition > this.page.maxWidth - element.width) {
           newXPosition = this.page.maxWidth - element.width;
         }
-        this.unitService.updateElementProperty([element], 'xPosition', newXPosition);
+        this.unitService.updateElementsPositionProperty([element], 'xPosition', newXPosition);
 
         let newYPosition = element.position.yPosition + event.distance.y;
         if (newYPosition < 0) {
@@ -59,7 +60,7 @@ export class CanvasComponent {
         if (newYPosition > this.getPageHeight() - element.height) {
           newYPosition = this.getPageHeight() - element.height;
         }
-        this.unitService.updateElementProperty([element], 'yPosition', newYPosition);
+        this.unitService.updateElementsPositionProperty([element], 'yPosition', newYPosition);
       });
     }
   }

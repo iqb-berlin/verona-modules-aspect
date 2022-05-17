@@ -1,9 +1,8 @@
 import {
-  AfterViewInit, Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef
+  AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementGroupDirective } from '../../directives/element-group.directive';
-import { ElementFactory } from 'common/util/element.factory';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({
@@ -17,17 +16,13 @@ export class ElementBaseGroupComponent extends ElementGroupDirective implements 
 
   baseElementComponent!: ElementComponent;
 
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    public unitStateService: UnitStateService
-  ) {
+  constructor(public unitStateService: UnitStateService) {
     super();
   }
 
   ngOnInit(): void {
-    const elementComponentFactory = ElementFactory
-      .getComponentFactory(this.elementModel.type, this.componentFactoryResolver);
-    this.baseElementComponent = this.elementComponentContainer.createComponent(elementComponentFactory).instance;
+    this.baseElementComponent =
+      this.elementComponentContainer.createComponent(this.elementModel.getComponentFactory()).instance;
     this.baseElementComponent.elementModel = this.elementModel;
   }
 

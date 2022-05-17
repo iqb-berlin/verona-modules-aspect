@@ -5,9 +5,8 @@ import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
-import { Page } from 'common/interfaces/unit';
 import { ArrayUtils } from 'common/util/array';
-import { UnitFactory } from 'common/util/unit.factory';
+import { Page } from 'common/models/page';
 
 @Component({
   selector: 'aspect-unit-view',
@@ -31,7 +30,7 @@ export class UnitViewComponent implements OnDestroy {
   }
 
   addPage(): void {
-    this.unitService.unit.pages.push(UnitFactory.createPage());
+    this.unitService.unit.pages.push(new Page());
 
     this.selectedPageIndex = this.unitService.unit.pages.length - 1;
     this.selectionService.selectedPageIndex = this.selectedPageIndex;

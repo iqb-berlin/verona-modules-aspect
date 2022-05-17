@@ -1,9 +1,12 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FileService } from 'common/services/file.service';
-import { Page } from 'common/interfaces/unit';
 import {
-  ElementCode, PagingMode, UnitState, VopPageNavigationCommand, VopStartCommand
+  ElementCode,
+  PagingMode, UnitState,
+  VopPageNavigationCommand,
+  VopStartCommand
 } from 'player/modules/verona/models/verona';
+import { Page } from 'common/models/page';
 
 @Component({
   selector: 'aspect-unit-menu',

@@ -8,12 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
-import {
-  TextImageLabel,
-  DragNDropValueObject,
-  UIElement,
-  UIElementValue
-} from 'common/interfaces/elements';
+import { DragNDropValueObject, TextImageLabel, UIElement, UIElementValue } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-properties',
@@ -94,7 +89,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
               TextImageLabel[] | DragNDropValueObject[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
-      this.unitService.updateElementProperty(this.selectedElements, property, value);
+      this.unitService.updateElementsProperty(this.selectedElements, property, value);
     } else {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));
     }

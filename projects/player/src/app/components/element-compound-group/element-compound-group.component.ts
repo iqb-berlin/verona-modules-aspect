@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
-import { ClozeUtils } from 'common/util/cloze';
+
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
@@ -45,7 +45,8 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
 
   ngOnInit(): void {
     const childModels = this.elementModel.type === 'cloze' ?
-      ClozeUtils.getClozeChildElements(this.elementModel as ClozeElement) :
+      // ClozeUtils.getClozeChildElements(this.elementModel as ClozeElement) :
+      [] :
       (this.elementModel as LikertElement).rows;
     this.createForm(childModels);
   }

@@ -38,4 +38,25 @@
     </button>
   </ng-container>
 
+  <ng-container *ngIf="elementCodes && elementCodes.length">
+    <mat-divider></mat-divider>
+    <button mat-menu-item
+            (click)="stop()">
+      <mat-icon>pause_circle</mat-icon>
+      <span>{{ 'stop_command' | translate }}</span>
+    </button>
+
+    <button mat-menu-item
+            (click)="continue()">
+      <mat-icon>play_circle</mat-icon>
+      <span>{{ 'continue_command' | translate }}</span>
+    </button>
+
+    <button mat-menu-item
+            (click)="request()">
+      <mat-icon>request_page</mat-icon>
+      <span>{{ 'request_command' | translate }}</span>
+    </button>
+  </ng-container>
+
 </mat-menu>

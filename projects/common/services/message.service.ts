@@ -11,6 +11,10 @@ export class MessageService {
     this._snackBar.open(text, undefined, { duration: 3000 });
   }
 
+  showSuccess(text: string): void {
+    this._snackBar.open(text, undefined, { duration: 3000, panelClass: 'snackbar-success' });
+  }
+
   showWarning(text: string): void {
     this._snackBar.open(text, undefined, { duration: 3000, panelClass: 'snackbar-warning' });
   }

@@ -15,7 +15,9 @@ import { Section } from 'common/models/section';
 @Component({
   selector: 'aspect-section-menu',
   template: `
-    <button mat-mini-fab [matMenuTriggerFor]="elementListMenu">
+    <button mat-mini-fab [matMenuTriggerFor]="elementListMenu"
+            [matTooltip]="'Elementliste'"
+            [matTooltipPosition]="'left'">
       <mat-icon>list</mat-icon>
     </button>
     <mat-menu #elementListMenu="matMenu" class="layoutMenu" xPosition="before">
@@ -30,7 +32,7 @@ import { Section } from 'common/models/section';
       </mat-action-list>
     </mat-menu>
 
-    <button mat-mini-fab
+    <button mat-mini-fab [matTooltip]="'Hintergrundfarbe'" [matTooltipPosition]="'left'"
             (click)="openColorPicker()">
       <mat-icon>palette</mat-icon>
     </button>
@@ -38,7 +40,8 @@ import { Section } from 'common/models/section';
            [value]="$any(section.backgroundColor)"
            (change)="updateModel('backgroundColor', $any($event.target).value)">
 
-    <button mat-mini-fab [matMenuTriggerFor]="activeAfterIDMenu">
+    <button mat-mini-fab [matMenuTriggerFor]="activeAfterIDMenu"
+            [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
       <mat-icon>disabled_visible</mat-icon>
     </button>
     <mat-menu #activeAfterIDMenu="matMenu" xPosition="before">
@@ -51,7 +54,8 @@ import { Section } from 'common/models/section';
       </mat-form-field>
     </mat-menu>
 
-    <button mat-mini-fab [matMenuTriggerFor]="layoutMenu">
+    <button mat-mini-fab [matMenuTriggerFor]="layoutMenu"
+            [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
       <mat-icon>space_dashboard</mat-icon>
     </button>
     <mat-menu #layoutMenu="matMenu" class="layoutMenu" xPosition="before">
@@ -176,18 +180,21 @@ import { Section } from 'common/models/section';
     </mat-menu>
 
     <button *ngIf="allowMoveUp" mat-mini-fab
+            [matTooltip]="'Nach oben verschieben'" [matTooltipPosition]="'left'"
             (click)="this.moveSection.emit('up')">
       <mat-icon>north</mat-icon>
     </button>
     <button *ngIf="allowMoveDown" mat-mini-fab
+            [matTooltip]="'Nach unten verschieben'" [matTooltipPosition]="'left'"
             (click)="this.moveSection.emit('down')">
       <mat-icon>south</mat-icon>
     </button>
-    <button mat-mini-fab
+    <button mat-mini-fab [matTooltip]="'Duplizieren'" [matTooltipPosition]="'left'"
             (click)="duplicateSection.emit()">
       <mat-icon>control_point_duplicate</mat-icon>
     </button>
     <button *ngIf="allowDelete" mat-mini-fab
+            [matTooltip]="'Löschen'" [matTooltipPosition]="'left'"
             (click)="deleteSection()">
       <mat-icon>clear</mat-icon>
     </button>

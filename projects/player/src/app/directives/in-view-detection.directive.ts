@@ -4,9 +4,9 @@ import {
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Directive({
-  selector: '[aspectIntersectionDetection]'
+  selector: '[aspectInViewDetection]'
 })
-export class IntersectionDetectionDirective implements OnInit, OnDestroy {
+export class InViewDetectionDirective implements OnInit, OnDestroy {
   @Input() detectionType!: 'top' | 'bottom';
   @Output() intersecting = new EventEmitter();
   @Input() intersectionContainer!: HTMLElement;

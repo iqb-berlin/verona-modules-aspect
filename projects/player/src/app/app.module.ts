@@ -14,7 +14,7 @@ import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { PagesLayoutComponent } from './components/layouts/layout-pages/pages-layout.component';
 import { PageLabelDirective } from './directives/page-label.directive';
 import { ScrollToIndexDirective } from './directives/scroll-to-index.directive';
-import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
+import { InViewDetectionDirective } from './directives/in-view-detection.directive';
 import { FloatingMarkingBarComponent } from './components/floating-marking-bar/floating-marking-bar.component';
 import { FloatingKeypadComponent } from './components/floating-keypad/floating-keypad.component';
 import {
@@ -55,7 +55,7 @@ import { PlayerStateDirective } from './directives/player-state.directive';
     PagesLayoutComponent,
     PageLabelDirective,
     ScrollToIndexDirective,
-    IntersectionDetectionDirective,
+    InViewDetectionDirective,
     FloatingMarkingBarComponent,
     FloatingKeypadComponent,
     ElementGroupSelectionComponent,

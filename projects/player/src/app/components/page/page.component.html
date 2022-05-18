@@ -1,4 +1,4 @@
-<div aspectIntersectionDetection
+<div aspectInViewDetection
      detectionType="top"
      [intersectionContainer]="pagesContainer"
      (intersecting)="selectedIndexChange.emit(pageIndex)">
@@ -10,7 +10,7 @@
                             [isVisible]="!section.activeAfterID">
   </aspect-section-container>
 </div>
-<div aspectIntersectionDetection
+<div aspectInViewDetection
      detectionType="bottom"
      [intersectionContainer]="pagesContainer"
      (intersecting)="selectedIndexChange.emit(pageIndex)">

@@ -78,8 +78,8 @@ export class TextMarkingService {
           const startIndex = Number(matchesArray[1]);
           const endIndex = Number(matchesArray[2]);
           const startMatch = TextMarkingService.createMarkingStartTag(matchesArray[3]);
-          newHtmlText = newHtmlText.substring(0, endIndex) + markingClosingTag + newHtmlText.substr(endIndex);
-          newHtmlText = newHtmlText.substring(0, startIndex) + startMatch + newHtmlText.substr(startIndex);
+          newHtmlText = newHtmlText.substring(0, endIndex) + markingClosingTag + newHtmlText.substring(endIndex);
+          newHtmlText = newHtmlText.substring(0, startIndex) + startMatch + newHtmlText.substring(startIndex);
         }
       });
     }

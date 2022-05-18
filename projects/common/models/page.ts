@@ -2,7 +2,6 @@ import { Section } from 'common/models/section';
 
 export class Page {
   [index: string]: any;
-
   sections: Section[] = [];
   hasMaxWidth: boolean = false;
   maxWidth: number = 900;
@@ -13,7 +12,7 @@ export class Page {
   alwaysVisibleAspectRatio: number = 50;
 
   constructor(page?: Page) {
-    this.sections = page?.sections.map(section => new Section(section)) || [new Section()];
     Object.assign(this, page);
+    this.sections = page?.sections.map(section => new Section(section)) || [new Section()];
   }
 }

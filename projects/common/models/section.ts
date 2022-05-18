@@ -1,4 +1,4 @@
-import { PositionedUIElement } from 'common/models/elements/element';
+import { PositionedUIElement, UIElement } from 'common/models/elements/element';
 import { ElementFactory } from 'common/util/element.factory';
 
 export class Section {
@@ -15,13 +15,17 @@ export class Section {
   activeAfterID: string | null = null;
 
   constructor(section?: Partial<Section>) {
+    Object.assign(this, section);
     this.elements =
       section?.elements?.map(element => ElementFactory.createElement(element.type, element) as PositionedUIElement) ||
       [];
-    Object.assign(this, section);
   }
 
   setProperty(property: string, value: any): void {
     this[property] = value;
+  }
+
+  getElements(): UIElement[] {
+    return this.elements;
   }
 }

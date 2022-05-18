@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
-
 import { UnitStateService } from '../../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
@@ -12,10 +11,12 @@ import { KeypadService } from '../../services/keypad.service';
 import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
 import { KeyboardService } from '../../services/keyboard.service';
 import { DeviceService } from '../../services/device.service';
-import { TextFieldSimpleComponent } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
+import {
+  TextFieldSimpleComponent
+} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import { InputElement } from 'common/models/elements/element';
+import { CompoundElement, InputElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-compound-group',
@@ -44,11 +45,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
   }
 
   ngOnInit(): void {
-    const childModels = this.elementModel.type === 'cloze' ?
-      // ClozeUtils.getClozeChildElements(this.elementModel as ClozeElement) :
-      [] :
-      (this.elementModel as LikertElement).rows;
-    this.createForm(childModels);
+    this.createForm((this.elementModel as CompoundElement).getChildElements() as InputElement[]);
   }
 
   onChildrenAdded(children: ElementComponent[]): void {
@@ -71,7 +68,7 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
           .onKeyDown
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(element => {
-            this.registerHardwareKeyboard(element, textFieldSimpleComponent);
+            this.detectHardwareKeyboard(element, textFieldSimpleComponent);
           });
       }
     });
@@ -88,9 +85,10 @@ export class ElementCompoundGroupComponent extends ElementFormGroupDirective imp
     }
   }
 
-  private registerHardwareKeyboard(inputElement: HTMLElement | null,
-                                   elementComponent: TextFieldSimpleComponent): void {
-    this.deviceService.registerHardwareKeyboard();
+  private detectHardwareKeyboard(inputElement: HTMLElement | null,
+                                 elementComponent: TextFieldSimpleComponent): void {
+    this.deviceService.hasHardwareKeyboard = true;
     this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
   }
 }
+

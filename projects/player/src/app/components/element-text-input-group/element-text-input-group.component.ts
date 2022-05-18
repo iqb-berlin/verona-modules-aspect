@@ -71,9 +71,9 @@ export class ElementTextInputGroupComponent extends ElementFormGroupDirective im
     }
   }
 
-  registerHardwareKeyboard(inputElement: HTMLElement | null,
-                           elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
-    this.deviceService.registerHardwareKeyboard();
+  detectHardwareKeyboard(inputElement: HTMLElement | null,
+                         elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
+    this.deviceService.hasHardwareKeyboard = true;
     this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
   }
 }

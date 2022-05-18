@@ -6,8 +6,8 @@ import { LogService } from 'player/modules/logging/services/log.service';
   providedIn: 'root'
 })
 export class DeviceService {
+  hasHardwareKeyboard: boolean = false;
   private readonly isTouch!: boolean;
-  private hasHardwareKeyboard: boolean = false;
   private noSleep!: NoSleep; // Cannot be instanced in a constructor, must be instanced by a user event
 
   constructor() {
@@ -24,9 +24,5 @@ export class DeviceService {
 
   get isMobileWithoutHardwareKeyboard(): boolean {
     return this.isTouch && !this.hasHardwareKeyboard;
-  }
-
-  registerHardwareKeyboard(): void {
-    this.hasHardwareKeyboard = true;
   }
 }

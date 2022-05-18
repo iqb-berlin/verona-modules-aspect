@@ -1,12 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ElementTextGroupComponent } from './element-text-group.component';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UIElement, ValueChangeElement } from 'common/interfaces/elements';
+import { ValueChangeElement } from 'common/models/elements/element';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import {
   FloatingMarkingBarComponent
 } from 'player/src/app/components/floating-marking-bar/floating-marking-bar.component';
+import { TextElement } from 'common/models/elements/text/text';
 
 describe('ElementTextGroupComponent', () => {
   let component: ElementTextGroupComponent;
@@ -15,7 +16,7 @@ describe('ElementTextGroupComponent', () => {
 
   @Component({ selector: 'aspect-text', template: '' })
   class TextStubComponent {
-    @Input() elementModel!: UIElement;
+    @Input() elementModel!: TextElement;
     @Input() savedText!: string;
     @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
     @Output() startSelection = new EventEmitter<PointerEvent>();
@@ -47,12 +48,12 @@ describe('ElementTextGroupComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: [] });
     component = fixture.componentInstance;
-    component.elementModel = {
-      type: 'audio',
+    component.elementModel = new TextElement({
+      type: 'text',
       id: 'test',
       width: 0,
       height: 0
-    };
+    });
     fixture.detectChanges();
   });
 

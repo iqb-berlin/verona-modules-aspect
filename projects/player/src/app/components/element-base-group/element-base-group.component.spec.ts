@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ElementBaseGroupComponent } from 'player/src/app/components/element-base-group/element-base-group.component';
-
+import { FrameElement } from 'common/models/elements/frame/frame';
 
 describe('ElementBaseGroupComponent', () => {
   let component: ElementBaseGroupComponent;
@@ -18,13 +18,12 @@ describe('ElementBaseGroupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ElementBaseGroupComponent);
     component = fixture.componentInstance;
-    component.elementModel = {
+    component.elementModel = new FrameElement({
       type: 'frame',
       id: 'test',
       width: 0,
-      height: 0,
-      styling: {}
-    };
+      height: 0
+    });
     fixture.detectChanges();
   });
 

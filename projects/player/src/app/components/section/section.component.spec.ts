@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionComponent } from './section.component';
+import { Section } from 'common/models/section';
 
 describe('SectionComponent', () => {
   let component: SectionComponent;
@@ -17,7 +18,7 @@ describe('SectionComponent', () => {
   beforeEach(async () => {
     fixture = TestBed.createComponent(SectionComponent);
     component = fixture.componentInstance;
-    component.section = {
+    component.section = new Section({
       elements: [],
       height: 400,
       backgroundColor: '#ffffff',
@@ -27,7 +28,7 @@ describe('SectionComponent', () => {
       gridColumnSizes: '1fr 1fr',
       gridRowSizes: '1fr',
       activeAfterID: ''
-    };
+    });
     fixture.detectChanges();
   });
 

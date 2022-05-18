@@ -1,5 +1,6 @@
-import { Page } from 'common/interfaces/unit';
+
 import { AlwaysVisiblePagePipe } from './always-visible-page.pipe';
+import { Page } from 'common/models/page';
 
 describe('AlwaysVisiblePagePipe', () => {
 

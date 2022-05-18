@@ -1,40 +1,26 @@
+import { Directive, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
-  Component, Input, OnDestroy, OnInit
-} from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
-import { NavigationService } from '../../services/navigation.service';
-import { LogService } from 'player/modules/logging/services/log.service';
-import {
-  PlayerConfig, PlayerState, RunningState,
-  VopContinueCommand, VopGetStateRequest,
-  VopPageNavigationCommand,
-  VopStopCommand
+  PlayerState, RunningState, VopContinueCommand, VopGetStateRequest, VopStopCommand
 } from 'player/modules/verona/models/verona';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
-import { Page } from 'common/models/page';
+import { takeUntil } from 'rxjs/operators';
+import { LogService } from 'player/modules/logging/services/log.service';
 
-@Component({
-  selector: 'aspect-player-state',
-  templateUrl: './player-state.component.html',
-  styleUrls: ['./player-state.component.css']
+@Directive({
+  selector: '[aspectPlayerState]'
 })
-export class PlayerStateComponent implements OnInit, OnDestroy {
-  @Input() pages!: Page[];
+export class PlayerStateDirective implements OnInit, OnChanges {
   @Input() validPages!: Record<string, string>;
-  @Input() playerConfig!: PlayerConfig;
-
-  currentPlayerPageIndex: number = 0;
-  selectIndex: Subject<number> = new Subject();
-  running: boolean = true;
+  @Input() currentPlayerPageIndex!: number;
+  @Input() isPlayerRunning!: BehaviorSubject<boolean>;
 
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private veronaSubscriptionService: VeronaSubscriptionService,
-    private veronaPostService: VeronaPostService,
-    private navigationService: NavigationService
+    private veronaPostService: VeronaPostService
   ) {}
 
   ngOnInit(): void {
@@ -42,13 +28,13 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
     this.sendVopStateChangedNotification();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.currentPlayerPageIndex) {
+      this.sendVopStateChangedNotification();
+    }
+  }
+
   private initSubscriptions(): void {
-    this.navigationService.pageIndex
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((pageIndex: number): void => this.selectIndex.next(pageIndex));
-    this.veronaSubscriptionService.vopPageNavigationCommand
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((message: VopPageNavigationCommand): void => this.selectIndex.next(Number(message.target)));
     this.veronaSubscriptionService.vopContinueCommand
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((message: VopContinueCommand): void => this.onContinue(message));
@@ -61,30 +47,25 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
   }
 
   private get state(): RunningState {
-    return this.running ? 'running' : 'stopped';
+    return this.isPlayerRunning.getValue() ? 'running' : 'stopped';
   }
-
-  onSelectedIndexChange(): void {
-    this.sendVopStateChangedNotification();
-  }
-
 
   private onContinue(message: VopContinueCommand): void {
     LogService.info('player: onContinue', message);
-    this.running = true;
+    this.isPlayerRunning.next(true);
     this.sendVopStateChangedNotification();
   }
 
   private onStop(message: VopStopCommand): void {
     LogService.info('player: onStop', message);
-    this.running = false;
+    this.isPlayerRunning.next(false);
     this.sendVopStateChangedNotification();
   }
 
   private onGetStateRequest(message: VopGetStateRequest): void {
     LogService.info('player: onGetStateRequest', message);
     if (message.stop) {
-      this.running = false;
+      this.isPlayerRunning.next(false);
     }
     this.sendVopStateChangedNotification(true);
   }
@@ -95,7 +76,7 @@ export class PlayerStateComponent implements OnInit, OnDestroy {
       currentPage: this.currentPlayerPageIndex.toString(10),
       validPages: this.validPages
     };
-    LogService.info('player: playerState sendVopStateChangedNotification', playerState);
+    LogService.info('player: sendVopStateChangedNotification', playerState);
     this.veronaPostService.sendVopStateChangedNotification({ playerState }, requested);
   }
 

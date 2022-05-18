@@ -7,10 +7,9 @@ import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-l
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
 import { Component, Input } from '@angular/core';
-import { UIElement } from 'common/interfaces/elements';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-
+import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 
 describe('ElementCompoundGroupComponent', () => {
   let component: ElementCompoundGroupComponent;
@@ -18,7 +17,7 @@ describe('ElementCompoundGroupComponent', () => {
 
   @Component({ selector: 'aspect-likert', template: '' })
   class LikertStubComponent {
-    @Input() elementModel!: UIElement;
+    @Input() elementModel!: LikertElement;
   }
 
   beforeEach(async () => {
@@ -48,13 +47,13 @@ describe('ElementCompoundGroupComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ElementCompoundGroupComponent);
     component = fixture.componentInstance;
-    component.elementModel = {
+    component.elementModel = new LikertElement({
       type: 'likert',
       id: 'test',
       width: 0,
       height: 0,
       rows: []
-    };
+    });
     fixture.detectChanges();
   });
 

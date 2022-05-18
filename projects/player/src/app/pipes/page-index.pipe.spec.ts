@@ -1,5 +1,5 @@
-import { Page } from 'common/interfaces/unit';
 import { PageIndexPipe } from './page-index.pipe';
+import { Page } from 'common/models/page';
 
 describe('PageIndexPipe', () => {
 

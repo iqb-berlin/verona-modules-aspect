@@ -3,12 +3,12 @@ import { ElementTextInputGroupComponent } from './element-text-input-group.compo
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { Component, Input } from '@angular/core';
-import { UIElement } from 'common/interfaces/elements';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
+import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
 
 describe('ElementTextInputGroupComponent', () => {
   let component: ElementTextInputGroupComponent;
@@ -17,7 +17,7 @@ describe('ElementTextInputGroupComponent', () => {
 
   @Component({ selector: 'aspect-text-field', template: '' })
   class TextFieldStubComponent {
-    @Input() elementModel!: UIElement;
+    @Input() elementModel!: TextFieldElement;
     @Input() parentForm!: FormGroup;
   }
 
@@ -52,12 +52,12 @@ describe('ElementTextInputGroupComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 'test' });
     component = fixture.componentInstance;
-    component.elementModel = {
+    component.elementModel = new TextFieldElement({
       type: 'text-field',
       id: 'test',
       width: 0,
       height: 0
-    };
+    });
     fixture.detectChanges();
 
   });

@@ -1,5 +1,5 @@
 import { ScrollPagesPipe } from './scroll-pages.pipe';
-import { Page } from 'common/interfaces/unit';
+import { Page } from 'common/models/page';
 
 describe('ScrollPagesPipe', () => {
 

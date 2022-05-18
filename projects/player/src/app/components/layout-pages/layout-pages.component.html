@@ -61,8 +61,7 @@
       [isHidden]="hidePageLabels"
       (getHeight)="tabHeaderHeight = $event"
       mat-align-tabs="start"
-      [(selectedIndex)]="selectedIndex"
-      (selectedIndexChange)="onSelectedIndexChange($event)">
+      [(selectedIndex)]="selectedIndex">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
       <mat-tab
           [label]="'pageIndication' | translate: {index: i + 1}">
@@ -101,7 +100,7 @@
           [pagesContainer]="pagesContainer"
           [page]="page"
           [isLastPage]="last"
-          (selectedIndexChange)="onSelectedIndexChange($event)">
+          (selectedIndexChange)="setSelectedIndex($event)">
       </aspect-page>
     </div>
   </ng-container>

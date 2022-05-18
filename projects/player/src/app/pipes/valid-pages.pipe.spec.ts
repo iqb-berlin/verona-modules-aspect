@@ -1,8 +1,8 @@
 import { ValidPagesPipe } from './valid-pages.pipe';
-import { Page } from 'common/interfaces/unit';
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateTestingModule } from 'ngx-translate-testing';
+import { Page } from 'common/models/page';
 
 describe('ValidPagesPipe', () => {
   let pipe: ValidPagesPipe;

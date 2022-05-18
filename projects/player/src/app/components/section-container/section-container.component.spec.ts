@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionContainerComponent } from './section-container.component';
 import { SectionComponent } from 'player/src/app/components/section/section.component';
+import { Section } from 'common/models/section';
 
 describe('SectionContainerComponent', () => {
   let component: SectionContainerComponent;
@@ -20,7 +21,7 @@ describe('SectionContainerComponent', () => {
     fixture = TestBed.createComponent(SectionContainerComponent);
     component = fixture.componentInstance;
     component.pageSections = [];
-    component.section = {
+    component.section = new Section({
       elements: [],
       height: 400,
       backgroundColor: '#ffffff',
@@ -30,7 +31,7 @@ describe('SectionContainerComponent', () => {
       gridColumnSizes: '1fr 1fr',
       gridRowSizes: '1fr',
       activeAfterID: ''
-    };
+    });
     fixture.detectChanges();
   });
 

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
 import * as text_130 from '../../../../../../test-data/element-models/text_130.json';
-import { TextComponent } from 'common/components/ui-elements/text.component';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { TextComponent } from 'common/components/text/text.component';
 
 describe('FloatingMarkingBarComponent', () => {
   let component: FloatingMarkingBarComponent;

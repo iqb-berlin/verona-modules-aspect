@@ -1,29 +1,31 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output
+  AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { NativeEventService } from '../../services/native-event.service';
-import { Page } from 'common/models/page';
+import { Page } from 'common/interfaces/unit';
+import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
+import { NavigationService } from 'player/src/app/services/navigation.service';
+import { VopPageNavigationCommand } from 'player/modules/verona/models/verona';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 
 @Component({
-  selector: '[aspect-layout-pages]',
+  selector: 'aspect-layout-pages',
   templateUrl: './layout-pages.component.html',
   styleUrls: ['./layout-pages.component.css']
 })
 
 export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pages!: Page[];
-  @Input() selectedIndex!: number;
-  @Input() selectIndex!: Subject<number>;
   @Input() scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
   @Input() alwaysVisiblePage!: Page | null;
   @Input() scrollPages!: Page[];
   @Input() hasScrollPages!: boolean;
   @Input() alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right';
 
-  @Output() selectedIndexChange = new EventEmitter<number>();
-
+  selectedIndex: number = 0;
+  selectIndex: Subject<number> = new Subject();
   layoutAlignment: 'row' | 'column' = 'row';
   hidePageLabels: boolean = true;
   tabHeaderHeight: number = 0;
@@ -44,23 +46,32 @@ export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private nativeEventService: NativeEventService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private veronaPostService: VeronaPostService,
+    private navigationService: NavigationService,
+    private veronaSubscriptionService: VeronaSubscriptionService
   ) {
   }
 
   ngOnInit(): void {
-    this.initLayout();
     this.selectIndex
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((selectedIndex: number): void => { this.selectedIndex = selectedIndex; });
+      .subscribe((selectedIndex: number): void => this.setSelectedIndex(selectedIndex));
+    this.navigationService.pageIndex
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((pageIndex: number): void => this.selectIndex.next(pageIndex));
+    this.veronaSubscriptionService.vopPageNavigationCommand
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((message: VopPageNavigationCommand): void => this.selectIndex.next(Number(message.target)));
+    this.initLayout();
   }
 
   ngAfterViewInit(): void {
     this.calculateCenterPositionInRowLayout();
   }
 
-  onSelectedIndexChange(selectedIndex: number): void {
-    this.selectedIndexChange.emit(selectedIndex);
+  setSelectedIndex(selectedIndex: number): void {
+    this.selectedIndex = selectedIndex;
   }
 
   private calculateCenterPositionInRowLayout(): void {

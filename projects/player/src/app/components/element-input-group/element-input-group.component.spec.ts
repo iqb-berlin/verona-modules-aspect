@@ -4,10 +4,10 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Component, Input } from '@angular/core';
-import { UIElement } from 'common/interfaces/elements';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
+import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
 
 describe('ElementInputGroupComponent', () => {
   let component: ElementInputGroupComponent;
@@ -16,7 +16,7 @@ describe('ElementInputGroupComponent', () => {
 
   @Component({ selector: 'aspect-radio-button-group', template: '' })
   class RadioStubComponent {
-    @Input() elementModel!: UIElement;
+    @Input() elementModel!: RadioButtonGroupElement;
     @Input() parentForm!: FormGroup;
   }
 
@@ -50,12 +50,12 @@ describe('ElementInputGroupComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
     component = fixture.componentInstance;
-    component.elementModel = {
+    component.elementModel = new RadioButtonGroupElement({
       type: 'radio',
       id: 'test',
       width: 0,
       height: 0
-    };
+    });
     fixture.detectChanges();
 
   });

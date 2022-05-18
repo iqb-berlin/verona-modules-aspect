@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ElementInteractiveGroupComponent } from './element-interactive-group.component';
 import { Component, Input } from '@angular/core';
-import { UIElement } from 'common/interfaces/elements';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
+import { ButtonElement } from 'common/models/elements/button/button';
 
 describe('ElementInteractiveGroupComponent', () => {
   let component: ElementInteractiveGroupComponent;
@@ -12,7 +12,7 @@ describe('ElementInteractiveGroupComponent', () => {
 
   @Component({ selector: 'aspect-button', template: '' })
   class ButtonStubComponent {
-    @Input() elementModel!: UIElement;
+    @Input() elementModel!: ButtonElement;
   }
 
   beforeEach(async () => {
@@ -34,12 +34,12 @@ describe('ElementInteractiveGroupComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
     component = fixture.componentInstance;
-    component.elementModel = {
+    component.elementModel = new ButtonElement({
       type: 'button',
       id: 'test',
       width: 0,
       height: 0
-    };
+    });
     fixture.detectChanges();
   });
 

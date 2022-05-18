@@ -1,11 +1,11 @@
 import {
   AfterViewInit, Component, ViewChild
 } from '@angular/core';
-import { UnitStateService } from '../../services/unit-state.service';
-import { ElementGroupDirective } from '../../directives/element-group.directive';
+import { UnitStateService } from '../../../services/unit-state.service';
+import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { NavigationService } from '../../services/navigation.service';
-import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
+import { NavigationService } from '../../../services/navigation.service';
+import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ImageElement } from 'common/models/elements/media-elements/image';

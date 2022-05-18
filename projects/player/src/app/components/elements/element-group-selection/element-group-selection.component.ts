@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ElementGroup, ElementGroupName } from '../../models/element-group';
+import { ElementGroup, ElementGroupName } from '../../../models/element-group';
 import { UIElement, UIElementType } from 'common/models/elements/element';
 
 @Component({

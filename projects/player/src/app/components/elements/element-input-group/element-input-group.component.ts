@@ -2,13 +2,13 @@ import {
   AfterViewInit, Component, OnInit, ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { UnitStateService } from '../../services/unit-state.service';
-import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
-import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
+import { UnitStateService } from '../../../services/unit-state.service';
+import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
+import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ValidationService } from '../../services/validation.service';
+import { ValidationService } from '../../../services/validation.service';
 import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
 import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';

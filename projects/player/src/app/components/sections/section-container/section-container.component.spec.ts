@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SectionContainerComponent } from './section-container.component';
-import { SectionComponent } from 'player/src/app/components/section/section.component';
+import { SectionComponent } from 'player/src/app/components/sections/section/section.component';
 import { Section } from 'common/models/section';
 
 describe('SectionContainerComponent', () => {

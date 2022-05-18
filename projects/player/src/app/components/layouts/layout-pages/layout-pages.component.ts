@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NativeEventService } from '../../services/native-event.service';
+import { NativeEventService } from '../../../services/native-event.service';
 import { Page } from 'common/models/page';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';

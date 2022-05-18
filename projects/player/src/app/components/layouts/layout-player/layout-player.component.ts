@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { KeypadService } from '../../services/keypad.service';
-import { KeyboardService } from '../../services/keyboard.service';
-import { DeviceService } from '../../services/device.service';
+import { KeypadService } from '../../../services/keypad.service';
+import { KeyboardService } from '../../../services/keyboard.service';
+import { DeviceService } from '../../../services/device.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

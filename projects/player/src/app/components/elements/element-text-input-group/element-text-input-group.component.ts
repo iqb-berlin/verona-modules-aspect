@@ -2,19 +2,19 @@ import {
   AfterViewInit, Component, OnInit, ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { KeypadService } from '../../services/keypad.service';
-import { UnitStateService } from '../../services/unit-state.service';
-import { ElementModelElementCodeMappingService } from '../../services/element-model-element-code-mapping.service';
+import { KeypadService } from '../../../services/keypad.service';
+import { UnitStateService } from '../../../services/unit-state.service';
+import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ValidationService } from '../../services/validation.service';
-import { ElementFormGroupDirective } from '../../directives/element-form-group.directive';
+import { ValidationService } from '../../../services/validation.service';
+import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
-import { KeyboardService } from '../../services/keyboard.service';
+import { KeyboardService } from '../../../services/keyboard.service';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
-import { DeviceService } from '../../services/device.service';
+import { DeviceService } from '../../../services/device.service';
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';

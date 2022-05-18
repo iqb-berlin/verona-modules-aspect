@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ElementBaseGroupComponent } from 'player/src/app/components/element-base-group/element-base-group.component';
+import {
+  ElementBaseGroupComponent
+} from 'player/src/app/components/elements/element-base-group/element-base-group.component';
 import { FrameElement } from 'common/models/elements/frame/frame';
 
 describe('ElementBaseGroupComponent', () => {

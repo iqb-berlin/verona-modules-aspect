@@ -1,8 +1,8 @@
 import {
   AfterViewInit, Component, OnInit, ViewChild, ViewContainerRef
 } from '@angular/core';
-import { UnitStateService } from '../../services/unit-state.service';
-import { ElementGroupDirective } from '../../directives/element-group.directive';
+import { UnitStateService } from '../../../services/unit-state.service';
+import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({

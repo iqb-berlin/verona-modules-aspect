@@ -11,12 +11,12 @@ import { VopPageNavigationCommand } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 
 @Component({
-  selector: 'aspect-layout-pages',
-  templateUrl: './layout-pages.component.html',
-  styleUrls: ['./layout-pages.component.css']
+  selector: 'aspect-pages-layout',
+  templateUrl: './pages-layout.component.html',
+  styleUrls: ['./pages-layout.component.css']
 })
 
-export class LayoutPagesComponent implements OnInit, AfterViewInit, OnDestroy {
+export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pages!: Page[];
   @Input() scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
   @Input() alwaysVisiblePage!: Page | null;

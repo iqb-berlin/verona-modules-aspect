@@ -4,7 +4,7 @@
   [scrollPages]="pages | scrollPages"
   [elementCodes]="unitStateService.elementCodes">
 </aspect-unit-menu>
-<aspect-layout-player
+<aspect-player-layout
   *ngIf="playerConfig && pages?.length"
   #playerLayout
   aspectUnitState
@@ -12,7 +12,7 @@
   [currentPlayerPageIndex]="pagesLayout.selectedIndex"
   [validPages]="pages | validPages"
   [isPlayerRunning]="playerLayout.isPlayerRunning">
-  <aspect-layout-pages
+  <aspect-pages-layout
     #pagesLayout
     [style.height.%]="100"
     [pages]="pages"
@@ -21,6 +21,6 @@
     [scrollPages]="pages | scrollPages"
     [hasScrollPages]="(pages | scrollPages).length > 0"
     [scrollPageMode]="playerConfig.pagingMode || 'separate'">
-  </aspect-layout-pages>
-</aspect-layout-player>
+  </aspect-pages-layout>
+</aspect-player-layout>
 

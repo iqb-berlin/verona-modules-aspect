@@ -11,7 +11,7 @@ import { SectionContainerComponent } from './components/sections/section-contain
 import { SectionComponent } from './components/sections/section/section.component';
 import { SharedModule } from 'common/shared.module';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
-import { LayoutPagesComponent } from './components/layouts/layout-pages/layout-pages.component';
+import { PagesLayoutComponent } from './components/layouts/layout-pages/pages-layout.component';
 import { PageLabelDirective } from './directives/page-label.directive';
 import { ScrollToIndexDirective } from './directives/scroll-to-index.directive';
 import { IntersectionDetectionDirective } from './directives/intersection-detection.directive';
@@ -36,7 +36,7 @@ import { BaseGroupElementComponent } from './components/elements/base-group-elem
 import {
   InteractiveGroupElementComponent
 } from './components/elements/interactive-group-element/interactive-group-element.component';
-import { LayoutPlayerComponent } from './components/layouts/layout-player/layout-player.component';
+import { PlayerLayoutComponent } from './components/layouts/player-layout/player-layout.component';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
 import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
@@ -52,7 +52,7 @@ import { PlayerStateDirective } from './directives/player-state.directive';
     PageComponent,
     SectionContainerComponent,
     SectionComponent,
-    LayoutPagesComponent,
+    PagesLayoutComponent,
     PageLabelDirective,
     ScrollToIndexDirective,
     IntersectionDetectionDirective,
@@ -67,7 +67,7 @@ import { PlayerStateDirective } from './directives/player-state.directive';
     TextGroupElementComponent,
     BaseGroupElementComponent,
     InteractiveGroupElementComponent,
-    LayoutPlayerComponent,
+    PlayerLayoutComponent,
     UnitStateDirective,
     ValidPagesPipe,
     AlwaysVisiblePagePipe,

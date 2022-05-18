@@ -6,9 +6,9 @@ import { DeviceService } from '../../../services/device.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
-  selector: 'aspect-layout-player',
-  templateUrl: './layout-player.component.html',
-  styleUrls: ['./layout-player.component.css'],
+  selector: 'aspect-player-layout',
+  templateUrl: './player-layout.component.html',
+  styleUrls: ['./player-layout.component.css'],
   animations: [
     trigger('keypadSlideInOut', [
       transition(':enter', [
@@ -30,7 +30,7 @@ import { BehaviorSubject } from 'rxjs';
     ])
   ]
 })
-export class LayoutPlayerComponent {
+export class PlayerLayoutComponent {
   isPlayerRunning: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   constructor(

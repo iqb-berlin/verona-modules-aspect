@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LayoutPagesComponent } from './layout-pages.component';
+import { PagesLayoutComponent } from './pages-layout.component';
 import { Subject } from 'rxjs';
 import { FlexModule } from '@angular/flex-layout';
 
-describe('LayoutPlayerComponent', () => {
-  let component: LayoutPagesComponent;
-  let fixture: ComponentFixture<LayoutPagesComponent>;
+describe('PagesLayoutComponent', () => {
+  let component: PagesLayoutComponent;
+  let fixture: ComponentFixture<PagesLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LayoutPagesComponent ],
+      declarations: [ PagesLayoutComponent ],
       imports: [ FlexModule ]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LayoutPagesComponent);
+    fixture = TestBed.createComponent(PagesLayoutComponent);
     component = fixture.componentInstance;
     component.selectIndex = new Subject<number>();
     component.scrollPages = [];

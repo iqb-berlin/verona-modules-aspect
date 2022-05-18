@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ElementInteractiveGroupComponent } from './element-interactive-group.component';
+import { InteractiveGroupElementComponent } from './interactive-group-element.component';
 import { Component, Input } from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { ButtonElement } from 'common/models/elements/button/button';
 
-describe('ElementInteractiveGroupComponent', () => {
-  let component: ElementInteractiveGroupComponent;
-  let fixture: ComponentFixture<ElementInteractiveGroupComponent>;
+describe('InteractiveGroupElementComponent', () => {
+  let component: InteractiveGroupElementComponent;
+  let fixture: ComponentFixture<InteractiveGroupElementComponent>;
   let mockUnitStateService: UnitStateService;
 
   @Component({ selector: 'aspect-button', template: '' })
@@ -18,7 +18,7 @@ describe('ElementInteractiveGroupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        ElementInteractiveGroupComponent,
+        InteractiveGroupElementComponent,
         ButtonStubComponent,
         CastPipe
       ]
@@ -28,7 +28,7 @@ describe('ElementInteractiveGroupComponent', () => {
 
   beforeEach(() => {
     mockUnitStateService = TestBed.inject(UnitStateService);
-    fixture = TestBed.createComponent(ElementInteractiveGroupComponent);
+    fixture = TestBed.createComponent(InteractiveGroupElementComponent);
     spyOn(mockUnitStateService, 'registerElement')
       .withArgs('test', 0, document.createElement('div'), 1);
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and

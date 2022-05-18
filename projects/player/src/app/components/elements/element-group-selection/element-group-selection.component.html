@@ -6,40 +6,40 @@
                       elementModel.width + 'px' : '100%'"
        [style.height]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
                       elementModel.height + 'px' : '100%'">
-          <aspect-element-text-input-group
+          <aspect-text-input-group-element
               *ngIf="'textInputGroup' === selectedGroup"
               [elementModel]="elementModel"
               [pageIndex]="pageIndex">
-          </aspect-element-text-input-group>
-          <aspect-element-media-player-group
+          </aspect-text-input-group-element>
+          <aspect-media-player-group-element
               *ngIf="'mediaPlayerGroup' === selectedGroup"
               [elementModel]="elementModel"
               [pageIndex]="pageIndex">
-          </aspect-element-media-player-group>
-          <aspect-element-input-group
+          </aspect-media-player-group-element>
+          <aspect-input-group-element
               *ngIf="'inputGroup' === selectedGroup"
               [elementModel]="elementModel"
               [pageIndex]="pageIndex">
-          </aspect-element-input-group>
-          <aspect-element-compound-group
+          </aspect-input-group-element>
+          <aspect-compound-group-element
               *ngIf="'compoundGroup' === selectedGroup"
               [elementModel]="elementModel"
               [pageIndex]="pageIndex">
-          </aspect-element-compound-group>
-          <aspect-element-text-group
+          </aspect-compound-group-element>
+          <aspect-text-group-element
               *ngIf="'textGroup' === selectedGroup"
               [elementModel]="elementModel"
               [pageIndex]="pageIndex">
-          </aspect-element-text-group>
-          <aspect-element-interactive-group
+          </aspect-text-group-element>
+          <aspect-interactive-group-element
               *ngIf="'interactiveGroup' === selectedGroup"
               [elementModel]="elementModel"
               [pageIndex]="pageIndex">
-          </aspect-element-interactive-group>
-          <aspect-element-base-group
+          </aspect-interactive-group-element>
+          <aspect-base-group-element
               *ngIf="!selectedGroup"
               [elementModel]="elementModel"
               [pageIndex]="pageIndex">
-          </aspect-element-base-group>
+          </aspect-base-group-element>
   </div>
 </div>

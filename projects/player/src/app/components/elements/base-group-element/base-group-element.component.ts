@@ -6,11 +6,11 @@ import { ElementGroupDirective } from '../../../directives/element-group.directi
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 @Component({
-  selector: 'aspect-element-base-group',
-  templateUrl: './element-base-group.component.html',
-  styleUrls: ['./element-base-group.component.scss']
+  selector: 'aspect-base-group-element',
+  templateUrl: './base-group-element.component.html',
+  styleUrls: ['./base-group-element.component.scss']
 })
-export class ElementBaseGroupComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
+export class BaseGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponentContainer',
     { read: ViewContainerRef, static: true }) private elementComponentContainer!: ViewContainerRef;
 

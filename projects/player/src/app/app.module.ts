@@ -20,22 +20,22 @@ import { FloatingKeypadComponent } from './components/floating-keypad/floating-k
 import {
   ElementGroupSelectionComponent
 } from './components/elements/element-group-selection/element-group-selection.component';
-import { ElementInputGroupComponent } from './components/elements/element-input-group/element-input-group.component';
+import { InputGroupElementComponent } from './components/elements/input-group-element/input-group-element.component';
 import {
-  ElementMediaPlayerGroupComponent
-} from './components/elements/element-media-player-group/element-media-player-group.component';
+  MediaPlayerGroupElementComponent
+} from './components/elements/media-player-group-element/media-player-group-element.component';
 import {
-  ElementTextInputGroupComponent
-} from './components/elements/element-text-input-group/element-text-input-group.component';
+  TextInputGroupElementComponent
+} from './components/elements/text-input-group-element/text-input-group-element.component';
 import {
-  ElementCompoundGroupComponent
-} from './components/elements/element-compound-group/element-compound-group.component';
+  CompoundGroupElementComponent
+} from './components/elements/compound-group-element/compound-group-element.component';
 import { CastPipe } from './pipes/cast.pipe';
-import { ElementTextGroupComponent } from './components/elements/element-text-group/element-text-group.component';
-import { ElementBaseGroupComponent } from './components/elements/element-base-group/element-base-group.component';
+import { TextGroupElementComponent } from './components/elements/text-group-element/text-group-element.component';
+import { BaseGroupElementComponent } from './components/elements/base-group-element/base-group-element.component';
 import {
-  ElementInteractiveGroupComponent
-} from './components/elements/element-interactive-group/element-interactive-group.component';
+  InteractiveGroupElementComponent
+} from './components/elements/interactive-group-element/interactive-group-element.component';
 import { LayoutPlayerComponent } from './components/layouts/layout-player/layout-player.component';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
@@ -59,14 +59,14 @@ import { PlayerStateDirective } from './directives/player-state.directive';
     FloatingMarkingBarComponent,
     FloatingKeypadComponent,
     ElementGroupSelectionComponent,
-    ElementInputGroupComponent,
-    ElementMediaPlayerGroupComponent,
-    ElementTextInputGroupComponent,
-    ElementCompoundGroupComponent,
+    InputGroupElementComponent,
+    MediaPlayerGroupElementComponent,
+    TextInputGroupElementComponent,
+    CompoundGroupElementComponent,
     CastPipe,
-    ElementTextGroupComponent,
-    ElementBaseGroupComponent,
-    ElementInteractiveGroupComponent,
+    TextGroupElementComponent,
+    BaseGroupElementComponent,
+    InteractiveGroupElementComponent,
     LayoutPlayerComponent,
     UnitStateDirective,
     ValidPagesPipe,

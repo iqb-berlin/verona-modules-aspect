@@ -13,11 +13,11 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
-  selector: 'aspect-element-text-group',
-  templateUrl: './element-text-group.component.html',
-  styleUrls: ['./element-text-group.component.scss']
+  selector: 'aspect-text-group-element',
+  templateUrl: './text-group-element.component.html',
+  styleUrls: ['./text-group-element.component.scss']
 })
-export class ElementTextGroupComponent extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
+export class TextGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   TextElement!: TextElement;
 

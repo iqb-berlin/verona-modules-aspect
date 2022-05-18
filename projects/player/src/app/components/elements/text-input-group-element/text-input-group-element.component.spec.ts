@@ -1,30 +1,32 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ElementInputGroupComponent } from './element-input-group.component';
+import { TextInputGroupElementComponent } from './text-input-group-element.component';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
-import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
+import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
 
-describe('ElementInputGroupComponent', () => {
-  let component: ElementInputGroupComponent;
-  let fixture: ComponentFixture<ElementInputGroupComponent>;
+describe('TextInputGroupElementComponent', () => {
+  let component: TextInputGroupElementComponent;
+  let fixture: ComponentFixture<TextInputGroupElementComponent>;
   let mockUnitStateService: UnitStateService;
 
-  @Component({ selector: 'aspect-radio-button-group', template: '' })
-  class RadioStubComponent {
-    @Input() elementModel!: RadioButtonGroupElement;
+  @Component({ selector: 'aspect-text-field', template: '' })
+  class TextFieldStubComponent {
+    @Input() elementModel!: TextFieldElement;
     @Input() parentForm!: FormGroup;
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        ElementInputGroupComponent,
-        RadioStubComponent,
+        TextInputGroupElementComponent,
+        FloatingKeypadComponent,
+        TextFieldStubComponent,
         CastPipe
       ],
       imports: [
@@ -44,14 +46,14 @@ describe('ElementInputGroupComponent', () => {
 
   beforeEach(() => {
     mockUnitStateService = TestBed.inject(UnitStateService);
-    fixture = TestBed.createComponent(ElementInputGroupComponent);
+    fixture = TestBed.createComponent(TextInputGroupElementComponent);
     spyOn(mockUnitStateService, 'registerElement')
-      .withArgs('test', 0, document.createElement('div'), 1);
+      .withArgs('test', 'test', document.createElement('div'), 1);
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
-      .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
+      .returnValue({ id: 'test', status: 'NOT_REACHED', value: 'test' });
     component = fixture.componentInstance;
-    component.elementModel = new RadioButtonGroupElement({
-      type: 'radio',
+    component.elementModel = new TextFieldElement({
+      type: 'text-field',
       id: 'test',
       width: 0,
       height: 0

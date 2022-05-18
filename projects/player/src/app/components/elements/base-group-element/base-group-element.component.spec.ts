@@ -1,24 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  ElementBaseGroupComponent
-} from 'player/src/app/components/elements/element-base-group/element-base-group.component';
+  BaseGroupElementComponent
+} from 'player/src/app/components/elements/base-group-element/base-group-element.component';
 import { FrameElement } from 'common/models/elements/frame/frame';
 
-describe('ElementBaseGroupComponent', () => {
-  let component: ElementBaseGroupComponent;
-  let fixture: ComponentFixture<ElementBaseGroupComponent>;
+describe('BaseGroupElementComponent', () => {
+  let component: BaseGroupElementComponent;
+  let fixture: ComponentFixture<BaseGroupElementComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        ElementBaseGroupComponent
+        BaseGroupElementComponent
       ]
     })
       .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ElementBaseGroupComponent);
+    fixture = TestBed.createComponent(BaseGroupElementComponent);
     component = fixture.componentInstance;
     component.elementModel = new FrameElement({
       type: 'frame',

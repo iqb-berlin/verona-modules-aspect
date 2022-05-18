@@ -13,11 +13,11 @@ import { InputElementValue } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 
 @Component({
-  selector: 'aspect-element-interactive-group',
-  templateUrl: './element-interactive-group.component.html',
-  styleUrls: ['./element-interactive-group.component.scss']
+  selector: 'aspect-interactive-group-element',
+  templateUrl: './interactive-group-element.component.html',
+  styleUrls: ['./interactive-group-element.component.scss']
 })
-export class ElementInteractiveGroupComponent extends ElementGroupDirective implements AfterViewInit {
+export class InteractiveGroupElementComponent extends ElementGroupDirective implements AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   ButtonElement!: ButtonElement;
   FrameElement!: FrameElement;

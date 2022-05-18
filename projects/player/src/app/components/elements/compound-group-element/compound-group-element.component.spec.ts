@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
-  ElementCompoundGroupComponent
-} from './element-compound-group.component';
+  CompoundGroupElementComponent
+} from './compound-group-element.component';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -11,9 +11,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 
-describe('ElementCompoundGroupComponent', () => {
-  let component: ElementCompoundGroupComponent;
-  let fixture: ComponentFixture<ElementCompoundGroupComponent>;
+describe('CompoundGroupElementComponent', () => {
+  let component: CompoundGroupElementComponent;
+  let fixture: ComponentFixture<CompoundGroupElementComponent>;
 
   @Component({ selector: 'aspect-likert', template: '' })
   class LikertStubComponent {
@@ -23,7 +23,7 @@ describe('ElementCompoundGroupComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        ElementCompoundGroupComponent,
+        CompoundGroupElementComponent,
         FloatingKeypadComponent,
         LikertStubComponent,
         CastPipe
@@ -45,7 +45,7 @@ describe('ElementCompoundGroupComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ElementCompoundGroupComponent);
+    fixture = TestBed.createComponent(CompoundGroupElementComponent);
     component = fixture.componentInstance;
     component.elementModel = new LikertElement({
       type: 'likert',

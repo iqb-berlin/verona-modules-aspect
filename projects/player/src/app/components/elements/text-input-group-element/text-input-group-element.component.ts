@@ -21,11 +21,11 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
 import { InputElement } from 'common/models/elements/element';
 
 @Component({
-  selector: 'aspect-element-text-input-group',
-  templateUrl: './element-text-input-group.component.html',
-  styleUrls: ['./element-text-input-group.component.scss']
+  selector: 'aspect-text-input-group-element',
+  templateUrl: './text-input-group-element.component.html',
+  styleUrls: ['./text-input-group-element.component.scss']
 })
-export class ElementTextInputGroupComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
+export class TextInputGroupElementComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   TextAreaElement!: TextAreaElement;
   TextFieldElement!: TextFieldElement;

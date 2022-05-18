@@ -11,11 +11,11 @@ import { VideoElement } from 'common/models/elements/media-elements/video';
 import { UIElement } from 'common/models/elements/element';
 
 @Component({
-  selector: 'aspect-element-media-player-group',
-  templateUrl: './element-media-player-group.component.html',
-  styleUrls: ['./element-media-player-group.component.scss']
+  selector: 'aspect-media-player-group-element',
+  templateUrl: './media-player-group-element.component.html',
+  styleUrls: ['./media-player-group-element.component.scss']
 })
-export class ElementMediaPlayerGroupComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
+export class MediaPlayerGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: MediaPlayerElementComponent;
   @Input() elementModel!: UIElement;
   @Input() pageIndex!: number;

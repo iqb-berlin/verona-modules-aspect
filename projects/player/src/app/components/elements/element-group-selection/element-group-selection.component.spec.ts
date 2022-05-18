@@ -23,43 +23,43 @@ describe('ElementGroupSelectionComponent', () => {
   let component: ElementGroupSelectionComponent;
   let fixture: ComponentFixture<ElementGroupSelectionComponent>;
 
-  @Component({ selector: 'aspect-element-text-group', template: '' })
+  @Component({ selector: 'aspect-text-group-element', template: '' })
   class ElementTextGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-element-input-group', template: '' })
+  @Component({ selector: 'aspect-input-group-element', template: '' })
   class ElementInputGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-element-text-input-group', template: '' })
+  @Component({ selector: 'aspect-text-input-group-element', template: '' })
   class ElementTextInputGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-element-media-player-group', template: '' })
+  @Component({ selector: 'aspect-media-player-group-element', template: '' })
   class ElementMediaPlayerGroupStubComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-element-compound-group', template: '' })
+  @Component({ selector: 'aspect-compound-group-element', template: '' })
   class ElementCompoundGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-element-base-group', template: '' })
+  @Component({ selector: 'aspect-base-group-element', template: '' })
   class ElementBaseGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;
   }
 
-  @Component({ selector: 'aspect-element-interactive-group', template: '' })
+  @Component({ selector: 'aspect-interactive-group-element', template: '' })
   class ElementInteractiveGroupComponent {
     @Input() elementModel!: UIElement;
     @Input() pageIndex!: number;

@@ -18,11 +18,11 @@ import { DropdownElement } from 'common/models/elements/input-elements/dropdown'
 import { InputElement } from 'common/models/elements/element';
 
 @Component({
-  selector: 'aspect-element-input-group',
-  templateUrl: './element-input-group.component.html',
-  styleUrls: ['./element-input-group.component.scss']
+  selector: 'aspect-input-group-element',
+  templateUrl: './input-group-element.component.html',
+  styleUrls: ['./input-group-element.component.scss']
 })
-export class ElementInputGroupComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
+export class InputGroupElementComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   CheckboxElement!: CheckboxElement;
   SliderElement!: SliderElement;

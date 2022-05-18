@@ -19,11 +19,11 @@ import { LikertElement } from 'common/models/elements/compound-elements/likert/l
 import { CompoundElement, InputElement } from 'common/models/elements/element';
 
 @Component({
-  selector: 'aspect-element-compound-group',
-  templateUrl: './element-compound-group.component.html',
-  styleUrls: ['./element-compound-group.component.scss']
+  selector: 'aspect-compound-group-element',
+  templateUrl: './compound-group-element.component.html',
+  styleUrls: ['./compound-group-element.component.scss']
 })
-export class ElementCompoundGroupComponent extends ElementFormGroupDirective implements OnInit {
+export class CompoundGroupElementComponent extends ElementFormGroupDirective implements OnInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;

@@ -54,8 +54,6 @@ export class AppComponent implements OnInit {
       .subscribe((message: VopStartCommand): void => this.onStart(message));
     this.nativeEventService.focus
       .subscribe((focused: boolean): void => this.onFocus(focused));
-    this.nativeEventService.pointerDown
-      .subscribe( () => this.deviceService.dontSleep());
   }
 
   private initVeronaPostService(): void {

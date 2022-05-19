@@ -1,28 +1,24 @@
-import {
-  Component, ElementRef, Input, OnDestroy, OnInit
-} from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { Section } from 'common/models/section';
+import { takeUntil } from 'rxjs/operators';
 
-@Component({
-  selector: 'aspect-section-container',
-  templateUrl: './section-container.component.html',
-  styleUrls: ['./section-container.component.scss']
+@Directive({
+  selector: '[aspectSectionVisibilityHandling]'
 })
-export class SectionContainerComponent implements OnInit, OnDestroy {
+export class SectionVisibilityHandlingDirective {
   @Input() mediaStatusChanged!: Subject<string>;
   @Input() section!: Section;
-  @Input() pageIndex!: number;
   @Input() pageSections!: Section[];
-  @Input() isVisible!: boolean;
 
+  private isVisible: boolean = true;
   private isScrollSection: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
+    this.setVisibility(!this.section.activeAfterID);
     this.isScrollSection = this.isVisible ?
       false :
       this.pageSections
@@ -38,11 +34,16 @@ export class SectionContainerComponent implements OnInit, OnDestroy {
 
   private setActiveAfterID(id: string): void {
     if (!this.isVisible) {
-      this.isVisible = id === this.section.activeAfterID;
+      this.setVisibility(id === this.section.activeAfterID);
       if (this.isScrollSection) {
         this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
+  }
+
+  private setVisibility(isVisible: boolean): void {
+    this.isVisible = isVisible;
+    this.elementRef.nativeElement.style.display = isVisible ? null : 'none';
   }
 
   ngOnDestroy(): void {

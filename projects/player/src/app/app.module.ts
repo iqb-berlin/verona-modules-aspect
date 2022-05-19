@@ -7,8 +7,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
-import { SectionContainerComponent } from './components/sections/section-container/section-container.component';
-import { SectionComponent } from './components/sections/section/section.component';
+import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from 'common/shared.module';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { PagesLayoutComponent } from './components/layouts/layout-pages/pages-layout.component';
@@ -45,12 +44,12 @@ import { ScrollPagesPipe } from './pipes/scroll-pages.pipe';
 import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';
 import { PageIndexPipe } from './pipes/page-index.pipe';
 import { PlayerStateDirective } from './directives/player-state.directive';
+import { SectionVisibilityHandlingDirective } from './directives/section-visibility-handling.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageComponent,
-    SectionContainerComponent,
     SectionComponent,
     PagesLayoutComponent,
     PageLabelDirective,
@@ -73,7 +72,8 @@ import { PlayerStateDirective } from './directives/player-state.directive';
     AlwaysVisiblePagePipe,
     ScrollPagesPipe,
     PageIndexPipe,
-    PlayerStateDirective
+    PlayerStateDirective,
+    SectionVisibilityHandlingDirective
   ],
   imports: [
     BrowserModule,

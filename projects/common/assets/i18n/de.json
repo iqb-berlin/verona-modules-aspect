@@ -5,7 +5,7 @@
   "load_separate": "Unit im 'Blätter'-Modus laden",
   "load_scroll": "Unit im 'Scroll'-Modus laden",
   "load_snap": "Unit im 'Snap'-Modus laden",
-  "reload_unit": "Unit incl. Zustand erneut laden",
+  "reload_unit": "Unit inkl. Zustand erneut laden",
   "stop_command": "Teste 'Stop-Command'",
   "continue_command": "Teste 'Continue-Command'",
   "request_command": "Teste 'Get-Request-Command'"

@@ -10,7 +10,7 @@ import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
 import { SharedModule } from 'common/shared.module';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
-import { PagesLayoutComponent } from './components/layouts/layout-pages/pages-layout.component';
+import { PagesLayoutComponent } from './components/layouts/pages-layout/pages-layout.component';
 import { PageLabelDirective } from './directives/page-label.directive';
 import { ScrollToIndexDirective } from './directives/scroll-to-index.directive';
 import { InViewDetectionDirective } from './directives/in-view-detection.directive';

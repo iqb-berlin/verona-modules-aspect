@@ -27,7 +27,6 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
 
 export abstract class ElementFactory {
   static createElement(elementType: string, defaultValues: Partial<UIElement> = {}): UIElement {
-    console.log('createElement', elementType, defaultValues);
     switch (elementType) {
       case 'text':
         return new TextElement({ type: elementType, ...defaultValues } as TextElement);

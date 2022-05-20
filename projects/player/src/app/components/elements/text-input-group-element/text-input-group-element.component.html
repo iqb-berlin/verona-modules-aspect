@@ -6,7 +6,7 @@
     [parentForm]="form"
     [elementModel]="elementModel | cast: TextAreaElement"
     (onKeyDown)="detectHardwareKeyboard($event, elementComponent)"
-    (onFocusChanged)="onFocusChanged($event, elementComponent)">
+    (focusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-area>
   <aspect-text-field
     *ngIf="elementModel.type === 'text-field'"
@@ -14,7 +14,7 @@
     [parentForm]="form"
     [elementModel]="elementModel | cast: TextFieldElement"
     (onKeyDown)="detectHardwareKeyboard($event, elementComponent)"
-    (onFocusChanged)="onFocusChanged($event, elementComponent)">
+    (focusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-text-field>
   <aspect-spell-correct
     *ngIf="elementModel.type === 'spell-correct'"
@@ -22,7 +22,7 @@
     [parentForm]="form"
     [elementModel]="elementModel | cast: SpellCorrectElement"
     (onKeyDown)="detectHardwareKeyboard($event, elementComponent)"
-    (onFocusChanged)="onFocusChanged($event, elementComponent)">
+    (focusChanged)="onFocusChanged($event, elementComponent)">
   </aspect-spell-correct>
 </form>
 

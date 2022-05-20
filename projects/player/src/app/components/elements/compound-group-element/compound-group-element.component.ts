@@ -62,7 +62,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
           .onFocusChanged
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(element => {
-            this.onFocusChanged(element, textFieldSimpleComponent, childModel);
+            this.toggleKeyInput(element, textFieldSimpleComponent, childModel);
           });
         (child as TextFieldSimpleComponent)
           .onKeyDown
@@ -74,7 +74,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     });
   }
 
-  private onFocusChanged(inputElement: HTMLElement | null,
+  private toggleKeyInput(inputElement: HTMLElement | null,
                          elementComponent: TextFieldSimpleComponent,
                          elementModel: InputElement): void {
     if (elementModel.inputAssistance) {

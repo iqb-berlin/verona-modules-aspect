@@ -54,37 +54,37 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
       this.pageIndex);
   }
 
-  applySelection(
+  applyMarkingData(
     selection: { active: boolean; mode: 'mark' | 'delete'; color: string; colorName: string | undefined },
     elementComponent: TextComponent
   ): void {
     if (selection.active) {
       this.selectedColor = selection.color;
       this.selectedMode = selection.mode;
-      this.applySelectionToText(selection.mode, selection.color, elementComponent);
+      this.applyMarkingDataToText(selection.mode, selection.color, elementComponent);
     } else {
       this.selectedColor = null;
       this.selectedMode = null;
     }
   }
 
-  startSelection(pointerDown: PointerEvent, elementComponent: TextComponent): void {
+  startTextSelection(pointerDown: PointerEvent, elementComponent: TextComponent): void {
     this.isMarkingBarOpen = false;
     this.nativeEventService.pointerUp
       .pipe(takeUntil(this.ngUnsubscribe), first())
       .subscribe((pointerUp: PointerEvent) => {
-        this.stopSelection(
-          this.getClientPointFromEvent(pointerUp),
+        this.stopTextSelection(
+          { clientX: pointerUp.clientX, clientY: pointerUp.clientY },
           pointerUp.ctrlKey,
-          this.getClientPointFromEvent(pointerDown),
+          { clientX: pointerDown.clientX, clientY: pointerDown.clientY },
           elementComponent
         );
       });
   }
 
-  applySelectionToText(mode: 'mark' | 'delete', color: string, elementComponent: TextComponent): void {
+  applyMarkingDataToText(mode: 'mark' | 'delete', color: string, elementComponent: TextComponent): void {
     TextMarkingService
-      .applySelection(
+      .applyMarkingDataToText(
         mode,
         color,
         elementComponent
@@ -92,29 +92,24 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     this.isMarkingBarOpen = false;
   }
 
-  private stopSelection(
-    mouseUp: { clientX: number, clientY: number },
+  private stopTextSelection(
+    pointerUpPoint: { clientX: number, clientY: number },
     ctrlKey: boolean,
-    downPosition: { clientX: number, clientY: number },
+    pointerDownPoint: { clientX: number, clientY: number },
     elementComponent: TextComponent
   ) {
     const selection = window.getSelection();
     if (selection && TextMarkingService.isSelectionValid(selection) && selection.rangeCount > 0) {
-      if (!TextMarkingService.isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) ||
-        (ctrlKey)) {
+      if (!TextMarkingService
+        .isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) || (ctrlKey)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
-        this.applySelectionToText(this.selectedMode, this.selectedColor, elementComponent);
+        this.applyMarkingDataToText(this.selectedMode, this.selectedColor, elementComponent);
       } else if (!this.isMarkingBarOpen) {
-        this.openMarkingBar(mouseUp, downPosition, elementComponent);
+        this.openMarkingBar(pointerUpPoint, pointerDownPoint, elementComponent);
       }
     }
   }
-
-  private getClientPointFromEvent = (event: PointerEvent): { clientX: number, clientY: number } => ({
-    clientX: event.clientX,
-    clientY: event.clientY
-  });
 
   private openMarkingBar(
     mouseUp: { clientX: number, clientY: number },

@@ -10,7 +10,7 @@ export class TextMarkingService {
 
   private static readonly MARKING_TAG = 'ASPECT-MARKED';
 
-  static applySelection(
+  static applyMarkingDataToText(
     mode: 'mark' | 'delete',
     color: string,
     textComponent: TextComponent
@@ -23,7 +23,7 @@ export class TextMarkingService {
         TextMarkingService.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
-          value: TextMarkingService.getMarkingData(element.innerHTML)
+          value: TextMarkingService.getMarkedTextIndices(element.innerHTML)
         });
         textComponent.savedText = element.innerHTML;
       } else {
@@ -40,7 +40,7 @@ export class TextMarkingService {
       TextMarkingService.isDescendantOf(range.endContainer, element));
   }
 
-  static getMarkingData = (htmlText: string): string[] => {
+  static getMarkedTextIndices = (htmlText: string): string[] => {
     const markingStartPattern =
       new RegExp(`<${TextMarkingService.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
     const markingClosingTag = `</${TextMarkingService.MARKING_TAG.toLowerCase()}>`;
@@ -66,7 +66,7 @@ export class TextMarkingService {
     return markCollection;
   };
 
-  static restoreMarkings(markings: string[], htmlText: string): string {
+  static restoreMarkedTextIndices(markings: string[], htmlText: string): string {
     let newHtmlText = htmlText;
     if (markings.length) {
       const markCollectionReversed = [...markings].reverse();

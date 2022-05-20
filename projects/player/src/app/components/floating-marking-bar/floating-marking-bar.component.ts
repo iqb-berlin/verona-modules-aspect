@@ -18,7 +18,7 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
   @Input() textComponentRect!: DOMRect;
   @Input() textComponentContainerScrollTop!: number;
 
-  @Output() applySelection = new EventEmitter<{
+  @Output() markingDataChanged = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
     color: string

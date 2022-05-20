@@ -30,7 +30,8 @@ export class ElementModelElementCodeMappingService {
           (elementModel as InputElement).value;
       case 'text':
         return (elementCodeValue !== undefined) ?
-          TextMarkingService.restoreMarkings(elementCodeValue as string[], (elementModel as TextElement).text) :
+          TextMarkingService
+            .restoreMarkedTextIndices(elementCodeValue as string[], (elementModel as TextElement).text) :
           (elementModel as TextElement).text;
       case 'audio':
         return elementCodeValue !== undefined ?
@@ -61,7 +62,7 @@ export class ElementModelElementCodeMappingService {
       case 'drop-list-simple':
         return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
       case 'text':
-        return TextMarkingService.getMarkingData(elementModelValue as string);
+        return TextMarkingService.getMarkedTextIndices(elementModelValue as string);
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':

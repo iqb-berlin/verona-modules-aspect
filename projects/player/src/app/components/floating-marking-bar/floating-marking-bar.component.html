@@ -11,7 +11,7 @@
        cdkDrag>
     <aspect-text-marking-bar
         [elementModel]="elementModel"
-        (selectionChanged)="applySelection.emit($event)">
+        (markingDataChanged)="markingDataChanged.emit($event)">
     </aspect-text-marking-bar>
   </div>
 </ng-template>

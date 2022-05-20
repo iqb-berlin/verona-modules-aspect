@@ -10,30 +10,30 @@ import { ValueChangeElement } from 'common/models/elements/element';
   template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
-        <aspect-text-marking-bar
-                *ngIf="elementModel.highlightableYellow ||
+      <aspect-text-marking-bar
+        *ngIf="elementModel.highlightableYellow ||
             elementModel.highlightableTurquoise ||
             elementModel.highlightableOrange"
-                [elementModel]="elementModel"
-                (selectionChanged)="onSelectionChanged($event)">
-        </aspect-text-marking-bar>
-        <div #textContainerRef class="text-container"
-             [class.orange-selection]="selectedColor === 'orange'"
-             [class.yellow-selection]="selectedColor === 'yellow'"
-             [class.turquoise-selection]="selectedColor === 'turquoise'"
-             [class.delete-selection]="selectedColor === 'delete'"
-             [style.background-color]="elementModel.styling.backgroundColor"
-             [style.color]="elementModel.styling.fontColor"
-             [style.font-family]="elementModel.styling.font"
-             [style.font-size.px]="elementModel.styling.fontSize"
-             [style.line-height.%]="elementModel.styling.lineHeight"
-             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-             [style.column-count]="elementModel.columnCount"
-             [innerHTML]="savedText || elementModel.text | safeResourceHTML"
-             (pointerdown)="emitStartSelection($event)">
-        </div>
+        [elementModel]="elementModel"
+        (markingDataChanged)="selectedColor=$event.colorName; markingDataChanged.emit($event)">
+      </aspect-text-marking-bar>
+      <div #textContainerRef class="text-container"
+           [class.orange-selection]="selectedColor === 'orange'"
+           [class.yellow-selection]="selectedColor === 'yellow'"
+           [class.turquoise-selection]="selectedColor === 'turquoise'"
+           [class.delete-selection]="selectedColor === 'delete'"
+           [style.background-color]="elementModel.styling.backgroundColor"
+           [style.color]="elementModel.styling.fontColor"
+           [style.font-family]="elementModel.styling.font"
+           [style.font-size.px]="elementModel.styling.fontSize"
+           [style.line-height.%]="elementModel.styling.lineHeight"
+           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+           [style.column-count]="elementModel.columnCount"
+           [innerHTML]="savedText || elementModel.text | safeResourceHTML"
+           (pointerdown)="startTextSelection($event)">
+      </div>
     </div>
   `,
   styles: [
@@ -56,8 +56,8 @@ export class TextComponent extends ElementComponent {
   @Input() elementModel!: TextElement;
   @Input() savedText!: string;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() startSelection = new EventEmitter<PointerEvent>();
-  @Output() applySelection = new EventEmitter<{
+  @Output() textSelectionStart = new EventEmitter<PointerEvent>();
+  @Output() markingDataChanged = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
     color: string,
@@ -68,21 +68,11 @@ export class TextComponent extends ElementComponent {
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
-  emitStartSelection(event: PointerEvent): void {
+  startTextSelection(event: PointerEvent): void {
     if (this.elementModel.highlightableYellow ||
       this.elementModel.highlightableTurquoise ||
       this.elementModel.highlightableOrange) {
-      this.startSelection.emit(event);
+      this.textSelectionStart.emit(event);
     }
-  }
-
-  onSelectionChanged(selection: {
-    active: boolean,
-    mode: 'mark' | 'delete',
-    color: string,
-    colorName: string | undefined
-  }): void {
-    this.selectedColor = selection.colorName;
-    this.applySelection.emit(selection);
   }
 }

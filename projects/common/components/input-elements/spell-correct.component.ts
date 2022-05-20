@@ -31,7 +31,7 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                  [formControl]="elementFormControl"
-                 (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
+                 (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit(input) : null"
                  (focus)="focusChanged.emit(input)"
                  (blur)="focusChanged.emit(null)">
         </mat-form-field>
@@ -68,6 +68,6 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
 export class SpellCorrectComponent extends FormElementComponent {
   @Input() elementModel!: SpellCorrectElement;
   @Output() focusChanged = new EventEmitter<HTMLElement | null>();
-  @Output() onKeyDown = new EventEmitter<HTMLElement>();
+  @Output() hardwareKeyDetected = new EventEmitter<HTMLElement>();
   @ViewChild(MatInput) inputElement!: MatInput;
 }

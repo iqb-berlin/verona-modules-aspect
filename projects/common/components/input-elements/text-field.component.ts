@@ -30,7 +30,7 @@ import { TextFieldElement } from 'common/models/elements/input-elements/text-fie
              [formControl]="elementFormControl"
              [pattern]="$any(elementModel.pattern)"
              [readonly]="elementModel.readOnly"
-             (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
+             (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit(input) : null"
              (focus)="focusChanged.emit(input)"
              (blur)="focusChanged.emit(null)">
       <button *ngIf="elementModel.clearable"
@@ -51,6 +51,6 @@ import { TextFieldElement } from 'common/models/elements/input-elements/text-fie
 })
 export class TextFieldComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldElement;
-  @Output() onKeyDown = new EventEmitter<HTMLElement>();
+  @Output() hardwareKeyDetected = new EventEmitter<HTMLElement>();
   @Output() focusChanged = new EventEmitter<HTMLElement | null>();
 }

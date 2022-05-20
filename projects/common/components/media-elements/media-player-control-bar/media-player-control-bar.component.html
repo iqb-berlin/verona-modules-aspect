@@ -44,7 +44,7 @@
                 [max]="player.duration"
                 [value]="player.currentTime"
                 [disabled]="disabled || !playerProperties.interactiveProgressbar || !active || !dependencyDissolved"
-                (input)="onTimeChange($event)">
+                (input)="setCurrentTime($event)">
     </mat-slider>
   </ng-container>
   <ng-container *ngIf="playerProperties.showRestTime">
@@ -76,7 +76,7 @@
                 step="0.01"
                 max="1"
                 [value]="player.volume"
-                (input)="onVolumeChange($event)">
+                (input)="setVolume($event)">
     </mat-slider>
   </ng-container>
 </div>

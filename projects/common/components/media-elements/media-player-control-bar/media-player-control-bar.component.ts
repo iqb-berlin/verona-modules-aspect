@@ -84,11 +84,11 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     this.player.pause();
   }
 
-  onTimeChange(event: MatSliderChange): void {
+  setCurrentTime(event: MatSliderChange): void {
     this.player.currentTime = event.value ? event.value : 0;
   }
 
-  onVolumeChange(event: MatSliderChange): void {
+  setVolume(event: MatSliderChange): void {
     event.source.value = event.value && event.value > this.playerProperties.minVolume ?
       event.value : this.playerProperties.minVolume;
     this.player.volume = event.source.value;

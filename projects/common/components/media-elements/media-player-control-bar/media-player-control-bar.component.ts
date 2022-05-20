@@ -18,7 +18,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Input() active!: boolean;
   @Input() dependencyDissolved!: boolean;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() onMediaValidStatusChanged = new EventEmitter<string>();
+  @Output() mediaValidStatusChanged = new EventEmitter<string>();
 
   duration!: number;
   currentTime!: number;
@@ -110,7 +110,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private checkValidState(runCounter: number): boolean {
     this.valid = this.playerProperties.minRuns === 0 ? true : runCounter >= this.playerProperties.minRuns;
     if (this.valid) {
-      this.onMediaValidStatusChanged.emit(this.id);
+      this.mediaValidStatusChanged.emit(this.id);
     }
     return this.valid;
   }

@@ -56,6 +56,9 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.unitStateService.reset();
+    this.mediaPlayerService.reset();
+    this.validatorService.reset();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

@@ -1,0 +1,19 @@
+<aspect-player-layout
+  *ngIf="playerConfig && pages?.length"
+  #playerLayout
+  aspectUnitState
+  aspectPlayerState
+  [validPages]="pages | validPages"
+  [currentPlayerPageIndex]="pagesLayout.selectedIndex"
+  [isPlayerRunning]="playerLayout.isPlayerRunning">
+  <aspect-pages-layout
+    #pagesLayout
+    [style.height.%]="100"
+    [pages]="pages"
+    [alwaysVisiblePage]="pages | alwaysVisiblePage"
+    [alwaysVisiblePagePosition]="(pages | alwaysVisiblePage)?.alwaysVisiblePagePosition || 'left'"
+    [scrollPages]="pages | scrollPages"
+    [hasScrollPages]="(pages | scrollPages).length > 0"
+    [scrollPageMode]="playerConfig.pagingMode || 'separate'">
+  </aspect-pages-layout>
+</aspect-player-layout>

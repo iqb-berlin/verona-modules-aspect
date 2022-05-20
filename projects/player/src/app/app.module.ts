@@ -45,6 +45,7 @@ import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';
 import { PageIndexPipe } from './pipes/page-index.pipe';
 import { PlayerStateDirective } from './directives/player-state.directive';
 import { SectionVisibilityHandlingDirective } from './directives/section-visibility-handling.directive';
+import { UnitComponent } from './components/unit/unit.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { SectionVisibilityHandlingDirective } from './directives/section-visibil
     ScrollPagesPipe,
     PageIndexPipe,
     PlayerStateDirective,
-    SectionVisibilityHandlingDirective
+    SectionVisibilityHandlingDirective,
+    UnitComponent
   ],
   imports: [
     BrowserModule,

@@ -1,26 +1,8 @@
 <aspect-unit-menu
   *ngIf="isStandalone"
   class="unit-definition-menu"
-  [scrollPages]="pages | scrollPages"
-  [elementCodes]="unitStateService.elementCodes">
+  [scrollPages]="unit.pages | scrollPages"
+  [elementCodes]="unit.unitStateService.elementCodes">
 </aspect-unit-menu>
-<aspect-player-layout
-  *ngIf="playerConfig && pages?.length"
-  #playerLayout
-  aspectUnitState
-  aspectPlayerState
-  [currentPlayerPageIndex]="pagesLayout.selectedIndex"
-  [validPages]="pages | validPages"
-  [isPlayerRunning]="playerLayout.isPlayerRunning">
-  <aspect-pages-layout
-    #pagesLayout
-    [style.height.%]="100"
-    [pages]="pages"
-    [alwaysVisiblePage]="pages | alwaysVisiblePage"
-    [alwaysVisiblePagePosition]="(pages | alwaysVisiblePage)?.alwaysVisiblePagePosition || 'left'"
-    [scrollPages]="pages | scrollPages"
-    [hasScrollPages]="(pages | scrollPages).length > 0"
-    [scrollPageMode]="playerConfig.pagingMode || 'separate'">
-  </aspect-pages-layout>
-</aspect-player-layout>
-
+<aspect-unit #unit>
+</aspect-unit>

@@ -73,10 +73,6 @@ export class ElementModelElementCodeMappingService {
     }
   };
 
-  reset(): void {
-    this.dragNDropValueObjects = [];
-  }
-
   private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {
     return this.dragNDropValueObjects.find(dropListValue => dropListValue.id === id);
   }

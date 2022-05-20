@@ -48,7 +48,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     this.createForm((this.elementModel as CompoundElement).getChildElements() as InputElement[]);
   }
 
-  onChildrenAdded(children: ElementComponent[]): void {
+  registerCompoundChildren(children: ElementComponent[]): void {
     children.forEach(child => {
       const childModel = child.elementModel as InputElement;
       this.registerAtUnitStateService(

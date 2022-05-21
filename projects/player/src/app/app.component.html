@@ -1,8 +1,8 @@
-<aspect-unit-menu
-  *ngIf="isStandalone"
-  class="unit-definition-menu"
-  [scrollPages]="unit.pages | scrollPages"
-  [elementCodes]="unit.unitStateService.elementCodes">
-</aspect-unit-menu>
 <aspect-unit #unit>
+  <aspect-unit-menu
+    *ngIf="isStandalone"
+    class="unit-definition-menu"
+    [scrollPages]="unit.pages | scrollPages"
+    [elementCodes]="unit.unitStateService.elementCodes">
+  </aspect-unit-menu>
 </aspect-unit>

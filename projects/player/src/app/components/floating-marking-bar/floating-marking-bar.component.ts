@@ -1,20 +1,18 @@
 import {
-  Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
+  Component, EventEmitter, Input, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
-import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
   selector: 'aspect-floating-marking-bar',
   templateUrl: './floating-marking-bar.component.html',
   styleUrls: ['./floating-marking-bar.component.scss']
 })
-export class FloatingMarkingBarComponent implements OnInit, OnChanges {
-  @Input() elementComponent!: ElementComponent;
+export class FloatingMarkingBarComponent implements OnChanges {
+  @Input() elementComponent!: TextComponent;
   @Input() isMarkingBarOpen!: boolean;
-  @Input() position!: { top: number, left: number };
+  @Input() markingBarPosition!: { top: number, left: number };
   @Input() textComponentRect!: DOMRect;
   @Input() textComponentContainerScrollTop!: number;
 
@@ -25,8 +23,7 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
     colorName: string | undefined;
   }>();
 
-  elementModel!: TextElement;
-  positions: ConnectedPosition[] = [{
+  overlayPositions: ConnectedPosition[] = [{
     originX: 'start',
     originY: 'top',
     overlayX: 'start',
@@ -35,37 +32,49 @@ export class FloatingMarkingBarComponent implements OnInit, OnChanges {
     offsetY: 0
   }];
 
-  ngOnInit(): void {
-    this.elementModel = (this.elementComponent as TextComponent).elementModel;
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isMarkingBarOpen && this.isMarkingBarOpen) {
-      this.calculatePosition();
+      this.correctMarkingBarPosition();
     }
   }
 
-  private calculateOffset(): number {
+  private getBarWidth(): number {
     return (1 + [
-      this.elementModel.highlightableYellow,
-      this.elementModel.highlightableTurquoise,
-      this.elementModel.highlightableOrange
+      this.elementComponent.elementModel.highlightableYellow,
+      this.elementComponent.elementModel.highlightableTurquoise,
+      this.elementComponent.elementModel.highlightableOrange
     ].filter(element => element).length) * 60;
   }
 
-  private calculatePosition(): void {
-    const viewConstraint = {
+  private correctMarkingBarPosition(): void {
+    const convertMarkingBarPosition = this.convertMarkingBarPositionToTextComponentRect();
+    const barConstraint = this.getBarConstraint();
+    this.overlayPositions[0].offsetX =
+      barConstraint.left < convertMarkingBarPosition.left ? barConstraint.left : convertMarkingBarPosition.left;
+    this.overlayPositions[0].offsetY = barConstraint.top < convertMarkingBarPosition.top ?
+      barConstraint.top - 50 + this.textComponentContainerScrollTop :
+      convertMarkingBarPosition.top + this.textComponentContainerScrollTop;
+  }
+
+  private getViewConstraint(): { top: number, left: number } {
+    return  {
       top: window.innerHeight - this.textComponentRect.top > this.textComponentRect.height ?
         this.textComponentRect.height :
         window.innerHeight - this.textComponentRect.top,
       left: this.textComponentRect.width
     };
-    const barConstraint = { top: viewConstraint.top - 100, left: viewConstraint.left - this.calculateOffset() };
-    const left = this.position.left - this.textComponentRect.left;
-    const top = this.position.top - this.textComponentRect.top + 15;
-    this.positions[0].offsetX = barConstraint.left < left ? barConstraint.left : left;
-    this.positions[0].offsetY = barConstraint.top < top ?
-      barConstraint.top - 50 + this.textComponentContainerScrollTop :
-      top + this.textComponentContainerScrollTop;
+  }
+
+  private getBarConstraint(): { top: number, left: number } {
+    const viewConstraint = this.getViewConstraint();
+    return { top: viewConstraint.top - 100, left: viewConstraint.left - this.getBarWidth() };
+  }
+
+  private convertMarkingBarPositionToTextComponentRect(): { top: number, left: number } {
+    return {
+      left: this.markingBarPosition.left - this.textComponentRect.left,
+      top: this.markingBarPosition.top - this.textComponentRect.top + 15
+    };
   }
 }

@@ -13,7 +13,7 @@ import { LogService } from 'player/modules/logging/services/log.service';
 })
 export class PlayerStateDirective implements OnInit, OnChanges {
   @Input() validPages!: Record<string, string>;
-  @Input() currentPlayerPageIndex!: number;
+  @Input() currentPageIndex!: number;
   @Input() isPlayerRunning!: BehaviorSubject<boolean>;
 
   private ngUnsubscribe = new Subject<void>();
@@ -29,7 +29,7 @@ export class PlayerStateDirective implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.currentPlayerPageIndex) {
+    if (changes.currentPageIndex) {
       this.sendVopStateChangedNotification();
     }
   }
@@ -58,10 +58,10 @@ export class PlayerStateDirective implements OnInit, OnChanges {
   private sendVopStateChangedNotification(requested:boolean = false): void {
     const playerState: PlayerState = {
       state: this.state,
-      currentPage: this.currentPlayerPageIndex.toString(10),
+      currentPage: this.currentPageIndex.toString(10),
       validPages: this.validPages
     };
-    LogService.warn('player: sendVopStateChangedNotification', playerState);
+    LogService.info('player: sendVopStateChangedNotification', playerState);
     this.veronaPostService.sendVopStateChangedNotification({ playerState }, requested);
   }
 

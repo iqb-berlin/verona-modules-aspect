@@ -16,9 +16,10 @@ describe('PlayerLayoutComponent', () => {
   @Directive({ selector: '[aspectPlayerState]' })
   class PlayerStateStubDirective {
     @Input() validPages!: Record<string, string>;
-    @Input() currentPlayerPageIndex!: number;
+    @Input() currentPageIndex!: number;
     @Input() isPlayerRunning!: BehaviorSubject<boolean>;
   }
+
 
   @Component({ selector: 'aspect-pages-layout', template: '' })
   class PagesLayoutStubComponent {

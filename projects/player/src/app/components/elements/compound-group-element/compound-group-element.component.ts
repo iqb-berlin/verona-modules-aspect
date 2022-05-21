@@ -57,21 +57,28 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
         child,
         this.pageIndex);
       if (childModel.type === 'text-field-simple') {
-        const textFieldSimpleComponent = child as TextFieldSimpleComponent;
-        (child as TextFieldSimpleComponent)
-          .onFocusChanged
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(element => {
-            this.toggleKeyInput(element, textFieldSimpleComponent, childModel);
-          });
-        (child as TextFieldSimpleComponent)
-          .onKeyDown
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(element => {
-            this.detectHardwareKeyboard(element, textFieldSimpleComponent);
-          });
+        this.manageKeyInputToggling(child as TextFieldSimpleComponent, childModel);
+        this.manageHardwareKeyBoardDetection(child as TextFieldSimpleComponent);
       }
     });
+  }
+
+  private manageHardwareKeyBoardDetection(textFieldSimpleComponent: TextFieldSimpleComponent): void {
+    (textFieldSimpleComponent)
+      .hardwareKeyDetected
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(element => {
+        this.detectHardwareKeyboard(element, textFieldSimpleComponent);
+      });
+  }
+
+  private manageKeyInputToggling(textFieldSimpleComponent: TextFieldSimpleComponent, elementModel: InputElement): void {
+    (textFieldSimpleComponent)
+      .focusChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(element => {
+        this.toggleKeyInput(element, textFieldSimpleComponent, elementModel);
+      });
   }
 
   private toggleKeyInput(inputElement: HTMLElement | null,

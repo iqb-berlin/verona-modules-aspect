@@ -1,8 +1,10 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { FormElementComponent } from '../../../../directives/form-element-component.directive';
-import { TextFieldSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import { FormElementComponent } from 'common/directives/form-element-component.directive';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 
 @Component({
   selector: 'aspect-text-field-simple',
@@ -24,9 +26,9 @@ import { TextFieldSimpleElement } from 'common/models/elements/compound-elements
            [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
            [value]="elementModel.value"
-           (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
-           (focus)="onFocusChanged.emit(input)"
-           (blur)="onFocusChanged.emit(null)">
+           (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit(input) : null"
+           (focus)="focusChanged.emit(input)"
+           (blur)="focusChanged.emit(null)">
   `,
   styles: [
     '.clozeChild {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}',
@@ -35,6 +37,6 @@ import { TextFieldSimpleElement } from 'common/models/elements/compound-elements
 })
 export class TextFieldSimpleComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldSimpleElement;
-  @Output() onKeyDown = new EventEmitter<HTMLElement>();
-  @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
+  @Output() hardwareKeyDetected = new EventEmitter<HTMLElement>();
+  @Output() focusChanged = new EventEmitter<HTMLElement | null>();
 }

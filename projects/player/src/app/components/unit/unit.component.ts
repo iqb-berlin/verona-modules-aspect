@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PlayerConfig, VopStartCommand } from 'player/modules/verona/models/verona';
 import { Unit } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
@@ -26,7 +26,8 @@ export class UnitComponent implements OnInit {
               private veronaPostService: VeronaPostService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-              private sanitizationService: SanitizationService) {
+              private sanitizationService: SanitizationService,
+              private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -79,5 +80,6 @@ export class UnitComponent implements OnInit {
   private reset(): void {
     this.pages = [];
     this.playerConfig = null;
+    this.changeDetectorRef.detectChanges();
   }
 }

@@ -59,7 +59,7 @@
   <mat-tab-group
       aspectPageLabel
       [isHidden]="hidePageLabels"
-      (getHeight)="tabHeaderHeight = $event"
+      (heightChanged)="tabHeaderHeight = $event"
       mat-align-tabs="start"
       [(selectedIndex)]="selectedIndex">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">

@@ -10,7 +10,7 @@ import { NativeEventService } from '../services/native-event.service';
 })
 export class PageLabelDirective implements OnInit, AfterViewInit, OnDestroy {
   @Input() isHidden!: boolean;
-  @Output() getHeight = new EventEmitter<number>();
+  @Output() heightChanged = new EventEmitter<number>();
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -22,25 +22,23 @@ export class PageLabelDirective implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     if (this.elementRef.nativeElement.firstChild) {
       if (this.isHidden) {
-        // default usage: hide element!
         this.elementRef.nativeElement.firstChild.style.display = 'none';
-      } else {
-        // otherwise: send its height to handle it
-        this.nativeEventService.resize
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(() => this.emitHeight());
       }
+      this.nativeEventService.resize
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => this.sendHeight());
     }
   }
 
   ngAfterViewInit(): void {
-    if (this.elementRef.nativeElement.firstChild && !this.isHidden) {
-      this.emitHeight();
+    if (this.elementRef.nativeElement.firstChild) {
+      this.sendHeight();
     }
   }
 
-  private emitHeight(): void {
-    this.getHeight.emit(this.elementRef.nativeElement.firstChild.offsetHeight);
+  private sendHeight(): void {
+    const height = this.isHidden ? 0 : this.elementRef.nativeElement.firstChild.offsetHeight;
+    this.heightChanged.emit(height);
   }
 
   ngOnDestroy(): void {

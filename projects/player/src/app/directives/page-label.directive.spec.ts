@@ -9,7 +9,7 @@ describe('PageLabelDirective', () => {
     <div id="container"
          aspectPageLabel
          [isHidden]="headerIsHidden"
-         (getHeight)="headerHeight=$event">
+         (heightChanged)="headerHeight=$event">
       <div id="header"
            [style.height.px]="100">FIRST CHILD</div>
       <div>Content</div>
@@ -32,7 +32,7 @@ describe('PageLabelDirective', () => {
   });
 
 
-  it('should color 1st <h2> background "yellow"', () => {
+  it('should not display page label', () => {
     component.headerIsHidden = true;
     fixture.detectChanges();
     const header = fixture.debugElement.query(By.css('#header'));
@@ -40,7 +40,7 @@ describe('PageLabelDirective', () => {
     expect(component.headerHeight).toBe(0);
   });
 
-  it('should color 1st <h2> background "yellow"', () => {
+  it('should display page label with a height of 100', () => {
     component.headerIsHidden = false;
     fixture.detectChanges();
     const header = fixture.debugElement.query(By.css('#header'));

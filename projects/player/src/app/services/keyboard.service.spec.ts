@@ -3,7 +3,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { KeyboardService } from './keyboard.service';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
-import { TextFieldSimpleComponent } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
+import {
+  TextFieldSimpleComponent
+} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
 
@@ -59,437 +61,438 @@ describe('KeyboardService', () => {
 
   // textField
 
-  it('should toggle keypad to open', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+  it('should toggle keyboard to open', () => {
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldComponent, true);
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to open', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    expect(service.toggle(input, textFieldComponent, true)).toBeTruthy();
-  });
-
-  it('should toggle keypad to close', () => {
+  it('should toggle keyboard to close', () => {
     service.isOpen = true;
-    service.toggle(null, textFieldComponent, true);
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: false };
+    service.toggle(input, textFieldComponent, true);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should toggle keypad to close', () => {
-    service.isOpen = true;
-    expect(service.toggle(null, textFieldComponent, true)).toBeFalse();
-  });
 
-  it('should not toggle keypad to open', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+  it('should not toggle keyboard to open', () => {
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldComponent, false);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should not toggle keypad to open', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    expect(service.toggle(input, textFieldComponent, false)).toBeFalse();
-  });
 
   it('should set the inputElement of the service', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldComponent, true);
     service.enterKey('n');
-    expect(service.inputElement).toEqual(input);
+    expect(service.inputElement).toEqual(input.inputElement);
   });
 
   it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldComponent, true);
     service.enterKey('n');
     expect(service.inputElement.value).toEqual('n');
   });
 
   it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, textFieldComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('n!');
   });
 
+
   it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 1);
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 1);
     service.toggle(input, textFieldComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('!');
   });
 
   it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, textFieldComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 0);
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 0);
     service.toggle(input, textFieldComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, textFieldComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+  it('deleterCharacters with parameter false should delete all characters', () => {
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, textFieldComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('alternativeKeyboardShowFrench should be set to "false"', () => {
-    const input = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldComponent, true);
     expect(service.alternativeKeyboardShowFrench).toBeFalse();
   });
 
-
   // textFieldSimple
 
-  it('should toggle keypad to open', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+  it('should toggle keyboard to open', () => {
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, true);
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to open', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    expect(service.toggle(input, textFieldSimpleComponent, true)).toBeTruthy();
-  });
 
-  it('should toggle keypad to close', () => {
+  it('should toggle keyboard to close', () => {
     service.isOpen = true;
-    service.toggle(null, textFieldSimpleComponent, true);
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: false };
+    service.toggle(input, textFieldSimpleComponent, true);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should toggle keypad to close', () => {
-    service.isOpen = true;
-    expect(service.toggle(null, textFieldSimpleComponent, true)).toBeFalse();
-  });
 
-  it('should not toggle keypad to open', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+  it('should not toggle keyboard to open', () => {
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, false);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should not toggle keypad to open', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    expect(service.toggle(input, textFieldSimpleComponent, false)).toBeFalse();
-  });
 
   it('should set the inputElement of the service', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, true);
     service.enterKey('n');
-    expect(service.inputElement).toEqual(input);
+    expect(service.inputElement).toEqual(input.inputElement);
   });
 
   it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, true);
     service.enterKey('n');
     expect(service.inputElement.value).toEqual('n');
   });
 
   it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, textFieldSimpleComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('n!');
   });
 
   it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 1);
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 1);
     service.toggle(input, textFieldSimpleComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('!');
   });
 
   it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, textFieldSimpleComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 0);
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 0);
     service.toggle(input, textFieldSimpleComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, textFieldSimpleComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+  it('deleterCharacters with parameter false should delete all characters', () => {
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, textFieldSimpleComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('alternativeKeyboardShowFrench should be set to "false"', () => {
-    const input = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, true);
     expect(service.alternativeKeyboardShowFrench).toBeFalse();
   });
 
   // textArea
 
-  it('should toggle keypad to open', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+  it('should toggle keyboard to open', () => {
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textAreaComponent, true);
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to open', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    expect(service.toggle(input, textAreaComponent, true)).toBeTruthy();
-  });
-
-  it('should toggle keypad to close', () => {
+  it('should toggle keyboard to close', () => {
     service.isOpen = true;
-    service.toggle(null, textAreaComponent, true);
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: false };
+    service.toggle(input, textAreaComponent, true);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should toggle keypad to close', () => {
-    service.isOpen = true;
-    expect( service.toggle(null, textAreaComponent, true)).toBeFalse();
-  });
 
-  it('should not toggle keypad to open', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+  it('should not toggle keyboard to open', () => {
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textAreaComponent, false);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should not toggle keypad to open', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    expect(service.toggle(input, textAreaComponent, false)).toBeFalse();
-  });
 
   it('should set the inputElement of the service', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    service.toggle(input, textFieldComponent, true);
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
+    service.toggle(input, textAreaComponent, true);
     service.enterKey('n');
-    expect(service.inputElement).toEqual(input);
+    expect(service.inputElement).toEqual(input.inputElement);
   });
 
   it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textAreaComponent, true);
     service.enterKey('n');
     expect(service.inputElement.value).toEqual('n');
   });
 
   it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, textAreaComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('n!');
   });
 
   it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 1);
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 1);
     service.toggle(input, textAreaComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('!');
   });
 
   it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, textAreaComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 0);
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 0);
     service.toggle(input, textAreaComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, textAreaComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+  it('deleterCharacters with parameter false should delete all characters', () => {
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, textAreaComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('alternativeKeyboardShowFrench should be set to "false"', () => {
-    const input = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, textAreaComponent, true);
     expect(service.alternativeKeyboardShowFrench).toBeFalse();
   });
 
   // spellCorrect
 
-  it('should toggle keypad to open', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    service.toggle(input, textFieldComponent, true);
+  it('should toggle keyboard to open', () => {
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    service.toggle(input, spellCorrectComponent, true);
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to open', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    expect( service.toggle(input, textFieldComponent, true)).toBeTruthy();
-  });
-
-  it('should toggle keypad to close', () => {
+  it('should toggle keyboard to close', () => {
     service.isOpen = true;
-    service.toggle(null, spellCorrectComponent, true);
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: false };
+    service.toggle(input, spellCorrectComponent, true);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should toggle keypad to close', () => {
-    service.isOpen = true;
-    expect(service.toggle(null, spellCorrectComponent, true)).toBeFalse();
-  });
 
-  it('should not toggle keypad to open', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+  it('should not toggle keyboard to open', () => {
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, spellCorrectComponent, false);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should not toggle keypad to open', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    expect( service.toggle(input, spellCorrectComponent, false)).toBeFalse();
-  });
 
   it('should set the inputElement of the service', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    service.toggle(input, textFieldComponent, true);
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    service.toggle(input, spellCorrectComponent, true);
     service.enterKey('n');
-    expect(service.inputElement).toEqual(input);
+    expect(service.inputElement).toEqual(input.inputElement);
   });
 
   it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, spellCorrectComponent, true);
     service.enterKey('n');
     expect(service.inputElement.value).toEqual('n');
   });
 
   it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, spellCorrectComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('n!');
   });
 
   it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 1);
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 1);
     service.toggle(input, spellCorrectComponent, true);
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('!');
   });
 
   it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(1, 1);
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(1, 1);
     service.toggle(input, spellCorrectComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'n';
-    input.setSelectionRange(0, 0);
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'n';
+    element.setSelectionRange(0, 0);
     service.toggle(input, spellCorrectComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, spellCorrectComponent, true);
-    service.deleterCharacters(true);
+    service.deleteCharacters(true);
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    input.value = 'all values';
-    input.setSelectionRange(0, input.value.length);
+  it('deleterCharacters with parameter false should delete all characters', () => {
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
+    element.value = 'all values';
+    element.setSelectionRange(0, element.value.length);
     service.toggle(input, spellCorrectComponent, true);
-    service.deleterCharacters(false);
+    service.deleteCharacters(false);
     expect(service.inputElement.value).toEqual('');
   });
 
   it('alternativeKeyboardShowFrench should be set to "false"', () => {
-    const input = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
+    const input = { inputElement: element, focused: true };
     service.toggle(input, spellCorrectComponent, true);
     expect(service.alternativeKeyboardShowFrench).toBeFalse();
   });

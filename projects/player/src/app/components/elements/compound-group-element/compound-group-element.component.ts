@@ -67,35 +67,36 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     (textFieldSimpleComponent)
       .hardwareKeyDetected
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(element => {
-        this.detectHardwareKeyboard(element, textFieldSimpleComponent);
+      .subscribe(() => {
+        this.detectHardwareKeyboard();
       });
   }
 
   private manageKeyInputToggling(textFieldSimpleComponent: TextFieldSimpleComponent, elementModel: InputElement): void {
     (textFieldSimpleComponent)
-      .focusChanged
+      .textInputExpected
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(element => {
-        this.toggleKeyInput(element, textFieldSimpleComponent, elementModel);
+      .subscribe(focusedTextInput => {
+        this.toggleKeyInput(focusedTextInput, textFieldSimpleComponent, elementModel);
       });
   }
 
-  private toggleKeyInput(inputElement: HTMLElement | null,
+  private toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                          elementComponent: TextFieldSimpleComponent,
                          elementModel: InputElement): void {
-    if (elementModel.inputAssistance) {
-      this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
+    if (elementModel.inputAssistancePreset) {
+      this.keypadService.toggle(focusedTextInput, elementComponent);
+      this.isKeypadOpen = this.keypadService.isOpen;
     }
     if (elementModel.showSoftwareKeyboard && !elementModel.readOnly) {
-      this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
+      this.keyboardService
+        .toggle(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
     }
   }
 
-  private detectHardwareKeyboard(inputElement: HTMLElement | null,
-                                 elementComponent: TextFieldSimpleComponent): void {
+  private detectHardwareKeyboard(): void {
     this.deviceService.hasHardwareKeyboard = true;
-    this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
+    this.keyboardService.close();
   }
 }
 

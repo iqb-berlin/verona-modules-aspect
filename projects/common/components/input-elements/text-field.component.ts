@@ -30,9 +30,9 @@ import { TextFieldElement } from 'common/models/elements/input-elements/text-fie
              [formControl]="elementFormControl"
              [pattern]="$any(elementModel.pattern)"
              [readonly]="elementModel.readOnly"
-             (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit(input) : null"
-             (focus)="focusChanged.emit(input)"
-             (blur)="focusChanged.emit(null)">
+             (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
+             (focus)="textInputExpected.emit({ inputElement: input, focused: true })"
+             (blur)="textInputExpected.emit({ inputElement: input, focused: false })">
       <button *ngIf="elementModel.clearable"
               type="button"
               matSuffix mat-icon-button aria-label="Clear"
@@ -51,6 +51,6 @@ import { TextFieldElement } from 'common/models/elements/input-elements/text-fie
 })
 export class TextFieldComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldElement;
-  @Output() hardwareKeyDetected = new EventEmitter<HTMLElement>();
-  @Output() focusChanged = new EventEmitter<HTMLElement | null>();
+  @Output() hardwareKeyDetected = new EventEmitter();
+  @Output() textInputExpected = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
 }

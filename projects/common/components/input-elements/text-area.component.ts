@@ -34,9 +34,9 @@ import { TextAreaElement } from 'common/models/elements/input-elements/text-area
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
-                (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit(input) : null"
-                (focus)="focusChanged.emit(input)"
-                (blur)="focusChanged.emit(null)">
+                (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
+                (focus)="textInputExpected.emit({ inputElement: input, focused: true })"
+                (blur)="textInputExpected.emit({ inputElement: input, focused: false })">
       </textarea>
       <mat-error *ngIf="elementFormControl.errors">
         {{elementFormControl.errors | errorTransform: elementModel}}
@@ -50,6 +50,6 @@ import { TextAreaElement } from 'common/models/elements/input-elements/text-area
 })
 export class TextAreaComponent extends FormElementComponent {
   @Input() elementModel!: TextAreaElement;
-  @Output() focusChanged = new EventEmitter<HTMLElement | null>();
-  @Output() hardwareKeyDetected = new EventEmitter<HTMLElement>();
+  @Output() textInputExpected = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
+  @Output() hardwareKeyDetected = new EventEmitter();
 }

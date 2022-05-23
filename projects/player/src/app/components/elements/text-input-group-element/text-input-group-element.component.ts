@@ -61,19 +61,21 @@ export class TextInputGroupElementComponent extends ElementFormGroupDirective im
     );
   }
 
-  toggleKeyInput(inputElement: HTMLElement | null,
+  toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                  elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
-    if (this.elementModel.inputAssistance) {
-      this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
+    console.log('open---------------------', this.elementModel.inputAssistance);
+    if (this.elementModel.inputAssistancePreset) {
+      this.keypadService.toggle(focusedTextInput, elementComponent);
+      this.isKeypadOpen = this.keypadService.isOpen;
     }
     if (this.elementModel.showSoftwareKeyboard && !this.elementModel.readOnly) {
-      this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
+      this.keyboardService
+        .toggle(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
     }
   }
 
-  detectHardwareKeyboard(inputElement: HTMLElement | null,
-                         elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
+  detectHardwareKeyboard(): void {
     this.deviceService.hasHardwareKeyboard = true;
-    this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
+    this.keyboardService.close();
   }
 }

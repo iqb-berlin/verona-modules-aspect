@@ -1,10 +1,10 @@
-import { UIElement } from 'common/models/elements/element';
+import { UIElement, UIElementType } from 'common/models/elements/element';
 
 export abstract class UnitUtils {
-  static findUIElements(value: any | unknown[], type?: string): UIElement[] {
+  static findUIElements(value: any | unknown[], type?: UIElementType): UIElement[] {
     const elements: UIElement[] = [];
     if (value && typeof value === 'object') {
-      if (type ? value.type === type : value.type) {
+      if (type ? value.type === type : value instanceof UIElement) {
         elements.push(value);
       }
       if (Array.isArray(value)) {

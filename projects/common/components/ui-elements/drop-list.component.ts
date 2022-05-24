@@ -51,7 +51,7 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
         </ng-container>
         <!--Leave template within the dom to ensure dragNdrop-->
         <ng-template #dropObject let-value>
-          <div class="item text-item" *ngIf="!value.imgSrcValue" cdkDrag
+          <div class="item text-item" *ngIf="value && !value.imgSrcValue" cdkDrag
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                       'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
                [style.background-color]="elementModel.styling.itemBackgroundColor"
@@ -66,7 +66,7 @@ import { DragNDropValueObject, DropListElement } from '../../interfaces/elements
             </div>
             {{value.stringValue}}
           </div>
-          <img *ngIf="value.imgSrcValue"
+          <img *ngIf="value && value.imgSrcValue"
                [src]="value.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
                [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
                class="item"

@@ -16,12 +16,16 @@ import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.js
 import * as dragNDropValues_01_130 from 'test-data/values/dragNDropValues_01_130.json';
 import * as dragNDropValues_02_130 from 'test-data/values/dragNDropValues_02_130.json';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { DropListSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
+import {
+  DropListSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { TextElement } from 'common/models/elements/text/text';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
-import { TextFieldSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
@@ -78,7 +82,7 @@ describe('ElementModelElementCodeMappingService', () => {
       .toEqual(true);
   });
 
-  it('should map the value of a iamge elementModel to its elementCode value', () => {
+  it('should map the value of a image elementModel to its elementCode value', () => {
     expect(service.mapToElementCodeValue(false, 'audio'))
       .toEqual(false);
   });
@@ -90,11 +94,22 @@ describe('ElementModelElementCodeMappingService', () => {
     }
   });
 
+  it('should map the value null of a radio elementModel to null', () => {
+    expect(service.mapToElementCodeValue(null, 'radio'))
+      .toBe(null);
+  });
+
+
   it('should map the value of a radio-group-images elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
       expect(service.mapToElementCodeValue(i, 'radio-group-images'))
         .toEqual(i + 1);
     }
+  });
+
+  it('should map the value null of a radio-group-images elementModel to null', () => {
+    expect(service.mapToElementCodeValue(null, 'radio'))
+      .toBe(null);
   });
 
   it('should map the value of a dropdown elementModel to its elementCode value', () => {
@@ -104,6 +119,11 @@ describe('ElementModelElementCodeMappingService', () => {
     }
   });
 
+  it('should map the value null of a dropdown elementModel to null', () => {
+    expect(service.mapToElementCodeValue(null, 'radio'))
+      .toBe(null);
+  });
+
   it('should map the value of a toggle-button elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
       expect(service.mapToElementCodeValue(i, 'toggle-button'))
@@ -111,11 +131,21 @@ describe('ElementModelElementCodeMappingService', () => {
     }
   });
 
+  it('should map the value null of a toggle-button elementModel to null', () => {
+    expect(service.mapToElementCodeValue(null, 'radio'))
+      .toBe(null);
+  });
+
   it('should map the value of a likert-row elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
       expect(service.mapToElementCodeValue(i, 'likert-row'))
         .toEqual(i + 1);
     }
+  });
+
+  it('should map the value null of a likert-row  elementModel to null', () => {
+    expect(service.mapToElementCodeValue(null, 'radio'))
+      .toBe(null);
   });
 
   it('should map the value of a text-field elementModel to its elementCode value', () => {

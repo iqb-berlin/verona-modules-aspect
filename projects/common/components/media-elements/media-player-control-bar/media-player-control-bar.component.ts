@@ -20,19 +20,19 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() mediaValidStatusChanged = new EventEmitter<string>();
 
-  duration!: number;
-  currentTime!: number;
-  currentRestTime!: number;
-  started!: boolean;
-  playing!: boolean;
-  pausing!: boolean;
-  runCounter!: number;
-  lastVolume!: number;
+  duration: number = 0;
+  currentTime: number = 0;
+  currentRestTime: number = 0;
+  started: boolean = false;
+  playing: boolean = false;
+  pausing: boolean = false;
+  runCounter: number = 0;
+  lastVolume: number = 0;
   restTimeMode: boolean = true;
-  showHint!: boolean;
-  disabled!: boolean;
-  playbackTime!: number;
-  valid!: boolean;
+  showHint: boolean = false;
+  disabled: boolean = true;
+  playbackTime: number = 0;
+  valid: boolean = false;
 
   ngOnInit(): void {
     this.playbackTime = this.savedPlaybackTime || this.playerProperties.playbackTime;

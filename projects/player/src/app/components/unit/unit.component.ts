@@ -42,6 +42,7 @@ export class UnitComponent implements OnInit {
         const unitDefinition: Unit = new Unit(
           this.sanitizationService.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
         );
+        LogService.info('player: unitDefinition', unitDefinition);
         this.configurePlayerAndPages(message, unitDefinition);
         this.configureServices(message);
       } else {

@@ -27,20 +27,6 @@ describe('UnitStateService', () => {
     expect(service.getElementCodeById('element_3')).toBeUndefined();
   });
 
-  it('should verify that element is registered ', () => {
-    const element1: ElementCode =  { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: ElementCode =  { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
-    service.elementCodes = [ element1, element2 ];
-    expect(service.isRegistered('element_1')).toBeTruthy();
-  });
-
-  it('should verify that element is registered ', () => {
-    const element1: ElementCode =  { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: ElementCode =  { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
-    service.elementCodes = [ element1, element2 ];
-    expect(service.isRegistered('element_3')).toBeFalse();
-  });
-
   it('should register an element', () => {
     service.elementCodes = [];
     const element = document.createElement('div');

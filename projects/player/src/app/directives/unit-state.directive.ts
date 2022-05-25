@@ -36,8 +36,11 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   private get presentationProgress(): Progress {
-    const mediaStatus = this.mediaPlayerService.mediaStatus;
-    return mediaStatus === this.unitStateService.presentedPagesProgress ? mediaStatus : 'some';
+    if (this.mediaPlayerService.areMediaElementsRegistered()) {
+      const mediaStatus = this.mediaPlayerService.mediaStatus;
+      return mediaStatus === this.unitStateService.presentedPagesProgress ? mediaStatus : 'some';
+    }
+    return this.unitStateService.presentedPagesProgress;
   }
 
   private sendVopStateChangedNotification(): void {

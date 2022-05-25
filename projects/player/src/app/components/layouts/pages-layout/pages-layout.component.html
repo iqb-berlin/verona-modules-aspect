@@ -70,7 +70,7 @@
             [style.padding.px]="page.margin"
             [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
           <aspect-page
-              [pageIndex]="i"
+              [pageIndex]="pages | pageIndex: page"
               [isLastPage]="last"
               [pagesContainer]="pagesContainer"
               [page]="page">
@@ -96,7 +96,7 @@
         {{'pageIndication' | translate: {index: i + 1} }}
       </div>
       <aspect-page
-          [pageIndex]="i"
+          [pageIndex]="pages | pageIndex: page"
           [pagesContainer]="pagesContainer"
           [page]="page"
           [isLastPage]="last"

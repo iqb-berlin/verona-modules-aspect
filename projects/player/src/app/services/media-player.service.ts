@@ -18,6 +18,10 @@ export class MediaPlayerService {
     return this.mediaElements.length ? 'none' : 'complete';
   }
 
+  areMediaElementsRegistered(): boolean {
+    return !!this.mediaElements.length;
+  }
+
   registerMediaElement(id: string, isValid: boolean): void {
     this.mediaElements.push({ id, isValid });
   }

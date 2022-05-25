@@ -74,12 +74,12 @@ export class UnitService {
   }
 
   unitUpdated(): void {
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   addSection(page: Page): void {
     page.sections.push(new Section());
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   deleteSection(section: Section): void {
@@ -87,7 +87,7 @@ export class UnitService {
       this.unit.pages[this.selectionService.selectedPageIndex].sections.indexOf(section),
       1
     );
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
@@ -96,7 +96,7 @@ export class UnitService {
       elements: section.elements.map(element => this.duplicateElement(element) as PositionedUIElement)
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
@@ -106,7 +106,7 @@ export class UnitService {
     } else if (direction === 'down') {
       this.selectionService.selectedPageSectionIndex += 1;
     }
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   addElementToSectionByIndex(elementType: UIElementType,
@@ -120,7 +120,9 @@ export class UnitService {
                             coordinates?: { x: number, y: number }): Promise<void> {
     console.log('addElementToSection', elementType);
     let newElement: PositionedUIElement;
+    // TODO: Remove switch use parameter for loadFile
     if (['audio', 'video', 'image'].includes(elementType)) {
+      // TODO: loadFile before addElementToSection
       let mediaSrc = '';
       switch (elementType) {
         case 'image':
@@ -134,6 +136,7 @@ export class UnitService {
           break;
         // no default
       }
+      // TODO: ElementFactory.createElement is used 2 times
       newElement = ElementFactory.createElement(
         elementType, {
           id: this.idService.getNewID(elementType),
@@ -161,7 +164,7 @@ export class UnitService {
       newElement.position.yPosition = coordinates.y;
     }
     section.elements.push(newElement);
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   deleteElements(elements: UIElement[]): void {
@@ -169,7 +172,7 @@ export class UnitService {
     this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
       section.elements = section.elements.filter(element => !elements.includes(element));
     });
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   private freeUpIds(elements: UIElement[]): void {
@@ -190,7 +193,7 @@ export class UnitService {
       newSection.elements.push(element as PositionedUIElement);
       (element as PositionedUIElement).position.dynamicPositioning = newSection.dynamicPositioning;
     });
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   duplicateElementsInSection(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
@@ -198,7 +201,7 @@ export class UnitService {
     elements.forEach((element: UIElement) => {
       section.elements.push(this.duplicateElement(element) as PositionedUIElement);
     });
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   private duplicateElement(element: UIElement): UIElement {
@@ -245,7 +248,7 @@ export class UnitService {
       section.setProperty(property, value);
     }
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   updateElementsProperty(elements: UIElement[],
@@ -277,7 +280,7 @@ export class UnitService {
       }
     });
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   updateSelectedElementsPositionProperty(property: string, value: any): void {
@@ -289,7 +292,7 @@ export class UnitService {
       element.setPositionProperty(property, value);
     });
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   updateSelectedElementsStyleProperty(property: string, value: any): void {
@@ -298,7 +301,7 @@ export class UnitService {
       element.setStyleProperty(property, value);
     });
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   updateElementsPlayerProperty(elements: UIElement[], property: string, value: any): void {
@@ -306,7 +309,7 @@ export class UnitService {
       element.setPlayerProperty(property, value);
     });
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
 
   createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
@@ -354,8 +357,31 @@ export class UnitService {
       // no default
     }
     this.elementPropertyUpdated.next();
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    this.sendChangedNotifications();
   }
+
+  sendChangedNotifications(): void {
+    // stattdessen event emitten?
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+
+    // relevante schemer Data ermitteln
+    const schemerData = UnitUtils.findUIElements(this.unit.pages)
+      .filter(element => element.getSchemerData)
+      .map( element  => element.getSchemerData(this.getSchemerOption(element.type)))
+      .filter(data => data.values.length > 0); // schemerData mit leeren values sind nicht von interesse
+    console.log(schemerData);
+  }
+
+  // Values für Schemer elemente setzen? Sind nur Droplists dynamisch?
+  private getSchemerOption(type: UIElementType): any {
+    if (type === 'drop-list-simple' || type === 'drop-list') {
+      return UnitUtils
+        .findUIElements(this.unit.pages, 'drop-list')
+        .concat(UnitUtils.findUIElements(this.unit.pages, 'drop-list-simple'));
+    }
+    return null;
+  }
+
 
   saveUnit(): void {
     FileService.saveUnitToFile(JSON.stringify(this.unit));
@@ -365,6 +391,7 @@ export class UnitService {
     this.loadUnitDefinition(await FileService.loadFile(['.json']));
   }
 
+  // TODO: showDefaultEditDialog is method in unitService?
   showDefaultEditDialog(element: UIElement): void {
     switch (element.type) {
       case 'button':
@@ -440,6 +467,7 @@ export class UnitService {
 
   /* Used by props panel to show available dropLists to connect */
   getDropListElementIDs(): string[] {
+    // TODO: DropListSinple?
     return this.unit.pages
       .map(page => page.sections
         .map(section => section.elements

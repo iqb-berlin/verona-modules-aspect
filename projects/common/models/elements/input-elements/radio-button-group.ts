@@ -1,5 +1,11 @@
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputElement, PositionedUIElement, PositionProperties } from 'common/models/elements/element';
+import {
+  BasicStyles,
+  InputElement,
+  PositionedUIElement,
+  PositionProperties,
+  SchemerData, SchemerValue
+} from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
@@ -24,6 +30,23 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
         ...element.styling
       })
     };
+  }
+
+  getSchemerData(options: any): SchemerData {
+    return {
+      id: this.id,
+      type: 'integer',
+      format: 'integer',
+      multiple: false,
+      nullable: true,
+      values: this.getSchemerValues(),
+      valuesComplete: true
+    };
+  }
+
+  private getSchemerValues(): SchemerValue[] {
+    return this.richTextOptions
+      .map((option, index) => ({ value: (index + 1).toString(), label: option }));
   }
 
   getComponentFactory(): Type<ElementComponent> {

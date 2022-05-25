@@ -3,7 +3,7 @@ import {
   BasicStyles,
   InputElement,
   PositionedUIElement,
-  PositionProperties,
+  PositionProperties, SchemerData, SchemerValue,
   TextImageLabel
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
@@ -22,6 +22,22 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
     this.styling = {
       ...ElementFactory.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
     };
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'integer',
+      format: '',
+      multiple: false,
+      nullable: true,
+      values: [], //?
+      valuesComplete: true
+    };
+  }
+
+  private getSchemerValues(): SchemerValue[] {
+    return [];// this.columns.map((option, index) => ({ value: (index + 1).toString(), label: option }));
   }
 
   getComponentFactory(): Type<ElementComponent> {

@@ -62,7 +62,10 @@ export abstract class InputElement extends UIElement {
     super(element);
     Object.assign(this, element);
   }
+
+  //abstract getSchemerData(options: any): SchemerData;
 }
+
 
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
@@ -75,6 +78,23 @@ export abstract class PlayerElement extends UIElement {
     super(element);
     this.player = ElementFactory.initPlayerProps(element.player);
   }
+
+  // abstract getSchemerData(options: any): SchemerData;
+}
+
+export interface SchemerValue {
+  value: string;
+  label: string;
+}
+
+export interface SchemerData {
+  id: string;
+  type: string;
+  format?: string;
+  multiple?: boolean;
+  nullable?: boolean;
+  values?: SchemerValue[];
+  valuesComplete?: boolean;
 }
 
 export interface PositionedUIElement extends UIElement {

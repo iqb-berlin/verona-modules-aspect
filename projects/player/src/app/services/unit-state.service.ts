@@ -2,11 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import {
-  Progress,
-  StatusChangeElement,
-  ElementCode,
-  ElementCodeStatus,
-  ElementCodeStatusValue
+  Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue
 } from 'player/modules/verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
 import { LogService } from 'player/modules/logging/services/log.service';
@@ -60,8 +56,7 @@ export class UnitStateService {
                   domElement: Element,
                   pageIndex: number): void {
     this.elementIdPageIndexMap[elementId] = pageIndex;
-    this.addElementCode(elementId, elementValue);
-    this.addIntersectionDetection(elementId, domElement);
+    this.addElementCode(elementId, elementValue, domElement);
   }
 
   changeElementCodeValue(elementValue: ValueChangeElement): void {
@@ -79,6 +74,7 @@ export class UnitStateService {
     this.elementCodes = [];
     this.presentedPages = [];
     this.elementIdPageIndexMap = {};
+    this.intersectionDetector = new IntersectionDetector(this.document, '0px 0px 0px 0px');
   }
 
   private addIntersectionDetection(elementId: string, domElement: Element): void {
@@ -109,16 +105,21 @@ export class UnitStateService {
   private setElementCodeStatus(id: string, status: ElementCodeStatus): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
-      if (ElementCodeStatusValue[status] >= ElementCodeStatusValue[unitStateElementCode.status]) {
+      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[unitStateElementCode.status]) {
         unitStateElementCode.status = status;
         this._elementCodeChanged.next(unitStateElementCode);
-        this.checkPresentedPageStatus(id);
+        this.checkPresentedPageStatus(this.elementIdPageIndexMap[id], true);
       }
     }
   }
 
-  private checkPresentedPageStatus(id: string): void {
-    const pageIndex = this.elementIdPageIndexMap[id];
+  private buildPresentedPages(): void {
+    const uniqPages = [...new Set( Object.values(this.elementIdPageIndexMap))];
+    uniqPages.forEach((pageIndex, index) => this
+      .checkPresentedPageStatus(pageIndex, index === uniqPages.length - 1));
+  }
+
+  private checkPresentedPageStatus(pageIndex: number, emitEvent: boolean): void {
     if (this.presentedPages.indexOf(pageIndex) === -1) {
       const notDisplayedElements = Object.entries(this.elementIdPageIndexMap)
         .filter((map: [string, number]): boolean => map[1] === pageIndex)
@@ -128,24 +129,30 @@ export class UnitStateService {
           ElementCodeStatusValue.DISPLAYED);
       if (notDisplayedElements.length === 0) {
         this.presentedPages.push(pageIndex);
-        this._presentedPageAdded.next(pageIndex);
+        if (emitEvent) {
+          this._presentedPageAdded.next(pageIndex);
+        }
       }
     } else {
       LogService.warn(`player: page ${pageIndex} is already presented`);
     }
   }
 
-  private addElementCode(id: string, value: InputElementValue): void {
+  private addElementCode(id: string, value: InputElementValue, domElement: Element): void {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
-      // when reloading a unit elementCodes are already pushed
+      // when reloading a unit, elementCodes are already pushed
       unitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.elementCodes.push(unitStateElementCode);
+      this._elementCodeChanged.next(unitStateElementCode);
+    } else {
+      // if all elements are registered, we can rebuild the presentedPages array
+      if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
+        this.buildPresentedPages();
+      }
     }
-    this._elementCodeChanged.next(unitStateElementCode);
-    // check pages status only if all reloaded elements have their pageIndex
-    if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
-      this.checkPresentedPageStatus(id);
+    if (unitStateElementCode.status === 'NOT_REACHED') {
+      this.addIntersectionDetection(id, domElement);
     }
   }
 }

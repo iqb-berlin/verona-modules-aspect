@@ -367,8 +367,11 @@ export class UnitService {
     // relevante schemer Data ermitteln
     const schemerData = UnitUtils.findUIElements(this.unit.pages)
       .filter(element => element.getSchemerData)
-      .map( element  => element.getSchemerData(this.getSchemerOption(element.type)))
-      .filter(data => data.values.length > 0); // schemerData mit leeren values sind nicht von interesse
+      .map(element  => this.getSchemerOption(element.type) ?
+        element.getSchemerData(this.getSchemerOption(element.type)) :
+        element.getSchemerData()
+      )
+      .filter(data => data.values.length || !data.valuesComplete); // schemerData mit leeren values sind nicht von interesse
     console.log(schemerData);
   }
 

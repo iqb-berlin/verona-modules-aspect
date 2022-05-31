@@ -32,13 +32,13 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     };
   }
 
-  getSchemerData(options: any): SchemerData {
+  getSchemerData(): SchemerData {
     return {
       id: this.id,
       type: 'integer',
-      format: 'integer',
+      format: '',
       multiple: false,
-      nullable: true,
+      nullable: !this.value && this.value === 0,
       values: this.getSchemerValues(),
       valuesComplete: true
     };

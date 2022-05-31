@@ -63,7 +63,7 @@ export abstract class InputElement extends UIElement {
     Object.assign(this, element);
   }
 
-  //abstract getSchemerData(options: any): SchemerData;
+  abstract getSchemerData(options?: unknown): SchemerData;
 }
 
 

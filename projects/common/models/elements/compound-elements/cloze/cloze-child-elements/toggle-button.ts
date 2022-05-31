@@ -1,5 +1,5 @@
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputElement } from 'common/models/elements/element';
+import { BasicStyles, InputElement, SchemerData, SchemerValue } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
@@ -27,6 +27,23 @@ export class ToggleButtonElement extends InputElement {
         ...element.styling
       })
     };
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'integer',
+      format: '',
+      multiple: false,
+      nullable: !this.value && this.value === 0,
+      values: this.getSchemerValues(),
+      valuesComplete: true
+    };
+  }
+
+  private getSchemerValues(): SchemerValue[] {
+    return this.richTextOptions
+      .map((option, index) => ({ value: (index + 1).toString(), label: option }));
   }
 
   getComponentFactory(): Type<ElementComponent> {

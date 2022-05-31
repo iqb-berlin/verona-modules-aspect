@@ -4,7 +4,7 @@ import {
   InputAssistancePreset,
   InputElement,
   PositionedUIElement,
-  PositionProperties
+  PositionProperties, SchemerData, SchemerValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -26,6 +26,22 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
     this.styling = {
       ...ElementFactory.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
     };
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'string',
+      format: '',
+      multiple: false,
+      nullable: true,
+      values: this.getSchemerValues(),
+      valuesComplete: false
+    };
+  }
+
+  private getSchemerValues(): SchemerValue[] {
+    return [];
   }
 
   getComponentFactory(): Type<ElementComponent> {

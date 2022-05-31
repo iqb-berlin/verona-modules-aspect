@@ -30,14 +30,15 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
       type: 'integer',
       format: '',
       multiple: false,
-      nullable: true,
-      values: [], //?
+      nullable: !this.value && this.value === 0,
+      values: this.getSchemerValues(),
       valuesComplete: true
     };
   }
 
   private getSchemerValues(): SchemerValue[] {
-    return [];// this.columns.map((option, index) => ({ value: (index + 1).toString(), label: option }));
+    return this.columns
+      .map((option, index) => ({ value: (index + 1).toString(), label: option.text })); //TODO iMAGE
   }
 
   getComponentFactory(): Type<ElementComponent> {

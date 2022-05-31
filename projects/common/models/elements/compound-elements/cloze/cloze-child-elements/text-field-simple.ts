@@ -1,5 +1,11 @@
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputAssistancePreset, InputElement } from 'common/models/elements/element';
+import {
+  BasicStyles,
+  InputAssistancePreset,
+  InputElement,
+  SchemerData,
+  SchemerValue
+} from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
@@ -33,6 +39,23 @@ export class TextFieldSimpleElement extends InputElement {
       ...ElementFactory.initStylingProps({ lineHeight: 135, backgroundColor: 'transparent', ...element.styling })
     };
   }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'string',
+      format: '',
+      multiple: false,
+      nullable: !this.value && this.value === '',
+      values: this.getSchemerValues(),
+      valuesComplete: false
+    };
+  }
+
+  private getSchemerValues(): SchemerValue[] {
+    return [];
+  }
+
 
   getComponentFactory(): Type<ElementComponent> {
     return TextFieldSimpleComponent;

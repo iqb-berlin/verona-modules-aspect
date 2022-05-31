@@ -39,7 +39,7 @@ export class DropListElement extends InputElement implements PositionedUIElement
     };
   }
 
-  getSchemerData(options: any): SchemerData {
+  getSchemerData(options: Array<DropListElement | DropListSimpleElement>): SchemerData {
     return {
       id: this.id,
       type: 'string',
@@ -51,17 +51,19 @@ export class DropListElement extends InputElement implements PositionedUIElement
     };
   }
 
-  getSchemerValues( dropLists: DropListElement[] | DropListSimpleElement[]): SchemerValue[] {
-    const valueDropLists = dropLists.filter( dropList => dropList.connectedTo.includes(this.id) );
-    if (valueDropLists.length) { // TODO: or Sorting List
+  private getSchemerValues( dropLists: Array<DropListElement | DropListSimpleElement>): SchemerValue[] {
+    const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id) );
+    if (valueDropLists.length || this.isSortingList()) {
       return [this, ...valueDropLists]
         .map(dropList => dropList.value as DragNDropValueObject[])
         .flat()
         .map(option => ({ value: option.id, label: option.stringValue as string })); // TODO: imageValueSrc
-    } else {
-      // only drag list - no drop list
-      return [];
     }
+    return [];
+  }
+
+  private isSortingList(): boolean {
+    return (!this.connectedTo.length && (this.value as DragNDropValueObject[]).length > 1);
   }
 
   getComponentFactory(): Type<ElementComponent> {

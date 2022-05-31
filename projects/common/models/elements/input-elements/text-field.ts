@@ -1,7 +1,7 @@
 import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, InputAssistancePreset, InputElement,
-  PositionedUIElement, PositionProperties
+  PositionedUIElement, PositionProperties, SchemerData, SchemerValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -37,6 +37,22 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
         ...element.styling
       })
     };
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'string',
+      format: '',
+      multiple: false,
+      nullable: !this.value && this.value === '',
+      values: this.getSchemerValues(),
+      valuesComplete: false
+    };
+  }
+
+  private getSchemerValues(): SchemerValue[] {
+    return [];
   }
 
   getComponentFactory(): Type<ElementComponent> {

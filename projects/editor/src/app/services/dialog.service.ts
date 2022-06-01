@@ -13,6 +13,8 @@ import { RichTextSimpleEditDialogComponent } from '../components/dialogs/rich-te
 import { DragNDropValueObject, PlayerProperties, TextImageLabel } from 'common/models/elements/element';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
+import { Section } from 'common/models/section';
 
 @Injectable({
   providedIn: 'root'
@@ -96,6 +98,13 @@ export class DialogService {
   showLikertRowEditDialog(row: LikertRowElement, columns: TextImageLabel[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
       data: { row, columns }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showSectionInsertDialog(section: Section): Observable<Section> {
+    const dialogRef = this.dialog.open(SectionInsertDialogComponent, {
+      data: { section }
     });
     return dialogRef.afterClosed();
   }

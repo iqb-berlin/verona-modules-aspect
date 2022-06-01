@@ -23,7 +23,7 @@ import { Section } from 'common/models/section';
     <mat-menu #elementListMenu="matMenu" class="layoutMenu" xPosition="before">
       <mat-action-list>
         <ng-container *ngIf="section.elements.length === 0">
-            Keine Elemente im Abschnitt
+          Keine Elemente im Abschnitt
         </ng-container>
         <mat-list-item *ngFor="let element of section.elements"
                        (click)="selectElement(element)">
@@ -68,7 +68,7 @@ import { Section } from 'common/models/section';
         <ng-container *ngIf="!section.dynamicPositioning">
           <mat-form-field appearance="fill">
             <mat-label>{{'section-menu.height' | translate }}</mat-label>
-            <input matInput  type="number"
+            <input matInput type="number"
                    [value]="$any(section.height)"
                    (click)="$any($event).stopPropagation()"
                    (change)="updateModel('height', $any($event.target).value)">
@@ -163,22 +163,15 @@ import { Section } from 'common/models/section';
       </div>
     </mat-menu>
 
-    <button mat-mini-fab
+    <button mat-mini-fab [matTooltip]="'Abschnitt kopieren'" [matTooltipPosition]="'left'"
             (click)="copySectionToClipboard()">
       <mat-icon>content_copy</mat-icon>
     </button>
-
-    <button mat-mini-fab [matMenuTriggerFor]="pasteSectionMenu">
+    <button mat-mini-fab
+            [matTooltip]="'Abschnitt einfügen'" [matTooltipPosition]="'left'"
+            (click)="showSectionInsertDialog()">
       <mat-icon>content_paste</mat-icon>
     </button>
-    <mat-menu #pasteSectionMenu="matMenu" xPosition="before">
-      <mat-form-field appearance="fill" (click)="$any($event).stopPropagation()">
-<!--        <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>-->
-        <input matInput (click)="$any($event).stopPropagation()"
-               (paste)="pasteSectionFromClipboard($event);">
-      </mat-form-field>
-    </mat-menu>
-
     <button *ngIf="allowMoveUp" mat-mini-fab
             [matTooltip]="'Nach oben verschieben'" [matTooltipPosition]="'left'"
             (click)="this.moveSection.emit('up')">
@@ -311,23 +304,17 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
 
   copySectionToClipboard() {
     this.clipboard.copy(JSON.stringify(this.section));
-    console.log('bla', navigator.clipboard);
+    this.messageService.showSuccess('Abschnitt in Zwischenablage kopiert');
   }
 
-  pasteSectionFromClipboard(event: ClipboardEvent) {
-    console.log('paste', event);
-    console.log('paste2', event.clipboardData?.getData('Text'));
-    const pastedText = event.clipboardData?.getData('Text');
-    // TODO try catch
-    if (!pastedText) return;
-    try {
-      const newSection = new Section(JSON.parse(pastedText) as Section);
-      this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
-    } catch (e) {
-      this.messageService.showError('Fehler beim Lesen der Sektion');
-    }
-    // console.log('evvv', event.target);
-    // (event.target as HTMLInputElement).value = 'abc';
-    event.stopPropagation();
+  showSectionInsertDialog(): void {
+    this.dialogService.showSectionInsertDialog(this.section)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((newSection: Section) => {
+        if (newSection) {
+          this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
+        }
+      });
   }
+
 }

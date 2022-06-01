@@ -25,7 +25,7 @@ describe('SanitizationService', () => {
   });
 
   it('isUnitDefinitionOutdated should return false on current version', () => {
-    const basicUnitDefinition: Unit = {
+    const basicUnitDefinition: Partial<Unit> = {
       'type': 'aspect-unit-definition',
       'version': packageJSON.config.unit_definition_version,
       'pages': []
@@ -34,7 +34,7 @@ describe('SanitizationService', () => {
   });
 
   it('isUnitDefinitionOutdated should return true on older version', () => {
-    const unitDefinition: Unit = {
+    const unitDefinition: Partial<Unit> = {
       'type': 'aspect-unit-definition',
       'version': '3.3.0',
       'pages': []
@@ -43,7 +43,7 @@ describe('SanitizationService', () => {
   });
 
   it('sanitizeUnitDefinition should return basic unit definition', () => {
-    const basicUnitDefinition: Unit = {
+    const basicUnitDefinition: Partial<Unit> = {
       'type': 'aspect-unit-definition',
       'version': packageJSON.config.unit_definition_version,
       'pages': []
@@ -71,7 +71,7 @@ describe('SanitizationService', () => {
         'zIndex': 0
       }
     };
-    expect(service.sanitizeUnitDefinition(testData130).pages[0].sections[0].elements[0])
+    expect(service.sanitizeUnitDefinition(testData130).pages![0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining(expectedPositionProps));
   });
 
@@ -85,9 +85,9 @@ describe('SanitizationService', () => {
       'gridRowRange': 1
     };
     const sanitizedUnit126 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit126)));
-    expect(Object.keys(sanitizedUnit126.pages[0].sections[0].elements[0]))
+    expect(Object.keys(sanitizedUnit126.pages![0].sections[0].elements[0]))
       .toContain('position');
-    expect(sanitizedUnit126.pages[0].sections[0].elements[0].position)
+    expect(sanitizedUnit126.pages![0].sections[0].elements[0].position)
       .toEqual(jasmine.objectContaining(expectedPositionProps));
   });
 
@@ -102,9 +102,9 @@ describe('SanitizationService', () => {
       'gridRowRange': 1
     };
     const sanitizedUnit100 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit100)));
-    expect(Object.keys(sanitizedUnit100.pages[0].sections[0].elements[0]))
+    expect(Object.keys(sanitizedUnit100.pages![0].sections[0].elements[0]))
       .toContain('position');
-    expect(sanitizedUnit100.pages[0].sections[0].elements[0].position)
+    expect(sanitizedUnit100.pages![0].sections[0].elements[0].position)
       .toEqual(jasmine.objectContaining(expectedPositionProps));
   });
 
@@ -113,14 +113,14 @@ describe('SanitizationService', () => {
     const unit = sampleUnit126;
     unit.pages[0].sections[0].dynamicPositioning = true;
     const sanitizedUnit = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(unit)));
-    expect(sanitizedUnit.pages[0].sections[0].elements[0].position)
+    expect(sanitizedUnit.pages![0].sections[0].elements[0].position)
       .toEqual(jasmine.objectContaining({
         'dynamicPositioning': true
       }));
 
     // no change necessary
     const sanitizedUnit129 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit129)));
-    expect(sanitizedUnit129.pages[0].sections[0].elements[0].position)
+    expect(sanitizedUnit129.pages![0].sections[0].elements[0].position)
       .toEqual(jasmine.objectContaining({
         'dynamicPositioning': false
       }));
@@ -138,9 +138,9 @@ describe('SanitizationService', () => {
       'lineHeight': 135
     };
     const sanitizedUnit130 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130)));
-    expect(Object.keys(sanitizedUnit130.pages[0].sections[0].elements[0]))
+    expect(Object.keys(sanitizedUnit130.pages![0].sections[0].elements[0]))
       .toContain('styling');
-    expect(sanitizedUnit130.pages[0].sections[0].elements[0].styling)
+    expect(sanitizedUnit130.pages![0].sections[0].elements[0].styling)
       .toEqual(jasmine.objectContaining(expectedStylingProps));
   });
 
@@ -156,9 +156,9 @@ describe('SanitizationService', () => {
       'backgroundColor': 'red'
     };
     const sanitizedUnit126 = service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit126)));
-    expect(Object.keys(sanitizedUnit126.pages[0].sections[0].elements[0]))
+    expect(Object.keys(sanitizedUnit126.pages![0].sections[0].elements[0]))
       .toContain('styling');
-    expect(sanitizedUnit126.pages[0].sections[0].elements[0].styling)
+    expect(sanitizedUnit126.pages![0].sections[0].elements[0].styling)
       .toEqual(jasmine.objectContaining(expectedStylingProps));
   });
 
@@ -175,9 +175,9 @@ describe('SanitizationService', () => {
       'interactiveProgressbar': false,
       'volumeControl': true
     };
-    expect(Object.keys(sanitizedUnit130Audio.pages[0].sections[0].elements[0]))
+    expect(Object.keys(sanitizedUnit130Audio.pages![0].sections[0].elements[0]))
       .toContain('player');
-    expect(sanitizedUnit130Audio.pages[0].sections[0].elements[0].player)
+    expect(sanitizedUnit130Audio.pages![0].sections[0].elements[0].player)
       .toEqual(jasmine.objectContaining(expectedPlayerProps));
   });
 
@@ -197,9 +197,9 @@ describe('SanitizationService', () => {
       'minVolume': 0,
       'muteControl': true
     };
-    expect(Object.keys(sanitizedUnit126Audio.pages[0].sections[0].elements[0]))
+    expect(Object.keys(sanitizedUnit126Audio.pages![0].sections[0].elements[0]))
       .toContain('player');
-    expect(sanitizedUnit126Audio.pages[0].sections[0].elements[0].player)
+    expect(sanitizedUnit126Audio.pages![0].sections[0].elements[0].player)
       .toEqual(jasmine.objectContaining(expectedPlayerProps));
   });
 
@@ -211,7 +211,7 @@ describe('SanitizationService', () => {
       highlightableTurquoise: false,
       highlightableOrange: false
     };
-    expect(sanitizedUnit112Texts.pages[0].sections[0].elements[1])
+    expect(sanitizedUnit112Texts.pages![0].sections[0].elements[1])
       .not.toEqual(jasmine.objectContaining(expectedTextProps));
   });
 
@@ -223,7 +223,7 @@ describe('SanitizationService', () => {
       highlightableTurquoise: true,
       highlightableOrange: true
     };
-    expect(sanitizedUnit112Texts.pages[0].sections[0].elements[0])
+    expect(sanitizedUnit112Texts.pages![0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining(expectedTextProps));
   });
 
@@ -235,26 +235,26 @@ describe('SanitizationService', () => {
       highlightableTurquoise: false,
       highlightableOrange: false
     };
-    expect(sanitizedUnit112Texts.pages[0].sections[0].elements[2])
+    expect(sanitizedUnit112Texts.pages![0].sections[0].elements[2])
       .not.toEqual(jasmine.objectContaining(expectedTextProps));
   });
 
   it('sanitizeUnitDefinition should return text field element', () => {
     const sanitizedUnit130TextFields =
       service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit130TextFields)));
-    expect(sanitizedUnit130TextFields.pages[0].sections[0].elements[0])
+    expect(sanitizedUnit130TextFields.pages![0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating',
         'restrictedToInputAssistanceChars': false
       }));
-    expect(sanitizedUnit130TextFields.pages[0].sections[0].elements[1])
+    expect(sanitizedUnit130TextFields.pages![0].sections[0].elements[1])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': 'french',
         'inputAssistancePosition': 'floating',
         'restrictedToInputAssistanceChars': true
       }));
-    expect(sanitizedUnit130TextFields.pages[0].sections[0].elements[2])
+    expect(sanitizedUnit130TextFields.pages![0].sections[0].elements[2])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': 'numbers',
         'inputAssistancePosition': 'floating',
@@ -266,41 +266,41 @@ describe('SanitizationService', () => {
   it('sanitizeUnitDefinition should repair text field and area elements', () => {
     const sanitizedUnit112TextFields =
       service.sanitizeUnitDefinition(JSON.parse(JSON.stringify(sampleUnit112TextFields)));
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[0])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating'
       }));
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[0])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[0])
       .not.toEqual(jasmine.objectContaining({
         'restrictedToInputAssistanceChars': false
       }));
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[1])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[1])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': 'french',
         'inputAssistancePosition': 'right',
         'restrictedToInputAssistanceChars': false
       }));
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[2])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[2])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': 'numbers',
         'inputAssistancePosition': 'floating'
       }));
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[2])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[2])
       .not.toEqual(jasmine.objectContaining({
         'restrictedToInputAssistanceChars': false
       }));
     // text areas
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[3])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[3])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': null,
         'inputAssistancePosition': 'floating'
       }));
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[3])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[3])
       .not.toEqual(jasmine.objectContaining({
         'restrictedToInputAssistanceChars': false
       }));
-    expect(sanitizedUnit112TextFields.pages[0].sections[0].elements[4])
+    expect(sanitizedUnit112TextFields.pages![0].sections[0].elements[4])
       .toEqual(jasmine.objectContaining({
         'inputAssistancePreset': 'french',
         'inputAssistancePosition': 'floating',
@@ -356,13 +356,13 @@ describe('SanitizationService', () => {
     };
     const sanitizedUnitDefinition = service.sanitizeUnitDefinition(unitDef as unknown as Unit);
 
-    expect(sanitizedUnitDefinition.pages[0].sections[0].elements[0])
+    expect(sanitizedUnitDefinition.pages![0].sections[0].elements[0])
       .toEqual(jasmine.objectContaining({
         'id': 'cloze_1',
         'type': 'cloze'
       }));
 
-    const sanatizedClozeChild1 = (sanitizedUnitDefinition.pages[0].sections[0].elements[0] as ClozeElement)
+    const sanatizedClozeChild1 = (sanitizedUnitDefinition.pages![0].sections[0].elements[0] as ClozeElement)
       .document.content[0].content[0]?.attrs?.model;
     expect(sanatizedClozeChild1)
       .toEqual(jasmine.objectContaining({
@@ -370,7 +370,7 @@ describe('SanitizationService', () => {
         'type': 'text-field-simple'
       }));
 
-    const sanatizedClozeChild2 = (sanitizedUnitDefinition.pages[0].sections[0].elements[0] as ClozeElement)
+    const sanatizedClozeChild2 = (sanitizedUnitDefinition.pages![0].sections[0].elements[0] as ClozeElement)
       .document.content[0].content[1]?.attrs?.model;
     expect(sanatizedClozeChild2)
       .toEqual(jasmine.objectContaining({
@@ -378,7 +378,7 @@ describe('SanitizationService', () => {
         'type': 'drop-list-simple'
       }));
 
-    const sanatizedClozeChild3 = (sanitizedUnitDefinition.pages[0].sections[0].elements[0] as ClozeElement)
+    const sanatizedClozeChild3 = (sanitizedUnitDefinition.pages![0].sections[0].elements[0] as ClozeElement)
       .document.content[0].content[2]?.attrs?.model;
     expect(sanatizedClozeChild3)
       .toEqual(jasmine.objectContaining({

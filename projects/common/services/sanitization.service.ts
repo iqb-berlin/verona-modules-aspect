@@ -39,16 +39,16 @@ export class SanitizationService {
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
   // TODO: isUnitDefinitionOutdated must not set the unitDefinitionVersion
-  static isUnitDefinitionOutdated(unitDefinition: Unit): boolean {
+  static isUnitDefinitionOutdated(unitDefinition: Partial<Unit>): boolean {
     SanitizationService.unitDefinitionVersion =
       SanitizationService.readUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
     return SanitizationService.isVersionOlderThanCurrent(SanitizationService.unitDefinitionVersion);
   }
 
-  sanitizeUnitDefinition(unitDefinition: Unit): Partial<Unit> {
+  sanitizeUnitDefinition(unitDefinition: Partial<Unit>): Partial<Unit> {
     return {
       ...unitDefinition,
-      pages: unitDefinition.pages.map((page: Page) => this.sanitizePage(page)) as Page[]
+      pages: unitDefinition.pages?.map((page: Page) => this.sanitizePage(page)) as Page[]
     };
   }
 

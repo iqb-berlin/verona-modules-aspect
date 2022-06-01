@@ -1,5 +1,6 @@
 import { Section } from 'common/models/section';
 import { IDManager } from 'common/util/id-manager';
+import { UIElement } from 'common/models/elements/element';
 
 export class Page {
   [index: string]: any;
@@ -21,5 +22,9 @@ export class Page {
     if (page?.alwaysVisiblePagePosition) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
     if (page?.alwaysVisibleAspectRatio) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
     this.sections = page?.sections.map(section => new Section(section, idManager)) || [new Section()];
+  }
+
+  getAllElements(elementType?: string): UIElement[] {
+    return this.sections.map(section => section.getAllElements(elementType)).flat();
   }
 }

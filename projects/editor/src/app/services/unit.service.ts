@@ -404,14 +404,10 @@ export class UnitService {
 
   /* Used by props panel to show available dropLists to connect */
   getDropListElementIDs(): string[] {
-    return this.unit.pages
-      .map(page => page.sections
-        .map(section => section.elements
-          .reduce((accumulator: any[], currentValue: any) => (
-            currentValue.type === 'drop-list' ? accumulator.concat(currentValue.id) : accumulator), [])
-          .flat()
-        )
-        .flat()).flat();
+    const allDropLists = [
+      ...this.unit.getAllElements('drop-list'),
+      ...this.unit.getAllElements('drop-list-simple')];
+    return allDropLists.map(dropList => dropList.id);
   }
 
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {

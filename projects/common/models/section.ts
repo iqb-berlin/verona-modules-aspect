@@ -88,7 +88,13 @@ export class Section {
   }
 
   /* Includes children of children, i.e. compound children. */
-  getAllChildElements(): UIElement[] {
-    return this.elements.map(element => [element, ...element.getChildElements()]).flat();
+  getAllElements(elementType?: string): UIElement[] {
+    let allElements: UIElement[] =
+      this.elements.map(element => [element, ...element.getChildElements()])
+        .flat();
+    if (elementType) {
+      allElements = allElements.filter(element => element.type === elementType);
+    }
+    return allElements;
   }
 }

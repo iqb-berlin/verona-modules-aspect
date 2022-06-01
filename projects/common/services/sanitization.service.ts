@@ -45,10 +45,10 @@ export class SanitizationService {
     return SanitizationService.isVersionOlderThanCurrent(SanitizationService.unitDefinitionVersion);
   }
 
-  sanitizeUnitDefinition(unitDefinition: Unit): Unit {
+  sanitizeUnitDefinition(unitDefinition: Unit): Partial<Unit> {
     return {
       ...unitDefinition,
-      pages: unitDefinition.pages.map((page: Page) => this.sanitizePage(page))
+      pages: unitDefinition.pages.map((page: Page) => this.sanitizePage(page)) as Page[]
     };
   }
 
@@ -71,7 +71,7 @@ export class SanitizationService {
     return version[2] < SanitizationService.expectedUnitVersion[2];
   }
 
-  private sanitizePage(page: Page): Page {
+  private sanitizePage(page: Page): Partial<Page> {
     return {
       ...page,
       sections: page.sections.map((section: Section) => this.sanitizeSection(section))

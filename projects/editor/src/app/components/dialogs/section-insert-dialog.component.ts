@@ -58,7 +58,7 @@ export class SectionInsertDialogComponent {
     try {
       this.newSection = new Section(JSON.parse(pastedText));
 
-      if (this.findElementsWithDuplicateID(this.newSection.getAllChildElements()).length > 0) {
+      if (this.findElementsWithDuplicateID(this.newSection.getAllElements()).length > 0) {
         this.operationStatusText =
           this.translateService.instant('Doppelte IDs festgestellt. Weiter mit neu generierten IDs?');
         this.operationStatus = 'yellow';

@@ -102,7 +102,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
   }
 
   getChildElements(): UIElement[] {
-    return ClozeElement.getDocumentChildElements(this.documnent);
+    return ClozeElement.getDocumentChildElements(this.document);
   }
 
   static getDocumentChildElements(document: ClozeDocument): UIElement[] {

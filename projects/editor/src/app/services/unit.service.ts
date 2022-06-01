@@ -7,15 +7,12 @@ import { MessageService } from 'common/services/message.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
-import { ClozeParser } from '../util/cloze-parser';
-import { UnitUtils } from 'common/util/unit-utils';
 import { ArrayUtils } from 'common/util/array';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Unit } from 'common/models/unit';
 import {
-  DragNDropValueObject,
-  InputElement,
-  InputElementValue, PlayerElement, PlayerProperties, PositionedUIElement, PositionProperties, TextImageLabel,
+  DragNDropValueObject, InputElement,
+  InputElementValue, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
   UIElement, UIElementType
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';

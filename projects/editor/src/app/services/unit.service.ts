@@ -231,8 +231,6 @@ export class UnitService {
           IDManager.getInstance().addID(value as string);
           element.id = value as string;
         }
-      } else if (property === 'document') {
-        element[property] = ClozeParser.setMissingIDs(value as ClozeDocument);
       } else if (element.type === 'likert' && property === 'columns') {
         (element as LikertElement).rows.forEach(row => {
           row.columnCount = (element as LikertElement).columns.length;

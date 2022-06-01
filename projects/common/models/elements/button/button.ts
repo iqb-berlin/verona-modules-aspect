@@ -15,9 +15,13 @@ export class ButtonElement extends UIElement implements PositionedUIElement {
     borderRadius: number;
   };
 
-  constructor(element: Partial<ButtonElement>) {
-    super(element);
-    Object.assign(this, element);
+  constructor(element: Partial<ButtonElement>, ...args: unknown[]) {
+    super(element, ...args);
+    if (element.label) this.label = element.label;
+    if (element.imageSrc) this.imageSrc = element.imageSrc;
+    if (element.asLink) this.asLink = element.asLink;
+    if (element.action) this.action = element.action;
+    if (element.actionParam) this.actionParam = element.actionParam;
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
       ...ElementFactory.initStylingProps<{ borderRadius: number; }>({ borderRadius: 0, ...element.styling })

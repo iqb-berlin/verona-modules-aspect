@@ -16,9 +16,12 @@ export class ToggleButtonElement extends InputElement {
     selectionColor: string;
   };
 
-  constructor(element: Partial<ToggleButtonElement>) {
-    super({ height: 25, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<ToggleButtonElement>, ...args: unknown[]) {
+    super({ height: 25, ...element }, ...args);
+    if (element.richTextOptions) this.richTextOptions = element.richTextOptions;
+    if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
+    if (element.verticalOrientation) this.verticalOrientation = element.verticalOrientation;
+    if (element.dynamicWidth !== undefined) this.dynamicWidth = element.dynamicWidth; // TODO klappt das?
     this.styling = {
       ...ElementFactory.initStylingProps({
         lineHeight: 135,

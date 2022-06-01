@@ -1,22 +1,29 @@
-import { IDService } from 'common/services/id.service';
-import { ElementFactory } from 'common/util/element.factory';
 import { InputElement, UIElement } from 'common/models/elements/element';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
+import { ElementFactory } from 'common/util/element.factory';
+import { IDManager } from 'common/util/id-manager';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import {
+  DropListSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
+import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 
 export abstract class ClozeParser {
-  static setMissingIDs(clozeJSON: ClozeDocument, idService: IDService): ClozeDocument {
+  static setMissingIDs(clozeJSON: ClozeDocument): ClozeDocument {
     clozeJSON.content.forEach((node: any) => {
       if (node.type === 'paragraph' || node.type === 'heading') {
-        ClozeParser.createSubNodeElements(node, idService);
+        ClozeParser.createSubNodeElements(node);
       } else if (node.type === 'bulletList' || node.type === 'orderedList') {
         node.content.forEach((listItem: any) => {
           listItem.content.forEach((listItemParagraph: any) => {
-            ClozeParser.createSubNodeElements(listItemParagraph, idService);
+            ClozeParser.createSubNodeElements(listItemParagraph);
           });
         });
       } else if (node.type === 'blockquote') {
         node.content.forEach((blockQuoteItem: any) => {
-          ClozeParser.createSubNodeElements(blockQuoteItem, idService);
+          ClozeParser.createSubNodeElements(blockQuoteItem);
         });
       }
     });
@@ -24,7 +31,8 @@ export abstract class ClozeParser {
   }
 
   // create element anew because the TextEditor can't create multiple element instances
-  private static createSubNodeElements(node: any, idService: IDService) {
+  private static createSubNodeElements(node: any) {
+    const idService = IDManager.getInstance();
     node.content?.forEach((subNode: any) => {
       if (['ToggleButton', 'DropList', 'TextField'].includes(subNode.type) &&
         subNode.attrs.model.id === 'id_placeholder') {
@@ -38,13 +46,13 @@ export abstract class ClozeParser {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field-simple':
-        newElement = ElementFactory.createElement(elementModel.type, elementModel as UIElement) as InputElement;
+        newElement = new TextFieldSimpleElement({ type: elementModel.type, elementModel }) as InputElement;
         break;
       case 'drop-list-simple':
-        newElement = ElementFactory.createElement(elementModel.type, elementModel as UIElement) as InputElement;
+        newElement = new DropListSimpleElement({ type: elementModel.type, elementModel }) as InputElement;
         break;
       case 'toggle-button':
-        newElement = ElementFactory.createElement(elementModel.type, elementModel as UIElement) as InputElement;
+        newElement = new ToggleButtonElement({ type: elementModel.type, elementModel }) as InputElement;
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

@@ -4,12 +4,12 @@ import {
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
-import { IDService } from 'common/services/id.service';
 import { MessageService } from 'common/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { DragNDropValueObject } from 'common/models/elements/element';
+import { IDManager } from 'common/util/id-manager';
 
 @Component({
   selector: 'aspect-drop-list-properties',
@@ -125,7 +125,6 @@ export class DropListPropertiesComponent {
   constructor(public unitService: UnitService,
               private selectionService: SelectionService,
               private dialogService: DialogService,
-              private idService: IDService,
               private messageService: MessageService,
               private translateService: TranslateService) { }
 
@@ -145,7 +144,7 @@ export class DropListPropertiesComponent {
     await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])
       .subscribe((result: DragNDropValueObject) => {
         if (result) {
-          if (result.id !== oldOptions[optionIndex].id && !this.idService.isIdAvailable(result.id)) {
+          if (result.id !== oldOptions[optionIndex].id && !IDManager.getInstance().isIdAvailable(result.id)) {
             this.messageService.showError(this.translateService.instant('idTaken'));
             return;
           }

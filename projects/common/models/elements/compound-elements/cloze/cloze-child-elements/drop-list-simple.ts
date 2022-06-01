@@ -15,10 +15,13 @@ export class DropListSimpleElement extends InputElement {
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListSimpleElement>) {
-    super({ width: 150, height: 30, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<DropListSimpleElement>, ...args: unknown[]) {
+    super({ width: 150, height: 30, ...element }, ...args);
     this.value = element.value || [];
+    if (element.connectedTo) this.connectedTo = element.connectedTo;
+    if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
+    if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
+    if (element.highlightReceivingDropListColor) this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
     this.styling = {
       ...ElementFactory.initStylingProps({
         backgroundColor: '#f4f4f2',

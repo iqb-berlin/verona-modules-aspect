@@ -4,6 +4,7 @@ import { AngularNodeViewRenderer } from 'ngx-tiptap';
 
 import { ToggleButtonNodeviewComponent } from './toggle-button-nodeview.component';
 import { ElementFactory } from 'common/util/element.factory';
+import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 
 const ToggleButtonComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -14,7 +15,7 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement('toggle-button', { height: 25, width: 100 })
+          default: new ToggleButtonElement({ type: 'toggle-button', height: 25, width: 100 })
         }
       };
     },

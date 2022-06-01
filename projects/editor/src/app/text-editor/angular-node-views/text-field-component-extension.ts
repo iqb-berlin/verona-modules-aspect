@@ -3,6 +3,9 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { TextFieldNodeviewComponent } from './text-field-nodeview.component';
 import { ElementFactory } from 'common/util/element.factory';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 
 const TextFieldComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -13,7 +16,7 @@ const TextFieldComponentExtension = (injector: Injector): Node => {
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement('text-field-simple')
+          default: new TextFieldSimpleElement({ type: 'text-field-simple' })
         }
       };
     },

@@ -1,4 +1,3 @@
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles,
   CompoundElement,
@@ -10,6 +9,14 @@ import {
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
+import { ElementFactory } from 'common/util/element.factory';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import {
+  DropListSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
+import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 
 export class ClozeElement extends CompoundElement implements PositionedUIElement {
   document: ClozeDocument = { type: 'doc', content: [] };
@@ -19,9 +26,9 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     lineHeight: number;
   };
 
-  constructor(element: Partial<ClozeElement>) {
-    super({ height: 200, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<ClozeElement>, ...args: unknown[]) {
+    super({ height: 200, ...element }, ...args);
+    if (element.columnCount) this.columnCount = element.columnCount;
     this.document = this.initDocument(element);
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
@@ -42,9 +49,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
                   ...paraPart,
                   attrs: {
                     ...paraPart.attrs,
-                    model: ElementFactory.createElement(
-                      (paraPart.attrs?.model as InputElement).type, paraPart.attrs?.model as InputElement
-                    )
+                    model: ClozeElement.createChildElement(paraPart.attrs?.model as InputElement)
                   }
                 } :
                 {
@@ -79,6 +84,24 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
       }
     });
     return elementList;
+  }
+
+  private static createChildElement(elementModel: Partial<UIElement>): InputElement {
+    let newElement: InputElement;
+    switch (elementModel.type) {
+      case 'text-field-simple':
+        newElement = new TextFieldSimpleElement({ type: elementModel.type, elementModel }) as InputElement;
+        break;
+      case 'drop-list-simple':
+        newElement = new DropListSimpleElement({ type: elementModel.type, elementModel }) as InputElement;
+        break;
+      case 'toggle-button':
+        newElement = new ToggleButtonElement({ type: elementModel.type, elementModel }) as InputElement;
+        break;
+      default:
+        throw new Error(`ElementType ${elementModel.type} not found!`);
+    }
+    return newElement;
   }
 
   private static getParagraphCustomElements(documentPart: any): InputElement[] {

@@ -16,10 +16,15 @@ export class DropListElement extends InputElement implements PositionedUIElement
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListElement>) {
-    super({ height: 100, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<DropListElement>, ...args: unknown[]) {
+    super({ height: 100, ...element }, ...args);
     this.value = element.value || [];
+    if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
+    if (element.connectedTo) this.connectedTo = element.connectedTo;
+    if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
+    if (element.orientation) this.orientation = element.orientation;
+    if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
+    if (element.highlightReceivingDropListColor) this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
     this.position = ElementFactory.initPositionProps({ useMinHeight: true, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

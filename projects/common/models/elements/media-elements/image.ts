@@ -13,9 +13,14 @@ export class ImageElement extends UIElement implements PositionedUIElement {
   magnifierUsed: boolean = false;
   position: PositionProperties;
 
-  constructor(element: Partial<ImageElement>) {
-    super({ height: 100, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<ImageElement>, ...args: unknown[]) {
+    super({ height: 100, ...element }, ...args);
+    if (element.src) this.src = element.src;
+    if (element.scale) this.scale = element.scale;
+    if (element.magnifier) this.magnifier = element.magnifier;
+    if (element.magnifierSize) this.magnifierSize = element.magnifierSize;
+    if (element.magnifierZoom) this.magnifierZoom = element.magnifierZoom;
+    if (element.magnifierUsed) this.magnifierUsed = element.magnifierUsed;
     this.position = ElementFactory.initPositionProps(element.position);
   }
 

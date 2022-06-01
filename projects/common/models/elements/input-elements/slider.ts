@@ -15,9 +15,13 @@ export class SliderElement extends InputElement implements PositionedUIElement {
     lineHeight: number;
   };
 
-  constructor(element: Partial<SliderElement>) {
-    super(element);
-    Object.assign(this, element);
+  constructor(element: Partial<SliderElement>, ...args: unknown[]) {
+    super(element, ...args);
+    if (element.minValue) this.minValue = element.minValue;
+    if (element.maxValue) this.maxValue = element.maxValue;
+    if (element.showValues) this.showValues = element.showValues;
+    if (element.barStyle) this.barStyle = element.barStyle;
+    if (element.thumbLabel) this.thumbLabel = element.thumbLabel;
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
       ...ElementFactory.initStylingProps({

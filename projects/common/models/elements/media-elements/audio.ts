@@ -8,9 +8,9 @@ export class AudioElement extends PlayerElement implements PositionedUIElement {
   src: string | undefined;
   position: PositionProperties;
 
-  constructor(element: Partial<AudioElement>) {
-    super({ width: 250, height: 90, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<AudioElement>, ...args: unknown[]) {
+    super({ width: 250, height: 90, ...element }, ...args);
+    if (element.src) this.src = element.src;
     this.position = ElementFactory.initPositionProps(element.position);
   }
 

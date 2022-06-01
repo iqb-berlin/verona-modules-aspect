@@ -1,10 +1,7 @@
-import { Injectable } from '@angular/core';
+export class IDManager {
+  private static instance: IDManager;
 
-@Injectable({
-  providedIn: 'root'
-})
-export class IDService {
-  private givenIDs: string[] = [];
+  givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,
     button: 0,
@@ -31,15 +28,17 @@ export class IDService {
     value: 0
   };
 
+  static getInstance() {
+    return this.instance || (this.instance = new this());
+  }
+
   getNewID(type: string): string {
     if (!type) {
       throw Error('ID-Service: No type given!');
     }
     do {
       this.idCounter[type] += 1;
-    }
-    while (!this.isIdAvailable(`${type}_${this.idCounter[type]}`));
-    this.givenIDs.push(`${type}_${this.idCounter[type]}`);
+    } while (!this.isIdAvailable(`${type}_${this.idCounter[type]}`));
     return `${type}_${this.idCounter[type]}`;
   }
 

@@ -1,7 +1,8 @@
-import { ElementFactory } from 'common/util/element.factory';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { Type } from '@angular/core';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
+import { ElementFactory } from 'common/util/element.factory';
+import { IDManager } from 'common/util/id-manager';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
@@ -24,10 +25,25 @@ export abstract class UIElement {
   styling?: BasicStyles & ExtendedStyles;
   player?: PlayerProperties;
 
-  constructor(element: Partial<UIElement>) {
-    Object.assign(this, element);
+  constructor(element: Partial<UIElement>, ...args: unknown[]) {
     if (!element.type) throw Error('Element has no type!');
     this.type = element.type;
+    if (element.id) this.id = element.id;
+
+    // IDManager is an optional parameter. When given, check/repair and register the ID.
+    if (args[0]) {
+      const idManager: IDManager = args[0] as IDManager;
+      if (!element.id) {
+        this.id = idManager.getNewID(element.type as string);
+      } else if (!IDManager.getInstance().isIdAvailable(element.id)) {
+        this.id = idManager.getNewID(element.type as string);
+      }
+      idManager.addID(this.id);
+      this.height = 1000;
+    }
+
+    if (element.width) this.width = element.width;
+    if (element.height) this.height = element.height;
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -46,6 +62,10 @@ export abstract class UIElement {
     (this.player as { [key: string]: any })[property] = value;
   }
 
+  getChildElements(): UIElement[] {
+    return [];
+  }
+
   abstract getComponentFactory(): Type<ElementComponent>;
 }
 
@@ -58,9 +78,13 @@ export abstract class InputElement extends UIElement {
   requiredWarnMessage: string = 'Eingabe erforderlich';
   readOnly: boolean = false;
 
-  protected constructor(element: Partial<InputElement>) {
-    super(element);
-    Object.assign(this, element);
+  protected constructor(element: Partial<InputElement>, ...args: unknown[]) {
+    super(element, ...args);
+    if (element.label) this.label = element.label;
+    if (element.value) this.value = element.value;
+    if (element.required) this.required = element.required;
+    if (element.requiredWarnMessage) this.requiredWarnMessage = element.requiredWarnMessage;
+    if (element.readOnly) this.readOnly = element.readOnly;
   }
 }
 
@@ -71,8 +95,8 @@ export abstract class CompoundElement extends UIElement {
 export abstract class PlayerElement extends UIElement {
   player: PlayerProperties;
 
-  protected constructor(element: Partial<PlayerElement>) {
-    super(element);
+  protected constructor(element: Partial<PlayerElement>, ...args: unknown[]) {
+    super(element, ...args);
     this.player = ElementFactory.initPlayerProps(element.player);
   }
 }

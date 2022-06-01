@@ -5,7 +5,6 @@ import StarterKit from '@tiptap/starter-kit';
 import ToggleButtonExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
 import DropListExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/drop-list';
 import TextFieldExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/text-field';
-import { IDService } from './id.service';
 import { Unit } from 'common/models/unit';
 import {
   BasicStyles, DragNDropValueObject, ExtendedStyles,
@@ -27,13 +26,12 @@ import {
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
+import { IDManager } from 'common/util/id-manager';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SanitizationService {
-
-  constructor(private iDService: IDService) { }
 
   private static expectedUnitVersion: [number, number, number] =
     packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
@@ -322,7 +320,7 @@ export class SanitizationService {
       newElement.value = [];
       (newElement.options as string[]).forEach(option => {
         (newElement.value as DragNDropValueObject[]).push({
-          id: this.iDService.getNewID('value'),
+          id: IDManager.getInstance().getNewID('value'),
           stringValue: option
         });
       });
@@ -331,7 +329,7 @@ export class SanitizationService {
       const newValues: DragNDropValueObject[] = [];
       (newElement.value as string[]).forEach(value => {
         newValues.push({
-          id: this.iDService.getNewID('value'),
+          id: IDManager.getInstance().getNewID('value'),
           stringValue: value
         });
       });

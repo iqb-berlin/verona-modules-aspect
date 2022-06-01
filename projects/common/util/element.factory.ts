@@ -4,7 +4,6 @@ import {
 } from 'common/models/elements/element';
 
 export abstract class ElementFactory {
-
   static initPositionProps(defaults: Record<string, UIElementValue> = {}): PositionProperties {
     return {
       fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,

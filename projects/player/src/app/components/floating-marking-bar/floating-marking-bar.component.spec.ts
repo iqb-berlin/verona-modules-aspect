@@ -33,8 +33,4 @@ describe('FloatingMarkingBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set the internal elementModel to the TextComponent.elementModel  ', () => {
-    expect(component.elementModel).toEqual(textComponent.elementModel);
-  });
-
 });

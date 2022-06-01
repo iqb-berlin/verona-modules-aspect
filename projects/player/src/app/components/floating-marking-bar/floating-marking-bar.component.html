@@ -1,17 +1,17 @@
 <ng-template
-    *ngIf="elementModel.highlightableYellow ||
-      elementModel.highlightableTurquoise ||
-      elementModel.highlightableOrange"
+    *ngIf="elementComponent.elementModel.highlightableYellow ||
+      elementComponent.elementModel.highlightableTurquoise ||
+      elementComponent.elementModel.highlightableOrange"
     cdkConnectedOverlay
     [cdkConnectedOverlayOrigin]="elementComponent"
-    [cdkConnectedOverlayPositions]="positions"
+    [cdkConnectedOverlayPositions]="overlayPositions"
     [cdkConnectedOverlayOpen]="isMarkingBarOpen">
   <div class="marking-bar-container"
        (mousedown)="$event.stopPropagation()"
        cdkDrag>
     <aspect-text-marking-bar
-        [elementModel]="elementModel"
-        (selectionChanged)="applySelection.emit($event)">
+        [elementModel]="elementComponent.elementModel"
+        (markingDataChanged)="markingDataChanged.emit($event)">
     </aspect-text-marking-bar>
   </div>
 </ng-template>

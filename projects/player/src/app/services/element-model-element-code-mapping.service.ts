@@ -30,7 +30,8 @@ export class ElementModelElementCodeMappingService {
           (elementModel as InputElement).value;
       case 'text':
         return (elementCodeValue !== undefined) ?
-          TextMarkingService.restoreMarkings(elementCodeValue as string[], (elementModel as TextElement).text) :
+          TextMarkingService
+            .restoreMarkedTextIndices(elementCodeValue as string[], (elementModel as TextElement).text) :
           (elementModel as TextElement).text;
       case 'audio':
         return elementCodeValue !== undefined ?
@@ -49,7 +50,8 @@ export class ElementModelElementCodeMappingService {
       case 'dropdown':
       case 'toggle-button':
       case 'likert-row':
-        return elementCodeValue !== undefined ? elementCodeValue as number - 1 : (elementModel as InputElement).value;
+        return elementCodeValue !== undefined && elementCodeValue !== null ?
+          elementCodeValue as number - 1 : (elementModel as InputElement).value;
       default:
         return elementCodeValue !== undefined ? elementCodeValue : (elementModel as InputElement).value;
     }
@@ -61,21 +63,17 @@ export class ElementModelElementCodeMappingService {
       case 'drop-list-simple':
         return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
       case 'text':
-        return TextMarkingService.getMarkingData(elementModelValue as string);
+        return TextMarkingService.getMarkedTextIndices(elementModelValue as string);
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':
       case 'toggle-button':
       case 'likert-row':
-        return elementModelValue as number + 1;
+        return elementModelValue !== null ? elementModelValue as number + 1 : null;
       default:
         return elementModelValue;
     }
   };
-
-  reset(): void {
-    this.dragNDropValueObjects = [];
-  }
 
   private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {
     return this.dragNDropValueObjects.find(dropListValue => dropListValue.id === id);

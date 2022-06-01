@@ -9,18 +9,18 @@ import { VideoElement } from 'common/models/elements/media-elements/video';
          [style.width.%]="100"
          [style.height.%]="100">
       <aspect-media-player-control-bar class="correct-position" *ngIf="elementModel.src"
-                          [player]="player"
-                          [project]="project"
-                          [active]="active"
-                          [id]="elementModel.id"
-                          [savedPlaybackTime]="savedPlaybackTime"
-                          [playerProperties]="elementModel.player"
-                          [dependencyDissolved]="dependencyDissolved"
-                          (onMediaValidStatusChanged)="onMediaValidStatusChanged.emit($event)"
-                          (elementValueChanged)="elementValueChanged.emit($event)">
+                                       [player]="player"
+                                       [project]="project"
+                                       [active]="active"
+                                       [id]="elementModel.id"
+                                       [savedPlaybackTime]="savedPlaybackTime"
+                                       [playerProperties]="elementModel.player"
+                                       [dependencyDissolved]="dependencyDissolved"
+                                       (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
+                                       (elementValueChanged)="elementValueChanged.emit($event)">
         <video #player
-               (playing)="onMediaPlayStatusChanged.emit(this.elementModel.id)"
-               (pause)="onMediaPlayStatusChanged.emit(null)"
+               (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
+               (pause)="mediaPlayStatusChanged.emit(null)"
                [style.width.%]="100"
                [src]="elementModel.src | safeResourceUrl">
         </video>

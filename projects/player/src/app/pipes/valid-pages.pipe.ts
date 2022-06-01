@@ -14,13 +14,15 @@ export class ValidPagesPipe implements PipeTransform {
   }
 
   private getValidPages(pages: Page[]): Record<string, string> {
-    return pages.reduce(
-      (validPages: Record<string, string>, page: Page, index: number) => ({
-        ...validPages,
-        [index.toString(10)]: `${this.translateService.instant(
-          'pageIndication', { index: index + 1 }
-        )}`
-      }), {}
-    );
+    return pages
+      .filter((page: Page): boolean => !page.alwaysVisible)
+      .reduce(
+        (validPages: Record<string, string>, page: Page, index: number) => ({
+          ...validPages,
+          [index.toString(10)]: `${this.translateService.instant(
+            'pageIndication', { index: index + 1 }
+          )}`
+        }), {}
+      );
   }
 }

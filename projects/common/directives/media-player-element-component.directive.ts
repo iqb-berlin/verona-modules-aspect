@@ -14,8 +14,8 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
   @Input() actualPlayingId!: Subject<string | null>;
   @Input() mediaStatusChanged!: Subject<string>;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() onMediaPlayStatusChanged = new EventEmitter<string | null>();
-  @Output() onMediaValidStatusChanged = new EventEmitter<string>();
+  @Output() mediaPlayStatusChanged = new EventEmitter<string | null>();
+  @Output() mediaValidStatusChanged = new EventEmitter<string>();
 
   abstract elementModel: AudioElement | VideoElement;
   active: boolean = true;

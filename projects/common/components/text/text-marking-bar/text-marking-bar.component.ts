@@ -8,27 +8,27 @@ import { TextElement } from 'common/models/elements/text/text';
   template: `
     <div class="marking-bar">
       <aspect-text-marking-button *ngIf="elementModel.highlightableYellow"
-                             [color]="selectionColors.yellow"
-                             [selected]="selectedColor === selectionColors.yellow"
-                             mode="mark"
-                             (selectedChanged)="onSelectionChange($event)">
+                                  [color]="selectionColors.yellow"
+                                  [isMarkingSelected]="selectedColor === selectionColors.yellow"
+                                  mode="mark"
+                                  (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button *ngIf="elementModel.highlightableTurquoise"
-                             [color]="selectionColors.turquoise"
-                             [selected]="selectedColor === selectionColors.turquoise"
-                             mode="mark"
-                             (selectedChanged)="onSelectionChange($event)">
+                                  [color]="selectionColors.turquoise"
+                                  [isMarkingSelected]="selectedColor === selectionColors.turquoise"
+                                  mode="mark"
+                                  (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button *ngIf="elementModel.highlightableOrange"
-                             [color]="selectionColors.orange"
-                             [selected]="selectedColor === selectionColors.orange"
-                             mode="mark"
-                             (selectedChanged)="onSelectionChange($event)">
+                                  [color]="selectionColors.orange"
+                                  [isMarkingSelected]="selectedColor === selectionColors.orange"
+                                  mode="mark"
+                                  (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button [color]="selectionColors.delete"
-                             [selected]="selectedColor === selectionColors.delete"
-                             mode="delete"
-                             (selectedChanged)="onSelectionChange($event)">
+                                  [isMarkingSelected]="selectedColor === selectionColors.delete"
+                                  mode="delete"
+                                  (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
     </div>`,
   styles: [
@@ -37,7 +37,7 @@ import { TextElement } from 'common/models/elements/text/text';
 })
 export class TextMarkingBarComponent {
   @Input() elementModel!: TextElement;
-  @Output() selectionChanged = new EventEmitter<{
+  @Output() markingDataChanged = new EventEmitter<{
     active: boolean,
     mode: 'mark' | 'delete',
     color: string,
@@ -49,14 +49,14 @@ export class TextMarkingBarComponent {
     yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
   };
 
-  onSelectionChange(selection: { selected: boolean, color: string, mode: 'mark' | 'delete' }): void {
-    this.selectedColor = selection.selected ? selection.color : 'none';
-    this.selectionChanged
+  changeMarkingData(selection: { isSelected: boolean, color: string, mode: 'mark' | 'delete' }): void {
+    this.selectedColor = selection.isSelected ? selection.color : 'none';
+    this.markingDataChanged
       .emit({
-        active: selection.selected,
+        active: selection.isSelected,
         mode: selection.mode,
         color: selection.color,
-        colorName: selection.selected ?
+        colorName: selection.isSelected ?
           Object.keys(this.selectionColors).find(key => this.selectionColors[key] === selection.color) : 'none'
       });
   }

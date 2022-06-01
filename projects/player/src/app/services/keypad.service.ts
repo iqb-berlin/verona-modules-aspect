@@ -3,7 +3,9 @@ import { TextFieldComponent } from 'common/components/input-elements/text-field.
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { InputService } from '../classes/input-service';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
-import { TextFieldSimpleComponent } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
+import {
+  TextFieldSimpleComponent
+} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { InputAssistancePreset } from 'common/models/elements/element';
 
 @Injectable({
@@ -13,16 +15,22 @@ export class KeypadService extends InputService {
   preset: InputAssistancePreset = null;
   position: 'floating' | 'right' = 'floating';
 
-  toggle(focusedElement: HTMLElement | null,
+  toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
          elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
-    boolean {
-    if (focusedElement) {
-      this.preset = elementComponent.elementModel.inputAssistancePreset;
-      this.position = elementComponent.elementModel.inputAssistancePosition;
-      this.isOpen = this.open(focusedElement, elementComponent);
+    void {
+    if (focusedTextInput.focused) {
+      this.open(focusedTextInput.inputElement, elementComponent);
     } else {
-      this.isOpen = false;
+      this.close();
     }
-    return this.isOpen;
+  }
+
+  open(inputElement: HTMLElement,
+       elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
+    void {
+    this.preset = elementComponent.elementModel.inputAssistancePreset;
+    this.position = elementComponent.elementModel.inputAssistancePosition;
+    this.setCurrentKeyInputElement(inputElement, elementComponent);
+    this.isOpen = true;
   }
 }

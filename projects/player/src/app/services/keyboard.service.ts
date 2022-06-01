@@ -3,7 +3,9 @@ import { InputService } from '../classes/input-service';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
-import { TextFieldSimpleComponent } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
+import {
+  TextFieldSimpleComponent
+} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +13,23 @@ import { TextFieldSimpleComponent } from 'common/components/compound-elements/cl
 export class KeyboardService extends InputService {
   alternativeKeyboardShowFrench: boolean = false;
 
-  toggle(focusedElement: HTMLElement | null,
+  toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
          elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent,
-         isMobileWithoutHardwareKeyboard: boolean): boolean {
-    if (focusedElement && isMobileWithoutHardwareKeyboard) {
-      this.alternativeKeyboardShowFrench = elementComponent.elementModel.softwareKeyboardShowFrench;
-      this.scrollElement(focusedElement);
-      this.isOpen = this.open(focusedElement, elementComponent);
+         isMobileWithoutHardwareKeyboard: boolean): void {
+    if (focusedTextInput.focused && isMobileWithoutHardwareKeyboard) {
+      this.open(focusedTextInput.inputElement, elementComponent);
     } else {
-      this.isOpen = false;
+      this.close();
     }
-    return this.isOpen;
+  }
+
+  open( inputElement: HTMLElement,
+        elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
+    void {
+    this.alternativeKeyboardShowFrench = elementComponent.elementModel.softwareKeyboardShowFrench;
+    this.scrollElement(inputElement);
+    this.setCurrentKeyInputElement(inputElement, elementComponent);
+    this.isOpen = true;
   }
 
   private scrollElement = (element: HTMLElement): void => {

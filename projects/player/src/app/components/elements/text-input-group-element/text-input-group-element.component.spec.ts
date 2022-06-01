@@ -47,8 +47,7 @@ describe('TextInputGroupElementComponent', () => {
   beforeEach(() => {
     mockUnitStateService = TestBed.inject(UnitStateService);
     fixture = TestBed.createComponent(TextInputGroupElementComponent);
-    spyOn(mockUnitStateService, 'registerElement')
-      .withArgs('test', 'test', document.createElement('div'), 1);
+    spyOn(mockUnitStateService, 'registerElement');
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 'test' });
     component = fixture.componentInstance;

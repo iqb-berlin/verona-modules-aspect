@@ -5,14 +5,14 @@
       #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: ClozeElement"
-      (childrenAdded)="onChildrenAdded($event)">
+      (childrenAdded)="registerCompoundChildren($event)">
   </aspect-cloze>
   <aspect-likert
       *ngIf="elementModel.type === 'likert'"
       #elementComponent
       [parentForm]="form"
       [elementModel]="elementModel | cast: LikertElement"
-      (childrenAdded)="onChildrenAdded($event)">
+      (childrenAdded)="registerCompoundChildren($event)">
   </aspect-likert>
 </form>
 

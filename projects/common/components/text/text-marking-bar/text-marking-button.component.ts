@@ -7,10 +7,10 @@ import {
   template: `
     <button type="button"
             class="marking-button"
-            [style.border-color]="selected ? 'black' : color"
+            [style.border-color]="isMarkingSelected ? 'black' : color"
             mat-mini-fab
             [style.background-color]="color"
-            (pointerdown)="emitSelectedChanged()">
+            (pointerdown)="selectMarking()">
       <mat-icon *ngIf="mode === 'mark'"
                 class="marking-icon">border_color
       </mat-icon>
@@ -25,18 +25,18 @@ import {
   ]
 })
 export class TextMarkingButtonComponent {
-  @Input() selected!: boolean;
+  @Input() isMarkingSelected!: boolean;
   @Input() color!: string;
   @Input() mode!: 'mark' | 'delete';
   @Input() element!: HTMLElement;
-  @Output() selectedChanged = new EventEmitter<{
-    selected: boolean,
+  @Output() selectedMarkingChanged = new EventEmitter<{
+    isSelected: boolean,
     mode: 'mark' | 'delete',
     color: string,
   }>();
 
-  emitSelectedChanged(): void {
-    this.selected = !this.selected;
-    this.selectedChanged.emit({ selected: this.selected, mode: this.mode, color: this.color });
+  selectMarking(): void {
+    this.isMarkingSelected = !this.isMarkingSelected;
+    this.selectedMarkingChanged.emit({ isSelected: this.isMarkingSelected, mode: this.mode, color: this.color });
   }
 }

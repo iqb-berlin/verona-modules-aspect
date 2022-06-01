@@ -48,7 +48,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     this.createForm((this.elementModel as CompoundElement).getChildElements() as InputElement[]);
   }
 
-  onChildrenAdded(children: ElementComponent[]): void {
+  registerCompoundChildren(children: ElementComponent[]): void {
     children.forEach(child => {
       const childModel = child.elementModel as InputElement;
       this.registerAtUnitStateService(
@@ -57,38 +57,46 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
         child,
         this.pageIndex);
       if (childModel.type === 'text-field-simple') {
-        const textFieldSimpleComponent = child as TextFieldSimpleComponent;
-        (child as TextFieldSimpleComponent)
-          .onFocusChanged
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(element => {
-            this.onFocusChanged(element, textFieldSimpleComponent, childModel);
-          });
-        (child as TextFieldSimpleComponent)
-          .onKeyDown
-          .pipe(takeUntil(this.ngUnsubscribe))
-          .subscribe(element => {
-            this.detectHardwareKeyboard(element, textFieldSimpleComponent);
-          });
+        this.manageKeyInputToggling(child as TextFieldSimpleComponent, childModel);
+        this.manageHardwareKeyBoardDetection(child as TextFieldSimpleComponent);
       }
     });
   }
 
-  private onFocusChanged(inputElement: HTMLElement | null,
+  private manageHardwareKeyBoardDetection(textFieldSimpleComponent: TextFieldSimpleComponent): void {
+    (textFieldSimpleComponent)
+      .hardwareKeyDetected
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.detectHardwareKeyboard();
+      });
+  }
+
+  private manageKeyInputToggling(textFieldSimpleComponent: TextFieldSimpleComponent, elementModel: InputElement): void {
+    (textFieldSimpleComponent)
+      .focusChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(focusedTextInput => {
+        this.toggleKeyInput(focusedTextInput, textFieldSimpleComponent, elementModel);
+      });
+  }
+
+  private toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                          elementComponent: TextFieldSimpleComponent,
                          elementModel: InputElement): void {
-    if (elementModel.inputAssistance) {
-      this.isKeypadOpen = this.keypadService.toggle(inputElement, elementComponent);
+    if (elementModel.inputAssistancePreset) {
+      this.keypadService.toggle(focusedTextInput, elementComponent);
+      this.isKeypadOpen = this.keypadService.isOpen;
     }
     if (elementModel.showSoftwareKeyboard && !elementModel.readOnly) {
-      this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
+      this.keyboardService
+        .toggle(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
     }
   }
 
-  private detectHardwareKeyboard(inputElement: HTMLElement | null,
-                                 elementComponent: TextFieldSimpleComponent): void {
+  private detectHardwareKeyboard(): void {
     this.deviceService.hasHardwareKeyboard = true;
-    this.keyboardService.toggle(inputElement, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
+    this.keyboardService.close();
   }
 }
 

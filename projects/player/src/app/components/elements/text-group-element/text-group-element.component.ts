@@ -9,7 +9,6 @@ import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
-import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
@@ -18,7 +17,7 @@ import { TextElement } from 'common/models/elements/text/text';
   styleUrls: ['./text-group-element.component.scss']
 })
 export class TextGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('elementComponent') elementComponent!: ElementComponent;
+  @ViewChild('elementComponent') elementComponent!: TextComponent;
   TextElement!: TextElement;
 
   initialValue: string = '';
@@ -54,78 +53,81 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
       this.pageIndex);
   }
 
-  applySelection(
-    selection: { active: boolean; mode: 'mark' | 'delete'; color: string; colorName: string | undefined },
-    elementComponent: TextComponent
+  applyMarkingData(
+    selection: { active: boolean; mode: 'mark' | 'delete'; color: string; colorName: string | undefined }
   ): void {
     if (selection.active) {
       this.selectedColor = selection.color;
       this.selectedMode = selection.mode;
-      this.applySelectionToText(selection.mode, selection.color, elementComponent);
+      this.applyMarkingDataToText(selection.mode, selection.color);
     } else {
       this.selectedColor = null;
       this.selectedMode = null;
     }
   }
 
-  startSelection(pointerDown: PointerEvent, elementComponent: TextComponent): void {
+  startTextSelection(pointerDown: PointerEvent): void {
     this.isMarkingBarOpen = false;
     this.nativeEventService.pointerUp
       .pipe(takeUntil(this.ngUnsubscribe), first())
       .subscribe((pointerUp: PointerEvent) => {
-        this.stopSelection(
-          this.getClientPointFromEvent(pointerUp),
-          pointerUp.ctrlKey,
-          this.getClientPointFromEvent(pointerDown),
-          elementComponent
+        this.stopTextSelection(
+          {
+            startSelectionX: pointerDown.clientX,
+            startSelectionY: pointerDown.clientY,
+            stopSelectionX: pointerUp.clientX,
+            stopSelectionY: pointerUp.clientY
+          },
+          pointerUp.ctrlKey
         );
       });
   }
 
-  applySelectionToText(mode: 'mark' | 'delete', color: string, elementComponent: TextComponent): void {
+  applyMarkingDataToText(mode: 'mark' | 'delete', color: string): void {
     TextMarkingService
-      .applySelection(
+      .applyMarkingDataToText(
         mode,
         color,
-        elementComponent
+        this.elementComponent
       );
     this.isMarkingBarOpen = false;
   }
 
-  private stopSelection(
-    mouseUp: { clientX: number, clientY: number },
-    ctrlKey: boolean,
-    downPosition: { clientX: number, clientY: number },
-    elementComponent: TextComponent
+  private stopTextSelection(
+    textSelectionPosition: {
+      stopSelectionX: number, stopSelectionY: number, startSelectionX: number, startSelectionY: number
+    },
+    isControlKeyPressed: boolean // do not allow multiple selections (FF)
   ) {
     const selection = window.getSelection();
     if (selection && TextMarkingService.isSelectionValid(selection) && selection.rangeCount > 0) {
-      if (!TextMarkingService.isRangeInside(selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement) ||
-        (ctrlKey)) {
+      if (!TextMarkingService
+        .isRangeInside(
+          selection.getRangeAt(0), this.elementComponent.textContainerRef.nativeElement
+        ) || (isControlKeyPressed)) {
         selection.removeAllRanges();
       } else if (this.selectedMode && this.selectedColor) {
-        this.applySelectionToText(this.selectedMode, this.selectedColor, elementComponent);
+        this.applyMarkingDataToText(this.selectedMode, this.selectedColor);
       } else if (!this.isMarkingBarOpen) {
-        this.openMarkingBar(mouseUp, downPosition, elementComponent);
+        this.openMarkingBar(textSelectionPosition);
       }
     }
   }
 
-  private getClientPointFromEvent = (event: PointerEvent): { clientX: number, clientY: number } => ({
-    clientX: event.clientX,
-    clientY: event.clientY
-  });
-
   private openMarkingBar(
-    mouseUp: { clientX: number, clientY: number },
-    downPosition: { clientX: number, clientY: number },
-    elementComponent: TextComponent
+    textSelectionPosition: {
+      stopSelectionX: number, stopSelectionY: number, startSelectionX: number, startSelectionY: number
+    }
   ) {
-    this.markingBarPosition.left = downPosition.clientX > mouseUp.clientX ? downPosition.clientX : mouseUp.clientX;
-    this.markingBarPosition.top = downPosition.clientY > mouseUp.clientY ? downPosition.clientY : mouseUp.clientY;
+    this.markingBarPosition.left =
+      textSelectionPosition.startSelectionX > textSelectionPosition.stopSelectionX ?
+        textSelectionPosition.startSelectionX : textSelectionPosition.stopSelectionX;
+    this.markingBarPosition.top =
+      textSelectionPosition.startSelectionY > textSelectionPosition.stopSelectionY ?
+        textSelectionPosition.startSelectionY : textSelectionPosition.stopSelectionY;
     this.textComponentContainerScrollTop =
-      elementComponent.domElement.closest('.fixed-size-content')?.scrollTop || 0;
-    this.textComponentRect = elementComponent.domElement.getBoundingClientRect();
+      this.elementComponent.domElement.closest('.fixed-size-content')?.scrollTop || 0;
+    this.textComponentRect = this.elementComponent.domElement.getBoundingClientRect();
     this.isMarkingBarOpen = true;
     this.nativeEventService.pointerDown
       .pipe(takeUntil(this.ngUnsubscribe), first())

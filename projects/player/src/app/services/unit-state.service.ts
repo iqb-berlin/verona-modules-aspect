@@ -2,11 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import {
-  Progress,
-  StatusChangeElement,
-  ElementCode,
-  ElementCodeStatus,
-  ElementCodeStatusValue
+  Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue
 } from 'player/modules/verona/models/verona';
 import { IntersectionDetector } from '../classes/intersection-detector';
 import { LogService } from 'player/modules/logging/services/log.service';
@@ -20,7 +16,7 @@ export class UnitStateService {
   private _presentedPageAdded = new Subject<number>();
   private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
-  private elementPageMap: { [elementId: string]: number } = {};
+  private elementIdPageIndexMap: { [elementId: string]: number } = {};
   private intersectionDetector: IntersectionDetector;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
@@ -30,10 +26,6 @@ export class UnitStateService {
   getElementCodeById(id: string): ElementCode | undefined {
     return this.elementCodes
       .find((elementCode: ElementCode): boolean => elementCode.id === id);
-  }
-
-  isRegistered(id: string): boolean {
-    return !!(this.getElementCodeById(id));
   }
 
   set elementCodes(unitStateElementCodes: ElementCode[]) {
@@ -63,14 +55,8 @@ export class UnitStateService {
                   elementValue: InputElementValue,
                   domElement: Element,
                   pageIndex: number): void {
-    this.elementPageMap[elementId] = pageIndex;
-    this.addElementCode(elementId, elementValue);
-    this.intersectionDetector.observe(domElement, elementId);
-    this.intersectionDetector.intersecting
-      .subscribe((id: string) => {
-        this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
-        this.intersectionDetector.unobserve(id);
-      });
+    this.elementIdPageIndexMap[elementId] = pageIndex;
+    this.addElementCode(elementId, elementValue, domElement);
   }
 
   changeElementCodeValue(elementValue: ValueChangeElement): void {
@@ -85,15 +71,25 @@ export class UnitStateService {
   }
 
   reset(): void {
-    this.elementPageMap = {};
     this.elementCodes = [];
     this.presentedPages = [];
+    this.elementIdPageIndexMap = {};
+    this.intersectionDetector = new IntersectionDetector(this.document, '0px 0px 0px 0px');
+  }
+
+  private addIntersectionDetection(elementId: string, domElement: Element): void {
+    this.intersectionDetector.observe(domElement, elementId);
+    this.intersectionDetector.intersecting
+      .subscribe((id: string) => {
+        this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
+        this.intersectionDetector.unobserve(id);
+      });
   }
 
   private get elementPageIndices(): number[] {
-    return Object.keys(this.elementPageMap).reduce((elementPageIndices: number[], elementId: string) => {
-      if (!elementPageIndices.includes(this.elementPageMap[elementId])) {
-        elementPageIndices.push(this.elementPageMap[elementId]);
+    return Object.keys(this.elementIdPageIndexMap).reduce((elementPageIndices: number[], elementId: string) => {
+      if (!elementPageIndices.includes(this.elementIdPageIndexMap[elementId])) {
+        elementPageIndices.push(this.elementIdPageIndexMap[elementId]);
       }
       return elementPageIndices;
     }, []);
@@ -109,18 +105,23 @@ export class UnitStateService {
   private setElementCodeStatus(id: string, status: ElementCodeStatus): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
-      if (ElementCodeStatusValue[status] >= ElementCodeStatusValue[unitStateElementCode.status]) {
+      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[unitStateElementCode.status]) {
         unitStateElementCode.status = status;
         this._elementCodeChanged.next(unitStateElementCode);
-        this.checkPresentedPageStatus(id);
+        this.checkPresentedPageStatus(this.elementIdPageIndexMap[id], true);
       }
     }
   }
 
-  private checkPresentedPageStatus(id: string): void {
-    const pageIndex = this.elementPageMap[id];
+  private buildPresentedPages(): void {
+    const uniqPages = [...new Set( Object.values(this.elementIdPageIndexMap))];
+    uniqPages.forEach((pageIndex, index) => this
+      .checkPresentedPageStatus(pageIndex, index === uniqPages.length - 1));
+  }
+
+  private checkPresentedPageStatus(pageIndex: number, emitEvent: boolean): void {
     if (this.presentedPages.indexOf(pageIndex) === -1) {
-      const notDisplayedElements = Object.entries(this.elementPageMap)
+      const notDisplayedElements = Object.entries(this.elementIdPageIndexMap)
         .filter((map: [string, number]): boolean => map[1] === pageIndex)
         .map((pageElement: [string, number]): ElementCode | undefined => this
           .getElementCodeById(pageElement[0]))
@@ -128,20 +129,30 @@ export class UnitStateService {
           ElementCodeStatusValue.DISPLAYED);
       if (notDisplayedElements.length === 0) {
         this.presentedPages.push(pageIndex);
-        this._presentedPageAdded.next(pageIndex);
+        if (emitEvent) {
+          this._presentedPageAdded.next(pageIndex);
+        }
       }
     } else {
-      LogService.info(`player: page ${pageIndex} is already presented`);
+      LogService.warn(`player: page ${pageIndex} is already presented`);
     }
   }
 
-  private addElementCode(id: string, value: InputElementValue): void {
-    if (!this.getElementCodeById(id)) {
-      const unitStateElementCode: ElementCode = { id: id, value: value, status: 'NOT_REACHED' };
+  private addElementCode(id: string, value: InputElementValue, domElement: Element): void {
+    let unitStateElementCode = this.getElementCodeById(id);
+    if (!unitStateElementCode) {
+      // when reloading a unit, elementCodes are already pushed
+      unitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.elementCodes.push(unitStateElementCode);
       this._elementCodeChanged.next(unitStateElementCode);
     } else {
-      this.checkPresentedPageStatus(id);
+      // if all elements are registered, we can rebuild the presentedPages array
+      if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
+        this.buildPresentedPages();
+      }
+    }
+    if (unitStateElementCode.status === 'NOT_REACHED') {
+      this.addIntersectionDetection(id, domElement);
     }
   }
 }

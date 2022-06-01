@@ -5,8 +5,8 @@
     [savedPlaybackTime]="initialValue"
     [actualPlayingId]="mediaPlayerService.actualPlayingId"
     [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
-    (onMediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
-    (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingId($event)"
+    (mediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
+    (mediaPlayStatusChanged)="mediaPlayerService.setActualPlayingId($event)"
     (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
 </aspect-audio>
 
@@ -17,7 +17,7 @@
     [actualPlayingId]="mediaPlayerService.actualPlayingId"
     [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
     [savedPlaybackTime]="initialValue"
-    (onMediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
-    (onMediaPlayStatusChanged)="mediaPlayerService.setActualPlayingId($event)"
+    (mediaValidStatusChanged)="mediaPlayerService.setValidStatusChanged($event)"
+    (mediaPlayStatusChanged)="mediaPlayerService.setActualPlayingId($event)"
     (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
 </aspect-video>

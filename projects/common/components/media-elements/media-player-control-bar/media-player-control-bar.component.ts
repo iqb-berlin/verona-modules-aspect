@@ -18,21 +18,21 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Input() active!: boolean;
   @Input() dependencyDissolved!: boolean;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() onMediaValidStatusChanged = new EventEmitter<string>();
+  @Output() mediaValidStatusChanged = new EventEmitter<string>();
 
-  duration!: number;
-  currentTime!: number;
-  currentRestTime!: number;
-  started!: boolean;
-  playing!: boolean;
-  pausing!: boolean;
-  runCounter!: number;
-  lastVolume!: number;
+  duration: number = 0;
+  currentTime: number = 0;
+  currentRestTime: number = 0;
+  started: boolean = false;
+  playing: boolean = false;
+  pausing: boolean = false;
+  runCounter: number = 0;
+  lastVolume: number = 0;
   restTimeMode: boolean = true;
-  showHint!: boolean;
-  disabled!: boolean;
-  playbackTime!: number;
-  valid!: boolean;
+  showHint: boolean = false;
+  disabled: boolean = true;
+  playbackTime: number = 0;
+  valid: boolean = false;
 
   ngOnInit(): void {
     this.playbackTime = this.savedPlaybackTime || this.playerProperties.playbackTime;
@@ -84,11 +84,11 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     this.player.pause();
   }
 
-  onTimeChange(event: MatSliderChange): void {
+  setCurrentTime(event: MatSliderChange): void {
     this.player.currentTime = event.value ? event.value : 0;
   }
 
-  onVolumeChange(event: MatSliderChange): void {
+  setVolume(event: MatSliderChange): void {
     event.source.value = event.value && event.value > this.playerProperties.minVolume ?
       event.value : this.playerProperties.minVolume;
     this.player.volume = event.source.value;
@@ -110,7 +110,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private checkValidState(runCounter: number): boolean {
     this.valid = this.playerProperties.minRuns === 0 ? true : runCounter >= this.playerProperties.minRuns;
     if (this.valid) {
-      this.onMediaValidStatusChanged.emit(this.id);
+      this.mediaValidStatusChanged.emit(this.id);
     }
     return this.valid;
   }

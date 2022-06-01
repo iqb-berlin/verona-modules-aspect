@@ -19,8 +19,8 @@ describe('TextGroupElementComponent', () => {
     @Input() elementModel!: TextElement;
     @Input() savedText!: string;
     @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-    @Output() startSelection = new EventEmitter<PointerEvent>();
-    @Output() applySelection = new EventEmitter<{
+    @Output() textSelectionStart = new EventEmitter<PointerEvent>();
+    @Output() markingDataChanged = new EventEmitter<{
       active: boolean,
       mode: 'mark' | 'delete',
       color: string,
@@ -43,8 +43,7 @@ describe('TextGroupElementComponent', () => {
   beforeEach(() => {
     mockUnitStateService = TestBed.inject(UnitStateService);
     fixture = TestBed.createComponent(TextGroupElementComponent);
-    spyOn(mockUnitStateService, 'registerElement')
-      .withArgs('test', 0, document.createElement('div'), 1);
+    spyOn(mockUnitStateService, 'registerElement');
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: [] });
     component = fixture.componentInstance;
@@ -54,7 +53,6 @@ describe('TextGroupElementComponent', () => {
       width: 0,
       height: 0
     });
-    fixture.detectChanges();
   });
 
   it('should create', () => {

@@ -16,7 +16,7 @@ describe('TextMarkingService', () => {
     const text =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     const expectedArray = ['6-11-#f9f871'];
-    expect(TextMarkingService.getMarkingData(text)).toEqual(expectedArray);
+    expect(TextMarkingService.getMarkedTextIndices(text)).toEqual(expectedArray);
   });
 
   it('should mark a text with given selections ', () => {
@@ -24,7 +24,7 @@ describe('TextMarkingService', () => {
     const expectedText =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     const markings = ['6-11-#f9f871'];
-    expect(TextMarkingService.restoreMarkings(markings, text)).toEqual(expectedText);
+    expect(TextMarkingService.restoreMarkedTextIndices(markings, text)).toEqual(expectedText);
   });
 
 });

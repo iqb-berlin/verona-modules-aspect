@@ -13,7 +13,7 @@
         [position]="keypadService.position"
         [preset]="keypadService.preset"
         [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
-        (backSpaceClicked)="keypadService.deleterCharacters(true)"
+        (backSpaceClicked)="keypadService.deleteCharacters(true)"
         (keyClicked)="keypadService.enterKey($event)">
     </aspect-keypad>
   </div>
@@ -22,6 +22,6 @@
       @keyboardSlideInOut
       [showFrenchCharacters]="keyboardService.elementComponent.elementModel.softwareKeyboardShowFrench"
       (keyClicked)="keyboardService.enterKey($event)"
-      (backspaceClicked)="keyboardService.deleterCharacters(true)">
+      (backspaceClicked)="keyboardService.deleteCharacters(true)">
   </aspect-keyboard>
 </div>

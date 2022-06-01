@@ -8,18 +8,18 @@ import { TextAreaElement } from 'common/models/elements/input-elements/text-area
   selector: 'aspect-text-area',
   template: `
     <mat-form-field
-        [ngClass]="{ 'no-label' : !elementModel.label}"
-        [style.width.%]="100"
-        [style.height.%]="100"
-        [style.min-height.%]="100"
-        aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
-        [style.color]="elementModel.styling.fontColor"
-        [style.font-family]="elementModel.styling.font"
-        [style.font-size.px]="elementModel.styling.fontSize"
-        [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-        [appearance]="$any(elementModel.appearance)">
+      [ngClass]="{ 'no-label' : !elementModel.label}"
+      [style.width.%]="100"
+      [style.height.%]="100"
+      [style.min-height.%]="100"
+      aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
+      [style.color]="elementModel.styling.fontColor"
+      [style.font-family]="elementModel.styling.font"
+      [style.font-size.px]="elementModel.styling.fontSize"
+      [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+      [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+      [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+      [appearance]="$any(elementModel.appearance)">
       <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
       <textarea matInput #input
                 autocomplete="off"
@@ -34,9 +34,9 @@ import { TextAreaElement } from 'common/models/elements/input-elements/text-area
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
-                (keydown)="elementModel.showSoftwareKeyboard ? onKeyDown.emit(input) : null"
-                (focus)="onFocusChanged.emit(input)"
-                (blur)="onFocusChanged.emit(null)">
+                (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
+                (focus)="focusChanged.emit({ inputElement: input, focused: true })"
+                (blur)="focusChanged.emit({ inputElement: input, focused: false })">
       </textarea>
       <mat-error *ngIf="elementFormControl.errors">
         {{elementFormControl.errors | errorTransform: elementModel}}
@@ -50,6 +50,6 @@ import { TextAreaElement } from 'common/models/elements/input-elements/text-area
 })
 export class TextAreaComponent extends FormElementComponent {
   @Input() elementModel!: TextAreaElement;
-  @Output() onFocusChanged = new EventEmitter<HTMLElement | null>();
-  @Output() onKeyDown = new EventEmitter<HTMLElement>();
+  @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
+  @Output() hardwareKeyDetected = new EventEmitter();
 }

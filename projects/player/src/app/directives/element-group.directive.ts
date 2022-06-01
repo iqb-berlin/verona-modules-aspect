@@ -12,10 +12,8 @@ export abstract class ElementGroupDirective {
   registerAtUnitStateService(
     id: string, value: InputElementValue, elementComponent: ElementComponent, pageIndex: number
   ): void {
-    if (!this.unitStateService.isRegistered(id)) {
-      this.unitStateService.registerElement(
-        id, value, elementComponent.domElement, pageIndex
-      );
-    }
+    this.unitStateService.registerElement(
+      id, value, elementComponent.domElement, pageIndex
+    );
   }
 }

@@ -1,6 +1,6 @@
 import { Directive, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import {
-  PlayerState, RunningState, VopContinueCommand, VopGetStateRequest, VopStopCommand
+  PlayerState, RunningState
 } from 'player/modules/verona/models/verona';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -13,7 +13,7 @@ import { LogService } from 'player/modules/logging/services/log.service';
 })
 export class PlayerStateDirective implements OnInit, OnChanges {
   @Input() validPages!: Record<string, string>;
-  @Input() currentPlayerPageIndex!: number;
+  @Input() currentPageIndex!: number;
   @Input() isPlayerRunning!: BehaviorSubject<boolean>;
 
   private ngUnsubscribe = new Subject<void>();
@@ -29,7 +29,7 @@ export class PlayerStateDirective implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.currentPlayerPageIndex) {
+    if (changes.currentPageIndex) {
       this.sendVopStateChangedNotification();
     }
   }
@@ -37,43 +37,28 @@ export class PlayerStateDirective implements OnInit, OnChanges {
   private initSubscriptions(): void {
     this.veronaSubscriptionService.vopContinueCommand
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((message: VopContinueCommand): void => this.onContinue(message));
+      .subscribe(() => this.setAndSendRunningState(true));
     this.veronaSubscriptionService.vopStopCommand
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((message: VopStopCommand): void => this.onStop(message));
+      .subscribe(()  => this.setAndSendRunningState(false));
     this.veronaSubscriptionService.vopGetStateRequest
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((message: VopGetStateRequest): void => this.onGetStateRequest(message));
+      .subscribe(message => this.setAndSendRunningState((!message.stop && this.state === 'running')));
   }
 
   private get state(): RunningState {
     return this.isPlayerRunning.getValue() ? 'running' : 'stopped';
   }
 
-  private onContinue(message: VopContinueCommand): void {
-    LogService.info('player: onContinue', message);
-    this.isPlayerRunning.next(true);
+  private setAndSendRunningState(isRunning: boolean): void {
+    this.isPlayerRunning.next(isRunning);
     this.sendVopStateChangedNotification();
-  }
-
-  private onStop(message: VopStopCommand): void {
-    LogService.info('player: onStop', message);
-    this.isPlayerRunning.next(false);
-    this.sendVopStateChangedNotification();
-  }
-
-  private onGetStateRequest(message: VopGetStateRequest): void {
-    LogService.info('player: onGetStateRequest', message);
-    if (message.stop) {
-      this.isPlayerRunning.next(false);
-    }
-    this.sendVopStateChangedNotification(true);
   }
 
   private sendVopStateChangedNotification(requested:boolean = false): void {
     const playerState: PlayerState = {
       state: this.state,
-      currentPage: this.currentPlayerPageIndex.toString(10),
+      currentPage: this.currentPageIndex.toString(10),
       validPages: this.validPages
     };
     LogService.info('player: sendVopStateChangedNotification', playerState);

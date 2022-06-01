@@ -2,8 +2,8 @@
     #elementComponent
     [elementModel]="elementModel | cast: TextElement"
     [savedText]="initialValue"
-    (applySelection)="applySelection($event, elementComponent)"
-    (startSelection)="startSelection($event, elementComponent)"
+    (markingDataChanged)="applyMarkingData($event)"
+    (textSelectionStart)="startTextSelection($event)"
     (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
 </aspect-text>
 <aspect-floating-marking-bar
@@ -11,6 +11,6 @@
     [isMarkingBarOpen]="isMarkingBarOpen"
     [textComponentRect]="textComponentRect"
     [textComponentContainerScrollTop]="textComponentContainerScrollTop"
-    [position]="markingBarPosition"
-    (applySelection)="applySelectionToText($event.mode, $event.color, elementComponent)">
+    [markingBarPosition]="markingBarPosition"
+    (markingDataChanged)="applyMarkingDataToText($event.mode, $event.color)">
 </aspect-floating-marking-bar>

@@ -107,8 +107,7 @@ export class SanitizationService {
     if (newElement.type === 'toggle-button') {
       newElement = SanitizationService.handleToggleButtonElement(newElement as ToggleButtonElement);
     }
-    // TODO: drop-list-simple?
-    if (newElement.type === 'drop-list') {
+    if (['drop-list', 'drop-list-simple'].includes(newElement.type as string)) {
       newElement = this.handleDropListElement(newElement as Record<string, UIElementValue>);
     }
     if (['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button']

@@ -108,23 +108,23 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
       });
     }
     if (dragItemData.dragType === 'move') {
-      this.unitService.updateElementsProperty(
+      this.unitService.updateElementsPositionProperty(
         [event.item.data.element],
         'gridColumn',
         event.container.data.gridCoordinates![0]
       );
-      this.unitService.updateElementsProperty(
+      this.unitService.updateElementsPositionProperty(
         [dragItemData.element],
         'gridRow',
         event.container.data.gridCoordinates![1]
       );
     } else if (event.item.data.dragType === 'resize') {
-      this.unitService.updateElementsProperty(
+      this.unitService.updateElementsPositionProperty(
         [dragItemData.element],
         'gridColumnEnd',
         event.container.data.gridCoordinates![0] + 1
       );
-      this.unitService.updateElementsProperty(
+      this.unitService.updateElementsPositionProperty(
         [dragItemData.element],
         'gridRowEnd',
         event.container.data.gridCoordinates![1] + 1

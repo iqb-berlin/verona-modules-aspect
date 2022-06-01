@@ -28,7 +28,6 @@ export abstract class UIElement {
   constructor(element: Partial<UIElement>, ...args: unknown[]) {
     if (!element.type) throw Error('Element has no type!');
     this.type = element.type;
-    if (element.id) this.id = element.id;
 
     // IDManager is an optional parameter. When given, check/repair and register the ID.
     if (args[0]) {
@@ -37,9 +36,14 @@ export abstract class UIElement {
         this.id = idManager.getNewID(element.type as string);
       } else if (!IDManager.getInstance().isIdAvailable(element.id)) {
         this.id = idManager.getNewID(element.type as string);
+      } else {
+        this.id = element.id;
       }
       idManager.addID(this.id);
-      this.height = 1000;
+    } else if (element.id) {
+      this.id = element.id;
+    } else {
+      throw Error('No ID for element!');
     }
 
     if (element.width) this.width = element.width;

@@ -245,8 +245,8 @@ export class SanitizationService {
 
     // TODO: create a sub method
     if (element.document) {
-      childElements = new ClozeElement(element).getChildElements();
       doc = element.document as ClozeDocument;
+      childElements = ClozeElement.getDocumentChildElements(doc);
     } else {
       childElements = (element.parts as any[])
         .map((el: any) => el

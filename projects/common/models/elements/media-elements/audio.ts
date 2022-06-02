@@ -5,7 +5,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { AudioComponent } from 'common/components/media-elements/audio.component';
 
 export class AudioElement extends PlayerElement implements PositionedUIElement {
-  src: string | undefined;
+  src: string | null = null;
   position: PositionProperties;
 
   constructor(element: Partial<AudioElement>, ...args: unknown[]) {

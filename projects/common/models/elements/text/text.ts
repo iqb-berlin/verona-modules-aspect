@@ -8,7 +8,6 @@ import {
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
-import { IDManager } from 'common/util/id-manager';
 
 export class TextElement extends UIElement implements PositionedUIElement {
   text: string = 'Lorem ipsum dolor sit amet';

@@ -5,7 +5,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ImageComponent } from 'common/components/media-elements/image.component';
 
 export class ImageElement extends UIElement implements PositionedUIElement {
-  src: string | undefined;
+  src: string | null = null;
   scale: boolean = false;
   magnifier: boolean = false;
   magnifierSize: number = 100;

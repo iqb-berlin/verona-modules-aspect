@@ -16,7 +16,7 @@ export class Page {
   constructor(page?: Partial<Page>, idManager?: IDManager) {
     if (page?.hasMaxWidth) this.hasMaxWidth = page.hasMaxWidth;
     if (page?.maxWidth) this.maxWidth = page.maxWidth;
-    if (page?.margin) this.margin = page.margin;
+    if (page?.margin !== undefined) this.margin = page.margin;
     if (page?.backgroundColor) this.backgroundColor = page.backgroundColor;
     if (page?.alwaysVisible) this.alwaysVisible = page.alwaysVisible;
     if (page?.alwaysVisiblePagePosition) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;

@@ -31,7 +31,9 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     if (element.rowCount) this.rowCount = element.rowCount;
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
-    if (element.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+    if (element.restrictedToInputAssistanceChars !== undefined) {
+      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+    }
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     this.position = ElementFactory.initPositionProps(element.position);

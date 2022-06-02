@@ -17,7 +17,7 @@ export class ButtonElement extends UIElement implements PositionedUIElement {
 
   constructor(element: Partial<ButtonElement>, ...args: unknown[]) {
     super(element, ...args);
-    if (element.label) this.label = element.label;
+    if (element.label !== undefined) this.label = element.label;
     if (element.imageSrc) this.imageSrc = element.imageSrc;
     if (element.asLink) this.asLink = element.asLink;
     if (element.action) this.action = element.action;

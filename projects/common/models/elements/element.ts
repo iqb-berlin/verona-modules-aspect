@@ -46,8 +46,8 @@ export abstract class UIElement {
       throw Error('No ID for element!');
     }
 
-    if (element.width) this.width = element.width;
-    if (element.height) this.height = element.height;
+    if (element.width !== undefined) this.width = element.width;
+    if (element.height !== undefined) this.height = element.height;
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -84,10 +84,10 @@ export abstract class InputElement extends UIElement {
 
   protected constructor(element: Partial<InputElement>, ...args: unknown[]) {
     super(element, ...args);
-    if (element.label) this.label = element.label;
-    if (element.value) this.value = element.value;
+    if (element.label !== undefined) this.label = element.label;
+    if (element.value !== undefined) this.value = element.value;
     if (element.required) this.required = element.required;
-    if (element.requiredWarnMessage) this.requiredWarnMessage = element.requiredWarnMessage;
+    if (element.requiredWarnMessage !== undefined) this.requiredWarnMessage = element.requiredWarnMessage;
     if (element.readOnly) this.readOnly = element.readOnly;
   }
 }

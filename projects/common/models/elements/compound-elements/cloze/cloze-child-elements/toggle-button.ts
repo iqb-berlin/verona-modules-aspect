@@ -21,7 +21,7 @@ export class ToggleButtonElement extends InputElement {
     if (element.richTextOptions) this.richTextOptions = element.richTextOptions;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
     if (element.verticalOrientation) this.verticalOrientation = element.verticalOrientation;
-    if (element.dynamicWidth !== undefined) this.dynamicWidth = element.dynamicWidth; // TODO klappt das?
+    if (element.dynamicWidth !== undefined) this.dynamicWidth = element.dynamicWidth;
     this.styling = {
       ...ElementFactory.initStylingProps({
         lineHeight: 135,

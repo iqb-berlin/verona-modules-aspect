@@ -23,7 +23,9 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
     super({ width: 230, height: 80, ...element }, ...args);
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
-    if (element.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+    if (element.restrictedToInputAssistanceChars !== undefined) {
+      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+    }
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     this.position = ElementFactory.initPositionProps(element.position);

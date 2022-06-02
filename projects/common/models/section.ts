@@ -1,5 +1,4 @@
 import { PositionedUIElement, UIElement } from 'common/models/elements/element';
-import { ElementFactory } from 'common/util/element.factory';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { TextElement } from 'common/models/elements/text/text';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
@@ -64,11 +63,11 @@ export class Section {
   constructor(section?: Partial<Section>, idManager?: IDManager) {
     if (section?.height) this.height = section.height;
     if (section?.backgroundColor) this.backgroundColor = section.backgroundColor;
-    if (section?.dynamicPositioning) this.dynamicPositioning = section.dynamicPositioning;
-    if (section?.autoColumnSize) this.autoColumnSize = section.autoColumnSize;
-    if (section?.autoRowSize) this.autoRowSize = section.autoRowSize;
-    if (section?.gridColumnSizes) this.gridColumnSizes = section.gridColumnSizes;
-    if (section?.gridRowSizes) this.gridRowSizes = section.gridRowSizes;
+    if (section?.dynamicPositioning !== undefined) this.dynamicPositioning = section.dynamicPositioning;
+    if (section?.autoColumnSize !== undefined) this.autoColumnSize = section.autoColumnSize;
+    if (section?.autoRowSize !== undefined) this.autoRowSize = section.autoRowSize;
+    if (section?.gridColumnSizes !== undefined) this.gridColumnSizes = section.gridColumnSizes;
+    if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
     if (section?.activeAfterID) this.activeAfterID = section.activeAfterID;
     this.elements =
       section?.elements?.map(element => Section.createElement(element, idManager)) ||

@@ -8,7 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
-import { DragNDropValueObject, TextImageLabel, UIElement, UIElementValue } from 'common/models/elements/element';
+import { DragNDropValueObject, TextImageLabel, UIElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-properties',
@@ -53,8 +53,8 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       );
   }
 
-  static createCombinedProperties(elements: Record<string, UIElementValue>[]): Record<string, UIElementValue> {
-    const combinedProperties: Record<string, UIElementValue> = { ...elements[0], id: [elements[0]?.id as string] };
+  static createCombinedProperties(elements: UIElement[]): Partial<UIElement> {
+    const combinedProperties: Partial<UIElement> & { id: string | string[] } = { ...elements[0], id: elements[0].id };
 
     for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
       const elementToMerge = elements[elementCounter];
@@ -63,11 +63,11 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
           if (typeof combinedProperties[property] === 'object' &&
             !Array.isArray(combinedProperties[property]) &&
             combinedProperties[property] !== null) {
-            (combinedProperties[property] as Record<string, UIElementValue>) =
+            (combinedProperties[property] as UIElement) =
               ElementPropertiesPanelComponent.createCombinedProperties(
-                [(combinedProperties[property] as Record<string, UIElementValue>),
-                  (elementToMerge[property] as Record<string, UIElementValue>)]
-              );
+                [(combinedProperties[property] as UIElement),
+                  (elementToMerge[property] as UIElement)]
+              ) as UIElement;
           } else if (JSON.stringify(combinedProperties[property]) !== JSON.stringify(elementToMerge[property])) {
             if (property === 'id') {
               (combinedProperties.id as string[]).push(elementToMerge.id as string);

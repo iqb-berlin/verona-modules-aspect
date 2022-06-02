@@ -27,7 +27,7 @@ import { FrameElement } from 'common/models/elements/frame/frame';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 
 export class Section {
-  [index: string]: any;
+  [index: string]: unknown;
   elements: PositionedUIElement[] = [];
   height: number = 400;
   backgroundColor: string = '#ffffff';
@@ -38,7 +38,7 @@ export class Section {
   gridRowSizes: string = '1fr';
   activeAfterID: string | null = null;
 
-  static ELEMENT_CLASSES: Record<string, any> = {
+  static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
     'text': TextElement,
     'button': ButtonElement,
     'text-field': TextFieldElement,
@@ -75,11 +75,11 @@ export class Section {
       [];
   }
 
-  static createElement(element: { type: string } & Partial<UIElement>, idManager?: IDManager) {
-    return new Section.ELEMENT_CLASSES[element.type](element, idManager);
+  static createElement(element: { type: string } & Partial<UIElement>, idManager?: IDManager): PositionedUIElement {
+    return new Section.ELEMENT_CLASSES[element.type](element, idManager) as PositionedUIElement;
   }
 
-  setProperty(property: string, value: any): void {
+  setProperty(property: string, value: UIElementValue): void {
     this[property] = value;
   }
 

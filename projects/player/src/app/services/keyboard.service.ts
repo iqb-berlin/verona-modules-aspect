@@ -34,7 +34,9 @@ export class KeyboardService extends InputService {
 
   private scrollElement = (element: HTMLElement): void => {
     if (this.isHiddenByKeyboard(element)) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 200);
     }
   };
 

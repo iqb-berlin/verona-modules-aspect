@@ -2,7 +2,7 @@ import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles,
   PositionedUIElement,
-  PositionProperties,
+  PositionProperties, SchemerData, SchemerValue,
   UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
@@ -30,6 +30,28 @@ export class TextElement extends UIElement implements PositionedUIElement {
         lineHeight: element.styling?.lineHeight || 135,
         ...element.styling
       })
+    };
+  }
+
+  isHighlightable(): boolean {
+    return this.highlightableYellow ||
+        this.highlightableTurquoise ||
+        this.highlightableOrange;
+  }
+
+  hasSchemerData(): boolean {
+    return this.isHighlightable();
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'string',
+      format: 'coloredSelectionRange',
+      multiple: true,
+      nullable: false,
+      values: [],
+      valuesComplete: false
     };
   }
 

@@ -1,9 +1,9 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, InputAssistancePreset, InputElement,
   PositionedUIElement, PositionProperties
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 

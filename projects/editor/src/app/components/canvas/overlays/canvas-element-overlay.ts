@@ -10,7 +10,7 @@ import { SelectionService } from '../../../services/selection.service';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import { CompoundChildOverlayComponent } from
-    'common/components/compound-elements/cloze/compound-child-overlay.component';
+  'common/components/compound-elements/cloze/compound-child-overlay.component';
 import { UIElement } from 'common/models/elements/element';
 
 @Directive()
@@ -70,7 +70,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     }
   }
 
-  elementClicked(event: MouseEvent): void {
+  elementClicked(event: MouseEvent): void { //TODO method name
     if (!this.isSelected) {
       this.selectElement(event.shiftKey);
     }

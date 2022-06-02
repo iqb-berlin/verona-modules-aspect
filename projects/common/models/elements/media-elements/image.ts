@@ -1,6 +1,6 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import { PositionedUIElement, PositionProperties, UIElement } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
 

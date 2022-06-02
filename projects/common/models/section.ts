@@ -1,4 +1,6 @@
-import { PositionedUIElement, UIElement } from 'common/models/elements/element';
+import { Type } from '@angular/core';
+import { IDManager } from 'common/util/id-manager';
+import { PositionedUIElement, UIElement, UIElementValue } from 'common/models/elements/element';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { TextElement } from 'common/models/elements/text/text';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
@@ -23,7 +25,6 @@ import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
-import { IDManager } from 'common/util/id-manager';
 
 export class Section {
   [index: string]: any;

@@ -1,13 +1,10 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, CompoundElement,
-  PositionedUIElement,
-  PositionProperties,
-  TextImageLabel,
-  UIElement
+  BasicStyles, CompoundElement, UIElement,
+  PositionedUIElement, PositionProperties, TextImageLabel
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { LikertComponent } from 'common/components/compound-elements/likert/likert.component';
 

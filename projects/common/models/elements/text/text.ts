@@ -1,11 +1,9 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles,
-  PositionedUIElement,
-  PositionProperties,
-  UIElement
+  BasicStyles, PositionedUIElement,
+  PositionProperties, UIElement
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
 

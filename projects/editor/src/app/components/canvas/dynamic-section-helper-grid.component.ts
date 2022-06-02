@@ -17,7 +17,7 @@ import { Section } from 'common/models/section';
              [style.grid-row-start]="y + 1"
              [style.grid-row-end]="y + 1"
              cdkDropList [cdkDropListData]="{ sectionIndex: sectionIndex, gridCoordinates: [x + 1, y + 1] }"
-             (cdkDropListDropped)="drop($any($event))"
+             (cdkDropListDropped)="drop($event)"
              id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}"
              (dragover)="$event.preventDefault()"
              (drop)="newElementDropped( $event, x + 1, y + 1)">
@@ -97,7 +97,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
     this.rowCountArray = Array(Math.max(numberOfRows, 1));
   }
 
-  drop(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {
+  drop(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates: number[]; }>): void {
     const dragItemData: { dragType: string; element: UIElement; } = event.item.data;
 
     // Move element to other section - handled by parent (page-canvas).
@@ -111,23 +111,23 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
       this.unitService.updateElementsPositionProperty(
         [event.item.data.element],
         'gridColumn',
-        event.container.data.gridCoordinates![0]
+        event.container.data.gridCoordinates[0]
       );
       this.unitService.updateElementsPositionProperty(
         [dragItemData.element],
         'gridRow',
-        event.container.data.gridCoordinates![1]
+        event.container.data.gridCoordinates[1]
       );
     } else if (event.item.data.dragType === 'resize') {
       this.unitService.updateElementsPositionProperty(
         [dragItemData.element],
         'gridColumnEnd',
-        event.container.data.gridCoordinates![0] + 1
+        event.container.data.gridCoordinates[0] + 1
       );
       this.unitService.updateElementsPositionProperty(
         [dragItemData.element],
         'gridRowEnd',
-        event.container.data.gridCoordinates![1] + 1
+        event.container.data.gridCoordinates[1] + 1
       );
     } else {
       throw new Error('Unknown drop event');

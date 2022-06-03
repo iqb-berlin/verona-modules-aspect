@@ -87,7 +87,8 @@ import { DragNDropValueObject } from 'common/models/elements/element';
                class="item"
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                       'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               cdkDrag (cdkDragStarted)=dragStart(index) (cdkDragEnded)="dragEnd()"
+               cdkDrag [cdkDragData]="{ element: dropListValueElement, index: index }"
+               (cdkDragStarted)=dragStart(index) (cdkDragEnded)="dragEnd()"
                [style.object-fit]="'scale-down'">
           <img *ngIf="elementModel.copyOnDrop && draggedItemIndex === index && dropListValueElement.imgSrcValue"
                [src]="dropListValueElement.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
@@ -95,7 +96,6 @@ import { DragNDropValueObject } from 'common/models/elements/element';
                class="item"
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                       'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               cdkDrag (cdkDragStarted)=dragStart(index) (cdkDragEnded)="dragEnd()"
                [style.object-fit]="'scale-down'">
         </ng-template>
       </div>

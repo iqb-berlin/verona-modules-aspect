@@ -105,9 +105,10 @@ export class UnitStateService {
   private setElementCodeStatus(id: string, status: ElementCodeStatus): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
-      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[unitStateElementCode.status]) {
-        unitStateElementCode.status = status;
-        this._elementCodeChanged.next(unitStateElementCode);
+      const actualStatus = unitStateElementCode.status;
+      unitStateElementCode.status = status;
+      this._elementCodeChanged.next(unitStateElementCode);
+      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[actualStatus]) {
         this.checkPresentedPageStatus(this.elementIdPageIndexMap[id]);
       }
     }

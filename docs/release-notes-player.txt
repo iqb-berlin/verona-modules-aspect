@@ -1,5 +1,8 @@
 Player
 ======
+1.25.1
+- Fix sending unit state values to the backend
+
 1.25.0
 - Scroll page when opening the virtual keyboard
 - Scroll to section after it is unlocked

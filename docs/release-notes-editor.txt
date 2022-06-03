@@ -1,5 +1,9 @@
 Editor
 ======
+1.31.1
+- Fix drag and drop with images
+- Fix drag and drop out of cloze children
+
 1.31.0
 - Add section copy&paste functionality
   Add 2 new menu buttons to the section menu.

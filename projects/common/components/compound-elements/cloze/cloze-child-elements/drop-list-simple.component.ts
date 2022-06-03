@@ -3,8 +3,9 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
   CdkDrag, CdkDropList, moveItemInArray, transferArrayItem
 } from '@angular/cdk/drag-drop';
-import { FormElementComponent } from '../../../../directives/form-element-component.directive';
-import { DropListSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
+import { FormElementComponent } from 'common/directives/form-element-component.directive';
+import { DropListSimpleElement } from
+  'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { DragNDropValueObject } from 'common/models/elements/element';
 
 @Component({
@@ -30,8 +31,9 @@ import { DragNDropValueObject } from 'common/models/elements/element';
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
            (cdkDropListDropped)="drop($event)">
         <ng-container *ngIf="!parentForm">
-            <ng-container *ngFor="let value of $any(elementModel.value)">
-                <ng-container [ngTemplateOutlet]="dropObject" [ngTemplateOutletContext]="{ $implicit: value }">
+            <ng-container *ngFor="let dropListValueElement of $any(elementModel.value)">
+                <ng-container [ngTemplateOutlet]="dropObject"
+                              [ngTemplateOutletContext]="{ $implicit: dropListValueElement }">
                 </ng-container>
             </ng-container>
         </ng-container>
@@ -46,7 +48,8 @@ import { DragNDropValueObject } from 'common/models/elements/element';
         <ng-template #dropObject let-value>
           <div class="item"
                [style.background-color]="elementModel.styling.itemBackgroundColor"
-               cdkDrag (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
+               cdkDrag [cdkDragData]="{ element: value }"
+               (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
             <div *cdkDragPreview
                  [style.font-size.px]="elementModel.styling.fontSize"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
@@ -100,6 +103,9 @@ export class DropListSimpleComponent extends FormElementComponent {
       if (event.previousContainer === event.container) {
         moveItemInArray(event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
           event.previousIndex, event.currentIndex);
+        this.elementFormControl.setValue(
+          (event.container.data.elementFormControl.value as DragNDropValueObject[])
+        );
       } else {
         transferArrayItem(
           event.previousContainer.data.elementFormControl.value as unknown as DragNDropValueObject[],

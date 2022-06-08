@@ -1,7 +1,7 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import { BasicStyles, PositionedUIElement, PositionProperties, UIElement } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 export class ButtonElement extends UIElement implements PositionedUIElement {

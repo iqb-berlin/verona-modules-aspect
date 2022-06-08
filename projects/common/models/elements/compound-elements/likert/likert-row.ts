@@ -1,5 +1,5 @@
-import { InputElement, TextImageLabel } from 'common/models/elements/element';
 import { Type } from '@angular/core';
+import { InputElement, TextImageLabel } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   LikertRadioButtonGroupComponent

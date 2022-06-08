@@ -1,10 +1,9 @@
 import {
-  BasicStyles, PlayerProperties, PositionProperties, TextImageLabel,
-  UIElementValue
+  BasicStyles, PlayerProperties, PositionProperties, TextImageLabel
 } from 'common/models/elements/element';
 
 export abstract class ElementFactory {
-  static initPositionProps(defaults: Record<string, UIElementValue> = {}): PositionProperties {
+  static initPositionProps(defaults: Partial<PositionProperties> = {}): PositionProperties {
     return {
       fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,
       dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : true,
@@ -44,7 +43,7 @@ export abstract class ElementFactory {
     };
   }
 
-  static initPlayerProps(defaults: Record<string, UIElementValue> = {}): PlayerProperties {
+  static initPlayerProps(defaults: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
       autostart: defaults.autostart !== undefined ? defaults.autostart as boolean : false,
       autostartDelay: defaults.autostartDelay !== undefined ? defaults.autostartDelay as number : 0,

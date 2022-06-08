@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import packageJSON from '../../../package.json';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import ToggleButtonExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
+import ToggleButtonExtension from
+  'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
 import DropListExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/drop-list';
 import TextFieldExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/text-field';
 import { Unit } from 'common/models/unit';
 import {
   BasicStyles, DragNDropValueObject, ExtendedStyles,
   InputElement, PlayerProperties,
-  PositionedUIElement, PositionProperties,
+  PositionedUIElement, PositionProperties, TextImageLabel,
   UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
@@ -82,7 +83,10 @@ export class SanitizationService {
     return {
       ...section,
       elements: section.elements.map((element: UIElement) => (
-        this.sanitizeElement(element, section.dynamicPositioning))) as PositionedUIElement[]
+        this.sanitizeElement(
+          element as Record<string, UIElementValue>,
+          section.dynamicPositioning
+        ))) as PositionedUIElement[]
     } as Section;
   }
 
@@ -95,11 +99,11 @@ export class SanitizationService {
       player: SanitizationService.getPlayerProps(element)
     };
     if (newElement.type === 'text') {
-      newElement = SanitizationService.handleTextElement(newElement);
+      newElement = SanitizationService.handleTextElement(newElement as Record<string, UIElementValue>);
     }
     if (['text-field', 'text-area', 'text-field-simple', 'spell-correct']
       .includes(newElement.type as string)) {
-      newElement = SanitizationService.sanitizeTextInputElement(newElement);
+      newElement = SanitizationService.sanitizeTextInputElement(newElement as Record<string, UIElementValue>);
     }
     if (newElement.type === 'cloze') {
       newElement = this.handleClozeElement(newElement as Record<string, UIElementValue>);
@@ -121,7 +125,7 @@ export class SanitizationService {
       newElement = this.handleLikertElement(newElement as LikertElement);
     }
     if (['likert-row', 'likert_row'].includes(newElement.type as string)) {
-      newElement = SanitizationService.handleLikertRowElement(newElement as LikertRowElement);
+      newElement = SanitizationService.handleLikertRowElement(newElement as Record<string, UIElementValue>);
     }
 
     return newElement as unknown as UIElement;
@@ -277,7 +281,7 @@ export class SanitizationService {
                     ...paraPart,
                     attrs: {
                       ...paraPart.attrs,
-                      model: this.sanitizeElement(childElements.shift()!)
+                      model: this.sanitizeElement(childElements.shift() as Record<string, UIElementValue>)
                     }
                   } :
                   {
@@ -340,11 +344,12 @@ export class SanitizationService {
   private handleLikertElement(element: LikertElement): LikertElement {
     return new LikertElement({
       ...element,
-      rows: element.rows.map((row: LikertRowElement) => this.sanitizeElement(row) as LikertRowElement)
+      rows: element.rows
+        .map((row: LikertRowElement) => this.sanitizeElement(row as Record<string, UIElementValue>) as LikertRowElement)
     });
   }
 
-  private static handleLikertRowElement(element: LikertRowElement): LikertRowElement {
+  private static handleLikertRowElement(element: Record<string, UIElementValue>): Partial<LikertRowElement> {
     if (element.rowLabel) {
       return element;
     }
@@ -354,7 +359,7 @@ export class SanitizationService {
         text: element.text,
         imgSrc: null,
         position: 'above'
-      }
+      } as TextImageLabel
     });
   }
 

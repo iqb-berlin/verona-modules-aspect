@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, Input, Output, ViewChild
+  Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';

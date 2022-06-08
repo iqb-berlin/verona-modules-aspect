@@ -1,6 +1,6 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import { BasicStyles, InputElement, PositionedUIElement, PositionProperties } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
 
@@ -24,7 +24,8 @@ export class DropListElement extends InputElement implements PositionedUIElement
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
     if (element.orientation) this.orientation = element.orientation;
     if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
-    if (element.highlightReceivingDropListColor) this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
+    if (element.highlightReceivingDropListColor) this.highlightReceivingDropListColor =
+      element.highlightReceivingDropListColor;
     this.position = ElementFactory.initPositionProps({ useMinHeight: true, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

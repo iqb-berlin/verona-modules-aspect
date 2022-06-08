@@ -176,13 +176,13 @@ export class UnitService {
     }
 
     if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
-      newElement.value.forEach((valueObject: { id: string }) => {
+      (newElement.value as DragNDropValueObject[]).forEach((valueObject: { id: string }) => {
         valueObject.id = IDManager.getInstance().getNewID('value');
       });
     }
 
     if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
-      newElement.rows.forEach((rowObject: { id: string }) => {
+      (newElement.rows as LikertRowElement[]).forEach((rowObject: { id: string }) => {
         rowObject.id = IDManager.getInstance().getNewID('likert_row');
       });
     }

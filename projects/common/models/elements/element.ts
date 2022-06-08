@@ -16,7 +16,7 @@ export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOpe
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue';
 
 export abstract class UIElement {
-  [index: string]: any;
+  [index: string]: unknown;
   id: string = 'id_placeholder';
   type: UIElementType;
   width: number = 180;
@@ -55,15 +55,15 @@ export abstract class UIElement {
   }
 
   setStyleProperty(property: string, value: UIElementValue): void {
-    (this.styling as { [key: string]: any })[property] = value;
+    (this.styling as BasicStyles & ExtendedStyles)[property] = value;
   }
 
   setPositionProperty(property: string, value: UIElementValue): void {
-    (this.position as { [key: string]: any })[property] = value;
+    (this.position as PositionProperties)[property] = value;
   }
 
   setPlayerProperty(property: string, value: UIElementValue): void {
-    (this.player as { [key: string]: any })[property] = value;
+    (this.player as PlayerProperties)[property] = value;
   }
 
   getChildElements(): UIElement[] {
@@ -110,7 +110,7 @@ export interface PositionedUIElement extends UIElement {
 }
 
 export interface PositionProperties {
-  [index: string]: string | number | boolean | null;
+  [index: string]: unknown;
   fixedSize: boolean;
   dynamicPositioning: boolean;
   xPosition: number;
@@ -128,6 +128,7 @@ export interface PositionProperties {
 }
 
 export interface BasicStyles {
+  [index: string]: unknown;
   fontColor: string;
   font: string;
   fontSize: number;
@@ -138,6 +139,7 @@ export interface BasicStyles {
 }
 
 export interface ExtendedStyles {
+  [index: string]: unknown;
   lineHeight?: number;
   borderRadius?: number;
   itemBackgroundColor?: string;
@@ -154,7 +156,7 @@ export interface PlayerElement {
 }
 
 export interface PlayerProperties {
-  [index: string]: string | number | boolean | null;
+  [index: string]: unknown;
   autostart: boolean;
   autostartDelay: number;
   loop: boolean;

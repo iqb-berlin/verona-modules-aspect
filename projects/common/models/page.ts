@@ -3,7 +3,7 @@ import { IDManager } from 'common/util/id-manager';
 import { UIElement } from 'common/models/elements/element';
 
 export class Page {
-  [index: string]: any;
+  [index: string]: unknown;
   sections: Section[] = [];
   hasMaxWidth: boolean = false;
   maxWidth: number = 900;

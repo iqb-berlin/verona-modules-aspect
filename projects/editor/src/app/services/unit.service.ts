@@ -273,18 +273,6 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
-    return new LikertRowElement({
-      id: IDManager.getInstance().getNewID('likert_row'),
-      rowLabel: {
-        text: rowLabelText,
-        imgSrc: null,
-        position: 'above'
-      },
-      columnCount: columnCount
-    } as Partial<LikertRowElement>);
-  }
-
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
     switch (alignmentDirection) {
       case 'left':

@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DragNDropValueObject, InputElementValue, TextImageLabel, UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import { IDManager } from 'common/util/id-manager';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -84,10 +85,15 @@ export class ElementModelPropertiesComponent {
   }
 
   addLikertRow(rowLabelText: string): void {
-    const newRow = this.unitService.createLikertRowElement(
-      rowLabelText,
-      (this.combinedProperties.columns as TextImageLabel[]).length
-    );
+    const newRow = new LikertRowElement({
+      type: 'likert-row',
+      rowLabel: {
+        text: rowLabelText,
+        imgSrc: null,
+        position: 'above'
+      },
+      columnCount: (this.combinedProperties.columns as TextImageLabel[]).length
+    }, IDManager.getInstance());
     (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
   }

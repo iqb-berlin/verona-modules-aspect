@@ -16,7 +16,7 @@ export class IDManager {
     audio: 0,
     video: 0,
     likert: 0,
-    likert_row: 0,
+    'likert-row': 0,
     slider: 0,
     'spell-correct': 0,
     'radio-group-images': 0,

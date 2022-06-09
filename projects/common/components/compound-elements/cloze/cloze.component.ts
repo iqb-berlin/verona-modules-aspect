@@ -12,7 +12,7 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
   selector: 'aspect-cloze',
   template: `
     <ng-container *ngIf="elementModel.document.content.length < 1">
-      Kein Dokument vorhanden
+      <i>Kein Dokument vorhanden</i>
     </ng-container>
     <div [style.width.%]="100"
          [style.height]="'auto'"

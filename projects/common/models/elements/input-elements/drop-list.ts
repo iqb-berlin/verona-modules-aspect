@@ -1,8 +1,13 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputElement, PositionedUIElement, PositionProperties } from 'common/models/elements/element';
+import {
+  InputElement, PositionedUIElement,
+  DragNDropValueObject,
+  BasicStyles, PositionProperties
+} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
+import { IDManager } from 'common/util/id-manager';
 
 export class DropListElement extends InputElement implements PositionedUIElement {
   onlyOneItem: boolean = false;
@@ -16,9 +21,12 @@ export class DropListElement extends InputElement implements PositionedUIElement
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListElement>, ...args: unknown[]) {
-    super({ height: 100, ...element }, ...args);
+  constructor(element: Partial<DropListElement>, idManager?: IDManager) {
+    super({ height: 100, ...element }, idManager);
     this.value = element.value || [];
+    if (idManager) {
+      (this.value as DragNDropValueObject[]).forEach(valueElement => idManager.addID(valueElement.id));
+    }
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
     if (element.connectedTo) this.connectedTo = element.connectedTo;
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;

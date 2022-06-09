@@ -20,9 +20,7 @@ import { ParagraphExtension } from './extensions/paragraph-extension';
 import { FontSize } from './extensions/font-size';
 import { BulletListExtension } from './extensions/bullet-list';
 import { OrderedListExtension } from './extensions/ordered-list';
-
 import { FileService } from 'common/services/file.service';
-
 import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
@@ -75,7 +73,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     Blockquote
   ];
 
-  editor: Editor = new Editor({ extensions: this.defaultExtensions });
+  editor: Editor = new Editor({
+    extensions: this.defaultExtensions,
+    enablePasteRules: false,
+    enableInputRules: false
+  });
 
   constructor(private injector: Injector) { }
 
@@ -86,7 +88,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       activeExtensions.push(DropListComponentExtension(this.injector));
       activeExtensions.push(TextFieldComponentExtension(this.injector));
     }
-    this.editor = new Editor({ extensions: activeExtensions });
+    this.editor = new Editor({
+      extensions: activeExtensions,
+      enablePasteRules: false,
+      enableInputRules: false
+    });
   }
 
   ngAfterViewInit(): void {

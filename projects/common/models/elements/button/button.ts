@@ -5,7 +5,7 @@ import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 export class ButtonElement extends UIElement implements PositionedUIElement {
-  label: string = 'Knopf';
+  label: string = 'Navigationsknopf';
   imageSrc: string | null = null;
   asLink: boolean = false;
   action: null | 'unitNav' | 'pageNav' = null;

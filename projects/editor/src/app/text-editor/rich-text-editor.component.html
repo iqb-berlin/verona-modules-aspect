@@ -249,11 +249,11 @@
         <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
         <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
       </mat-menu>
-      <button mat-icon-button matTooltip="Bild" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+      <button mat-icon-button matTooltip="Bild" [matTooltipShowDelay]="300"
               (click)="addImage()">
         <mat-icon>image</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Zitat" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+      <button mat-icon-button matTooltip="Zitat" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive('blockquote')"
               (click)="toggleBlockquote()">
         <mat-icon>format_quote</mat-icon>

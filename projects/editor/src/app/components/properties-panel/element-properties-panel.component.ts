@@ -54,34 +54,36 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   static createCombinedProperties(elements: UIElement[]): Partial<UIElement> {
-    const combinedProperties: Partial<UIElement> & { id: string | string[] } = { ...elements[0], id: elements[0].id };
+    if (elements.length > 0) {
+      const combinedProperties: Partial<UIElement> & { id: string | string[] } = { ...elements[0], id: elements[0].id };
 
-    for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
-      const elementToMerge = elements[elementCounter];
-      Object.keys(combinedProperties).forEach((property: keyof UIElement) => {
-        if (Object.prototype.hasOwnProperty.call(elementToMerge, property)) {
-          if (typeof combinedProperties[property] === 'object' &&
-            !Array.isArray(combinedProperties[property]) &&
-            combinedProperties[property] !== null) {
-            (combinedProperties[property] as UIElement) =
-              ElementPropertiesPanelComponent.createCombinedProperties(
-                [(combinedProperties[property] as UIElement),
-                  (elementToMerge[property] as UIElement)]
-              ) as UIElement;
-          } else if (JSON.stringify(combinedProperties[property]) !== JSON.stringify(elementToMerge[property])) {
-            if (property === 'id') {
-              (combinedProperties.id as string[]).push(elementToMerge.id as string);
-            } else {
-              combinedProperties[property] = null;
+      for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
+        const elementToMerge = elements[elementCounter];
+        Object.keys(combinedProperties).forEach((property: keyof UIElement) => {
+          if (Object.prototype.hasOwnProperty.call(elementToMerge, property)) {
+            if (typeof combinedProperties[property] === 'object' &&
+              !Array.isArray(combinedProperties[property]) &&
+              combinedProperties[property] !== null) {
+              (combinedProperties[property] as UIElement) =
+                ElementPropertiesPanelComponent.createCombinedProperties(
+                  [(combinedProperties[property] as UIElement),
+                    (elementToMerge[property] as UIElement)]
+                ) as UIElement;
+            } else if (JSON.stringify(combinedProperties[property]) !== JSON.stringify(elementToMerge[property])) {
+              if (property === 'id') {
+                (combinedProperties.id as string[]).push(elementToMerge.id as string);
+              } else {
+                combinedProperties[property] = null;
+              }
             }
+          } else {
+            delete combinedProperties[property];
           }
-        } else {
-          delete combinedProperties[property];
-        }
-      });
+        });
+      }
+      return combinedProperties;
     }
-    // console.log('combined', combinedProperties);
-    return combinedProperties;
+    return {};
   }
 
   updateModel(property: string,

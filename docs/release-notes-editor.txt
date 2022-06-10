@@ -1,5 +1,16 @@
 Editor
 ======
+1.32.0
+- Fix likert row generation
+- Overhaul new element panel
+  Some new icons and element reordering. Button is now called
+  navigation button, because that is it's only purpose.
+- Fix dropList element to read and register existing value IDs
+- Disable autocomplete in TextEditor
+  This 'fixes' issues with wrong formatted lists.
+- Add more quoting characters to TextEditor special characters menu
+- Fix spaces around sub and sup elements in cloze
+
 1.31.1
 - Fix drag and drop with images
 - Fix drag and drop out of cloze children

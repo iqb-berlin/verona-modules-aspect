@@ -2,7 +2,7 @@
   "name": "verona-modules-aspect",
   "config": {
     "player_version": "1.25.2",
-    "editor_version": "1.31.1",
+    "editor_version": "1.32.0",
     "unit_definition_version": "3.6.0"
   },
   "scripts": {

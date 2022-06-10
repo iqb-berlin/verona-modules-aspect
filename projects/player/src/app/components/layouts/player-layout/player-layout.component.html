@@ -20,6 +20,7 @@
   <aspect-keyboard
       *ngIf="keyboardService.isOpen"
       @keyboardSlideInOut
+      (@keyboardSlideInOut.done)="keyboardService.scrollElement()"
       [showFrenchCharacters]="keyboardService.elementComponent.elementModel.softwareKeyboardShowFrench"
       (keyClicked)="keyboardService.enterKey($event)"
       (backspaceClicked)="keyboardService.deleteCharacters(true)">

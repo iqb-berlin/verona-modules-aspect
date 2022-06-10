@@ -1,5 +1,11 @@
 Player
 ======
+1.25.2
+- Fix the scroll position of input elements when
+  opening the virtual keyboard in small browser views
+  In small browser views elements are now scrolled
+  to the top of the view instead of the middle of the view
+
 1.25.1
 - Fix sending unit state values to the backend
 

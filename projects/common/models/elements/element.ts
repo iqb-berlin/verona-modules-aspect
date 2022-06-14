@@ -70,6 +70,10 @@ export abstract class UIElement {
     return [];
   }
 
+  hasSchemerData(): boolean {
+    return false;
+  }
+
   abstract getComponentFactory(): Type<ElementComponent>;
 }
 

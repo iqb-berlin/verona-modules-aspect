@@ -32,6 +32,10 @@ export class ToggleButtonElement extends InputElement {
     };
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(): SchemerData {
     return {
       id: this.id,

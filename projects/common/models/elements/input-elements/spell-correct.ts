@@ -5,7 +5,7 @@ import {
   InputAssistancePreset,
   InputElement,
   PositionedUIElement,
-  PositionProperties, SchemerData, SchemerValue
+  PositionProperties, SchemerData
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
@@ -34,6 +34,10 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
     };
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(): SchemerData {
     return {
       id: this.id,
@@ -41,13 +45,9 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
       format: '',
       multiple: false,
       nullable: true,
-      values: this.getSchemerValues(),
+      values: [],
       valuesComplete: false
     };
-  }
-
-  private getSchemerValues(): SchemerValue[] {
-    return [];
   }
 
   getComponentFactory(): Type<ElementComponent> {

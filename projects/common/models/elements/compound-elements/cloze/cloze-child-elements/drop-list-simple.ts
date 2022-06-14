@@ -37,6 +37,10 @@ export class DropListSimpleElement extends InputElement {
     };
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(dropLists: Array<DropListElement | DropListSimpleElement>): SchemerData {
     return {
       id: this.id,

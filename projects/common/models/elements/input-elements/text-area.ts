@@ -5,7 +5,7 @@ import {
   InputAssistancePreset,
   InputElement,
   PositionedUIElement,
-  PositionProperties, SchemerData, SchemerValue
+  PositionProperties, SchemerData
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
@@ -46,20 +46,20 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     };
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(): SchemerData {
     return {
       id: this.id,
       type: 'string',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value === '',
-      values: this.getSchemerValues(),
+      nullable: !this.value && this.value !== '',
+      values: [],
       valuesComplete: false
     };
-  }
-
-  private getSchemerValues(): SchemerValue[] {
-    return [];
   }
 
   getComponentFactory(): Type<ElementComponent> {

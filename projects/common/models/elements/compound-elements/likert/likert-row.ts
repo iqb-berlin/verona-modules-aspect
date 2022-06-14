@@ -19,20 +19,28 @@ export class LikertRowElement extends InputElement {
     if (element.verticalButtonAlignment) this.verticalButtonAlignment = element.verticalButtonAlignment;
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(): SchemerData {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value === 0,
+      nullable: !this.value && this.value !== 0,
       values: this.getSchemerValues(),
       valuesComplete: true
     };
   }
 
   private getSchemerValues(): SchemerValue[] {
-    return [];
+    console.log(this.value);
+    return [
+      { value: !this.value && this.value !== 0 ? 'null' : (this.value as number + 1).toString(),
+        label: this.rowLabel.text } // TODO Image
+    ];
   }
 
   getComponentFactory(): Type<ElementComponent> {

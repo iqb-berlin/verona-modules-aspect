@@ -24,13 +24,17 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
     };
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(): SchemerData {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value === 0,
+      nullable: !this.value && this.value !== 0,
       values: this.getSchemerValues(),
       valuesComplete: true
     };

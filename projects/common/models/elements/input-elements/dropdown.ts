@@ -26,6 +26,10 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     };
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(): SchemerData {
     return {
       id: this.id,

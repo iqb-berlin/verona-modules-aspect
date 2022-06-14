@@ -47,6 +47,10 @@ export class DropListElement extends InputElement implements PositionedUIElement
     };
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(options: Array<DropListElement | DropListSimpleElement>): SchemerData {
     return {
       id: this.id,

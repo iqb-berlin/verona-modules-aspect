@@ -20,6 +20,10 @@ export class CheckboxElement extends InputElement implements PositionedUIElement
     this.styling = ElementFactory.initStylingProps(element.styling);
   }
 
+  hasSchemerData(): boolean {
+    return true;
+  }
+
   getSchemerData(): SchemerData {
     return {
       id: this.id,

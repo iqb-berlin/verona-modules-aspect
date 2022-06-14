@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import packageJSON from '../../../../../package.json';
 import { Unit } from 'common/models/unit';
+import { SchemerData } from 'common/models/elements/element';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class VeronaAPIService {
     }
   }
 
-  private send(message: Record<string, string>): void {
+  private send(message: Record<string, string | SchemerData[]>): void {
     // prevent posts in local (dev) mode
     if (!this.isStandalone()) {
       window.parent.postMessage(message, '*');
@@ -58,7 +59,8 @@ export class VeronaAPIService {
       sessionId: this.sessionID,
       timeStamp: String(Date.now()),
       unitDefinition: JSON.stringify(unit),
-      unitDefinitionType: `${unit.type}@${unit.version}`
+      unitDefinitionType: `${unit.type}@${unit.version}`,
+      variables: unit.getSchemerData()
     });
   }
 

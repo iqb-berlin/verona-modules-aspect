@@ -1,6 +1,12 @@
 import { Type } from '@angular/core';
 import { IDManager } from 'common/util/id-manager';
-import { PositionedUIElement, UIElement, UIElementValue } from 'common/models/elements/element';
+import {
+  InputElement,
+  PositionedUIElement,
+  SchemerData,
+  UIElement,
+  UIElementValue
+} from 'common/models/elements/element';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { TextElement } from 'common/models/elements/text/text';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
@@ -96,5 +102,14 @@ export class Section {
       allElements = allElements.filter(element => element.type === elementType);
     }
     return allElements;
+  }
+
+  getSchemerData(dropLists: UIElement[]): SchemerData[] {
+    return this.getAllElements()
+      .filter(element => element.hasSchemerData())
+      .map(element =>
+        (element.type === 'drop-list' || element.type === 'drop-list-simple') ?
+          (element as InputElement).getSchemerData(dropLists) :
+          (element as InputElement | TextElement).getSchemerData());
   }
 }

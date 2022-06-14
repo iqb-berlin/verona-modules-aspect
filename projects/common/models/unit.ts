@@ -1,7 +1,7 @@
 import packageJSON from '../../../package.json';
 import { Page } from 'common/models/page';
 import { IDManager } from 'common/util/id-manager';
-import { UIElement } from 'common/models/elements/element';
+import { SchemerData, UIElement } from 'common/models/elements/element';
 
 export class Unit {
   type = 'aspect-unit-definition';
@@ -15,5 +15,13 @@ export class Unit {
 
   getAllElements(elementType?: string): UIElement[] {
     return this.pages.map(page => page.getAllElements(elementType)).flat();
+  }
+
+  getSchemerData(): SchemerData[] {
+    const dropLists = [
+      ...this.getAllElements('drop-list'),
+      ...this.getAllElements('drop-list-simple')
+    ];
+    return this.pages.map(page => page.getSchemerData(dropLists)).flat();
   }
 }

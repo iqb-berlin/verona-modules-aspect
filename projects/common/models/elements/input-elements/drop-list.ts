@@ -1,14 +1,13 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, DragNDropValueObject,
-  InputElement,
-  PositionedUIElement,
-  PositionProperties,
-  SchemerData, SchemerValue
+  InputElement, PositionedUIElement,
+  DragNDropValueObject,
+  BasicStyles, PositionProperties, SchemerData, SchemerValue
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
+import { IDManager } from 'common/util/id-manager';
 import {
   DropListSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
@@ -25,10 +24,19 @@ export class DropListElement extends InputElement implements PositionedUIElement
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListElement>) {
-    super({ height: 100, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<DropListElement>, idManager?: IDManager) {
+    super({ height: 100, ...element }, idManager);
     this.value = element.value || [];
+    if (idManager) {
+      (this.value as DragNDropValueObject[]).forEach(valueElement => idManager.addID(valueElement.id));
+    }
+    if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
+    if (element.connectedTo) this.connectedTo = element.connectedTo;
+    if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
+    if (element.orientation) this.orientation = element.orientation;
+    if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
+    if (element.highlightReceivingDropListColor) this.highlightReceivingDropListColor =
+      element.highlightReceivingDropListColor;
     this.position = ElementFactory.initPositionProps({ useMinHeight: true, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

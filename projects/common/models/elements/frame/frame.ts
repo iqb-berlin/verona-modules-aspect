@@ -1,8 +1,8 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import { BasicStyles, PositionedUIElement, PositionProperties, UIElement } from 'common/models/elements/element';
 import { FrameComponent } from 'common/components/frame/frame.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { Type } from '@angular/core';
 
 export class FrameElement extends UIElement implements PositionedUIElement {
   position: PositionProperties;
@@ -13,9 +13,8 @@ export class FrameElement extends UIElement implements PositionedUIElement {
     borderRadius: number;
   };
 
-  constructor(element: Partial<FrameElement>) {
-    super(element);
-    Object.assign(this, element);
+  constructor(element: Partial<FrameElement>, ...args: unknown[]) {
+    super(element, ...args);
     this.position = ElementFactory.initPositionProps({ zIndex: -1, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

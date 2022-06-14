@@ -1,5 +1,7 @@
 import { Node, mergeAttributes } from '@tiptap/core';
-import { ElementFactory } from '../../../../../util/element.factory';
+import {
+  DropListSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 
 const DropListExtension =
   Node.create({
@@ -10,7 +12,7 @@ const DropListExtension =
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement('drop-list-simple')
+          default: new DropListSimpleElement({ type: 'drop-list-simple' })
         }
       };
     },

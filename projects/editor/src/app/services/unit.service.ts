@@ -4,19 +4,14 @@ import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
-import { IDService } from 'common/services/id.service';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
-import { ElementFactory } from 'common/util/element.factory';
-import { ClozeParser } from '../util/cloze-parser';
-import { UnitUtils } from 'common/util/unit-utils';
 import { ArrayUtils } from 'common/util/array';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Unit } from 'common/models/unit';
 import {
-  DragNDropValueObject,
-  InputElement,
+  DragNDropValueObject, InputElement,
   InputElementValue, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
   UIElement, UIElementType
 } from 'common/models/elements/element';
@@ -27,6 +22,8 @@ import { TextElement } from 'common/models/elements/text/text';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
+import { ElementFactory } from 'common/util/element.factory';
+import { IDManager } from 'common/util/id-manager';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +34,6 @@ export class UnitService {
   elementPropertyUpdated: Subject<void> = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
-              private idService: IDService,
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
@@ -48,38 +44,23 @@ export class UnitService {
   }
 
   loadUnitDefinition(unitDefinition: string): void {
-    this.idService.reset();
+    IDManager.getInstance().reset();
     const unitDef = JSON.parse(unitDefinition);
     if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
-      // this.unit = UnitFactory.createUnit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
       this.unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
       this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
     } else {
-      this.unit = new Unit(unitDef);
+      this.unit = new Unit(unitDef, IDManager.getInstance());
     }
-    this.readIDs(this.unit);
-  }
-
-  private readIDs(unit: Unit): void {
-    UnitUtils.findUIElements(unit).forEach(element => {
-      if (element.type === 'likert') {
-        (element as LikertElement).getChildElements().forEach(row => this.idService.addID(row.id));
-      }
-      if (element.type === 'cloze') {
-        (element as ClozeElement).getChildElements()
-          .forEach(child => this.idService.addID(child.id));
-      }
-      this.idService.addID(element.id);
-    });
   }
 
   unitUpdated(): void {
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  addSection(page: Page): void {
-    page.sections.push(new Section());
-    this.sendChangedNotifications();
+  addSection(page: Page, newSection?: Partial<Section>): void {
+    page.sections.push(new Section(newSection, IDManager.getInstance()));
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   deleteSection(section: Section): void {
@@ -87,7 +68,7 @@ export class UnitService {
       this.unit.pages[this.selectionService.selectedPageIndex].sections.indexOf(section),
       1
     );
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
@@ -96,7 +77,7 @@ export class UnitService {
       elements: section.elements.map(element => this.duplicateElement(element) as PositionedUIElement)
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
@@ -106,7 +87,7 @@ export class UnitService {
     } else if (direction === 'down') {
       this.selectionService.selectedPageSectionIndex += 1;
     }
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   addElementToSectionByIndex(elementType: UIElementType,
@@ -118,11 +99,10 @@ export class UnitService {
   async addElementToSection(elementType: UIElementType,
                             section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    console.log('addElementToSection', elementType);
-    let newElement: PositionedUIElement;
-    // TODO: Remove switch use parameter for loadFile
+    const newElement: { type: string } & Partial<PositionedUIElement> = {
+      type: elementType
+    };
     if (['audio', 'video', 'image'].includes(elementType)) {
-      // TODO: loadFile before addElementToSection
       let mediaSrc = '';
       switch (elementType) {
         case 'image':
@@ -136,35 +116,19 @@ export class UnitService {
           break;
         // no default
       }
-      // TODO: ElementFactory.createElement is used 2 times
-      newElement = ElementFactory.createElement(
-        elementType, {
-          id: this.idService.getNewID(elementType),
-          src: mediaSrc,
-          position: {
-            dynamicPositioning: section.dynamicPositioning
-          }
-        } as unknown as UIElement) as PositionedUIElement;
-    } else {
-      newElement = ElementFactory.createElement(
-        elementType, {
-          id: this.idService.getNewID(elementType),
-          position: {
-            dynamicPositioning: section.dynamicPositioning
-          }
-        } as unknown as UIElement) as PositionedUIElement;
+      newElement.src = mediaSrc;
     }
-    if (coordinates && section.dynamicPositioning) {
-      newElement.position.gridColumn = coordinates.x;
-      newElement.position.gridColumnRange = 1;
-      newElement.position.gridRow = coordinates.y;
-      newElement.position.gridRowRange = 1;
-    } else if (coordinates && !section.dynamicPositioning) {
-      newElement.position.xPosition = coordinates.x;
-      newElement.position.yPosition = coordinates.y;
+
+    if (coordinates) {
+      newElement.position = ElementFactory.initPositionProps({
+        ...(section.dynamicPositioning && { gridColumn: coordinates.x }),
+        ...(section.dynamicPositioning && { gridRow: coordinates.y }),
+        ...(!section.dynamicPositioning && { yPosition: coordinates.y }),
+        ...(!section.dynamicPositioning && { yPosition: coordinates.y })
+      });
     }
-    section.elements.push(newElement);
-    this.sendChangedNotifications();
+    section.addElement(Section.createElement(newElement, IDManager.getInstance()));
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   deleteElements(elements: UIElement[]): void {
@@ -172,17 +136,17 @@ export class UnitService {
     this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
       section.elements = section.elements.filter(element => !elements.includes(element));
     });
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  private freeUpIds(elements: UIElement[]): void {
+  private freeUpIds(elements: UIElement[]): void { // TODO free up child and value IDs
     elements.forEach(element => {
       if (element.type === 'drop-list') {
         ((element as DropListElement).value as DragNDropValueObject[]).forEach((value: DragNDropValueObject) => {
-          this.idService.removeId(value.id);
+          IDManager.getInstance().removeId(value.id);
         });
       }
-      this.idService.removeId(element.id);
+      IDManager.getInstance().removeId(element.id);
     });
   }
 
@@ -193,7 +157,7 @@ export class UnitService {
       newSection.elements.push(element as PositionedUIElement);
       (element as PositionedUIElement).position.dynamicPositioning = newSection.dynamicPositioning;
     });
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   duplicateElementsInSection(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
@@ -201,35 +165,35 @@ export class UnitService {
     elements.forEach((element: UIElement) => {
       section.elements.push(this.duplicateElement(element) as PositionedUIElement);
     });
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   private duplicateElement(element: UIElement): UIElement {
-    const newElement = ElementFactory
-      .createElement(element.type, { ...element, id: this.idService.getNewID(element.type) });
+    const newElement = Section.createElement(element, IDManager.getInstance());
     if (newElement.position) {
       newElement.position.xPosition += 10;
       newElement.position.yPosition += 10;
     }
 
     if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
-      newElement.value.forEach((valueObject: { id: string }) => {
-        valueObject.id = this.idService.getNewID('value');
+      (newElement.value as DragNDropValueObject[]).forEach((valueObject: { id: string }) => {
+        valueObject.id = IDManager.getInstance().getNewID('value');
       });
     }
 
     if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
-      newElement.rows.forEach((rowObject: { id: string }) => {
-        rowObject.id = this.idService.getNewID('likert_row');
+      (newElement.rows as LikertRowElement[]).forEach((rowObject: { id: string }) => {
+        rowObject.id = IDManager.getInstance().getNewID('likert_row');
       });
     }
 
-    if (newElement.type === 'cloze') {
-      element.getChildElements().forEach((childElement: InputElement) => {
-        childElement.id = this.idService.getNewID(childElement.type);
+
+    if (newElement instanceof ClozeElement) {
+      element.getChildElements().forEach((childElement: UIElement) => {
+        childElement.id = IDManager.getInstance().getNewID(childElement.type);
         if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
           (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
-            valueObject.id = this.idService.getNewID('value');
+            valueObject.id = IDManager.getInstance().getNewID('value');
           });
         }
       });
@@ -244,11 +208,10 @@ export class UnitService {
         (element as PositionedUIElement).position.dynamicPositioning = value as boolean;
       });
     } else {
-      // section[property] = value;
       section.setProperty(property, value);
     }
     this.elementPropertyUpdated.next();
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   updateElementsProperty(elements: UIElement[],
@@ -258,15 +221,13 @@ export class UnitService {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
-        if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
+        if (!IDManager.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError(this.translateService.instant('idTaken'));
         } else {
-          this.idService.removeId(element.id);
-          this.idService.addID(value as string);
+          IDManager.getInstance().removeId(element.id);
+          IDManager.getInstance().addID(value as string);
           element.id = value as string;
         }
-      } else if (property === 'document') {
-        element[property] = ClozeParser.setMissingIDs(value as ClozeDocument, this.idService);
       } else if (element.type === 'likert' && property === 'columns') {
         (element as LikertElement).rows.forEach(row => {
           row.columnCount = (element as LikertElement).columns.length;
@@ -280,7 +241,7 @@ export class UnitService {
       }
     });
     this.elementPropertyUpdated.next();
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   updateSelectedElementsPositionProperty(property: string, value: any): void {
@@ -292,7 +253,7 @@ export class UnitService {
       element.setPositionProperty(property, value);
     });
     this.elementPropertyUpdated.next();
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   updateSelectedElementsStyleProperty(property: string, value: any): void {
@@ -301,7 +262,7 @@ export class UnitService {
       element.setStyleProperty(property, value);
     });
     this.elementPropertyUpdated.next();
-    this.sendChangedNotifications();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   updateElementsPlayerProperty(elements: UIElement[], property: string, value: any): void {
@@ -309,19 +270,7 @@ export class UnitService {
       element.setPlayerProperty(property, value);
     });
     this.elementPropertyUpdated.next();
-    this.sendChangedNotifications();
-  }
-
-  createLikertRowElement(rowLabelText: string, columnCount: number): LikertRowElement {
-    return new LikertRowElement({
-      id: this.idService.getNewID('likert_row'),
-      rowLabel: {
-        text: rowLabelText,
-        imgSrc: null,
-        position: 'above'
-      },
-      columnCount: columnCount
-    } as Partial<LikertRowElement>);
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
@@ -357,34 +306,8 @@ export class UnitService {
       // no default
     }
     this.elementPropertyUpdated.next();
-    this.sendChangedNotifications();
-  }
-
-  sendChangedNotifications(): void {
-    // stattdessen event emitten?
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
-
-    // relevante schemer Data ermitteln
-    const schemerData = UnitUtils.findUIElements(this.unit.pages)
-      .filter(element => element.getSchemerData)
-      .map(element  => this.getSchemerOption(element.type) ?
-        element.getSchemerData(this.getSchemerOption(element.type)) :
-        element.getSchemerData()
-      )
-      .filter(data => data.values.length || !data.valuesComplete); // schemerData mit leeren values sind nicht von interesse
-    console.log(schemerData);
   }
-
-  // Values für Schemer elemente setzen? Sind nur Droplists dynamisch?
-  private getSchemerOption(type: UIElementType): any {
-    if (type === 'drop-list-simple' || type === 'drop-list') {
-      return UnitUtils
-        .findUIElements(this.unit.pages, 'drop-list')
-        .concat(UnitUtils.findUIElements(this.unit.pages, 'drop-list-simple'));
-    }
-    return null;
-  }
-
 
   saveUnit(): void {
     FileService.saveUnitToFile(JSON.stringify(this.unit));
@@ -394,7 +317,6 @@ export class UnitService {
     this.loadUnitDefinition(await FileService.loadFile(['.json']));
   }
 
-  // TODO: showDefaultEditDialog is method in unitService?
   showDefaultEditDialog(element: UIElement): void {
     switch (element.type) {
       case 'button':
@@ -465,23 +387,19 @@ export class UnitService {
   }
 
   getNewValueID(): string {
-    return this.idService.getNewID('value');
+    return IDManager.getInstance().getNewID('value');
   }
 
   /* Used by props panel to show available dropLists to connect */
   getDropListElementIDs(): string[] {
-    // TODO: DropListSinple?
-    return this.unit.pages
-      .map(page => page.sections
-        .map(section => section.elements
-          .reduce((accumulator: any[], currentValue: any) => (
-            currentValue.type === 'drop-list' ? accumulator.concat(currentValue.id) : accumulator), [])
-          .flat()
-        )
-        .flat()).flat();
+    const allDropLists = [
+      ...this.unit.getAllElements('drop-list'),
+      ...this.unit.getAllElements('drop-list-simple')];
+    return allDropLists.map(dropList => dropList.id);
   }
 
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
-    this.unit.pages[pageIndex].sections[sectionIndex] = newSection;
+    this.deleteSection(this.unit.pages[pageIndex].sections[sectionIndex]);
+    this.addSection(this.unit.pages[pageIndex], newSection);
   }
 }

@@ -63,7 +63,6 @@ export class TextInputGroupElementComponent extends ElementFormGroupDirective im
 
   toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                  elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
-    console.log('open---------------------', this.elementModel.inputAssistance);
     if (this.elementModel.inputAssistancePreset) {
       this.keypadService.toggle(focusedTextInput, elementComponent);
       this.isKeypadOpen = this.keypadService.isOpen;

@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles,
@@ -6,7 +7,6 @@ import {
   PositionProperties,
   SchemerData, SchemerValue
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
 
@@ -19,9 +19,11 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     lineHeight: number;
   };
 
-  constructor(element: Partial<RadioButtonGroupElement>) {
-    super({ height: 100, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<RadioButtonGroupElement>, ...args: unknown[]) {
+    super({ height: 100, ...element }, ...args);
+    if (element.richTextOptions) this.richTextOptions = element.richTextOptions;
+    if (element.alignment) this.alignment = element.alignment;
+    if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
     this.position = ElementFactory.initPositionProps({ marginBottom: 30, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

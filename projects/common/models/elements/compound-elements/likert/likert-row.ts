@@ -1,5 +1,5 @@
-import { InputElement, TextImageLabel } from 'common/models/elements/element';
 import { Type } from '@angular/core';
+import { InputElement, SchemerData, SchemerValue, TextImageLabel } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   LikertRadioButtonGroupComponent
@@ -11,9 +11,28 @@ export class LikertRowElement extends InputElement {
   firstColumnSizeRatio: number = 5;
   verticalButtonAlignment: 'auto' | 'center' = 'center';
 
-  constructor(element: Partial<LikertRowElement>) {
-    super(element);
-    Object.assign(this, element);
+  constructor(element: Partial<LikertRowElement>, ...args: unknown[]) {
+    super(element, ...args);
+    if (element.rowLabel) this.rowLabel = element.rowLabel;
+    if (element.columnCount) this.columnCount = element.columnCount;
+    if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+    if (element.verticalButtonAlignment) this.verticalButtonAlignment = element.verticalButtonAlignment;
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'integer',
+      format: '',
+      multiple: false,
+      nullable: !this.value && this.value === 0,
+      values: this.getSchemerValues(),
+      valuesComplete: true
+    };
+  }
+
+  private getSchemerValues(): SchemerValue[] {
+    return [];
   }
 
   getComponentFactory(): Type<ElementComponent> {

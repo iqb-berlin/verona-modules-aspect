@@ -105,21 +105,22 @@ export class UnitStateService {
   private setElementCodeStatus(id: string, status: ElementCodeStatus): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
-      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[unitStateElementCode.status]) {
-        unitStateElementCode.status = status;
-        this._elementCodeChanged.next(unitStateElementCode);
-        this.checkPresentedPageStatus(this.elementIdPageIndexMap[id], true);
+      const actualStatus = unitStateElementCode.status;
+      unitStateElementCode.status = status;
+      this._elementCodeChanged.next(unitStateElementCode);
+      if (ElementCodeStatusValue[status] > ElementCodeStatusValue[actualStatus]) {
+        this.checkPresentedPageStatus(this.elementIdPageIndexMap[id]);
       }
     }
   }
 
   private buildPresentedPages(): void {
     const uniqPages = [...new Set( Object.values(this.elementIdPageIndexMap))];
-    uniqPages.forEach((pageIndex, index) => this
-      .checkPresentedPageStatus(pageIndex, index === uniqPages.length - 1));
+    uniqPages.forEach(pageIndex => this
+      .checkPresentedPageStatus(pageIndex));
   }
 
-  private checkPresentedPageStatus(pageIndex: number, emitEvent: boolean): void {
+  private checkPresentedPageStatus(pageIndex: number): void {
     if (this.presentedPages.indexOf(pageIndex) === -1) {
       const notDisplayedElements = Object.entries(this.elementIdPageIndexMap)
         .filter((map: [string, number]): boolean => map[1] === pageIndex)
@@ -129,9 +130,7 @@ export class UnitStateService {
           ElementCodeStatusValue.DISPLAYED);
       if (notDisplayedElements.length === 0) {
         this.presentedPages.push(pageIndex);
-        if (emitEvent) {
-          this._presentedPageAdded.next(pageIndex);
-        }
+        this._presentedPageAdded.next(pageIndex);
       }
     } else {
       LogService.warn(`player: page ${pageIndex} is already presented`);

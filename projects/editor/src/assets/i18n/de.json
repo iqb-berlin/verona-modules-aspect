@@ -184,15 +184,15 @@
   },
   "toolbox": {
     "text": "Text",
-    "button": "Knopf",
+    "button": "Navigationsknopf",
     "frame": "Rahmen",
     "text-field": "Eingabefeld",
     "text-area": "Eingabebereich",
     "checkbox": "Kontrollkästchen",
     "dropdown": "Klappliste",
-    "radio": "Optionsfeld",
-    "simple": "einfach",
-    "complex": "komplex",
+    "radio": "Optionsfelder",
+    "simple": "mit Text",
+    "complex": "mit Bild",
     "drop-list": "Ablegeliste",
     "image": "Bild",
     "audio": "Audio",
@@ -215,5 +215,9 @@
     "fraction": "Anteile",
     "pixel": "Bildpunkte",
     "activeAfterID": "Sichtbar nach A/V-ID"
-  }
+  },
+  "Bitte kopierten Abschnitt einfügen": "Bitte kopierten Abschnitt einfügen",
+  "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",
+  "Abschnitt wurde erfolgreich gelesen.": "Abschnitt wurde erfolgreich gelesen.",
+  "Fehler beim Lesen des Abschnitts!": "Fehler beim Lesen des Abschnitts!"
 }

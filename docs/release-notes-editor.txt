@@ -1,5 +1,71 @@
 Editor
 ======
+1.32.0
+- Fix likert row generation
+- Overhaul new element panel
+  Some new icons and element reordering. Button is now called
+  navigation button, because that is it's only purpose.
+- Fix dropList element to read and register existing value IDs
+- Disable autocomplete in TextEditor
+  This 'fixes' issues with wrong formatted lists.
+- Add more quoting characters to TextEditor special characters menu
+- Fix spaces around sub and sup elements in cloze
+
+1.31.1
+- Fix drag and drop with images
+- Fix drag and drop out of cloze children
+
+1.31.0
+- Add section copy&paste functionality
+  Add 2 new menu buttons to the section menu.
+  One simply copies the selected section to the clipboard.
+  The other opens a dialog where a copied section can be pasted. The
+  section element's IDs are checked for availability and a warning may be
+  shown.
+  This feature has one caveat: When pasting a section into one that already
+  has elements in it, it will warn about duplicate IDs even though the IDs
+  would be free again when the old section is replaced.
+- Implement 'copy on drop' for dropLists
+  With this setting elements are copied when being dropped to another list.
+  On drop, it is now also checked if the item ID is already present in the
+  target list. If it is, the drop event is silently discarded. This allows
+  putting items back in the list without creating duplicate IDs.
+  Lists with this setting:
+  - do show a placeholder of the items being dragged. This way it is
+  conveyed that the item will remain there after being dropped.
+  - don't show a placeholder when foreign items are hovered over them, to
+  avoid confusion with duplicate items.
+- Add dynamic selection menu for connected drop lists
+  This shows all available drop lists (including cloze children).
+  This is pure QOL feature. Everything works the same as before, you just
+  do not have to enter the target drop list ID manually.
+- Rework new element panel
+  No longer uses tabs but but a single column of grouped elements.
+  The grouping is supposed to reflect logical meaning of elements for
+  creating units instead of the system (ascending by technical
+  complexity) used before.
+  (This classification has been criticized heavily already and will probably
+  change again in the future. It still is an improvement and will be used
+  until better ideas are submitted.)
+- Add tooltips to section menu
+  This is supposed to help finding the right one, as there are quite a lot
+  of buttons on there already. Also some icons are sub optimal.
+  This whole panel needs a rework.
+- Improve properties panel style and layout
+  For example, add property groups (field sets) for some elements.
+  The image control of buttons is has a fixed size, scales properly
+  and show buttons only on hover.
+  Addes tooltip to action parameter of dropdown: When having selected
+  pageNav it shows a tooltip to get across that only valid pages can show up.
+  Increase the panel width slightly (by 20px).
+- Move dynamic width parameter of toggle buttons to dimension properties panel
+- Fix Frame element not saving changed properties
+- Fix line height property of cloze element
+- Improve alignment of all cloze child elements
+- Fix cloze element and section containing cloze elements duplication
+  (IDs of children)
+- Fix unclickable radio button label
+
 1.30.0
 - Improve aligmnent of elements within cloze
 - Re-Add line-height property to radio button group

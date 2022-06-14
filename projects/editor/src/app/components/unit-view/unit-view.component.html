@@ -48,8 +48,8 @@
                 </button>
                 <mat-divider></mat-divider>
                 <mat-checkbox class="menuItem" [checked]="page.hasMaxWidth"
-                              (click)="$any($event).stopPropagation()"
-                              (change)="updateModel(page, 'hasMaxWidth', $any($event.source).checked)">
+                              (click)="$event.stopPropagation()"
+                              (change)="updateModel(page, 'hasMaxWidth', $event.source.checked)">
                   {{'pageProperties.maxWidth' | translate }}
                 </mat-checkbox>
                 <div *ngIf="page.hasMaxWidth" class="menuItem">
@@ -59,33 +59,33 @@
                   <mat-label>{{'pageProperties.sectionWidth' | translate }}</mat-label>
                   <input matInput type="number" min="0" #maxWidth="ngModel"
                          [ngModel]="page.maxWidth"
-                         (click)="$any($event).stopPropagation()"
+                         (click)="$event.stopPropagation()"
                          (ngModelChange)="updateModel(page,'maxWidth', $event, maxWidth.valid)">
                 </mat-form-field>
                 <mat-form-field class="menuItem" appearance="fill">
                   <mat-label>{{'pageProperties.marginWidth' | translate }}</mat-label>
                   <input matInput type="number" min="0" #margin="ngModel"
                          [ngModel]="page.margin"
-                         (click)="$any($event).stopPropagation()"
+                         (click)="$event.stopPropagation()"
                          (ngModelChange)="updateModel(page,'margin', $event, margin.valid)">
                 </mat-form-field>
                 <mat-form-field class="menuItem" appearance="fill">
                   <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
                   <input matInput type="color"
-                         [value]="page.backgroundColor"
-                         (change)="updateModel(page,'backgroundColor', $any($event.target).value)">
+                         [ngModel]="page.backgroundColor"
+                         (ngModelChange)="updateModel(page,'backgroundColor', $event.target.value)">
                 </mat-form-field>
                 <mat-checkbox class="menuItem"
                               [disabled]="unitService.unit.pages.length < 2 || unitService.unit.pages[0].alwaysVisible && i != 0"
                               [ngModel]="page.alwaysVisible"
-                              (click)="$any($event).stopPropagation()"
-                              (change)="updateModel(page, 'alwaysVisible', $any($event.source).checked)">
+                              (click)="$event.stopPropagation()"
+                              (change)="updateModel(page, 'alwaysVisible', $event.source.checked)">
                   {{'pageProperties.alwaysVisible' | translate }}
                 </mat-checkbox>
                 <mat-form-field *ngIf="page.alwaysVisible" class="menuItem" appearance="fill">
                   <mat-label>{{'pageProperties.position' | translate }}</mat-label>
                   <mat-select [value]="page.alwaysVisiblePagePosition"
-                              (click)="$any($event).stopPropagation()"
+                              (click)="$event.stopPropagation()"
                               (selectionChange)="updateModel(page, 'alwaysVisiblePagePosition', $event.value)">
                     <mat-option *ngFor="let option of ['left', 'right', 'top', 'bottom']"
                                 [value]="option">
@@ -98,7 +98,7 @@
                   <mat-label>{{'pageProperties.alwaysVisibleAspectRatio' | translate }}</mat-label>
                   <input matInput type="number" min="0" max="100"
                          [ngModel]="page.alwaysVisibleAspectRatio"
-                         (click)="$any($event).stopPropagation()"
+                         (click)="$event.stopPropagation()"
                          (ngModelChange)="updateModel(page, 'alwaysVisibleAspectRatio', $event)">
                 </mat-form-field>
               </div>

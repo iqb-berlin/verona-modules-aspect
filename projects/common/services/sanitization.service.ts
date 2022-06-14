@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import packageJSON from '../../../package.json';
 import { Editor } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import ToggleButtonExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
+import ToggleButtonExtension from
+  'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
 import DropListExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/drop-list';
 import TextFieldExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/text-field';
-import { IDService } from './id.service';
 import { Unit } from 'common/models/unit';
 import {
   BasicStyles, DragNDropValueObject, ExtendedStyles,
   InputElement, PlayerProperties,
-  PositionedUIElement, PositionProperties,
+  PositionedUIElement, PositionProperties, TextImageLabel,
   UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
@@ -27,13 +27,12 @@ import {
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
+import { IDManager } from 'common/util/id-manager';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SanitizationService {
-
-  constructor(private iDService: IDService) { }
 
   private static expectedUnitVersion: [number, number, number] =
     packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
@@ -41,16 +40,16 @@ export class SanitizationService {
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
   // TODO: isUnitDefinitionOutdated must not set the unitDefinitionVersion
-  static isUnitDefinitionOutdated(unitDefinition: Unit): boolean {
+  static isUnitDefinitionOutdated(unitDefinition: Partial<Unit>): boolean {
     SanitizationService.unitDefinitionVersion =
       SanitizationService.readUnitDefinitionVersion(unitDefinition as unknown as Record<string, string>);
     return SanitizationService.isVersionOlderThanCurrent(SanitizationService.unitDefinitionVersion);
   }
 
-  sanitizeUnitDefinition(unitDefinition: Unit): Unit {
+  sanitizeUnitDefinition(unitDefinition: Partial<Unit>): Partial<Unit> {
     return {
       ...unitDefinition,
-      pages: unitDefinition.pages.map((page: Page) => this.sanitizePage(page))
+      pages: unitDefinition.pages?.map((page: Page) => this.sanitizePage(page)) as Page[]
     };
   }
 
@@ -73,7 +72,7 @@ export class SanitizationService {
     return version[2] < SanitizationService.expectedUnitVersion[2];
   }
 
-  private sanitizePage(page: Page): Page {
+  private sanitizePage(page: Page): Partial<Page> {
     return {
       ...page,
       sections: page.sections.map((section: Section) => this.sanitizeSection(section))
@@ -84,7 +83,10 @@ export class SanitizationService {
     return {
       ...section,
       elements: section.elements.map((element: UIElement) => (
-        this.sanitizeElement(element, section.dynamicPositioning))) as PositionedUIElement[]
+        this.sanitizeElement(
+          element as Record<string, UIElementValue>,
+          section.dynamicPositioning
+        ))) as PositionedUIElement[]
     } as Section;
   }
 
@@ -97,11 +99,11 @@ export class SanitizationService {
       player: SanitizationService.getPlayerProps(element)
     };
     if (newElement.type === 'text') {
-      newElement = SanitizationService.handleTextElement(newElement);
+      newElement = SanitizationService.handleTextElement(newElement as Record<string, UIElementValue>);
     }
     if (['text-field', 'text-area', 'text-field-simple', 'spell-correct']
       .includes(newElement.type as string)) {
-      newElement = SanitizationService.sanitizeTextInputElement(newElement);
+      newElement = SanitizationService.sanitizeTextInputElement(newElement as Record<string, UIElementValue>);
     }
     if (newElement.type === 'cloze') {
       newElement = this.handleClozeElement(newElement as Record<string, UIElementValue>);
@@ -109,8 +111,7 @@ export class SanitizationService {
     if (newElement.type === 'toggle-button') {
       newElement = SanitizationService.handleToggleButtonElement(newElement as ToggleButtonElement);
     }
-    // TODO: drop-list-simple?
-    if (newElement.type === 'drop-list') {
+    if (['drop-list', 'drop-list-simple'].includes(newElement.type as string)) {
       newElement = this.handleDropListElement(newElement as Record<string, UIElementValue>);
     }
     if (['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button']
@@ -124,7 +125,7 @@ export class SanitizationService {
       newElement = this.handleLikertElement(newElement as LikertElement);
     }
     if (['likert-row', 'likert_row'].includes(newElement.type as string)) {
-      newElement = SanitizationService.handleLikertRowElement(newElement as LikertRowElement);
+      newElement = SanitizationService.handleLikertRowElement(newElement as Record<string, UIElementValue>);
     }
 
     return newElement as unknown as UIElement;
@@ -247,8 +248,8 @@ export class SanitizationService {
 
     // TODO: create a sub method
     if (element.document) {
-      childElements = new ClozeElement(element).getChildElements();
       doc = element.document as ClozeDocument;
+      childElements = ClozeElement.getDocumentChildElements(doc);
     } else {
       childElements = (element.parts as any[])
         .map((el: any) => el
@@ -280,7 +281,7 @@ export class SanitizationService {
                     ...paraPart,
                     attrs: {
                       ...paraPart.attrs,
-                      model: this.sanitizeElement(childElements.shift()!)
+                      model: this.sanitizeElement(childElements.shift() as Record<string, UIElementValue>)
                     }
                   } :
                   {
@@ -322,7 +323,7 @@ export class SanitizationService {
       newElement.value = [];
       (newElement.options as string[]).forEach(option => {
         (newElement.value as DragNDropValueObject[]).push({
-          id: this.iDService.getNewID('value'),
+          id: IDManager.getInstance().getNewID('value'),
           stringValue: option
         });
       });
@@ -331,7 +332,7 @@ export class SanitizationService {
       const newValues: DragNDropValueObject[] = [];
       (newElement.value as string[]).forEach(value => {
         newValues.push({
-          id: this.iDService.getNewID('value'),
+          id: IDManager.getInstance().getNewID('value'),
           stringValue: value
         });
       });
@@ -343,11 +344,12 @@ export class SanitizationService {
   private handleLikertElement(element: LikertElement): LikertElement {
     return new LikertElement({
       ...element,
-      rows: element.rows.map((row: LikertRowElement) => this.sanitizeElement(row) as LikertRowElement)
+      rows: element.rows
+        .map((row: LikertRowElement) => this.sanitizeElement(row as Record<string, UIElementValue>) as LikertRowElement)
     });
   }
 
-  private static handleLikertRowElement(element: LikertRowElement): LikertRowElement {
+  private static handleLikertRowElement(element: Record<string, UIElementValue>): Partial<LikertRowElement> {
     if (element.rowLabel) {
       return element;
     }
@@ -357,7 +359,7 @@ export class SanitizationService {
         text: element.text,
         imgSrc: null,
         position: 'above'
-      }
+      } as TextImageLabel
     });
   }
 

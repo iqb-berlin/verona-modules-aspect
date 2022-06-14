@@ -2,8 +2,8 @@ import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { DropListNodeviewComponent } from './drop-list-nodeview.component';
-
-import { ElementFactory } from 'common/util/element.factory';
+import { DropListSimpleElement }
+  from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 
 const DropListComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -14,7 +14,7 @@ const DropListComponentExtension = (injector: Injector): Node => {
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement('drop-list-simple')
+          default: new DropListSimpleElement({ type: 'drop-list-simple', id: 'cloze-child-id-placeholder' })
         }
       };
     },

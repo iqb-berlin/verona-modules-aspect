@@ -12,7 +12,7 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
   selector: 'aspect-cloze',
   template: `
     <ng-container *ngIf="elementModel.document.content.length < 1">
-      Kein Dokument vorhanden
+      <i>Kein Dokument vorhanden</i>
     </ng-container>
     <div [style.width.%]="100"
          [style.height]="'auto'"
@@ -144,22 +144,14 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
         <ng-container *ngIf="$any(subPart).type === 'text' &&
                              (!(subPart.marks | markList).includes('superscript')) &&
                              (!(subPart.marks | markList).includes('subscript'))">
-          <span [ngStyle]="subPart.marks | styleMarks">
-            {{subPart.text}}
-          </span>
+          <span [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</span>
         </ng-container>
-
         <ng-container *ngIf="$any(subPart).type === 'text' && (subPart.marks | markList).includes('superscript')">
-          <sup [ngStyle]="subPart.marks | styleMarks">
-            {{subPart.text}}
-          </sup>
+          <sup [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</sup>
         </ng-container>
         <ng-container *ngIf="$any(subPart).type === 'text' && (subPart.marks | markList).includes('subscript')">
-          <sub [ngStyle]="subPart.marks | styleMarks">
-            {{subPart.text}}
-          </sub>
+          <sub [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</sub>
         </ng-container>
-
         <ng-container *ngIf="$any(subPart).type === 'image'">
           <img [src]="subPart.attrs.src" [alt]="subPart.attrs.alt"
                [style.display]="'inline-block'"

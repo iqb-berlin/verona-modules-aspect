@@ -74,7 +74,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
 
   private manageKeyInputToggling(textFieldSimpleComponent: TextFieldSimpleComponent, elementModel: InputElement): void {
     (textFieldSimpleComponent)
-      .textInputExpected
+      .focusChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(focusedTextInput => {
         this.toggleKeyInput(focusedTextInput, textFieldSimpleComponent, elementModel);

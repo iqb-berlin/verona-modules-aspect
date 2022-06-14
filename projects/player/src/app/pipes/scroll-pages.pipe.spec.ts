@@ -3,7 +3,7 @@ import { Page } from 'common/models/page';
 
 describe('ScrollPagesPipe', () => {
 
-  const page: Page = {
+  const page: Page = new Page({
     hasMaxWidth: false,
     maxWidth: 0,
     margin: 0,
@@ -12,12 +12,12 @@ describe('ScrollPagesPipe', () => {
     alwaysVisiblePagePosition: 'left',
     alwaysVisibleAspectRatio: 50,
     sections: []
-  };
+  });
 
   const pipe = new ScrollPagesPipe();
 
   it('should transform 3 pages to 2 scroll pages', () => {
-    const pages = [page, page, { ...page, alwaysVisible: true }];
+    const pages = [page, page, { ...page, alwaysVisible: true } as Page];
     expect(pipe.transform(pages).length).toBe(2);
   });
 

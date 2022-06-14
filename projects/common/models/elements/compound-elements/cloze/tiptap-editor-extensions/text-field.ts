@@ -1,5 +1,8 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { ElementFactory } from '../../../../../util/element.factory';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 
 const TextFieldExtension =
   Node.create({
@@ -10,7 +13,7 @@ const TextFieldExtension =
     addAttributes() {
       return {
         model: {
-          default: ElementFactory.createElement('text-field-simple')
+          default: new TextFieldSimpleElement({ type: 'text-field-simple' })
         }
       };
     },

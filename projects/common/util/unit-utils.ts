@@ -1,6 +1,6 @@
 import { UIElement, UIElementType } from 'common/models/elements/element';
 
-export abstract class UnitUtils {
+export abstract class UnitUtils { // TODO delete this. replce by unit method
   static findUIElements(value: any | unknown[], type?: UIElementType): UIElement[] {
     const elements: UIElement[] = [];
     if (value && typeof value === 'object') {

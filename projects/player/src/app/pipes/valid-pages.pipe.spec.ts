@@ -13,7 +13,7 @@ describe('ValidPagesPipe', () => {
     }
   };
 
-  const page: Page = {
+  const page = new Page({
     hasMaxWidth: false,
     maxWidth: 0,
     margin: 0,
@@ -22,7 +22,7 @@ describe('ValidPagesPipe', () => {
     alwaysVisiblePagePosition: 'left',
     alwaysVisibleAspectRatio: 50,
     sections: []
-  };
+  });
 
   beforeEach(() => {
     TestBed

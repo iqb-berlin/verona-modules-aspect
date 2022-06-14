@@ -70,6 +70,7 @@ import { ImagePropertiesComponent } from './components/properties-panel/model-pr
 import { DropListPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
 import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
+import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 
 @NgModule({
   declarations: [
@@ -111,7 +112,8 @@ import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-tex
     ImagePropertiesComponent,
     DropListPropertiesComponent,
     RichTextEditorSimpleComponent,
-    RichTextSimpleEditDialogComponent
+    RichTextSimpleEditDialogComponent,
+    SectionInsertDialogComponent
   ],
   imports: [
     BrowserModule,

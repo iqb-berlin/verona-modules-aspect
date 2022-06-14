@@ -1,5 +1,24 @@
 Player
 ======
+1.25.2
+- Fix the scroll position of input elements when
+  opening the virtual keyboard in small browser views
+  In small browser views elements are now scrolled
+  to the top of the view instead of the middle of the view
+
+1.25.1
+- Fix sending unit state values to the backend
+
+1.25.0
+- Scroll page when opening the virtual keyboard
+- Scroll to section after it is unlocked
+- Fix initialisation problems of elements in hidden sections
+- Resolve response status issues after re-entering a unit
+- Fix problems with restoring drop-list, radio, radio-group-images,
+  dropdown, toggle-button, likert-row values when re-entering the unit
+- Reset the shift key after entering a capital letter
+- Add software tests
+
 1.24.0
 - Fix display of empty dynamic drop lists on iOS 14
 

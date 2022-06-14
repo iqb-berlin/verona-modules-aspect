@@ -27,8 +27,8 @@ import {
            [formControl]="elementFormControl"
            [value]="elementModel.value"
            (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
-           (focus)="textInputExpected.emit({ inputElement: input, focused: true })"
-           (blur)="textInputExpected.emit({ inputElement: input, focused: false })">
+           (focus)="focusChanged.emit({ inputElement: input, focused: true })"
+           (blur)="focusChanged.emit({ inputElement: input, focused: false })">
   `,
   styles: [
     '.clozeChild {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}',
@@ -38,5 +38,5 @@ import {
 export class TextFieldSimpleComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldSimpleElement;
   @Output() hardwareKeyDetected = new EventEmitter();
-  @Output() textInputExpected = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
+  @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
 }

@@ -27,18 +27,26 @@ export class KeyboardService extends InputService {
         elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
     void {
     this.alternativeKeyboardShowFrench = elementComponent.elementModel.softwareKeyboardShowFrench;
-    this.scrollElement(inputElement);
     this.setCurrentKeyInputElement(inputElement, elementComponent);
     this.isOpen = true;
   }
 
-  private scrollElement = (element: HTMLElement): void => {
-    if (this.isHiddenByKeyboard(element)) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  scrollElement(): void {
+    if (this.isOpen && this.isElementHiddenByKeyboard()) {
+      const scrollPositionTarget = this.isViewHighEnoughToCenterElement() ? 'start' : 'center';
+      this.elementComponent.domElement.scrollIntoView({ block: scrollPositionTarget });
     }
-  };
+  }
 
-  private isHiddenByKeyboard = (element: HTMLElement): boolean => (
-    window.innerHeight - element.getBoundingClientRect().top < 300
-  );
+  private isViewHighEnoughToCenterElement(): boolean {
+    return  window.innerHeight < this.getKeyboardHeight() * 2;
+  }
+
+  private isElementHiddenByKeyboard(): boolean {
+    return window.innerHeight - this.elementComponent.domElement.getBoundingClientRect().top < this.getKeyboardHeight();
+  }
+
+  private getKeyboardHeight(): number {
+    return this.alternativeKeyboardShowFrench ? 400 : 350;
+  }
 }

@@ -25,7 +25,7 @@ import { Section } from 'common/models/section';
 export class CanvasComponent {
   @Input() page!: Page;
   @ViewChildren('sectionComponent')
-  childSectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
+    sectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
 
   constructor(public selectionService: SelectionService, public unitService: UnitService) { }
 
@@ -75,8 +75,8 @@ export class CanvasComponent {
     this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
   }
 
-  selectElementComponent(element: UIElement): void {
-    const elementComponent = this.getElementComponent(element);
+  selectElementOverlay(element: UIElement): void {
+    const elementComponent = this.getElementOverlay(element);
     if (elementComponent) {
       this.selectionService.selectElement({ elementComponent: elementComponent, multiSelect: false });
     } else {
@@ -84,8 +84,8 @@ export class CanvasComponent {
     }
   }
 
-  private getElementComponent(element: UIElement): CanvasElementOverlay | null {
-    for (const sectionComponent of this.childSectionComponents.toArray()) {
+  private getElementOverlay(element: UIElement): CanvasElementOverlay | null {
+    for (const sectionComponent of this.sectionComponents.toArray()) {
       for (const elementComponent of sectionComponent.childElementComponents.toArray()) {
         if (elementComponent.element.id === element.id) {
           return elementComponent;

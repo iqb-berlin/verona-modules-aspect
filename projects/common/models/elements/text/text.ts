@@ -1,11 +1,9 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles,
-  PositionedUIElement,
-  PositionProperties, SchemerData, SchemerValue,
-  UIElement
+  BasicStyles, PositionedUIElement,
+  PositionProperties, SchemerData, UIElement
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
 
@@ -20,9 +18,13 @@ export class TextElement extends UIElement implements PositionedUIElement {
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextElement>) {
-    super({ height: 98, ...element });
-    Object.assign(this, element);
+  constructor(element: Partial<TextElement>, ...args: unknown[]) {
+    super({ height: 98, ...element }, ...args);
+    if (element.text) this.text = element.text;
+    if (element.highlightableOrange) this.highlightableOrange = element.highlightableOrange;
+    if (element.highlightableTurquoise) this.highlightableTurquoise = element.highlightableTurquoise;
+    if (element.highlightableYellow) this.highlightableYellow = element.highlightableYellow;
+    if (element.columnCount) this.columnCount = element.columnCount;
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
       ...ElementFactory.initStylingProps({
@@ -33,7 +35,7 @@ export class TextElement extends UIElement implements PositionedUIElement {
     };
   }
 
-  isHighlightable(): boolean {
+  private isHighlightable(): boolean {
     return this.highlightableYellow ||
         this.highlightableTurquoise ||
         this.highlightableOrange;

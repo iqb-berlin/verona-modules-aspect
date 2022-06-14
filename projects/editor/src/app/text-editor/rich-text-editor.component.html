@@ -212,7 +212,9 @@
         <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
         <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
         <br>
+        <button mat-button (click)="insertSpecialChar('&lsquo;')">&lsquo;</button>
         <button mat-button (click)="insertSpecialChar('&rsquo;')">&rsquo;</button>
+        <button mat-button (click)="insertSpecialChar('&sbquo;')">&sbquo;</button>
         <button mat-button (click)="insertSpecialChar('&bdquo;')">&bdquo;</button>
         <button mat-button (click)="insertSpecialChar('&ldquo;')">&ldquo;</button>
         <button mat-button (click)="insertSpecialChar('&rdquo;')">&rdquo;</button>
@@ -249,11 +251,11 @@
         <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
         <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
       </mat-menu>
-      <button mat-icon-button matTooltip="Bild" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+      <button mat-icon-button matTooltip="Bild" [matTooltipShowDelay]="300"
               (click)="addImage()">
         <mat-icon>image</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Zitat" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+      <button mat-icon-button matTooltip="Zitat" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive('blockquote')"
               (click)="toggleBlockquote()">
         <mat-icon>format_quote</mat-icon>
@@ -263,7 +265,7 @@
   <div *ngIf="clozeMode" fxLayout="row" fxLayoutAlign="space-around center" >
     <button mat-icon-button matTooltip="Eingabefeld" [matTooltipShowDelay]="300"
             (click)="insertTextField()">
-      <mat-icon>text_fields</mat-icon>
+      <mat-icon>edit</mat-icon>
     </button>
     <button mat-icon-button matTooltip="Ablegeliste" [matTooltipShowDelay]="300"
             (click)="insertDropList()">

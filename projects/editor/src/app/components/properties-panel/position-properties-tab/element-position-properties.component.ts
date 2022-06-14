@@ -17,9 +17,7 @@ import { PositionedUIElement, PositionProperties } from 'common/models/elements/
 
       <aspect-dimension-field-set
         [positionProperties]="positionProperties"
-        [dimensions]="dimensions"
-        (updateModel)="unitService.updateElementsProperty(
-                         this.selectionService.getSelectedElements(), $event.property, $event.value)">
+        [dimensions]="dimensions">
       </aspect-dimension-field-set>
 
       <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">

@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles,
@@ -6,7 +7,6 @@ import {
   PositionProperties,
   SchemerData, SchemerValue
 } from 'common/models/elements/element';
-import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SliderComponent } from 'common/components/input-elements/slider.component';
 
@@ -21,9 +21,13 @@ export class SliderElement extends InputElement implements PositionedUIElement {
     lineHeight: number;
   };
 
-  constructor(element: Partial<SliderElement>) {
-    super(element);
-    Object.assign(this, element);
+  constructor(element: Partial<SliderElement>, ...args: unknown[]) {
+    super(element, ...args);
+    if (element.minValue) this.minValue = element.minValue;
+    if (element.maxValue !== undefined) this.maxValue = element.maxValue;
+    if (element.showValues !== undefined) this.showValues = element.showValues;
+    if (element.barStyle) this.barStyle = element.barStyle;
+    if (element.thumbLabel) this.thumbLabel = element.thumbLabel;
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
       ...ElementFactory.initStylingProps({

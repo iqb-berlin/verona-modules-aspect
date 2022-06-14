@@ -1,63 +1,61 @@
 import {
-  Component, ElementRef, EventEmitter, Input, Output, ViewChild
+  Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
-import { IDService } from 'common/services/id.service';
 import { MessageService } from 'common/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { DragNDropValueObject } from 'common/models/elements/element';
+import { IDManager } from 'common/util/id-manager';
 
 @Component({
   selector: 'aspect-drop-list-properties',
   template: `
     <fieldset *ngIf="combinedProperties.type === 'drop-list' ||
-                     combinedProperties.type === 'drop-list-sorting'">
+                     combinedProperties.type === 'drop-list-simple'">
       <legend>Ablegeliste</legend>
 
-      <mat-form-field disabled="true" *ngIf="combinedProperties.type === 'drop-list' ||
-                                           combinedProperties.type === 'drop-list-sorting'">
-        <ng-container>
-          <mat-label>{{'preset' | translate }}</mat-label>
-          <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
-               (cdkDropListDropped)="moveListValue($any($event))">
-            <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
-                 class="list-items" fxLayout="row" fxLayoutAlign="end center">
-              <div fxFlex="70" class="draggable-element-label">
-                {{value.stringValue}} ({{value.id}})
-              </div>
-              <img [src]="value.imgSrcValue"
-                   [style.object-fit]="'scale-down'"
-                   [style.height.px]="40">
-              <button mat-icon-button color="primary"
-                      (click)="editDropListOption(i)">
-                <mat-icon>build</mat-icon>
-              </button>
-              <button mat-icon-button color="primary"
-                      (click)="removeListValue('value', i)">
-                <mat-icon>clear</mat-icon>
-              </button>
+      <div class="value-list-container">
+        <mat-label>{{'preset' | translate }}</mat-label>
+        <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
+             (cdkDropListDropped)="moveListValue($any($event))">
+          <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
+               class="list-items" fxLayout="row" fxLayoutAlign="end center">
+            <div fxFlex="70" class="draggable-element-label">
+              {{value.stringValue}} ({{value.id}})
             </div>
+            <img [src]="value.imgSrcValue"
+                 [style.object-fit]="'scale-down'"
+                 [style.height.px]="40">
+            <button mat-icon-button color="primary"
+                    (click)="editDropListOption(i)">
+              <mat-icon>build</mat-icon>
+            </button>
+            <button mat-icon-button color="primary"
+                    (click)="removeListValue('value', i)">
+              <mat-icon>clear</mat-icon>
+            </button>
           </div>
-        </ng-container>
-        <div fxLayout="row" fxLayoutAlign="center center">
-          <textarea matInput type="text" #newValue rows="2"
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="text-area-container">
+          <textarea matInput type="text"
+                    #newValue rows="2"
                     (keyup.enter)="addDropListOption(newValue.value); newValue.select()"></textarea>
           <button mat-icon-button
                   (click)="addDropListOption(newValue.value); newValue.select()">
             <mat-icon>add</mat-icon>
           </button>
         </div>
-      </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="fill" *ngIf="combinedProperties.connectedTo !== null">
+      <mat-form-field appearance="fill" *ngIf="combinedProperties.connectedTo !== null"
+                      (click)="generateValidDropLists()">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.connectedTo"
-                    (ngModelChange)="toggleConnectedDropList($event)"
-                    (click)="generateValidDropLists()">
+                    (ngModelChange)="toggleConnectedDropList($event)">
           <mat-select-trigger>
             {{'propertiesPanel.connectedDropLists' | translate }} ({{combinedProperties.connectedTo.length}})
           </mat-select-trigger>
@@ -109,7 +107,11 @@ import { DragNDropValueObject } from 'common/models/elements/element';
   styles: [
     'mat-form-field {width: 100%;}',
     '.draggable-element-label {overflow-wrap: anywhere;}',
-    'mat-select {height: 100%;}'
+    'mat-select {height: 100%;}',
+    '.text-area-container {background-color: lightgray; margin-bottom: 15px;}',
+    '.value-list-container {background-color: rgba(0,0,0,.04);}',
+    '.text-area-container button {border: 1px solid gray;}',
+    '.value-list-container mat-label {font-size: large;}'
   ]
 })
 export class DropListPropertiesComponent {
@@ -125,7 +127,6 @@ export class DropListPropertiesComponent {
   constructor(public unitService: UnitService,
               private selectionService: SelectionService,
               private dialogService: DialogService,
-              private idService: IDService,
               private messageService: MessageService,
               private translateService: TranslateService) { }
 
@@ -145,7 +146,7 @@ export class DropListPropertiesComponent {
     await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])
       .subscribe((result: DragNDropValueObject) => {
         if (result) {
-          if (result.id !== oldOptions[optionIndex].id && !this.idService.isIdAvailable(result.id)) {
+          if (result.id !== oldOptions[optionIndex].id && !IDManager.getInstance().isIdAvailable(result.id)) {
             this.messageService.showError(this.translateService.instant('idTaken'));
             return;
           }

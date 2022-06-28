@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 import { IDManager } from 'common/util/id-manager';
 import {
-  InputElement,
+  InputElement, PlayerElement,
   PositionedUIElement,
   SchemerData,
   UIElement,
@@ -110,6 +110,6 @@ export class Section {
       .map(element =>
         (element.type === 'drop-list' || element.type === 'drop-list-simple') ?
           (element as InputElement).getSchemerData(dropLists) :
-          (element as InputElement | TextElement).getSchemerData());
+          (element as InputElement | PlayerElement | TextElement | ImageElement).getSchemerData());
   }
 }

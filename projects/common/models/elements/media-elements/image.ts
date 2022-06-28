@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
-import { PositionedUIElement, PositionProperties, UIElement } from 'common/models/elements/element';
+import { PositionedUIElement, PositionProperties, SchemerData, UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
 
@@ -26,5 +26,21 @@ export class ImageElement extends UIElement implements PositionedUIElement {
 
   getComponentFactory(): Type<ElementComponent> {
     return ImageComponent;
+  }
+
+  hasSchemerData(): boolean {
+    return this.magnifier;
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'boolean',
+      format: '',
+      multiple: false,
+      nullable: false,
+      values: [],
+      valuesComplete: true
+    };
   }
 }

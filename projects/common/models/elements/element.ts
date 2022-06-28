@@ -111,7 +111,21 @@ export abstract class PlayerElement extends UIElement {
     this.player = ElementFactory.initPlayerProps(element.player);
   }
 
-  // abstract getSchemerData(options: any): SchemerData;
+  hasSchemerData(): boolean {
+    return true;
+  }
+
+  getSchemerData(): SchemerData {
+    return {
+      id: this.id,
+      type: 'string',
+      format: 'playback',
+      multiple: false,
+      nullable: true,
+      values: [],
+      valuesComplete: true
+    };
+  }
 }
 
 export interface SchemerValue {

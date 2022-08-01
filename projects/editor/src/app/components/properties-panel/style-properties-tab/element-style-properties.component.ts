@@ -1,6 +1,4 @@
-import {
-  Component, EventEmitter, Input, Output
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BasicStyles, ExtendedStyles } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit.service';
 

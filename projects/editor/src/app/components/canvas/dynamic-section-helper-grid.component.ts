@@ -44,7 +44,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   columnCountArray: unknown[] = [];
   rowCountArray: unknown[] = [];
 
-  constructor(public unitService: UnitService, public ele: ElementRef) {}
+  constructor(public unitService: UnitService) {}
 
   ngOnInit(): void {
     this.calculateColumnCount();

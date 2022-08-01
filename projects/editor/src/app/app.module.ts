@@ -19,17 +19,18 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 
+import { SharedModule } from 'common/shared.module';
+import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
-    './components/new-ui-element-panel/ui-element-toolbox.component';
+  './components/new-ui-element-panel/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { StaticCanvasOverlayComponent } from
-    './components/canvas/overlays/static-canvas-overlay.component';
+  './components/canvas/overlays/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from
-    './components/canvas/overlays/dynamic-canvas-overlay.component';
-import { SharedModule } from 'common/shared.module';
+  './components/canvas/overlays/dynamic-canvas-overlay.component';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { SectionMenuComponent } from './components/canvas/section-menu.component';
 import { SectionStaticComponent } from './components/canvas/section-static.component';
@@ -48,29 +49,35 @@ import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/
 import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
 import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
 import { PositionFieldSetComponent } from
-    './components/properties-panel/position-properties-tab/input-groups/position-field-set.component';
+  './components/properties-panel/position-properties-tab/input-groups/position-field-set.component';
 import { DimensionFieldSetComponent } from
-    './components/properties-panel/position-properties-tab/input-groups/dimension-field-set.component';
+  './components/properties-panel/position-properties-tab/input-groups/dimension-field-set.component';
 import { ElementPropertiesPanelComponent }
   from './components/properties-panel/element-properties-panel.component';
 import { ElementPositionPropertiesComponent } from
-    './components/properties-panel/position-properties-tab/element-position-properties.component';
+  './components/properties-panel/position-properties-tab/element-position-properties.component';
 import { ElementStylePropertiesComponent } from
-    './components/properties-panel/style-properties-tab/element-style-properties.component';
+  './components/properties-panel/style-properties-tab/element-style-properties.component';
 import { ElementModelPropertiesComponent } from
-    './components/properties-panel/model-properties-tab/element-model-properties.component';
+  './components/properties-panel/model-properties-tab/element-model-properties.component';
 import { DynamicSectionHelperGridComponent } from './components/canvas/dynamic-section-helper-grid.component';
 import { ElementGridChangeListenerDirective } from './components/canvas/element-grid-change-listener.directive';
-import { OptionsFieldSetComponent } from './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
-import { TextPropertiesFieldSetComponent } from './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
-import { ButtonPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
-import { SliderPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
-import { InputElementPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
-import { ImagePropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/image-properties.component';
-import { DropListPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
+import { OptionsFieldSetComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
+import { TextPropertiesFieldSetComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
+import { ButtonPropertiesComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
+import { SliderPropertiesComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
+import { InputElementPropertiesComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
+import { ImagePropertiesComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/image-properties.component';
+import { DropListPropertiesComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
 import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
-import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 
 @NgModule({
   declarations: [

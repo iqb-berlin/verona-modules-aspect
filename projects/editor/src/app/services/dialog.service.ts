@@ -76,7 +76,12 @@ export class DialogService {
 
   showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
-      data: { content: document, defaultFontSize, clozeMode: true },
+      data: {
+        content: document,
+        defaultFontSize,
+        clozeMode: true
+      },
+      height: '700px',
       autoFocus: false
     });
     return dialogRef.afterClosed();

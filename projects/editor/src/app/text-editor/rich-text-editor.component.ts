@@ -74,6 +74,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     HangingIndent,
     Image.configure({
       inline: true,
+      allowBase64: true,
       HTMLAttributes: {
         style: 'display: inline-block; height: 1em; vertical-align: middle'
       }
@@ -210,7 +211,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     this.editor.commands.unhangIndent(this.selectedIndentSize);
   }
 
-  async addImage(): Promise<void> {
+  async insertImage(): Promise<void> {
     const mediaSrc = await FileService.loadImage();
     this.editor.commands.setImage({ src: mediaSrc });
   }

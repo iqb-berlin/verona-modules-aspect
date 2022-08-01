@@ -12,6 +12,7 @@ import { DragNDropValueObject, InputElementValue, TextImageLabel, UIElement } fr
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { IDManager } from 'common/util/id-manager';
+import { FileService } from 'common/services/file.service';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -131,5 +132,22 @@ export class ElementModelPropertiesComponent {
           }
         }
       });
+  }
+
+  async changeMediaSrc(elementType: string) {
+    let mediaSrc = '';
+    switch (elementType) {
+      case 'image':
+        mediaSrc = await FileService.loadImage();
+        break;
+      case 'audio':
+        mediaSrc = await FileService.loadAudio();
+        break;
+      case 'video':
+        mediaSrc = await FileService.loadVideo();
+        break;
+      // no default
+    }
+    this.updateModel.emit({ property: 'src', value: mediaSrc });
   }
 }

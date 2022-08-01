@@ -19,8 +19,16 @@
   </ng-container>
 
   <ng-container *ngIf="combinedProperties.player">
-    <button (click)="unitService.showDefaultEditDialog(selectedElements[0])">
-      <mat-icon>build_circle</mat-icon>
+    <button mat-raised-button fxFlexAlign="center" fxFill
+            [style.width.%]="95" [style.min-width.%]="95"
+            (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+      Medienoptionen
+    </button>
+  </ng-container>
+  <ng-container *ngIf="combinedProperties.src">
+    <button mat-fab color="primary" fxFlexAlign="center"
+            (click)="changeMediaSrc(combinedProperties.type)">
+      <mat-icon>upload_file</mat-icon>
     </button>
   </ng-container>
 

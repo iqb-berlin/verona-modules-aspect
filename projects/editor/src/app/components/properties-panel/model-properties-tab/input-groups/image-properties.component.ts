@@ -5,38 +5,44 @@ import {
 @Component({
   selector: 'aspect-image-properties',
   template: `
-    <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
-                  [checked]="$any(combinedProperties.scale)"
-                  (change)="updateModel.emit({ property: 'scale', value: $event.checked })">
-      {{'propertiesPanel.scale' | translate }}
-    </mat-checkbox>
+    <div fxLayout="column" fxLayoutGap="5px" *ngIf="combinedProperties.scale !== undefined">
+      <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
+                    [checked]="$any(combinedProperties.scale)"
+                    (change)="updateModel.emit({ property: 'scale', value: $event.checked })">
+        {{'propertiesPanel.scale' | translate }}
+      </mat-checkbox>
 
-    <mat-checkbox *ngIf="combinedProperties.magnifier !== undefined"
-                  [checked]="$any(combinedProperties.magnifier)"
-                  (change)="updateModel.emit({ property: 'magnifier', value: $event.checked })">
-      {{'propertiesPanel.magnifier' | translate }}
-    </mat-checkbox>
-    <mat-form-field *ngIf="combinedProperties.magnifier" appearance="fill">
-      <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>
-      <input matInput type="number" #magnifierSize="ngModel" min="0"
-             [ngModel]="combinedProperties.magnifierSize"
-             (ngModelChange)="updateModel.emit({
-                  property: 'magnifierSize',
-                  value: $event,
-                  isInputValid: magnifierSize.valid})">
-    </mat-form-field>
+      <mat-checkbox *ngIf="combinedProperties.magnifier !== undefined"
+                    [checked]="$any(combinedProperties.magnifier)"
+                    (change)="updateModel.emit({ property: 'magnifier', value: $event.checked })">
+        {{'propertiesPanel.magnifier' | translate }}
+      </mat-checkbox>
 
-    <ng-container *ngIf="combinedProperties.magnifier">
-      {{'propertiesPanel.magnifierZoom' | translate }}
-      <mat-slider min="1" max="3" step="0.1" [ngModel]="combinedProperties.magnifierZoom"
+      <mat-form-field appearance="fill">
+        <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>
+        <input matInput type="number" #magnifierSize="ngModel" min="0"
+               [disabled]="!combinedProperties.magnifier"
+               [ngModel]="combinedProperties.magnifierSize"
+               (ngModelChange)="updateModel.emit({
+                    property: 'magnifierSize',
+                    value: $event,
+                    isInputValid: magnifierSize.valid})">
+      </mat-form-field>
+
+      <div [class.disabled-label]="!combinedProperties.magnifier">
+        {{'propertiesPanel.magnifierZoom' | translate }}
+      </div>
+      <mat-slider min="1" max="3" step="0.1" [disabled]="!combinedProperties.magnifier"
+                  [ngModel]="combinedProperties.magnifierZoom"
                   (change)="updateModel.emit({ property: 'magnifierZoom', value: $event.value })">
       </mat-slider>
       <div *ngIf="combinedProperties.magnifier">
         {{combinedProperties.magnifierZoom}}
       </div>
-    </ng-container>
+    </div>
   `,
   styles: [
+    '.disabled-label {color: rgba(0, 0, 0, 0.26)}'
   ]
 })
 export class ImagePropertiesComponent {

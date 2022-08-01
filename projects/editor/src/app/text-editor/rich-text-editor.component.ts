@@ -3,7 +3,6 @@ import {
   AfterViewInit, Injector, OnInit
 } from '@angular/core';
 import { Editor } from '@tiptap/core';
-import StarterKit from '@tiptap/starter-kit';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Subscript } from '@tiptap/extension-subscript';
@@ -14,13 +13,19 @@ import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
 import { Image } from '@tiptap/extension-image';
 import { Blockquote } from '@tiptap/extension-blockquote';
+import { Document } from '@tiptap/extension-document';
+import { Text } from '@tiptap/extension-text';
+import { ListItem } from '@tiptap/extension-list-item';
+import { Bold } from '@tiptap/extension-bold';
+import { Italic } from '@tiptap/extension-italic';
+import { Strike } from '@tiptap/extension-strike';
+import { FileService } from 'common/services/file.service';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
 import { ParagraphExtension } from './extensions/paragraph-extension';
 import { FontSize } from './extensions/font-size';
 import { BulletListExtension } from './extensions/bullet-list';
 import { OrderedListExtension } from './extensions/ordered-list';
-import { FileService } from 'common/services/file.service';
 import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
@@ -43,8 +48,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   bulletListStyle: string = 'disc';
   orderedListStyle: string = 'decimal';
 
-  defaultExtensions = [StarterKit, Underline, Superscript, Subscript,
+  defaultExtensions = [
+    Document, Text, ListItem,
+    Underline, Superscript, Subscript,
     TextStyle, Color,
+    Bold, Italic, Strike,
     Highlight.configure({
       multicolor: true
     }),

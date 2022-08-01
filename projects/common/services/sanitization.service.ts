@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import packageJSON from '../../../package.json';
 import { Editor } from '@tiptap/core';
-import StarterKit from '@tiptap/starter-kit';
 import ToggleButtonExtension from
   'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
 import DropListExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/drop-list';
@@ -28,12 +26,12 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { IDManager } from 'common/util/id-manager';
+import packageJSON from '../../../package.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SanitizationService {
-
   private static expectedUnitVersion: [number, number, number] =
     packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
 
@@ -308,7 +306,7 @@ export class SanitizationService {
     });
 
     const editor = new Editor({
-      extensions: [StarterKit, ToggleButtonExtension, DropListExtension, TextFieldExtension],
+      extensions: [ToggleButtonExtension, DropListExtension, TextFieldExtension],
       content: replacedText
     });
     return editor.getJSON() as ClozeDocument;

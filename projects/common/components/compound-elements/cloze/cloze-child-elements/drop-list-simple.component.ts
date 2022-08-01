@@ -73,6 +73,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
     '.list {width: 100%; height: 100%; border-radius: 5px}',
     '.item {border-radius: 5px; padding: 0 5px; height: 100%; text-align: center;}',
     '.item:not(:last-child) {margin-bottom: 5px;}',
+    '.item:active {cursor: grabbing}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
     '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999;}',

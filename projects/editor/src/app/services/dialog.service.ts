@@ -57,6 +57,7 @@ export class DialogService {
         defaultFontSize,
         clozeMode: false
       },
+      height: '600px',
       autoFocus: false
     });
     return dialogRef.afterClosed();

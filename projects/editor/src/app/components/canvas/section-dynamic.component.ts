@@ -2,9 +2,9 @@ import {
   Component, Input, Output, EventEmitter,
   ViewChildren, QueryList, ViewChild
 } from '@angular/core';
+import { Section } from 'common/models/section';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
-import { Section } from 'common/models/section';
 
 @Component({
   selector: 'aspect-section-dynamic',

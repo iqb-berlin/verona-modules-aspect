@@ -5,12 +5,12 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { UnitService } from '../../services/unit.service';
-import { DialogService } from '../../services/dialog.service';
-import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
+import { UnitService } from '../../services/unit.service';
+import { DialogService } from '../../services/dialog.service';
+import { SelectionService } from '../../services/selection.service';
 
 @Component({
   selector: 'aspect-section-menu',

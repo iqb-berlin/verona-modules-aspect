@@ -4,14 +4,14 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../../services/unit.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { SelectionService } from '../../../services/selection.service';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import { CompoundChildOverlayComponent } from
   'common/components/compound-elements/cloze/compound-child-overlay.component';
 import { UIElement } from 'common/models/elements/element';
+import { UnitService } from '../../../services/unit.service';
+import { SelectionService } from '../../../services/selection.service';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {

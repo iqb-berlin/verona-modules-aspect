@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
-import packageJSON from '../../../../../package.json';
 import { Unit } from 'common/models/unit';
+import packageJSON from '../../../../../package.json';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class VeronaAPIService {
   private _voeStartCommand = new Subject<VoeStartCommand>(); // TODO proper interfaces
   private _voeGetDefinitionRequest = new Subject<VoeGetDefinitionRequest>();
 
-  private isStandalone = (): boolean => window === window.parent;
+  private isStandalone = window === window.parent;
 
   constructor() {
     fromEvent(window, 'message')
@@ -36,7 +36,7 @@ export class VeronaAPIService {
 
   private send(message: Record<string, string>): void {
     // prevent posts in local (dev) mode
-    if (!this.isStandalone()) {
+    if (!this.isStandalone) {
       window.parent.postMessage(message, '*');
     } else {
       // console.log(`player: ${message.type}`);

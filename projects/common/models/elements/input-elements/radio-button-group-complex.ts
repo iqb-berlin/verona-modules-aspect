@@ -17,7 +17,7 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
 
   constructor(element: Partial<RadioButtonGroupComplexElement>, ...args: unknown[]) {
     super({ height: 100, ...element }, ...args);
-    if (element.columns) this.columns = element.columns;
+    if (element.columns) this.columns = [...element.columns];
     this.position = ElementFactory.initPositionProps({ marginBottom: 40, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({ backgroundColor: 'transparent', ...element.styling })

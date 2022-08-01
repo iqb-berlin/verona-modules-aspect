@@ -62,19 +62,16 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
   }
 
-  selectElement(multiSelect: boolean = false): void {
-    if (multiSelect) {
-      this.selectionService.selectElement({ elementComponent: this, multiSelect: true });
-    } else {
-      this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
-    }
-  }
-
-  elementClicked(event: MouseEvent): void { //TODO method name
+  selectElement(event?: MouseEvent): void {
     if (!this.isSelected) {
-      this.selectElement(event.shiftKey);
+      // this.selectElement(event.shiftKey);
+      if (event?.shiftKey) {
+        this.selectionService.selectElement({ elementComponent: this, multiSelect: true });
+      } else {
+        this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
+      }
     }
-    event.stopPropagation();
+    event?.stopPropagation();
     this.elementSelected.emit();
   }
 

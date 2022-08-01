@@ -11,11 +11,11 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <div class="draggable-element"
          [class.temporaryHighlight]="temporaryHighlight"
-         (click)="elementClicked($event)"
+         (click)="selectElement($event)"
          (dblclick)="openEditDialog()"
          (keyup.delete)="deleteSelectedElements()" tabindex="-1"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
-         (cdkDragStarted)="!isSelected && selectElement()"
+         (cdkDragStarted)="selectElement()"
          cdkDropList>
       <div *cdkDragPlaceholder></div>
       <!-- Needs extra div because styling can interfere with drag and drop-->

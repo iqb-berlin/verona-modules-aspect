@@ -87,7 +87,7 @@
     "@angular-devkit/build-angular": "~13.3.0",
     "@angular/cli": "~13.3.0",
     "@angular/compiler-cli": "~13.3.0",
-    "@iqb/eslint-config": "^1.1.1",
+    "@iqb/eslint-config": "^2.1.0",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.7",
     "iqb-dev-components": "^1.4.0",

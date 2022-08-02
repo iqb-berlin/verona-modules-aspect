@@ -1,15 +1,14 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { TextElement } from 'common/models/elements/text/text';
 import { DialogService } from '../../../../services/dialog.service';
 import { SelectionService } from '../../../../services/selection.service';
-import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
   selector: 'aspect-text-properties-field-set',
   template: `
-    <fieldset *ngIf="combinedProperties.text">
-      <legend>Textelement</legend>
+    <ng-container *ngIf="combinedProperties.text">
       <ng-container>
         <div class="text-text"
              [innerHTML]="$any(combinedProperties.text) | safeResourceHTML"
@@ -41,7 +40,7 @@ import { TextElement } from 'common/models/elements/text/text';
                     (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
         {{'propertiesPanel.highlightableOrange' | translate }}
       </mat-checkbox>
-    </fieldset>
+    </ng-container>
   `,
   styles: [
     'mat-checkbox {margin-left: 15px;}',
@@ -58,7 +57,7 @@ import { TextElement } from 'common/models/elements/text/text';
 export class TextPropertiesFieldSetComponent {
   @Input() combinedProperties!: any;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+    new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
 
   constructor(public dialogService: DialogService, public selectionService: SelectionService) {}
 

@@ -64,7 +64,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 })
 export class DimensionFieldSetComponent {
   @Input() positionProperties: PositionProperties | undefined;
-  @Input() dimensions!: { width: number; height: number; dynamicWidth?: boolean };
+  @Input() dimensions!: { width?: number; height?: number; dynamicWidth?: boolean };
 
   constructor(public unitService: UnitService, public selectionService: SelectionService) { }
 

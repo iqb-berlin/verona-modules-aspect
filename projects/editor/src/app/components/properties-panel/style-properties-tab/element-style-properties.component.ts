@@ -5,7 +5,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 @Component({
   selector: 'aspect-element-style-properties',
   template: `
-    <div fxLayout="column">
+    <div fxLayout="column" *ngIf="styles">
       <mat-checkbox *ngIf="styles.lineColoring !== undefined"
                     [checked]="$any(styles.lineColoring)"
                     (change)="unitService.updateSelectedElementsStyleProperty('lineColoring', $event.checked)">
@@ -156,7 +156,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
   `
 })
 export class ElementStylePropertiesComponent {
-  @Input() styles!: BasicStyles & ExtendedStyles;
+  @Input() styles!: BasicStyles & ExtendedStyles | undefined;
 
   constructor(public unitService: UnitService) { }
 }

@@ -46,7 +46,7 @@ import { PositionedUIElement, PositionProperties } from 'common/models/elements/
   ]
 })
 export class ElementPositionPropertiesComponent {
-  @Input() dimensions!: { width: number; height: number; dynamicWidth: boolean; };
+  @Input() dimensions!: { width?: number; height?: number; dynamicWidth: boolean; };
   @Input() positionProperties: PositionProperties | undefined;
 
   constructor(public unitService: UnitService, public selectionService: SelectionService) { }

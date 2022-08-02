@@ -1,18 +1,22 @@
 import {
   Component, EventEmitter,
-  Input, Output
+  Input, OnInit, Output
 } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { UnitService } from '../../../services/unit.service';
-import { SelectionService } from '../../../services/selection.service';
-import { DialogService } from '../../../services/dialog.service';
-import { DomSanitizer } from '@angular/platform-browser';
-import { DragNDropValueObject, InputElementValue, TextImageLabel, UIElement } from 'common/models/elements/element';
+import {
+  BasicStyles,
+  DragNDropValueObject, ExtendedStyles, InputElementValue, TextImageLabel, UIElement
+} from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { IDManager } from 'common/util/id-manager';
 import { FileService } from 'common/services/file.service';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { UnitService } from '../../../services/unit.service';
+import { SelectionService } from '../../../services/selection.service';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -20,7 +24,7 @@ import { FileService } from 'common/services/file.service';
   styleUrls: ['./element-model-properties.component.css']
 })
 export class ElementModelPropertiesComponent {
-  @Input() combinedProperties: UIElement = {} as UIElement;
+  @Input() combinedProperties!: CombinedProperties;
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
@@ -64,9 +68,8 @@ export class ElementModelPropertiesComponent {
 
   async editColumnOption(optionIndex: number): Promise<void> {
     const firstElement = (this.selectedElements as LikertElement[])[0];
-    await this.dialogService
-      .showLikertColumnEditDialog(firstElement.columns[optionIndex],
-        (this.combinedProperties as LikertElement).styling.fontSize)
+    this.dialogService.showLikertColumnEditDialog(firstElement.columns[optionIndex],
+      (this.combinedProperties.styling as BasicStyles & ExtendedStyles).fontSize as number)
       .subscribe((result: TextImageLabel) => {
         if (result) {
           firstElement.columns[optionIndex] = result;

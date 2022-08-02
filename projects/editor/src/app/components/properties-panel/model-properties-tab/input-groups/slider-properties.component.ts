@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 
 @Component({
   selector: 'aspect-slider-properties',
@@ -43,5 +45,5 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class SliderPropertiesComponent {
   @Input() combinedProperties!: any;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+    new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
 }

@@ -5,10 +5,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { UnitService } from '../../services/unit.service';
-import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
 import { DragNDropValueObject, TextImageLabel, UIElement } from 'common/models/elements/element';
+import { UnitService } from '../../services/unit.service';
+import { SelectionService } from '../../services/selection.service';
+
+export type CombinedProperties = UIElement & { idList?: string[] };
 
 @Component({
   selector: 'aspect-element-properties',
@@ -24,8 +26,8 @@ import { DragNDropValueObject, TextImageLabel, UIElement } from 'common/models/e
   ]
 })
 export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
-  selectedElements!: UIElement[];
-  combinedProperties: UIElement = {} as UIElement;
+  selectedElements: UIElement[] = [];
+  combinedProperties: CombinedProperties | undefined;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
@@ -39,7 +41,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       .subscribe(
         () => {
           this.combinedProperties =
-            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements) as UIElement;
+            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
         }
       );
     this.selectionService.selectedElements
@@ -48,14 +50,14 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
         (selectedElements: UIElement[]) => {
           this.selectedElements = selectedElements;
           this.combinedProperties =
-            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements) as UIElement;
+            ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
         }
       );
   }
 
-  static createCombinedProperties(elements: UIElement[]): Partial<UIElement> {
+  static createCombinedProperties(elements: UIElement[]): CombinedProperties | undefined {
     if (elements.length > 0) {
-      const combinedProperties: Partial<UIElement> & { id: string | string[] } = { ...elements[0], id: elements[0].id };
+      const combinedProperties = { ...elements[0], idList: [elements[0].id] } as CombinedProperties;
 
       for (let elementCounter = 1; elementCounter < elements.length; elementCounter++) {
         const elementToMerge = elements[elementCounter];
@@ -64,14 +66,16 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
             if (typeof combinedProperties[property] === 'object' &&
               !Array.isArray(combinedProperties[property]) &&
               combinedProperties[property] !== null) {
-              (combinedProperties[property] as UIElement) =
+              combinedProperties[property] =
                 ElementPropertiesPanelComponent.createCombinedProperties(
                   [(combinedProperties[property] as UIElement),
                     (elementToMerge[property] as UIElement)]
-                ) as UIElement;
+                );
             } else if (JSON.stringify(combinedProperties[property]) !== JSON.stringify(elementToMerge[property])) {
               if (property === 'id') {
-                (combinedProperties.id as string[]).push(elementToMerge.id as string);
+                // console.log('hier', combinedProperties.id);
+                combinedProperties.idList?.push(elementToMerge.id as string);
+                // combinedProperties.id = [combinedProperties.id, elementToMerge.id] as string[];
               } else {
                 combinedProperties[property] = null;
               }
@@ -83,7 +87,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
       }
       return combinedProperties;
     }
-    return {};
+    return undefined;
   }
 
   updateModel(property: string,

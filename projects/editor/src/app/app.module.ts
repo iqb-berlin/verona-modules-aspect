@@ -70,14 +70,16 @@ import { ButtonPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
 import { SliderPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
-import { InputElementPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
-import { ImagePropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/image-properties.component';
+import { TextFieldElementPropertiesComponent } from
+    './components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
+import { ScaleAndZoomPropertiesComponent } from
+    './components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
 import { DropListPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
 import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
+import { SelectPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/select-properties.component';
+import { InputElementPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
 
 @NgModule({
   declarations: [
@@ -115,12 +117,14 @@ import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-tex
     TextPropertiesFieldSetComponent,
     ButtonPropertiesComponent,
     SliderPropertiesComponent,
-    InputElementPropertiesComponent,
-    ImagePropertiesComponent,
+    TextFieldElementPropertiesComponent,
+    ScaleAndZoomPropertiesComponent,
     DropListPropertiesComponent,
     RichTextEditorSimpleComponent,
     RichTextSimpleEditDialogComponent,
-    SectionInsertDialogComponent
+    SectionInsertDialogComponent,
+    SelectPropertiesComponent,
+    InputElementPropertiesComponent
   ],
   imports: [
     BrowserModule,

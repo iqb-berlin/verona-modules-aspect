@@ -133,6 +133,13 @@ export class ElementModelPropertiesComponent {
               result.verticalButtonAlignment
             );
           }
+          if (result.readOnly !== row.readOnly) {
+            this.unitService.updateElementsProperty(
+              [row],
+              'readOnly',
+              result.readOnly
+            );
+          }
         }
       });
   }

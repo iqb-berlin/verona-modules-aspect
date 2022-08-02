@@ -6,6 +6,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
   selector: 'aspect-toggle-button',
   template: `
     <mat-button-toggle-group [formControl]="elementFormControl"
+                             [disabled]="elementModel.readOnly"
                              [value]="elementModel.value"
                              [vertical]="elementModel.verticalOrientation"
                              [style.width]="elementModel.dynamicWidth ? 'unset' : '100%'">

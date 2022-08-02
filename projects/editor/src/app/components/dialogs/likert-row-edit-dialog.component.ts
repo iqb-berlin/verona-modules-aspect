@@ -53,6 +53,10 @@ import { TextImageLabel } from 'common/models/elements/element';
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+    <mat-checkbox #readOnlyField [checked]="data.row.readOnly">
+      {{'propertiesPanel.readOnly' | translate }}
+    </mat-checkbox>
     </mat-dialog-content>
 
     <mat-dialog-actions>
@@ -65,7 +69,8 @@ import { TextImageLabel } from 'common/models/elements/element';
                 },
                 id: idField.value,
                 value: valueField.value,
-                verticalButtonAlignment: verticalButtonAlignmentSelect.value
+                verticalButtonAlignment: verticalButtonAlignmentSelect.value,
+                readOnly: readOnlyField.value
               }">
         {{'save' | translate }}
       </button>

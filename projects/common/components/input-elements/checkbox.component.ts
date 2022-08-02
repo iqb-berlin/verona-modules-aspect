@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { CheckboxElement } from 'common/models/elements/input-elements/checkbox';
+import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-checkbox',
@@ -18,7 +18,7 @@ import { CheckboxElement } from 'common/models/elements/input-elements/checkbox'
                     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-                    (click)="elementModel.readOnly ? $event.preventDefault() : null">
+                    (click)="elementModel.readOnly && $event.preventDefault()">
         <div [innerHTML]="elementModel.label"></div>
       </mat-checkbox>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormElementComponent } from '../../../../directives/form-element-component.directive';
+import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 
 @Component({
@@ -11,9 +11,8 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                              [style.width]="elementModel.dynamicWidth ? 'unset' : '100%'">
       <mat-button-toggle *ngFor="let option of elementModel.richTextOptions; let i = index"
                          [value]="i"
-                         [ngClass]="{ 'strike' : elementModel.strikeOtherOptions &&
-                                                 elementFormControl.value !== null &&
-                                                 elementFormControl.value !== i }"
+                         [ngClass]="{ 'strike-other-options' : elementModel.strikeOtherOptions,
+                                      'strike-selected-option' : elementModel.strikeSelectedOption }"
                          [style.color]="elementModel.styling.fontColor"
                          [style.font-size.px]="elementModel.styling.fontSize"
                          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
@@ -33,7 +32,10 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
     'mat-button-toggle-group {display: inline-flex; min-width: 70px; min-height: 20px; max-width: 100%;}',
     'mat-button-toggle-group {justify-content: center;}',
     ':host ::ng-deep .mat-button-toggle-label-content {line-height: unset}',
-    ':host ::ng-deep .strike .mat-button-toggle-label-content {text-decoration: line-through}',
+    ':host ::ng-deep .strike-selected-option.mat-button-toggle-checked .mat-button-toggle-label-content' +
+    '{text-decoration: line-through}',
+    ':host ::ng-deep .strike-other-options:not(.mat-button-toggle-checked) .mat-button-toggle-label-content' +
+    '{text-decoration: line-through}'
   ]
 })
 export class ToggleButtonComponent extends FormElementComponent {

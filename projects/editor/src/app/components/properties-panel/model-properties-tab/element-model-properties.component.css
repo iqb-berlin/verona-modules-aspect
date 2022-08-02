@@ -23,3 +23,15 @@
 button {
   margin-bottom: 15px;
 }
+
+:host ::ng-deep .mat-form-field {
+  margin-bottom: -10px;
+}
+
+:host ::ng-deep fieldset {
+  margin-bottom: 15px;
+}
+
+:host ::ng-deep .mat-checkbox {
+  margin-bottom: 8px;
+}

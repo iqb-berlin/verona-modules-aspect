@@ -1,6 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 
 @Component({
   selector: 'aspect-select-properties',
@@ -25,8 +26,10 @@ import {
   ]
 })
 export class SelectPropertiesComponent {
-  @Input() combinedProperties!: any;
+  @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
-
+    new EventEmitter<{
+      property: string,
+      value: string | number | boolean | string[]
+    }>();
 }

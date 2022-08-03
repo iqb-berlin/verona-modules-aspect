@@ -79,7 +79,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
       content: element.document?.content ? element.document.content
         .map((paragraph: ClozeDocumentParagraph) => ({
           ...paragraph,
-          content: paragraph.content
+          content: paragraph.content ? paragraph.content
             .map((paraPart: ClozeDocumentParagraphPart) => (
               ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
                 {
@@ -92,7 +92,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
                 {
                   ...paraPart
                 }
-            ))
+            )) : undefined
         })) : []
     } as ClozeDocument;
   }

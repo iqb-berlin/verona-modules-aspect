@@ -1,7 +1,7 @@
 <div fxLayout="column">
   <mat-form-field appearance="fill">
     <mat-label>{{'propertiesPanel.id' | translate }}</mat-label>
-    <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.id[0]"
+    <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.id"
            (input)="updateModel.emit({property: 'id', value: $any($event.target).value })">
     <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
   </mat-form-field>

@@ -176,6 +176,6 @@ export class DropListPropertiesComponent {
 
   generateValidDropLists() {
     this.dropListIDs = this.unitService.getDropListElementIDs()
-      .filter(dropListID => !this.combinedProperties.id.includes(dropListID));
+      .filter(dropListID => !this.combinedProperties.idList.includes(dropListID));
   }
 }

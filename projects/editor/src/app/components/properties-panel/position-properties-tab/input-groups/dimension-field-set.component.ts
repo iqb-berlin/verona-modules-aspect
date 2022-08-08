@@ -57,10 +57,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
                (ngModelChange)="updateDimensionProperty('height', $event)">
       </mat-form-field>
     </fieldset>
-  `,
-  styles: [
-    '.mat-form-field {display: inline;}'
-  ]
+  `
 })
 export class DimensionFieldSetComponent {
   @Input() positionProperties: PositionProperties | undefined;

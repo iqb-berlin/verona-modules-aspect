@@ -21,9 +21,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                   (change)="updateModel.emit({ property: 'allowUnset', value: $event.checked })">
       {{'propertiesPanel.allowUnset' | translate }}
     </mat-checkbox>
-  `,
-  styles: [
-  ]
+  `
 })
 export class SelectPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;

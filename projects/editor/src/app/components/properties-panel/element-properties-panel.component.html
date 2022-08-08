@@ -1,6 +1,6 @@
 <div *ngIf="selectedElements.length > 0 && combinedProperties"
-     class="properties-panel"
-     fxLayout="column" fxLayoutAlign="space-between stretch">
+     class="properties-panel" fxFlexFill
+     fxLayout="column" fxLayoutAlign="start stretch">
   <div class="panel-title" fxLayout="column">
     <ng-container *ngIf="combinedProperties.type">
       {{'toolbox.' + combinedProperties.type | translate}}
@@ -10,9 +10,10 @@
       <i>Mehrfachauswahl</i>
     </ng-container>
   </div>
-  <mat-divider [style.margin-bottom]="0"></mat-divider>
 
-  <mat-tab-group mat-stretch-tabs>
+  <mat-divider></mat-divider>
+
+  <mat-tab-group mat-stretch-tabs fxFlex>
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">build</mat-icon>

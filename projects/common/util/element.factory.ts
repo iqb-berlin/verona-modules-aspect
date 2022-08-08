@@ -35,14 +35,6 @@ export abstract class ElementFactory {
     };
   }
 
-  static initTextImageLabel(): TextImageLabel {
-    return {
-      text: '',
-      imgSrc: null,
-      position: 'above'
-    };
-  }
-
   static initPlayerProps(defaults: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
       autostart: defaults.autostart !== undefined ? defaults.autostart as boolean : false,

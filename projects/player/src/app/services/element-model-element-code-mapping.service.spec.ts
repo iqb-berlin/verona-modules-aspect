@@ -202,23 +202,23 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map an elementCode value to drop-list elementModel value', () => {
     service.dragNDropValueObjects =  [
       {
-        'stringValue': 'a',
+        'text': 'a',
         'id': 'value_1'
       },
       {
-        'stringValue': 'b',
+        'text': 'b',
         'id': 'value_2'
       },
       {
-        'stringValue': 'c',
+        'text': 'c',
         'id': 'value_3'
       },
       {
-        'stringValue': 'd',
+        'text': 'd',
         'id': 'value_4'
       },
       {
-        'stringValue': 'e',
+        'text': 'e',
         'id': 'value_5'
       }
     ];
@@ -236,23 +236,23 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map an elementCode value to drop-list elementModel value', () => {
     service.dragNDropValueObjects =  [
       {
-        'stringValue': 'a',
+        'text': 'a',
         'id': 'value_1'
       },
       {
-        'stringValue': 'b',
+        'text': 'b',
         'id': 'value_2'
       },
       {
-        'stringValue': 'c',
+        'text': 'c',
         'id': 'value_3'
       },
       {
-        'stringValue': 'd',
+        'text': 'd',
         'id': 'value_4'
       },
       {
-        'stringValue': 'e',
+        'text': 'e',
         'id': 'value_5'
       }
     ];
@@ -270,23 +270,23 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should not map but return the drop-list-simple elementModel value', () => {
     service.dragNDropValueObjects =  [
       {
-        'stringValue': 'a',
+        'text': 'a',
         'id': 'value_1'
       },
       {
-        'stringValue': 'b',
+        'text': 'b',
         'id': 'value_2'
       },
       {
-        'stringValue': 'c',
+        'text': 'c',
         'id': 'value_3'
       },
       {
-        'stringValue': 'd',
+        'text': 'd',
         'id': 'value_4'
       },
       {
-        'stringValue': 'e',
+        'text': 'e',
         'id': 'value_5'
       }
     ];

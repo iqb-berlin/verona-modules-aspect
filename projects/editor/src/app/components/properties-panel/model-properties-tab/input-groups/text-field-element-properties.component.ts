@@ -69,7 +69,20 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       {{'propertiesPanel.clearable' | translate }}
     </mat-checkbox>
 
-    <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== undefined" appearance="fill">
+    <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
+                  [checked]="$any(combinedProperties.showSoftwareKeyboard)"
+                  (change)="updateModel.emit({ property: 'showSoftwareKeyboard', value: $event.checked })">
+      {{'propertiesPanel.showSoftwareKeyboard' | translate }}
+    </mat-checkbox>
+    <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
+                  [disabled]="!combinedProperties.showSoftwareKeyboard"
+                  [checked]="$any(combinedProperties.softwareKeyboardShowFrench)"
+                  (change)="updateModel.emit({ property: 'softwareKeyboardShowFrench', value: $event.checked })">
+      {{'propertiesPanel.softwareKeyboardShowFrench' | translate }}
+    </mat-checkbox>
+
+    <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== undefined" appearance="fill"
+                    class="wide-form-field">
       <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.inputAssistancePreset"
                   (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
@@ -99,22 +112,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                   (change)="updateModel.emit({ property: 'restrictedToInputAssistanceChars', value: $event.checked })">
       {{'propertiesPanel.restrictedToInputAssistanceChars' | translate }}
     </mat-checkbox>
-
-    <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
-                  [checked]="$any(combinedProperties.showSoftwareKeyboard)"
-                  (change)="updateModel.emit({ property: 'showSoftwareKeyboard', value: $event.checked })">
-      {{'propertiesPanel.showSoftwareKeyboard' | translate }}
-    </mat-checkbox>
-
-    <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard"
-                  [checked]="$any(combinedProperties.softwareKeyboardShowFrench)"
-                  (change)="updateModel.emit({ property: 'softwareKeyboardShowFrench', value: $event.checked })">
-      {{'propertiesPanel.softwareKeyboardShowFrench' | translate }}
-    </mat-checkbox>
-  `,
-  styles: [
-    'mat-form-field {width: 100%;}'
-  ]
+  `
 })
 export class TextFieldElementPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;

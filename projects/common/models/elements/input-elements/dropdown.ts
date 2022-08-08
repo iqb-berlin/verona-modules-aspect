@@ -1,18 +1,20 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputElement, PositionedUIElement, PositionProperties } from 'common/models/elements/element';
+import {
+  BasicStyles, InputElement, TextLabel, PositionedUIElement, PositionProperties, OptionElement, Label
+} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropdownComponent } from 'common/components/input-elements/dropdown.component';
 
-export class DropdownElement extends InputElement implements PositionedUIElement {
-  options: string[] = [];
+export class DropdownElement extends InputElement implements PositionedUIElement, OptionElement {
+  options: TextLabel[] = [];
   allowUnset: boolean = false;
   position: PositionProperties;
   styling: BasicStyles;
 
   constructor(element: Partial<DropdownElement>, ...args: unknown[]) {
     super({ width: 240, height: 83, ...element }, ...args);
-    if (element.options) this.options = element.options;
+    if (element.options) this.options = [...element.options];
     if (element.allowUnset) this.allowUnset = element.allowUnset;
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
@@ -22,5 +24,10 @@ export class DropdownElement extends InputElement implements PositionedUIElement
 
   getComponentFactory(): Type<ElementComponent> {
     return DropdownComponent;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getNewOption(optionText: string): TextLabel {
+    return { text: optionText };
   }
 }

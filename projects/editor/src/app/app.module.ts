@@ -40,7 +40,6 @@ import { ConfirmationDialogComponent } from './components/dialogs/confirmation-d
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
 import { PlayerEditDialogComponent } from './components/dialogs/player-edit-dialog.component';
-import { ColumnHeaderEditDialogComponent } from './components/dialogs/column-header-edit-dialog.component';
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
 import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
@@ -80,6 +79,10 @@ import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-ed
 import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
 import { SelectPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/select-properties.component';
 import { InputElementPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
+import { PresetValuePropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/preset-value-properties.component';
+import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
+import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
+import { LabelEditDialogComponent, SaveLabelPipe } from './components/dialogs/label-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +107,6 @@ import { InputElementPropertiesComponent } from './components/properties-panel/m
     TextEditDialogComponent,
     TextEditMultilineDialogComponent,
     PlayerEditDialogComponent,
-    ColumnHeaderEditDialogComponent,
     LikertRowEditDialogComponent,
     RichTextEditDialogComponent,
     ElementModelPropertiesComponent,
@@ -124,7 +126,12 @@ import { InputElementPropertiesComponent } from './components/properties-panel/m
     RichTextSimpleEditDialogComponent,
     SectionInsertDialogComponent,
     SelectPropertiesComponent,
-    InputElementPropertiesComponent
+    InputElementPropertiesComponent,
+    PresetValuePropertiesComponent,
+    OptionListPanelComponent,
+    LikertRowLabelPipe,
+    LabelEditDialogComponent,
+    SaveLabelPipe
   ],
   imports: [
     BrowserModule,

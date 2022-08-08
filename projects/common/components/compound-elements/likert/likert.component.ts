@@ -10,7 +10,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 @Component({
   selector: 'aspect-likert',
   template: `
-    <div *ngIf="elementModel.rows.length === 0 && elementModel.columns.length === 0">
+    <div *ngIf="elementModel.rows.length === 0 && elementModel.options.length === 0">
       Keine Zeilen oder Spalten vorhanden
     </div>
     <div [style.width.%]="100"
@@ -18,7 +18,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
       <div class="mat-typography"
            [style.display]="'grid'"
            [style.grid-template-columns]="elementModel.firstColumnSizeRatio + 'fr ' +
-                                    '1fr '.repeat(elementModel.columns.length)"
+                                    '1fr '.repeat(elementModel.options.length)"
            [style.background-color]="elementModel.styling.backgroundColor"
            [style.color]="elementModel.styling.fontColor"
            [style.font-family]="elementModel.styling.font"
@@ -27,17 +27,17 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
-        <div *ngFor="let column of elementModel.columns; let i = index"
+        <div *ngFor="let column of elementModel.options; let i = index"
              class="columns" fxLayout="column" fxLayoutAlign="end center"
              [style.grid-column-start]="2 + i"
              [style.grid-column-end]="3 + i"
              [style.grid-row-start]="1"
              [style.grid-row-end]="2">
-          <img *ngIf="column.imgSrc && column.position === 'above'"
+          <img *ngIf="column.imgSrc && column.imgPosition === 'above'"
                [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'">
           <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(column.text)"></div>
-          <img *ngIf="column.imgSrc && column.position === 'below'"
+          <img *ngIf="column.imgSrc && column.imgPosition === 'below'"
                [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'">
         </div>
@@ -47,7 +47,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
             [style.background-color]="elementModel.styling.lineColoring && i % 2 === 0 ?
                                       elementModel.styling.lineColoringColor : ''"
             [style.grid-column-start]="1"
-            [style.grid-column-end]="elementModel.columns.length + 2"
+            [style.grid-column-end]="elementModel.options.length + 2"
             [style.grid-row-start]="2 + i"
             [style.grid-row-end]="3 + i"
             [style.padding.px]="3"

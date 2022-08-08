@@ -15,7 +15,6 @@ import { UIElement } from 'common/models/elements/element';
       </mat-form-field>
 
       <mat-checkbox *ngIf="combinedProperties.readOnly !== undefined"
-                    [style.margin-bottom.px]="10"
                     [checked]="$any(combinedProperties.readOnly)"
                     (change)="updateModel.emit({ property: 'readOnly', value: $event.checked })">
         {{'propertiesPanel.readOnly' | translate }}
@@ -34,9 +33,7 @@ import { UIElement } from 'common/models/elements/element';
                (input)="updateModel.emit({ property: 'requiredWarnMessage', value: $any($event.target).value })">
       </mat-form-field>
     </fieldset>
-  `,
-  styles: [
-  ]
+  `
 })
 export class InputElementPropertiesComponent {
   @Input() combinedProperties!: UIElement;

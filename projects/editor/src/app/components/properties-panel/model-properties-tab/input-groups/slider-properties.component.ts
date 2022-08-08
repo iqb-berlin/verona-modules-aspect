@@ -38,9 +38,7 @@ import {
                   (change)="updateModel.emit({ property: 'thumbLabel', value: $event.checked })">
       {{'propertiesPanel.thumbLabel' | translate }}
     </mat-checkbox>
-  `,
-  styles: [
-  ]
+  `
 })
 export class SliderPropertiesComponent {
   @Input() combinedProperties!: any;

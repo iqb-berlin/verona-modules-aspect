@@ -13,6 +13,8 @@ import { Document } from '@tiptap/extension-document';
 import { Text } from '@tiptap/extension-text';
 import { ListItem } from '@tiptap/extension-list-item';
 import { Strike } from '@tiptap/extension-strike';
+import { Bold } from '@tiptap/extension-bold';
+import { Italic } from '@tiptap/extension-italic';
 
 @Component({
   selector: 'aspect-rich-text-editor-simple',
@@ -31,7 +33,7 @@ export class RichTextEditorSimpleComponent {
     extensions: [Document, Text, ListItem,
       Underline, Superscript, Subscript,
       TextStyle, Color,
-      Strike,
+      Bold, Italic, Strike,
       Highlight.configure({
         multicolor: true
       }),

@@ -1,15 +1,17 @@
+// eslint-disable-next-line max-classes-per-file
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { Type } from '@angular/core';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ElementFactory } from 'common/util/element.factory';
 import { IDManager } from 'common/util/id-manager';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
 | 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button';
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-TextImageLabel[] | ClozeDocument | TextImageLabel |
+TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] |
 PositionProperties | PlayerProperties | BasicStyles;
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
@@ -73,7 +75,7 @@ export abstract class UIElement {
   abstract getComponentFactory(): Type<ElementComponent>;
 }
 
-export type InputElementValue = string[] | string | number | boolean | DragNDropValueObject[] | null;
+export type InputElementValue = string[] | string | number | boolean | TextLabel[] | null;
 
 export abstract class InputElement extends UIElement {
   label: string = 'Beschriftung';
@@ -184,14 +186,21 @@ export interface ValueChangeElement {
   value: InputElementValue;
 }
 
-export interface TextImageLabel {
-  text: string;
-  imgSrc: string | null;
-  position: 'above' | 'below' | 'left' | 'right';
+export interface OptionElement extends UIElement {
+  getNewOption(optionText: string): Label;
 }
 
-export type DragNDropValueObject = {
+export interface TextLabel {
+  text: string;
+}
+
+export interface TextImageLabel extends TextLabel {
+  imgSrc: string | null;
+  imgPosition: 'above' | 'below' | 'left' | 'right';
+}
+
+export interface DragNDropValueObject extends TextImageLabel {
   id: string;
-  stringValue?: string;
-  imgSrcValue?: string;
-};
+}
+
+export type Label = TextLabel | TextImageLabel | DragNDropValueObject;

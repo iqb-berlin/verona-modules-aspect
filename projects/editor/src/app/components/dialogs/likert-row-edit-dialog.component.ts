@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { TextImageLabel } from 'common/models/elements/element';
+import { TextLabel } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-likert-row-edit-dialog',
@@ -26,7 +26,7 @@ import { TextImageLabel } from 'common/models/elements/element';
 
       <mat-form-field appearance="fill">
         <mat-label>{{'imagePosition' | translate }}</mat-label>
-        <mat-select #positionSelect [value]="data.row.rowLabel.position">
+        <mat-select #positionSelect [value]="data.row.rowLabel.imgPosition">
           <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
                       [value]="option">
             {{ option | translate }}
@@ -48,8 +48,8 @@ import { TextImageLabel } from 'common/models/elements/element';
         <mat-label>{{'preset' | translate }}</mat-label>
         <mat-select #valueField [value]="data.row.value">
           <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-          <mat-option *ngFor="let column of data.columns; let i = index" [value]="i + 1">
-            {{column.text}} (Index: {{i + 1}})
+          <mat-option *ngFor="let column of data.columns; let i = index" [value]="i">
+            {{column.text}} (Index: {{i}})
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -79,7 +79,7 @@ import { TextImageLabel } from 'common/models/elements/element';
   `
 })
 export class LikertRowEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, columns: TextImageLabel[] }) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, columns: TextLabel[] }) { }
   imgSrc: string | null = this.data.row.rowLabel.imgSrc;
 
   async loadImage(): Promise<void> {

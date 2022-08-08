@@ -1,26 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { DragNDropValueObject, PlayerProperties, TextImageLabel } from 'common/models/elements/element';
+import {
+  DragNDropValueObject,
+  PlayerProperties,
+  TextImageLabel, Label
+} from 'common/models/elements/element';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { Section } from 'common/models/section';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
+import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog.component';
 import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
 import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edit-dialog.component';
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
-import { ColumnHeaderEditDialogComponent } from '../components/dialogs/column-header-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
-import { RichTextSimpleEditDialogComponent } from '../components/dialogs/rich-text-simple-edit-dialog.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DialogService {
   constructor(private dialog: MatDialog) { }
+
+  showLabelEditDialog(label: Label): Observable<Label> {
+    const dialogRef = this.dialog.open(LabelEditDialogComponent, {
+      data: { label }
+    });
+    return dialogRef.afterClosed();
+  }
 
   showConfirmDialog(text: string): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -63,17 +73,6 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showRichTextSimpleEditDialog(text: string, defaultFontSize: number): Observable<string> {
-    const dialogRef = this.dialog.open(RichTextSimpleEditDialogComponent, {
-      data: {
-        content: text,
-        defaultFontSize
-      },
-      autoFocus: false
-    });
-    return dialogRef.afterClosed();
-  }
-
   showClozeTextEditDialog(document: ClozeDocument, defaultFontSize: number): Observable<string> {
     const dialogRef = this.dialog.open(RichTextEditDialogComponent, {
       data: {
@@ -90,13 +89,6 @@ export class DialogService {
   showPlayerEditDialog(playerProps: PlayerProperties): Observable<PlayerProperties> {
     const dialogRef = this.dialog.open(PlayerEditDialogComponent, {
       data: { playerProps }
-    });
-    return dialogRef.afterClosed();
-  }
-
-  showLikertColumnEditDialog(column: TextImageLabel, defaultFontSize: number): Observable<TextImageLabel> {
-    const dialogRef = this.dialog.open(ColumnHeaderEditDialogComponent, {
-      data: { column, defaultFontSize }
     });
     return dialogRef.afterClosed();
   }

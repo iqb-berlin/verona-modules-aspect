@@ -8,8 +8,9 @@ import { ArrayUtils } from 'common/util/array';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Unit } from 'common/models/unit';
 import {
+  CompoundElement,
   DragNDropValueObject, InputElement,
-  InputElementValue, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
+  InputElementValue, TextLabel, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
   UIElement, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
@@ -219,9 +220,9 @@ export class UnitService {
 
   updateElementsProperty(elements: UIElement[],
                          property: string,
-                         value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
-                         DragNDropValueObject[] | null): void {
-    // console.log('updateElementProperty', elements, property, value);
+                         value: InputElementValue | LikertRowElement[] |
+                         TextLabel | TextLabel[] | ClozeDocument | null): void {
+    console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
         if (!this.idManager.isIdAvailable((value as string))) { // prohibit existing IDs
@@ -231,14 +232,6 @@ export class UnitService {
           this.idManager.addID(value as string);
           element.id = value as string;
         }
-      } else if (element.type === 'likert' && property === 'columns') {
-        (element as LikertElement).rows.forEach(row => {
-          row.columnCount = (element as LikertElement).columns.length;
-        });
-      } else if (element.type === 'likert' && property === 'readOnly') {
-        (element as LikertElement).rows.forEach(row => {
-          row.readOnly = value as boolean;
-        });
       } else {
         element.setProperty(property, value);
       }

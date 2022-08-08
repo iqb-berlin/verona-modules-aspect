@@ -69,15 +69,7 @@ import { SelectionService } from '../../../../services/selection.service';
              [src]="combinedProperties.imageSrc">
       </div>
     </fieldset>
-  `,
-  styles: [
-    'mat-checkbox {margin-bottom: 10px;}',
-    'mat-form-field {width: 100%;}',
-    '.image-panel {width: 250px; height: 150px; border: 1px solid; text-align: center; position: relative;}',
-    '.image-panel .add-image-button {position: absolute; left: 50%; top: 35%; transform: translate(-50%, -35%);}',
-    '.image-panel .remove-image-button {position: absolute; left: 50%; top: 70%; transform: translate(-50%, -70%);}',
-    '.image-panel img {width:100%; height:100%;}'
-  ]
+  `
 })
 export class ButtonPropertiesComponent {
   @Input() combinedProperties!: UIElement;

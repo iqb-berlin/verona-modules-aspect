@@ -8,7 +8,7 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
     <div [style.width.%]="100"
          [style.height.%]="100"
          [style.display]="'grid !important'"
-         [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)"
+         [style.grid-template-columns]="'1fr '.repeat(elementModel.options.length)"
          [style.background-color]="elementModel.styling.backgroundColor"
          [style.color]="elementModel.styling.fontColor"
          [style.font-family]="elementModel.styling.font"
@@ -18,24 +18,24 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
       <label id="radio-group-label" class="label"
              [style.grid-column-start]="1"
-             [style.grid-column-end]="2 + elementModel.columns.length"
+             [style.grid-column-end]="2 + elementModel.options.length"
              [style.grid-row-start]="1"
              [style.grid-row-end]="2"
              [innerHTML]="elementModel.label">
       </label>
-      <div *ngFor="let option of elementModel.columns; let i = index"
+      <div *ngFor="let option of elementModel.options; let i = index"
            class="columns" fxLayout="column" fxLayoutAlign="center center"
            [style.grid-column-start]="1 + i"
            [style.grid-column-end]="2 + i"
            [style.grid-row-start]="2"
            [style.grid-row-end]="3"
            (click)="selectOption(i)">
-        <img *ngIf="option.imgSrc && option.position === 'above'"
+        <img *ngIf="option.imgSrc && option.imgPosition === 'above'"
              [style.object-fit]="'scale-down'"
              [style.max-width.%]="100"
              [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
         <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(option.text)"></div>
-        <img *ngIf="option.imgSrc && option.position === 'below'"
+        <img *ngIf="option.imgSrc && option.imgPosition === 'below'"
              [style.object-fit]="'scale-down'"
              [style.max-width.%]="100"
              [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
@@ -43,13 +43,13 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
       <mat-radio-group aria-labelledby="radio-group-label"
                        [formControl]="elementFormControl"
                        [style.display]="'grid'"
-                       [style.grid-template-columns]="'1fr '.repeat(elementModel.columns.length)"
+                       [style.grid-template-columns]="'1fr '.repeat(elementModel.options.length)"
                        [style.grid-column-start]="1"
-                       [style.grid-column-end]="2 + elementModel.columns.length"
+                       [style.grid-column-end]="2 + elementModel.options.length"
                        [style.grid-row-start]="3"
                        [style.grid-row-end]="4"
                        [value]="elementModel.value">
-        <mat-radio-button *ngFor="let option of elementModel.columns; let i = index"
+        <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
                           aria-labelledby="radio-group-label"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [value]="i"

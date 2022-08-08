@@ -1,9 +1,9 @@
 import {
   Component, Input
 } from '@angular/core';
+import { PositionedUIElement, PositionProperties } from 'common/models/elements/element';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
-import { PositionedUIElement, PositionProperties } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-element-postion-properties',
@@ -39,11 +39,7 @@ import { PositionedUIElement, PositionProperties } from 'common/models/elements/
         </div>
       </ng-container>
     </div>
-  `,
-  styles: [
-    'aspect-position-field-set {margin-bottom: 20px;}',
-    ':host ::ng-deep fieldset {padding-bottom: 0;}'
-  ]
+  `
 })
 export class ElementPositionPropertiesComponent {
   @Input() dimensions!: { width?: number; height?: number; dynamicWidth: boolean; };

@@ -10,6 +10,7 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
 import { IDManager } from 'common/util/id-manager';
 
 export class DropListElement extends InputElement implements PositionedUIElement {
+  value: DragNDropValueObject[];
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;

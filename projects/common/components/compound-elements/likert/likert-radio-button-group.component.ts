@@ -17,15 +17,15 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
            [style.grid-row-end]="2"
            [style.place-self]="'start'"
            [style.align-items]="'center'"
-           [fxLayout]="elementModel.rowLabel.position === 'left' ||
-                     elementModel.rowLabel.position === 'right' ? 'row' : 'column'">
+           [fxLayout]="elementModel.rowLabel.imgPosition === 'left' ||
+                     elementModel.rowLabel.imgPosition === 'right' ? 'row' : 'column'">
         <img *ngIf="elementModel.rowLabel.imgSrc &&
-                    (elementModel.rowLabel.position === 'above' || elementModel.rowLabel.position === 'left')"
+                    (elementModel.rowLabel.imgPosition === 'above' || elementModel.rowLabel.imgPosition === 'left')"
              [src]="elementModel.rowLabel.imgSrc | safeResourceUrl" alt="Image Placeholder"
              [style.object-fit]="'scale-down'" [style.max-width.%]="100">
         <ng-container>{{elementModel.rowLabel.text}}</ng-container>
         <img *ngIf="elementModel.rowLabel.imgSrc &&
-                    (elementModel.rowLabel.position === 'below' || elementModel.rowLabel.position === 'right')"
+                    (elementModel.rowLabel.imgPosition === 'below' || elementModel.rowLabel.imgPosition === 'right')"
              [src]="elementModel.rowLabel.imgSrc | safeResourceUrl" alt="Image Placeholder"
              [style.object-fit]="'scale-down'" [style.max-width.%]="100">
       </div>

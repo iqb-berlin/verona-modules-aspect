@@ -1,23 +1,20 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles,
-  InputElement,
-  PositionedUIElement,
-  PositionProperties,
-  TextImageLabel
+  BasicStyles, InputElement, OptionElement,
+  PositionedUIElement, PositionProperties, TextImageLabel
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
 
-export class RadioButtonGroupComplexElement extends InputElement implements PositionedUIElement {
-  columns: TextImageLabel[] = [];
+export class RadioButtonGroupComplexElement extends InputElement implements PositionedUIElement, OptionElement {
+  options: TextImageLabel[] = [];
   position: PositionProperties;
   styling: BasicStyles;
 
   constructor(element: Partial<RadioButtonGroupComplexElement>, ...args: unknown[]) {
     super({ height: 100, ...element }, ...args);
-    if (element.columns) this.columns = [...element.columns];
+    if (element.options) this.options = [...element.options];
     this.position = ElementFactory.initPositionProps({ marginBottom: 40, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
@@ -26,5 +23,9 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
 
   getComponentFactory(): Type<ElementComponent> {
     return RadioGroupImagesComponent;
+  }
+
+  getNewOption(optionText: string): TextImageLabel {
+    return { text: optionText, imgSrc: null, imgPosition: 'above' };
   }
 }

@@ -190,6 +190,7 @@
     "button": "Navigationsknopf",
     "frame": "Rahmen",
     "text-field": "Eingabefeld",
+    "text-field-simple": "Eingabefeld",
     "text-area": "Eingabebereich",
     "checkbox": "Kontrollkästchen",
     "dropdown": "Klappliste",
@@ -197,13 +198,15 @@
     "simple": "mit Text",
     "complex": "mit Bild",
     "drop-list": "Ablegeliste",
+    "drop-list-simple": "Ablegeliste",
     "image": "Bild",
     "audio": "Audio",
     "video": "Video",
     "likert": "Optionentabelle",
     "cloze": "Lückentext",
     "slider": "Schieberegler",
-    "spell-correct": "Wort korrigieren"
+    "spell-correct": "Wort korrigieren",
+    "toggle-button": "Optionsfeld"
   },
   "section-menu": {
     "height": "Höhe",

@@ -67,11 +67,11 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
   `,
   styles: [
     '.columns {text-align: center; margin: 0 5px;}',
-    '.grid-layout .columns img {cursor: pointer;}',
+    '.columns img {cursor: pointer;}',
     ':host ::ng-deep mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
     'mat-radio-group {margin-top: 10px}',
     '.error-message { font-size: 75% }',
-    '.grid-layout mat-radio-button {margin-top: 15px}'
+    'mat-radio-button {margin-top: 15px}'
   ]
 })
 export class RadioGroupImagesComponent extends FormElementComponent {

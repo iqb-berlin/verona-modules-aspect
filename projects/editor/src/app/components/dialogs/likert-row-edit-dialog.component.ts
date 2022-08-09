@@ -8,35 +8,31 @@ import { TextLabel } from 'common/models/elements/element';
   selector: 'aspect-likert-row-edit-dialog',
   template: `
     <mat-dialog-content fxLayout="column">
-      <mat-form-field>
-        <mat-label>{{'text' | translate }}</mat-label>
-        <input #textField matInput type="text" [value]="data.row.rowLabel.text">
-      </mat-form-field>
+      <aspect-rich-text-editor-simple [(content)]="newLikertRow.rowLabel.text">
+      </aspect-rich-text-editor-simple>
 
-      <mat-form-field>
+      <mat-form-field [style.margin-top.px]="15">
         <mat-label>{{'id' | translate }}</mat-label>
-        <input #idField matInput type="text" [value]="data.row.id">
+        <input matInput type="text" [(ngModel)]="newLikertRow.id">
       </mat-form-field>
 
-      <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
-      <button mat-raised-button (click)="imgSrc = null">{{ 'removeImage' | translate }}</button>
-      <img [src]="imgSrc"
-           [style.object-fit]="'scale-down'"
-           [width]="200">
+      <mat-checkbox [(ngModel)]="newLikertRow.readOnly">
+        {{'propertiesPanel.readOnly' | translate }}
+      </mat-checkbox>
 
       <mat-form-field appearance="fill">
-        <mat-label>{{'imagePosition' | translate }}</mat-label>
-        <mat-select #positionSelect [value]="data.row.rowLabel.imgPosition">
-          <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
-                      [value]="option">
-            {{ option | translate }}
+        <mat-label>{{'preset' | translate }}</mat-label>
+        <mat-select [(ngModel)]="newLikertRow.value">
+          <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
+          <mat-option *ngFor="let column of data.options; let i = index" [value]="i">
+            {{column.text}} (Index: {{i}})
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="fill">
         <mat-label>{{'verticalButtonAlignment' | translate }}</mat-label>
-        <mat-select #verticalButtonAlignmentSelect [value]="data.row.verticalButtonAlignment">
+        <mat-select [(ngModel)]="newLikertRow.verticalButtonAlignment">
           <mat-option *ngFor="let option of ['auto', 'center']"
                       [value]="option">
             {{ option | translate }}
@@ -44,45 +40,49 @@ import { TextLabel } from 'common/models/elements/element';
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>{{'preset' | translate }}</mat-label>
-        <mat-select #valueField [value]="data.row.value">
-          <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-          <mat-option *ngFor="let column of data.columns; let i = index" [value]="i">
-            {{column.text}} (Index: {{i}})
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="column" fxLayoutGap="10px">
+          <button mat-raised-button (click)="loadImage()">
+            {{ 'loadImage' | translate }}</button>
+          <button mat-raised-button (click)="newLikertRow.rowLabel.imgSrc = null">
+            {{ 'removeImage' | translate }}</button>
+          <mat-form-field>
+            <mat-label>{{'imagePosition' | translate }}</mat-label>
+            <mat-select [(ngModel)]="newLikertRow.rowLabel.imgPosition">
+              <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
+                          [value]="option">
+                {{ option | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-    <mat-checkbox #readOnlyField [checked]="data.row.readOnly">
-      {{'propertiesPanel.readOnly' | translate }}
-    </mat-checkbox>
+        <img [src]="newLikertRow.rowLabel.imgSrc"
+             [style.object-fit]="'scale-down'" [width]="200">
+      </div>
+
     </mat-dialog-content>
 
     <mat-dialog-actions>
-      <button mat-button
-              [mat-dialog-close]="{
-                rowLabel: {
-                  text: textField.value,
-                  imgSrc: imgSrc,
-                  position: positionSelect.value
-                },
-                id: idField.value,
-                value: valueField.value,
-                verticalButtonAlignment: verticalButtonAlignmentSelect.value,
-                readOnly: readOnlyField.value
-              }">
+      <button mat-button [mat-dialog-close]="newLikertRow">
         {{'save' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-  `
+  `,
+  styles: [
+    'mat-checkbox {margin-bottom: 15px;}'
+  ]
 })
 export class LikertRowEditDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, columns: TextLabel[] }) { }
-  imgSrc: string | null = this.data.row.rowLabel.imgSrc;
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, options: TextLabel[] }) { }
+
+  newLikertRow = {
+    ...this.data.row,
+    rowLabel: { ...this.data.row.rowLabel }
+  };
 
   async loadImage(): Promise<void> {
-    this.imgSrc = await FileService.loadImage();
+    this.newLikertRow.rowLabel.imgSrc = await FileService.loadImage();
   }
 }

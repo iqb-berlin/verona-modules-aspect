@@ -1,5 +1,5 @@
 :host ::ng-deep div.ProseMirror {
-  min-height: 100px;
+  min-height: 60px;
   border: 1px solid;
 }
 
@@ -9,7 +9,6 @@
 }
 
 .editor-control-panel {
-  margin-bottom: 20px;
   background: linear-gradient(to top right, #FFF5F8, #FAFAFA);
   font: unset;
   max-width: 1000px;

@@ -93,9 +93,9 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showLikertRowEditDialog(row: LikertRowElement, columns: TextImageLabel[]): Observable<LikertRowElement> {
+  showLikertRowEditDialog(row: LikertRowElement, options: TextImageLabel[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
-      data: { row, columns }
+      data: { row, options }
     });
     return dialogRef.afterClosed();
   }

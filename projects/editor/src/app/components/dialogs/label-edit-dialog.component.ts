@@ -1,29 +1,22 @@
-// eslint-disable-next-line max-classes-per-file
-import {
-  Component, Inject, Pipe, PipeTransform
-} from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Label, TextImageLabel } from 'common/models/elements/element';
+import { TextImageLabel } from 'common/models/elements/element';
 import { FileService } from 'common/services/file.service';
 
 @Component({
   selector: 'aspect-label-edit-dialog',
   template: `
-    <mat-dialog-content>
-      <div>
-        <aspect-rich-text-editor-simple [(content)]="newLabel.text">
-        </aspect-rich-text-editor-simple>
-      </div>
+    <mat-dialog-content fxLayout="column" fxLayoutGap="20px">
+      <aspect-rich-text-editor-simple [(content)]="newLabel.text">
+      </aspect-rich-text-editor-simple>
 
-      <mat-divider [style.margin.px]="15"></mat-divider>
-
-      <div *ngIf="newLabel.imgSrc !== undefined" fxLayout="row" fxLayoutAlign="space-between center" >
+      <div *ngIf="newLabel.imgSrc !== undefined" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxLayout="column" fxLayoutGap="10px">
           <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
           <button mat-raised-button (click)="newLabel.imgSrc = null">{{ 'removeImage' | translate }}</button>
           <mat-form-field>
             <mat-label>{{'imagePosition' | translate }}</mat-label>
-            <mat-select #positionSelect [value]="newLabel.imgPosition"
+            <mat-select [value]="newLabel.imgPosition"
                         [disabled]="newLabel.imgSrc == null">
               <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
                           [value]="option">
@@ -42,7 +35,10 @@ import { FileService } from 'common/services/file.service';
       <button mat-button [mat-dialog-close]="newLabel">{{'save' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-  `
+  `,
+  styles: [
+    'aspect-rich-text-editor-simple {margin-bottom: 20px;}'
+  ]
 })
 export class LabelEditDialogComponent {
   newLabel = { ...this.data.label };
@@ -51,15 +47,5 @@ export class LabelEditDialogComponent {
 
   async loadImage(): Promise<void> {
     this.newLabel.imgSrc = await FileService.loadImage();
-  }
-}
-
-@Pipe({
-  name: 'saveLabel'
-})
-export class SaveLabelPipe implements PipeTransform {
-  // eslint-disable-next-line class-methods-use-this
-  transform(labelText: string, label: Label): Label {
-    return { ...label, text: labelText };
   }
 }

@@ -82,7 +82,7 @@ import { InputElementPropertiesComponent } from './components/properties-panel/m
 import { PresetValuePropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/preset-value-properties.component';
 import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
 import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
-import { LabelEditDialogComponent, SaveLabelPipe } from './components/dialogs/label-edit-dialog.component';
+import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -130,8 +130,7 @@ import { LabelEditDialogComponent, SaveLabelPipe } from './components/dialogs/la
     PresetValuePropertiesComponent,
     OptionListPanelComponent,
     LikertRowLabelPipe,
-    LabelEditDialogComponent,
-    SaveLabelPipe
+    LabelEditDialogComponent
   ],
   imports: [
     BrowserModule,

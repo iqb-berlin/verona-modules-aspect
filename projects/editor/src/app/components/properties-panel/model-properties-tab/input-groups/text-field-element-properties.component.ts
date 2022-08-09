@@ -16,52 +16,59 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field *ngIf="combinedProperties.minLength !== undefined" appearance="fill">
-      <mat-label>{{'propertiesPanel.minLength' | translate }}</mat-label>
-      <input matInput type="number" #minLength="ngModel" min="0"
-             [ngModel]="combinedProperties.minLength"
-             (ngModelChange)="updateModel.emit({
-                  property: 'minLength',
-                  value: $event,
-                  isInputValid: minLength.valid })">
-    </mat-form-field>
-    <mat-form-field *ngIf="combinedProperties.minLength &&
-                                     $any(combinedProperties.minLength) > 0"
-                    appearance="fill">
-      <mat-label>{{'propertiesPanel.minLengthWarnMessage' | translate }}</mat-label>
-      <input matInput type="text" [value]="$any(combinedProperties.minLengthWarnMessage)"
-             (input)="updateModel.emit({ property: 'minLengthWarnMessage', value: $any($event.target).value })">
-    </mat-form-field>
+    <ng-container *ngIf="combinedProperties.minLength !== undefined">
+      <mat-form-field class="wide-form-field" appearance="fill">
+        <mat-label>{{'propertiesPanel.minLength' | translate }}</mat-label>
+        <input matInput type="number" #minLength="ngModel" min="0"
+               [ngModel]="combinedProperties.minLength"
+               (ngModelChange)="updateModel.emit({
+                    property: 'minLength',
+                    value: $event,
+                    isInputValid: minLength.valid })">
+      </mat-form-field>
+      <mat-form-field class="wide-form-field" appearance="fill">
+        <mat-label>{{'propertiesPanel.minLengthWarnMessage' | translate }}</mat-label>
+        <input matInput type="text"
+               [disabled]="!combinedProperties.minLength"
+               [value]="$any(combinedProperties.minLengthWarnMessage)"
+               (input)="updateModel.emit({ property: 'minLengthWarnMessage', value: $any($event.target).value })">
+      </mat-form-field>
+    </ng-container>
 
-    <mat-form-field *ngIf="combinedProperties.maxLength !== undefined" appearance="fill">
-      <mat-label>{{'propertiesPanel.maxLength' | translate }}</mat-label>
-      <input matInput type="number" #maxLength="ngModel" min="0"
-             [ngModel]="combinedProperties.maxLength"
-             (ngModelChange)="updateModel.emit({
-                  property: 'maxLength',
-                  value: $event,
-                  isInputValid: maxLength.valid })">
-    </mat-form-field>
-    <mat-form-field *ngIf="combinedProperties.maxLength &&
-                                     $any(combinedProperties.maxLength) > 0"
-                    appearance="fill">
-      <mat-label>{{'propertiesPanel.maxLengthWarnMessage' | translate }}</mat-label>
-      <input matInput type="text" [value]="$any(combinedProperties.maxLengthWarnMessage)"
-             (input)="updateModel.emit({ property: 'maxLengthWarnMessage', value: $any($event.target).value })">
-    </mat-form-field>
+    <ng-container *ngIf="combinedProperties.maxLength !== undefined">
+      <mat-form-field class="wide-form-field" appearance="fill">
+        <mat-label>{{'propertiesPanel.maxLength' | translate }}</mat-label>
+        <input matInput type="number" #maxLength="ngModel" min="0"
+               [ngModel]="combinedProperties.maxLength"
+               (ngModelChange)="updateModel.emit({
+                    property: 'maxLength',
+                    value: $event,
+                    isInputValid: maxLength.valid })">
+      </mat-form-field>
+      <mat-form-field class="wide-form-field" appearance="fill">
+        <mat-label>{{'propertiesPanel.maxLengthWarnMessage' | translate }}</mat-label>
+        <input matInput type="text"
+               [disabled]="!combinedProperties.maxLength"
+               [value]="$any(combinedProperties.maxLengthWarnMessage)"
+               (input)="updateModel.emit({ property: 'maxLengthWarnMessage', value: $any($event.target).value })">
+      </mat-form-field>
+    </ng-container>
 
-    <mat-form-field *ngIf="combinedProperties.pattern !== undefined" appearance="fill">
-      <mat-label>{{'propertiesPanel.pattern' | translate }}</mat-label>
-      <input matInput [value]="$any(combinedProperties.pattern)"
-             (input)="updateModel.emit({ property: 'pattern', value: $any($event.target).value })">
-    </mat-form-field>
-    <mat-form-field *ngIf="combinedProperties.pattern && $any(combinedProperties.pattern) !== ''"
-                    appearance="fill"
-                    matTooltip="Angabe als regulärer Ausdruck.">
-      <mat-label>{{'propertiesPanel.patternWarnMessage' | translate }}</mat-label>
-      <input matInput type="text" [value]="$any(combinedProperties.patternWarnMessage)"
-             (input)="updateModel.emit({ property: 'patternWarnMessage', value: $any($event.target).value })">
-    </mat-form-field>
+    <ng-container *ngIf="combinedProperties.pattern !== undefined">
+      <mat-form-field class="wide-form-field" appearance="fill"
+                      matTooltip="Angabe als regulärer Ausdruck.">
+        <mat-label>{{'propertiesPanel.pattern' | translate }}</mat-label>
+        <input matInput [value]="$any(combinedProperties.pattern)"
+               (input)="updateModel.emit({ property: 'pattern', value: $any($event.target).value })">
+      </mat-form-field>
+      <mat-form-field class="wide-form-field" appearance="fill">
+        <mat-label>{{'propertiesPanel.patternWarnMessage' | translate }}</mat-label>
+        <input matInput type="text"
+               [disabled]="!combinedProperties.pattern"
+               [value]="$any(combinedProperties.patternWarnMessage)"
+               (input)="updateModel.emit({ property: 'patternWarnMessage', value: $any($event.target).value })">
+      </mat-form-field>
+    </ng-container>
 
     <mat-checkbox *ngIf="combinedProperties.clearable !== undefined"
                   [checked]="$any(combinedProperties.clearable)"
@@ -94,7 +101,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       </mat-select>
     </mat-form-field>
     <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
-                                 combinedProperties.inputAssistancePosition !== undefined"
+                           combinedProperties.inputAssistancePosition !== undefined"
                     appearance="fill">
       <mat-label>{{'propertiesPanel.inputAssistancePosition' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.inputAssistancePosition"

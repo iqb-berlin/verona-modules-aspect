@@ -9,11 +9,11 @@ import { TextFieldComponent } from 'common/components/input-elements/text-field.
 
 export class TextFieldElement extends InputElement implements PositionedUIElement {
   appearance: 'fill' | 'outline' = 'outline';
-  minLength: number | undefined;
+  minLength: number | null = null;
   minLengthWarnMessage: string = 'Eingabe zu kurz';
-  maxLength: number | undefined;
+  maxLength: number | null = null;
   maxLengthWarnMessage: string = 'Eingabe zu lang';
-  pattern: string | undefined;
+  pattern: string | null = null;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
@@ -29,11 +29,11 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
   constructor(element: Partial<TextFieldElement>, ...args: unknown[]) {
     super({ width: 180, height: 120, ...element }, ...args);
     if (element.appearance) this.appearance = element.appearance;
-    if (element.minLength) this.minLength = element.minLength;
+    if (element.minLength !== undefined) this.minLength = element.minLength;
     if (element.minLengthWarnMessage) this.minLengthWarnMessage = element.minLengthWarnMessage;
-    if (element.maxLength) this.maxLength = element.maxLength;
+    if (element.maxLength !== undefined) this.maxLength = element.maxLength;
     if (element.maxLengthWarnMessage) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-    if (element.pattern) this.pattern = element.pattern;
+    if (element.pattern !== undefined) this.pattern = element.pattern;
     if (element.patternWarnMessage) this.patternWarnMessage = element.patternWarnMessage;
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;

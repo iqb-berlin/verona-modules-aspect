@@ -107,7 +107,7 @@
     "minLength": "Minimallänge",
     "minValue": "Minimalwert",
     "minLengthWarnMessage": "Minimalwert Warnmeldung",
-    "maxLength": "Maximalwert",
+    "maxLength": "Maximallänge",
     "maxValue": "Maximalwert",
     "showValues": "Zeige Start- und Endwert",
     "barStyle": "Zahlenstrahl-Modus",

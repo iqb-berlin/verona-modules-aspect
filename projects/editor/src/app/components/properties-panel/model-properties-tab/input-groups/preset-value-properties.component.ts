@@ -22,39 +22,14 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
              (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
     </mat-form-field>
 
-    <mat-form-field *ngIf="combinedProperties.options !== undefined && !combinedProperties.connectedTo"
+    <mat-form-field *ngIf="combinedProperties.options !== undefined"
                     appearance="fill" class="wide-form-field">
       <mat-label>{{'preset' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.value"
                   (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
         <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
         <mat-option *ngFor="let option of $any(combinedProperties.options); let i = index" [value]="i">
-          {{option.text}} (Index: {{i}})
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field *ngIf="combinedProperties.richTextOptions !== undefined && !combinedProperties.connectedTo"
-                    appearance="fill" class="wide-form-field">
-      <mat-label>{{'preset' | translate }}</mat-label>
-      <mat-select [value]="combinedProperties.value"
-                  (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
-        <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-        <mat-option *ngFor="let option of $any(combinedProperties.richTextOptions); let i = index" [value]="i"
-                    [innerHTML]="option + '&nbsp;(Index: ' + i + ')'">
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- This is for radio with images-->
-    <mat-form-field *ngIf="combinedProperties.columns !== undefined && combinedProperties.rows === undefined"
-                    appearance="fill" class="wide-form-field">
-      <mat-label>{{'preset' | translate }}</mat-label>
-      <mat-select [value]="combinedProperties.value"
-                  (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
-        <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-        <mat-option *ngFor="let column of $any(combinedProperties.columns); let i = index" [value]="i">
-          {{column.name}} (Index: {{i}})
+          <div fxFlex fxFlexAlign="center" [innerHTML]="option.text + ' (Index: ' + i + ')'"></div>
         </mat-option>
       </mat-select>
     </mat-form-field>

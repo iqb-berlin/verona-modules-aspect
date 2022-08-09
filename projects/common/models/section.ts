@@ -91,7 +91,7 @@ export class Section {
   /* Includes children of children, i.e. compound children. */
   getAllElements(elementType?: string): UIElement[] {
     let allElements: UIElement[] =
-      this.elements.map(element => [element, ...element.getChildElements()])
+      this.elements.map(element => [element, ...(element as CompoundElement).getChildElements() || []])
         .flat();
     if (elementType) {
       allElements = allElements.filter(element => element.type === elementType);

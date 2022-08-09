@@ -148,9 +148,11 @@ export class UnitService {
           this.idManager.removeId(value.id);
         });
       }
-      element.getChildElements().forEach((childElement: UIElement) => {
-        this.idManager.removeId(childElement.id);
-      });
+      if (element instanceof CompoundElement) {
+        element.getChildElements().forEach((childElement: UIElement) => {
+          this.idManager.removeId(childElement.id);
+        });
+      }
       this.idManager.removeId(element.id);
     });
   }

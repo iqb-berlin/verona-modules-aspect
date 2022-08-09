@@ -68,10 +68,6 @@ export abstract class UIElement {
     (this.player as PlayerProperties)[property] = value;
   }
 
-  getChildElements(): UIElement[] {
-    return [];
-  }
-
   abstract getComponentFactory(): Type<ElementComponent>;
 }
 

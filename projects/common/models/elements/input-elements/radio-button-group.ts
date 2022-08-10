@@ -33,7 +33,7 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return RadioButtonGroupComponent;
   }
 

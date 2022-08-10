@@ -68,7 +68,7 @@ export abstract class UIElement {
     (this.player as PlayerProperties)[property] = value;
   }
 
-  abstract getComponentFactory(): Type<ElementComponent>;
+  abstract getElementComponent(): Type<ElementComponent>;
 }
 
 export type InputElementValue = string[] | string | number | boolean | TextLabel[] | null;

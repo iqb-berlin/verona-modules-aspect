@@ -111,7 +111,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     } as ClozeDocument;
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return ClozeComponent;
   }
 

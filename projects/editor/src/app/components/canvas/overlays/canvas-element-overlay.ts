@@ -30,7 +30,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.childComponent = this.elementContainer.createComponent(this.element.getComponentFactory());
+    this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
 
     // Make children not clickable. This way the only relevant events are managed by the overlay.

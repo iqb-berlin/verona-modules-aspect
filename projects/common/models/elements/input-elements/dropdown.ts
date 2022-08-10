@@ -22,7 +22,7 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return DropdownComponent;
   }
 

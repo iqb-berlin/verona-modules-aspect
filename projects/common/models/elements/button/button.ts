@@ -28,7 +28,7 @@ export class ButtonElement extends UIElement implements PositionedUIElement {
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return ButtonComponent;
   }
 }

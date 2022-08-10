@@ -32,7 +32,7 @@ export class SliderElement extends InputElement implements PositionedUIElement {
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return SliderComponent;
   }
 }

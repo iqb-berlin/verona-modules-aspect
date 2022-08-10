@@ -14,7 +14,7 @@ export class AudioElement extends PlayerElement implements PositionedUIElement {
     this.position = ElementFactory.initPositionProps(element.position);
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return AudioComponent;
   }
 }

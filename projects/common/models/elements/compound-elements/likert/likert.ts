@@ -54,7 +54,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     }
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return LikertComponent;
   }
 

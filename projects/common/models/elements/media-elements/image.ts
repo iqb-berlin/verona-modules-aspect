@@ -24,7 +24,7 @@ export class ImageElement extends UIElement implements PositionedUIElement {
     this.position = ElementFactory.initPositionProps(element.position);
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return ImageComponent;
   }
 }

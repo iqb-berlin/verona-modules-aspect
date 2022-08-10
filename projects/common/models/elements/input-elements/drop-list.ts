@@ -45,7 +45,7 @@ export class DropListElement extends InputElement implements PositionedUIElement
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return DropListComponent;
   }
 }

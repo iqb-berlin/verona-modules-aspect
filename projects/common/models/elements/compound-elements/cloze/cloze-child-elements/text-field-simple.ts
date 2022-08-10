@@ -44,7 +44,7 @@ export class TextFieldSimpleElement extends InputElement {
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return TextFieldSimpleComponent;
   }
 }

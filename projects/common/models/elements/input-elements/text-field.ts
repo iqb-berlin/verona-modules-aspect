@@ -53,7 +53,7 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return TextFieldComponent;
   }
 }

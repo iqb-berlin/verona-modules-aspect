@@ -19,7 +19,7 @@ export class LikertRowElement extends InputElement {
     if (element.verticalButtonAlignment) this.verticalButtonAlignment = element.verticalButtonAlignment;
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return LikertRadioButtonGroupComponent;
   }
 }

@@ -14,7 +14,7 @@ export class CheckboxElement extends InputElement implements PositionedUIElement
     this.styling = ElementFactory.initStylingProps(element.styling);
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return CheckboxComponent;
   }
 }

@@ -34,7 +34,7 @@ export class ToggleButtonElement extends InputElement {
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return ToggleButtonComponent;
   }
 }

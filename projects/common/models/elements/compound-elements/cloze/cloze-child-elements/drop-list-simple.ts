@@ -53,7 +53,7 @@ export class DropListSimpleElement extends InputElement {
     return valueList;
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return DropListSimpleComponent;
   }
 }

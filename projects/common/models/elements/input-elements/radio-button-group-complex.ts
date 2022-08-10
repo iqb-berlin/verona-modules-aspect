@@ -21,7 +21,7 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return RadioGroupImagesComponent;
   }
 

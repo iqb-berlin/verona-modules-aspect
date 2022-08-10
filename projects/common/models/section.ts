@@ -1,6 +1,8 @@
 import { Type } from '@angular/core';
 import { IDManager } from 'common/util/id-manager';
-import { PositionedUIElement, UIElement, UIElementValue } from 'common/models/elements/element';
+import {
+  CompoundElement, PositionedUIElement, UIElement, UIElementValue
+} from 'common/models/elements/element';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { TextElement } from 'common/models/elements/text/text';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
@@ -39,25 +41,25 @@ export class Section {
   activeAfterID: string | null = null;
 
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
-    'text': TextElement,
-    'button': ButtonElement,
+    text: TextElement,
+    button: ButtonElement,
     'text-field': TextFieldElement,
     'text-field-simple': TextFieldSimpleElement,
     'text-area': TextAreaElement,
-    'checkbox': CheckboxElement,
-    'dropdown': DropdownElement,
-    'radio': RadioButtonGroupElement,
-    'image': ImageElement,
-    'audio': AudioElement,
-    'video': VideoElement,
-    'likert': LikertElement,
+    checkbox: CheckboxElement,
+    dropdown: DropdownElement,
+    radio: RadioButtonGroupElement,
+    image: ImageElement,
+    audio: AudioElement,
+    video: VideoElement,
+    likert: LikertElement,
     'radio-group-images': RadioButtonGroupComplexElement,
     'drop-list': DropListElement,
     'drop-list-simple': DropListSimpleElement,
-    'cloze': ClozeElement,
-    'slider': SliderElement,
+    cloze: ClozeElement,
+    slider: SliderElement,
     'spell-correct': SpellCorrectElement,
-    'frame': FrameElement,
+    frame: FrameElement,
     'toggle-button': ToggleButtonElement
   };
 

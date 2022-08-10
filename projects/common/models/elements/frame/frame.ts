@@ -1,6 +1,8 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, PositionedUIElement, PositionProperties, UIElement } from 'common/models/elements/element';
+import {
+  BasicStyles, PositionedUIElement, PositionProperties, UIElement
+} from 'common/models/elements/element';
 import { FrameComponent } from 'common/components/frame/frame.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
@@ -22,7 +24,7 @@ export class FrameElement extends UIElement implements PositionedUIElement {
         borderWidth: 1,
         borderColor: 'black',
         borderStyle: 'solid',
-        borderRadius:  0,
+        borderRadius: 0,
         ...element.styling
       })
     };

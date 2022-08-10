@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, CompoundElement, UIElement,
-  PositionedUIElement, PositionProperties, UIElementValue, TextImageLabel, OptionElement, Label
+  PositionedUIElement, PositionProperties, UIElementValue, TextImageLabel, OptionElement
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -20,7 +20,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   };
 
   constructor(element: Partial<LikertElement>, ...args: unknown[]) {
-    super({width: 250, height: 200, ...element}, ...args);
+    super({ width: 250, height: 200, ...element }, ...args);
     if (element.options) this.options = [...element.options];
     if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
     this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row, ...args)) : [];

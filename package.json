@@ -22,6 +22,9 @@
     "parserOptions": {
       "project": "./tsconfig.json"
     },
+    "rules": {
+      "class-methods-use-this": ["error", { "exceptMethods": ["getElementComponent", "getNewOptionLabel"] }]
+    },
     "overrides": [
       {
         "files": [

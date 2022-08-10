@@ -63,4 +63,12 @@ export abstract class ElementFactory {
       playbackTime: defaults.playbackTime !== undefined ? defaults.playbackTime as number : 0
     };
   }
+
+  static createOptionLabel(optionText: string, addImg: boolean = false) {
+    return {
+      text: optionText,
+      imgSrc: addImg ? null : undefined,
+      imgPosition: addImg ? 'above' : undefined
+    };
+  }
 }

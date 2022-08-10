@@ -37,7 +37,7 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     return RadioButtonGroupComponent;
   }
 
-  getNewOption(optionText: string): TextLabel {
-    return { text: optionText };
+  getNewOptionLabel(optionText: string): TextLabel {
+    return ElementFactory.createOptionLabel(optionText) as TextLabel;
   }
 }

@@ -183,7 +183,7 @@ export interface ValueChangeElement {
 }
 
 export interface OptionElement extends UIElement {
-  getNewOption(optionText: string): Label;
+  getNewOptionLabel(optionText: string): Label;
 }
 
 export interface TextLabel {

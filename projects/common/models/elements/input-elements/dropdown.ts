@@ -26,8 +26,7 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     return DropdownComponent;
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  getNewOption(optionText: string): TextLabel {
-    return { text: optionText };
+  getNewOptionLabel(optionText: string): TextLabel {
+    return ElementFactory.createOptionLabel(optionText) as TextLabel;
   }
 }

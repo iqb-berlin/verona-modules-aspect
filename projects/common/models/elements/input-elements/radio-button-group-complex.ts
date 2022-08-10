@@ -25,7 +25,7 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
     return RadioGroupImagesComponent;
   }
 
-  getNewOption(optionText: string): TextImageLabel {
-    return { text: optionText, imgSrc: null, imgPosition: 'above' };
+  getNewOptionLabel(optionText: string): TextImageLabel {
+    return ElementFactory.createOptionLabel(optionText, true) as TextImageLabel;
   }
 }

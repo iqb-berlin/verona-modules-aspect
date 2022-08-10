@@ -36,9 +36,8 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     };
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  getNewOption(optionText: string): Label {
-    return { text: optionText, imgSrc: null, imgPosition: 'above' };
+  getNewOptionLabel(optionText: string): TextImageLabel {
+    return ElementFactory.createOptionLabel(optionText, true) as TextImageLabel;
   }
 
   setProperty(property: string, value: UIElementValue): void {

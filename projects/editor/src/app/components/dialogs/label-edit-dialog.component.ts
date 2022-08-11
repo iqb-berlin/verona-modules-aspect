@@ -16,7 +16,7 @@ import { FileService } from 'common/services/file.service';
           <button mat-raised-button (click)="newLabel.imgSrc = null">{{ 'removeImage' | translate }}</button>
           <mat-form-field>
             <mat-label>{{'imagePosition' | translate }}</mat-label>
-            <mat-select [value]="newLabel.imgPosition"
+            <mat-select [(ngModel)]="newLabel.imgPosition"
                         [disabled]="newLabel.imgSrc == null">
               <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
                           [value]="option">

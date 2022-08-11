@@ -32,7 +32,9 @@ import {
   `,
   styles: [
     '.clozeChild {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}',
-    'input {width: calc(100% - 2px); height: calc(100% - 2px); vertical-align: top; padding: 0;}'
+    'input {width: calc(100% - 2px); height: calc(100% - 2px); vertical-align: top; padding: 0;}',
+    'input:hover {border: 1px solid currentColor;}',
+    'input:focus {outline: 1px solid #3f51b5;}'
   ]
 })
 export class TextFieldSimpleComponent extends FormElementComponent {

@@ -195,6 +195,7 @@
     "checkbox": "Kontrollkästchen",
     "dropdown": "Klappliste",
     "radio": "Optionsfelder",
+    "radio-group-images": "Optionsfelder mit Bild",
     "simple": "mit Text",
     "complex": "mit Bild",
     "drop-list": "Ablegeliste",
@@ -225,5 +226,8 @@
   "Bitte kopierten Abschnitt einfügen": "Bitte kopierten Abschnitt einfügen",
   "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",
   "Abschnitt wurde erfolgreich gelesen.": "Abschnitt wurde erfolgreich gelesen.",
-  "Fehler beim Lesen des Abschnitts!": "Fehler beim Lesen des Abschnitts!"
+  "Fehler beim Lesen des Abschnitts!": "Fehler beim Lesen des Abschnitts!",
+  "limitItemPerRow": "Elemente je Zeile begrenzen",
+  "numberGreater0": "Zahlenwert größer 0",
+  "itemsPerRow": "Anzahl der Elemente"
 }

@@ -2,6 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'aspect-select-properties',
@@ -21,6 +22,25 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                   (change)="updateModel.emit({ property: 'allowUnset', value: $event.checked })">
       {{'propertiesPanel.allowUnset' | translate }}
     </mat-checkbox>
+
+    <mat-checkbox *ngIf="combinedProperties.itemsPerRow !== undefined"
+                  (change)="setItemsPerRow($event)"
+                  [checked]="$any(combinedProperties.itemsPerRow)">
+      {{'limitItemPerRow' | translate}}
+    </mat-checkbox>
+
+    <mat-form-field *ngIf="combinedProperties.itemsPerRow !== undefined"
+                    appearance="fill" class="mdInput textsingleline">
+      <mat-label>{{'itemsPerRow' | translate }}</mat-label>
+      <input matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required
+             [disabled]="!isItemsPerRowSet"
+             [ngModel]="$any(combinedProperties.itemsPerRow)"
+             (input)="itemsPerRow.valid &&
+                      updateModel.emit({ property: 'itemsPerRow', value: $any($event.target).value })">
+      <mat-error *ngIf="itemsPerRow.errors?.['pattern']">
+        {{'numberGreater0' | translate}}
+      </mat-error>
+    </mat-form-field>
   `
 })
 export class SelectPropertiesComponent {
@@ -28,6 +48,15 @@ export class SelectPropertiesComponent {
   @Output() updateModel =
     new EventEmitter<{
       property: string,
-      value: string | number | boolean | string[]
+      value: string | number | boolean | string[] | null
     }>();
+
+  isItemsPerRowSet = false;
+
+  setItemsPerRow(event: MatCheckboxChange) {
+    this.isItemsPerRowSet = event.checked;
+    if (!event.checked) {
+      this.updateModel.emit({ property: 'itemsPerRow', value: null });
+    }
+  }
 }

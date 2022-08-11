@@ -193,17 +193,6 @@ export class UnitService {
         rowObject.id = this.idManager.getNewID('likert_row');
       });
     }
-
-    if (newElement instanceof ClozeElement) {
-      element.getChildElements().forEach((childElement: UIElement) => {
-        childElement.id = this.idManager.getNewID(childElement.type);
-        if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
-          (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
-            valueObject.id = this.idManager.getNewID('value');
-          });
-        }
-      });
-    }
     return newElement;
   }
 

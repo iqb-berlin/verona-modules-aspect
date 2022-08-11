@@ -15,7 +15,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
             </textarea>
     </mat-form-field>
 
-    <mat-form-field *ngIf="combinedProperties.type === 'text-field'"
+    <mat-form-field *ngIf="combinedProperties.type === 'text-field' || combinedProperties.type === 'text-field-simple'"
                     class="wide-form-field" appearance="fill">
       <mat-label>{{'preset' | translate }}</mat-label>
       <input matInput type="text" [value]="$any(combinedProperties).value"

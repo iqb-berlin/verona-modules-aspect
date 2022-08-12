@@ -22,7 +22,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
              (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
     </mat-form-field>
 
-    <mat-form-field *ngIf="combinedProperties.options !== undefined"
+    <mat-form-field *ngIf="combinedProperties.options !== undefined && combinedProperties.rows === undefined"
                     appearance="fill" class="wide-form-field">
       <mat-label>{{'preset' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.value"

@@ -12,6 +12,8 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   rows: LikertRowElement[] = [];
   options: TextImageLabel[] = [];
   firstColumnSizeRatio: number = 5;
+  label: string = 'Optionentabelle Beschriftung';
+  label2: string = 'Beschriftung Erste Spalte';
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -24,6 +26,8 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     if (element.options) this.options = [...element.options];
     if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
     this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row, ...args)) : [];
+    this.label = element.label !== undefined ? element.label : 'Optionentabelle Beschriftung';
+    this.label2 = element.label2 !== undefined ? element.label2 : 'Optionentabelle Erste Spalte';
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
       ...ElementFactory.initStylingProps({

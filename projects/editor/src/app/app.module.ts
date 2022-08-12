@@ -86,6 +86,7 @@ import { PresetValuePropertiesComponent } from
 import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
 import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
 import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
+import { BorderPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 
 @NgModule({
   declarations: [
@@ -133,7 +134,8 @@ import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog
     PresetValuePropertiesComponent,
     OptionListPanelComponent,
     LikertRowLabelPipe,
-    LabelEditDialogComponent
+    LabelEditDialogComponent,
+    BorderPropertiesComponent
   ],
   imports: [
     BrowserModule,

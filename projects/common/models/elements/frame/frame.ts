@@ -7,6 +7,11 @@ import { FrameComponent } from 'common/components/frame/frame.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 export class FrameElement extends UIElement implements PositionedUIElement {
+  hasBorderTop: boolean = true;
+  hasBorderBottom: boolean = true;
+  hasBorderLeft: boolean = true;
+  hasBorderRight: boolean = true;
+
   position: PositionProperties;
   styling: BasicStyles & {
     borderWidth: number;

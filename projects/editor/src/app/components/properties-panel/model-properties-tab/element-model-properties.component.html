@@ -31,6 +31,9 @@
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
+  <aspect-border-properties [combinedProperties]="combinedProperties"
+                            (updateModel)="updateModel.emit($event)"></aspect-border-properties>
+
   <button *ngIf="combinedProperties.document"
           mat-raised-button fxFlexAlign="center"
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">

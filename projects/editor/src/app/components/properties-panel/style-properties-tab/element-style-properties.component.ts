@@ -37,12 +37,6 @@ import { UnitService } from 'editor/src/app/services/unit.service';
              [value]="styles.selectionColor"
              (input)="unitService.updateSelectedElementsStyleProperty('selectionColor', $any($event.target).value)">
 
-      <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
-        <input matInput type="number" [ngModel]="styles.borderRadius"
-               (input)="unitService.updateSelectedElementsStyleProperty('borderRadius', $any($event.target).value)">
-      </mat-form-field>
-
       <mat-form-field *ngIf="styles.itemBackgroundColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.itemBackgroundColor' | translate }}</mat-label>
@@ -68,19 +62,6 @@ import { UnitService } from 'editor/src/app/services/unit.service';
       <input matInput type="color" hidden #backgroundColorInput
              [value]="styles.backgroundColor"
              (input)="unitService.updateSelectedElementsStyleProperty('backgroundColor', $any($event.target).value)">
-
-      <mat-form-field *ngIf="styles.borderColor !== undefined"
-                      appearance="fill" class="mdInput textsingleline">
-        <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.borderColor"
-               (input)="unitService.updateSelectedElementsStyleProperty('borderColor', $any($event.target).value)">
-        <button mat-icon-button matSuffix (click)="borderColorInput.click()">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </mat-form-field>
-      <input matInput type="color" hidden #borderColorInput
-             [value]="styles.borderColor"
-             (input)="unitService.updateSelectedElementsStyleProperty('borderColor', $any($event.target).value)">
 
       <mat-form-field *ngIf="styles.fontColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
@@ -132,6 +113,30 @@ import { UnitService } from 'editor/src/app/services/unit.service';
         {{'propertiesPanel.underline' | translate }}
       </mat-checkbox>
 
+    </div>
+
+    <fieldset *ngIf="styles && styles.borderRadius !== undefined">
+      <legend>Rahmen</legend>
+
+      <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
+        <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
+        <input matInput type="number" [ngModel]="styles.borderRadius"
+               (input)="unitService.updateSelectedElementsStyleProperty('borderRadius', $any($event.target).value)">
+      </mat-form-field>
+
+      <mat-form-field *ngIf="styles.borderColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="styles.borderColor"
+               (input)="unitService.updateSelectedElementsStyleProperty('borderColor', $any($event.target).value)">
+        <button mat-icon-button matSuffix (click)="borderColorInput.click()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-form-field>
+      <input matInput type="color" hidden #borderColorInput
+             [value]="styles.borderColor"
+             (input)="unitService.updateSelectedElementsStyleProperty('borderColor', $any($event.target).value)">
+
       <mat-form-field *ngIf="styles.borderStyle !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.borderStyle' | translate }}</mat-label>
@@ -144,7 +149,6 @@ import { UnitService } from 'editor/src/app/services/unit.service';
           </mat-option>
         </mat-select>
       </mat-form-field>
-
       <mat-form-field *ngIf="styles.borderWidth !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
@@ -152,7 +156,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
                [ngModel]="styles.borderWidth"
                (ngModelChange)="unitService.updateSelectedElementsStyleProperty('borderWidth', $event)">
       </mat-form-field>
-    </div>
+    </fieldset>
   `
 })
 export class ElementStylePropertiesComponent {

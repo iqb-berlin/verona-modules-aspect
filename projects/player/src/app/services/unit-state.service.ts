@@ -4,9 +4,9 @@ import { DOCUMENT } from '@angular/common';
 import {
   Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue
 } from 'player/modules/verona/models/verona';
-import { IntersectionDetector } from '../classes/intersection-detector';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElementValue, ValueChangeElement } from 'common/models/elements/element';
+import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Injectable({
   providedIn: 'root'
@@ -81,8 +81,10 @@ export class UnitStateService {
     this.intersectionDetector.observe(domElement, elementId);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
-        this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
-        this.intersectionDetector.unobserve(id);
+        if (elementId === id) {
+          this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
+          this.intersectionDetector.unobserve(id);
+        }
       });
   }
 
@@ -115,7 +117,7 @@ export class UnitStateService {
   }
 
   private buildPresentedPages(): void {
-    const uniqPages = [...new Set( Object.values(this.elementIdPageIndexMap))];
+    const uniqPages = [...new Set(Object.values(this.elementIdPageIndexMap))];
     uniqPages.forEach(pageIndex => this
       .checkPresentedPageStatus(pageIndex));
   }
@@ -144,11 +146,9 @@ export class UnitStateService {
       unitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.elementCodes.push(unitStateElementCode);
       this._elementCodeChanged.next(unitStateElementCode);
-    } else {
+    } else if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
       // if all elements are registered, we can rebuild the presentedPages array
-      if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
-        this.buildPresentedPages();
-      }
+      this.buildPresentedPages();
     }
     if (unitStateElementCode.status === 'NOT_REACHED') {
       this.addIntersectionDetection(id, domElement);

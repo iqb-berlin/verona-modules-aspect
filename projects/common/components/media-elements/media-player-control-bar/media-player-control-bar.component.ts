@@ -3,6 +3,10 @@ import {
 } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 import { PlayerProperties, ValueChangeElement } from 'common/models/elements/element';
+import {
+  fromEvent, Subject, tap, throttleTime
+} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'aspect-media-player-control-bar',
@@ -34,16 +38,23 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   playbackTime: number = 0;
   valid: boolean = false;
 
+  private ngUnsubscribe = new Subject<void>();
+
   ngOnInit(): void {
     this.playbackTime = this.savedPlaybackTime || this.playerProperties.playbackTime;
     this.started = this.playbackTime > 0;
     this.runCounter = Math.floor(this.playbackTime);
     this.player.ondurationchange = () => this.initTimeValues();
-    this.player.ontimeupdate = () => {
-      this.currentTime = this.player.currentTime / 60;
-      this.currentRestTime = this.player.duration ? (this.player.duration - this.player.currentTime) / 60 : 0;
-      this.sendPlaybackTimeChanged();
-    };
+    fromEvent(this.player, 'timeupdate')
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+        tap(() => {
+          this.currentTime = this.player.currentTime / 60;
+          this.currentRestTime = this.player.duration ? (this.player.duration - this.player.currentTime) / 60 : 0;
+        }),
+        throttleTime(5000)
+      )
+      .subscribe(() => this.sendPlaybackTimeChanged());
     this.player.onpause = () => {
       this.playing = false;
       this.pausing = true;
@@ -186,5 +197,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
 
   ngOnDestroy(): void {
     this.player.pause();
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

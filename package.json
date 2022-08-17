@@ -13,6 +13,8 @@
     "start-player-local-network": "ng serve player --port 4202 --host 0.0.0.0",
     "build-editor": "ng build --project editor --output-hashing=none && scripts/build.sh editor $npm_package_config_editor_version",
     "build-player": "ng build --project player --output-hashing=none && scripts/build.sh player $npm_package_config_player_version",
+    "node-build-editor": "ng build --project editor --output-hashing=none && node scripts/wrap_and_pack.js editor $npm_package_config_editor_version projects/editor/src/html_wrapper/index.html",
+    "node-build-player": "ng build --project player --output-hashing=none && node scripts/wrap_and_pack.js player $npm_package_config_player_version projects/player/src/html_wrapper/index.html",
     "test": "ng test",
     "e2e": "node node_modules/testcafe/bin/testcafe.js 'chrome' e2e-tests/editor/test.ts"
   },

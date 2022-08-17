@@ -1,6 +1,8 @@
 import {
   Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Directive({
@@ -13,18 +15,24 @@ export class InViewDetectionDirective implements OnInit, OnDestroy {
 
   intersectionDetector!: IntersectionDetector;
 
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     const constraint = this.detectionType === 'top' ? '0px 0px 0px 0px' : '-95% 0px 0px 0px';
     this.intersectionDetector = new IntersectionDetector(this.intersectionContainer, constraint);
     this.intersectionDetector.observe(this.elementRef.nativeElement);
-    this.intersectionDetector.intersecting.subscribe(() => {
-      this.intersecting.emit();
-    });
+    this.intersectionDetector.intersecting
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.intersecting.emit();
+      });
   }
 
   ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
     this.intersectionDetector.disconnect(this.elementRef.nativeElement);
   }
 }

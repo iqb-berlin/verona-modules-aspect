@@ -26,7 +26,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   ngOnInit(): void {
     merge(
       this.mediaPlayerService.mediaStatusChanged,
-      this.unitStateService.presentedPageAdded,
+      this.unitStateService.pagePresented,
       this.unitStateService.elementCodeChanged
     )
       .pipe(

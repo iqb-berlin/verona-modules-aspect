@@ -13,7 +13,7 @@ import { IntersectionDetector } from '../classes/intersection-detector';
 })
 export class UnitStateService {
   private _elementCodes: ElementCode[] = [];
-  private _presentedPageAdded = new Subject<number>();
+  private _pagePresented = new Subject<number>();
   private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
   private elementIdPageIndexMap: { [elementId: string]: number } = {};
@@ -40,8 +40,8 @@ export class UnitStateService {
     return this._elementCodeChanged.asObservable();
   }
 
-  get presentedPageAdded(): Observable<number> {
-    return this._presentedPageAdded.asObservable();
+  get pagePresented(): Observable<number> {
+    return this._pagePresented.asObservable();
   }
 
   get presentedPagesProgress(): Progress {
@@ -132,7 +132,7 @@ export class UnitStateService {
           ElementCodeStatusValue.DISPLAYED);
       if (notDisplayedElements.length === 0) {
         this.presentedPages.push(pageIndex);
-        this._presentedPageAdded.next(pageIndex);
+        this._pagePresented.next(pageIndex);
       }
     } else {
       LogService.warn(`player: page ${pageIndex} is already presented`);

@@ -107,7 +107,7 @@ describe('UnitStateService', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElement('element_1', 'TEST1', element, 1);
-    service.presentedPageAdded
+    service.pagePresented
       .subscribe(index => {
         expect(index).toEqual(1);
         done();
@@ -119,7 +119,7 @@ describe('UnitStateService', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElement('element_1', 'TEST1', element, 1);
-    service.presentedPageAdded
+    service.pagePresented
       .subscribe(index => {
         expect(index).toEqual(1);
         done();

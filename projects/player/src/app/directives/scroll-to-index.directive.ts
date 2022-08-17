@@ -1,14 +1,16 @@
 import {
-  Directive, ElementRef, Input, OnInit
+  Directive, ElementRef, Input, OnDestroy, OnInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Directive({
   selector: '[aspectScrollToIndex]'
 })
-export class ScrollToIndexDirective implements OnInit {
+export class ScrollToIndexDirective implements OnInit, OnDestroy {
   @Input() selectIndex!: Subject<number>;
   @Input() index!: number;
+
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(private elementRef: ElementRef) {}
 
@@ -18,5 +20,10 @@ export class ScrollToIndexDirective implements OnInit {
         this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth' });
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

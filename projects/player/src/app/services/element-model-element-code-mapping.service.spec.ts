@@ -200,33 +200,45 @@ describe('ElementModelElementCodeMappingService', () => {
   // mapToElementValue
 
   it('should map an elementCode value to drop-list elementModel value', () => {
-    service.dragNDropValueObjects =  [
+    service.dragNDropValueObjects = [
       {
-        'text': 'a',
-        'id': 'value_1'
+        text: 'a',
+        id: 'value_1',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'b',
-        'id': 'value_2'
+        text: 'b',
+        id: 'value_2',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'c',
-        'id': 'value_3'
+        text: 'c',
+        id: 'value_3',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'd',
-        'id': 'value_4'
+        text: 'd',
+        id: 'value_4',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
-    const expectedValue = [
+    const expectedValue: DragNDropValueObject[] = [
       {
-        'stringValue': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     expect(service.mapToElementModelValue(['value_5'], elementModel))
@@ -234,33 +246,45 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map an elementCode value to drop-list elementModel value', () => {
-    service.dragNDropValueObjects =  [
+    service.dragNDropValueObjects = [
       {
-        'text': 'a',
-        'id': 'value_1'
+        text: 'a',
+        id: 'value_1',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'b',
-        'id': 'value_2'
+        text: 'b',
+        id: 'value_2',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'c',
-        'id': 'value_3'
+        text: 'c',
+        id: 'value_3',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'd',
-        'id': 'value_4'
+        text: 'd',
+        id: 'value_4',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
-    const expectedValue = [
+    const expectedValue: DragNDropValueObject[] = [
       {
-        'stringValue': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     expect(service.mapToElementModelValue(['value_5'], elementModel))
@@ -268,26 +292,36 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should not map but return the drop-list-simple elementModel value', () => {
-    service.dragNDropValueObjects =  [
+    service.dragNDropValueObjects = [
       {
-        'text': 'a',
-        'id': 'value_1'
+        text: 'a',
+        id: 'value_1',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'b',
-        'id': 'value_2'
+        text: 'b',
+        id: 'value_2',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'c',
-        'id': 'value_3'
+        text: 'c',
+        id: 'value_3',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'd',
-        'id': 'value_4'
+        text: 'd',
+        id: 'value_4',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'text': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     const elementModel: DropListSimpleElement = JSON.parse(JSON.stringify(dropListSimple_131));

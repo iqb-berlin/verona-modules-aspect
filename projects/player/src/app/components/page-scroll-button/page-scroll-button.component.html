@@ -1,0 +1,17 @@
+<ng-content></ng-content>
+<div fxLayout="column" fxLayoutAlign="center end"
+     class="scroll-button-container">
+  <button *ngIf="isVisible.value"
+          mat-fab
+          class="scroll-button"
+          (contextmenu)="$event.preventDefault()"
+          (pointercancel)="toggleScrolling(false)"
+          (pointerout)="toggleScrolling(false)"
+          (pointerdown)="toggleScrolling(true)"
+          (pointerup)="toggleScrolling(false)"
+          (pointerleave)="toggleScrolling(false)">
+    <mat-icon>arrow_downward</mat-icon>
+  </button>
+</div>
+
+

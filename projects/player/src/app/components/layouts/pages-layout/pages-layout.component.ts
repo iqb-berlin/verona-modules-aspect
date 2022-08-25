@@ -3,12 +3,12 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NativeEventService } from '../../../services/native-event.service';
 import { Page } from 'common/models/page';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { VopPageNavigationCommand } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
+import { NativeEventService } from '../../../services/native-event.service';
 
 @Component({
   selector: 'aspect-pages-layout',
@@ -134,7 +134,7 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private calculatePagesMaxWidth(): void {
-    this.maxWidth.alwaysVisiblePage = this.getAbsolutePageWidth(this.alwaysVisiblePage);
+    this.maxWidth.alwaysVisiblePage = PagesLayoutComponent.getAbsolutePageWidth(this.alwaysVisiblePage);
     this.maxWidth.scrollPages = this.getScrollPagesWidth();
     this.maxWidth.allPages = Math.max(this.maxWidth.alwaysVisiblePage, this.maxWidth.scrollPages);
   }
@@ -153,13 +153,19 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private getScrollPagesWidth(): number {
     return this.hasScrollPages ?
-      Math.max(...this.scrollPages.map((page: Page): number => this.getAbsolutePageWidth(page))) : 0;
+      Math.max(...this.scrollPages.map((page: Page): number => PagesLayoutComponent.getAbsolutePageWidth(page))) : 0;
   }
 
-  private getAbsolutePageWidth = (page: Page | null): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
+  private static getAbsolutePageWidth = (page: Page | null): number => ((page) ? 2 * page.margin + page.maxWidth : 0);
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  scrollToNextPage() {
+    if (this.selectedIndex < this.scrollPages.length - 1) {
+      this.selectIndex.next(this.selectedIndex + 1);
+    }
   }
 }

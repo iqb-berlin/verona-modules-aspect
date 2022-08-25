@@ -1,0 +1,16 @@
+.scroll-button {
+  background-color: #cccccc;
+  opacity: 0.6;
+  pointer-events: all;
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.scroll-button-container {
+  height: 0;
+  padding-right: 15px;
+  position: sticky;
+  bottom: 40px;
+  pointer-events: none;
+}

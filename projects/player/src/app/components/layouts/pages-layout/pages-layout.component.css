@@ -3,8 +3,8 @@
 }
 
 .concat-scroll-snap {
-  scroll-snap-type: both mandatory;
-  scroll-padding: 10px;
+  scroll-snap-type: y mandatory;
+  scroll-padding: 0;
 }
 
 .page-container{

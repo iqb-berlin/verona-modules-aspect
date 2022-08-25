@@ -5,10 +5,12 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { SharedModule } from 'common/shared.module';
+import { KeyInputModule } from 'player/modules/key-input/key-input.module';
+import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
-import { SharedModule } from 'common/shared.module';
 import { PlayerTranslateLoader } from './classes/player-translate-loader';
 import { PagesLayoutComponent } from './components/layouts/pages-layout/pages-layout.component';
 import { PageLabelDirective } from './directives/page-label.directive';
@@ -36,9 +38,7 @@ import {
   InteractiveGroupElementComponent
 } from './components/elements/interactive-group-element/interactive-group-element.component';
 import { PlayerLayoutComponent } from './components/layouts/player-layout/player-layout.component';
-import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitStateDirective } from './directives/unit-state.directive';
-import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
 import { ValidPagesPipe } from './pipes/valid-pages.pipe';
 import { ScrollPagesPipe } from './pipes/scroll-pages.pipe';
 import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';
@@ -46,6 +46,7 @@ import { PageIndexPipe } from './pipes/page-index.pipe';
 import { PlayerStateDirective } from './directives/player-state.directive';
 import { SectionVisibilityHandlingDirective } from './directives/section-visibility-handling.directive';
 import { UnitComponent } from './components/unit/unit.component';
+import { PageScrollButtonComponent } from './components/page-scroll-button/page-scroll-button.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { UnitComponent } from './components/unit/unit.component';
     PageIndexPipe,
     PlayerStateDirective,
     SectionVisibilityHandlingDirective,
-    UnitComponent
+    UnitComponent,
+    PageScrollButtonComponent
   ],
   imports: [
     BrowserModule,

@@ -20,14 +20,12 @@ export class InViewDetectionDirective implements OnInit, OnDestroy {
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    const constraint = this.detectionType === 'top' ? '0px 0px 0px 0px' : '-95% 0px 0px 0px';
+    const constraint = this.detectionType === 'top' ? '0px 0px -99% 0px' : '99% 0px 0px 0px';
     this.intersectionDetector = new IntersectionDetector(this.intersectionContainer, constraint);
     this.intersectionDetector.observe(this.elementRef.nativeElement);
     this.intersectionDetector.intersecting
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.intersecting.emit();
-      });
+      .subscribe(() => this.intersecting.emit());
   }
 
   ngOnDestroy(): void {

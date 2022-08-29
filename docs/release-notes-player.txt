@@ -1,5 +1,10 @@
 Player
 ======
+1.26.0
+- Improve performance by reducing the frequency of change notifications to the host
+- Display pages in scroll mode without generated spacing
+- Add scroll buttons to pages that can be scrolled
+
 1.25.2
 - Fix the scroll position of input elements when
   opening the virtual keyboard in small browser views

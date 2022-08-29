@@ -6,14 +6,14 @@ import {
 } from 'common/components/compound-elements/likert/likert-radio-button-group.component';
 
 export class LikertRowElement extends InputElement {
-  rowLabel: TextImageLabel = { text: '', imgSrc: null, position: 'above' };
+  rowLabel: TextImageLabel = { text: '', imgSrc: null, imgPosition: 'above' };
   columnCount: number = 0;
   firstColumnSizeRatio: number = 5;
   verticalButtonAlignment: 'auto' | 'center' = 'center';
 
   constructor(element: Partial<LikertRowElement>, ...args: unknown[]) {
     super(element, ...args);
-    if (element.rowLabel) this.rowLabel = element.rowLabel;
+    if (element.rowLabel) this.rowLabel = { ...element.rowLabel };
     if (element.columnCount) this.columnCount = element.columnCount;
     if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
     if (element.verticalButtonAlignment) this.verticalButtonAlignment = element.verticalButtonAlignment;
@@ -43,7 +43,7 @@ export class LikertRowElement extends InputElement {
     ];
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return LikertRadioButtonGroupComponent;
   }
 }

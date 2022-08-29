@@ -1,12 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../services/unit.service';
-import { DialogService } from '../../services/dialog.service';
-import { SelectionService } from '../../services/selection.service';
 import { MessageService } from 'common/services/message.service';
 import { ArrayUtils } from 'common/util/array';
 import { Page } from 'common/models/page';
+import { UnitService } from '../../services/unit.service';
+import { DialogService } from '../../services/dialog.service';
+import { SelectionService } from '../../services/selection.service';
 
 @Component({
   selector: 'aspect-unit-view',

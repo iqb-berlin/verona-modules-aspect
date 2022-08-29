@@ -3,10 +3,10 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ElementComponent } from './element-component.directive';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { ElementComponent } from './element-component.directive';
 
 @Directive()
 export abstract class MediaPlayerElementComponent extends ElementComponent implements OnInit, OnDestroy {

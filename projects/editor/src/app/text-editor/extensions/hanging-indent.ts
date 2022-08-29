@@ -57,7 +57,7 @@ export const HangingIndent = Extension.create({
     const updateIndentLevel = (tr: Transaction, hangingIndent: boolean, indentSize: number): Transaction => {
       const { doc, selection } = tr;
 
-      if (doc && selection && (selection instanceof TextSelection || selection instanceof AllSelection)) {
+      if (doc && selection && (selection instanceof TextSelection)) {
         const { from, to } = selection;
         doc.nodesBetween(from, to, (node, pos) => {
           setNodeIndentMarkup(tr, pos, hangingIndent, indentSize);

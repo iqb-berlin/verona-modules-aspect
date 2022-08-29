@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MediaPlayerService } from './media-player.service';
 
-
 describe('MediaPlayerService', () => {
   let service: MediaPlayerService;
   beforeEach(() => {
@@ -17,7 +16,7 @@ describe('MediaPlayerService', () => {
     const mediaId = 'audio_1';
     service.registerMediaElement(mediaId, false);
     service.mediaStatusChanged
-      .subscribe( id => {
+      .subscribe(id => {
         expect(id).toEqual(mediaId);
         done();
       });
@@ -29,7 +28,7 @@ describe('MediaPlayerService', () => {
     service.registerMediaElement(mediaId, false);
     service.registerMediaElement('audio_2', false);
     service.mediaStatusChanged
-      .subscribe( id => {
+      .subscribe(id => {
         expect(id).toEqual(mediaId);
         done();
       });
@@ -41,7 +40,7 @@ describe('MediaPlayerService', () => {
     service.registerMediaElement(mediaId, false);
     service.registerMediaElement('audio_2', false);
     service.mediaStatusChanged
-      .subscribe( id => {
+      .subscribe(id => {
         expect(id).not.toEqual(mediaId);
         done();
       });
@@ -77,7 +76,7 @@ describe('MediaPlayerService', () => {
   it('actualPlayingMediaId should be audio_1', done => {
     const mediaId = 'audio_1';
     service.actualPlayingId
-      .subscribe( id => {
+      .subscribe(id => {
         expect(id).toEqual(mediaId);
         done();
       });
@@ -87,7 +86,7 @@ describe('MediaPlayerService', () => {
   it('pageIndex should not be audio_1', done => {
     const mediaId = 'audio_1';
     service.actualPlayingId
-      .subscribe( id => {
+      .subscribe(id => {
         expect(id).not.toEqual(mediaId);
         done();
       });

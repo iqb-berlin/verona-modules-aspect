@@ -22,7 +22,7 @@ export class BaseGroupElementComponent extends ElementGroupDirective implements 
 
   ngOnInit(): void {
     this.baseElementComponent =
-      this.elementComponentContainer.createComponent(this.elementModel.getComponentFactory()).instance;
+      this.elementComponentContainer.createComponent(this.elementModel.getElementComponent()).instance;
     this.baseElementComponent.elementModel = this.elementModel;
   }
 

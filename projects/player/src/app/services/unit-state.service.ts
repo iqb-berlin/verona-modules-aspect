@@ -4,16 +4,16 @@ import { DOCUMENT } from '@angular/common';
 import {
   Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue
 } from 'player/modules/verona/models/verona';
-import { IntersectionDetector } from '../classes/intersection-detector';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElementValue, ValueChangeElement } from 'common/models/elements/element';
+import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnitStateService {
   private _elementCodes: ElementCode[] = [];
-  private _presentedPageAdded = new Subject<number>();
+  private _pagePresented = new Subject<number>();
   private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
   private elementIdPageIndexMap: { [elementId: string]: number } = {};
@@ -40,8 +40,8 @@ export class UnitStateService {
     return this._elementCodeChanged.asObservable();
   }
 
-  get presentedPageAdded(): Observable<number> {
-    return this._presentedPageAdded.asObservable();
+  get pagePresented(): Observable<number> {
+    return this._pagePresented.asObservable();
   }
 
   get presentedPagesProgress(): Progress {
@@ -81,8 +81,10 @@ export class UnitStateService {
     this.intersectionDetector.observe(domElement, elementId);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
-        this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
-        this.intersectionDetector.unobserve(id);
+        if (elementId === id) {
+          this.changeElementCodeStatus({ id: id, status: 'DISPLAYED' });
+          this.intersectionDetector.unobserve(id);
+        }
       });
   }
 
@@ -115,7 +117,7 @@ export class UnitStateService {
   }
 
   private buildPresentedPages(): void {
-    const uniqPages = [...new Set( Object.values(this.elementIdPageIndexMap))];
+    const uniqPages = [...new Set(Object.values(this.elementIdPageIndexMap))];
     uniqPages.forEach(pageIndex => this
       .checkPresentedPageStatus(pageIndex));
   }
@@ -130,7 +132,7 @@ export class UnitStateService {
           ElementCodeStatusValue.DISPLAYED);
       if (notDisplayedElements.length === 0) {
         this.presentedPages.push(pageIndex);
-        this._presentedPageAdded.next(pageIndex);
+        this._pagePresented.next(pageIndex);
       }
     } else {
       LogService.warn(`player: page ${pageIndex} is already presented`);
@@ -144,11 +146,9 @@ export class UnitStateService {
       unitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
       this.elementCodes.push(unitStateElementCode);
       this._elementCodeChanged.next(unitStateElementCode);
-    } else {
+    } else if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
       // if all elements are registered, we can rebuild the presentedPages array
-      if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
-        this.buildPresentedPages();
-      }
+      this.buildPresentedPages();
     }
     if (unitStateElementCode.status === 'NOT_REACHED') {
       this.addIntersectionDetection(id, domElement);

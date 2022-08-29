@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
-import { KeypadService } from './keypad.service';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import {
@@ -13,7 +12,7 @@ import * as textField_130 from 'test-data/element-models/text-field_130.json';
 import * as textFieldSimple_131 from 'test-data/element-models/text-field-simple_131.json';
 import * as textArea_130 from 'test-data/element-models/text-area_130.json';
 import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
-
+import { KeypadService } from './keypad.service';
 
 describe('KeypadService', () => {
   let service: KeypadService;
@@ -69,7 +68,6 @@ describe('KeypadService', () => {
     expect(service.isOpen).toBeTruthy();
   });
 
-
   it('should toggle keypad to close', () => {
     service.isOpen = true;
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
@@ -77,7 +75,6 @@ describe('KeypadService', () => {
     service.toggle(input, textFieldComponent);
     expect(service.isOpen).toBeFalse();
   });
-
 
   it('should set the inputElement of the service', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
@@ -177,7 +174,6 @@ describe('KeypadService', () => {
     service.toggle(input, textFieldSimpleComponent);
     expect(service.isOpen).toBeTruthy();
   });
-
 
   it('should toggle keypad to close', () => {
     service.isOpen = true;
@@ -392,7 +388,6 @@ describe('KeypadService', () => {
     service.toggle(input, spellCorrectComponent);
     expect(service.isOpen).toBeTruthy();
   });
-
 
   it('should toggle keypad to close', () => {
     service.isOpen = true;

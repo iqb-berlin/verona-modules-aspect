@@ -14,7 +14,7 @@ describe('NavigationService', () => {
 
   it('pageIndex should be 2', done => {
     service.pageIndex
-      .subscribe( pageIndex => {
+      .subscribe(pageIndex => {
         expect(pageIndex).toEqual(2);
         done();
       });
@@ -23,7 +23,7 @@ describe('NavigationService', () => {
 
   it('pageIndex should not be 2', done => {
     service.pageIndex
-      .subscribe( pageIndex => {
+      .subscribe(pageIndex => {
         expect(pageIndex).not.toEqual(2);
         done();
       });

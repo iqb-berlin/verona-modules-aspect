@@ -1,17 +1,14 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles,
-  InputElement,
-  PositionedUIElement,
-  PositionProperties,
+  BasicStyles, InputElement, TextLabel, PositionedUIElement, PositionProperties, OptionElement,
   AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
 
-export class RadioButtonGroupElement extends InputElement implements PositionedUIElement {
-  richTextOptions: string[] = [];
+export class RadioButtonGroupElement extends InputElement implements PositionedUIElement, OptionElement {
+  options: TextLabel[] = [];
   alignment: 'column' | 'row' = 'column';
   strikeOtherOptions: boolean = false;
   position: PositionProperties;
@@ -21,9 +18,12 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
 
   constructor(element: Partial<RadioButtonGroupElement>, ...args: unknown[]) {
     super({ height: 100, ...element }, ...args);
-    if (element.richTextOptions) this.richTextOptions = element.richTextOptions;
+    if (element.options) this.options = [...element.options];
     if (element.alignment) this.alignment = element.alignment;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
+
+    this.value = element.value !== undefined ? element.value : [];
+
     this.position = ElementFactory.initPositionProps({ marginBottom: 30, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({
@@ -55,7 +55,11 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
       .map((option, index) => ({ value: (index + 1).toString(), label: option }));
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return RadioButtonGroupComponent;
+  }
+
+  getNewOptionLabel(optionText: string): TextLabel {
+    return ElementFactory.createOptionLabel(optionText) as TextLabel;
   }
 }

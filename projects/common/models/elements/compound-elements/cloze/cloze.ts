@@ -40,7 +40,6 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
   setProperty(property: string, value: UIElementValue): void {
     if (property === 'document') {
       this.document = value as ClozeDocument;
-
       this.document.content.forEach((node: any) => {
         if (node.type === 'paragraph' || node.type === 'heading') {
           ClozeElement.createSubNodeElements(node);
@@ -56,7 +55,6 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
           });
         }
       });
-
     } else {
       super.setProperty(property, value);
     }
@@ -76,10 +74,11 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
   private initDocument(element: Partial<ClozeElement>, idManager?: IDManager): ClozeDocument {
     return {
       ...element.document,
+      type: 'doc',
       content: element.document?.content ? element.document.content
         .map((paragraph: ClozeDocumentParagraph) => ({
           ...paragraph,
-          content: paragraph.content
+          content: paragraph.content ? paragraph.content
             .map((paraPart: ClozeDocumentParagraphPart) => (
               ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
                 {
@@ -92,12 +91,27 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
                 {
                   ...paraPart
                 }
-            ))
-        })) : []
+            )) : undefined
+        })) : [{
+        type: 'paragraph',
+        attrs: {
+          textAlign: 'left',
+          indent: null,
+          indentSize: 20,
+          hangingIndent: false,
+          margin: 0
+        },
+        content: [
+          {
+            text: 'Lorem Ipsum',
+            type: 'text'
+          }
+        ]
+      }]
     } as ClozeDocument;
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return ClozeComponent;
   }
 

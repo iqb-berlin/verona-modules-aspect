@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import packageJSON from '../../../package.json';
 import { Editor } from '@tiptap/core';
-import StarterKit from '@tiptap/starter-kit';
 import ToggleButtonExtension from
   'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/toggle-button';
 import DropListExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/drop-list';
@@ -10,7 +8,7 @@ import { Unit } from 'common/models/unit';
 import {
   BasicStyles, DragNDropValueObject, ExtendedStyles,
   InputElement, PlayerProperties,
-  PositionedUIElement, PositionProperties, TextImageLabel,
+  PositionedUIElement, PositionProperties, TextImageLabel, TextLabel,
   UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
@@ -28,12 +26,13 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { IDManager } from 'common/util/id-manager';
+import packageJSON from '../../../package.json';
+import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SanitizationService {
-
   private static expectedUnitVersion: [number, number, number] =
     packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
 
@@ -118,8 +117,8 @@ export class SanitizationService {
       .includes(newElement.type as string)) {
       newElement = SanitizationService.handlePlusOne(newElement as InputElement);
     }
-    if (['radio'].includes(newElement.type as string)) {
-      newElement = SanitizationService.handleRadioButtonGroupElement(newElement as RadioButtonGroupElement);
+    if (['radio-group-images'].includes(newElement.type as string)) {
+      newElement = SanitizationService.fixImageLabel(newElement as RadioButtonGroupComplexElement);
     }
     if (['likert'].includes(newElement.type as string)) {
       newElement = this.handleLikertElement(newElement as LikertElement);
@@ -308,7 +307,7 @@ export class SanitizationService {
     });
 
     const editor = new Editor({
-      extensions: [StarterKit, ToggleButtonExtension, DropListExtension, TextFieldExtension],
+      extensions: [ToggleButtonExtension, DropListExtension, TextFieldExtension],
       content: replacedText
     });
     return editor.getJSON() as ClozeDocument;
@@ -324,7 +323,9 @@ export class SanitizationService {
       (newElement.options as string[]).forEach(option => {
         (newElement.value as DragNDropValueObject[]).push({
           id: IDManager.getInstance().getNewID('value'),
-          stringValue: option
+          text: option,
+          imgSrc: null,
+          imgPosition: 'above'
         });
       });
     }
@@ -333,8 +334,17 @@ export class SanitizationService {
       (newElement.value as string[]).forEach(value => {
         newValues.push({
           id: IDManager.getInstance().getNewID('value'),
-          stringValue: value
+          text: value,
+          imgSrc: null,
+          imgPosition: 'above'
         });
+      });
+      // fix DragNDropValueObject stringValue -> text
+      //  imgSrcValue -> imgSrc
+      (newElement as DropListElement).value.forEach((valueObject: any) => {
+        valueObject.text = valueObject.text || valueObject.stringValue;
+        valueObject.imgSrc = valueObject.text || valueObject.imgSrcValue;
+        valueObject.imgPosition = valueObject.imgPosition || valueObject.position;
       });
       newElement.value = newValues;
     }
@@ -344,21 +354,19 @@ export class SanitizationService {
   private handleLikertElement(element: LikertElement): LikertElement {
     return new LikertElement({
       ...element,
+      options: element.options || element.columns,
       rows: element.rows
         .map((row: LikertRowElement) => this.sanitizeElement(row as Record<string, UIElementValue>) as LikertRowElement)
     });
   }
 
   private static handleLikertRowElement(element: Record<string, UIElementValue>): Partial<LikertRowElement> {
-    if (element.rowLabel) {
-      return element;
-    }
     return new LikertRowElement({
       ...element,
       rowLabel: {
         text: element.text,
-        imgSrc: null,
-        position: 'above'
+        imgSrc: element.imgSrc,
+        imgPosition: element.imgPosition || element.position || 'above'
       } as TextImageLabel
     });
   }
@@ -373,16 +381,6 @@ export class SanitizationService {
       element;
   }
 
-  private static handleRadioButtonGroupElement(element: RadioButtonGroupElement): RadioButtonGroupElement {
-    if (element.richTextOptions) {
-      return element;
-    }
-    return new RadioButtonGroupElement({
-      ...element,
-      richTextOptions: element.options as string[]
-    });
-  }
-
   private static handleToggleButtonElement(element: ToggleButtonElement): ToggleButtonElement {
     if (element.richTextOptions) {
       return element;
@@ -391,5 +389,12 @@ export class SanitizationService {
       ...element,
       richTextOptions: element.options as string[]
     });
+  }
+
+  private static fixImageLabel(element: RadioButtonGroupComplexElement) {
+    element.options.forEach(option => {
+      option.imgPosition = option.imgPosition || (option as any).position || 'above';
+    });
+    return element;
   }
 }

@@ -1,11 +1,7 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles,
-  InputElement,
-  PositionedUIElement,
-  PositionProperties,
-  AnswerScheme, AnswerSchemeValue
+  BasicStyles, InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SliderComponent } from 'common/components/input-elements/slider.component';
@@ -60,7 +56,7 @@ export class SliderElement extends InputElement implements PositionedUIElement {
     )) as AnswerSchemeValue[];
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return SliderComponent;
   }
 }

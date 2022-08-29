@@ -26,5 +26,4 @@ describe('TextMarkingService', () => {
     const markings = ['6-11-#f9f871'];
     expect(TextMarkingService.restoreMarkedTextIndices(markings, text)).toEqual(expectedText);
   });
-
 });

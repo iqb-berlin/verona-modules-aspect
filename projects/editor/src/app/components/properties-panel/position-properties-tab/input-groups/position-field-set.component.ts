@@ -8,9 +8,11 @@ import { PositionProperties } from 'common/models/elements/element';
   template: `
     <fieldset>
       <legend>Position</legend>
-      <ng-container *ngIf="!positionProperties.dynamicPositioning; else elseBlock">
+      <div *ngIf="!positionProperties.dynamicPositioning; else elseBlock"
+           fxLayout="row" fxLayoutGap="10px">
         <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
-                               positionProperties.xPosition !== undefined" appearance="fill">
+                               positionProperties.xPosition !== undefined"
+                        fxFlex>
           <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
           <input matInput type="number" #xPosition="ngModel" min="0"
                  [ngModel]="positionProperties.xPosition"
@@ -18,36 +20,38 @@ import { PositionProperties } from 'common/models/elements/element';
                         { property: 'xPosition', value: $event, isInputValid: xPosition.valid && $event !== null })">
         </mat-form-field>
         <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
-                                 positionProperties.yPosition !== undefined" appearance="fill">
+                                 positionProperties.yPosition !== undefined"
+                        fxFlex>
           <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
           <input matInput type="number" #yPosition="ngModel" min="0"
                  [ngModel]="positionProperties.yPosition"
                  (ngModelChange)="updateModel.emit(
                         { property: 'yPosition', value: $event, isInputValid: yPosition.valid && $event !== null })">
         </mat-form-field>
-      </ng-container>
+      </div>
 
       <ng-template #elseBlock>
         {{'propertiesPanel.grid' | translate }}
-        <div class="input-group">
-          <mat-form-field>
-            <mat-label>{{'propertiesPanel.column' | translate }}</mat-label>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-form-field fxFlex>
+            <mat-label>{{'column' | translate }}</mat-label>
             <input matInput type="number" [ngModel]="positionProperties.gridColumn"
                    (ngModelChange)="updateModel.emit({ property: 'gridColumn', value: $event })">
           </mat-form-field>
-          <mat-form-field>
-            <mat-label>{{'propertiesPanel.row' | translate }}</mat-label>
-            <input matInput type="number" [ngModel]="positionProperties.gridRow"
-                   (ngModelChange)="updateModel.emit({ property: 'gridRow', value: $event })">
-          </mat-form-field>
-
-          <mat-form-field>
+          <mat-form-field fxFlex="40">
             <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridColumnRange"
                    (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })">
           </mat-form-field>
-          <mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px">
+          <mat-form-field fxFlex>
+            <mat-label>{{'row' | translate }}</mat-label>
+            <input matInput type="number" [ngModel]="positionProperties.gridRow"
+                   (ngModelChange)="updateModel.emit({ property: 'gridRow', value: $event })">
+          </mat-form-field>
+          <mat-form-field fxFlex="40">
             <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridRowRange"
@@ -56,16 +60,16 @@ import { PositionProperties } from 'common/models/elements/element';
         </div>
 
         {{'propertiesPanel.margin' | translate }}
-        <div class="input-group">
-          <mat-form-field class="centered-form-field small-input">
+        <div fxLayout="column" class="margin-controls">
+          <mat-form-field fxFlexAlign="center">
             <mat-label>{{'propertiesPanel.top' | translate }}</mat-label>
             <input matInput type="number" #marginTop="ngModel"
                    [ngModel]="positionProperties.marginTop"
                    (ngModelChange)="updateModel.emit(
                           { property: 'marginTop', value: $event, isInputValid: marginTop.valid && $event !== null })">
           </mat-form-field>
-          <div fxLayoutAlign="row">
-            <mat-form-field class="small-input">
+          <div fxLayout="row" fxLayoutAlign="space-around center">
+            <mat-form-field>
               <mat-label>{{'propertiesPanel.left' | translate }}</mat-label>
               <input matInput type="number" #marginLeft="ngModel"
                      [ngModel]="positionProperties.marginLeft"
@@ -75,7 +79,7 @@ import { PositionProperties } from 'common/models/elements/element';
                        isInputValid: marginLeft.valid && $event !== null
                      })">
             </mat-form-field>
-            <mat-form-field class="right-form-field small-input">
+            <mat-form-field>
               <mat-label>{{'propertiesPanel.right' | translate }}</mat-label>
               <input matInput type="number" #marginRight="ngModel"
                      [ngModel]="positionProperties.marginRight"
@@ -85,7 +89,7 @@ import { PositionProperties } from 'common/models/elements/element';
                               isInputValid: marginRight .valid && $event !== null })">
             </mat-form-field>
           </div>
-          <mat-form-field class="centered-form-field small-input">
+          <mat-form-field fxFlexAlign="center">
             <mat-label>{{'propertiesPanel.bottom' | translate }}</mat-label>
             <input matInput type="number" #marginBottom="ngModel"
                    [ngModel]="positionProperties.marginBottom"
@@ -110,12 +114,9 @@ import { PositionProperties } from 'common/models/elements/element';
     </fieldset>
   `,
   styles: [
-    '.centered-form-field {margin-left: 25%;}',
-    '.right-form-field {margin-left: 15px;}',
-    '.input-group {background-color: rgba(0,0,0,.04); margin-bottom: 10px;}',
-    '.mat-form-field {display: inline;}',
-    '.small-input {display: inline-block;}',
-    '::ng-deep aspect-position-field-set .small-input .mat-form-field-infix {width: 100px; margin: 0 5px;}'
+    '.margin-controls mat-form-field {width: 100px;}',
+    '.margin-controls {margin-bottom: 10px;}',
+    'mat-form-field {width: 110px;}'
   ]
 })
 export class PositionFieldSetComponent {

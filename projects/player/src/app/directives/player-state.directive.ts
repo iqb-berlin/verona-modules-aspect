@@ -1,8 +1,12 @@
-import { Directive, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Directive, Input, OnChanges, OnInit, SimpleChanges
+} from '@angular/core';
 import {
   PlayerState, RunningState
 } from 'player/modules/verona/models/verona';
-import { BehaviorSubject, Subject } from 'rxjs';
+import {
+  BehaviorSubject, map, merge, Subject
+} from 'rxjs';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { takeUntil } from 'rxjs/operators';
@@ -25,7 +29,6 @@ export class PlayerStateDirective implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.initSubscriptions();
-    this.sendVopStateChangedNotification();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -35,15 +38,15 @@ export class PlayerStateDirective implements OnInit, OnChanges {
   }
 
   private initSubscriptions(): void {
-    this.veronaSubscriptionService.vopContinueCommand
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => this.setAndSendRunningState(true));
-    this.veronaSubscriptionService.vopStopCommand
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(()  => this.setAndSendRunningState(false));
-    this.veronaSubscriptionService.vopGetStateRequest
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(message => this.setAndSendRunningState((!message.stop && this.state === 'running')));
+    merge(
+      this.veronaSubscriptionService.vopContinueCommand
+        .pipe(map(() => true)),
+      this.veronaSubscriptionService.vopStopCommand
+        .pipe(map(() => false)),
+      this.veronaSubscriptionService.vopGetStateRequest
+        .pipe(map(message => (!message.stop && this.state === 'running')))
+    ).pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(isRunning => this.setAndSendRunningState(isRunning));
   }
 
   private get state(): RunningState {

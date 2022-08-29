@@ -54,3 +54,14 @@ blockquote p {
 .fixed-size-content {
   overflow: auto;
 }
+
+.snackbar-warning {border: 3px double #ff4d4d}
+.snackbar-error {background-color: #ff4d4d}
+.snackbar-success {background-color: green}
+
+.cdk-drag {
+  cursor: grab;
+}
+.cdk-drag-dragging {
+  cursor: grabbing;
+}

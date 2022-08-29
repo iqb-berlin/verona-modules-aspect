@@ -1,13 +1,13 @@
 import { Directive, OnDestroy, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { debounceTime, merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Progress, UnitState } from 'player/modules/verona/models/verona';
-import { UnitStateService } from '../services/unit-state.service';
-import { MediaPlayerService } from '../services/media-player.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
-import { ValidationService } from '../services/validation.service';
 import { LogService } from 'player/modules/logging/services/log.service';
+import { UnitStateService } from '../services/unit-state.service';
+import { MediaPlayerService } from '../services/media-player.service';
+import { ValidationService } from '../services/validation.service';
 
 @Directive({
   selector: '[aspectUnitState]'
@@ -24,14 +24,15 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.mediaPlayerService.mediaStatusChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((): void => this.sendVopStateChangedNotification());
-    this.unitStateService.presentedPageAdded
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((): void => this.sendVopStateChangedNotification());
-    this.unitStateService.elementCodeChanged
-      .pipe(takeUntil(this.ngUnsubscribe))
+    merge(
+      this.mediaPlayerService.mediaStatusChanged,
+      this.unitStateService.pagePresented,
+      this.unitStateService.elementCodeChanged
+    )
+      .pipe(
+        debounceTime(500),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((): void => this.sendVopStateChangedNotification());
   }
 

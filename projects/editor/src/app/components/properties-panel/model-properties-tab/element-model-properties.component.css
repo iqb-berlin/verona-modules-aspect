@@ -1,25 +1,34 @@
-.list-items {
-  padding: 5px 10px;
-  border-bottom: solid 1px #ccc;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between
+aspect-input-element-properties {
+  margin-bottom: 10px;
 }
 
-::ng-deep aspect-element-properties .mat-tab-label {
-  min-width: 0 !important;
+button:not(.media-src-button):not(.mat-mini-fab):not(.mat-icon-button) {
+  width: 95%
 }
 
-::ng-deep aspect-element-properties .mat-tab-group {
-  padding: 15px;
+.mat-fab, .mat-raised-button {
+  margin-bottom: 10px;
 }
 
-:host ::ng-deep mat-button-toggle {
-  width: 100%;
-  height: 100%
-}
-
-button {
+:host ::ng-deep fieldset {
   margin-bottom: 15px;
+}
+
+:host ::ng-deep .drop-list {
+  border: solid 1px #ccc;
+  border-radius: 4px;
+}
+
+:host ::ng-deep .drop-list:empty {
+  border: none;
+}
+
+:host ::ng-deep .option-draggable {
+  border-bottom: solid 1px #ccc;
+  cursor: move;
+  padding: 3px 5px;
+}
+
+:host ::ng-deep .option-draggable:last-child {
+  border: none;
 }

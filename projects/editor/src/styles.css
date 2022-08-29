@@ -2,17 +2,7 @@ html, body { height: 100%; }
 
 .mat-expansion-panel-content {font: unset !important;}
 
-.snackbar-warning {border: 3px double #ff4d4d}
-.snackbar-error {background-color: #ff4d4d}
-.snackbar-success {background-color: green}
-
-.cdk-drag {
-  cursor: grab;
-}
-.cdk-drag-dragging {
-  cursor: grabbing;
-}
-
+/* TODO needed? */
 .mat-dialog-content {
   border: 1px solid lightgray;
   margin: -13px !important;

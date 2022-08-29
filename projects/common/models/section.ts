@@ -1,11 +1,7 @@
 import { Type } from '@angular/core';
 import { IDManager } from 'common/util/id-manager';
 import {
-  InputElement, PlayerElement,
-  PositionedUIElement,
-  AnswerScheme,
-  UIElement,
-  UIElementValue
+  CompoundElement, PositionedUIElement, UIElement, UIElementValue, AnswerScheme
 } from 'common/models/elements/element';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { TextElement } from 'common/models/elements/text/text';
@@ -45,25 +41,25 @@ export class Section {
   activeAfterID: string | null = null;
 
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
-    'text': TextElement,
-    'button': ButtonElement,
+    text: TextElement,
+    button: ButtonElement,
     'text-field': TextFieldElement,
     'text-field-simple': TextFieldSimpleElement,
     'text-area': TextAreaElement,
-    'checkbox': CheckboxElement,
-    'dropdown': DropdownElement,
-    'radio': RadioButtonGroupElement,
-    'image': ImageElement,
-    'audio': AudioElement,
-    'video': VideoElement,
-    'likert': LikertElement,
+    checkbox: CheckboxElement,
+    dropdown: DropdownElement,
+    radio: RadioButtonGroupElement,
+    image: ImageElement,
+    audio: AudioElement,
+    video: VideoElement,
+    likert: LikertElement,
     'radio-group-images': RadioButtonGroupComplexElement,
     'drop-list': DropListElement,
     'drop-list-simple': DropListSimpleElement,
-    'cloze': ClozeElement,
-    'slider': SliderElement,
+    cloze: ClozeElement,
+    slider: SliderElement,
     'spell-correct': SpellCorrectElement,
-    'frame': FrameElement,
+    frame: FrameElement,
     'toggle-button': ToggleButtonElement
   };
 
@@ -90,13 +86,14 @@ export class Section {
   }
 
   addElement(element: PositionedUIElement): void {
+    element.position.dynamicPositioning = this.dynamicPositioning;
     this.elements.push(element);
   }
 
   /* Includes children of children, i.e. compound children. */
   getAllElements(elementType?: string): UIElement[] {
     let allElements: UIElement[] =
-      this.elements.map(element => [element, ...element.getChildElements()])
+      this.elements.map(element => [element, ...(element as CompoundElement).getChildElements() || []])
         .flat();
     if (elementType) {
       allElements = allElements.filter(element => element.type === elementType);

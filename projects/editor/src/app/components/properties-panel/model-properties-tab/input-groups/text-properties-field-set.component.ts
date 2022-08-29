@@ -1,15 +1,14 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { TextElement } from 'common/models/elements/text/text';
 import { DialogService } from '../../../../services/dialog.service';
 import { SelectionService } from '../../../../services/selection.service';
-import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
   selector: 'aspect-text-properties-field-set',
   template: `
-    <fieldset *ngIf="combinedProperties.text">
-      <legend>Textelement</legend>
+    <div *ngIf="combinedProperties.text" fxLayout="column">
       <ng-container>
         <div class="text-text"
              [innerHTML]="$any(combinedProperties.text) | safeResourceHTML"
@@ -41,24 +40,17 @@ import { TextElement } from 'common/models/elements/text/text';
                     (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
         {{'propertiesPanel.highlightableOrange' | translate }}
       </mat-checkbox>
-    </fieldset>
+    </div>
   `,
   styles: [
-    'mat-checkbox {margin-left: 15px;}',
-    '.text-text {min-height: 125px; max-height: 500px; overflow: auto; margin-bottom: 10px;}',
-    '.text-text {background-color: rgba(0,0,0,.04); cursor: pointer;}',
-    '::ng-deep .text-text p:empty::after {content: "\\00A0";}',
-    '::ng-deep .text-text h1 {font-weight: bold; font-size: 20px;}',
-    '::ng-deep .text-text h2 {font-weight: bold; font-size: 18px;}',
-    '::ng-deep .text-text h3 {font-weight: bold; font-size: 16px;}',
-    '::ng-deep .text-text h4 {font-weight: normal; font-size: 16px;}',
-    '::ng-deep .text-text mark {color: inherit;}'
+    '.text-text {min-height: 125px; max-height: 400px; overflow: auto;}',
+    '.text-text {background-color: rgba(0,0,0,.04); cursor: pointer; margin-bottom: 10px;}'
   ]
 })
 export class TextPropertiesFieldSetComponent {
   @Input() combinedProperties!: any;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+    new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
 
   constructor(public dialogService: DialogService, public selectionService: SelectionService) {}
 

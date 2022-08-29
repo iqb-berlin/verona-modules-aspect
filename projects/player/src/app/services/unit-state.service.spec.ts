@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { UnitStateService } from './unit-state.service';
 import { ElementCode } from 'player/modules/verona/models/verona';
+import { UnitStateService } from './unit-state.service';
 
 describe('UnitStateService', () => {
   let service: UnitStateService;
@@ -14,16 +14,16 @@ describe('UnitStateService', () => {
   });
 
   it('should get element by id', () => {
-    const element1: ElementCode =  { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: ElementCode =  { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
-    service.elementCodes = [ element1, element2 ];
+    const element1: ElementCode = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
+    const element2: ElementCode = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
+    service.elementCodes = [element1, element2];
     expect(service.getElementCodeById('element_1')).toEqual(element1);
   });
 
   it('should return undefined for a not registered element id', () => {
-    const element1: ElementCode =  { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: ElementCode =  { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
-    service.elementCodes = [ element1, element2 ];
+    const element1: ElementCode = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
+    const element2: ElementCode = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
+    service.elementCodes = [element1, element2];
     expect(service.getElementCodeById('element_3')).toBeUndefined();
   });
 
@@ -31,13 +31,13 @@ describe('UnitStateService', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElement('element', 'TEST', element, 1);
-    expect(service.elementCodes).toEqual([ { id: 'element', status: 'NOT_REACHED', value: 'TEST' } ]);
+    expect(service.elementCodes).toEqual([{ id: 'element', status: 'NOT_REACHED', value: 'TEST' }]);
   });
 
   it('elementCode of an element should change', done => {
     service.elementCodes = [{ id: 'element_1', status: 'NOT_REACHED', value: 'TEST1' }];
     service.elementCodeChanged
-      .subscribe( code => {
+      .subscribe(code => {
         expect(code.status).toEqual('DISPLAYED');
         done();
       });
@@ -47,11 +47,11 @@ describe('UnitStateService', () => {
   it('elementCode of an element should change', done => {
     service.elementCodes = [{ id: 'element_1', status: 'NOT_REACHED', value: 'TEST1' }];
     service.elementCodeChanged
-      .subscribe( code =>  {
+      .subscribe(code => {
         expect(code.status).toEqual('VALUE_CHANGED');
         expect(code.value).toEqual('NEU');
         done();
-      }) ;
+      });
     service.changeElementCodeValue({ id: 'element_1', value: 'NEU' });
   });
 
@@ -107,8 +107,8 @@ describe('UnitStateService', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElement('element_1', 'TEST1', element, 1);
-    service.presentedPageAdded
-      .subscribe( index => {
+    service.pagePresented
+      .subscribe(index => {
         expect(index).toEqual(1);
         done();
       });
@@ -119,12 +119,11 @@ describe('UnitStateService', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
     service.registerElement('element_1', 'TEST1', element, 1);
-    service.presentedPageAdded
-      .subscribe( index => {
+    service.pagePresented
+      .subscribe(index => {
         expect(index).toEqual(1);
         done();
       });
     service.changeElementCodeValue({ id: 'element_1', value: 'NEU' });
   });
-
 });

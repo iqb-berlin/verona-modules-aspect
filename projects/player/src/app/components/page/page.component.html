@@ -1,7 +1,7 @@
 <div aspectInViewDetection
      detectionType="top"
      [intersectionContainer]="pagesContainer"
-     (intersecting)="selectedIndexChange.emit(pageIndex)">
+     (intersecting)="selectedIndexChange.emit(scrollPageIndex)">
   <aspect-section
     *ngFor="let section of page.sections"
     class="section"
@@ -18,5 +18,5 @@
 <div aspectInViewDetection
      detectionType="bottom"
      [intersectionContainer]="pagesContainer"
-     (intersecting)="selectedIndexChange.emit(pageIndex)">
+     (intersecting)="selectedIndexChange.emit(scrollPageIndex)">
 </div>

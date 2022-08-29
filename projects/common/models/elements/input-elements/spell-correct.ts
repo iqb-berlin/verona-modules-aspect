@@ -50,7 +50,7 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return SpellCorrectComponent;
   }
 }

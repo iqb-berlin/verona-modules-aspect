@@ -2,7 +2,6 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { Editor, mergeAttributes } from '@tiptap/core';
-import StarterKit from '@tiptap/starter-kit';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
 import { Subscript } from '@tiptap/extension-subscript';
@@ -10,6 +9,12 @@ import { Paragraph } from '@tiptap/extension-paragraph';
 import { TextStyle } from '@tiptap/extension-text-style';
 import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
+import { Document } from '@tiptap/extension-document';
+import { Text } from '@tiptap/extension-text';
+import { ListItem } from '@tiptap/extension-list-item';
+import { Strike } from '@tiptap/extension-strike';
+import { Bold } from '@tiptap/extension-bold';
+import { Italic } from '@tiptap/extension-italic';
 
 @Component({
   selector: 'aspect-rich-text-editor-simple',
@@ -25,8 +30,10 @@ export class RichTextEditorSimpleComponent {
   selectedHighlightColor: string = 'lightgrey';
 
   editor = new Editor({
-    extensions: [StarterKit, Underline, Superscript, Subscript,
+    extensions: [Document, Text, ListItem,
+      Underline, Superscript, Subscript,
       TextStyle, Color,
+      Bold, Italic, Strike,
       Highlight.configure({
         multicolor: true
       }),

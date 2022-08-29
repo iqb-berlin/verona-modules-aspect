@@ -62,7 +62,7 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     };
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return TextAreaComponent;
   }
 }

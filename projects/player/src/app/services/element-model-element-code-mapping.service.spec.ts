@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 import * as dropList_130 from 'test-data/element-models/drop-list_130.json';
 import * as dropListSimple_131 from 'test-data/element-models/drop-list-simple_131.json';
 import * as textField_130 from 'test-data/element-models/text-field_130.json';
@@ -33,6 +32,7 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { DragNDropValueObject } from 'common/models/elements/element';
+import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
 describe('ElementModelElementCodeMappingService', () => {
   let service: ElementModelElementCodeMappingService;
@@ -50,26 +50,26 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map the value of a drop-list elementModel to its elementCode value', () => {
     const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     expect(service.mapToElementCodeValue(dragNDropValueObjects, 'drop-list'))
-      .toEqual( ['value_1', 'value_2', 'value_3']);
+      .toEqual(['value_1', 'value_2', 'value_3']);
   });
 
   it('should map the value of a drop-list-simple elementModel to its elementCode value', () => {
     const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     expect(service.mapToElementCodeValue(dragNDropValueObjects, 'drop-list-simple'))
-      .toEqual( ['value_1', 'value_2', 'value_3']);
+      .toEqual(['value_1', 'value_2', 'value_3']);
   });
 
   it('should map the value of a text elementModel to its elementCode value', () => {
     const textValue =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     expect(service.mapToElementCodeValue(textValue, 'text'))
-      .toEqual( ['6-11-#f9f871']);
+      .toEqual(['6-11-#f9f871']);
   });
 
   it('should map the value of a text elementModel to its elementCode value - empty Array', () => {
     const textValue = 'Lorem dolor sit amet';
     expect(service.mapToElementCodeValue(textValue, 'text'))
-      .toEqual( []);
+      .toEqual([]);
   });
 
   it('should map the value of a audio elementModel to its elementCode value', () => {
@@ -98,7 +98,6 @@ describe('ElementModelElementCodeMappingService', () => {
     expect(service.mapToElementCodeValue(null, 'radio'))
       .toBe(null);
   });
-
 
   it('should map the value of a radio-group-images elementModel to its elementCode value', () => {
     for (let i = 0; i < 10; i++) {
@@ -151,82 +150,93 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map the value of a text-field elementModel to its elementCode value', () => {
     const textFieldValue = 'TEST';
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
-      .toEqual( 'TEST');
+      .toEqual('TEST');
   });
 
   it('should map the value of a text-field elementModel to its elementCode value', () => {
     const textFieldValue = null;
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field'))
-      .toEqual( null);
+      .toEqual(null);
   });
 
   it('should map the value of a text-field-simple elementModel to its elementCode value', () => {
     const textFieldValue = 'TEST';
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field-simple'))
-      .toEqual( 'TEST');
+      .toEqual('TEST');
   });
 
   it('should map the value of a text-field-simple elementModel to its elementCode value', () => {
     const textFieldValue = null;
     expect(service.mapToElementCodeValue(textFieldValue, 'text-field-simple'))
-      .toEqual( null);
+      .toEqual(null);
   });
 
   it('should map the value of a spell-correct elementModel to its elementCode value', () => {
     const spellCorrectValue = 'TEST';
     expect(service.mapToElementCodeValue(spellCorrectValue, 'spell-correct'))
-      .toEqual( 'TEST');
+      .toEqual('TEST');
   });
 
   it('should map the value of a spell-correct elementModel to its elementCode value', () => {
     const spellCorrectValue = null;
     expect(service.mapToElementCodeValue(spellCorrectValue, 'spell-correct'))
-      .toEqual( null);
+      .toEqual(null);
   });
 
   it('should map the value of a text-area elementModel to its elementCode value', () => {
     const textAreaValue = 'TEST';
     expect(service.mapToElementCodeValue(textAreaValue, 'text-area'))
-      .toEqual( 'TEST');
+      .toEqual('TEST');
   });
 
   it('should map the value of a text-area elementModel to its elementCode value', () => {
     const textAreaValue = null;
     expect(service.mapToElementCodeValue(textAreaValue, 'text-area'))
-      .toEqual( null);
+      .toEqual(null);
   });
-
 
   // mapToElementValue
 
   it('should map an elementCode value to drop-list elementModel value', () => {
-    service.dragNDropValueObjects =  [
+    service.dragNDropValueObjects = [
       {
-        'stringValue': 'a',
-        'id': 'value_1'
+        text: 'a',
+        id: 'value_1',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'b',
-        'id': 'value_2'
+        text: 'b',
+        id: 'value_2',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'c',
-        'id': 'value_3'
+        text: 'c',
+        id: 'value_3',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'd',
-        'id': 'value_4'
+        text: 'd',
+        id: 'value_4',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
-    const expectedValue = [
+    const expectedValue: DragNDropValueObject[] = [
       {
-        'stringValue': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     expect(service.mapToElementModelValue(['value_5'], elementModel))
@@ -234,33 +244,45 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should map an elementCode value to drop-list elementModel value', () => {
-    service.dragNDropValueObjects =  [
+    service.dragNDropValueObjects = [
       {
-        'stringValue': 'a',
-        'id': 'value_1'
+        text: 'a',
+        id: 'value_1',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'b',
-        'id': 'value_2'
+        text: 'b',
+        id: 'value_2',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'c',
-        'id': 'value_3'
+        text: 'c',
+        id: 'value_3',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'd',
-        'id': 'value_4'
+        text: 'd',
+        id: 'value_4',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
-    const expectedValue = [
+    const expectedValue: DragNDropValueObject[] = [
       {
-        'stringValue': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     expect(service.mapToElementModelValue(['value_5'], elementModel))
@@ -268,26 +290,36 @@ describe('ElementModelElementCodeMappingService', () => {
   });
 
   it('should not map but return the drop-list-simple elementModel value', () => {
-    service.dragNDropValueObjects =  [
+    service.dragNDropValueObjects = [
       {
-        'stringValue': 'a',
-        'id': 'value_1'
+        text: 'a',
+        id: 'value_1',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'b',
-        'id': 'value_2'
+        text: 'b',
+        id: 'value_2',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'c',
-        'id': 'value_3'
+        text: 'c',
+        id: 'value_3',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'd',
-        'id': 'value_4'
+        text: 'd',
+        id: 'value_4',
+        imgSrc: null,
+        imgPosition: 'above'
       },
       {
-        'stringValue': 'e',
-        'id': 'value_5'
+        text: 'e',
+        id: 'value_5',
+        imgSrc: null,
+        imgPosition: 'above'
       }
     ];
     const elementModel: DropListSimpleElement = JSON.parse(JSON.stringify(dropListSimple_131));
@@ -314,14 +346,14 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map an elementCode value to drop-list-simple elementModel value - an empty array', () => {
     service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
-    expect(service.mapToElementModelValue([], elementModel ))
+    expect(service.mapToElementModelValue([], elementModel))
       .toEqual([]);
   });
 
   it('should map an elementCode value to drop-list elementModel value - an empty array', () => {
     service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     const elementModel: DropListSimpleElement = JSON.parse(JSON.stringify(dropListSimple_131));
-    expect(service.mapToElementModelValue([], elementModel ))
+    expect(service.mapToElementModelValue([], elementModel))
       .toEqual([]);
   });
 
@@ -347,121 +379,121 @@ describe('ElementModelElementCodeMappingService', () => {
 
   it('should map an elementCode value to audio elementModel value', () => {
     const elementModel: AudioElement = JSON.parse(JSON.stringify(audio_130));
-    expect(service.mapToElementModelValue( 2, elementModel))
+    expect(service.mapToElementModelValue(2, elementModel))
       .toEqual(2);
   });
 
   it('should not map but return the audio elementModel value (player.playbackTime)', () => {
     const elementModel: AudioElement = JSON.parse(JSON.stringify(audio_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(0);
   });
 
   it('should map an elementCode value to image elementModel value', () => {
     const elementModel: ImageElement = JSON.parse(JSON.stringify(image_130));
-    expect(service.mapToElementModelValue( true, elementModel))
+    expect(service.mapToElementModelValue(true, elementModel))
       .toEqual(true);
   });
 
   it('should not map but return the image elementModel value (magnifierUsed)', () => {
     const elementModel: ImageElement = JSON.parse(JSON.stringify(image_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(false);
   });
 
   it('should map an elementCode value to text-field elementModel value', () => {
     const elementModel: TextFieldElement = JSON.parse(JSON.stringify(textField_130));
-    expect(service.mapToElementModelValue( 'TEST', elementModel))
+    expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the text-field elementModel value', () => {
     const elementModel: TextFieldElement = JSON.parse(JSON.stringify(textField_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to text-field-simple elementModel value', () => {
     const elementModel: TextFieldSimpleElement = JSON.parse(JSON.stringify(textFieldSimple_131));
-    expect(service.mapToElementModelValue( 'TEST', elementModel))
+    expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the text-field-simple elementModel value', () => {
     const elementModel: TextFieldSimpleElement = JSON.parse(JSON.stringify(textFieldSimple_131));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to text-area elementModel value', () => {
     const elementModel: TextAreaElement = JSON.parse(JSON.stringify(textArea_130));
-    expect(service.mapToElementModelValue( 'TEST', elementModel))
+    expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the text-area elementModel value', () => {
     const elementModel: TextAreaElement = JSON.parse(JSON.stringify(textArea_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to spell-correct elementModel value', () => {
     const elementModel: SpellCorrectElement = JSON.parse(JSON.stringify(spellCorrect_130));
-    expect(service.mapToElementModelValue( 'TEST', elementModel))
+    expect(service.mapToElementModelValue('TEST', elementModel))
       .toEqual('TEST');
   });
 
   it('should not map but return the spell-correct elementModel value', () => {
     const elementModel: SpellCorrectElement = JSON.parse(JSON.stringify(spellCorrect_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to radio elementModel value', () => {
     const elementModel: RadioButtonGroupElement = JSON.parse(JSON.stringify(radio_130));
-    expect(service.mapToElementModelValue( 1, elementModel))
+    expect(service.mapToElementModelValue(1, elementModel))
       .toEqual(0);
   });
 
   it('should not map but return the radio elementModel value', () => {
     const elementModel: RadioButtonGroupElement = JSON.parse(JSON.stringify(radio_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to radio-group-images elementModel value', () => {
     const elementModel: RadioButtonGroupComplexElement = JSON.parse(JSON.stringify(radioGroupImages_130));
-    expect(service.mapToElementModelValue( 2, elementModel))
+    expect(service.mapToElementModelValue(2, elementModel))
       .toEqual(1);
   });
 
   it('should not map but return the radio-group-images elementModel value', () => {
     const elementModel: RadioButtonGroupComplexElement = JSON.parse(JSON.stringify(radioGroupImages_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to likert-row elementModel value', () => {
     const elementModel: LikertRowElement = JSON.parse(JSON.stringify(likertRow_130));
-    expect(service.mapToElementModelValue( 3, elementModel))
+    expect(service.mapToElementModelValue(3, elementModel))
       .toEqual(2);
   });
 
   it('should not map but return the likert-row elementModel value', () => {
     const elementModel: LikertRowElement = JSON.parse(JSON.stringify(likertRow_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 
   it('should map an elementCode value to toggle-button elementModel value', () => {
     const elementModel: ToggleButtonElement = JSON.parse(JSON.stringify(toggleButton_130));
-    expect(service.mapToElementModelValue( 1, elementModel))
+    expect(service.mapToElementModelValue(1, elementModel))
       .toEqual(0);
   });
 
   it('should not map but return the toggle-button elementModel value', () => {
     const elementModel: ToggleButtonElement = JSON.parse(JSON.stringify(toggleButton_130));
-    expect(service.mapToElementModelValue( undefined, elementModel))
+    expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
   });
 });

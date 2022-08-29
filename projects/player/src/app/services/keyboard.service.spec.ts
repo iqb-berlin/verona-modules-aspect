@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
-import { KeyboardService } from './keyboard.service';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import {
   TextFieldSimpleComponent
@@ -13,6 +12,7 @@ import * as textField_130 from 'test-data/element-models/text-field_130.json';
 import * as textFieldSimple_131 from 'test-data/element-models/text-field-simple_131.json';
 import * as textArea_130 from 'test-data/element-models/text-area_130.json';
 import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
+import { KeyboardService } from './keyboard.service';
 
 describe('KeyboardService', () => {
   let service: KeyboardService;
@@ -76,14 +76,12 @@ describe('KeyboardService', () => {
     expect(service.isOpen).toBeFalse();
   });
 
-
   it('should not toggle keyboard to open', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldComponent, false);
     expect(service.isOpen).toBeFalse();
   });
-
 
   it('should set the inputElement of the service', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
@@ -110,7 +108,6 @@ describe('KeyboardService', () => {
     service.enterKey('!');
     expect(service.inputElement.value).toEqual('n!');
   });
-
 
   it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
@@ -178,7 +175,6 @@ describe('KeyboardService', () => {
     expect(service.isOpen).toBeTruthy();
   });
 
-
   it('should toggle keyboard to close', () => {
     service.isOpen = true;
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
@@ -187,14 +183,12 @@ describe('KeyboardService', () => {
     expect(service.isOpen).toBeFalse();
   });
 
-
   it('should not toggle keyboard to open', () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, false);
     expect(service.isOpen).toBeFalse();
   });
-
 
   it('should set the inputElement of the service', () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
@@ -296,14 +290,12 @@ describe('KeyboardService', () => {
     expect(service.isOpen).toBeFalse();
   });
 
-
   it('should not toggle keyboard to open', () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, textAreaComponent, false);
     expect(service.isOpen).toBeFalse();
   });
-
 
   it('should set the inputElement of the service', () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
@@ -405,14 +397,12 @@ describe('KeyboardService', () => {
     expect(service.isOpen).toBeFalse();
   });
 
-
   it('should not toggle keyboard to open', () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, spellCorrectComponent, false);
     expect(service.isOpen).toBeFalse();
   });
-
 
   it('should set the inputElement of the service', () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;

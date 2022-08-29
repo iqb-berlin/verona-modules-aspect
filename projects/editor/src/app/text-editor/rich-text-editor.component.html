@@ -208,6 +208,8 @@
       <mat-menu #specialCharsMenu="matMenu" yPosition="above">
         <button mat-button (click)="insertSpecialChar('&nbsp;')"
                 [matTooltip]="'Geschütztes Leerzeichen'">&blank;</button>
+        <button mat-button (click)="insertSpecialChar('&#8239;')"
+                [matTooltip]="'Geschütztes Leerzeichen (schmal)'">&blank;<sub>2</sub></button>
         <button mat-button (click)="insertSpecialChar('&ndash;')">&ndash;</button>
         <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
         <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
@@ -252,7 +254,7 @@
         <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
       </mat-menu>
       <button mat-icon-button matTooltip="Bild" [matTooltipShowDelay]="300"
-              (click)="addImage()">
+              (click)="insertImage()">
         <mat-icon>image</mat-icon>
       </button>
       <button mat-icon-button matTooltip="Zitat" [matTooltipShowDelay]="300"

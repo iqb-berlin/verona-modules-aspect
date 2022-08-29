@@ -1,63 +1,38 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { MessageService } from 'common/services/message.service';
+import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/element';
+import { IDManager } from 'common/util/id-manager';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
-import { MessageService } from 'common/services/message.service';
-import { TranslateService } from '@ngx-translate/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { DragNDropValueObject } from 'common/models/elements/element';
-import { IDManager } from 'common/util/id-manager';
 
 @Component({
   selector: 'aspect-drop-list-properties',
   template: `
-    <fieldset *ngIf="combinedProperties.type === 'drop-list' ||
-                     combinedProperties.type === 'drop-list-simple'">
-      <legend>Ablegeliste</legend>
+    <div *ngIf="combinedProperties.type === 'drop-list' ||
+                combinedProperties.type === 'drop-list-simple'"
+                fxLayout="column">
+      <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"
+                                [itemList]="$any(combinedProperties.value)"
+                                (addItem)="addOption($event)"
+                                (removeItem)="removeOption($event)"
+                                (changedItemOrder)="moveOption('value', $event)"
+                                (editItem)="editOption($event)">
+      </aspect-option-list-panel>
 
-      <div class="value-list-container">
-        <mat-label>{{'preset' | translate }}</mat-label>
-        <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
-             (cdkDropListDropped)="moveListValue($any($event))">
-          <div *ngFor="let value of $any(combinedProperties.value); let i = index" cdkDrag
-               class="list-items" fxLayout="row" fxLayoutAlign="end center">
-            <div fxFlex="70" class="draggable-element-label">
-              {{value.stringValue}} ({{value.id}})
-            </div>
-            <img [src]="value.imgSrcValue"
-                 [style.object-fit]="'scale-down'"
-                 [style.height.px]="40">
-            <button mat-icon-button color="primary"
-                    (click)="editDropListOption(i)">
-              <mat-icon>build</mat-icon>
-            </button>
-            <button mat-icon-button color="primary"
-                    (click)="removeListValue('value', i)">
-              <mat-icon>clear</mat-icon>
-            </button>
-          </div>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="center center" class="text-area-container">
-          <textarea matInput type="text"
-                    #newValue rows="2"
-                    (keyup.enter)="addDropListOption(newValue.value); newValue.select()"></textarea>
-          <button mat-icon-button
-                  (click)="addDropListOption(newValue.value); newValue.select()">
-            <mat-icon>add</mat-icon>
-          </button>
-        </div>
-      </div>
-
-      <mat-form-field appearance="fill" *ngIf="combinedProperties.connectedTo !== null"
+      <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
+                      class="wide-form-field" appearance="fill"
                       (click)="generateValidDropLists()">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.connectedTo"
                     (ngModelChange)="toggleConnectedDropList($event)">
           <mat-select-trigger>
-            {{'propertiesPanel.connectedDropLists' | translate }} ({{combinedProperties.connectedTo.length}})
+            {{'propertiesPanel.connectedDropLists' | translate }} ({{$any(combinedProperties.connectedTo).length}})
           </mat-select-trigger>
           <mat-option *ngFor="let id of dropListIDs" [value]="id">
             {{id}}
@@ -94,28 +69,20 @@ import { IDManager } from 'common/util/id-manager';
                     (change)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event.checked })">
         {{'propertiesPanel.highlightReceivingDropList' | translate }}
       </mat-checkbox>
-      <mat-form-field *ngIf="combinedProperties.highlightReceivingDropList"
-                      appearance="fill" class="mdInput textsingleline">
+      <mat-form-field appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.highlightReceivingDropListColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="$any(combinedProperties.highlightReceivingDropListColor)"
+        <input matInput type="text"
+               [disabled]="!combinedProperties.highlightReceivingDropList"
+               [value]="$any(combinedProperties.highlightReceivingDropListColor)"
                (input)="updateModel.emit({
                      property: 'highlightReceivingDropListColor',
                      value: $any($event.target).value })">
       </mat-form-field>
-    </fieldset>
-  `,
-  styles: [
-    'mat-form-field {width: 100%;}',
-    '.draggable-element-label {overflow-wrap: anywhere;}',
-    'mat-select {height: 100%;}',
-    '.text-area-container {background-color: lightgray; margin-bottom: 15px;}',
-    '.value-list-container {background-color: rgba(0,0,0,.04);}',
-    '.text-area-container button {border: 1px solid gray;}',
-    '.value-list-container mat-label {font-size: large;}'
-  ]
+    </div>
+  `
 })
 export class DropListPropertiesComponent {
-  @Input() combinedProperties!: any;
+  @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel = new EventEmitter<{
     property: string;
     value: string | number | boolean | string[] | DragNDropValueObject[],
@@ -130,18 +97,34 @@ export class DropListPropertiesComponent {
               private messageService: MessageService,
               private translateService: TranslateService) { }
 
-  addDropListOption(value: string): void {
+  notifyListChange(changedList: DragNDropValueObject[]): void {
+    this.updateModel.emit({ property: 'value', value: changedList });
+  }
+
+  addOption(value: string): void {
     this.updateModel.emit({
       property: 'value',
       value: [
         ...this.combinedProperties.value as DragNDropValueObject[],
-        { stringValue: value, id: this.unitService.getNewValueID() } // TODO direkt IDService
+        {
+          text: value,
+          imgSrc: null,
+          imgPosition: 'above',
+          id: this.unitService.getNewValueID()
+        }
       ]
     });
   }
 
-  async editDropListOption(optionIndex: number): Promise<void> {
-    const oldOptions = this.combinedProperties.value;
+  moveOption(property: string, indices: { previousIndex: number, currentIndex: number }): void {
+    moveItemInArray(this.combinedProperties[property] as TextImageLabel[],
+      indices.previousIndex,
+      indices.currentIndex);
+    this.updateModel.emit({ property: property, value: this.combinedProperties[property] as DragNDropValueObject[] });
+  }
+
+  async editOption(optionIndex: number): Promise<void> {
+    const oldOptions: DragNDropValueObject[] = this.combinedProperties.value as DragNDropValueObject[];
 
     await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])
       .subscribe((result: DragNDropValueObject) => {
@@ -156,15 +139,10 @@ export class DropListPropertiesComponent {
       });
   }
 
-  moveListValue(event: CdkDragDrop<string[]>): void {
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    this.updateModel.emit({ property: 'value', value: event.container.data });
-  }
-
-  removeListValue(property: string, optionIndex: number): void {
-    const valueList = this.combinedProperties[property] as DragNDropValueObject[];
+  removeOption(optionIndex: number): void {
+    const valueList = this.combinedProperties.value as DragNDropValueObject[];
     valueList.splice(optionIndex, 1);
-    this.updateModel.emit({ property: property, value: valueList });
+    this.updateModel.emit({ property: 'value', value: valueList });
   }
 
   toggleConnectedDropList(connectedDropListList: string[]) {
@@ -176,6 +154,6 @@ export class DropListPropertiesComponent {
 
   generateValidDropLists() {
     this.dropListIDs = this.unitService.getDropListElementIDs()
-      .filter(dropListID => !this.combinedProperties.id.includes(dropListID));
+      .filter(dropListID => !this.combinedProperties.idList!.includes(dropListID));
   }
 }

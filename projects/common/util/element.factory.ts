@@ -35,14 +35,6 @@ export abstract class ElementFactory {
     };
   }
 
-  static initTextImageLabel(): TextImageLabel {
-    return {
-      text: '',
-      imgSrc: null,
-      position: 'above'
-    };
-  }
-
   static initPlayerProps(defaults: Partial<PlayerProperties> = {}): PlayerProperties {
     return {
       autostart: defaults.autostart !== undefined ? defaults.autostart as boolean : false,
@@ -69,6 +61,14 @@ export abstract class ElementFactory {
       showRestRuns: defaults.showRestRuns !== undefined ? defaults.showRestRuns as boolean : false,
       showRestTime: defaults.showRestTime !== undefined ? defaults.showRestTime as boolean : true,
       playbackTime: defaults.playbackTime !== undefined ? defaults.playbackTime as number : 0
+    };
+  }
+
+  static createOptionLabel(optionText: string, addImg: boolean = false) {
+    return {
+      text: optionText,
+      imgSrc: addImg ? null : undefined,
+      imgPosition: addImg ? 'above' : undefined
     };
   }
 }

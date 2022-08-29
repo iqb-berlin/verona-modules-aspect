@@ -4,14 +4,14 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UnitService } from '../../../services/unit.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { SelectionService } from '../../../services/selection.service';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import { CompoundChildOverlayComponent } from
   'common/components/compound-elements/cloze/compound-child-overlay.component';
 import { UIElement } from 'common/models/elements/element';
+import { UnitService } from '../../../services/unit.service';
+import { SelectionService } from '../../../services/selection.service';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -30,7 +30,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-    this.childComponent = this.elementContainer.createComponent(this.element.getComponentFactory());
+    this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
 
     // Make children not clickable. This way the only relevant events are managed by the overlay.
@@ -62,19 +62,16 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
   }
 
-  selectElement(multiSelect: boolean = false): void {
-    if (multiSelect) {
-      this.selectionService.selectElement({ elementComponent: this, multiSelect: true });
-    } else {
-      this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
-    }
-  }
-
-  elementClicked(event: MouseEvent): void { //TODO method name
+  selectElement(event?: MouseEvent): void {
     if (!this.isSelected) {
-      this.selectElement(event.shiftKey);
+      // this.selectElement(event.shiftKey);
+      if (event?.shiftKey) {
+        this.selectionService.selectElement({ elementComponent: this, multiSelect: true });
+      } else {
+        this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
+      }
     }
-    event.stopPropagation();
+    event?.stopPropagation();
     this.elementSelected.emit();
   }
 

@@ -3,7 +3,8 @@ import { ElementFactory } from 'common/util/element.factory';
 import {
   InputElement, PositionedUIElement,
   DragNDropValueObject,
-  BasicStyles, PositionProperties, AnswerScheme, AnswerSchemeValue
+  BasicStyles, PositionProperties,
+  AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
@@ -13,6 +14,7 @@ import {
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 
 export class DropListElement extends InputElement implements PositionedUIElement {
+  value: DragNDropValueObject[];
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
@@ -35,8 +37,9 @@ export class DropListElement extends InputElement implements PositionedUIElement
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
     if (element.orientation) this.orientation = element.orientation;
     if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
-    if (element.highlightReceivingDropListColor) this.highlightReceivingDropListColor =
-      element.highlightReceivingDropListColor;
+    if (element.highlightReceivingDropListColor) {
+      this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
+    }
     this.position = ElementFactory.initPositionProps({ useMinHeight: true, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({
@@ -78,7 +81,7 @@ export class DropListElement extends InputElement implements PositionedUIElement
     return (!this.connectedTo.length && (this.value as DragNDropValueObject[]).length > 1);
   }
 
-  getComponentFactory(): Type<ElementComponent> {
+  getElementComponent(): Type<ElementComponent> {
     return DropListComponent;
   }
 }

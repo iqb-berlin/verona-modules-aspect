@@ -28,8 +28,11 @@ export class IDManager {
     value: 0
   };
 
-  static getInstance() {
-    return this.instance || (this.instance = new this());
+  static getInstance(): IDManager {
+    if (!this.instance) {
+      this.instance = new this();
+    }
+    return this.instance;
   }
 
   getNewID(type: string): string {

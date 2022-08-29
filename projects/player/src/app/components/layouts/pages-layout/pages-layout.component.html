@@ -9,8 +9,10 @@
 </div>
 
 <ng-template #alwaysVisiblePageView>
-  <div *ngIf="alwaysVisiblePage"
+  <aspect-page-scroll-button
+      *ngIf="alwaysVisiblePage"
       class="page-container"
+      [isSnapMode]="false"
       [style.max-height.%]="aspectRatioColumn.alwaysVisiblePage"
       [style.max-width.%]="aspectRatioRow.alwaysVisiblePage">
     <div #alwaysVisiblePageContainer
@@ -33,15 +35,18 @@
         </aspect-page>
       </div>
     </div>
-  </div>
+  </aspect-page-scroll-button>
 </ng-template>
 
 <ng-template #scrollPagesView>
   <ng-container *ngIf="hasScrollPages">
-    <div class="page-container"
+    <aspect-page-scroll-button
+        class="page-container"
+        [isSnapMode]="scrollPageMode === 'concat-scroll-snap'"
         [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'"
         [style.max-height.%]="aspectRatioColumn.scrollPages"
-        [style.max-width.%]="aspectRatioRow.scrollPages">
+        [style.max-width.%]="aspectRatioRow.scrollPages"
+        (scrollToNextPage)="scrollToNextPage()">
       <div #pagesScrolledContainer
           [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
           [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
@@ -51,7 +56,7 @@
             [ngTemplateOutletContext]="{pagesContainer: pagesScrolledContainer}">
         </ng-container>
       </div>
-    </div>
+    </aspect-page-scroll-button>
   </ng-container>
 </ng-template>
 
@@ -83,7 +88,9 @@
 
 <ng-template #scrollPagesScrolledView let-pagesContainer>
   <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
-    <div [style.min-height]="'calc(100vh - ' + (page.margin * 2) + 'px)'"
+    <div [style.min-height]="scrollPageMode === 'concat-scroll-snap' ?
+                             'calc(100vh - ' + (page.margin * 2) + 'px)' :
+                             'unset'"
         [style.background-color]="page.backgroundColor"
         [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap'"
         [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
@@ -97,6 +104,7 @@
       </div>
       <aspect-page
           [pageIndex]="pages | pageIndex: page"
+          [scrollPageIndex]="i"
           [pagesContainer]="pagesContainer"
           [page]="page"
           [isLastPage]="last"

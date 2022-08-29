@@ -3,9 +3,9 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import {
   CdkDrag, CdkDropList, moveItemInArray
 } from '@angular/cdk/drag-drop';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/elements/element';
+import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-drop-list',
@@ -54,7 +54,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
         </ng-container>
         <!--Leave template within the dom to ensure dragNdrop-->
         <ng-template #dropObject let-dropListValueElement let-index="index">
-          <div class="item text-item" *ngIf="!dropListValueElement.imgSrcValue"
+          <div class="item text-item" *ngIf="!dropListValueElement.imgSrc"
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                       'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
                [style.background-color]="elementModel.styling.itemBackgroundColor"
@@ -64,12 +64,12 @@ import { DragNDropValueObject } from 'common/models/elements/element';
             <div *cdkDragPreview
                  [style.font-size.px]="elementModel.styling.fontSize"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
-              {{dropListValueElement.stringValue}}
+              {{dropListValueElement.text}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
                  [style.min-height.px]="elementModel.styling.fontSize">
             </div>
-            {{dropListValueElement.stringValue}}
+            {{dropListValueElement.text}}
           </div>
 
           <!-- actual placeholder when item is being dragged from copy-list -->
@@ -78,11 +78,11 @@ import { DragNDropValueObject } from 'common/models/elements/element';
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                             'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
                [style.background-color]="elementModel.styling.itemBackgroundColor">
-            {{dropListValueElement.stringValue}}
+            {{dropListValueElement.text}}
           </div>
 
-          <img *ngIf="dropListValueElement.imgSrcValue"
-               [src]="dropListValueElement.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
+          <img *ngIf="dropListValueElement.imgSrc"
+               [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
                class="item"
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
@@ -90,8 +90,8 @@ import { DragNDropValueObject } from 'common/models/elements/element';
                cdkDrag [cdkDragData]="{ element: dropListValueElement, index: index }"
                (cdkDragStarted)=dragStart(index) (cdkDragEnded)="dragEnd()"
                [style.object-fit]="'scale-down'">
-          <img *ngIf="elementModel.copyOnDrop && draggedItemIndex === index && dropListValueElement.imgSrcValue"
-               [src]="dropListValueElement.imgSrcValue | safeResourceUrl" alt="Image Placeholder"
+          <img *ngIf="elementModel.copyOnDrop && draggedItemIndex === index && dropListValueElement.imgSrc"
+               [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
                class="item"
                [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
@@ -148,7 +148,7 @@ export class DropListComponent extends FormElementComponent {
   drop(event: CdkDragDrop<DropListComponent>): void {
     if (event.previousContainer === event.container && !event.container.data.elementModel.copyOnDrop) {
       moveItemInArray(event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
-        event.previousIndex, event.currentIndex);
+                      event.previousIndex, event.currentIndex);
       this.elementFormControl.setValue(
         (event.container.data.elementFormControl.value as DragNDropValueObject[])
       );

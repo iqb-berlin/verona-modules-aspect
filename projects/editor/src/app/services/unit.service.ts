@@ -4,16 +4,14 @@ import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
-import { DialogService } from './dialog.service';
-import { VeronaAPIService } from './verona-api.service';
-import { SelectionService } from './selection.service';
 import { ArrayUtils } from 'common/util/array';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Unit } from 'common/models/unit';
 import {
+  CompoundElement,
   DragNDropValueObject, InputElement,
-  InputElementValue, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
-  UIElement, UIElementType
+  InputElementValue, TextLabel, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
+  UIElement, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
@@ -24,12 +22,16 @@ import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { ElementFactory } from 'common/util/element.factory';
 import { IDManager } from 'common/util/id-manager';
+import { DialogService } from './dialog.service';
+import { VeronaAPIService } from './verona-api.service';
+import { SelectionService } from './selection.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnitService {
   unit: Unit;
+  idManager = IDManager.getInstance();
 
   elementPropertyUpdated: Subject<void> = new Subject<void>();
 
@@ -44,13 +46,13 @@ export class UnitService {
   }
 
   loadUnitDefinition(unitDefinition: string): void {
-    IDManager.getInstance().reset();
+    this.idManager.reset();
     const unitDef = JSON.parse(unitDefinition);
     if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
       this.unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
       this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
     } else {
-      this.unit = new Unit(unitDef, IDManager.getInstance());
+      this.unit = new Unit(unitDef, this.idManager);
     }
   }
 
@@ -139,14 +141,19 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  private freeUpIds(elements: UIElement[]): void { // TODO free up child and value IDs
+  private freeUpIds(elements: UIElement[]): void {
     elements.forEach(element => {
       if (element.type === 'drop-list') {
         ((element as DropListElement).value as DragNDropValueObject[]).forEach((value: DragNDropValueObject) => {
-          IDManager.getInstance().removeId(value.id);
+          this.idManager.removeId(value.id);
         });
       }
-      IDManager.getInstance().removeId(element.id);
+      if (element instanceof CompoundElement) {
+        element.getChildElements().forEach((childElement: UIElement) => {
+          this.idManager.removeId(childElement.id);
+        });
+      }
+      this.idManager.removeId(element.id);
     });
   }
 
@@ -177,25 +184,13 @@ export class UnitService {
 
     if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
       (newElement.value as DragNDropValueObject[]).forEach((valueObject: { id: string }) => {
-        valueObject.id = IDManager.getInstance().getNewID('value');
+        valueObject.id = this.idManager.getNewID('value');
       });
     }
 
     if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
       (newElement.rows as LikertRowElement[]).forEach((rowObject: { id: string }) => {
-        rowObject.id = IDManager.getInstance().getNewID('likert_row');
-      });
-    }
-
-
-    if (newElement instanceof ClozeElement) {
-      element.getChildElements().forEach((childElement: UIElement) => {
-        childElement.id = IDManager.getInstance().getNewID(childElement.type);
-        if (childElement.type === 'drop-list-simple') { // replace value Ids with fresh ones (dropList)
-          (childElement.value as DragNDropValueObject[]).forEach((valueObject: DragNDropValueObject) => {
-            valueObject.id = IDManager.getInstance().getNewID('value');
-          });
-        }
+        rowObject.id = this.idManager.getNewID('likert_row');
       });
     }
     return newElement;
@@ -216,26 +211,18 @@ export class UnitService {
 
   updateElementsProperty(elements: UIElement[],
                          property: string,
-                         value: InputElementValue | TextImageLabel | TextImageLabel[] | ClozeDocument |
-                         DragNDropValueObject[] | null): void {
+                         value: InputElementValue | LikertRowElement[] |
+                         TextLabel | TextLabel[] | ClozeDocument | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
-        if (!IDManager.getInstance().isIdAvailable((value as string))) { // prohibit existing IDs
+        if (!this.idManager.isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError(this.translateService.instant('idTaken'));
         } else {
-          IDManager.getInstance().removeId(element.id);
-          IDManager.getInstance().addID(value as string);
+          this.idManager.removeId(element.id);
+          this.idManager.addID(value as string);
           element.id = value as string;
         }
-      } else if (element.type === 'likert' && property === 'columns') {
-        (element as LikertElement).rows.forEach(row => {
-          row.columnCount = (element as LikertElement).columns.length;
-        });
-      } else if (element.type === 'likert' && property === 'readOnly') {
-        (element as LikertElement).rows.forEach(row => {
-          row.readOnly = value as boolean;
-        });
       } else {
         element.setProperty(property, value);
       }
@@ -244,11 +231,11 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  updateSelectedElementsPositionProperty(property: string, value: any): void {
+  updateSelectedElementsPositionProperty(property: string, value: UIElementValue): void {
     this.updateElementsPositionProperty(this.selectionService.getSelectedElements(), property, value);
   }
 
-  updateElementsPositionProperty(elements: UIElement[], property: string, value: any): void {
+  updateElementsPositionProperty(elements: UIElement[], property: string, value: UIElementValue): void {
     elements.forEach(element => {
       element.setPositionProperty(property, value);
     });
@@ -256,7 +243,7 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  updateSelectedElementsStyleProperty(property: string, value: any): void {
+  updateSelectedElementsStyleProperty(property: string, value: UIElementValue): void {
     const elements = this.selectionService.getSelectedElements();
     elements.forEach(element => {
       element.setStyleProperty(property, value);
@@ -265,7 +252,7 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  updateElementsPlayerProperty(elements: UIElement[], property: string, value: any): void {
+  updateElementsPlayerProperty(elements: UIElement[], property: string, value: UIElementValue): void {
     elements.forEach(element => {
       element.setPlayerProperty(property, value);
     });
@@ -379,7 +366,9 @@ export class UnitService {
       case 'video':
         this.dialogService.showPlayerEditDialog((element as PlayerElement).player)
           .subscribe((result: PlayerProperties) => {
-            Object.keys(result).forEach(key => this.updateElementsPlayerProperty([element], key, result[key]));
+            Object.keys(result).forEach(
+              key => this.updateElementsPlayerProperty([element], key, result[key] as UIElementValue)
+            );
           });
         break;
       // no default
@@ -387,7 +376,7 @@ export class UnitService {
   }
 
   getNewValueID(): string {
-    return IDManager.getInstance().getNewID('value');
+    return this.idManager.getNewID('value');
   }
 
   /* Used by props panel to show available dropLists to connect */

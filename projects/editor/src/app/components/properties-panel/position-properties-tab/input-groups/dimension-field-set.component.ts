@@ -1,6 +1,4 @@
-import {
-  Component, EventEmitter, Input, Output
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PositionProperties } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -31,7 +29,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
                           (positionProperties?.dynamicPositioning && positionProperties?.fixedSize)">
           {{'propertiesPanel.width' | translate }}
         </mat-label>
-        <input matInput type="number" #width="ngModel" min="0"
+        <input matInput type="number" min="0"
                [disabled]="$any(dimensions.dynamicWidth)"
                [ngModel]="dimensions.width"
                (ngModelChange)="updateDimensionProperty('width', $event)">
@@ -54,19 +52,16 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
                           (positionProperties?.fixedSize || positionProperties?.useMinHeight))">
           {{'propertiesPanel.height' | translate }}
         </mat-label>
-        <input matInput type="number" #height="ngModel" min="0"
+        <input matInput type="number" min="0"
                [ngModel]="dimensions.height"
                (ngModelChange)="updateDimensionProperty('height', $event)">
       </mat-form-field>
     </fieldset>
-  `,
-  styles: [
-    '.mat-form-field {display: inline;}'
-  ]
+  `
 })
 export class DimensionFieldSetComponent {
   @Input() positionProperties: PositionProperties | undefined;
-  @Input() dimensions!: { width: number; height: number; dynamicWidth?: boolean };
+  @Input() dimensions!: { width?: number; height?: number; dynamicWidth?: boolean };
 
   constructor(public unitService: UnitService, public selectionService: SelectionService) { }
 

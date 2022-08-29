@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
-import { CanvasElementOverlay } from './canvas-element-overlay';
 import { UIElement } from 'common/models/elements/element';
+import { CanvasElementOverlay } from './canvas-element-overlay';
 
 @Component({
   selector: 'aspect-static-canvas-overlay',
@@ -11,11 +11,11 @@ import { UIElement } from 'common/models/elements/element';
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <div class="draggable-element"
          [class.temporaryHighlight]="temporaryHighlight"
-         (click)="elementClicked($event)"
+         (click)="selectElement($event)"
          (dblclick)="openEditDialog()"
          (keyup.delete)="deleteSelectedElements()" tabindex="-1"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
-         (cdkDragStarted)="!isSelected && selectElement()"
+         (cdkDragStarted)="selectElement()"
          cdkDropList>
       <div *cdkDragPlaceholder></div>
       <!-- Needs extra div because styling can interfere with drag and drop-->

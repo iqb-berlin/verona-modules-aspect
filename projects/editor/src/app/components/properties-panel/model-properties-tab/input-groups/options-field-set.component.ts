@@ -1,113 +1,162 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import {
+  TextLabel, TextImageLabel, OptionElement, Label
+} from 'common/models/elements/element';
+import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { IDManager } from 'common/util/id-manager';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { DialogService } from '../../../../services/dialog.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 
 @Component({
   selector: 'aspect-options-field-set',
   template: `
-    <mat-form-field disabled="true" *ngIf="combinedProperties.options !== undefined">
-      <ng-container>
-        <mat-label>{{'propertiesPanel.options' | translate }}</mat-label>
-        <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.options"
-             (cdkDropListDropped)="reorderOptions('options', $any($event))">
-          <div *ngFor="let option of $any(combinedProperties.options); let i = index" cdkDrag
-               fxLayout="row" fxLayoutAlign="end center">
-            <div fxFlex="70">
-              {{option}}
-            </div>
-            <button mat-icon-button color="primary"
-                    (click)="editTextOption('options', i)">
-              <mat-icon>build</mat-icon>
-            </button>
-            <button mat-icon-button color="primary"
-                    (click)="removeOption('options', option)">
-              <mat-icon>clear</mat-icon>
-            </button>
-          </div>
-        </div>
-      </ng-container>
-      <div fxLayout="row" fxLayoutAlign="center center">
-        <button mat-icon-button matPrefix
-                (click)="addOption('options', newOption.value); newOption.select()">
-          <mat-icon>add</mat-icon>
-        </button>
-        <input #newOption matInput type="text" placeholder="Optionstext"
-               (keyup.enter)="addOption('options', newOption.value); newOption.select()">
-      </div>
-    </mat-form-field>
+    <!--dropdown-->
+<!--                              [useRichText]="combinedProperties.type === 'radio'"-->
+    <aspect-option-list-panel *ngIf="combinedProperties.options !== undefined"
+                              [title]="'propertiesPanel.options'" [textFieldLabel]="'Neue Option'"
+                              [itemList]="$any(combinedProperties.options)"
+                              (addItem)="addOption('options', $event)"
+                              (removeItem)="removeOption('options', $event)"
+                              (changedItemOrder)="moveOption('options', $event)"
+                              (editItem)="editOption('options', $event)">
+    </aspect-option-list-panel>
 
-    <mat-form-field disabled="true" *ngIf="combinedProperties.richTextOptions !== undefined">
-      <ng-container>
-        <mat-label>{{'propertiesPanel.options' | translate }}</mat-label>
-        <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.richTextOptions"
-             (cdkDropListDropped)="reorderOptions('richTextOptions', $any($event))">
-          <div *ngFor="let option of $any(combinedProperties.richTextOptions); let i = index" cdkDrag
-               fxLayout="row" fxLayoutAlign="end center">
-            <div fxFlex="70" [innerHTML]="sanitizer.bypassSecurityTrustHtml(option)">
-            </div>
-            <button mat-icon-button color="primary"
-                    (click)="editTextOption('richTextOptions', i)">
-              <mat-icon>build</mat-icon>
-            </button>
-            <button mat-icon-button color="primary"
-                    (click)="removeOption('richTextOptions', option)">
-              <mat-icon>clear</mat-icon>
-            </button>
-          </div>
-        </div>
-      </ng-container>
-      <div fxLayout="row" fxLayoutAlign="center center">
-        <button mat-icon-button matPrefix
-                (click)="addOption('richTextOptions', newOption.value); newOption.select()">
-          <mat-icon>add</mat-icon>
-        </button>
-        <input #newOption matInput type="text" placeholder="Optionstext"
-               (keyup.enter)="addOption('richTextOptions', newOption.value); newOption.select()">
-      </div>
-    </mat-form-field>
-  `,
-  styles: [
-    '.mat-form-field {width: 100%;}'
-  ]
+    <!--likert-->
+    <aspect-option-list-panel *ngIf="combinedProperties.rows !== undefined"
+                              [itemList]="$any(combinedProperties).rows | LikertRowLabel"
+                              [title]="'rows'"
+                              [textFieldLabel]="'Neue Zeile'"
+
+                              (changedItemOrder)="moveLikertRow($event)"
+
+                              (addItem)="addLikertRow($event)"
+                              (removeItem)="removeLikertRow($event)"
+                              (editItem)="editLikertRow($event)">
+    </aspect-option-list-panel>
+  `
 })
 export class OptionsFieldSetComponent {
-  @Input() combinedProperties!: any;
+  @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel =
-  new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+    new EventEmitter<{
+      property: string;
+      value: string | number | boolean | string[] | Label[] | LikertRowElement[]
+    }>();
 
-  constructor(public dialogService: DialogService, public sanitizer: DomSanitizer) { }
+  constructor(private unitService: UnitService,
+              private selectionService: SelectionService,
+              public dialogService: DialogService) { }
 
-  addOption(property: string, value: string): void {
-    this.updateModel.emit({
-      property: property,
-      value: [...(this.combinedProperties[property] as string[]), value]
+  addOption(property: string, option: string): void {
+    const selectedElements = this.selectionService.getSelectedElements() as OptionElement[];
+
+    selectedElements.forEach(element => {
+      const newValue = [...this.combinedProperties[property] as Label[], element.getNewOptionLabel(option)];
+      this.unitService.updateElementsProperty([element], property, newValue);
     });
   }
 
-  removeOption(property: string, option: any): void {
-    const valueList = this.combinedProperties[property] as string[];
-    valueList.splice(valueList.indexOf(option), 1);
-    this.updateModel.emit({ property: property, value: valueList });
+  removeOption(property: string, optionIndex: number): void {
+    (this.combinedProperties[property] as Label[]).splice(optionIndex, 1);
+    this.updateModel.emit({
+      property: property,
+      value: this.combinedProperties[property] as Label[]
+    });
   }
 
-  async editTextOption(property: string, optionIndex: number): Promise<void> {
-    const oldOptions = this.combinedProperties[property] as string[];
-    await this.dialogService
-      .showRichTextSimpleEditDialog(oldOptions[optionIndex], this.combinedProperties.styling.fontSize)
-      .subscribe((result: string) => {
+  moveOption(property: string, indices: { previousIndex: number, currentIndex: number }): void {
+    moveItemInArray(this.combinedProperties[property] as Label[],
+      indices.previousIndex,
+      indices.currentIndex);
+    this.updateModel.emit({ property: property, value: this.combinedProperties[property] as Label[] });
+  }
+
+  async editOption(property: string, optionIndex: number): Promise<void> {
+    const selectedOption = (this.combinedProperties[property] as Label[])[optionIndex];
+    await this.dialogService.showLabelEditDialog(selectedOption)
+      .subscribe((result: Label) => {
         if (result) {
-          oldOptions[optionIndex] = result;
-          this.updateModel.emit({ property, value: oldOptions });
+          (this.combinedProperties[property] as Label[])[optionIndex] = result;
+          this.updateModel.emit({ property, value: (this.combinedProperties[property] as Label[]) });
         }
       });
   }
 
-  reorderOptions(property: string, event: CdkDragDrop<string[]>): void {
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    this.updateModel.emit({ property: property, value: event.container.data });
+  notifyListChange(property: string, changedList: TextLabel[]): void {
+    this.updateModel.emit({ property: property, value: changedList });
+  }
+
+  addLikertRow(rowLabelText: string): void {
+    const newRow = new LikertRowElement({
+      type: 'likert-row',
+      rowLabel: {
+        text: rowLabelText,
+        imgSrc: null,
+        imgPosition: 'above'
+      },
+      columnCount: (this.combinedProperties.options as unknown[]).length
+    }, IDManager.getInstance());
+    (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
+    this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
+  }
+
+  async editLikertRow(rowIndex: number): Promise<void> {
+    const row = (this.combinedProperties.rows as LikertRowElement[])[rowIndex] as LikertRowElement;
+    const columns = this.combinedProperties.options as TextImageLabel[];
+
+    await this.dialogService.showLikertRowEditDialog(row, columns)
+      .subscribe((result: LikertRowElement) => {
+        if (result) {
+          if (result.id !== row.id) {
+            this.unitService.updateElementsProperty(
+              [row],
+              'id',
+              result.id
+            );
+          }
+          if (result.rowLabel !== row.rowLabel) {
+            this.unitService.updateElementsProperty([row], 'rowLabel', result.rowLabel);
+          }
+          if (result.value !== row.value) {
+            this.unitService.updateElementsProperty(
+              [row],
+              'value',
+              result.value
+            );
+          }
+          if (result.verticalButtonAlignment !== row.verticalButtonAlignment) {
+            this.unitService.updateElementsProperty(
+              [row],
+              'verticalButtonAlignment',
+              result.verticalButtonAlignment
+            );
+          }
+          if (result.readOnly !== row.readOnly) {
+            this.unitService.updateElementsProperty(
+              [row],
+              'readOnly',
+              result.readOnly
+            );
+          }
+        }
+      });
+  }
+
+  removeLikertRow(index: number): void {
+    const valueList = this.combinedProperties.rows as LikertRowElement[];
+    valueList.splice(index, 1);
+    this.updateModel.emit({ property: 'rows', value: valueList });
+  }
+
+  moveLikertRow(indices: { previousIndex: number, currentIndex: number }): void {
+    moveItemInArray(this.combinedProperties.rows as LikertRowElement[],
+      indices.previousIndex,
+      indices.currentIndex);
+    this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
   }
 }

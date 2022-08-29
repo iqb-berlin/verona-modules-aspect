@@ -34,3 +34,6 @@ iqb-aspect-definition@1.0.0
 
 3.6.0
 - DropList, DropListSimple: +copyOnDrop
+
+3.7.0
+- TextElement: +hasSelectionPopup: boolean;

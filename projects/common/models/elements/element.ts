@@ -73,10 +73,9 @@ export abstract class UIElement {
   }
 
   hasAnswerScheme(): boolean {
-    return false;
+    return Boolean(this.getAnswerSchemeValues);
   }
 
-  abstract getComponentFactory(): Type<ElementComponent>;
   abstract getElementComponent(): Type<ElementComponent>;
 }
 
@@ -101,7 +100,6 @@ export abstract class InputElement extends UIElement {
   abstract getAnswerScheme(options?: unknown): AnswerScheme;
 }
 
-
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
 }
@@ -115,7 +113,7 @@ export abstract class PlayerElement extends UIElement {
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

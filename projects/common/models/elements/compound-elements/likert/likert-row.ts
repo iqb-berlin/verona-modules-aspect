@@ -1,5 +1,7 @@
 import { Type } from '@angular/core';
-import { InputElement, AnswerScheme, AnswerSchemeValue, TextImageLabel } from 'common/models/elements/element';
+import {
+  InputElement, AnswerScheme, AnswerSchemeValue, TextImageLabel
+} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   LikertRadioButtonGroupComponent
@@ -20,7 +22,7 @@ export class LikertRowElement extends InputElement {
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {
@@ -36,10 +38,11 @@ export class LikertRowElement extends InputElement {
   }
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
-    console.log(this.value);
     return [
-      { value: !this.value && this.value !== 0 ? 'null' : (this.value as number + 1).toString(),
-        label: this.rowLabel.text } // TODO Image
+      {
+        value: !this.value && this.value !== 0 ? 'null' : (this.value as number + 1).toString(),
+        label: this.rowLabel.text
+      } // TODO Image
     ];
   }
 

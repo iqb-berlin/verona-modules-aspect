@@ -54,7 +54,7 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

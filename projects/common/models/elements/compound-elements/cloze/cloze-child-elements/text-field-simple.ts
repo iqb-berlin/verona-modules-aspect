@@ -47,7 +47,7 @@ export class TextFieldSimpleElement extends InputElement {
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

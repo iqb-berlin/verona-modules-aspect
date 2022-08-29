@@ -1,6 +1,6 @@
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, DragNDropValueObject, InputElement, UIElementValue,  AnswerScheme,
+  BasicStyles, DragNDropValueObject, InputElement, UIElementValue, AnswerScheme,
   AnswerSchemeValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
@@ -42,7 +42,7 @@ export class DropListSimpleElement extends InputElement {
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(dropLists: Array<DropListElement | DropListSimpleElement>): AnswerScheme {
@@ -62,7 +62,7 @@ export class DropListSimpleElement extends InputElement {
     return [this, ...valueDropLists]
       .map(dropList => dropList.value as DragNDropValueObject[])
       .flat()
-      .map(option => ({ value: option.id, label: option.stringValue as string })); // TODO: imageValueSrc
+      .map(option => ({ value: option.id, label: option.text as string }));
   }
 
   setProperty(property: string, value: UIElementValue) {

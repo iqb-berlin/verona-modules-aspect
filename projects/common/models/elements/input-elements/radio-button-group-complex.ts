@@ -3,7 +3,7 @@ import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, InputElement, OptionElement,
   PositionedUIElement, PositionProperties, TextImageLabel,
-  AnswerScheme, AnswerSchemeValue,
+  AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
@@ -25,7 +25,7 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {
@@ -41,8 +41,8 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
   }
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
-    return this.columns
-      .map((option, index) => ({ value: (index + 1).toString(), label: option.text })); //TODO iMAGE
+    return this.options
+      .map((option, index) => ({ value: (index + 1).toString(), label: option.text }));
   }
 
   getElementComponent(): Type<ElementComponent> {

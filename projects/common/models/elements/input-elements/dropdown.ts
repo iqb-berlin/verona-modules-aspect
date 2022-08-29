@@ -24,7 +24,7 @@ export class DropdownElement extends InputElement implements PositionedUIElement
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {
@@ -40,7 +40,8 @@ export class DropdownElement extends InputElement implements PositionedUIElement
   }
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
-    return this.options.map((option, index) => ({ value: (index + 1).toString(), label: option }));
+    return this.options
+      .map((option, index) => ({ value: (index + 1).toString(), label: option.text }));
   }
 
   getElementComponent(): Type<ElementComponent> {

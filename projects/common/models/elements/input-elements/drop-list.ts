@@ -51,7 +51,7 @@ export class DropListElement extends InputElement implements PositionedUIElement
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(options: Array<DropListElement | DropListSimpleElement>): AnswerScheme {
@@ -66,13 +66,13 @@ export class DropListElement extends InputElement implements PositionedUIElement
     };
   }
 
-  private getAnswerSchemeValues( dropLists: Array<DropListElement | DropListSimpleElement>): AnswerSchemeValue[] {
-    const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id) );
+  private getAnswerSchemeValues(dropLists: Array<DropListElement | DropListSimpleElement>): AnswerSchemeValue[] {
+    const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id));
     if (valueDropLists.length || this.isSortingList()) {
       return [this, ...valueDropLists]
         .map(dropList => dropList.value as DragNDropValueObject[])
         .flat()
-        .map(option => ({ value: option.id, label: option.stringValue as string })); // TODO: imageValueSrc
+        .map(option => ({ value: option.id, label: option.text as string }));
     }
     return [];
   }

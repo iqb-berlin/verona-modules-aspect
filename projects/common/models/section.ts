@@ -1,7 +1,7 @@
 import { Type } from '@angular/core';
 import { IDManager } from 'common/util/id-manager';
 import {
-  CompoundElement, PositionedUIElement, UIElement, UIElementValue, AnswerScheme
+  CompoundElement, PositionedUIElement, UIElement, UIElementValue, AnswerScheme, PlayerElement, InputElement
 } from 'common/models/elements/element';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { TextElement } from 'common/models/elements/text/text';
@@ -104,9 +104,8 @@ export class Section {
   getAnswerScheme(dropLists: UIElement[]): AnswerScheme[] {
     return this.getAllElements()
       .filter(element => element.hasAnswerScheme())
-      .map(element =>
-        (element.type === 'drop-list' || element.type === 'drop-list-simple') ?
-          (element as InputElement).getAnswerScheme(dropLists) :
-          (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme());
+      .map(element => ((element.type === 'drop-list' || element.type === 'drop-list-simple') ?
+        (element as InputElement).getAnswerScheme(dropLists) :
+        (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme()));
   }
 }

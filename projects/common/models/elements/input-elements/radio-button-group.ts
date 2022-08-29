@@ -35,7 +35,7 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {
@@ -51,8 +51,8 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
   }
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
-    return this.richTextOptions
-      .map((option, index) => ({ value: (index + 1).toString(), label: option }));
+    return this.options
+      .map((option, index) => ({ value: (index + 1).toString(), label: option.text }));
   }
 
   getElementComponent(): Type<ElementComponent> {

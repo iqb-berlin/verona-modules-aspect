@@ -35,7 +35,7 @@ export class SliderElement extends InputElement implements PositionedUIElement {
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

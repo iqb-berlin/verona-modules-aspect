@@ -1,5 +1,7 @@
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue } from 'common/models/elements/element';
+import {
+  BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue
+} from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
@@ -35,7 +37,7 @@ export class ToggleButtonElement extends InputElement {
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

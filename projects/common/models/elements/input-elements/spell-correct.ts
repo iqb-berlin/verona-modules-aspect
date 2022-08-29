@@ -35,7 +35,7 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

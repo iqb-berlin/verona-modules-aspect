@@ -1,6 +1,8 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue } from 'common/models/elements/element';
+import {
+  BasicStyles, InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue
+} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
 
@@ -15,7 +17,7 @@ export class CheckboxElement extends InputElement implements PositionedUIElement
   }
 
   hasAnswerScheme(): boolean {
-    return true;
+    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

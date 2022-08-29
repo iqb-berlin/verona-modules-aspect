@@ -81,6 +81,7 @@
     "highlightableYellow": "Gelb",
     "highlightableTurquoise": "Türkis",
     "highlightableOrange": "Orange",
+    "hasSelectionPopup": "Farbauswahl-Popup",
     "allowUnset": "Deselektion erlauben",
     "readOnly": "Schreibgeschützt",
     "requiredField": "Pflichtfeld",

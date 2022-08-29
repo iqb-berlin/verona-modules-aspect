@@ -40,6 +40,15 @@ import { SelectionService } from '../../../../services/selection.service';
                     (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
         {{'propertiesPanel.highlightableOrange' | translate }}
       </mat-checkbox>
+      <mat-checkbox *ngIf="combinedProperties.hasSelectionPopup !== undefined"
+                    [disabled]="!combinedProperties.highlightableYellow &&
+                    !combinedProperties.highlightableTurquoise &&
+                    !combinedProperties.highlightableOrange"
+                    [checked]="$any(combinedProperties.hasSelectionPopup)"
+                    (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
+        {{'propertiesPanel.hasSelectionPopup' | translate }}
+      </mat-checkbox>
+
     </div>
   `,
   styles: [

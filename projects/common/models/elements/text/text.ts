@@ -12,6 +12,7 @@ export class TextElement extends UIElement implements PositionedUIElement {
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;
+  hasSelectionPopup: boolean = true;
   columnCount: number = 1;
   position: PositionProperties;
   styling: BasicStyles & {
@@ -24,6 +25,7 @@ export class TextElement extends UIElement implements PositionedUIElement {
     if (element.highlightableOrange) this.highlightableOrange = element.highlightableOrange;
     if (element.highlightableTurquoise) this.highlightableTurquoise = element.highlightableTurquoise;
     if (element.highlightableYellow) this.highlightableYellow = element.highlightableYellow;
+    if (element.hasSelectionPopup !== undefined) this.hasSelectionPopup = element.hasSelectionPopup;
     if (element.columnCount) this.columnCount = element.columnCount;
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {

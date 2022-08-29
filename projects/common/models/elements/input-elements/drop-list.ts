@@ -3,7 +3,7 @@ import { ElementFactory } from 'common/util/element.factory';
 import {
   InputElement, PositionedUIElement,
   DragNDropValueObject,
-  BasicStyles, PositionProperties, SchemerData, SchemerValue
+  BasicStyles, PositionProperties, AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
@@ -47,23 +47,23 @@ export class DropListElement extends InputElement implements PositionedUIElement
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(options: Array<DropListElement | DropListSimpleElement>): SchemerData {
+  getAnswerScheme(options: Array<DropListElement | DropListSimpleElement>): AnswerScheme {
     return {
       id: this.id,
       type: 'string',
       format: '',
       multiple: true,
       nullable: false,
-      values: this.getSchemerValues(options),
+      values: this.getAnswerSchemeValues(options),
       valuesComplete: true
     };
   }
 
-  private getSchemerValues( dropLists: Array<DropListElement | DropListSimpleElement>): SchemerValue[] {
+  private getAnswerSchemeValues( dropLists: Array<DropListElement | DropListSimpleElement>): AnswerSchemeValue[] {
     const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id) );
     if (valueDropLists.length || this.isSortingList()) {
       return [this, ...valueDropLists]

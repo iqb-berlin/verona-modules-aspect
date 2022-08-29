@@ -5,7 +5,7 @@ import {
   InputElement,
   PositionedUIElement,
   PositionProperties,
-  SchemerData, SchemerValue
+  AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
@@ -34,23 +34,23 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: !this.value && this.value !== 0,
-      values: this.getSchemerValues(),
+      values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
   }
 
-  private getSchemerValues(): SchemerValue[] {
+  private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return this.richTextOptions
       .map((option, index) => ({ value: (index + 1).toString(), label: option }));
   }

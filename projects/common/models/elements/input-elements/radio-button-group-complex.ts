@@ -4,7 +4,7 @@ import {
   BasicStyles,
   InputElement,
   PositionedUIElement,
-  PositionProperties, SchemerData, SchemerValue,
+  PositionProperties, AnswerScheme, AnswerSchemeValue,
   TextImageLabel
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -24,23 +24,23 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: !this.value && this.value !== 0,
-      values: this.getSchemerValues(),
+      values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
   }
 
-  private getSchemerValues(): SchemerValue[] {
+  private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return this.columns
       .map((option, index) => ({ value: (index + 1).toString(), label: option.text })); //TODO iMAGE
   }

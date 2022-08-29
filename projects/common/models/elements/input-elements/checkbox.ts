@@ -5,7 +5,7 @@ import {
   InputElement,
   PositionedUIElement,
   PositionProperties,
-  SchemerData, SchemerValue
+  AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
@@ -20,23 +20,23 @@ export class CheckboxElement extends InputElement implements PositionedUIElement
     this.styling = ElementFactory.initStylingProps(element.styling);
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'boolean',
       format: '',
       multiple: false,
       nullable: false,
-      values: this.getSchemerValues(),
+      values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
   }
 
-  private getSchemerValues(): SchemerValue[] {
+  private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return [
       { value: 'true', label: `Angekreuzt: ${this.label}` },
       { value: 'false', label: `Nicht Angekreuzt: ${this.label}` }

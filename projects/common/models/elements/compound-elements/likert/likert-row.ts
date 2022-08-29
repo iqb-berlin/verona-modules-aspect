@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { InputElement, SchemerData, SchemerValue, TextImageLabel } from 'common/models/elements/element';
+import { InputElement, AnswerScheme, AnswerSchemeValue, TextImageLabel } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   LikertRadioButtonGroupComponent
@@ -19,23 +19,23 @@ export class LikertRowElement extends InputElement {
     if (element.verticalButtonAlignment) this.verticalButtonAlignment = element.verticalButtonAlignment;
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: !this.value && this.value !== 0,
-      values: this.getSchemerValues(),
+      values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
   }
 
-  private getSchemerValues(): SchemerValue[] {
+  private getAnswerSchemeValues(): AnswerSchemeValue[] {
     console.log(this.value);
     return [
       { value: !this.value && this.value !== 0 ? 'null' : (this.value as number + 1).toString(),

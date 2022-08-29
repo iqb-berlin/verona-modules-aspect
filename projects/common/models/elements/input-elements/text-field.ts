@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, InputAssistancePreset, InputElement,
-  PositionedUIElement, PositionProperties, SchemerData
+  PositionedUIElement, PositionProperties, AnswerScheme
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
@@ -53,11 +53,11 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'string',

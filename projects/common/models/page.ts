@@ -1,6 +1,6 @@
 import { Section } from 'common/models/section';
 import { IDManager } from 'common/util/id-manager';
-import { SchemerData, UIElement } from 'common/models/elements/element';
+import { AnswerScheme, UIElement } from 'common/models/elements/element';
 
 export class Page {
   [index: string]: unknown;
@@ -28,7 +28,7 @@ export class Page {
     return this.sections.map(section => section.getAllElements(elementType)).flat();
   }
 
-  getSchemerData(dropLists: UIElement[]): SchemerData[] {
-    return this.sections.map(section => section.getSchemerData(dropLists)).flat();
+  getAnswerScheme(dropLists: UIElement[]): AnswerScheme[] {
+    return this.sections.map(section => section.getAnswerScheme(dropLists)).flat();
   }
 }

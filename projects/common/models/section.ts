@@ -3,7 +3,7 @@ import { IDManager } from 'common/util/id-manager';
 import {
   InputElement, PlayerElement,
   PositionedUIElement,
-  SchemerData,
+  AnswerScheme,
   UIElement,
   UIElementValue
 } from 'common/models/elements/element';
@@ -104,12 +104,12 @@ export class Section {
     return allElements;
   }
 
-  getSchemerData(dropLists: UIElement[]): SchemerData[] {
+  getAnswerScheme(dropLists: UIElement[]): AnswerScheme[] {
     return this.getAllElements()
-      .filter(element => element.hasSchemerData())
+      .filter(element => element.hasAnswerScheme())
       .map(element =>
         (element.type === 'drop-list' || element.type === 'drop-list-simple') ?
-          (element as InputElement).getSchemerData(dropLists) :
-          (element as InputElement | PlayerElement | TextElement | ImageElement).getSchemerData());
+          (element as InputElement).getAnswerScheme(dropLists) :
+          (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme());
   }
 }

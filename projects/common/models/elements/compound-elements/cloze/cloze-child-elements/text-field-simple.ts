@@ -1,6 +1,6 @@
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, InputAssistancePreset, InputElement, SchemerData
+  BasicStyles, InputAssistancePreset, InputElement, AnswerScheme
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -46,11 +46,11 @@ export class TextFieldSimpleElement extends InputElement {
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'string',

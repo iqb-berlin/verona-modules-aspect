@@ -3,8 +3,8 @@ import {
   BasicStyles,
   DragNDropValueObject,
   InputElement,
-  SchemerData,
-  SchemerValue
+  AnswerScheme,
+  AnswerSchemeValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -37,23 +37,23 @@ export class DropListSimpleElement extends InputElement {
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(dropLists: Array<DropListElement | DropListSimpleElement>): SchemerData {
+  getAnswerScheme(dropLists: Array<DropListElement | DropListSimpleElement>): AnswerScheme {
     return {
       id: this.id,
       type: 'string',
       format: '',
       multiple: true,
       nullable: false,
-      values: this.getSchemerValues(dropLists),
+      values: this.getAnswerSchemeValues(dropLists),
       valuesComplete: true
     };
   }
 
-  getSchemerValues(dropLists: Array<DropListElement | DropListSimpleElement>): SchemerValue[] {
+  getAnswerSchemeValues(dropLists: Array<DropListElement | DropListSimpleElement>): AnswerSchemeValue[] {
     const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id));
     return [this, ...valueDropLists]
       .map(dropList => dropList.value as DragNDropValueObject[])

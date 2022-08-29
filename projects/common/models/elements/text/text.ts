@@ -2,7 +2,7 @@ import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, PositionedUIElement,
-  PositionProperties, SchemerData, UIElement
+  PositionProperties, AnswerScheme, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
@@ -41,11 +41,11 @@ export class TextElement extends UIElement implements PositionedUIElement {
         this.highlightableOrange;
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return this.isHighlightable();
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'string',

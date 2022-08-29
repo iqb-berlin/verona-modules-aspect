@@ -1,5 +1,5 @@
 import { ElementFactory } from 'common/util/element.factory';
-import { BasicStyles, InputElement, SchemerData, SchemerValue } from 'common/models/elements/element';
+import { BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
@@ -32,23 +32,23 @@ export class ToggleButtonElement extends InputElement {
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: !this.value && this.value === 0,
-      values: this.getSchemerValues(),
+      values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
   }
 
-  private getSchemerValues(): SchemerValue[] {
+  private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return this.richTextOptions
       .map((option, index) => ({ value: (index + 1).toString(), label: option }));
   }

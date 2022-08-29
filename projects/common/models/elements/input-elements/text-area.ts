@@ -5,7 +5,7 @@ import {
   InputAssistancePreset,
   InputElement,
   PositionedUIElement,
-  PositionProperties, SchemerData
+  PositionProperties, AnswerScheme
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
@@ -46,11 +46,11 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'string',

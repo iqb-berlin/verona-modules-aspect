@@ -5,7 +5,7 @@ import {
   InputElement,
   PositionedUIElement,
   PositionProperties,
-  SchemerData, SchemerValue
+  AnswerScheme, AnswerSchemeValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropdownComponent } from 'common/components/input-elements/dropdown.component';
@@ -26,23 +26,23 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     };
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: this.allowUnset,
-      values: this.getSchemerValues(),
+      values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
   }
 
-  private getSchemerValues(): SchemerValue[] {
+  private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return this.options.map((option, index) => ({ value: (index + 1).toString(), label: option }));
   }
 

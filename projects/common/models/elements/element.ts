@@ -70,7 +70,7 @@ export abstract class UIElement {
     return [];
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return false;
   }
 
@@ -95,7 +95,7 @@ export abstract class InputElement extends UIElement {
     if (element.readOnly) this.readOnly = element.readOnly;
   }
 
-  abstract getSchemerData(options?: unknown): SchemerData;
+  abstract getAnswerScheme(options?: unknown): AnswerScheme;
 }
 
 
@@ -111,11 +111,11 @@ export abstract class PlayerElement extends UIElement {
     this.player = ElementFactory.initPlayerProps(element.player);
   }
 
-  hasSchemerData(): boolean {
+  hasAnswerScheme(): boolean {
     return true;
   }
 
-  getSchemerData(): SchemerData {
+  getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,
       type: 'string',
@@ -128,18 +128,18 @@ export abstract class PlayerElement extends UIElement {
   }
 }
 
-export interface SchemerValue {
+export interface AnswerSchemeValue {
   value: string;
   label: string;
 }
 
-export interface SchemerData {
+export interface AnswerScheme {
   id: string;
   type: string;
   format?: string;
   multiple?: boolean;
   nullable?: boolean;
-  values?: SchemerValue[];
+  values?: AnswerSchemeValue[];
   valuesComplete?: boolean;
 }
 

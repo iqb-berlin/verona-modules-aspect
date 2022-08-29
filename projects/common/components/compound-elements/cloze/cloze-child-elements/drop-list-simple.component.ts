@@ -53,12 +53,12 @@ import { DragNDropValueObject } from 'common/models/elements/element';
             <div *cdkDragPreview
                  [style.font-size.px]="elementModel.styling.fontSize"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
-              {{value.stringValue}}
+              {{value.text}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
                  [style.min-height.px]="elementModel.styling.fontSize">
             </div>
-            {{value.stringValue}}
+            {{value.text}}
           </div>
         </ng-template>
       </div>

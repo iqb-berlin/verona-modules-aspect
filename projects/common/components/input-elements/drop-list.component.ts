@@ -17,6 +17,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       iOS 14 is not able to determine the height of the flex container-->
       <div class="list"
            [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex', 'copyOnDrop': elementModel.copyOnDrop }"
+           [class.errors]="elementFormControl.errors && elementFormControl.touched"
            [style.min-height.px]="elementModel.position.useMinHeight ? elementModel.height - 6 : null"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
            [style.outline-color]="elementModel.highlightReceivingDropListColor"
@@ -115,6 +116,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.copyOnDrop .item {transform: none !important}',
     '.vertical-orientation.item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation.item:not(:last-child) {margin-right: 5px}',
+    '.errors {outline: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px;}', // TODO error message?
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px; z-index: 5;}',
     '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999; padding: 10px;}',
@@ -152,6 +154,7 @@ export class DropListComponent extends FormElementComponent {
       this.elementFormControl.setValue(
         (event.container.data.elementFormControl.value as DragNDropValueObject[])
       );
+      event.container.data.elementFormControl.markAsTouched();
     } else {
       const presentValueIDs = event.container.data.elementFormControl.value
         .map((value2: DragNDropValueObject) => value2.id);
@@ -166,6 +169,8 @@ export class DropListComponent extends FormElementComponent {
           (event.previousContainer.data.elementFormControl.value as DragNDropValueObject[])
         );
       }
+      event.container.data.elementFormControl.markAsTouched();
+      event.previousContainer.data.elementFormControl.markAsTouched();
     }
   }
 

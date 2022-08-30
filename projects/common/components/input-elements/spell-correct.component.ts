@@ -2,8 +2,8 @@ import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { MatInput } from '@angular/material/input';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
+import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-spell-correct',
@@ -52,12 +52,16 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
                                               (elementFormControl && elementFormControl.value === '') ?
                                               'line-through' : ''"
                 (click)="elementFormControl.value === null ?
-                           inputElement.focus() :
-                           buttonElement.focus();
-                        elementFormControl.value === null ?
-                            (elementFormControl.setValue('')) :
-                            elementFormControl.setValue(null)">{{elementModel.label}}
+                            inputElement.focus() :
+                            buttonElement.focus();
+                         elementFormControl.value === null ?
+                            elementFormControl.setValue('') :
+                            elementFormControl.setValue(null)">
+          {{elementModel.label}}
         </button>
+        <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched">
+          {{elementFormControl.errors | errorTransform: elementModel}}
+        </mat-error>
       </div>
     </div>
   `,

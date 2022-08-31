@@ -1,22 +1,22 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
-import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
-import { ValidationService } from '../../../services/validation.service';
-import { KeypadService } from '../../../services/keypad.service';
-import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
-import { KeyboardService } from '../../../services/keyboard.service';
-import { DeviceService } from '../../../services/device.service';
 import {
   TextFieldSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { CompoundElement, InputElement } from 'common/models/elements/element';
+import { UnitStateService } from '../../../services/unit-state.service';
+import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
+import { ValidationService } from '../../../services/validation.service';
+import { KeypadService } from '../../../services/keypad.service';
+import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
+import { KeyboardService } from '../../../services/keyboard.service';
+import { DeviceService } from '../../../services/device.service';
 
 @Component({
   selector: 'aspect-compound-group-element',
@@ -39,7 +39,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
-    public validatorService: ValidationService
+    public validationService: ValidationService
   ) {
     super();
   }
@@ -99,4 +99,3 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     this.keyboardService.close();
   }
 }
-

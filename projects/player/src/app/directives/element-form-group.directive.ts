@@ -24,7 +24,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   abstract translateService: TranslateService;
   abstract messageService: MessageService;
   abstract veronaSubscriptionService: VeronaSubscriptionService;
-  abstract validatorService: ValidationService;
+  abstract validationService: ValidationService;
 
   ngUnsubscribe = new Subject<void>();
 
@@ -43,7 +43,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
           });
         });
       if (ElementFormGroupDirective.needsValidation(elementModel)) {
-        this.validatorService.registerFormControl(formControl);
+        this.validationService.registerFormControl(formControl);
       }
     });
     this.veronaSubscriptionService.vopNavigationDeniedNotification

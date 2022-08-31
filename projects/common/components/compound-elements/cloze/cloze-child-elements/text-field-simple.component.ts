@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, Output, ViewEncapsulation
+  Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import {
@@ -15,10 +15,9 @@ import {
            autocapitalize="none"
            autocorrect="off"
            spellcheck="false"
-           [class.text-field-simple-error]="elementFormControl.errors && elementFormControl.touched"
+           [class.errors]="elementFormControl.errors && elementFormControl.touched"
            [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
                          (elementFormControl.errors | errorTransform: elementModel) : ''"
-           [matTooltipClass]="{'text-field-simple-error-tooltip': true}"
            [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.color]="elementModel.styling.fontColor"
@@ -35,17 +34,14 @@ import {
            (blur)="focusChanged.emit({ inputElement: input, focused: false })">
   `,
   styles: [
-    'aspect-text-field-simple .clozeChild {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}',
-    'aspect-text-field-simple input{width: calc(100% - 2px); height: calc(100% - 2px);}',
-    'aspect-text-field-simple input{vertical-align: top; padding: 0;}',
-    'aspect-text-field-simple input:hover {border: 1px solid currentColor;}',
-    'aspect-text-field-simple input:focus {outline: 1px solid #3f51b5;}',
-    '.text-field-simple-error {outline: 2px solid #f44336 !important;}',
-    '.text-field-simple-error:hover {border: 1px solid  #f44336;}',
-    '.text-field-simple-error-tooltip {border: 1px solid #f44336; margin-top: 8px !important;}',
-    '.text-field-simple-error-tooltip {background-color: white; color: #f44336 !important;}'
-  ],
-  encapsulation: ViewEncapsulation.None // Required for overriding tooltip
+    '.clozeChild {border: 1px solid rgba(0,0,0,.12); border-radius: 5px}',
+    'input {width: calc(100% - 2px); height: calc(100% - 2px); vertical-align: top; padding: 0;}',
+    'input:hover {border: 1px solid currentColor;}',
+    'input:focus {outline: 1px solid #3f51b5;}',
+    '.errors {border: 2px solid #f44336 !important;}',
+    '::ng-deep .mat-tooltip {border: 1px solid #f44336; margin-top: 8px !important;}',
+    '::ng-deep .mat-tooltip {background-color: white; color: #f44336 !important;}'
+  ]
 })
 export class TextFieldSimpleComponent extends FormElementComponent {
   @Input() elementModel!: TextFieldSimpleElement;

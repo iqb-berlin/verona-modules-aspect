@@ -5,16 +5,16 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
-import { UnitStateService } from '../services/unit-state.service';
-import { ElementModelElementCodeMappingService } from '../services/element-model-element-code-mapping.service';
-import { ElementGroupDirective } from './element-group.directive';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
-import { ValidationService } from '../services/validation.service';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement, InputElementValue } from 'common/models/elements/element';
 import { SliderElement } from 'common/models/elements/input-elements/slider';
+import { ValidationService } from '../services/validation.service';
+import { ElementGroupDirective } from './element-group.directive';
+import { ElementModelElementCodeMappingService } from '../services/element-model-element-code-mapping.service';
+import { UnitStateService } from '../services/unit-state.service';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
@@ -32,7 +32,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
     elementModels.forEach(elementModel => {
       const initialValue = this.elementModelElementCodeMappingService
         .mapToElementModelValue(this.unitStateService.getElementCodeById(elementModel.id)?.value, elementModel);
-      const formControl = new FormControl(initialValue, this.getValidators(elementModel));
+      const formControl = new FormControl(initialValue, ElementFormGroupDirective.getValidators(elementModel));
       this.form.addControl(elementModel.id, formControl);
       formControl.valueChanges
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -42,7 +42,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
             value: this.elementModelElementCodeMappingService.mapToElementCodeValue(inputValue, elementModel.type)
           });
         });
-      if (this.needsValidation(elementModel)) {
+      if (ElementFormGroupDirective.needsValidation(elementModel)) {
         this.validatorService.registerFormControl(formControl);
       }
     });
@@ -60,11 +60,11 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
     }
   }
 
-  private needsValidation = (elementModel: InputElement): boolean => [
+  private static needsValidation = (elementModel: InputElement): boolean => [
     elementModel.required, !!elementModel.minLength, !!elementModel.maxLength, !!elementModel.pattern
   ].some(validator => validator);
 
-  private getValidators = (elementModel: InputElement) => {
+  private static getValidators = (elementModel: InputElement) => {
     const validators: ValidatorFn[] = [];
     if (elementModel.required) {
       switch (elementModel.type) {
@@ -72,6 +72,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
           validators.push(Validators.requiredTrue);
           break;
         case 'slider':
+          validators.push(Validators.required);
           validators.push(Validators.min((elementModel as SliderElement).minValue + 1));
           break;
         default:

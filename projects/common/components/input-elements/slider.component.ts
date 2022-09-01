@@ -73,7 +73,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [style.margin-left.px]="elementModel.barStyle ? valueMin.offsetWidth/2 - 8: valueMin.offsetWidth"
            [style.margin-top.px]="elementModel.barStyle ? -32 : -valueContainer.offsetHeight">
         <mat-slider [class]="elementModel.barStyle ? 'bar-style' : ''"
-                    [disabled]="elementModel.readOnly"
+                    [isDisabled]="elementModel.readOnly"
                     [thumbLabel]="elementModel.thumbLabel"
                     [formControl]="elementFormControl"
                     [style.width.%]="100"

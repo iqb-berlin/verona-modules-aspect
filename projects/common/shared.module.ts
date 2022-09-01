@@ -65,6 +65,7 @@ import { StyleMarksPipe } from './pipes/styleMarks.pipe';
 import { TextMarkingButtonComponent } from './components/text/text-marking-bar/text-marking-button.component';
 import { CompoundChildOverlayComponent } from './components/compound-elements/cloze/compound-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
+import { IsDisabledDirective } from './directives/is-disabled.directive';
 
 @NgModule({
   imports: [
@@ -120,7 +121,8 @@ import { MarkListPipe } from './pipes/mark-list.pipe';
     StyleMarksPipe,
     TextMarkingButtonComponent,
     CompoundChildOverlayComponent,
-    MarkListPipe
+    MarkListPipe,
+    IsDisabledDirective
   ],
   exports: [
     CommonModule,

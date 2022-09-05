@@ -37,3 +37,4 @@ iqb-aspect-definition@1.0.0
 
 3.7.0
 - TextElement: +hasSelectionPopup: boolean;
+- ToggleButtonElement now have "options: TextLabel[]" instead of "richTextOptions: string[]"

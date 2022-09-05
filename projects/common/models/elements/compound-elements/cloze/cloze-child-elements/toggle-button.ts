@@ -1,6 +1,6 @@
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue
+  BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue, TextLabel
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -9,7 +9,7 @@ import {
 } from 'common/components/compound-elements/cloze/cloze-child-elements/toggle-button.component';
 
 export class ToggleButtonElement extends InputElement {
-  richTextOptions: string[] = [];
+  options: TextLabel[] = [];
   strikeOtherOptions: boolean = false;
   strikeSelectedOption: boolean = false;
   verticalOrientation: boolean = false;
@@ -21,7 +21,7 @@ export class ToggleButtonElement extends InputElement {
 
   constructor(element: Partial<ToggleButtonElement>, ...args: unknown[]) {
     super({ height: 25, ...element }, ...args);
-    if (element.richTextOptions) this.richTextOptions = element.richTextOptions;
+    if (element.options) this.options = element.options;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
     if (element.strikeSelectedOption) this.strikeSelectedOption = element.strikeSelectedOption;
     if (element.verticalOrientation) this.verticalOrientation = element.verticalOrientation;
@@ -53,11 +53,15 @@ export class ToggleButtonElement extends InputElement {
   }
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
-    return this.richTextOptions
-      .map((option, index) => ({ value: (index + 1).toString(), label: option }));
+    return this.options
+      .map((option, index) => ({ value: (index + 1).toString(), label: option.text }));
   }
 
   getElementComponent(): Type<ElementComponent> {
     return ToggleButtonComponent;
+  }
+
+  getNewOptionLabel(optionText: string): TextLabel {
+    return ElementFactory.createOptionLabel(optionText) as TextLabel;
   }
 }

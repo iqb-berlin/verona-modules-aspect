@@ -8,11 +8,10 @@ import { Unit } from 'common/models/unit';
 import {
   BasicStyles, DragNDropValueObject, ExtendedStyles,
   InputElement, PlayerProperties,
-  PositionedUIElement, PositionProperties, TextImageLabel, TextLabel,
+  PositionedUIElement, PositionProperties, TextImageLabel,
   UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { TextElement } from 'common/models/elements/text/text';
@@ -26,8 +25,8 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { IDManager } from 'common/util/id-manager';
-import packageJSON from '../../../package.json';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
+import packageJSON from '../../../package.json';
 
 @Injectable({
   providedIn: 'root'
@@ -61,14 +60,19 @@ export class SanitizationService {
   }
 
   private static isVersionOlderThanCurrent(version: [number, number, number]): boolean {
-    if (!version) return true;
-    if (version[0] < SanitizationService.expectedUnitVersion[0]) {
+    return SanitizationService.isOlderThan(version, SanitizationService.expectedUnitVersion);
+  }
+
+  private static isOlderThan(versionA: [number, number, number] | undefined,
+                             versionB: [number, number, number]): boolean {
+    if (!versionA) return true;
+    if (versionA[0] < versionB[0]) {
       return true;
     }
-    if (version[1] < SanitizationService.expectedUnitVersion[1]) {
+    if (versionA[1] < versionB[1]) {
       return true;
     }
-    return version[2] < SanitizationService.expectedUnitVersion[2];
+    return versionA[2] < versionB[2];
   }
 
   private sanitizePage(page: Page): Partial<Page> {
@@ -108,7 +112,7 @@ export class SanitizationService {
       newElement = this.handleClozeElement(newElement as Record<string, UIElementValue>);
     }
     if (newElement.type === 'toggle-button') {
-      newElement = SanitizationService.handleToggleButtonElement(newElement as ToggleButtonElement);
+      newElement = SanitizationService.handleToggleButtonElement(newElement as Record<string, UIElementValue>);
     }
     if (['drop-list', 'drop-list-simple'].includes(newElement.type as string)) {
       newElement = this.handleDropListElement(newElement as Record<string, UIElementValue>);
@@ -203,7 +207,8 @@ export class SanitizationService {
   private static getPlayerProps(element: Record<string, UIElementValue>): PlayerProperties {
     if (element.playerProps !== undefined) {
       return element.playerProps as PlayerProperties;
-    } else if (element.player !== undefined) {
+    }
+    if (element.player !== undefined) {
       return element.player as PlayerProperties;
     }
     return element as unknown as PlayerProperties;
@@ -382,14 +387,22 @@ export class SanitizationService {
       element;
   }
 
-  private static handleToggleButtonElement(element: ToggleButtonElement): ToggleButtonElement {
+  private static handleToggleButtonElement(element: Record<string, UIElementValue>): ToggleButtonElement {
     if (element.richTextOptions) {
-      return element;
+      return new ToggleButtonElement({
+        ...element,
+        options: (element.richTextOptions as string[])
+          .map(richTextOption => ({ text: richTextOption }))
+      });
     }
-    return new ToggleButtonElement({
-      ...element,
-      richTextOptions: element.options as string[]
-    });
+    if (element.options && SanitizationService.isOlderThan(SanitizationService.unitDefinitionVersion, [3, 7, 0])) {
+      return new ToggleButtonElement({
+        ...element,
+        options: (element.options as string[])
+          .map(options => ({ text: options }))
+      });
+    }
+    return element as ToggleButtonElement;
   }
 
   private static fixImageLabel(element: RadioButtonGroupComplexElement) {

@@ -35,13 +35,13 @@ export class UnitComponent implements OnInit {
       .subscribe((message: VopStartCommand) => this.configureUnit(message));
   }
 
-  private configureUnit( message: VopStartCommand): void {
+  private configureUnit(message: VopStartCommand): void {
     this.reset();
     setTimeout(() => {
       if (message.unitDefinition) {
-        const unitDefinition: Unit = new Unit(
-          this.sanitizationService.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
-        );
+        const unitDef = JSON.parse(message.unitDefinition);
+        SanitizationService.isUnitDefinitionOutdated(unitDef);
+        const unitDefinition: Unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
         LogService.info('player: unitDefinition', unitDefinition);
         this.configurePlayerAndPages(message, unitDefinition);
         this.configureServices(message);

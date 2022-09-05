@@ -10,7 +10,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                              [value]="elementModel.value"
                              [vertical]="elementModel.verticalOrientation"
                              [style.width]="elementModel.dynamicWidth ? 'unset' : '100%'">
-      <mat-button-toggle *ngFor="let option of elementModel.richTextOptions; let i = index"
+      <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
                          [value]="i"
                          [ngClass]="{ 'strike-other-options' : elementModel.strikeOtherOptions,
                                       'strike-selected-option' : elementModel.strikeSelectedOption }"
@@ -25,7 +25,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                                                  elementModel.styling.selectionColor :
                                                  elementModel.styling.backgroundColor"
                          [style.line-height.%]="elementModel.styling.lineHeight">
-        <div [innerHTML]="option"></div>
+        <div [innerHTML]="option.text | safeResourceHTML"></div>
       </mat-button-toggle>
     </mat-button-toggle-group>
   `,

@@ -373,7 +373,8 @@ export class SanitizationService {
 
   // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.
   private static handlePlusOne(element: InputElement): InputElement {
-    return ((SanitizationService.unitDefinitionVersion === [1, 1, 0]) && (element.value && element.value > 0)) ?
+    return ((SanitizationService.unitDefinitionVersion?.toString() ===
+      [1, 1, 0].toString()) && (element.value && element.value > 0)) ?
       {
         ...element,
         value: (element.value as number) - 1

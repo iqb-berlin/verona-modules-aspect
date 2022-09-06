@@ -16,6 +16,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
       <div class="list"
            [class.errors]="elementFormControl.errors && elementFormControl.touched"
            [class.dropList-highlight]="elementModel.highlightReceivingDropList"
+           [style.min-height.px]="elementModel.height"
            [style.border-color]="elementModel.highlightReceivingDropListColor"
            [style.border-width.px]="elementModel.highlightReceivingDropList ? 2 : 0"
            [style.color]="elementModel.styling.fontColor"

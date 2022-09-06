@@ -21,9 +21,6 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     if (element.options) this.options = [...element.options];
     if (element.alignment) this.alignment = element.alignment;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
-
-    this.value = element.value !== undefined ? element.value : [];
-
     this.position = ElementFactory.initPositionProps({ marginBottom: 30, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

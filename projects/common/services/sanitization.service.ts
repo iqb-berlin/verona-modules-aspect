@@ -395,7 +395,8 @@ export class SanitizationService {
           .map(richTextOption => ({ text: richTextOption }))
       });
     }
-    if (element.options && SanitizationService.isOlderThan(SanitizationService.unitDefinitionVersion, [3, 7, 0])) {
+    if (element.options &&
+      SanitizationService.isOlderThan(SanitizationService.unitDefinitionVersion, [3, 4, 0])) {
       return new ToggleButtonElement({
         ...element,
         options: (element.options as string[])

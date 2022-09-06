@@ -71,9 +71,9 @@
                 </mat-form-field>
                 <mat-form-field class="menuItem" appearance="fill">
                   <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
-                  <input matInput type="color"
+                  <input matInput type="color" #backgroundColor="ngModel"
                          [ngModel]="page.backgroundColor"
-                         (ngModelChange)="updateModel(page,'backgroundColor', $event.target.value)">
+                         (ngModelChange)="updateModel(page,'backgroundColor', $event, backgroundColor.valid)">
                 </mat-form-field>
                 <mat-checkbox class="menuItem"
                               [disabled]="unitService.unit.pages.length < 2 || unitService.unit.pages[0].alwaysVisible && i != 0"

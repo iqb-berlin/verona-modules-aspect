@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { DropdownElement } from 'common/models/elements/input-elements/dropdown';
+import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-dropdown',
@@ -25,7 +25,7 @@ import { DropdownElement } from 'common/models/elements/input-elements/dropdown'
         </mat-option>
         <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i"
                     [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'">
-          {{option}}
+          {{option.text}}
         </mat-option>
       </mat-select>
       <mat-error *ngIf="elementFormControl.errors">

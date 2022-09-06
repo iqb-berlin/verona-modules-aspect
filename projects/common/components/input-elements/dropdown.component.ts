@@ -19,7 +19,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         {{$any(elementModel).label}}
       </mat-label>
       <mat-select [formControl]="elementFormControl" [value]="elementModel.value">
-        <mat-option *ngIf="elementModel.allowUnset" value=""
+        <mat-option *ngIf="elementModel.allowUnset" [value]="null"
                     [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                     (click)="$event.preventDefault()">
         </mat-option>

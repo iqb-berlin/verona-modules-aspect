@@ -13,6 +13,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                              [style.width]="elementModel.dynamicWidth ? 'unset' : '100%'"
                              [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
                                            (elementFormControl.errors | errorTransform: elementModel) : ''"
+                             [matTooltipClass]="'error-tooltip'"
                              (focusout)="elementFormControl.markAsTouched()">
       <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
                          [value]="i"
@@ -35,8 +36,6 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
   `,
   styles: [
     '.errors {border: 2px solid #f44336 !important;}',
-    '::ng-deep .mat-tooltip {border: 1px solid #f44336; margin-top: 8px !important;}',
-    '::ng-deep .mat-tooltip {background-color: white; color: #f44336 !important;}',
     'mat-button-toggle-group {display: inline-flex; min-width: 70px; min-height: 20px; max-width: 100%;}',
     'mat-button-toggle-group {justify-content: center;}',
     ':host ::ng-deep .mat-button-toggle-label-content {line-height: unset}',

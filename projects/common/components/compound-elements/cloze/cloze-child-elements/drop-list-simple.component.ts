@@ -28,6 +28,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
            [style.backgroundColor]="elementModel.styling.backgroundColor"
            [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
                          (elementFormControl.errors | errorTransform: elementModel) : ''"
+           [matTooltipClass]="'error-tooltip'"
            cdkDropList
            [id]="elementModel.id"
            [cdkDropListData]="this"
@@ -74,7 +75,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
     '.item {border-radius: 5px; padding: 0 5px; height: 100%; text-align: center;}',
     '.item:not(:last-child) {margin-bottom: 5px;}',
     '.item:active {cursor: grabbing}',
-    '.errors {border: 2px solid #f44336 !important;}',
+    '.errors {box-sizing: border-box; border: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
     '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999;}',
@@ -82,10 +83,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
 
     '.dropList-highlight.cdk-drop-list-receiving {border: solid;}',
-    '.dropList-highlight.cdk-drop-list-dragging {border: solid;}',
-
-    '::ng-deep .mat-tooltip {border: 1px solid #f44336; margin-top: 8px !important;}',
-    '::ng-deep .mat-tooltip {background-color: white; color: #f44336 !important;}'
+    '.dropList-highlight.cdk-drop-list-dragging {border: solid;}'
   ]
 })
 export class DropListSimpleComponent extends FormElementComponent {

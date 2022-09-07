@@ -18,6 +18,7 @@ import {
            [class.errors]="elementFormControl.errors && elementFormControl.touched"
            [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
                          (elementFormControl.errors | errorTransform: elementModel) : ''"
+           [matTooltipClass]="'error-tooltip'"
            [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.color]="elementModel.styling.fontColor"
@@ -38,9 +39,7 @@ import {
     'input {width: calc(100% - 2px); height: calc(100% - 2px); vertical-align: top; padding: 0;}',
     'input:hover {border: 1px solid currentColor;}',
     'input:focus {outline: 1px solid #3f51b5;}',
-    '.errors {border: 2px solid #f44336 !important;}',
-    '::ng-deep .mat-tooltip {border: 1px solid #f44336; margin-top: 8px !important;}',
-    '::ng-deep .mat-tooltip {background-color: white; color: #f44336 !important;}'
+    '.errors {border: 2px solid #f44336 !important;}'
   ]
 })
 export class TextFieldSimpleComponent extends FormElementComponent {

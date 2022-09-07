@@ -19,7 +19,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                     (click)="elementModel.readOnly ? $event.preventDefault() : null">
-        <div [innerHTML]="elementModel.label"></div>
+        <div [innerHTML]="elementModel.label | safeResourceHTML"></div>
       </mat-checkbox>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">

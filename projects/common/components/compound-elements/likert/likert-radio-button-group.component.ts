@@ -23,7 +23,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
                     (elementModel.rowLabel.imgPosition === 'above' || elementModel.rowLabel.imgPosition === 'left')"
              [src]="elementModel.rowLabel.imgSrc | safeResourceUrl" alt="Image Placeholder"
              [style.object-fit]="'scale-down'" [style.max-width.%]="100">
-        <div [innerHTML]="elementModel.rowLabel.text"></div>
+        <div [innerHTML]="elementModel.rowLabel.text | safeResourceHTML"></div>
         <img *ngIf="elementModel.rowLabel.imgSrc &&
                     (elementModel.rowLabel.imgPosition === 'below' || elementModel.rowLabel.imgPosition === 'right')"
              [src]="elementModel.rowLabel.imgSrc | safeResourceUrl" alt="Image Placeholder"

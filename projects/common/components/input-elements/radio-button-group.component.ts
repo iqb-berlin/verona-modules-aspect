@@ -16,7 +16,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
       <label id="radio-group-label"
-             [innerHTML]="elementModel.label">
+             [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
       <mat-radio-group aria-labelledby="radio-group-label"
                        [fxLayout]="elementModel.alignment"

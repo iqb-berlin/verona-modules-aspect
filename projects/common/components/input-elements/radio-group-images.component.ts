@@ -6,7 +6,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   selector: 'aspect-radio-group-images',
   template: `
       <label id="radio-group-label"
-              [innerHTML]="elementModel.label">
+              [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
       <mat-radio-group aria-labelledby="radio-group-label"
                        [style.grid-template-columns]="elementModel.itemsPerRow !== null ?

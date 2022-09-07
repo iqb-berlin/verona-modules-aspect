@@ -29,7 +29,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                   (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
         <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
         <mat-option *ngFor="let option of $any(combinedProperties.options); let i = index" [value]="i">
-          <div fxFlex fxFlexAlign="center" [innerHTML]="option.text + ' (Index: ' + i + ')'"></div>
+          <div fxFlex fxFlexAlign="center" [innerHTML]="option.text + ' (Index: ' + i + ')' | safeResourceHTML"></div>
         </mat-option>
       </mat-select>
     </mat-form-field>

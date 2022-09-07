@@ -23,7 +23,7 @@ import { Label } from 'common/models/elements/element';
            (cdkDropListDropped)="moveListValue($event)">
         <div *ngFor="let item of itemList; let i = index" cdkDrag
              class="option-draggable" fxLayout="row">
-          <div fxFlex fxFlexAlign="center" [innerHTML]="item.text"></div>
+          <div fxFlex fxFlexAlign="center" [innerHTML]="item.text | safeResourceHTML"></div>
           <img [src]="$any(item).imgSrc"
                [style.object-fit]="'scale-down'" [style.height.px]="40">
           <button mat-icon-button color="primary"

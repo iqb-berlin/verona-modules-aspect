@@ -11,7 +11,7 @@ import { SelectionService } from '../../../../services/selection.service';
     <div *ngIf="combinedProperties.text" fxLayout="column">
       <ng-container>
         <div class="text-text"
-             [innerHTML]="$any(combinedProperties.text) | safeResourceHTML"
+             [innerHTML]="combinedProperties.text | safeResourceHTML"
              (click)="showTextEditDialog()">
         </div>
       </ng-container>

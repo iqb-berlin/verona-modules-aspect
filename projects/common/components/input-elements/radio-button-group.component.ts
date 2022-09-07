@@ -30,7 +30,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                           [value]="i"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [style.line-height.%]="elementModel.styling.lineHeight">
-          <div class="radio-button-label" [innerHTML]="sanitizer.bypassSecurityTrustHtml(option.text)"></div>
+          <div class="radio-button-label" [innerHTML]="option.text | safeResourceHTML"></div>
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                    class="error-message">

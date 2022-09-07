@@ -22,7 +22,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                [style.object-fit]="'scale-down'"
                [style.max-width.%]="100"
                [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
-          <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(option.text)"
+          <div [innerHTML]="option.text | safeResourceHTML"
                [style.background-color]="elementModel.styling.backgroundColor"
                [style.color]="elementModel.styling.fontColor"
                [style.font-family]="elementModel.styling.font"

@@ -52,7 +52,7 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
           <img *ngIf="column.imgSrc && column.imgPosition === 'above'"
                [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'">
-          <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(column.text)"></div>
+          <div [innerHTML]="column.text | safeResourceHTML"></div>
           <img *ngIf="column.imgSrc && column.imgPosition === 'below'"
                [src]="column.imgSrc | safeResourceUrl" alt="Image Placeholder"
                [style.object-fit]="'scale-down'">

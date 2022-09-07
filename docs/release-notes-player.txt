@@ -4,6 +4,8 @@ Player
 - Improve performance by reducing the frequency of change notifications to the host
 - Display pages in scroll mode without generated spacing
 - Add scroll buttons to pages that can be scrolled
+- Add validation error functionality to cloze elements
+- Fix reset option of dropdown element
 
 1.25.2
 - Fix the scroll position of input elements when

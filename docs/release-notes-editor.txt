@@ -3,6 +3,7 @@ Editor
 1.33.0
 - Make popup for selecting marker colors for text elements optional
 - Provide response schemes for elements. They are used by the "verona schemer"
+- Fix setting of background color of pages
 
 1.32.0
 - Fix likert row generation

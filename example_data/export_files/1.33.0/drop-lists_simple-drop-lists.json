@@ -1,0 +1,310 @@
+{
+  "type": "aspect-unit-definition",
+  "pages": [
+    {
+      "sections": [
+        {
+          "elements": [
+            {
+              "id": "drop-list_1",
+              "width": 180,
+              "height": 100,
+              "type": "drop-list",
+              "label": "Beschriftung",
+              "value": [
+                {
+                  "text": "1",
+                  "imgSrc": null,
+                  "imgPosition": "above",
+                  "id": "value_1"
+                },
+                {
+                  "text": "2",
+                  "imgSrc": null,
+                  "imgPosition": "above",
+                  "id": "value_2"
+                }
+              ],
+              "required": true,
+              "requiredWarnMessage": "Eingabe erforderlich",
+              "readOnly": false,
+              "onlyOneItem": false,
+              "connectedTo": [
+                "drop-list_2",
+                "drop-list-simple_1",
+                "drop-list-simple_2"
+              ],
+              "copyOnDrop": false,
+              "orientation": "vertical",
+              "highlightReceivingDropList": false,
+              "highlightReceivingDropListColor": "#006064",
+              "position": {
+                "fixedSize": false,
+                "dynamicPositioning": true,
+                "xPosition": 0,
+                "yPosition": 0,
+                "useMinHeight": true,
+                "gridColumn": 1,
+                "gridColumnRange": 1,
+                "gridRow": 1,
+                "gridRowRange": 1,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "marginTop": 0,
+                "marginBottom": 0,
+                "zIndex": 0
+              },
+              "styling": {
+                "backgroundColor": "#f4f4f2",
+                "itemBackgroundColor": "#c9e0e0",
+                "fontColor": "#000000",
+                "font": "Roboto",
+                "fontSize": 20,
+                "bold": false,
+                "italic": false,
+                "underline": false
+              }
+            }
+          ],
+          "height": 400,
+          "backgroundColor": "#ffffff",
+          "dynamicPositioning": true,
+          "autoColumnSize": true,
+          "autoRowSize": true,
+          "gridColumnSizes": "1fr 1fr",
+          "gridRowSizes": "1fr",
+          "activeAfterID": null
+        },
+        {
+          "elements": [
+            {
+              "id": "drop-list_2",
+              "width": 180,
+              "height": 100,
+              "type": "drop-list",
+              "label": "Beschriftung",
+              "value": [
+                {
+                  "text": "3",
+                  "imgSrc": null,
+                  "imgPosition": "above",
+                  "id": "value_3"
+                },
+                {
+                  "text": "4",
+                  "imgSrc": null,
+                  "imgPosition": "above",
+                  "id": "value_4"
+                }
+              ],
+              "required": true,
+              "requiredWarnMessage": "Eingabe erforderlich",
+              "readOnly": false,
+              "onlyOneItem": false,
+              "connectedTo": [
+                "drop-list_1",
+                "drop-list-simple_1",
+                "drop-list-simple_2"
+              ],
+              "copyOnDrop": false,
+              "orientation": "vertical",
+              "highlightReceivingDropList": false,
+              "highlightReceivingDropListColor": "#006064",
+              "position": {
+                "fixedSize": false,
+                "dynamicPositioning": true,
+                "xPosition": 0,
+                "yPosition": 0,
+                "useMinHeight": true,
+                "gridColumn": 1,
+                "gridColumnRange": 1,
+                "gridRow": 1,
+                "gridRowRange": 1,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "marginTop": 0,
+                "marginBottom": 0,
+                "zIndex": 0
+              },
+              "styling": {
+                "backgroundColor": "#f4f4f2",
+                "itemBackgroundColor": "#c9e0e0",
+                "fontColor": "#000000",
+                "font": "Roboto",
+                "fontSize": 20,
+                "bold": false,
+                "italic": false,
+                "underline": false
+              }
+            }
+          ],
+          "height": 400,
+          "backgroundColor": "#ffffff",
+          "dynamicPositioning": true,
+          "autoColumnSize": true,
+          "autoRowSize": true,
+          "gridColumnSizes": "1fr 1fr",
+          "gridRowSizes": "1fr",
+          "activeAfterID": null
+        },
+        {
+          "elements": [
+            {
+              "id": "cloze_1",
+              "width": 180,
+              "height": 200,
+              "type": "cloze",
+              "document": {
+                "type": "doc",
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "attrs": {
+                      "textAlign": "left",
+                      "indent": null,
+                      "indentSize": 20,
+                      "hangingIndent": false,
+                      "margin": 0
+                    },
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Lorem "
+                      },
+                      {
+                        "type": "DropList",
+                        "attrs": {
+                          "model": {
+                            "id": "drop-list-simple_1",
+                            "width": 150,
+                            "height": 30,
+                            "type": "drop-list-simple",
+                            "label": "Beschriftung",
+                            "value": [],
+                            "required": true,
+                            "requiredWarnMessage": "Eingabe erforderlich",
+                            "readOnly": false,
+                            "connectedTo": [
+                              "drop-list_1",
+                              "drop-list_2",
+                              "drop-list-simple_2"
+                            ],
+                            "copyOnDrop": false,
+                            "highlightReceivingDropList": false,
+                            "highlightReceivingDropListColor": "#006064",
+                            "styling": {
+                              "backgroundColor": "#f4f4f2",
+                              "itemBackgroundColor": "#c9e0e0",
+                              "fontColor": "#000000",
+                              "font": "Roboto",
+                              "fontSize": 20,
+                              "bold": false,
+                              "italic": false,
+                              "underline": false
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "text",
+                        "text": "Ipsum"
+                      },
+                      {
+                        "type": "DropList",
+                        "attrs": {
+                          "model": {
+                            "id": "drop-list-simple_2",
+                            "width": 150,
+                            "height": 30,
+                            "type": "drop-list-simple",
+                            "label": "Beschriftung",
+                            "value": [
+                              {
+                                "text": "5",
+                                "imgSrc": null,
+                                "imgPosition": "above",
+                                "id": "value_5"
+                              }
+                            ],
+                            "required": true,
+                            "requiredWarnMessage": "Eingabe erforderlich",
+                            "readOnly": false,
+                            "connectedTo": [
+                              "drop-list_1",
+                              "drop-list_2",
+                              "drop-list-simple_1"
+                            ],
+                            "copyOnDrop": false,
+                            "highlightReceivingDropList": false,
+                            "highlightReceivingDropListColor": "#006064",
+                            "styling": {
+                              "backgroundColor": "#f4f4f2",
+                              "itemBackgroundColor": "#c9e0e0",
+                              "fontColor": "#000000",
+                              "font": "Roboto",
+                              "fontSize": 20,
+                              "bold": false,
+                              "italic": false,
+                              "underline": false
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "type": "text",
+                        "text": "fdf"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "columnCount": 1,
+              "position": {
+                "fixedSize": false,
+                "dynamicPositioning": true,
+                "xPosition": 0,
+                "yPosition": 0,
+                "useMinHeight": false,
+                "gridColumn": 1,
+                "gridColumnRange": 1,
+                "gridRow": 1,
+                "gridRowRange": 1,
+                "marginLeft": 0,
+                "marginRight": 0,
+                "marginTop": 0,
+                "marginBottom": 0,
+                "zIndex": 0
+              },
+              "styling": {
+                "lineHeight": 150,
+                "fontColor": "#000000",
+                "font": "Roboto",
+                "fontSize": 20,
+                "bold": false,
+                "italic": false,
+                "underline": false,
+                "backgroundColor": "#d3d3d3"
+              }
+            }
+          ],
+          "height": 400,
+          "backgroundColor": "#ffffff",
+          "dynamicPositioning": true,
+          "autoColumnSize": true,
+          "autoRowSize": true,
+          "gridColumnSizes": "1fr 1fr",
+          "gridRowSizes": "1fr",
+          "activeAfterID": null
+        }
+      ],
+      "hasMaxWidth": false,
+      "maxWidth": 900,
+      "margin": 30,
+      "backgroundColor": "#ffffff",
+      "alwaysVisible": false,
+      "alwaysVisiblePagePosition": "left",
+      "alwaysVisibleAspectRatio": 50
+    }
+  ],
+  "version": "3.7.0"
+}

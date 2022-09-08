@@ -36,6 +36,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            [cdkDropListConnectedTo]="elementModel.connectedTo"
            [cdkDropListOrientation]="elementModel.orientation !== 'flex' ? $any(elementModel.orientation) : ''"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
+           tabindex="0"
+           (focusout)="elementFormControl.markAsTouched()"
            (cdkDropListDropped)="drop($event)">
 
         <ng-container *ngIf="!parentForm">
@@ -154,7 +156,6 @@ export class DropListComponent extends FormElementComponent {
       this.elementFormControl.setValue(
         (event.container.data.elementFormControl.value as DragNDropValueObject[])
       );
-      event.container.data.elementFormControl.markAsTouched();
     } else {
       const presentValueIDs = event.container.data.elementFormControl.value
         .map((value2: DragNDropValueObject) => value2.id);
@@ -169,8 +170,6 @@ export class DropListComponent extends FormElementComponent {
           (event.previousContainer.data.elementFormControl.value as DragNDropValueObject[])
         );
       }
-      event.container.data.elementFormControl.markAsTouched();
-      event.previousContainer.data.elementFormControl.markAsTouched();
     }
   }
 

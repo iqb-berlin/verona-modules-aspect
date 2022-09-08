@@ -34,6 +34,8 @@ import { DragNDropValueObject } from 'common/models/elements/element';
            [cdkDropListData]="this"
            [cdkDropListConnectedTo]="elementModel.connectedTo"
            [cdkDropListEnterPredicate]="onlyOneItemPredicate"
+           tabindex="0"
+           (focusout)="elementFormControl.markAsTouched()"
            (cdkDropListDropped)="drop($event)">
         <ng-container *ngIf="!parentForm">
             <ng-container *ngFor="let dropListValueElement of $any(elementModel.value)">
@@ -110,7 +112,6 @@ export class DropListSimpleComponent extends FormElementComponent {
         this.elementFormControl.setValue(
           (event.container.data.elementFormControl.value as DragNDropValueObject[])
         );
-        event.container.data.elementFormControl.markAsTouched();
       } else {
         transferArrayItem(
           event.previousContainer.data.elementFormControl.value as unknown as DragNDropValueObject[],
@@ -125,8 +126,6 @@ export class DropListSimpleComponent extends FormElementComponent {
       this.elementFormControl.setValue(
         (event.container.data.elementFormControl.value as DragNDropValueObject[])
       );
-      event.container.data.elementFormControl.markAsTouched();
-      event.previousContainer.data.elementFormControl.markAsTouched();
     }
   }
 

@@ -60,19 +60,14 @@ export class SanitizationService {
   }
 
   private static isVersionOlderThanCurrent(version: [number, number, number]): boolean {
-    return SanitizationService.isOlderThan(version, SanitizationService.expectedUnitVersion);
-  }
-
-  private static isOlderThan(versionA: [number, number, number] | undefined,
-                             versionB: [number, number, number]): boolean {
-    if (!versionA) return true;
-    if (versionA[0] < versionB[0]) {
+    if (!version) return true;
+    if (version[0] < SanitizationService.expectedUnitVersion[0]) {
       return true;
     }
-    if (versionA[1] < versionB[1]) {
+    if (version[1] < SanitizationService.expectedUnitVersion[1]) {
       return true;
     }
-    return versionA[2] < versionB[2];
+    return version[2] < SanitizationService.expectedUnitVersion[2];
   }
 
   private sanitizePage(page: Page): Partial<Page> {
@@ -395,13 +390,14 @@ export class SanitizationService {
           .map(richTextOption => ({ text: richTextOption }))
       });
     }
-    if (element.options &&
-      SanitizationService.isOlderThan(SanitizationService.unitDefinitionVersion, [3, 4, 0])) {
-      return new ToggleButtonElement({
-        ...element,
-        options: (element.options as string[])
-          .map(options => ({ text: options }))
-      });
+    if (element.options && (element.options as unknown[]).length) {
+      if (typeof (element.options as unknown[])[0] === 'string') {
+        return new ToggleButtonElement({
+          ...element,
+          options: (element.options as string[])
+            .map(options => ({ text: options }))
+        });
+      }
     }
     return element as ToggleButtonElement;
   }

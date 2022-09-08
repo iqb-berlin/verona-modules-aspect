@@ -39,9 +39,9 @@ export class UnitComponent implements OnInit {
     this.reset();
     setTimeout(() => {
       if (message.unitDefinition) {
-        const unitDef = JSON.parse(message.unitDefinition);
-        SanitizationService.isUnitDefinitionOutdated(unitDef);
-        const unitDefinition: Unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
+        const unitDefinition: Unit = new Unit(
+          this.sanitizationService.sanitizeUnitDefinition(JSON.parse(message.unitDefinition))
+        );
         LogService.info('player: unitDefinition', unitDefinition);
         this.configurePlayerAndPages(message, unitDefinition);
         this.configureServices(message);

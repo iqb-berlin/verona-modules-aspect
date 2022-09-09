@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PlayerConfig, VopStartCommand } from 'player/modules/verona/models/verona';
 import { Unit } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { DragNDropValueObject } from 'common/models/elements/element';
+import { DragNDropValueObject, UIElement } from 'common/models/elements/element';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Page } from 'common/models/page';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
@@ -51,7 +51,13 @@ export class UnitComponent implements OnInit {
         JSON.parse(message.unitState.dataParts.elementCodes) : [];
       this.elementModelElementCodeMappingService.dragNDropValueObjects = [
         ...unitDefinition.getAllElements('drop-list'),
-        ...unitDefinition.getAllElements('drop-list-simple')] as unknown as DragNDropValueObject[];
+        ...unitDefinition.getAllElements('drop-list-simple')]
+        .reduce(
+          (accumulator: DragNDropValueObject[], currentValue: UIElement) => (
+            (currentValue.value && (currentValue.value as DragNDropValueObject[]).length) ?
+              accumulator.concat(currentValue.value as DragNDropValueObject) :
+              accumulator), []
+        );
     } else {
       LogService.warn('player: message has no unitDefinition');
     }

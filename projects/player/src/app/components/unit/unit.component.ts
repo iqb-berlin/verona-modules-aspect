@@ -11,6 +11,7 @@ import { VeronaPostService } from 'player/modules/verona/services/verona-post.se
 import {
   ElementModelElementCodeMappingService
 } from 'player/src/app/services/element-model-element-code-mapping.service';
+import { IDManager } from 'common/util/id-manager';
 
 @Component({
   selector: 'aspect-unit',
@@ -18,6 +19,7 @@ import {
   styleUrls: ['./unit.component.scss']
 })
 export class UnitComponent implements OnInit {
+  idManager = IDManager.getInstance();
   pages: Page[] = [];
   playerConfig: PlayerConfig | null = null;
 
@@ -64,6 +66,7 @@ export class UnitComponent implements OnInit {
   }
 
   private reset(): void {
+    this.idManager.reset();
     this.pages = [];
     this.playerConfig = null;
     this.changeDetectorRef.detectChanges();

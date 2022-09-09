@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDragDrop, CdkDragEnter, CdkDragStart } from '@angular/cdk/drag-drop/drag-events';
 import {
   CdkDrag, CdkDropList, moveItemInArray, transferArrayItem
 } from '@angular/cdk/drag-drop';
@@ -7,6 +7,7 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 import { DropListSimpleElement } from
   'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { DragNDropValueObject } from 'common/models/elements/element';
+import { DropListComponent } from 'common/components/input-elements/drop-list.component';
 
 @Component({
   selector: 'aspect-drop-list-simple',
@@ -56,14 +57,14 @@ import { DragNDropValueObject } from 'common/models/elements/element';
           <div class="item"
                [style.background-color]="elementModel.styling.itemBackgroundColor"
                cdkDrag [cdkDragData]="{ element: value }"
-               (cdkDragStarted)=dragStart() (cdkDragEnded)="dragEnd()">
+               (cdkDragStarted)="dragStart($event)" (cdkDragEnded)="dragEnd()" (cdkDragEntered)="dragEnter($event)">
             <div *cdkDragPreview
                  [style.font-size.px]="elementModel.styling.fontSize"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
               {{value.text}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
-                 [style.min-height.px]="elementModel.styling.fontSize">
+                 [style.height.px]="placeHolderHeight">
             </div>
             {{value.text}}
           </div>
@@ -79,8 +80,8 @@ import { DragNDropValueObject } from 'common/models/elements/element';
     '.item:active {cursor: grabbing}',
     '.errors {box-sizing: border-box; border: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
-    '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px}',
-    '.drag-placeholder {background-color: lightgrey; border: dotted 3px #999;}',
+    '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px; box-shadow: 2px 2px 1px black;}',
+    '.drag-placeholder {box-sizing: border-box; border-radius: 5px; background-color: lightgrey; border: dotted 3px #999;}',
     '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
 
@@ -90,10 +91,13 @@ import { DragNDropValueObject } from 'common/models/elements/element';
 })
 export class DropListSimpleComponent extends FormElementComponent {
   @Input() elementModel!: DropListSimpleElement;
+  placeHolderHeight: number = 50;
 
   bodyElement: HTMLElement = document.body;
 
-  dragStart(): void {
+  dragStart(event: CdkDragStart<DropListSimpleComponent>): void {
+    const containerHeight = event.source.dropContainer.data.elementRef.nativeElement.offsetHeight;
+    this.placeHolderHeight = event.source.dropContainer.data instanceof DropListSimpleComponent ? containerHeight - 2 : 50;
     this.bodyElement.classList.add('inheritCursors');
     this.bodyElement.style.cursor = 'grabbing';
   }
@@ -127,6 +131,16 @@ export class DropListSimpleComponent extends FormElementComponent {
         (event.container.data.elementFormControl.value as DragNDropValueObject[])
       );
     }
+  }
+
+  dragEnter(event: CdkDragEnter<DropListSimpleComponent | DropListComponent, { element: DragNDropValueObject }>) {
+    const presentValueIDs = event.container.data.elementFormControl.value
+      .map((value: DragNDropValueObject) => value.id);
+    const itemCountOffset = presentValueIDs.includes(event.item.data.element.id) ? 1 : 0;
+    const containerHeight = event.container.data.elementRef.nativeElement.offsetHeight;
+    const itemsCount = presentValueIDs.length - itemCountOffset;
+    const condition = event.container.data instanceof DropListSimpleComponent || !itemsCount;
+    this.placeHolderHeight = condition ? containerHeight - 2 : 50;
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (

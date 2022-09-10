@@ -6,6 +6,7 @@ Player
 - Add scroll buttons to pages that can be scrolled
 - Display validation errors for children of cloze elements and for drop lists
 - Fix reset option of dropdown element
+- Improve setting of the height of placeholders in drop lists
 
 1.25.2
 - Fix the scroll position of input elements when

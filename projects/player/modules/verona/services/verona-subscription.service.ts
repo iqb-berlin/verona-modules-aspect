@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
+import { LogService } from 'player/modules/logging/services/log.service';
 import {
   VopContinueCommand, VopGetStateRequest,
   VopMessage,
@@ -7,7 +8,6 @@ import {
   VopPageNavigationCommand,
   VopStartCommand, VopStopCommand
 } from '../models/verona';
-import { LogService } from 'player/modules/logging/services/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +53,7 @@ export class VeronaSubscriptionService {
         this._vopGetStateRequest.next(messageData);
         break;
       default:
-        LogService.warn(`player: got message of unknown type ${messageData.type}`);
+        LogService.info(`player: got message of unknown type ${messageData.type}`);
     }
   }
 

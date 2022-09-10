@@ -135,7 +135,7 @@ export class UnitStateService {
         this._pagePresented.next(pageIndex);
       }
     } else {
-      LogService.warn(`player: page ${pageIndex} is already presented`);
+      LogService.info(`player: page ${pageIndex} is already presented`);
     }
   }
 

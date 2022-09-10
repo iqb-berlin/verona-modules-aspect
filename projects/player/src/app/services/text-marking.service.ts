@@ -2,12 +2,10 @@ import { TextComponent } from 'common/components/text/text.component';
 import { Injectable } from '@angular/core';
 import { LogService } from 'player/modules/logging/services/log.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class TextMarkingService {
-
   private static readonly MARKING_TAG = 'ASPECT-MARKED';
 
   static applyMarkingDataToText(
@@ -27,7 +25,7 @@ export class TextMarkingService {
         });
         textComponent.savedText = element.innerHTML;
       } else {
-        LogService.warn('Selection contains elements that are outside the text component!');
+        LogService.info('Selection contains elements that are outside the text component!');
       }
       selection.removeAllRanges();
     } // nothing to do!

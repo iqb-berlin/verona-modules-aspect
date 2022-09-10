@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { LogService } from 'player/modules/logging/services/log.service';
 import {
   LogData,
   NavigationTarget,
@@ -9,7 +10,6 @@ import {
   VopMetaData,
   VopStateChangedNotification
 } from '../models/verona';
-import { LogService } from 'player/modules/logging/services/log.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +41,7 @@ export class VeronaPostService {
     if (!this._isStandalone) {
       window.parent.postMessage(message, '*');
     } else {
-      LogService.warn('player: no host detected');
+      LogService.info('player: no host detected');
     }
   }
 

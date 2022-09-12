@@ -182,12 +182,6 @@ export class UnitService {
       newElement.position.yPosition += 10;
     }
 
-    if ('value' in newElement && newElement.value instanceof Object) { // replace value Ids with fresh ones (dropList)
-      (newElement.value as DragNDropValueObject[]).forEach((valueObject: { id: string }) => {
-        valueObject.id = this.idManager.getNewID('value');
-      });
-    }
-
     if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
       (newElement.rows as LikertRowElement[]).forEach((rowObject: { id: string }) => {
         rowObject.id = this.idManager.getNewID('likert_row');

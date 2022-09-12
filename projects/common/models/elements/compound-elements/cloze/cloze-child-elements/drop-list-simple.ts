@@ -21,10 +21,10 @@ export class DropListSimpleElement extends InputElement {
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListSimpleElement>, ...args: unknown[]) {
-    super({ width: 150, height: 30, ...element }, ...args);
-    if (element.value) {
-      this.value = DropListSimpleElement.checkAndRepairValueIDs(element.value);
+  constructor(element: Partial<DropListSimpleElement>, idManager?: IDManager) {
+    super({ width: 150, height: 30, ...element }, idManager);
+    if (element.value && idManager) { // IDManager should not be present in player, therefore no ID checks necessary
+      this.value = DropListSimpleElement.checkAndRepairValueIDs(element.value, idManager);
     }
     if (element.connectedTo) this.connectedTo = element.connectedTo;
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
@@ -65,23 +65,21 @@ export class DropListSimpleElement extends InputElement {
       .map(option => ({ value: option.id, label: option.text as string }));
   }
 
-  setProperty(property: string, value: UIElementValue) {
-    if (property === 'value') {
-      this.value = DropListSimpleElement.checkAndRepairValueIDs(value as DragNDropValueObject[]);
-    } else {
-      super.setProperty(property, value);
+  private static checkAndRepairValueIDs(valueList: DragNDropValueObject[],
+                                        idManager?: IDManager): DragNDropValueObject[] {
+    if (!idManager) {
+      return valueList;
     }
-  }
-
-  private static checkAndRepairValueIDs(valueList: DragNDropValueObject[]): DragNDropValueObject[] {
+    const newValueList: DragNDropValueObject[] = [];
     valueList.forEach(valueObject => {
       if (IDManager.getInstance().isIdAvailable(valueObject.id)) {
         IDManager.getInstance().addID(valueObject.id);
+        newValueList.push(valueObject);
       } else {
-        valueObject.id = IDManager.getInstance().getNewID('value');
+        newValueList.push({ ...valueObject, id: IDManager.getInstance().getNewID('value') });
       }
     });
-    return valueList;
+    return newValueList;
   }
 
   getElementComponent(): Type<ElementComponent> {

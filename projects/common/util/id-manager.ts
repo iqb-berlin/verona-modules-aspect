@@ -46,6 +46,7 @@ export class IDManager {
   }
 
   addID(id: string): void {
+    if (this.givenIDs.includes(id)) throw Error('ID already given');
     this.givenIDs.push(id);
   }
 

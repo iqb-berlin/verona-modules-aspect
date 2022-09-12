@@ -75,6 +75,7 @@
     "alignment": "Ausrichtung",
     "id": "ID",
     "label": "Beschriftung",
+    "label2": "Beschriftung (sekundär)",
     "text": "Text",
     "borderRadius": "Radius",
     "highlightable": "Markieren erlauben",

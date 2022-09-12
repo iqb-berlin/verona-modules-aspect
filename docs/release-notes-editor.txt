@@ -1,9 +1,37 @@
 Editor
 ======
 1.33.0
+- Provide response schemes for elements; They are used by the "verona schemer"
+- Implement changing media source for image, audio, video (also improve layout+styling)
+- Add option to hide borders of frame element
+  This way line-like elements are possible.
+- Implement strike-through for selected value of toggle-button
 - Make popup for selecting marker colors for text elements optional
-- Provide response schemes for elements. They are used by the "verona schemer"
+- Implement read-only for elements still missing it
+- Rework option elements
+  - All have "Options"
+    - Likert has "Rows" additionally
+  - All, except dropdown, can have rich text
+  - Improve properties panel layout and styling
+- Rework radio-group-images element layout
+  Add new parameter 'itemsPerRow'. This limits the grid columns used, making items move to the next row if overextending.
+- Add new special character to TextEditor: thin non-breaking space
+- Add primary and secondary label to likert
 - Fix setting of background color of pages
+- Fix shown position properties of elements created in static section
+- Fix input field (text+area) validation inputs (to actually show :))
+  - Also don't hide fields when unusable, but disable them. This way the UI should be less jumpy.
+    This is a general philosophy for the editor from now on.
+- Fix drop-list cursor when grabbing
+- Fix save/read of images within text elements
+- Fix button actions (was broken in several ways)
+- Fix duplication issues with radio-group-images and drop-list within cloze
+- Fix dynamic height of TextEditor dialog
+- Fix empty line in cloze text (no longer destroys the element)
+- Fix text field within cloze to have the same hover and focus styling as normal inputs
+- Fix properties panel Delete and Duplicate buttons to not work with cloze sub-elements
+- Improve several dialog layouts (mainly for labels and likert)
+- Fix several missing translations
 
 1.32.0
 - Fix likert row generation

@@ -266,7 +266,7 @@ export class SanitizationService {
       childElement.type = childElement.type === 'drop-list' ? 'drop-list-simple' : childElement.type;
     });
 
-    return new ClozeElement({
+    return {
       ...element,
       document: {
         ...doc,
@@ -289,7 +289,7 @@ export class SanitizationService {
               )) : undefined
           }))
       } as ClozeDocument
-    });
+    } as ClozeElement;
   }
 
   private static createClozeDocument(element: Record<string, UIElementValue>): ClozeDocument {
@@ -329,7 +329,9 @@ export class SanitizationService {
         });
       });
     }
-    if (newElement.value && !((newElement.value as DragNDropValueObject[])[0] instanceof Object)) {
+    if (newElement.value &&
+        (newElement.value as []).length > 0 &&
+        !((newElement.value as DragNDropValueObject[])[0] instanceof Object)) {
       const newValues: DragNDropValueObject[] = [];
       (newElement.value as string[]).forEach(value => {
         newValues.push({

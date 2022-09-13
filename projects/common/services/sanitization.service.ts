@@ -355,7 +355,7 @@ export class SanitizationService {
       newElement.value = newValues;
     }
 
-    if ((newElement.value as any)[0]?.stringValue) {
+    if ((newElement.value as any)[0]?.stringValue !== undefined) {
       type OldDragNDropValueObject = {
         id: string;
         stringValue?: string;

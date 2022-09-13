@@ -363,14 +363,14 @@ export class SanitizationService {
   }
 
   private static handleLikertRowElement(element: Record<string, UIElementValue>): Partial<LikertRowElement> {
-    return new LikertRowElement({
+    return {
       ...element,
       rowLabel: {
-        text: element.text,
-        imgSrc: element.imgSrc,
-        imgPosition: element.imgPosition || element.position || 'above'
+        text: (element.rowLabel as TextImageLabel).text,
+        imgSrc: (element.rowLabel as TextImageLabel).imgSrc,
+        imgPosition: (element.rowLabel as TextImageLabel).imgPosition || element.position || 'above'
       } as TextImageLabel
-    });
+    };
   }
 
   // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.

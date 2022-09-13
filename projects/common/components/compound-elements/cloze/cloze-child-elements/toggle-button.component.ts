@@ -17,8 +17,12 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                              (focusout)="elementFormControl.markAsTouched()">
       <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
                          [value]="i"
-                         [ngClass]="{ 'strike-other-options' : elementModel.strikeOtherOptions,
-                                      'strike-selected-option' : elementModel.strikeSelectedOption }"
+                         [ngClass]="{ 'strike-other-options' : (this.elementFormControl.value !== null ||
+                                                                  elementModel.value !== null) &&
+                                                               elementModel.strikeOtherOptions,
+                                      'strike-selected-option' : (this.elementFormControl.value !== null ||
+                                                                    elementModel.value !== null) &&
+                                                                 elementModel.strikeSelectedOption }"
                          [style.color]="elementModel.styling.fontColor"
                          [style.font-size.px]="elementModel.styling.fontSize"
                          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"

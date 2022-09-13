@@ -1,5 +1,8 @@
 Player
 ======
+1.26.2
+- Fix reading of old unit definition of likert options, radio-group-images image position and drop-list option with empty text
+
 1.26.1
 - Fix reading of old unit definition of likert-row, radio-group-images and drop-list
 - Fix strike-through in toggle-button to only appear after a value is set

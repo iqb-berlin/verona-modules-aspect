@@ -110,7 +110,7 @@ export class SanitizationService {
       newElement = SanitizationService.handleToggleButtonElement(newElement as Record<string, UIElementValue>);
     }
     if (['drop-list', 'drop-list-simple'].includes(newElement.type as string)) {
-      newElement = this.handleDropListElement(newElement as Record<string, UIElementValue>);
+      newElement = SanitizationService.handleDropListElement(newElement as Record<string, UIElementValue>);
     }
     if (['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button']
       .includes(newElement.type as string)) {
@@ -315,7 +315,7 @@ export class SanitizationService {
 
   /* before: simple string[]; after: DragNDropValueObject with ID and value.
   * Needs to be done to selectable options and the possibly set preset (value). */
-  private handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
+  private static handleDropListElement(element: Record<string, UIElementValue>): DropListElement {
     const newElement = { ...element };
     if (newElement.options) {
       console.warn('New dropList value IDs have been generated');
@@ -349,6 +349,21 @@ export class SanitizationService {
         valueObject.imgPosition = valueObject.imgPosition || valueObject.position;
       });
       newElement.value = newValues;
+    }
+
+    if ((newElement.value as any)[0]?.stringValue) {
+      type OldDragNDropValueObject = {
+        id: string;
+        stringValue?: string;
+        imgSrcValue?: string;
+      };
+      newElement.value = (newElement.value as OldDragNDropValueObject[])
+        .map((value: OldDragNDropValueObject) => ({
+          text: value.stringValue,
+          id: value.id,
+          imgSrc: value.imgSrcValue,
+          imgPosition: 'above'
+        } as DragNDropValueObject));
     }
     return newElement as DropListElement;
   }
@@ -404,10 +419,15 @@ export class SanitizationService {
     return element as ToggleButtonElement;
   }
 
-  private static fixImageLabel(element: RadioButtonGroupComplexElement) {
-    element.options.forEach(option => {
-      option.imgPosition = option.imgPosition || (option as any).position || 'above';
-    });
-    return element;
+  private static fixImageLabel(element: Partial<RadioButtonGroupComplexElement>) {
+    return {
+      ...element,
+      options: element.options ?
+        element.options :
+        (element.columns as TextImageLabel[])
+          .map((column: TextImageLabel) => ({
+            ...column, imgPosition: column.imgPosition || (column as any).position || 'above'
+          }))
+    };
   }
 }

@@ -1,5 +1,9 @@
 Editor
 ======
+1.33.1
+- Fix reading of old unit definition of likert-row, radio-group-images and drop-list
+- Fix strike-through in toggle-button to only appear after a value is set
+
 1.33.0
 - Provide response schemes for elements; They are used by the "verona schemer"
 - Implement changing media source for image, audio, video (also improve layout+styling)

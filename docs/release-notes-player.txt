@@ -1,5 +1,9 @@
 Player
 ======
+1.26.1
+- Fix reading of old unit definition of likert-row, radio-group-images and drop-list
+- Fix strike-through in toggle-button to only appear after a value is set
+
 1.26.0
 - Improve performance by reducing the frequency of change notifications to the host
 - Display pages in scroll mode without generated spacing

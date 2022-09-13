@@ -372,13 +372,19 @@ export class SanitizationService {
     return newElement as DropListElement;
   }
 
-  private handleLikertElement(element: LikertElement): LikertElement {
-    return new LikertElement({
+  private handleLikertElement(element: Partial<LikertElement>): LikertElement {
+    element.options = element.options || element.columns as any;
+    return {
       ...element,
-      options: element.options || element.columns,
+      options: element.options?.map(option => ({
+        text: option.text,
+        imgSrc: option.imgSrc,
+        imgPosition: option.imgPosition || (option as any).position
+      })),
       rows: element.rows
-        .map((row: LikertRowElement) => this.sanitizeElement(row as Record<string, UIElementValue>) as LikertRowElement)
-    });
+        ?.map((row: LikertRowElement) => (
+          this.sanitizeElement(row as Record<string, UIElementValue>) as LikertRowElement))
+    } as LikertElement;
   }
 
   private static handleLikertRowElement(element: Record<string, UIElementValue>): Partial<LikertRowElement> {

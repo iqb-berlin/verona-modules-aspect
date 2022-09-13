@@ -8,7 +8,7 @@ import { Unit } from 'common/models/unit';
 import {
   BasicStyles, DragNDropValueObject, ExtendedStyles,
   InputElement, PlayerProperties,
-  PositionedUIElement, PositionProperties, TextImageLabel,
+  PositionedUIElement, PositionProperties, TextImageLabel, TextLabel,
   UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
@@ -27,6 +27,7 @@ import { Section } from 'common/models/section';
 import { IDManager } from 'common/util/id-manager';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import packageJSON from '../../../package.json';
+import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +116,9 @@ export class SanitizationService {
     if (['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button']
       .includes(newElement.type as string)) {
       newElement = SanitizationService.handlePlusOne(newElement as InputElement);
+    }
+    if (['radio'].includes(newElement.type as string)) {
+      newElement = SanitizationService.handleRadioGroup(newElement as RadioButtonGroupElement);
     }
     if (['radio-group-images'].includes(newElement.type as string)) {
       newElement = SanitizationService.fixImageLabel(newElement as RadioButtonGroupComplexElement);
@@ -419,7 +423,7 @@ export class SanitizationService {
     return element as ToggleButtonElement;
   }
 
-  private static fixImageLabel(element: Partial<RadioButtonGroupComplexElement>) {
+  private static fixImageLabel(element: Partial<RadioButtonGroupComplexElement>): RadioButtonGroupComplexElement {
     return {
       ...element,
       options: element.options ?
@@ -428,6 +432,18 @@ export class SanitizationService {
           .map((column: TextImageLabel) => ({
             ...column, imgPosition: column.imgPosition || (column as any).position || 'above'
           }))
-    };
+    } as RadioButtonGroupComplexElement;
+  }
+
+  private static handleRadioGroup(element: Partial<RadioButtonGroupElement>): RadioButtonGroupElement {
+    return {
+      ...element,
+      options: element.options ?
+        element.options :
+        (element.richTextOptions as string[])
+          .map((option: string) => ({
+            text: option
+          }))
+    } as RadioButtonGroupElement;
   }
 }

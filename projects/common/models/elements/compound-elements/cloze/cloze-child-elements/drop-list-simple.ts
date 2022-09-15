@@ -8,7 +8,6 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import {
   DropListSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/drop-list-simple.component';
-import { IDManager } from 'common/util/id-manager';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 
 export class DropListSimpleElement extends InputElement {
@@ -21,11 +20,9 @@ export class DropListSimpleElement extends InputElement {
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListSimpleElement>, idManager?: IDManager) {
-    super({ width: 150, height: 30, ...element }, idManager);
-    if (element.value && idManager) { // IDManager should not be present in player, therefore no ID checks necessary
-      this.value = DropListSimpleElement.checkAndRepairValueIDs(element.value, idManager);
-    }
+  constructor(element: Partial<DropListSimpleElement>) {
+    super({ width: 150, height: 30, ...element });
+    this.value = element.value || [];
     if (element.connectedTo) this.connectedTo = element.connectedTo;
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
     if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
@@ -63,23 +60,6 @@ export class DropListSimpleElement extends InputElement {
       .map(dropList => dropList.value as DragNDropValueObject[])
       .flat()
       .map(option => ({ value: option.id, label: option.text as string }));
-  }
-
-  private static checkAndRepairValueIDs(valueList: DragNDropValueObject[],
-                                        idManager?: IDManager): DragNDropValueObject[] {
-    if (!idManager) {
-      return valueList;
-    }
-    const newValueList: DragNDropValueObject[] = [];
-    valueList.forEach(valueObject => {
-      if (IDManager.getInstance().isIdAvailable(valueObject.id)) {
-        IDManager.getInstance().addID(valueObject.id);
-        newValueList.push(valueObject);
-      } else {
-        newValueList.push({ ...valueObject, id: IDManager.getInstance().getNewID('value') });
-      }
-    });
-    return newValueList;
   }
 
   getElementComponent(): Type<ElementComponent> {

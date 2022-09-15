@@ -1,5 +1,4 @@
 import { Section } from 'common/models/section';
-import { IDManager } from 'common/util/id-manager';
 import { AnswerScheme, UIElement } from 'common/models/elements/element';
 
 export class Page {
@@ -13,7 +12,7 @@ export class Page {
   alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom' = 'left';
   alwaysVisibleAspectRatio: number = 50;
 
-  constructor(page?: Partial<Page>, idManager?: IDManager) {
+  constructor(page?: Partial<Page>) {
     if (page?.hasMaxWidth) this.hasMaxWidth = page.hasMaxWidth;
     if (page?.maxWidth) this.maxWidth = page.maxWidth;
     if (page?.margin !== undefined) this.margin = page.margin;
@@ -21,7 +20,7 @@ export class Page {
     if (page?.alwaysVisible) this.alwaysVisible = page.alwaysVisible;
     if (page?.alwaysVisiblePagePosition) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
     if (page?.alwaysVisibleAspectRatio) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
-    this.sections = page?.sections?.map(section => new Section(section, idManager)) || [new Section()];
+    this.sections = page?.sections?.map(section => new Section(section)) || [new Section()];
   }
 
   getAllElements(elementType?: string): UIElement[] {

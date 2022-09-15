@@ -10,10 +10,9 @@ import { Unit } from 'common/models/unit';
 import {
   CompoundElement,
   DragNDropValueObject, InputElement,
-  InputElementValue, TextLabel, PlayerElement, PlayerProperties, PositionedUIElement, TextImageLabel,
+  InputElementValue, TextLabel, PlayerElement, PlayerProperties, PositionedUIElement,
   UIElement, UIElementType, UIElementValue
 } from 'common/models/elements/element';
-import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { TextElement } from 'common/models/elements/text/text';
@@ -21,18 +20,16 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { ElementFactory } from 'common/util/element.factory';
-import { IDManager } from 'common/util/id-manager';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
+import { IDService } from './id.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UnitService {
   unit: Unit;
-  idManager = IDManager.getInstance();
-
   elementPropertyUpdated: Subject<void> = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
@@ -41,20 +38,22 @@ export class UnitService {
               private dialogService: DialogService,
               private sanitizationService: SanitizationService,
               private sanitizer: DomSanitizer,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private idService: IDService) {
     this.unit = new Unit();
   }
 
   loadUnitDefinition(unitDefinition: string): void {
-    this.idManager.reset();
+    this.idService.reset();
     const unitDef = JSON.parse(unitDefinition);
-    this.sanitizationService.checkAndRepairIDs(unitDef, this.idManager, this.messageService);
+    this.sanitizationService.checkAndRepairIDs(unitDef, this.idService, this.messageService);
     if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
       this.unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
       this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
     } else {
-      this.unit = new Unit(unitDef, this.idManager);
+      this.unit = new Unit(unitDef);
     }
+    this.idService.registerUnitIds(this.unit);
   }
 
   unitUpdated(): void {
@@ -62,7 +61,7 @@ export class UnitService {
   }
 
   addSection(page: Page, newSection?: Partial<Section>): void {
-    page.sections.push(new Section(newSection, IDManager.getInstance()));
+    page.sections.push(new Section(newSection));
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
@@ -130,7 +129,10 @@ export class UnitService {
         ...(!section.dynamicPositioning && { yPosition: coordinates.y })
       });
     }
-    section.addElement(Section.createElement(newElement, IDManager.getInstance()));
+    section.addElement(Section.createElement({
+      ...newElement,
+      id: this.idService.getAndRegisterNewID(newElement.type)
+    }));
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
@@ -146,15 +148,15 @@ export class UnitService {
     elements.forEach(element => {
       if (element.type === 'drop-list') {
         ((element as DropListElement).value as DragNDropValueObject[]).forEach((value: DragNDropValueObject) => {
-          this.idManager.removeId(value.id);
+          this.idService.removeId(value.id);
         });
       }
       if (element instanceof CompoundElement) {
         element.getChildElements().forEach((childElement: UIElement) => {
-          this.idManager.removeId(childElement.id);
+          this.idService.removeId(childElement.id);
         });
       }
-      this.idManager.removeId(element.id);
+      this.idService.removeId(element.id);
     });
   }
 
@@ -177,15 +179,23 @@ export class UnitService {
   }
 
   private duplicateElement(element: UIElement): UIElement {
-    const newElement = Section.createElement(element, IDManager.getInstance());
+    const newElement = Section.createElement(element);
+    newElement.id = this.idService.getAndRegisterNewID(newElement.type);
+
     if (newElement.position) {
       newElement.position.xPosition += 10;
       newElement.position.yPosition += 10;
     }
 
-    if ('row' in newElement && newElement.rows instanceof Object) { // replace row Ids with fresh ones (likert)
+    if (newElement.type === 'likert') { // replace row Ids with fresh ones (likert)
       (newElement.rows as LikertRowElement[]).forEach((rowObject: { id: string }) => {
-        rowObject.id = this.idManager.getNewID('likert_row');
+        rowObject.id = this.idService.getAndRegisterNewID('likert-row');
+      });
+    }
+
+    if (newElement.type === 'cloze') {
+      ClozeElement.getDocumentChildElements((newElement as ClozeElement).document).forEach(clozeChild => {
+        clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
       });
     }
     return newElement;
@@ -211,13 +221,20 @@ export class UnitService {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
-        if (!this.idManager.isIdAvailable((value as string))) { // prohibit existing IDs
+        if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError(this.translateService.instant('idTaken'));
         } else {
-          this.idManager.removeId(element.id);
-          this.idManager.addID(value as string);
+          this.idService.removeId(element.id);
+          this.idService.addID(value as string);
           element.id = value as string;
         }
+      } else if (property === 'document') {
+        element.setProperty(property, value);
+        ClozeElement.getDocumentChildElements(value as ClozeDocument).forEach(clozeChild => {
+          if (clozeChild.id === 'cloze-child-id-placeholder') {
+            clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
+          }
+        });
       } else {
         element.setProperty(property, value);
       }
@@ -371,7 +388,7 @@ export class UnitService {
   }
 
   getNewValueID(): string {
-    return this.idManager.getNewID('value');
+    return this.idService.getAndRegisterNewID('value');
   }
 
   /* Used by props panel to show available dropLists to connect */

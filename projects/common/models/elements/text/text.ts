@@ -19,8 +19,8 @@ export class TextElement extends UIElement implements PositionedUIElement {
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextElement>, ...args: unknown[]) {
-    super({ height: 98, ...element }, ...args);
+  constructor(element: Partial<TextElement>) {
+    super({ height: 98, ...element });
     if (element.text) this.text = element.text;
     if (element.highlightableOrange) this.highlightableOrange = element.highlightableOrange;
     if (element.highlightableTurquoise) this.highlightableTurquoise = element.highlightableTurquoise;

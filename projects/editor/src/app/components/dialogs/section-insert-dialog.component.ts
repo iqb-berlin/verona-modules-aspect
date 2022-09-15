@@ -4,8 +4,8 @@ import { MessageService } from 'common/services/message.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
-import { IDManager } from 'common/util/id-manager';
 import { TranslateService } from '@ngx-translate/core';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   selector: 'app-section-insert-dialog',
@@ -45,10 +45,10 @@ export class SectionInsertDialogComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { existingSection: Section },
               private messageService: MessageService,
+              private idManager: IDService,
               private translateService: TranslateService) { }
 
-
-  pasteSectionFromClipboard(event: ClipboardEvent) {
+  pasteSectionFromClipboard(event: ClipboardEvent): void {
     this.isPastedTextPresent = true;
     const pastedText = event.clipboardData?.getData('Text');
     if (!pastedText) {
@@ -73,7 +73,7 @@ export class SectionInsertDialogComponent {
   }
 
   private findElementsWithDuplicateID(elements: UIElement[]): UIElement[] {
-    return elements.filter(element => !IDManager.getInstance().isIdAvailable(element.id));
+    return elements.filter(element => !this.idManager.isIdAvailable(element.id));
   }
 
   ngOnDestroy(): void {

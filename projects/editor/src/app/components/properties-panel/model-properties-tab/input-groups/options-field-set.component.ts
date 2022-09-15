@@ -6,11 +6,11 @@ import {
 } from 'common/models/elements/element';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { IDManager } from 'common/util/id-manager';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   selector: 'aspect-options-field-set',
@@ -50,7 +50,8 @@ export class OptionsFieldSetComponent {
 
   constructor(private unitService: UnitService,
               private selectionService: SelectionService,
-              public dialogService: DialogService) { }
+              public dialogService: DialogService,
+              private idService: IDService) { }
 
   addOption(property: string, option: string): void {
     const selectedElements = this.selectionService.getSelectedElements() as OptionElement[];
@@ -94,13 +95,14 @@ export class OptionsFieldSetComponent {
   addLikertRow(rowLabelText: string): void {
     const newRow = new LikertRowElement({
       type: 'likert-row',
+      id: this.idService.getAndRegisterNewID('likert-row'),
       rowLabel: {
         text: rowLabelText,
         imgSrc: null,
         imgPosition: 'above'
       },
       columnCount: (this.combinedProperties.options as unknown[]).length
-    }, IDManager.getInstance());
+    });
     (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
   }

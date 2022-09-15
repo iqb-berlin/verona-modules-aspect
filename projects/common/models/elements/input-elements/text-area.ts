@@ -24,8 +24,8 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextAreaElement>, ...args: unknown[]) {
-    super({ width: 230, height: 132, ...element }, ...args);
+  constructor(element: Partial<TextAreaElement>) {
+    super({ width: 230, height: 132, ...element });
     if (element.appearance) this.appearance = element.appearance;
     if (element.resizeEnabled) this.resizeEnabled = element.resizeEnabled;
     if (element.rowCount) this.rowCount = element.rowCount;

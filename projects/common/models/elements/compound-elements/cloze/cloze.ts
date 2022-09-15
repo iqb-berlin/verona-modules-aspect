@@ -17,7 +17,6 @@ import {
   DropListSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
-import { IDManager } from 'common/util/id-manager';
 
 export class ClozeElement extends CompoundElement implements PositionedUIElement {
   document: ClozeDocument = { type: 'doc', content: [] };
@@ -27,10 +26,10 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     lineHeight: number;
   };
 
-  constructor(element: Partial<ClozeElement>, idManager?: IDManager) {
-    super({ height: 200, ...element }, idManager);
+  constructor(element: Partial<ClozeElement>) {
+    super({ height: 200, ...element });
     if (element.columnCount) this.columnCount = element.columnCount;
-    this.document = this.initDocument(element, idManager);
+    this.document = ClozeElement.initDocument(element.document);
     this.position = ElementFactory.initPositionProps(element.position);
     this.styling = {
       ...ElementFactory.initStylingProps({ lineHeight: 150, ...element.styling })
@@ -64,18 +63,17 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     node.content?.forEach((subNode: any) => {
       if (['ToggleButton', 'DropList', 'TextField'].includes(subNode.type) &&
         subNode.attrs.model.id === 'cloze-child-id-placeholder') {
-        const newID = IDManager.getInstance().getNewID(subNode.attrs.model.type);
         subNode.attrs.model =
-          ClozeElement.createChildElement({ ...subNode.attrs.model, id: newID }, IDManager.getInstance());
+          ClozeElement.createChildElement({ ...subNode.attrs.model });
       }
     });
   }
 
-  private initDocument(element: Partial<ClozeElement>, idManager?: IDManager): ClozeDocument {
+  private static initDocument(document?: ClozeDocument): ClozeDocument {
     return {
-      ...element.document,
+      ...document,
       type: 'doc',
-      content: element.document?.content ? element.document.content
+      content: document?.content ? document.content
         .map((paragraph: ClozeDocumentParagraph) => ({
           ...paragraph,
           content: paragraph.content ? paragraph.content
@@ -85,7 +83,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
                   ...paraPart,
                   attrs: {
                     ...paraPart.attrs,
-                    model: ClozeElement.createChildElement(paraPart.attrs?.model as InputElement, idManager)
+                    model: ClozeElement.createChildElement(paraPart.attrs?.model as InputElement)
                   }
                 } :
                 {
@@ -141,22 +139,21 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     return elementList;
   }
 
-  private static createChildElement(elementModel: Partial<UIElement>, idManager?: IDManager): InputElement {
+  private static createChildElement(elementModel: Partial<UIElement>): InputElement {
     let newElement: InputElement;
     switch (elementModel.type) {
       case 'text-field-simple':
-        newElement = new TextFieldSimpleElement(elementModel as TextFieldSimpleElement, idManager);
+        newElement = new TextFieldSimpleElement(elementModel as TextFieldSimpleElement);
         break;
       case 'drop-list-simple':
-        newElement = new DropListSimpleElement(elementModel as DropListSimpleElement, idManager);
+        newElement = new DropListSimpleElement(elementModel as DropListSimpleElement);
         break;
       case 'toggle-button':
-        newElement = new ToggleButtonElement(elementModel as ToggleButtonElement, idManager);
+        newElement = new ToggleButtonElement(elementModel as ToggleButtonElement);
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);
     }
-    // console.log('newElement', newElement);
     return newElement;
   }
 

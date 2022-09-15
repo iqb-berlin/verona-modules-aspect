@@ -9,8 +9,8 @@ export class VideoElement extends PlayerElement implements PositionedUIElement {
   scale: boolean = false;
   position: PositionProperties;
 
-  constructor(element: Partial<VideoElement>, ...args: unknown[]) {
-    super({ width: 280, height: 230, ...element }, ...args);
+  constructor(element: Partial<VideoElement>) {
+    super({ width: 280, height: 230, ...element });
     if (element.src) this.src = element.src;
     if (element.scale) this.scale = element.scale;
     this.position = ElementFactory.initPositionProps(element.position);

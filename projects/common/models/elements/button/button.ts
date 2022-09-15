@@ -17,8 +17,8 @@ export class ButtonElement extends UIElement implements PositionedUIElement {
     borderRadius: number;
   };
 
-  constructor(element: Partial<ButtonElement>, ...args: unknown[]) {
-    super(element, ...args);
+  constructor(element: Partial<ButtonElement>) {
+    super(element);
     if (element.label !== undefined) this.label = element.label;
     if (element.imageSrc) this.imageSrc = element.imageSrc;
     if (element.asLink) this.asLink = element.asLink;

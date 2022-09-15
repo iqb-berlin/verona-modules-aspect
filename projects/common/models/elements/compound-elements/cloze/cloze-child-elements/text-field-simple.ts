@@ -25,8 +25,8 @@ export class TextFieldSimpleElement extends InputElement {
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextFieldSimpleElement>, ...args: unknown[]) {
-    super({ width: 150, height: 30, ...element }, ...args);
+  constructor(element: Partial<TextFieldSimpleElement>) {
+    super({ width: 150, height: 30, ...element });
     if (element.minLength) this.minLength = element.minLength;
     if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
     if (element.maxLength) this.maxLength = element.maxLength;

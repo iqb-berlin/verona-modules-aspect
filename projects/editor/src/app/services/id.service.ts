@@ -1,6 +1,12 @@
-export class IDManager {
-  private static instance: IDManager;
+import { Injectable } from '@angular/core';
+import { Unit } from 'common/models/unit';
+import { UIElement } from 'common/models/elements/element';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 
+@Injectable({
+  providedIn: 'root'
+})
+export class IDService {
   givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,
@@ -28,13 +34,6 @@ export class IDManager {
     value: 0
   };
 
-  static getInstance(): IDManager {
-    if (!this.instance) {
-      this.instance = new this();
-    }
-    return this.instance;
-  }
-
   getNewID(type: string): string {
     if (!type) {
       throw Error('ID-Service: No type given!');
@@ -45,8 +44,14 @@ export class IDManager {
     return `${type}_${this.idCounter[type]}`;
   }
 
+  getAndRegisterNewID(elementType: string): string {
+    const newID = this.getNewID(elementType);
+    this.addID(newID);
+    return newID;
+  }
+
   addID(id: string): void {
-    if (this.givenIDs.includes(id)) throw Error('ID already given');
+    if (this.givenIDs.includes(id)) throw Error(`ID already given: ${id}`);
     this.givenIDs.push(id);
   }
 
@@ -64,5 +69,14 @@ export class IDManager {
       this.idCounter[counter] = 0;
     });
     this.givenIDs = [];
+  }
+
+  registerUnitIds(unit: Unit) {
+    unit.getAllElements().forEach(element => {
+      this.addID(element.id);
+      if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
+        (element as DropListElement).value.forEach(value => this.addID(value.id));
+      }
+    });
   }
 }

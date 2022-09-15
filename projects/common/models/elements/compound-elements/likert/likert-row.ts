@@ -13,8 +13,8 @@ export class LikertRowElement extends InputElement {
   firstColumnSizeRatio: number = 5;
   verticalButtonAlignment: 'auto' | 'center' = 'center';
 
-  constructor(element: Partial<LikertRowElement>, ...args: unknown[]) {
-    super(element, ...args);
+  constructor(element: Partial<LikertRowElement>) {
+    super(element);
     if (element.rowLabel) this.rowLabel = { ...element.rowLabel };
     if (element.columnCount) this.columnCount = element.columnCount;
     if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;

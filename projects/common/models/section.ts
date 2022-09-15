@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { IDManager } from 'common/util/id-manager';
 import {
   CompoundElement, PositionedUIElement, UIElement, UIElementValue, AnswerScheme, PlayerElement, InputElement
 } from 'common/models/elements/element';
@@ -63,7 +62,7 @@ export class Section {
     'toggle-button': ToggleButtonElement
   };
 
-  constructor(section?: Partial<Section>, idManager?: IDManager) {
+  constructor(section?: Partial<Section>) {
     if (section?.height) this.height = section.height;
     if (section?.backgroundColor) this.backgroundColor = section.backgroundColor;
     if (section?.dynamicPositioning !== undefined) this.dynamicPositioning = section.dynamicPositioning;
@@ -73,12 +72,12 @@ export class Section {
     if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
     if (section?.activeAfterID) this.activeAfterID = section.activeAfterID;
     this.elements =
-      section?.elements?.map(element => Section.createElement(element, idManager)) ||
+      section?.elements?.map(element => Section.createElement(element)) ||
       [];
   }
 
-  static createElement(element: { type: string } & Partial<UIElement>, idManager?: IDManager): PositionedUIElement {
-    return new Section.ELEMENT_CLASSES[element.type](element, idManager) as PositionedUIElement;
+  static createElement(element: { type: string } & Partial<UIElement>): PositionedUIElement {
+    return new Section.ELEMENT_CLASSES[element.type](element) as PositionedUIElement;
   }
 
   setProperty(property: string, value: UIElementValue): void {

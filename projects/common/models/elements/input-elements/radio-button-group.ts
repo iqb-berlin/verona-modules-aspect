@@ -16,8 +16,8 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     lineHeight: number;
   };
 
-  constructor(element: Partial<RadioButtonGroupElement>, ...args: unknown[]) {
-    super({ height: 100, ...element }, ...args);
+  constructor(element: Partial<RadioButtonGroupElement>) {
+    super({ height: 100, ...element });
     if (element.options) this.options = [...element.options];
     if (element.alignment) this.alignment = element.alignment;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;

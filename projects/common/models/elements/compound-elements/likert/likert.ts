@@ -21,11 +21,11 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     lineColoringColor: string;
   };
 
-  constructor(element: Partial<LikertElement>, ...args: unknown[]) {
-    super({ width: 250, height: 200, ...element }, ...args);
+  constructor(element: Partial<LikertElement>) {
+    super({ width: 250, height: 200, ...element });
     if (element.options) this.options = [...element.options];
     if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-    this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row, ...args)) : [];
+    this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row)) : [];
     this.label = element.label !== undefined ? element.label : 'Optionentabelle Beschriftung';
     this.label2 = element.label2 !== undefined ? element.label2 : 'Optionentabelle Erste Spalte';
     this.position = ElementFactory.initPositionProps(element.position);

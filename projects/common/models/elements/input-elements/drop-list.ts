@@ -8,7 +8,6 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
-import { IDManager } from 'common/util/id-manager';
 import {
   DropListSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
@@ -26,12 +25,9 @@ export class DropListElement extends InputElement implements PositionedUIElement
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListElement>, idManager?: IDManager) {
-    super({ height: 100, ...element }, idManager);
+  constructor(element: Partial<DropListElement>) {
+    super({ height: 100, ...element });
     this.value = element.value || [];
-    if (idManager) {
-      (this.value as DragNDropValueObject[]).forEach(valueElement => idManager.addID(valueElement.id));
-    }
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
     if (element.connectedTo) this.connectedTo = element.connectedTo;
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;

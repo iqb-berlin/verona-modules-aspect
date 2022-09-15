@@ -20,8 +20,8 @@ export class FrameElement extends UIElement implements PositionedUIElement {
     borderRadius: number;
   };
 
-  constructor(element: Partial<FrameElement>, ...args: unknown[]) {
-    super(element, ...args);
+  constructor(element: Partial<FrameElement>) {
+    super(element);
     this.position = ElementFactory.initPositionProps({ zIndex: -1, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

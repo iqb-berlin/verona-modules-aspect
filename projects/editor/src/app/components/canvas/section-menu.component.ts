@@ -8,6 +8,8 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'common/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
@@ -218,6 +220,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
               private selectionService: SelectionService,
               private dialogService: DialogService,
               private messageService: MessageService,
+              private idService: IDService,
               private clipboard: Clipboard) { }
 
   ngOnInit(): void {
@@ -312,9 +315,18 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((newSection: Section) => {
         if (newSection) {
+          newSection.getAllElements().filter(element => !this.idService.isIdAvailable(element.id)).forEach(element => {
+            element.id = this.idService.getAndRegisterNewID(element.type);
+            if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
+              (element as DropListElement).value
+                .filter(valueElement => !this.idService.isIdAvailable(valueElement.id))
+                .forEach(valueElement => {
+                  valueElement.id = this.idService.getAndRegisterNewID('value');
+                });
+            }
+          });
           this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
         }
       });
   }
-
 }

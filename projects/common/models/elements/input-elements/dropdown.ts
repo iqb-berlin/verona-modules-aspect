@@ -13,8 +13,8 @@ export class DropdownElement extends InputElement implements PositionedUIElement
   position: PositionProperties;
   styling: BasicStyles;
 
-  constructor(element: Partial<DropdownElement>, ...args: unknown[]) {
-    super({ width: 240, height: 83, ...element }, ...args);
+  constructor(element: Partial<DropdownElement>) {
+    super({ width: 240, height: 83, ...element });
     if (element.options) this.options = [...element.options];
     if (element.allowUnset) this.allowUnset = element.allowUnset;
     this.position = ElementFactory.initPositionProps(element.position);

@@ -26,8 +26,8 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextFieldElement>, ...args: unknown[]) {
-    super({ width: 180, height: 120, ...element }, ...args);
+  constructor(element: Partial<TextFieldElement>) {
+    super({ width: 180, height: 120, ...element });
     if (element.appearance) this.appearance = element.appearance;
     if (element.minLength !== undefined) this.minLength = element.minLength;
     if (element.minLengthWarnMessage) this.minLengthWarnMessage = element.minLengthWarnMessage;

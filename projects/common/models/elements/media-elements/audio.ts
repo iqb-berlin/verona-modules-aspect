@@ -8,8 +8,8 @@ export class AudioElement extends PlayerElement implements PositionedUIElement {
   src: string | null = null;
   position: PositionProperties;
 
-  constructor(element: Partial<AudioElement>, ...args: unknown[]) {
-    super({ width: 250, height: 90, ...element }, ...args);
+  constructor(element: Partial<AudioElement>) {
+    super({ width: 250, height: 90, ...element });
     if (element.src) this.src = element.src;
     this.position = ElementFactory.initPositionProps(element.position);
   }

@@ -19,8 +19,8 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
   position: PositionProperties;
   styling: BasicStyles;
 
-  constructor(element: Partial<SpellCorrectElement>, ...args: unknown[]) {
-    super({ width: 230, height: 80, ...element }, ...args);
+  constructor(element: Partial<SpellCorrectElement>) {
+    super({ width: 230, height: 80, ...element });
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
     if (element.restrictedToInputAssistanceChars !== undefined) {

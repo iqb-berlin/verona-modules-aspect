@@ -24,11 +24,11 @@ import {
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
-import { IDManager } from 'common/util/id-manager';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import packageJSON from '../../../package.json';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
 import { MessageService } from 'common/services/message.service';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,6 @@ export class SanitizationService {
 
   private static unitDefinitionVersion: [number, number, number] | undefined;
 
-  idList: string[] = [];
   repairLog: string[] = [];
 
   // TODO: isUnitDefinitionOutdated must not set the unitDefinitionVersion
@@ -56,8 +55,7 @@ export class SanitizationService {
     };
   }
 
-  checkAndRepairIDs(unitDefinition: Partial<Unit>, idManager: IDManager, messageService: MessageService): Partial<Unit> {
-    this.idList = [];
+  checkAndRepairIDs(unitDefinition: Partial<Unit>, idManager: IDService, messageService: MessageService): Partial<Unit> {
     this.repairLog = [];
     unitDefinition.pages?.forEach(page => {
       page.sections.forEach(section => {
@@ -77,18 +75,19 @@ export class SanitizationService {
       messageService.showPrompt(
         `Doppelte IDs gefunden: \n${this.repairLog.join('\n')}\n\n Es wurden neue IDs generiert.`);
     }
+    idManager.reset();
     return unitDefinition;
   }
 
   private checkIDList(element: UIElement | DragNDropValueObject,
-                      idManager: IDManager,
+                      idManager: IDService,
                       messageService: MessageService): void {
-    if (this.idList.includes(element.id)) {
+    if (!idManager.isIdAvailable(element.id)) {
       console.warn(`Id already in: ${element.id}! Generating a new one...`);
       this.repairLog.push(element.id);
       element.id = idManager.getNewID((element as UIElement).type || 'value');
     }
-    this.idList.push(element.id);
+    idManager.addID(element.id);
 
     if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
       (element as DropListElement).value.forEach(value => {
@@ -371,7 +370,7 @@ export class SanitizationService {
       newElement.value = [];
       (newElement.options as string[]).forEach(option => {
         (newElement.value as DragNDropValueObject[]).push({
-          id: IDManager.getInstance().getNewID('value'),
+          id: 'id_placeholder',
           text: option,
           imgSrc: null,
           imgPosition: 'above'
@@ -384,7 +383,7 @@ export class SanitizationService {
       const newValues: DragNDropValueObject[] = [];
       (newElement.value as string[]).forEach(value => {
         newValues.push({
-          id: IDManager.getInstance().getNewID('value'),
+          id: 'id_placeholder',
           text: value,
           imgSrc: null,
           imgPosition: 'above'

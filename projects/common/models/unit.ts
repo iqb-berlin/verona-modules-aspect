@@ -1,6 +1,5 @@
 import packageJSON from '../../../package.json';
 import { Page } from 'common/models/page';
-import { IDManager } from 'common/util/id-manager';
 import { AnswerScheme, UIElement } from 'common/models/elements/element';
 
 export class Unit {
@@ -8,9 +7,9 @@ export class Unit {
   version: string;
   pages: Page[] = [];
 
-  constructor(unit?: Partial<Unit>, idManager?: IDManager) {
+  constructor(unit?: Partial<Unit>) {
     this.version = packageJSON.config.unit_definition_version;
-    this.pages = unit?.pages?.map(page => new Page(page, idManager)) || [new Page()];
+    this.pages = unit?.pages?.map(page => new Page(page)) || [new Page()];
   }
 
   getAllElements(elementType?: string): UIElement[] {

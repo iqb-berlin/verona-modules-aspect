@@ -3,7 +3,6 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { Type } from '@angular/core';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ElementFactory } from 'common/util/element.factory';
-import { IDManager } from 'common/util/id-manager';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
@@ -19,7 +18,7 @@ export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOpe
 
 export abstract class UIElement {
   [index: string]: unknown;
-  id: string = 'id_placeholder';
+  id: string;
   type: UIElementType;
   width: number = 180;
   height: number = 60;
@@ -27,27 +26,10 @@ export abstract class UIElement {
   styling?: BasicStyles & ExtendedStyles;
   player?: PlayerProperties;
 
-  constructor(element: Partial<UIElement>, ...args: unknown[]) {
+  constructor(element: Partial<UIElement>) {
     if (!element.type) throw Error('Element has no type!');
     this.type = element.type;
-
-    // IDManager is an optional parameter. When given, check/repair and register the ID.
-    if (args[0]) {
-      const idManager: IDManager = args[0] as IDManager;
-      if (!element.id) {
-        this.id = idManager.getNewID(element.type as string);
-      } else if (!IDManager.getInstance().isIdAvailable(element.id)) {
-        this.id = idManager.getNewID(element.type as string);
-      } else {
-        this.id = element.id;
-      }
-      idManager.addID(this.id);
-    } else if (element.id) {
-      this.id = element.id;
-    } else {
-      throw Error('No ID for element!');
-    }
-
+    this.id = element.id || 'id_placeholder';
     if (element.width !== undefined) this.width = element.width;
     if (element.height !== undefined) this.height = element.height;
   }
@@ -88,8 +70,8 @@ export abstract class InputElement extends UIElement {
   requiredWarnMessage: string = 'Eingabe erforderlich';
   readOnly: boolean = false;
 
-  protected constructor(element: Partial<InputElement>, ...args: unknown[]) {
-    super(element, ...args);
+  protected constructor(element: Partial<InputElement>) {
+    super(element);
     if (element.label !== undefined) this.label = element.label;
     if (element.value !== undefined) this.value = element.value;
     if (element.required) this.required = element.required;
@@ -107,8 +89,8 @@ export abstract class CompoundElement extends UIElement {
 export abstract class PlayerElement extends UIElement {
   player: PlayerProperties;
 
-  protected constructor(element: Partial<PlayerElement>, ...args: unknown[]) {
-    super(element, ...args);
+  protected constructor(element: Partial<PlayerElement>) {
+    super(element);
     this.player = ElementFactory.initPlayerProps(element.player);
   }
 

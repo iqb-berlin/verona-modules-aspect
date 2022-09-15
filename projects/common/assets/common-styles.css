@@ -55,9 +55,9 @@ blockquote p {
   overflow: auto;
 }
 
-.snackbar-warning {border: 3px double #ff4d4d}
-.snackbar-error {background-color: #ff4d4d; white-space: pre-wrap;}
-.snackbar-success {background-color: green}
+.snackbar-warning, .snackbar-error {border: 3px double #ff4d4d}
+.snackbar-error {white-space: pre-wrap;}
+.snackbar-success {border: 3px double green;}
 
 .cdk-drag {
   cursor: grab;

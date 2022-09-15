@@ -48,6 +48,7 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     this.idManager.reset();
     const unitDef = JSON.parse(unitDefinition);
+    this.sanitizationService.checkAndRepairIDs(unitDef, this.idManager, this.messageService);
     if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
       this.unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
       this.messageService.showMessage(this.translateService.instant('outdatedUnit'));

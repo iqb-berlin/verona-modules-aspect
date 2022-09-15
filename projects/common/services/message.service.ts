@@ -22,4 +22,8 @@ export class MessageService {
   showError(text: string): void {
     this._snackBar.open(text, undefined, { duration: 3000, panelClass: 'snackbar-error' });
   }
+
+  showPrompt(text: string): void {
+    this._snackBar.open(text, 'OK', { panelClass: 'snackbar-error' });
+  }
 }

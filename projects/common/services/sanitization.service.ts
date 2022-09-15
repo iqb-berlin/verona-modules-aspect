@@ -28,6 +28,7 @@ import { IDManager } from 'common/util/id-manager';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import packageJSON from '../../../package.json';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { MessageService } from 'common/services/message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,9 @@ export class SanitizationService {
     packageJSON.config.unit_definition_version.split('.') as unknown as [number, number, number];
 
   private static unitDefinitionVersion: [number, number, number] | undefined;
+
+  idList: string[] = [];
+  repairLog: string[] = [];
 
   // TODO: isUnitDefinitionOutdated must not set the unitDefinitionVersion
   static isUnitDefinitionOutdated(unitDefinition: Partial<Unit>): boolean {
@@ -50,6 +54,47 @@ export class SanitizationService {
       ...unitDefinition,
       pages: unitDefinition.pages?.map((page: Page) => this.sanitizePage(page)) as Page[]
     };
+  }
+
+  checkAndRepairIDs(unitDefinition: Partial<Unit>, idManager: IDManager, messageService: MessageService): Partial<Unit> {
+    this.idList = [];
+    this.repairLog = [];
+    unitDefinition.pages?.forEach(page => {
+      page.sections.forEach(section => {
+        section.elements.forEach(element => {
+          this.checkIDList(element, idManager, messageService);
+          if (element.type === 'likert') {
+            (element as LikertElement).rows.forEach(row => this.checkIDList(row, idManager, messageService));
+          }
+          if (element.type === 'cloze') {
+            ClozeElement.getDocumentChildElements((element as ClozeElement).document)
+              .forEach(clozeChild => this.checkIDList(clozeChild, idManager, messageService));
+          }
+        });
+      });
+    });
+    if (this.repairLog.length > 0) {
+      messageService.showPrompt(
+        `Doppelte IDs gefunden: \n${this.repairLog.join('\n')}\n\n Es wurden neue IDs generiert.`);
+    }
+    return unitDefinition;
+  }
+
+  private checkIDList(element: UIElement | DragNDropValueObject,
+                      idManager: IDManager,
+                      messageService: MessageService): void {
+    if (this.idList.includes(element.id)) {
+      console.warn(`Id already in: ${element.id}! Generating a new one...`);
+      this.repairLog.push(element.id);
+      element.id = idManager.getNewID((element as UIElement).type || 'value');
+    }
+    this.idList.push(element.id);
+
+    if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
+      (element as DropListElement).value.forEach(value => {
+        this.checkIDList(value, idManager, messageService);
+      });
+    }
   }
 
   private static readUnitDefinitionVersion(unitDefinition: Record<string, string>): [number, number, number] {

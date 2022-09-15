@@ -1,5 +1,9 @@
 Editor
 ======
+1.33.3
+- Enable reading of duplicate IDs
+  IDs will be generated and a warning is shown.
+
 1.33.2
 - Fix reading of old unit definition of likert options, radio-group-images image position and drop-list option with empty text
 

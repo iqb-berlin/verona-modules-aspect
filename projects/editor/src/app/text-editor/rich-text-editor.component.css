@@ -3,7 +3,7 @@ tiptap-editor {
 }
 :host ::ng-deep div.ProseMirror {
   height: 99%;
-  border: 1px solid;
+  outline: none;
 }
 
 :host ::ng-deep .ProseMirror p strong {

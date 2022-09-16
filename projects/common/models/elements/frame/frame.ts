@@ -22,6 +22,10 @@ export class FrameElement extends UIElement implements PositionedUIElement {
 
   constructor(element: Partial<FrameElement>) {
     super(element);
+    this.hasBorderTop = element.hasBorderTop !== undefined ? element.hasBorderTop : true;
+    this.hasBorderBottom = element.hasBorderBottom !== undefined ? element.hasBorderBottom : true;
+    this.hasBorderLeft = element.hasBorderLeft !== undefined ? element.hasBorderLeft : true;
+    this.hasBorderRight = element.hasBorderRight !== undefined ? element.hasBorderRight : true;
     this.position = ElementFactory.initPositionProps({ zIndex: -1, ...element.position });
     this.styling = {
       ...ElementFactory.initStylingProps({

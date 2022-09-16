@@ -27,6 +27,7 @@ import {
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+           [style.background-color]="elementModel.styling.backgroundColor"
            [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
            [value]="elementModel.value"

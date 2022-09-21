@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
@@ -31,6 +31,7 @@ import { IDService } from './id.service';
 export class UnitService {
   unit: Unit;
   elementPropertyUpdated: Subject<void> = new Subject<void>();
+  geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
@@ -104,6 +105,10 @@ export class UnitService {
     const newElement: { type: string } & Partial<PositionedUIElement> = {
       type: elementType
     };
+    if (['geometry'].includes(elementType)) {
+      newElement.appDefinition = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
+      if (!newElement.appDefinition) return; // dialog canceled
+    }
     if (['audio', 'video', 'image'].includes(elementType)) {
       let mediaSrc = '';
       switch (elementType) {
@@ -237,6 +242,7 @@ export class UnitService {
         });
       } else {
         element.setProperty(property, value);
+        if (element.type === 'geometry') this.geometryElementPropertyUpdated.next(element.id);
       }
     });
     this.elementPropertyUpdated.next();

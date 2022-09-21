@@ -21,7 +21,8 @@ export interface PlayerConfig {
   pagingMode?: PagingMode;
   logPolicy?: 'lean' | 'rich' | 'debug' | 'disabled';
   startPage?: string;
-  enabledNavigationTargets?: NavigationTarget[]
+  enabledNavigationTargets?: NavigationTarget[];
+  directDownloadUrl?: string;
 }
 
 export interface ElementCode {

@@ -10,6 +10,8 @@ import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.
 import { CompoundChildOverlayComponent } from
   'common/components/compound-elements/cloze/compound-child-overlay.component';
 import { UIElement } from 'common/models/elements/element';
+import { GeometryComponent } from 'common/components/geometry/geometry.component';
+import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 
@@ -36,10 +38,11 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     // Make children not clickable. This way the only relevant events are managed by the overlay.
     this.childComponent.location.nativeElement.style.pointerEvents = 'none';
 
-    this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
-
+    if (this.childComponent.instance instanceof GeometryComponent) {
+      this.childComponent.instance.appDefinition = (this.element as GeometryElement).appDefinition;
+    }
     if (this.childComponent.instance instanceof ClozeComponent) {
-      // make cloze element children clickable
+      // make cloze element children clickable to access child elements
       this.childComponent.instance.editorMode = true;
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.childElementSelected
@@ -48,6 +51,19 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
           this.selectionService.selectElement({ elementComponent: elementSelectionEvent, multiSelect: false });
         });
     }
+
+    this.selectionService.selectElement({ elementComponent: this, multiSelect: false });
+
+    // Geogebra element needs to know when its props are updated, re-init itself
+    this.unitService.geometryElementPropertyUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (elementID: string) => {
+          if (this.element.type === 'geometry' && this.element.id === elementID) {
+            (this.childComponent.instance as GeometryComponent).refresh();
+          }
+        }
+      );
   }
 
   setSelected(newValue: boolean): void {

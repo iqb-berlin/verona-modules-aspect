@@ -31,6 +31,7 @@ export class IDService {
     cloze: 0,
     frame: 0,
     'toggle-button': 0,
+    geometry: 0,
     value: 0
   };
 

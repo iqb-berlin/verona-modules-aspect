@@ -8,8 +8,9 @@ import packageJSON from '../../../../../package.json';
   providedIn: 'root'
 })
 export class VeronaAPIService {
-  sessionID: string = '';
-  private _voeStartCommand = new Subject<VoeStartCommand>(); // TODO proper interfaces
+  sessionID: string | undefined;
+  resourceURL: string | undefined;
+  private _voeStartCommand = new Subject<VoeStartCommand>();
   private _voeGetDefinitionRequest = new Subject<VoeGetDefinitionRequest>();
 
   private isStandalone = window === window.parent;
@@ -25,6 +26,7 @@ export class VeronaAPIService {
     switch (messageData.type) {
       case 'voeStartCommand':
         this.sessionID = messageData.sessionId;
+        this.resourceURL = (messageData as VoeStartCommand).editorConfig.directDownloadUrl;
         this._voeStartCommand.next(messageData as VoeStartCommand);
         break;
       case 'voeGetDefinitionRequest':
@@ -33,6 +35,10 @@ export class VeronaAPIService {
       default:
         console.warn(`editor: got message of unknown type ${messageData}`);
     }
+  }
+
+  getResourceURL(): string {
+    return this.resourceURL || 'assets';
   }
 
   private send(message: Record<string, string | AnswerScheme[]>): void {
@@ -56,7 +62,7 @@ export class VeronaAPIService {
   sendVoeDefinitionChangedNotification(unit: Unit): void {
     this.send({
       type: 'voeDefinitionChangedNotification',
-      sessionId: this.sessionID,
+      sessionId: this.sessionID as string,
       timeStamp: String(Date.now()),
       unitDefinition: JSON.stringify(unit),
       unitDefinitionType: `${unit.type}@${unit.version}`,
@@ -79,6 +85,7 @@ export interface VoeStartCommand extends MessageEvent {
   unitDefinitionType: string,
   editorConfig: {
     definitionReportPolicy: string
+    directDownloadUrl: string
   }
 }
 

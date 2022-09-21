@@ -19,7 +19,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 
-import { SharedModule } from 'common/shared.module';
+import { APIService, SharedModule } from 'common/shared.module';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -87,6 +87,8 @@ import { OptionListPanelComponent } from './components/properties-panel/option-l
 import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
 import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
 import { BorderPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
+import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
+import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 
 @NgModule({
   declarations: [
@@ -135,7 +137,8 @@ import { BorderPropertiesComponent } from './components/properties-panel/model-p
     OptionListPanelComponent,
     LikertRowLabelPipe,
     LabelEditDialogComponent,
-    BorderPropertiesComponent
+    BorderPropertiesComponent,
+    GeogebraAppDefinitionDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -161,7 +164,9 @@ import { BorderPropertiesComponent } from './components/properties-panel/model-p
     }),
     MatListModule
   ],
-  providers: []
+  providers: [
+    { provide: APIService, useExisting: VeronaAPIService }
+  ]
 })
 
 export class AppModule implements DoBootstrap {

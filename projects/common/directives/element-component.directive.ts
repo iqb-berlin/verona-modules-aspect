@@ -1,16 +1,20 @@
 import {
   AfterContentChecked,
-  Directive, ElementRef
+  Directive, ElementRef, Renderer2
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UIElement } from 'common/models/elements/element';
+import { ExternalResourceService } from 'common/services/external-resource.service';
 
 @Directive()
 export abstract class ElementComponent implements AfterContentChecked {
   abstract elementModel: UIElement;
   project!: 'player' | 'editor';
 
-  constructor(public elementRef: ElementRef, public sanitizer: DomSanitizer) {}
+  constructor(public elementRef: ElementRef,
+              public sanitizer: DomSanitizer,
+              protected renderer: Renderer2,
+              protected externalResourceService: ExternalResourceService) {}
 
   get domElement(): Element {
     return this.elementRef.nativeElement;

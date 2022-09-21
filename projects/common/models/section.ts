@@ -26,6 +26,7 @@ import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { GeometryElement } from 'common/models/elements/geometry/geometry';
 
 export class Section {
   [index: string]: unknown;
@@ -59,7 +60,8 @@ export class Section {
     slider: SliderElement,
     'spell-correct': SpellCorrectElement,
     frame: FrameElement,
-    'toggle-button': ToggleButtonElement
+    'toggle-button': ToggleButtonElement,
+    geometry: GeometryElement
   };
 
   constructor(section?: Partial<Section>) {

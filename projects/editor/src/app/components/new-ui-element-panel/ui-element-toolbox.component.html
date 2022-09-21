@@ -122,5 +122,10 @@
       <mat-icon>crop_square</mat-icon>
       {{'toolbox.frame' | translate }}
     </button>
+    <button mat-stroked-button (click)="addUIElement('geometry')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','geometry');">
+      <mat-icon>architecture</mat-icon>
+      {{'toolbox.geometry' | translate }}
+    </button>
   </mat-expansion-panel>
 </mat-accordion>

@@ -1,0 +1,6 @@
+<aspect-geometry
+  #elementComponent
+  [elementModel]="elementModel | cast: GeometryElement"
+  [appDefinition]="appDefinition"
+  (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
+</aspect-geometry>

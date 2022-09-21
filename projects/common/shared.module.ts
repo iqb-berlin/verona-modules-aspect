@@ -66,6 +66,7 @@ import { TextMarkingButtonComponent } from './components/text/text-marking-bar/t
 import { CompoundChildOverlayComponent } from './components/compound-elements/cloze/compound-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
 import { IsDisabledDirective } from './directives/is-disabled.directive';
+import { GeometryComponent } from './components/geometry/geometry.component';
 
 @NgModule({
   imports: [
@@ -122,7 +123,8 @@ import { IsDisabledDirective } from './directives/is-disabled.directive';
     TextMarkingButtonComponent,
     CompoundChildOverlayComponent,
     MarkListPipe,
-    IsDisabledDirective
+    IsDisabledDirective,
+    GeometryComponent
   ],
   exports: [
     CommonModule,
@@ -159,7 +161,8 @@ import { IsDisabledDirective } from './directives/is-disabled.directive';
     LikertComponent,
     ButtonComponent,
     FrameComponent,
-    ImageComponent
+    ImageComponent,
+    GeometryComponent
   ]
 })
 export class SharedModule {
@@ -169,4 +172,8 @@ export class SharedModule {
       sanitizer.bypassSecurityTrustResourceUrl('assets/images/rubber-black.svg')
     );
   }
+}
+
+export abstract class APIService {
+  abstract getResourceURL(): string;
 }

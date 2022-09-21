@@ -12,7 +12,6 @@ import {
 @Injectable({
   providedIn: 'root'
 })
-
 export class VeronaSubscriptionService {
   private _vopStartCommand = new Subject<VopStartCommand>();
   private _vopNavigationDeniedNotification = new Subject<VopNavigationDeniedNotification>();
@@ -21,15 +20,22 @@ export class VeronaSubscriptionService {
   private _vopContinueCommand = new Subject<VopContinueCommand>();
   private _vopGetStateRequest = new Subject<VopGetStateRequest>();
 
+  resourceURL: string | undefined;
+
   constructor() {
     fromEvent(window, 'message')
       .subscribe((event: Event): void => this.handleMessage((event as MessageEvent).data as VopMessage));
+  }
+
+  getResourceURL(): string {
+    return this.resourceURL || 'assets';
   }
 
   private handleMessage(messageData: VopMessage): void {
     switch (messageData.type) {
       case 'vopStartCommand':
         LogService.info('player: _vopStartCommand ', messageData);
+        this.resourceURL = (messageData as VopStartCommand).playerConfig?.directDownloadUrl;
         this._vopStartCommand.next(messageData);
         break;
       case 'vopNavigationDeniedNotification':

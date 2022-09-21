@@ -14,6 +14,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -72,5 +73,10 @@ export class ElementModelPropertiesComponent {
       // no default
     }
     this.updateModel.emit({ property: 'src', value: mediaSrc });
+  }
+
+  async showGeogebraAppDefDialog() {
+    const appDefinition = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
+    if (appDefinition) this.updateModel.emit({ property: 'appDefinition', value: appDefinition });
   }
 }

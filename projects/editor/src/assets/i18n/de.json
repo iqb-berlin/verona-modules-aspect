@@ -166,7 +166,11 @@
     "hasBorderBottom": "Kante oben",
     "hasBorderTop": "Kante unten",
     "hasBorderLeft": "Kante links",
-    "hasBorderRight": "Kante rechts"
+    "hasBorderRight": "Kante rechts",
+    "showResetIcon": "Zurücksetzen-Knopf anzeigen",
+    "showToolbar": "Werkzeugleiste anzeigen",
+    "showZoomButtons": "Zoom-Knöpfe anzeigen",
+    "showFullscreenButton": "Vollbild-Knopf anzeigen"
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",
@@ -213,7 +217,8 @@
     "cloze": "Lückentext",
     "slider": "Schieberegler",
     "spell-correct": "Wort korrigieren",
-    "toggle-button": "Optionsfeld"
+    "toggle-button": "Optionsfeld",
+    "geometry": "Geometrie"
   },
   "section-menu": {
     "height": "Höhe",

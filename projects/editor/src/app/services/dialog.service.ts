@@ -18,6 +18,9 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
+import {
+  GeogebraAppDefinitionDialogComponent
+} from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -103,6 +106,13 @@ export class DialogService {
   showSectionInsertDialog(section: Section): Observable<Section> {
     const dialogRef = this.dialog.open(SectionInsertDialogComponent, {
       data: { section }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showGeogebraAppDefinitionDialog(): Observable<string> {
+    const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
+      data: { }
     });
     return dialogRef.afterClosed();
   }

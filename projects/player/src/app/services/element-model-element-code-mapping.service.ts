@@ -11,6 +11,7 @@ import { TextElement } from 'common/models/elements/text/text';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ImageElement } from 'common/models/elements/media-elements/image';
+import { GeometryElement } from 'common/models/elements/geometry/geometry';
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +20,8 @@ import { ImageElement } from 'common/models/elements/media-elements/image';
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
-  mapToElementModelValue = (
-    elementCodeValue: InputElementValue | undefined, elementModel: UIElement
-  ): InputElementValue => {
+  mapToElementModelValue = (elementCodeValue: InputElementValue | undefined, elementModel: UIElement)
+  : InputElementValue => {
     switch (elementModel.type) {
       case 'drop-list':
       case 'drop-list-simple':
@@ -52,6 +52,8 @@ export class ElementModelElementCodeMappingService {
       case 'likert-row':
         return elementCodeValue !== undefined && elementCodeValue !== null ?
           elementCodeValue as number - 1 : (elementModel as InputElement).value;
+      case 'geometry':
+        return elementCodeValue !== undefined ? elementCodeValue : (elementModel as GeometryElement).appDefinition;
       default:
         return elementCodeValue !== undefined ? elementCodeValue : (elementModel as InputElement).value;
     }

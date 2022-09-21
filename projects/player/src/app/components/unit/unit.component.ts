@@ -20,7 +20,7 @@ import { IDManager } from 'common/util/id-manager';
 })
 export class UnitComponent implements OnInit {
   pages: Page[] = [];
-  playerConfig: PlayerConfig | null = null;
+  playerConfig: PlayerConfig = {};
 
   constructor(public unitStateService: UnitStateService,
               private veronaPostService: VeronaPostService,
@@ -61,7 +61,7 @@ export class UnitComponent implements OnInit {
 
   private reset(): void {
     this.pages = [];
-    this.playerConfig = null;
+    this.playerConfig = {};
     this.changeDetectorRef.detectChanges();
   }
 }

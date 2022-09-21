@@ -5,9 +5,10 @@ import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { SharedModule } from 'common/shared.module';
+import { SharedModule, APIService } from 'common/shared.module';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
+import { DeviceService } from './services/device.service';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -47,6 +48,9 @@ import { PlayerStateDirective } from './directives/player-state.directive';
 import { SectionVisibilityHandlingDirective } from './directives/section-visibility-handling.directive';
 import { UnitComponent } from './components/unit/unit.component';
 import { PageScrollButtonComponent } from './components/page-scroll-button/page-scroll-button.component';
+import { ExternalAppGroupElementComponent } from
+  './components/elements/external-app-group-element/external-app-group-element.component';
+import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 
 @NgModule({
   declarations: [
@@ -77,7 +81,8 @@ import { PageScrollButtonComponent } from './components/page-scroll-button/page-
     PlayerStateDirective,
     SectionVisibilityHandlingDirective,
     UnitComponent,
-    PageScrollButtonComponent
+    PageScrollButtonComponent,
+    ExternalAppGroupElementComponent
   ],
   imports: [
     BrowserModule,
@@ -93,6 +98,9 @@ import { PageScrollButtonComponent } from './components/page-scroll-button/page-
     }),
     OverlayModule,
     UnitMenuModule
+  ],
+  providers: [
+    { provide: APIService, useExisting: VeronaSubscriptionService }
   ]
 })
 

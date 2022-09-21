@@ -20,7 +20,8 @@ export class ElementGroupSelectionComponent implements OnInit {
     },
     { name: 'compoundGroup', types: ['cloze', 'likert'] },
     { name: 'textGroup', types: ['text'] },
-    { name: 'interactiveGroup', types: ['button', 'image'] }
+    { name: 'interactiveGroup', types: ['button', 'image'] },
+    { name: 'externalAppGroup', types: ['geometry'] }
   ];
 
   selectedGroup!: ElementGroupName | undefined;

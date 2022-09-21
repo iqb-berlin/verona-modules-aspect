@@ -7,19 +7,8 @@ stages:
 default:
   image: iqbberlin/ci-node-chromium:latest
 
-install-npm-packages:
-  stage: install
-  script:
-    - npm ci --cache .npm  --prefer-offline
-  cache:
-    key: aspect-npm-packages
-    paths:
-      - .npm/
-
 test-unit:
   stage: test
-  needs:
-    - install-npm-packages
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
@@ -29,23 +18,19 @@ test-unit:
     paths:
       - .npm/
 
-build-packages:
-  stage: build
+deploy:
+  stage: deploy
+  only:
+    refs:
+      - master
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
     - npm run build-editor
     - npm run build-player
+    - ./scripts/deploy.sh $TESTSTUDIO_USERNAME $TESTSTUDIO_PASSWORD
   artifacts:
     paths:
       - dist/verona-editor-aspect-nightly.html
       - dist/verona-player-aspect-nightly.html
     expire_in: 1 week
-
-deploy:
-  stage: deploy
-  script:
-    - ./scripts/deploy.sh $TESTSTUDIO_USERNAME $TESTSTUDIO_PASSWORD
-  only:
-    refs:
-      - master

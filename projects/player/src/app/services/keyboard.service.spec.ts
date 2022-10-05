@@ -12,6 +12,7 @@ import * as textField_130 from 'test-data/element-models/text-field_130.json';
 import * as textFieldSimple_131 from 'test-data/element-models/text-field-simple_131.json';
 import * as textArea_130 from 'test-data/element-models/text-area_130.json';
 import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
+import { APIService } from 'common/shared.module';
 import { KeyboardService } from './keyboard.service';
 
 describe('KeyboardService', () => {
@@ -24,12 +25,21 @@ describe('KeyboardService', () => {
   let textAreaComponent: TextAreaComponent;
   let spellCorrectComponentFixture: ComponentFixture<SpellCorrectComponent>;
   let spellCorrectComponent: SpellCorrectComponent;
+
+  class ApiStubService {
+    // eslint-disable-next-line class-methods-use-this
+    getResourceURL(): string {
+      return 'assets';
+    }
+  }
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
         KeyInputModule
-      ]
+      ],
+      providers: [{ provide: APIService, useClass: ApiStubService }]
     });
     service = TestBed.inject(KeyboardService);
 

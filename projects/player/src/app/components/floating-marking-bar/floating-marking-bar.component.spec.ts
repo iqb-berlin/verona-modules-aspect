@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
-import * as text_130 from '../../../../../../test-data/element-models/text_130.json';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { TextComponent } from 'common/components/text/text.component';
+import { APIService } from 'common/shared.module';
+import * as text_130 from '../../../../../../test-data/element-models/text_130.json';
+import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
 
 describe('FloatingMarkingBarComponent', () => {
   let component: FloatingMarkingBarComponent;
@@ -10,10 +11,18 @@ describe('FloatingMarkingBarComponent', () => {
   let textComponentFixture: ComponentFixture<TextComponent>;
   let textComponent: TextComponent;
 
+  class ApiStubService {
+    // eslint-disable-next-line class-methods-use-this
+    getResourceURL(): string {
+      return 'assets';
+    }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FloatingMarkingBarComponent ],
-      imports: [ OverlayModule ]
+      declarations: [FloatingMarkingBarComponent],
+      imports: [OverlayModule],
+      providers: [{ provide: APIService, useClass: ApiStubService }]
     })
       .compileComponents();
   });
@@ -32,5 +41,4 @@ describe('FloatingMarkingBarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

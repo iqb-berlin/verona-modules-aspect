@@ -10,13 +10,24 @@ import * as sampleUnit112TextFields from 'test-data/unit-definitions/test112-Tex
 import * as sampleUnit130TextFields from 'test-data/unit-definitions/test130-textfields.json';
 import { Unit } from 'common/models/unit';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { APIService } from 'common/shared.module';
 import { SanitizationService } from './sanitization.service';
 import packageJSON from '../../../package.json';
 
 describe('SanitizationService', () => {
   let service: SanitizationService;
+
+  class ApiStubService {
+    // eslint-disable-next-line class-methods-use-this
+    getResourceURL(): string {
+      return 'assets';
+    }
+  }
+
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [{ provide: APIService, useClass: ApiStubService }]
+    });
     service = TestBed.inject(SanitizationService);
   });
 

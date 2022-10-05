@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PlayerLayoutComponent } from './player-layout.component';
 import { AlwaysVisiblePagePipe } from 'player/src/app/pipes/always-visible-page.pipe';
 import { ScrollPagesPipe } from 'player/src/app/pipes/scroll-pages.pipe';
 import { ValidPagesPipe } from 'player/src/app/pipes/valid-pages.pipe';
@@ -8,18 +7,24 @@ import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-l
 import { Component, Directive, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Page } from 'common/models/page';
+import { APIService } from 'common/shared.module';
+import { PlayerLayoutComponent } from './player-layout.component';
 
 describe('PlayerLayoutComponent', () => {
   let component: PlayerLayoutComponent;
   let fixture: ComponentFixture<PlayerLayoutComponent>;
-
   @Directive({ selector: '[aspectPlayerState]' })
   class PlayerStateStubDirective {
     @Input() validPages!: Record<string, string>;
     @Input() currentPageIndex!: number;
     @Input() isPlayerRunning!: BehaviorSubject<boolean>;
   }
-
+  class ApiStubService {
+    // eslint-disable-next-line class-methods-use-this
+    getResourceURL(): string {
+      return 'assets';
+    }
+  }
 
   @Component({ selector: 'aspect-pages-layout', template: '' })
   class PagesLayoutStubComponent {
@@ -48,7 +53,7 @@ describe('PlayerLayoutComponent', () => {
           }
         })
       ],
-      providers: [TranslateService]
+      providers: [TranslateService, { provide: APIService, useClass: ApiStubService }]
     })
       .compileComponents();
   });
@@ -62,5 +67,4 @@ describe('PlayerLayoutComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

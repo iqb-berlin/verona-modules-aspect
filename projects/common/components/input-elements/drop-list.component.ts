@@ -197,8 +197,8 @@ export class DropListComponent extends FormElementComponent {
   }
 
   setPlaceholderDimensions(itemsCount: number, orientation: unknown): void {
-    this.placeholderDimensions.height = itemsCount && orientation === 'vertical' ? 1 : 100;
-    this.placeholderDimensions.width = itemsCount && orientation !== 'vertical' ? 1 : 100;
+    this.placeholderDimensions.height = itemsCount && orientation !== 'horizontal' ? 1 : 100;
+    this.placeholderDimensions.width = itemsCount && orientation === 'horizontal' ? 1 : 100;
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (

@@ -35,6 +35,12 @@ import { ValueChangeElement } from 'common/models/elements/element';
                             [style.width]="element.dynamicWidth ? 'unset' : element.width+'px'"
                             [style.height.px]="element.height">
       </aspect-toggle-button>
+      <aspect-button *ngIf="element.type === 'button'" #childComponent
+                     [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                     [elementModel]="$any(element)"
+                     [style.width.px]="element.width"
+                     [style.height.px]="element.height">
+      </aspect-button>
     </div>
   `,
   styles: [

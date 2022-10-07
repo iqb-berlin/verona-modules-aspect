@@ -50,8 +50,8 @@ import { ButtonElement } from 'common/models/elements/button/button';
     <input
         *ngIf="elementModel.imageSrc" type="image"
         [src]="elementModel.imageSrc | safeResourceUrl"
-        [class]="elementModel.position.dynamicPositioning &&
-                    !elementModel.position.fixedSize ? 'dynamic-image' : 'static-image'"
+        [class]="elementModel.position?.dynamicPositioning &&
+                 !elementModel.position?.fixedSize ? 'dynamic-image' : 'static-image'"
         [alt]="'imageNotFound' | translate"
         (click)="elementModel.action && elementModel.actionParam !== null?
            navigateTo.emit({

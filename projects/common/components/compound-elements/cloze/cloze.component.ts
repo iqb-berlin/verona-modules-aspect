@@ -155,7 +155,7 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
                [style.height]="'1em'"
                [style.vertical-align]="'middle'">
         </ng-container>
-        <span *ngIf="['ToggleButton', 'DropList', 'TextField'].includes(subPart.type)">
+        <span *ngIf="['ToggleButton', 'DropList', 'TextField', 'Button'].includes(subPart.type)">
           <aspect-compound-child-overlay [style.display]="'inline-block'"
                                          [parentForm]="parentForm"
                                          [element]="$any(subPart).attrs.model"

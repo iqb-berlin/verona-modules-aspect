@@ -134,10 +134,11 @@ export class UnitService {
         ...(!section.dynamicPositioning && { yPosition: coordinates.y })
       });
     }
-    section.addElement(Section.createElement({
+    section.addElement(ElementFactory.createElement({
       ...newElement,
-      id: this.idService.getAndRegisterNewID(newElement.type)
-    }));
+      id: this.idService.getAndRegisterNewID(newElement.type),
+      position: ElementFactory.initPositionProps(newElement.position)
+    }) as PositionedUIElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
@@ -184,7 +185,7 @@ export class UnitService {
   }
 
   private duplicateElement(element: UIElement): UIElement {
-    const newElement = Section.createElement(element);
+    const newElement = ElementFactory.createElement(element);
     newElement.id = this.idService.getAndRegisterNewID(newElement.type);
 
     if (newElement.position) {

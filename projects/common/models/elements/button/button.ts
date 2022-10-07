@@ -1,18 +1,18 @@
 import { Type } from '@angular/core';
 import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, PositionedUIElement, PositionProperties, UIElement
+  BasicStyles, PositionProperties, UIElement
 } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
-export class ButtonElement extends UIElement implements PositionedUIElement {
+export class ButtonElement extends UIElement {
   label: string = 'Navigationsknopf';
   imageSrc: string | null = null;
   asLink: boolean = false;
   action: null | 'unitNav' | 'pageNav' = null;
   actionParam: null | 'previous' | 'next' | 'first' | 'last' | 'end' | number = null;
-  position: PositionProperties;
+  position: PositionProperties | undefined;
   styling: BasicStyles & {
     borderRadius: number;
   };
@@ -24,7 +24,7 @@ export class ButtonElement extends UIElement implements PositionedUIElement {
     if (element.asLink) this.asLink = element.asLink;
     if (element.action) this.action = element.action;
     if (element.actionParam) this.actionParam = element.actionParam;
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = element.position ? ElementFactory.initPositionProps(element.position) : undefined;
     this.styling = {
       ...ElementFactory.initStylingProps<{ borderRadius: number; }>({ borderRadius: 0, ...element.styling })
     };

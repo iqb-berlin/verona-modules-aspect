@@ -277,6 +277,10 @@
             (click)="insertToggleButton()">
       <mat-icon>radio_button_checked</mat-icon>
     </button>
+    <button mat-icon-button matTooltip="Navigationsknopf" [matTooltipShowDelay]="300"
+            (click)="insertButton()">
+      <mat-icon>navigation</mat-icon>
+    </button>
   </div>
 </div>
 <tiptap-editor [editor]="editor" [ngModel]="content" mat-dialog-content

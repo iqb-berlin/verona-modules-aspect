@@ -47,6 +47,7 @@ import { DropListOptionEditDialogComponent } from './components/dialogs/drop-lis
 import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/toggle-button-nodeview.component';
 import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
 import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
+import { ButtonNodeviewComponent } from './text-editor/angular-node-views/button-nodeview.component';
 import { PositionFieldSetComponent } from
   './components/properties-panel/position-properties-tab/input-groups/position-field-set.component';
 import { DimensionFieldSetComponent } from
@@ -107,6 +108,7 @@ import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
     ToggleButtonNodeviewComponent,
     TextFieldNodeviewComponent,
     DropListNodeviewComponent,
+    ButtonNodeviewComponent,
     ElementStylePropertiesComponent,
     ElementPositionPropertiesComponent,
     ConfirmationDialogComponent,

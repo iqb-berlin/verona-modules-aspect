@@ -27,6 +27,7 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { ElementFactory } from 'common/util/element.factory';
 
 export class Section {
   [index: string]: unknown;
@@ -40,30 +41,6 @@ export class Section {
   gridRowSizes: string = '1fr';
   activeAfterID: string | null = null;
 
-  static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
-    text: TextElement,
-    button: ButtonElement,
-    'text-field': TextFieldElement,
-    'text-field-simple': TextFieldSimpleElement,
-    'text-area': TextAreaElement,
-    checkbox: CheckboxElement,
-    dropdown: DropdownElement,
-    radio: RadioButtonGroupElement,
-    image: ImageElement,
-    audio: AudioElement,
-    video: VideoElement,
-    likert: LikertElement,
-    'radio-group-images': RadioButtonGroupComplexElement,
-    'drop-list': DropListElement,
-    'drop-list-simple': DropListSimpleElement,
-    cloze: ClozeElement,
-    slider: SliderElement,
-    'spell-correct': SpellCorrectElement,
-    frame: FrameElement,
-    'toggle-button': ToggleButtonElement,
-    geometry: GeometryElement
-  };
-
   constructor(section?: Partial<Section>) {
     if (section?.height) this.height = section.height;
     if (section?.backgroundColor) this.backgroundColor = section.backgroundColor;
@@ -74,12 +51,10 @@ export class Section {
     if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
     if (section?.activeAfterID) this.activeAfterID = section.activeAfterID;
     this.elements =
-      section?.elements?.map(element => Section.createElement(element)) ||
-      [];
-  }
-
-  static createElement(element: { type: string } & Partial<UIElement>): PositionedUIElement {
-    return new Section.ELEMENT_CLASSES[element.type](element) as PositionedUIElement;
+      section?.elements?.map(element => ({
+        ...ElementFactory.createElement(element),
+        position: ElementFactory.initPositionProps(element.position)
+      } as PositionedUIElement)) || [];
   }
 
   setProperty(property: string, value: UIElementValue): void {

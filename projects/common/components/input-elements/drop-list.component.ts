@@ -126,7 +126,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.horizontal-orientation.item:not(:last-child) {margin-right: 5px}',
     '.errors {outline: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
-    '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px; z-index: 5;}',
+    '.cdk-drag-preview {padding: 8px 20px; border-radius: 10px; z-index: 5; box-shadow: 2px 2px 5px black;}',
     '.drag-placeholder {box-sizing: border-box; border-radius: 5px; background-color: lightgrey; border: dotted 3px #999;}',
     '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',

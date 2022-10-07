@@ -64,8 +64,8 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
               {{value.text}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
-                 [style.height.%]="placeholderHeight"
-                 [style.width.%]="placeholderWidth">
+                 [style.height.%]="placeholderDimensions.height"
+                 [style.width.%]="placeholderDimensions.width">
             </div>
             {{value.text}}
           </div>
@@ -92,8 +92,7 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
 })
 export class DropListSimpleComponent extends FormElementComponent {
   @Input() elementModel!: DropListSimpleElement;
-  placeholderHeight: number = 1;
-  placeholderWidth: number = 1;
+  placeholderDimensions: { width: number, height: number } = { width: 1, height: 1 };
 
   bodyElement: HTMLElement = document.body;
 
@@ -147,8 +146,8 @@ export class DropListSimpleComponent extends FormElementComponent {
   }
 
   setPlaceholderDimensions(itemsCount: number, orientation: unknown): void {
-    this.placeholderHeight = itemsCount && orientation !== 'horizontal' ? 1 : 100;
-    this.placeholderWidth = itemsCount && orientation !== 'vertical' ? 1 : 100;
+    this.placeholderDimensions.height = itemsCount && orientation === 'vertical' ? 1 : 100;
+    this.placeholderDimensions.width = itemsCount && orientation !== 'vertical' ? 1 : 100;
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (

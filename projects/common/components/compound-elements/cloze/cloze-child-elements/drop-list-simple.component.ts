@@ -64,7 +64,8 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
               {{value.text}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
-                 [style.height.%]="placeholderHeight">
+                 [style.height.%]="placeholderHeight"
+                 [style.width.%]="placeholderWidth">
             </div>
             {{value.text}}
           </div>
@@ -92,11 +93,12 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
 export class DropListSimpleComponent extends FormElementComponent {
   @Input() elementModel!: DropListSimpleElement;
   placeholderHeight: number = 1;
+  placeholderWidth: number = 1;
 
   bodyElement: HTMLElement = document.body;
 
   dragStart(event: CdkDragStart<DropListSimpleComponent>): void {
-    this.setPlaceholderHeight(
+    this.setPlaceholderDimensions(
       event.source.dropContainer.data.elementFormControl.value.length - 1,
       event.source.dropContainer.data.elementModel.orientation
     );
@@ -139,13 +141,14 @@ export class DropListSimpleComponent extends FormElementComponent {
     const presentValueIDs = event.container.data.elementFormControl.value
       .map((value: DragNDropValueObject) => value.id);
     const itemCountOffset = presentValueIDs.includes(event.item.data.element.id) ? 1 : 0;
-    this.setPlaceholderHeight(
+    this.setPlaceholderDimensions(
       presentValueIDs.length - itemCountOffset,
       event.container.data.elementModel.orientation);
   }
 
-  setPlaceholderHeight(itemsCount: number, orientation: unknown): void {
+  setPlaceholderDimensions(itemsCount: number, orientation: unknown): void {
     this.placeholderHeight = itemsCount && orientation !== 'horizontal' ? 1 : 100;
+    this.placeholderWidth = itemsCount && orientation !== 'vertical' ? 1 : 100;
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (

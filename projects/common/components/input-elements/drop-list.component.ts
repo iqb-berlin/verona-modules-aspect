@@ -127,7 +127,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.errors {outline: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 5px; z-index: 5; box-shadow: 2px 2px 5px black;}',
-    '.drag-placeholder {box-sizing: border-box; border-radius: 5px; background-color: lightgrey; border: dotted 3px #999;}',
+    '.drag-placeholder {box-sizing: border-box; border-radius: 5px; background-color: lightgrey; border: solid 3px #999;}',
     '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.dropList-highlight.cdk-drop-list-receiving {outline: solid;}',

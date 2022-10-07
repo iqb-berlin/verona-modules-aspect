@@ -11,7 +11,6 @@ import { VeronaPostService } from 'player/modules/verona/services/verona-post.se
 import {
   ElementModelElementCodeMappingService
 } from 'player/src/app/services/element-model-element-code-mapping.service';
-import { IDManager } from 'common/util/id-manager';
 
 @Component({
   selector: 'aspect-unit',

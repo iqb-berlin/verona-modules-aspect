@@ -17,7 +17,7 @@
         [position]="position"
         (keyClicked)="evaluateKeyValue($event)">
     </aspect-keypad-french>
-    <aspect-keypad-math
+    <aspect-keypad-layout
         *ngIf="preset !== 'french'"
         [inputElement]="inputElement"
         [preset]="preset"
@@ -28,6 +28,6 @@
         [hasReturnKey]="hasReturnKey"
         (backSpaceClicked)="backSpaceClicked.emit()"
         (keyClicked)="evaluateKeyValue($event)">
-    </aspect-keypad-math>
+    </aspect-keypad-layout>
   </div>
 </div>

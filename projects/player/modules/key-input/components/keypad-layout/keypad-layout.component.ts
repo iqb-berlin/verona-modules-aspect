@@ -6,11 +6,11 @@ import { KeyInputRestrictionDirective } from '../../directives/key-input-restric
 import { KeyLayout } from '../../configs/key-layout';
 
 @Component({
-  selector: 'aspect-keypad-math',
-  templateUrl: './keypad-math.component.html',
-  styleUrls: ['./keypad-math.component.css']
+  selector: 'aspect-keypad-layout',
+  templateUrl: './keypad-layout.component.html',
+  styleUrls: ['./keypad-layout.component.css']
 })
-export class KeypadMathComponent extends KeyInputRestrictionDirective implements OnInit {
+export class KeypadLayoutComponent extends KeyInputRestrictionDirective implements OnInit {
   @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
 

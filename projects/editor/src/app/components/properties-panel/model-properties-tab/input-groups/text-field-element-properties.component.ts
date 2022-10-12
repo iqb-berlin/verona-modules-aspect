@@ -94,7 +94,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       <mat-select [value]="combinedProperties.inputAssistancePreset"
                   (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
         <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators',
-       'comparisonOperators', 'squareDashDot', 'placeValue']"
+       'comparisonOperators', 'squareDashDot', 'placeValue', 'space', 'comma']"
                     [value]="option">
           {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
         </mat-option>
@@ -118,6 +118,22 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                   [checked]="$any(combinedProperties.restrictedToInputAssistanceChars)"
                   (change)="updateModel.emit({ property: 'restrictedToInputAssistanceChars', value: $event.checked })">
       {{'propertiesPanel.restrictedToInputAssistanceChars' | translate }}
+    </mat-checkbox>
+
+    <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                       combinedProperties.hasArrowKeys !== undefined"
+                  [checked]="$any(combinedProperties.hasArrowKeys)"
+                  (change)="updateModel.emit({ property: 'hasArrowKeys', value: $event.checked })">
+      {{'propertiesPanel.hasArrowKeys' | translate }}
+    </mat-checkbox>
+
+    {{combinedProperties.type}}
+
+    <mat-checkbox *ngIf="combinedProperties.type === 'text-area' && combinedProperties.inputAssistancePreset !== null &&
+                       combinedProperties.hasReturnKey !== undefined"
+                  [checked]="$any(combinedProperties.hasReturnKey)"
+                  (change)="updateModel.emit({ property: 'hasReturnKey', value: $event.checked })">
+      {{'propertiesPanel.hasReturnKey' | translate }}
     </mat-checkbox>
   `
 })

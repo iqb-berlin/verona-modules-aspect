@@ -18,6 +18,7 @@ export class TextFieldSimpleElement extends InputElement {
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true;
+  hasArrowKeys: boolean = false;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
   clearable: boolean = false;
@@ -38,6 +39,7 @@ export class TextFieldSimpleElement extends InputElement {
     if (element.restrictedToInputAssistanceChars !== undefined) {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
     }
+    if (element.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     if (element.clearable) this.clearable = element.clearable;

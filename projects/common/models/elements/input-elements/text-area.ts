@@ -16,6 +16,8 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
   rowCount: number = 3;
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
+  hasArrowKeys: boolean = false;
+  hasReturnKey: boolean = false;
   restrictedToInputAssistanceChars: boolean = true;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
@@ -34,6 +36,8 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     if (element.restrictedToInputAssistanceChars !== undefined) {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
     }
+    if (element.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
+    if (element.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     this.position = ElementFactory.initPositionProps(element.position);

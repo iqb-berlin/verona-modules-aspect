@@ -14,6 +14,7 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true;
+  hasArrowKeys: boolean = false;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
   position: PositionProperties;
@@ -26,6 +27,7 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
     if (element.restrictedToInputAssistanceChars !== undefined) {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
     }
+    if (element.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     this.position = ElementFactory.initPositionProps(element.position);

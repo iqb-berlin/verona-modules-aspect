@@ -14,7 +14,7 @@ TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] |
 PositionProperties | PlayerProperties | BasicStyles;
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
-| 'comparisonOperators' | 'squareDashDot' | 'placeValue';
+| 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma';
 
 export abstract class UIElement {
   [index: string]: unknown;

@@ -1,9 +1,9 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
+import { InputAssistancePreset } from 'common/models/elements/element';
 import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
 import { KeyLayout } from '../../configs/key-layout';
-import { InputAssistancePreset } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-keypad-math',
@@ -24,5 +24,6 @@ export class KeypadMathComponent extends KeyInputRestrictionDirective implements
     this.rows = KeyLayout.get(this.preset).default;
     this.additionalRows = KeyLayout.get(this.preset).additional;
     this.allowedKeys = [...this.rows.flat(), ...this.additionalRows.flat()];
+    if (this.hasReturnKey) this.allowedKeys.push('\n');
   }
 }

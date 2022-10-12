@@ -10,8 +10,9 @@ export abstract class InputService {
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
   isOpen: boolean = false;
 
-  setCurrentKeyInputElement(focusedElement: HTMLElement, elementComponent:
-  TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent
+  setCurrentKeyInputElement(
+    focusedElement: HTMLElement,
+    elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent
   ): void {
     this.inputElement = elementComponent.elementModel.type === 'text-area' ?
       focusedElement as HTMLTextAreaElement :
@@ -27,7 +28,9 @@ export abstract class InputService {
     const selectionStart = this.inputElement.selectionStart || 0;
     const selectionEnd = this.inputElement.selectionEnd || 0;
     const newSelection = selectionStart ? selectionStart + 1 : 1;
-    this.insert( { selectionStart, selectionEnd, newSelection, key });
+    this.insert({
+      selectionStart, selectionEnd, newSelection, key
+    });
   }
 
   deleteCharacters(backspace: boolean): void {
@@ -37,17 +40,21 @@ export abstract class InputService {
       if (selectionStart === selectionEnd) {
         selectionStart -= 1;
       }
-      this.insert( { selectionStart, selectionEnd, newSelection: selectionStart, key : '' });
+      this.insert({
+        selectionStart, selectionEnd, newSelection: selectionStart, key: ''
+      });
     }
     if (!backspace && selectionEnd <= this.inputElement.value.length) {
       if (selectionStart === selectionEnd) {
         selectionEnd += 1;
       }
-      this.insert( { selectionStart, selectionEnd, newSelection: selectionStart, key: '' });
+      this.insert({
+        selectionStart, selectionEnd, newSelection: selectionStart, key: ''
+      });
     }
   }
 
-  private insert( keyAtPosition : {
+  private insert(keyAtPosition: {
     selectionStart: number;
     selectionEnd: number;
     newSelection: number;

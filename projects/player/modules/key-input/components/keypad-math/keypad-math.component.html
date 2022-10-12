@@ -5,7 +5,7 @@
         [preset]="preset"
         [last]="!last && lastRowKey"
         [position]="position"
-        (keyClicked)="keyClicked.emit($event)">
+        (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
     </aspect-keypad-key>
     <span *ngIf="last && lastRowKey"
           [class.clear-button-container-floating-keypad]="row.length === 3 && position === 'floating'"
@@ -13,7 +13,7 @@
       <button type="button"
               mat-mini-fab
               [class]="position === 'floating' ? 'delete-characters-floating-keypad' : 'delete-characters-fixed-keypad'"
-              (click)="backSpaceClicked.emit()">
+              (click)="canEdit(true) ? backSpaceClicked.emit() : null">
         <mat-icon>keyboard_backspace</mat-icon>
       </button>
     </span>
@@ -35,18 +35,85 @@
                   [style.grid-column-end]="columnIndex+2"
                   [style.grid-row-start]="rowIndex + 1"
                   [style.grid-row-end]="rowIndex + 2"
-                  (keyClicked)="keyClicked.emit($event)">
+                  (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
       </aspect-keypad-key>
       <aspect-keypad-key *ngIf="key === '='"
                   [key]="key"
                   [position]="position"
-                  [oval]="true"
+                  [verticalOval]="true"
                   [style.grid-column-start]="3"
                   [style.grid-column-end]="3"
                   [style.grid-row-start]="1"
                   [style.grid-row-end]="3"
-                  (keyClicked)="keyClicked.emit($event)">
+                  (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
       </aspect-keypad-key>
     </ng-container>
   </ng-container>
 </div>
+
+<div *ngIf="hasReturnKey">
+  <aspect-keypad-key
+    [key]="'\n'"
+    [preset]="preset"
+    [last]="true"
+    [horizontalOval]="true"
+    [darkMode]="false"
+    [position]="position"
+    (keyClicked)="keyClicked.emit($event)">
+  </aspect-keypad-key>
+</div>
+
+<div *ngIf="hasArrowKeys"
+     class="grid-layout"
+     [class.floating-arrow-layout]="position === 'floating'"
+     [class.fixed-arrow-layout]="position !== 'floating'">
+  <aspect-keypad-key
+    [style.grid-column-start]="2"
+    [style.grid-column-end]="3"
+    [style.grid-row-start]="1"
+    [style.grid-row-end]="2"
+    [key]="'ArrowUp'"
+    [last]="true"
+    [preset]="preset"
+    [darkMode]="true"
+    [position]="position"
+    (keyClicked)="keyClicked.emit($event)">
+  </aspect-keypad-key>
+  <aspect-keypad-key
+    [style.grid-column-start]="1"
+    [style.grid-column-end]="2"
+    [style.grid-row-start]="2"
+    [style.grid-row-end]="3"
+    [key]="'ArrowLeft'"
+    [last]="true"
+    [preset]="preset"
+    [darkMode]="true"
+    [position]="position"
+    (keyClicked)="keyClicked.emit($event)">
+  </aspect-keypad-key>
+  <aspect-keypad-key
+    [style.grid-column-start]="3"
+    [style.grid-column-end]="4"
+    [style.grid-row-start]="2"
+    [style.grid-row-end]="3"
+    [last]="true"
+    [key]="'ArrowRight'"
+    [preset]="preset"
+    [darkMode]="true"
+    [position]="position"
+    (keyClicked)="keyClicked.emit($event)">
+  </aspect-keypad-key>
+  <aspect-keypad-key
+    [style.grid-column-start]="2"
+    [style.grid-column-end]="3"
+    [style.grid-row-start]="3"
+    [style.grid-row-end]="4"
+    [key]="'ArrowDown'"
+    [last]="true"
+    [preset]="preset"
+    [darkMode]="true"
+    [position]="position"
+    (keyClicked)="keyClicked.emit($event)">
+  </aspect-keypad-key>
+</div>
+

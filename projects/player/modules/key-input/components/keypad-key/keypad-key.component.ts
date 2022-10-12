@@ -10,7 +10,9 @@ import { InputAssistancePreset } from 'common/models/elements/element';
 })
 export class KeypadKeyComponent {
   @Input() key!: string;
-  @Input() oval!: boolean;
+  @Input() verticalOval!: boolean;
+  @Input() horizontalOval!: boolean;
+  @Input() darkMode!: boolean;
   @Input() position!: 'floating' | 'right';
   @Input() last!: boolean;
   @Input() preset!: InputAssistancePreset;

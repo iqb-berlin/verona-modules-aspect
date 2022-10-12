@@ -14,13 +14,27 @@
   margin-right: 5px;
 }
 
-.oval-floating-keypad-key{
+.vertical-oval-floating-keypad-key{
   height: 85px;
   border-radius: 20px;
 }
 
-.oval-fixed-keypad-key{
+.vertical-oval-fixed-keypad-key{
   height: 135px;
   border-radius: 65px;
 }
 
+.horizontal-oval-floating-keypad-key{
+  width: 130px;
+  border-radius: 20px;
+}
+
+.horizontal-oval-fixed-keypad-key{
+  width: 200px;
+  border-radius: 65px;
+}
+
+.dark-mode {
+  background-color: dimgray;
+  color: #fff;
+}

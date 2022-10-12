@@ -90,6 +90,24 @@ export class KeyLayout {
           additional: [[]]
         };
       }
+      case 'space': {
+        return {
+          default: [
+            [' ']
+          ],
+          shift: [[]],
+          additional: [[]]
+        };
+      }
+      case 'comma': {
+        return {
+          default: [
+            [',']
+          ],
+          shift: [[]],
+          additional: [[]]
+        };
+      }
       default: { // keyboard
         return {
           default: [

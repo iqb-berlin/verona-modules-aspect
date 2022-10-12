@@ -53,3 +53,13 @@
 .fixed-3-column-grid-layout {
   grid-template-columns: 70px 70px 65px;
 }
+
+.floating-arrow-layout {
+  grid-template-columns: 35px 35px 40px;
+  grid-template-rows: 35px 35px 40px;
+}
+
+.fixed-arrow-layout {
+  grid-template-columns: 55px 55px 65px;
+  grid-template-rows: 55px 55px 65px;
+}

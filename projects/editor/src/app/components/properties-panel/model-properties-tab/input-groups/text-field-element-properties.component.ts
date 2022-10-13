@@ -127,8 +127,6 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       {{'propertiesPanel.hasArrowKeys' | translate }}
     </mat-checkbox>
 
-    {{combinedProperties.type}}
-
     <mat-checkbox *ngIf="combinedProperties.type === 'text-area' && combinedProperties.inputAssistancePreset !== null &&
                        combinedProperties.hasReturnKey !== undefined"
                   [checked]="$any(combinedProperties.hasReturnKey)"

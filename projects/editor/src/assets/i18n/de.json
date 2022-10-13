@@ -174,7 +174,10 @@
     "showResetIcon": "Zurücksetzen-Knopf anzeigen",
     "showToolbar": "Werkzeugleiste anzeigen",
     "showZoomButtons": "Zoom-Knöpfe anzeigen",
-    "showFullscreenButton": "Vollbild-Knopf anzeigen"
+    "showFullscreenButton": "Vollbild-Knopf anzeigen",
+    "enableShiftDragZoom": "Bewegen und Zoom erlauben",
+    "customToolBar": "Anpassung Werkzeugleiste",
+    "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren."
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",

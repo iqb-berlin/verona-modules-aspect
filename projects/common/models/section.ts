@@ -51,10 +51,12 @@ export class Section {
     if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
     if (section?.activeAfterID) this.activeAfterID = section.activeAfterID;
     this.elements =
-      section?.elements?.map(element => ({
-        ...ElementFactory.createElement(element),
-        position: ElementFactory.initPositionProps(element.position)
-      } as PositionedUIElement)) || [];
+      section?.elements?.map(element => (
+        ElementFactory.createElement({
+          ...element,
+          position: ElementFactory.initPositionProps(element.position)
+        }) as PositionedUIElement)
+      ) || [];
   }
 
   setProperty(property: string, value: UIElementValue): void {

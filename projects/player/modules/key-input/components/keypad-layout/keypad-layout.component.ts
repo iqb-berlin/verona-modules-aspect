@@ -19,11 +19,21 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
 
   rows: string[][] = [];
   additionalRows: string[][] = [];
+  shift: boolean = false;
 
   ngOnInit(): void {
     this.rows = KeyLayout.get(this.preset).default;
     this.additionalRows = KeyLayout.get(this.preset).additional;
     this.allowedKeys = [...this.rows.flat(), ...this.additionalRows.flat()];
     if (this.hasReturnKey) this.allowedKeys.push('\n');
+  }
+
+  toggleShift(): void {
+    this.shift = !this.shift;
+    if (this.shift) {
+      this.rows = KeyLayout.get('french').shift;
+    } else {
+      this.rows = KeyLayout.get('french').default;
+    }
   }
 }

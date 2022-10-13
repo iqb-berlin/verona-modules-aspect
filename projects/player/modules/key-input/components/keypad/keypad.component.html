@@ -7,18 +7,7 @@
   <div class="keypad-inner-container"
        [class.fixed-keypad-inner-container]="position === 'right'"
        (mousedown)="$event.preventDefault(); $event.stopPropagation()">
-    <aspect-keypad-french
-        *ngIf="preset === 'french'"
-        [inputElement]="inputElement"
-        [restrictToAllowedKeys]="restrictToAllowedKeys"
-        [hasArrowKeys]="hasArrowKeys"
-        [hasReturnKey]="hasReturnKey"
-        [arrows]="arrows"
-        [position]="position"
-        (keyClicked)="evaluateKeyValue($event)">
-    </aspect-keypad-french>
     <aspect-keypad-layout
-        *ngIf="preset !== 'french'"
         [inputElement]="inputElement"
         [preset]="preset"
         [position]="position"

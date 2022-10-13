@@ -1,69 +1,118 @@
-<div *ngFor="let row of rows; let last = last">
-  <ng-container *ngFor="let key of row; let lastRowKey = last">
-    <aspect-keypad-key
-        [key]="key"
-        [preset]="preset"
-        [last]="!last && lastRowKey"
-        [position]="position"
-        (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
-    </aspect-keypad-key>
-    <span *ngIf="last && lastRowKey"
-          [class.clear-button-container-floating-keypad]="row.length === 3 && position === 'floating'"
-          [class.clear-button-container-fixed-keypad]="row.length === 3 && position !== 'floating'">
-      <button type="button"
-              mat-mini-fab
-              [class]="position === 'floating' ? 'delete-characters-floating-keypad' : 'delete-characters-fixed-keypad'"
-              (click)="canEdit(true) ? backSpaceClicked.emit() : null">
-        <mat-icon>keyboard_backspace</mat-icon>
-      </button>
-    </span>
-  </ng-container>
-</div>
-
-<div *ngIf="additionalRows.length"
-     class="grid-layout"
-     [class.floating-3-column-grid-layout]="position === 'floating' && preset === 'numbersAndOperators'"
-     [class.floating-2-column-grid-layout]="position === 'floating' && preset === 'numbersAndBasicOperators'"
-     [class.fixed-3-column-grid-layout]="position !== 'floating' && preset === 'numbersAndOperators'"
-     [class.fixed-2-column-grid-layout]="position !== 'floating' && preset === 'numbersAndBasicOperators'">
-  <ng-container *ngFor="let row of additionalRows; let rowIndex = index ">
-    <ng-container *ngFor="let key of row; let columnIndex = index">
-      <aspect-keypad-key *ngIf="key !== '='"
-                  [key]="key"
-                  [position]="position"
-                  [style.grid-column-start]="columnIndex+1"
-                  [style.grid-column-end]="columnIndex+2"
-                  [style.grid-row-start]="rowIndex + 1"
-                  [style.grid-row-end]="rowIndex + 2"
-                  (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
+<ng-container *ngIf="preset !== 'french'">
+  <div *ngFor="let row of rows; let last = last">
+    <ng-container *ngFor="let key of row; let lastRowKey = last">
+      <aspect-keypad-key
+          [key]="key"
+          [preset]="preset"
+          [last]="!last && lastRowKey"
+          [position]="position"
+          (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
       </aspect-keypad-key>
-      <aspect-keypad-key *ngIf="key === '='"
-                  [key]="key"
-                  [position]="position"
-                  [verticalOval]="true"
-                  [style.grid-column-start]="3"
-                  [style.grid-column-end]="3"
-                  [style.grid-row-start]="1"
-                  [style.grid-row-end]="3"
-                  (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
-      </aspect-keypad-key>
+      <span *ngIf="last && lastRowKey"
+            [class.clear-button-container-floating-keypad]="row.length === 3 && position === 'floating'"
+            [class.clear-button-container-fixed-keypad]="row.length === 3 && position !== 'floating'">
+        <button type="button"
+                mat-mini-fab
+                [class]="position === 'floating' ? 'delete-characters-floating-keypad' : 'delete-characters-fixed-keypad'"
+                (click)="canEdit(true) ? backSpaceClicked.emit() : null">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </button>
+      </span>
     </ng-container>
-  </ng-container>
-</div>
+  </div>
 
-<div *ngIf="hasReturnKey">
-  <aspect-keypad-key
-    [key]="'\n'"
-    [preset]="preset"
-    [last]="true"
-    [horizontalOval]="true"
-    [darkMode]="false"
-    [position]="position"
-    (keyClicked)="keyClicked.emit($event)">
-  </aspect-keypad-key>
-</div>
+  <div *ngIf="additionalRows.length"
+       class="grid-layout"
+       [class.floating-3-column-grid-layout]="position === 'floating' && preset === 'numbersAndOperators'"
+       [class.floating-2-column-grid-layout]="position === 'floating' && preset === 'numbersAndBasicOperators'"
+       [class.fixed-3-column-grid-layout]="position !== 'floating' && preset === 'numbersAndOperators'"
+       [class.fixed-2-column-grid-layout]="position !== 'floating' && preset === 'numbersAndBasicOperators'">
+    <ng-container *ngFor="let row of additionalRows; let rowIndex = index ">
+      <ng-container *ngFor="let key of row; let columnIndex = index">
+        <aspect-keypad-key *ngIf="key !== '='"
+                    [key]="key"
+                    [position]="position"
+                    [style.grid-column-start]="columnIndex+1"
+                    [style.grid-column-end]="columnIndex+2"
+                    [style.grid-row-start]="rowIndex + 1"
+                    [style.grid-row-end]="rowIndex + 2"
+                    (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
+        </aspect-keypad-key>
+        <aspect-keypad-key *ngIf="key === '='"
+                    [key]="key"
+                    [position]="position"
+                    [verticalOval]="true"
+                    [style.grid-column-start]="3"
+                    [style.grid-column-end]="3"
+                    [style.grid-row-start]="1"
+                    [style.grid-row-end]="3"
+                    (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
+        </aspect-keypad-key>
+      </ng-container>
+    </ng-container>
+  </div>
 
-<div *ngIf="hasArrowKeys"
+  <div *ngIf="hasReturnKey">
+    <aspect-keypad-key
+      [key]="'\n'"
+      [preset]="preset"
+      [last]="true"
+      [horizontalOval]="true"
+      [darkMode]="false"
+      [position]="position"
+      (keyClicked)="keyClicked.emit($event)">
+    </aspect-keypad-key>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="preset === 'french'">
+  <div [class.fixed-row-container]="position === 'right'">
+    <div *ngFor="let row of rows">
+      <ng-container *ngFor="let key of row, let lastRowKey = last">
+        <aspect-keypad-key
+          [key]="key"
+          [position]="position"
+          [last]="lastRowKey"
+          (keyClicked)="canEdit(false) ? keyClicked.emit($event) : null">
+        </aspect-keypad-key>
+      </ng-container>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+      <button
+        type="button"
+        class="keypad-capslock"
+        mat-mini-fab
+        [class.fixed-keypad-key]="position === 'right'"
+        (click)="toggleShift()">
+        <mat-icon *ngIf="!shift">keyboard_arrow_up</mat-icon>
+        <mat-icon *ngIf="shift">keyboard_capslock</mat-icon>
+      </button>
+      <aspect-keypad-key *ngIf="hasReturnKey"
+        [key]="'\n'"
+        [preset]="preset"
+        [last]="true"
+        [horizontalOval]="true"
+        [darkMode]="false"
+        [position]="position"
+        (keyClicked)="keyClicked.emit($event)">
+      </aspect-keypad-key>
+      <ng-container *ngIf="hasArrowKeys && position === 'floating'">
+        <aspect-keypad-key *ngFor="let arrow of arrows"
+          [key]="arrow"
+          [last]="true"
+          [preset]="preset"
+          [darkMode]="true"
+          [position]="position"
+          (keyClicked)="keyClicked.emit($event)">
+        </aspect-keypad-key>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+
+
+
+<div *ngIf="hasArrowKeys && !(preset === 'french' && position === 'floating')"
      class="grid-layout"
      [class.floating-arrow-layout]="position === 'floating'"
      [class.fixed-arrow-layout]="position !== 'floating'">

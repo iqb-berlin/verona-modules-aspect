@@ -14,7 +14,6 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
   @Input() preset!: InputAssistancePreset;
   @Input() position!: 'floating' | 'right';
 
-  @Output() backSpaceClicked = new EventEmitter();
   @Output() keyClicked = new EventEmitter<string>();
 
   rows: string[][] = [];
@@ -24,16 +23,28 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
   ngOnInit(): void {
     this.rows = KeyLayout.get(this.preset).default;
     this.additionalRows = KeyLayout.get(this.preset).additional;
-    this.allowedKeys = [...this.rows.flat(), ...this.additionalRows.flat()];
+    this.allowedKeys = [
+      ...this.rows.flat().filter(key => key.length === 1),
+      ...this.additionalRows.flat().filter(key => key.length === 1)
+    ];
     if (this.hasReturnKey) this.allowedKeys.push('\n');
+  }
+
+  evaluateClickedKeyValue(key: string) {
+    switch (key) {
+      case 'Shift':
+      case 'ShiftUp': {
+        this.toggleShift();
+        break;
+      }
+      default: {
+        this.keyClicked.emit(key);
+      }
+    }
   }
 
   toggleShift(): void {
     this.shift = !this.shift;
-    if (this.shift) {
-      this.rows = KeyLayout.get('french').shift;
-    } else {
-      this.rows = KeyLayout.get('french').default;
-    }
+    this.rows = this.shift ? KeyLayout.get(this.preset).shift : KeyLayout.get(this.preset).default;
   }
 }

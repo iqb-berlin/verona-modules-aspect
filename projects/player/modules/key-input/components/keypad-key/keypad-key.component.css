@@ -3,15 +3,13 @@
   font-size: x-large;
   margin-bottom: 5px;
   color: black;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 .fixed-keypad-key{
   width: 65px;
   height: 65px;
-}
-
-.not-last-key{
-  margin-right: 5px;
 }
 
 .vertical-oval-floating-keypad-key{
@@ -24,14 +22,32 @@
   border-radius: 65px;
 }
 
-.horizontal-oval-floating-keypad-key{
+.big-horizontal-oval-floating-keypad-key{
   width: 130px;
   border-radius: 20px;
 }
 
-.horizontal-oval-fixed-keypad-key{
+.big-horizontal-oval-fixed-keypad-key{
   width: 205px;
   border-radius: 65px;
+}
+
+.horizontal-oval-floating-keypad-key{
+  width: 85px;
+  border-radius: 20px;
+}
+
+.horizontal-oval-fixed-keypad-key{
+  width: 135px;
+  border-radius: 65px;
+}
+
+.right-position-floating{
+  margin-left: 42px;
+}
+
+.right-position-fixed{
+  margin-left: 67px;
 }
 
 .dark-mode {

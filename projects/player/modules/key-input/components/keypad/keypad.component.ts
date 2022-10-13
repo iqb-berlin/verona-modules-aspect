@@ -22,9 +22,11 @@ export class KeypadComponent {
 
   arrows: string[] = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
 
-  evaluateKeyValue(key: string): void {
+  evaluateClickedKeyValue(key: string): void {
     if (this.arrows.includes(key)) {
       this.select(key);
+    } else if (key === 'Backspace') {
+      this.backSpaceClicked.emit();
     } else {
       this.keyClicked.emit(key);
     }

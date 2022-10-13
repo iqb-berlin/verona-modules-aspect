@@ -3,49 +3,6 @@
   margin: auto;
 }
 
-.keypad-capslock{
-  font-size: x-large;
-  background-color: dimgray;
-  margin-right: 5px;
-}
-
-.keypad-capslock-container{
-  margin-right: 100%;
-}
-
-.delete-characters-floating-keypad{
-  font-size: x-large;
-  width: 85px;
-  height: 40px;
-  border-radius: 20px;
-  background-color: dimgray;
-  color: #fff;
-}
-
-.delete-characters-fixed-keypad{
-  font-size: x-large;
-  width: 135px;
-  height: 65px;
-  border-radius: 65px;
-  background-color: dimgray;
-  color: #fff;
-}
-
-.fixed-keypad-key{
-  width: 65px;
-  height: 65px;
-}
-
-.clear-button-container-floating-keypad{
-  display: block;
-  margin-left: 40px;
-}
-
-.clear-button-container-fixed-keypad{
-  margin-left: 65px;
-  display: block;
-}
-
 .grid-layout {
   justify-content: center;
   margin-top: 15px;

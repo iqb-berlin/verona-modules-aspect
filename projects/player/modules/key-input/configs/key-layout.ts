@@ -11,11 +11,13 @@ export class KeyLayout {
         return {
           default: [
             ['â', 'à', 'æ', 'ê', 'è', 'é', 'ë', 'î'],
-            ['ï', 'ô', 'ò', 'œ', 'û', 'ù', 'ü', 'ç']
+            ['ï', 'ô', 'ò', 'œ', 'û', 'ù', 'ü', 'ç'],
+            ['Shift']
           ],
           shift: [
             ['Â', 'À', 'Æ', 'Ê', 'È', 'É', 'Ë', 'Î'],
-            ['Ï', 'Ô', 'Ò', 'Œ', 'Û', 'Ù', 'Ü', 'Ç']
+            ['Ï', 'Ô', 'Ò', 'Œ', 'Û', 'Ù', 'Ü', 'Ç'],
+            ['ShiftUp']
           ],
           additional: [[]]
         };
@@ -23,7 +25,8 @@ export class KeyLayout {
       case 'comparisonOperators': {
         return {
           default: [
-            ['<', '=', '>']
+            ['<', '=', '>'],
+            ['Backspace']
           ],
           shift: [[]],
           additional: [[]]
@@ -35,7 +38,7 @@ export class KeyLayout {
             ['7', '8', '9'],
             ['4', '5', '6'],
             ['1', '2', '3'],
-            ['0']
+            ['0', 'Backspace']
           ],
           shift: [[]],
           additional: [
@@ -51,7 +54,7 @@ export class KeyLayout {
             ['7', '8', '9'],
             ['4', '5', '6'],
             ['1', '2', '3'],
-            ['0']
+            ['0', 'Backspace']
           ],
           shift: [[]],
           additional: [
@@ -63,7 +66,8 @@ export class KeyLayout {
       case 'squareDashDot': {
         return {
           default: [
-            ['⬜', '❘', '∙'] // U+2B1C, U+2758, U+2219
+            ['⬜', '❘', '∙'], // U+2B1C, U+2758, U+2219
+            ['Backspace']
           ],
           shift: [[]],
           additional: [[]]
@@ -72,7 +76,7 @@ export class KeyLayout {
       case 'placeValue': {
         return {
           default: [
-            ['•'] // U+2022
+            ['•', 'Backspace'] // U+2022
           ],
           shift: [[]],
           additional: [[]]
@@ -84,7 +88,7 @@ export class KeyLayout {
             ['7', '8', '9'],
             ['4', '5', '6'],
             ['1', '2', '3'],
-            ['0']
+            ['0', 'Backspace']
           ],
           shift: [[]],
           additional: [[]]
@@ -93,7 +97,7 @@ export class KeyLayout {
       case 'space': {
         return {
           default: [
-            [' ']
+            [' ', 'Backspace']
           ],
           shift: [[]],
           additional: [[]]
@@ -102,7 +106,7 @@ export class KeyLayout {
       case 'comma': {
         return {
           default: [
-            [',']
+            [',', 'Backspace']
           ],
           shift: [[]],
           additional: [[]]

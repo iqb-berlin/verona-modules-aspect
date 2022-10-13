@@ -24,7 +24,7 @@ import { ButtonElement } from 'common/models/elements/button/button';
                                               action: elementModel.action,
                                               param: elementModel.actionParam
                                            }) : false">
-<!--TODO why prevent default?-->
+      <!--preventDefault to prevent form submission-->
       {{elementModel.label}}
     </a>
     <button *ngIf="!elementModel.imageSrc && !elementModel.asLink" mat-button

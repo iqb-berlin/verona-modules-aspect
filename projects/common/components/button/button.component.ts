@@ -1,8 +1,9 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ElementComponent } from '../../directives/element-component.directive';
 import { ButtonElement } from 'common/models/elements/button/button';
+import { NavigationEvent } from 'common/models/elements/element';
+import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
   selector: 'aspect-button',
@@ -68,8 +69,5 @@ import { ButtonElement } from 'common/models/elements/button/button';
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
-  @Output() navigateTo = new EventEmitter<{
-    action: 'unitNav' | 'pageNav';
-    param: 'previous' | 'next' | 'first' | 'last' | 'end' | number
-  }>();
+  @Output() navigateTo = new EventEmitter<NavigationEvent>();
 }

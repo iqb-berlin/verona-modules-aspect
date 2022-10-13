@@ -10,6 +10,9 @@ import {
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { CompoundElement, InputElement } from 'common/models/elements/element';
+import { ButtonComponent } from 'common/components/button/button.component';
+import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
+import { NavigationService } from 'player/src/app/services/navigation.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -39,6 +42,8 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     public translateService: TranslateService,
     public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
+    private veronaPostService: VeronaPostService,
+    private navigationService: NavigationService,
     public validationService: ValidationService
   ) {
     super();
@@ -59,6 +64,9 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
       if (childModel.type === 'text-field-simple') {
         this.manageKeyInputToggling(child as TextFieldSimpleComponent, childModel);
         this.manageHardwareKeyBoardDetection(child as TextFieldSimpleComponent);
+      }
+      if (childModel.type === 'button') {
+        this.addNavigationEventListener(child as ButtonComponent);
       }
     });
   }
@@ -97,5 +105,18 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
   private detectHardwareKeyboard(): void {
     this.deviceService.hasHardwareKeyboard = true;
     this.keyboardService.close();
+  }
+
+  private addNavigationEventListener(button: ButtonComponent) {
+    button.navigateTo
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(navigationEvent => {
+        if (navigationEvent.action === 'unitNav') {
+          this.veronaPostService.sendVopUnitNavigationRequestedNotification(
+            (navigationEvent.param as 'previous' | 'next' | 'first' | 'last' | 'end'));
+        } else {
+          this.navigationService.setPage(navigationEvent.param as number);
+        }
+      });
   }
 }

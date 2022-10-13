@@ -205,6 +205,11 @@ export interface ValueChangeElement {
   value: InputElementValue;
 }
 
+export interface NavigationEvent {
+  action: 'unitNav' | 'pageNav';
+  param: 'previous' | 'next' | 'first' | 'last' | 'end' | number;
+}
+
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;
 }

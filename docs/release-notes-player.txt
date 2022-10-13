@@ -1,5 +1,17 @@
 Player
 ======
+1.27.0
+- Add new input assistance presets ('Space' and 'Comma').
+  The preset 'Space' can be used to separate words.
+  The preset 'Comma' can be used to add commas in texts.
+- Add optional arrow keys to the input instance.
+  This is useful for the 'Comma' and 'Space' presets.
+- Add optional enter keys to the input instance of text areas.
+- Improve placeholder behavior and styling of drop lists
+
+1.26.3
+- Support editor version 1.33.3
+
 1.26.2
 - Fix reading of old unit definition of likert options, radio-group-images image position and drop-list option with empty text
 

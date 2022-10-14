@@ -8,7 +8,7 @@ import { Unit } from 'common/models/unit';
 import {
   BasicStyles, DragNDropValueObject, ExtendedStyles,
   InputElement, PlayerProperties,
-  PositionedUIElement, PositionProperties, TextImageLabel, TextLabel,
+  PositionedUIElement, PositionProperties, TextImageLabel,
   UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
@@ -25,10 +25,10 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
-import packageJSON from '../../../package.json';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
 import { MessageService } from 'common/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import packageJSON from '../../../package.json';
 
 @Injectable({
   providedIn: 'root'

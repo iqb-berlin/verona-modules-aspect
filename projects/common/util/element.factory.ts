@@ -1,5 +1,5 @@
 import {
-  BasicStyles, PlayerProperties, PositionedUIElement, PositionProperties, TextImageLabel, UIElement
+  BasicStyles, PlayerProperties, PositionProperties, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';

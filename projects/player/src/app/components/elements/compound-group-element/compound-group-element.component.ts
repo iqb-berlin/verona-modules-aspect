@@ -9,7 +9,7 @@ import {
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import { CompoundElement, InputElement } from 'common/models/elements/element';
+import { CompoundElement, InputElement, InputElementValue } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
@@ -56,11 +56,10 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
   registerCompoundChildren(children: ElementComponent[]): void {
     children.forEach(child => {
       const childModel = child.elementModel as InputElement;
-      this.registerAtUnitStateService(
-        childModel.id,
-        this.elementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type),
-        child,
-        this.pageIndex);
+      const initialValue: InputElementValue = childModel.type === 'button' ?
+        null :
+        this.elementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type);
+      this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
       if (childModel.type === 'text-field-simple') {
         this.manageKeyInputToggling(child as TextFieldSimpleComponent, childModel);
         this.manageHardwareKeyBoardDetection(child as TextFieldSimpleComponent);

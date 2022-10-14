@@ -1,5 +1,16 @@
 Editor
 ======
+1.34.0
+- Implement GeoGebra applet element
+  This needs a base64 representation of a unit.
+  CustomToolbar setting as text-field is a temporary solution as a nice UI would
+  be rather complicated to implement.
+  Reference list of possible values can be found here:
+  https://wiki.geogebra.org/en/Reference:Toolbar
+- Add background color setting to text-field in cloze
+- Fix frame border initialization
+- Fix visual issue with double borders in TextEditor
+
 1.33.3
 - Enable reading of duplicate IDs
   IDs will be generated and a warning is shown.

@@ -8,7 +8,7 @@
           [darkMode]="key === 'Backspace' || key==='Shift' || key==='ShiftUp'"
           [horizontalOval]="key === 'Backspace'"
           [position]="position"
-          (keyClicked)="canEdit(false) ? evaluateClickedKeyValue($event) : null">
+          (keyClicked)="canEdit(key === 'Backspace') ? evaluateClickedKeyValue($event) : null">
       </aspect-keypad-key>
       <ng-container *ngIf="last && lastRowKey && preset  === 'french'">
         <aspect-keypad-key *ngIf="hasReturnKey"

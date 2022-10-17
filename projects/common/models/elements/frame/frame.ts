@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, PositionedUIElement, PositionProperties, UIElement
 } from 'common/models/elements/element';
@@ -26,9 +25,9 @@ export class FrameElement extends UIElement implements PositionedUIElement {
     this.hasBorderBottom = element.hasBorderBottom !== undefined ? element.hasBorderBottom : true;
     this.hasBorderLeft = element.hasBorderLeft !== undefined ? element.hasBorderLeft : true;
     this.hasBorderRight = element.hasBorderRight !== undefined ? element.hasBorderRight : true;
-    this.position = ElementFactory.initPositionProps({ zIndex: -1, ...element.position });
+    this.position = UIElement.initPositionProps({ zIndex: -1, ...element.position });
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: 'transparent',
         borderWidth: 1,
         borderColor: 'black',

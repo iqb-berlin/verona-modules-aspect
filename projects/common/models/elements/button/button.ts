@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, PositionProperties, UIElement
 } from 'common/models/elements/element';
@@ -24,9 +23,9 @@ export class ButtonElement extends UIElement {
     if (element.asLink) this.asLink = element.asLink;
     if (element.action) this.action = element.action;
     if (element.actionParam) this.actionParam = element.actionParam;
-    this.position = element.position ? ElementFactory.initPositionProps(element.position) : undefined;
+    this.position = element.position ? UIElement.initPositionProps(element.position) : undefined;
     this.styling = {
-      ...ElementFactory.initStylingProps<{ borderRadius: number; }>({ borderRadius: 0, ...element.styling })
+      ...UIElement.initStylingProps<{ borderRadius: number; }>({ borderRadius: 0, ...element.styling })
     };
   }
 

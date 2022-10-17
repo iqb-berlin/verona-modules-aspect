@@ -30,7 +30,7 @@ export class Section {
       section?.elements?.map(element => (
         ElementFactory.createElement({
           ...element,
-          position: ElementFactory.initPositionProps(element.position)
+          position: UIElement.initPositionProps(element.position)
         }) as PositionedUIElement)
       ) || [];
   }

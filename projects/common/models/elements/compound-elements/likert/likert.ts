@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, CompoundElement, UIElement,
   PositionedUIElement, PositionProperties, UIElementValue, TextImageLabel, OptionElement
@@ -28,9 +27,9 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row)) : [];
     this.label = element.label !== undefined ? element.label : 'Optionentabelle Beschriftung';
     this.label2 = element.label2 !== undefined ? element.label2 : 'Optionentabelle Erste Spalte';
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: 'transparent',
         lineHeight: 135,
         lineColoring: true,
@@ -41,7 +40,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   }
 
   getNewOptionLabel(optionText: string): TextImageLabel {
-    return ElementFactory.createOptionLabel(optionText, true) as TextImageLabel;
+    return UIElement.createOptionLabel(optionText, true) as TextImageLabel;
   }
 
   setProperty(property: string, value: UIElementValue): void {

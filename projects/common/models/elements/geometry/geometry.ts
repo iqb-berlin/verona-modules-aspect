@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   PositionedUIElement, PositionProperties, UIElement
 } from 'common/models/elements/element';
@@ -22,7 +21,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement {
     this.appDefinition = element.appDefinition !== undefined ? element.appDefinition : '';
     this.showResetIcon = element.showResetIcon !== undefined ? element.showResetIcon : true;
 
-    this.position = ElementFactory.initPositionProps({ ...element.position });
+    this.position = UIElement.initPositionProps({ ...element.position });
   }
 
   getElementComponent(): Type<ElementComponent> {

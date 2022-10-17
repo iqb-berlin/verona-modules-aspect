@@ -1,9 +1,8 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, InputElement, OptionElement,
   PositionedUIElement, PositionProperties, TextImageLabel,
-  AnswerScheme, AnswerSchemeValue
+  AnswerScheme, AnswerSchemeValue, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
@@ -18,9 +17,9 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
     super({ height: 100, ...element });
     if (element.options) this.options = [...element.options];
     this.itemsPerRow = element.itemsPerRow !== undefined ? element.itemsPerRow : null;
-    this.position = ElementFactory.initPositionProps({ marginBottom: 40, ...element.position });
+    this.position = UIElement.initPositionProps({ marginBottom: 40, ...element.position });
     this.styling = {
-      ...ElementFactory.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
+      ...UIElement.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
     };
   }
 
@@ -50,6 +49,6 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
   }
 
   getNewOptionLabel(optionText: string): TextImageLabel {
-    return ElementFactory.createOptionLabel(optionText, true) as TextImageLabel;
+    return UIElement.createOptionLabel(optionText, true) as TextImageLabel;
   }
 }

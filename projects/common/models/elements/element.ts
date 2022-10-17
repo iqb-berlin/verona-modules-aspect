@@ -2,7 +2,6 @@
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { Type } from '@angular/core';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
-import { ElementFactory } from 'common/util/element.factory';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
@@ -59,6 +58,46 @@ export abstract class UIElement {
   }
 
   abstract getElementComponent(): Type<ElementComponent>;
+
+  static initPositionProps(defaults: Partial<PositionProperties> = {}): PositionProperties {
+    return {
+      fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,
+      dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : true,
+      xPosition: defaults.xPosition !== undefined ? defaults.xPosition as number : 0,
+      yPosition: defaults.yPosition !== undefined ? defaults.yPosition as number : 0,
+      useMinHeight: defaults.useMinHeight !== undefined ? defaults.useMinHeight as boolean : false,
+      gridColumn: defaults.gridColumn !== undefined ? defaults.gridColumn as number : null,
+      gridColumnRange: defaults.gridColumnRange !== undefined ? defaults.gridColumnRange as number : 1,
+      gridRow: defaults.gridRow !== undefined ? defaults.gridRow as number : null,
+      gridRowRange: defaults.gridRowRange !== undefined ? defaults.gridRowRange as number : 1,
+      marginLeft: defaults.marginLeft !== undefined ? defaults.marginLeft as number : 0,
+      marginRight: defaults.marginRight !== undefined ? defaults.marginRight as number : 0,
+      marginTop: defaults.marginTop !== undefined ? defaults.marginTop as number : 0,
+      marginBottom: defaults.marginBottom !== undefined ? defaults.marginBottom as number : 0,
+      zIndex: defaults.zIndex !== undefined ? defaults.zIndex as number : 0
+    };
+  }
+
+  static initStylingProps<T>(defaults?: Partial<BasicStyles> & T): BasicStyles & T {
+    return {
+      ...defaults as T,
+      fontColor: defaults?.fontColor !== undefined ? defaults.fontColor as string : '#000000',
+      font: defaults?.font !== undefined ? defaults.font as string : 'Roboto',
+      fontSize: defaults?.fontSize !== undefined ? defaults.fontSize as number : 20,
+      bold: defaults?.bold !== undefined ? defaults.bold as boolean : false,
+      italic: defaults?.italic !== undefined ? defaults.italic as boolean : false,
+      underline: defaults?.underline !== undefined ? defaults.underline as boolean : false,
+      backgroundColor: defaults?.backgroundColor !== undefined ? defaults.backgroundColor as string : '#d3d3d3'
+    };
+  }
+
+  static createOptionLabel(optionText: string, addImg: boolean = false) {
+    return {
+      text: optionText,
+      imgSrc: addImg ? null : undefined,
+      imgPosition: addImg ? 'above' : undefined
+    };
+  }
 }
 
 export type InputElementValue = string[] | string | number | boolean | TextLabel[] | null;
@@ -91,7 +130,32 @@ export abstract class PlayerElement extends UIElement {
 
   protected constructor(element: Partial<PlayerElement>) {
     super(element);
-    this.player = ElementFactory.initPlayerProps(element.player);
+    this.player = {
+      autostart: element.autostart !== undefined ? element.autostart as boolean : false,
+      autostartDelay: element.autostartDelay !== undefined ? element.autostartDelay as number : 0,
+      loop: element.loop !== undefined ? element.loop as boolean : false,
+      startControl: element.startControl !== undefined ? element.startControl as boolean : true,
+      pauseControl: element.pauseControl !== undefined ? element.pauseControl as boolean : false,
+      progressBar: element.progressBar !== undefined ? element.progressBar as boolean : true,
+      interactiveProgressbar: element.interactiveProgressbar !== undefined ?
+        element.interactiveProgressbar as boolean :
+        false,
+      volumeControl: element.volumeControl !== undefined ? element.volumeControl as boolean : true,
+      defaultVolume: element.defaultVolume !== undefined ? element.defaultVolume as number : 0.8,
+      minVolume: element.minVolume !== undefined ? element.minVolume as number : 0,
+      muteControl: element.muteControl !== undefined ? element.muteControl as boolean : true,
+      interactiveMuteControl: element.interactiveMuteControl !== undefined ?
+        element.interactiveMuteControl as boolean :
+        false,
+      hintLabel: element.hintLabel !== undefined ? element.hintLabel as string : '',
+      hintLabelDelay: element.hintLabelDelay !== undefined ? element.hintLabelDelay as number : 0,
+      activeAfterID: element.activeAfterID !== undefined ? element.activeAfterID as string : '',
+      minRuns: element.minRuns !== undefined ? element.minRuns as number : 1,
+      maxRuns: element.maxRuns !== undefined ? element.maxRuns as number | null : null,
+      showRestRuns: element.showRestRuns !== undefined ? element.showRestRuns as boolean : false,
+      showRestTime: element.showRestTime !== undefined ? element.showRestTime as boolean : true,
+      playbackTime: element.playbackTime !== undefined ? element.playbackTime as number : 0
+    };
   }
 
   hasAnswerScheme(): boolean {

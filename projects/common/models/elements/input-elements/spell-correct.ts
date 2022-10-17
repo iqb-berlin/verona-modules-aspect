@@ -1,11 +1,10 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles,
   InputAssistancePreset,
   InputElement,
   PositionedUIElement,
-  PositionProperties, AnswerScheme
+  PositionProperties, AnswerScheme, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
@@ -28,9 +27,9 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
     }
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
     this.styling = {
-      ...ElementFactory.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
+      ...UIElement.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
     };
   }
 

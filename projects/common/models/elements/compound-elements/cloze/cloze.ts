@@ -9,7 +9,6 @@ import {
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
@@ -31,9 +30,9 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     super({ height: 200, ...element });
     if (element.columnCount) this.columnCount = element.columnCount;
     this.document = ClozeElement.initDocument(element.document);
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
     this.styling = {
-      ...ElementFactory.initStylingProps({ lineHeight: 150, ...element.styling })
+      ...UIElement.initStylingProps({ lineHeight: 150, ...element.styling })
     };
   }
 

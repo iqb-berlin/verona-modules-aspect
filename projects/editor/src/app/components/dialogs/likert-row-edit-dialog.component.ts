@@ -24,8 +24,8 @@ import { TextLabel } from 'common/models/elements/element';
         <mat-label>{{'preset' | translate }}</mat-label>
         <mat-select [(ngModel)]="newLikertRow.value">
           <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-          <mat-option *ngFor="let column of data.options; let i = index" [value]="i">
-            {{column.text}} (Index: {{i}})
+          <mat-option *ngFor="let column of data.options; let i = index" [value]="i"
+                      [innerHTML]="'<span>' + column.text + ' (Index: ' + i + ')</span>' | safeResourceHTML">
           </mat-option>
         </mat-select>
       </mat-form-field>

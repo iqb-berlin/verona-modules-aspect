@@ -119,7 +119,7 @@
     "patternWarnMessage": "Muster Warnmeldung",
     "clearable": "Knopf zum Leeren anzeigen",
     "inputAssistance": "Eingabehilfe",
-    "restrictedToInputAssistanceChars": "Bearbeitung mit anderer Zeichen verhindern",
+    "restrictedToInputAssistanceChars": "Bearbeitung anderer Zeichen verhindern",
     "hasReturnKey": "Eingabetaste hinzufügen",
     "hasArrowKeys": "Pfeiltasten hinzufügen",
     "none": "keine",

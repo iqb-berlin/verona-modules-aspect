@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'arrayIncludes'
 })
 export class ArrayIncludesPipe implements PipeTransform {
-  transform(valueList: string[], searchValue: string): unknown {
+  transform(valueList: string[], searchValue: string): boolean {
     return valueList.includes(searchValue);
   }
 }

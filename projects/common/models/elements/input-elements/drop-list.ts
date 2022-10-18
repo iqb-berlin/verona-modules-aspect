@@ -27,7 +27,7 @@ export class DropListElement extends InputElement implements PositionedUIElement
 
   constructor(element: Partial<DropListElement>) {
     super({ height: 100, ...element });
-    this.value = element.value || [];
+    this.value = element.value !== undefined ? [...element.value] : [];
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
     if (element.connectedTo) this.connectedTo = element.connectedTo;
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;

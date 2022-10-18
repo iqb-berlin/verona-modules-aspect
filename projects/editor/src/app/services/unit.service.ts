@@ -197,10 +197,14 @@ export class UnitService {
         rowObject.id = this.idService.getAndRegisterNewID('likert-row');
       });
     }
-
     if (newElement.type === 'cloze') {
       ClozeElement.getDocumentChildElements((newElement as ClozeElement).document).forEach(clozeChild => {
         clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
+      });
+    }
+    if (newElement.type === 'drop-list') {
+      (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
+        valueObject.id = this.idService.getAndRegisterNewID('value');
       });
     }
     return newElement;

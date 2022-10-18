@@ -10,6 +10,9 @@ Editor
 - Add background color setting to text-field in cloze
 - Fix frame border initialization
 - Fix visual issue with double borders in TextEditor
+- Fix DropList duplication
+- Fix likert-row preset to show rich text
+- Fix frame border switch translation (top and bottom were mixed up)
 
 1.33.3
 - Enable reading of duplicate IDs

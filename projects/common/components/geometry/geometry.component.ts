@@ -1,9 +1,10 @@
 import {
-  AfterViewInit, Component, EventEmitter, Input, Output
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, Renderer2
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { ExternalResourceService } from 'common/services/external-resource.service';
 
 declare const GGBApplet: any;
 
@@ -21,6 +22,12 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   @Input() elementModel!: GeometryElement;
   @Input() appDefinition!: string;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
+
+  constructor(public elementRef: ElementRef,
+              private renderer: Renderer2,
+              private externalResourceService: ExternalResourceService) {
+    super(elementRef);
+  }
 
   ngAfterViewInit(): void {
     this.externalResourceService.initializeGeoGebra(this.renderer);

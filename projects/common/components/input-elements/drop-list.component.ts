@@ -75,8 +75,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
               {{dropListValueElement.text}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
-                 [style.height.%]="placeholderDimensions.height"
-                 [style.width.%]="placeholderDimensions.width">
+                 [class.drag-placeholder-border]="placeholderDimensions.width !== '0px'"
+                 [style.padding]="0"
+                 [style.margin]="0"
+                 [style.height]="placeholderDimensions.height"
+                 [style.width]="placeholderDimensions.width">
             </div>
             {{dropListValueElement.text}}
           </div>
@@ -116,7 +119,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   `,
   styles: [
     '.list-container {width: 100%; height: 100%;}',
-    '.list {border-radius: 5px; width: calc(100% - 6px);}',
+    '.list {border-radius: 5px; width: calc(100% - 6px); overflow: hidden}',
     '.list {height: calc(100% - 6px); margin-top: 3px; margin-left: 3px;}',
     '.text-item {border-radius: 5px; padding: 10px;}',
     '.item {cursor: grab}',
@@ -127,13 +130,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.errors {outline: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 5px; z-index: 5; box-shadow: 2px 2px 5px black;}',
-    '.drag-placeholder {box-sizing: border-box; border-radius: 5px; background-color: lightgrey; border: solid 3px #999;}',
-    '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
+    '.drag-placeholder-border {box-sizing: border-box; border: solid 3px #999; border-radius: 5px}',
+    '.drag-placeholder {background-color: lightgrey; transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.dropList-highlight.cdk-drop-list-receiving {outline: solid;}',
     '.dropList-highlight.cdk-drop-list-dragging {outline: solid;}',
     '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
-    ':host .copyOnDrop .cdk-drag-placeholder {position: relative; visibility: hidden; height: 0 !important; min-height: 0 !important;}',
+    ':host .copyOnDrop .cdk-drag-placeholder {position: relative; visibility: hidden;}',
+    ':host .copyOnDrop .cdk-drag-placeholder {height: 0 !important; min-height: 0 !important;}',
     ':host .copyOnDrop .cdk-drag-placeholder {margin: 0 !important; padding: 0 !important; border: 0;}'
   ]
 })
@@ -142,9 +146,9 @@ export class DropListComponent extends FormElementComponent {
 
   bodyElement: HTMLElement = document.body;
   draggedItemIndex: number | null = null;
-  placeholderDimensions: { width: number, height: number } = { width: 1, height: 1 };
+  placeholderDimensions: { width: string, height: string } = { width: '1px', height: '1px' };
 
-  dragStart(itemIndex: number, event: CdkDragStart<DropListSimpleComponent>): void {
+  dragStart(itemIndex: number, event: CdkDragStart<DropListComponent>): void {
     this.setPlaceholderDimensions(
       event.source.dropContainer.data.elementFormControl.value.length - 1,
       event.source.dropContainer.data.elementModel.orientation
@@ -197,8 +201,22 @@ export class DropListComponent extends FormElementComponent {
   }
 
   setPlaceholderDimensions(itemsCount: number, orientation: unknown): void {
-    this.placeholderDimensions.height = itemsCount && orientation !== 'horizontal' ? 1 : 100;
-    this.placeholderDimensions.width = itemsCount && orientation === 'horizontal' ? 1 : 100;
+    switch (orientation) {
+      case 'vertical': {
+        this.placeholderDimensions.width = '100%';
+        this.placeholderDimensions.height = itemsCount ? '1px' : '100%';
+        break;
+      }
+      case 'horizontal': {
+        this.placeholderDimensions.width = itemsCount ? '1px' : '100%';
+        this.placeholderDimensions.height = '100%';
+        break;
+      }
+      default: { // 'flex'
+        this.placeholderDimensions.width = itemsCount ? '0px' : '100%';
+        this.placeholderDimensions.height = itemsCount ? '0px' : '100%';
+      }
+    }
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (

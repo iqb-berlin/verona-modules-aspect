@@ -64,8 +64,9 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
               {{value.text}}
             </div>
             <div class="drag-placeholder" *cdkDragPlaceholder
-                 [style.height.%]="placeholderDimensions.height"
-                 [style.width.%]="placeholderDimensions.width">
+                 [class.drag-placeholder-border]="placeholderDimensions.width !== '0px'"
+                 [style.height]="placeholderDimensions.height"
+                 [style.width]="placeholderDimensions.width">
             </div>
             {{value.text}}
           </div>
@@ -75,15 +76,15 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
   `,
   styles: [
     '.list-container {display: flex; flex-direction: column; width: 100%; height: 100%;}',
-    '.list {width: 100%; height: 100%; border-radius: 5px}',
+    '.list {width: 100%; height: 100%; border-radius: 5px; overflow: hidden}',
     '.item {border-radius: 5px; padding: 0 5px; height: 100%; text-align: center;}',
     '.item:not(:last-child) {margin-bottom: 5px;}',
     '.item:active {cursor: grabbing}',
     '.errors {box-sizing: border-box; border: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px;}',
     '.cdk-drag-preview {padding: 8px 20px; border-radius: 5px; box-shadow: 2px 2px 5px black;}',
-    '.drag-placeholder {box-sizing: border-box; border-radius: 5px; background-color: lightgrey; border: solid 3px #999;}',
-    '.drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
+    '.drag-placeholder {background-color: lightgrey; transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
+    '.drag-placeholder-border {box-sizing: border-box; border: solid 3px #999; border-radius: 5px}',
     '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
 
     '.dropList-highlight.cdk-drop-list-receiving {border: solid;}',
@@ -92,7 +93,7 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
 })
 export class DropListSimpleComponent extends FormElementComponent {
   @Input() elementModel!: DropListSimpleElement;
-  placeholderDimensions: { width: number, height: number } = { width: 1, height: 1 };
+  placeholderDimensions: { width: string, height: string } = { width: '1px', height: '1px' };
 
   bodyElement: HTMLElement = document.body;
 
@@ -146,8 +147,22 @@ export class DropListSimpleComponent extends FormElementComponent {
   }
 
   setPlaceholderDimensions(itemsCount: number, orientation: unknown): void {
-    this.placeholderDimensions.height = itemsCount && orientation !== 'horizontal' ? 1 : 100;
-    this.placeholderDimensions.width = itemsCount && orientation === 'horizontal' ? 1 : 100;
+    switch (orientation) {
+      case 'vertical': {
+        this.placeholderDimensions.width = '100%';
+        this.placeholderDimensions.height = itemsCount ? '1px' : '100%';
+        break;
+      }
+      case 'horizontal': {
+        this.placeholderDimensions.width = itemsCount ? '1px' : '100%';
+        this.placeholderDimensions.height = '100%';
+        break;
+      }
+      default: { // 'flex'
+        this.placeholderDimensions.width = itemsCount ? '0px' : '100%';
+        this.placeholderDimensions.height = itemsCount ? '0px' : '100%';
+      }
+    }
   }
 
   onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (

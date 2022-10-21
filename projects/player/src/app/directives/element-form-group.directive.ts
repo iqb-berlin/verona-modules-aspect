@@ -11,6 +11,7 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement, InputElementValue } from 'common/models/elements/element';
 import { SliderElement } from 'common/models/elements/input-elements/slider';
+import { hotspotImageRequiredValidator } from 'player/src/app/validators/hotspot-image-required.validator';
 import { ValidationService } from '../services/validation.service';
 import { ElementGroupDirective } from './element-group.directive';
 import { ElementModelElementCodeMappingService } from '../services/element-model-element-code-mapping.service';
@@ -68,6 +69,9 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
     const validators: ValidatorFn[] = [];
     if (elementModel.required) {
       switch (elementModel.type) {
+        case 'hotspot-image':
+          validators.push(hotspotImageRequiredValidator());
+          break;
         case 'checkbox':
           validators.push(Validators.requiredTrue);
           break;

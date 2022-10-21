@@ -1,5 +1,11 @@
 Editor
 ======
+1.35.0
+- Implement hotspot image element
+  Clickable and non-clickable (read-only) areas can be placed on an image.
+  The shapes of the areas can be ellipses and rectangles. Their position,
+  size, rotation, color and frame thickness can be set. The elements can be marked as required.
+
 1.34.0
 - Implement GeoGebra applet element
   This needs a base64 representation of a unit.

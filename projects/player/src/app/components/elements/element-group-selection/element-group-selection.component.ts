@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ElementGroup, ElementGroupName } from '../../../models/element-group';
 import { UIElement, UIElementType } from 'common/models/elements/element';
+import { ElementGroup, ElementGroupName } from '../../../models/element-group';
 
 @Component({
   selector: 'aspect-element-group-selection',
@@ -16,7 +16,7 @@ export class ElementGroupSelectionComponent implements OnInit {
     { name: 'mediaPlayerGroup', types: ['audio', 'video'] },
     {
       name: 'inputGroup',
-      types: ['checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images', 'dropdown']
+      types: ['checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images', 'dropdown', 'hotspot-image']
     },
     { name: 'compoundGroup', types: ['cloze', 'likert'] },
     { name: 'textGroup', types: ['text'] },

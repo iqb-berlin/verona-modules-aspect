@@ -12,6 +12,7 @@ import { RadioButtonGroupElement } from 'common/models/elements/input-elements/r
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import { DropdownElement } from 'common/models/elements/input-elements/dropdown';
 import { InputElement } from 'common/models/elements/element';
+import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { ValidationService } from '../../../services/validation.service';
 import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -30,6 +31,7 @@ export class InputGroupElementComponent extends ElementFormGroupDirective implem
   RadioButtonGroupElement!: RadioButtonGroupElement;
   RadioButtonGroupComplexElement!: RadioButtonGroupComplexElement;
   DropdownElement!: DropdownElement;
+  HotspotImageElement!: HotspotImageElement;
 
   constructor(
     public unitStateService: UnitStateService,

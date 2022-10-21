@@ -21,6 +21,13 @@ import { MatListModule } from '@angular/material/list';
 
 import { APIService, SharedModule } from 'common/shared.module';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
+import { HotspotListPanelComponent } from 'editor/src/app/components/properties-panel/hotspot-list-panel.component';
+import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
+import { MatRadioModule } from '@angular/material/radio';
+import {
+  HotspotFieldSetComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/hotspot-field-set.component';
+import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -88,7 +95,6 @@ import { LikertRowLabelPipe } from './components/properties-panel/likert-row-lab
 import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
 import { BorderPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
-import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 
 @NgModule({
   declarations: [
@@ -115,6 +121,7 @@ import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
     PlayerEditDialogComponent,
     LikertRowEditDialogComponent,
     RichTextEditDialogComponent,
+    HotspotEditDialogComponent,
     ElementModelPropertiesComponent,
     DropListOptionEditDialogComponent,
     PositionFieldSetComponent,
@@ -135,6 +142,8 @@ import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
     InputElementPropertiesComponent,
     PresetValuePropertiesComponent,
     OptionListPanelComponent,
+    HotspotFieldSetComponent,
+    HotspotListPanelComponent,
     LikertRowLabelPipe,
     LabelEditDialogComponent,
     BorderPropertiesComponent,
@@ -162,7 +171,8 @@ import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
         useClass: EditorTranslateLoader
       }
     }),
-    MatListModule
+    MatListModule,
+    MatRadioModule
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService }

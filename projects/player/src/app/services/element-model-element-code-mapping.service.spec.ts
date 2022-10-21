@@ -12,6 +12,7 @@ import * as radioGroupImages_130 from 'test-data/element-models/radio-group-imag
 import * as toggleButton_130 from 'test-data/element-models/toggle-button_130.json';
 import * as textArea_130 from 'test-data/element-models/text-area_130.json';
 import * as spellCorrect_130 from 'test-data/element-models/spell-correct_130.json';
+import * as hotspotImage_135 from 'test-data/element-models/hotspot-image_135.json';
 import * as dragNDropValues_01_130 from 'test-data/values/dragNDropValues_01_130.json';
 import * as dragNDropValues_02_130 from 'test-data/values/dragNDropValues_02_130.json';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
@@ -31,7 +32,8 @@ import { RadioButtonGroupElement } from 'common/models/elements/input-elements/r
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
-import { DragNDropValueObject } from 'common/models/elements/element';
+import { DragNDropValueObject, Hotspot } from 'common/models/elements/element';
+import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
 describe('ElementModelElementCodeMappingService', () => {
@@ -97,6 +99,46 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map the value null of a radio elementModel to null', () => {
     expect(service.mapToElementCodeValue(null, 'radio'))
       .toBe(null);
+  });
+
+  it('should map the value of a hotspot image elementModel to its elementCode value', () => {
+    const hotspots: Hotspot[] = [
+      {
+        top: 10,
+        left: 10,
+        width: 20,
+        height: 20,
+        shape: 'rect',
+        borderWidth: 1,
+        borderColor: '#000000',
+        backgroundColor: '#000000',
+        rotation: 0,
+        readOnly: false,
+        value: true
+      },
+      {
+        top: 10,
+        left: 10,
+        width: 20,
+        height: 20,
+        shape: 'rect',
+        borderWidth: 1,
+        borderColor: '#000000',
+        backgroundColor: '#000000',
+        rotation: 0,
+        readOnly: false,
+        value: false
+      }
+    ];
+    expect(service.mapToElementCodeValue(hotspots, 'hotspot-image'))
+      .toEqual([true, false]);
+  });
+
+  it('should map the value of a hotspot image elementModel to its elementCode value', () => {
+    const hotspots: Hotspot[] = [];
+
+    expect(service.mapToElementCodeValue(hotspots, 'hotspot-image'))
+      .toEqual([]);
   });
 
   it('should map the value of a radio-group-images elementModel to its elementCode value', () => {
@@ -495,5 +537,45 @@ describe('ElementModelElementCodeMappingService', () => {
     const elementModel: ToggleButtonElement = JSON.parse(JSON.stringify(toggleButton_130));
     expect(service.mapToElementModelValue(undefined, elementModel))
       .toEqual(null);
+  });
+
+  it('should map an elementCode value to hotspot-image elementModel value', () => {
+    const elementModel: HotspotImageElement = JSON.parse(JSON.stringify(hotspotImage_135));
+    expect(service.mapToElementModelValue([true], elementModel))
+      .toEqual([
+        {
+          top: 10,
+          left: 10,
+          width: 20,
+          height: 20,
+          shape: 'rect',
+          borderWidth: 1,
+          borderColor: '#000000',
+          backgroundColor: '#000000',
+          rotation: 0,
+          readOnly: false,
+          value: true
+        }
+      ]);
+  });
+
+  it('should map an elementCode value to hotspot-image elementModel value', () => {
+    const elementModel: HotspotImageElement = JSON.parse(JSON.stringify(hotspotImage_135));
+    expect(service.mapToElementModelValue([false], elementModel))
+      .toEqual([
+        {
+          top: 10,
+          left: 10,
+          width: 20,
+          height: 20,
+          shape: 'rect',
+          borderWidth: 1,
+          borderColor: '#000000',
+          backgroundColor: '#000000',
+          rotation: 0,
+          readOnly: false,
+          value: false
+        }
+      ]);
   });
 });

@@ -30,6 +30,12 @@
       [parentForm]="form"
       [elementModel]="elementModel | cast: RadioButtonGroupComplexElement">
   </aspect-radio-group-images>
+  <aspect-hotspot-image
+    *ngIf="elementModel.type === 'hotspot-image'"
+    #elementComponent
+    [parentForm]="form"
+    [elementModel]="elementModel | cast: HotspotImageElement">
+  </aspect-hotspot-image>
   <aspect-dropdown
       *ngIf="elementModel.type === 'dropdown'"
       #elementComponent

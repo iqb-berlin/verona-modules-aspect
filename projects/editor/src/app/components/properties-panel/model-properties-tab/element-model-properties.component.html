@@ -31,6 +31,11 @@
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
+  <aspect-hotspot-field-set *ngIf="combinedProperties.type === 'hotspot-image'"
+                            [combinedProperties]="combinedProperties"
+                            (updateModel)="updateModel.emit($event)">
+  </aspect-hotspot-field-set>
+
   <aspect-border-properties [combinedProperties]="combinedProperties"
                             (updateModel)="updateModel.emit($event)"></aspect-border-properties>
 

@@ -27,6 +27,7 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 
 export class Section {
   [index: string]: unknown;
@@ -49,6 +50,7 @@ export class Section {
     checkbox: CheckboxElement,
     dropdown: DropdownElement,
     radio: RadioButtonGroupElement,
+    'hotspot-image': HotspotImageElement,
     image: ImageElement,
     audio: AudioElement,
     video: VideoElement,

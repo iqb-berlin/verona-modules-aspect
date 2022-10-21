@@ -16,9 +16,9 @@ describe('LoggerService', () => {
   it('should call LogService.log', () => {
     spyOn(LogService, 'log')
       .withArgs('test', 'test2');
-    LogService.log('test', 'test2');
-    expect(LogService.log).toHaveBeenCalled();
-    expect(LogService.log).toHaveBeenCalledWith('test', 'test2');
+    LogService.debug('test', 'test2');
+    expect(LogService.debug).toHaveBeenCalled();
+    expect(LogService.debug).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.info', () => {

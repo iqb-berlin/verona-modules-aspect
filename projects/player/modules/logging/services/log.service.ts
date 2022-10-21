@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export enum LogLevel { LOG = 0, INFO = 1, WARN = 2, ERROR = 3, NONE = 4}
+export enum LogLevel { DEBUG = 1, INFO = 2, WARN = 3, ERROR = 4, NONE = 5}
 
 @Injectable({
   providedIn: 'root'
@@ -30,8 +30,8 @@ export class LogService {
   }
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  static log(...args: any[]): void {
-    if (LogService.level <= LogLevel.LOG) {
+  static debug(...args: any[]): void {
+    if (LogService.level <= LogLevel.DEBUG) {
       window.console.log.apply(console, args);
     }
   }

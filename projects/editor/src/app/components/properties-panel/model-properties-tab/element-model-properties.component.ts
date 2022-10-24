@@ -61,6 +61,7 @@ export class ElementModelPropertiesComponent {
   async changeMediaSrc(elementType: string) {
     let mediaSrc = '';
     switch (elementType) {
+      case 'hotspot-image':
       case 'image':
         mediaSrc = await FileService.loadImage();
         break;

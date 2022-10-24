@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'common/services/message.service';
-import { TextLabel, UIElement } from 'common/models/elements/element';
+import { Hotspot, TextLabel, UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
@@ -85,7 +85,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] |
+              value: string | number | boolean | string[] | boolean[] | Hotspot[] |
               TextLabel | TextLabel[] | LikertRowElement[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {

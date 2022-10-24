@@ -18,6 +18,7 @@ export class IDService {
     checkbox: 0,
     dropdown: 0,
     radio: 0,
+    'hotspot-image': 0,
     image: 0,
     audio: 0,
     video: 0,

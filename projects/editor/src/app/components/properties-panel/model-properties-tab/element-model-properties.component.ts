@@ -6,15 +6,15 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
-  InputElementValue, TextLabel, TextImageLabel, UIElement
+  InputElementValue, TextLabel, TextImageLabel, UIElement, Hotspot
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { FileService } from 'common/services/file.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { firstValueFrom } from 'rxjs';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -26,7 +26,7 @@ export class ElementModelPropertiesComponent {
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
-    value: InputElementValue | TextImageLabel[] | LikertRowElement[] | TextLabel[],
+    value: InputElementValue | TextImageLabel[] | LikertRowElement[] | TextLabel[] | Hotspot[]
     isInputValid?: boolean | null
   }>();
 

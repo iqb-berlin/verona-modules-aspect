@@ -177,7 +177,24 @@
     "showFullscreenButton": "Vollbild-Knopf anzeigen",
     "enableShiftDragZoom": "Bewegen und Zoom erlauben",
     "customToolBar": "Anpassung Werkzeugleiste",
-    "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren."
+    "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren.",
+    "hotspots": "Aktive Bereiche",
+    "newHotspot": "Neuer Bereich"
+  },
+  "hotspot": {
+    "top": "Abstand von oben",
+    "left": "Abstand von links",
+    "width": "Bereichsbreite",
+    "height": "Bereichshöhe",
+    "borderWidth": "Rahmenbreite",
+    "borderColor": "Rahmenfarbe",
+    "shape": "Bereichsform",
+    "rect": "Rechteck",
+    "ellipse": "Ellipse",
+    "rotation": "Drehung",
+    "backgroundColor": "Füllfarbe (bei Aktivierung)",
+    "value": "Aktivierter Bereich",
+    "readOnly": "Schreibgeschützt"
   },
   "player": {
     "autoStart": "Autostart (nicht für Tablets)",
@@ -225,7 +242,8 @@
     "slider": "Schieberegler",
     "spell-correct": "Wort korrigieren",
     "toggle-button": "Optionsfeld",
-    "geometry": "Geometrie"
+    "geometry": "Geometrie",
+    "hotspot-image": "Bildbereiche"
   },
   "section-menu": {
     "height": "Höhe",

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { TextMarkingService } from './text-marking.service';
 import {
   DragNDropValueObject,
+  Hotspot,
   InputElement,
   InputElementValue,
   UIElement,
@@ -12,6 +12,8 @@ import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
+import { TextMarkingService } from './text-marking.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +30,11 @@ export class ElementModelElementCodeMappingService {
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectById(id)) as DragNDropValueObject[] :
           (elementModel as InputElement).value;
+      case 'hotspot-image':
+        return (elementCodeValue !== undefined) ?
+          (elementCodeValue as boolean[])
+            .map((v, i) => ({ ...(elementModel as HotspotImageElement).value[i], value: v })) :
+          (elementModel as HotspotImageElement).value;
       case 'text':
         return (elementCodeValue !== undefined) ?
           TextMarkingService
@@ -64,6 +71,8 @@ export class ElementModelElementCodeMappingService {
       case 'drop-list':
       case 'drop-list-simple':
         return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
+      case 'hotspot-image':
+        return (elementModelValue as Hotspot[]).map(hotspot => hotspot.value);
       case 'text':
         return TextMarkingService.getMarkedTextIndices(elementModelValue as string);
       case 'radio':

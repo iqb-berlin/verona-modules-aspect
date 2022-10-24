@@ -21,6 +21,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -113,6 +114,7 @@ import { GeometryComponent } from './components/geometry/geometry.component';
     RadioGroupImagesComponent,
     DropListComponent,
     ClozeComponent,
+    HotspotImageComponent,
     DropListSimpleComponent,
     SliderComponent,
     SpellCorrectComponent,
@@ -158,6 +160,7 @@ import { GeometryComponent } from './components/geometry/geometry.component';
     RadioGroupImagesComponent,
     DropListComponent,
     ClozeComponent,
+    HotspotImageComponent,
     LikertComponent,
     ButtonComponent,
     FrameComponent,

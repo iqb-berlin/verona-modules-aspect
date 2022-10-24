@@ -93,6 +93,11 @@
       <mat-icon>linear_scale</mat-icon>
       {{'toolbox.slider' | translate }}
     </button>
+    <button mat-stroked-button (click)="addUIElement('hotspot-image')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','hotspot-image')">
+      <mat-icon>ads_click</mat-icon>
+      {{'toolbox.hotspot-image' | translate }}
+    </button>
   </mat-expansion-panel>
   <mat-expansion-panel>
     <mat-expansion-panel-header>

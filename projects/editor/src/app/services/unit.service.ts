@@ -11,7 +11,7 @@ import {
   CompoundElement,
   DragNDropValueObject, InputElement,
   InputElementValue, TextLabel, PlayerElement, PlayerProperties, PositionedUIElement,
-  UIElement, UIElementType, UIElementValue
+  UIElement, UIElementType, UIElementValue, Hotspot
 } from 'common/models/elements/element';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
@@ -109,9 +109,10 @@ export class UnitService {
       newElement.appDefinition = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
       if (!newElement.appDefinition) return; // dialog canceled
     }
-    if (['audio', 'video', 'image'].includes(elementType)) {
+    if (['audio', 'video', 'image', 'hotspot-image'].includes(elementType)) {
       let mediaSrc = '';
       switch (elementType) {
+        case 'hotspot-image':
         case 'image':
           mediaSrc = await FileService.loadImage();
           break;
@@ -225,7 +226,7 @@ export class UnitService {
 
   updateElementsProperty(elements: UIElement[],
                          property: string,
-                         value: InputElementValue | LikertRowElement[] |
+                         value: InputElementValue | LikertRowElement[] | Hotspot[] |
                          TextLabel | TextLabel[] | ClozeDocument | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {

@@ -6,11 +6,11 @@ import { ElementFactory } from 'common/util/element.factory';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
-| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images'
+| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
 | 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry';
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] |
+TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] |
 PositionProperties | PlayerProperties | BasicStyles;
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
@@ -61,7 +61,7 @@ export abstract class UIElement {
   abstract getElementComponent(): Type<ElementComponent>;
 }
 
-export type InputElementValue = string[] | string | number | boolean | TextLabel[] | null;
+export type InputElementValue = string[] | string | number | boolean | TextLabel[] | null | Hotspot[] | boolean[];
 
 export abstract class InputElement extends UIElement {
   label: string = 'Beschriftung';
@@ -198,6 +198,20 @@ export interface PlayerProperties {
   showRestRuns: boolean;
   showRestTime: boolean;
   playbackTime: number;
+}
+
+export interface Hotspot {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  shape: 'ellipse' | 'rect';
+  borderWidth: number;
+  borderColor: string;
+  backgroundColor: string;
+  rotation: number;
+  value: boolean;
+  readOnly: boolean
 }
 
 export interface ValueChangeElement {

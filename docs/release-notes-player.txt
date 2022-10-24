@@ -1,5 +1,9 @@
 Player
 ======
+1.20.0
+- Support for hotspot image element
+  Clickable areas of the image are colored on click.
+
 1.27.0
 - Add new input assistance presets ('Space' and 'Comma').
   The preset 'Space' can be used to separate words.

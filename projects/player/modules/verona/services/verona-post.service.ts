@@ -41,7 +41,7 @@ export class VeronaPostService {
     if (!this._isStandalone) {
       window.parent.postMessage(message, '*');
     } else {
-      LogService.info('player: no host detected');
+      LogService.debug('player: no host detected');
     }
   }
 
@@ -74,7 +74,7 @@ export class VeronaPostService {
 
   sendVopReadyNotification(playerMetadata: VopMetaData): void {
     if (playerMetadata) {
-      LogService.info('player: sendVopReadyNotification', playerMetadata);
+      LogService.debug('player: sendVopReadyNotification', playerMetadata);
       this.send({
         type: 'vopReadyNotification',
         ...playerMetadata

@@ -13,12 +13,12 @@ describe('LoggerService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should call LogService.log', () => {
-    spyOn(LogService, 'log')
+  it('should call LogService.debug', () => {
+    spyOn(LogService, 'debug')
       .withArgs('test', 'test2');
-    LogService.log('test', 'test2');
-    expect(LogService.log).toHaveBeenCalled();
-    expect(LogService.log).toHaveBeenCalledWith('test', 'test2');
+    LogService.debug('test', 'test2');
+    expect(LogService.debug).toHaveBeenCalled();
+    expect(LogService.debug).toHaveBeenCalledWith('test', 'test2');
   });
 
   it('should call LogService.info', () => {
@@ -45,26 +45,24 @@ describe('LoggerService', () => {
     expect(LogService.error).toHaveBeenCalledWith('test', 'test2');
   });
 
-  it('should set LogService.level to "LOG"', () => {
-    LogService.level = 0;
-    expect(LogService.level).toEqual(LogLevel.LOG);
-  });
-
-  it('should set LogService.level to "INFO"', () => {
+  it('should set LogService.level to "DEBUG"', () => {
     LogService.level = 1;
+    expect(LogService.level).toEqual(LogLevel.DEBUG);
+  });
+  it('should set LogService.level to "INFO"', () => {
+    LogService.level = 2;
     expect(LogService.level).toEqual(LogLevel.INFO);
   });
   it('should set LogService.level to "WARN"', () => {
-    LogService.level = 2;
+    LogService.level = 3;
     expect(LogService.level).toEqual(LogLevel.WARN);
   });
   it('should set LogService.level to "ERROR"', () => {
-    LogService.level = 3;
+    LogService.level = 4;
     expect(LogService.level).toEqual(LogLevel.ERROR);
   });
   it('should set LogService.level to "NONE"', () => {
-    LogService.level = 4;
+    LogService.level = 5;
     expect(LogService.level).toEqual(LogLevel.NONE);
   });
-
 });

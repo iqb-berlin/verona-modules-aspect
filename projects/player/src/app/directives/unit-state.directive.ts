@@ -45,7 +45,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   private sendVopStateChangedNotification(): void {
-    LogService.info('player: this.unitStateService.unitStateElementCodes',
+    LogService.debug('player: this.unitStateService.unitStateElementCodes',
       this.unitStateService.elementCodes);
     const unitState: UnitState = {
       dataParts: {
@@ -55,7 +55,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
       responseProgress: this.validatorService.responseProgress,
       unitStateDataType: 'iqb-standard@1.0'
     };
-    LogService.info('player: unitState sendVopStateChangedNotification', unitState);
+    LogService.debug('player: unitState sendVopStateChangedNotification', unitState);
     this.veronaPostService.sendVopStateChangedNotification({ unitState });
   }
 

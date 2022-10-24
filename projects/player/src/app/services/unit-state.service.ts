@@ -66,7 +66,7 @@ export class UnitStateService {
   }
 
   changeElementCodeStatus(elementStatus: StatusChangeElement): void {
-    LogService.info(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
+    LogService.debug(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
     this.setElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
@@ -135,7 +135,7 @@ export class UnitStateService {
         this._pagePresented.next(pageIndex);
       }
     } else {
-      LogService.info(`player: page ${pageIndex} is already presented`);
+      LogService.debug(`player: page ${pageIndex} is already presented`);
     }
   }
 

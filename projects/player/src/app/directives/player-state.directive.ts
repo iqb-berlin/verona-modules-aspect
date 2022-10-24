@@ -64,7 +64,7 @@ export class PlayerStateDirective implements OnInit, OnChanges {
       currentPage: this.currentPageIndex.toString(10),
       validPages: this.validPages
     };
-    LogService.info('player: sendVopStateChangedNotification', playerState);
+    LogService.debug('player: sendVopStateChangedNotification', playerState);
     this.veronaPostService.sendVopStateChangedNotification({ playerState }, requested);
   }
 

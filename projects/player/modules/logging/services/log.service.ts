@@ -6,7 +6,7 @@ export enum LogLevel { DEBUG = 1, INFO = 2, WARN = 3, ERROR = 4, NONE = 5}
   providedIn: 'root'
 })
 export class LogService {
-  static level: LogLevel = 2;
+  static level: LogLevel = 3;
 
   // eslint-disable-next-line  @typescript-eslint/no-explicit-any
   static error(...args: any[]): void {

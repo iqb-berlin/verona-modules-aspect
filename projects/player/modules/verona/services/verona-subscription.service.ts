@@ -34,8 +34,7 @@ export class VeronaSubscriptionService {
   private handleMessage(messageData: VopMessage): void {
     switch (messageData.type) {
       case 'vopStartCommand':
-        LogService.debug('player: _vopStartCommand ', messageData.type, messageData.sessionId);
-        LogService.debug('player: _vopStartCommand unit definition ', messageData.unitDefinition);
+        LogService.debug('player: _vopStartCommand ', messageData);
         this.resourceURL = (messageData as VopStartCommand).playerConfig?.directDownloadUrl;
         this._vopStartCommand.next(messageData);
         break;

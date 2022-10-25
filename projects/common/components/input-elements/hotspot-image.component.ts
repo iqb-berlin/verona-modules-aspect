@@ -31,10 +31,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                  [style.border-width.px]="(item.borderWidth + 0.5) / 2"
                  [style.border-color]="item.borderColor"
                  [style.background-color]="(parentForm && elementFormControl.value[index].value) ||
-              (!parentForm && item.value) ?
-              item.backgroundColor :
-              'transparent'"
-                 (click)="!item.readOnly && parentForm ? onHotspotClicked(index) : null">
+                                           (!parentForm && item.value) ?
+                                           item.backgroundColor :
+                                           'transparent'"
+                 (click)="(!item.readOnly && parentForm) && setHotspotValue(index)">
             </div>
             <div *ngIf="item.borderWidth > 0"
                  class="triangle-half-bottom-border hotspot"
@@ -56,10 +56,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                  [style.border-width.px]="(item.borderWidth + 0.5) / 2"
                  [style.border-color]="item.borderColor"
                  [style.background-color]="(parentForm && elementFormControl.value[index].value) ||
-              (!parentForm && item.value) ?
-              item.backgroundColor :
-              'transparent'"
-                 (click)="!item.readOnly && parentForm ? onHotspotClicked(index) : null">
+                                           (!parentForm && item.value) ?
+                                           item.backgroundColor :
+                                           'transparent'"
+                 (click)="(!item.readOnly && parentForm) && setHotspotValue(index)">
             </div>
             <div *ngIf="item.borderWidth > 0"
                  class="triangle-half-bottom-border hotspot"
@@ -86,7 +86,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [style.width.px]="item.width"
              [style.height.px]="item.height"
              [style.transform]="'rotate(' + item.rotation + 'deg)'"
-             (click)="!item.readOnly && parentForm ? onHotspotClicked(index) : null">
+             (click)="(!item.readOnly && parentForm) && setHotspotValue(index)">
         </div>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched">
@@ -95,22 +95,22 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [
-    '.triangle-half {height: 100%; width: 50%; overflow: hidden; position: absolute; pointer-events: none}',
+    '.triangle-half {height: 100%; width: 50%; overflow: hidden; position: absolute; pointer-events: none;}',
     '.triangle-container {overflow: hidden; position: absolute; pointer-events: none;}',
     '.triangle-half-inner {transform-origin: 0 100%; width: 100%; height: 100%;}',
-    '.triangle-half-bottom-border {top: 0; height: 100%; width: 100%; border-bottom-style: solid}',
-    '.border {border-style: solid}',
-    '.border-left {border-left-style: solid}',
+    '.triangle-half-bottom-border {top: 0; height: 100%; width: 100%; border-bottom-style: solid;}',
+    '.border {border-style: solid;}',
+    '.border-left {border-left-style: solid;}',
     '.circle {border-radius: 50%;}',
     '.hotspot {position: absolute; box-sizing: border-box;}',
-    '.active-hotspot {cursor: pointer; pointer-events: all}',
+    '.active-hotspot {cursor: pointer; pointer-events: all;}',
     '.image-container {position: relative;}'
   ]
 })
 export class HotspotImageComponent extends FormElementComponent {
   @Input() elementModel!: HotspotImageElement;
 
-  onHotspotClicked(index: number): void {
+  setHotspotValue(index: number): void {
     const actualValue = this.elementFormControl.value;
     actualValue[index].value = !actualValue[index].value;
     this.elementFormControl.setValue(actualValue);

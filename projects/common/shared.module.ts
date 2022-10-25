@@ -68,6 +68,8 @@ import { CompoundChildOverlayComponent } from './components/compound-elements/cl
 import { MarkListPipe } from './pipes/mark-list.pipe';
 import { IsDisabledDirective } from './directives/is-disabled.directive';
 import { GeometryComponent } from './components/geometry/geometry.component';
+import { MathAtanPipe } from './pipes/math-atan.pipe';
+import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 
 @NgModule({
   imports: [
@@ -126,7 +128,9 @@ import { GeometryComponent } from './components/geometry/geometry.component';
     CompoundChildOverlayComponent,
     MarkListPipe,
     IsDisabledDirective,
-    GeometryComponent
+    GeometryComponent,
+    MathAtanPipe,
+    MathDegreesPipe
   ],
   exports: [
     CommonModule,

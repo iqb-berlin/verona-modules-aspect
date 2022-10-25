@@ -35,6 +35,7 @@ import { Hotspot } from 'common/models/elements/element';
           <label>{{'hotspot.shape' | translate}}</label>
           <mat-radio-button value='ellipse'>{{'hotspot.ellipse' | translate}}</mat-radio-button>
           <mat-radio-button value='rect'>{{'hotspot.rect' | translate}}</mat-radio-button>
+          <mat-radio-button value='triangle'>{{'hotspot.triangle' | translate}}</mat-radio-button>
         </mat-radio-group>
         <mat-form-field appearance="fill" fxFlex="50">
           <mat-label>{{ 'hotspot.borderWidth' | translate }}</mat-label>

@@ -191,6 +191,7 @@
     "shape": "Bereichsform",
     "rect": "Rechteck",
     "ellipse": "Ellipse",
+    "triangle": "Dreieck",
     "rotation": "Drehung",
     "backgroundColor": "Füllfarbe (bei Aktivierung)",
     "value": "Aktivierter Bereich",

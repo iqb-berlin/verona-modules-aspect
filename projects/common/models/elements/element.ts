@@ -205,7 +205,7 @@ export interface Hotspot {
   left: number;
   width: number;
   height: number;
-  shape: 'ellipse' | 'rect';
+  shape: 'ellipse' | 'rect' | 'triangle';
   borderWidth: number;
   borderColor: string;
   backgroundColor: string;

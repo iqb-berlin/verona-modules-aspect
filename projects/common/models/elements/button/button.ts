@@ -24,9 +24,7 @@ export class ButtonElement extends UIElement {
     if (element.action) this.action = element.action;
     if (element.actionParam) this.actionParam = element.actionParam;
     this.position = element.position ? UIElement.initPositionProps(element.position) : undefined;
-    this.styling = {
-      ...UIElement.initStylingProps<{ borderRadius: number; }>({ borderRadius: 0, ...element.styling })
-    };
+    this.styling = UIElement.initStylingProps({ borderRadius: 0, ...element.styling });
   }
 
   getElementComponent(): Type<ElementComponent> {

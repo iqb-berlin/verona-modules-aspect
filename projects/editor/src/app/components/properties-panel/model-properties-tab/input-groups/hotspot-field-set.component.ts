@@ -32,7 +32,7 @@ export class HotspotFieldSetComponent {
       left: 10,
       width: 20,
       height: 20,
-      shape: 'rect',
+      shape: 'rectangle',
       borderWidth: 1,
       borderColor: '#000000',
       backgroundColor: '#000000',

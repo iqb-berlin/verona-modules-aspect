@@ -189,7 +189,7 @@
     "borderWidth": "Rahmenbreite",
     "borderColor": "Rahmenfarbe",
     "shape": "Bereichsform",
-    "rect": "Rechteck",
+    "rectangle": "Rechteck",
     "ellipse": "Ellipse",
     "triangle": "Dreieck",
     "rotation": "Drehung",

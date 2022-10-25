@@ -34,7 +34,7 @@ import { Hotspot } from 'common/models/elements/element';
         <mat-radio-group [(ngModel)]="newHotspot.shape" fxFlex="50" fxLayout='column' fxLayoutGap="5px">
           <label>{{'hotspot.shape' | translate}}</label>
           <mat-radio-button value='ellipse'>{{'hotspot.ellipse' | translate}}</mat-radio-button>
-          <mat-radio-button value='rect'>{{'hotspot.rect' | translate}}</mat-radio-button>
+          <mat-radio-button value='rectangle'>{{'hotspot.rectangle' | translate}}</mat-radio-button>
           <mat-radio-button value='triangle'>{{'hotspot.triangle' | translate}}</mat-radio-button>
         </mat-radio-group>
         <mat-form-field appearance="fill" fxFlex="50">

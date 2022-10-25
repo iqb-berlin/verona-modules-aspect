@@ -269,7 +269,7 @@ export interface Hotspot {
   left: number;
   width: number;
   height: number;
-  shape: 'ellipse' | 'rect' | 'triangle';
+  shape: 'ellipse' | 'rectangle' | 'triangle';
   borderWidth: number;
   borderColor: string;
   backgroundColor: string;

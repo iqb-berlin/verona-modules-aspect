@@ -1,10 +1,9 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   InputElement, PositionedUIElement,
   DragNDropValueObject,
   BasicStyles, PositionProperties,
-  AnswerScheme, AnswerSchemeValue
+  AnswerScheme, AnswerSchemeValue, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
@@ -36,9 +35,9 @@ export class DropListElement extends InputElement implements PositionedUIElement
     if (element.highlightReceivingDropListColor) {
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
     }
-    this.position = ElementFactory.initPositionProps({ useMinHeight: true, ...element.position });
+    this.position = UIElement.initPositionProps({ useMinHeight: true, ...element.position });
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: '#f4f4f2',
         itemBackgroundColor: '#c9e0e0',
         ...element.styling

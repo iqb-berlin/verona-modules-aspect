@@ -1,7 +1,6 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue
+  BasicStyles, InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SliderComponent } from 'common/components/input-elements/slider.component';
@@ -24,9 +23,9 @@ export class SliderElement extends InputElement implements PositionedUIElement {
     if (element.showValues !== undefined) this.showValues = element.showValues;
     if (element.barStyle) this.barStyle = element.barStyle;
     if (element.thumbLabel) this.thumbLabel = element.thumbLabel;
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: 'transparent',
         lineHeight: 135,
         ...element.styling

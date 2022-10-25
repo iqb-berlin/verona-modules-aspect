@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   PositionedUIElement, PositionProperties, UIElement
 } from 'common/models/elements/element';
@@ -30,7 +29,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement {
     this.showFullscreenButton = element.showFullscreenButton !== undefined ? element.showFullscreenButton : true;
     this.customToolBar = element.customToolBar !== undefined ? element.customToolBar : '';
 
-    this.position = ElementFactory.initPositionProps({ ...element.position });
+    this.position = UIElement.initPositionProps({ ...element.position });
   }
 
   getElementComponent(): Type<ElementComponent> {

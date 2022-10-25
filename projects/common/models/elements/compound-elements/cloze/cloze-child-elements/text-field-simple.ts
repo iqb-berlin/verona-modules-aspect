@@ -1,6 +1,5 @@
-import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, InputAssistancePreset, InputElement, AnswerScheme
+  BasicStyles, InputAssistancePreset, InputElement, AnswerScheme, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -44,7 +43,7 @@ export class TextFieldSimpleElement extends InputElement {
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     if (element.clearable) this.clearable = element.clearable;
     this.styling = {
-      ...ElementFactory.initStylingProps({ lineHeight: 135, backgroundColor: 'transparent', ...element.styling })
+      ...UIElement.initStylingProps({ lineHeight: 135, backgroundColor: 'transparent', ...element.styling })
     };
   }
 

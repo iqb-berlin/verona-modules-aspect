@@ -1,11 +1,10 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles,
   InputAssistancePreset,
   InputElement,
   PositionedUIElement,
-  PositionProperties, AnswerScheme
+  PositionProperties, AnswerScheme, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
@@ -40,9 +39,9 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     if (element.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: 'transparent',
         lineHeight: 135,
         ...element.styling

@@ -1,5 +1,4 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, PositionedUIElement,
   PositionProperties, AnswerScheme, UIElement
@@ -27,9 +26,9 @@ export class TextElement extends UIElement implements PositionedUIElement {
     if (element.highlightableYellow) this.highlightableYellow = element.highlightableYellow;
     if (element.hasSelectionPopup !== undefined) this.hasSelectionPopup = element.hasSelectionPopup;
     if (element.columnCount) this.columnCount = element.columnCount;
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: 'transparent',
         lineHeight: element.styling?.lineHeight || 135,
         ...element.styling

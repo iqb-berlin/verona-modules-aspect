@@ -1,6 +1,7 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
-import { PositionedUIElement, PositionProperties, AnswerScheme, UIElement } from 'common/models/elements/element';
+import {
+  PositionedUIElement, PositionProperties, AnswerScheme, UIElement
+} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
 
@@ -21,7 +22,7 @@ export class ImageElement extends UIElement implements PositionedUIElement {
     if (element.magnifierSize) this.magnifierSize = element.magnifierSize;
     if (element.magnifierZoom) this.magnifierZoom = element.magnifierZoom;
     if (element.magnifierUsed) this.magnifierUsed = element.magnifierUsed;
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
   }
 
   getElementComponent(): Type<ElementComponent> {

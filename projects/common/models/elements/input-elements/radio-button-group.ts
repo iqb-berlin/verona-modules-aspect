@@ -1,8 +1,7 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   BasicStyles, InputElement, TextLabel, PositionedUIElement, PositionProperties, OptionElement,
-  AnswerScheme, AnswerSchemeValue
+  AnswerScheme, AnswerSchemeValue, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
@@ -21,9 +20,9 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     if (element.options) this.options = [...element.options];
     if (element.alignment) this.alignment = element.alignment;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
-    this.position = ElementFactory.initPositionProps({ marginBottom: 30, ...element.position });
+    this.position = UIElement.initPositionProps({ marginBottom: 30, ...element.position });
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: 'transparent',
         lineHeight: 135,
         ...element.styling
@@ -57,6 +56,6 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
   }
 
   getNewOptionLabel(optionText: string): TextLabel {
-    return ElementFactory.createOptionLabel(optionText) as TextLabel;
+    return UIElement.createOptionLabel(optionText) as TextLabel;
   }
 }

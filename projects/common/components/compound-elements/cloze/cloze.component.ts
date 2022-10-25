@@ -139,14 +139,14 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
     <ng-template #paragraphChildren let-part>
       <ng-container *ngFor="let subPart of part.content">
         <ng-container *ngIf="$any(subPart).type === 'text' &&
-                             (!(subPart.marks | markList).includes('superscript')) &&
-                             (!(subPart.marks | markList).includes('subscript'))">
+                             (!(subPart.marks | markList | arrayIncludes:'superscript')) &&
+                             (!(subPart.marks | markList | arrayIncludes:'subscript'))">
           <span [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</span>
         </ng-container>
-        <ng-container *ngIf="$any(subPart).type === 'text' && (subPart.marks | markList).includes('superscript')">
+        <ng-container *ngIf="$any(subPart).type === 'text' && ((subPart.marks | markList) | arrayIncludes:'superscript')">
           <sup [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</sup>
         </ng-container>
-        <ng-container *ngIf="$any(subPart).type === 'text' && (subPart.marks | markList).includes('subscript')">
+        <ng-container *ngIf="$any(subPart).type === 'text' && ((subPart.marks | markList) | arrayIncludes:'subscript')">
           <sub [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</sub>
         </ng-container>
         <ng-container *ngIf="$any(subPart).type === 'image'">
@@ -155,7 +155,7 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
                [style.height]="'1em'"
                [style.vertical-align]="'middle'">
         </ng-container>
-        <span *ngIf="['ToggleButton', 'DropList', 'TextField'].includes(subPart.type)">
+        <span *ngIf="['ToggleButton', 'DropList', 'TextField', 'Button'] | arrayIncludes:subPart.type">
           <aspect-compound-child-overlay [style.display]="'inline-block'"
                                          [parentForm]="parentForm"
                                          [element]="$any(subPart).attrs.model"

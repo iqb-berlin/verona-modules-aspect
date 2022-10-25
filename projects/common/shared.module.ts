@@ -70,6 +70,7 @@ import { IsDisabledDirective } from './directives/is-disabled.directive';
 import { GeometryComponent } from './components/geometry/geometry.component';
 import { MathAtanPipe } from './pipes/math-atan.pipe';
 import { MathDegreesPipe } from './pipes/math-degrees.pipe';
+import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 
 @NgModule({
   imports: [
@@ -130,7 +131,8 @@ import { MathDegreesPipe } from './pipes/math-degrees.pipe';
     IsDisabledDirective,
     GeometryComponent,
     MathAtanPipe,
-    MathDegreesPipe
+    MathDegreesPipe,
+    ArrayIncludesPipe
   ],
   exports: [
     CommonModule,

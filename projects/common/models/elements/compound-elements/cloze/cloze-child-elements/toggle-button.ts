@@ -1,6 +1,5 @@
-import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue, TextLabel
+  BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue, TextLabel, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -27,7 +26,7 @@ export class ToggleButtonElement extends InputElement {
     if (element.verticalOrientation) this.verticalOrientation = element.verticalOrientation;
     if (element.dynamicWidth !== undefined) this.dynamicWidth = element.dynamicWidth;
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         lineHeight: 135,
         selectionColor: '#c7f3d0',
         backgroundColor: 'transparent',
@@ -62,6 +61,6 @@ export class ToggleButtonElement extends InputElement {
   }
 
   getNewOptionLabel(optionText: string): TextLabel {
-    return ElementFactory.createOptionLabel(optionText) as TextLabel;
+    return UIElement.createOptionLabel(optionText) as TextLabel;
   }
 }

@@ -1,8 +1,9 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ElementComponent } from '../../directives/element-component.directive';
 import { ButtonElement } from 'common/models/elements/button/button';
+import { NavigationEvent } from 'common/models/elements/element';
+import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
   selector: 'aspect-button',
@@ -24,7 +25,7 @@ import { ButtonElement } from 'common/models/elements/button/button';
                                               action: elementModel.action,
                                               param: elementModel.actionParam
                                            }) : false">
-<!--TODO why prevent default?-->
+      <!--preventDefault to prevent form submission-->
       {{elementModel.label}}
     </a>
     <button *ngIf="!elementModel.imageSrc && !elementModel.asLink" mat-button
@@ -50,8 +51,8 @@ import { ButtonElement } from 'common/models/elements/button/button';
     <input
         *ngIf="elementModel.imageSrc" type="image"
         [src]="elementModel.imageSrc | safeResourceUrl"
-        [class]="elementModel.position.dynamicPositioning &&
-                    !elementModel.position.fixedSize ? 'dynamic-image' : 'static-image'"
+        [class]="elementModel.position?.dynamicPositioning &&
+                 !elementModel.position?.fixedSize ? 'dynamic-image' : 'static-image'"
         [alt]="'imageNotFound' | translate"
         (click)="elementModel.action && elementModel.actionParam !== null?
            navigateTo.emit({
@@ -68,8 +69,5 @@ import { ButtonElement } from 'common/models/elements/button/button';
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
-  @Output() navigateTo = new EventEmitter<{
-    action: 'unitNav' | 'pageNav';
-    param: 'previous' | 'next' | 'first' | 'last' | 'end' | number
-  }>();
+  @Output() navigateTo = new EventEmitter<NavigationEvent>();
 }

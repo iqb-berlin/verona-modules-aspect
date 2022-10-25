@@ -1,7 +1,6 @@
-import { ElementFactory } from 'common/util/element.factory';
 import {
-  BasicStyles, DragNDropValueObject, InputElement, UIElementValue, AnswerScheme,
-  AnswerSchemeValue
+  BasicStyles, DragNDropValueObject, InputElement, AnswerScheme,
+  AnswerSchemeValue, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -30,7 +29,7 @@ export class DropListSimpleElement extends InputElement {
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
     }
     this.styling = {
-      ...ElementFactory.initStylingProps({
+      ...UIElement.initStylingProps({
         backgroundColor: '#f4f4f2',
         itemBackgroundColor: '#c9e0e0',
         ...element.styling

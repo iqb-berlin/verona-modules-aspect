@@ -9,7 +9,6 @@ import {
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
-import { ElementFactory } from 'common/util/element.factory';
 import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
@@ -17,6 +16,7 @@ import {
   DropListSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { ButtonElement } from 'common/models/elements/button/button';
 
 export class ClozeElement extends CompoundElement implements PositionedUIElement {
   document: ClozeDocument = { type: 'doc', content: [] };
@@ -30,9 +30,9 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     super({ height: 200, ...element });
     if (element.columnCount) this.columnCount = element.columnCount;
     this.document = ClozeElement.initDocument(element.document);
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
     this.styling = {
-      ...ElementFactory.initStylingProps({ lineHeight: 150, ...element.styling })
+      ...UIElement.initStylingProps({ lineHeight: 150, ...element.styling })
     };
   }
 
@@ -61,7 +61,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
 
   private static createSubNodeElements(node: any) {
     node.content?.forEach((subNode: any) => {
-      if (['ToggleButton', 'DropList', 'TextField'].includes(subNode.type) &&
+      if (['ToggleButton', 'DropList', 'TextField', 'Button'].includes(subNode.type) &&
         subNode.attrs.model.id === 'cloze-child-id-placeholder') {
         subNode.attrs.model =
           ClozeElement.createChildElement({ ...subNode.attrs.model });
@@ -78,7 +78,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
           ...paragraph,
           content: paragraph.content ? paragraph.content
             .map((paraPart: ClozeDocumentParagraphPart) => (
-              ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
+              ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(paraPart.type) ?
                 {
                   ...paraPart,
                   attrs: {
@@ -139,8 +139,8 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     return elementList;
   }
 
-  private static createChildElement(elementModel: Partial<UIElement>): InputElement {
-    let newElement: InputElement;
+  private static createChildElement(elementModel: Partial<UIElement>): InputElement | ButtonElement {
+    let newElement: InputElement | ButtonElement;
     switch (elementModel.type) {
       case 'text-field-simple':
         newElement = new TextFieldSimpleElement(elementModel as TextFieldSimpleElement);
@@ -150,6 +150,9 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
         break;
       case 'toggle-button':
         newElement = new ToggleButtonElement(elementModel as ToggleButtonElement);
+        break;
+      case 'button':
+        newElement = new ButtonElement(elementModel as ButtonElement);
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);
@@ -162,7 +165,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
       return [];
     }
     return documentPart.content
-      .filter((word: ClozeDocumentParagraphPart) => ['TextField', 'DropList', 'ToggleButton'].includes(word.type))
+      .filter((word: ClozeDocumentParagraphPart) => ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(word.type))
       .reduce((accumulator: any[], currentValue: any) => accumulator.concat(currentValue.attrs.model), []);
   }
 }

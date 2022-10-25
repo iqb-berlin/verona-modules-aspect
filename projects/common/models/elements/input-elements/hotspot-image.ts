@@ -1,7 +1,6 @@
 import { Type } from '@angular/core';
-import { ElementFactory } from 'common/util/element.factory';
 import {
-  InputElement, PositionedUIElement, PositionProperties, AnswerScheme, Hotspot, AnswerSchemeValue
+  InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue, UIElement, Hotspot
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
@@ -15,7 +14,7 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
     super({ height: 100, ...element });
     this.value = element.value !== undefined ? [...element.value] : [];
     if (element.src) this.src = element.src;
-    this.position = ElementFactory.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps(element.position);
   }
 
   hasAnswerScheme(): boolean {

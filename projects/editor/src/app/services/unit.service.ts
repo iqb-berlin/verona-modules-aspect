@@ -128,7 +128,7 @@ export class UnitService {
     }
 
     if (coordinates) {
-      newElement.position = ElementFactory.initPositionProps({
+      newElement.position = UIElement.initPositionProps({
         ...(section.dynamicPositioning && { gridColumn: coordinates.x }),
         ...(section.dynamicPositioning && { gridRow: coordinates.y }),
         ...(!section.dynamicPositioning && { yPosition: coordinates.y }),
@@ -138,7 +138,7 @@ export class UnitService {
     section.addElement(ElementFactory.createElement({
       ...newElement,
       id: this.idService.getAndRegisterNewID(newElement.type),
-      position: ElementFactory.initPositionProps(newElement.position)
+      position: UIElement.initPositionProps(newElement.position)
     }) as PositionedUIElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }

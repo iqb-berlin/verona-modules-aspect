@@ -25,6 +25,7 @@ import { SpellCorrectElement } from 'common/models/elements/input-elements/spell
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -48,7 +49,8 @@ export abstract class ElementFactory {
     'spell-correct': SpellCorrectElement,
     frame: FrameElement,
     'toggle-button': ToggleButtonElement,
-    geometry: GeometryElement
+    geometry: GeometryElement,
+    'hotspot-image': HotspotImageElement
   };
 
   static createElement(element: { type: string } & Partial<UIElement>): UIElement {

@@ -23,12 +23,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [style.transform]="'rotate(' + item.rotation + 'deg)'">
           <div class="triangle-half">
             <div class="triangle-half-inner hotspot"
-                 [style.transform]="'scale(2) rotate(' +
-                 (((item.height + item.borderWidth) | mathAtan:(item.width/2 + item.borderWidth)) | mathDegrees) +
-                 'deg)'"
+                 [style.transform]="'rotate(' + ((item.height | mathAtan:item.width/2) | mathDegrees) + 'deg)'"
                  [class.active-hotspot]="!item.readOnly"
                  [class.border-left]="item.borderWidth > 0"
-                 [style.border-width.px]="(item.borderWidth + 0.5) / 2"
+                 [style.border-width.px]="item.borderWidth"
                  [style.border-color]="item.borderColor"
                  [style.background-color]="(parentForm && elementFormControl.value[index].value) ||
                                            (!parentForm && item.value) ?
@@ -38,22 +36,19 @@ import { FormElementComponent } from '../../directives/form-element-component.di
             </div>
             <div *ngIf="item.borderWidth > 0"
                  class="triangle-half-bottom-border hotspot"
-                 [style.left.px]="item.borderWidth - 1"
+                 [style.left.px]="item.width > item.height ? item.borderWidth * 2 : item.borderWidth"
                  [style.border-width.px]="item.borderWidth"
-                 [style.border-color]="item.borderColor"
-                 [style.bottom.px]="item.borderWidth">
+                 [style.border-color]="item.borderColor">
             </div>
           </div>
           <div class="triangle-half"
                [style.left.%]="50"
                [style.transform]="'scaleX(-1)'">
             <div class="triangle-half-inner hotspot"
-                 [style.transform]="'scale(2) rotate(' +
-                 (((item.height + item.borderWidth) | mathAtan:(item.width/2 + item.borderWidth)) | mathDegrees) +
-                 'deg)'"
+                 [style.transform]="'rotate(' + ((item.height | mathAtan:item.width/2) | mathDegrees) + 'deg)'"
                  [class.active-hotspot]="!item.readOnly"
                  [class.border-left]="item.borderWidth > 0"
-                 [style.border-width.px]="(item.borderWidth + 0.5) / 2"
+                 [style.border-width.px]="item.borderWidth"
                  [style.border-color]="item.borderColor"
                  [style.background-color]="(parentForm && elementFormControl.value[index].value) ||
                                            (!parentForm && item.value) ?
@@ -63,10 +58,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
             </div>
             <div *ngIf="item.borderWidth > 0"
                  class="triangle-half-bottom-border hotspot"
-                 [style.left.px]="item.borderWidth - 1"
+                 [style.left.px]="item.width > item.height ? item.borderWidth * 2 : item.borderWidth"
                  [style.border-width.px]="item.borderWidth"
-                 [style.border-color]="item.borderColor"
-                 [style.bottom.px]="item.borderWidth">
+                 [style.border-color]="item.borderColor">
             </div>
           </div>
         </div>
@@ -97,7 +91,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   styles: [
     '.triangle-half {height: 100%; width: 50%; overflow: hidden; position: absolute; pointer-events: none;}',
     '.triangle-container {overflow: hidden; position: absolute; pointer-events: none;}',
-    '.triangle-half-inner {transform-origin: 0 100%; width: 100%; height: 100%;}',
+    '.triangle-half-inner {transform-origin: 0 100%; width: 500%; height: 500%; bottom: 0; left: 0;}',
     '.triangle-half-bottom-border {top: 0; height: 100%; width: 100%; border-bottom-style: solid;}',
     '.border {border-style: solid;}',
     '.border-left {border-left-style: solid;}',

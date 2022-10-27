@@ -28,12 +28,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                 autocorrect="off"
                 spellcheck="false"
                 value="{{elementModel.value}}"
-                [rows]="(isViewInitialized | async) &&
-                        elementModel.hasDynamicRowCount ?
-                        (elementModel.rowCount | updateTextareaRows :
-                        elementModel.expectedCharactersCount :
-                        input.offsetWidth:
-                        elementModel.styling.fontSize) : elementModel.rowCount"
+                [rows]="(isViewInitialized | async) && elementModel.hasDynamicRowCount ?
+                            (elementModel.expectedCharactersCount | updateTextareaRows:
+                                input.offsetWidth:
+                                elementModel.styling.fontSize) :
+                            elementModel.rowCount"
                 [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
                 [formControl]="elementFormControl"
                 [readonly]="elementModel.readOnly"

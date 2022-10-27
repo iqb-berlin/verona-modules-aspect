@@ -7,6 +7,9 @@ Editor
   Die Bereiche können als Ellipsen, Rechtecke und Dreiecke angelegt werden.
   Ihre Position, Größe, Drehung, Farbe und Rahmenbreite kann eingestellt werden.
   Das Element kann als Pflichtfeld ausgezeichnet werden.
+- Ermöglicht für Eingabebereichen die dynamische Anpassung der Anzahl von Zeilen
+  Auf Grundlage der Angabe der erwarteten Zeichen für die Antwort des Users wird
+  für das gegebene Seitenformat die Anzahl der Zeilen berechnet.
 
 1.34.0
 - Implement GeoGebra applet element

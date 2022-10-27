@@ -71,6 +71,7 @@ import { GeometryComponent } from './components/geometry/geometry.component';
 import { MathAtanPipe } from './pipes/math-atan.pipe';
 import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
+import { UpdateTextareaRowsPipe } from './pipes/update-textarea-rows.pipe';
 
 @NgModule({
   imports: [
@@ -132,7 +133,8 @@ import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
     GeometryComponent,
     MathAtanPipe,
     MathDegreesPipe,
-    ArrayIncludesPipe
+    ArrayIncludesPipe,
+    UpdateTextareaRowsPipe
   ],
   exports: [
     CommonModule,

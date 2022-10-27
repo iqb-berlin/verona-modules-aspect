@@ -12,7 +12,9 @@ import { TextAreaComponent } from 'common/components/input-elements/text-area.co
 export class TextAreaElement extends InputElement implements PositionedUIElement {
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
+  hasDynamicRowCount: boolean = false;
   rowCount: number = 3;
+  expectedCharactersCount: number = 300;
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   hasArrowKeys: boolean = false;
@@ -30,6 +32,8 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     if (element.appearance) this.appearance = element.appearance;
     if (element.resizeEnabled) this.resizeEnabled = element.resizeEnabled;
     if (element.rowCount) this.rowCount = element.rowCount;
+    if (element.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
+    if (element.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
     if (element.restrictedToInputAssistanceChars !== undefined) {

@@ -41,3 +41,5 @@ iqb-aspect-definition@1.0.0
 
 3.8.0
 - +HotspotImageElement
+- Textarea: +hasDynamicRowCount: boolean;
+            +expectedCharactersCount: number;

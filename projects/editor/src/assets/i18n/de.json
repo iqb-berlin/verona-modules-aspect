@@ -179,7 +179,9 @@
     "customToolBar": "Anpassung Werkzeugleiste",
     "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren.",
     "hotspots": "Aktive Bereiche",
-    "newHotspot": "Neuer Bereich"
+    "newHotspot": "Neuer Bereich",
+    "hasDynamicRowCount": "Dynamische Zeilen",
+    "expectedCharactersCount": "Erwartete Zeichenanzahl"
   },
   "hotspot": {
     "top": "Abstand von oben",

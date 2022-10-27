@@ -82,11 +82,24 @@
     {{'propertiesPanel.resizeEnabled' | translate }}
   </mat-checkbox>
 
-  <mat-form-field *ngIf="combinedProperties.rowCount != null"
+  <mat-checkbox *ngIf="combinedProperties.hasDynamicRowCount !== undefined"
+                [checked]="$any(combinedProperties.hasDynamicRowCount)"
+                (change)="updateModel.emit({ property: 'hasDynamicRowCount', value: $event.checked })">
+    {{'propertiesPanel.hasDynamicRowCount' | translate }}
+  </mat-checkbox>
+
+  <mat-form-field *ngIf="combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false"
                   appearance="fill" class="mdInput textsingleline">
     <mat-label>{{'rows' | translate }}</mat-label>
     <input matInput type="number" [value]="$any(combinedProperties.rowCount)"
            (input)="updateModel.emit({ property: 'rowCount', value: $any($event.target).value })">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.expectedCharactersCount != null && combinedProperties.hasDynamicRowCount"
+                  appearance="fill" class="mdInput textsingleline">
+    <mat-label>{{'propertiesPanel.expectedCharactersCount' | translate }}</mat-label>
+    <input matInput type="number" [value]="$any(combinedProperties.expectedCharactersCount)"
+           (input)="updateModel.emit({ property: 'expectedCharactersCount', value: $any($event.target).value })">
   </mat-form-field>
 
   <aspect-button-properties [combinedProperties]="combinedProperties"

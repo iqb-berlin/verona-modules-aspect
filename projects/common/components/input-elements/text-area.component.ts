@@ -26,8 +26,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                 autocapitalize="none"
                 autocorrect="off"
                 spellcheck="false"
-                rows="{{elementModel.rowCount}}"
                 value="{{elementModel.value}}"
+                [rows]="elementModel.rowCount | updateTextareaRows :
+                        elementModel.expectedCharactersCount :
+                        elementModel.hasDynamicRowCount :
+                        input.offsetWidth :
+                        elementModel.styling.fontSize"
                 [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
                 [formControl]="elementFormControl"
                 [readonly]="elementModel.readOnly"

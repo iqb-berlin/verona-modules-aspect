@@ -1,7 +1,8 @@
 import {
-  Component, Output, EventEmitter, Input
+  Component, Output, EventEmitter, Input, AfterViewInit
 } from '@angular/core';
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
+import { delay, Observable, of } from 'rxjs';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
@@ -27,11 +28,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                 autocorrect="off"
                 spellcheck="false"
                 value="{{elementModel.value}}"
-                [rows]="elementModel.rowCount | updateTextareaRows :
+                [rows]="(isViewInitialized | async) &&
+                        elementModel.hasDynamicRowCount ?
+                        (elementModel.rowCount | updateTextareaRows :
                         elementModel.expectedCharactersCount :
-                        elementModel.hasDynamicRowCount :
-                        input.offsetWidth :
-                        elementModel.styling.fontSize"
+                        input.offsetWidth:
+                        elementModel.styling.fontSize) : elementModel.rowCount"
                 [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
                 [formControl]="elementFormControl"
                 [readonly]="elementModel.readOnly"
@@ -52,8 +54,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     ':host ::ng-deep .no-label .mat-form-field-outline-gap {border-top-color: unset !important}'
   ]
 })
-export class TextAreaComponent extends FormElementComponent {
+export class TextAreaComponent extends FormElementComponent implements AfterViewInit {
   @Input() elementModel!: TextAreaElement;
   @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
   @Output() hardwareKeyDetected = new EventEmitter();
+
+  isViewInitialized!: Observable<boolean>;
+
+  ngAfterViewInit(): void {
+    this.isViewInitialized = of(true).pipe(delay(0));
+  }
 }

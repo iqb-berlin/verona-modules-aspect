@@ -59,7 +59,7 @@ export class TextAreaComponent extends FormElementComponent implements AfterView
   @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
   @Output() hardwareKeyDetected = new EventEmitter();
 
-  isViewInitialized!: Observable<boolean>;
+  isViewInitialized: Observable<boolean> = of(false);
 
   ngAfterViewInit(): void {
     this.isViewInitialized = of(true).pipe(delay(0));

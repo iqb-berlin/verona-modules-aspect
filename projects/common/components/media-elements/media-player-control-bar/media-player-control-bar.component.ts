@@ -92,6 +92,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   pause(): void {
+    this.sendPlaybackTimeChanged();
     this.player.pause();
   }
 
@@ -121,6 +122,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   private checkValidState(runCounter: number): boolean {
     this.valid = this.playerProperties.minRuns === 0 ? true : runCounter >= this.playerProperties.minRuns;
     if (this.valid) {
+      this.sendPlaybackTimeChanged();
       this.mediaValidStatusChanged.emit(this.id);
     }
     return this.valid;
@@ -196,7 +198,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnDestroy(): void {
-    this.player.pause();
+    this.pause();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

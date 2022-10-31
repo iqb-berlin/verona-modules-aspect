@@ -36,7 +36,8 @@ export class SectionVisibilityHandlingDirective {
     if (!this.isVisible) {
       this.setVisibility(id === this.section.activeAfterID);
       if (this.isScrollSection) {
-        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        this.elementRef.nativeElement.style.scrollMargin = `${window.innerHeight / 3}px`;
+        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
   }

@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output
+  AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, Output
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,8 +24,7 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private elementRef: ElementRef,
-              private changeDetectorRef: ChangeDetectorRef) {
+  constructor(private elementRef: ElementRef) {
     this.isVisible
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(value => {
@@ -36,12 +35,11 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.checkScrollPosition(this.elementRef.nativeElement);
-    this.changeDetectorRef.detectChanges();
+    setTimeout(() => this.checkScrollPosition(this.elementRef.nativeElement));
   }
 
   private checkScrollPosition(element: HTMLElement): void {
-    this.isVisible.next(element.scrollHeight - element.offsetHeight > element.scrollTop);
+    this.isVisible.next(element.scrollHeight - element.offsetHeight > element.scrollTop + 10);
   }
 
   toggleScrolling(scrolling: boolean) {
@@ -50,18 +48,29 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
         this.scrollDown();
       });
     } else {
-      setTimeout(() => this.clearScrollIng(), 0);
+      this.clearScrollIng();
     }
   }
 
   scrollDown(): void {
-    const lastScrollTop = this.elementRef.nativeElement.scrollTop;
-    this.elementRef.nativeElement.scrollTop = lastScrollTop + 2;
-    if (this.isSnapMode && (this.elementRef.nativeElement.scrollTop !== lastScrollTop + 2)) {
+    const nextScrollTop = this.elementRef.nativeElement.scrollTop + 2;
+    if (this.isSnapMode && this.getBottomsOfPages()
+      .filter((page: number) => Math
+        .abs(page - (nextScrollTop + this.elementRef.nativeElement.offsetHeight)) <= 2).length === 1) {
       this.clearScrollIng();
-      // FF needs time to finish concat scroll anmations before setting a new page index
-      setTimeout(() => this.scrollToNextPage.emit(), 100);
+      this.scrollToNextPage.emit();
+    } else {
+      this.elementRef.nativeElement.scrollTop = nextScrollTop;
     }
+  }
+
+  private getBottomsOfPages(): number[] {
+    return [...this.elementRef.nativeElement.querySelectorAll('aspect-page')]
+      .map(page => page.parentElement?.offsetHeight)
+      .reduce((acc, v, i) => {
+        i === 0 ? acc.push(v) : acc.push(v + acc[i - 1]);
+        return acc;
+      }, []);
   }
 
   private clearScrollIng(): void {

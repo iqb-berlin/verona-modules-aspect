@@ -20,8 +20,7 @@ export class ScrollToIndexDirective implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((selectedIndex: number): void => {
         if (selectedIndex === this.index) {
-          // timeout is required because of side effects of concat scroll
-          setTimeout(() => this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+          this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
   }

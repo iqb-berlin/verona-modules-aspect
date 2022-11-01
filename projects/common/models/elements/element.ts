@@ -131,30 +131,30 @@ export abstract class PlayerElement extends UIElement {
   protected constructor(element: Partial<PlayerElement>) {
     super(element);
     this.player = {
-      autostart: element.autostart !== undefined ? element.autostart as boolean : false,
-      autostartDelay: element.autostartDelay !== undefined ? element.autostartDelay as number : 0,
-      loop: element.loop !== undefined ? element.loop as boolean : false,
-      startControl: element.startControl !== undefined ? element.startControl as boolean : true,
-      pauseControl: element.pauseControl !== undefined ? element.pauseControl as boolean : false,
-      progressBar: element.progressBar !== undefined ? element.progressBar as boolean : true,
-      interactiveProgressbar: element.interactiveProgressbar !== undefined ?
-        element.interactiveProgressbar as boolean :
+      autostart: element.player?.autostart !== undefined ? element.player?.autostart as boolean : false,
+      autostartDelay: element.player?.autostartDelay !== undefined ? element.player?.autostartDelay as number : 0,
+      loop: element.player?.loop !== undefined ? element.player?.loop as boolean : false,
+      startControl: element.player?.startControl !== undefined ? element.player?.startControl as boolean : true,
+      pauseControl: element.player?.pauseControl !== undefined ? element.player?.pauseControl as boolean : false,
+      progressBar: element.player?.progressBar !== undefined ? element.player?.progressBar as boolean : true,
+      interactiveProgressbar: element.player?.interactiveProgressbar !== undefined ?
+        element.player?.interactiveProgressbar as boolean :
         false,
-      volumeControl: element.volumeControl !== undefined ? element.volumeControl as boolean : true,
-      defaultVolume: element.defaultVolume !== undefined ? element.defaultVolume as number : 0.8,
-      minVolume: element.minVolume !== undefined ? element.minVolume as number : 0,
-      muteControl: element.muteControl !== undefined ? element.muteControl as boolean : true,
-      interactiveMuteControl: element.interactiveMuteControl !== undefined ?
-        element.interactiveMuteControl as boolean :
+      volumeControl: element.player?.volumeControl !== undefined ? element.player?.volumeControl as boolean : true,
+      defaultVolume: element.player?.defaultVolume !== undefined ? element.player?.defaultVolume as number : 0.8,
+      minVolume: element.player?.minVolume !== undefined ? element.player?.minVolume as number : 0,
+      muteControl: element.player?.muteControl !== undefined ? element.player?.muteControl as boolean : true,
+      interactiveMuteControl: element.player?.interactiveMuteControl !== undefined ?
+        element.player?.interactiveMuteControl as boolean :
         false,
-      hintLabel: element.hintLabel !== undefined ? element.hintLabel as string : '',
-      hintLabelDelay: element.hintLabelDelay !== undefined ? element.hintLabelDelay as number : 0,
-      activeAfterID: element.activeAfterID !== undefined ? element.activeAfterID as string : '',
-      minRuns: element.minRuns !== undefined ? element.minRuns as number : 1,
-      maxRuns: element.maxRuns !== undefined ? element.maxRuns as number | null : null,
-      showRestRuns: element.showRestRuns !== undefined ? element.showRestRuns as boolean : false,
-      showRestTime: element.showRestTime !== undefined ? element.showRestTime as boolean : true,
-      playbackTime: element.playbackTime !== undefined ? element.playbackTime as number : 0
+      hintLabel: element.player?.hintLabel !== undefined ? element.player?.hintLabel as string : '',
+      hintLabelDelay: element.player?.hintLabelDelay !== undefined ? element.player?.hintLabelDelay as number : 0,
+      activeAfterID: element.player?.activeAfterID !== undefined ? element.player?.activeAfterID as string : '',
+      minRuns: element.player?.minRuns !== undefined ? element.player?.minRuns as number : 1,
+      maxRuns: element.player?.maxRuns !== undefined ? element.player?.maxRuns as number | null : null,
+      showRestRuns: element.player?.showRestRuns !== undefined ? element.player?.showRestRuns as boolean : false,
+      showRestTime: element.player?.showRestTime !== undefined ? element.player?.showRestTime as boolean : true,
+      playbackTime: element.player?.playbackTime !== undefined ? element.player?.playbackTime as number : 0
     };
   }
 

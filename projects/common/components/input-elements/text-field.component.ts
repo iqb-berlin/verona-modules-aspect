@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
+import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-text-field',
@@ -33,12 +33,15 @@ import { TextFieldElement } from 'common/models/elements/input-elements/text-fie
              (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
              (focus)="focusChanged.emit({ inputElement: input, focused: true })"
              (blur)="focusChanged.emit({ inputElement: input, focused: false })">
-      <button *ngIf="elementModel.clearable"
-              type="button"
-              matSuffix mat-icon-button aria-label="Clear"
-              (click)="this.elementFormControl.setValue('')">
-        <mat-icon>close</mat-icon>
-      </button>
+      <div matSuffix fxLayout="row" fxLayoutAlign="center baseline">
+        <mat-icon *ngIf="!elementFormControl.touched && elementModel.hasKeyboardIcon">keyboard_outline</mat-icon>
+        <button *ngIf="elementModel.clearable"
+                type="button"
+                mat-icon-button aria-label="Clear"
+                (click)="elementFormControl.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
       <mat-error *ngIf="elementFormControl.errors">
         {{elementFormControl.errors | errorTransform: elementModel}}
       </mat-error>

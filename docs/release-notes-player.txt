@@ -4,6 +4,10 @@ Player
 - Macht das neue Element "Bildbereiche" im Player verfügbar
   "Aktive Bereiche" werden beim Anklicken durch den User mit der
   eingestellten Farbe gefüllt.
+- Eingabebereiche mit "dynamischen Zeilen" passen die Anzahl
+  ihrer Zeilen an das gegebene Seitenformat an
+- Optionale Tastatursymbole von Eingabefeldern und -bereichen
+  werden nach erster Benutzung der Elemente ausgeblendet
 
 1.27.0
 - Add new input assistance presets ('Space' and 'Comma').

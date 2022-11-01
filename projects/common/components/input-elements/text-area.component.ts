@@ -22,6 +22,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
       [appearance]="$any(elementModel.appearance)">
       <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
+      <mat-icon *ngIf="!elementFormControl.touched && elementModel.hasKeyboardIcon"
+                class="keyboard-icon"
+                [style.top.px]="elementModel.styling.fontSize/2">
+        keyboard_outline
+      </mat-icon>
       <textarea matInput #input
                 autocomplete="off"
                 autocapitalize="none"
@@ -49,6 +54,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </mat-form-field>
   `,
   styles: [
+    '.keyboard-icon {position: absolute; right: 0; font-size: 150%;}',
     ':host ::ng-deep div.mat-form-field-infix {padding-top: 0.2em; padding-bottom: 0.2em;}',
     ':host ::ng-deep .no-label .mat-form-field-outline-gap {border-top-color: unset !important}'
   ]

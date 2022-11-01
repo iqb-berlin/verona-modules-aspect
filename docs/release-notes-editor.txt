@@ -10,6 +10,7 @@ Editor
 - Ermöglicht für Eingabebereichen die dynamische Anpassung der Anzahl von Zeilen
   Auf Grundlage der Angabe der erwarteten Zeichen für die Antwort des Users wird
   für das gegebene Seitenformat die Anzahl der Zeilen berechnet.
+- Ermöglicht die Darstellung eines optionalen Tastatursymbols bei Eingabefeldern und -bereichen
 
 1.34.0
 - Implement GeoGebra applet element

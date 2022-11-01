@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 
 @Component({
@@ -76,6 +78,12 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       {{'propertiesPanel.clearable' | translate }}
     </mat-checkbox>
 
+    <mat-checkbox *ngIf="combinedProperties.hasKeyboardIcon !== undefined"
+                  [checked]="$any(combinedProperties.hasKeyboardIcon)"
+                  (change)="updateModel.emit({ property: 'hasKeyboardIcon', value: $event.checked })">
+      {{'propertiesPanel.hasKeyboardIcon' | translate }}
+    </mat-checkbox>
+
     <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
                   [checked]="$any(combinedProperties.showSoftwareKeyboard)"
                   (change)="updateModel.emit({ property: 'showSoftwareKeyboard', value: $event.checked })">
@@ -137,6 +145,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
 })
 export class TextFieldElementPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
-  @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+  @Output() updateModel = new EventEmitter<{
+    property: string; value: string | number | boolean | string[], isInputValid?: boolean | null
+  }>();
 }

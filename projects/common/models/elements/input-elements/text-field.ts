@@ -20,6 +20,7 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
   hasArrowKeys: boolean = false;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
+  hasKeyboardIcon: boolean = false;
   clearable: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
@@ -44,6 +45,7 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     if (element.clearable) this.clearable = element.clearable;
+    if (element.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
     this.position = UIElement.initPositionProps(element.position);
     this.styling = {
       ...UIElement.initStylingProps({

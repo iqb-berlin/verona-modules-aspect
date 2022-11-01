@@ -22,6 +22,7 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
   restrictedToInputAssistanceChars: boolean = true;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
+  hasKeyboardIcon: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -43,6 +44,7 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     if (element.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
+    if (element.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
     this.position = UIElement.initPositionProps(element.position);
     this.styling = {
       ...UIElement.initStylingProps({

@@ -8,6 +8,7 @@ Player
   ihrer Zeilen an das gegebene Seitenformat an
 - Optionale Tastatursymbole von Eingabefeldern und -bereichen
   werden nach erster Benutzung der Elemente ausgeblendet
+- Verbessert die Performanz von GeoGebra-Elementen
 
 1.27.0
 - Add new input assistance presets ('Space' and 'Comma').

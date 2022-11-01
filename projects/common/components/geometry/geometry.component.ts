@@ -1,10 +1,12 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, Renderer2
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { ValueChangeElement } from 'common/models/elements/element';
 import { ExternalResourceService } from 'common/services/external-resource.service';
+import { debounceTime, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 declare const GGBApplet: any;
 
@@ -18,15 +20,27 @@ declare const GGBApplet: any;
     '.geogebra-applet {margin: auto;}'
   ]
 })
-export class GeometryComponent extends ElementComponent implements AfterViewInit {
+export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
   @Input() elementModel!: GeometryElement;
   @Input() appDefinition!: string;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
+
+  private ngUnsubscribe = new Subject<void>();
+  private geometryUpdated = new EventEmitter<any>();
 
   constructor(public elementRef: ElementRef,
               private renderer: Renderer2,
               private externalResourceService: ExternalResourceService) {
     super(elementRef);
+    this.geometryUpdated
+      .pipe(
+        debounceTime(500),
+        takeUntil(this.ngUnsubscribe)
+      ).subscribe((api): void => this.elementValueChanged
+        .emit({
+          id: this.elementModel.id,
+          value: api.getBase64()
+        }));
   }
 
   ngAfterViewInit(): void {
@@ -67,10 +81,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       ggbBase64: this.appDefinition,
       appletOnLoad: (api: any) => {
         api.registerUpdateListener(() => {
-          this.elementValueChanged.emit({
-            id: this.elementModel.id,
-            value: api.getBase64()
-          });
+          this.geometryUpdated.emit(api);
         });
       }
     };
@@ -79,5 +90,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     // Needs timeout for loading new unit file in editor. For unknown reasons the component
     // does not get re-initialized.
     setTimeout(() => applet.inject(this.elementModel.id));
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

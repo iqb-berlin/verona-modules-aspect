@@ -38,10 +38,17 @@ iqb-aspect-definition@1.0.0
 3.7.0
 - TextElement: +hasSelectionPopup: boolean;
 - ToggleButtonElement now have "options: TextLabel[]" instead of "richTextOptions: string[]"
+- TextAreaElement: InputAssistancePreset +'space'
+                                         +'comma'
+                   +hasArrowKeys: boolean;
+                   +hasReturnKey: boolean
+- TextFieldElement/TextFieldSimpleElement/SpellCorrectElement: InputAssistancePreset +'space'
+                                                                                     +'comma'
+                                                                +hasArrowKeys: boolean;
 
 3.8.0
 - +HotspotImageElement
-- Textarea: +hasDynamicRowCount: boolean;
-            +expectedCharactersCount: number;
-            +hasKeyboardIcon: boolean;
-- Textfield: +hasKeyboardIcon: boolean;
+- TextAreaElement:  +hasDynamicRowCount: boolean;
+                    +expectedCharactersCount: number;
+                    +hasKeyboardIcon: boolean;
+- TextFieldElement: +hasKeyboardIcon: boolean;

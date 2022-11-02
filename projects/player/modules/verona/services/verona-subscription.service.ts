@@ -27,15 +27,10 @@ export class VeronaSubscriptionService {
       .subscribe((event: Event): void => this.handleMessage((event as MessageEvent).data as VopMessage));
   }
 
-  getResourceURL(): string {
-    return this.resourceURL || 'assets';
-  }
-
   private handleMessage(messageData: VopMessage): void {
     switch (messageData.type) {
       case 'vopStartCommand':
         LogService.debug('player: _vopStartCommand ', messageData);
-        this.resourceURL = (messageData as VopStartCommand).playerConfig?.directDownloadUrl;
         this._vopStartCommand.next(messageData);
         break;
       case 'vopNavigationDeniedNotification':

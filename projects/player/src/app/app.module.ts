@@ -8,7 +8,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { SharedModule, APIService } from 'common/shared.module';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
-import { DeviceService } from './services/device.service';
+import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -50,7 +50,6 @@ import { UnitComponent } from './components/unit/unit.component';
 import { PageScrollButtonComponent } from './components/page-scroll-button/page-scroll-button.component';
 import { ExternalAppGroupElementComponent } from
   './components/elements/external-app-group-element/external-app-group-element.component';
-import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 
 @NgModule({
   declarations: [
@@ -100,7 +99,7 @@ import { VeronaSubscriptionService } from 'player/modules/verona/services/verona
     UnitMenuModule
   ],
   providers: [
-    { provide: APIService, useExisting: VeronaSubscriptionService }
+    { provide: APIService, useExisting: MetaDataService }
   ]
 })
 

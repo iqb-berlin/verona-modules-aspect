@@ -11,6 +11,7 @@ import { VeronaPostService } from 'player/modules/verona/services/verona-post.se
 import {
   ElementModelElementCodeMappingService
 } from 'player/src/app/services/element-model-element-code-mapping.service';
+import { MetaDataService } from 'player/src/app/services/meta-data.service';
 
 @Component({
   selector: 'aspect-unit',
@@ -22,6 +23,7 @@ export class UnitComponent implements OnInit {
   playerConfig: PlayerConfig = {};
 
   constructor(public unitStateService: UnitStateService,
+              private metaDataService: MetaDataService,
               private veronaPostService: VeronaPostService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
@@ -45,6 +47,7 @@ export class UnitComponent implements OnInit {
       this.pages = unitDefinition.pages;
       this.playerConfig = message.playerConfig || {};
       LogService.info('player: unitStateElementCodes', this.unitStateService.elementCodes);
+      this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
       this.veronaPostService.sessionId = message.sessionId;
       this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
       this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?

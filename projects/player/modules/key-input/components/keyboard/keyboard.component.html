@@ -2,40 +2,28 @@
      (mousedown)="$event.preventDefault(); $event.stopPropagation()">
   <div *ngIf="showFrenchCharacters"
        fxLayout="row wrap"
-       fxLayoutAlign="space-around center"
+       fxLayoutAlign="space-between center"
        class="specialCharacters">
-    <button *ngFor="let key of frenchSpecialCharacters; let i = index"
-            mat-raised-button
-            (click)="enterKey(key)">
-      {{shift ? key[1] : key[0]}}
-    </button>
+    <keyboard-key *ngFor="let key of frenchSpecialCharacters; let i = index"
+                  class="key"
+                  [key]="key"
+                  [shift]="shift"
+                  (keyClicked)="enterKey($event)">
+    </keyboard-key>
   </div>
 
   <div class="character-rows">
     <ng-container *ngFor="let row of rows; let rowIndex = index">
       <ng-container *ngFor="let key of row; let i = index">
-        <button mat-raised-button
-                [style.grid-row-start]="rowIndex + 2"
-                [style.grid-row-end]="key[1] === 'Return' ? rowIndex + 4 : rowIndex + 3"
-                [style.grid-column-start]="key[1] === 'Space' ? i + 2 : i + 1"
-                [style.grid-column-end]="key[1] === 'Space' ? i + 12 : i + 2"
-                (click)="enterKey(key)">
-          <ng-container *ngIf="key[2] !== 'control'">
-            <ng-container *ngIf="!shift">
-             {{key[0]}}
-              <span *ngIf="key[2] === 'sign'" class="alternativeKey">{{key[1]}}</span>
-            </ng-container>
-            <ng-container *ngIf="shift">
-              {{key[1]}}
-              <span *ngIf="key[2] === 'sign'" class="alternativeKey">{{key[0]}}</span>
-            </ng-container>
-          </ng-container>
-          <mat-icon *ngIf="key[1] === 'Return'">keyboard_return</mat-icon>
-          <mat-icon *ngIf="key[1] === 'Backspace'">keyboard_backspace</mat-icon>
-          <mat-icon *ngIf="key[1] === 'Shift' && !shift">keyboard_arrow_up</mat-icon>
-          <mat-icon *ngIf="key[1] === 'Shift' && shift">keyboard_capslock</mat-icon>
-          <mat-icon *ngIf="key[1] === 'Space'">space_bar</mat-icon>
-        </button>
+        <keyboard-key class="key"
+                      [style.grid-row-start]="rowIndex + 2"
+                      [style.grid-row-end]="key[1] === 'Return' ? rowIndex + 4 : rowIndex + 3"
+                      [style.grid-column-start]="key[1] === 'Space' ? i + 2 : i + 1"
+                      [style.grid-column-end]="key[1] === 'Space' ? i + 12 : i + 2"
+                      [key]="key"
+                      [shift]="shift"
+                      (keyClicked)="enterKey($event)">
+        </keyboard-key>
       </ng-container>
     </ng-container>
   </div>

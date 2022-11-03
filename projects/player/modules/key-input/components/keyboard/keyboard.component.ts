@@ -16,12 +16,11 @@ export class KeyboardComponent {
   shift = false;
 
   frenchSpecialCharacters: [string, string, 'letter' | 'sign' | 'control'][] = KeyLayout.get('french').default.flat()
-    .map( (key, index) => [
+    .filter(key => key.length === 1) // only letters; use the shift key of the main keyboard
+    .map((key, index) => [
       key,
       KeyLayout.get('french').shift.flat()[index],
-      key.length > 1 ?
-        'control' :
-        key.toUpperCase() === KeyLayout.get('french').shift.flat()[index] ? 'letter' : 'sign'
+      'letter'
     ]);
 
   rows: [string, string, 'letter' | 'sign' | 'control'][][] = KeyLayout.get('keyboard').default
@@ -29,26 +28,29 @@ export class KeyboardComponent {
       .map((key, keyIndex) => [
         key,
         KeyLayout.get('keyboard').shift[rowIndex][keyIndex],
-        key.length > 1 ?
-          'control' :
-          key.toUpperCase() === KeyLayout.get('keyboard').shift[rowIndex][keyIndex] ? 'letter' : 'sign'
+        KeyboardComponent.getKeyType(key, rowIndex, keyIndex)
       ]));
+
+  private static getKeyType(key: string, rowIndex: number, keyIndex: number): 'control' | 'letter' | 'sign' {
+    if (key.length > 1) return 'control';
+    return key.toUpperCase() === KeyLayout.get('keyboard').shift[rowIndex][keyIndex] ? 'letter' : 'sign';
+  }
 
   enterKey(key: [string, string, 'letter' | 'sign' | 'control']): void {
     switch (key[1]) {
-      case 'SHIFT': {
+      case 'Shift': {
         this.shift = !this.shift;
         break;
       }
-      case 'BACKSPACE': {
+      case 'Backspace': {
         this.backspaceClicked.emit();
         break;
       }
-      case 'RETURN': {
+      case 'Return': {
         this.keyClicked.emit('\n');
         break;
       }
-      case 'SPACE': {
+      case 'Space': {
         this.keyClicked.emit(' ');
         break;
       }

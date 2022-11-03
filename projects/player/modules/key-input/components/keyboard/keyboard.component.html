@@ -16,9 +16,9 @@
       <ng-container *ngFor="let key of row; let i = index">
         <button mat-raised-button
                 [style.grid-row-start]="rowIndex + 2"
-                [style.grid-row-end]="key[1] === 'RETURN' ? rowIndex + 4 : rowIndex + 3"
-                [style.grid-column-start]="key[1] === 'SPACE' ? i + 2 : i + 1"
-                [style.grid-column-end]="key[1] === 'SPACE' ? i + 12 : i + 2"
+                [style.grid-row-end]="key[1] === 'Return' ? rowIndex + 4 : rowIndex + 3"
+                [style.grid-column-start]="key[1] === 'Space' ? i + 2 : i + 1"
+                [style.grid-column-end]="key[1] === 'Space' ? i + 12 : i + 2"
                 (click)="enterKey(key)">
           <ng-container *ngIf="key[2] !== 'control'">
             <ng-container *ngIf="!shift">
@@ -30,11 +30,11 @@
               <span *ngIf="key[2] === 'sign'" class="alternativeKey">{{key[0]}}</span>
             </ng-container>
           </ng-container>
-          <mat-icon *ngIf="key[1] === 'RETURN'">keyboard_return</mat-icon>
-          <mat-icon *ngIf="key[1] === 'BACKSPACE'">keyboard_backspace</mat-icon>
-          <mat-icon *ngIf="key[1] === 'SHIFT' && !shift">keyboard_arrow_up</mat-icon>
-          <mat-icon *ngIf="key[1] === 'SHIFT' && shift">keyboard_capslock</mat-icon>
-          <mat-icon *ngIf="key[1] === 'SPACE'">space_bar</mat-icon>
+          <mat-icon *ngIf="key[1] === 'Return'">keyboard_return</mat-icon>
+          <mat-icon *ngIf="key[1] === 'Backspace'">keyboard_backspace</mat-icon>
+          <mat-icon *ngIf="key[1] === 'Shift' && !shift">keyboard_arrow_up</mat-icon>
+          <mat-icon *ngIf="key[1] === 'Shift' && shift">keyboard_capslock</mat-icon>
+          <mat-icon *ngIf="key[1] === 'Space'">space_bar</mat-icon>
         </button>
       </ng-container>
     </ng-container>

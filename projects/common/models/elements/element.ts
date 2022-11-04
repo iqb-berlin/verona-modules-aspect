@@ -121,6 +121,30 @@ export abstract class InputElement extends UIElement {
   abstract getAnswerScheme(options?: unknown): AnswerScheme;
 }
 
+export abstract class TextInputElement extends InputElement {
+  inputAssistancePreset: InputAssistancePreset = null;
+  inputAssistanceCustomKeys: string = '';
+  inputAssistancePosition: 'floating' | 'right' = 'floating';
+  restrictedToInputAssistanceChars: boolean = true;
+  hasArrowKeys: boolean = false;
+  showSoftwareKeyboard: boolean = false;
+  softwareKeyboardShowFrench: boolean = false;
+  protected constructor(element: Partial<TextInputElement>) {
+    super(element);
+    if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
+    if (element.inputAssistanceCustomKeys !== undefined) {
+      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+    }
+    if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
+    if (element.restrictedToInputAssistanceChars !== undefined) {
+      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+    }
+    if (element.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
+    if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+    if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
+  }
+}
+
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
 }

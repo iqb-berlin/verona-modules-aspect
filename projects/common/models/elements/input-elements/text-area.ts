@@ -1,28 +1,17 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles,
-  InputAssistancePreset,
-  InputElement,
-  PositionedUIElement,
-  PositionProperties, AnswerScheme, UIElement
+  BasicStyles, PositionedUIElement, PositionProperties, AnswerScheme, UIElement, TextInputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 
-export class TextAreaElement extends InputElement implements PositionedUIElement {
+export class TextAreaElement extends TextInputElement implements PositionedUIElement {
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
   hasDynamicRowCount: boolean = false;
   rowCount: number = 3;
   expectedCharactersCount: number = 300;
-  inputAssistancePreset: InputAssistancePreset = null;
-  inputAssistanceCustomKeys: string = '';
-  inputAssistancePosition: 'floating' | 'right' = 'floating';
-  hasArrowKeys: boolean = false;
   hasReturnKey: boolean = false;
-  restrictedToInputAssistanceChars: boolean = true;
-  showSoftwareKeyboard: boolean = false;
-  softwareKeyboardShowFrench: boolean = false;
   hasKeyboardIcon: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
@@ -36,18 +25,7 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     if (element.rowCount) this.rowCount = element.rowCount;
     if (element.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
     if (element.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
-    if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
-    if (element.inputAssistanceCustomKeys !== undefined) {
-      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-    }
-    if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
-    if (element.restrictedToInputAssistanceChars !== undefined) {
-      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-    }
-    if (element.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
     if (element.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
-    if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-    if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     if (element.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
     this.position = UIElement.initPositionProps(element.position);
     this.styling = {

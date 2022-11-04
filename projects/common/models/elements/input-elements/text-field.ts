@@ -1,12 +1,11 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, InputAssistancePreset, InputElement,
-  PositionedUIElement, PositionProperties, AnswerScheme, UIElement
+  BasicStyles, PositionedUIElement, PositionProperties, AnswerScheme, UIElement, TextInputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 
-export class TextFieldElement extends InputElement implements PositionedUIElement {
+export class TextFieldElement extends TextInputElement implements PositionedUIElement {
   appearance: 'fill' | 'outline' = 'outline';
   minLength: number | null = null;
   minLengthWarnMessage: string = 'Eingabe zu kurz';
@@ -14,13 +13,6 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
   maxLengthWarnMessage: string = 'Eingabe zu lang';
   pattern: string | null = null;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
-  inputAssistancePreset: InputAssistancePreset = null;
-  inputAssistanceCustomKeys: string = '';
-  inputAssistancePosition: 'floating' | 'right' = 'floating';
-  restrictedToInputAssistanceChars: boolean = true;
-  hasArrowKeys: boolean = false;
-  showSoftwareKeyboard: boolean = false;
-  softwareKeyboardShowFrench: boolean = false;
   hasKeyboardIcon: boolean = false;
   clearable: boolean = false;
   position: PositionProperties;
@@ -37,17 +29,6 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
     if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
     if (element.pattern !== undefined) this.pattern = element.pattern;
     if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
-    if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
-    if (element.inputAssistanceCustomKeys !== undefined) {
-      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-    }
-    if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
-    if (element.restrictedToInputAssistanceChars !== undefined) {
-      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-    }
-    if (element.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
-    if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-    if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
     if (element.clearable) this.clearable = element.clearable;
     if (element.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
     this.position = UIElement.initPositionProps(element.position);

@@ -9,6 +9,7 @@ Player
 - Optionale Tastatursymbole von Eingabefeldern und -bereichen
   werden nach erster Benutzung der Elemente ausgeblendet
 - Verbessert die Performanz von GeoGebra-Elementen
+- Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an
 
 1.27.0
 - Add new input assistance presets ('Space' and 'Comma').

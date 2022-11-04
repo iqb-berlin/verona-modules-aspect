@@ -31,11 +31,11 @@ export class TextFieldElement extends InputElement implements PositionedUIElemen
     super({ width: 180, height: 120, ...element });
     if (element.appearance) this.appearance = element.appearance;
     if (element.minLength !== undefined) this.minLength = element.minLength;
-    if (element.minLengthWarnMessage) this.minLengthWarnMessage = element.minLengthWarnMessage;
+    if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
     if (element.maxLength !== undefined) this.maxLength = element.maxLength;
-    if (element.maxLengthWarnMessage) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+    if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
     if (element.pattern !== undefined) this.pattern = element.pattern;
-    if (element.patternWarnMessage) this.patternWarnMessage = element.patternWarnMessage;
+    if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
     if (element.restrictedToInputAssistanceChars !== undefined) {

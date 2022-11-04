@@ -11,6 +11,8 @@ Editor
   Auf Grundlage der Angabe der erwarteten Zeichen für die Antwort des Users wird
   für das gegebene Seitenformat die Anzahl der Zeilen berechnet.
 - Ermöglicht die Darstellung eines optionalen Tastatursymbols bei Eingabefeldern und -bereichen
+- Erlaubt Validierungen ohne Warnmeldungen
+  Warnmeldungen können nun ohne Zeichenketten abgespeichert werden.
 
 1.34.0
 - Implement GeoGebra applet element

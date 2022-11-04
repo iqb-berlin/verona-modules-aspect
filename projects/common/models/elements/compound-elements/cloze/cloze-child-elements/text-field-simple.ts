@@ -15,6 +15,7 @@ export class TextFieldSimpleElement extends InputElement {
   pattern: string | null = null;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
   inputAssistancePreset: InputAssistancePreset = null;
+  inputAssistanceCustomKeys: string = '';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true;
   hasArrowKeys: boolean = false;
@@ -34,6 +35,9 @@ export class TextFieldSimpleElement extends InputElement {
     if (element.pattern) this.pattern = element.pattern;
     if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
+    if (element.inputAssistanceCustomKeys !== undefined) {
+      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+    }
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
     if (element.restrictedToInputAssistanceChars !== undefined) {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;

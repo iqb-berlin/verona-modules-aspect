@@ -3,6 +3,10 @@
   margin: auto;
 }
 
+.floating-row-container {
+  max-width: 354px;
+}
+
 .grid-layout {
   justify-content: center;
   margin-top: 15px;

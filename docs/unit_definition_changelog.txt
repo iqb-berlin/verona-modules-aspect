@@ -52,3 +52,5 @@ iqb-aspect-definition@1.0.0
                     +expectedCharactersCount: number;
                     +hasKeyboardIcon: boolean;
 - TextFieldElement: +hasKeyboardIcon: boolean;
+- TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement: InputAssistancePreset +'custom'
+                                                                               +inputAssistanceCustomKeys: string;

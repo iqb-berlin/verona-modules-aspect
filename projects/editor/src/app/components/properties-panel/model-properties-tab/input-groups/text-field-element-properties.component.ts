@@ -102,12 +102,21 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       <mat-select [value]="combinedProperties.inputAssistancePreset"
                   (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
         <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators',
-       'comparisonOperators', 'squareDashDot', 'placeValue', 'space', 'comma']"
+       'comparisonOperators', 'squareDashDot', 'placeValue', 'space', 'comma', 'custom']"
                     [value]="option">
           {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <mat-form-field *ngIf="combinedProperties.inputAssistancePreset === 'custom'"
+                    class="wide-form-field" appearance="fill">
+      <mat-label>{{'propertiesPanel.inputAssistanceCustomKeys' | translate }}</mat-label>
+      <input matInput type="text"
+             [value]="$any(combinedProperties.inputAssistanceCustomKeys)"
+             (input)="updateModel.emit({ property: 'inputAssistanceCustomKeys', value: $any($event.target).value })">
+    </mat-form-field>
+
     <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
                            combinedProperties.inputAssistancePosition !== undefined"
                     appearance="fill">

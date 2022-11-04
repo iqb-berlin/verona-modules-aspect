@@ -11,6 +11,7 @@ import { SpellCorrectComponent } from 'common/components/input-elements/spell-co
 
 export class SpellCorrectElement extends InputElement implements PositionedUIElement {
   inputAssistancePreset: InputAssistancePreset = null;
+  inputAssistanceCustomKeys: string = '';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   restrictedToInputAssistanceChars: boolean = true;
   hasArrowKeys: boolean = false;
@@ -22,6 +23,9 @@ export class SpellCorrectElement extends InputElement implements PositionedUIEle
   constructor(element: Partial<SpellCorrectElement>) {
     super({ width: 230, height: 80, ...element });
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
+    if (element.inputAssistanceCustomKeys !== undefined) {
+      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+    }
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
     if (element.restrictedToInputAssistanceChars !== undefined) {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;

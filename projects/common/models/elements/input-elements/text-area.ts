@@ -16,6 +16,7 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
   rowCount: number = 3;
   expectedCharactersCount: number = 300;
   inputAssistancePreset: InputAssistancePreset = null;
+  inputAssistanceCustomKeys: string = '';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   hasArrowKeys: boolean = false;
   hasReturnKey: boolean = false;
@@ -36,6 +37,9 @@ export class TextAreaElement extends InputElement implements PositionedUIElement
     if (element.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
     if (element.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
+    if (element.inputAssistanceCustomKeys !== undefined) {
+      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+    }
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
     if (element.restrictedToInputAssistanceChars !== undefined) {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;

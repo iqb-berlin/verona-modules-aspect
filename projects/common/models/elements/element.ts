@@ -13,7 +13,7 @@ TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] |
 PositionProperties | PlayerProperties | BasicStyles;
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
-| 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma';
+| 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
 
 export abstract class UIElement {
   [index: string]: unknown;

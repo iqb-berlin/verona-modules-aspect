@@ -10,6 +10,8 @@ Player
   werden nach erster Benutzung der Elemente ausgeblendet
 - Verbessert die Performanz von GeoGebra-Elementen
 - Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an
+- Die Eingabehilfe "Eigene Zeichen" nutzt weitestgehend das Layout
+  der Eingabehilfe "Französische Sonderzeichen"
 
 1.27.0
 - Add new input assistance presets ('Space' and 'Comma').

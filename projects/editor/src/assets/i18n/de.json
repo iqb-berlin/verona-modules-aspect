@@ -133,6 +133,8 @@
     "squareDashDot": "Quadrat Strich Punkt",
     "placeValue": "Stellenwert",
     "comparisonOperators": "Vergleichsoperatoren",
+    "custom": "Eigene Zeichen",
+    "inputAssistanceCustomKeys": "Zeichenkette",
     "inputAssistancePosition": "Eingabehilfeposition",
     "floating": "schwebend",
     "showSoftwareKeyboard": "Tastatur einblenden",

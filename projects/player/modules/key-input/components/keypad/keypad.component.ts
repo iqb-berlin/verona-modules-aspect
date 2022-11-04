@@ -1,15 +1,17 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { InputAssistancePreset } from 'common/models/elements/element';
+import { KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-layout';
 
 @Component({
   selector: 'aspect-keypad',
   templateUrl: './keypad.component.html',
   styleUrls: ['./keypad.component.css']
 })
-export class KeypadComponent {
+export class KeypadComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;
+  @Input() customKeys!: string;
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
   @Input() positionOffset!: number;
@@ -21,6 +23,11 @@ export class KeypadComponent {
   @Output() keyClicked = new EventEmitter<string>();
 
   arrows: string[] = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'];
+  layout: KeyInputLayout = { default: [], shift: [], additional: [] };
+
+  ngOnInit(): void {
+    this.layout = KeyLayout.get(this.preset, this.customKeys);
+  }
 
   evaluateClickedKeyValue(key: string): void {
     if (this.arrows.includes(key)) {

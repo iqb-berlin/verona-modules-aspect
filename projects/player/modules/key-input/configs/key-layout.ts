@@ -1,11 +1,13 @@
 import { InputAssistancePreset } from 'common/models/elements/element';
 
+export interface KeyInputLayout {
+  default: string[][],
+  shift: string[][],
+  additional: string[][]
+}
+
 export class KeyLayout {
-  static get = (preset: InputAssistancePreset | 'keyboard'): {
-    default: string[][],
-    shift: string[][],
-    additional: string[][]
-  } => {
+  static get = (preset: InputAssistancePreset | 'keyboard', customKeys: string = ''): KeyInputLayout => {
     switch (preset) {
       case 'french': {
         return {
@@ -112,7 +114,7 @@ export class KeyLayout {
           additional: [[]]
         };
       }
-      default: { // keyboard
+      case 'keyboard': {
         return {
           default: [
             ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', 'ß', 'Backspace'],
@@ -128,6 +130,15 @@ export class KeyLayout {
             ['ShiftUp', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', ';', ':', '_'],
             ['Space']
           ],
+          additional: [[]]
+        };
+      }
+      default: { // custom
+        return {
+          default: [
+            customKeys.split('')
+          ],
+          shift: [[]],
           additional: [[]]
         };
       }

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { InputAssistancePreset } from 'common/models/elements/element';
 import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
-import { KeyLayout } from '../../configs/key-layout';
+import { KeyInputLayout } from '../../configs/key-layout';
 
 @Component({
   selector: 'aspect-keypad-layout',
@@ -12,6 +12,7 @@ import { KeyLayout } from '../../configs/key-layout';
 })
 export class KeypadLayoutComponent extends KeyInputRestrictionDirective implements OnInit {
   @Input() preset!: InputAssistancePreset;
+  @Input() layout!: KeyInputLayout;
   @Input() position!: 'floating' | 'right';
 
   @Output() keyClicked = new EventEmitter<string>();
@@ -21,8 +22,8 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
   shift: boolean = false;
 
   ngOnInit(): void {
-    this.rows = KeyLayout.get(this.preset).default;
-    this.additionalRows = KeyLayout.get(this.preset).additional;
+    this.rows = this.layout.default;
+    this.additionalRows = this.layout.additional;
     this.allowedKeys = [
       ...this.rows.flat().filter(key => key.length === 1),
       ...this.additionalRows.flat().filter(key => key.length === 1)
@@ -45,6 +46,6 @@ export class KeypadLayoutComponent extends KeyInputRestrictionDirective implemen
 
   toggleShift(): void {
     this.shift = !this.shift;
-    this.rows = this.shift ? KeyLayout.get(this.preset).shift : KeyLayout.get(this.preset).default;
+    this.rows = this.shift ? this.layout.shift : this.layout.default;
   }
 }

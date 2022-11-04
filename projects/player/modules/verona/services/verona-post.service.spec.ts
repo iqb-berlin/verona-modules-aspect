@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { VeronaPostService } from './verona-post.service';
 import { fromEvent } from 'rxjs';
 import {
   VopReadyNotification, VopStateChangedNotification, VopUnitNavigationRequestedNotification,
   VopWindowFocusChangedNotification
 } from 'player/modules/verona/models/verona';
+import { VeronaPostService } from './verona-post.service';
 
 describe('VeronaPostService', () => {
   let service: VeronaPostService;
@@ -24,7 +24,7 @@ describe('VeronaPostService', () => {
     const expectedStateChangedNotification: VopStateChangedNotification = {
       type: 'vopStateChangedNotification',
       sessionId: 'test',
-      timeStamp:  Date.now()
+      timeStamp: Date.now()
     };
     const eventSubscription = fromEvent(window.parent, 'message')
       .subscribe(event => {
@@ -39,9 +39,45 @@ describe('VeronaPostService', () => {
   });
 
   it('should post a VopReadyNotification', done => {
+    const metadata = {
+      $schema: 'https://raw.githubusercontent.com/verona-interfaces/metadata/master/verona-module-metadata.json',
+      name: [
+        {
+          lang: 'de',
+          value: 'IQB-Player (Aspect)'
+        }
+      ],
+      description: [
+        {
+          lang: 'de',
+          value: 'Kann in Verbindung mit dem IQB-Editor (Aspect) im IQB-Studio oder im IQB-Testcenter genutzt werden.'
+        }
+      ],
+      notSupportedFeatures: [],
+      maintainer: {
+        name: [
+          {
+            lang: 'de',
+            value: 'IQB - Institut zur Qualitätsentwicklung im Bildungswesen'
+          }
+        ],
+        url: 'https://www.iqb.hu-berlin.de',
+        email: 'iqb-tbadev@hu-berlin.de'
+      },
+      code: {
+        repositoryType: 'git',
+        licenseType: 'MIT',
+        licenseUrl: 'https://opensource.org/licenses/MIT',
+        repositoryUrl: 'https://github.com/iqb-berlin/verona-modules-aspect'
+      },
+      type: 'player',
+      id: 'iqb-player-aspect',
+      version: 'version-placeholder',
+      specVersion: '4.0'
+    };
     const expectedReadyNotification: VopReadyNotification = {
       type: 'vopReadyNotification',
-      apiVersion: 'test'
+      metadata
     };
     const eventSubscription = fromEvent(window.parent, 'message')
       .subscribe(event => {
@@ -49,8 +85,8 @@ describe('VeronaPostService', () => {
           .toEqual(expectedReadyNotification);
         eventSubscription.unsubscribe();
         done();
-      } );
-    service.sendVopReadyNotification({ apiVersion: 'test' });
+      });
+    service.sendVopReadyNotification(metadata);
   });
 
   it('should post a VopUnitNavigationRequestedNotification', done => {
@@ -65,10 +101,9 @@ describe('VeronaPostService', () => {
           .toEqual(expectedUnitNavigationRequestedNotification);
         eventSubscription.unsubscribe();
         done();
-      } );
+      });
     service.sendVopUnitNavigationRequestedNotification('next');
   });
-
 
   it('should post a VopUnitNavigationRequestedNotification', done => {
     const expectedWindowFocusChangedNotification: VopWindowFocusChangedNotification = {
@@ -84,7 +119,7 @@ describe('VeronaPostService', () => {
         expect(Object.prototype.hasOwnProperty.call(data, 'timeStamp')).toBeTruthy();
         eventSubscription.unsubscribe();
         done();
-      } );
+      });
     service.sendVopWindowFocusChangedNotification(true);
   });
 });

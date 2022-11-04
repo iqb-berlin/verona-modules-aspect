@@ -1,6 +1,6 @@
 Player
 ======
-1.20.0
+1.28.0
 - Macht das neue Element "Bildbereiche" im Player verfügbar
   "Aktive Bereiche" werden beim Anklicken durch den User mit der
   eingestellten Farbe gefüllt.
@@ -12,6 +12,7 @@ Player
 - Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an
 - Die Eingabehilfe "Eigene Zeichen" nutzt weitestgehend das Layout
   der Eingabehilfe "Französische Sonderzeichen"
+- Ändert die Metadaten entsprechend der Verona Inferfaces Specification
 
 1.27.0
 - Add new input assistance presets ('Space' and 'Comma').

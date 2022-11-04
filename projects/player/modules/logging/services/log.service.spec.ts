@@ -45,24 +45,24 @@ describe('LoggerService', () => {
     expect(LogService.error).toHaveBeenCalledWith('test', 'test2');
   });
 
-  it('should set LogService.level to "DEBUG"', () => {
-    LogService.level = 1;
-    expect(LogService.level).toEqual(LogLevel.DEBUG);
-  });
-  it('should set LogService.level to "INFO"', () => {
-    LogService.level = 2;
-    expect(LogService.level).toEqual(LogLevel.INFO);
-  });
-  it('should set LogService.level to "WARN"', () => {
-    LogService.level = 3;
-    expect(LogService.level).toEqual(LogLevel.WARN);
+  it('should set LogService.level to "NONE"', () => {
+    LogService.level = 0;
+    expect(LogService.level).toEqual(LogLevel.NONE);
   });
   it('should set LogService.level to "ERROR"', () => {
-    LogService.level = 4;
+    LogService.level = 1;
     expect(LogService.level).toEqual(LogLevel.ERROR);
   });
-  it('should set LogService.level to "NONE"', () => {
-    LogService.level = 5;
-    expect(LogService.level).toEqual(LogLevel.NONE);
+  it('should set LogService.level to "WARN"', () => {
+    LogService.level = 2;
+    expect(LogService.level).toEqual(LogLevel.WARN);
+  });
+  it('should set LogService.level to "INFO"', () => {
+    LogService.level = 3;
+    expect(LogService.level).toEqual(LogLevel.INFO);
+  });
+  it('should set LogService.level to "DEBUG"', () => {
+    LogService.level = 4;
+    expect(LogService.level).toEqual(LogLevel.DEBUG);
   });
 });

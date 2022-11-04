@@ -14,32 +14,15 @@ export class KeyboardComponent {
   @Output() backspaceClicked = new EventEmitter();
 
   shift = false;
+  layout = KeyLayout.get('keyboard');
+  rows: string[][] = this.layout.default;
+  frenchRow: string[] = KeyLayout.get('french').default.flat().filter(key => key.length === 1);
 
-  frenchSpecialCharacters: [string, string, 'letter' | 'sign' | 'control'][] = KeyLayout.get('french').default.flat()
-    .filter(key => key.length === 1) // only letters; use the shift key of the main keyboard
-    .map((key, index) => [
-      key,
-      KeyLayout.get('french').shift.flat()[index],
-      'letter'
-    ]);
-
-  rows: [string, string, 'letter' | 'sign' | 'control'][][] = KeyLayout.get('keyboard').default
-    .map((row, rowIndex) => row
-      .map((key, keyIndex) => [
-        key,
-        KeyLayout.get('keyboard').shift[rowIndex][keyIndex],
-        KeyboardComponent.getKeyType(key, rowIndex, keyIndex)
-      ]));
-
-  private static getKeyType(key: string, rowIndex: number, keyIndex: number): 'control' | 'letter' | 'sign' {
-    if (key.length > 1) return 'control';
-    return key.toUpperCase() === KeyLayout.get('keyboard').shift[rowIndex][keyIndex] ? 'letter' : 'sign';
-  }
-
-  enterKey(key: [string, string, 'letter' | 'sign' | 'control']): void {
-    switch (key[1]) {
-      case 'Shift': {
-        this.shift = !this.shift;
+  evaluateClickedKeyValue(key: string): void {
+    switch (key) {
+      case 'Shift':
+      case 'ShiftUp': {
+        this.toggleShift();
         break;
       }
       case 'Backspace': {
@@ -55,9 +38,17 @@ export class KeyboardComponent {
         break;
       }
       default: {
-        this.keyClicked.emit(this.shift ? key[1] : key[0]);
-        this.shift = false;
+        this.keyClicked.emit(key);
+        if (this.shift) this.toggleShift();
       }
     }
+  }
+
+  private toggleShift(): void {
+    this.shift = !this.shift;
+    this.rows = this.shift ? this.layout.shift : this.layout.default;
+    this.frenchRow = this.shift ?
+      KeyLayout.get('french').shift.flat().filter(key => key.length === 1) :
+      KeyLayout.get('french').default.flat().filter(key => key.length === 1);
   }
 }

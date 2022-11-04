@@ -15,7 +15,7 @@ describe('KeyboardKeyComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KeyboardKeyComponent);
     component = fixture.componentInstance;
-    component.key = ['a', 'A', 'letter'];
+    component.key = 'a';
     fixture.detectChanges();
   });
 

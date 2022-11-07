@@ -10,6 +10,7 @@ Player
   werden nach erster Benutzung der Elemente ausgeblendet
 - Verbessert die Performanz von GeoGebra-Elementen
 - Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an
+- Korrigiert fehlende Warnmeldungen beim Schieberegler/Zahlenstrahl
 - Die Eingabehilfe "Eigene Zeichen" nutzt weitestgehend das Layout
   der Eingabehilfe "Französische Sonderzeichen"
 - Ändert die Metadaten entsprechend der Verona Inferfaces Specification

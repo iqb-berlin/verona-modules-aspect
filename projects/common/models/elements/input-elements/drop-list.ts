@@ -24,7 +24,9 @@ export class DropListElement extends InputElement {
 
   constructor(element: Partial<DropListElement>) {
     super({ height: 100, ...element });
-    this.value = element.value !== undefined ? [...element.value] : [];
+    this.value = element.value !== undefined ?
+      element.value.map(val => ({ ...val })) :
+      [];
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
     if (element.isSortList) this.isSortList = element.isSortList;
     if (element.connectedTo) this.connectedTo = element.connectedTo;

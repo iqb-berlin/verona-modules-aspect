@@ -311,7 +311,6 @@ export class SanitizationService {
     // repair child element types
     childElements.forEach(childElement => {
       childElement.type = childElement.type === 'text-field' ? 'text-field-simple' : childElement.type;
-      childElement.type = childElement.type === 'drop-list' ? 'drop-list-simple' : childElement.type;
     });
 
     return {

@@ -1,225 +1,254 @@
-import { Component, Input } from '@angular/core';
+// eslint-disable-next-line max-classes-per-file
 import {
-  CdkDragDrop, CdkDragEnter, CdkDragStart
-} from '@angular/cdk/drag-drop/drag-events';
-import {
-  CdkDrag, CdkDropList, moveItemInArray
-} from '@angular/cdk/drag-drop';
+  AfterViewInit,
+  Component, ElementRef, Input, OnDestroy, OnInit, Pipe, PipeTransform, ViewChild
+} from '@angular/core';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/elements/element';
-import {
-  DropListSimpleComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/drop-list-simple.component';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-drop-list',
   template: `
-    <div class="list-container" fxLayout="column">
-      <!-- Border width is a workaround to enable/disable the Material cdk-drop-list-receiving-->
-      <!-- class style.-->
-      <!-- min-height for the following div is important for iOS 14!
-      iOS 14 is not able to determine the height of the flex container-->
-      <div class="list"
-           [ngClass]="{ 'align-flex' : elementModel.orientation === 'flex', 'copyOnDrop': elementModel.copyOnDrop }"
-           [class.errors]="elementFormControl.errors && elementFormControl.touched"
-           [style.min-height.px]="elementModel.position.useMinHeight ? elementModel.height - 6 : null"
-           [class.dropList-highlight]="elementModel.highlightReceivingDropList"
-           [style.outline-color]="elementModel.highlightReceivingDropListColor"
-           [style.color]="elementModel.styling.fontColor"
-           [style.font-family]="elementModel.styling.font"
-           [style.font-size.px]="elementModel.styling.fontSize"
-           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-           [style.backgroundColor]="elementModel.styling.backgroundColor"
-           [style.display]="elementModel.orientation === 'horizontal' ? 'flex' : ''"
-           [style.flex-direction]="elementModel.orientation === 'horizontal' ? 'row' : ''"
-           cdkDropList
-           [id]="elementModel.id"
-           [cdkDropListData]="this"
-           [cdkDropListConnectedTo]="elementModel.connectedTo"
-           [cdkDropListOrientation]="elementModel.orientation !== 'flex' ? $any(elementModel.orientation) : ''"
-           [cdkDropListEnterPredicate]="onlyOneItemPredicate"
-           tabindex="0"
-           (focusout)="elementFormControl.markAsTouched()"
-           (cdkDropListDropped)="drop($event)">
-
-        <ng-container *ngIf="!parentForm">
-          <ng-container *ngFor="let dropListValueElement of $any(elementModel.value); let index = index;">
-            <ng-container [ngTemplateOutlet]="dropObject"
-                          [ngTemplateOutletContext]="{ $implicit: dropListValueElement, index: index }">
-            </ng-container>
-          </ng-container>
-        </ng-container>
-
-        <ng-container *ngIf="parentForm">
-          <ng-container *ngFor="let dropListValueElement of elementFormControl.value; let index = index;">
-            <ng-container [ngTemplateOutlet]="dropObject"
-                          [ngTemplateOutletContext]="{ $implicit: dropListValueElement, index: index }">
-            </ng-container>
-          </ng-container>
-        </ng-container>
-        <!--Leave template within the dom to ensure dragNdrop-->
-        <ng-template #dropObject let-dropListValueElement let-index="index">
-          <div class="item text-item" *ngIf="!dropListValueElement.imgSrc"
-               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                      'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               [style.background-color]="elementModel.styling.itemBackgroundColor"
-               cdkDrag
-               [cdkDragData]="{ element: dropListValueElement, index: index }"
-               (cdkDragStarted)="dragStart(index, $event)" (cdkDragEnded)="dragEnd()" (cdkDragEntered)="dragEnter($event)">
-            <div *cdkDragPreview
-                 [style.font-size.px]="elementModel.styling.fontSize"
-                 [style.background-color]="elementModel.styling.itemBackgroundColor">
-              {{dropListValueElement.text}}
-            </div>
-            <div class="drag-placeholder" *cdkDragPlaceholder
-                 [class.drag-placeholder-border]="placeholderDimensions.width !== '0px'"
-                 [style.padding]="0"
-                 [style.margin]="0"
-                 [style.height]="placeholderDimensions.height"
-                 [style.width]="placeholderDimensions.width">
-            </div>
-            {{dropListValueElement.text}}
-          </div>
-
-          <!-- actual placeholder when item is being dragged from copy-list -->
-          <div *ngIf="elementModel.copyOnDrop && draggedItemIndex === index" class="item text-item"
-               [style.font-size.px]="elementModel.styling.fontSize"
-               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                            'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               [style.background-color]="elementModel.styling.itemBackgroundColor">
-            {{dropListValueElement.text}}
-          </div>
-
-          <img *ngIf="dropListValueElement.imgSrc"
-               [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
-               [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
-               class="item"
-               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                      'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               cdkDrag [cdkDragData]="{ element: dropListValueElement, index: index }"
-               (cdkDragStarted)="dragStart(index, $event)" (cdkDragEnded)="dragEnd()"
-               [style.object-fit]="'scale-down'">
-          <img *ngIf="elementModel.copyOnDrop && draggedItemIndex === index && dropListValueElement.imgSrc"
-               [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
-               [style.display]="elementModel.orientation === 'flex' ? '' : 'block'"
-               class="item"
-               [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                      'horizontal-orientation' : elementModel.orientation === 'horizontal'}"
-               [style.object-fit]="'scale-down'">
-        </ng-template>
-      </div>
-      <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-                 class="error-message">
-        {{elementFormControl.errors | errorTransform: elementModel}}
-      </mat-error>
+    <div class="list" [id]="elementModel.id"
+         [fxLayout]="elementModel.orientation | droplistLayout"
+         [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
+         [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                      'horizontal-orientation' : elementModel.orientation === 'horizontal',
+                      'clozeContext': clozeContext}"
+         [style.min-height.px]="elementModel.position?.useMinHeight ? elementModel.height : undefined"
+         [style.color]="elementModel.styling.fontColor"
+         [style.font-family]="elementModel.styling.font"
+         [style.font-size.px]="elementModel.styling.fontSize"
+         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+         [style.backgroundColor]="elementModel.styling.backgroundColor"
+         [class.errors]="elementFormControl.errors && elementFormControl.touched"
+         [style.outline-color]="elementModel.highlightReceivingDropListColor"
+         [class.highlight-valid-drop]="highlightValidDrop"
+         [class.highlight-as-receiver]="highlightAsReceiver"
+         (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
+         (dragover)="$event.preventDefault()">
+      <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
+        <div class="list-item"
+             draggable="true"
+             (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
+             (dragenter)="dragEnterItem($event)"
+             [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
+             [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
+             [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''"
+             [style.background-color]="elementModel.styling.itemBackgroundColor">
+          <span>{{dropListValueElement.text}}</span>
+        </div>
+        <img *ngIf="dropListValueElement.imgSrc"
+             class="list-item"
+             [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
+             draggable="true" [id]="dropListValueElement.id"
+             (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
+             [style.object-fit]="'scale-down'">
+      </ng-container>
     </div>
+    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+               class="error-message">
+      {{elementFormControl.errors | errorTransform: elementModel}}
+    </mat-error>
   `,
   styles: [
-    '.list-container {width: 100%; height: 100%;}',
-    '.list {border-radius: 5px; width: calc(100% - 6px); overflow: hidden}',
-    '.list {height: calc(100% - 6px); margin-top: 3px; margin-left: 3px;}',
-    '.text-item {border-radius: 5px; padding: 10px;}',
-    '.item {cursor: grab}',
-    '.item:active {cursor: grabbing}',
-    '.copyOnDrop .item {transform: none !important}',
-    '.vertical-orientation.item:not(:last-child) {margin-bottom: 5px;}',
-    '.horizontal-orientation.item:not(:last-child) {margin-right: 5px}',
+    '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); padding: 3px;}',
+    ':not(.clozeContext) .list-item {border-radius: 5px; padding: 10px;}',
+    '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
+    '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',
     '.errors {outline: 2px solid #f44336 !important;}',
-    '.error-message {font-size: 75%; margin-top: 10px;}',
-    '.cdk-drag-preview {padding: 8px 20px; border-radius: 5px; z-index: 5; box-shadow: 2px 2px 5px black;}',
-    '.drag-placeholder-border {box-sizing: border-box; border: solid 3px #999; border-radius: 5px}',
-    '.drag-placeholder {background-color: lightgrey; transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
-    '.cdk-drag-animating {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
-    '.dropList-highlight.cdk-drop-list-receiving {outline: solid;}',
-    '.dropList-highlight.cdk-drop-list-dragging {outline: solid;}',
-    '.align-flex {flex: 1 1 auto; flex-flow: row wrap; display: flex; place-content: center space-around; gap: 10px}',
-    ':host .copyOnDrop .cdk-drag-placeholder {position: relative; visibility: hidden;}',
-    ':host .copyOnDrop .cdk-drag-placeholder {height: 0 !important; min-height: 0 !important;}',
-    ':host .copyOnDrop .cdk-drag-placeholder {margin: 0 !important; padding: 0 !important; border: 0;}'
+    '.list-item {cursor: grab;}',
+    '.list-item:active {cursor: grabbing}',
+    '.show-as-placeholder {opacity: 0.5 !important; pointer-events: none;}',
+    '.highlight-valid-drop {background-color: lightblue !important;}',
+    '.highlight-as-receiver {outline: 2px solid;}',
+    '.show-as-hidden {visibility: hidden;}'
   ]
 })
-export class DropListComponent extends FormElementComponent {
+export class DropListComponent extends FormElementComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() elementModel!: DropListElement;
+  @Input() clozeContext: boolean = false;
+  @ViewChild('placeholder') placeholder!: ElementRef<HTMLElement>;
+  static dragAndDropComponents: { [id: string]: DropListComponent } = {};
 
-  bodyElement: HTMLElement = document.body;
-  draggedItemIndex: number | null = null;
-  placeholderDimensions: { width: string, height: string } = { width: '1px', height: '1px' };
+  viewModel: DragNDropValueObject[] = [];
+  placeHolderIndex?: number;
+  highlightAsReceiver = false;
 
-  dragStart(itemIndex: number, event: CdkDragStart<DropListComponent>): void {
-    this.setPlaceholderDimensions(
-      event.source.dropContainer.data.elementFormControl.value.length - 1,
-      event.source.dropContainer.data.elementModel.orientation
-    );
-    this.draggedItemIndex = itemIndex;
-    this.bodyElement.classList.add('inheritCursors');
-    this.bodyElement.style.cursor = 'grabbing';
+  dragging = false;
+
+  showAsPlaceholder = false;
+  hidePlaceholder = false;
+  highlightValidDrop = false;
+
+  static draggedElement?: DragNDropValueObject;
+  static sourceList?: DropListComponent;
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.viewModel = [...this.elementFormControl.value];
   }
 
-  dragEnd(): void {
-    this.draggedItemIndex = null;
-    this.bodyElement.classList.remove('inheritCursors');
-    this.bodyElement.style.cursor = 'unset';
+  ngAfterViewInit() {
+    DropListComponent.dragAndDropComponents[this.elementModel.id] = this;
   }
 
-  drop(event: CdkDragDrop<DropListComponent>): void {
-    if (event.previousContainer === event.container && !event.container.data.elementModel.copyOnDrop) {
-      moveItemInArray(
-        event.container.data.elementFormControl.value as unknown as DragNDropValueObject[],
-        event.previousIndex,
-        event.currentIndex
-      );
-      this.elementFormControl.setValue(
-        (event.container.data.elementFormControl.value as DragNDropValueObject[])
-      );
+  dragStart(dragEvent: DragEvent,
+            dropListValueElement: DragNDropValueObject,
+            sourceListIndex: number) {
+    if (dragEvent.dataTransfer) {
+      dragEvent.dataTransfer.effectAllowed = 'copyMove';
+      dragEvent.dataTransfer.setDragImage(
+        DropListComponent.createDragImage(dragEvent.target as Node, dropListValueElement.id), 0, 0);
+    }
+
+    DropListComponent.draggedElement = dropListValueElement;
+    DropListComponent.sourceList = this;
+    this.placeHolderIndex = sourceListIndex;
+    if (this.elementModel.isSortList) {
+      this.showAsPlaceholder = true;
     } else {
-      const presentValueIDs = event.container.data.elementFormControl.value
-        .map((value2: DragNDropValueObject) => value2.id);
-      if (!presentValueIDs.includes(event.item.data.element.id)) {
-        event.container.data.elementFormControl.value.splice(event.currentIndex, 0, event.item.data.element);
-        event.container.data.elementFormControl
-          .setValue(event.container.data.elementFormControl.value);
-      }
-      if (!event.previousContainer.data.elementModel.copyOnDrop) {
-        event.previousContainer.data.elementFormControl.value.splice(event.item.data.index, 1);
-        event.previousContainer.data.elementFormControl.setValue(
-          (event.previousContainer.data.elementFormControl.value as DragNDropValueObject[])
-        );
-      }
+      this.hidePlaceholder = true;
+      this.highlightValidDrop = true;
+    }
+
+    Object.entries(DropListComponent.dragAndDropComponents)
+      .forEach(([, value]) => {
+        value.dragging = true;
+      });
+
+    if (this.elementModel.highlightReceivingDropList) {
+      this.highlightAsReceiver = true;
+      this.elementModel.connectedTo.forEach(connectedDropListID => {
+        DropListComponent.dragAndDropComponents[connectedDropListID].highlightAsReceiver = true;
+      });
     }
   }
 
-  dragEnter(event: CdkDragEnter<DropListSimpleComponent | DropListComponent, { element: DragNDropValueObject }>) {
-    const presentValueIDs = event.container.data.elementFormControl.value
-      .map((value: DragNDropValueObject) => value.id);
-    const itemCountOffset = presentValueIDs.includes(event.item.data.element.id) ? 1 : 0;
-    this.setPlaceholderDimensions(
-      presentValueIDs.length - itemCountOffset,
-      event.container.data.elementModel.orientation);
+  static createDragImage(baseElement: Node, baseID: string): HTMLElement {
+    const dragImage: HTMLElement = baseElement.cloneNode(true) as HTMLElement;
+    dragImage.id = `${baseID}-dragimage`;
+    dragImage.style.display = 'inline-block';
+    document.body.appendChild(dragImage);
+    return dragImage;
   }
 
-  setPlaceholderDimensions(itemsCount: number, orientation: unknown): void {
+  dragEnterItem(event: DragEvent) {
+    event.preventDefault();
+
+    if (this.elementModel.isSortList && DropListComponent.sourceList === this) {
+      const sourceIndex: number = this.placeHolderIndex as number;
+      const targetIndex: number = Array.from((event.target as any).parentNode.children).indexOf(event.target);
+      const removedElement = this.viewModel.splice(sourceIndex, 1)[0];
+      this.viewModel.splice(targetIndex, 0, removedElement);
+      this.placeHolderIndex = targetIndex;
+    }
+  }
+
+  dragEnterList(event: DragEvent) {
+    event.preventDefault();
+
+    if (!this.elementModel.isSortList) {
+      this.highlightValidDrop = true;
+    } else if (DropListComponent.sourceList !== this) {
+      this.viewModel.push(DropListComponent.draggedElement as DragNDropValueObject);
+      const sourceList = DropListComponent.sourceList as DropListComponent;
+      sourceList.viewModel.splice(sourceList.placeHolderIndex as number, 1);
+      sourceList.elementFormControl.setValue(sourceList.viewModel);
+      sourceList.placeHolderIndex = undefined;
+      DropListComponent.sourceList = this;
+      this.placeHolderIndex = this.viewModel.length > 0 ? this.viewModel.length - 1 : 0;
+    }
+  }
+
+  dragLeaveList(event: DragEvent) {
+    event.preventDefault();
+    this.highlightValidDrop = false;
+  }
+
+  drop(event: DragEvent) {
+    event.preventDefault();
+
+    if (DropListComponent.sourceList === this && this.elementModel.isSortList) {
+      this.elementFormControl.setValue(this.viewModel);
+    } else if (this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) {
+      const presentValueIDs = this.elementFormControl.value
+        .map((valueValue: DragNDropValueObject) => valueValue.id);
+      if (!presentValueIDs.includes(DropListComponent.draggedElement?.id)) {
+        this.viewModel.push(DropListComponent.draggedElement as DragNDropValueObject);
+        this.elementFormControl.setValue(this.viewModel);
+        if (!DropListComponent.sourceList?.elementModel.copyOnDrop) {
+          DropListComponent.sourceList?.viewModel.splice(this.placeHolderIndex as number, 1);
+          DropListComponent.sourceList?.elementFormControl.setValue(DropListComponent.sourceList.viewModel);
+        }
+      }
+    } else {
+      console.log('Not an allowed target list');
+    }
+    this.dragEnd();
+  }
+
+  isDropAllowed(connectedDropLists: string[]): boolean {
+    return (connectedDropLists as string[]).includes(this.elementModel.id) &&
+           !(this.elementModel.onlyOneItem && this.elementModel.value.length > 0);
+    // TODO presentValueIDs?
+  }
+
+  dragEnd(event?: DragEvent) {
+    event?.preventDefault();
+
+    Object.entries(DropListComponent.dragAndDropComponents)
+      .forEach(([, value]) => {
+        value.highlightAsReceiver = false;
+        value.dragging = false;
+        value.highlightValidDrop = false;
+      });
+    if (DropListComponent.sourceList) DropListComponent.sourceList.placeHolderIndex = undefined;
+    this.placeHolderIndex = undefined;
+
+    document.getElementById(`${DropListComponent.draggedElement?.id}-dragimage`)?.remove();
+  }
+
+  ngOnDestroy(): void {
+    delete DropListComponent.dragAndDropComponents[this.elementModel.id];
+  }
+}
+
+@Pipe({
+  name: 'droplistLayout'
+})
+export class DropListLayoutPipe implements PipeTransform {
+  transform(orientation: string): string {
     switch (orientation) {
-      case 'vertical': {
-        this.placeholderDimensions.width = '100%';
-        this.placeholderDimensions.height = itemsCount ? '1px' : '100%';
-        break;
-      }
-      case 'horizontal': {
-        this.placeholderDimensions.width = itemsCount ? '1px' : '100%';
-        this.placeholderDimensions.height = '100%';
-        break;
-      }
-      default: { // 'flex'
-        this.placeholderDimensions.width = itemsCount ? '0px' : '100%';
-        this.placeholderDimensions.height = itemsCount ? '0px' : '100%';
-      }
+      case 'horizontal':
+        return 'row';
+      case 'vertical':
+        return 'column';
+      case 'flex':
+        return 'row wrap';
+      default:
+        throw Error(`droplist orientation invalid: ${orientation}`);
     }
   }
+}
 
-  onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
-    !drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1
-  );
+@Pipe({
+  name: 'droplistLayoutAlign'
+})
+export class DropListLayoutAlignPipe implements PipeTransform {
+  transform(orientation: string): string {
+    switch (orientation) {
+      case 'horizontal':
+        return 'start start';
+      case 'vertical':
+        return 'start stretch';
+      case 'flex':
+        return 'space-around center';
+      default:
+        throw Error(`droplist orientation invalid: ${orientation}`);
+    }
+  }
 }

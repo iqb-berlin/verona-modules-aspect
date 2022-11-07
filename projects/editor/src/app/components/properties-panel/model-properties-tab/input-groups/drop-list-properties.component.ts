@@ -14,8 +14,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 @Component({
   selector: 'aspect-drop-list-properties',
   template: `
-    <div *ngIf="combinedProperties.type === 'drop-list' ||
-                combinedProperties.type === 'drop-list-simple'"
+    <div *ngIf="combinedProperties.type === 'drop-list'"
                 fxLayout="column">
       <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"
                                 [itemList]="$any(combinedProperties.value)"
@@ -51,6 +50,12 @@ import { IDService } from 'editor/src/app/services/id.service';
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-checkbox *ngIf="combinedProperties.isSortList !== undefined"
+                    [checked]="$any(combinedProperties.isSortList)"
+                    (change)="updateModel.emit({ property: 'isSortList', value: $event.checked })">
+        {{'propertiesPanel.isSortList' | translate }}
+      </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
                     [checked]="$any(combinedProperties.onlyOneItem)"

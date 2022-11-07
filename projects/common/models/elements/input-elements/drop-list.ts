@@ -1,25 +1,23 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, PositionedUIElement,
+  InputElement,
   DragNDropValueObject,
   BasicStyles, PositionProperties,
   AnswerScheme, AnswerSchemeValue, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
-import {
-  DropListSimpleElement
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 
-export class DropListElement extends InputElement implements PositionedUIElement {
+export class DropListElement extends InputElement {
   value: DragNDropValueObject[];
   onlyOneItem: boolean = false;
+  isSortList: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical';
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#006064';
-  position: PositionProperties;
+  position: PositionProperties | undefined;
   styling: BasicStyles & {
     itemBackgroundColor: string;
   };
@@ -28,6 +26,7 @@ export class DropListElement extends InputElement implements PositionedUIElement
     super({ height: 100, ...element });
     this.value = element.value !== undefined ? [...element.value] : [];
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
+    if (element.isSortList) this.isSortList = element.isSortList;
     if (element.connectedTo) this.connectedTo = element.connectedTo;
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
     if (element.orientation) this.orientation = element.orientation;
@@ -35,21 +34,21 @@ export class DropListElement extends InputElement implements PositionedUIElement
     if (element.highlightReceivingDropListColor) {
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
     }
-    this.position = UIElement.initPositionProps({ useMinHeight: true, ...element.position });
-    this.styling = {
-      ...UIElement.initStylingProps({
-        backgroundColor: '#f4f4f2',
-        itemBackgroundColor: '#c9e0e0',
-        ...element.styling
-      })
-    };
+    this.position = element.position ?
+      UIElement.initPositionProps({ useMinHeight: true, ...element.position as Partial<PositionProperties> }) :
+      undefined;
+    this.styling = UIElement.initStylingProps({
+      backgroundColor: '#f4f4f2',
+      itemBackgroundColor: '#c9e0e0',
+      ...element.styling
+    });
   }
 
   hasAnswerScheme(): boolean {
     return Boolean(this.getAnswerScheme);
   }
 
-  getAnswerScheme(options: Array<DropListElement | DropListSimpleElement>): AnswerScheme {
+  getAnswerScheme(options: Array<DropListElement>): AnswerScheme {
     return {
       id: this.id,
       type: 'string',
@@ -61,7 +60,7 @@ export class DropListElement extends InputElement implements PositionedUIElement
     };
   }
 
-  private getAnswerSchemeValues(dropLists: Array<DropListElement | DropListSimpleElement>): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(dropLists: Array<DropListElement>): AnswerSchemeValue[] {
     const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id));
     if (valueDropLists.length || this.isSortingList()) {
       return [this, ...valueDropLists]

@@ -6,7 +6,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
-| 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry';
+| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry';
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] |
@@ -34,7 +34,12 @@ export abstract class UIElement {
   }
 
   setProperty(property: string, value: UIElementValue): void {
-    this[property] = value;
+    if (Array.isArray(this[property])) { // keep array reference intact
+      (this[property] as UIElementValue[])
+        .splice(0, (this[property] as UIElementValue[]).length, ...(value as UIElementValue[]));
+    } else {
+      this[property] = value;
+    }
   }
 
   setStyleProperty(property: string, value: UIElementValue): void {

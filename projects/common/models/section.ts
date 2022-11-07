@@ -27,12 +27,11 @@ export class Section {
     if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
     if (section?.activeAfterID) this.activeAfterID = section.activeAfterID;
     this.elements =
-      section?.elements?.map(element => (
-        ElementFactory.createElement({
-          ...element,
-          position: UIElement.initPositionProps(element.position)
-        }) as PositionedUIElement)
-      ) || [];
+      section?.elements?.map(element => ElementFactory.createElement({
+        ...element,
+        position: UIElement.initPositionProps(element.position)
+      }) as PositionedUIElement) ||
+      [];
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -58,7 +57,7 @@ export class Section {
   getAnswerScheme(dropLists: UIElement[]): AnswerScheme[] {
     return this.getAllElements()
       .filter(element => element.hasAnswerScheme())
-      .map(element => ((element.type === 'drop-list' || element.type === 'drop-list-simple') ?
+      .map(element => ((element.type === 'drop-list') ?
         (element as InputElement).getAnswerScheme(dropLists) :
         (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme()));
   }

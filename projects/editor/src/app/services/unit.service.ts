@@ -11,7 +11,7 @@ import {
   CompoundElement,
   DragNDropValueObject, InputElement,
   InputElementValue, TextLabel, PlayerElement, PlayerProperties, PositionedUIElement,
-  UIElement, UIElementType, UIElementValue, Hotspot
+  UIElement, UIElementType, UIElementValue, Hotspot, PositionProperties
 } from 'common/models/elements/element';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
@@ -128,17 +128,17 @@ export class UnitService {
     }
 
     if (coordinates) {
-      newElement.position = UIElement.initPositionProps({
+      newElement.position = {
         ...(section.dynamicPositioning && { gridColumn: coordinates.x }),
         ...(section.dynamicPositioning && { gridRow: coordinates.y }),
         ...(!section.dynamicPositioning && { yPosition: coordinates.y }),
         ...(!section.dynamicPositioning && { yPosition: coordinates.y })
-      });
+      } as PositionProperties;
     }
     section.addElement(ElementFactory.createElement({
       ...newElement,
       id: this.idService.getAndRegisterNewID(newElement.type),
-      position: UIElement.initPositionProps(newElement.position)
+      position: { ...newElement.position } as PositionProperties
     }) as PositionedUIElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }

@@ -26,7 +26,6 @@ export class ElementModelElementCodeMappingService {
   : InputElementValue => {
     switch (elementModel.type) {
       case 'drop-list':
-      case 'drop-list-simple':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectById(id)) as DragNDropValueObject[] :
           (elementModel as InputElement).value;
@@ -69,7 +68,6 @@ export class ElementModelElementCodeMappingService {
   mapToElementCodeValue = (elementModelValue: InputElementValue, elementType: UIElementType): InputElementValue => {
     switch (elementType) {
       case 'drop-list':
-      case 'drop-list-simple':
         return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
       case 'hotspot-image':
         return (elementModelValue as Hotspot[]).map(hotspot => hotspot.value);

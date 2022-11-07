@@ -9,11 +9,14 @@ import { CompoundElementComponent } from 'common/directives/compound-element.dir
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import { CompoundChildOverlayComponent } from
   'common/components/compound-elements/cloze/compound-child-overlay.component';
-import { UIElement } from 'common/models/elements/element';
+import { DragNDropValueObject, UIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
+import { DropListComponent } from 'common/components/input-elements/drop-list.component';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { FormElementComponent } from 'common/directives/form-element-component.directive';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -34,6 +37,14 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
+    this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
+    if (this.childComponent.instance instanceof FormElementComponent) {
+      (this.childComponent.instance as FormElementComponent).elementFormControl.setValue(this.element.value);
+    }
+    // DropList keeps a special viewModel variable, which needs to be updated
+    if (this.childComponent.instance instanceof DropListComponent) {
+      (this.childComponent.instance as DropListComponent).viewModel = this.element.value as DragNDropValueObject[];
+    }
 
     // Make children not clickable. This way the only relevant events are managed by the overlay.
     this.childComponent.location.nativeElement.style.pointerEvents = 'none';

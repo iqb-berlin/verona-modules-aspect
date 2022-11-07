@@ -6,7 +6,6 @@ import { FormGroup } from '@angular/forms';
 import { ElementComponent } from '../../../directives/element-component.directive';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { TextFieldSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
-import { DropListSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { ValueChangeElement } from 'common/models/elements/element';
 
 @Component({
@@ -21,13 +20,14 @@ import { ValueChangeElement } from 'common/models/elements/element';
                                 [style.width.px]="element.width"
                                 [style.height.px]="element.height">
       </aspect-text-field-simple>
-      <aspect-drop-list-simple *ngIf="element.type === 'drop-list-simple'" #childComponent
+      <aspect-drop-list *ngIf="element.type === 'drop-list'" #childComponent
+                               [clozeContext]="true"
                                [style.pointer-events]="editorMode ? 'none' : 'auto'"
                                [parentForm]="parentForm"
                                [elementModel]="$any(element)"
                                [style.width.px]="element.width"
                                [style.height.px]="element.height">
-      </aspect-drop-list-simple>
+      </aspect-drop-list>
       <aspect-toggle-button *ngIf="element.type === 'toggle-button'" #childComponent
                             [style.pointer-events]="editorMode ? 'none' : 'auto'"
                             [parentForm]="parentForm"
@@ -47,12 +47,12 @@ import { ValueChangeElement } from 'common/models/elements/element';
     ':host {vertical-align: middle;}',
     ':host > div {border-radius: 3px;}',
     ':host div > * {display: inline-block; padding-bottom: 2px; box-sizing: border-box;}',
-    'aspect-drop-list-simple, aspect-text-field-simple {width: 100%; height: 100%;}',
-    'aspect-drop-list-simple {line-height: unset; vertical-align: top;}'
+    'aspect-drop-list, aspect-text-field-simple {width: 100%; height: 100%;}',
+    'aspect-drop-list {line-height: unset; vertical-align: top;}'
   ]
 })
 export class CompoundChildOverlayComponent { // TODO rename to ClozeChildOverlay
-  @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListSimpleElement;
+  @Input() element!: ToggleButtonElement | TextFieldSimpleElement;
   @Input() parentForm!: FormGroup;
   @Input() editorMode: boolean = false;
   @Input() lineHeight!: number;

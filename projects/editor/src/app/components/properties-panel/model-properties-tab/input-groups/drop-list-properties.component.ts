@@ -26,7 +26,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 
       <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
                       class="wide-form-field" appearance="fill"
-                      (click)="generateValidDropLists()">
+                      (mousedown)="generateValidDropLists($event)">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.connectedTo"
                     (ngModelChange)="toggleConnectedDropList($event)">

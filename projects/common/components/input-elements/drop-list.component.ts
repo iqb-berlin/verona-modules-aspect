@@ -184,7 +184,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
         this.viewModel.push(DropListComponent.draggedElement as DragNDropValueObject);
         this.elementFormControl.setValue(this.viewModel);
         if (!DropListComponent.sourceList?.elementModel.copyOnDrop) {
-          DropListComponent.sourceList?.viewModel.splice(this.placeHolderIndex as number, 1);
+          DropListComponent.sourceList?.viewModel.splice(DropListComponent.sourceList.placeHolderIndex as number, 1);
           DropListComponent.sourceList?.elementFormControl.setValue(DropListComponent.sourceList.viewModel);
         }
       }

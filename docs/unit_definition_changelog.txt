@@ -53,6 +53,4 @@ iqb-aspect-definition@1.0.0
                     +hasKeyboardIcon: boolean;
 - TextFieldElement: +hasKeyboardIcon: boolean;
 - TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement: InputAssistancePreset +'custom'
-
-3.9.0
-- remove drop-list-simple as cloze child; is now a drop-list
+- Remove drop-list-simple as cloze child; is now a drop-list

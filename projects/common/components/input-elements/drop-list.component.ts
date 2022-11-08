@@ -105,27 +105,30 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
         DropListComponent.createDragImage(dragEvent.target as Node, dropListValueElement.id), 0, 0);
     }
 
-    DropListComponent.draggedElement = dropListValueElement;
-    DropListComponent.sourceList = this;
-    this.placeHolderIndex = sourceListIndex;
-    if (this.elementModel.isSortList) {
-      this.showAsPlaceholder = true;
-    } else {
-      this.hidePlaceholder = true;
-      this.highlightValidDrop = true;
-    }
+    // Sadly timeout is necessary for Chrome, which does not allow DOM manipulation on dragstart
+    setTimeout(() => {
+      DropListComponent.draggedElement = dropListValueElement;
+      DropListComponent.sourceList = this;
+      this.placeHolderIndex = sourceListIndex;
+      if (this.elementModel.isSortList) {
+        this.showAsPlaceholder = true;
+      } else {
+        this.hidePlaceholder = true;
+        this.highlightValidDrop = true;
+      }
 
-    Object.entries(DropListComponent.dragAndDropComponents)
-      .forEach(([, value]) => {
-        value.dragging = true;
-      });
+      Object.entries(DropListComponent.dragAndDropComponents)
+        .forEach(([, value]) => {
+          value.dragging = true;
+        });
 
-    if (this.elementModel.highlightReceivingDropList) {
-      this.highlightAsReceiver = true;
-      this.elementModel.connectedTo.forEach(connectedDropListID => {
-        DropListComponent.dragAndDropComponents[connectedDropListID].highlightAsReceiver = true;
-      });
-    }
+      if (this.elementModel.highlightReceivingDropList) {
+        this.highlightAsReceiver = true;
+        this.elementModel.connectedTo.forEach(connectedDropListID => {
+          DropListComponent.dragAndDropComponents[connectedDropListID].highlightAsReceiver = true;
+        });
+      }
+    });
   }
 
   static createDragImage(baseElement: Node, baseID: string): HTMLElement {

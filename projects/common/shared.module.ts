@@ -22,6 +22,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -72,6 +73,7 @@ import { MathAtanPipe } from './pipes/math-atan.pipe';
 import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { UpdateTextareaRowsPipe } from './pipes/update-textarea-rows.pipe';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 @NgModule({
   imports: [
@@ -92,7 +94,8 @@ import { UpdateTextareaRowsPipe } from './pipes/update-textarea-rows.pipe';
     MatButtonModule,
     TranslateModule,
     MatSliderModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatProgressSpinnerModule
   ],
   declarations: [
     ButtonComponent,
@@ -134,7 +137,8 @@ import { UpdateTextareaRowsPipe } from './pipes/update-textarea-rows.pipe';
     MathAtanPipe,
     MathDegreesPipe,
     ArrayIncludesPipe,
-    UpdateTextareaRowsPipe
+    UpdateTextareaRowsPipe,
+    SpinnerComponent
   ],
   exports: [
     CommonModule,

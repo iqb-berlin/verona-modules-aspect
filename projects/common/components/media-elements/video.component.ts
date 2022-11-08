@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { MediaPlayerElementComponent } from '../../directives/media-player-element-component.directive';
 import { VideoElement } from 'common/models/elements/media-elements/video';
+import { MediaPlayerElementComponent } from '../../directives/media-player-element-component.directive';
 
 @Component({
   selector: 'aspect-video',
@@ -19,12 +19,14 @@ import { VideoElement } from 'common/models/elements/media-elements/video';
                                        (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                        (elementValueChanged)="elementValueChanged.emit($event)">
         <video #player
+               (loadedmetadata)="isLoaded.next(true)"
                (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
                (pause)="mediaPlayStatusChanged.emit(null)"
                [style.width.%]="100"
                [src]="elementModel.src | safeResourceUrl">
         </video>
       </aspect-media-player-control-bar>
+      <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
     </div>
   `,
   styles: [

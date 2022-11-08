@@ -9,11 +9,13 @@ Player
 - Optionale Tastatursymbole von Eingabefeldern und -bereichen
   werden nach erster Benutzung der Elemente ausgeblendet
 - Verbessert die Performanz von GeoGebra-Elementen
+- Zeigt Ladeanimationen während des Ladens von GeoGebra-, Video- und Audioelementen
 - Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an
 - Korrigiert fehlende Warnmeldungen beim Schieberegler/Zahlenstrahl
 - Die Eingabehilfe "Eigene Zeichen" nutzt weitestgehend das Layout
   der Eingabehilfe "Französische Sonderzeichen"
 - Ändert die Metadaten entsprechend der Verona Inferfaces Specification
+
 
 1.27.0
 - Add new input assistance presets ('Space' and 'Comma').

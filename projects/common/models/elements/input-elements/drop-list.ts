@@ -29,7 +29,7 @@ export class DropListElement extends InputElement {
       [];
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
     if (element.isSortList) this.isSortList = element.isSortList;
-    if (element.connectedTo) this.connectedTo = element.connectedTo;
+    if (element.connectedTo) this.connectedTo = [...element.connectedTo];
     if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
     if (element.orientation) this.orientation = element.orientation;
     if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;

@@ -6,10 +6,10 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MessageService } from 'common/services/message.service';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/element';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
-import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   selector: 'aspect-drop-list-properties',
@@ -26,7 +26,7 @@ import { IDService } from 'editor/src/app/services/id.service';
 
       <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
                       class="wide-form-field" appearance="fill"
-                      (mousedown)="generateValidDropLists($event)">
+                      (mousedown)="generateValidDropLists()">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.connectedTo"
                     (ngModelChange)="toggleConnectedDropList($event)">

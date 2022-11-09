@@ -67,7 +67,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list-item:active {cursor: grabbing}',
     '.show-as-placeholder {opacity: 0.5 !important; pointer-events: none;}',
     '.highlight-valid-drop {background-color: lightblue !important;}',
-    '.highlight-as-receiver {outline: 2px solid;}',
+    '.highlight-as-receiver {border: 2px solid;}',
     '.show-as-hidden {visibility: hidden;}'
   ]
 })

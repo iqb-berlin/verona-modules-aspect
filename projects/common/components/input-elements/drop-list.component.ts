@@ -10,56 +10,59 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-drop-list',
   template: `
-    <div class="list" [id]="elementModel.id"
-         [fxLayout]="elementModel.orientation | droplistLayout"
-         [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
-         [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                      'horizontal-orientation' : elementModel.orientation === 'horizontal',
-                      'clozeContext': clozeContext}"
-         [style.min-height.px]="elementModel.position?.useMinHeight ? elementModel.height : undefined"
-         [style.color]="elementModel.styling.fontColor"
-         [style.font-family]="elementModel.styling.font"
-         [style.font-size.px]="elementModel.styling.fontSize"
-         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-         [style.backgroundColor]="elementModel.styling.backgroundColor"
-         [class.errors]="elementFormControl.errors && elementFormControl.touched"
-         [style.outline-color]="elementModel.highlightReceivingDropListColor"
-         [class.highlight-valid-drop]="highlightValidDrop"
-         [class.highlight-as-receiver]="highlightAsReceiver"
-         (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
-         (dragover)="$event.preventDefault()">
-      <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
-        <div class="list-item"
-             draggable="true"
-             (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
-             (dragenter)="dragEnterItem($event)"
-             [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
-             [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
-             [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''"
-             [style.background-color]="elementModel.styling.itemBackgroundColor">
-          <span>{{dropListValueElement.text}}</span>
-        </div>
-        <img *ngIf="dropListValueElement.imgSrc"
-             class="list-item"
-             [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
-             draggable="true" [id]="dropListValueElement.id"
-             (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
-             [style.object-fit]="'scale-down'">
-      </ng-container>
-    </div>
-    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-               class="error-message">
-      {{elementFormControl.errors | errorTransform: elementModel}}
-    </mat-error>
+      <div class="list" [id]="elementModel.id"
+           [fxLayout]="elementModel.orientation | droplistLayout"
+           [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
+           [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+                        'horizontal-orientation' : elementModel.orientation === 'horizontal',
+                        'clozeContext': clozeContext}"
+           [style.min-height.px]="elementModel.position?.useMinHeight ? elementModel.height : undefined"
+           [style.color]="elementModel.styling.fontColor"
+           [style.font-family]="elementModel.styling.font"
+           [style.font-size.px]="elementModel.styling.fontSize"
+           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+           [style.backgroundColor]="elementModel.styling.backgroundColor"
+           [class.errors]="elementFormControl.errors && elementFormControl.touched"
+           [style.outline-color]="elementModel.highlightReceivingDropListColor"
+           [class.highlight-valid-drop]="highlightValidDrop"
+           [class.highlight-as-receiver]="highlightAsReceiver"
+           tabindex="0"
+           (focusout)="elementFormControl.markAsTouched()"
+           (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
+           (dragover)="$event.preventDefault()">
+        <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
+          <div class="list-item"
+               draggable="true"
+               (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
+               (dragenter)="dragEnterItem($event)"
+               [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
+               [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
+               [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''"
+               [style.background-color]="elementModel.styling.itemBackgroundColor">
+            <span>{{dropListValueElement.text}}</span>
+          </div>
+          <img *ngIf="dropListValueElement.imgSrc"
+               class="list-item"
+               [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
+               draggable="true" [id]="dropListValueElement.id"
+               (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
+               [style.object-fit]="'scale-down'">
+        </ng-container>
+      </div>
+      <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+                 class="error-message">
+        {{elementFormControl.errors | errorTransform: elementModel}}
+      </mat-error>
   `,
   styles: [
     '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); padding: 3px;}',
     ':not(.clozeContext) .list-item {border-radius: 5px; padding: 10px;}',
     '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',
-    '.errors {outline: 2px solid #f44336 !important;}',
+    '.errors {border: 2px solid #f44336;}',
+    '.error-message {font-size: 75%; margin-top: 10px; margin-left: 3px; position: absolute; bottom: 3px;}',
     '.list-item {cursor: grab;}',
     '.list-item:active {cursor: grabbing}',
     '.show-as-placeholder {opacity: 0.5 !important; pointer-events: none;}',

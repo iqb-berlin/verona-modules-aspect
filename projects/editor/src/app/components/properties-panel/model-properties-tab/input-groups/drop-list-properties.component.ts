@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
@@ -15,7 +15,7 @@ import { DialogService } from '../../../../services/dialog.service';
   selector: 'aspect-drop-list-properties',
   template: `
     <div *ngIf="combinedProperties.type === 'drop-list'"
-                fxLayout="column">
+         fxLayout="column">
       <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"
                                 [itemList]="$any(combinedProperties.value)"
                                 (addItem)="addOption($event)"
@@ -25,15 +25,14 @@ import { DialogService } from '../../../../services/dialog.service';
       </aspect-option-list-panel>
 
       <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
-                      class="wide-form-field" appearance="fill"
-                      (mousedown)="generateValidDropLists()">
+                      class="wide-form-field" appearance="fill">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.connectedTo"
                     (ngModelChange)="toggleConnectedDropList($event)">
           <mat-select-trigger>
             {{'propertiesPanel.connectedDropLists' | translate }} ({{$any(combinedProperties.connectedTo).length}})
           </mat-select-trigger>
-          <mat-option *ngFor="let id of dropListIDs" [value]="id">
+          <mat-option *ngFor="let id of (combinedProperties.idList | getValidDropLists)" [value]="id">
             {{id}}
           </mat-option>
         </mat-select>
@@ -93,8 +92,6 @@ export class DropListPropertiesComponent {
     value: string | number | boolean | string[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();
-
-  dropListIDs: string[] = [];
 
   constructor(public unitService: UnitService,
               private selectionService: SelectionService,
@@ -157,9 +154,17 @@ export class DropListPropertiesComponent {
       value: connectedDropListList
     });
   }
+}
 
-  generateValidDropLists() {
-    this.dropListIDs = this.unitService.getDropListElementIDs()
-      .filter(dropListID => !this.combinedProperties.idList!.includes(dropListID));
+@Pipe({
+  name: 'getValidDropLists'
+})
+export class GetValidDropListsPipe implements PipeTransform {
+  constructor(private unitService: UnitService) {}
+
+  transform(idList: string[] | undefined): string[] {
+    if (!idList) return [];
+    return this.unitService.getDropListElementIDs()
+      .filter(dropListID => !idList.includes(dropListID));
   }
 }

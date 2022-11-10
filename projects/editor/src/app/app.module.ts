@@ -81,7 +81,7 @@ import { TextFieldElementPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
 import { ScaleAndZoomPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
-import { DropListPropertiesComponent } from
+import { DropListPropertiesComponent, GetValidDropListsPipe } from
   './components/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
 import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
@@ -94,7 +94,9 @@ import { PresetValuePropertiesComponent } from
 import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
 import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
 import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
-import { BorderPropertiesComponent } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
+import {
+  BorderPropertiesComponent
+} from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
 
 @NgModule({
@@ -149,7 +151,8 @@ import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geoge
     LikertRowLabelPipe,
     LabelEditDialogComponent,
     BorderPropertiesComponent,
-    GeogebraAppDefinitionDialogComponent
+    GeogebraAppDefinitionDialogComponent,
+    GetValidDropListsPipe
   ],
   imports: [
     BrowserModule,

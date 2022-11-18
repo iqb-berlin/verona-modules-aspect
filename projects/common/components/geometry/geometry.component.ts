@@ -53,11 +53,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     });
   }
 
-  refresh() {
+  refresh(): void {
     this.initApplet();
   }
 
-  initApplet(): void {
+  private initApplet(): void {
     console.log('Initializing GeoGebra applet');
     if (!this.appDefinition) {
       console.error('Geogebra Applet definition not found.');
@@ -84,7 +84,22 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       ggbBase64: this.appDefinition,
       appletOnLoad: (api: any) => {
         this.isLoaded.next(true);
+        api.registerAddListener(() => {
+          this.geometryUpdated.emit(api);
+        });
+        api.registerRemoveListener(() => {
+          this.geometryUpdated.emit(api);
+        });
         api.registerUpdateListener(() => {
+          this.geometryUpdated.emit(api);
+        });
+        api.registerRenameListener(() => {
+          this.geometryUpdated.emit(api);
+        });
+        api.registerClearListener(() => {
+          this.geometryUpdated.emit(api);
+        });
+        api.registerStoreUndoListener(() => {
           this.geometryUpdated.emit(api);
         });
       }

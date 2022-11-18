@@ -28,5 +28,9 @@ export const BulletListExtension = BulletList.extend({
         return commands.updateAttributes(this.name, { listStyle: newStyle });
       }
     };
+  },
+
+  addInputRules() {
+    return [];
   }
 });

@@ -84,9 +84,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   ];
 
   editor: Editor = new Editor({
-    extensions: this.defaultExtensions,
-    enablePasteRules: false,
-    enableInputRules: false
+    extensions: this.defaultExtensions
   });
 
   constructor(private injector: Injector) { }
@@ -100,9 +98,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       activeExtensions.push(ButtonComponentExtension(this.injector));
     }
     this.editor = new Editor({
-      extensions: activeExtensions,
-      enablePasteRules: false,
-      enableInputRules: false
+      extensions: activeExtensions
     });
   }
 

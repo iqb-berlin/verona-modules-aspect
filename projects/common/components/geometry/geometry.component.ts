@@ -48,9 +48,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
 
   ngAfterViewInit(): void {
     this.externalResourceService.initializeGeoGebra(this.renderer);
-    this.externalResourceService.isGeoGebraLoaded().subscribe((isLoaded: boolean) => {
-      if (isLoaded) this.initApplet();
-    });
+    this.externalResourceService.isGeoGebraLoaded()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((isLoaded: boolean) => {
+        if (isLoaded) this.initApplet();
+      });
   }
 
   refresh(): void {

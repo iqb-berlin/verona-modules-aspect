@@ -10,6 +10,7 @@ import { Hotspot, TextLabel, UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
+import { CanvasElementOverlay } from '../canvas/overlays/canvas-element-overlay';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 
@@ -22,6 +23,10 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   selectedElements: UIElement[] = [];
   combinedProperties: CombinedProperties | undefined;
   private ngUnsubscribe = new Subject<void>();
+
+  interactionEnabled = false;
+  interactionIndeterminate = false;
+
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
               private messageService: MessageService,
@@ -44,6 +49,18 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
           this.selectedElements = selectedElements;
           this.combinedProperties =
             ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
+
+          this.interactionEnabled = this.selectionService.selectedElementComponents
+            .filter(elementOverlay => elementOverlay instanceof CanvasElementOverlay)
+            .reduce((accumulator: boolean, elementOverlay: any) => elementOverlay.isInteractionEnabled(), false);
+
+          this.interactionIndeterminate = (this.selectionService.selectedElementComponents.length > 1) &&
+            this.selectionService.selectedElementComponents
+              .filter(elementOverlay => elementOverlay instanceof CanvasElementOverlay)
+              .reduce((accumulator: any, elementOverlay: any) => {
+                if (!accumulator) return elementOverlay.isInteractionEnabled();
+                return accumulator !== elementOverlay.isInteractionEnabled();
+              }, undefined);
         }
       );
   }
@@ -93,6 +110,12 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
     } else {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));
     }
+  }
+
+  setElementInteractionEnabled(isEnabled: boolean): void {
+    this.selectionService.selectedElementComponents.forEach(elementOverlay => {
+      if (elementOverlay instanceof CanvasElementOverlay) elementOverlay.setInteractionEnabled(isEnabled);
+    });
   }
 
   deleteElement(): void {

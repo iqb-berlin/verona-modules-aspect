@@ -95,6 +95,14 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.unitService.showDefaultEditDialog(this.element);
   }
 
+  setInteractionEnabled(isEnabled: boolean): void {
+    this.childComponent.location.nativeElement.style.pointerEvents = isEnabled ? 'unset' : 'none';
+  }
+
+  isInteractionEnabled(): boolean {
+    return this.childComponent.location.nativeElement.style.pointerEvents !== 'none';
+  }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

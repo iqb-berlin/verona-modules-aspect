@@ -184,7 +184,8 @@
     "hotspots": "Aktive Bereiche",
     "newHotspot": "Neuer Bereich",
     "hasDynamicRowCount": "Dynamische Zeilen",
-    "expectedCharactersCount": "Erwartete Zeichenanzahl"
+    "expectedCharactersCount": "Erwartete Zeichenanzahl",
+    "setElementInteractionEnabled": "Elementinteraktion erlauben"
   },
   "hotspot": {
     "top": "Abstand von oben",

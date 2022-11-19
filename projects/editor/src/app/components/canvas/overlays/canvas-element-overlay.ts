@@ -18,7 +18,6 @@ import { SelectionService } from '../../../services/selection.service';
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   @Input() element!: UIElement;
-  @Input() viewMode: boolean = false;
   @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;

@@ -47,13 +47,18 @@ export class UnitService {
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
     if (unitDefinition) {
-      const unitDef = JSON.parse(unitDefinition);
-      this.sanitizationService.checkAndRepairIDs(unitDef, this.idService, this.messageService);
-      if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
-        this.unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
-        this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
-      } else {
-        this.unit = new Unit(unitDef);
+      try {
+        const unitDef = JSON.parse(unitDefinition);
+        this.sanitizationService.checkAndRepairIDs(unitDef, this.idService, this.messageService);
+        if (SanitizationService.isUnitDefinitionOutdated(unitDef)) {
+          this.unit = new Unit(this.sanitizationService.sanitizeUnitDefinition(unitDef));
+          this.messageService.showMessage(this.translateService.instant('outdatedUnit'));
+        } else {
+          this.unit = new Unit(unitDef);
+        }
+      } catch (e) {
+        this.messageService.showError('Unit definition konnte nicht gelesen werden!');
+        this.unit = new Unit();
       }
     } else {
       this.unit = new Unit();

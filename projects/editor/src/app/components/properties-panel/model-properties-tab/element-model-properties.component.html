@@ -166,22 +166,6 @@
     </button>
   </mat-form-field>
 
-
-  <mat-form-field *ngIf="combinedProperties.width != null"
-                  matTooltip="{{'propertiesPanel.width' | translate }}"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-    <input matInput type="number" [value]="$any(combinedProperties.width)"
-           (input)="updateModel.emit({ property: 'width', value: $any($event.target).value })">
-  </mat-form-field>
-  <mat-form-field *ngIf="combinedProperties.height != null"
-                  matTooltip="{{'propertiesPanel.height' | translate }}"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.height' | translate }}</mat-label>
-    <input matInput type="number" [value]="$any(combinedProperties.height)"
-           (input)="updateModel.emit({ property: 'height', value: $any($event.target).value })">
-  </mat-form-field>
-
   <mat-checkbox *ngIf="combinedProperties.showResetIcon !== undefined"
                 [checked]="$any(combinedProperties.showResetIcon)"
                 (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">

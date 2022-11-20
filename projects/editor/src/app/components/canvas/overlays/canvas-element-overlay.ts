@@ -21,7 +21,6 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   @Input() element!: UIElement;
-  @Input() viewMode: boolean = false;
   @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;
@@ -104,6 +103,14 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   openEditDialog(): void {
     this.unitService.showDefaultEditDialog(this.element);
+  }
+
+  setInteractionEnabled(isEnabled: boolean): void {
+    this.childComponent.location.nativeElement.style.pointerEvents = isEnabled ? 'unset' : 'none';
+  }
+
+  isInteractionEnabled(): boolean {
+    return this.childComponent.location.nativeElement.style.pointerEvents !== 'none';
   }
 
   ngOnDestroy(): void {

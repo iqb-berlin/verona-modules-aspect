@@ -39,5 +39,9 @@ export const OrderedListExtension = OrderedList.extend({
         commands.updateAttributes(this.name, { fontSize: fontSize })
       )
     };
+  },
+
+  addInputRules() {
+    return [];
   }
 });

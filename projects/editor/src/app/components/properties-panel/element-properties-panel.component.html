@@ -46,6 +46,12 @@
 
   <div fxLayout="column" class="button-group">
     <mat-divider></mat-divider>
+    <mat-checkbox fxFlexAlign="center"
+                  [indeterminate]="interactionIndeterminate"
+                  [checked]="interactionEnabled"
+                  (change)="setElementInteractionEnabled($event.checked)">
+      {{'propertiesPanel.setElementInteractionEnabled' | translate }}
+    </mat-checkbox>
     <button mat-raised-button [disabled]="selectedElements.length > 1 ||
                                           combinedProperties.type == 'toggle-button' ||
                                           combinedProperties.type == 'text-field-simple'"

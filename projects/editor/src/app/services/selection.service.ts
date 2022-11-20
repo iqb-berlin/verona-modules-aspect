@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
+import { CanvasElementOverlay } from 'editor/src/app/components/canvas/overlays/canvas-element-overlay';
+import {
+  CompoundChildOverlayComponent
+} from 'common/components/compound-elements/cloze/compound-child-overlay.component';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +13,7 @@ export class SelectionService {
   selectedPageIndex: number = 0;
   selectedPageSectionIndex: number = 0;
   private _selectedElements!: BehaviorSubject<UIElement[]>;
-  selectedElementComponents: any[] = [];
+  selectedElementComponents: (CanvasElementOverlay | CompoundChildOverlayComponent)[] = [];
   selectedCompoundChild: { element: UIElement, nativeElement: HTMLElement } | null = null;
 
   constructor() {
@@ -24,7 +28,7 @@ export class SelectionService {
     return this._selectedElements.value;
   }
 
-  selectElement(event: { elementComponent: any; multiSelect: boolean }): void {
+  selectElement(event: { elementComponent: CanvasElementOverlay | CompoundChildOverlayComponent; multiSelect: boolean }): void {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
@@ -34,7 +38,7 @@ export class SelectionService {
   }
 
   clearElementSelection(): void {
-    this.selectedElementComponents.forEach((overlayComponent: any) => {
+    this.selectedElementComponents.forEach((overlayComponent: CanvasElementOverlay | CompoundChildOverlayComponent) => {
       overlayComponent.setSelected(false);
     });
     this.selectedElementComponents = [];

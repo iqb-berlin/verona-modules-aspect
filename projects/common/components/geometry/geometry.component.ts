@@ -14,6 +14,7 @@ declare const GGBApplet: any;
   selector: 'aspect-geometry',
   template: `
     <div [id]="elementModel.id" class="geogebra-applet"></div>
+    <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
   `,
   styles: [
     ':host {display: block; width: 100%; height: 100%;}',
@@ -24,6 +25,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   @Input() elementModel!: GeometryElement;
   @Input() appDefinition!: string;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
+
+  isLoaded: Subject<boolean> = new Subject();
 
   private ngUnsubscribe = new Subject<void>();
   private geometryUpdated = new EventEmitter<any>();
@@ -80,6 +83,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       useBrowserForJS: false,
       ggbBase64: this.appDefinition,
       appletOnLoad: (api: any) => {
+        this.isLoaded.next(true);
         api.registerUpdateListener(() => {
           this.geometryUpdated.emit(api);
         });

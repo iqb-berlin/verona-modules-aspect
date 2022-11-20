@@ -29,7 +29,7 @@ export class VeronaAPIService {
         this.resourceURL = (messageData as VoeStartCommand).editorConfig.directDownloadUrl;
         this._voeStartCommand.next(messageData as VoeStartCommand);
         break;
-      case 'voeGetDefinitionRequest':
+      case 'voeGetDefinitionRequest': // No longer part of the API. Kept in for compatibility.
         this._voeGetDefinitionRequest.next(messageData);
         break;
       default:
@@ -74,6 +74,7 @@ export class VeronaAPIService {
     return this._voeStartCommand.asObservable();
   }
 
+  // No longer part of the API. Kept in for compatibility.
   get voeGetDefinitionRequest(): Observable<VoeGetDefinitionRequest> {
     return this._voeGetDefinitionRequest.asObservable();
   }
@@ -84,7 +85,6 @@ export interface VoeStartCommand extends MessageEvent {
   unitDefinition: string,
   unitDefinitionType: string,
   editorConfig: {
-    definitionReportPolicy: string
     directDownloadUrl: string
   }
 }

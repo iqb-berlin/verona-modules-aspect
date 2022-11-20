@@ -334,7 +334,7 @@ export class UnitService {
   }
 
   async loadUnitFromFile(): Promise<void> {
-    this.loadUnitDefinition(await FileService.loadFile(['.json']));
+    this.loadUnitDefinition(await FileService.loadFile(['.json', '.voud']));
   }
 
   showDefaultEditDialog(element: UIElement): void {

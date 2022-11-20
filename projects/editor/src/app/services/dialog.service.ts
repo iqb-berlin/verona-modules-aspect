@@ -120,7 +120,8 @@ export class DialogService {
 
   showGeogebraAppDefinitionDialog(): Observable<string> {
     const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
-      data: { }
+      data: { },
+      autoFocus: false
     });
     return dialogRef.afterClosed();
   }

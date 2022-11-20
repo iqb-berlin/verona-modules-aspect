@@ -272,5 +272,6 @@
   "Fehler beim Lesen des Abschnitts!": "Fehler beim Lesen des Abschnitts!",
   "limitItemPerRow": "Elemente je Zeile begrenzen",
   "numberGreater0": "Zahlenwert größer 0",
-  "itemsPerRow": "Anzahl der Elemente"
+  "itemsPerRow": "Anzahl der Elemente",
+  "loadGeogebraFile": "GGB-Datei hochladen"
 }

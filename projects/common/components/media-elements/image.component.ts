@@ -16,6 +16,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
          (mouseenter)="magnifierVisible = true"
          (mouseleave)="magnifierVisible = false">
       <img #image
+           draggable="false"
            [src]="elementModel.src | safeResourceUrl"
            [alt]="'imageNotFound' | translate"
            [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">

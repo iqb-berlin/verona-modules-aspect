@@ -1,25 +1,61 @@
 Editor
 ======
-1.35.0
-- Implementiert "Bildbereiche" als neues Element
+
+## 1.35.0
+
+### Neue Funktionen
+- "Bildbereiche" als neues Element
   Auf einem Hintergrundbild können durch den User ausfüllbare und
   nicht ausfüllbare (schreibgeschützte) "aktive Bereiche" platziert werden.
   Die Bereiche können als Ellipsen, Rechtecke und Dreiecke angelegt werden.
   Ihre Position, Größe, Drehung, Farbe und Rahmenbreite kann eingestellt werden.
   Das Element kann als Pflichtfeld ausgezeichnet werden.
-- Ermöglicht für Eingabebereichen die dynamische Anpassung der Anzahl von Zeilen
+- Navigationsknöpfe können nun als Lückentextelemente verwendet werden.
+  Sie haben als Vorbelegung die Einstellung "als Hyperlink-Text darstellen".
+- "Elementinteraktion erlauben"-Schalter ermöglicht mit Elementen
+  bereits im Editor zu interagieren und deren Verhalten zu überprüfen.
+  Das kann hinderlich beim Bewegen von Elementen sein und bleibt standardmäßig
+  deaktiviert.
+  - Dies hat keinen Einfluss auf das Verhalten im Player und wird beim Verlassen
+    des Editors zurückgesetzt.
+  - Interaktion mit den Elementen hat keinen Einfluss auf deren Vorbelegung. Diese
+    ist weiterhin ggf. im Eigenschaftsfenster zu setzen.
+
+### Verbesserungen
+- Ermöglicht für Eingabebereiche die dynamische Anpassung der Anzahl von Zeilen
   Auf Grundlage der Angabe der erwarteten Zeichen für die Antwort des Users wird
   für das gegebene Seitenformat die Anzahl der Zeilen berechnet.
-- Ermöglicht die Darstellung eines optionalen Tastatursymbols bei Eingabefeldern und -bereichen
-- Erlaubt Validierungen ohne Warnmeldungen
+- Darstellung eines optionalen Tastatursymbols bei Eingabefeldern und -bereichen
+- Validierungen ohne Warnmeldungen
   Warnmeldungen können nun ohne Zeichenketten abgespeichert werden.
-- Ermöglicht die Definition eigener Zeichen für die Eingabehilfe
+- Definition eigener Zeichen für die Eingabehilfe
   Durch Auswahl der Option "Eigene Zeichen" öffnet sich ein Textfeld,
-  in das die gewünschten Zeichen als ein Wort eingegeben werden.
-- Bietet die Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen
+  in das die gewünschten Zeichen als ein Wort eingegeben werden können.
+- Runderneuerte Ablegelisten
+  - "Potentielle Ablagen hervorheben" bezieht sich nun auf alle verbundenen
+    Ablegelisten und muss nicht mehr in der Zielliste gesetzt werden.
+  - Neuer Schalter "Sortierliste". Sortierlisten ermöglichen das Umsortieren der
+    Elemente und haben einen dynamischen Platzhalter.
+    Normale Listen haben einen unbewegten, versteckten Platzhalter und die gesamte Liste
+    wird farbig markiert beim *mouseover*.
+  - Verbesserte Formatierierung des gezogenen Elements
+- Shortcuts und *Rückgängig machen* im TextEditor re-aktiviert. Das automatische
+  Generieren von Listen bleibt deaktiviert.
+- GeoGebra-Elemente können nun auch durch Hochladen einer .ggb-Datei angelegt werden.
+- Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen.
 
+### Fehlerbehebungen
+- "Verbundene Ablegelisten"-Menu öffnet sich beim ersten Click und zeigt immer die
+  Anzahl der verbundenen Listen.
+- Fehler bei leerer Unit-Definition behoben
+- Falls eine Unit-Definition nicht gelesen werden konnte erscheint eine Fehlermeldung
+  und der Editor startet mit einer leeren Unit.
+  Es soll möglich sein alle (alten) Unit-Definitionen zu laden, andernfalls ist es ein Bug.
+  Dieses Verhalten verhindert, dass in diesem Ausnahmefall der Editor in einen unbenutzbaren
+  Zustand gerät.
+- Felder zur Größenanpassung aus den elementspezifischen Einstellungen entfernt.
 
-1.34.0
+## 1.34.0
 - Implement GeoGebra applet element
   This needs a base64 representation of a unit.
   CustomToolbar setting as text-field is a temporary solution as a nice UI would
@@ -33,18 +69,18 @@ Editor
 - Fix likert-row preset to show rich text
 - Fix frame border switch translation (top and bottom were mixed up)
 
-1.33.3
+## 1.33.3
 - Enable reading of duplicate IDs
   IDs will be generated and a warning is shown.
 
-1.33.2
+## 1.33.2
 - Fix reading of old unit definition of likert options, radio-group-images image position and drop-list option with empty text
 
-1.33.1
+## 1.33.1
 - Fix reading of old unit definition of likert-row, radio-group-images and drop-list
 - Fix strike-through in toggle-button to only appear after a value is set
 
-1.33.0
+## 1.33.0
 - Provide response schemes for elements; They are used by the "verona schemer"
 - Implement changing media source for image, audio, video (also improve layout+styling)
 - Add option to hide borders of frame element
@@ -77,7 +113,7 @@ Editor
 - Improve several dialog layouts (mainly for labels and likert)
 - Fix several missing translations
 
-1.32.0
+## 1.32.0
 - Fix likert row generation
 - Overhaul new element panel
   Some new icons and element reordering. Button is now called
@@ -88,11 +124,11 @@ Editor
 - Add more quoting characters to TextEditor special characters menu
 - Fix spaces around sub and sup elements in cloze
 
-1.31.1
+## 1.31.1
 - Fix drag and drop with images
 - Fix drag and drop out of cloze children
 
-1.31.0
+## 1.31.0
 - Add section copy&paste functionality
   Add 2 new menu buttons to the section menu.
   One simply copies the selected section to the clipboard.
@@ -143,7 +179,7 @@ Editor
   (IDs of children)
 - Fix unclickable radio button label
 
-1.30.0
+## 1.30.0
 - Improve aligmnent of elements within cloze
 - Re-Add line-height property to radio button group
 - Change default values for various fields
@@ -160,7 +196,7 @@ Editor
 - Fix cloze text to not show sub- and superscript twice
 - Fix (cloze element's) toggle button styling
 
-1.29.0
+## 1.29.0
 - Extend likert rows to have text and/or an image
 - Add switch likert row label to set the image postion relative to the text
 - Rework software keyboard settings
@@ -172,10 +208,10 @@ Editor
   The solution is to always show the section menu of the selected section.
 - Fix droplist item background color initialization
 
-1.28.1
+## 1.28.1
 - Fix reading of old radio button group options
 
-1.28.0
+## 1.28.0
 - Add rich text functionality for radio button group and likert
   When editing option items a reduced variant of the TextEditor is used.
 - Add new property column count to text elements
@@ -196,7 +232,7 @@ Editor
   Missing item color; half hidden outline etc.
 - Add some missing translations
 
-1.27.0
+## 1.27.0
 - Implement page navigation action for buttons
 - Improve wording for page width setting and show actual resulting page width
 - Add link variant to button
@@ -237,10 +273,10 @@ Editor
 - Fix text fields within cloze elements to support all properties normal
   text fields have, including input assistance and software keyboard.
 
-1.26.1
+## 1.26.1
 - Fix styling issues with some elements in version 1.26.0
 
-1.26.0
+## 1.26.0
 - Set the default language of the editor to German
 - Add handling of empty and invalid unit definitions
   Show error but continue on with empty unit.
@@ -248,24 +284,24 @@ Editor
 - Fix height of elements with dynamic positioning and fixed size
 - Fix dimensions of image elements with dynamic positioning and fixed size
 
-1.25.0
+## 1.25.0
 - Remove border of slider rectangle in number line mode at position 0
 - Fix coloring of the slider rectangle in number line mode at position 0
 
-1.24.0
+## 1.24.0
 - Show arrow for slider in number line mode
 - Center the position of slider rectangle in number line mode
 - Color the slider rectangle in number line mode also in position 0
 - Add a Unicode font to display squares, bars, and dots
 
-1.23.0
+## 1.23.0
  - Fix setting of the default z-index for frames
  - Use dot instead of comma as thousands separator in number line
  - Rename option "Balken statt Kreis" of slider to "Zahlenstrahl-Modus"
  - Rename virtual keyboards for mathematics
  - Do not color the progress on the number line
 
-1.22.0
+## 1.22.0
 - Rework cloze element
   No longer uses 'backslash-markers'. Instead inserts and renders
   elements directly. It is also able to read sub element properties,
@@ -297,7 +333,7 @@ Editor
   The field is not removed completely as in the future more than one font
   might be available. So for now you just can't choose a different one.
 
-1.21.0
+## 1.21.0
 - Fix multiselect of elements with array values (i.e. dropList)
   This includes correctly showing them and saving the changes properly
   so that other elements are not affected.
@@ -309,7 +345,7 @@ Editor
 - Fix cloze element to also save the actual HTML text
   This allows future versions to correctly restore the element
 
-1.20.0
+## 1.20.0
 - Use shorter dash in TextEditor special chars
 - Add top-99-double quote to TextEditor special chars
 - Use font 'PT Sans' for blockquote quotes
@@ -317,7 +353,7 @@ Editor
 - Fix positioning values when duplicating elements
 - Fix changing element IDs
 
-1.19.0
+## 1.19.0
 - Implement fixedSize for all elements
 - Add long dash to TextEditor special characters
 - Remove border style 'hidden' from frame element
@@ -342,7 +378,7 @@ Editor
   dropList highlight: #006064
   likert line color: #c9e0e0
 
-1.18.0
+## 1.18.0
 - Add image feature to TextEditor
   Images are always inline and scaled down to the font size (of the text
   element as a whole).
@@ -374,7 +410,7 @@ Editor
   There are still some issues with duplication (and multiselect).
   Will be fixed soon™.
 
-1.17.0
+## 1.17.0
 - Rework text field and text area styling
   The other variants are basically the same as filled. The only
   difference is the background color, which we are manipulating anyway.
@@ -387,7 +423,7 @@ Editor
 - Revert radio button color to default when not selected
 - Add special character 'apostrophe' to TextEditor
 
-1.16.0
+## 1.16.0
 - Fix text with background and font color
 - Fix line-height property for radio button group
 - Set default line height of 135 for likert and text
@@ -407,7 +443,7 @@ Editor
   This is a replacement for actual radio button groups. Will be extended
   with colors in the next release.
 
-1.15.0
+## 1.15.0
 - New element frame ("Rahmen")
   (Tested and working for static layouts. Usage in dynamic layouts at one's
   own risk.)
@@ -429,7 +465,7 @@ Editor
   element but elements now have a margin sideways (5px).
 - Reduce unused space in textarea
 
-1.14.0
+## 1.14.0
 - Fix reading of existing drop lists
 - Fix reading of highlight properties of text elements
 - New elements:
@@ -439,7 +475,7 @@ Editor
   Specific parts of the text can still have a different font size
   applied to them.
 
-1.13.0
+## 1.13.0
 - Remove underlinable option for text
 - Offer a choice of colors for marking text
 - Fix text element with background color and font color at the same time
@@ -453,7 +489,7 @@ Editor
 - Improve cloze element all around - most importantly allowing to manually
  size sub-elements
 
-1.12.0
+## 1.12.0
 - Add new element cloze ("Lückentext")
   Similar to a text element but parses the text on change and replaces
   markers with actual ui elements.
@@ -494,7 +530,7 @@ Editor
   Images are scaled again but behave a little better.
 - Make min-height optional
 
-1.11.0
+## 1.11.0
 - New DropList feature: highlightReceivingDropList ("Potentielle Ablagen hervorheben")
   When set eligible dropLists display a highlight effect. Currently with
   a colored border. The color is adjustable.
@@ -528,7 +564,7 @@ Editor
 - Move some styling properties to the styling tab
   Applies to: borderRadius, itemBackgroundColor
 
-1.10.0
+## 1.10.0
 - Fix reading of existing likert element row values
 - Fix reading of existing dropList elements
   (This element was internally reworked and no longer has the 'options' property.
@@ -536,11 +572,11 @@ Editor
 - Fix textarea edit dialog to use multiline dialog
 - Improve dialog sizing and styling
 
-1.9.1
+## 1.9.1
 - Make text underlinable
 - Fix marking of text
 
-1.9.0
+## 1.9.0
 - Fix dropList element 'connectedTo' property renaming
 - Implement 'readOnly' setting for dropList element
   This prevents reordering items.
@@ -553,7 +589,7 @@ Editor
   Player support will follow soon.
 - Implement setting 'likert' preset value
 
-1.8.1
+## 1.8.1
 - Add index indicator to option-list preset value
 - Add alternative radio button group with images
   Automatically aligned horizontally with a vertical label on top.
@@ -574,7 +610,7 @@ Editor
   the ID of the target DropList.
   There is an additional switch to allow only one item in a list.
 
-1.7.2
+## 1.7.2
 - Add showRestRuns property to player-elements
 - Fix (several problems with) likert element
   - Headings with Images should also work better now
@@ -583,7 +619,7 @@ Editor
 - Fix editing properties of multiple selected elements
 - Fix disappearing style properties when deleting the value
 
-1.7.1
+## 1.7.1
 - Add radio-button-group property for strike-through of unselected options
 - Allow setting 'first' and 'last' as button actions
 - TextEditor: Add whitespace to special characters menu
@@ -603,7 +639,7 @@ Editor
   This feature will have to be reworked from scratch and will be re-introduced
   in a different form later.
 
-1.7.0:
+## 1.7.0:
 - [bug] Fix resize (drag and drop) in dynamic sections
 - Replace element selection indicator from border to outline
   This makes element contents not move when selected.
@@ -635,7 +671,7 @@ Editor
   This is to allow different purpose markers on text. Does NOT work in the
   aspect-player yet.
 
-1.6.1:
+## 1.6.1:
 - Allow styling of "Likert" element
 - Set Roboto as app-wide font
 - [bug] Fix selected page when deleting sections
@@ -645,14 +681,14 @@ Editor
 - Improve radio button group style (margins)
 - Allow editing text option properties (via overlay menu)
 
-1.6.0:
+## 1.6.0:
 - Add Likert-Element (looking for better name)
 - Add Player-Element property controls
 
-1.5.1:
+## 1.5.1:
 - Fix reading of existing elements
 
-1.5.0:
+## 1.5.0:
 - Show scroll bars on element overflow
 - Allow images for buttons
 - Add border-radius setting to buttons
@@ -678,16 +714,16 @@ Editor
   settings.
 - Make all elements non-interactable. Only the overlay can be moved and resized.
 
-1.4.0
+## 1.4.0
 - New Text-Editor (based on TipTap/ProseMirror)
 
-1.3.1
+## 1.3.1
 - Fix background color of input fields
 - Remove font size property from text elements
 - Add 16px as font size option
 - Textfield and Textarea have transparent background by default
 
-1.3.0
+## 1.3.0
 - Use Roboto as default font
 - [bug] Fix selection after adding/deleting pages/sections
 - [bug] Fix deselection of maximum page width. Default design page width is always 900px.

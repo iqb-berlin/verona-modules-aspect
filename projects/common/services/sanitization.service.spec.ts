@@ -400,7 +400,7 @@ describe('SanitizationService', () => {
     expect(sanatizedClozeChild2)
       .toEqual(jasmine.objectContaining({
         id: 'drop-list_1',
-        type: 'drop-list-simple'
+        type: 'drop-list'
       }));
 
     const sanatizedClozeChild3 = (sanitizedUnitDefinition.pages![0].sections[0].elements[0] as ClozeElement)

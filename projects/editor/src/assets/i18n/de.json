@@ -185,6 +185,7 @@
     "newHotspot": "Neuer Bereich",
     "hasDynamicRowCount": "Dynamische Zeilen",
     "expectedCharactersCount": "Erwartete Zeichenanzahl",
+    "isSortList": "Sortierliste",
     "setElementInteractionEnabled": "Elementinteraktion erlauben"
   },
   "hotspot": {

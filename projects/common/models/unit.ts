@@ -18,8 +18,7 @@ export class Unit {
 
   getAnswerScheme(): AnswerScheme[] {
     const dropLists = [
-      ...this.getAllElements('drop-list'),
-      ...this.getAllElements('drop-list-simple')
+      ...this.getAllElements('drop-list')
     ];
     return this.pages.map(page => page.getAnswerScheme(dropLists)).flat();
   }

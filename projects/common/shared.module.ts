@@ -51,13 +51,14 @@ import {
 } from './components/compound-elements/likert/likert-radio-button-group.component';
 import { ImageMagnifierComponent } from './components/media-elements/image-magnifier.component';
 import { RadioGroupImagesComponent } from './components/input-elements/radio-group-images.component';
-import { DropListComponent } from './components/input-elements/drop-list.component';
+import {
+  DropListComponent,
+  DropListLayoutAlignPipe,
+  DropListLayoutPipe
+} from './components/input-elements/drop-list.component';
 import { ClozeComponent } from './components/compound-elements/cloze/cloze.component';
 import { SliderComponent } from './components/input-elements/slider.component';
 import { SpellCorrectComponent } from './components/input-elements/spell-correct.component';
-import {
-  DropListSimpleComponent
-} from './components/compound-elements/cloze/cloze-child-elements/drop-list-simple.component';
 import { FrameComponent } from './components/frame/frame.component';
 import {
   ToggleButtonComponent
@@ -122,7 +123,6 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     DropListComponent,
     ClozeComponent,
     HotspotImageComponent,
-    DropListSimpleComponent,
     SliderComponent,
     SpellCorrectComponent,
     FrameComponent,
@@ -138,7 +138,9 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     MathDegreesPipe,
     ArrayIncludesPipe,
     UpdateTextareaRowsPipe,
-    SpinnerComponent
+    SpinnerComponent,
+    DropListLayoutPipe,
+    DropListLayoutAlignPipe
   ],
   exports: [
     CommonModule,
@@ -159,7 +161,6 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     ToggleButtonComponent,
     TextFieldComponent,
     TextFieldSimpleComponent,
-    DropListSimpleComponent,
     TextAreaComponent,
     AudioComponent,
     VideoComponent,

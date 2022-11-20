@@ -4,7 +4,7 @@ import {
   InputElement,
   PositionedUIElement,
   PositionProperties,
-  UIElement, UIElementValue
+  UIElement, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -12,11 +12,9 @@ import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.
 import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
-import {
-  DropListSimpleElement
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { ButtonElement } from 'common/models/elements/button/button';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 
 export class ClozeElement extends CompoundElement implements PositionedUIElement {
   document: ClozeDocument = { type: 'doc', content: [] };
@@ -145,8 +143,9 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
       case 'text-field-simple':
         newElement = new TextFieldSimpleElement(elementModel as TextFieldSimpleElement);
         break;
-      case 'drop-list-simple':
-        newElement = new DropListSimpleElement(elementModel as DropListSimpleElement);
+      case 'drop-list':
+      case 'drop-list-simple' as UIElementType: // keep here for compatibility
+        newElement = new DropListElement({ ...elementModel as DropListElement, type: 'drop-list' });
         break;
       case 'toggle-button':
         newElement = new ToggleButtonElement(elementModel as ToggleButtonElement);

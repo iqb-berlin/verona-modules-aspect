@@ -16,9 +16,6 @@ import { VideoElement } from 'common/models/elements/media-elements/video';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import {
-  DropListSimpleElement
-} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/drop-list-simple';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
@@ -43,7 +40,6 @@ export abstract class ElementFactory {
     likert: LikertElement,
     'radio-group-images': RadioButtonGroupComplexElement,
     'drop-list': DropListElement,
-    'drop-list-simple': DropListSimpleElement,
     cloze: ClozeElement,
     slider: SliderElement,
     'spell-correct': SpellCorrectElement,

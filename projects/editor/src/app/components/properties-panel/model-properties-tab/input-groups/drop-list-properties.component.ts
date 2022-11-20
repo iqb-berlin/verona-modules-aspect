@@ -1,22 +1,21 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MessageService } from 'common/services/message.service';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/element';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { IDService } from 'editor/src/app/services/id.service';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
-import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   selector: 'aspect-drop-list-properties',
   template: `
-    <div *ngIf="combinedProperties.type === 'drop-list' ||
-                combinedProperties.type === 'drop-list-simple'"
-                fxLayout="column">
+    <div *ngIf="combinedProperties.type === 'drop-list'"
+         fxLayout="column">
       <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"
                                 [itemList]="$any(combinedProperties.value)"
                                 (addItem)="addOption($event)"
@@ -26,15 +25,14 @@ import { IDService } from 'editor/src/app/services/id.service';
       </aspect-option-list-panel>
 
       <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
-                      class="wide-form-field" appearance="fill"
-                      (click)="generateValidDropLists()">
+                      class="wide-form-field" appearance="fill">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
         <mat-select multiple [ngModel]="combinedProperties.connectedTo"
                     (ngModelChange)="toggleConnectedDropList($event)">
           <mat-select-trigger>
             {{'propertiesPanel.connectedDropLists' | translate }} ({{$any(combinedProperties.connectedTo).length}})
           </mat-select-trigger>
-          <mat-option *ngFor="let id of dropListIDs" [value]="id">
+          <mat-option *ngFor="let id of (combinedProperties.idList | getValidDropLists)" [value]="id">
             {{id}}
           </mat-option>
         </mat-select>
@@ -51,6 +49,12 @@ import { IDService } from 'editor/src/app/services/id.service';
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <mat-checkbox *ngIf="combinedProperties.isSortList !== undefined"
+                    [checked]="$any(combinedProperties.isSortList)"
+                    (change)="updateModel.emit({ property: 'isSortList', value: $event.checked })">
+        {{'propertiesPanel.isSortList' | translate }}
+      </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
                     [checked]="$any(combinedProperties.onlyOneItem)"
@@ -88,8 +92,6 @@ export class DropListPropertiesComponent {
     value: string | number | boolean | string[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();
-
-  dropListIDs: string[] = [];
 
   constructor(public unitService: UnitService,
               private selectionService: SelectionService,
@@ -152,9 +154,17 @@ export class DropListPropertiesComponent {
       value: connectedDropListList
     });
   }
+}
 
-  generateValidDropLists() {
-    this.dropListIDs = this.unitService.getDropListElementIDs()
-      .filter(dropListID => !this.combinedProperties.idList!.includes(dropListID));
+@Pipe({
+  name: 'getValidDropLists'
+})
+export class GetValidDropListsPipe implements PipeTransform {
+  constructor(private unitService: UnitService) {}
+
+  transform(idList: string[] | undefined): string[] {
+    if (!idList) return [];
+    return this.unitService.getDropListElementIDs()
+      .filter(dropListID => !idList.includes(dropListID));
   }
 }

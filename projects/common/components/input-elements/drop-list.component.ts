@@ -106,7 +106,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     if (dragEvent.dataTransfer) {
       dragEvent.dataTransfer.effectAllowed = 'copyMove';
       dragEvent.dataTransfer.setDragImage(
-        DropListComponent.createDragImage(dragEvent.target as Node, dropListValueElement.id), 0, 0);
+        this.createDragImage(dragEvent.target as HTMLElement, dropListValueElement.id), 0, 0);
     }
 
     // Sadly timeout is necessary for Chrome, which does not allow DOM manipulation on dragstart
@@ -135,10 +135,14 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     });
   }
 
-  static createDragImage(baseElement: Node, baseID: string): HTMLElement {
+  createDragImage(baseElement: HTMLElement, baseID: string): HTMLElement {
     const dragImage: HTMLElement = baseElement.cloneNode(true) as HTMLElement;
     dragImage.id = `${baseID}-dragimage`;
-    dragImage.style.display = 'inline-block';
+    dragImage.style.display = 'block';
+    dragImage.style.width = `${(baseElement as HTMLElement).offsetWidth}px`;
+    dragImage.style.fontSize = `${this.elementModel.styling.fontSize}px`;
+    dragImage.style.borderRadius = '5px';
+    dragImage.style.padding = '10px';
     document.body.appendChild(dragImage);
     return dragImage;
   }

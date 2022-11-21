@@ -33,7 +33,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
            (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
            (dragover)="$event.preventDefault()">
         <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
-          <div class="list-item"
+          <div *ngIf="!dropListValueElement.imgSrc"
+               class="list-item"
                draggable="true"
                (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
                (dragenter)="dragEnterItem($event)"
@@ -46,9 +47,13 @@ import { FormElementComponent } from '../../directives/form-element-component.di
           <img *ngIf="dropListValueElement.imgSrc"
                class="list-item"
                [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
-               draggable="true" [id]="dropListValueElement.id"
+               [id]="dropListValueElement.id"
+               draggable="true"
                (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
-               [style.object-fit]="'scale-down'">
+               (dragenter)="dragEnterItem($event)"
+               [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
+               [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
+               [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''">
         </ng-container>
       </div>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
@@ -59,6 +64,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   styles: [
     '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); padding: 3px;}',
     ':not(.clozeContext) .list-item {border-radius: 5px; padding: 10px;}',
+    'img.list-item {align-self: start;}',
     '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',
     '.errors {border: 2px solid #f44336;}',
@@ -162,6 +168,8 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   dragEnterList(event: DragEvent) {
     event.preventDefault();
 
+    if (!this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) return;
+
     if (!this.elementModel.isSortList) {
       this.highlightValidDrop = true;
     } else if (DropListComponent.sourceList !== this) {
@@ -203,8 +211,9 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   }
 
   isDropAllowed(connectedDropLists: string[]): boolean {
-    return (connectedDropLists as string[]).includes(this.elementModel.id) &&
-           !(this.elementModel.onlyOneItem && this.elementModel.value.length > 0);
+    return (DropListComponent.sourceList === this) ||
+      ((connectedDropLists as string[]).includes(this.elementModel.id) &&
+       !(this.elementModel.onlyOneItem && this.elementModel.value.length > 0));
     // TODO presentValueIDs?
   }
 

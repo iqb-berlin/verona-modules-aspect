@@ -1,9 +1,9 @@
 import {
-  Component, EventEmitter, Input, Output, ViewChild
+  Component, Input, ViewChild
 } from '@angular/core';
 import { MatInput } from '@angular/material/input';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
   selector: 'aspect-spell-correct',
@@ -31,7 +31,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                  [formControl]="elementFormControl"
-                 (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
+                 (keydown)="onKeyDown($event)"
                  (focus)="focusChanged.emit({ inputElement: input, focused: true })"
                  (blur)="focusChanged.emit({ inputElement: input, focused: false })">
         </mat-form-field>
@@ -69,9 +69,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
   ]
 })
-export class SpellCorrectComponent extends FormElementComponent {
+export class SpellCorrectComponent extends TextInputComponent {
   @Input() elementModel!: SpellCorrectElement;
-  @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
-  @Output() hardwareKeyDetected = new EventEmitter();
   @ViewChild(MatInput) inputElement!: MatInput;
 }

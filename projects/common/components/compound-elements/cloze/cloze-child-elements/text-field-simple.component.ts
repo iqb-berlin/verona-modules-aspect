@@ -1,10 +1,10 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, Input
 } from '@angular/core';
-import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
   selector: 'aspect-text-field-simple',
@@ -31,7 +31,7 @@ import {
            [readonly]="elementModel.readOnly"
            [formControl]="elementFormControl"
            [value]="elementModel.value"
-           (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
+           (keydown)="onKeyDown($event)"
            (focus)="focusChanged.emit({ inputElement: input, focused: true })"
            (blur)="focusChanged.emit({ inputElement: input, focused: false })">
   `,
@@ -43,8 +43,6 @@ import {
     '.errors {border: 2px solid #f44336 !important;}'
   ]
 })
-export class TextFieldSimpleComponent extends FormElementComponent {
+export class TextFieldSimpleComponent extends TextInputComponent {
   @Input() elementModel!: TextFieldSimpleElement;
-  @Output() hardwareKeyDetected = new EventEmitter();
-  @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
 }

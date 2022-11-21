@@ -1,9 +1,9 @@
 import {
-  Component, Output, EventEmitter, Input, AfterViewInit
+  Component, Input, AfterViewInit
 } from '@angular/core';
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
 import { delay, Observable, of } from 'rxjs';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
   selector: 'aspect-text-area',
@@ -44,7 +44,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
-                (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
+                (keydown)="onKeyDown($event)"
                 (focus)="focusChanged.emit({ inputElement: input, focused: true })"
                 (blur)="focusChanged.emit({ inputElement: input, focused: false })">
       </textarea>
@@ -59,10 +59,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     ':host ::ng-deep .no-label .mat-form-field-outline-gap {border-top-color: unset !important}'
   ]
 })
-export class TextAreaComponent extends FormElementComponent implements AfterViewInit {
+export class TextAreaComponent extends TextInputComponent implements AfterViewInit {
   @Input() elementModel!: TextAreaElement;
-  @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
-  @Output() hardwareKeyDetected = new EventEmitter();
 
   isViewInitialized: Observable<boolean> = of(false);
 

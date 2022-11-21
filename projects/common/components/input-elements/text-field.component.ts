@@ -1,8 +1,6 @@
-import {
-  Component, EventEmitter, Input, Output
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
   selector: 'aspect-text-field',
@@ -30,7 +28,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [formControl]="elementFormControl"
              [pattern]="$any(elementModel.pattern)"
              [readonly]="elementModel.readOnly"
-             (keydown)="elementModel.showSoftwareKeyboard ? hardwareKeyDetected.emit() : null"
+             (keydown)="onKeyDown($event)"
              (focus)="focusChanged.emit({ inputElement: input, focused: true })"
              (blur)="focusChanged.emit({ inputElement: input, focused: false })">
       <div matSuffix fxLayout="row" fxLayoutAlign="center baseline">
@@ -52,8 +50,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     ':host ::ng-deep .small-input .mat-form-field-outline-gap {display: none; }'
   ]
 })
-export class TextFieldComponent extends FormElementComponent {
+export class TextFieldComponent extends TextInputComponent {
   @Input() elementModel!: TextFieldElement;
-  @Output() hardwareKeyDetected = new EventEmitter();
-  @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
 }

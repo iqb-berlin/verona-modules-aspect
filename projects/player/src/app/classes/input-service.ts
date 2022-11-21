@@ -25,12 +25,16 @@ export abstract class InputService {
   }
 
   enterKey(key: string): void {
-    const selectionStart = this.inputElement.selectionStart || 0;
-    const selectionEnd = this.inputElement.selectionEnd || 0;
-    const newSelection = selectionStart ? selectionStart + 1 : 1;
-    this.insert({
-      selectionStart, selectionEnd, newSelection, key
-    });
+    if (!(this.elementComponent.elementModel.maxLength &&
+      this.elementComponent.elementModel.isLimitedToMaxLength &&
+      this.inputElement.value.length === this.elementComponent.elementModel.maxLength)) {
+      const selectionStart = this.inputElement.selectionStart || 0;
+      const selectionEnd = this.inputElement.selectionEnd || 0;
+      const newSelection = selectionStart ? selectionStart + 1 : 1;
+      this.insert({
+        selectionStart, selectionEnd, newSelection, key
+      });
+    }
   }
 
   deleteCharacters(backspace: boolean): void {

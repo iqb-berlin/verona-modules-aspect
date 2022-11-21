@@ -28,7 +28,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
              [formControl]="elementFormControl"
              [pattern]="$any(elementModel.pattern)"
              [readonly]="elementModel.readOnly"
-             (keydown)="onKeyDown($event)"
+             (paste)="elementModel.isLimitedToMaxLength && elementModel.maxLength ? $event.preventDefault() : null"
+             (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
              (focus)="focusChanged.emit({ inputElement: input, focused: true })"
              (blur)="focusChanged.emit({ inputElement: input, focused: false })">
       <div matSuffix fxLayout="row" fxLayoutAlign="center baseline">

@@ -11,6 +11,7 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
   minLengthWarnMessage: string = 'Eingabe zu kurz';
   maxLength: number | null = null;
   maxLengthWarnMessage: string = 'Eingabe zu lang';
+  isLimitedToMaxLength: boolean = false;
   pattern: string | null = null;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
   hasKeyboardIcon: boolean = false;
@@ -27,6 +28,7 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
     if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
     if (element.maxLength !== undefined) this.maxLength = element.maxLength;
     if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+    if (element.isLimitedToMaxLength) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
     if (element.pattern !== undefined) this.pattern = element.pattern;
     if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
     if (element.clearable) this.clearable = element.clearable;

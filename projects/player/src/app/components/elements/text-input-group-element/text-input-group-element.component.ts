@@ -73,8 +73,22 @@ export class TextInputGroupElementComponent extends ElementFormGroupDirective im
     }
   }
 
+  checkInputLimitation(event: {
+    keyboardEvent: KeyboardEvent;
+    inputElement: HTMLInputElement | HTMLTextAreaElement
+  }): void {
+    if (this.elementModel.maxLength &&
+      this.elementModel.isLimitedToMaxLength &&
+      event.inputElement.value.length === this.elementModel.maxLength &&
+      !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'].includes(event.keyboardEvent.key)) {
+      event.keyboardEvent.preventDefault();
+    }
+  }
+
   detectHardwareKeyboard(): void {
-    this.deviceService.hasHardwareKeyboard = true;
-    this.keyboardService.close();
+    if (this.elementModel.showSoftwareKeyboard) {
+      this.deviceService.hasHardwareKeyboard = true;
+      this.keyboardService.close();
+    }
   }
 }

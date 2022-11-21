@@ -44,7 +44,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
                 [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
-                (keydown)="onKeyDown($event)"
+                (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
                 (focus)="focusChanged.emit({ inputElement: input, focused: true })"
                 (blur)="focusChanged.emit({ inputElement: input, focused: false })">
       </textarea>

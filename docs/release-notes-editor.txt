@@ -16,6 +16,8 @@ Editor
 - Ermöglicht die Definition eigener Zeichen für die Eingabehilfe
   Durch Auswahl der Option "Eigene Zeichen" öffnet sich ein Textfeld,
   in das die gewünschten Zeichen als ein Wort eingegeben werden.
+- Bietet die Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen
+
 
 1.34.0
 - Implement GeoGebra applet element

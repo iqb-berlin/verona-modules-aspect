@@ -111,6 +111,7 @@
     "minLengthWarnMessage": "Minimalwert Warnmeldung",
     "maxLength": "Maximallänge",
     "maxValue": "Maximalwert",
+    "isLimitedToMaxLength": "Eingabe auf Maximallänge begrenzen",
     "showValues": "Zeige Start- und Endwert",
     "barStyle": "Zahlenstrahl-Modus",
     "thumbLabel": "Zeige gewählten Wert",

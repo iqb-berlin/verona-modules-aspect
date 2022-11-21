@@ -14,6 +14,8 @@ Player
 - Korrigiert fehlende Warnmeldungen beim Schieberegler/Zahlenstrahl
 - Die Eingabehilfe "Eigene Zeichen" nutzt weitestgehend das Layout
   der Eingabehilfe "Französische Sonderzeichen"
+- Verhindert die Eingabe bei Eingabefeldern, wenn die festgelegte Maximallänge erreicht ist
+  Bei festgelegter Maximallänge ist die Möglichkeit unterbunden, Text über Tastenkürzel einzufügen
 - Ändert die Metadaten entsprechend der Verona Inferfaces Specification
 
 

@@ -31,7 +31,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                  [formControl]="elementFormControl"
-                 (keydown)="onKeyDown($event)"
+                 (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
                  (focus)="focusChanged.emit({ inputElement: input, focused: true })"
                  (blur)="focusChanged.emit({ inputElement: input, focused: false })">
         </mat-form-field>

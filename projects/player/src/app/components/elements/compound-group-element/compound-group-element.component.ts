@@ -62,7 +62,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
       if (childModel.type === 'text-field-simple') {
         this.manageKeyInputToggling(child as TextFieldSimpleComponent, childModel);
-        this.manageHardwareKeyBoardDetection(child as TextFieldSimpleComponent);
+        this.manageOnKeyDown(child as TextFieldSimpleComponent, childModel);
       }
       if (childModel.type === 'button') {
         this.addNavigationEventListener(child as ButtonComponent);
@@ -70,12 +70,12 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     });
   }
 
-  private manageHardwareKeyBoardDetection(textFieldSimpleComponent: TextFieldSimpleComponent): void {
+  private manageOnKeyDown(textFieldSimpleComponent: TextFieldSimpleComponent, elementModel: InputElement): void {
     (textFieldSimpleComponent)
-      .hardwareKeyDetected
+      .onKeyDown
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.detectHardwareKeyboard();
+      .subscribe(event => {
+        this.onKeyDown(event, elementModel);
       });
   }
 
@@ -101,9 +101,31 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     }
   }
 
-  private detectHardwareKeyboard(): void {
-    this.deviceService.hasHardwareKeyboard = true;
-    this.keyboardService.close();
+  private onKeyDown(event: {
+    keyboardEvent: KeyboardEvent;
+    inputElement: HTMLInputElement | HTMLTextAreaElement
+  }, elementModel: InputElement): void {
+    this.detectHardwareKeyboard(elementModel);
+    CompoundGroupElementComponent.checkInputLimitation(event, elementModel);
+  }
+
+  private static checkInputLimitation(event: {
+    keyboardEvent: KeyboardEvent;
+    inputElement: HTMLInputElement | HTMLTextAreaElement
+  }, elementModel: InputElement): void {
+    if (elementModel.maxLength &&
+      elementModel.isLimitedToMaxLength &&
+      event.inputElement.value.length === elementModel.maxLength &&
+      !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'].includes(event.keyboardEvent.key)) {
+      event.keyboardEvent.preventDefault();
+    }
+  }
+
+  private detectHardwareKeyboard(elementModel: InputElement): void {
+    if (elementModel.showSoftwareKeyboard) {
+      this.deviceService.hasHardwareKeyboard = true;
+      this.keyboardService.close();
+    }
   }
 
   private addNavigationEventListener(button: ButtonComponent) {

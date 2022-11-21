@@ -5,12 +5,9 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
 
 @Directive()
 export abstract class TextInputComponent extends FormElementComponent implements OnInit {
-  @Output() hardwareKeyDetected = new EventEmitter();
   @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
-
-  onKeyDown(event: KeyboardEvent): void {
-    if (this.elementModel.showSoftwareKeyboard) {
-      this.hardwareKeyDetected.emit();
-    }
-  }
+  @Output() onKeyDown = new EventEmitter<{
+    keyboardEvent: KeyboardEvent;
+    inputElement: HTMLInputElement | HTMLTextAreaElement
+  }>();
 }

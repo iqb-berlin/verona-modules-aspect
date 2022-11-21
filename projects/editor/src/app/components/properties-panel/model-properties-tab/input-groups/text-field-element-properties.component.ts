@@ -47,6 +47,12 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                     value: $event,
                     isInputValid: maxLength.valid })">
       </mat-form-field>
+      <mat-checkbox *ngIf="combinedProperties.isLimitedToMaxLength !== undefined"
+                    [disabled]="!combinedProperties.maxLength"
+                    [checked]="$any(combinedProperties.isLimitedToMaxLength)"
+                    (change)="updateModel.emit({ property: 'isLimitedToMaxLength', value: $event.checked })">
+        {{'propertiesPanel.isLimitedToMaxLength' | translate }}
+      </mat-checkbox>
       <mat-form-field class="wide-form-field" appearance="fill">
         <mat-label>{{'propertiesPanel.maxLengthWarnMessage' | translate }}</mat-label>
         <input matInput type="text"

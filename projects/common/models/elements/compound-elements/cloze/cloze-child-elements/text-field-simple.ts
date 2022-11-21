@@ -12,6 +12,7 @@ export class TextFieldSimpleElement extends TextInputElement {
   minLengthWarnMessage: string = 'Eingabe zu kurz';
   maxLength: number | null = null;
   maxLengthWarnMessage: string = 'Eingabe zu lang';
+  isLimitedToMaxLength: boolean = false;
   pattern: string | null = null;
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
   clearable: boolean = false;
@@ -25,6 +26,7 @@ export class TextFieldSimpleElement extends TextInputElement {
     if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
     if (element.maxLength) this.maxLength = element.maxLength;
     if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+    if (element.isLimitedToMaxLength) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
     if (element.pattern) this.pattern = element.pattern;
     if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
     if (element.clearable) this.clearable = element.clearable;

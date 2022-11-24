@@ -105,6 +105,9 @@ export class ButtonPropertiesComponent {
   name: 'getAnchorIds'
 })
 export class GetAnchorIdsPipe implements PipeTransform {
+  // There can be multiple elements with the same data-anchor-id,
+  // since a selected range can include multiple HTMLElements.
+  // The first element is filtered out for display in the properties panel.
   transform(textComponents: { [id: string]: TextComponent }): string[] {
     return Object.values(textComponents)
       .map(textComponent => Array.from(textComponent.textContainerRef.nativeElement.querySelectorAll('aspect-anchor'))

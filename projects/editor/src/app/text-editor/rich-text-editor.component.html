@@ -262,6 +262,11 @@
               (click)="toggleBlockquote()">
         <mat-icon>format_quote</mat-icon>
       </button>
+      <button mat-icon-button matTooltip="Bereich markieren"
+              [class.active]="editor.isActive('anchorId')"
+              (click)="applyAnchorId()">
+        <mat-icon>read_more</mat-icon>
+      </button>
     </fieldset>
   </div>
   <div *ngIf="clozeMode" fxLayout="row" fxLayoutAlign="space-around center" >

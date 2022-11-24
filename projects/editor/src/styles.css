@@ -16,3 +16,7 @@ html, body { height: 100%; }
 input[type=color] {
   cursor: pointer;
 }
+
+aspect-anchor {
+  background-color: #adff2f;
+}

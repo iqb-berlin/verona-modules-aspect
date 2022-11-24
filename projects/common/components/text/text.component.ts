@@ -1,9 +1,9 @@
 import {
-  Component, ElementRef, EventEmitter, Input, Output, ViewChild
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild
 } from '@angular/core';
-import { ElementComponent } from '../../directives/element-component.directive';
 import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
   selector: 'aspect-text',
@@ -52,7 +52,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
     '::ng-deep sub {vertical-align: baseline; position: relative; top: 0.4em;}'
   ]
 })
-export class TextComponent extends ElementComponent {
+export class TextComponent extends ElementComponent implements AfterViewInit, OnDestroy {
   @Input() elementModel!: TextElement;
   @Input() savedText!: string;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
@@ -66,6 +66,8 @@ export class TextComponent extends ElementComponent {
 
   selectedColor!: string | undefined;
 
+  static textComponents: { [id: string]: TextComponent } = {};
+
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
   startTextSelection(event: PointerEvent): void {
@@ -74,5 +76,13 @@ export class TextComponent extends ElementComponent {
       this.elementModel.highlightableOrange) {
       this.textSelectionStart.emit(event);
     }
+  }
+
+  ngAfterViewInit() {
+    TextComponent.textComponents[this.elementModel.id] = this;
+  }
+
+  ngOnDestroy(): void {
+    delete TextComponent.textComponents[this.elementModel.id];
   }
 }

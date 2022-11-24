@@ -9,8 +9,8 @@ export class ButtonElement extends UIElement {
   label: string = 'Navigationsknopf';
   imageSrc: string | null = null;
   asLink: boolean = false;
-  action: null | 'unitNav' | 'pageNav' = null;
-  actionParam: null | 'previous' | 'next' | 'first' | 'last' | 'end' | number = null;
+  action: null | 'unitNav' | 'pageNav' | 'scrollTo' = null;
+  actionParam: null | 'previous' | 'next' | 'first' | 'last' | 'end' | number | string = null;
   position: PositionProperties | undefined;
   styling: BasicStyles & {
     borderRadius: number;

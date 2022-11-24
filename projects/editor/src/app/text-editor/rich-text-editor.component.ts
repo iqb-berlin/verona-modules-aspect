@@ -20,6 +20,8 @@ import { Bold } from '@tiptap/extension-bold';
 import { Italic } from '@tiptap/extension-italic';
 import { Strike } from '@tiptap/extension-strike';
 import { FileService } from 'common/services/file.service';
+import ButtonComponentExtension from 'editor/src/app/text-editor/angular-node-views/button-component-extension';
+import { AnchorId } from './extensions/anchorId';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
 import { ParagraphExtension } from './extensions/paragraph-extension';
@@ -29,7 +31,6 @@ import { OrderedListExtension } from './extensions/ordered-list';
 import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
-import ButtonComponentExtension from 'editor/src/app/text-editor/angular-node-views/button-component-extension';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -57,6 +58,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     Highlight.configure({
       multicolor: true
     }),
+    AnchorId,
     TextAlign.configure({
       types: ['paragraph', 'heading']
     }),
@@ -141,6 +143,16 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   applyHighlightColor(): void {
     this.editor.chain().focus().toggleHighlight({ color: this.selectedHighlightColor }).run();
+  }
+
+  applyAnchorId(): void {
+    const text = window?.getSelection()?.toString();
+    if (text) {
+      const id = text.replace(/[^0-9a-zA-Z]/g, '_').substring(0, 20);
+      this.editor.chain().focus().toggleAnchorId({ anchorId: id }).run();
+    } else {
+      console.warn('No text selected for anchor!');
+    }
   }
 
   alignText(direction: string): void {

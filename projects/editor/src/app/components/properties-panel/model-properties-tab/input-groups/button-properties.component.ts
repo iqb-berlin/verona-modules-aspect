@@ -1,8 +1,9 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import { UIElement } from 'common/models/elements/element';
+import { TextComponent } from 'common/components/text/text.component';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 
@@ -25,7 +26,7 @@ import { SelectionService } from '../../../../services/selection.service';
           <mat-option [value]="null">
             {{ 'propertiesPanel.none' | translate }}
           </mat-option>
-          <mat-option *ngFor="let option of ['unitNav', 'pageNav']"
+          <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'scrollTo']"
                       [value]="option">
             {{ 'propertiesPanel.' + option | translate }}
           </mat-option>
@@ -55,6 +56,14 @@ import { SelectionService } from '../../../../services/selection.service';
                 {{ 'propertiesPanel.' + option | translate }}
               </mat-option>
             </ng-container>
+
+            <ng-container *ngIf="combinedProperties.action === 'scrollTo'">
+              <mat-option *ngFor="let option of (textComponents | getAnchorIds) "
+                          [value]="option">
+                {{ option  }}
+              </mat-option>
+            </ng-container>
+
           </mat-select>
       </mat-form-field>
 
@@ -77,8 +86,11 @@ export class ButtonPropertiesComponent {
     new EventEmitter<{ property: string; value: string | number | boolean | null, isInputValid?: boolean | null }>();
 
   hoveringImage = false;
+  textComponents: { [id: string]: TextComponent } = {};
 
-  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
+  constructor(public unitService: UnitService, public selectionService: SelectionService) {
+    this.textComponents = TextComponent.textComponents;
+  }
 
   async loadImage(): Promise<void> {
     this.updateModel.emit({ property: 'imageSrc', value: await FileService.loadImage() });
@@ -86,5 +98,18 @@ export class ButtonPropertiesComponent {
 
   removeImage(): void {
     this.updateModel.emit({ property: 'imageSrc', value: null });
+  }
+}
+
+@Pipe({
+  name: 'getAnchorIds'
+})
+export class GetAnchorIdsPipe implements PipeTransform {
+  transform(textComponents: { [id: string]: TextComponent }): string[] {
+    return Object.values(textComponents)
+      .map(textComponent => Array.from(textComponent.textContainerRef.nativeElement.querySelectorAll('aspect-anchor'))
+        .map(anchor => (anchor as Element).getAttribute('data-anchor-id'))
+        .filter((anchorId, index, anchorIds) => anchorIds.indexOf(anchorId) === index) as string[]
+      ).flat();
   }
 }

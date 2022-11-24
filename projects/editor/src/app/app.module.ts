@@ -73,7 +73,7 @@ import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
 import { TextPropertiesFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
-import { ButtonPropertiesComponent } from
+import { ButtonPropertiesComponent, GetAnchorIdsPipe } from
   './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
 import { SliderPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
@@ -152,7 +152,8 @@ import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geoge
     LabelEditDialogComponent,
     BorderPropertiesComponent,
     GeogebraAppDefinitionDialogComponent,
-    GetValidDropListsPipe
+    GetValidDropListsPipe,
+    GetAnchorIdsPipe
   ],
   imports: [
     BrowserModule,

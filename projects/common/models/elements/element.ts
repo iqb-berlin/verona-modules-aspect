@@ -313,8 +313,8 @@ export interface ValueChangeElement {
 }
 
 export interface NavigationEvent {
-  action: 'unitNav' | 'pageNav';
-  param: 'previous' | 'next' | 'first' | 'last' | 'end' | number;
+  action: 'unitNav' | 'pageNav' | 'scrollTo';
+  param: 'previous' | 'next' | 'first' | 'last' | 'end' | number | string;
 }
 
 export interface OptionElement extends UIElement {

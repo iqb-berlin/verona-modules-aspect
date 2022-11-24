@@ -26,7 +26,7 @@ import { SelectionService } from '../../../../services/selection.service';
           <mat-option [value]="null">
             {{ 'propertiesPanel.none' | translate }}
           </mat-option>
-          <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'scrollTo']"
+          <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'highlightText']"
                       [value]="option">
             {{ 'propertiesPanel.' + option | translate }}
           </mat-option>
@@ -57,7 +57,7 @@ import { SelectionService } from '../../../../services/selection.service';
               </mat-option>
             </ng-container>
 
-            <ng-container *ngIf="combinedProperties.action === 'scrollTo'">
+            <ng-container *ngIf="combinedProperties.action === 'highlightText'">
               <mat-option *ngFor="let option of (textComponents | getAnchorIds) "
                           [value]="option">
                 {{ option  }}

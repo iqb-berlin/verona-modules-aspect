@@ -93,7 +93,7 @@
     "actionParam": "Aktionsparameter",
     "unitNav": "Unitnavigation",
     "pageNav": "Seitennavigation",
-    "scrollTo": "Textabschnitt hervorheben",
+    "highlightText": "Textabschnitt hervorheben",
     "previous": "Vorherige Unit",
     "next": "Nächste Unit",
     "first": "Erste Unit",
@@ -231,7 +231,7 @@
   },
   "toolbox": {
     "text": "Text",
-    "button": "Navigationsknopf",
+    "button": "Knopf",
     "frame": "Rahmen",
     "text-field": "Eingabefeld",
     "text-field-simple": "Eingabefeld",

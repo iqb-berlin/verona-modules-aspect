@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ButtonElement } from 'common/models/elements/button/button';
-import { NavigationEvent } from 'common/models/elements/element';
+import { ButtonEvent } from 'common/models/elements/element';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
@@ -69,5 +69,5 @@ import { ElementComponent } from '../../directives/element-component.directive';
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
-  @Output() navigateTo = new EventEmitter<NavigationEvent>();
+  @Output() navigateTo = new EventEmitter<ButtonEvent>();
 }

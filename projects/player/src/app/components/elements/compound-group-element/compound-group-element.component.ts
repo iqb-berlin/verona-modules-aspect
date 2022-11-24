@@ -9,7 +9,9 @@ import {
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import { CompoundElement, InputElement, InputElementValue } from 'common/models/elements/element';
+import {
+  CompoundElement, InputElement, InputElementValue, UnitNavParam
+} from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
@@ -137,13 +139,13 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
         switch (navigationEvent.action) {
           case 'unitNav':
             this.veronaPostService.sendVopUnitNavigationRequestedNotification(
-              (navigationEvent.param as 'previous' | 'next' | 'first' | 'last' | 'end')
+              (navigationEvent.param as UnitNavParam)
             );
             break;
           case 'pageNav':
             this.navigationService.setPage(navigationEvent.param as number);
             break;
-          case 'scrollTo':
+          case 'highlightText':
             this.anchorService.toggleAnchor(navigationEvent.param as string);
             break;
           default:

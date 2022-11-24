@@ -5,7 +5,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ButtonElement } from 'common/models/elements/button/button';
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { InputElementValue, NavigationEvent } from 'common/models/elements/element';
+import { InputElementValue, ButtonEvent, UnitNavParam } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { NavigationService } from '../../../services/navigation.service';
@@ -46,17 +46,17 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
       this.pageIndex);
   }
 
-  navigateTo(navigationEvent: NavigationEvent): void {
+  navigateTo(navigationEvent: ButtonEvent): void {
     switch (navigationEvent.action) {
       case 'unitNav':
         this.veronaPostService.sendVopUnitNavigationRequestedNotification(
-          (navigationEvent.param as 'previous' | 'next' | 'first' | 'last' | 'end')
+          (navigationEvent.param as UnitNavParam)
         );
         break;
       case 'pageNav':
         this.navigationService.setPage(navigationEvent.param as number);
         break;
-      case 'scrollTo':
+      case 'highlightText':
         this.anchorService.toggleAnchor(navigationEvent.param as string);
         break;
       default:

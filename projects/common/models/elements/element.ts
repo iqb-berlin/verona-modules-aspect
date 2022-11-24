@@ -312,10 +312,14 @@ export interface ValueChangeElement {
   value: InputElementValue;
 }
 
-export interface NavigationEvent {
-  action: 'unitNav' | 'pageNav' | 'scrollTo';
-  param: 'previous' | 'next' | 'first' | 'last' | 'end' | number | string;
+export interface ButtonEvent {
+  action: ButtonAction;
+  param: UnitNavParam | number | string;
 }
+
+export type ButtonAction = 'unitNav' | 'pageNav' | 'highlightText';
+
+export type UnitNavParam = 'previous' | 'next' | 'first' | 'last' | 'end';
 
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;

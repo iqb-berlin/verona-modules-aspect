@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, PositionProperties, UIElement
+  BasicStyles, ButtonAction, PositionProperties, UIElement, UnitNavParam
 } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -9,8 +9,8 @@ export class ButtonElement extends UIElement {
   label: string = 'Navigationsknopf';
   imageSrc: string | null = null;
   asLink: boolean = false;
-  action: null | 'unitNav' | 'pageNav' | 'scrollTo' = null;
-  actionParam: null | 'previous' | 'next' | 'first' | 'last' | 'end' | number | string = null;
+  action: null | ButtonAction = null;
+  actionParam: null | UnitNavParam | number | string = null;
   position: PositionProperties | undefined;
   styling: BasicStyles & {
     borderRadius: number;

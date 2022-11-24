@@ -1,16 +1,17 @@
 import {
   AfterViewInit, Component, ViewChild
 } from '@angular/core';
-import { UnitStateService } from '../../../services/unit-state.service';
-import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { NavigationService } from '../../../services/navigation.service';
-import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { InputElementValue } from 'common/models/elements/element';
+import { InputElementValue, NavigationEvent } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
+import { AnchorService } from 'player/src/app/services/anchor.service';
+import { NavigationService } from '../../../services/navigation.service';
+import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
+import { ElementGroupDirective } from '../../../directives/element-group.directive';
+import { UnitStateService } from '../../../services/unit-state.service';
 
 @Component({
   selector: 'aspect-interactive-group-element',
@@ -27,7 +28,8 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
     public unitStateService: UnitStateService,
     public veronaPostService: VeronaPostService,
     public navigationService: NavigationService,
-    private elementModelElementCodeMappingService: ElementModelElementCodeMappingService
+    private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
+    private anchorService: AnchorService
   ) {
     super();
   }
@@ -42,5 +44,22 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
       initialValue,
       this.elementComponent,
       this.pageIndex);
+  }
+
+  navigateTo(navigationEvent: NavigationEvent): void {
+    switch (navigationEvent.action) {
+      case 'unitNav':
+        this.veronaPostService.sendVopUnitNavigationRequestedNotification(
+          (navigationEvent.param as 'previous' | 'next' | 'first' | 'last' | 'end')
+        );
+        break;
+      case 'pageNav':
+        this.navigationService.setPage(navigationEvent.param as number);
+        break;
+      case 'scrollTo':
+        this.anchorService.toggleAnchor(navigationEvent.param as string);
+        break;
+      default:
+    }
   }
 }

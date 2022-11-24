@@ -2,9 +2,7 @@
     *ngIf="elementModel.type === 'button'"
     #elementComponent
     [elementModel]="elementModel | cast: ButtonElement"
-    (navigateTo)="($event.action === 'unitNav') ?
-      veronaPostService.sendVopUnitNavigationRequestedNotification($any($event.param)) :
-      navigationService.setPage($any($event.param))">
+    (navigateTo)="navigateTo($event)">
 </aspect-button>
 <aspect-frame
     *ngIf="elementModel.type === 'frame'"

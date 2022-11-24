@@ -14,3 +14,12 @@ body {
   background-color: white;
   color: #f44336 !important;;
 }
+
+.active-anchor {
+  background-color: #adff2f;
+  scroll-margin: 100px 0;
+}
+
+.active-anchor > mark, .active-anchor > aspect-marked {
+  background-color: unset !important;
+}

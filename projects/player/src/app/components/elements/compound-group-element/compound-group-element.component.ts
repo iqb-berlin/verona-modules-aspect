@@ -13,6 +13,7 @@ import { CompoundElement, InputElement, InputElementValue } from 'common/models/
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
+import { AnchorService } from 'player/src/app/services/anchor.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -44,6 +45,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     public veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
     private navigationService: NavigationService,
+    private anchorService: AnchorService,
     public validationService: ValidationService
   ) {
     super();
@@ -132,11 +134,19 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     button.navigateTo
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(navigationEvent => {
-        if (navigationEvent.action === 'unitNav') {
-          this.veronaPostService.sendVopUnitNavigationRequestedNotification(
-            (navigationEvent.param as 'previous' | 'next' | 'first' | 'last' | 'end'));
-        } else {
-          this.navigationService.setPage(navigationEvent.param as number);
+        switch (navigationEvent.action) {
+          case 'unitNav':
+            this.veronaPostService.sendVopUnitNavigationRequestedNotification(
+              (navigationEvent.param as 'previous' | 'next' | 'first' | 'last' | 'end')
+            );
+            break;
+          case 'pageNav':
+            this.navigationService.setPage(navigationEvent.param as number);
+            break;
+          case 'scrollTo':
+            this.anchorService.toggleAnchor(navigationEvent.param as string);
+            break;
+          default:
         }
       });
   }

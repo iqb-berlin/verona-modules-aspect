@@ -12,6 +12,7 @@ import {
   ElementModelElementCodeMappingService
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
+import { AnchorService } from 'player/src/app/services/anchor.service';
 
 @Component({
   selector: 'aspect-unit',
@@ -28,6 +29,7 @@ export class UnitComponent implements OnInit {
               private veronaSubscriptionService: VeronaSubscriptionService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
               private sanitizationService: SanitizationService,
+              private anchorService: AnchorService,
               private changeDetectorRef: ChangeDetectorRef) {
   }
 
@@ -64,6 +66,7 @@ export class UnitComponent implements OnInit {
   private reset(): void {
     this.pages = [];
     this.playerConfig = {};
+    this.anchorService.reset();
     this.changeDetectorRef.detectChanges();
   }
 }

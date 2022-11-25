@@ -13,12 +13,23 @@ declare const GGBApplet: any;
 @Component({
   selector: 'aspect-geometry',
   template: `
-    <div [id]="elementModel.id" class="geogebra-applet"></div>
+    <div class="geogebra-container">
+      <div [id]="elementModel.id" class="geogebra-applet"></div>
+      <button *ngIf="this.elementModel.showResetIcon"
+              mat-icon-button
+              class="reset-button"
+              (click)="reset()">
+        <mat-icon class="reset-icon">restart_alt</mat-icon>
+      </button>
+    </div>
     <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
   `,
   styles: [
     ':host {display: block; width: 100%; height: 100%;}',
-    '.geogebra-applet {margin: auto;}'
+    '.geogebra-applet {margin: auto;}',
+    '.geogebra-container {position: relative;}',
+    '.reset-button {position: absolute; top: 0; right: 0; z-index: 100; margin: 5px;}',
+    '.reset-icon {font-size: 30px !important;}'
   ]
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
@@ -27,9 +38,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
 
   isLoaded: Subject<boolean> = new Subject();
+  geoGebraApi!: any;
 
   private ngUnsubscribe = new Subject<void>();
-  private geometryUpdated = new EventEmitter<any>();
+  private geometryUpdated = new EventEmitter<void>();
 
   constructor(public elementRef: ElementRef,
               private renderer: Renderer2,
@@ -39,10 +51,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       .pipe(
         debounceTime(500),
         takeUntil(this.ngUnsubscribe)
-      ).subscribe((api): void => this.elementValueChanged
+      ).subscribe((): void => this.elementValueChanged
         .emit({
           id: this.elementModel.id,
-          value: api.getBase64()
+          value: this.geoGebraApi.getBase64()
         }));
   }
 
@@ -59,6 +71,12 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     this.initApplet();
   }
 
+  reset(): void {
+    this.appDefinition = this.elementModel.appDefinition;
+    this.initApplet();
+    this.geometryUpdated.next();
+  }
+
   private initApplet(): void {
     console.log('Initializing GeoGebra applet');
     if (!this.appDefinition) {
@@ -70,11 +88,12 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       width: this.elementModel.width,
       height: this.elementModel.height,
       showToolBar: this.elementModel.showToolbar,
-      showResetIcon: this.elementModel.showResetIcon,
+      showResetIcon: false,
       enableShiftDragZoom: this.elementModel.enableShiftDragZoom,
       showZoomButtons: this.elementModel.showZoomButtons,
       showFullscreenButton: this.elementModel.showFullscreenButton,
       customToolBar: this.elementModel.customToolBar,
+      enableUndoRedo: false,
       showMenuBar: false,
       showAlgebraInput: false,
       enableLabelDrags: false,
@@ -84,25 +103,26 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       showLogging: false,
       useBrowserForJS: false,
       ggbBase64: this.appDefinition,
-      appletOnLoad: (api: any) => {
+      appletOnLoad: (geoGebraApi: any) => {
+        this.geoGebraApi = geoGebraApi;
         this.isLoaded.next(true);
-        api.registerAddListener(() => {
-          this.geometryUpdated.emit(api);
+        this.geoGebraApi.registerAddListener(() => {
+          this.geometryUpdated.emit();
         });
-        api.registerRemoveListener(() => {
-          this.geometryUpdated.emit(api);
+        this.geoGebraApi.registerRemoveListener(() => {
+          this.geometryUpdated.emit();
         });
-        api.registerUpdateListener(() => {
-          this.geometryUpdated.emit(api);
+        this.geoGebraApi.registerUpdateListener(() => {
+          this.geometryUpdated.emit();
         });
-        api.registerRenameListener(() => {
-          this.geometryUpdated.emit(api);
+        this.geoGebraApi.registerRenameListener(() => {
+          this.geometryUpdated.emit();
         });
-        api.registerClearListener(() => {
-          this.geometryUpdated.emit(api);
+        this.geoGebraApi.registerClearListener(() => {
+          this.geometryUpdated.emit();
         });
-        api.registerStoreUndoListener(() => {
-          this.geometryUpdated.emit(api);
+        this.geoGebraApi.registerStoreUndoListener(() => {
+          this.geometryUpdated.emit();
         });
       }
     };

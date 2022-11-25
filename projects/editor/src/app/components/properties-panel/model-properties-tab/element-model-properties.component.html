@@ -171,6 +171,11 @@
                 (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">
     {{'propertiesPanel.showResetIcon' | translate }}
   </mat-checkbox>
+  <mat-checkbox *ngIf="combinedProperties.enableUndoRedo !== undefined"
+                [checked]="$any(combinedProperties.enableUndoRedo)"
+                (change)="updateModel.emit({ property: 'enableUndoRedo', value: $event.checked })">
+    {{'propertiesPanel.enableUndoRedo' | translate }}
+  </mat-checkbox>
   <mat-checkbox *ngIf="combinedProperties.showToolbar !== undefined"
                 [checked]="$any(combinedProperties.showToolbar)"
                 (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">

@@ -177,6 +177,7 @@
     "hasBorderLeft": "Kante links",
     "hasBorderRight": "Kante rechts",
     "showResetIcon": "Zurücksetzen-Knopf anzeigen",
+    "enableUndoRedo": "Schritt rückgängig/wiederherstellen",
     "showToolbar": "Werkzeugleiste anzeigen",
     "showZoomButtons": "Zoom-Knöpfe anzeigen",
     "showFullscreenButton": "Vollbild-Knopf anzeigen",

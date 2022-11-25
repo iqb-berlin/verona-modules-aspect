@@ -10,6 +10,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement {
   width: number = 600;
   height: number = 400;
   showResetIcon: boolean = true;
+  enableUndoRedo: boolean = true;
   showToolbar: boolean = true;
   enableShiftDragZoom: boolean = true;
   showZoomButtons: boolean = true;
@@ -23,6 +24,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement {
     this.width = element.width !== undefined ? element.width : 600;
     this.height = element.height !== undefined ? element.height : 400;
     this.showResetIcon = element.showResetIcon !== undefined ? element.showResetIcon : true;
+    this.enableUndoRedo = element.enableUndoRedo !== undefined ? element.enableUndoRedo : true;
     this.showToolbar = element.showToolbar !== undefined ? element.showToolbar : true;
     this.enableShiftDragZoom = element.enableShiftDragZoom !== undefined ? element.enableShiftDragZoom : true;
     this.showZoomButtons = element.showZoomButtons !== undefined ? element.showZoomButtons : true;

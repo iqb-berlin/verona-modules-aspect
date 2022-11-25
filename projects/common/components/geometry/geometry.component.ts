@@ -17,6 +17,7 @@ declare const GGBApplet: any;
       <div [id]="elementModel.id" class="geogebra-applet"></div>
       <button *ngIf="this.elementModel.showResetIcon"
               mat-icon-button
+              [style.top.px]="this.elementModel.showToolbar ? 50 : 0"
               class="reset-button"
               (click)="reset()">
         <mat-icon class="reset-icon">restart_alt</mat-icon>
@@ -28,7 +29,7 @@ declare const GGBApplet: any;
     ':host {display: block; width: 100%; height: 100%;}',
     '.geogebra-applet {margin: auto;}',
     '.geogebra-container {position: relative;}',
-    '.reset-button {position: absolute; top: 0; right: 0; z-index: 100; margin: 5px;}',
+    '.reset-button {position: absolute; right: 0; z-index: 100; margin: 5px;}',
     '.reset-icon {font-size: 30px !important;}'
   ]
 })
@@ -88,12 +89,12 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       width: this.elementModel.width,
       height: this.elementModel.height,
       showToolBar: this.elementModel.showToolbar,
-      showResetIcon: false,
       enableShiftDragZoom: this.elementModel.enableShiftDragZoom,
       showZoomButtons: this.elementModel.showZoomButtons,
       showFullscreenButton: this.elementModel.showFullscreenButton,
       customToolBar: this.elementModel.customToolBar,
-      enableUndoRedo: false,
+      enableUndoRedo: this.elementModel.enableUndoRedo,
+      showResetIcon: false, // use custom html button icon
       showMenuBar: false,
       showAlgebraInput: false,
       enableLabelDrags: false,

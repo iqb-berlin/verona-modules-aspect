@@ -20,6 +20,9 @@ Editor
     des Editors zurückgesetzt.
   - Interaktion mit den Elementen hat keinen Einfluss auf deren Vorbelegung. Diese
     ist weiterhin ggf. im Eigenschaftsfenster zu setzen.
+- Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen
+- Im TextEditor können nun Bereiche markiert werden, die dann im Navigationsknopf
+  über die Aktion "Textabschnitt hervorheben" ausgewählt werden können.
 
 ### Verbesserungen
 - Ermöglicht für Eingabebereiche die dynamische Anpassung der Anzahl von Zeilen
@@ -42,7 +45,8 @@ Editor
 - Shortcuts und *Rückgängig machen* im TextEditor re-aktiviert. Das automatische
   Generieren von Listen bleibt deaktiviert.
 - GeoGebra-Elemente können nun auch durch Hochladen einer .ggb-Datei angelegt werden.
-- Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen.
+- Die Erweiterung der Aktionsmöglichkeit eines Navigationsknopfs 
+  führt zur Umbenennung in "Knopf" 
 
 ### Fehlerbehebungen
 - "Verbundene Ablegelisten"-Menu öffnet sich beim ersten Click und zeigt immer die

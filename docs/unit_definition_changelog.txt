@@ -56,3 +56,5 @@ iqb-aspect-definition@1.0.0
 - TextFieldSimpleElement: +isLimitedToMaxLength: boolean;
 - TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement: InputAssistancePreset +'custom'
 - Remove drop-list-simple as cloze child; is now a drop-list
+- ButtonElement: action +highlightText
+                 param +string

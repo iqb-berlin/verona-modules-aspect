@@ -13,7 +13,10 @@ declare const GGBApplet: any;
 @Component({
   selector: 'aspect-geometry',
   template: `
-    <div class="geogebra-container">
+    <div class="geogebra-container"
+         [style.height.px]="elementModel.height"
+         [style.width.px]="elementModel.width"
+         [class.center]="this.elementModel.position.fixedSize && this.elementModel.position.dynamicPositioning">
       <div [id]="elementModel.id" class="geogebra-applet"></div>
       <button *ngIf="this.elementModel.showResetIcon"
               mat-icon-button
@@ -27,8 +30,8 @@ declare const GGBApplet: any;
   `,
   styles: [
     ':host {display: block; width: 100%; height: 100%;}',
-    '.geogebra-applet {margin: auto;}',
     '.geogebra-container {position: relative;}',
+    '.center {margin: auto;}',
     '.reset-button {position: absolute; right: 0; z-index: 100; margin: 5px;}',
     '.reset-icon {font-size: 30px !important;}'
   ]
@@ -86,8 +89,9 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     }
     const params: any = {
       id: this.elementModel.id,
-      width: this.elementModel.width,
-      height: this.elementModel.height,
+      width: this.elementModel.width - 4, // must be smaller than the container, otherwise scroll bars will be displayed
+      height: this.elementModel.height - 4,
+      scale: 1,
       showToolBar: this.elementModel.showToolbar,
       enableShiftDragZoom: this.elementModel.enableShiftDragZoom,
       showZoomButtons: this.elementModel.showZoomButtons,

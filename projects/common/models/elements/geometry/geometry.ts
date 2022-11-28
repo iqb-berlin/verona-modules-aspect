@@ -31,7 +31,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement {
     this.showFullscreenButton = element.showFullscreenButton !== undefined ? element.showFullscreenButton : true;
     this.customToolBar = element.customToolBar !== undefined ? element.customToolBar : '';
 
-    this.position = UIElement.initPositionProps({ ...element.position, fixedSize: true }); // yes, always stay fixed
+    this.position = UIElement.initPositionProps({ ...element.position });
   }
 
   getElementComponent(): Type<ElementComponent> {

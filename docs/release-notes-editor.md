@@ -46,7 +46,8 @@ Editor
   Generieren von Listen bleibt deaktiviert.
 - GeoGebra-Elemente können nun auch durch Hochladen einer .ggb-Datei angelegt werden.
 - Die Erweiterung der Aktionsmöglichkeit eines Navigationsknopfs 
-  führt zur Umbenennung in "Knopf" 
+  führt zur Umbenennung in "Knopf"
+- Zeigt Ladeanimation bei GeoGebra-, Video- und Audioelementen
 
 ### Fehlerbehebungen
 - "Verbundene Ablegelisten"-Menu öffnet sich beim ersten Click und zeigt immer die
@@ -58,6 +59,7 @@ Editor
   Dieses Verhalten verhindert, dass in diesem Ausnahmefall der Editor in einen unbenutzbaren
   Zustand gerät.
 - Felder zur Größenanpassung aus den elementspezifischen Einstellungen entfernt.
+- Verhindert die Anzeige von Bildlaufleisten bei Geogebra-Elementen mit fester Größe
 
 ## 1.34.0
 - Implement GeoGebra applet element

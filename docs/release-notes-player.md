@@ -11,21 +11,22 @@ Player
   ihrer Zeilen an das gegebene Seitenformat an
 - Optionale Tastatursymbole von Eingabefeldern und -bereichen
   werden nach erster Benutzung der Elemente ausgeblendet
-- Zeigt Ladeanimationen während des Ladens von GeoGebra-, Video- und Audioelementen
 - Die neue Eingabehilfe "Eigene Zeichen" nutzt weitestgehend das Layout
   der Eingabehilfe "Französische Sonderzeichen"
 - Ist die Texteingabe bei Eingabefeldern auf eine Maximallänge begrenzt, kann kein 
   Text über die Zwischenablage eingefügt werden
 - Vordefinierte markierte Bereiche in Texten können gezielt über vordefinierte Klicks auf 
-  Navigationsknöpfe für 30 Sekunden farblich hervorgehoben werden  
+  Navigationsknöpfe für 30 Sekunden farblich hervorgehoben werden
 
 ### Verbesserungen
 - Verbessert die Performanz von GeoGebra-Elementen
 - Ändert die Metadaten entsprechend der Verona Inferfaces Specification
+- Zeigt Ladeanimationen während des Ladens von GeoGebra-, Video- und Audioelementen
 
 ### Fehlerbehebungen
 - Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an
 - Korrigiert fehlende Warnmeldungen beim Schieberegler/Zahlenstrahl
+- Verhindert die Anzeige von Bildlaufleisten bei Geogebra-Elementen mit fester Größe 
 
 
 ## 1.27.0

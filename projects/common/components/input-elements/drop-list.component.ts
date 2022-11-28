@@ -106,6 +106,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     DropListComponent.dragAndDropComponents[this.elementModel.id] = this;
   }
 
+  // TODO method names
   dragStart(dragEvent: DragEvent,
             dropListValueElement: DragNDropValueObject,
             sourceListIndex: number) {
@@ -191,23 +192,34 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   drop(event: DragEvent) {
     event.preventDefault();
 
+    // SortList viewModel already gets manipulated while dragging. Just set the value.
     if (DropListComponent.sourceList === this && this.elementModel.isSortList) {
       this.elementFormControl.setValue(this.viewModel);
     } else if (this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) {
-      const presentValueIDs = this.elementFormControl.value
-        .map((valueValue: DragNDropValueObject) => valueValue.id);
-      if (!presentValueIDs.includes(DropListComponent.draggedElement?.id)) {
-        this.viewModel.push(DropListComponent.draggedElement as DragNDropValueObject);
-        this.elementFormControl.setValue(this.viewModel);
+      const valueIDs = this.elementFormControl.value.map((valueValue: DragNDropValueObject) => valueValue.id);
+      if (!valueIDs.includes(DropListComponent.draggedElement?.id)) {
+        this.addDraggedElementToList();
         if (!DropListComponent.sourceList?.elementModel.copyOnDrop) {
-          DropListComponent.sourceList?.viewModel.splice(DropListComponent.sourceList.placeHolderIndex as number, 1);
-          DropListComponent.sourceList?.elementFormControl.setValue(DropListComponent.sourceList.viewModel);
+          DropListComponent.removeElementFromSourceList();
         }
+      } else if (this.elementModel.deleteDroppedItemWithSameID) {
+        DropListComponent.removeElementFromSourceList();
       }
-    } else {
-      console.log('Not an allowed target list');
     }
+    // else {
+    // console.log('Not an allowed target list');
+    // }
     this.dragEnd();
+  }
+
+  addDraggedElementToList(): void {
+    this.viewModel.push(DropListComponent.draggedElement as DragNDropValueObject);
+    this.elementFormControl.setValue(this.viewModel);
+  }
+
+  static removeElementFromSourceList(): void {
+    DropListComponent.sourceList?.viewModel.splice(DropListComponent.sourceList.placeHolderIndex as number, 1);
+    DropListComponent.sourceList?.elementFormControl.setValue(DropListComponent.sourceList.viewModel);
   }
 
   isDropAllowed(connectedDropLists: string[]): boolean {

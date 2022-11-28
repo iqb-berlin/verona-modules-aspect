@@ -14,6 +14,7 @@ export class DropListElement extends InputElement {
   isSortList: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
+  deleteDroppedItemWithSameID: boolean = false;
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical';
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#006064';
@@ -28,9 +29,12 @@ export class DropListElement extends InputElement {
       element.value.map(val => ({ ...val })) :
       [];
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
-    if (element.isSortList) this.isSortList = element.isSortList;
+    if (element.isSortList !== undefined) this.isSortList = element.isSortList;
     if (element.connectedTo) this.connectedTo = [...element.connectedTo];
-    if (element.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
+    if (element.copyOnDrop !== undefined) this.copyOnDrop = element.copyOnDrop;
+    if (element.deleteDroppedItemWithSameID !== undefined) {
+      this.deleteDroppedItemWithSameID = element.deleteDroppedItemWithSameID;
+    }
     if (element.orientation) this.orientation = element.orientation;
     if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
     if (element.highlightReceivingDropListColor) {

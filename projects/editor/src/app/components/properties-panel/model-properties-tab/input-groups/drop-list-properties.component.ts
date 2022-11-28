@@ -68,6 +68,14 @@ import { DialogService } from '../../../../services/dialog.service';
         {{'propertiesPanel.copyOnDrop' | translate }}
       </mat-checkbox>
 
+      <mat-checkbox *ngIf="combinedProperties.deleteDroppedItemWithSameID !== undefined"
+                    matTooltip="{{'propertiesPanel.deleteDroppedItemWithSameIDTooltip' | translate }}"
+                    [disabled]="!combinedProperties.copyOnDrop"
+                    [checked]="$any(combinedProperties.deleteDroppedItemWithSameID)"
+                    (change)="updateModel.emit({ property: 'deleteDroppedItemWithSameID', value: $event.checked })">
+        {{'propertiesPanel.deleteDroppedItemWithSameID' | translate }}
+      </mat-checkbox>
+
       <mat-checkbox *ngIf="combinedProperties.highlightReceivingDropList !== undefined"
                     [checked]="$any(combinedProperties.highlightReceivingDropList)"
                     (change)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event.checked })">

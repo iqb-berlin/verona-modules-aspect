@@ -12,11 +12,10 @@ import { CompoundChildOverlayComponent } from
 import { DragNDropValueObject, UIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { DropListComponent } from 'common/components/input-elements/drop-list.component';
+import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
-import { DropListComponent } from 'common/components/input-elements/drop-list.component';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { FormElementComponent } from 'common/directives/form-element-component.directive';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -36,6 +35,9 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
+    if (this.childComponent.instance instanceof GeometryComponent) {
+      this.childComponent.instance.appDefinition = (this.element as GeometryElement).appDefinition;
+    }
     this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
     if (this.childComponent.instance instanceof FormElementComponent) {
       (this.childComponent.instance as FormElementComponent).elementFormControl.setValue(this.element.value);
@@ -48,9 +50,6 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     // Make children not clickable. This way the only relevant events are managed by the overlay.
     this.childComponent.location.nativeElement.style.pointerEvents = 'none';
 
-    if (this.childComponent.instance instanceof GeometryComponent) {
-      this.childComponent.instance.appDefinition = (this.element as GeometryElement).appDefinition;
-    }
     if (this.childComponent.instance instanceof ClozeComponent) {
       // make cloze element children clickable to access child elements
       this.childComponent.instance.editorMode = true;

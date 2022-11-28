@@ -60,6 +60,8 @@ Editor
   Zustand gerät.
 - Felder zur Größenanpassung aus den elementspezifischen Einstellungen entfernt.
 - Verhindert die Anzeige von Bildlaufleisten bei Geogebra-Elementen mit fester Größe
+- Korrigiert Initialisierungs-Fehler von GeoGebra-Elementen beim wiederholten Laden von 
+  Aufgaben
 
 ## 1.34.0
 - Implement GeoGebra applet element

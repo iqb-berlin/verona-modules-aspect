@@ -54,8 +54,15 @@ import { SelectionService } from '../../services/selection.service';
                (click)="$any($event).stopPropagation()"
                (change)="updateModel('activeAfterID', $any($event.target).value)">
       </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>{{'section-menu.activeAfterIdDelay' | translate }}</mat-label>
+        <input matInput type="number" step="1000" min="0"
+               [disabled]="!section.activeAfterID"
+               [value]="$any(section.activeAfterIdDelay)"
+               (click)="$any($event).stopPropagation()"
+               (change)="updateModel('activeAfterIdDelay', $any($event.target).value)">
+      </mat-form-field>
     </mat-menu>
-
     <button mat-mini-fab [matMenuTriggerFor]="layoutMenu"
             [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
       <mat-icon>space_dashboard</mat-icon>

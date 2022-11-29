@@ -16,6 +16,7 @@ export class Section {
   gridColumnSizes: string = '1fr 1fr';
   gridRowSizes: string = '1fr';
   activeAfterID: string | null = null;
+  activeAfterIdDelay: number = 0;
 
   constructor(section?: Partial<Section>) {
     if (section?.height) this.height = section.height;
@@ -26,6 +27,7 @@ export class Section {
     if (section?.gridColumnSizes !== undefined) this.gridColumnSizes = section.gridColumnSizes;
     if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
     if (section?.activeAfterID) this.activeAfterID = section.activeAfterID;
+    if (section?.activeAfterIdDelay) this.activeAfterIdDelay = section.activeAfterIdDelay;
     this.elements =
       section?.elements?.map(element => ElementFactory.createElement({
         ...element,

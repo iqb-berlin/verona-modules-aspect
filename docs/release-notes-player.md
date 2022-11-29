@@ -17,6 +17,7 @@ Player
   Text über die Zwischenablage eingefügt werden
 - Vordefinierte markierte Bereiche in Texten können gezielt über vordefinierte Klicks auf 
   Navigationsknöpfe für 30 Sekunden farblich hervorgehoben werden
+- Aktiviert verborgene Abschnitten mit der angegebenen Verzögerung (in Millisekunden)
 
 ### Verbesserungen
 - Verbessert die Performanz von GeoGebra-Elementen

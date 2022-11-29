@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input } from '@angular/core';
-import { Subject } from 'rxjs';
+import { delay, Subject } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
 
@@ -27,7 +27,9 @@ export class SectionVisibilityHandlingDirective {
 
     if (this.mediaStatusChanged) {
       this.mediaStatusChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
+        .pipe(
+          takeUntil(this.ngUnsubscribe),
+          delay(this.section.activeAfterIdDelay))
         .subscribe((id: string): void => this.setActiveAfterID(id));
     }
   }

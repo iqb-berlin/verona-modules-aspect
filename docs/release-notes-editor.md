@@ -23,6 +23,8 @@ Editor
 - Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen
 - Im TextEditor können nun Bereiche markiert werden, die dann im Navigationsknopf
   über die Aktion "Textabschnitt hervorheben" ausgewählt werden können.
+- Ermöglicht die Angabe einer Verzögerung (in Millisekunden)
+  für Aktivieren von verborgenen Abschnitten  
 
 ### Verbesserungen
 - Ermöglicht für Eingabebereiche die dynamische Anpassung der Anzahl von Zeilen

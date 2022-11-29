@@ -270,7 +270,8 @@
     "width": "Breite",
     "fraction": "Anteile",
     "pixel": "Bildpunkte",
-    "activeAfterID": "Sichtbar nach A/V-ID"
+    "activeAfterID": "Sichtbar nach A/V-ID",
+    "activeAfterIdDelay": "Verzögerung der Sichtbarkeit"
   },
   "Bitte kopierten Abschnitt einfügen": "Bitte kopierten Abschnitt einfügen",
   "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",

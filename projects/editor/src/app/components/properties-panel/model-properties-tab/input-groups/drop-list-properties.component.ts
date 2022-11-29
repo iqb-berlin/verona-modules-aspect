@@ -121,7 +121,8 @@ export class DropListPropertiesComponent {
           text: value,
           imgSrc: null,
           imgPosition: 'above',
-          id: this.unitService.getNewValueID()
+          id: this.unitService.getNewValueID(),
+          returnToOriginOnReplacement: false
         }
       ]
     });
@@ -135,17 +136,17 @@ export class DropListPropertiesComponent {
   }
 
   async editOption(optionIndex: number): Promise<void> {
-    const oldOptions: DragNDropValueObject[] = this.combinedProperties.value as DragNDropValueObject[];
+    const dropListValues: DragNDropValueObject[] = this.combinedProperties.value as DragNDropValueObject[];
 
-    await this.dialogService.showDropListOptionEditDialog(oldOptions[optionIndex])
+    await this.dialogService.showDropListOptionEditDialog(dropListValues[optionIndex])
       .subscribe((result: DragNDropValueObject) => {
         if (result) {
-          if (result.id !== oldOptions[optionIndex].id && !this.idManager.isIdAvailable(result.id)) {
+          if (result.id !== dropListValues[optionIndex].id && !this.idManager.isIdAvailable(result.id)) {
             this.messageService.showError(this.translateService.instant('idTaken'));
             return;
           }
-          oldOptions[optionIndex] = result;
-          this.updateModel.emit({ property: 'value', value: oldOptions });
+          dropListValues[optionIndex] = result;
+          this.updateModel.emit({ property: 'value', value: dropListValues });
         }
       });
   }

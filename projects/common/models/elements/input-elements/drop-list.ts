@@ -3,7 +3,7 @@ import {
   InputElement,
   DragNDropValueObject,
   BasicStyles, PositionProperties,
-  AnswerScheme, AnswerSchemeValue, UIElement
+  AnswerScheme, AnswerSchemeValue, UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
@@ -48,6 +48,20 @@ export class DropListElement extends InputElement {
       itemBackgroundColor: '#c9e0e0',
       ...element.styling
     });
+  }
+
+  /* Set originListID and originListIndex if applicable. */
+  setProperty(property: string, value: UIElementValue): void {
+    super.setProperty(property, value);
+    if (property === 'value' || property === 'id') {
+      this.value.forEach((dndValue: DragNDropValueObject, index) => {
+        this.value[index] = {
+          ...dndValue,
+          originListID: dndValue.returnToOriginOnReplacement ? this.id : undefined,
+          originListIndex: dndValue.returnToOriginOnReplacement ? this.value.indexOf(dndValue) : undefined
+        };
+      });
+    }
   }
 
   hasAnswerScheme(): boolean {

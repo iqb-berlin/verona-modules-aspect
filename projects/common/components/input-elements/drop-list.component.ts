@@ -10,60 +10,62 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-drop-list',
   template: `
-      <div class="list" [id]="elementModel.id"
-           [fxLayout]="elementModel.orientation | droplistLayout"
-           [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
-           [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
+    <div class="list" [id]="elementModel.id"
+         [fxLayout]="elementModel.orientation | droplistLayout"
+         [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
+         [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
                         'horizontal-orientation' : elementModel.orientation === 'horizontal',
                         'clozeContext': clozeContext}"
-           [style.min-height.px]="elementModel.position?.useMinHeight ? elementModel.height : undefined"
-           [style.color]="elementModel.styling.fontColor"
-           [style.font-family]="elementModel.styling.font"
-           [style.font-size.px]="elementModel.styling.fontSize"
-           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-           [style.backgroundColor]="elementModel.styling.backgroundColor"
-           [class.errors]="elementFormControl.errors && elementFormControl.touched"
-           [style.outline-color]="elementModel.highlightReceivingDropListColor"
-           [class.highlight-valid-drop]="highlightValidDrop"
-           [class.highlight-as-receiver]="highlightAsReceiver"
-           tabindex="0"
-           (focusout)="elementFormControl.markAsTouched()"
-           (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
-           (dragover)="$event.preventDefault()">
-        <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
-          <div *ngIf="!dropListValueElement.imgSrc"
-               class="list-item"
-               draggable="true"
-               (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
-               (dragenter)="dragEnterItem($event)"
-               [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
-               [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
-               [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''"
-               [style.background-color]="elementModel.styling.itemBackgroundColor">
-            <span>{{dropListValueElement.text}}</span>
-          </div>
-          <img *ngIf="dropListValueElement.imgSrc"
-               class="list-item"
-               [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
-               [id]="dropListValueElement.id"
-               draggable="true"
-               (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
-               (dragenter)="dragEnterItem($event)"
-               [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
-               [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
-               [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''">
-        </ng-container>
-      </div>
-      <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-                 class="error-message">
-        {{elementFormControl.errors | errorTransform: elementModel}}
-      </mat-error>
+         [style.min-height.px]="elementModel.position?.useMinHeight ? elementModel.height : undefined"
+         [style.color]="elementModel.styling.fontColor"
+         [style.font-family]="elementModel.styling.font"
+         [style.font-size.px]="elementModel.styling.fontSize"
+         [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+         [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+         [style.backgroundColor]="elementModel.styling.backgroundColor"
+         [class.errors]="elementFormControl.errors && elementFormControl.touched"
+         [style.outline-color]="elementModel.highlightReceivingDropListColor"
+         [class.highlight-valid-drop]="highlightValidDrop"
+         [class.highlight-as-receiver]="highlightAsReceiver"
+         tabindex="0"
+         (focusout)="elementFormControl.markAsTouched()"
+         (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
+         (dragover)="$event.preventDefault()">
+      <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
+        <div *ngIf="!dropListValueElement.imgSrc"
+             class="list-item"
+             draggable="true"
+             (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
+             (dragenter)="moveElementInSortList($event)"
+             [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
+             [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
+             [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''"
+             [style.background-color]="elementModel.styling.itemBackgroundColor">
+          <span>{{dropListValueElement.text}}</span>
+        </div>
+        <img *ngIf="dropListValueElement.imgSrc"
+             class="list-item"
+             [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder"
+             [id]="dropListValueElement.id"
+             draggable="true"
+             (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
+             (dragenter)="moveElementInSortList($event)"
+             [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
+             [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
+             [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''">
+      </ng-container>
+    </div>
+    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+               class="error-message">
+      {{elementFormControl.errors | errorTransform: elementModel}}
+    </mat-error>
   `,
   styles: [
-    '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); padding: 3px;}',
+    '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); border-radius: 5px;}',
+    ':not(.clozeContext).list {padding: 3px;}',
     ':not(.clozeContext) .list-item {border-radius: 5px; padding: 10px;}',
+    '.clozeContext .list-item {border-radius: 5px; padding: 0 5px; text-align: center;}',
     'img.list-item {align-self: start;}',
     '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',
@@ -107,6 +109,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   }
 
   // TODO method names
+  // TODO elemente flackern manchmal beim aufnehmen; iwas stimmt mit highlightAsReceiver nicht
   dragStart(dragEvent: DragEvent,
             dropListValueElement: DragNDropValueObject,
             sourceListIndex: number) {
@@ -116,7 +119,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
         this.createDragImage(dragEvent.target as HTMLElement, dropListValueElement.id), 0, 0);
     }
 
-    // Sadly timeout is necessary for Chrome, which does not allow DOM manipulation on dragstart
+    // Timeout is necessary for Chrome, which does not allow DOM manipulation on dragstart
     setTimeout(() => {
       DropListComponent.draggedElement = dropListValueElement;
       DropListComponent.sourceList = this;
@@ -128,25 +131,31 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
         this.highlightValidDrop = true;
       }
 
+      /* Let all droplists know when drag is going on, so they can potentially disable their pointer effects.
+      *  This is to prevent unwanted dragOver events of list items. */
       Object.entries(DropListComponent.dragAndDropComponents)
         .forEach(([, value]) => {
           value.dragging = true;
         });
 
       if (this.elementModel.highlightReceivingDropList) {
-        this.highlightAsReceiver = true;
-        this.elementModel.connectedTo.forEach(connectedDropListID => {
-          DropListComponent.dragAndDropComponents[connectedDropListID].highlightAsReceiver = true;
-        });
+        this.highlightReceiverLists();
       }
+    });
+  }
+
+  highlightReceiverLists(): void {
+    this.highlightAsReceiver = true;
+    this.elementModel.connectedTo.forEach(connectedDropListID => {
+      DropListComponent.dragAndDropComponents[connectedDropListID].highlightAsReceiver = true;
     });
   }
 
   createDragImage(baseElement: HTMLElement, baseID: string): HTMLElement {
     const dragImage: HTMLElement = baseElement.cloneNode(true) as HTMLElement;
     dragImage.id = `${baseID}-dragimage`;
-    dragImage.style.display = 'block';
-    dragImage.style.width = `${(baseElement as HTMLElement).offsetWidth}px`;
+    dragImage.style.display = 'inline-block';
+    dragImage.style.maxWidth = `${(baseElement as HTMLElement).offsetWidth}px`;
     dragImage.style.fontSize = `${this.elementModel.styling.fontSize}px`;
     dragImage.style.borderRadius = '5px';
     dragImage.style.padding = '10px';
@@ -154,9 +163,8 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     return dragImage;
   }
 
-  dragEnterItem(event: DragEvent) {
+  moveElementInSortList(event: DragEvent) {
     event.preventDefault();
-
     if (this.elementModel.isSortList && DropListComponent.sourceList === this) {
       const sourceIndex: number = this.placeHolderIndex as number;
       const targetIndex: number = Array.from((event.target as any).parentNode.children).indexOf(event.target);
@@ -195,38 +203,53 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     // SortList viewModel already gets manipulated while dragging. Just set the value.
     if (DropListComponent.sourceList === this && this.elementModel.isSortList) {
       this.elementFormControl.setValue(this.viewModel);
+    // if drop is allowed that means item transfer
     } else if (this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) {
       const valueIDs = this.elementFormControl.value.map((valueValue: DragNDropValueObject) => valueValue.id);
-      if (!valueIDs.includes(DropListComponent.draggedElement?.id)) {
-        this.addDraggedElementToList();
+      const isIDAlreadyPresent = valueIDs.includes(DropListComponent.draggedElement?.id);
+      if (!isIDAlreadyPresent) {
+        if (this.elementModel.onlyOneItem &&
+            this.viewModel.length > 0 &&
+            this.viewModel[0].returnToOriginOnReplacement) {
+          const originListComponent = DropListComponent.dragAndDropComponents[this.viewModel[0].originListID as string];
+          DropListComponent.addElementToList(originListComponent, this.viewModel[0]);
+          DropListComponent.removeElementFromList(this, 0);
+        }
+        DropListComponent.addElementToList(this, DropListComponent.draggedElement as DragNDropValueObject);
         if (!DropListComponent.sourceList?.elementModel.copyOnDrop) {
-          DropListComponent.removeElementFromSourceList();
+          DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
+            DropListComponent.sourceList?.placeHolderIndex as number);
         }
       } else if (this.elementModel.deleteDroppedItemWithSameID) {
-        DropListComponent.removeElementFromSourceList();
+        DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
+          DropListComponent.sourceList?.placeHolderIndex as number);
       }
     }
-    // else {
-    // console.log('Not an allowed target list');
-    // }
     this.dragEnd();
-  }
-
-  addDraggedElementToList(): void {
-    this.viewModel.push(DropListComponent.draggedElement as DragNDropValueObject);
-    this.elementFormControl.setValue(this.viewModel);
-  }
-
-  static removeElementFromSourceList(): void {
-    DropListComponent.sourceList?.viewModel.splice(DropListComponent.sourceList.placeHolderIndex as number, 1);
-    DropListComponent.sourceList?.elementFormControl.setValue(DropListComponent.sourceList.viewModel);
   }
 
   isDropAllowed(connectedDropLists: string[]): boolean {
     return (DropListComponent.sourceList === this) ||
       ((connectedDropLists as string[]).includes(this.elementModel.id) &&
-       !(this.elementModel.onlyOneItem && this.elementModel.value.length > 0));
-    // TODO presentValueIDs?
+       !(this.elementModel.onlyOneItem && this.viewModel.length > 0 && !this.viewModel[0].returnToOriginOnReplacement));
+  }
+
+  static addElementToList(listComponent: DropListComponent, element: DragNDropValueObject, targetIndex?: number): void {
+    if (targetIndex) {
+      listComponent.viewModel.splice(
+        Math.min(listComponent.viewModel.length, element.originListIndex || 0),
+        0,
+        element
+      );
+    } else {
+      listComponent.viewModel.push(element);
+    }
+    listComponent.elementFormControl.setValue(listComponent.viewModel);
+  }
+
+  static removeElementFromList(listComponent: DropListComponent, index: number): void {
+    listComponent.viewModel.splice(index, 1);
+    listComponent.elementFormControl.setValue(listComponent.viewModel);
   }
 
   dragEnd(event?: DragEvent) {

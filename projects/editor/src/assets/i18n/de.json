@@ -191,7 +191,8 @@
     "isSortList": "Sortierliste",
     "deleteDroppedItemWithSameID": "Gleiche abgelegte Elemente löschen",
     "deleteDroppedItemWithSameIDTooltip": "Elemente mit gleicher ID werden beim Zurücklegen gelöscht.",
-    "setElementInteractionEnabled": "Elementinteraktion erlauben"
+    "setElementInteractionEnabled": "Elementinteraktion erlauben",
+    "enableModeSwitch": "Eingabemodus änderbar"
   },
   "hotspot": {
     "top": "Abstand von oben",
@@ -256,7 +257,8 @@
     "spell-correct": "Wort korrigieren",
     "toggle-button": "Optionsfeld",
     "geometry": "Geometrie",
-    "hotspot-image": "Bildbereiche"
+    "hotspot-image": "Bildbereiche",
+    "math-field": "Formel"
   },
   "section-menu": {
     "height": "Höhe",

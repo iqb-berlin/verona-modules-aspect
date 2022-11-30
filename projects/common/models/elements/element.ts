@@ -6,7 +6,8 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
-| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry';
+| 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry'
+| 'math-field';
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] |

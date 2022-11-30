@@ -30,3 +30,7 @@ mat-tab-group {
 :host ::ng-deep .wide-form-field {
   width: 100%;
 }
+
+:host ::ng-deep math-field {
+  margin: 0 3px 10px 3px;
+}

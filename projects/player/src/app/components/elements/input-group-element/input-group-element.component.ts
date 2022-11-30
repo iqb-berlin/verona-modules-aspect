@@ -17,6 +17,7 @@ import { ValidationService } from '../../../services/validation.service';
 import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { UnitStateService } from '../../../services/unit-state.service';
+import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
 
 @Component({
   selector: 'aspect-input-group-element',
@@ -32,6 +33,7 @@ export class InputGroupElementComponent extends ElementFormGroupDirective implem
   RadioButtonGroupComplexElement!: RadioButtonGroupComplexElement;
   DropdownElement!: DropdownElement;
   HotspotImageElement!: HotspotImageElement;
+  MathFieldElement!: MathFieldElement;
 
   constructor(
     public unitStateService: UnitStateService,

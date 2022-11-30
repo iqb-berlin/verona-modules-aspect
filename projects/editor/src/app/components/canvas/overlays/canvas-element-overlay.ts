@@ -35,13 +35,17 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
+
     if (this.childComponent.instance instanceof GeometryComponent) {
       this.childComponent.instance.appDefinition = (this.element as GeometryElement).appDefinition;
     }
+
     this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
+
     if (this.childComponent.instance instanceof FormElementComponent) {
       (this.childComponent.instance as FormElementComponent).elementFormControl.setValue(this.element.value);
     }
+
     // DropList keeps a special viewModel variable, which needs to be updated
     if (this.childComponent.instance instanceof DropListComponent) {
       (this.childComponent.instance as DropListComponent).viewModel = this.element.value as DragNDropValueObject[];

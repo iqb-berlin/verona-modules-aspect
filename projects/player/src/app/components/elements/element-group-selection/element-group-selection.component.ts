@@ -16,7 +16,10 @@ export class ElementGroupSelectionComponent implements OnInit {
     { name: 'mediaPlayerGroup', types: ['audio', 'video'] },
     {
       name: 'inputGroup',
-      types: ['checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images', 'dropdown', 'hotspot-image']
+      types: [
+        'checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images',
+        'dropdown', 'hotspot-image', 'math-field'
+      ]
     },
     { name: 'compoundGroup', types: ['cloze', 'likert'] },
     { name: 'textGroup', types: ['text'] },

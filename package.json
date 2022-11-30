@@ -25,7 +25,16 @@
       "project": "./tsconfig.json"
     },
     "rules": {
-      "class-methods-use-this": ["error", { "exceptMethods": ["getElementComponent", "getNewOptionLabel", "transform"] }]
+      "class-methods-use-this": [
+        "error",
+        {
+          "exceptMethods": [
+            "getElementComponent",
+            "getNewOptionLabel",
+            "transform"
+          ]
+        }
+      ]
     },
     "overrides": [
       {

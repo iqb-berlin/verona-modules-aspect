@@ -205,5 +205,9 @@
            (input)="updateModel.emit({ property: 'customToolBar', value: $any($event.target).value })">
   </mat-form-field>
 
-
+  <mat-checkbox *ngIf="combinedProperties.enableModeSwitch !== undefined"
+                [checked]="$any(combinedProperties.enableModeSwitch)"
+                (change)="updateModel.emit({ property: 'enableModeSwitch', value: $event.checked })">
+    {{'propertiesPanel.enableModeSwitch' | translate }}
+  </mat-checkbox>
 </div>

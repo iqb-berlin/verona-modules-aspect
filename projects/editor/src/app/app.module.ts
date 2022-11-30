@@ -6,6 +6,7 @@ import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
 import { NgxTiptapModule } from 'ngx-tiptap';
+import { MathfieldElement } from 'mathlive';
 
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
@@ -98,6 +99,7 @@ import {
   BorderPropertiesComponent
 } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
+import { MathEditorModule } from 'common/math-editor.module';
 
 @NgModule({
   declarations: [
@@ -178,7 +180,8 @@ import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geoge
       }
     }),
     MatListModule,
-    MatRadioModule
+    MatRadioModule,
+    MathEditorModule
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService }

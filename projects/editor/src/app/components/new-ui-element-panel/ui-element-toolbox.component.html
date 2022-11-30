@@ -52,6 +52,11 @@
       <mat-icon>format_strikethrough</mat-icon>
       {{'toolbox.spell-correct' | translate }}
     </button>
+    <button mat-stroked-button (click)="addUIElement('math-field')"
+            draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','math-field');">
+      <mat-icon>calculate</mat-icon>
+      {{'toolbox.math-field' | translate }}
+    </button>
   </mat-expansion-panel>
   <mat-expansion-panel expanded>
     <mat-expansion-panel-header>

@@ -33,6 +33,14 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <ng-container *ngIf="combinedProperties.type === 'math-field'">
+      <mat-label>{{'preset' | translate }}</mat-label>
+      <aspect-mathlive-math-field [value]="$any(combinedProperties).value"
+                                  [enableModeSwitch]="true"
+                                  (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
+      </aspect-mathlive-math-field>
+    </ng-container>
   `
 })
 export class PresetValuePropertiesComponent {

@@ -98,6 +98,60 @@
         </mat-select>
       </mat-form-field>
     </fieldset>
+
+    <fieldset fxLayout="row">
+      <legend>Listen</legend>
+      <div class="combo-button" fxLayout="row"
+           [style.background-color]="editor.isActive('bulletList') ? 'lightgrey' : ''">
+        <button mat-icon-button matTooltip="Aufzählung" [matTooltipShowDelay]="300"
+                [class.active]="editor.isActive('bulletList')"
+                (click)="toggleBulletList()">
+          <mat-icon>format_list_bulleted</mat-icon>
+        </button>
+        <mat-select [value]="editor.getAttributes('bulletList').listStyle"
+                    (valueChange)="applyListStyle('bulletList', $event)">
+          <mat-option value="disc">disc</mat-option>
+          <mat-option value="circle">circle</mat-option>
+          <mat-option value="square">square</mat-option>
+        </mat-select>
+      </div>
+      <div class="combo-button" fxLayout="row" [style.background-color]="editor.isActive('orderedList') ? 'lightgrey' : ''">
+        <button mat-icon-button matTooltip="Aufzählung (nummeriert)" [matTooltipShowDelay]="300"
+                [class.active]="editor.isActive('orderedList')"
+                (click)="toggleOrderedList()">
+          <mat-icon>format_list_numbered</mat-icon>
+        </button>
+        <mat-select [value]="editor.getAttributes('orderedList').listStyle"
+                    (valueChange)="applyListStyle('orderedList', $event)">
+          <mat-option value="decimal"
+                      (click)="applyListStyle('orderedList', 'decimal')">
+            decimal
+          </mat-option>
+          <mat-option value="lower-latin"
+                      (click)="applyListStyle('orderedList', 'lower-latin')">
+            lower-latin
+          </mat-option>
+
+          <mat-option value="upper-latin"
+                      (click)="applyListStyle('orderedList', 'upper-latin')">
+            upper-latin
+          </mat-option>
+          <mat-option value="lower-roman"
+                      (click)="applyListStyle('orderedList', 'lower-roman')">
+            lower-roman
+          </mat-option>
+          <mat-option value="upper-roman"
+                      (click)="applyListStyle('orderedList', 'upper-roman')">
+            upper-roman
+          </mat-option>
+          <mat-option value="lower-greek"
+                      (click)="applyListStyle('orderedList', 'lower-greek')">
+            lower-greek
+          </mat-option>
+        </mat-select>
+      </div>
+    </fieldset>
+
   </div>
 
   <div fxLayout="row" fxLayoutAlign="space-between">
@@ -147,58 +201,27 @@
         <input matInput type="text" [(ngModel)]="selectedIndentSize">
       </mat-form-field>
     </fieldset>
-    <fieldset fxLayout="row">
-      <legend>Listen</legend>
-      <div class="combo-button" fxLayout="row"
-           [style.background-color]="editor.isActive('bulletList') ? 'lightgrey' : ''">
-        <button mat-icon-button matTooltip="Aufzählung" [matTooltipShowDelay]="300"
-                [class.active]="editor.isActive('bulletList')"
-                (click)="toggleBulletList()">
-          <mat-icon>format_list_bulleted</mat-icon>
-        </button>
-        <mat-select [value]="editor.getAttributes('bulletList').listStyle"
-                    (valueChange)="applyListStyle('bulletList', $event)">
-          <mat-option value="disc">disc</mat-option>
-          <mat-option value="circle">circle</mat-option>
-          <mat-option value="square">square</mat-option>
-        </mat-select>
-      </div>
-      <div class="combo-button" fxLayout="row" [style.background-color]="editor.isActive('orderedList') ? 'lightgrey' : ''">
-        <button mat-icon-button matTooltip="Aufzählung (nummeriert)" [matTooltipShowDelay]="300"
-                [class.active]="editor.isActive('orderedList')"
-                (click)="toggleOrderedList()">
-          <mat-icon>format_list_numbered</mat-icon>
-        </button>
-          <mat-select [value]="editor.getAttributes('orderedList').listStyle"
-                      (valueChange)="applyListStyle('orderedList', $event)">
-            <mat-option value="decimal"
-                        (click)="applyListStyle('orderedList', 'decimal')">
-              decimal
-            </mat-option>
-            <mat-option value="lower-latin"
-                        (click)="applyListStyle('orderedList', 'lower-latin')">
-              lower-latin
-            </mat-option>
 
-            <mat-option value="upper-latin"
-                        (click)="applyListStyle('orderedList', 'upper-latin')">
-              upper-latin
-            </mat-option>
-            <mat-option value="lower-roman"
-                        (click)="applyListStyle('orderedList', 'lower-roman')">
-              lower-roman
-            </mat-option>
-            <mat-option value="upper-roman"
-                        (click)="applyListStyle('orderedList', 'upper-roman')">
-              upper-roman
-            </mat-option>
-            <mat-option value="lower-greek"
-                        (click)="applyListStyle('orderedList', 'lower-greek')">
-              lower-greek
-            </mat-option>
-          </mat-select>
-      </div>
+    <fieldset>
+      <legend>Bild</legend>
+      <button mat-icon-button matTooltip="Bild in Zeile einfügen" [matTooltipShowDelay]="300"
+              (click)="insertImage()">
+        <mat-icon>burst_mode</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Bild in eigenem Absatz einfügen" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('none')">
+        <mat-icon>image</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Bild rechts einfügen" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('right')">
+        <mat-icon style="transform: scaleX(-1);">art_track</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Bild links einfügen" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('left')">
+        <mat-icon>art_track</mat-icon>
+      </button>
     </fieldset>
+
     <fieldset>
       <legend>Sonderelemente</legend>
       <button mat-icon-button class="special-chars-button" matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
@@ -253,22 +276,6 @@
         <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
         <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
       </mat-menu>
-      <button mat-icon-button matTooltip="Bild in Zeile einfügen" [matTooltipShowDelay]="300"
-              (click)="insertImage()">
-        <mat-icon>burst_mode</mat-icon>
-      </button>
-      <button mat-icon-button matTooltip="Bild in eigenem Absatz einfügen" [matTooltipShowDelay]="300"
-              (click)="insertBlockImage('none')">
-        <mat-icon>image</mat-icon>
-      </button>
-      <button mat-icon-button matTooltip="Bild rechts einfügen" [matTooltipShowDelay]="300"
-              (click)="insertBlockImage('right')">
-        <mat-icon style="transform: scaleX(-1);">art_track</mat-icon>
-      </button>
-      <button mat-icon-button matTooltip="Bild links einfügen" [matTooltipShowDelay]="300"
-              (click)="insertBlockImage('left')">
-        <mat-icon>art_track</mat-icon>
-      </button>
       <button mat-icon-button matTooltip="Zitat" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive('blockquote')"
               (click)="toggleBlockquote()">

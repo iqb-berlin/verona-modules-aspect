@@ -77,7 +77,7 @@ export class VeronaPostService {
       LogService.debug('player: sendVopReadyNotification', playerMetadata);
       this.send({
         type: 'vopReadyNotification',
-        metadata: playerMetadata
+        ...playerMetadata
       });
     } else {
       LogService.warn('player: no playerMetadata defined');

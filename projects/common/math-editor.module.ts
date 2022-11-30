@@ -12,7 +12,8 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
   selector: 'aspect-mathlive-math-field',
   template: `
     <mat-button-toggle-group *ngIf="enableModeSwitch"
-                             [value]="this.mathFieldElement.mode" (change)="setParseMode($event)">
+                             [value]="mathFieldElement.mode"
+                             (change)="setParseMode($event)">
       <mat-button-toggle value="math">Formel</mat-button-toggle>
       <mat-button-toggle value="text">Text</mat-button-toggle>
     </mat-button-toggle-group>

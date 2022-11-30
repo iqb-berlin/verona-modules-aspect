@@ -9,6 +9,7 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
 @Component({
   selector: 'aspect-math-field',
   template: `
+    <label>{{elementModel.label}}</label><br>
     <aspect-mathlive-math-field [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
                                 [enableModeSwitch]="elementModel.enableModeSwitch"
                                 (input)="elementFormControl.setValue($any($event.target).value)"

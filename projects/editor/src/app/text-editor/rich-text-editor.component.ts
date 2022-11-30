@@ -11,7 +11,6 @@ import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
-import { Image } from '@tiptap/extension-image';
 import { Blockquote } from '@tiptap/extension-blockquote';
 import { Document } from '@tiptap/extension-document';
 import { Text } from '@tiptap/extension-text';
@@ -21,6 +20,8 @@ import { Italic } from '@tiptap/extension-italic';
 import { Strike } from '@tiptap/extension-strike';
 import { FileService } from 'common/services/file.service';
 import ButtonComponentExtension from 'editor/src/app/text-editor/angular-node-views/button-component-extension';
+import { BlockImage } from 'editor/src/app/text-editor/extensions/block-image';
+import { InlineImage } from 'editor/src/app/text-editor/extensions/inline-image';
 import { AnchorId } from './extensions/anchorId';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
@@ -75,13 +76,8 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     BulletListExtension,
     OrderedListExtension,
     HangingIndent,
-    Image.configure({
-      inline: true,
-      allowBase64: true,
-      HTMLAttributes: {
-        style: 'display: inline-block; height: 1em; vertical-align: middle'
-      }
-    }),
+    InlineImage,
+    BlockImage,
     Blockquote
   ];
 
@@ -223,7 +219,24 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   async insertImage(): Promise<void> {
     const mediaSrc = await FileService.loadImage();
-    this.editor.commands.setImage({ src: mediaSrc });
+    this.editor.commands.insertInlineImage({ src: mediaSrc });
+  }
+
+  async insertBlockImage(alignment: 'none' | 'right' | 'left'): Promise<void> {
+    const mediaSrc = await FileService.loadImage();
+    switch (alignment) {
+      case 'left': {
+        this.editor.commands.insertBlockImage({ src: mediaSrc, style: 'float: left; margin-right: 10px;' });
+        break;
+      }
+      case 'right': {
+        this.editor.commands.insertBlockImage({ src: mediaSrc, style: 'float: right; margin-left: 10px' });
+        break;
+      }
+      default: {
+        this.editor.commands.insertBlockImage({ src: mediaSrc });
+      }
+    }
   }
 
   toggleBlockquote(): void {
@@ -246,7 +259,6 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   }
 
   insertButton() {
-    console.log('inserting button');
     this.editor.commands.insertContent('<aspect-nodeview-button></aspect-nodeview-button>');
     this.editor.commands.focus();
   }

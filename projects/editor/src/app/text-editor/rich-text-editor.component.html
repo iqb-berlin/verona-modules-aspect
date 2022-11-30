@@ -253,9 +253,21 @@
         <button mat-button (click)="insertSpecialChar('&hearts;')">&hearts;</button>
         <button mat-button (click)="insertSpecialChar('&diams;')">&diams;</button>
       </mat-menu>
-      <button mat-icon-button matTooltip="Bild" [matTooltipShowDelay]="300"
+      <button mat-icon-button matTooltip="Bild in Zeile einfügen" [matTooltipShowDelay]="300"
               (click)="insertImage()">
+        <mat-icon>burst_mode</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Bild in eigenem Absatz einfügen" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('none')">
         <mat-icon>image</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Bild rechts einfügen" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('right')">
+        <mat-icon style="transform: scaleX(-1);">art_track</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Bild links einfügen" [matTooltipShowDelay]="300"
+              (click)="insertBlockImage('left')">
+        <mat-icon>art_track</mat-icon>
       </button>
       <button mat-icon-button matTooltip="Zitat" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive('blockquote')"

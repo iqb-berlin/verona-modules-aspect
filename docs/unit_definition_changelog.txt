@@ -59,8 +59,6 @@ iqb-aspect-definition@1.0.0
 - ButtonElement: action +highlightText
                  param +string
 - Section: +activeAfterIdDelay: number
-
-3.9.0
 - DropListElement: +deleteDroppedItemWithSameID
 - DropListValueElement:
     + returnToOriginOnReplacement?: boolean;

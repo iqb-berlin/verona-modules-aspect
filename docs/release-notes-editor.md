@@ -10,7 +10,13 @@ Editor
   Die Bereiche können als Ellipsen, Rechtecke und Dreiecke angelegt werden.
   Ihre Position, Größe, Drehung, Farbe und Rahmenbreite kann eingestellt werden.
   Das Element kann als Pflichtfeld ausgezeichnet werden.
-- Navigationsknöpfe können nun als Lückentextelemente verwendet werden.
+- Neues Element "Formel"
+  Ermöglicht Formeleingabe in vergleichbarer Form zu einem Eingabefeld.
+  In der Standardeinstellung lassen sich nur Formeln eingeben. Wenn "Eingabemodes änderbar"
+  ausgewählt ist, erscheinen Knöpfe über dem Feld und der Eingabemodus kann auf 'Text'
+  umgestellt werden. Das Einfügen von Formeln funktioniert nur im Formel-Modus!
+  Für die Vorbelegung ist der duale Modus permanent aktiv.
+- Knöpfe können nun als Lückentextelemente verwendet werden.
   Sie haben als Vorbelegung die Einstellung "als Hyperlink-Text darstellen".
 - "Elementinteraktion erlauben"-Schalter ermöglicht mit Elementen
   bereits im Editor zu interagieren und deren Verhalten zu überprüfen.
@@ -24,7 +30,20 @@ Editor
 - Im TextEditor können nun Bereiche markiert werden, die dann im Navigationsknopf
   über die Aktion "Textabschnitt hervorheben" ausgewählt werden können.
 - Ermöglicht die Angabe einer Verzögerung (in Millisekunden)
-  für Aktivieren von verborgenen Abschnitten  
+  für Aktivieren von verborgenen Abschnitten
+- Runderneuerte Ablegelisten
+  - Neuer Schalter "Sortierliste". Sortierlisten ermöglichen das Umsortieren der
+    Elemente und haben einen dynamischen Platzhalter.
+    Normale Listen haben einen unbewegten, versteckten Platzhalter und die gesamte Liste
+    wird farbig markiert beim *mouseover*.
+  - Neuer Schalter "Gleiche abgelegte Elemente löschen"
+    Ist dieser gesetzt und es wird ein Element mit gleicher ID in das Feld zurückgelegt, so verschwindet dieses.
+  - Neuer Schalter für Optionselemente "Verdrängen erlauben"
+    Elemente mit gesetztem Schalter werden zurück in ihre Ursprungsliste verschoben, wenn
+    ein anderes Element in ihre Liste gezogen wird.
+  - "Potentielle Ablagen hervorheben" bezieht sich nun auf alle verbundenen
+    Ablegelisten und muss nicht mehr in der Zielliste gesetzt werden.
+  - Verbesserte Formatierierung des gezogenen Elements
 
 ### Verbesserungen
 - Ermöglicht für Eingabebereiche die dynamische Anpassung der Anzahl von Zeilen
@@ -36,14 +55,6 @@ Editor
 - Definition eigener Zeichen für die Eingabehilfe
   Durch Auswahl der Option "Eigene Zeichen" öffnet sich ein Textfeld,
   in das die gewünschten Zeichen als ein Wort eingegeben werden können.
-- Runderneuerte Ablegelisten
-  - "Potentielle Ablagen hervorheben" bezieht sich nun auf alle verbundenen
-    Ablegelisten und muss nicht mehr in der Zielliste gesetzt werden.
-  - Neuer Schalter "Sortierliste". Sortierlisten ermöglichen das Umsortieren der
-    Elemente und haben einen dynamischen Platzhalter.
-    Normale Listen haben einen unbewegten, versteckten Platzhalter und die gesamte Liste
-    wird farbig markiert beim *mouseover*.
-  - Verbesserte Formatierierung des gezogenen Elements
 - Shortcuts und *Rückgängig machen* im TextEditor re-aktiviert. Das automatische
   Generieren von Listen bleibt deaktiviert.
 - GeoGebra-Elemente können nun auch durch Hochladen einer .ggb-Datei angelegt werden.

@@ -12,7 +12,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
         <input #textField matInput type="text" [value]="data.value.text">
       </mat-form-field>
       <mat-checkbox #returnToOriginOnReplacement [checked]="$any(data.value.returnToOriginOnReplacement)">
-        {{'propertiesPanel.returnToOriginOnReplacement' | translate }}
+        {{'returnToOriginOnReplacement' | translate }}
       </mat-checkbox>
       <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
       <button mat-raised-button (click)="imgSrc = null">{{ 'removeImage' | translate }}</button>

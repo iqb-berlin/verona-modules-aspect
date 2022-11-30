@@ -145,6 +145,11 @@
                 "glob": "**/*",
                 "input": "./projects/common/assets",
                 "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "./projects/common/assets/fonts/mathlive",
+                "output": "fonts"
               }
             ],
             "styles": [

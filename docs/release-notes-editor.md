@@ -27,8 +27,11 @@ Editor
   - Interaktion mit den Elementen hat keinen Einfluss auf deren Vorbelegung. Diese
     ist weiterhin ggf. im Eigenschaftsfenster zu setzen.
 - Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen
-- Im TextEditor können nun Bereiche markiert werden, die dann im Navigationsknopf
-  über die Aktion "Textabschnitt hervorheben" ausgewählt werden können.
+- Neue Kontrollelemente im Texteditor 
+  - Im TextEditor können nun Bereiche markiert werden, die dann im Navigationsknopf
+    über die Aktion "Textabschnitt hervorheben" ausgewählt werden können.
+  - Bilder können nun zusätzlich in voller Größe, in eigenem Absatz sowie mit rechts 
+    oder links umlaufendem Text angelegt werden.
 - Ermöglicht die Angabe einer Verzögerung (in Millisekunden)
   für Aktivieren von verborgenen Abschnitten
 - Runderneuerte Ablegelisten

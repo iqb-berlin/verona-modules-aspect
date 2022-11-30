@@ -37,7 +37,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              class="list-item"
              draggable="true"
              (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
-             (dragenter)="moveElementInSortList($event)"
+             (dragenter)="dragEnterItem($event)"
              [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
              [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
              [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''"
@@ -50,7 +50,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [id]="dropListValueElement.id"
              draggable="true"
              (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
-             (dragenter)="moveElementInSortList($event)"
+             (dragenter)="dragEnterItem($event)"
              [class.show-as-placeholder]="showAsPlaceholder && placeHolderIndex === index"
              [class.show-as-hidden]="hidePlaceholder && placeHolderIndex === index"
              [style.pointer-events]="dragging && elementModel.isSortList === false ? 'none' : ''">
@@ -163,15 +163,20 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     return dragImage;
   }
 
-  moveElementInSortList(event: DragEvent) {
+  dragEnterItem(event: DragEvent) {
     event.preventDefault();
     if (this.elementModel.isSortList && DropListComponent.sourceList === this) {
-      const sourceIndex: number = this.placeHolderIndex as number;
-      const targetIndex: number = Array.from((event.target as any).parentNode.children).indexOf(event.target);
-      const removedElement = this.viewModel.splice(sourceIndex, 1)[0];
-      this.viewModel.splice(targetIndex, 0, removedElement);
-      this.placeHolderIndex = targetIndex;
+      this.moveListItem(
+        this.placeHolderIndex as number,
+        Array.from((event.target as any).parentNode.children).indexOf(event.target)
+      );
     }
+  }
+
+  moveListItem(sourceIndex: number, targetIndex: number): void {
+    const removedElement = this.viewModel.splice(sourceIndex, 1)[0];
+    this.viewModel.splice(targetIndex, 0, removedElement);
+    this.placeHolderIndex = targetIndex;
   }
 
   dragEnterList(event: DragEvent) {
@@ -184,8 +189,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     } else if (DropListComponent.sourceList !== this) {
       this.viewModel.push(DropListComponent.draggedElement as DragNDropValueObject);
       const sourceList = DropListComponent.sourceList as DropListComponent;
-      sourceList.viewModel.splice(sourceList.placeHolderIndex as number, 1);
-      sourceList.elementFormControl.setValue(sourceList.viewModel);
+      DropListComponent.removeElementFromList(sourceList, sourceList.placeHolderIndex as number);
       sourceList.placeHolderIndex = undefined;
       DropListComponent.sourceList = this;
       this.placeHolderIndex = this.viewModel.length > 0 ? this.viewModel.length - 1 : 0;
@@ -197,30 +201,31 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     this.highlightValidDrop = false;
   }
 
-  drop(event: DragEvent) {
+  drop(event: DragEvent): void {
     event.preventDefault();
 
     // SortList viewModel already gets manipulated while dragging. Just set the value.
     if (DropListComponent.sourceList === this && this.elementModel.isSortList) {
       this.elementFormControl.setValue(this.viewModel);
-    // if drop is allowed that means item transfer
-    } else if (this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) {
-      const valueIDs = this.elementFormControl.value.map((valueValue: DragNDropValueObject) => valueValue.id);
-      const isIDAlreadyPresent = valueIDs.includes(DropListComponent.draggedElement?.id);
-      if (!isIDAlreadyPresent) {
+      this.dragEnd();
+      return;
+    }
+    // if drop is allowed that means item transfer between non-sort lists
+    if (this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) {
+      if (!this.isIDAlreadyPresent()) {
         if (this.elementModel.onlyOneItem &&
             this.viewModel.length > 0 &&
-            this.viewModel[0].returnToOriginOnReplacement) {
+            this.viewModel[0].returnToOriginOnReplacement) { // move replaced item back to origin
           const originListComponent = DropListComponent.dragAndDropComponents[this.viewModel[0].originListID as string];
           DropListComponent.addElementToList(originListComponent, this.viewModel[0]);
           DropListComponent.removeElementFromList(this, 0);
         }
-        DropListComponent.addElementToList(this, DropListComponent.draggedElement as DragNDropValueObject);
-        if (!DropListComponent.sourceList?.elementModel.copyOnDrop) {
+        if (!DropListComponent.sourceList?.elementModel.copyOnDrop) { // remove source item if not copy
           DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
             DropListComponent.sourceList?.placeHolderIndex as number);
         }
-      } else if (this.elementModel.deleteDroppedItemWithSameID) {
+        DropListComponent.addElementToList(this, DropListComponent.draggedElement as DragNDropValueObject);
+      } else if (this.elementModel.deleteDroppedItemWithSameID) { // put back (return) item
         DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
           DropListComponent.sourceList?.placeHolderIndex as number);
       }
@@ -228,10 +233,39 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     this.dragEnd();
   }
 
+  /* When
+  - same list
+  - connected list
+  - onlyOneItem && itemcount = 0 ||
+  onlyOneItem && itemcount = 1 && this.viewModel[0].returnToOriginOnReplacement)  // verdraengen
+  - (! id already present) || id already present && deleteDroppedItemWithSameID // zuruecklegen
+   */
   isDropAllowed(connectedDropLists: string[]): boolean {
-    return (DropListComponent.sourceList === this) ||
-      ((connectedDropLists as string[]).includes(this.elementModel.id) &&
-       !(this.elementModel.onlyOneItem && this.viewModel.length > 0 && !this.viewModel[0].returnToOriginOnReplacement));
+    const sameList = DropListComponent.sourceList === this;
+    const isConnectedList = (connectedDropLists as string[]).includes(this.elementModel.id);
+    return (sameList) || (isConnectedList &&
+                             !this.isOnlyOneItemAndNoReplacingOrReturning() &&
+                             !this.isIDPresentAndNoReturning());
+  }
+
+  isIDPresentAndNoReturning(): boolean {
+    return this.isIDAlreadyPresent() && !(this.elementModel.deleteDroppedItemWithSameID);
+  }
+
+  /* No replacement in sort lists: operation should only move the placeholder
+     until the actual drop. By allowing elements to transfer while dragging we create
+     all kinds of problems and unwanted behaviour, like having all touched lists generate change events.
+   */
+  isOnlyOneItemAndNoReplacingOrReturning(): boolean {
+    return this.elementModel.onlyOneItem && this.viewModel.length > 0 &&
+      !((this.viewModel[0].returnToOriginOnReplacement && !this.elementModel.isSortList) ||
+       (this.elementModel.deleteDroppedItemWithSameID &&
+         DropListComponent.draggedElement?.id === this.viewModel[0].id));
+  }
+
+  isIDAlreadyPresent(): boolean {
+    const listValueIDs = this.elementFormControl.value.map((valueValue: DragNDropValueObject) => valueValue.id);
+    return listValueIDs.includes(DropListComponent.draggedElement?.id);
   }
 
   static addElementToList(listComponent: DropListComponent, element: DragNDropValueObject, targetIndex?: number): void {
@@ -252,7 +286,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     listComponent.elementFormControl.setValue(listComponent.viewModel);
   }
 
-  dragEnd(event?: DragEvent) {
+  dragEnd(event?: DragEvent): void {
     event?.preventDefault();
 
     Object.entries(DropListComponent.dragAndDropComponents)

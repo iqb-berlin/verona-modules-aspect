@@ -190,7 +190,7 @@
     "hasDynamicRowCount": "Dynamische Zeilen",
     "expectedCharactersCount": "Erwartete Zeichenanzahl",
     "isSortList": "Sortierliste",
-    "deleteDroppedItemWithSameID": "Gleiche abgelegte Elemente löschen",
+    "deleteDroppedItemWithSameID": "Zurücklegen erlauben",
     "deleteDroppedItemWithSameIDTooltip": "Elemente mit gleicher ID werden beim Zurücklegen gelöscht.",
     "setElementInteractionEnabled": "Elementinteraktion erlauben",
     "enableModeSwitch": "Eingabemodus änderbar"

@@ -14,7 +14,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.font-size.px]="elementModel.styling.fontSize"
          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+         [style.line-height.%]="elementModel.styling.lineHeight">
       <label id="radio-group-label"
              [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
@@ -28,8 +29,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                                                   elementFormControl.value !== null &&
                                                   elementFormControl.value !== i }"
                           [value]="i"
-                          [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                          [style.line-height.%]="elementModel.styling.lineHeight">
+                          [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'">
           <div class="radio-button-label" [innerHTML]="option.text | safeResourceHTML"></div>
         </mat-radio-button>
         <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
@@ -40,12 +40,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [
-    ':host ::ng-deep .mat-radio-label {white-space: normal}',
-    ':host ::ng-deep .mat-radio-label .mat-radio-label-content {padding-left: 10px}',
-    'mat-radio-button {margin-bottom: 6px; margin-right: 15px}',
-    '.error-message { font-size: 75% }',
-    ':host ::ng-deep .strike .mat-radio-label {text-decoration: line-through}',
-    ':host ::ng-deep .mat-radio-label {align-items: baseline}',
+    ':host ::ng-deep .mat-radio-label {white-space: normal;}',
+    ':host ::ng-deep .mat-radio-label .mat-radio-label-content {padding-left: 10px;}',
+    'mat-radio-button {margin-bottom: 6px; margin-right: 15px;}',
+    '.error-message {font-size: 75%; line-height: 100%;}',
+    ':host ::ng-deep .strike .mat-radio-label {text-decoration: line-through;}',
+    ':host ::ng-deep .mat-radio-label {align-items: baseline;}',
     ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}',
     '.radio-button-label {pointer-events: none;}'
   ]

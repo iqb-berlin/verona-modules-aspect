@@ -23,6 +23,7 @@ Player
 - Verbessert die Performanz von GeoGebra-Elementen
 - Ändert die Metadaten entsprechend der Verona Inferfaces Specification
 - Zeigt Ladeanimationen während des Ladens von GeoGebra-, Video- und Audioelementen
+- Wendet die angegebene Zeilenhöhe bei Optionsfeldern auch auf die Beschriftung an
 
 ### Fehlerbehebungen
 - Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an

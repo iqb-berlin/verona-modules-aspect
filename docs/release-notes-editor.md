@@ -64,6 +64,7 @@ Editor
 - Die Erweiterung der Aktionsmöglichkeit eines Navigationsknopfs 
   führt zur Umbenennung in "Knopf"
 - Zeigt Ladeanimation bei GeoGebra-, Video- und Audioelementen
+- Wendet die angegebene Zeilenhöhe bei Optionsfeldern auch auf die Beschriftung an
 
 ### Fehlerbehebungen
 - "Verbundene Ablegelisten"-Menu öffnet sich beim ersten Click und zeigt immer die

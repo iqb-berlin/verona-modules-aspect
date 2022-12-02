@@ -13,6 +13,7 @@ import { TextAlign } from '@tiptap/extension-text-align';
 import { Heading } from '@tiptap/extension-heading';
 import { Blockquote } from '@tiptap/extension-blockquote';
 import { Document } from '@tiptap/extension-document';
+import { History } from '@tiptap/extension-history';
 import { Text } from '@tiptap/extension-text';
 import { ListItem } from '@tiptap/extension-list-item';
 import { Bold } from '@tiptap/extension-bold';
@@ -55,7 +56,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     Document, Text, ListItem,
     Underline, Superscript, Subscript,
     TextStyle, Color,
-    Bold, Italic, Strike,
+    Bold, Italic, Strike, History,
     Highlight.configure({
       multicolor: true
     }),

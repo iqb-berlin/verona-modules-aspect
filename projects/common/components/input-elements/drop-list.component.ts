@@ -14,8 +14,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [fxLayout]="elementModel.orientation | droplistLayout"
          [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
          [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                        'horizontal-orientation' : elementModel.orientation === 'horizontal',
-                        'clozeContext': clozeContext}"
+                       'horizontal-orientation' : elementModel.orientation === 'horizontal',
+                       'clozeContext': clozeContext}"
          [style.min-height.px]="elementModel.position?.useMinHeight ? elementModel.height : undefined"
          [style.color]="elementModel.styling.fontColor"
          [style.font-family]="elementModel.styling.font"
@@ -25,7 +25,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [style.backgroundColor]="elementModel.styling.backgroundColor"
          [class.errors]="elementFormControl.errors && elementFormControl.touched"
-         [style.outline-color]="elementModel.highlightReceivingDropListColor"
+         [style.border-color]="elementModel.highlightReceivingDropListColor"
          [class.highlight-valid-drop]="highlightValidDrop"
          [class.highlight-as-receiver]="highlightAsReceiver"
          tabindex="0"
@@ -63,10 +63,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   `,
   styles: [
     '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); border-radius: 5px;}',
-    ':not(.clozeContext).list {padding: 3px;}',
-    ':not(.clozeContext) .list-item {border-radius: 5px; padding: 10px;}',
-    '.clozeContext .list-item {border-radius: 5px; padding: 0 5px; text-align: center;}',
-    'img.list-item {align-self: start;}',
+    '.list {padding: 2px;}',
+    '.list-item {border-radius: 5px;}',
+    ':not(.clozeContext) .list-item {padding: 10px;}',
+    '.clozeContext .list-item {padding: 0 5px; text-align: center; line-height: 130%;}',
+    'img.list-item {align-self: start; padding: 2px !important;}',
     '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',
     '.errors {border: 2px solid #f44336;}',
@@ -76,7 +77,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list-item:active {cursor: grabbing}',
     '.show-as-placeholder {opacity: 0.5 !important; pointer-events: none;}',
     '.highlight-valid-drop {background-color: lightblue !important;}',
-    '.highlight-as-receiver {border: 2px solid;}',
+    '.highlight-as-receiver {padding: 0; border: 2px solid;}',
     '.show-as-hidden {visibility: hidden;}'
   ]
 })
@@ -331,7 +332,6 @@ export class DropListLayoutAlignPipe implements PipeTransform {
   transform(orientation: string): string {
     switch (orientation) {
       case 'horizontal':
-        return 'start start';
       case 'vertical':
         return 'start stretch';
       case 'flex':

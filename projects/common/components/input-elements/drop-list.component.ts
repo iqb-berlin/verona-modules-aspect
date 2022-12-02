@@ -128,7 +128,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
       if (this.elementModel.isSortList) {
         this.showAsPlaceholder = true;
       } else {
-        this.hidePlaceholder = true;
+        if (!this.elementModel.copyOnDrop) this.hidePlaceholder = true;
         this.highlightValidDrop = true;
       }
 
@@ -205,30 +205,42 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   drop(event: DragEvent): void {
     event.preventDefault();
 
-    // SortList viewModel already gets manipulated while dragging. Just set the value.
-    if (DropListComponent.sourceList === this && this.elementModel.isSortList) {
-      this.elementFormControl.setValue(this.viewModel);
+    if (DropListComponent.sourceList === this) {
+      // SortList viewModel already gets manipulated while dragging. Just set the value.
+      if (this.elementModel.isSortList) this.elementFormControl.setValue(this.viewModel);
       this.dragEnd();
       return;
     }
+
     // if drop is allowed that means item transfer between non-sort lists
     if (this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) {
-      if (!this.isIDAlreadyPresent()) {
-        if (this.elementModel.onlyOneItem &&
-            this.viewModel.length > 0 &&
-            this.viewModel[0].returnToOriginOnReplacement) { // move replaced item back to origin
-          const originListComponent = DropListComponent.dragAndDropComponents[this.viewModel[0].originListID as string];
-          DropListComponent.addElementToList(originListComponent, this.viewModel[0]);
-          DropListComponent.removeElementFromList(this, 0);
-        }
+      if (!DropListComponent.isItemIDAlreadyPresent(DropListComponent.draggedElement?.id as string, this.elementFormControl.value) &&
+          !(this.elementModel.onlyOneItem && this.viewModel.length > 0)) { // normal drop
         if (!DropListComponent.sourceList?.elementModel.copyOnDrop) { // remove source item if not copy
           DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
             DropListComponent.sourceList?.placeHolderIndex as number);
         }
         DropListComponent.addElementToList(this, DropListComponent.draggedElement as DragNDropValueObject);
-      } else if (this.elementModel.deleteDroppedItemWithSameID) { // put back (return) item
+      } else if (DropListComponent.isItemIDAlreadyPresent(DropListComponent.draggedElement?.id as string, this.elementFormControl.value) &&
+                 this.elementModel.deleteDroppedItemWithSameID) { // put back (return) item
         DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
           DropListComponent.sourceList?.placeHolderIndex as number);
+      } else if (this.elementModel.onlyOneItem && this.viewModel.length > 0 &&
+                 this.viewModel[0].returnToOriginOnReplacement) { // replace
+        const originListComponent = DropListComponent.dragAndDropComponents[this.viewModel[0].originListID as string];
+        const isItemIDAlreadyPresent =
+          DropListComponent.isItemIDAlreadyPresent(this.viewModel[0].id, originListComponent.elementFormControl.value);
+        if (!(isItemIDAlreadyPresent && originListComponent.elementModel.deleteDroppedItemWithSameID)) { // dont add to origin if dupe
+          DropListComponent.addElementToList(originListComponent, this.viewModel[0]);
+        }
+        DropListComponent.removeElementFromList(this, 0);
+        DropListComponent.addElementToList(this, DropListComponent.draggedElement as DragNDropValueObject);
+        if (!DropListComponent.sourceList?.elementModel.copyOnDrop) { // remove source item if not copy
+          DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
+            DropListComponent.sourceList?.placeHolderIndex as number);
+        }
+      } else {
+        console.warn('Valid drop but no handler found. This is most likely a bug!');
       }
     }
     this.dragEnd();
@@ -250,7 +262,8 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   }
 
   isIDPresentAndNoReturning(): boolean {
-    return this.isIDAlreadyPresent() && !(this.elementModel.deleteDroppedItemWithSameID);
+    return DropListComponent.isItemIDAlreadyPresent(DropListComponent.draggedElement?.id as string, this.elementFormControl.value) &&
+      !(this.elementModel.deleteDroppedItemWithSameID);
   }
 
   /* No replacement in sort lists: operation should only move the placeholder
@@ -264,9 +277,9 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
          DropListComponent.draggedElement?.id === this.viewModel[0].id));
   }
 
-  isIDAlreadyPresent(): boolean {
-    const listValueIDs = this.elementFormControl.value.map((valueValue: DragNDropValueObject) => valueValue.id);
-    return listValueIDs.includes(DropListComponent.draggedElement?.id);
+  static isItemIDAlreadyPresent(itemID: string, valueList: DragNDropValueObject[]): boolean {
+    const listValueIDs = valueList.map((valueValue: DragNDropValueObject) => valueValue.id);
+    return listValueIDs.includes(itemID);
   }
 
   static addElementToList(listComponent: DropListComponent, element: DragNDropValueObject, targetIndex?: number): void {

@@ -44,11 +44,8 @@ import { ValueChangeElement } from 'common/models/elements/element';
     </div>
   `,
   styles: [
-    ':host {vertical-align: middle;}',
-    ':host > div {border-radius: 3px;}',
-    ':host div > * {display: inline-block; padding-bottom: 2px; box-sizing: border-box;}',
-    'aspect-drop-list, aspect-text-field-simple {width: 100%; height: 100%;}',
-    'aspect-drop-list {line-height: unset; vertical-align: top;}'
+    ':host div > * {display: inline-block;}',
+    'aspect-drop-list {vertical-align: middle;}'
   ]
 })
 export class CompoundChildOverlayComponent { // TODO rename to ClozeChildOverlay

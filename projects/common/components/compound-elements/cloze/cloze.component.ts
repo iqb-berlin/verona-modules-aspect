@@ -155,14 +155,14 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
                [style.height]="'1em'"
                [style.vertical-align]="'middle'">
         </ng-container>
-        <span *ngIf="['ToggleButton', 'DropList', 'TextField', 'Button'] | arrayIncludes:subPart.type">
-          <aspect-compound-child-overlay [style.display]="'inline-block'"
-                                         [parentForm]="parentForm"
-                                         [element]="$any(subPart).attrs.model"
-                                         [editorMode]="editorMode"
-                                         (elementSelected)="childElementSelected.emit($event)">
-          </aspect-compound-child-overlay>
-        </span>
+        <aspect-compound-child-overlay
+          *ngIf="['ToggleButton', 'DropList', 'TextField', 'Button'] | arrayIncludes:subPart.type"
+          [style.display]="'inline-block'"
+         [parentForm]="parentForm"
+         [element]="$any(subPart).attrs.model"
+         [editorMode]="editorMode"
+         (elementSelected)="childElementSelected.emit($event)">
+        </aspect-compound-child-overlay>
       </ng-container>
     </ng-template>
   `,

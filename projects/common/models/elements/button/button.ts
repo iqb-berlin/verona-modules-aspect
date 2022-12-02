@@ -6,7 +6,7 @@ import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 
 export class ButtonElement extends UIElement {
-  label: string = 'Navigationsknopf';
+  label: string = 'Knopf';
   imageSrc: string | null = null;
   asLink: boolean = false;
   action: null | ButtonAction = null;

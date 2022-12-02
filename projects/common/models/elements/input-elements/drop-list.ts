@@ -44,7 +44,7 @@ export class DropListElement extends InputElement {
       UIElement.initPositionProps({ useMinHeight: true, ...element.position as Partial<PositionProperties> }) :
       undefined;
     this.styling = UIElement.initStylingProps({
-      backgroundColor: '#f4f4f2',
+      backgroundColor: '#ededed',
       itemBackgroundColor: '#c9e0e0',
       ...element.styling
     });

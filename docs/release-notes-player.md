@@ -5,6 +5,11 @@ Player
 - Darstellung und Verhalten der Warnmeldung von Formelelementen
   verhalten sich analog zu anderen Elementen
 
+### Fehlerbehebungen
+- Behebt das versehentliche Löschen von Text beim Entfernen von 
+  Markierungen aus Textelementen (im Firefox-Browser)  
+
+
 ## 1.28.0
 
 ### Neue Funktionen

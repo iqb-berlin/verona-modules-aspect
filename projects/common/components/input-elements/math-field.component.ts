@@ -15,10 +15,12 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
                                 (input)="elementFormControl.setValue($any($event.target).value)"
                                 (focusout)="elementFormControl.markAsTouched()">
     </aspect-mathlive-math-field>
-    <mat-error *ngIf="elementFormControl.errors">
+    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
+               class="error-message">
       {{elementFormControl.errors | errorTransform: elementModel}}
     </mat-error>
-  `
+  `,
+  styles: ['.error-message {font-size: 75%; margin-top: 15px; margin-left: 10px;}']
 })
 export class MathFieldComponent extends FormElementComponent {
   @Input() elementModel!: MathFieldElement;

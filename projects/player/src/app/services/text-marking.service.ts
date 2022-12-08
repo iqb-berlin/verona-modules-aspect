@@ -109,52 +109,43 @@ export class TextMarkingService {
   private static applyRange(
     range: Range, selection: Selection, clear: boolean, color: string
   ): void {
-    if (range.startContainer === range.endContainer) {
+    const nodes: Node[] = TextMarkingService.getSelectedNodes(range, selection);
+    if ((range.startContainer === range.endContainer) && range.startContainer.nodeType === Node.TEXT_NODE) {
       if (clear) {
-        TextMarkingService.clearMarkingFromNode(range);
+        if (range.startContainer.nodeType === Node.TEXT_NODE) {
+          TextMarkingService.clearMarkingFromNode(range);
+        } else {
+          TextMarkingService.clearNodes(nodes, range);
+        }
       } else {
         TextMarkingService.markNode(range, color);
       }
+    } else if (clear) {
+      TextMarkingService.clearNodes(nodes, range);
     } else {
-      const nodes: Node[] = TextMarkingService.getSelectedNodes(range, selection);
-      if (clear) {
-        TextMarkingService.clearNodes(nodes, range);
-      } else {
-        TextMarkingService.markNodes(nodes, range, color);
-      }
+      TextMarkingService.markNodes(nodes, range, color);
     }
   }
 
   private static getSelectedNodes = (range: Range, selection: Selection): Node[] => {
+    let startContainerNodes: Node[] = [];
+    const endContainerNodes: Node[] = [];
     const nodes: Node[] = TextMarkingService.findNodes(range.commonAncestorContainer.childNodes, selection);
-    // When the user finishes selecting between paragraphs and the selection happens from
-    // back to front, Firefox does not consider the start container as a selected child node.
-    // Therefore, it is added to the list of selected nodes at the beginning.
+    // The range is structured differently in FF and Chrome.
+    // With the same selection startcontainer and endcontainer differ.
+    // Under certain conditions, startcontainer and endcontainer are not present
+    // in the list of child nodes in FF and must therefore be added here
     if (!nodes.includes(range.startContainer)) {
-      nodes.unshift(range.startContainer);
-    }
-    // When the user finishes selecting between paragraphs the browser does not consider the end container
-    // as a selected child node. Therefore, it is added to the list of selected nodes at the end.
-    if (range.endOffset === 0) {
-      const endContainer = TextMarkingService.getEndContainer(range.endContainer);
-      if (endContainer && !nodes.includes(endContainer)) {
-        nodes.push(endContainer);
+      if (range.startContainer.nodeType === Node.TEXT_NODE) {
+        startContainerNodes.push(range.startContainer);
+      } else {
+        startContainerNodes = TextMarkingService.findNodes(range.startContainer.childNodes, selection);
       }
     }
-    return nodes;
-  };
-
-  private static getEndContainer = (endContainer: Node): Node | null => {
-    if (endContainer.nodeType === Node.ELEMENT_NODE) {
-      if (endContainer.childNodes.length) {
-        return (endContainer.childNodes[0]);
-      }
-      return endContainer;
+    if (range.endOffset === 0 && !nodes.includes(range.endContainer) && !range.endContainer.childNodes.length) {
+      endContainerNodes.push(range.endContainer);
     }
-    if (endContainer.nodeType === Node.TEXT_NODE) {
-      return endContainer;
-    }
-    return null;
+    return [...startContainerNodes, ...nodes, ...endContainerNodes];
   };
 
   private static clearMarkingFromNode(range: Range): void {

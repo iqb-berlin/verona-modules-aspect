@@ -1,5 +1,9 @@
 Player
 ======
+## 1.28.1
+### Verbesserungen
+- Darstellung und Verhalten der Warnmeldung von Formelelementen
+  verhalten sich analog zu anderen Elementen
 
 ## 1.28.0
 

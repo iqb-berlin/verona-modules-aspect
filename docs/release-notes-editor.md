@@ -1,5 +1,9 @@
 Editor
 ======
+## 1.35.1
+
+### Verbesserungen
+- Das Aussehen von Formelelementen kann im Eigenschaftsfenster geändert werden   
 
 ## 1.35.0
 

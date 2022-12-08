@@ -33,7 +33,7 @@ export class MathFieldElement extends InputElement {
     return {
       id: this.id,
       type: 'string',
-      format: '',
+      format: 'latex',
       multiple: false,
       nullable: !this.value && this.value !== '',
       values: [],

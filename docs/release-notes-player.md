@@ -1,5 +1,9 @@
 Player
 ======
+## 1.28.2
+### Verbesserungen 
+- Ermöglicht die Interaktion mit Elementen, die sich hinter einem Rahmenelement befinden
+
 ## 1.28.1
 ### Verbesserungen
 - Darstellung und Verhalten der Warnmeldung von Formelelementen

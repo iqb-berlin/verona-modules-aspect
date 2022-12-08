@@ -4,6 +4,7 @@
   <ng-container *ngFor="let element of section.elements">
     <aspect-element-group-selection
         class="static-element fixed-size-content"
+        [class.no-pointer-events]="element.type === 'frame'"
         [style.width.px]="element.width"
         [style.height.px]="element.height"
         [style.left.px]="element.position.xPosition"
@@ -25,23 +26,24 @@
       [style.backgroundColor]="section.backgroundColor">
     <ng-container *ngFor="let element of section.elements">
       <aspect-element-group-selection
-          [style.min-width.px]="element.width"
-          [style.min-height.px]="element.position.useMinHeight ? element.height : null"
-          [style.margin-left.px]="element.position.marginLeft"
-          [style.margin-right.px]="element.position.marginRight"
-          [style.margin-top.px]="element.position.marginTop"
-          [style.margin-bottom.px]="element.position.marginBottom"
-          [style.grid-column-start]="element.position.gridColumn"
-          [style.grid-column-end]="element.position.gridColumn ?
-            element.position.gridColumn + element.position.gridColumnRange:
-            null"
-          [style.grid-row-start]="element.position.gridRow"
-          [style.grid-row-end]="element.position.gridRow ?
-            element.position.gridRow + element.position.gridRowRange:
-            null"
-          [style.z-index]="element.position?.zIndex"
-          [elementModel]="element"
-          [pageIndex]="pageIndex">
+        [class.no-pointer-events]="element.type === 'frame'"
+        [style.min-width.px]="element.width"
+        [style.min-height.px]="element.position.useMinHeight ? element.height : null"
+        [style.margin-left.px]="element.position.marginLeft"
+        [style.margin-right.px]="element.position.marginRight"
+        [style.margin-top.px]="element.position.marginTop"
+        [style.margin-bottom.px]="element.position.marginBottom"
+        [style.grid-column-start]="element.position.gridColumn"
+        [style.grid-column-end]="element.position.gridColumn ?
+          element.position.gridColumn + element.position.gridColumnRange:
+          null"
+        [style.grid-row-start]="element.position.gridRow"
+        [style.grid-row-end]="element.position.gridRow ?
+          element.position.gridRow + element.position.gridRowRange:
+          null"
+        [style.z-index]="element.position?.zIndex"
+        [elementModel]="element"
+        [pageIndex]="pageIndex">
       </aspect-element-group-selection>
     </ng-container>
   </div>

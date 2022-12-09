@@ -1,5 +1,9 @@
 Editor
 ======
+##1.35.2
+### Verbesserungen
+- Wendet die Eigenschaft "Schreibgeschützt" auf Formel Elemente an
+
 ## 1.35.1
 
 ### Verbesserungen

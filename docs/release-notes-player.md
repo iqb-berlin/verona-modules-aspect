@@ -1,8 +1,12 @@
 Player
 ======
+
 ## 1.28.2
 ### Verbesserungen 
 - Ermöglicht die Interaktion mit Elementen, die sich hinter einem Rahmenelement befinden
+
+### Fehlerbehebungen
+- Behebt Fehler beim Hochladen von Aufgaben mit HTML-Sonderzeichen ins Testcenter
 
 ## 1.28.1
 ### Verbesserungen

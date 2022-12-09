@@ -86,7 +86,7 @@ export class DropListElement extends InputElement {
       return [this, ...valueDropLists]
         .map(dropList => dropList.value as DragNDropValueObject[])
         .flat()
-        .map(option => ({ value: option.id, label: option.text as string }));
+        .map(option => ({ value: option.id, label: InputElement.stripHTML(option.text) }));
     }
     return [];
   }

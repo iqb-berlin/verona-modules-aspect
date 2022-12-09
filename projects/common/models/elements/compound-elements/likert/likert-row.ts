@@ -41,7 +41,7 @@ export class LikertRowElement extends InputElement {
     return [
       {
         value: !this.value && this.value !== 0 ? 'null' : (this.value as number + 1).toString(),
-        label: this.rowLabel.text
+        label: InputElement.stripHTML(this.rowLabel.text)
       } // TODO Image
     ];
   }

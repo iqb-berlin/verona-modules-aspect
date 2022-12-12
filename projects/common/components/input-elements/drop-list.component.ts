@@ -13,10 +13,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     <div class="list" [id]="elementModel.id"
          [fxLayout]="elementModel.orientation | droplistLayout"
          [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
-         [ngClass]="{ 'vertical-orientation' : elementModel.orientation === 'vertical',
-                       'horizontal-orientation' : elementModel.orientation === 'horizontal',
-                       'clozeContext': clozeContext}"
-         [style.min-height.px]="elementModel.position?.useMinHeight ? elementModel.height : undefined"
+         [class.vertical-orientation] = "elementModel.orientation === 'vertical'"
+         [class.horizontal-orientation] = "elementModel.orientation === 'horizontal'"
+         [class.cloze-context] = "clozeContext"
+         [class.only-one-item]= "elementModel.onlyOneItem"
+         [style.min-height.px]="elementModel.position?.useMinHeight || clozeContext ? elementModel.height : undefined"
          [style.color]="elementModel.styling.fontColor"
          [style.font-family]="elementModel.styling.font"
          [style.font-size.px]="elementModel.styling.fontSize"
@@ -32,9 +33,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          (focusout)="elementFormControl.markAsTouched()"
          (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
          (dragover)="$event.preventDefault()">
+          <!--Add dummy div - otherwise the empty list in cloze context will not be in one line-->
+          <div *ngIf="viewModel.length === 0"
+               [style.min-height.px]="elementModel.height - 4"
+               fxLayout="row"
+               [fxLayoutAlign]="'center center'">
+            <span>&nbsp;</span>
+          </div>
       <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
+             fxLayout="row"
+             [fxLayoutAlign]="elementModel.onlyOneItem ? 'center center' : 'none'"
              draggable="true"
              (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
              (dragenter)="dragEnterItem($event)"
@@ -65,8 +75,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); border-radius: 5px;}',
     '.list {padding: 2px;}',
     '.list-item {border-radius: 5px;}',
-    ':not(.clozeContext) .list-item {padding: 10px;}',
-    '.clozeContext .list-item {padding: 0 5px; text-align: center; line-height: 130%;}',
+    ':not(.cloze-context) .list-item {padding: 10px;}',
+    '.cloze-context .list-item {padding: 0 5px; text-align: center; line-height: 1.2;}',
+    '.only-one-item .list-item {padding: 0 !important; line-height: 1.2; text-align: center;}',
+    '.only-one-item .list-item {height: 100%; min-height: 100%; min-width: 100%; width: 100%;}',
     'img.list-item {align-self: start; padding: 2px !important;}',
     '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',

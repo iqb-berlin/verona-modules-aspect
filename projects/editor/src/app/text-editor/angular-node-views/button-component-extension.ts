@@ -17,7 +17,7 @@ const ButtonComponentExtension = (injector: Injector): Node => {
           default: new ButtonElement({
             type: 'button',
             id: 'cloze-child-id-placeholder',
-            height: 34,
+            height: 30,
             asLink: true,
             styling: {
               backgroundColor: 'transparent'

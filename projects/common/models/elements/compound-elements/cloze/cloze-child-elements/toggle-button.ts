@@ -19,7 +19,7 @@ export class ToggleButtonElement extends InputElement {
   };
 
   constructor(element: Partial<ToggleButtonElement>) {
-    super({ height: 25, ...element });
+    super({ height: 30, ...element });
     if (element.options) this.options = element.options;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
     if (element.strikeSelectedOption) this.strikeSelectedOption = element.strikeSelectedOption;

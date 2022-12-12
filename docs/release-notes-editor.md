@@ -3,8 +3,10 @@ Editor
 ##1.35.2
 ### Verbesserungen
 - Wendet die Eigenschaft "Schreibgeschützt" auf Formel Elemente an
+- Auswahllisten, die nur ein Element zulassen, werden von diesem Element komplett ausgefüllt
 - Vereinheitlicht das Verhalten von Kindelementen von Lückentexten bei Änderung ihrer Höhe
-- Auswahllisten, die nur ein Element zulassen, werden von diesem Element komplett ausgefüllt 
+  Bei Veränderung des Wertes ändert sich die Höhe aus der Mitte heraus
+- Setzt bei allen Kindelementen von Lückentexten die Vorbelegung der Höhe auf 30
 
 ## 1.35.1
 

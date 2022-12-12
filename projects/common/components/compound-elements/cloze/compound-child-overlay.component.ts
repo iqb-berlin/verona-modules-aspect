@@ -3,9 +3,11 @@ import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ElementComponent } from '../../../directives/element-component.directive';
+import { ElementComponent } from 'common/directives/element-component.directive';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
-import { TextFieldSimpleElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
+import {
+  TextFieldSimpleElement
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import { ValueChangeElement } from 'common/models/elements/element';
 
 @Component({
@@ -44,8 +46,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
     </div>
   `,
   styles: [
-    ':host div > * {display: inline-block;}',
-    'aspect-drop-list {vertical-align: middle;}'
+    ':host div > * {display: block;}'
   ]
 })
 export class CompoundChildOverlayComponent { // TODO rename to ClozeChildOverlay

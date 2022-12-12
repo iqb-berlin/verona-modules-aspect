@@ -7,6 +7,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
   template: `
     <mat-button-toggle-group [class.errors]="elementFormControl.errors && elementFormControl.touched"
                              [formControl]="elementFormControl"
+                             [style.height.px]="elementModel.height"
                              [isDisabled]="elementModel.readOnly"
                              [value]="elementModel.value"
                              [vertical]="elementModel.verticalOrientation"
@@ -41,8 +42,9 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
   styles: [
     '.errors {border: 2px solid #f44336 !important;}',
     'mat-button-toggle-group {display: inline-flex; min-width: 70px; min-height: 20px; max-width: 100%;}',
-    'mat-button-toggle-group {justify-content: center;}',
+    'mat-button-toggle-group {justify-content: center; box-sizing: border-box;}',
     ':host ::ng-deep .mat-button-toggle-label-content {line-height: unset}',
+    ':host ::ng-deep .mat-button-toggle-button {height: 100%}',
     ':host ::ng-deep .strike-selected-option.mat-button-toggle-checked .mat-button-toggle-label-content' +
     '{text-decoration: line-through}',
     ':host ::ng-deep .strike-other-options:not(.mat-button-toggle-checked) .mat-button-toggle-label-content' +

@@ -3,6 +3,8 @@ Editor
 ##1.35.2
 ### Verbesserungen
 - Wendet die Eigenschaft "Schreibgeschützt" auf Formel Elemente an
+- Vereinheitlicht das Verhalten von Kindelementen von Lückentexten bei Änderung ihrer Höhe
+- Auswahllisten, die nur ein Element zulassen, werden von diesem Element komplett ausgefüllt 
 
 ## 1.35.1
 

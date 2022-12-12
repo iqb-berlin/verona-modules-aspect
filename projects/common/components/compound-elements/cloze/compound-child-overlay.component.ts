@@ -14,6 +14,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
   selector: 'aspect-compound-child-overlay',
   template: `
     <div [style.border]="isSelected ? 'purple solid 1px' : ''"
+
          (click)="elementSelected.emit(this); $event.stopPropagation();">
       <aspect-text-field-simple *ngIf="element.type === 'text-field-simple'" #childComponent
                                 [style.pointer-events]="editorMode ? 'none' : 'auto'"

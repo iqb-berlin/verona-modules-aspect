@@ -16,8 +16,6 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
         model: {
           default: new ToggleButtonElement({
             type: 'toggle-button',
-            height: 30,
-            width: 100,
             id: 'cloze-child-id-placeholder'
           })
         }

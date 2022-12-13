@@ -1,6 +1,8 @@
 Editor
 ======
 ## 1.35.3
+### Verbesserungen
+- Ändert Symbol und Tooltip-Namen für Knopf als Lückentextelement 
 
 
 ## 1.35.2

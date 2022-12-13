@@ -19,7 +19,7 @@ export class ToggleButtonElement extends InputElement {
   };
 
   constructor(element: Partial<ToggleButtonElement>) {
-    super({ height: 25, ...element });
+    super({ height: 30, ...element });
     if (element.options) this.options = element.options;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
     if (element.strikeSelectedOption) this.strikeSelectedOption = element.strikeSelectedOption;
@@ -53,7 +53,10 @@ export class ToggleButtonElement extends InputElement {
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return this.options
-      .map((option, index) => ({ value: (index + 1).toString(), label: option.text }));
+      .map((option, index) => ({
+        value: (index + 1).toString(),
+        label: InputElement.stripHTML(option.text)
+      }));
   }
 
   getElementComponent(): Type<ElementComponent> {

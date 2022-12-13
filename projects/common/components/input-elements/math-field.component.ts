@@ -19,6 +19,7 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
        [style.backgroundColor]="elementModel.styling.backgroundColor">
       <label>{{elementModel.label}}</label><br>
       <aspect-mathlive-math-field [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
+                                  [readonly]="elementModel.readOnly"
                                   [enableModeSwitch]="elementModel.enableModeSwitch"
                                   (input)="elementFormControl.setValue($any($event.target).value)"
                                   (focusout)="elementFormControl.markAsTouched()">

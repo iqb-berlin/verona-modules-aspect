@@ -1,9 +1,19 @@
 Player
 ======
+
+## 1.28.2
+### Verbesserungen 
+- Ermöglicht die Interaktion mit Elementen, die sich hinter einem Rahmenelement befinden
+- Vereinheitlicht die vertikale Ausrichtung von Kindelementen von Lückentexten
+
+### Fehlerbehebungen
+- Behebt Fehler beim Hochladen von Aufgaben mit HTML-Sonderzeichen ins Testcenter
+
 ## 1.28.1
 ### Verbesserungen
 - Darstellung und Verhalten der Warnmeldung von Formelelementen
   verhalten sich analog zu anderen Elementen
+- Korrigiert die vertikale Ausrichtung von Ablegelisten in Lückentexten
 
 ### Fehlerbehebungen
 - Behebt das versehentliche Löschen von Text beim Entfernen von 

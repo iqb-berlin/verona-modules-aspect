@@ -17,16 +17,18 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
       <mat-button-toggle value="math">Formel</mat-button-toggle>
       <mat-button-toggle value="text">Text</mat-button-toggle>
     </mat-button-toggle-group>
-    <div #mathfield>
+    <div #mathfield [class.read-only]="readonly">
     </div>
   `,
   styles: [
     'mat-button-toggle-group {height: 20px;}',
+    ':host ::ng-deep .read-only math-field {outline: unset}',
     ':host ::ng-deep .mat-button-toggle-label-content {line-height: unset}'
   ]
 })
 export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() value!: string;
+  @Input() readonly!: boolean;
   @Input() enableModeSwitch: boolean = false;
   @ViewChild('mathfield') mathfieldRef!: ElementRef;
 
@@ -37,7 +39,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     virtualKeyboards: 'aspect-keyboard roman greek',
     keypressSound: null,
     plonkSound: null,
-    decimalSeparator: ',',
+    decimalSeparator: ','
     // defaultMode: 'math'
   });
 
@@ -48,6 +50,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   setupMathfield(): void {
     this.mathfieldRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;
+    this.mathFieldElement.readOnly = this.readonly;
   }
 
   static setupKeyboard(): Record<string, VirtualKeyboardDefinition> {

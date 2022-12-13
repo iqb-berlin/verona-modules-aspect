@@ -8,3 +8,7 @@
   display: block;
   position: absolute;
 }
+
+.no-pointer-events {
+  pointer-events: none;
+}

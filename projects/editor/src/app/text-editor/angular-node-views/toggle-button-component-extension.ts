@@ -2,8 +2,8 @@ import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 
-import { ToggleButtonNodeviewComponent } from './toggle-button-nodeview.component';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { ToggleButtonNodeviewComponent } from './toggle-button-nodeview.component';
 
 const ToggleButtonComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -16,8 +16,6 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
         model: {
           default: new ToggleButtonElement({
             type: 'toggle-button',
-            height: 25,
-            width: 100,
             id: 'cloze-child-id-placeholder'
           })
         }

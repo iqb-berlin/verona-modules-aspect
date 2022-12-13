@@ -125,6 +125,12 @@ export abstract class InputElement extends UIElement {
   }
 
   abstract getAnswerScheme(options?: unknown): AnswerScheme;
+
+  static stripHTML(htmlString: string): string {
+    const parser = new DOMParser();
+    const htmlDocument = parser.parseFromString(htmlString, 'text/html');
+    return htmlDocument.documentElement.textContent || '';
+  }
 }
 
 export abstract class TextInputElement extends InputElement {

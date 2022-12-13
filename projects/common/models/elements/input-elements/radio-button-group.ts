@@ -48,7 +48,10 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return this.options
-      .map((option, index) => ({ value: (index + 1).toString(), label: option.text }));
+      .map((option, index) => ({
+        value: (index + 1).toString(),
+        label: InputElement.stripHTML(option.text)
+      }));
   }
 
   getElementComponent(): Type<ElementComponent> {

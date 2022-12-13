@@ -1,5 +1,8 @@
 Player
 ======
+## 1.28.3
+### Fehlerbehebungen
+- Korrigiert das Scroll-Verhalten von versteckten Abschnitten mit unterschiedlichen Verzögerungen
 
 ## 1.28.2
 ### Verbesserungen 

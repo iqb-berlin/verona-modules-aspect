@@ -1,6 +1,9 @@
 Editor
 ======
-##1.35.2
+## 1.35.3
+
+
+## 1.35.2
 ### Verbesserungen
 - Wendet die Eigenschaft "Schreibgeschützt" auf Formel Elemente an
 - Auswahllisten, die nur ein Element zulassen, werden von diesem Element komplett ausgefüllt

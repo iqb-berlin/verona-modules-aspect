@@ -16,6 +16,14 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                                            (elementFormControl.errors | errorTransform: elementModel) : ''"
                              [matTooltipClass]="'error-tooltip'"
                              (focusout)="elementFormControl.markAsTouched()">
+      <!--Add dummy div - otherwise toggle button with empty options will not be in one line-->
+      <div *ngIf="elementModel.options.length === 0"
+           [style.min-height.px]="elementModel.height - 2"
+           [style.width]="100"
+           fxLayout="row"
+           [fxLayoutAlign]="'center center'">
+        <span>&nbsp;</span>
+      </div>
       <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
                          [value]="i"
                          [ngClass]="{ 'strike-other-options' : (this.elementFormControl.value !== null ||

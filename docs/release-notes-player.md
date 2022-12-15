@@ -1,5 +1,9 @@
 Player
 ======
+## 1.28.4
+### Fehlerbehebungen
+- Korrigiert Darstellungsfehler von hervorzuhebenden Textbereichen, bei gleichzeitiger Markierung 
+
 ## 1.28.3
 ### Verbesserungen
 - Änderungen an hervorzuhebenden Textbereiche

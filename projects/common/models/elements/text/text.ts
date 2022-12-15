@@ -50,7 +50,7 @@ export class TextElement extends UIElement implements PositionedUIElement {
     return {
       id: this.id,
       type: 'string',
-      format: 'coloredSelectionRange',
+      format: 'text-selection',
       multiple: true,
       nullable: false,
       values: [],

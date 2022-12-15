@@ -8,6 +8,7 @@ Player
 
 ### Fehlerbehebungen
 - Korrigiert das Scroll-Verhalten von versteckten Abschnitten mit unterschiedlichen Verzögerungen
+- Korrigiert Darstellungsfehler von Eingabefeldern in Lückentexten in FireFox
 
 ## 1.28.2
 ### Verbesserungen 

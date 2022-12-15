@@ -1,5 +1,6 @@
 import { Type } from '@angular/core';
 import {
+  AnswerScheme,
   PositionedUIElement, PositionProperties, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -32,6 +33,22 @@ export class GeometryElement extends UIElement implements PositionedUIElement {
     this.customToolBar = element.customToolBar !== undefined ? element.customToolBar : '';
 
     this.position = UIElement.initPositionProps({ ...element.position });
+  }
+
+  hasAnswerScheme(): boolean {
+    return Boolean(this.getAnswerScheme);
+  }
+
+  getAnswerScheme(): AnswerScheme {
+    return {
+      id: this.id,
+      type: 'string',
+      format: 'ggb-file',
+      multiple: false,
+      nullable: false,
+      values: [],
+      valuesComplete: false
+    };
   }
 
   getElementComponent(): Type<ElementComponent> {

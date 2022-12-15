@@ -1,5 +1,14 @@
 Player
 ======
+## 1.28.3
+### Verbesserungen
+- Änderungen an hervorzuhebenden Textbereiche
+  - Die Dauer der Anzeige beträgt 15 Sekunden
+  - Es ist immer nur eine Hervorhebung aktiv
+
+### Fehlerbehebungen
+- Korrigiert das Scroll-Verhalten von versteckten Abschnitten mit unterschiedlichen Verzögerungen
+- Korrigiert Darstellungsfehler von Eingabefeldern in Lückentexten in FireFox
 
 ## 1.28.2
 ### Verbesserungen 

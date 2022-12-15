@@ -10,7 +10,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
   selector: 'aspect-text-field-simple',
   template: `
     <input #input
-           class="clozeChild"
+           class="cloze-child"
            autocomplete="off"
            autocapitalize="none"
            autocorrect="off"
@@ -37,10 +37,10 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
            (blur)="focusChanged.emit({ inputElement: input, focused: false })">
   `,
   styles: [
-    '.clozeChild {border: 1px solid rgba(0,0,0,.12); border-radius: 4px}',
-    'input {width: calc(100% - 2px); height: calc(100% - 2px); padding: 0 0 1px 0;}',
+    '.cloze-child {border: 1px solid rgba(0,0,0,.12); border-radius: 4px;}',
+    'input {width: 100%; height: 100%; padding: 0 2px; box-sizing: border-box}',
     'input:hover {border: 1px solid currentColor;}',
-    'input:focus {outline: 1px solid #3f51b5;}',
+    'input:focus {border: 1px solid #3f51b5; outline: 0}',
     '.errors {border: 2px solid #f44336 !important;}'
   ]
 })

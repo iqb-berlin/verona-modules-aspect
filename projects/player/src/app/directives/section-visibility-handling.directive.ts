@@ -22,7 +22,8 @@ export class SectionVisibilityHandlingDirective {
     this.isScrollSection = this.isVisible ?
       false :
       this.pageSections
-        .filter(pageSection => pageSection.activeAfterID === this.section.activeAfterID)
+        .filter(pageSection => pageSection.activeAfterID === this.section.activeAfterID &&
+          pageSection.activeAfterIdDelay === this.section.activeAfterIdDelay)
         .findIndex(section => section === this.section) === 0;
 
     if (this.mediaStatusChanged) {
@@ -38,8 +39,10 @@ export class SectionVisibilityHandlingDirective {
     if (!this.isVisible) {
       this.setVisibility(id === this.section.activeAfterID);
       if (this.isScrollSection) {
-        this.elementRef.nativeElement.style.scrollMargin = `${window.innerHeight / 3}px`;
-        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        this.elementRef.nativeElement.style.scrollMarginTop = 100;
+        setTimeout(() => {
+          this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
       }
     }
   }

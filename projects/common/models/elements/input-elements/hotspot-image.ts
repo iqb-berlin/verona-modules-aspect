@@ -35,15 +35,17 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
 
   private getAnswerSchemeValues(): AnswerSchemeValue[] {
     return this.value
-      .map((hotspot, index) => ({
-        value: (index + 1).toString(),
-        label: `top: ${hotspot.top},
-        left: ${hotspot.left},
-        height: ${hotspot.height},
-        width: ${hotspot.width},
-        shape: ${hotspot.shape},
-        value: ${hotspot.value}`
-      }));
+      .map(hotspot => (
+        [{
+          value: 'true',
+          // eslint-disable-next-line max-len
+          label: `Gefüllt top: ${hotspot.top}, left: ${hotspot.left}, height: ${hotspot.height}, width: ${hotspot.width}, shape: ${hotspot.shape}, value: ${hotspot.value}`
+        }, {
+          value: 'false',
+          // eslint-disable-next-line max-len
+          label: `Nicht gefüllt: top: ${hotspot.top}, left: ${hotspot.left}, height: ${hotspot.height}, width: ${hotspot.width}, shape: ${hotspot.shape}, value: ${hotspot.value}`
+        }
+        ])).flat();
   }
 
   getElementComponent(): Type<ElementComponent> {

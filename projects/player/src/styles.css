@@ -23,7 +23,7 @@ body {
   background-color: unset !important;
 }
 
-.active-nested-anchor > mark, .active-anchor > aspect-marked {
+.active-nested-anchor > mark, .active-nested-anchor > aspect-marked {
   background-color: unset !important;
 }
 

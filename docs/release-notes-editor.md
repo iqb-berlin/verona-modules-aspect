@@ -4,9 +4,10 @@ Editor
 ### Verbesserungen
 - Ändert Symbol und Tooltip-Namen für Knopf als Lückentextelement
 - Erweiterung der Möglichkeiten für hervorzuhebende Textbereiche im TextEditor
-  - Die hervorzuhebenden TextBereichen können mit einer Farbe belegt werden
+  - Die hervorzuhebenden Textbereichen können mit einer Farbe belegt werden
   - Innerhalb eines Textbereichs können weitere Textbereiche mit anderen Farben definiert werden
     - Eine noch tiefere Verschachtelung ist nicht möglich
+- Überarbeitet die Variablenliste zur Codierung für Geometrie-, Bildbereiche- und Textelemente
 
 ## 1.35.2
 ### Verbesserungen

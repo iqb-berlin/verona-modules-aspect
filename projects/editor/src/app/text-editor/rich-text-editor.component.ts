@@ -47,6 +47,8 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   selectedFontColor = 'lightgrey';
   selectedHighlightColor = 'lightgrey';
+  selectedAnchorColor = '#adff2f';
+  selectedAnchorIdText = '';
   selectedFontSize = '20px';
   selectedIndentSize = 20;
   bulletListStyle: string = 'disc';
@@ -143,13 +145,53 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   }
 
   applyAnchorId(): void {
-    const text = window?.getSelection()?.toString();
-    if (text) {
-      const id = text.replace(/[^0-9a-zA-Z]/g, '_').substring(0, 20);
-      this.editor.chain().focus().toggleAnchorId({ anchorId: id }).run();
+    const id = this.getAnchorIdFromSelection();
+    if (id) {
+      const activeAnchorId = this.editor.getAttributes('anchorId').anchorId;
+      const activeAnchorColor = this.editor.getAttributes('anchorId').anchorColor;
+      const activeParentAnchorId = this.editor.getAttributes('anchorId').parentAnchorId;
+      const activeParentAnchorColor = this.editor.getAttributes('anchorId').parentAnchorColor;
+      if (activeParentAnchorId) { // reset nested child
+        if (this.selectedAnchorColor === activeParentAnchorColor || this.selectedAnchorColor === activeAnchorColor) {
+          this.editor.chain().focus().setAnchorId({
+            anchorId: activeParentAnchorId,
+            parentAnchorId: '',
+            anchorColor: activeParentAnchorColor,
+            parentAnchorColor: ''
+          }).run();
+        } else { // set new color for nested Child
+          this.editor.chain().focus().setAnchorId({
+            anchorId: activeAnchorId,
+            parentAnchorId: activeParentAnchorId,
+            anchorColor: this.selectedAnchorColor,
+            parentAnchorColor: activeParentAnchorColor
+          }).run();
+        }
+      } else { // standard toggle
+        this.editor.chain().focus().toggleAnchorId({
+          anchorId: id,
+          parentAnchorId: (activeAnchorId !== id) ? activeAnchorId : '',
+          anchorColor: this.selectedAnchorColor,
+          parentAnchorColor: (activeAnchorId !== id) ? activeAnchorColor : ''
+        }).run();
+      }
+      this.resetSelectedAnchorIdText();
     } else {
       console.warn('No text selected for anchor!');
     }
+  }
+
+  setSelectedAnchorIdText() {
+    this.selectedAnchorIdText = window.getSelection()?.toString() as string;
+  }
+
+  private getAnchorIdFromSelection(): string {
+    const selection = window?.getSelection()?.toString() || this.selectedAnchorIdText;
+    return selection.replace(/[^0-9a-zA-Z]/g, '_').substring(0, 20);
+  }
+
+  private resetSelectedAnchorIdText(): void {
+    this.selectedAnchorIdText = '';
   }
 
   alignText(direction: string): void {

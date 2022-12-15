@@ -281,11 +281,19 @@
               (click)="toggleBlockquote()">
         <mat-icon>format_quote</mat-icon>
       </button>
-      <button mat-icon-button matTooltip="Bereich markieren"
-              [class.active]="editor.isActive('anchorId')"
-              (click)="applyAnchorId()">
-        <mat-icon>read_more</mat-icon>
-      </button>
+      <div *ngIf="!clozeMode" class="combo-button" fxLayout="row"
+           [style.background-color]="selectedAnchorColor">
+        <button mat-icon-button matTooltip="Bereich markieren"
+                (click)="applyAnchorId()">
+          <mat-icon>read_more</mat-icon>
+        </button>
+        <mat-select matTooltip="Bereichsfarbe wählen"
+                    (click)="anchorIdColorInput.click()"
+                    (focus)="setSelectedAnchorIdText()">
+        </mat-select>
+        <input matInput type="color" #anchorIdColorInput hidden
+               (input)="selectedAnchorColor = $any($event.target).value; applyAnchorId()">
+      </div>
     </fieldset>
   </div>
   <div *ngIf="clozeMode" fxLayout="row" fxLayoutAlign="space-around center" >

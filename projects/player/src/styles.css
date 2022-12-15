@@ -16,10 +16,17 @@ body {
 }
 
 .active-anchor {
-  background-color: #adff2f;
   scroll-margin: 100px 0;
 }
 
 .active-anchor > mark, .active-anchor > aspect-marked {
+  background-color: unset !important;
+}
+
+.active-nested-anchor > mark, .active-anchor > aspect-marked {
+  background-color: unset !important;
+}
+
+aspect-anchor:not(.active-anchor):not(.active-nested-anchor) {
   background-color: unset !important;
 }

@@ -2,8 +2,11 @@ Editor
 ======
 ## 1.35.3
 ### Verbesserungen
-- Ändert Symbol und Tooltip-Namen für Knopf als Lückentextelement 
-
+- Ändert Symbol und Tooltip-Namen für Knopf als Lückentextelement
+- Erweiterung der Möglichkeiten für hervorzuhebende Textbereiche im TextEditor
+  - Die hervorzuhebenden TextBereichen können mit einer Farbe belegt werden
+  - Innerhalb eines Textbereichs können weitere Textbereiche mit anderen Farben definiert werden
+    - Eine noch tiefere Verschachtelung ist nicht möglich
 
 ## 1.35.2
 ### Verbesserungen

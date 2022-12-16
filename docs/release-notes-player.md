@@ -1,5 +1,12 @@
 Player
 ======
+## 1.29.0
+### Verbesserungen
+- Elemente von Ablegelisten, die nur ein Element zulassen, werden nur dann zentriert dargestellt,
+  wenn die Ablegelisten innerhalb von Lückentexten angelegt sind
+- Eingabehilfen bewegen sich innerhalb des sichtbaren Bereichs einer Seite mit,
+  wenn die Seite gescrollt wird 
+
 ## 1.28.4
 ### Fehlerbehebungen
 - Korrigiert Darstellungsfehler von hervorzuhebenden Textbereichen, bei gleichzeitiger Markierung 

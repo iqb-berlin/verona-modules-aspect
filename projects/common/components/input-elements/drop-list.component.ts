@@ -44,7 +44,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
              fxLayout="row"
-             [fxLayoutAlign]="elementModel.onlyOneItem ? 'center center' : 'none'"
+             [fxLayoutAlign]="elementModel.onlyOneItem ? (clozeContext ? 'center center' : 'start center') : 'none'"
              draggable="true"
              (dragstart)="dragStart($event, dropListValueElement, index)" (dragend)="dragEnd($event)"
              (dragenter)="dragEnterItem($event)"
@@ -76,9 +76,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list {padding: 2px;}',
     '.list-item {border-radius: 5px;}',
     ':not(.cloze-context) .list-item {padding: 10px;}',
-    '.cloze-context .list-item {padding: 0 5px; text-align: center; line-height: 1.2;}',
-    '.only-one-item .list-item {padding: 0 !important; line-height: 1.2; text-align: center;}',
-    '.only-one-item .list-item {height: 100%; min-height: 100%; min-width: 100%; width: 100%;}',
+    '.cloze-context .list-item {padding: 0 5px; line-height: 1.2;}',
+    '.only-one-item.cloze-context .list-item {padding: 0;}',
+    '.only-one-item:not(.cloze-context) .list-item {padding: 0 10px;}',
+    '.only-one-item .list-item {height: 100%; min-height: 100%; min-width: 100%; width: 100%; line-height: 1.2;}',
     'img.list-item {align-self: start; padding: 2px !important;}',
     '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',

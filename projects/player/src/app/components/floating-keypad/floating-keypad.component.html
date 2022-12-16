@@ -1,7 +1,10 @@
 <ng-template
     *ngIf="keypadService.preset"
     cdkConnectedOverlay
+    cdkConnectedOverlayPush
+    [cdkConnectedOverlayScrollStrategy]="repositionScrollStrategy"
     [cdkConnectedOverlayOrigin]="keypadService.elementComponent"
+    [cdkConnectedOverlayPositions]="overlayPositions"
     [cdkConnectedOverlayOpen]="isKeypadOpen && keypadService.position === 'floating'">
   <aspect-keypad
       cdkDrag

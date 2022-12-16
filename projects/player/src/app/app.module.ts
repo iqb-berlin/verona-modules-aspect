@@ -9,6 +9,7 @@ import { SharedModule, APIService } from 'common/shared.module';
 import { KeyInputModule } from 'player/modules/key-input/key-input.module';
 import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -96,6 +97,7 @@ import { ExternalAppGroupElementComponent } from
       }
     }),
     OverlayModule,
+    ScrollingModule,
     UnitMenuModule
   ],
   providers: [

@@ -137,6 +137,7 @@ export abstract class TextInputElement extends InputElement {
   inputAssistancePreset: InputAssistancePreset = null;
   inputAssistanceCustomKeys: string = '';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
+  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
   restrictedToInputAssistanceChars: boolean = true;
   hasArrowKeys: boolean = false;
   showSoftwareKeyboard: boolean = false;
@@ -148,6 +149,9 @@ export abstract class TextInputElement extends InputElement {
       this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
     }
     if (element.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
+    if (element.inputAssistanceFloatingStartPosition) {
+      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+    }
     if (element.restrictedToInputAssistanceChars !== undefined) {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
     }

@@ -1,5 +1,10 @@
 Player
 ======
+## 1.29.1
+### Verbesserungen
+- Ändert die voreingestellte Hintergrundfarbe bei Ablegelisten für Ablegeankündigung
+
+
 ## 1.29.0
 ### Verbesserungen
 - Elemente von Ablegelisten, die nur ein Element zulassen, werden nur dann zentriert dargestellt,

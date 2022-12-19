@@ -7,10 +7,9 @@ Player
 - Eingabehilfen bewegen sich innerhalb des sichtbaren Bereichs einer Seite mit,
   wenn die Seite gescrollt wird 
 
-##Fehlerbehebungen
-- Stellt die erreichte Sichtbarkeit von Abschnitte mit eingestellter Verzögerung beim erneuten Laden einer 
-  Unit wieder her
-
+## Fehlerbehebungen
+- Stellt die erreichte Sichtbarkeit von Abschnitten mit eingestellter Verzögerung
+  beim erneuten Laden einer Unit wieder her
   Folgendes ist zu beachten: 
   - Abschnitte mit eingestellter Verzögerung dürfen nicht leer sein
   - Bereits verstrichene Zeit kann beim erneuten Laden berücksichtigt werden

@@ -1,5 +1,20 @@
 Player
 ======
+## 1.29.0
+### Verbesserungen
+- Elemente von Ablegelisten, die nur ein Element zulassen, werden nur dann zentriert dargestellt,
+  wenn die Ablegelisten innerhalb von Lückentexten angelegt sind
+- Eingabehilfen bewegen sich innerhalb des sichtbaren Bereichs einer Seite mit,
+  wenn die Seite gescrollt wird 
+
+##Fehlerbehebungen
+- Stellt die erreichte Sichtbarkeit von Abschnitte mit eingestellter Verzögerung beim erneuten Laden einer 
+  Unit wieder her
+
+  Folgendes ist zu beachten: 
+  - Abschnitte mit eingestellter Verzögerung dürfen nicht leer sein
+  - Bereits verstrichene Zeit kann beim erneuten Laden berücksichtigt werden
+
 ## 1.28.4
 ### Fehlerbehebungen
 - Korrigiert Darstellungsfehler von hervorzuhebenden Textbereichen, bei gleichzeitiger Markierung 

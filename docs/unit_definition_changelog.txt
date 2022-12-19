@@ -64,3 +64,7 @@ iqb-aspect-definition@1.0.0
     + returnToOriginOnReplacement?: boolean;
     + originListID?: string;
     + originListIndex?: number;
+
+3.9.0
+- TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement
+    +inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter';

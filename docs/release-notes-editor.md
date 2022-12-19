@@ -1,5 +1,9 @@
 Editor
 ======
+## 1.36.0
+### Neue Funktionen
+- Bietet unterschiedliche Startpositionen für schwebende Eingabehilfen an  
+
 ## 1.35.3
 ### Verbesserungen
 - Ändert Symbol und Tooltip-Namen für Knopf als Lückentextelement

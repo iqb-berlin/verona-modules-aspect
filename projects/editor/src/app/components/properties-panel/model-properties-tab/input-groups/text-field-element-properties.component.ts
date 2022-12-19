@@ -135,6 +135,21 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                           combinedProperties.inputAssistancePosition === 'floating'"
+                    appearance="fill">
+      <mat-label>{{'propertiesPanel.inputAssistanceFloatingStartPosition' | translate }}</mat-label>
+      <mat-select [value]="combinedProperties.inputAssistanceFloatingStartPosition"
+                  (selectionChange)="updateModel.emit({
+                    property: 'inputAssistanceFloatingStartPosition',
+                    value: $event.value
+                  })">
+        <mat-option *ngFor="let option of ['startBottom', 'endCenter']"
+                    [value]="option">
+          {{ 'propertiesPanel.' + option | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
                        combinedProperties.restrictedToInputAssistanceChars !== undefined"

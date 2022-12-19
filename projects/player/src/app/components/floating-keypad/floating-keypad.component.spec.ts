@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { FloatingKeypadComponent } from './floating-keypad.component';
 
 describe('FloatingKeypadComponent', () => {
@@ -7,7 +8,8 @@ describe('FloatingKeypadComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FloatingKeypadComponent ]
+      imports: [OverlayModule],
+      declarations: [FloatingKeypadComponent]
     })
       .compileComponents();
   });
@@ -21,5 +23,4 @@ describe('FloatingKeypadComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

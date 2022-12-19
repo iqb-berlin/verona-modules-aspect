@@ -1,4 +1,5 @@
 <div class="pages-container"
+     cdkScrollable
      [fxLayout]="layoutAlignment">
   <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
     alwaysVisiblePageView :
@@ -12,6 +13,7 @@
   <aspect-page-scroll-button
       *ngIf="alwaysVisiblePage"
       class="page-container"
+      cdkScrollable
       [isSnapMode]="false"
       [style.max-height.%]="aspectRatioColumn.alwaysVisiblePage"
       [style.max-width.%]="aspectRatioRow.alwaysVisiblePage">
@@ -42,6 +44,7 @@
   <ng-container *ngIf="hasScrollPages">
     <aspect-page-scroll-button
         class="page-container"
+        cdkScrollable
         [isSnapMode]="scrollPageMode === 'concat-scroll-snap'"
         [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'"
         [style.max-height.%]="aspectRatioColumn.scrollPages"

@@ -22,7 +22,7 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
   `,
   styles: [
     'mat-button-toggle-group {height: 20px;}',
-    ':host ::ng-deep .read-only math-field {outline: unset}',
+    ':host ::ng-deep .read-only math-field {outline: unset; border: unset }',
     ':host ::ng-deep .mat-button-toggle-label-content {line-height: unset}'
   ]
 })

@@ -3,6 +3,7 @@ Player
 ## 1.29.1
 ### Verbesserungen
 - Ändert die voreingestellte Hintergrundfarbe bei Ablegelisten für Ablegeankündigung
+- Ändert die Rahmenfarbe für Eingabefelder, Eingabebereiche, Formeln und Optionsfelder in Lückentexten
 
 
 ## 1.29.0

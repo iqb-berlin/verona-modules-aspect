@@ -5,6 +5,10 @@ Player
 - Ändert die voreingestellte Hintergrundfarbe bei Ablegelisten für Ablegeankündigung
 - Ändert die Rahmenfarbe für Eingabefelder, Eingabebereiche, Formeln und Optionsfelder in Lückentexten
 
+## Fehlerbehebungen
+- Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der 
+  Rückgängig- und Wiederherstellen-Knöpfe ausgelöst wurden   
+
 
 ## 1.29.0
 ### Verbesserungen

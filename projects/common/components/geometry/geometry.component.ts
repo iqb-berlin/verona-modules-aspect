@@ -126,7 +126,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
         this.geoGebraApi.registerClearListener(() => {
           this.geometryUpdated.emit();
         });
-        this.geoGebraApi.registerStoreUndoListener(() => {
+        this.geoGebraApi.registerClientListener(() => {
           this.geometryUpdated.emit();
         });
       }

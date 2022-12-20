@@ -1,6 +1,8 @@
 @use '../../../node_modules/@angular/material/index' as mat;
 @import '../../../node_modules/@angular/material/theming';
 
+$aspect-element-border-color: #ccc;
+$aspect-element-border-hover-color: #333;
 $aspect-primary: mat.define-palette(mat.$pink-palette);
 $aspect-accent: mat.define-palette($mat-cyan, 900);
 $aspect-theme: mat.define-light-theme((
@@ -10,3 +12,33 @@ $aspect-theme: mat.define-light-theme((
 @include mat.checkbox-color($aspect-theme);
 @include mat.radio-color($aspect-theme);
 @include mat.slider-color($aspect-theme);
+
+.mat-form-field-appearance-outline:not(.mat-focused ){
+  .mat-form-field-outline {
+    color: $aspect-element-border-color;
+  }
+  &:hover {
+    .mat-form-field-outline {
+      color: $aspect-element-border-hover-color;
+    }
+  }
+}
+
+.mat-button-toggle-group-appearance-standard {
+  border-color: $aspect-element-border-color;
+  .mat-button-toggle+.mat-button-toggle {
+    border-left-color: $aspect-element-border-color;
+  }
+}
+
+math-field {
+  border-radius: 4px;
+  border: 1px solid $aspect-element-border-color;
+  padding: 8px;
+  &:hover {
+    border-color: $aspect-element-border-hover-color
+  };
+  &:focus {
+    outline-color: #3f51b5; //TODO $outline-color-primary
+  }
+}

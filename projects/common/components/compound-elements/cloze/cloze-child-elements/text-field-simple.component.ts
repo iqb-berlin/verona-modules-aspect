@@ -37,7 +37,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
            (blur)="focusChanged.emit({ inputElement: input, focused: false })">
   `,
   styles: [
-    '.cloze-child {border: 1px solid rgba(0,0,0,.12); border-radius: 4px;}',
+    '.cloze-child {border: 1px solid #ccc; border-radius: 4px;}',
     'input {width: 100%; height: 100%; padding: 0 2px; box-sizing: border-box}',
     'input:hover {border: 1px solid currentColor;}',
     'input:focus {border: 1px solid #3f51b5; outline: 0}',

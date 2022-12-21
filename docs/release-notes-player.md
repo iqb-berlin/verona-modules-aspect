@@ -7,7 +7,8 @@ Player
 
 ## Fehlerbehebungen
 - Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der 
-  Rückgängig- und Wiederherstellen-Knöpfe ausgelöst wurden   
+  Rückgängig- und Wiederherstellen-Knöpfe ausgelöst wurden
+- Korrigiert die Ablegeankündigung für leere Ablegelisten
 
 
 ## 1.29.0

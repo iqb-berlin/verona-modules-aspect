@@ -36,6 +36,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
           <!--Add dummy div - otherwise the empty list in cloze context will not be in one line-->
           <div *ngIf="viewModel.length === 0"
                [style.min-height.px]="elementModel.height - 4"
+               [style.pointer-events]="'none'"
                fxLayout="row"
                [fxLayoutAlign]="'center center'">
             <span>&nbsp;</span>

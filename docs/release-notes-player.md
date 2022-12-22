@@ -9,6 +9,7 @@ Player
 - Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der 
   Rückgängig- und Wiederherstellen-Knöpfe ausgelöst wurden
 - Korrigiert die Ablegeankündigung für leere Ablegelisten
+- Verhindert das Ablegen von Elementen, die nicht zu einer Ablegeliste gehören
 
 
 ## 1.29.0

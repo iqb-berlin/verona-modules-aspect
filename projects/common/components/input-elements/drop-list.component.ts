@@ -197,7 +197,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   dragEnterList(event: DragEvent) {
     event.preventDefault();
 
-    if (!this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) return;
+    if (!DropListComponent.sourceList || !this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) return;
 
     if (!this.elementModel.isSortList) {
       this.highlightValidDrop = true;

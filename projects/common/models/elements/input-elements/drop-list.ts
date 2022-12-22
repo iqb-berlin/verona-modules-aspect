@@ -54,7 +54,7 @@ export class DropListElement extends InputElement {
   setProperty(property: string, value: UIElementValue): void {
     super.setProperty(property, value);
     if (property === 'value' || property === 'id') {
-      this.value.forEach((dndValue: DragNDropValueObject, index) => {
+      this.value.forEach((dndValue: DragNDropValueObject, index) => { // foreach to keep the array ref intact
         this.value[index] = {
           ...dndValue,
           originListID: dndValue.returnToOriginOnReplacement ? this.id : undefined,

@@ -4,6 +4,12 @@ Player
 ### Verbesserungen
 - Ändert die voreingestellte Hintergrundfarbe bei Ablegelisten für Ablegeankündigung
 - Ändert die Rahmenfarbe für Eingabefelder, Eingabebereiche, Formeln und Optionsfelder in Lückentexten
+- Überarbeitet Mauszeiger für Ablegelisten
+  - Wird in der Ursprungsliste "Elemente kopieren" benutzt, wird der "Kopieren"-Mauszeiger verwendet
+  - Ist ein Ablegen nicht erlaubt, wird der "Verboten"-Mauszeiger benutzt
+  - In allen anderen Fällen (das beinhaltet alle Flächen außerhalb von Ablegelisten) wird der
+    "Verschieben"-Mauszeiger verwendet
+  - **Die Darstellung der Mauszeiger ist abhängig vom Betriebssystem**
 
 ## Fehlerbehebungen
 - Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der 

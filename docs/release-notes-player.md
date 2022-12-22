@@ -1,5 +1,23 @@
 Player
 ======
+## 1.29.1
+### Verbesserungen
+- Ändert die voreingestellte Hintergrundfarbe bei Ablegelisten für Ablegeankündigung
+- Ändert die Rahmenfarbe für Eingabefelder, Eingabebereiche, Formeln und Optionsfelder in Lückentexten
+- Überarbeitet Mauszeiger für Ablegelisten
+  - Wird in der Ursprungsliste "Elemente kopieren" benutzt, wird der "Kopieren"-Mauszeiger verwendet
+  - Ist ein Ablegen nicht erlaubt, wird der "Verboten"-Mauszeiger benutzt
+  - In allen anderen Fällen (das beinhaltet alle Flächen außerhalb von Ablegelisten) wird der
+    "Verschieben"-Mauszeiger verwendet
+  - **Die Darstellung der Mauszeiger ist abhängig vom Betriebssystem**
+
+## Fehlerbehebungen
+- Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der 
+  Rückgängig- und Wiederherstellen-Knöpfe ausgelöst wurden
+- Korrigiert die Ablegeankündigung für leere Ablegelisten
+- Verhindert das Ablegen von Elementen, die nicht zu einer Ablegeliste gehören
+
+
 ## 1.29.0
 ### Verbesserungen
 - Elemente von Ablegelisten, die nur ein Element zulassen, werden nur dann zentriert dargestellt,
@@ -7,10 +25,9 @@ Player
 - Eingabehilfen bewegen sich innerhalb des sichtbaren Bereichs einer Seite mit,
   wenn die Seite gescrollt wird 
 
-##Fehlerbehebungen
-- Stellt die erreichte Sichtbarkeit von Abschnitte mit eingestellter Verzögerung beim erneuten Laden einer 
-  Unit wieder her
-
+## Fehlerbehebungen
+- Stellt die erreichte Sichtbarkeit von Abschnitten mit eingestellter Verzögerung
+  beim erneuten Laden einer Unit wieder her
   Folgendes ist zu beachten: 
   - Abschnitte mit eingestellter Verzögerung dürfen nicht leer sein
   - Bereits verstrichene Zeit kann beim erneuten Laden berücksichtigt werden

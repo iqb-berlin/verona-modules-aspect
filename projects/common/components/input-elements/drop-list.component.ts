@@ -13,10 +13,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     <div class="list" [id]="elementModel.id"
          [fxLayout]="elementModel.orientation | droplistLayout"
          [fxLayoutAlign]="elementModel.orientation |  droplistLayoutAlign"
-         [class.vertical-orientation] = "elementModel.orientation === 'vertical'"
-         [class.horizontal-orientation] = "elementModel.orientation === 'horizontal'"
-         [class.cloze-context] = "clozeContext"
-         [class.only-one-item]= "elementModel.onlyOneItem"
+         [class.vertical-orientation]="elementModel.orientation === 'vertical'"
+         [class.horizontal-orientation]="elementModel.orientation === 'horizontal'"
+         [class.cloze-context]="clozeContext"
+         [class.only-one-item]="elementModel.onlyOneItem"
          [style.min-height.px]="elementModel.position?.useMinHeight || clozeContext ? elementModel.height : undefined"
          [style.color]="elementModel.styling.fontColor"
          [style.font-family]="elementModel.styling.font"
@@ -32,14 +32,15 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          tabindex="0"
          (focusout)="elementFormControl.markAsTouched()"
          (drop)="drop($event)" (dragenter)="dragEnterList($event)" (dragleave)="dragLeaveList($event)"
-         (dragover)="$event.preventDefault()">
-          <!--Add dummy div - otherwise the empty list in cloze context will not be in one line-->
-          <div *ngIf="viewModel.length === 0"
-               [style.min-height.px]="elementModel.height - 4"
-               fxLayout="row"
-               [fxLayoutAlign]="'center center'">
-            <span>&nbsp;</span>
-          </div>
+         (dragover)="setDropEffect($event)">
+      <!--Add dummy div - otherwise the empty list in cloze context will not be in one line-->
+      <div *ngIf="viewModel.length === 0"
+           [style.min-height.px]="elementModel.height - 4"
+           [style.pointer-events]="'none'"
+           fxLayout="row"
+           [fxLayoutAlign]="'center center'">
+        <span>&nbsp;</span>
+      </div>
       <ng-container *ngFor="let dropListValueElement of viewModel let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
@@ -87,9 +88,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.error-message {font-size: 75%; margin-top: 10px; margin-left: 3px;}',
     '.error-message {position: absolute; bottom: 3px; pointer-events: none;}',
     '.list-item {cursor: grab;}',
-    '.list-item:active {cursor: grabbing}',
+    '.list-item:active {cursor: grabbing;}',
     '.show-as-placeholder {opacity: 0.5 !important; pointer-events: none;}',
-    '.highlight-valid-drop {background-color: lightblue !important;}',
+    '.highlight-valid-drop {background-color: #ccc !important;}',
     '.highlight-as-receiver {padding: 0; border: 2px solid;}',
     '.show-as-hidden {visibility: hidden;}'
   ]
@@ -120,6 +121,8 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
 
   ngAfterViewInit() {
     DropListComponent.dragAndDropComponents[this.elementModel.id] = this;
+    // Prevent 'forbidden' cursor outside of drop lists
+    document.addEventListener('dragover', (event => event.preventDefault()));
   }
 
   // TODO method names
@@ -172,7 +175,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     dragImage.style.maxWidth = `${(baseElement as HTMLElement).offsetWidth}px`;
     dragImage.style.fontSize = `${this.elementModel.styling.fontSize}px`;
     dragImage.style.borderRadius = '5px';
-    dragImage.style.padding = '10px';
+    dragImage.style.padding = '10px 20px'; // Leave space for cursor
     document.body.appendChild(dragImage);
     return dragImage;
   }
@@ -193,11 +196,23 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     this.placeHolderIndex = targetIndex;
   }
 
+  setDropEffect(event: DragEvent) {
+    event.preventDefault();
+    if (!event.dataTransfer) return;
+    if (this.isDropAllowed()) {
+      if ((DropListComponent.sourceList as DropListComponent).elementModel.copyOnDrop) {
+        event.dataTransfer.dropEffect = 'copy';
+      } else {
+        event.dataTransfer.dropEffect = 'move';
+      }
+    } else {
+      event.dataTransfer.dropEffect = 'none';
+    }
+  }
+
   dragEnterList(event: DragEvent) {
     event.preventDefault();
-
-    if (!this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) return;
-
+    if (!this.isDropAllowed()) return;
     if (!this.elementModel.isSortList) {
       this.highlightValidDrop = true;
     } else if (DropListComponent.sourceList !== this) {
@@ -226,20 +241,20 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     }
 
     // if drop is allowed that means item transfer between non-sort lists
-    if (this.isDropAllowed((DropListComponent.sourceList as DropListComponent).elementModel.connectedTo)) {
+    if (this.isDropAllowed()) {
       if (!DropListComponent.isItemIDAlreadyPresent(DropListComponent.draggedElement?.id as string, this.elementFormControl.value) &&
-          !(this.elementModel.onlyOneItem && this.viewModel.length > 0)) { // normal drop
+        !(this.elementModel.onlyOneItem && this.viewModel.length > 0)) { // normal drop
         if (!DropListComponent.sourceList?.elementModel.copyOnDrop) { // remove source item if not copy
           DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
             DropListComponent.sourceList?.placeHolderIndex as number);
         }
         DropListComponent.addElementToList(this, DropListComponent.draggedElement as DragNDropValueObject);
       } else if (DropListComponent.isItemIDAlreadyPresent(DropListComponent.draggedElement?.id as string, this.elementFormControl.value) &&
-                 this.elementModel.deleteDroppedItemWithSameID) { // put back (return) item
+        this.elementModel.deleteDroppedItemWithSameID) { // put back (return) item
         DropListComponent.removeElementFromList(DropListComponent.sourceList as DropListComponent,
           DropListComponent.sourceList?.placeHolderIndex as number);
       } else if (this.elementModel.onlyOneItem && this.viewModel.length > 0 &&
-                 this.viewModel[0].returnToOriginOnReplacement) { // replace
+        this.viewModel[0].returnToOriginOnReplacement) { // replace
         const originListComponent = DropListComponent.dragAndDropComponents[this.viewModel[0].originListID as string];
         const isItemIDAlreadyPresent =
           DropListComponent.isItemIDAlreadyPresent(this.viewModel[0].id, originListComponent.elementFormControl.value);
@@ -266,12 +281,14 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   onlyOneItem && itemcount = 1 && this.viewModel[0].returnToOriginOnReplacement)  // verdraengen
   - (! id already present) || id already present && deleteDroppedItemWithSameID // zuruecklegen
    */
-  isDropAllowed(connectedDropLists: string[]): boolean {
+  isDropAllowed(): boolean {
+    if (!DropListComponent.sourceList) return false;
     const sameList = DropListComponent.sourceList === this;
+    const connectedDropLists = (DropListComponent.sourceList as DropListComponent).elementModel.connectedTo;
     const isConnectedList = (connectedDropLists as string[]).includes(this.elementModel.id);
     return (sameList) || (isConnectedList &&
-                             !this.isOnlyOneItemAndNoReplacingOrReturning() &&
-                             !this.isIDPresentAndNoReturning());
+      !this.isOnlyOneItemAndNoReplacingOrReturning() &&
+      !this.isIDPresentAndNoReturning());
   }
 
   isIDPresentAndNoReturning(): boolean {
@@ -286,8 +303,8 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
   isOnlyOneItemAndNoReplacingOrReturning(): boolean {
     return this.elementModel.onlyOneItem && this.viewModel.length > 0 &&
       !((this.viewModel[0].returnToOriginOnReplacement && !this.elementModel.isSortList) ||
-       (this.elementModel.deleteDroppedItemWithSameID &&
-         DropListComponent.draggedElement?.id === this.viewModel[0].id));
+        (this.elementModel.deleteDroppedItemWithSameID &&
+          DropListComponent.draggedElement?.id === this.viewModel[0].id));
   }
 
   static isItemIDAlreadyPresent(itemID: string, valueList: DragNDropValueObject[]): boolean {

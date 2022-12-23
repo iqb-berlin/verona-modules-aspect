@@ -1,5 +1,9 @@
 Player
 ======
+## 1.29.2
+### Fehlerbehebungen
+- Korrigiert die Warnmeldungsrahmenfarbe von als Pflichtfeld markierten Ablegelisten
+
 ## 1.29.1
 ### Verbesserungen
 - Ändert die voreingestellte Hintergrundfarbe bei Ablegelisten für Ablegeankündigung
@@ -11,7 +15,7 @@ Player
     "Verschieben"-Mauszeiger verwendet
   - **Die Darstellung der Mauszeiger ist abhängig vom Betriebssystem**
 
-## Fehlerbehebungen
+### Fehlerbehebungen
 - Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der 
   Rückgängig- und Wiederherstellen-Knöpfe ausgelöst wurden
 - Korrigiert die Ablegeankündigung für leere Ablegelisten
@@ -25,7 +29,7 @@ Player
 - Eingabehilfen bewegen sich innerhalb des sichtbaren Bereichs einer Seite mit,
   wenn die Seite gescrollt wird 
 
-## Fehlerbehebungen
+### Fehlerbehebungen
 - Stellt die erreichte Sichtbarkeit von Abschnitten mit eingestellter Verzögerung
   beim erneuten Laden einer Unit wieder her
   Folgendes ist zu beachten: 

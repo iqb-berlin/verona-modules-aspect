@@ -68,7 +68,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </ng-container>
     </div>
     <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-               class="error-message">
+               class="error-message" [style.bottom.px]="clozeContext ? -1 : 3"
+               [class.cloze-context-error-messag]="clozeContext">
       {{elementFormControl.errors | errorTransform: elementModel}}
     </mat-error>
   `,
@@ -84,9 +85,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     'img.list-item {align-self: start; padding: 2px !important;}',
     '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
     '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',
-    '.errors {border: 2px solid #f44336;}',
-    '.error-message {font-size: 75%; margin-top: 10px; margin-left: 3px;}',
-    '.error-message {position: absolute; bottom: 3px; pointer-events: none;}',
+    '.errors {border: 2px solid #f44336 !important;}',
+    '.error-message {font-size: 75%; margin-top: 10px; margin-left: 5px; position: absolute; pointer-events: none;}',
+    '.cloze-context-error-message {padding: 0 !important;}',
     '.list-item {cursor: grab;}',
     '.list-item:active {cursor: grabbing;}',
     '.show-as-placeholder {opacity: 0.5 !important; pointer-events: none;}',

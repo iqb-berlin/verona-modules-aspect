@@ -3,6 +3,7 @@ Player
 ## 1.29.2
 ### Fehlerbehebungen
 - Korrigiert die Warnmeldungsrahmenfarbe von als Pflichtfeld markierten Ablegelisten
+- Korrigiert die Position von schließenden Zitatanführungszeichen in auf Chrome basierenden Browsern
 
 ## 1.29.1
 ### Verbesserungen

@@ -27,7 +27,7 @@ export class ToggleButtonElement extends InputElement {
     if (element.dynamicWidth !== undefined) this.dynamicWidth = element.dynamicWidth;
     this.styling = {
       ...UIElement.initStylingProps({
-        lineHeight: 135,
+        lineHeight: 100,
         selectionColor: '#c7f3d0',
         backgroundColor: 'transparent',
         ...element.styling

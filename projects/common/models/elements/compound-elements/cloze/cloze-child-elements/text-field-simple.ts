@@ -31,7 +31,7 @@ export class TextFieldSimpleElement extends TextInputElement {
     if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
     if (element.clearable) this.clearable = element.clearable;
     this.styling = {
-      ...UIElement.initStylingProps({ lineHeight: 135, backgroundColor: 'transparent', ...element.styling })
+      ...UIElement.initStylingProps({ lineHeight: 100, backgroundColor: 'transparent', ...element.styling })
     };
   }
 

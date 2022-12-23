@@ -1,5 +1,13 @@
 Editor
 ======
+## 1.36.2
+- Setzt für Eingabe- und Optionsfelder in Lückentexten den voreingestellten Wert für die Zeilenhöhe auf 100%
+
+## 1.36.1
+### Verbesserungen
+- Unterstützt neue Darstellungen (s. Player Version 1.29.1)
+
+
 ## 1.36.0
 ### Neue Funktionen
 - Bietet unterschiedliche Startpositionen für schwebende Eingabehilfen an  

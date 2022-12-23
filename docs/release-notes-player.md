@@ -1,5 +1,9 @@
 Player
 ======
+## 1.29.3
+### Fehlerbehebungen
+- Korrigiert die Position des Textes auf gezogenen Ablegelistenelementen
+
 ## 1.29.2
 ### Fehlerbehebungen
 - Korrigiert die Warnmeldungsrahmenfarbe von als Pflichtfeld markierten Ablegelisten
@@ -17,7 +21,7 @@ Player
   - **Die Darstellung der Mauszeiger ist abhängig vom Betriebssystem**
 
 ### Fehlerbehebungen
-- Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der 
+- Speichert Änderungen an GeoGebra-Elementen, die durch Benutzung der
   Rückgängig- und Wiederherstellen-Knöpfe ausgelöst wurden
 - Korrigiert die Ablegeankündigung für leere Ablegelisten
 - Verhindert das Ablegen von Elementen, die nicht zu einer Ablegeliste gehören
@@ -28,18 +32,18 @@ Player
 - Elemente von Ablegelisten, die nur ein Element zulassen, werden nur dann zentriert dargestellt,
   wenn die Ablegelisten innerhalb von Lückentexten angelegt sind
 - Eingabehilfen bewegen sich innerhalb des sichtbaren Bereichs einer Seite mit,
-  wenn die Seite gescrollt wird 
+  wenn die Seite gescrollt wird
 
 ### Fehlerbehebungen
 - Stellt die erreichte Sichtbarkeit von Abschnitten mit eingestellter Verzögerung
   beim erneuten Laden einer Unit wieder her
-  Folgendes ist zu beachten: 
+  Folgendes ist zu beachten:
   - Abschnitte mit eingestellter Verzögerung dürfen nicht leer sein
   - Bereits verstrichene Zeit kann beim erneuten Laden berücksichtigt werden
 
 ## 1.28.4
 ### Fehlerbehebungen
-- Korrigiert Darstellungsfehler von hervorzuhebenden Textbereichen, bei gleichzeitiger Markierung 
+- Korrigiert Darstellungsfehler von hervorzuhebenden Textbereichen, bei gleichzeitiger Markierung
 
 ## 1.28.3
 ### Verbesserungen
@@ -52,7 +56,7 @@ Player
 - Korrigiert Darstellungsfehler von Eingabefeldern in Lückentexten in FireFox
 
 ## 1.28.2
-### Verbesserungen 
+### Verbesserungen
 - Ermöglicht die Interaktion mit Elementen, die sich hinter einem Rahmenelement befinden
 - Vereinheitlicht die vertikale Ausrichtung von Kindelementen von Lückentexten
 
@@ -66,7 +70,7 @@ Player
 - Korrigiert die vertikale Ausrichtung von Ablegelisten in Lückentexten
 
 ### Fehlerbehebungen
-- Behebt das versehentliche Löschen von Text beim Entfernen von 
+- Behebt das versehentliche Löschen von Text beim Entfernen von
   Markierungen aus Textelementen (im Firefox-Browser)  
 
 
@@ -82,9 +86,9 @@ Player
   werden nach erster Benutzung der Elemente ausgeblendet
 - Die neue Eingabehilfe "Eigene Zeichen" nutzt weitestgehend das Layout
   der Eingabehilfe "Französische Sonderzeichen"
-- Ist die Texteingabe bei Eingabefeldern auf eine Maximallänge begrenzt, kann kein 
+- Ist die Texteingabe bei Eingabefeldern auf eine Maximallänge begrenzt, kann kein
   Text über die Zwischenablage eingefügt werden
-- Vordefinierte markierte Bereiche in Texten können gezielt über vordefinierte Klicks auf 
+- Vordefinierte markierte Bereiche in Texten können gezielt über vordefinierte Klicks auf
   Navigationsknöpfe für 30 Sekunden farblich hervorgehoben werden
 - Aktiviert verborgene Abschnitten mit der angegebenen Verzögerung (in Millisekunden)
 
@@ -97,7 +101,7 @@ Player
 ### Fehlerbehebungen
 - Zeigt Validierungsfehler ohne angegebene Warnmeldungen nur mit rotem Rahmen an
 - Korrigiert fehlende Warnmeldungen beim Schieberegler/Zahlenstrahl
-- Verhindert die Anzeige von Bildlaufleisten bei Geogebra-Elementen mit fester Größe 
+- Verhindert die Anzeige von Bildlaufleisten bei Geogebra-Elementen mit fester Größe
 
 
 ## 1.27.0

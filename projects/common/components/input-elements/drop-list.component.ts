@@ -173,7 +173,7 @@ export class DropListComponent extends FormElementComponent implements OnInit, A
     const dragImage: HTMLElement = baseElement.cloneNode(true) as HTMLElement;
     dragImage.id = `${baseID}-dragimage`;
     dragImage.style.display = 'inline-block';
-    dragImage.style.maxWidth = `${(baseElement as HTMLElement).offsetWidth}px`;
+    dragImage.style.maxWidth = `${(baseElement as HTMLElement).offsetWidth + 20}px`;
     dragImage.style.fontSize = `${this.elementModel.styling.fontSize}px`;
     dragImage.style.borderRadius = '5px';
     dragImage.style.padding = '10px 20px'; // Leave space for cursor

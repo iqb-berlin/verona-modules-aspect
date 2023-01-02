@@ -158,6 +158,7 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
         <aspect-compound-child-overlay
           *ngIf="['ToggleButton', 'DropList', 'TextField', 'Button'] | arrayIncludes:subPart.type"
           [style.display]="'inline-block'"
+          [style.vertical-align]="'top'"
          [parentForm]="parentForm"
          [element]="$any(subPart).attrs.model"
          [editorMode]="editorMode"

@@ -9,6 +9,7 @@ import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 
 @Component({
   selector: 'aspect-compound-child-overlay',
@@ -51,7 +52,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
   ]
 })
 export class CompoundChildOverlayComponent { // TODO rename to ClozeChildOverlay
-  @Input() element!: ToggleButtonElement | TextFieldSimpleElement;
+  @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement;
   @Input() parentForm!: FormGroup;
   @Input() editorMode: boolean = false;
   @Input() lineHeight!: number;

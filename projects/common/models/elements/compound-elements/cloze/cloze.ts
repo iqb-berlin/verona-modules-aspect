@@ -145,7 +145,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
         break;
       case 'drop-list':
       case 'drop-list-simple' as UIElementType: // keep here for compatibility
-        newElement = new DropListElement({ ...elementModel as DropListElement, type: 'drop-list' });
+        newElement = new DropListElement(elementModel as DropListElement);
         break;
       case 'toggle-button':
         newElement = new ToggleButtonElement(elementModel as ToggleButtonElement);

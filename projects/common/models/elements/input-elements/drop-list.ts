@@ -15,8 +15,8 @@ export class DropListElement extends InputElement {
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
   deleteDroppedItemWithSameID: boolean = false;
-  orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical';
-  highlightReceivingDropList: boolean = false;
+  orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
+  highlightReceivingDropList: boolean = false; // TODO unused
   highlightReceivingDropListColor: string = '#006064';
   position: PositionProperties | undefined;
   styling: BasicStyles & {

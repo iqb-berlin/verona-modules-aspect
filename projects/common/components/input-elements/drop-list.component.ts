@@ -1,13 +1,11 @@
-// eslint-disable-next-line max-classes-per-file
 import {
-  Component, Input, Pipe, PipeTransform
+  Component, Input
 } from '@angular/core';
 import {
-  CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem
+  CdkDrag, CdkDragDrop, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/elements/element';
-import { FormGroup } from '@angular/forms';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
@@ -37,7 +35,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [class.errors]="elementFormControl.errors && elementFormControl.touched"
          (focusout)="elementFormControl.markAsTouched()">
       <ng-container *ngFor="let dropListValueElement of
-      (parentForm | dropListValueElements: elementModel.value: elementFormControl.value) let index = index;">
+      parentForm ? elementFormControl.value : elementModel.value; let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
              cdkDrag [cdkDragData]="dropListValueElement"
@@ -138,6 +136,7 @@ export class DropListComponent extends FormElementComponent {
     }
   }
 
+  /* Move element within the same list to a new index position. */
   static isReorderDrop(event: CdkDragDrop<any>): boolean {
     return event.previousContainer === event.container;
   }
@@ -146,6 +145,7 @@ export class DropListComponent extends FormElementComponent {
     return event.previousContainer.data.elementModel.copyOnDrop;
   }
 
+  /* Put a copied element back to the source list. */
   static isPutBack(event: CdkDragDrop<any>): boolean {
     return event.container.data.elementModel.copyOnDrop &&
       DropListComponent.isItemIDAlreadyPresent(event.item.data.id, event.container.data.elementFormControl.value);
@@ -178,12 +178,3 @@ export class DropListComponent extends FormElementComponent {
   }
 }
 
-@Pipe({
-  name: 'dropListValueElements'
-})
-export class DropListValueElementsPipe implements PipeTransform {
-  transform(parentForm: FormGroup, elementModelValue: DragNDropValueObject[], elementFormValue: DragNDropValueObject[])
-    : DragNDropValueObject[] {
-    return parentForm ? elementFormValue : elementModelValue;
-  }
-}

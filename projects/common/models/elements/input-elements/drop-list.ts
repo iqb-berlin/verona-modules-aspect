@@ -11,11 +11,9 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
 export class DropListElement extends InputElement {
   value: DragNDropValueObject[];
   onlyOneItem: boolean = false;
-  isSortList: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
-  deleteDroppedItemWithSameID: boolean = false;
-  orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical';
+  orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#006064';
   position: PositionProperties | undefined;
@@ -29,12 +27,8 @@ export class DropListElement extends InputElement {
       element.value.map(val => ({ ...val })) :
       [];
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
-    if (element.isSortList !== undefined) this.isSortList = element.isSortList;
     if (element.connectedTo) this.connectedTo = [...element.connectedTo];
     if (element.copyOnDrop !== undefined) this.copyOnDrop = element.copyOnDrop;
-    if (element.deleteDroppedItemWithSameID !== undefined) {
-      this.deleteDroppedItemWithSameID = element.deleteDroppedItemWithSameID;
-    }
     if (element.orientation) this.orientation = element.orientation;
     if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
     if (element.highlightReceivingDropListColor) {

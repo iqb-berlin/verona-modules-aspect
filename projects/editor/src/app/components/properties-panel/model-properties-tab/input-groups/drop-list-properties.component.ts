@@ -50,12 +50,6 @@ import { DialogService } from '../../../../services/dialog.service';
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox *ngIf="combinedProperties.isSortList !== undefined"
-                    [checked]="$any(combinedProperties.isSortList)"
-                    (change)="updateModel.emit({ property: 'isSortList', value: $event.checked })">
-        {{'propertiesPanel.isSortList' | translate }}
-      </mat-checkbox>
-
       <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
                     [checked]="$any(combinedProperties.onlyOneItem)"
                     (change)="updateModel.emit({ property: 'onlyOneItem', value: $event.checked })">

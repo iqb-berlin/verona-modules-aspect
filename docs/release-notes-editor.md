@@ -1,7 +1,11 @@
 Editor
 ======
-## 1.37.0
+## 1.37.0-beta
+### Verbesserungen
 - Erneute Überarbeitung von Ablegelisten
+  - Unterscheidung zwische Sortierlisten und normalen Ablegelisten existiert nicht mehr.
+      Alle Listen lassen Umsortieren zu.
+  - Zurücklegen in Listen mit kopierenden Elementen ist nun standardmäßiges, unabänderliches Verhalten.
 
 ## 1.36.2
 - Setzt für Eingabe- und Optionsfelder in Lückentexten den voreingestellten Wert für die Zeilenhöhe auf 100%

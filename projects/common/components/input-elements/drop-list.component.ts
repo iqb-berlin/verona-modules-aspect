@@ -18,6 +18,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [class.vertical-orientation]="elementModel.orientation === 'vertical'"
          [class.horizontal-orientation]="elementModel.orientation === 'horizontal'"
          [class.floating-orientation]="elementModel.orientation === 'flex'"
+         [class.only-one-item]="elementModel.onlyOneItem"
          [class.highlight-receiver]="classReference.highlightReceivingDropList"
          cdkDropList
          [cdkDropListData]="this" [cdkDropListConnectedTo]="elementModel.connectedTo"
@@ -73,19 +74,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list.vertical-orientation {flex-direction: column;}',
     '.list.horizontal-orientation {flex-direction: row;}',
     '.list.floating-orientation {place-content: center space-around; align-items: center; flex-flow: row wrap;}',
+    '.cloze-context.list {padding: 0;}',
     '.list-item {border-radius: 5px;}',
     ':not(.cloze-context) .list-item {padding: 10px;}',
     '.cloze-context .list-item {padding: 0 5px;}',
-    '.cloze-context.list {padding: 0;}',
+    '.cloze-context .list-item span {margin-bottom: 3px;}',
+    '.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
     'img.list-item {align-self: start;}',
     '.errors {border: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; margin-top: 10px; margin-left: 5px; position: absolute; pointer-events: none;}',
     '.cloze-context-error-message {padding: 0 !important;}',
-    '.list-item {cursor: grab;}',
     '.list-item:active {cursor: grabbing;}',
-
     '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black; padding: 10px;}',
-
     '.cdk-drop-list-dragging .cdk-drag {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.highlight-receiver.cdk-drop-list-receiving {padding: 3px; border: 2px solid;}',
     '.cdk-drag-placeholder {background: #ccc; border: dotted 3px #999; min-height: 25px; min-width: 25px;}',

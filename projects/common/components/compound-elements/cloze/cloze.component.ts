@@ -158,11 +158,11 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
         <aspect-compound-child-overlay
           *ngIf="['ToggleButton', 'DropList', 'TextField', 'Button'] | arrayIncludes:subPart.type"
           [style.display]="'inline-block'"
-          [style.vertical-align]="'top'"
-         [parentForm]="parentForm"
-         [element]="$any(subPart).attrs.model"
-         [editorMode]="editorMode"
-         (elementSelected)="childElementSelected.emit($event)">
+          [class.droplist-child]="subPart.type == 'DropList'"
+          [parentForm]="parentForm"
+          [element]="$any(subPart).attrs.model"
+          [editorMode]="editorMode"
+          (elementSelected)="childElementSelected.emit($event)">
         </aspect-compound-child-overlay>
       </ng-container>
     </ng-template>
@@ -175,7 +175,8 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
     ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
     ':host ::ng-deep p:empty::after {content: "\\00A0"}', // render empty p
     'p span {font-size: inherit}',
-    'sup, sub {line-height: 0;}'
+    'sup, sub {line-height: 0;}',
+    '.droplist-child {vertical-align: middle;}'
   ]
 })
 export class ClozeComponent extends CompoundElementComponent {

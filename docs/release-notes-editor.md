@@ -1,5 +1,8 @@
 Editor
 ======
+## 1.37.0
+- Erneute Überarbeitung von Ablegelisten
+
 ## 1.36.2
 - Setzt für Eingabe- und Optionsfelder in Lückentexten den voreingestellten Wert für die Zeilenhöhe auf 100%
 

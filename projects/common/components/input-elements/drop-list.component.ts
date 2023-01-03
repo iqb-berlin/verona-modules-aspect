@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Pipe, PipeTransform } from '@angular/core';
 import {
   CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/elements/element';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'aspect-drop-list',
@@ -32,7 +33,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.border-color]="elementModel.highlightReceivingDropListColor"
          [class.errors]="elementFormControl.errors && elementFormControl.touched"
          (focusout)="elementFormControl.markAsTouched()">
-      <ng-container *ngFor="let dropListValueElement of elementModel.value let index = index;">
+      <ng-container *ngFor="let dropListValueElement of
+      (parentForm | dropListValueElements: elementModel.value: elementFormControl.value) let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
              cdkDrag [cdkDragData]="dropListValueElement"
@@ -112,19 +114,19 @@ export class DropListComponent extends FormElementComponent {
 
   drop(event: CdkDragDrop<any>) {
     if (DropListComponent.isReorderDrop(event)) {
-      moveItemInArray(event.container.data.elementModel.value, event.previousIndex, event.currentIndex);
+      moveItemInArray(event.container.data.elementFormControl.value, event.previousIndex, event.currentIndex);
       event.container.data.updateFormvalue();
     } else if (DropListComponent.isCopyDrop(event)) {
-      event.container.data.elementModel.value.push(
-        event.previousContainer.data.elementModel.value[event.previousIndex]);
+      event.container.data.elementFormControl.value.push(
+        event.previousContainer.data.elementFormControl.value[event.previousIndex]);
       event.container.data.updateFormvalue();
     } else if (DropListComponent.isPutBack(event)) {
-      event.previousContainer.data.elementModel.value.splice(event.previousIndex, 1);
+      event.previousContainer.data.elementFormControl.value.splice(event.previousIndex, 1);
       event.previousContainer.data.updateFormvalue();
     } else {
       transferArrayItem(
-        event.previousContainer.data.elementModel.value,
-        event.container.data.elementModel.value,
+        event.previousContainer.data.elementFormControl.value,
+        event.container.data.elementFormControl.value,
         event.previousIndex,
         event.currentIndex
       );
@@ -143,7 +145,7 @@ export class DropListComponent extends FormElementComponent {
 
   static isPutBack(event: CdkDragDrop<any>): boolean {
     return event.container.data.elementModel.copyOnDrop &&
-      DropListComponent.isItemIDAlreadyPresent(event.item.data.id, event.container.data.elementModel.value);
+      DropListComponent.isItemIDAlreadyPresent(event.item.data.id, event.container.data.elementFormControl.value);
   }
 
   updateFormvalue(): void {
@@ -151,7 +153,7 @@ export class DropListComponent extends FormElementComponent {
   }
 
   validDropPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => {
-    return (!drop.data.elementModel.onlyOneItem || drop.data.elementModel.value.length < 1);// &&
+    return (!drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1);// &&
       // (!DropListComponent.isItemIDAlreadyPresent(drag.data.id, drop.data.value));
   };
 
@@ -170,5 +172,15 @@ export class DropListComponent extends FormElementComponent {
   static isItemIDAlreadyPresent(itemID: string, valueList: DragNDropValueObject[]): boolean {
     const listValueIDs = valueList.map((valueValue: DragNDropValueObject) => valueValue.id);
     return listValueIDs.includes(itemID);
+  }
+}
+
+@Pipe({
+  name: 'dropListValueElements'
+})
+export class DropListValueElementsPipe implements PipeTransform {
+  transform(parentForm: FormGroup, elementModelValue: DragNDropValueObject[], elementFormValue: DragNDropValueObject[])
+    : DragNDropValueObject[] {
+    return parentForm ? elementFormValue : elementModelValue;
   }
 }

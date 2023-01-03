@@ -1,11 +1,14 @@
-import { Component, Input, Pipe, PipeTransform } from '@angular/core';
+// eslint-disable-next-line max-classes-per-file
+import {
+  Component, Input, Pipe, PipeTransform
+} from '@angular/core';
 import {
   CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/elements/element';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
 import { FormGroup } from '@angular/forms';
+import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-drop-list',
@@ -149,7 +152,7 @@ export class DropListComponent extends FormElementComponent {
   }
 
   updateFormvalue(): void {
-    this.elementFormControl.setValue(this.elementModel.value);
+    this.elementFormControl.setValue(this.elementFormControl.value);
   }
 
   validDropPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => {

@@ -322,7 +322,7 @@ export class SanitizationService {
             ...paragraph,
             content: paragraph.content ? paragraph.content
               .map((paraPart: ClozeDocumentParagraphPart) => (
-                ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
+                ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(paraPart.type) ?
                   {
                     ...paraPart,
                     attrs: {

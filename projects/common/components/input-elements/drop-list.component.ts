@@ -1,17 +1,17 @@
+import { Component, Input } from '@angular/core';
 import {
-  Component, Input } from '@angular/core';
-import {
-  CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem
+  CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DragNDropValueObject } from 'common/models/elements/element';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-drop-list',
   template: `
     <!--         [style.min-height.px]="elementModel.position?.useMinHeight || clozeContext ? elementModel.height : undefined"-->
-    <!--         tabindex="0"-->
     <div class="list" [id]="elementModel.id"
+         tabindex="0"
          [class.cloze-context]="clozeContext"
          [class.vertical-orientation]="elementModel.orientation === 'vertical'"
          [class.horizontal-orientation]="elementModel.orientation === 'horizontal'"
@@ -20,7 +20,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          cdkDropList
          [cdkDropListData]="this" [cdkDropListConnectedTo]="elementModel.connectedTo"
          [cdkDropListOrientation]="elementModel.orientation === 'vertical' ? 'vertical' : 'horizontal'"
-         [cdkDropListEnterPredicate]="onlyOneItemPredicate"
+         [cdkDropListEnterPredicate]="validDropPredicate"
          (cdkDropListDropped)="drop($event)"
          [style.color]="elementModel.styling.fontColor"
          [style.font-family]="elementModel.styling.font"
@@ -35,13 +35,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       <ng-container *ngFor="let dropListValueElement of elementModel.value let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
-             cdkDrag
-             (cdkDragStarted)="setHighlighting(elementModel.highlightReceivingDropList)"
-             (cdkDragEnded)="setHighlighting(false)"
+             cdkDrag [cdkDragData]="dropListValueElement"
+             (cdkDragStarted)="dragStart($event)"
+             (cdkDragEnded)="dragEnd()"
              [style.background-color]="elementModel.styling.itemBackgroundColor">
           <span>{{dropListValueElement.text}}</span>
           <div *cdkDragPlaceholder></div>
-          <!--          <ng-template cdkDragPreview [matchSize]="true">-->
           <ng-template cdkDragPreview>
             <div [style.color]="elementModel.styling.fontColor"
                  [style.font-family]="elementModel.styling.font"
@@ -71,31 +70,22 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list.vertical-orientation {flex-direction: column;}',
     '.list.horizontal-orientation {flex-direction: row;}',
     '.list.floating-orientation {place-content: center space-around; align-items: center; flex-flow: row wrap;}',
-    '.cloze-context.list {padding: 0}',
     '.list-item {border-radius: 5px;}',
-    // '.list-item {margin: 2px; border-radius: 5px;}',
     ':not(.cloze-context) .list-item {padding: 10px;}',
     '.cloze-context .list-item {padding: 0 5px;}',
-    // '.cloze-context .list {padding: 0 5px;}',
-    // '.cloze-context .list-item {padding: 0 5px; line-height: 1.2;}',
-    // '.only-one-item.cloze-context .list-item {padding: 0;}',
-    // '.only-one-item:not(.cloze-context) .list-item {padding: 0 10px;}',
-    // '.only-one-item .list-item {height: 100%; min-height: 100%; min-width: 100%; width: 100%; line-height: 1.2;}',
-    // 'img.list-item {align-self: start; padding: 2px !important;}',
+    '.cloze-context.list {padding: 0;}',
     'img.list-item {align-self: start;}',
-    // '.vertical-orientation .list-item:not(:last-child) {margin-bottom: 5px;}',
-    // '.horizontal-orientation .list-item:not(:last-child) {margin-right: 5px;}',
-    // '.errors {border: 2px solid #f44336 !important;}',
-    // '.error-message {font-size: 75%; margin-top: 10px; margin-left: 5px; position: absolute; pointer-events: none;}',
-    // '.cloze-context-error-message {padding: 0 !important;}',
-    // '.list-item {cursor: grab;}',
-    // '.list-item:active {cursor: grabbing;}',
+    '.errors {border: 2px solid #f44336 !important;}',
+    '.error-message {font-size: 75%; margin-top: 10px; margin-left: 5px; position: absolute; pointer-events: none;}',
+    '.cloze-context-error-message {padding: 0 !important;}',
+    '.list-item {cursor: grab;}',
+    '.list-item:active {cursor: grabbing;}',
 
     '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black; padding: 10px;}',
 
     '.cdk-drop-list-dragging .cdk-drag {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.highlight-receiver.cdk-drop-list-receiving {padding: 3px; border: 2px solid;}',
-    '.cdk-drag-placeholder {background: #ccc; border: dotted 3px #999; min-height: 20px;}',
+    '.cdk-drag-placeholder {background: #ccc; border: dotted 3px #999; min-height: 25px; min-width: 25px;}',
     '.cdk-drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}'
   ]
 })
@@ -105,17 +95,32 @@ export class DropListComponent extends FormElementComponent {
 
   classReference = DropListComponent;
   static highlightReceivingDropList = false;
-  // viewModel: DragNDropValueObject[] = [];
 
-  // ngOnInit() {
-  //   super.ngOnInit();
-  //   this.viewModel = [...this.elementFormControl.value];
-  // }
+  dragStart(event: CdkDragStart) {
+    DropListComponent.setHighlighting(event.source.dropContainer.data.elementModel.highlightReceivingDropList);
+    document.body.classList.add('dragging-active');
+  }
+
+  dragEnd() {
+    DropListComponent.setHighlighting(false);
+    document.body.classList.remove('dragging-active');
+  }
+
+  static setHighlighting(showHighlight: boolean) {
+    DropListComponent.highlightReceivingDropList = showHighlight;
+  }
 
   drop(event: CdkDragDrop<any>) {
-    if (event.previousContainer === event.container) {
+    if (DropListComponent.isReorderDrop(event)) {
       moveItemInArray(event.container.data.elementModel.value, event.previousIndex, event.currentIndex);
       event.container.data.updateFormvalue();
+    } else if (DropListComponent.isCopyDrop(event)) {
+      event.container.data.elementModel.value.push(
+        event.previousContainer.data.elementModel.value[event.previousIndex]);
+      event.container.data.updateFormvalue();
+    } else if (DropListComponent.isPutBack(event)) {
+      event.previousContainer.data.elementModel.value.splice(event.previousIndex, 1);
+      event.previousContainer.data.updateFormvalue();
     } else {
       transferArrayItem(
         event.previousContainer.data.elementModel.value,
@@ -128,16 +133,42 @@ export class DropListComponent extends FormElementComponent {
     }
   }
 
+  static isReorderDrop(event: CdkDragDrop<any>): boolean {
+    return event.previousContainer === event.container;
+  }
+
+  static isCopyDrop(event: CdkDragDrop<any>): boolean {
+    return event.previousContainer.data.elementModel.copyOnDrop;
+  }
+
+  static isPutBack(event: CdkDragDrop<any>): boolean {
+    return event.container.data.elementModel.copyOnDrop &&
+      DropListComponent.isItemIDAlreadyPresent(event.item.data.id, event.container.data.elementModel.value);
+  }
+
   updateFormvalue(): void {
     this.elementFormControl.setValue(this.elementModel.value);
   }
 
-  onlyOneItemPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
-    !drop.data.elementModel.onlyOneItem || drop.data.elementModel.value.length < 1
-  );
+  validDropPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => {
+    return (!drop.data.elementModel.onlyOneItem || drop.data.elementModel.value.length < 1);// &&
+      // (!DropListComponent.isItemIDAlreadyPresent(drag.data.id, drop.data.value));
+  };
 
-  setHighlighting(showHighlight: boolean) {
-    console.log('drag started', showHighlight);
-    DropListComponent.highlightReceivingDropList = showHighlight;
+  // isIDPresentAndNoReturning(): boolean {
+  //   return DropListComponent.isItemIDAlreadyPresent(DropListComponent.draggedElement?.id as string, this.elementFormControl.value) &&
+  //     !(this.elementModel.deleteDroppedItemWithSameID);
+  // }
+  //
+  // isOnlyOneItemAndNoReplacingOrReturning(): boolean {
+  //   return this.elementModel.onlyOneItem && this.viewModel.length > 0 &&
+  //     !((this.viewModel[0].returnToOriginOnReplacement && !this.elementModel.isSortList) ||
+  //       (this.elementModel.deleteDroppedItemWithSameID &&
+  //         DropListComponent.draggedElement?.id === this.viewModel[0].id));
+  // }
+
+  static isItemIDAlreadyPresent(itemID: string, valueList: DragNDropValueObject[]): boolean {
+    const listValueIDs = valueList.map((valueValue: DragNDropValueObject) => valueValue.id);
+    return listValueIDs.includes(itemID);
   }
 }

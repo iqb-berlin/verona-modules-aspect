@@ -29,7 +29,7 @@
   "verticalButtonAlignment": "Vertikale Knopfausrichtung",
   "auto": "oben",
   "center": "zentriert",
-  "returnToOriginOnReplacement": "Verdrängen erlauben",
+  "allowReplacement": "Verdrängen erlauben",
   "toolbar": {
     "loadUnit": "Unit laden",
     "saveUnit": "Unit speichern"

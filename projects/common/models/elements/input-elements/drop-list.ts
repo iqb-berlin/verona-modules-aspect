@@ -13,6 +13,7 @@ export class DropListElement extends InputElement {
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
+  allowReplacement: boolean = false;
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#006064';
@@ -29,6 +30,7 @@ export class DropListElement extends InputElement {
     if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
     if (element.connectedTo) this.connectedTo = [...element.connectedTo];
     if (element.copyOnDrop !== undefined) this.copyOnDrop = element.copyOnDrop;
+    if (element.allowReplacement !== undefined) this.allowReplacement = element.allowReplacement;
     if (element.orientation) this.orientation = element.orientation;
     if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
     if (element.highlightReceivingDropListColor) {
@@ -51,8 +53,8 @@ export class DropListElement extends InputElement {
       this.value.forEach((dndValue: DragNDropValueObject, index) => { // foreach to keep the array ref intact
         this.value[index] = {
           ...dndValue,
-          originListID: dndValue.returnToOriginOnReplacement ? this.id : undefined,
-          originListIndex: dndValue.returnToOriginOnReplacement ? this.value.indexOf(dndValue) : undefined
+          originListID: this.id,
+          originListIndex: this.value.indexOf(dndValue)
         };
       });
     }

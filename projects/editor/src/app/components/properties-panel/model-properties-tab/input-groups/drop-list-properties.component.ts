@@ -62,6 +62,12 @@ import { DialogService } from '../../../../services/dialog.service';
         {{'propertiesPanel.copyOnDrop' | translate }}
       </mat-checkbox>
 
+      <mat-checkbox *ngIf="combinedProperties.allowReplacement !== undefined"
+                    [checked]="$any(combinedProperties.allowReplacement)"
+                    (change)="updateModel.emit({ property: 'allowReplacement', value: $event.checked })">
+        {{'propertiesPanel.allowReplacement' | translate }}
+      </mat-checkbox>
+
       <mat-checkbox *ngIf="combinedProperties.deleteDroppedItemWithSameID !== undefined"
                     matTooltip="{{'propertiesPanel.deleteDroppedItemWithSameIDTooltip' | translate }}"
                     [disabled]="!combinedProperties.copyOnDrop"
@@ -116,7 +122,8 @@ export class DropListPropertiesComponent {
           imgSrc: null,
           imgPosition: 'above',
           id: this.unitService.getNewValueID(),
-          returnToOriginOnReplacement: false
+          originListID: 'id_placeholder',
+          originListIndex: 0
         }
       ]
     });

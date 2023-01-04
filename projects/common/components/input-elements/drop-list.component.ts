@@ -1,8 +1,8 @@
 import {
-  Component, Input
+  Component, ComponentRef, ElementRef, Input, OnInit, ViewChild
 } from '@angular/core';
 import {
-  CdkDrag, CdkDragDrop, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem
+  CdkDrag, CdkDragDrop, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem, copyArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/elements/element';
@@ -12,7 +12,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   selector: 'aspect-drop-list',
   template: `
     <!--         [style.min-height.px]="elementModel.position?.useMinHeight || clozeContext ? elementModel.height : undefined"-->
-    <div class="list" [id]="elementModel.id"
+    <div class="list" [id]="elementModel.id" #listComponent
          tabindex="0"
          [class.cloze-context]="clozeContext"
          [class.vertical-orientation]="elementModel.orientation === 'vertical'"
@@ -36,7 +36,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [class.errors]="elementFormControl.errors && elementFormControl.touched"
          (focusout)="elementFormControl.markAsTouched()">
       <ng-container *ngFor="let dropListValueElement of
-      parentForm ? elementFormControl.value : elementModel.value; let index = index;">
+        parentForm ? elementFormControl.value : elementModel.value; let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
              cdkDrag [cdkDragData]="dropListValueElement"
@@ -92,12 +92,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.cdk-drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}'
   ]
 })
-export class DropListComponent extends FormElementComponent {
+export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: DropListElement;
   @Input() clozeContext: boolean = false;
+  static dragAndDropComponents: { [id: string]: DropListComponent } = {};
 
   classReference = DropListComponent;
   static highlightReceivingDropList = false;
+
+  ngOnInit() {
+    super.ngOnInit();
+    DropListComponent.dragAndDropComponents[this.elementModel.id] = this;
+  }
 
   dragStart(event: CdkDragStart) {
     DropListComponent.setHighlighting(event.source.dropContainer.data.elementModel.highlightReceivingDropList);
@@ -114,26 +120,73 @@ export class DropListComponent extends FormElementComponent {
   }
 
   drop(event: CdkDragDrop<any>) {
+    console.log('drop', event);
+    // console.log('drop2 listComponent', ng.getComponent(this.listComponent));
     if (DropListComponent.isReorderDrop(event)) {
+      console.log('reorder');
       moveItemInArray(event.container.data.elementFormControl.value, event.previousIndex, event.currentIndex);
       event.container.data.updateFormvalue();
-    } else if (DropListComponent.isCopyDrop(event)) {
-      event.container.data.elementFormControl.value.push(
-        event.previousContainer.data.elementFormControl.value[event.previousIndex]);
-      event.container.data.updateFormvalue();
-    } else if (DropListComponent.isPutBack(event)) {
+      return;
+    }
+    if (DropListComponent.isPutBack(event)) {
+      console.log('put back');
       event.previousContainer.data.elementFormControl.value.splice(event.previousIndex, 1);
       event.previousContainer.data.updateFormvalue();
-    } else {
-      transferArrayItem(
-        event.previousContainer.data.elementFormControl.value,
-        event.container.data.elementFormControl.value,
-        event.previousIndex,
-        event.currentIndex
-      );
-      event.previousContainer.data.updateFormvalue();
-      event.container.data.updateFormvalue();
+      return;
     }
+
+    if (DropListComponent.isReplace(event)) {
+      console.log('replace');
+      DropListComponent.moveBackToOrigin(event);
+    }
+
+    if (DropListComponent.isCopyDrop(event)) {
+      console.log('copy drop');
+      copyArrayItem(event.previousContainer.data.elementFormControl.value, event.container.data.elementFormControl.value, event.previousIndex, event.currentIndex);
+    } else {
+      console.log('transfer drop');
+      DropListComponent.transferItem(event.previousContainer, event.container, event.previousIndex, event.currentIndex);
+    }
+    event.previousContainer.data.updateFormvalue();
+    event.container.data.updateFormvalue();
+  }
+
+  static transferItem(previousContainer: CdkDropList, newContainer: CdkDropList, previousIndex: number, newIndex: number): void {
+    transferArrayItem(
+      previousContainer.data.elementFormControl.value,
+      newContainer.data.elementFormControl.value,
+      previousIndex,
+      newIndex
+    );
+  }
+
+  static moveBackToOrigin(event: CdkDragDrop<any>): void {
+    console.log('moveBackToOrigin', event);
+    const originComponent = DropListComponent.dragAndDropComponents[event.container.data.elementFormControl.value[0].originListID];
+    const isIDAlreadyPresentInOrigin = DropListComponent.isItemIDAlreadyPresent(event.container.data.elementFormControl.value[0].id,originComponent.elementFormControl.value);
+    if (!originComponent.elementModel.copyOnDrop || !isIDAlreadyPresentInOrigin) {
+      DropListComponent.addElementToList(originComponent, event.container.data.elementFormControl.value[0]);
+    }
+    DropListComponent.removeElementFromList(event.container.data, 0);
+  }
+
+  static addElementToList(listComponent: DropListComponent, element: DragNDropValueObject): void {
+    const targetIndex = element.originListIndex;
+    if (targetIndex) {
+      listComponent.elementFormControl.value.splice(
+        Math.min(listComponent.elementFormControl.value.length, element.originListIndex || 0),
+        0,
+        element
+      );
+    } else {
+      listComponent.elementFormControl.value.push(element);
+    }
+    listComponent.elementFormControl.setValue(listComponent.elementFormControl.value);
+  }
+
+  static removeElementFromList(listComponent: DropListComponent, index: number): void {
+    listComponent.elementFormControl.value.splice(index, 1);
+    listComponent.elementFormControl.setValue(listComponent.elementFormControl.value);
   }
 
   /* Move element within the same list to a new index position. */
@@ -151,13 +204,19 @@ export class DropListComponent extends FormElementComponent {
       DropListComponent.isItemIDAlreadyPresent(event.item.data.id, event.container.data.elementFormControl.value);
   }
 
+  static isReplace(event: CdkDragDrop<any>): boolean {
+    return event.container.data.elementFormControl.value.length === 1 &&
+      event.container.data.elementModel.allowReplacement;
+  }
+
   updateFormvalue(): void {
     this.elementFormControl.setValue(this.elementFormControl.value);
   }
 
   validDropPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => {
-    return (!drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1);// &&
-      // (!DropListComponent.isItemIDAlreadyPresent(drag.data.id, drop.data.value));
+    console.log('valid?', drop);
+    return (!drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1 ||
+      drop.data.elementModel.allowReplacement);
   };
 
   // isIDPresentAndNoReturning(): boolean {
@@ -177,4 +236,3 @@ export class DropListComponent extends FormElementComponent {
     return listValueIDs.includes(itemID);
   }
 }
-

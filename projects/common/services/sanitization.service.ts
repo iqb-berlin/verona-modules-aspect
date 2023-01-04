@@ -367,12 +367,14 @@ export class SanitizationService {
     if (newElement.options) {
       console.warn('New dropList value IDs have been generated');
       newElement.value = [];
-      (newElement.options as string[]).forEach(option => {
+      (newElement.options as string[]).forEach((option, index) => {
         (newElement.value as DragNDropValueObject[]).push({
           id: 'id_placeholder',
           text: option,
           imgSrc: null,
-          imgPosition: 'above'
+          imgPosition: 'above',
+          originListID: newElement.id as string,
+          originListIndex: index
         });
       });
     }
@@ -380,12 +382,14 @@ export class SanitizationService {
         (newElement.value as []).length > 0 &&
         !((newElement.value as DragNDropValueObject[])[0] instanceof Object)) {
       const newValues: DragNDropValueObject[] = [];
-      (newElement.value as string[]).forEach(value => {
+      (newElement.value as string[]).forEach((value, index) => {
         newValues.push({
           id: 'id_placeholder',
           text: value,
           imgSrc: null,
-          imgPosition: 'above'
+          imgPosition: 'above',
+          originListID: newElement.id as string,
+          originListIndex: index
         });
       });
       // fix DragNDropValueObject stringValue -> text

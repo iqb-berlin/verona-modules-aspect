@@ -33,7 +33,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [style.backgroundColor]="elementModel.styling.backgroundColor"
          [style.border-color]="elementModel.highlightReceivingDropListColor"
-         [class.errors]="elementFormControl.errors && elementFormControl.touched"
+         [class.errors]="elementFormControl.errors && elementFormControl.touched && !classReference.highlightReceivingDropList"
          (focusout)="elementFormControl.markAsTouched()">
       <ng-container *ngFor="let dropListValueElement of
         parentForm ? elementFormControl.value : elementModel.value; let index = index;">
@@ -62,12 +62,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              class="list-item" cdkDrag
              [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
       </ng-container>
+      <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched && !classReference.highlightReceivingDropList"
+                 class="error-message">
+        <span>{{elementFormControl.errors | errorTransform: elementModel}}</span>
+      </mat-error>
     </div>
-    <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
-               class="error-message" [style.bottom.px]="clozeContext ? -1 : 3"
-               [class.cloze-context-error-messag]="clozeContext">
-      {{elementFormControl.errors | errorTransform: elementModel}}
-    </mat-error>
   `,
   styles: [
     '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); border-radius: 5px;}',
@@ -83,8 +82,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
     'img.list-item {align-self: start;}',
     '.errors {border: 2px solid #f44336 !important;}',
-    '.error-message {font-size: 75%; margin-top: 10px; margin-left: 5px; position: absolute; pointer-events: none;}',
-    '.cloze-context-error-message {padding: 0 !important;}',
+    '.error-message {font-size: 75%; position: absolute; margin-left: 3px;}',
     '.list-item:active {cursor: grabbing;}',
     '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black;}',
     '.cdk-drop-list-dragging .cdk-drag {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',

@@ -58,9 +58,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
             </div>
           </ng-template>
         </div>
-        <div class="list-item image-list-item" cdkDrag>
-          <img *ngIf="dropListValueElement.imgSrc"
-               [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
+        <div *ngIf="dropListValueElement.imgSrc"
+             class="list-item image-list-item" cdkDrag>
+          <img [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
           <ng-template cdkDragPreview>
             <img *ngIf="dropListValueElement.imgSrc"
                  [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">

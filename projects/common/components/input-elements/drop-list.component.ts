@@ -85,7 +85,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list-item {border-radius: 5px;}',
     ':not(.cloze-context) .list-item:not(.image-list-item) {padding: 10px;}',
     '.cloze-context .list-item {padding: 0 5px;}',
-    '.cloze-context .list-item span {margin-bottom: 3px;}',
     '.cloze-context.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
     'img.list-item {align-self: start;}',
     '.errors {border: 2px solid #f44336 !important;}',

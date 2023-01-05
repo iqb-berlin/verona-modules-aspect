@@ -52,6 +52,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                  [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+                 [style.padding.px]="dropListValueElement.imgSrc ? 0 : 10"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
               <span>{{dropListValueElement.text}}</span>
             </div>
@@ -76,7 +77,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list.floating-orientation {place-content: center space-around; align-items: center; flex-flow: row wrap;}',
     '.cloze-context.list {padding: 0;}',
     '.list-item {border-radius: 5px;}',
-    ':not(.cloze-context) .list-item {padding: 10px;}',
+    ':not(.cloze-context) :not(img).list-item {padding: 10px;}',
     '.cloze-context .list-item {padding: 0 5px;}',
     '.cloze-context .list-item span {margin-bottom: 3px;}',
     '.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
@@ -85,7 +86,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.error-message {font-size: 75%; margin-top: 10px; margin-left: 5px; position: absolute; pointer-events: none;}',
     '.cloze-context-error-message {padding: 0 !important;}',
     '.list-item:active {cursor: grabbing;}',
-    '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black; padding: 10px;}',
+    '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black;}',
     '.cdk-drop-list-dragging .cdk-drag {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.highlight-receiver.cdk-drop-list-receiving {padding: 3px; border: 2px solid;}',
     '.cdk-drag-placeholder {background: #ccc; border: dotted 3px #999; min-height: 25px; min-width: 25px;}',

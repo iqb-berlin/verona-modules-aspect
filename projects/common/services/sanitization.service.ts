@@ -409,11 +409,22 @@ export class SanitizationService {
         imgSrcValue?: string;
       };
       newElement.value = (newElement.value as OldDragNDropValueObject[])
-        .map((value: OldDragNDropValueObject) => ({
+        .map((value: OldDragNDropValueObject, index) => ({
           text: value.stringValue,
           id: value.id,
           imgSrc: value.imgSrcValue,
           imgPosition: 'above'
+        } as DragNDropValueObject));
+    }
+    // originListID and originListIndex are mandatory and need to be added to all values
+    if (newElement.value &&
+        (newElement.value as DragNDropValueObject[]).length &&
+        !(newElement.value as DragNDropValueObject[])[0].originListID) {
+      newElement.value = (newElement.value as DragNDropValueObject[])
+        .map((value: DragNDropValueObject, index) => ({
+          ...value,
+          originListID: newElement.id as string,
+          originListIndex: index
         } as DragNDropValueObject));
     }
     return newElement as DropListElement;

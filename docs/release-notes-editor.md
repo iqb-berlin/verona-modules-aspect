@@ -1,5 +1,9 @@
 Editor
 ======
+## 1.37.1
+### Fehlerbehebungen
+- Repariert die Indices von gezogenen Drag-and-Drop-Elementen bei dynamisch zentrierter Ausrichtung
+
 ## 1.37.0
 ### Verbesserungen
 - Erneute Überarbeitung von Ablegelisten

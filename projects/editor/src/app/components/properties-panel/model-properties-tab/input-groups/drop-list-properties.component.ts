@@ -65,7 +65,7 @@ import { DialogService } from '../../../../services/dialog.service';
       <mat-checkbox *ngIf="combinedProperties.allowReplacement !== undefined"
                     [checked]="$any(combinedProperties.allowReplacement)"
                     (change)="updateModel.emit({ property: 'allowReplacement', value: $event.checked })">
-        {{'propertiesPanel.allowReplacement' | translate }}
+        {{'allowReplacement' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.deleteDroppedItemWithSameID !== undefined"

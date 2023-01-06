@@ -47,16 +47,16 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     }
 
     // DropList keeps a special viewModel variable, which needs to be updated
-    if (this.childComponent.instance instanceof DropListComponent) {
-      (this.childComponent.instance as DropListComponent).viewModel = this.element.value as DragNDropValueObject[];
-    }
+    // if (this.childComponent.instance instanceof DropListComponent) {
+    //   (this.childComponent.instance as DropListComponent).viewModel = this.element.value as DragNDropValueObject[];
+    // }
 
     // Make children not clickable. This way the only relevant events are managed by the overlay.
     this.childComponent.location.nativeElement.style.pointerEvents = 'none';
 
     if (this.childComponent.instance instanceof ClozeComponent) {
-      // make cloze element children clickable to access child elements
       this.childComponent.instance.editorMode = true;
+      // make cloze element children clickable to access child elements
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.childElementSelected
         .pipe(takeUntil(this.ngUnsubscribe))

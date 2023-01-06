@@ -106,13 +106,13 @@ export class SanitizationService {
 
   private static isVersionOlderThanCurrent(version: [number, number, number]): boolean {
     if (!version) return true;
-    if (version[0] < SanitizationService.expectedUnitVersion[0]) {
+    if (Number(version[0]) < Number(SanitizationService.expectedUnitVersion[0])) {
       return true;
     }
-    if (version[1] < SanitizationService.expectedUnitVersion[1]) {
+    if (Number(version[1]) < Number(SanitizationService.expectedUnitVersion[1])) {
       return true;
     }
-    return version[2] < SanitizationService.expectedUnitVersion[2];
+    return Number(version[2]) < Number(SanitizationService.expectedUnitVersion[2]);
   }
 
   private sanitizePage(page: Page): Partial<Page> {
@@ -322,7 +322,7 @@ export class SanitizationService {
             ...paragraph,
             content: paragraph.content ? paragraph.content
               .map((paraPart: ClozeDocumentParagraphPart) => (
-                ['TextField', 'DropList', 'ToggleButton'].includes(paraPart.type) ?
+                ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(paraPart.type) ?
                   {
                     ...paraPart,
                     attrs: {
@@ -367,12 +367,14 @@ export class SanitizationService {
     if (newElement.options) {
       console.warn('New dropList value IDs have been generated');
       newElement.value = [];
-      (newElement.options as string[]).forEach(option => {
+      (newElement.options as string[]).forEach((option, index) => {
         (newElement.value as DragNDropValueObject[]).push({
           id: 'id_placeholder',
           text: option,
           imgSrc: null,
-          imgPosition: 'above'
+          imgPosition: 'above',
+          originListID: newElement.id as string,
+          originListIndex: index
         });
       });
     }
@@ -380,12 +382,14 @@ export class SanitizationService {
         (newElement.value as []).length > 0 &&
         !((newElement.value as DragNDropValueObject[])[0] instanceof Object)) {
       const newValues: DragNDropValueObject[] = [];
-      (newElement.value as string[]).forEach(value => {
+      (newElement.value as string[]).forEach((value, index) => {
         newValues.push({
           id: 'id_placeholder',
           text: value,
           imgSrc: null,
-          imgPosition: 'above'
+          imgPosition: 'above',
+          originListID: newElement.id as string,
+          originListIndex: index
         });
       });
       // fix DragNDropValueObject stringValue -> text
@@ -405,11 +409,22 @@ export class SanitizationService {
         imgSrcValue?: string;
       };
       newElement.value = (newElement.value as OldDragNDropValueObject[])
-        .map((value: OldDragNDropValueObject) => ({
+        .map((value: OldDragNDropValueObject, index) => ({
           text: value.stringValue,
           id: value.id,
           imgSrc: value.imgSrcValue,
           imgPosition: 'above'
+        } as DragNDropValueObject));
+    }
+    // originListID and originListIndex are mandatory and need to be added to all values
+    if (newElement.value &&
+        (newElement.value as DragNDropValueObject[]).length &&
+        !(newElement.value as DragNDropValueObject[])[0].originListID) {
+      newElement.value = (newElement.value as DragNDropValueObject[])
+        .map((value: DragNDropValueObject, index) => ({
+          ...value,
+          originListID: newElement.id as string,
+          originListIndex: index
         } as DragNDropValueObject));
     }
     return newElement as DropListElement;

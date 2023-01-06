@@ -1,5 +1,15 @@
 Editor
 ======
+## 1.37.0
+### Verbesserungen
+- Erneute Überarbeitung von Ablegelisten
+  - Unterscheidung zwischen Sortierlisten und normalen Ablegelisten existiert nicht mehr.
+      Alle Listen lassen Umsortieren zu.
+  - Zurücklegen in Listen mit kopierenden Elementen ist nun standardmäßiges, unabänderliches Verhalten.
+  - 'Verdrängen erlauben' ist nun eine Einstellung für Listen, anstatt für einzelne Optionen
+  - Platzhalter übernehmen die Größe der bewegten Elemente
+  - Verbesserte Ausrichtung in Lückentexten
+
 ## 1.36.2
 - Setzt für Eingabe- und Optionsfelder in Lückentexten den voreingestellten Wert für die Zeilenhöhe auf 100%
 
@@ -60,10 +70,10 @@ Editor
   - Interaktion mit den Elementen hat keinen Einfluss auf deren Vorbelegung. Diese
     ist weiterhin ggf. im Eigenschaftsfenster zu setzen.
 - Möglichkeit, die maximale Zeichenanzahl von Eingabefeldern zu begrenzen
-- Neue Kontrollelemente im Texteditor 
+- Neue Kontrollelemente im Texteditor
   - Im TextEditor können nun Bereiche markiert werden, die dann im Navigationsknopf
     über die Aktion "Textabschnitt hervorheben" ausgewählt werden können.
-  - Bilder können nun zusätzlich in voller Größe, in eigenem Absatz sowie mit rechts 
+  - Bilder können nun zusätzlich in voller Größe, in eigenem Absatz sowie mit rechts
     oder links umlaufendem Text angelegt werden.
 - Ermöglicht die Angabe einer Verzögerung (in Millisekunden)
   für Aktivieren von verborgenen Abschnitten
@@ -94,7 +104,7 @@ Editor
 - Shortcuts und *Rückgängig machen* im TextEditor re-aktiviert. Das automatische
   Generieren von Listen bleibt deaktiviert.
 - GeoGebra-Elemente können nun auch durch Hochladen einer .ggb-Datei angelegt werden.
-- Die Erweiterung der Aktionsmöglichkeit eines Navigationsknopfs 
+- Die Erweiterung der Aktionsmöglichkeit eines Navigationsknopfs
   führt zur Umbenennung in "Knopf"
 - Zeigt Ladeanimation bei GeoGebra-, Video- und Audioelementen
 - Wendet die angegebene Zeilenhöhe bei Optionsfeldern auch auf die Beschriftung an
@@ -110,7 +120,7 @@ Editor
   Zustand gerät.
 - Felder zur Größenanpassung aus den elementspezifischen Einstellungen entfernt.
 - Verhindert die Anzeige von Bildlaufleisten bei Geogebra-Elementen mit fester Größe
-- Korrigiert Initialisierungs-Fehler von GeoGebra-Elementen beim wiederholten Laden von 
+- Korrigiert Initialisierungs-Fehler von GeoGebra-Elementen beim wiederholten Laden von
   Aufgaben
 
 ## 1.34.0

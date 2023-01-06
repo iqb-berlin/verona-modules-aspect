@@ -1,5 +1,11 @@
 Player
 ======
+## 1.30.0
+### Fehlerbehebungen
+- Behebt Probleme bei Lückentexten mit Knopfelementen
+  Bei Lückentexten mit mehreren Elementen und mindestens einem Knopfelement,
+  wurde den Elementen teilweise die Eigenschaften des Knopfelements zugeordnet     
+
 ## 1.29.3
 ### Fehlerbehebungen
 - Korrigiert die Position des Textes auf gezogenen Ablegelistenelementen

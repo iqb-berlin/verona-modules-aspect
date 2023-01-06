@@ -11,9 +11,6 @@ import { DragNDropValueObject } from 'common/models/elements/element';
         <mat-label>{{'text' | translate }}</mat-label>
         <input #textField matInput type="text" [value]="data.value.text">
       </mat-form-field>
-      <mat-checkbox #returnToOriginOnReplacement [checked]="$any(data.value.returnToOriginOnReplacement)">
-        {{'returnToOriginOnReplacement' | translate }}
-      </mat-checkbox>
       <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
       <button mat-raised-button (click)="imgSrc = null">{{ 'removeImage' | translate }}</button>
       <img [src]="imgSrc"
@@ -28,8 +25,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
       <button mat-button [mat-dialog-close]="{
         text: textField.value,
         imgSrc: imgSrc,
-        id: idField.value,
-        returnToOriginOnReplacement: returnToOriginOnReplacement.checked
+        id: idField.value
       }">
         {{'save' | translate }}
       </button>

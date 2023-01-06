@@ -30,3 +30,11 @@ body {
 aspect-anchor:not(.active-anchor):not(.active-nested-anchor) {
   background-color: unset !important;
 }
+
+.dragging-active {
+  cursor: grabbing;
+}
+
+.dragging-active * {
+  cursor: inherit !important;
+}

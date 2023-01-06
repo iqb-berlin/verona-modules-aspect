@@ -29,7 +29,7 @@
   "verticalButtonAlignment": "Vertikale Knopfausrichtung",
   "auto": "oben",
   "center": "zentriert",
-  "returnToOriginOnReplacement": "Verdrängen erlauben",
+  "allowReplacement": "Verdrängen erlauben",
   "toolbar": {
     "loadUnit": "Unit laden",
     "saveUnit": "Unit speichern"
@@ -192,7 +192,6 @@
     "newHotspot": "Neuer Bereich",
     "hasDynamicRowCount": "Dynamische Zeilen",
     "expectedCharactersCount": "Erwartete Zeichenanzahl",
-    "isSortList": "Sortierliste",
     "deleteDroppedItemWithSameID": "Zurücklegen erlauben",
     "deleteDroppedItemWithSameIDTooltip": "Elemente mit gleicher ID werden beim Zurücklegen gelöscht.",
     "setElementInteractionEnabled": "Elementinteraktion erlauben",

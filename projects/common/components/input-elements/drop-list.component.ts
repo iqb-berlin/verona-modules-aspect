@@ -1,8 +1,12 @@
+import { Component, Input, OnInit } from '@angular/core';
 import {
-  Component, Input, OnInit
-} from '@angular/core';
-import {
-  CdkDrag, CdkDragDrop, CdkDragStart, CdkDropList, moveItemInArray, transferArrayItem, copyArrayItem
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragStart,
+  CdkDropList,
+  moveItemInArray,
+  transferArrayItem,
+  copyArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { DragNDropValueObject } from 'common/models/elements/element';
@@ -11,7 +15,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-drop-list',
   template: `
-    <div class="list" [id]="elementModel.id" #listComponent
+    <div class="list" [id]="elementModel.id"
          tabindex="0"
          [class.cloze-context]="clozeContext"
          [class.vertical-orientation]="elementModel.orientation === 'vertical'"
@@ -20,10 +24,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [class.only-one-item]="elementModel.onlyOneItem"
          [class.highlight-receiver]="classReference.highlightReceivingDropList"
          cdkDropList
+         (cdkDropListEntered)="showsPlaceholder = true"
+         (cdkDropListExited)="showsPlaceholder = false"
          [cdkDropListData]="this" [cdkDropListConnectedTo]="elementModel.connectedTo"
          [cdkDropListOrientation]="elementModel.orientation === 'vertical' ? 'vertical' : 'horizontal'"
          [cdkDropListEnterPredicate]="validDropPredicate"
-         (cdkDropListDropped)="drop($event)"
+         (cdkDropListDropped)="drop($event);"
          [style.color]="elementModel.styling.fontColor"
          [style.font-family]="elementModel.styling.font"
          [style.font-size.px]="elementModel.styling.fontSize"
@@ -36,6 +42,11 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                          elementFormControl.touched &&
                          !classReference.highlightReceivingDropList"
          (focusout)="elementFormControl.markAsTouched()">
+      <div class="list-item" *ngIf="parentForm ? !elementFormControl.value.length && !showsPlaceholder ||
+                                                 elementFormControl.value.length === 1 && !showsPlaceholder && dragging:
+                                    !elementModel.value.length;">
+        <span>&nbsp;</span>
+      </div>
       <ng-container *ngFor="let dropListValueElement of
         parentForm ? elementFormControl.value : elementModel.value; let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
@@ -102,10 +113,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: DropListElement;
   @Input() clozeContext: boolean = false;
-  static dragAndDropComponents: { [id: string]: DropListComponent } = {};
-
+  dragging = false;
+  showsPlaceholder = false;
   classReference = DropListComponent;
+
   static highlightReceivingDropList = false;
+  static dragAndDropComponents: { [id: string]: DropListComponent } = {};
 
   ngOnInit() {
     super.ngOnInit();
@@ -114,12 +127,15 @@ export class DropListComponent extends FormElementComponent implements OnInit {
 
   dragStart(event: CdkDragStart) {
     DropListComponent.setHighlighting(event.source.dropContainer.data.elementModel.highlightReceivingDropList);
+    // add class for cursor while dragging
     document.body.classList.add('dragging-active');
+    this.dragging = true;
   }
 
   dragEnd() {
     DropListComponent.setHighlighting(false);
     document.body.classList.remove('dragging-active');
+    this.dragging = false;
   }
 
   static setHighlighting(showHighlight: boolean) {
@@ -155,7 +171,8 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     event.container.data.updateFormvalue();
   }
 
-  static transferItem(previousContainer: CdkDropList, newContainer: CdkDropList, previousIndex: number, newIndex: number): void {
+  static transferItem(previousContainer: CdkDropList, newContainer: CdkDropList,
+                      previousIndex: number, newIndex: number): void {
     transferArrayItem(
       previousContainer.data.elementFormControl.value,
       newContainer.data.elementFormControl.value,
@@ -220,10 +237,10 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     this.elementFormControl.setValue(this.elementFormControl.value);
   }
 
-  validDropPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => {
-    return (!drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1 ||
-      drop.data.elementModel.allowReplacement);
-  };
+  validDropPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
+    (!drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1 ||
+      drop.data.elementModel.allowReplacement)
+  );
 
   static isItemIDAlreadyPresent(itemID: string, valueList: DragNDropValueObject[]): boolean {
     const listValueIDs = valueList.map((valueValue: DragNDropValueObject) => valueValue.id);

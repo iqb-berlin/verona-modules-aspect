@@ -1,9 +1,9 @@
 Player
 ======
-## 1.30.0-beta
+## 1.30.0
 ### Fehlerbehebungen
 - Behebt Probleme bei Lückentexten mit Knopfelementen
-  Bei Lückentexte mit mehreren Elementen und mindestens einem Knopfelement,
+  Bei Lückentexten mit mehreren Elementen und mindestens einem Knopfelement,
   wurde den Elementen teilweise die Eigenschaften des Knopfelements zugeordnet     
 
 ## 1.29.3

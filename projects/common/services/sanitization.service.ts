@@ -106,13 +106,13 @@ export class SanitizationService {
 
   private static isVersionOlderThanCurrent(version: [number, number, number]): boolean {
     if (!version) return true;
-    if (version[0] < SanitizationService.expectedUnitVersion[0]) {
+    if (Number(version[0]) < Number(SanitizationService.expectedUnitVersion[0])) {
       return true;
     }
-    if (version[1] < SanitizationService.expectedUnitVersion[1]) {
+    if (Number(version[1]) < Number(SanitizationService.expectedUnitVersion[1])) {
       return true;
     }
-    return version[2] < SanitizationService.expectedUnitVersion[2];
+    return Number(version[2]) < Number(SanitizationService.expectedUnitVersion[2]);
   }
 
   private sanitizePage(page: Page): Partial<Page> {

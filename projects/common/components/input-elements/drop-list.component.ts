@@ -15,6 +15,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-drop-list',
   template: `
+    <!--         [style.min-height.px]="elementModel.position?.useMinHeight || clozeContext ? elementModel.height : undefined"-->
     <div class="list" [id]="elementModel.id"
          tabindex="0"
          [class.cloze-context]="clozeContext"

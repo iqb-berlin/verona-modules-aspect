@@ -179,7 +179,8 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
     ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
     ':host ::ng-deep p:empty::after {content: "\\00A0"}', // render empty p
     'p span {font-size: inherit}',
-    'sup, sub {line-height: 0;}'
+    'sup, sub {line-height: 0;}',
+    '.droplist-child {vertical-align: middle;}'
   ]
 })
 export class ClozeComponent extends CompoundElementComponent {

@@ -68,3 +68,7 @@ iqb-aspect-definition@1.0.0
 3.9.0
 - TextFieldElement/TextFieldSimpleElement/SpellCorrectElement/TextAreaElement
     +inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter';
+
+3.10.0
+- DropList: +allowReplacement
+- DragAndDropValueObject: -returnToOriginOnReplacement; originListID and originListIndex are now mandatory

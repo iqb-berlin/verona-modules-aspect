@@ -235,31 +235,41 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'a',
         id: 'value_1',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 0
       },
       {
         text: 'b',
         id: 'value_2',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 0
       },
       {
         text: 'c',
         id: 'value_3',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 0
       },
       {
         text: 'd',
         id: 'value_4',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 0
       },
       {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 0
       }
     ];
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
@@ -268,7 +278,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 0
       }
     ];
     expect(service.mapToElementModelValue(['value_5'], elementModel))
@@ -281,31 +293,41 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'a',
         id: 'value_1',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 0
       },
       {
         text: 'b',
         id: 'value_2',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 1
       },
       {
         text: 'c',
         id: 'value_3',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 2
       },
       {
         text: 'd',
         id: 'value_4',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 3
       },
       {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 4
       }
     ];
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
@@ -314,7 +336,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        originListID: 'id',
+        originListIndex: 4
       }
     ];
     expect(service.mapToElementModelValue(['value_5'], elementModel))

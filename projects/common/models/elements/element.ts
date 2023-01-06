@@ -347,9 +347,8 @@ export interface TextImageLabel extends TextLabel {
 
 export interface DragNDropValueObject extends TextImageLabel {
   id: string;
-  returnToOriginOnReplacement?: boolean;
-  originListID?: string;
-  originListIndex?: number;
+  originListID: string;
+  originListIndex: number;
 }
 
 export type Label = TextLabel | TextImageLabel | DragNDropValueObject;

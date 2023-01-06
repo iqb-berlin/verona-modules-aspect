@@ -50,12 +50,6 @@ import { DialogService } from '../../../../services/dialog.service';
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox *ngIf="combinedProperties.isSortList !== undefined"
-                    [checked]="$any(combinedProperties.isSortList)"
-                    (change)="updateModel.emit({ property: 'isSortList', value: $event.checked })">
-        {{'propertiesPanel.isSortList' | translate }}
-      </mat-checkbox>
-
       <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
                     [checked]="$any(combinedProperties.onlyOneItem)"
                     (change)="updateModel.emit({ property: 'onlyOneItem', value: $event.checked })">
@@ -66,6 +60,12 @@ import { DialogService } from '../../../../services/dialog.service';
                     [checked]="$any(combinedProperties.copyOnDrop)"
                     (change)="updateModel.emit({ property: 'copyOnDrop', value: $event.checked })">
         {{'propertiesPanel.copyOnDrop' | translate }}
+      </mat-checkbox>
+
+      <mat-checkbox *ngIf="combinedProperties.allowReplacement !== undefined"
+                    [checked]="$any(combinedProperties.allowReplacement)"
+                    (change)="updateModel.emit({ property: 'allowReplacement', value: $event.checked })">
+        {{'allowReplacement' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.deleteDroppedItemWithSameID !== undefined"
@@ -122,7 +122,8 @@ export class DropListPropertiesComponent {
           imgSrc: null,
           imgPosition: 'above',
           id: this.unitService.getNewValueID(),
-          returnToOriginOnReplacement: false
+          originListID: 'id_placeholder',
+          originListIndex: 0
         }
       ]
     });

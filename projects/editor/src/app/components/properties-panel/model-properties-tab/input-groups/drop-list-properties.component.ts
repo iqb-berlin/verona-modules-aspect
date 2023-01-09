@@ -52,20 +52,20 @@ import { DialogService } from '../../../../services/dialog.service';
 
       <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
                     [checked]="$any(combinedProperties.onlyOneItem)"
-                    (change)="updateModel.emit({ property: 'onlyOneItem', value: $event.checked })">
+                    (change)="updateOnlyOneItem($event.checked)">
         {{'propertiesPanel.onlyOneItem' | translate }}
+      </mat-checkbox>
+
+      <mat-checkbox *ngIf="combinedProperties.allowReplacement !== undefined"
+                    [checked]="$any(combinedProperties.allowReplacement)"
+                    (change)="updateAllowReplacement($event.checked)">
+        {{'allowReplacement' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.copyOnDrop !== undefined"
                     [checked]="$any(combinedProperties.copyOnDrop)"
                     (change)="updateModel.emit({ property: 'copyOnDrop', value: $event.checked })">
         {{'propertiesPanel.copyOnDrop' | translate }}
-      </mat-checkbox>
-
-      <mat-checkbox *ngIf="combinedProperties.allowReplacement !== undefined"
-                    [checked]="$any(combinedProperties.allowReplacement)"
-                    (change)="updateModel.emit({ property: 'allowReplacement', value: $event.checked })">
-        {{'allowReplacement' | translate }}
       </mat-checkbox>
 
       <mat-checkbox *ngIf="combinedProperties.deleteDroppedItemWithSameID !== undefined"
@@ -110,6 +110,16 @@ export class DropListPropertiesComponent {
 
   notifyListChange(changedList: DragNDropValueObject[]): void {
     this.updateModel.emit({ property: 'value', value: changedList });
+  }
+
+  updateAllowReplacement(value: boolean) {
+    if (value) this.updateOnlyOneItem(true);
+    this.updateModel.emit({ property: 'allowReplacement', value });
+  }
+
+  updateOnlyOneItem(value: boolean) {
+    if (!value) this.updateAllowReplacement(false);
+    this.updateModel.emit({ property: 'onlyOneItem', value });
   }
 
   addOption(value: string): void {

@@ -167,13 +167,18 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     }
 
     if (DropListComponent.isReplace(event)) {
-      const isAlreadyInOrigin: boolean =
+      const isToReplaceItemAlreadyInOrigin: boolean =
         event.container.data.elementFormControl.value[0].originListID === event.container.data.elementModel.id;
-      if (!isAlreadyInOrigin) {
-        DropListComponent.moveBackToOrigin(event);
-      } else {
+      if (isToReplaceItemAlreadyInOrigin) {
         return;
       }
+      const replacedItem: DragNDropValueObject = event.container.data.elementFormControl.value.splice(0, 1)[0];
+      DropListComponent.transferItem(event.previousContainer, event.container, event.previousIndex, event.currentIndex);
+      event.previousContainer.data.updateFormvalue();
+      event.container.data.updateFormvalue();
+      const originComponent = DropListComponent.dragAndDropComponents[replacedItem.originListID];
+      DropListComponent.addElementToList(originComponent, replacedItem);
+      return;
     }
 
     if (DropListComponent.isCopyDrop(event)) {
@@ -199,35 +204,9 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     );
   }
 
-  static moveBackToOrigin(event: CdkDragDrop<any>): void {
-    const originComponent =
-      DropListComponent.dragAndDropComponents[event.container.data.elementFormControl.value[0].originListID];
-    const isIDAlreadyPresentInOrigin =
-      DropListComponent.isItemIDAlreadyPresent(
-        event.container.data.elementFormControl.value[0].id,
-        originComponent.elementFormControl.value);
-    if (!originComponent.elementModel.copyOnDrop || !isIDAlreadyPresentInOrigin) {
-      DropListComponent.addElementToList(originComponent, event.container.data.elementFormControl.value[0]);
-    }
-    DropListComponent.removeElementFromList(event.container.data, 0);
-  }
-
   static addElementToList(listComponent: DropListComponent, element: DragNDropValueObject): void {
-    const targetIndex = element.originListIndex;
-    if (targetIndex) {
-      listComponent.elementFormControl.value.splice(
-        Math.min(listComponent.elementFormControl.value.length, element.originListIndex || 0),
-        0,
-        element
-      );
-    } else {
-      listComponent.elementFormControl.value.push(element);
-    }
-    listComponent.elementFormControl.setValue(listComponent.elementFormControl.value);
-  }
-
-  static removeElementFromList(listComponent: DropListComponent, index: number): void {
-    listComponent.elementFormControl.value.splice(index, 1);
+    const targetIndex = Math.min(listComponent.elementFormControl.value.length, element.originListIndex || 0);
+    listComponent.elementFormControl.value.splice(targetIndex, 0, element);
     listComponent.elementFormControl.setValue(listComponent.elementFormControl.value);
   }
 

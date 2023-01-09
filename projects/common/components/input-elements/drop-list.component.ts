@@ -15,7 +15,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-drop-list',
   template: `
-    <!--         [style.min-height.px]="elementModel.position?.useMinHeight || clozeContext ? elementModel.height : undefined"-->
     <div class="list" [id]="elementModel.id"
          tabindex="0"
          [class.cloze-context]="clozeContext"
@@ -24,6 +23,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [class.floating-orientation]="elementModel.orientation === 'flex'"
          [class.only-one-item]="elementModel.onlyOneItem"
          [class.highlight-receiver]="classReference.highlightReceivingDropList"
+         [class.allow-replacement]="parentForm && elementFormControl.value.length === 1 &&
+                                    elementModel.allowReplacement && !dragging"
          cdkDropList
          (cdkDropListEntered)="showsPlaceholder = true"
          (cdkDropListExited)="showsPlaceholder = false"
@@ -53,6 +54,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         parentForm ? elementFormControl.value : elementModel.value; let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
              class="list-item"
+             [class.hide-list-item]="parentForm && elementModel.allowReplacement &&
+                                     elementFormControl.value.length === 1 && showsPlaceholder"
              cdkDrag [cdkDragData]="dropListValueElement"
              (cdkDragStarted)="dragStart($event)"
              (cdkDragEnded)="dragEnd()"
@@ -72,7 +75,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
           </ng-template>
         </div>
         <div *ngIf="dropListValueElement.imgSrc"
-             class="list-item image-list-item" cdkDrag>
+             class="list-item image-list-item" cdkDrag
+             [class.hide-list-item]="parentForm && elementModel.allowReplacement &&
+                                     elementFormControl.value.length === 1 && showsPlaceholder">
           <img [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
           <ng-template cdkDragPreview>
             <img *ngIf="dropListValueElement.imgSrc"
@@ -109,7 +114,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.highlight-receiver.cdk-drop-list-receiving {padding: 3px; border: 2px solid;}',
     '.cdk-drag-placeholder {background-color: #ccc !important;}',
     '.cdk-drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
-    '.cdk-drag-placeholder * {visibility: hidden;}'
+    '.cdk-drag-placeholder * {visibility: hidden;}',
+    '.allow-replacement .cdk-drag-placeholder {padding: 0 !important; height: 0 !important;}',
+    '.hide-list-item {background-color: #ccc !important;}',
+    '.hide-list-item * {visibility: hidden;}'
   ]
 })
 export class DropListComponent extends FormElementComponent implements OnInit {
@@ -131,6 +139,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     DropListComponent.setHighlighting(event.source.dropContainer.data.elementModel.highlightReceivingDropList);
     // add class for cursor while dragging
     document.body.classList.add('dragging-active');
+    this.showsPlaceholder = true;
     this.dragging = true;
   }
 
@@ -138,6 +147,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     DropListComponent.setHighlighting(false);
     document.body.classList.remove('dragging-active');
     this.dragging = false;
+    Object.values(DropListComponent.dragAndDropComponents).forEach(d => { d.showsPlaceholder = false; });
   }
 
   static setHighlighting(showHighlight: boolean) {

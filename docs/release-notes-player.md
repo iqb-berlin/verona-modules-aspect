@@ -1,5 +1,10 @@
 Player
 ======
+## 1.30.2
+### Verbesserungen
+- Wenn ein Element ein anderes Element in einer Ablegeliste verdrängen soll,
+  wird die Darstellung des zu verdrängenden Listenelements unterbunden, sobald der Platzhalter erscheint. 
+
 ## 1.30.1
 ### Fehlerbehebungen
 - Repariert die Indices von gezogenen Drag-and-Drop-Elementen bei dynamisch zentrierter Ausrichtung

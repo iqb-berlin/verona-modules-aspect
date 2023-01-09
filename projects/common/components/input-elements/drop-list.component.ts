@@ -167,7 +167,13 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     }
 
     if (DropListComponent.isReplace(event)) {
-      DropListComponent.moveBackToOrigin(event);
+      const isAlreadyInOrigin: boolean =
+        event.container.data.elementFormControl.value[0].originListID === event.container.data.elementModel.id;
+      if (!isAlreadyInOrigin) {
+        DropListComponent.moveBackToOrigin(event);
+      } else {
+        return;
+      }
     }
 
     if (DropListComponent.isCopyDrop(event)) {

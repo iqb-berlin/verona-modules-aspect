@@ -28,7 +28,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          (cdkDropListEntered)="showsPlaceholder = true"
          (cdkDropListExited)="showsPlaceholder = false"
          [cdkDropListData]="this" [cdkDropListConnectedTo]="elementModel.connectedTo"
-         [cdkDropListOrientation]="elementModel.orientation === 'vertical' ? 'vertical' : 'horizontal'"
+         [cdkDropListOrientation]="$any(elementModel.orientation)"
          [cdkDropListSortingDisabled]="elementModel.orientation === 'flex'"
          [cdkDropListEnterPredicate]="validDropPredicate"
          (cdkDropListDropped)="drop($event);"

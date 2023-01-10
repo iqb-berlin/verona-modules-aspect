@@ -1,5 +1,10 @@
 Player
 ======
+## 1.30.3
+### Fehlerbehebungen
+- Ersetzt den temporären Platzhalter von Bilder in Ablegelisten, die Verdrängung erlauben
+- Behebt Fehler beim Verdrängen von Elementen, die aus Kopierlisten stammen
+
 ## 1.30.2
 ### Verbesserungen
 - Wenn ein Element ein anderes Element in einer Ablegeliste verdrängen soll,

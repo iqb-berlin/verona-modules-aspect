@@ -15,6 +15,11 @@
   min-height: 50px;
 }
 
+.keyboard-container {
+  position: relative;
+  z-index: 10000;
+}
+
 ::ng-deep .keyboard-container .iconButton mat-icon {
   font-size: 2vw;
   width: unset;

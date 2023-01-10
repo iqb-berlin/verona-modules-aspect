@@ -103,7 +103,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list-item {border-radius: 5px;}',
     ':not(.cloze-context) .list-item:not(.image-list-item) {padding: 10px;}',
     '.cloze-context .list-item {padding: 0 5px;}',
-    '.cloze-context.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
+    '.cloze-context.only-one-item:not(.allow-replacement) .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
     'img.list-item {align-self: start;}',
     '.errors {border: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; position: absolute; margin-left: 3px;}',
@@ -115,6 +115,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.cdk-drag-placeholder {background-color: #ccc !important;}',
     '.cdk-drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-placeholder * {visibility: hidden;}',
+    '.allow-replacement {gap: 0;}',
     '.allow-replacement .cdk-drag-placeholder {padding: 0 !important; height: 0 !important;}',
     '.hide-list-item {background-color: #ccc !important;}',
     '.hide-list-item * {visibility: hidden;}'

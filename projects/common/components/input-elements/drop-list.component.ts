@@ -161,29 +161,31 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     if (DropListComponent.isReorderDrop(event)) {
       moveItemInArray(event.container.data.elementFormControl.value, event.previousIndex, event.currentIndex);
       event.container.data.updateFormvalue();
-      return;
-    }
-    if (DropListComponent.isPutBack(event)) {
+    } else if (DropListComponent.isPutBack(event)) {
       event.previousContainer.data.elementFormControl.value.splice(event.previousIndex, 1);
       event.previousContainer.data.updateFormvalue();
-      return;
-    }
-
-    if (DropListComponent.isReplace(event)) {
+    } else if (DropListComponent.isReplace(event)) {
       const isToReplaceItemAlreadyInOrigin: boolean =
         event.container.data.elementFormControl.value[0].originListID === event.container.data.elementModel.id;
       if (isToReplaceItemAlreadyInOrigin) {
         return;
       }
+      // splice first and hold the replaced item, then move. to prevent indix mixup
       const replacedItem: DragNDropValueObject = event.container.data.elementFormControl.value.splice(0, 1)[0];
-      DropListComponent.transferItem(event.previousContainer, event.container, event.previousIndex, event.currentIndex);
-      event.previousContainer.data.updateFormvalue();
-      event.container.data.updateFormvalue();
+      DropListComponent.moveItem(event);
       const originComponent = DropListComponent.dragAndDropComponents[replacedItem.originListID];
-      DropListComponent.addElementToList(originComponent, replacedItem);
-      return;
+      const isIDAlreadyPresentInOrigin = DropListComponent.isItemIDAlreadyPresent(
+        replacedItem.id,
+        originComponent.elementFormControl.value);
+      if (!(originComponent.elementModel.copyOnDrop && isIDAlreadyPresentInOrigin)) {
+        DropListComponent.addElementToList(originComponent, replacedItem);
+      }
+    } else {
+      DropListComponent.moveItem(event);
     }
+  }
 
+  static moveItem(event: CdkDragDrop<any>): void {
     if (DropListComponent.isCopyDrop(event)) {
       copyArrayItem(
         event.previousContainer.data.elementFormControl.value,
@@ -233,6 +235,11 @@ export class DropListComponent extends FormElementComponent implements OnInit {
       event.container.data.elementModel.allowReplacement;
   }
 
+  static isItemIDAlreadyPresent(itemID: string, valueList: DragNDropValueObject[]): boolean {
+    const listValueIDs = valueList.map((valueValue: DragNDropValueObject) => valueValue.id);
+    return listValueIDs.includes(itemID);
+  }
+
   updateFormvalue(): void {
     this.elementFormControl.setValue(this.elementFormControl.value);
   }
@@ -241,9 +248,4 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     (!drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1 ||
       drop.data.elementModel.allowReplacement)
   );
-
-  static isItemIDAlreadyPresent(itemID: string, valueList: DragNDropValueObject[]): boolean {
-    const listValueIDs = valueList.map((valueValue: DragNDropValueObject) => valueValue.id);
-    return listValueIDs.includes(itemID);
-  }
 }

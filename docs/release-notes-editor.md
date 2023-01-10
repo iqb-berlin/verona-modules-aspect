@@ -1,5 +1,8 @@
 Editor
 ======
+## 1.37.3
+- Unterstützt die aktuellen Fehlerbehebungen im Player
+
 ## 1.37.2
 ### Verbesserungen
 - Erlaubt das Setzen von "Verdrängen erlauben" für Ablegelisten nur in Verbindung mit der Option "Nur ein Element"

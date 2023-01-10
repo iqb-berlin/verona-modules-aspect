@@ -77,7 +77,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div *ngIf="dropListValueElement.imgSrc"
              class="list-item image-list-item" cdkDrag
              [class.hide-list-item]="parentForm && elementModel.allowReplacement &&
-                                     elementFormControl.value.length === 1 && showsPlaceholder">
+                                     elementFormControl.value.length === 1 && showsPlaceholder"
+             (cdkDragStarted)="dragStart($event)"
+             (cdkDragEnded)="dragEnd()">
           <img [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
           <ng-template cdkDragPreview>
             <img *ngIf="dropListValueElement.imgSrc"

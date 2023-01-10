@@ -1,5 +1,8 @@
 Editor
 ======
+## 1.37.4
+- Unterstützt die aktuelle Fehlerbehebung im Player
+
 ## 1.37.3
 - Unterstützt die aktuellen Fehlerbehebungen im Player
 

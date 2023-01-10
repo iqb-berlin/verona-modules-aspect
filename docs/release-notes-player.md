@@ -1,5 +1,9 @@
 Player
 ======
+## 1.30.4
+### Fehlerbehebungen
+- Korrigiert Tastatureingabefehler beim Tablet bei gleichzeitiger Verwendung von Tastatur und Eingabehilfe
+
 ## 1.30.3
 ### Fehlerbehebungen
 - Ersetzt den temporären Platzhalter von Bilder in Ablegelisten, die Verdrängung erlauben

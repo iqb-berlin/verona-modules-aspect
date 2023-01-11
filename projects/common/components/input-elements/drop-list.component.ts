@@ -63,6 +63,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
           <span>{{dropListValueElement.text}}</span>
           <ng-template cdkDragPreview matchSize>
             <div class="text-preview"
+                 [class.cloze-context-preview]="clozeContext"
                  [style.color]="elementModel.styling.fontColor"
                  [style.font-family]="elementModel.styling.font"
                  [style.font-size.px]="elementModel.styling.fontSize"
@@ -106,13 +107,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.list-item {border-radius: 5px;}',
     ':not(.cloze-context) .list-item:not(.image-list-item) {padding: 10px;}',
     '.cloze-context .list-item {padding: 0 5px;}',
-    '.cloze-context.only-one-item:not(.allow-replacement) .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
+    '.cloze-context.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
     'img.list-item {align-self: start;}',
     '.errors {border: 2px solid #f44336 !important;}',
     '.error-message {font-size: 75%; position: absolute; margin-left: 3px;}',
     '.list-item:active {cursor: grabbing;}',
     '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black;}',
     '.cdk-drag-preview.text-preview {padding: 10px; box-sizing: border-box;}',
+    '.cdk-drag-preview.cloze-context-preview {padding: 0 5px; text-align: center !important; box-sizing: content-box !important;}',
     '.cdk-drop-list-dragging .cdk-drag {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.highlight-receiver.cdk-drop-list-receiving {padding: 3px; border: 2px solid;}',
     '.cdk-drag-placeholder {background-color: #ccc !important;}',

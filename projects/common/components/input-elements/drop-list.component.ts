@@ -247,11 +247,34 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     this.elementFormControl.setValue(this.elementFormControl.value);
   }
 
-  validDropPredicate = (draggedItem: CdkDrag, targetList: CdkDropList): boolean => (
-    (!targetList.data.elementModel.onlyOneItem || targetList.data.elementFormControl.value.length < 1 ||
-     (targetList.data.elementModel.allowReplacement && DropListComponent.containedItemIsReplacable(targetList)) ||
-     (DropListComponent.isPutBack(draggedItem, targetList)))
-  );
+  validDropPredicate = (draggedItem: CdkDrag, targetList: CdkDropList): boolean => {
+    if (!DropListComponent.isItemIDAlreadyPresent(draggedItem.data.id, targetList.data.elementFormControl.value) &&
+       !targetList.data.elementModel.onlyOneItem) {
+      return true;
+    }
+
+    if (targetList.data.elementModel.onlyOneItem && targetList.data.elementFormControl.value.length < 1) {
+      return true;
+    }
+
+    if (targetList.data.elementModel.onlyOneItem &&
+        targetList.data.elementFormControl.value.length > 0 &&
+        (targetList.data.elementModel.allowReplacement && DropListComponent.containedItemIsReplacable(targetList))) {
+      return true;
+    }
+
+    if (DropListComponent.isItemIDAlreadyPresent(draggedItem.data.id, targetList.data.elementFormControl.value) &&
+        targetList.data.elementModel.onlyOneItem &&
+        (targetList.data.elementModel.allowReplacement && DropListComponent.containedItemIsReplacable(targetList))) {
+      return true;
+    }
+
+    if (DropListComponent.isPutBack(draggedItem, targetList)) {
+      return true;
+    }
+
+    return false;
+  };
 
   /* To be replacable an item must not be in it's origin. Otherwise it has nowhere to go to. */
   static containedItemIsReplacable(list: CdkDropList): boolean {

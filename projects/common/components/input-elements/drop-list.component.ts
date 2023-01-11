@@ -162,7 +162,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     if (DropListComponent.isReorderDrop(event)) {
       moveItemInArray(event.container.data.elementFormControl.value, event.previousIndex, event.currentIndex);
       event.container.data.updateFormvalue();
-    } else if (DropListComponent.isPutBack(event)) {
+    } else if (DropListComponent.isPutBack(event.item, event.container)) {
       event.previousContainer.data.elementFormControl.value.splice(event.previousIndex, 1);
       event.previousContainer.data.updateFormvalue();
     } else if (DropListComponent.isReplace(event)) {
@@ -226,9 +226,9 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   }
 
   /* Put a copied element back to the source list. */
-  static isPutBack(event: CdkDragDrop<any>): boolean {
-    return event.container.data.elementModel.copyOnDrop &&
-      DropListComponent.isItemIDAlreadyPresent(event.item.data.id, event.container.data.elementFormControl.value);
+  static isPutBack(draggedItem: CdkDrag, list: CdkDropList): boolean {
+    return list.data.elementModel.copyOnDrop &&
+      DropListComponent.isItemIDAlreadyPresent(draggedItem.data.id, list.data.elementFormControl.value);
   }
 
   static isReplace(event: CdkDragDrop<any>): boolean {
@@ -245,8 +245,14 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     this.elementFormControl.setValue(this.elementFormControl.value);
   }
 
-  validDropPredicate = (drag: CdkDrag, drop: CdkDropList): boolean => (
-    (!drop.data.elementModel.onlyOneItem || drop.data.elementFormControl.value.length < 1 ||
-      drop.data.elementModel.allowReplacement)
+  validDropPredicate = (draggedItem: CdkDrag, targetList: CdkDropList): boolean => (
+    (!targetList.data.elementModel.onlyOneItem || targetList.data.elementFormControl.value.length < 1 ||
+     (targetList.data.elementModel.allowReplacement && DropListComponent.containedItemIsReplacable(targetList)) ||
+     (DropListComponent.isPutBack(draggedItem, targetList)))
   );
+
+  /* To be replacable an item must not be in it's origin. Otherwise it has nowhere to go to. */
+  static containedItemIsReplacable(list: CdkDropList): boolean {
+    return list.data.elementFormControl.value[0].originListID !== list.data.elementModel.id;
+  }
 }

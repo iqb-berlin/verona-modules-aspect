@@ -1,5 +1,13 @@
 Player
 ======
+## 1.30.5
+### Fehlerbehebungen
+- Ablegelisten
+  - Bilder in Ablegelisten tragen nun korrekt ihre ID und produzieren keine Fehler
+  - Vorschau behält die größe des gezogenen Elements
+  - Mauszeiger bleibt an der Position an der das Element angefasst wurde
+  - Überarbeitete Regeln zur erkennung von validen Ablagen
+
 ## 1.30.4
 ### Fehlerbehebungen
 - Korrigiert Tastatureingabefehler beim Tablet bei gleichzeitiger Verwendung von Tastatur und Eingabehilfe

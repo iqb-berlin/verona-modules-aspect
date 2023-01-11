@@ -82,7 +82,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              (cdkDragStarted)="dragStart($event)"
              (cdkDragEnded)="dragEnd()">
           <img [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
-          <ng-template cdkDragPreview>
+          <ng-template cdkDragPreview matchSize>
             <img *ngIf="dropListValueElement.imgSrc"
                  [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
           </ng-template>

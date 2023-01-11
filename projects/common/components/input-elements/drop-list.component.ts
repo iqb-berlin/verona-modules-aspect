@@ -61,7 +61,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              (cdkDragEnded)="dragEnd()"
              [style.background-color]="elementModel.styling.itemBackgroundColor">
           <span>{{dropListValueElement.text}}</span>
-          <ng-template cdkDragPreview>
+          <ng-template cdkDragPreview matchSize>
             <div class="text-preview"
                  [style.color]="elementModel.styling.fontColor"
                  [style.font-family]="elementModel.styling.font"

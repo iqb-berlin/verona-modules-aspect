@@ -18,13 +18,17 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     <div class="list" [id]="elementModel.id"
          tabindex="0"
          [class.cloze-context]="clozeContext"
+         [class.only-one-item]="elementModel.onlyOneItem"
          [class.vertical-orientation]="elementModel.orientation === 'vertical'"
          [class.horizontal-orientation]="elementModel.orientation === 'horizontal'"
          [class.floating-orientation]="elementModel.orientation === 'flex'"
-         [class.only-one-item]="elementModel.onlyOneItem"
+         [class.static-placeholder]="parentForm && elementFormControl.value.length === 1 &&
+                                    (elementModel.allowReplacement || (elementModel.copyOnDrop && showsPlaceholder)) &&
+                                    !dragging"
          [class.highlight-receiver]="classReference.highlightReceivingDropList"
-         [class.allow-replacement]="parentForm && elementFormControl.value.length === 1 &&
-                                    elementModel.allowReplacement && !dragging"
+         [class.error]="elementFormControl.errors &&
+                        elementFormControl.touched &&
+                        !classReference.highlightReceivingDropList"
          cdkDropList
          (cdkDropListEntered)="showsPlaceholder = true"
          (cdkDropListExited)="showsPlaceholder = false"
@@ -33,6 +37,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [cdkDropListSortingDisabled]="elementModel.orientation === 'flex'"
          [cdkDropListEnterPredicate]="validDropPredicate"
          (cdkDropListDropped)="drop($event);"
+         [style.gap.px]="elementModel.onlyOneItem ? 0 : 5"
          [style.color]="elementModel.styling.fontColor"
          [style.font-family]="elementModel.styling.font"
          [style.font-size.px]="elementModel.styling.fontSize"
@@ -41,20 +46,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [style.backgroundColor]="elementModel.styling.backgroundColor"
          [style.border-color]="elementModel.highlightReceivingDropListColor"
-         [class.errors]="elementFormControl.errors &&
-                         elementFormControl.touched &&
-                         !classReference.highlightReceivingDropList"
          (focusout)="elementFormControl.markAsTouched()">
-      <div class="list-item" *ngIf="parentForm ? !elementFormControl.value.length && !showsPlaceholder ||
-                                                 elementFormControl.value.length === 1 && !showsPlaceholder && dragging:
-                                    !elementModel.value.length;">
-        <span>&nbsp;</span>
-      </div>
       <ng-container *ngFor="let dropListValueElement of
         parentForm ? elementFormControl.value : elementModel.value; let index = index;">
         <div *ngIf="!dropListValueElement.imgSrc"
-             class="list-item"
-             [class.hide-list-item]="parentForm && elementModel.allowReplacement &&
+             class="list-item text-list-item"
+             [class.hide-list-item]="parentForm && (elementModel.allowReplacement || elementModel.copyOnDrop) &&
                                      elementFormControl.value.length === 1 && showsPlaceholder"
              cdkDrag [cdkDragData]="dropListValueElement"
              (cdkDragStarted)="dragStart($event)"
@@ -77,53 +74,62 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         </div>
         <div *ngIf="dropListValueElement.imgSrc"
              class="list-item image-list-item"
-             [class.hide-list-item]="parentForm && elementModel.allowReplacement &&
+             [class.hide-list-item]="parentForm && (elementModel.allowReplacement || elementModel.copyOnDrop) &&
                                      elementFormControl.value.length === 1 && showsPlaceholder"
              cdkDrag [cdkDragData]="dropListValueElement"
              (cdkDragStarted)="dragStart($event)"
              (cdkDragEnded)="dragEnd()">
+          <span class="baseline-helper">&nbsp;</span>
           <img [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
           <ng-template cdkDragPreview matchSize>
-            <img *ngIf="dropListValueElement.imgSrc"
+            <div>
+              <span class="baseline-helper">&nbsp;</span>
+              <img *ngIf="dropListValueElement.imgSrc"
                  [src]="dropListValueElement.imgSrc | safeResourceUrl" alt="Image Placeholder">
+            </div>
           </ng-template>
         </div>
       </ng-container>
-      <mat-error *ngIf="elementFormControl.errors &&
-                        elementFormControl.touched &&
-                        !classReference.highlightReceivingDropList"
-                 class="error-message">
-        <span>{{elementFormControl.errors | errorTransform: elementModel}}</span>
-      </mat-error>
+
+      <div class="list-item text-list-item" *ngIf="parentForm ?
+                                    (!elementFormControl.value.length && !showsPlaceholder) ||
+                                    (elementFormControl.value.length === 1 && !showsPlaceholder && dragging) :
+                                    !elementModel.value.length;">
+        <span class="baseline-helper">&nbsp;</span>
+        <mat-error *ngIf="elementFormControl.errors &&
+                          elementFormControl.touched &&
+                          !classReference.highlightReceivingDropList"
+                   class="error-message">{{elementFormControl.errors | errorTransform: elementModel}}</mat-error>
+      </div>
     </div>
   `,
   styles: [
     '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); border-radius: 5px;}',
-    '.list {display: flex; gap: 5px; box-sizing: border-box; padding: 5px}',
+    '.list {display: flex; box-sizing: border-box; padding: 5px;}',
     '.list.vertical-orientation {flex-direction: column;}',
     '.list.horizontal-orientation {flex-direction: row;}',
     '.list.floating-orientation {place-content: center space-around; align-items: center; flex-flow: row wrap;}',
-    '.cloze-context.list {padding: 0;}',
-    '.list-item {border-radius: 5px;}',
-    ':not(.cloze-context) .list-item:not(.image-list-item) {padding: 10px;}',
-    '.cloze-context .list-item {padding: 0 5px;}',
-    '.cloze-context.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
-    'img.list-item {align-self: start;}',
-    '.errors {border: 2px solid #f44336 !important;}',
-    '.error-message {font-size: 75%; position: absolute; margin-left: 3px;}',
+    '.cloze-context.list {padding: 0}',
+    '.highlight-receiver.cdk-drop-list-receiving {border: 2px solid;}',
+    '.highlight-receiver.cdk-drop-list-receiving:not(.cloze-context) {padding: 3px;}',
+    '.error {padding: 3px; border: 2px solid #f44336 !important;}',
     '.list-item:active {cursor: grabbing;}',
+    '.list-item {border-radius: 5px;}',
+    ':not(.cloze-context) .list-item.text-list-item {padding: 10px;}',
+    '.cloze-context .list-item.text-list-item {padding: 0 5px;}',
+    '.cloze-context.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
+    '.image-list-item {align-self: start;}',
+    '.hide-list-item {display: none !important; transform: unset !important;}',
     '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black;}',
     '.cdk-drag-preview.text-preview {padding: 10px; box-sizing: border-box;}',
-    '.cdk-drag-preview.cloze-context-preview {padding: 0 5px; text-align: center !important; box-sizing: content-box !important;}',
+    '.cdk-drag-preview.cloze-context-preview {padding: 0 2px; display: flex; align-items: center; justify-content: center;}',
     '.cdk-drop-list-dragging .cdk-drag {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
-    '.highlight-receiver.cdk-drop-list-receiving {padding: 3px; border: 2px solid;}',
     '.cdk-drag-placeholder {background-color: #ccc !important;}',
     '.cdk-drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-placeholder * {visibility: hidden;}',
-    '.allow-replacement {gap: 0;}',
-    '.allow-replacement .cdk-drag-placeholder {padding: 0 !important; height: 0 !important;}',
-    '.hide-list-item {background-color: #ccc !important;}',
-    '.hide-list-item * {visibility: hidden;}'
+    '.static-placeholder .cdk-drag-placeholder {transform: unset !important;}',
+    '.error-message {font-size: 75%;}',
+    '.baseline-helper {width: 0; display: inline-block;}'
   ]
 })
 export class DropListComponent extends FormElementComponent implements OnInit {
@@ -272,7 +278,6 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     if (DropListComponent.isPutBack(draggedItem, targetList)) {
       return true;
     }
-
     return false;
   };
 

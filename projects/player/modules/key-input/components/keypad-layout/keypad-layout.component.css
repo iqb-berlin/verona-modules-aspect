@@ -1,5 +1,10 @@
-.fixed-row-container{
+.fixed-big-row-container{
   width: 280px;
+  margin: auto;
+}
+
+.fixed-small-row-container{
+  width: 208px;
   margin: auto;
 }
 

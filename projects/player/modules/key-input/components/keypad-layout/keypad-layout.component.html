@@ -1,4 +1,5 @@
-<div [class.fixed-row-container]="position === 'right' && ( preset === 'french' || preset === 'custom' )"
+<div [class.fixed-big-row-container]="position === 'right' && ( preset === 'french' || preset === 'custom' )"
+     [class.fixed-small-row-container]="position === 'right' && preset !== 'french' && preset !== 'custom'"
      [class.floating-row-container]="position === 'floating'">
   <div *ngFor="let row of rows; let last = last">
     <ng-container *ngFor="let key of row; let index = index; let lastRowKey = last">

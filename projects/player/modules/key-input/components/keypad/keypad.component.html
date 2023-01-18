@@ -1,5 +1,4 @@
 <div [class]="position === 'floating' ? 'floating-keypad-container' : 'fixed-keypad-container'"
-     [style.margin-bottom.px]="inputElement.clientHeight + positionOffset"
      (mousedown)="$event.preventDefault()">
   <div *ngIf="position === 'floating'"
        class="keypad-header">

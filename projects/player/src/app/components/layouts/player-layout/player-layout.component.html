@@ -8,7 +8,6 @@
     <aspect-keypad
         *ngIf="keypadService.isOpen && keypadService.position === 'right'"
         @keypadSlideInOut
-        [positionOffset]="0"
         [inputElement]="keypadService.inputElement"
         [position]="keypadService.position"
         [preset]="keypadService.preset"

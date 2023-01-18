@@ -14,7 +14,6 @@ export class KeypadComponent implements OnInit {
   @Input() customKeys!: string;
   @Input() position!: 'floating' | 'right';
   @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
-  @Input() positionOffset!: number;
   @Input() restrictToAllowedKeys!: boolean;
   @Input() hasArrowKeys!: boolean;
   @Input() hasReturnKey!: boolean;

@@ -20,12 +20,16 @@ export class FloatingKeypadComponent implements OnChanges {
       originX: 'start',
       originY: 'bottom',
       overlayX: 'start',
-      overlayY: 'top'
+      overlayY: 'top',
+      offsetX: 0,
+      offsetY: 0
     }, {
       originX: 'start',
       originY: 'top',
       overlayX: 'start',
-      overlayY: 'bottom'
+      overlayY: 'bottom',
+      offsetX: 0,
+      offsetY: 0
     }],
     endCenter: [{
       originX: 'end',
@@ -44,8 +48,28 @@ export class FloatingKeypadComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.isKeypadOpen && this.isKeypadOpen) {
-      this.overlayPositions = FloatingKeypadComponent
-        .overlayPositionsConfig[this.keypadService.elementComponent.elementModel.inputAssistanceFloatingStartPosition];
+      const startPosition = this.keypadService.elementComponent.elementModel.inputAssistanceFloatingStartPosition;
+      if (startPosition === 'startBottom') {
+        this.overlayPositions = FloatingKeypadComponent.overlayPositionsConfig[startPosition]
+          .map((position, index) => (
+            { ...position, offsetY: this.getOffsetY(index) }
+          ));
+      } else {
+        this.overlayPositions = [...FloatingKeypadComponent.overlayPositionsConfig[startPosition]];
+      }
     }
+  }
+
+  private getOffsetY(index: number): number {
+    if (index > 0) {
+      let positionOffset = 0;
+      if (this.keypadService.elementComponent.elementModel.type === 'text-field') {
+        positionOffset = 20;
+      } else if (this.keypadService.elementComponent.elementModel.type === 'text-field-simple') {
+        positionOffset = -22;
+      }
+      return -(this.keypadService.inputElement.clientHeight + positionOffset);
+    }
+    return this.keypadService.elementComponent.elementModel.type === 'text-field' ? 26 : 8;
   }
 }

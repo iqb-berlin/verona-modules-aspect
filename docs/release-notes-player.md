@@ -1,5 +1,13 @@
 Player
 ======
+## next
+### Verbesserungen
+- Verbessert die Positionsbestimmung für schwebende Eingabehilfen
+
+### Fehlerbehebungen
+- Korrigiert die Darstellung von Platzhaltern in Ablegelisten von Lückentexten 
+- Korrigiert die Position der Tasten in rechts positionierten Eingabehilfen
+
 ## 1.30.5
 ### Fehlerbehebungen
 - Ablegelisten

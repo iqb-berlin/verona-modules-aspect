@@ -1,9 +1,11 @@
+// eslint-disable-next-line max-classes-per-file
 import {
   Component, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import { UIElement } from 'common/models/elements/element';
 import { TextComponent } from 'common/components/text/text.component';
+import { Page } from 'common/models/page';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 
@@ -42,13 +44,14 @@ import { SelectionService } from '../../../../services/selection.service';
                       (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
 
             <ng-container *ngIf="combinedProperties.action === 'pageNav'">
-              <ng-container *ngFor="let page of unitService.unit.pages; index as i">
-                <mat-option *ngIf="!page.alwaysVisible && selectionService.selectedPageIndex !== i"
+              <ng-container *ngFor="let page of (unitService.unit.pages | scrollPages); index as i">
+                <mat-option *ngIf="(unitService.unit.pages | scrollPageIndex: selectionService.selectedPageIndex) !== i"
                             [value]="i">
-                  {{ unitService.unit.pages[0].alwaysVisible ? i : i + 1 }}
+                  {{'page' | translate}} {{i + 1}}
                 </mat-option>
               </ng-container>
             </ng-container>
+
 
             <ng-container *ngIf="combinedProperties.action === 'unitNav'">
               <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
@@ -114,5 +117,17 @@ export class GetAnchorIdsPipe implements PipeTransform {
         .map(anchor => (anchor as Element).getAttribute('data-anchor-id'))
         .filter((anchorId, index, anchorIds) => anchorIds.indexOf(anchorId) === index) as string[]
       ).flat();
+  }
+}
+
+@Pipe({
+  name: 'scrollPageIndex'
+})
+export class ScrollPageIndexPipe implements PipeTransform {
+  transform(pages: Page[], index: number): number | null {
+    if (pages.find((page: Page): boolean => page.alwaysVisible)) {
+      return index - 1;
+    }
+    return index;
   }
 }

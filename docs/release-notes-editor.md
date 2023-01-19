@@ -1,5 +1,9 @@
 Editor
 ======
+## 1.38.0
+### Fehlerbehebungen
+- Korrigiert das Setzen der Seitennavigation im Knopfelement 
+
 ## 1.37.5
 - Unterstützt die aktuelle Fehlerbehebung im Player
 

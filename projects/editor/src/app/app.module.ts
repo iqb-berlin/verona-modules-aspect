@@ -4,10 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { createCustomElement } from '@angular/elements';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-
 import { NgxTiptapModule } from 'ngx-tiptap';
-import { MathfieldElement } from 'mathlive';
-
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSliderModule } from '@angular/material/slider';
@@ -29,6 +26,7 @@ import {
   HotspotFieldSetComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/hotspot-field-set.component';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
+import { MathEditorModule } from 'common/math-editor.module';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -74,7 +72,7 @@ import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
 import { TextPropertiesFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
-import { ButtonPropertiesComponent, GetAnchorIdsPipe } from
+import { ButtonPropertiesComponent, GetAnchorIdsPipe, ScrollPageIndexPipe } from
   './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
 import { SliderPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
@@ -99,7 +97,6 @@ import {
   BorderPropertiesComponent
 } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
-import { MathEditorModule } from 'common/math-editor.module';
 
 @NgModule({
   declarations: [
@@ -155,7 +152,8 @@ import { MathEditorModule } from 'common/math-editor.module';
     BorderPropertiesComponent,
     GeogebraAppDefinitionDialogComponent,
     GetValidDropListsPipe,
-    GetAnchorIdsPipe
+    GetAnchorIdsPipe,
+    ScrollPageIndexPipe
   ],
   imports: [
     BrowserModule,

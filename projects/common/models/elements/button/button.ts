@@ -22,7 +22,7 @@ export class ButtonElement extends UIElement {
     if (element.imageSrc) this.imageSrc = element.imageSrc;
     if (element.asLink) this.asLink = element.asLink;
     if (element.action) this.action = element.action;
-    if (element.actionParam) this.actionParam = element.actionParam;
+    if (element.actionParam !== undefined) this.actionParam = element.actionParam;
     this.position = element.position ? UIElement.initPositionProps(element.position) : undefined;
     this.styling = UIElement.initStylingProps({ borderRadius: 0, ...element.styling });
   }

@@ -23,6 +23,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { MathEditorModule } from 'common/math-editor.module';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
@@ -113,6 +114,7 @@ import { GetValuePipe, MathFieldComponent } from './components/input-elements/ma
     InputBackgroundColorDirective,
     ErrorTransformPipe,
     SafeResourceHTMLPipe,
+    ScrollPagesPipe,
     MediaPlayerControlBarComponent,
     MediaPlayerTimeFormatPipe,
     LikertComponent,
@@ -156,6 +158,7 @@ import { GetValuePipe, MathFieldComponent } from './components/input-elements/ma
     MatDialogModule,
     TranslateModule,
     SafeResourceHTMLPipe,
+    ScrollPagesPipe,
     TextMarkingBarComponent,
     ToggleButtonComponent,
     TextFieldComponent,

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlwaysVisiblePagePipe } from 'player/src/app/pipes/always-visible-page.pipe';
-import { ScrollPagesPipe } from 'player/src/app/pipes/scroll-pages.pipe';
+import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { ValidPagesPipe } from 'player/src/app/pipes/valid-pages.pipe';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';

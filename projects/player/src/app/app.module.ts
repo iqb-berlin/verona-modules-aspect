@@ -42,7 +42,6 @@ import {
 import { PlayerLayoutComponent } from './components/layouts/player-layout/player-layout.component';
 import { UnitStateDirective } from './directives/unit-state.directive';
 import { ValidPagesPipe } from './pipes/valid-pages.pipe';
-import { ScrollPagesPipe } from './pipes/scroll-pages.pipe';
 import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';
 import { PageIndexPipe } from './pipes/page-index.pipe';
 import { PlayerStateDirective } from './directives/player-state.directive';
@@ -76,7 +75,6 @@ import { ExternalAppGroupElementComponent } from
     UnitStateDirective,
     ValidPagesPipe,
     AlwaysVisiblePagePipe,
-    ScrollPagesPipe,
     PageIndexPipe,
     PlayerStateDirective,
     SectionVisibilityHandlingDirective,

@@ -1,6 +1,6 @@
 Player
 ======
-## next
+## 1.31.0
 ### Verbesserungen
 - Verbessert die Positionsbestimmung für schwebende Eingabehilfen
 

@@ -1,13 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { InputGroupElementComponent } from './input-group-element.component';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
+import { InputGroupElementComponent } from './input-group-element.component';
 
 describe('InputGroupElementComponent', () => {
   let component: InputGroupElementComponent;
@@ -29,15 +27,8 @@ describe('InputGroupElementComponent', () => {
       ],
       imports: [
         ReactiveFormsModule,
-        MatSnackBarModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: PlayerTranslateLoader
-          }
-        })
-      ],
-      providers: [TranslateService]
+        MatSnackBarModule
+      ]
     })
       .compileComponents();
   });
@@ -56,11 +47,9 @@ describe('InputGroupElementComponent', () => {
       height: 0
     });
     fixture.detectChanges();
-
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

@@ -1,5 +1,10 @@
 Player
 ======
+## next
+### Verbesserungen
+- Player stellt keine eigene Meldung mehr dar, wenn er vom Host die Meldung erhält,
+  dass die Navigation verweigert wird. Diese Meldung ist Aufgabe des Hosts.  
+
 ## 1.31.0
 ### Verbesserungen
 - Verbessert die Positionsbestimmung für schwebende Eingabehilfen

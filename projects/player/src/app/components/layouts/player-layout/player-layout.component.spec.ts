@@ -1,9 +1,8 @@
+// eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlwaysVisiblePagePipe } from 'player/src/app/pipes/always-visible-page.pipe';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { ValidPagesPipe } from 'player/src/app/pipes/valid-pages.pipe';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { Component, Directive, Input } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Page } from 'common/models/page';
@@ -44,16 +43,9 @@ describe('PlayerLayoutComponent', () => {
         AlwaysVisiblePagePipe,
         ValidPagesPipe,
         ScrollPagesPipe,
-        PlayerStateStubDirective],
-      imports: [
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: PlayerTranslateLoader
-          }
-        })
+        PlayerStateStubDirective
       ],
-      providers: [TranslateService, { provide: APIService, useClass: ApiStubService }]
+      providers: [{ provide: APIService, useClass: ApiStubService }]
     })
       .compileComponents();
   });

@@ -1,6 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
 import { Component, Input } from '@angular/core';
@@ -32,15 +30,8 @@ describe('CompoundGroupElementComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        MatSnackBarModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: PlayerTranslateLoader
-          }
-        })
-      ],
-      providers: [TranslateService]
+        MatSnackBarModule
+      ]
     })
       .compileComponents();
   });

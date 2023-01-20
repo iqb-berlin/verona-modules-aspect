@@ -1,7 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TextInputGroupElementComponent } from './text-input-group-element.component';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { Component, Input } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
@@ -9,6 +6,7 @@ import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
+import { TextInputGroupElementComponent } from './text-input-group-element.component';
 
 describe('TextInputGroupElementComponent', () => {
   let component: TextInputGroupElementComponent;
@@ -31,15 +29,8 @@ describe('TextInputGroupElementComponent', () => {
       ],
       imports: [
         ReactiveFormsModule,
-        MatSnackBarModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: PlayerTranslateLoader
-          }
-        })
-      ],
-      providers: [TranslateService]
+        MatSnackBarModule
+      ]
     })
       .compileComponents();
   });
@@ -58,11 +49,9 @@ describe('TextInputGroupElementComponent', () => {
       height: 0
     });
     fixture.detectChanges();
-
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

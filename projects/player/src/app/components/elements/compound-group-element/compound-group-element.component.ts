@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import {
   TextFieldSimpleComponent
@@ -42,8 +40,6 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     public keypadService: KeypadService,
     public unitStateService: UnitStateService,
     public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-    public translateService: TranslateService,
-    public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
     private navigationService: NavigationService,

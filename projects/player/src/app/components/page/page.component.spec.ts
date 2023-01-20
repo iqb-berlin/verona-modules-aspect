@@ -1,14 +1,45 @@
+// eslint-disable-next-line max-classes-per-file
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PageComponent } from './page.component';
 import { Page } from 'common/models/page';
+import {
+  Component, Directive, EventEmitter, Input, Output
+} from '@angular/core';
+import { Section } from 'common/models/section';
+import { Subject } from 'rxjs';
+import { PageComponent } from './page.component';
 
 describe('PageComponent', () => {
   let component: PageComponent;
   let fixture: ComponentFixture<PageComponent>;
 
+  @Component({ selector: 'aspect-section', template: '' })
+  class SectionComponent {
+    @Input() section!: Section;
+    @Input() pageIndex!: number;
+  }
+
+  @Directive({ selector: '[aspectSectionVisibilityHandling]' })
+  class SectionVisibilityHandling {
+    @Input() mediaStatusChanged!: Subject<string>;
+    @Input() section!: Section;
+    @Input() pageSections!: Section[];
+  }
+
+  @Directive({ selector: '[aspectInViewDetection]' })
+  class InViewDetection {
+    @Input() detectionType!: 'top' | 'bottom';
+    @Output() intersecting = new EventEmitter();
+    @Input() intersectionContainer!: HTMLElement;
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageComponent ]
+      declarations: [
+        PageComponent,
+        SectionComponent,
+        SectionVisibilityHandling,
+        InViewDetection
+      ]
     })
       .compileComponents();
   });
@@ -23,5 +54,4 @@ describe('PageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

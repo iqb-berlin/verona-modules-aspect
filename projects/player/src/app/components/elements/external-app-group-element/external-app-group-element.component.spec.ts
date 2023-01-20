@@ -15,6 +15,7 @@ describe('ExternalAppGroupElementComponent', () => {
   @Component({ selector: 'aspect-geometry', template: '' })
   class GeometryStubComponent {
     @Input() elementModel!: GeometryElement;
+    @Input() appDefinition!: string;
   }
 
   beforeEach(async () => {

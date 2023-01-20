@@ -33,6 +33,7 @@ describe('KeypadLayoutComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(KeypadLayoutComponent);
     component = fixture.componentInstance;
+    component.inputElement = document.createElement('input');
     component.layout = {
       default: [[]],
       shift: [[]],

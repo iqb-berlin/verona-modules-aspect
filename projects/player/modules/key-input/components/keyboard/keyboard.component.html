@@ -4,18 +4,18 @@
        fxLayout="row wrap"
        fxLayoutAlign="space-between center"
        class="specialCharacters">
-    <keyboard-key *ngFor="let key of frenchRow; let i = index"
+    <aspect-keyboard-key *ngFor="let key of frenchRow; let i = index"
                   class="key"
                   [key]="key"
                   [alternativeKey]="null"
                   (keyClicked)="evaluateClickedKeyValue($event)">
-    </keyboard-key>
+    </aspect-keyboard-key>
   </div>
 
   <div class="character-rows">
     <ng-container *ngFor="let row of rows; let rowIndex = index">
       <ng-container *ngFor="let key of row; let i = index">
-        <keyboard-key class="key"
+        <aspect-keyboard-key class="key"
                       [style.grid-row-start]="rowIndex + 2"
                       [style.grid-row-end]="key === 'Return' ? rowIndex + 4 : rowIndex + 3"
                       [style.grid-column-start]="key === 'Space' ? i + 2 : i + 1"
@@ -23,7 +23,7 @@
                       [key]="key "
                       [alternativeKey]="layout.default[rowIndex][i] | getAlternativeKey:layout.shift[rowIndex][i]:shift"
                       (keyClicked)="evaluateClickedKeyValue($event)">
-        </keyboard-key>
+        </aspect-keyboard-key>
       </ng-container>
     </ng-container>
   </div>

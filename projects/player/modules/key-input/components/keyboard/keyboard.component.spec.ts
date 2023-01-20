@@ -7,7 +7,7 @@ describe('KeyboardComponent', () => {
   let component: KeyboardComponent;
   let fixture: ComponentFixture<KeyboardComponent>;
 
-  @Component({ selector: 'keyboard-key', template: '' })
+  @Component({ selector: 'aspect-keyboard-key', template: '' })
   class KeyboardKeyComponent {
     @Input() key!: string;
     @Input() alternativeKey!: string;

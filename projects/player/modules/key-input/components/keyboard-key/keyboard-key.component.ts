@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'keyboard-key',
+  selector: 'aspect-keyboard-key',
   templateUrl: './keyboard-key.component.html',
   styleUrls: ['./keyboard-key.component.scss']
 })

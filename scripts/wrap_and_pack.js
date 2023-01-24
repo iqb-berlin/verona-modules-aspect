@@ -14,5 +14,5 @@ const fileContent = fs.readFileSync(wrapperPath, 'utf8').toString()
   .replace(/version-placeholder/g, packageVersion);
 fs.writeFileSync('dist/index.html', fileContent, 'utf8');
 
-const targetFileName = `verona-${packageName}-aspect-${packageVersion}.html`;
+const targetFileName = `iqb-${packageName}-aspect-${packageVersion}.html`;
 execSync(`node scripts/distpacker.js dist ${targetFileName} ${packageName}`);

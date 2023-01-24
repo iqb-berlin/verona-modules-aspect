@@ -41,7 +41,7 @@ or
 >npm run start-player-local
 
 ### Build
-This produces an HTML file in the `dist` folder, named `verona-{module}-aspect-{version}.html`.
+This produces an HTML file in the `dist` folder, named `iqb-{module}-aspect-{version}.html`.
 
 >npm run build-editor
 

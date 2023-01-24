@@ -1,7 +1,7 @@
 import Page from './page-model';
 
 fixture `Button Tests`
-  .page `../../dist/verona-editor-aspect.html`;
+  .page `../../dist/iqb-editor-aspect.html`;
 
 const page = new Page();
 

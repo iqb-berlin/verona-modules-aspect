@@ -1,6 +1,11 @@
 Player
 ======
-## next
+## 1.32.0
+### Neue Funktionen
+- Das Präfix "aspect" im Dateinamen wird durch "iqb" ersetzt.
+  Der aktuelle Editor heißt "iqb-editor-aspect-1.32.0"
+- Ändert die Metadaten entsprechend der Verona Interfaces Specification zu Version 5.0
+
 ### Verbesserungen
 - Player stellt keine eigene Meldung mehr dar, wenn er vom Host die Meldung erhält,
   dass die Navigation verweigert wird. Diese Meldung ist Aufgabe des Hosts.  

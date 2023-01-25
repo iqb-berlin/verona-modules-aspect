@@ -1,8 +1,8 @@
 {
   "name": "verona-modules-aspect",
   "config": {
-    "player_version": "1.32-beta",
-    "editor_version": "1.39-beta",
+    "player_version": "1.32.0-beta",
+    "editor_version": "1.39.0-beta",
     "unit_definition_version": "3.10.0"
   },
   "scripts": {

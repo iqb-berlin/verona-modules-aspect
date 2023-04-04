@@ -1,33 +1,29 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Component, Input } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
-import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
-import { InputGroupElementComponent } from './input-group-element.component';
+import {
+  ExternalAppGroupElementComponent
+} from 'player/src/app/components/elements/external-app-group-element/external-app-group-element.component';
+import { GeometryElement } from 'common/models/elements/geometry/geometry';
 
-describe('InputGroupElementComponent', () => {
-  let component: InputGroupElementComponent;
-  let fixture: ComponentFixture<InputGroupElementComponent>;
+describe('ExternalAppGroupElementComponent', () => {
+  let component: ExternalAppGroupElementComponent;
+  let fixture: ComponentFixture<ExternalAppGroupElementComponent>;
   let mockUnitStateService: UnitStateService;
 
-  @Component({ selector: 'aspect-radio-button-group', template: '' })
-  class RadioStubComponent {
-    @Input() elementModel!: RadioButtonGroupElement;
-    @Input() parentForm!: FormGroup;
+  @Component({ selector: 'aspect-geometry', template: '' })
+  class GeometryStubComponent {
+    @Input() elementModel!: GeometryElement;
+    @Input() appDefinition!: string;
   }
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        InputGroupElementComponent,
-        RadioStubComponent,
+        ExternalAppGroupElementComponent,
+        GeometryStubComponent,
         CastPipe
-      ],
-      imports: [
-        ReactiveFormsModule,
-        MatSnackBarModule
       ]
     })
       .compileComponents();
@@ -35,13 +31,13 @@ describe('InputGroupElementComponent', () => {
 
   beforeEach(() => {
     mockUnitStateService = TestBed.inject(UnitStateService);
-    fixture = TestBed.createComponent(InputGroupElementComponent);
+    fixture = TestBed.createComponent(ExternalAppGroupElementComponent);
     spyOn(mockUnitStateService, 'registerElement');
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
     component = fixture.componentInstance;
-    component.elementModel = new RadioButtonGroupElement({
-      type: 'radio',
+    component.elementModel = new GeometryElement({
+      type: 'geometry',
       id: 'test',
       width: 0,
       height: 0

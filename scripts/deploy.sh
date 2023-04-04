@@ -16,12 +16,12 @@ token=$(echo $login_return | jq ".token")
 curl -f -X POST \
   -F "t=$token" \
   -F "name=verona-module" \
-  -F "verona-module=@./dist/verona-editor-aspect-nightly.html" \
+  -F "verona-module=@./dist/iqb-editor-aspect-nightly.html" \
   https://teststudio.iqb.hu-berlin.de/api/php_superadmin/uploadVeronaModule.php
 
 ## PLAYER
 curl -f -X POST \
   -F "t=$token" \
   -F "name=verona-module" \
-  -F "verona-module=@./dist/verona-player-aspect-nightly.html" \
+  -F "verona-module=@./dist/iqb-player-aspect-nightly.html" \
   https://teststudio.iqb.hu-berlin.de/api/php_superadmin/uploadVeronaModule.php

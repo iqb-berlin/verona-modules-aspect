@@ -3,10 +3,8 @@ import {
   FormControl, FormGroup, ValidatorFn, Validators
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
-import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement, InputElementValue } from 'common/models/elements/element';
@@ -22,8 +20,6 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
   form: FormGroup = new FormGroup({});
   abstract unitStateService: UnitStateService;
   abstract elementModelElementCodeMappingService: ElementModelElementCodeMappingService;
-  abstract translateService: TranslateService;
-  abstract messageService: MessageService;
   abstract veronaSubscriptionService: VeronaSubscriptionService;
   abstract validationService: ValidationService;
 
@@ -54,8 +50,6 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
 
   private onNavigationDenied(message: VopNavigationDeniedNotification): void {
     LogService.info('player: onNavigationDenied', message);
-    const reasons = message.reason?.map((reason: string) => this.translateService.instant(reason));
-    this.messageService.showWarning(reasons?.join(', ') || this.translateService.instant('noReason'));
     if (message.reason && message.reason.find(reason => reason === 'responsesIncomplete')) {
       this.form.markAllAsTouched();
     }

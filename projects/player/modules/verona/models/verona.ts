@@ -87,15 +87,38 @@ export interface VopContinueCommand {
   sessionId: string;
 }
 
-export interface VopReadyNotification extends VopMetaData {
+export interface VopReadyNotification {
   type: 'vopReadyNotification';
+  metadata: VopMetaData;
 }
 
 export interface VopMetaData {
-  apiVersion: string;
-  notSupportedApiFeatures?: string;
-  supportedUnitDefinitionTypes?: string;
-  supportedUnitStateDataTypes?: string;
+  $schema: string,
+  id: string;
+  type: string;
+  version: string;
+  specVersion: string;
+  metadataVersion: string
+  name: {
+    lang: string;
+    value: string;
+  }[];
+  description: {
+    lang: string;
+    value: string;
+  }[];
+  maintainer: {
+    name: Record<string, string>[];
+    email: string;
+    url: string;
+  }
+  code: {
+    repositoryType: string;
+    licenseType: string;
+    licenseUrl: string;
+    repositoryUrl: string;
+  }
+  notSupportedFeatures: string[];
 }
 
 export interface VopStateChangedNotification {

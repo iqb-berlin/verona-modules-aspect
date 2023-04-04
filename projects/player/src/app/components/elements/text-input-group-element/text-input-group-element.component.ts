@@ -1,8 +1,6 @@
 import {
   AfterViewInit, Component, OnInit, ViewChild
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'common/services/message.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
@@ -38,8 +36,6 @@ export class TextInputGroupElementComponent extends ElementFormGroupDirective im
     public keypadService: KeypadService,
     public unitStateService: UnitStateService,
     public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-    public translateService: TranslateService,
-    public messageService: MessageService,
     public veronaSubscriptionService: VeronaSubscriptionService,
     public validationService: ValidationService,
     public deviceService: DeviceService

@@ -1,5 +1,12 @@
 Editor
 ======
+## 1.39.0
+### Neue Funktionen
+- Das Präfix "aspect" im Dateinamen wird durch "iqb" ersetzt.
+  Der aktuelle Editor heißt "iqb-editor-aspect-1.39.0"
+- Ändert die Metadaten entsprechend der Verona Interfaces Specification zu Version 4.0
+
+
 ## 1.38.0
 ### Fehlerbehebungen
 - Korrigiert das Setzen der Seitennavigation im Knopfelement 

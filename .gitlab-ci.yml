@@ -31,6 +31,6 @@ deploy:
     - ./scripts/deploy.sh $TESTSTUDIO_USERNAME $TESTSTUDIO_PASSWORD
   artifacts:
     paths:
-      - dist/verona-editor-aspect-nightly.html
-      - dist/verona-player-aspect-nightly.html
+      - dist/iqb-editor-aspect-nightly.html
+      - dist/iqb-player-aspect-nightly.html
     expire_in: 1 week

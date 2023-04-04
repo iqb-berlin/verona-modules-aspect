@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { Unit } from 'common/models/unit';
 import { AnswerScheme } from 'common/models/elements/element';
-import packageJSON from '../../../../../package.json';
 
 @Injectable({
   providedIn: 'root'
@@ -51,11 +50,10 @@ export class VeronaAPIService {
   }
 
   sendVoeReadyNotification(): void {
+    const metadata: string | null | undefined = document.getElementById('verona-metadata')?.textContent;
     this.send({
       type: 'voeReadyNotification',
-      apiVersion: '1.1.0',
-      notSupportedApiFeatures: '',
-      supportedUnitDefinitionTypes: packageJSON.config.unit_definition_version
+      metadata: metadata ? JSON.parse(metadata) : {}
     });
   }
 

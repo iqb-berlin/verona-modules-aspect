@@ -1,15 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  CompoundGroupElementComponent
-} from './compound-group-element.component';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
-import { PlayerTranslateLoader } from 'player/src/app/classes/player-translate-loader';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
 import { Component, Input } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
+import {
+  CompoundGroupElementComponent
+} from './compound-group-element.component';
 
 describe('CompoundGroupElementComponent', () => {
   let component: CompoundGroupElementComponent;
@@ -18,6 +16,7 @@ describe('CompoundGroupElementComponent', () => {
   @Component({ selector: 'aspect-likert', template: '' })
   class LikertStubComponent {
     @Input() elementModel!: LikertElement;
+    @Input() parentForm!: FormGroup;
   }
 
   beforeEach(async () => {
@@ -31,15 +30,8 @@ describe('CompoundGroupElementComponent', () => {
       imports: [
         FormsModule,
         ReactiveFormsModule,
-        MatSnackBarModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: PlayerTranslateLoader
-          }
-        })
-      ],
-      providers: [TranslateService]
+        MatSnackBarModule
+      ]
     })
       .compileComponents();
   });
@@ -60,5 +52,4 @@ describe('CompoundGroupElementComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

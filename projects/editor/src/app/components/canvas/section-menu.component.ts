@@ -46,15 +46,16 @@ import { SelectionService } from '../../services/selection.service';
             [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
       <mat-icon>disabled_visible</mat-icon>
     </button>
-    <mat-menu #activeAfterIDMenu="matMenu" xPosition="before">
-      <mat-form-field appearance="fill">
+    <mat-menu #activeAfterIDMenu="matMenu"
+              class="activeAfterID-menu" xPosition="before">
+      <mat-form-field appearance="outline">
         <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>
         <input matInput
                [value]="$any(section.activeAfterID)"
                (click)="$any($event).stopPropagation()"
                (change)="updateModel('activeAfterID', $any($event.target).value)">
       </mat-form-field>
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>{{'section-menu.activeAfterIdDelay' | translate }}</mat-label>
         <input matInput type="number" step="1000" min="0"
                [disabled]="!section.activeAfterID"
@@ -75,7 +76,7 @@ import { SelectionService } from '../../services/selection.service';
           {{'section-menu.dynamic-positioning' | translate }}
         </mat-checkbox>
         <ng-container *ngIf="!section.dynamicPositioning">
-          <mat-form-field appearance="fill">
+          <mat-form-field class="section-height-input" appearance="outline">
             <mat-label>{{'section-menu.height' | translate }}</mat-label>
             <input matInput type="number"
                    [value]="$any(section.height)"
@@ -87,86 +88,81 @@ import { SelectionService } from '../../services/selection.service';
           <fieldset>
             <legend>{{'section-menu.columns' | translate }}</legend>
 
-            <div class="size-group">
-              <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
-                            (click)="$any($event).stopPropagation()"
-                            (change)="updateModel('autoColumnSize', $event.checked)">
-                {{'section-menu.autoColumnSize' | translate }}
-              </mat-checkbox>
-              <ng-container *ngIf="!section.autoColumnSize">
-                <mat-form-field>
-                  <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
+            <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
+                          (click)="$any($event).stopPropagation()"
+                          (change)="updateModel('autoColumnSize', $event.checked)">
+              {{'section-menu.autoColumnSize' | translate }}
+            </mat-checkbox>
+            <ng-container *ngIf="!section.autoColumnSize">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
+                <input matInput type="number"
+                       [value]="$any(section.gridColumnSizes.split(' ').length)"
+                       (click)="$any($event).stopPropagation()"
+                       (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">
+              </mat-form-field>
+              <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs">
+                <mat-form-field class="size-item">
+                  <mat-label>{{'section-menu.width' | translate }} {{i + 1}}</mat-label>
                   <input matInput type="number"
-                         [value]="$any(section.gridColumnSizes.split(' ').length)"
+                         [value]="size.value"
                          (click)="$any($event).stopPropagation()"
-                         (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">
+                         (change)="changeGridSize('gridColumnSizes', i, false, $any($event).target.value)">
                 </mat-form-field>
-                <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs" fxLayout="row">
-                  <mat-form-field>
-                    <mat-label>{{'section-menu.width' | translate }} {{i + 1}}</mat-label>
-                    <input matInput type="number"
-                           [value]="size.value"
-                           (click)="$any($event).stopPropagation()"
-                           (change)="changeGridSize('gridColumnSizes', i, false, $any($event).target.value)">
-                  </mat-form-field>
+                <mat-form-field class="size-item-unit">
+                  <mat-label>Einheit</mat-label>
                   <mat-select [value]="size.unit"
                               (click)="$any($event).stopPropagation()"
                               (selectionChange)="changeGridSize('gridColumnSizes', i, true, $event.value)">
                     <mat-option value="fr">{{'section-menu.fraction' | translate }}</mat-option>
                     <mat-option value="px">{{'section-menu.pixel' | translate }}</mat-option>
                   </mat-select>
-                </div>
-              </ng-container>
-            </div>
+                </mat-form-field>
+              </div>
+            </ng-container>
           </fieldset>
 
           <fieldset>
             <legend>{{'section-menu.rows' | translate }}</legend>
-            <div class="size-group">
-              <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
-                            (click)="$any($event).stopPropagation()"
-                            (change)="updateModel('autoRowSize', $event.checked)">
-                {{'section-menu.autoRowSize' | translate }}
-              </mat-checkbox>
-              <ng-container *ngIf="!section.autoRowSize">
+            <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
+                          (click)="$any($event).stopPropagation()"
+                          (change)="updateModel('autoRowSize', $event.checked)">
+              {{'section-menu.autoRowSize' | translate }}
+            </mat-checkbox>
+            <ng-container *ngIf="!section.autoRowSize">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'section-menu.height' | translate }}</mat-label>
+                <input matInput type="number"
+                       [value]="$any(section.height)"
+                       (click)="$any($event).stopPropagation()"
+                       (change)="updateModel('height', $any($event.target).value)">
+              </mat-form-field>
 
-                <mat-form-field appearance="fill">
-                  <mat-label>{{'section-menu.height' | translate }}</mat-label>
-                  <input matInput mat-menu-item type="number"
-                         [value]="$any(section.height)"
-                         (click)="$any($event).stopPropagation()"
-                         (change)="updateModel('height', $any($event.target).value)">
-                </mat-form-field>
-
-                <mat-form-field>
-                  <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
+              <mat-form-field appearance="outline">
+                <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
+                <input matInput type="number"
+                       [value]="$any(section.gridRowSizes.split(' ').length)"
+                       (click)="$any($event).stopPropagation()"
+                       (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
+              </mat-form-field>
+              <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
+                <mat-form-field class="size-item">
+                  <mat-label>{{'section-menu.height' | translate }} {{i + 1}}</mat-label>
                   <input matInput type="number"
-                         [value]="$any(section.gridRowSizes.split(' ').length)"
+                         [value]="size.value"
                          (click)="$any($event).stopPropagation()"
-                         (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
+                         (change)="changeGridSize('gridRowSizes', i, false, $any($event).target.value)">
                 </mat-form-field>
-
-
-                <fieldset>
-                  <legend>Zeilenhöhen</legend>
-                  <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
-                    <mat-form-field>
-                      <mat-label>{{'section-menu.height' | translate }} {{i + 1}}</mat-label>
-                      <input matInput type="number"
-                             [value]="size.value"
-                             (click)="$any($event).stopPropagation()"
-                             (change)="changeGridSize('gridRowSizes', i, false, $any($event).target.value)">
-                    </mat-form-field>
-                    <mat-select [value]="size.unit"
-                                (click)="$any($event).stopPropagation()"
-                                (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
-                      <mat-option value="fr">{{'section-menu.fraction' | translate }}</mat-option>
-                      <mat-option value="px">{{'section-menu.pixel' | translate }}</mat-option>
-                    </mat-select>
-                  </div>
-                </fieldset>
-              </ng-container>
-            </div>
+                <mat-form-field class="size-item-unit">
+                  <mat-select [value]="size.unit"
+                              (click)="$any($event).stopPropagation()"
+                              (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
+                    <mat-option value="fr">{{'section-menu.fraction' | translate }}</mat-option>
+                    <mat-option value="px">{{'section-menu.pixel' | translate }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </ng-container>
           </fieldset>
         </div>
       </div>
@@ -202,10 +198,13 @@ import { SelectionService } from '../../services/selection.service';
     </button>
   `,
   styles: [
-    '::ng-deep .layoutMenu .size-inputs .mat-form-field-infix {width: 65px}',
-    '.size-group {background-color: #f5f5f5; margin: 0 0 15px 0}',
-    '::ng-deep .layoutMenu .size-group mat-select {padding-top: 24px; padding-left: 15px;}',
-    '::ng-deep .layoutMenu {padding: 0 15px}'
+    '::ng-deep .layoutMenu {padding: 0 15px; width: 250px;}',
+    '::ng-deep .layoutMenu fieldset {margin: 10px 0; display: flex; flex-direction: column; align-items: start;}',
+    '::ng-deep .layoutMenu .section-height-input {margin-top: 10px;}',
+    '::ng-deep .layoutMenu .size-inputs .mat-form-field {width: 100px;}',
+    '::ng-deep .layoutMenu .size-inputs {display: flex; flex-direction: row; gap: 15px;}',
+    '.menuItem {margin-bottom: 5px;}',
+    '::ng-deep .activeAfterID-menu .mat-form-field {width:90%; margin-left: 10px;}'
   ]
 })
 export class SectionMenuComponent implements OnInit, OnDestroy {

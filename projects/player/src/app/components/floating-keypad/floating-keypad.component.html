@@ -3,7 +3,7 @@
     cdkConnectedOverlay
     cdkConnectedOverlayPush
     [cdkConnectedOverlayScrollStrategy]="repositionScrollStrategy"
-    [cdkConnectedOverlayOrigin]="keypadService.elementComponent"
+    [cdkConnectedOverlayOrigin]="keypadService.elementComponent | asOverlayOrigin"
     [cdkConnectedOverlayPositions]="overlayPositions"
     [cdkConnectedOverlayOpen]="isKeypadOpen && keypadService.position === 'floating'">
   <aspect-keypad
@@ -15,7 +15,7 @@
       [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys"
       [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
       [hasArrowKeys]="keypadService.elementComponent.elementModel.hasArrowKeys"
-      [hasReturnKey]="!!keypadService.elementComponent.elementModel.hasReturnKey"
+      [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
       (backSpaceClicked)="keypadService.deleteCharacters(true)"
       (keyClicked)="keypadService.enterKey($event)">
   </aspect-keypad>

@@ -11,6 +11,7 @@ import { UnitMenuModule } from 'player/modules/unit-menu/unit-menu.module';
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AsOverlayOriginPipe } from 'player/src/app/pipes/as-overlay-origin.pipe';
+import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -70,6 +71,7 @@ import { ExternalAppGroupElementComponent } from
     CompoundGroupElementComponent,
     CastPipe,
     AsOverlayOriginPipe,
+    HasReturnKeyPipe,
     TextGroupElementComponent,
     BaseGroupElementComponent,
     InteractiveGroupElementComponent,

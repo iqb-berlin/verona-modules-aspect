@@ -11,7 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'aspect-media-player-control-bar',
   templateUrl: './media-player-control-bar.component.html',
-  styleUrls: ['./media-player-control-bar.component.css']
+  styleUrls: ['./media-player-control-bar.component.scss']
 })
 export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() player!: HTMLVideoElement | HTMLAudioElement;

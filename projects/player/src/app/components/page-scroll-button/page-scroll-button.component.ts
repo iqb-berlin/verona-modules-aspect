@@ -35,7 +35,8 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.checkScrollPosition(this.elementRef.nativeElement));
+    // give media elements time to load
+    setTimeout(() => this.checkScrollPosition(this.elementRef.nativeElement), 200);
   }
 
   private checkScrollPosition(element: HTMLElement): void {

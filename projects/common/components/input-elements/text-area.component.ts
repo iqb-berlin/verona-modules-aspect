@@ -1,8 +1,5 @@
-import {
-  Component, Input, AfterViewInit
-} from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
-import { delay, Observable, of } from 'rxjs';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
@@ -33,11 +30,11 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 autocorrect="off"
                 spellcheck="false"
                 value="{{elementModel.value}}"
-                [rows]="(isViewInitialized | async) && elementModel.hasDynamicRowCount ?
-                            (elementModel.expectedCharactersCount | updateTextareaRows:
-                                input.offsetWidth:
-                                elementModel.styling.fontSize) :
-                            elementModel.rowCount"
+                dynamicRows
+                [expectedCharactersCount]="elementModel.expectedCharactersCount"
+                [fontSize]="elementModel.styling.fontSize"
+                (dynamicRowsChange)="dynamicRows = $event"
+                [rows]="elementModel.hasDynamicRowCount && dynamicRows ? dynamicRows : elementModel.rows"
                 [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
                 [formControl]="elementFormControl"
                 [readonly]="elementModel.readOnly"
@@ -59,12 +56,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     ':host ::ng-deep .no-label .mat-form-field-outline-gap {border-top-color: unset !important}'
   ]
 })
-export class TextAreaComponent extends TextInputComponent implements AfterViewInit {
+export class TextAreaComponent extends TextInputComponent {
   @Input() elementModel!: TextAreaElement;
-
-  isViewInitialized: Observable<boolean> = of(false);
-
-  ngAfterViewInit(): void {
-    this.isViewInitialized = of(true).pipe(delay(0));
-  }
+  dynamicRows: number = 0;
 }

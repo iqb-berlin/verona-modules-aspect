@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -25,6 +26,7 @@ import { HotspotImageComponent } from 'common/components/input-elements/hotspot-
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { MathEditorModule } from 'common/math-editor.module';
+import { DynamicRowsDirective } from 'common/directives/dynamic-rows.directive';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -71,7 +73,6 @@ import { GeometryComponent } from './components/geometry/geometry.component';
 import { MathAtanPipe } from './pipes/math-atan.pipe';
 import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
-import { UpdateTextareaRowsPipe } from './pipes/update-textarea-rows.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
 
@@ -138,10 +139,10 @@ import { GetValuePipe, MathFieldComponent } from './components/input-elements/ma
     MathAtanPipe,
     MathDegreesPipe,
     ArrayIncludesPipe,
-    UpdateTextareaRowsPipe,
     SpinnerComponent,
     GetValuePipe,
-    MathFieldComponent
+    MathFieldComponent,
+    DynamicRowsDirective
   ],
   exports: [
     CommonModule,

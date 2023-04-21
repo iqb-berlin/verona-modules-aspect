@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input } from '@angular/core';
-import { delay, Subject, Subscription } from 'rxjs';
+import { delay, Subject } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
 import { ElementCodeStatusValue } from 'player/modules/verona/models/verona';

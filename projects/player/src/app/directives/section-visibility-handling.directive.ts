@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input } from '@angular/core';
-import { delay, Subject } from 'rxjs';
+import { delay, Subject, Subscription } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
 import { ElementCodeStatusValue } from 'player/modules/verona/models/verona';
@@ -28,7 +28,11 @@ export class SectionVisibilityHandlingDirective {
         .pipe(
           takeUntil(this.ngUnsubscribe),
           delay(this.section.activeAfterIdDelay))
-        .subscribe((id: string): void => this.setActiveAfterID(id));
+        .subscribe((id: string): void => {
+          this.ngUnsubscribe.next();
+          this.ngUnsubscribe.complete();
+          this.setActiveAfterID(id);
+        });
     }
   }
 

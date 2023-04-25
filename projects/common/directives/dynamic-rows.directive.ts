@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges
+  AfterViewInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, Input, NgZone, OnChanges, Output, SimpleChanges
 } from '@angular/core';
 
 @Directive({
@@ -10,30 +10,40 @@ export class DynamicRowsDirective implements AfterViewInit, OnChanges {
   @Input() expectedCharactersCount!: number;
   @Output() dynamicRowsChange: EventEmitter<number> = new EventEmitter<number>();
 
-  @HostListener('window:resize') onResize() {
-    // guard against resize before view is rendered
-    this.calculateDynamicRows();
-  }
+  width = 0;
+  observer!: ResizeObserver;
 
-  constructor(public elementRef: ElementRef) {}
+  constructor(
+    private elementRef: ElementRef,
+    private zone: NgZone,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.observer = new ResizeObserver(entries => {
+      this.zone.run(() => {
+        this.width = (entries[0].contentRect.width);
+        this.calculateDynamicRows();
+      });
+    });
+    this.observer.observe(this.elementRef.nativeElement);
+  }
 
   ngAfterViewInit(): void {
     this.calculateDynamicRows();
   }
 
   calculateDynamicRows(): void {
-    // give the textarea time to render before calculating the dynamic row count
-    setTimeout(() => {
-      const averageCharWidth = this.fontSize / 2;
-      if (this.elementRef.nativeElement.offsetWidth) {
-        this.dynamicRowsChange.emit(
-          Math.ceil((
-            this.expectedCharactersCount * averageCharWidth) /
-            this.elementRef.nativeElement.offsetWidth
-          )
-        );
-      }
-    });
+    const averageCharWidth = this.fontSize / 2;
+    if (this.width) {
+      this.dynamicRowsChange.emit(
+        Math.ceil((
+          this.expectedCharactersCount * averageCharWidth) /
+          this.width
+        )
+      );
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

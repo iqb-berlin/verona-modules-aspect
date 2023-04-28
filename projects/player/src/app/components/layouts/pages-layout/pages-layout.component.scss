@@ -2,6 +2,22 @@
   scroll-snap-align: start;
 }
 
+.fx-column-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.fx-row-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: stretch;
+}
+
 .concat-scroll-snap {
   scroll-snap-type: y mandatory;
   scroll-padding: 0;

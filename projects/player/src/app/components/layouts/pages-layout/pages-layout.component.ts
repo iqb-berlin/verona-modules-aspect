@@ -13,7 +13,7 @@ import { NativeEventService } from '../../../services/native-event.service';
 @Component({
   selector: 'aspect-pages-layout',
   templateUrl: './pages-layout.component.html',
-  styleUrls: ['./pages-layout.component.css']
+  styleUrls: ['./pages-layout.component.scss']
 })
 
 export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {

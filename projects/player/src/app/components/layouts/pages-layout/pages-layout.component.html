@@ -1,6 +1,7 @@
 <div class="pages-container"
      cdkScrollable
-     [fxLayout]="layoutAlignment">
+     [class.fx-column-start-stretch]="layoutAlignment === 'column'"
+     [class.fx-row-start-stretch]="layoutAlignment === 'row'">
   <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
     alwaysVisiblePageView :
     scrollPagesView"></ng-container>

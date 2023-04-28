@@ -10,6 +10,15 @@
   background-color: grey;
 }
 
+.fx-space-between-center-wrap {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .key {
   margin: 4px;
   min-height: 50px;

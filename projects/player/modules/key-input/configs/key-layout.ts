@@ -7,7 +7,11 @@ export interface KeyInputLayout {
 }
 
 export class KeyLayout {
-  static get = (preset: InputAssistancePreset | 'keyboard', customKeys: string = ''): KeyInputLayout => {
+  static get = (
+    preset: InputAssistancePreset | 'keyboard',
+    customKeys: string = '',
+    hasBackspaceKey: boolean = false
+  ): KeyInputLayout => {
     switch (preset) {
       case 'french': {
         return {
@@ -134,9 +138,10 @@ export class KeyLayout {
         };
       }
       default: { // custom
+        const keys = hasBackspaceKey ? customKeys.split('').concat('Backspace') : customKeys.split('');
         return {
           default: [
-            customKeys.split('')
+            keys
           ],
           shift: [[]],
           additional: [[]]

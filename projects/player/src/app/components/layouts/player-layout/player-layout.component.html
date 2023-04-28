@@ -14,7 +14,8 @@
         [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys"
         [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
         [hasArrowKeys]="keypadService.elementComponent.elementModel.hasArrowKeys"
-        [hasReturnKey]="!!keypadService.elementComponent.elementModel.hasReturnKey"
+        [hasBackspaceKey]="keypadService.elementComponent.elementModel.hasBackspaceKey"
+        [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
         (backSpaceClicked)="keypadService.deleteCharacters(true)"
         (keyClicked)="keypadService.enterKey($event)">
     </aspect-keypad>

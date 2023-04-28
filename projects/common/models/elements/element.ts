@@ -55,6 +55,7 @@ export abstract class UIElement {
     (this.player as PlayerProperties)[property] = value;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getChildElements(): UIElement[] {
     return [];
   }
@@ -140,6 +141,7 @@ export abstract class TextInputElement extends InputElement {
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
   restrictedToInputAssistanceChars: boolean = true;
   hasArrowKeys: boolean = false;
+  hasBackspaceKey: boolean = false;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
   protected constructor(element: Partial<TextInputElement>) {
@@ -156,6 +158,7 @@ export abstract class TextInputElement extends InputElement {
       this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
     }
     if (element.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
+    if (element.hasBackspaceKey) this.hasBackspaceKey = element.hasBackspaceKey;
     if (element.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
     if (element.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
   }

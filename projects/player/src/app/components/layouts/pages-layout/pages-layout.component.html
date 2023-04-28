@@ -3,38 +3,38 @@
      [class.fx-column-start-stretch]="layoutAlignment === 'column'"
      [class.fx-row-start-stretch]="layoutAlignment === 'row'">
   <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'top' || alwaysVisiblePagePosition === 'left' ?
-    alwaysVisiblePageView :
-    scrollPagesView"></ng-container>
+                  alwaysVisiblePageView :
+                  scrollPagesView">
+  </ng-container>
   <ng-container *ngTemplateOutlet="alwaysVisiblePagePosition === 'bottom' || alwaysVisiblePagePosition === 'right' ?
-    alwaysVisiblePageView :
-    scrollPagesView"></ng-container>
+                  alwaysVisiblePageView :
+                  scrollPagesView">
+  </ng-container>
 </div>
 
 <ng-template #alwaysVisiblePageView>
-  <aspect-page-scroll-button
-      *ngIf="alwaysVisiblePage"
-      class="page-container"
-      cdkScrollable
-      [isSnapMode]="false"
-      [style.max-height.%]="aspectRatioColumn.alwaysVisiblePage"
-      [style.max-width.%]="aspectRatioRow.alwaysVisiblePage">
+  <aspect-page-scroll-button *ngIf="alwaysVisiblePage"
+                             class="page-container"
+                             cdkScrollable
+                             [isSnapMode]="false"
+                             [style.max-height.%]="aspectRatioColumn.alwaysVisiblePage"
+                             [style.max-width.%]="aspectRatioRow.alwaysVisiblePage">
     <div #alwaysVisiblePageContainer
-        [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
-        [class.left-container]="alwaysVisiblePagePosition === 'left'"
-        [style.max-width]="containerMaxWidth.alwaysVisiblePage">
-      <div [style.min-height]="'calc(100vh - ' + (alwaysVisiblePage.margin * 2) + 'px)'"
-          [style.background-color]="alwaysVisiblePage.backgroundColor"
-          [style.max-width]="alwaysVisiblePage.hasMaxWidth ? alwaysVisiblePage.maxWidth + 'px' : '100%'"
-          [style.padding.px]="alwaysVisiblePage.margin">
+         [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
+         [class.left-container]="alwaysVisiblePagePosition === 'left'"
+         [style.max-width]="containerMaxWidth.alwaysVisiblePage">
+      <div [style.min-height]="'calc(' + minHeight.alwaysVisiblePage + 'vh - ' + (alwaysVisiblePage.margin * 2) + 'px)'"
+           [style.background-color]="alwaysVisiblePage.backgroundColor"
+           [style.max-width]="alwaysVisiblePage.hasMaxWidth ? alwaysVisiblePage.maxWidth + 'px' : '100%'"
+           [style.padding.px]="alwaysVisiblePage.margin">
         <div *ngIf="!hidePageLabels"
-            class="mat-tab-label">
+             class="mat-tab-label">
           {{'alwaysVisiblePage' | translate}}
         </div>
-        <aspect-page
-            [pageIndex]="pages | pageIndex: alwaysVisiblePage"
-            [isLastPage]="false"
-            [pagesContainer]="alwaysVisiblePageContainer"
-            [page]="alwaysVisiblePage">
+        <aspect-page [pageIndex]="pages | pageIndex: alwaysVisiblePage"
+                     [isLastPage]="false"
+                     [pagesContainer]="alwaysVisiblePageContainer"
+                     [page]="alwaysVisiblePage">
         </aspect-page>
       </div>
     </div>
@@ -43,21 +43,21 @@
 
 <ng-template #scrollPagesView>
   <ng-container *ngIf="hasScrollPages">
-    <aspect-page-scroll-button
-        class="page-container"
-        cdkScrollable
-        [isSnapMode]="scrollPageMode === 'concat-scroll-snap'"
-        [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'"
-        [style.max-height.%]="aspectRatioColumn.scrollPages"
-        [style.max-width.%]="aspectRatioRow.scrollPages"
-        (scrollToNextPage)="scrollToNextPage()">
+    <aspect-page-scroll-button class="page-container"
+                               cdkScrollable
+                               [isSnapMode]="scrollPageMode === 'concat-scroll-snap'"
+                               [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'"
+                               [style.max-height.%]="aspectRatioColumn.scrollPages"
+                               [style.max-width.%]="aspectRatioRow.scrollPages"
+                               (scrollToNextPage)="scrollToNextPage()">
       <div #pagesScrolledContainer
-          [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
-          [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
-          [style.max-width]="containerMaxWidth.scrollPages">
-        <ng-container
-            [ngTemplateOutlet]="scrollPageMode === 'separate' ? scrollPagesSeparatedView : scrollPagesScrolledView"
-            [ngTemplateOutletContext]="{pagesContainer: pagesScrolledContainer}">
+           [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
+           [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
+           [style.max-width]="containerMaxWidth.scrollPages">
+        <ng-container [ngTemplateOutletContext]="{pagesContainer: pagesScrolledContainer}"
+                      [ngTemplateOutlet]="scrollPageMode === 'separate' ?
+                                            scrollPagesSeparatedView :
+                                            scrollPagesScrolledView">
         </ng-container>
       </div>
     </aspect-page-scroll-button>
@@ -65,24 +65,21 @@
 </ng-template>
 
 <ng-template #scrollPagesSeparatedView let-pagesContainer>
-  <mat-tab-group
-      aspectPageLabel
-      [isHidden]="hidePageLabels"
-      (heightChanged)="tabHeaderHeight = $event"
-      mat-align-tabs="start"
-      [(selectedIndex)]="selectedIndex">
+  <mat-tab-group aspectPageLabel
+                 [isHidden]="hidePageLabels"
+                 (heightChanged)="tabHeaderHeight = $event"
+                 mat-align-tabs="start"
+                 [(selectedIndex)]="selectedIndex">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
-      <mat-tab
-          [label]="'pageIndication' | translate: {index: i + 1}">
-        <div [style.min-height]="'calc(100vh - ' + ((page.margin * 2) + tabHeaderHeight) + 'px)'"
-            [style.background-color]="page.backgroundColor"
-            [style.padding.px]="page.margin"
-            [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
-          <aspect-page
-              [pageIndex]="pages | pageIndex: page"
-              [isLastPage]="last"
-              [pagesContainer]="pagesContainer"
-              [page]="page">
+      <mat-tab [label]="'pageIndication' | translate: {index: i + 1}">
+        <div [style.min-height]="'calc(' + minHeight.scrollPages + 'vh - ' + ((page.margin * 2) + tabHeaderHeight) + 'px)'"
+             [style.background-color]="page.backgroundColor"
+             [style.padding.px]="page.margin"
+             [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
+          <aspect-page [pageIndex]="pages | pageIndex: page"
+                       [isLastPage]="last"
+                       [pagesContainer]="pagesContainer"
+                       [page]="page">
           </aspect-page>
         </div>
       </mat-tab>
@@ -93,26 +90,25 @@
 <ng-template #scrollPagesScrolledView let-pagesContainer>
   <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
     <div [style.min-height]="scrollPageMode === 'concat-scroll-snap' ?
-                             'calc(100vh - ' + (page.margin * 2) + 'px)' :
-                             'unset'"
-        [style.background-color]="page.backgroundColor"
-        [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap'"
-        [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
-        [style.padding.px]="page.margin"
-        aspectScrollToIndex
-        [selectIndex]="selectIndex"
-        [index]="i">
+                               'calc(' + minHeight.scrollPages + 'vh - ' + (page.margin * 2) + 'px)' :
+                               'unset'"
+         [style.background-color]="page.backgroundColor"
+         [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap'"
+         [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
+         [style.padding.px]="page.margin"
+         aspectScrollToIndex
+         [selectIndex]="selectIndex"
+         [index]="i">
       <div *ngIf="!hidePageLabels"
-          class="mat-tab-label">
+           class="mat-tab-label">
         {{'pageIndication' | translate: {index: i + 1} }}
       </div>
-      <aspect-page
-          [pageIndex]="pages | pageIndex: page"
-          [scrollPageIndex]="i"
-          [pagesContainer]="pagesContainer"
-          [page]="page"
-          [isLastPage]="last"
-          (selectedIndexChange)="setSelectedIndex($event)">
+      <aspect-page [pageIndex]="pages | pageIndex: page"
+                   [scrollPageIndex]="i"
+                   [pagesContainer]="pagesContainer"
+                   [page]="page"
+                   [isLastPage]="last"
+                   (selectedIndexChange)="setSelectedIndex($event)">
       </aspect-page>
     </div>
   </ng-container>

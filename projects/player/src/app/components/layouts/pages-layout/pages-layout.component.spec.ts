@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { PagesLayoutComponent } from './pages-layout.component';
 import { Subject } from 'rxjs';
 import { FlexModule } from '@angular/flex-layout';
+import { PagesLayoutComponent } from './pages-layout.component';
 
 describe('PagesLayoutComponent', () => {
   let component: PagesLayoutComponent;
@@ -9,8 +9,8 @@ describe('PagesLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PagesLayoutComponent ],
-      imports: [ FlexModule ]
+      declarations: [PagesLayoutComponent],
+      imports: [FlexModule]
     })
       .compileComponents();
   });
@@ -26,5 +26,4 @@ describe('PagesLayoutComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

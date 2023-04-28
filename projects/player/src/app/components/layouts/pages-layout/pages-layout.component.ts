@@ -39,6 +39,9 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   aspectRatioColumn: { alwaysVisiblePage: number, scrollPages: number } =
     { alwaysVisiblePage: 0, scrollPages: 0 };
 
+  minHeight: { alwaysVisiblePage: number, scrollPages: number } =
+    { alwaysVisiblePage: 0, scrollPages: 0 };
+
   containerMaxWidth: { alwaysVisiblePage: string, scrollPages: string } =
     { alwaysVisiblePage: '0px', scrollPages: '0px' };
 
@@ -107,6 +110,7 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.calculatePagesMaxWidth();
     this.calculatePagesAspectRatio();
     this.calculatePagesContainerMaxWidth();
+    this.calculatePageMinHeight();
   }
 
   private setLayoutAlignment(): void {
@@ -166,6 +170,17 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   scrollToNextPage() {
     if (this.selectedIndex < this.scrollPages.length - 1) {
       this.selectIndex.next(this.selectedIndex + 1);
+    }
+  }
+
+  private calculatePageMinHeight() {
+    if (this.alwaysVisiblePage) {
+      this.minHeight.alwaysVisiblePage =
+        this.layoutAlignment === 'row' ? 100 : this.alwaysVisiblePage.alwaysVisibleAspectRatio;
+      this.minHeight.scrollPages =
+        this.layoutAlignment === 'row' ? 100 : 100 - this.alwaysVisiblePage.alwaysVisibleAspectRatio;
+    } else {
+      this.minHeight.scrollPages = 100;
     }
   }
 }

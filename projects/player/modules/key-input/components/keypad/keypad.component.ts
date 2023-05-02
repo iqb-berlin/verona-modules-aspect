@@ -17,6 +17,7 @@ export class KeypadComponent implements OnInit {
   @Input() restrictToAllowedKeys!: boolean;
   @Input() hasArrowKeys!: boolean;
   @Input() hasReturnKey!: boolean;
+  @Input() hasBackspaceKey!: boolean;
 
   @Output() backSpaceClicked = new EventEmitter();
   @Output() keyClicked = new EventEmitter<string>();
@@ -25,7 +26,7 @@ export class KeypadComponent implements OnInit {
   layout: KeyInputLayout = { default: [], shift: [], additional: [] };
 
   ngOnInit(): void {
-    this.layout = KeyLayout.get(this.preset, this.customKeys);
+    this.layout = KeyLayout.get(this.preset, this.customKeys, this.hasBackspaceKey);
   }
 
   evaluateClickedKeyValue(key: string): void {

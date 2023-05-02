@@ -125,6 +125,7 @@
     "inputAssistance": "Eingabehilfe",
     "restrictedToInputAssistanceChars": "Bearbeitung anderer Zeichen verhindern",
     "hasReturnKey": "Eingabetaste hinzufügen",
+    "hasBackspaceKey": "Löschtaste hinzufügen",
     "hasArrowKeys": "Pfeiltasten hinzufügen",
     "none": "keine",
     "french": "Französische Sonderzeichen",

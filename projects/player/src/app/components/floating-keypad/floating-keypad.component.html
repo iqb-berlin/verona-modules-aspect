@@ -15,6 +15,7 @@
       [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys"
       [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
       [hasArrowKeys]="keypadService.elementComponent.elementModel.hasArrowKeys"
+      [hasBackspaceKey]="keypadService.elementComponent.elementModel.hasBackspaceKey"
       [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
       (backSpaceClicked)="keypadService.deleteCharacters(true)"
       (keyClicked)="keypadService.enterKey($event)">

@@ -165,6 +165,16 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       {{'propertiesPanel.hasArrowKeys' | translate }}
     </mat-checkbox>
 
+    <mat-checkbox *ngIf="combinedProperties.inputAssistancePreset !== null &&
+                       combinedProperties.hasBackspaceKey !== undefined"
+                  [disabled]="combinedProperties.inputAssistancePreset !== 'custom'"
+                  [checked]="combinedProperties.inputAssistancePreset === 'custom' ?
+                              $any(combinedProperties.hasBackspaceKey) :
+                              combinedProperties.inputAssistancePreset !== 'french'"
+                  (change)="updateModel.emit({ property: 'hasBackspaceKey', value: $event.checked })">
+      {{'propertiesPanel.hasBackspaceKey' | translate }}
+    </mat-checkbox>
+
     <mat-checkbox *ngIf="combinedProperties.type === 'text-area' && combinedProperties.inputAssistancePreset !== null &&
                        combinedProperties.hasReturnKey !== undefined"
                   [checked]="$any(combinedProperties.hasReturnKey)"

@@ -5,8 +5,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-slider',
   template: `
-    <div fxLayout="column"
-         [style.width.%]="100"
+    <div [style.width.%]="100"
          [style.height.%]="100"
          [style.background-color]="elementModel.styling.backgroundColor">
       <div *ngIf="elementModel.label"

@@ -17,8 +17,10 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
            [style.grid-row-end]="2"
            [style.place-self]="'start'"
            [style.align-items]="'center'"
-           [fxLayout]="elementModel.rowLabel.imgPosition === 'left' ||
-                     elementModel.rowLabel.imgPosition === 'right' ? 'row' : 'column'">
+           [class.fx-row-start-stretch]="elementModel.rowLabel.imgPosition === 'left' ||
+                                         elementModel.rowLabel.imgPosition === 'right'"
+           [class.fx-column-start-stretch]="elementModel.rowLabel.imgPosition === 'above' ||
+                                            elementModel.rowLabel.imgPosition === 'below'">
         <img *ngIf="elementModel.rowLabel.imgSrc &&
                     (elementModel.rowLabel.imgPosition === 'above' || elementModel.rowLabel.imgPosition === 'left')"
              [src]="elementModel.rowLabel.imgSrc | safeResourceUrl" alt="Image Placeholder"
@@ -40,7 +42,23 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
                         [style.grid-row-end]="2">
       </mat-radio-button>
     </mat-radio-group>
-  `
+  `,
+  styles: [`
+    .fx-row-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: stretch;
+    }
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: stretch;
+    }
+  `]
 })
 export class LikertRadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: LikertRowElement;

@@ -10,9 +10,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
   template: `
     <div *ngIf="!elementModel.imageSrc && elementModel.asLink"
          [style.width.%]="100"
-         [style.height.%]="100"
-         fxLayout="column"
-         fxLayoutAlign="center stretch">
+         [style.height.%]="100">
       <a href="{{elementModel.action+'-'+elementModel.actionParam}}"
          [style.background-color]="elementModel.styling.backgroundColor"
          [style.color]="elementModel.styling.fontColor"

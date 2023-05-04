@@ -10,7 +10,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
   template: `
     <div [style.width.%]="100"
          [style.height.%]="100">
-      <div fxFlex fxLayout="column"
+      <div class="fx-column-start-stretch"
            aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
            [style.width.%]="100"
            [style.height.%]="100">
@@ -65,9 +65,19 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </div>
     </div>
   `,
-  styles: [
-    ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.75em 0 0.25em 0;}'
-  ]
+  styles: [`
+    :host ::ng-deep .small-input div.mat-form-field-infix {
+      border-top: none;
+      padding: 0.75em 0 0.25em 0;
+    }
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: stretch;
+    }
+  `]
 })
 export class SpellCorrectComponent extends TextInputComponent {
   @Input() elementModel!: SpellCorrectElement;

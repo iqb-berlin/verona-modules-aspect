@@ -44,7 +44,7 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
           {{elementModel.label2}}
         </div>
         <div *ngFor="let column of elementModel.options; let i = index"
-             class="columns" fxLayout="column" fxLayoutAlign="end center"
+             class="columns fx-column-end-center"
              [style.grid-column-start]="2 + i"
              [style.grid-column-end]="3 + i"
              [style.grid-row-start]="1"
@@ -75,12 +75,30 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
       </div>
     </div>
   `,
-  styles: [
-    'img {object-fit: contain; max-height: 100%; max-width: 100%; margin: 10px}',
-    '.columns {text-align: center;}',
-    ':host ::ng-deep mat-radio-button span.mat-radio-container {left: calc(50% - 10px)}',
-    '.label {margin-bottom: 10px;}'
-  ]
+  styles: [`
+    img {
+      object-fit: contain;
+      max-height: 100%;
+      max-width: 100%;
+      margin: 10px;
+    }
+    .columns {
+      text-align: center;
+    }
+    :host ::ng-deep mat-radio-button span.mat-radio-container {
+      left: calc(50% - 10px);
+    }
+    .label {
+      margin-bottom: 10px;
+    }
+    .fx-column-end-center {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  `]
 })
 export class LikertComponent extends CompoundElementComponent {
   @ViewChildren(LikertRadioButtonGroupComponent) compoundChildren!: QueryList<LikertRadioButtonGroupComponent>;

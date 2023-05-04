@@ -20,7 +20,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
       <mat-radio-group aria-labelledby="radio-group-label"
-                       [fxLayout]="elementModel.alignment"
+                       [class.fx-column-start-stretch]="elementModel.alignment === 'column'"
+                       [class.fx-row-start-stretch]="elementModel.alignment === 'row'"
                        [formControl]="elementFormControl"
                        [value]="elementModel.value"
                        [style.margin-top.px]="elementModel.label !== '' ? 10 : 0">
@@ -39,16 +40,46 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-radio-group>
     </div>
   `,
-  styles: [
-    ':host ::ng-deep .mat-radio-label {white-space: normal;}',
-    ':host ::ng-deep .mat-radio-label .mat-radio-label-content {padding-left: 10px;}',
-    'mat-radio-button {margin-bottom: 6px; margin-right: 15px;}',
-    '.error-message {font-size: 75%; line-height: 100%;}',
-    ':host ::ng-deep .strike .mat-radio-label {text-decoration: line-through;}',
-    ':host ::ng-deep .mat-radio-label {align-items: baseline;}',
-    ':host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-container {top: 4px;}',
-    '.radio-button-label {pointer-events: none;}'
-  ]
+  styles: [`
+    :host ::ng-deep .mat-radio-label {
+      white-space: normal;
+    }
+    :host ::ng-deep .mat-radio-label .mat-radio-label-content {
+      padding-left: 10px;
+    }
+    mat-radio-button {
+      margin-bottom: 6px; margin-right: 15px;
+    }
+    .error-message {
+      font-size: 75%; line-height: 100%;
+    }
+    :host ::ng-deep .strike .mat-radio-label {
+      text-decoration: line-through;
+    }
+    :host ::ng-deep .mat-radio-label {
+      align-items: baseline;
+    }
+    :host ::ng-deep mat-radio-button .mat-radio-label .mat-radio-container {
+      top: 4px;
+    }
+    .radio-button-label {
+      pointer-events: none;
+    }
+    .fx-row-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: stretch;
+    }
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: stretch;
+    }
+  `]
 })
 export class RadioButtonGroupComponent extends FormElementComponent {
   @Input() elementModel!: RadioButtonGroupElement;

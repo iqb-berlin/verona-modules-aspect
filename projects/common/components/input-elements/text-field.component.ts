@@ -32,7 +32,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
              (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
              (focus)="focusChanged.emit({ inputElement: input, focused: true })"
              (blur)="focusChanged.emit({ inputElement: input, focused: false })">
-      <div matSuffix fxLayout="row" fxLayoutAlign="center baseline">
+      <div matSuffix
+           class="fx-row-center-baseline">
         <mat-icon *ngIf="!elementFormControl.touched && elementModel.hasKeyboardIcon">keyboard_outline</mat-icon>
         <button *ngIf="elementModel.clearable"
                 type="button"
@@ -46,10 +47,21 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </mat-error>
     </mat-form-field>
   `,
-  styles: [
-    ':host ::ng-deep .small-input div.mat-form-field-infix {border-top: none; padding: 0.55em 0 0.25em 0;}',
-    ':host ::ng-deep .small-input .mat-form-field-outline-gap {display: none; }'
-  ]
+  styles: [`
+    :host ::ng-deep .small-input div.mat-form-field-infix {
+      border-top: none; padding: 0.55em 0 0.25em 0;
+    }
+    :host ::ng-deep .small-input .mat-form-field-outline-gap {
+      display: none;
+    }
+    .fx-row-center-baseline {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: baseline;
+    }
+  `]
 })
 export class TextFieldComponent extends TextInputComponent {
   @Input() elementModel!: TextFieldElement;

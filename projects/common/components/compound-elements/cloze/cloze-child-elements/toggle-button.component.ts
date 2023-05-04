@@ -18,10 +18,9 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                              (focusout)="elementFormControl.markAsTouched()">
       <!--Add dummy div - otherwise toggle button with empty options will not be in one line-->
       <div *ngIf="elementModel.options.length === 0"
+           class="fx-row-center-center"
            [style.min-height.px]="elementModel.height - 2"
-           [style.width]="100"
-           fxLayout="row"
-           [fxLayoutAlign]="'center center'">
+           [style.width]="100">
         <span>&nbsp;</span>
       </div>
       <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
@@ -47,17 +46,38 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       </mat-button-toggle>
     </mat-button-toggle-group>
   `,
-  styles: [
-    '.errors {border: 2px solid #f44336 !important;}',
-    'mat-button-toggle-group {display: inline-flex; min-width: 70px; min-height: 20px; max-width: 100%;}',
-    'mat-button-toggle-group {justify-content: center; box-sizing: border-box;}',
-    ':host ::ng-deep .mat-button-toggle-label-content {line-height: unset}',
-    ':host ::ng-deep .mat-button-toggle-button {height: 100%}',
-    ':host ::ng-deep .strike-selected-option.mat-button-toggle-checked .mat-button-toggle-label-content' +
-    '{text-decoration: line-through}',
-    ':host ::ng-deep .strike-other-options:not(.mat-button-toggle-checked) .mat-button-toggle-label-content' +
-    '{text-decoration: line-through}'
-  ]
+  styles: [`
+    .errors {
+      border: 2px solid #f44336 !important;
+    }
+    mat-button-toggle-group {
+      display: inline-flex;
+      min-width: 70px;
+      min-height: 20px;
+      max-width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    :host ::ng-deep .mat-button-toggle-label-content {
+      line-height: unset;
+    }
+    :host ::ng-deep .mat-button-toggle-button {
+      height: 100%;
+    }
+    :host ::ng-deep .strike-selected-option.mat-button-toggle-checked .mat-button-toggle-label-content {
+      text-decoration: line-through;
+    }
+    :host ::ng-deep .strike-other-options:not(.mat-button-toggle-checked) .mat-button-toggle-label-content {
+      text-decoration: line-through;
+    }
+    .fx-row-center-center {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+  `]
 })
 export class ToggleButtonComponent extends FormElementComponent {
   @Input() elementModel!: ToggleButtonElement;

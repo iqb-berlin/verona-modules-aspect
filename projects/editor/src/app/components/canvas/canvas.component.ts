@@ -38,14 +38,14 @@ import { SectionDynamicComponent } from './section-dynamic.component';
       display: none !important;
     }
     .fx-flex {
-        flex: 1 1 0%;
+        flex: 1 1 0;
         box-sizing: border-box;
     }
     .fx-column-start-stretch {
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: stretch;
     }
   `]

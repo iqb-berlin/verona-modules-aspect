@@ -43,7 +43,7 @@ import { MatDialogRef } from '@angular/material/dialog';
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: stretch;
     }
   `]

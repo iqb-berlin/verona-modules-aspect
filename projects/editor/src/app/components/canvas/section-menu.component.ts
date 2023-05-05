@@ -202,7 +202,7 @@ import { SelectionService } from '../../services/selection.service';
       padding: 0 15px; width: 250px;
     }
     ::ng-deep .layoutMenu fieldset {
-      margin: 10px 0; display: flex; flex-direction: column; align-items: start;
+      margin: 10px 0; display: flex; flex-direction: column; align-items: flex-start;
     }
     ::ng-deep .layoutMenu .section-height-input {
       margin-top: 10px;
@@ -223,7 +223,7 @@ import { SelectionService } from '../../services/selection.service';
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: stretch;
     }
   `]

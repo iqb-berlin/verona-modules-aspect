@@ -37,7 +37,7 @@ button:not(.media-src-button):not(.mat-mini-fab):not(.mat-icon-button) {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: stretch;
 }
 
@@ -46,5 +46,5 @@ button:not(.media-src-button):not(.mat-mini-fab):not(.mat-icon-button) {
 }
 
 .fx-align-self-start {
-  align-self: start;
+  align-self: flex-start;
 }

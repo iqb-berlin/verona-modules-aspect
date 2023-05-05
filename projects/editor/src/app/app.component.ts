@@ -8,14 +8,27 @@ import { UnitService } from './services/unit.service';
 @Component({
   selector: 'aspect-editor',
   template: `
-    <div fxLayout="column" class="mainView">
+    <div class="mainView fx-column-start-stretch">
       <aspect-toolbar *ngIf="isStandalone"></aspect-toolbar>
-      <aspect-unit-view fxFlex></aspect-unit-view>
+      <aspect-unit-view class="fx-flex"></aspect-unit-view>
     </div>
   `,
-  styles: [
-    '.mainView {height: 100%;}'
-  ]
+  styles: [`
+    .mainView {
+      height: 100%;
+    }
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: stretch;
+    }
+    .fx-flex {
+      flex: 1 1 0;
+      box-sizing: border-box;
+    }
+  `]
 })
 export class AppComponent implements OnInit {
   isStandalone = window === window.parent;

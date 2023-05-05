@@ -145,7 +145,7 @@ import { SelectionService } from '../../services/selection.service';
                        (click)="$any($event).stopPropagation()"
                        (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
               </mat-form-field>
-              <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs" fxLayout="row">
+              <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs fx-row-start-stretch">
                 <mat-form-field class="size-item">
                   <mat-label>{{'section-menu.height' | translate }} {{i + 1}}</mat-label>
                   <input matInput type="number"
@@ -197,15 +197,36 @@ import { SelectionService } from '../../services/selection.service';
       <mat-icon>clear</mat-icon>
     </button>
   `,
-  styles: [
-    '::ng-deep .layoutMenu {padding: 0 15px; width: 250px;}',
-    '::ng-deep .layoutMenu fieldset {margin: 10px 0; display: flex; flex-direction: column; align-items: start;}',
-    '::ng-deep .layoutMenu .section-height-input {margin-top: 10px;}',
-    '::ng-deep .layoutMenu .size-inputs .mat-form-field {width: 100px;}',
-    '::ng-deep .layoutMenu .size-inputs {display: flex; flex-direction: row; gap: 15px;}',
-    '.menuItem {margin-bottom: 5px;}',
-    '::ng-deep .activeAfterID-menu .mat-form-field {width:90%; margin-left: 10px;}'
-  ]
+  styles: [`
+    ::ng-deep .layoutMenu {
+      padding: 0 15px; width: 250px;
+    }
+    ::ng-deep .layoutMenu fieldset {
+      margin: 10px 0; display: flex; flex-direction: column; align-items: start;
+    }
+    ::ng-deep .layoutMenu .section-height-input {
+      margin-top: 10px;
+    }
+    ::ng-deep .layoutMenu .size-inputs .mat-form-field {
+      width: 100px;
+    }
+    ::ng-deep .layoutMenu .size-inputs {
+      display: flex; flex-direction: row; gap: 15px;
+    }
+    .menuItem {
+      margin-bottom: 5px;
+    }
+    ::ng-deep .activeAfterID-menu .mat-form-field {
+      width:90%; margin-left: 10px;
+    }
+    .fx-row-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: stretch;
+    }
+  `]
 })
 export class SectionMenuComponent implements OnInit, OnDestroy {
   @Input() section!: Section;

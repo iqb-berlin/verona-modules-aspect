@@ -34,3 +34,29 @@ mat-tab-group {
 :host ::ng-deep math-field {
   margin: 0 3px 10px 3px;
 }
+
+.fx-column-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.fill {
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.fx-flex {
+  flex: 1 1 0;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.fx-align-self-center {
+  align-self: center;
+}

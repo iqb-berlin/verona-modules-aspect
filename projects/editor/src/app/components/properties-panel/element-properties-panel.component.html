@@ -1,7 +1,6 @@
 <div *ngIf="selectedElements.length > 0 && combinedProperties"
-     class="properties-panel" fxFlexFill
-     fxLayout="column" fxLayoutAlign="start stretch">
-  <div class="panel-title" fxLayout="column">
+     class="properties-panel fx-column-start-stretch fill">
+  <div class="panel-title fx-column-start-stretch">
     <ng-container *ngIf="combinedProperties.type">
       {{'toolbox.' + combinedProperties.type | translate}}
       <span>{{combinedProperties.id}}</span>
@@ -11,7 +10,7 @@
     </ng-container>
   </div>
 
-  <mat-tab-group mat-stretch-tabs fxFlex>
+  <mat-tab-group class="fx-flex" mat-stretch-tabs>
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">build</mat-icon>
@@ -42,8 +41,8 @@
     </mat-tab>
   </mat-tab-group>
 
-  <div fxLayout="column" class="button-group">
-    <mat-checkbox fxFlexAlign="center"
+  <div class="button-group fx-column-start-stretch">
+    <mat-checkbox class="fx-align-self-center"
                   [indeterminate]="interactionIndeterminate"
                   [checked]="interactionEnabled"
                   (change)="setElementInteractionEnabled($event.checked)">

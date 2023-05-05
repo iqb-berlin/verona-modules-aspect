@@ -7,9 +7,9 @@ import { Hotspot } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-hotspot-list-panel',
   template: `
-    <fieldset fxLayout="column">
+    <fieldset class="fx-column-start-stretch">
       <legend>{{title | translate }}</legend>
-      <button mat-mini-fab matSuffix color="primary" [style.bottom.px]="3" fxFlexAlign="end"
+      <button class="fx-align-self-end" mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"
               (click)="addListItem();">
         <mat-icon>add</mat-icon>
       </button>
@@ -17,8 +17,8 @@ import { Hotspot } from 'common/models/elements/element';
       <div class="drop-list" cdkDropList [cdkDropListData]="itemList"
            (cdkDropListDropped)="moveListValue($event)">
         <div *ngFor="let item of itemList; let i = index" cdkDrag
-             class="option-draggable" fxLayout="row">
-          <div fxFlex fxFlexAlign="center">{{'hotspot.'+item.shape | translate}}({{i + 1}})</div>
+             class="option-draggable fx-row-start-stretch">
+          <div class="fx-flex fx-align-self-center">{{'hotspot.'+item.shape | translate}}({{i + 1}})</div>
           <button mat-icon-button color="primary"
                   (click)="editItem.emit(i)">
             <mat-icon>build</mat-icon>
@@ -30,7 +30,37 @@ import { Hotspot } from 'common/models/elements/element';
         </div>
       </div>
     </fieldset>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-row-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-align-self-end {
+      align-self: flex-end;
+    }
+
+    .fx-align-self-center {
+      align-self: center;
+    }
+
+    .fx-flex {
+      flex: 1 1 0;
+      box-sizing: border-box;
+    }
+  `]
 })
 export class HotspotListPanelComponent {
   @Input() title!: string;

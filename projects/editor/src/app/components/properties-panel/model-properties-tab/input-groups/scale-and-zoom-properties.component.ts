@@ -6,7 +6,7 @@ import { UIElement } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-scale-and-zoom-properties',
   template: `
-    <div fxLayout="column" fxLayoutGap="5px">
+    <div class="fx-column-start-stretch fx-fix-gap-5">
       <mat-checkbox *ngIf="combinedProperties.scale !== undefined"
                     [checked]="$any(combinedProperties.scale)"
                     (change)="updateModel.emit({ property: 'scale', value: $event.checked })">
@@ -44,9 +44,23 @@ import { UIElement } from 'common/models/elements/element';
       </div>
     </div>
   `,
-  styles: [
-    '.disabled-label {color: rgba(0, 0, 0, 0.26)}'
-  ]
+  styles: [`
+    .disabled-label {
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-fix-gap-5 {
+      gap: 5px;
+    }
+  `]
 })
 export class ScaleAndZoomPropertiesComponent {
   @Input() combinedProperties!: UIElement;

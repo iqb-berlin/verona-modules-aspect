@@ -6,7 +6,7 @@ import { DragNDropValueObject } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-drop-list-option-edit-dialog',
   template: `
-    <mat-dialog-content fxLayout="column">
+    <mat-dialog-content class="fx-column-start-stretch">
       <mat-form-field>
         <mat-label>{{'text' | translate }}</mat-label>
         <input #textField matInput type="text" [value]="data.value.text">
@@ -31,7 +31,16 @@ import { DragNDropValueObject } from 'common/models/elements/element';
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: stretch;
+    }
+  `]
 })
 export class DropListOptionEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { value: DragNDropValueObject }) { }

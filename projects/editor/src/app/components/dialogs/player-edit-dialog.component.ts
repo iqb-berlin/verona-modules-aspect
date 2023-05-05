@@ -5,10 +5,10 @@ import { PlayerProperties } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-player-edit-dialog',
   template: `
-    <mat-dialog-content fxLayout="row">
+    <mat-dialog-content class="fx-row-start-stretch">
       <mat-tab-group>
         <mat-tab label="{{ 'player.appearance' | translate }}">
-          <div fxLayout="column">
+          <div class="fx-column-start-stretch">
             <mat-checkbox [checked]="newPlayerConfig.startControl || data.playerProps.startControl"
                           (change)="newPlayerConfig.startControl = $event.checked">
               {{ 'player.startControl' | translate }}
@@ -68,7 +68,7 @@ import { PlayerProperties } from 'common/models/elements/element';
           </div>
         </mat-tab>
         <mat-tab label="{{ 'player.behaviour' | translate }}">
-          <div fxLayout="column">
+          <div class="fx-column-start-stretch">
             <mat-checkbox [checked]="newPlayerConfig.autostart || data.playerProps.autostart"
                           (change)="newPlayerConfig.autostart = $event.checked">
               {{ 'player.autoStart' | translate }}
@@ -112,7 +112,24 @@ import { PlayerProperties } from 'common/models/elements/element';
       <button mat-button [mat-dialog-close]="newPlayerConfig">{{'save' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-    `
+    `,
+  styles: [`
+    .fx-row-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+  `]
 })
 export class PlayerEditDialogComponent {
   newPlayerConfig: PlayerProperties = {} as PlayerProperties;

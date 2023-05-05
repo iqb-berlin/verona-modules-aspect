@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -80,7 +79,6 @@ import { GetValuePipe, MathFieldComponent } from './components/input-elements/ma
   imports: [
     CommonModule,
     HttpClientModule,
-    FlexLayoutModule,
     DragDropModule,
     MatSelectModule,
     MatRadioModule,
@@ -146,7 +144,6 @@ import { GetValuePipe, MathFieldComponent } from './components/input-elements/ma
   ],
   exports: [
     CommonModule,
-    FlexLayoutModule,
     MatIconModule,
     MatTabsModule,
     MatButtonModule,

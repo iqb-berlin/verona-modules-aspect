@@ -64,7 +64,7 @@
         Auswahl
       </mat-panel-description>
     </mat-expansion-panel-header>
-    <div (mouseover)="hoverRadioButton = true" (mouseleave)="hoverRadioButton = false" fxLayout="row">
+    <div class="fx-row-start-stretch" (mouseover)="hoverRadioButton = true" (mouseleave)="hoverRadioButton = false">
       <button *ngIf="!hoverRadioButton" class="radio-button-placeholder" mat-stroked-button>
         <mat-icon>radio_button_checked</mat-icon>
         {{'toolbox.radio' | translate }}

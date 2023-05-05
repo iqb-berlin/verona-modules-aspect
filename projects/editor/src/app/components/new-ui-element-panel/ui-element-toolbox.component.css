@@ -25,3 +25,11 @@
 :host ::ng-deep .mat-expansion-panel-body {
   padding: 0 10px 10px;
 }
+
+.fx-row-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: stretch;
+}

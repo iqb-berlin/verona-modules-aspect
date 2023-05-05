@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-geogebra-app-definition-dialog',
   template: `
-    <mat-dialog-content fxLayout="column">
+    <mat-dialog-content class="fx-column-start-stretch">
       <div class="paste-area" contenteditable="true"
            (paste)="validateBase64($event.clipboardData?.getData('Text'))">
         <span>Base64 Repräsentation einfügen</span>
@@ -22,12 +22,31 @@ import { MatDialogRef } from '@angular/material/dialog';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: [
-    '.paste-area {width: 400px; height: 100px; border: 1px solid; overflow: hidden; white-space: pre-wrap;}',
-    '.paste-area:focus span {display: none}',
-    'button {margin-top: 10px;}',
-    '.status-area {margin-top: 10px;}'
-  ]
+  styles: [`
+    .paste-area {
+      width: 400px;
+      height: 100px;
+      border: 1px solid;
+      overflow: hidden;
+      white-space: pre-wrap;
+    }
+    .paste-area:focus span {
+      display: none;
+    }
+    button {
+      margin-top: 10px;
+    }
+    .status-area {
+      margin-top: 10px;
+    }
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: stretch;
+    }
+  `]
 })
 export class GeogebraAppDefinitionDialogComponent {
   statusMessage: { text: string; color: string } | undefined;

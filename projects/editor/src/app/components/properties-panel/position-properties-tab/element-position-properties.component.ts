@@ -8,7 +8,7 @@ import { SelectionService } from '../../../services/selection.service';
 @Component({
   selector: 'aspect-element-postion-properties',
   template: `
-    <div fxLayout="column">
+    <div class="fx-column-start-stretch">
       <aspect-position-field-set
         *ngIf="positionProperties"
         [positionProperties]="positionProperties"
@@ -22,8 +22,8 @@ import { SelectionService } from '../../../services/selection.service';
 
       <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">
         {{'propertiesPanel.alignment' | translate }}
-        <div class="alignment-button-group" [style.margin]="'10px 0'"
-             fxLayout="row" fxLayoutAlign="space-evenly center">
+        <div class="alignment-button-group fx-row-space-evenly-center"
+             [style.margin]="'10px 0'">
           <button (click)="alignElements('left')">
             <mat-icon>align_horizontal_left</mat-icon>
           </button>
@@ -39,7 +39,24 @@ import { SelectionService } from '../../../services/selection.service';
         </div>
       </ng-container>
     </div>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-row-space-evenly-center {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+    }
+  `]
 })
 export class ElementPositionPropertiesComponent {
   @Input() dimensions!: { width?: number; height?: number; dynamicWidth: boolean; };

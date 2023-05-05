@@ -6,7 +6,7 @@ import { UIElement } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-border-properties',
   template: `
-    <div fxLayout="column">
+    <div class="fx-column-start-stretch">
       <mat-checkbox *ngIf="combinedProperties.hasBorderTop !== undefined"
                     [checked]="$any(combinedProperties).hasBorderTop"
                     (change)="updateModel.emit({ property: 'hasBorderTop', value: $event.checked })">
@@ -28,7 +28,16 @@ import { UIElement } from 'common/models/elements/element';
         {{'propertiesPanel.hasBorderRight' | translate }}
       </mat-checkbox>
     </div>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+  `]
 })
 export class BorderPropertiesComponent {
   @Input() combinedProperties!: UIElement;

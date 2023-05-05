@@ -118,7 +118,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     ':not(.cloze-context) .list-item.text-list-item {padding: 10px;}',
     '.cloze-context .list-item.text-list-item {padding: 0 5px;}',
     '.cloze-context.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
-    '.image-list-item {align-self: start;}',
+    '.image-list-item {align-self: flex-start;}',
     '.hide-list-item {display: none !important; transform: unset !important;}',
     '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black;}',
     '.cdk-drag-preview.text-preview {padding: 10px; box-sizing: border-box;}',

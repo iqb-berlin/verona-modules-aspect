@@ -6,7 +6,7 @@ import { UIElement } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-input-element-properties',
   template: `
-    <fieldset *ngIf="combinedProperties.required !== undefined" fxLayout="column">
+    <fieldset *ngIf="combinedProperties.required !== undefined" class="fx-column-start-stretch">
       <legend>Eingabeelement</legend>
       <mat-form-field *ngIf="combinedProperties.label !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
@@ -33,7 +33,16 @@ import { UIElement } from 'common/models/elements/element';
                (input)="updateModel.emit({ property: 'requiredWarnMessage', value: $any($event.target).value })">
       </mat-form-field>
     </fieldset>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+  `]
 })
 export class InputElementPropertiesComponent {
   @Input() combinedProperties!: UIElement;

@@ -39,3 +39,11 @@
 button.active {
   background-color: lightgrey;
 }
+
+.fx-row-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: stretch;
+}

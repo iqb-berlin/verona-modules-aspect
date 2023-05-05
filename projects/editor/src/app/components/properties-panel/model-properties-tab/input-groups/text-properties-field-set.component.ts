@@ -8,7 +8,7 @@ import { SelectionService } from '../../../../services/selection.service';
 @Component({
   selector: 'aspect-text-properties-field-set',
   template: `
-    <div *ngIf="combinedProperties.text" fxLayout="column">
+    <div *ngIf="combinedProperties.text" class="fx-column-start-stretch">
       <ng-container>
         <div class="text-text"
              [innerHTML]="combinedProperties.text | safeResourceHTML"
@@ -48,13 +48,26 @@ import { SelectionService } from '../../../../services/selection.service';
                     (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
         {{'propertiesPanel.hasSelectionPopup' | translate }}
       </mat-checkbox>
-
     </div>
   `,
-  styles: [
-    '.text-text {min-height: 125px; max-height: 400px; overflow: auto;}',
-    '.text-text {background-color: rgba(0,0,0,.04); cursor: pointer; margin-bottom: 10px;}'
-  ]
+  styles: [`
+    .text-text {
+      min-height: 125px;
+      max-height: 400px;
+      overflow: auto;
+      background-color: rgba(0,0,0,.04);
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+  `]
 })
 export class TextPropertiesFieldSetComponent {
   @Input() combinedProperties!: any;

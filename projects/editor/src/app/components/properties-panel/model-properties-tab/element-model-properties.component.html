@@ -1,4 +1,4 @@
-<div fxLayout="column">
+<div class='fx-column-start-stretch'>
   <mat-form-field appearance="fill">
     <mat-label>{{'propertiesPanel.id' | translate }}</mat-label>
     <input matInput type="text" *ngIf="selectedElements.length === 1" [value]="combinedProperties.id"
@@ -40,19 +40,22 @@
                             (updateModel)="updateModel.emit($event)"></aspect-border-properties>
 
   <button *ngIf="combinedProperties.document"
-          mat-raised-button fxFlexAlign="center"
+          class="fx-align-self-center"
+          mat-raised-button
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">
     Text editieren
   </button>
 
   <button *ngIf="combinedProperties.src"
-          mat-fab color="primary" fxFlexAlign="center" class="media-src-button"
+          class="media-src-button fx-align-self-center"
+          mat-fab color="primary"
           [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
           (click)="changeMediaSrc(combinedProperties.type)">
     <mat-icon>upload_file</mat-icon>
   </button>
   <button *ngIf="combinedProperties.player"
-          mat-raised-button fxFlexAlign="center"
+          class="fx-align-self-center"
+          mat-raised-button
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">
     Medienoptionen
   </button>
@@ -112,7 +115,8 @@
 
   <ng-container *ngIf="combinedProperties.type === 'checkbox'">
     {{'preset' | translate }}
-    <mat-button-toggle-group [value]="combinedProperties.value" fxFlexAlign="start"
+    <mat-button-toggle-group class="fx-align-self-start"
+                             [value]="combinedProperties.value"
                              (change)="updateModel.emit({ property: 'value', value: $event.value })">
       <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>
       <mat-button-toggle [value]="false">{{'propertiesPanel.false' | translate }}</mat-button-toggle>

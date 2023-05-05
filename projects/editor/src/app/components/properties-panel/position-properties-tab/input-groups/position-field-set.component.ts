@@ -9,10 +9,10 @@ import { PositionProperties } from 'common/models/elements/element';
     <fieldset>
       <legend>Position</legend>
       <div *ngIf="!positionProperties.dynamicPositioning; else elseBlock"
-           fxLayout="row" fxLayoutGap="10px">
+           class="fx-row-start-stretch fx-fix-gap-10">
         <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
                                positionProperties.xPosition !== undefined"
-                        fxFlex>
+                        class="fx-flex">
           <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
           <input matInput type="number" #xPosition="ngModel" min="0"
                  [ngModel]="positionProperties.xPosition"
@@ -21,7 +21,7 @@ import { PositionProperties } from 'common/models/elements/element';
         </mat-form-field>
         <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
                                  positionProperties.yPosition !== undefined"
-                        fxFlex>
+                        class="fx-flex">
           <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
           <input matInput type="number" #yPosition="ngModel" min="0"
                  [ngModel]="positionProperties.yPosition"
@@ -32,26 +32,26 @@ import { PositionProperties } from 'common/models/elements/element';
 
       <ng-template #elseBlock>
         {{'propertiesPanel.grid' | translate }}
-        <div fxLayout="row" fxLayoutGap="10px">
-          <mat-form-field fxFlex>
+        <div class="fx-row-start-stretch fx-fix-gap-10">
+          <mat-form-field class="fx-flex">
             <mat-label>{{'column' | translate }}</mat-label>
             <input matInput type="number" [ngModel]="positionProperties.gridColumn"
                    (ngModelChange)="updateModel.emit({ property: 'gridColumn', value: $event })">
           </mat-form-field>
-          <mat-form-field fxFlex="40">
+          <mat-form-field class="fx-flex-40">
             <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridColumnRange"
                    (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })">
           </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayoutGap="10px">
-          <mat-form-field fxFlex>
+        <div class="fx-row-start-stretch fx-fix-gap-10">
+          <mat-form-field class="fx-flex">
             <mat-label>{{'row' | translate }}</mat-label>
             <input matInput type="number" [ngModel]="positionProperties.gridRow"
                    (ngModelChange)="updateModel.emit({ property: 'gridRow', value: $event })">
           </mat-form-field>
-          <mat-form-field fxFlex="40">
+          <mat-form-field class="fx-flex-40">
             <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridRowRange"
@@ -60,15 +60,15 @@ import { PositionProperties } from 'common/models/elements/element';
         </div>
 
         {{'propertiesPanel.margin' | translate }}
-        <div fxLayout="column" class="margin-controls">
-          <mat-form-field fxFlexAlign="center">
+        <div class="margin-controls fx-column-start-stretch">
+          <mat-form-field class="fx-align-self-center">
             <mat-label>{{'propertiesPanel.top' | translate }}</mat-label>
             <input matInput type="number" #marginTop="ngModel"
                    [ngModel]="positionProperties.marginTop"
                    (ngModelChange)="updateModel.emit(
                           { property: 'marginTop', value: $event, isInputValid: marginTop.valid && $event !== null })">
           </mat-form-field>
-          <div fxLayout="row" fxLayoutAlign="space-around center">
+          <div class="fx-row-space-around-center">
             <mat-form-field>
               <mat-label>{{'propertiesPanel.left' | translate }}</mat-label>
               <input matInput type="number" #marginLeft="ngModel"
@@ -89,7 +89,7 @@ import { PositionProperties } from 'common/models/elements/element';
                               isInputValid: marginRight .valid && $event !== null })">
             </mat-form-field>
           </div>
-          <mat-form-field fxFlexAlign="center">
+          <mat-form-field class="fx-align-self-center">
             <mat-label>{{'propertiesPanel.bottom' | translate }}</mat-label>
             <input matInput type="number" #marginBottom="ngModel"
                    [ngModel]="positionProperties.marginBottom"
@@ -113,11 +113,60 @@ import { PositionProperties } from 'common/models/elements/element';
       </mat-form-field>
     </fieldset>
   `,
-  styles: [
-    '.margin-controls mat-form-field {width: 100px;}',
-    '.margin-controls {margin-bottom: 10px;}',
-    'mat-form-field {width: 110px;}'
-  ]
+  styles: [`
+    .margin-controls mat-form-field {
+      width: 100px;
+    }
+    .margin-controls {
+      margin-bottom: 10px;
+    }
+    mat-form-field {
+      width: 110px;
+    }
+
+    .fx-row-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-row-space-around-center {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-fix-gap-10 {
+      gap: 10px;
+    }
+
+    .fx-flex {
+      flex: 1 1 0;
+      box-sizing: border-box;
+    }
+
+    .fx-flex-40 {
+      flex: 1 1 100%;
+      box-sizing: border-box;
+      max-width: 40%;
+    }
+
+    .fx-align-self-center {
+      align-self: center;
+    }
+  `]
 })
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;

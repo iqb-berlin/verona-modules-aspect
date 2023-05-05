@@ -5,7 +5,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 @Component({
   selector: 'aspect-element-style-properties',
   template: `
-    <div fxLayout="column" *ngIf="styles">
+    <div class="fx-column-start-stretch" *ngIf="styles">
       <mat-checkbox *ngIf="styles.lineColoring !== undefined"
                     [checked]="$any(styles.lineColoring)"
                     (change)="unitService.updateSelectedElementsStyleProperty('lineColoring', $event.checked)">
@@ -157,7 +157,16 @@ import { UnitService } from 'editor/src/app/services/unit.service';
                (ngModelChange)="unitService.updateSelectedElementsStyleProperty('borderWidth', $event)">
       </mat-form-field>
     </fieldset>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+  `]
 })
 export class ElementStylePropertiesComponent {
   @Input() styles!: BasicStyles & ExtendedStyles | undefined;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import {
   Component, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
@@ -15,7 +16,7 @@ import { DialogService } from '../../../../services/dialog.service';
   selector: 'aspect-drop-list-properties',
   template: `
     <div *ngIf="combinedProperties.type === 'drop-list'"
-         fxLayout="column">
+         class="fx-column-start-stretch">
       <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"
                                 [itemList]="$any(combinedProperties.value)"
                                 (addItem)="addOption($event)"
@@ -91,7 +92,16 @@ import { DialogService } from '../../../../services/dialog.service';
                      value: $any($event.target).value })">
       </mat-form-field>
     </div>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+  `]
 })
 export class DropListPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;

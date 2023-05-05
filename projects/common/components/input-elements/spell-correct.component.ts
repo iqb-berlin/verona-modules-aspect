@@ -74,7 +74,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: stretch;
     }
   `]

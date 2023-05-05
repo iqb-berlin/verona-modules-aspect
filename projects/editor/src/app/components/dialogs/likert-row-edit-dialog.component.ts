@@ -7,7 +7,7 @@ import { TextLabel } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-likert-row-edit-dialog',
   template: `
-    <mat-dialog-content fxLayout="column">
+    <mat-dialog-content class="fx-column-start-stretch">
       <aspect-rich-text-editor-simple [(content)]="newLikertRow.rowLabel.text">
       </aspect-rich-text-editor-simple>
 
@@ -40,8 +40,8 @@ import { TextLabel } from 'common/models/elements/element';
         </mat-select>
       </mat-form-field>
 
-      <div fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxLayout="column" fxLayoutGap="10px">
+      <div class="fx-row-space-between-center">
+        <div class="fx-column-start-stretch fx-fix-gap-10">
           <button mat-raised-button (click)="loadImage()">
             {{ 'loadImage' | translate }}</button>
           <button mat-raised-button (click)="newLikertRow.rowLabel.imgSrc = null">
@@ -70,9 +70,31 @@ import { TextLabel } from 'common/models/elements/element';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: [
-    'mat-checkbox {margin-bottom: 15px;}'
-  ]
+  styles: [`
+     mat-checkbox {
+       margin-bottom: 15px;
+     }
+
+     .fx-column-start-stretch {
+       box-sizing: border-box;
+       display: flex;
+       flex-direction: column;
+       justify-content: flex-start;
+       align-items: stretch;
+     }
+
+     .fx-row-space-between-center {
+       box-sizing: border-box;
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+       align-items: center;
+     }
+
+     .fx-fix-gap-10 {
+       gap: 10px;
+     }
+  `]
 })
 export class LikertRowEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, options: TextLabel[] }) { }

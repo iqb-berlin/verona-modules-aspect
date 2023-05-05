@@ -1,11 +1,12 @@
-<div [style.height.%]="100">
+<div class="fx-row-start-stretch"
+     [style.height.%]="100">
   <button class="drawer-button show-elements-button" (click)="toolbox_drawer.toggle()">
     <span>
       {{'elements' | translate | uppercase}}
     </span>
   </button>
 
-  <mat-drawer-container fxFlex>
+  <mat-drawer-container class="fx-flex">
     <mat-drawer #toolbox_drawer class="toolbox_drawer" mode="side" opened>
       <aspect-ui-element-toolbox></aspect-ui-element-toolbox>
     </mat-drawer>
@@ -105,7 +106,7 @@
             </mat-menu>
 
           </ng-template>
-          <aspect-page-canvas *ngIf="pagesLoaded" [page]="page" fxLayout="column"></aspect-page-canvas>
+          <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch" [page]="page"></aspect-page-canvas>
         </mat-tab>
         <mat-tab disabled>
           <ng-template mat-tab-label>

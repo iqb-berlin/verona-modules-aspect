@@ -1,6 +1,6 @@
-<div fxLayout="row" class="editor-control-panel">
-  <div fxLayout="row">
-    <fieldset fxLayout="row">
+<div class="editor-control-panel fx-row-start-stretch">
+  <div class="fx-row-start-stretch">
+    <fieldset class="fx-row-start-stretch">
       <legend>Schriftauszeichnung</legend>
       <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
               [class.active]="editor.isActive('bold')"
@@ -35,9 +35,9 @@
     </fieldset>
   </div>
 
-  <fieldset fxLayout="row">
+  <fieldset  class="fx-row-start-stretch">
     <legend>Schrift</legend>
-    <div class="combo-button" fxLayout="row"
+    <div class="combo-button fx-row-start-stretch"
          [style.background-color]="selectedFontColor">
       <button mat-icon-button matTooltip="Textfarbe"
               (click)="applyFontColor()">
@@ -47,7 +47,7 @@
       <input matInput type="color" #textColorInput hidden
              (input)="selectedFontColor = $any($event.target).value; applyFontColor()">
     </div>
-    <div class="combo-button" fxLayout="row"
+    <div class="combo-button fx-row-start-stretch"
          [style.background-color]="selectedHighlightColor">
       <button mat-icon-button matTooltip="Texthintergrund"
               (click)="applyHighlightColor()">

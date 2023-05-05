@@ -23,6 +23,14 @@
   display: inherit;
 }
 
+.fx-column-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+}
+
 .show-properties-button {
   padding-bottom: 140px;
 }

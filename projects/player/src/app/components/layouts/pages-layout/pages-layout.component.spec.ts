@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
-import { FlexModule } from '@angular/flex-layout';
 import { PagesLayoutComponent } from './pages-layout.component';
 
 describe('PagesLayoutComponent', () => {
@@ -9,8 +8,7 @@ describe('PagesLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PagesLayoutComponent],
-      imports: [FlexModule]
+      declarations: [PagesLayoutComponent]
     })
       .compileComponents();
   });

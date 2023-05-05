@@ -7,7 +7,7 @@ import { Label } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-option-list-panel',
   template: `
-    <fieldset fxLayout="column">
+    <fieldset class="fx-column-start-stretch">
       <legend>{{title | translate }}</legend>
       <mat-form-field appearance="outline">
         <mat-label>{{textFieldLabel}}</mat-label>
@@ -22,8 +22,8 @@ import { Label } from 'common/models/elements/element';
       <div class="drop-list" cdkDropList [cdkDropListData]="itemList"
            (cdkDropListDropped)="moveListValue($event)">
         <div *ngFor="let item of itemList; let i = index" cdkDrag
-             class="option-draggable" fxLayout="row">
-          <div fxFlex fxFlexAlign="center" [innerHTML]="item.text | safeResourceHTML"></div>
+             class="option-draggable fx-row-start-stretch">
+          <div class="fx-flex fx-align-self-center" [innerHTML]="item.text | safeResourceHTML"></div>
           <img [src]="$any(item).imgSrc"
                [style.object-fit]="'scale-down'" [style.height.px]="40">
           <button mat-icon-button color="primary"
@@ -37,7 +37,33 @@ import { Label } from 'common/models/elements/element';
         </div>
       </div>
     </fieldset>
-  `
+  `,
+  styles: [`
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-row-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-align-self-center {
+      align-self: center;
+    }
+
+    .fx-flex {
+      flex: 1 1 0;
+      box-sizing: border-box;
+    }
+  `]
 })
 export class OptionListPanelComponent {
   @Input() title!: string;

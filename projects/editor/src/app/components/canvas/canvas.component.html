@@ -1,4 +1,4 @@
-<div class="canvasBackground" fxFlex
+<div class="canvasBackground fx-flex"
      (click)="selectionService.clearElementSelection()">
   <div [style.width.px]="page.hasMaxWidth ? page.maxWidth : null"
        [style.padding.px]="page.margin"
@@ -6,7 +6,7 @@
     <div cdkDropListGroup>
       <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
         <aspect-section-menu [class.hidden]="selectionService.selectedPageSectionIndex !== i"
-                             class="section-menu" fxLayout="column"
+                             class="section-menu fx-column-start-stretch"
                              [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
                              [section]="section" [sectionIndex]="i"
                              [allowMoveUp]="i != 0"

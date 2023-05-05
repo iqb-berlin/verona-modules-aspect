@@ -14,13 +14,41 @@ import { SectionDynamicComponent } from './section-dynamic.component';
 @Component({
   selector: 'aspect-page-canvas',
   templateUrl: './canvas.component.html',
-  styles: [
-    '.canvasBackground {background-color: lightgrey; padding: 20px 50px; height: 100%; overflow: auto;}',
-    '.add-section-button {width: 100%; height: 25px; background-color: #BABABA; margin-top: 10px; border-radius: 10%}',
-    '::ng-deep .add-section-button span.mat-button-wrapper {padding: 0}',
-    '::ng-deep .add-section-button span.mat-button-wrapper mat-icon {vertical-align: unset}',
-    '.hidden {display: none !important;}'
-  ]
+  styles: [`
+    .canvasBackground {
+      background-color: lightgrey;
+      padding: 20px 50px;
+      height: 100%;
+      overflow: auto;
+    }
+    .add-section-button {
+      width: 100%;
+      height: 25px;
+      background-color: #BABABA;
+      margin-top: 10px;
+      border-radius: 10%;
+    }
+    ::ng-deep .add-section-button span.mat-button-wrapper {
+      padding: 0;
+    }
+    ::ng-deep .add-section-button span.mat-button-wrapper mat-icon {
+      vertical-align: unset;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .fx-flex {
+        flex: 1 1 0%;
+        box-sizing: border-box;
+    }
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      align-items: stretch;
+    }
+  `]
 })
 export class CanvasComponent {
   @Input() page!: Page;

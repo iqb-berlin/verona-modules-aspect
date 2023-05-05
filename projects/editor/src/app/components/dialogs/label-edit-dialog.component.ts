@@ -6,12 +6,12 @@ import { FileService } from 'common/services/file.service';
 @Component({
   selector: 'aspect-label-edit-dialog',
   template: `
-    <mat-dialog-content fxLayout="column" fxLayoutGap="20px">
+    <mat-dialog-content class="fx-column-start-stretch fx-fix-gap-20">
       <aspect-rich-text-editor-simple [(content)]="newLabel.text">
       </aspect-rich-text-editor-simple>
 
-      <div *ngIf="newLabel.imgSrc !== undefined" fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxLayout="column" fxLayoutGap="10px">
+      <div *ngIf="newLabel.imgSrc !== undefined" class="fx-row-space-between-center">
+        <div class="fx-column-start-stretch fx-fix-gap-10">
           <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
           <button mat-raised-button (click)="newLabel.imgSrc = null">{{ 'removeImage' | translate }}</button>
           <mat-form-field>
@@ -36,9 +36,34 @@ import { FileService } from 'common/services/file.service';
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
   `,
-  styles: [
-    'aspect-rich-text-editor-simple {margin-bottom: 20px;}'
-  ]
+  styles: [`
+    aspect-rich-text-editor-simple {
+      margin-bottom: 20px;
+    }
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
+
+    .fx-row-space-between-center {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fx-fix-gap-20 {
+      gap: 20px;
+    }
+
+    .fx-fix-gap-10 {
+      gap: 10px;
+    }
+  `]
 })
 export class LabelEditDialogComponent {
   newLabel = { ...this.data.label };

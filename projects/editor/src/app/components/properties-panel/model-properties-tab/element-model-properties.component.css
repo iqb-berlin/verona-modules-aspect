@@ -32,3 +32,19 @@ button:not(.media-src-button):not(.mat-mini-fab):not(.mat-icon-button) {
 :host ::ng-deep .option-draggable:last-child {
   border: none;
 }
+
+.fx-column-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+}
+
+.fx-align-self-center {
+  align-self: center;
+}
+
+.fx-align-self-start {
+  align-self: start;
+}

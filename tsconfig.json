@@ -16,17 +16,24 @@
     "importHelpers": true,
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "lib": [
       "es2020",
       "dom"
     ],
     "paths": {
-      "common/*": ["./projects/common/*"],
-      "editor/*": ["./projects/editor/*"],
-      "player/*": ["./projects/player/*"],
-    }
+      "common/*": [
+        "./projects/common/*"
+      ],
+      "editor/*": [
+        "./projects/editor/*"
+      ],
+      "player/*": [
+        "./projects/player/*"
+      ]
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

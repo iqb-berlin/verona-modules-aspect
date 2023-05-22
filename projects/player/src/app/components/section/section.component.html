@@ -9,7 +9,7 @@
         [style.height.px]="element.height"
         [style.left.px]="element.position.xPosition"
         [style.top.px]="element.position.yPosition"
-        [style.z-index]="element.position?.zIndex"
+        [style.z-index]="element.position.zIndex"
         [elementModel]="element"
         [pageIndex]="pageIndex">
     </aspect-element-group-selection>
@@ -41,7 +41,7 @@
         [style.grid-row-end]="element.position.gridRow ?
           element.position.gridRow + element.position.gridRowRange:
           null"
-        [style.z-index]="element.position?.zIndex"
+        [style.z-index]="element.position.zIndex"
         [elementModel]="element"
         [pageIndex]="pageIndex">
       </aspect-element-group-selection>

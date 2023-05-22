@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ValidationService } from './validation.service';
 
 describe('ValidationService', () => {
@@ -18,18 +18,18 @@ describe('ValidationService', () => {
   });
 
   it('responseProgress should be complete', () => {
-    service.registerFormControl(new FormControl('TEST'));
+    service.registerFormControl(new UntypedFormControl('TEST'));
     expect(service.responseProgress).toEqual('complete');
   });
 
   it('responseProgress should be none', () => {
-    service.registerFormControl(new FormControl(''));
+    service.registerFormControl(new UntypedFormControl(''));
     expect(service.responseProgress).toEqual('none');
   });
 
   it('responseProgress should be some', () => {
-    service.registerFormControl(new FormControl('TEST'));
-    service.registerFormControl(new FormControl(''));
+    service.registerFormControl(new UntypedFormControl('TEST'));
+    service.registerFormControl(new UntypedFormControl(''));
     expect(service.responseProgress).toEqual('some');
   });
 });

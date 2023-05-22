@@ -9,7 +9,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
     <fieldset>
       <legend>Dimensionen</legend>
       <mat-checkbox *ngIf="dimensions.dynamicWidth !== undefined"
-                    [checked]="$any(dimensions?.dynamicWidth)"
+                    [checked]="$any(dimensions.dynamicWidth)"
                     (change)="updateDimensionProperty('dynamicWidth', $event.checked)">
         {{'propertiesPanel.dynamicWidth' | translate }}
       </mat-checkbox>
@@ -58,7 +58,8 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
       </mat-form-field>
     </fieldset>
   `
-})
+  })
+
 export class DimensionFieldSetComponent {
   @Input() positionProperties: PositionProperties | undefined;
   @Input() dimensions!: { width?: number; height?: number; dynamicWidth?: boolean };

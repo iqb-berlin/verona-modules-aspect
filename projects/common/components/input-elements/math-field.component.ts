@@ -2,7 +2,7 @@
 import {
   Component, Input, Pipe, PipeTransform
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
 
@@ -40,7 +40,7 @@ export class MathFieldComponent extends FormElementComponent {
   name: 'getValue'
 })
 export class GetValuePipe implements PipeTransform {
-  transform(elementModelValue: string, elementFormControlValue: string, parentForm: FormGroup): string {
+  transform(elementModelValue: string, elementFormControlValue: string, parentForm: UntypedFormGroup): string {
     return parentForm ? elementFormControlValue : elementModelValue;
   }
 }

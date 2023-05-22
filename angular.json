@@ -271,6 +271,5 @@
     "@schematics/angular:component": {
       "style": "scss"
     }
-  },
-  "defaultProject": "editor"
+  }
 }

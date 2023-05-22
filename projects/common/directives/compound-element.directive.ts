@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   Directive, EventEmitter, Input, Output, QueryList
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ElementComponent } from './element-component.directive';
 import { CompoundChildOverlayComponent } from '../components/compound-elements/cloze/compound-child-overlay.component';
 import { LikertRadioButtonGroupComponent } from
@@ -11,7 +11,7 @@ import { LikertRadioButtonGroupComponent } from
 @Directive()
 export abstract class CompoundElementComponent extends ElementComponent implements AfterViewInit {
   @Output() childrenAdded = new EventEmitter<ElementComponent[]>();
-  @Input() parentForm!: FormGroup;
+  @Input() parentForm!: UntypedFormGroup;
   compoundChildren!: QueryList<CompoundChildOverlayComponent | LikertRadioButtonGroupComponent>;
 
   ngAfterViewInit(): void {

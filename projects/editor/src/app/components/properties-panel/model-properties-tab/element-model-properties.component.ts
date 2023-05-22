@@ -3,7 +3,7 @@ import {
   Input, Output
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   InputElementValue, TextLabel, TextImageLabel, UIElement, Hotspot

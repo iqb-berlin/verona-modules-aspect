@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Progress } from 'player/modules/verona/models/verona';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidationService {
-  private formControls: FormControl[] = [];
+  private formControls: UntypedFormControl[] = [];
 
   get responseProgress(): Progress {
     const validFormControls = this.formControls
@@ -17,7 +17,7 @@ export class ValidationService {
     return validFormControls.some(control => control.valid) ? 'some' : 'none';
   }
 
-  registerFormControl(control: FormControl): void {
+  registerFormControl(control: UntypedFormControl): void {
     this.formControls.push(control);
   }
 

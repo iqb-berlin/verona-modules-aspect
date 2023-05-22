@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import {
@@ -16,7 +16,7 @@ describe('CompoundGroupElementComponent', () => {
   @Component({ selector: 'aspect-likert', template: '' })
   class LikertStubComponent {
     @Input() elementModel!: LikertElement;
-    @Input() parentForm!: FormGroup;
+    @Input() parentForm!: UntypedFormGroup;
   }
 
   beforeEach(async () => {

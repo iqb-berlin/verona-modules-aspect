@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop/drag-events';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Hotspot } from 'common/models/elements/element';
 
 @Component({

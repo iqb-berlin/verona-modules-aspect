@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -16,7 +16,7 @@ describe('TextInputGroupElementComponent', () => {
   @Component({ selector: 'aspect-text-field', template: '' })
   class TextFieldStubComponent {
     @Input() elementModel!: TextFieldElement;
-    @Input() parentForm!: FormGroup;
+    @Input() parentForm!: UntypedFormGroup;
   }
 
   beforeEach(async () => {

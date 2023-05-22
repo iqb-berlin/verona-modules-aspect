@@ -2,7 +2,7 @@ import {
   ChangeDetectorRef,
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import {
@@ -53,7 +53,7 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 })
 export class CompoundChildOverlayComponent { // TODO rename to ClozeChildOverlay
   @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement;
-  @Input() parentForm!: FormGroup;
+  @Input() parentForm!: UntypedFormGroup;
   @Input() editorMode: boolean = false;
   @Input() lineHeight!: number;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();

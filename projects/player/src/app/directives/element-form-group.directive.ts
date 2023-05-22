@@ -1,6 +1,6 @@
 import { Directive, OnDestroy } from '@angular/core';
 import {
-  FormControl, FormGroup, ValidatorFn, Validators
+  UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -17,7 +17,7 @@ import { UnitStateService } from '../services/unit-state.service';
 
 @Directive()
 export abstract class ElementFormGroupDirective extends ElementGroupDirective implements OnDestroy {
-  form: FormGroup = new FormGroup({});
+  form: UntypedFormGroup = new UntypedFormGroup({});
   abstract unitStateService: UnitStateService;
   abstract elementModelElementCodeMappingService: ElementModelElementCodeMappingService;
   abstract veronaSubscriptionService: VeronaSubscriptionService;
@@ -29,7 +29,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
     elementModels.forEach(elementModel => {
       const initialValue = this.elementModelElementCodeMappingService
         .mapToElementModelValue(this.unitStateService.getElementCodeById(elementModel.id)?.value, elementModel);
-      const formControl = new FormControl(initialValue, ElementFormGroupDirective.getValidators(elementModel));
+      const formControl = new UntypedFormControl(initialValue, ElementFormGroupDirective.getValidators(elementModel));
       this.form.addControl(elementModel.id, formControl);
       formControl.valueChanges
         .pipe(takeUntil(this.ngUnsubscribe))

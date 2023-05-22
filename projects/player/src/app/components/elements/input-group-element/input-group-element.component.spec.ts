@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Component, Input } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
@@ -15,7 +15,7 @@ describe('InputGroupElementComponent', () => {
   @Component({ selector: 'aspect-radio-button-group', template: '' })
   class RadioStubComponent {
     @Input() elementModel!: RadioButtonGroupElement;
-    @Input() parentForm!: FormGroup;
+    @Input() parentForm!: UntypedFormGroup;
   }
 
   beforeEach(async () => {

@@ -21,7 +21,7 @@ import { UnitService } from './services/unit.service';
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: start;
+      justify-content: flex-start;
       align-items: stretch;
     }
     .fx-flex {
@@ -30,6 +30,7 @@ import { UnitService } from './services/unit.service';
     }
   `]
 })
+
 export class AppComponent implements OnInit {
   isStandalone = window === window.parent;
 

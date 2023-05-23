@@ -53,8 +53,7 @@
   display: inherit;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-::ng-deep .mat-drawer-content .mat-tab-body-wrapper {
+::ng-deep .mat-drawer-content .mat-mdc-tab-body-wrapper {
   height: 100%;
 }
 
@@ -62,7 +61,6 @@
   padding: 0 16px;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
 mat-checkbox.menuItem {
   padding: 0 16px 10px 16px;
 }
@@ -71,15 +69,14 @@ mat-divider {
   margin-bottom: 10px;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
-::ng-deep .mat-tab-label:hover .menu-button {
+
+::ng-deep .mdc-tab:hover .menu-button {
   visibility: visible;
 }
 
 .menu-button {
   position: absolute;
-  left: 130px;
-  bottom: 6px;
+  left: 80%;
   visibility: hidden;
 }
 

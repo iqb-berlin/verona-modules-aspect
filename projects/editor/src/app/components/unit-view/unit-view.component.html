@@ -13,7 +13,7 @@
 
     <mat-drawer-content>
       <mat-tab-group *ngIf="pagesLoaded"
-                     [style.height.%]="100" mat-align-tabs="start"
+                     [style.height.%]="100" mat-align-tabs="start" mat-stretch-tabs="false"
                      [selectedIndex]="selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)">
         <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">

@@ -1,7 +1,7 @@
 import {
   Component, Input, ViewChild
 } from '@angular/core';
-import { MatInput } from '@angular/material/input';
+import { MatLegacyInput as MatInput } from '@angular/material/legacy-input';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 

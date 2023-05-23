@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Section } from 'common/models/section';
 import { MessageService } from 'common/services/message.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { TranslateService } from '@ngx-translate/core';

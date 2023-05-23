@@ -2,9 +2,7 @@ import {
   Directive, ElementRef, Input, OnChanges, SimpleChanges
 } from '@angular/core';
 
-@Directive({
-  selector: '[aspectInputBackgroundColor]'
-})
+@Directive({ selector: '[aspectInputBackgroundColor]'})
 export class InputBackgroundColorDirective implements OnChanges {
   @Input() backgroundColor!: string;
   @Input() appearance!: string;
@@ -23,9 +21,9 @@ export class InputBackgroundColorDirective implements OnChanges {
   private setBackgroundColor(): void {
     let targetElements: HTMLElement[];
     if (this.appearance === 'outline') {
-      targetElements = this.elementRef.nativeElement.querySelector('div.mat-form-field-outline')?.children;
+      targetElements = this.elementRef.nativeElement.querySelector('div.mdc-notched-outline')?.children;
     } else {
-      targetElements = [this.elementRef.nativeElement.querySelector('div.mat-form-field-flex')];
+      targetElements = [this.elementRef.nativeElement.querySelector('div.mat-mdc-form-field-flex')];
     }
     // This fails, when component is not set up yet, therefore the extra check
     if (targetElements) {

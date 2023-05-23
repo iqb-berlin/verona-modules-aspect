@@ -10,6 +10,7 @@
   width: 100%;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
 ::ng-deep aspect-ui-element-toolbox .mat-button-wrapper {
   width: 100%;
   display: inline-block;

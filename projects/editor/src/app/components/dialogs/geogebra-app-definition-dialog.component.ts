@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FileService } from 'common/services/file.service';
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-geogebra-app-definition-dialog',

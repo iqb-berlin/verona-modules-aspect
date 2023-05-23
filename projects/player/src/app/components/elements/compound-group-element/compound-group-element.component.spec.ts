@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FloatingKeypadComponent } from 'player/src/app/components/floating-keypad/floating-keypad.component';
 import { Component, Input } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';

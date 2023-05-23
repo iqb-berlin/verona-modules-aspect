@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { TextLabel } from 'common/models/elements/element';
@@ -71,6 +71,7 @@ import { TextLabel } from 'common/models/elements/element';
     </mat-dialog-actions>
   `,
   styles: [`
+     /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
      mat-checkbox {
        margin-bottom: 15px;
      }

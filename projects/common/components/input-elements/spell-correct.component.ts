@@ -1,7 +1,7 @@
 import {
   Component, Input, ViewChild
 } from '@angular/core';
-import { MatLegacyInput as MatInput } from '@angular/material/legacy-input';
+import { MatInput } from '@angular/material/input';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
 import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
@@ -66,6 +66,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </div>
   `,
   styles: [`
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .small-input div.mat-form-field-infix {
       border-top: none;
       padding: 0.75em 0 0.25em 0;

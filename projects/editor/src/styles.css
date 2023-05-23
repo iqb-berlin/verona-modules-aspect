@@ -3,13 +3,13 @@ html, body { height: 100%; }
 .mat-expansion-panel-content {font: unset !important;}
 
 /* TODO needed? */
-.mat-dialog-content {
+.mat-mdc-dialog-content {
   border: 1px solid lightgray;
   margin: -13px !important;
   padding: 15px !important;
 }
 
-.mat-dialog-actions {
+.mat-mdc-dialog-actions {
   margin-top: 20px !important;
 }
 

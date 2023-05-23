@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'aspect-select-properties',

@@ -55,12 +55,15 @@
   border: 2px #f44336 solid;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
 ::ng-deep aspect-media-player-control-bar .mat-accent .mat-slider-thumb {
   background-color: #006064;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
 ::ng-deep aspect-media-player-control-bar .mat-accent .mat-slider-thumb-label {
   background-color: #006064;
 }
+/* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
 ::ng-deep aspect-media-player-control-bar .mat-accent .mat-slider-track-fill {
   background-color: #006064;
 }

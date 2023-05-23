@@ -14,18 +14,23 @@ $aspect-theme: mat.define-light-theme((
 @include mat.slider-color($aspect-theme);
 
 .mat-form-field-appearance-outline:not(.mat-focused ){
+  /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
   .mat-form-field-outline {
     color: $aspect-element-border-color;
   }
   &:hover {
+    /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.*/
     .mat-form-field-outline {
       color: $aspect-element-border-hover-color;
     }
   }
 }
 
+/*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
+/*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
 .mat-button-toggle-group-appearance-standard {
   border-color: $aspect-element-border-color;
+  /*TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.*/
   .mat-button-toggle+.mat-button-toggle {
     border-left-color: $aspect-element-border-color;
   }

@@ -50,6 +50,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
     .errors {
       border: 2px solid #f44336 !important;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     mat-button-toggle-group {
       display: inline-flex;
       min-width: 70px;
@@ -58,15 +59,19 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       justify-content: center;
       box-sizing: border-box;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-button-toggle-label-content {
       line-height: unset;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-button-toggle-button {
       height: 100%;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     :host ::ng-deep .strike-selected-option.mat-button-toggle-checked .mat-button-toggle-label-content {
       text-decoration: line-through;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     :host ::ng-deep .strike-other-options:not(.mat-button-toggle-checked) .mat-button-toggle-label-content {
       text-decoration: line-through;
     }

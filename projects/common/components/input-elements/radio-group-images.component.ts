@@ -42,19 +42,24 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
   `,
   styles: [`
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     mat-radio-group {
     display: grid;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-radio-label {
       flex-direction: column-reverse;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-radio-label .mat-radio-container {
       margin-top: 15px;
       margin-left: 10px;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-radio-label .mat-radio-label-content {
       text-align: center;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     mat-radio-button {
       margin-bottom: 60px;
     }

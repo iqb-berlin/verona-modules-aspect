@@ -2,11 +2,11 @@ aspect-input-element-properties {
   margin-bottom: 10px;
 }
 
-button:not(.media-src-button):not(.mat-mini-fab):not(.mat-icon-button) {
+button:not(.media-src-button):not(.mat-mdc-mini-fab):not(.mat-mdc-icon-button) {
   width: 95%
 }
 
-.mat-fab, .mat-raised-button {
+.mat-mdc-fab, .mat-mdc-raised-button {
   margin-bottom: 10px;
 }
 

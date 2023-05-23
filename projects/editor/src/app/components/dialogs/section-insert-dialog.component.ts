@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Section } from 'common/models/section';
 import { MessageService } from 'common/services/message.service';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { TranslateService } from '@ngx-translate/core';
@@ -29,7 +29,7 @@ import { IDService } from 'editor/src/app/services/id.service';
     </mat-dialog-actions>
   `,
   styles: [
-    '.mat-dialog-content {width: 400px; height: 200px;}',
+    '.mat-mdc-dialog-content {width: 400px; height: 200px;}',
     '.paste-area {position: absolute; width: 400px; height: 200px; border: 1px solid; overflow: hidden}',
     '.message-area {position: absolute; width: 400px; height: 200px; text-align: center; font-size: large;}'
   ]

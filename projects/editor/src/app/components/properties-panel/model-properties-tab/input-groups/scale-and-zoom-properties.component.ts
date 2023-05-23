@@ -36,8 +36,7 @@ import { UIElement } from 'common/models/elements/element';
       </div>
       <mat-slider *ngIf="combinedProperties.magnifierZoom !== undefined"
                   min="1" max="3" step="0.1" [disabled]="!combinedProperties.magnifier"
-                  [ngModel]="combinedProperties.magnifierZoom"
-                  (change)="updateModel.emit({ property: 'magnifierZoom', value: $event.value })">
+                  [ngModel]="combinedProperties.magnifierZoom" #ngSlider><input matSliderThumb (change)="updateModel.emit({ property: 'magnifierZoom', value: {source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value}.value })" #ngSliderThumb="matSliderThumb" />
       </mat-slider>
       <div *ngIf="combinedProperties.magnifier">
         {{combinedProperties.magnifierZoom}}

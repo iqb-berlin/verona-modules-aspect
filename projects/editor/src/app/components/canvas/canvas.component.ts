@@ -28,9 +28,11 @@ import { SectionDynamicComponent } from './section-dynamic.component';
       margin-top: 10px;
       border-radius: 10%;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     ::ng-deep .add-section-button span.mat-button-wrapper {
       padding: 0;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
     ::ng-deep .add-section-button span.mat-button-wrapper mat-icon {
       vertical-align: unset;
     }

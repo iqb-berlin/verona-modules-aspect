@@ -172,12 +172,16 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
     </ng-template>
   `,
   styles: [
-    ':host ::ng-deep aspect-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}',
-    ':host ::ng-deep aspect-text-field .mat-form-field {height: 100%}',
-    ':host ::ng-deep aspect-text-field .mat-form-field-flex {height: 100%}',
+    `
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+    :host ::ng-deep aspect-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}`,
+    ':host ::ng-deep aspect-text-field .mat-mdc-form-field {height: 100%}',
+    `
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
+    :host ::ng-deep aspect-text-field .mat-form-field-flex {height: 100%}`,
     'p {margin: 0}',
     ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
-    ':host ::ng-deep p:empty::after {content: "\\00A0"}', // render empty p
+    ':host ::ng-deep p:empty::after {content: "\00A0"}', // render empty p
     'p span {font-size: inherit}',
     'sup, sub {line-height: 0;}',
     '.droplist-child {vertical-align: middle;}'

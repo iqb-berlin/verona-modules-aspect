@@ -46,12 +46,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div *ngIf="elementModel.barStyle" class="value-marker min-value-marker"></div>
         <div *ngIf="elementModel.barStyle" class="value-marker max-value-marker"></div>
         <mat-slider [class]="elementModel.barStyle ? 'slider-bar-style' : 'slider'"
-                    [isDisabled]="elementModel.readOnly"
-                    [thumbLabel]="elementModel.thumbLabel"
-                    [formControl]="elementFormControl"
+                    [discrete]="elementModel.thumbLabel"
                     [style.width.%]="100"
                     [max]="elementModel.maxValue"
-                    [min]="elementModel.minValue"><input matSliderThumb />
+                    [min]="elementModel.minValue">
+          <input matSliderThumb
+                 [isDisabled]="elementModel.readOnly"
+                 [formControl]="elementFormControl"
+          />
         </mat-slider>
       </div>
       <mat-error *ngIf="elementFormControl.touched && elementFormControl.errors">

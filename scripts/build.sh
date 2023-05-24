@@ -5,6 +5,10 @@ if [ $# -lt 2 ]; then
     exit 1
 fi
 
+rm -rf .angular/cache
+
+ng build --project $1 --output-hashing=none
+
 node node_modules/iqb-dev-components/src/js_css_packer.js dist $1 dist
 cp projects/$1/src/html_wrapper/index.html dist/index.html
 sed -i -e 's/version-placeholder/'${2}'/g' dist/index.html

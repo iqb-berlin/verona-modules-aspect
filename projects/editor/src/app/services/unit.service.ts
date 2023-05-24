@@ -271,8 +271,37 @@ export class UnitService {
     elements.forEach(element => {
       element.setPositionProperty(property, value);
     });
+    this.reorderElements();
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  reorderElements() {
+    const sectionElementList = this.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedPageSectionIndex].elements;
+    const isDynamicPositioning = this.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedPageSectionIndex].dynamicPositioning;
+    const sortDynamicPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
+      const rowSort =
+        (a.position.gridRow !== null ? a.position.gridRow : Infinity) -
+        (b.position.gridRow !== null ? b.position.gridRow : Infinity);
+      if (rowSort === 0) {
+        return a.position.gridColumn! - b.position.gridColumn!;
+      }
+      return rowSort;
+    };
+    const sortStaticPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
+      const ySort = a.position.yPosition! - b.position.yPosition!;
+      if (ySort === 0) {
+        return a.position.xPosition! - b.position.xPosition!;
+      }
+      return ySort;
+    };
+    if (isDynamicPositioning) {
+      sectionElementList.sort(sortDynamicPositioning);
+    } else {
+      sectionElementList.sort(sortStaticPositioning);
+    }
   }
 
   updateSelectedElementsStyleProperty(property: string, value: UIElementValue): void {

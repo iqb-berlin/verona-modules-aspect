@@ -71,7 +71,7 @@ export class UnitService {
   }
 
   addSection(page: Page, newSection?: Partial<Section>): void {
-    page.sections.push(new Section(newSection));
+    page.sections.push(new Section(newSection as Record<string, UIElementValue>));
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
@@ -86,7 +86,7 @@ export class UnitService {
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
     const newSection: Section = new Section({
       ...section,
-      elements: section.elements.map(element => this.duplicateElement(element) as PositionedUIElement)
+      elements: section.elements.map(element => this.duplicateElement(element))
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
@@ -221,7 +221,7 @@ export class UnitService {
     return newElement;
   }
 
-  updateSectionProperty(section: Section, property: string, value: string | number | boolean): void {
+  updateSectionProperty(section: Section, property: string, value: string | number | boolean | { value: number; unit: string }[]): void {
     if (property === 'dynamicPositioning') {
       section.dynamicPositioning = value as boolean;
       section.elements.forEach((element: UIElement) => {

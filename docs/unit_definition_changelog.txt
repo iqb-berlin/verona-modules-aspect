@@ -72,3 +72,9 @@ iqb-aspect-definition@1.0.0
 3.10.0
 - DropList: +allowReplacement
 - DragAndDropValueObject: -returnToOriginOnReplacement; originListID and originListIndex are now mandatory
+
+3.11.0
+- Element.position: margin properties now have a unit attached and are therefore an
+  object ({value: number; unit: string})
+- Section.gridColumnSizes and Section.gridRowSizes now have a unit attached and are therefore an object
+  ({value: number; unit: string})

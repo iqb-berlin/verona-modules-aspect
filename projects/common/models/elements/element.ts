@@ -11,7 +11,7 @@ export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simpl
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] |
-PositionProperties | PlayerProperties | BasicStyles;
+PositionProperties | PlayerProperties | BasicStyles | Measurement | Measurement[];
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
@@ -66,7 +66,8 @@ export abstract class UIElement {
 
   abstract getElementComponent(): Type<ElementComponent>;
 
-  static initPositionProps(defaults: Partial<PositionProperties> = {}): PositionProperties {
+  static initPositionProps(properties: Partial<PositionProperties> = {}): PositionProperties {
+    const defaults = UIElement.sanitizePositionProps(properties);
     return {
       fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,
       dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : true,
@@ -77,12 +78,23 @@ export abstract class UIElement {
       gridColumnRange: defaults.gridColumnRange !== undefined ? defaults.gridColumnRange as number : 1,
       gridRow: defaults.gridRow !== undefined ? defaults.gridRow as number : null,
       gridRowRange: defaults.gridRowRange !== undefined ? defaults.gridRowRange as number : 1,
-      marginLeft: defaults.marginLeft !== undefined ? defaults.marginLeft as number : 0,
-      marginRight: defaults.marginRight !== undefined ? defaults.marginRight as number : 0,
-      marginTop: defaults.marginTop !== undefined ? defaults.marginTop as number : 0,
-      marginBottom: defaults.marginBottom !== undefined ? defaults.marginBottom as number : 0,
+      marginLeft: defaults.marginLeft !== undefined ? defaults.marginLeft as Measurement : { value: 0, unit: 'px' },
+      marginRight: defaults.marginRight !== undefined ? defaults.marginRight as Measurement : { value: 0, unit: 'px' },
+      marginTop: defaults.marginTop !== undefined ? defaults.marginTop as Measurement : { value: 0, unit: 'px' },
+      marginBottom: defaults.marginBottom !== undefined ? defaults.marginBottom as Measurement : { value: 0, unit: 'px' },
       zIndex: defaults.zIndex !== undefined ? defaults.zIndex as number : 0
     };
+  }
+
+  static sanitizePositionProps(properties: Record<string, any> = {}): Partial<PositionProperties> {
+    const newProperties = { ...properties };
+    if (typeof newProperties.marginLeft === 'number') {
+      newProperties.marginLeft = { value: properties.marginLeft, unit: 'px' };
+      newProperties.marginRight = { value: properties.marginRight, unit: 'px' };
+      newProperties.marginTop = { value: properties.marginTop, unit: 'px' };
+      newProperties.marginBottom = { value: properties.marginBottom, unit: 'px' };
+    }
+    return newProperties;
   }
 
   static initStylingProps<T>(defaults?: Partial<BasicStyles> & T): BasicStyles & T {
@@ -248,10 +260,10 @@ export interface PositionProperties {
   gridColumnRange: number;
   gridRow: number | null;
   gridRowRange: number;
-  marginLeft: number;
-  marginRight: number;
-  marginTop: number;
-  marginBottom: number;
+  marginLeft: Measurement;
+  marginRight: Measurement;
+  marginTop: Measurement;
+  marginBottom: Measurement;
   zIndex: number;
 }
 
@@ -355,3 +367,8 @@ export interface DragNDropValueObject extends TextImageLabel {
 }
 
 export type Label = TextLabel | TextImageLabel | DragNDropValueObject;
+
+export interface Measurement {
+  value: number;
+  unit: string
+}

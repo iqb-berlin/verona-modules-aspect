@@ -17,7 +17,7 @@ export class RadioButtonGroupComplexElement extends InputElement implements Posi
     super({ height: 100, ...element });
     if (element.options) this.options = [...element.options];
     this.itemsPerRow = element.itemsPerRow !== undefined ? element.itemsPerRow : null;
-    this.position = UIElement.initPositionProps({ marginBottom: 40, ...element.position });
+    this.position = UIElement.initPositionProps({ marginBottom: { value: 40, unit: 'px' }, ...element.position });
     this.styling = {
       ...UIElement.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
     };

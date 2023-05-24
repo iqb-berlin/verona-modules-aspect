@@ -35,8 +35,8 @@ import { UnitService } from '../../services/unit.service';
 export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   @Input() autoColumnSize!: boolean;
   @Input() autoRowSize!: boolean;
-  @Input() gridColumnSizes!: string;
-  @Input() gridRowSizes!: string;
+  @Input() gridColumnSizes!: { value: number; unit: string }[];
+  @Input() gridRowSizes!: { value: number; unit: string }[];
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
@@ -52,9 +52,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.autoColumnSize ||
-      changes.gridColumnSizes ||
-      changes.gridRowSizes) {
+    if (changes.autoColumnSize || changes.gridColumnSizes || changes.gridRowSizes) {
       this.calculateColumnCount();
       this.calculateRowCount();
     }
@@ -76,7 +74,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
         ),
         0) - 1;
     } else {
-      numberOfColumns = this.gridColumnSizes.split(' ').length;
+      numberOfColumns = this.gridColumnSizes.length;
     }
     this.columnCountArray = Array(Math.max(numberOfColumns, 1));
   }
@@ -92,7 +90,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
         ),
         0) - 1;
     } else {
-      numberOfRows = this.gridRowSizes.split(' ').length;
+      numberOfRows = this.gridRowSizes.length;
     }
     this.rowCountArray = Array(Math.max(numberOfRows, 1));
   }

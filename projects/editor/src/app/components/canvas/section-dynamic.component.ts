@@ -10,8 +10,8 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
   selector: 'aspect-section-dynamic',
   template: `
     <div [style.display]="'grid'"
-         [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes"
-         [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes"
+         [style.grid-template-columns]="section.autoColumnSize ? '' : section.gridColumnSizes | measure"
+         [style.grid-template-rows]="section.autoRowSize ? '' : section.gridRowSizes | measure"
          [style.grid-auto-columns]="'auto'"
          [style.grid-auto-rows]="'auto'"
          [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
@@ -34,10 +34,10 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [element]="$any(element)"
                                      [style.min-width.px]="element.width"
                                      [style.min-height.px]="element.position.useMinHeight ? element.height : null"
-                                     [style.margin-left.px]="element.position.marginLeft"
-                                     [style.margin-right.px]="element.position.marginRight"
-                                     [style.margin-top.px]="element.position.marginTop"
-                                     [style.margin-bottom.px]="element.position.marginBottom"
+                                     [style.margin-left]="[element.position.marginLeft] | measure"
+                                     [style.margin-right]="[element.position.marginRight] | measure"
+                                     [style.margin-top]="[element.position.marginTop] | measure"
+                                     [style.margin-bottom]="[element.position.marginBottom] | measure"
                                      [style.grid-column-start]="element.position.gridColumn"
                                      [style.grid-column-end]="element.position.gridColumn ?
                                        element.position.gridColumn + element.position.gridColumnRange :

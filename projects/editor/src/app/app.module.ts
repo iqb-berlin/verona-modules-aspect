@@ -97,6 +97,7 @@ import {
   BorderPropertiesComponent
 } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
+import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
 
 @NgModule({
   declarations: [
@@ -153,7 +154,8 @@ import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geoge
     GeogebraAppDefinitionDialogComponent,
     GetValidDropListsPipe,
     GetAnchorIdsPipe,
-    ScrollPageIndexPipe
+    ScrollPageIndexPipe,
+    SizeInputPanelComponent
   ],
   imports: [
     BrowserModule,

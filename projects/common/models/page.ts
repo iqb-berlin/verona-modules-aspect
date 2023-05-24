@@ -12,7 +12,7 @@ export class Page {
   alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom' = 'left';
   alwaysVisibleAspectRatio: number = 50;
 
-  constructor(page?: Partial<Page>) {
+  constructor(page?: Record<string, any>) {
     if (page?.hasMaxWidth) this.hasMaxWidth = page.hasMaxWidth;
     if (page?.maxWidth) this.maxWidth = page.maxWidth;
     if (page?.margin !== undefined) this.margin = page.margin;
@@ -20,7 +20,7 @@ export class Page {
     if (page?.alwaysVisible) this.alwaysVisible = page.alwaysVisible;
     if (page?.alwaysVisiblePagePosition) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
     if (page?.alwaysVisibleAspectRatio) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
-    this.sections = page?.sections?.map(section => new Section(section)) || [new Section()];
+    this.sections = page?.sections?.map((section: Record<string, any>) => new Section(section)) || [new Section()];
   }
 
   getAllElements(elementType?: string): UIElement[] {

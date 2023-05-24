@@ -122,9 +122,20 @@ export class SanitizationService {
     };
   }
 
-  private sanitizeSection(section: Section): Section {
+  /* Transform grid sizes from string to array with value and unit. */
+  private sanitizeSection(section: any): Section {
     return {
       ...section,
+      gridColumnSizes: typeof section.gridColumnSizes === 'string' ?
+        (section.gridColumnSizes as string)
+          .split(' ')
+          .map(size => ({ value: size.slice(0, -2), unit: size.slice(-2) })) :
+        section.gridColumnSizes,
+      gridRowSizes: typeof section.gridRowSizes === 'string' ?
+        (section.gridRowSizes as string)
+          .split(' ')
+          .map(size => ({ value: size.slice(0, -2), unit: size.slice(-2) })) :
+        section.gridRowSizes,
       elements: section.elements.map((element: UIElement) => (
         this.sanitizeElement(
           element as Record<string, UIElementValue>,

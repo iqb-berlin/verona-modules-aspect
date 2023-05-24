@@ -1,5 +1,12 @@
 import {
-  CompoundElement, PositionedUIElement, UIElement, UIElementValue, AnswerScheme, PlayerElement, InputElement
+  CompoundElement,
+  PositionedUIElement,
+  UIElement,
+  UIElementValue,
+  AnswerScheme,
+  PlayerElement,
+  InputElement,
+  Measurement
 } from 'common/models/elements/element';
 import { TextElement } from 'common/models/elements/text/text';
 import { ImageElement } from 'common/models/elements/media-elements/image';
@@ -13,23 +20,24 @@ export class Section {
   dynamicPositioning: boolean = true;
   autoColumnSize: boolean = true;
   autoRowSize: boolean = true;
-  gridColumnSizes: string = '1fr 1fr';
-  gridRowSizes: string = '1fr';
+  gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
+  gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }];
   activeAfterID: string | null = null;
   activeAfterIdDelay: number = 0;
 
-  constructor(section?: Partial<Section>) {
-    if (section?.height) this.height = section.height;
-    if (section?.backgroundColor) this.backgroundColor = section.backgroundColor;
-    if (section?.dynamicPositioning !== undefined) this.dynamicPositioning = section.dynamicPositioning;
-    if (section?.autoColumnSize !== undefined) this.autoColumnSize = section.autoColumnSize;
-    if (section?.autoRowSize !== undefined) this.autoRowSize = section.autoRowSize;
-    if (section?.gridColumnSizes !== undefined) this.gridColumnSizes = section.gridColumnSizes;
-    if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
-    if (section?.activeAfterID) this.activeAfterID = section.activeAfterID;
-    if (section?.activeAfterIdDelay) this.activeAfterIdDelay = section.activeAfterIdDelay;
+  constructor(blueprint?: Record<string, any>) {
+    const sanitizedBlueprint = Section.sanitizeBlueprint(blueprint);
+    if (sanitizedBlueprint.height) this.height = sanitizedBlueprint.height;
+    if (sanitizedBlueprint.backgroundColor) this.backgroundColor = sanitizedBlueprint.backgroundColor;
+    if (sanitizedBlueprint.dynamicPositioning !== undefined) this.dynamicPositioning = sanitizedBlueprint.dynamicPositioning;
+    if (sanitizedBlueprint.autoColumnSize !== undefined) this.autoColumnSize = sanitizedBlueprint.autoColumnSize;
+    if (sanitizedBlueprint.autoRowSize !== undefined) this.autoRowSize = sanitizedBlueprint.autoRowSize;
+    if (sanitizedBlueprint.gridColumnSizes !== undefined) this.gridColumnSizes = sanitizedBlueprint.gridColumnSizes;
+    if (sanitizedBlueprint.gridRowSizes !== undefined) this.gridRowSizes = sanitizedBlueprint.gridRowSizes;
+    if (sanitizedBlueprint.activeAfterID) this.activeAfterID = sanitizedBlueprint.activeAfterID;
+    if (sanitizedBlueprint.activeAfterIdDelay) this.activeAfterIdDelay = sanitizedBlueprint.activeAfterIdDelay;
     this.elements =
-      section?.elements?.map(element => ElementFactory.createElement({
+      sanitizedBlueprint.elements?.map(element => ElementFactory.createElement({
         ...element,
         position: UIElement.initPositionProps(element.position)
       }) as PositionedUIElement) ||
@@ -62,5 +70,23 @@ export class Section {
       .map(element => ((element.type === 'drop-list') ?
         (element as InputElement).getAnswerScheme(dropLists) :
         (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme()));
+  }
+
+  static sanitizeBlueprint(blueprint?: Record<string, UIElementValue>): Partial<Section> {
+    if (!blueprint) return {};
+
+    return {
+      ...blueprint,
+      gridColumnSizes: typeof blueprint.gridColumnSizes === 'string' ?
+        (blueprint.gridColumnSizes as string)
+          .split(' ')
+          .map(size => ({ value: Number(size.slice(0, -2)), unit: size.slice(-2) })) :
+        blueprint.gridColumnSizes as Measurement[],
+      gridRowSizes: typeof blueprint.gridRowSizes === 'string' ?
+        (blueprint.gridRowSizes as string)
+          .split(' ')
+          .map(size => ({ value: Number(size.slice(0, -2)), unit: size.slice(-2) })) :
+        blueprint.gridRowSizes as Measurement[]
+    };
   }
 }

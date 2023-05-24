@@ -60,44 +60,47 @@ import { PositionProperties } from 'common/models/elements/element';
         </div>
 
         {{'propertiesPanel.margin' | translate }}
-        <div class="margin-controls fx-column-start-stretch">
-          <mat-form-field class="fx-align-self-center">
-            <mat-label>{{'propertiesPanel.top' | translate }}</mat-label>
-            <input matInput type="number" #marginTop="ngModel"
-                   [ngModel]="positionProperties.marginTop"
-                   (ngModelChange)="updateModel.emit(
-                          { property: 'marginTop', value: $event, isInputValid: marginTop.valid && $event !== null })">
-          </mat-form-field>
-          <div class="fx-row-space-around-center">
-            <mat-form-field>
-              <mat-label>{{'propertiesPanel.left' | translate }}</mat-label>
-              <input matInput type="number" #marginLeft="ngModel"
-                     [ngModel]="positionProperties.marginLeft"
-                     (ngModelChange)="updateModel.emit({
-                       property: 'marginLeft',
-                       value: $event,
-                       isInputValid: marginLeft.valid && $event !== null
-                     })">
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>{{'propertiesPanel.right' | translate }}</mat-label>
-              <input matInput type="number" #marginRight="ngModel"
-                     [ngModel]="positionProperties.marginRight"
-                     (ngModelChange)="updateModel.emit(
-                            { property: 'marginRight',
-                              value: $event,
-                              isInputValid: marginRight .valid && $event !== null })">
-            </mat-form-field>
-          </div>
-          <mat-form-field class="fx-align-self-center">
-            <mat-label>{{'propertiesPanel.bottom' | translate }}</mat-label>
-            <input matInput type="number" #marginBottom="ngModel"
-                   [ngModel]="positionProperties.marginBottom"
-                   (ngModelChange)="updateModel.emit(
-                          { property: 'marginBottom',
-                            value: $event,
-                            isInputValid: marginBottom .valid && $event !== null })">
-          </mat-form-field>
+        <div>
+          <aspect-size-input-panel [label]="('propertiesPanel.top' | translate)"
+                                   [value]="positionProperties.marginTop.value"
+                                   [unit]="positionProperties.marginTop.unit"
+                                   [allowedUnits]="['px', '%']"
+                                   (valueUpdated)="updateModel.emit(
+                                                     {
+                                                       property: 'marginTop',
+                                                       value: $any($event)
+                                                     })">
+          </aspect-size-input-panel>
+          <aspect-size-input-panel [label]="('propertiesPanel.bottom' | translate)"
+                                   [value]="positionProperties.marginBottom.value"
+                                   [unit]="positionProperties.marginBottom.unit"
+                                   [allowedUnits]="['px', '%']"
+                                   (valueUpdated)="updateModel.emit(
+                                                     {
+                                                       property: 'marginBottom',
+                                                       value: $any($event)
+                                                     })">
+          </aspect-size-input-panel>
+          <aspect-size-input-panel [label]="('propertiesPanel.left' | translate)"
+                                   [value]="positionProperties.marginLeft.value"
+                                   [unit]="positionProperties.marginLeft.unit"
+                                   [allowedUnits]="['px', '%']"
+                                   (valueUpdated)="updateModel.emit(
+                                                     {
+                                                       property: 'marginLeft',
+                                                       value: $any($event)
+                                                     })">
+          </aspect-size-input-panel>
+          <aspect-size-input-panel [label]="('propertiesPanel.right' | translate)"
+                                   [value]="positionProperties.marginRight.value"
+                                   [unit]="positionProperties.marginRight.unit"
+                                   [allowedUnits]="['px', '%']"
+                                   (valueUpdated)="updateModel.emit(
+                                                     {
+                                                       property: 'marginRight',
+                                                       value: $any($event)
+                                                     })">
+          </aspect-size-input-panel>
         </div>
       </ng-template>
 
@@ -113,63 +116,16 @@ import { PositionProperties } from 'common/models/elements/element';
       </mat-form-field>
     </fieldset>
   `,
-  styles: [`
-    .margin-controls mat-form-field {
-      width: 100px;
-    }
-    .margin-controls {
-      margin-bottom: 10px;
-    }
-    mat-form-field {
-      width: 110px;
-    }
-
-    .fx-row-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
-    .fx-row-space-around-center {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
-    }
-
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
-    .fx-fix-gap-10 {
-      gap: 10px;
-    }
-
-    .fx-flex {
-      flex: 1 1 0;
-      box-sizing: border-box;
-    }
-
-    .fx-flex-40 {
-      flex: 1 1 100%;
-      box-sizing: border-box;
-      max-width: 40%;
-    }
-
-    .fx-align-self-center {
-      align-self: center;
-    }
-  `]
+  styles: [
+    'mat-form-field {width: 110px;}'
+  ]
 })
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean, isInputValid?: boolean | null }>();
+    new EventEmitter<{
+      property: string;
+      value: UIElementValue,
+      isInputValid?: boolean | null
+    }>();
 }

@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnDestroy, Input, Output, EventEmitter,
+  Component, OnDestroy, Input, Output, EventEmitter,
   ViewChild, ElementRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
@@ -97,28 +97,18 @@ import { SelectionService } from '../../services/selection.service';
               <mat-form-field appearance="outline">
                 <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
                 <input matInput type="number"
-                       [value]="$any(section.gridColumnSizes.split(' ').length)"
+                       [value]="$any(section.gridColumnSizes.length)"
                        (click)="$any($event).stopPropagation()"
                        (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">
               </mat-form-field>
-              <div *ngFor="let size of columnSizes ; let i = index" class="size-inputs">
-                <mat-form-field class="size-item">
-                  <mat-label>{{'section-menu.width' | translate }} {{i + 1}}</mat-label>
-                  <input matInput type="number"
-                         [value]="size.value"
-                         (click)="$any($event).stopPropagation()"
-                         (change)="changeGridSize('gridColumnSizes', i, false, $any($event).target.value)">
-                </mat-form-field>
-                <mat-form-field class="size-item-unit">
-                  <mat-label>Einheit</mat-label>
-                  <mat-select [value]="size.unit"
-                              (click)="$any($event).stopPropagation()"
-                              (selectionChange)="changeGridSize('gridColumnSizes', i, true, $event.value)">
-                    <mat-option value="fr">{{'section-menu.fraction' | translate }}</mat-option>
-                    <mat-option value="px">{{'section-menu.pixel' | translate }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
+              <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
+                <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
+                                         [value]="size.value"
+                                         [unit]="size.unit"
+                                         [allowedUnits]="['px', 'fr']"
+                                         (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
+                </aspect-size-input-panel>
+              </ng-container>
             </ng-container>
           </fieldset>
 
@@ -141,27 +131,18 @@ import { SelectionService } from '../../services/selection.service';
               <mat-form-field appearance="outline">
                 <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
                 <input matInput type="number"
-                       [value]="$any(section.gridRowSizes.split(' ').length)"
+                       [value]="$any(section.gridRowSizes.length)"
                        (click)="$any($event).stopPropagation()"
                        (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
               </mat-form-field>
-              <div *ngFor="let size of rowSizes ; let i = index" class="size-inputs fx-row-start-stretch">
-                <mat-form-field class="size-item">
-                  <mat-label>{{'section-menu.height' | translate }} {{i + 1}}</mat-label>
-                  <input matInput type="number"
-                         [value]="size.value"
-                         (click)="$any($event).stopPropagation()"
-                         (change)="changeGridSize('gridRowSizes', i, false, $any($event).target.value)">
-                </mat-form-field>
-                <mat-form-field class="size-item-unit">
-                  <mat-select [value]="size.unit"
-                              (click)="$any($event).stopPropagation()"
-                              (selectionChange)="changeGridSize('gridRowSizes', i, true, $event.value)">
-                    <mat-option value="fr">{{'section-menu.fraction' | translate }}</mat-option>
-                    <mat-option value="px">{{'section-menu.pixel' | translate }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
+              <ng-container *ngFor="let size of section.gridRowSizes ; let i = index">
+                <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
+                                         [value]="size.value"
+                                         [unit]="size.unit"
+                                         [allowedUnits]="['px', 'fr']"
+                                         (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
+                </aspect-size-input-panel>
+              </ng-container>
             </ng-container>
           </fieldset>
         </div>
@@ -197,38 +178,15 @@ import { SelectionService } from '../../services/selection.service';
       <mat-icon>clear</mat-icon>
     </button>
   `,
-  styles: [`
-    ::ng-deep .layoutMenu {
-      padding: 0 15px; width: 250px;
-    }
-    ::ng-deep .layoutMenu fieldset {
-      margin: 10px 0; display: flex; flex-direction: column; align-items: flex-start;
-    }
-    ::ng-deep .layoutMenu .section-height-input {
-      margin-top: 10px;
-    }
-    ::ng-deep .layoutMenu .size-inputs .mat-form-field {
-      width: 100px;
-    }
-    ::ng-deep .layoutMenu .size-inputs {
-      display: flex; flex-direction: row; gap: 15px;
-    }
-    .menuItem {
-      margin-bottom: 5px;
-    }
-    ::ng-deep .activeAfterID-menu .mat-form-field {
-      width:90%; margin-left: 10px;
-    }
-    .fx-row-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-  `]
+  styles: [
+    '::ng-deep .layoutMenu {padding: 0 15px; width: 250px;}',
+    '::ng-deep .layoutMenu fieldset {margin: 10px 0; display: flex; flex-direction: column; align-items: start;}',
+    '::ng-deep .layoutMenu .section-height-input {margin-top: 10px;}',
+    '.menuItem {margin-bottom: 5px;}',
+    '::ng-deep .activeAfterID-menu .mat-form-field {width:90%; margin-left: 10px;}'
+  ]
 })
-export class SectionMenuComponent implements OnInit, OnDestroy {
+export class SectionMenuComponent implements OnDestroy {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() allowMoveUp!: boolean;
@@ -239,8 +197,6 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
   @Output() selectElementComponent = new EventEmitter<UIElement>();
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
-  columnSizes: { value: string, unit: string }[] = [];
-  rowSizes: { value: string, unit: string }[] = [];
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
@@ -250,11 +206,7 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
               private idService: IDService,
               private clipboard: Clipboard) { }
 
-  ngOnInit(): void {
-    this.updateGridSizes();
-  }
-
-  updateModel(property: string, value: string | number | boolean): void {
+  updateModel(property: string, value: string | number | boolean | { value: number; unit: string }[]): void {
     this.unitService.updateSectionProperty(this.section, property, value);
   }
 
@@ -276,51 +228,28 @@ export class SectionMenuComponent implements OnInit, OnDestroy {
       });
   }
 
-  /* Initialize internal array of grid sizes. Where value and unit are put, split up, in an array. */
-  private updateGridSizes(): void {
-    this.columnSizes = [];
-    this.section.gridColumnSizes.split(' ').forEach((size: string) => {
-      this.columnSizes.push({ value: size.slice(0, -2), unit: size.slice(-2) });
-    });
-    this.rowSizes = [];
-    this.section.gridRowSizes.split(' ').forEach((size: string) => {
-      this.rowSizes.push({ value: size.slice(0, -2), unit: size.slice(-2) });
-    });
-  }
-
-  /* Add elements to size array. Default value 1fr. */
+  /* Add or remove elements to size array. Default value 1fr. */
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
-    const oldSizesAsArray = property === 'gridColumnSizes' ?
-      this.section.gridColumnSizes.split(' ') :
-      this.section.gridRowSizes.split(' ');
+    const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
+      this.section.gridColumnSizes : this.section.gridRowSizes;
 
     let newArray = [];
-    if (newLength < oldSizesAsArray.length) {
-      newArray = oldSizesAsArray.slice(0, newLength);
+    if (newLength < sizeArray.length) {
+      newArray = sizeArray.slice(0, newLength);
     } else {
       newArray.push(
-        ...oldSizesAsArray,
-        ...Array(newLength - oldSizesAsArray.length).fill('1fr')
+        ...sizeArray,
+        ...Array(newLength - sizeArray.length).fill({ value: 1, unit: 'fr' })
       );
     }
-    this.updateModel(property, newArray.join(' '));
-    this.updateGridSizes();
+    this.updateModel(property, newArray);
   }
 
-  /* Replace number or unit is size string. '2fr 1fr' -> '2px 3fr' */
-  changeGridSize(property: string, index: number, unit: boolean = false, newValue: string): void {
-    const oldSizesAsArray = property === 'gridColumnSizes' ?
-      this.section.gridColumnSizes.split(' ') :
-      this.section.gridRowSizes.split(' ');
-
-    if (unit) {
-      oldSizesAsArray[index] = oldSizesAsArray[index].slice(0, -2) + newValue;
-    } else {
-      oldSizesAsArray[index] = newValue + oldSizesAsArray[index].slice(-2);
-    }
-
-    this.updateModel(property, oldSizesAsArray.join(' '));
-    this.updateGridSizes();
+  changeGridSize(property: string, index: number, newValue: { value: number; unit: string }): void {
+    const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
+      this.section.gridColumnSizes : this.section.gridRowSizes;
+    sizeArray[index] = newValue;
+    this.updateModel(property, [...sizeArray]);
   }
 
   openColorPicker(): void {

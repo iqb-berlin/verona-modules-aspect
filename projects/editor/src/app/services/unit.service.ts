@@ -243,6 +243,10 @@ export class UnitService {
       if (property === 'id') {
         if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
           this.messageService.showError(this.translateService.instant('idTaken'));
+        } else if ((value as string).length > 20) {
+          this.messageService.showError('ID länger als 20 Zeichen');
+        } else if ((value as string).includes(' ')) {
+          this.messageService.showError('ID enthält unerlaubtes Leerzeichen');
         } else {
           this.idService.removeId(element.id);
           this.idService.addID(value as string);

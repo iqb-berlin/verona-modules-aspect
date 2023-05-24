@@ -38,7 +38,7 @@
   "pageProperties": {
     "maxWidth": "Maximalbreite",
     "sectionWidth": "Abschnittbreite",
-    "pageWidth": "Seitenbreite",
+    "pageWidth": "effektive Seitenbreite",
     "marginWidth": "Randbreite",
     "backgroundColor": "Hintergrundfarbe",
     "alwaysVisible": "Immer angezeigt",
@@ -276,6 +276,7 @@
     "width": "Breite",
     "fraction": "Anteile",
     "pixel": "Bildpunkte",
+    "percent": "Prozent",
     "activeAfterID": "Sichtbar nach A/V-ID",
     "activeAfterIdDelay": "Verzögerung der Sichtbarkeit"
   },

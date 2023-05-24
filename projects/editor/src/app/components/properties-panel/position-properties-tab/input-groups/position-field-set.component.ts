@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { PositionProperties } from 'common/models/elements/element';
+import { PositionProperties, UIElementValue } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-position-field-set',
@@ -104,6 +104,7 @@ import { PositionProperties } from 'common/models/elements/element';
         </div>
       </ng-template>
 
+      Stapelung<br>
       <mat-form-field *ngIf="positionProperties.zIndex !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
         <input matInput type="number" #zIndex="ngModel"
@@ -112,7 +113,6 @@ import { PositionProperties } from 'common/models/elements/element';
                                                        value: $event,
                                                        isInputValid: zIndex.valid && $event !== null })"
                matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
-        <!--        TODO translate-->
       </mat-form-field>
     </fieldset>
   `,

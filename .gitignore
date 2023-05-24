@@ -46,3 +46,4 @@ testem.log
 Thumbs.db
 
 projects/common/assets/GeoGebra
+example_data/proprietary

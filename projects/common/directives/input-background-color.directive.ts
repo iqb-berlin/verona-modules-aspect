@@ -23,7 +23,7 @@ export class InputBackgroundColorDirective implements OnChanges {
     if (this.appearance === 'outline') {
       targetElements = this.elementRef.nativeElement.querySelector('div.mdc-notched-outline')?.children;
     } else {
-      targetElements = [this.elementRef.nativeElement.querySelector('div.mat-mdc-form-field-flex')];
+      targetElements = [this.elementRef.nativeElement.querySelector('div.mat-mdc-text-field-wrapper')];
     }
     // This fails, when component is not set up yet, therefore the extra check
     if (targetElements) {

@@ -23,7 +23,7 @@
       [style.grid-template-rows]="section.autoRowSize ? undefined : section.gridRowSizes | measure"
       [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
-      [style.backgroundColor]="section.backgroundColor">
+      [style.background-color]="section.backgroundColor">
     <ng-container *ngFor="let element of section.elements">
       <aspect-element-group-selection
         [class.no-pointer-events]="element.type === 'frame'"

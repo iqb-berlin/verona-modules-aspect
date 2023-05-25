@@ -167,7 +167,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.mathFieldElement.setValue(changes.value.currentValue, { mode: 'text' });
+    if (changes.value) {
+      this.mathFieldElement.setValue(changes.value.currentValue, { mode: 'text' });
+    }
   }
 
   setParseMode(event: MatButtonToggleChange) {

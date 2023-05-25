@@ -20,14 +20,16 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
     <div #mathfield [class.read-only]="readonly">
     </div>
   `,
-  styles: [
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-    mat-button-toggle-group {height: 20px;}`,
-    ':host ::ng-deep .read-only math-field {outline: unset; border: unset }',
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version. */
-    :host ::ng-deep .mat-button-toggle-label-content {line-height: unset}`
+  styles: [`
+    mat-button-toggle-group {
+      height: auto;
+    }
+    :host ::ng-deep .read-only math-field {
+      outline: unset; border: unset;
+    }
+    :host ::ng-deep .mat-button-toggle-label-content {
+      line-height: unset;
+    }`
   ]
 })
 export class MathInputComponent implements AfterViewInit, OnChanges {

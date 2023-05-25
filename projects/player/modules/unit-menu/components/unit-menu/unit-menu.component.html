@@ -5,20 +5,27 @@
 
 <mat-menu #menu="matMenu">
   <button mat-menu-item
-          (click)="load('separate')">
+          (click)="vopStartCommandMessage.playerConfig = { pagingMode: 'separate' };
+                   fileUploadSeparate.click()">
     <mat-icon>file_upload</mat-icon>
     <span>{{ 'load_separate' | translate }}</span>
   </button>
   <button mat-menu-item
-          (click)="load('concat-scroll')">
+          (click)="vopStartCommandMessage.playerConfig = { pagingMode: 'concat-scroll' };
+                   fileUploadSeparate.click()">
     <mat-icon>file_upload</mat-icon>
     <span>{{ 'load_scroll' | translate }}</span>
   </button>
   <button mat-menu-item
-          (click)="load('concat-scroll-snap')">
+          (click)="vopStartCommandMessage.playerConfig = { pagingMode: 'concat-scroll-snap' };
+                   fileUploadSeparate.click()">
     <mat-icon>file_upload</mat-icon>
     <span>{{ 'load_snap' | translate }}</span>
   </button>
+
+  <input type="file" hidden accept=".json, .voud"
+         #fileUploadSeparate
+         (change)="loadUnitFile($event)">
 
   <ng-container *ngIf="elementCodes && elementCodes.length">
     <mat-divider></mat-divider>

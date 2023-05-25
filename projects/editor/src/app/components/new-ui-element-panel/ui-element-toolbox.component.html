@@ -10,21 +10,31 @@
       <mat-icon>text_snippet</mat-icon>
       {{'toolbox.text' | translate }}
     </button>
-    <button mat-stroked-button (click)="addUIElement('image')"
+
+    <button mat-stroked-button (click)="imageUpload.click()"
             draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
       <mat-icon>image</mat-icon>
       {{'toolbox.image' | translate }}
     </button>
-    <button mat-stroked-button (click)="addUIElement('audio')"
+    <input type="file" hidden accept="image/*" #imageUpload
+           (change)="addUIElement('image')">
+
+    <button mat-stroked-button (click)="audioUpload.click()"
             draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','audio')">
       <mat-icon>volume_up</mat-icon>
       {{'toolbox.audio' | translate }}
     </button>
-    <button mat-stroked-button (click)="addUIElement('video')"
+    <input type="file" hidden accept="audio/*" #audioUpload
+           (change)="addUIElement('audio')">
+
+    <button mat-stroked-button (click)="videoUpload.click()"
             draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','video')">
       <mat-icon>ondemand_video</mat-icon>
       {{'toolbox.video' | translate }}
     </button>
+    <input type="file" hidden accept="video/*" #videoUpload
+           (change)="addUIElement('video')">
+
   </mat-expansion-panel>
   <mat-expansion-panel expanded>
     <mat-expansion-panel-header>

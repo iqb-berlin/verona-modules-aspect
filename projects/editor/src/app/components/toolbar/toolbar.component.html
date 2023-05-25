@@ -1,8 +1,11 @@
 <mat-toolbar>
-  <button mat-raised-button (click)="load()">
+  <button mat-raised-button (click)="fileUpload.click()">
     {{'toolbar.loadUnit' | translate}}
     <mat-icon>file_upload</mat-icon>
   </button>
+  <input type="file" hidden accept=".json, .voud"
+         #fileUpload
+         (change)="loadUnitFile($event)">
   <button mat-raised-button (click)="save()">
     {{'toolbar.saveUnit' | translate}}
     <mat-icon>file_download</mat-icon>

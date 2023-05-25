@@ -11,7 +11,10 @@ import { DragNDropValueObject } from 'common/models/elements/element';
         <mat-label>{{'text' | translate }}</mat-label>
         <input #textField matInput type="text" [value]="data.value.text">
       </mat-form-field>
-      <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
+      <button mat-raised-button (click)="fileUpload.click()">{{ 'loadImage' | translate }}</button>
+      <input type="file" hidden accept="image/*"
+             #fileUpload
+             (change)="loadImage($event)">
       <button mat-raised-button (click)="imgSrc = null">{{ 'removeImage' | translate }}</button>
       <img [src]="imgSrc"
            [style.object-fit]="'scale-down'"
@@ -46,7 +49,7 @@ export class DropListOptionEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { value: DragNDropValueObject }) { }
   imgSrc: string | null = this.data.value.imgSrc;
 
-  async loadImage(): Promise<void> {
-    this.imgSrc = await FileService.loadImage();
+  async loadImage(event: Event): Promise<void> {
+    this.imgSrc = await FileService.readFileAsText((event.target as HTMLInputElement).files?.[0] as File);
   }
 }

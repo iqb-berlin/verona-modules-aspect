@@ -29,6 +29,15 @@ export class FileService {
     });
   }
 
+  static async readFileAsText(file: File, asBase64: boolean = false): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject();
+      asBase64 ? reader.readAsDataURL(file) : reader.readAsText(file);
+    });
+  }
+
   static loadImage(): Promise<string> {
     return FileService.loadFile(['image/*'], true);
   }

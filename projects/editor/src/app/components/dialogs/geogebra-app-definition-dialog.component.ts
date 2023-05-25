@@ -13,10 +13,12 @@ import { MatDialogRef } from '@angular/material/dialog';
       <div class="status-area" [style.color]="statusMessage?.color" [hidden]="!statusMessage">
         {{ statusMessage?.text }}
       </div>
-      <button mat-raised-button (click)="loadGeogebraFile()">
+      <button mat-raised-button (click)="fileUpload.click()">
         {{'loadGeogebraFile' | translate}}
         <mat-icon>file_upload</mat-icon>
       </button>
+      <input #fileUpload type="file" hidden accept=".ggb"
+             (change)="loadGeogebraFile($event)">
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -64,7 +66,7 @@ export class GeogebraAppDefinitionDialogComponent {
     }
   }
 
-  async loadGeogebraFile(): Promise<void> {
-    this.dialogRef.close(await FileService.loadFile(['.ggb'], true));
+  async loadGeogebraFile(event: Event): Promise<void> {
+    this.dialogRef.close(await FileService.readFileAsText((event.target as HTMLInputElement).files?.[0] as File, true));
   }
 }

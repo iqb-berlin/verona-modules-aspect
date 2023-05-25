@@ -22,7 +22,7 @@ export class UnitMenuComponent {
   @Input() scrollPages!: Page[];
   @Input() elementCodes!: ElementCode[];
 
-  private vopStartCommandMessage: VopStartCommand = {
+  public vopStartCommandMessage: VopStartCommand = {
     type: 'vopStartCommand',
     sessionId: 'dev',
     unitDefinition: undefined,
@@ -54,8 +54,14 @@ export class UnitMenuComponent {
     stop: true
   };
 
-  async load(pagingMode: PagingMode): Promise<void> {
-    await this.loadUnit(await FileService.loadFile(['.json', '.voud']), pagingMode, {});
+  // async load(pagingMode: PagingMode): Promise<void> {
+  //   await this.loadUnit(await FileService.loadFile(['.json', '.voud']), {});
+  // }
+
+  async loadUnitFile(event: Event) {
+    await this.loadUnit(await FileService.readFileAsText((event.target as HTMLInputElement).files?.[0] as File),
+      {}
+    );
   }
 
   reloadUnit(): void {
@@ -80,9 +86,9 @@ export class UnitMenuComponent {
     window.postMessage( this.vopGetStateRequestMessage, '*');
   }
 
-  private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState): void {
+  private loadUnit(unitDefinition: string, unitSate: UnitState): void {
     this.vopStartCommandMessage.unitDefinition = unitDefinition;
-    this.vopStartCommandMessage.playerConfig = { pagingMode };
+    // this.vopStartCommandMessage.playerConfig = { pagingMode };
     this.vopStartCommandMessage.unitState = unitSate;
     this.postMessage(this.vopStartCommandMessage);
   }

@@ -16,7 +16,11 @@ export class ToolbarComponent {
     this.unitService.saveUnit();
   }
 
-  async load(): Promise<void> {
-    await this.unitService.loadUnitFromFile();
+  loadUnitFile(event: Event) {
+    this.unitService.loadUnitFile((event.target as HTMLInputElement).files?.[0] as File);
   }
+
+  // async load(): Promise<void> {
+  //   await this.unitService.loadUnitFromFile();
+  // }
 }

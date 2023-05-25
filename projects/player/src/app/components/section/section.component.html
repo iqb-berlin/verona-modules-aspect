@@ -19,8 +19,8 @@
 <ng-template #dynamicElements>
   <div
       class="dynamic-section"
-      [style.grid-template-columns]="!section.autoColumnSize ? section.gridColumnSizes : undefined"
-      [style.grid-template-rows]="!section.autoRowSize ? section.gridRowSizes : undefined"
+      [style.grid-template-columns]="section.autoColumnSize ? undefined : section.gridColumnSizes | measure"
+      [style.grid-template-rows]="section.autoRowSize ? undefined : section.gridRowSizes | measure"
       [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
       [style.backgroundColor]="section.backgroundColor">
@@ -29,10 +29,10 @@
         [class.no-pointer-events]="element.type === 'frame'"
         [style.min-width.px]="element.width"
         [style.min-height.px]="element.position.useMinHeight ? element.height : null"
-        [style.margin-left.px]="element.position.marginLeft"
-        [style.margin-right.px]="element.position.marginRight"
-        [style.margin-top.px]="element.position.marginTop"
-        [style.margin-bottom.px]="element.position.marginBottom"
+        [style.margin-left]="[element.position.marginLeft] | measure"
+        [style.margin-right]="[element.position.marginRight] | measure"
+        [style.margin-top]="[element.position.marginTop] | measure"
+        [style.margin-bottom]="[element.position.marginBottom] | measure"
         [style.grid-column-start]="element.position.gridColumn"
         [style.grid-column-end]="element.position.gridColumn ?
           element.position.gridColumn + element.position.gridColumnRange:

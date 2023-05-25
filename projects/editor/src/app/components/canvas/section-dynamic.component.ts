@@ -57,11 +57,11 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [gridRow]="element.position.gridRow"
                                      [gridRowRange]="element.position.gridRowRange"
                                      (elementSelected)="elementSelected.emit()"
-                                     (elementChanged)="helperGrid.refresh()">
+                                     (elementChanged)="helperGrid && helperGrid.refresh()">
       </aspect-dynamic-canvas-overlay>
     </div>
   `
-  })
+})
 
 export class SectionDynamicComponent {
   @Input() section!: Section;

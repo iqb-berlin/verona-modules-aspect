@@ -180,7 +180,7 @@ import { SelectionService } from '../../services/selection.service';
   `,
   styles: [
     '::ng-deep .layoutMenu {padding: 0 15px; width: 250px;}',
-    '::ng-deep .layoutMenu fieldset {margin: 10px 0; display: flex; flex-direction: column; align-items: start;}',
+    '::ng-deep .layoutMenu fieldset {margin: 10px 0; display: flex; flex-direction: column; align-items: flex-start;}',
     '::ng-deep .layoutMenu .section-height-input {margin-top: 10px;}',
     '.menuItem {margin-bottom: 5px;}',
     '::ng-deep .activeAfterID-menu .mat-form-field {width:90%; margin-left: 10px;}'

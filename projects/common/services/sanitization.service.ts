@@ -168,10 +168,6 @@ export class SanitizationService {
     if (['drop-list', 'drop-list-simple'].includes(newElement.type as string)) {
       newElement = SanitizationService.handleDropListElement(newElement as Record<string, UIElementValue>);
     }
-    if (['dropdown', 'radio', 'likert-row', 'radio-group-images', 'toggle-button']
-      .includes(newElement.type as string)) {
-      newElement = SanitizationService.handlePlusOne(newElement as InputElement);
-    }
     if (['radio'].includes(newElement.type as string)) {
       newElement = SanitizationService.handleRadioGroup(newElement as RadioButtonGroupElement);
     }
@@ -465,17 +461,6 @@ export class SanitizationService {
         imgPosition: (element.rowLabel as TextImageLabel).imgPosition || element.position || 'above'
       } as TextImageLabel
     };
-  }
-
-  // version 1.1.0 is the only version where there was a plus one for values, which was rolled back afterwards.
-  private static handlePlusOne(element: InputElement): InputElement {
-    return ((SanitizationService.unitDefinitionVersion?.toString() ===
-      [1, 1, 0].toString()) && (element.value && element.value > 0)) ?
-      {
-        ...element,
-        value: (element.value as number) - 1
-      } as InputElement :
-      element;
   }
 
   private static handleToggleButtonElement(element: Record<string, UIElementValue>): ToggleButtonElement {

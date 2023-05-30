@@ -33,9 +33,9 @@
         <mat-icon>strikethrough_s</mat-icon>
       </button>
     </fieldset>
-    <fieldset class="fx-row-start-stretch">
+    <fieldset class="fx-row-start-start">
       <legend>Schrift</legend>
-      <mat-form-field class="small-dropdown">
+      <mat-form-field class="dropdown">
         <mat-label>Schriftgröße</mat-label>
         <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize">
           <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
@@ -74,7 +74,7 @@
                (input)="selectedHighlightColor = $any($event.target).value; applyHighlightColor()">
       </div>
     </fieldset>
-    <fieldset class="fx-row-start-stretch">
+    <fieldset class="fx-row-start-start" [style.gap.px]="10" >
       <legend>Absatz</legend>
       <mat-form-field class="dropdown">
         <mat-label>Absatztyp</mat-label>
@@ -108,12 +108,12 @@
                 (click)="toggleBulletList()">
           <mat-icon>format_list_bulleted</mat-icon>
         </button>
-        <mat-select [value]="editor.getAttributes('bulletList').listStyle"
-                    (valueChange)="applyListStyle('bulletList', $event)">
-          <mat-option value="disc">disc</mat-option>
-          <mat-option value="circle">circle</mat-option>
-          <mat-option value="square">square</mat-option>
-        </mat-select>
+        <select class="combo-button-select" [value]="editor.getAttributes('bulletList').listStyle"
+                    (change)="applyListStyle('bulletList', $any($event.target).value )">
+          <option value="disc">disc</option>
+          <option value="circle">circle</option>
+          <option value="square">square</option>
+        </select>
       </div>
       <div class="combo-button fx-row-start-stretch"
            [style.background-color]="editor.isActive('orderedList') ? 'lightgrey' : ''">
@@ -122,34 +122,27 @@
                 (click)="toggleOrderedList()">
           <mat-icon>format_list_numbered</mat-icon>
         </button>
-        <mat-select [value]="editor.getAttributes('orderedList').listStyle"
-                    (valueChange)="applyListStyle('orderedList', $event)">
-          <mat-option value="decimal"
-                      (click)="applyListStyle('orderedList', 'decimal')">
+        <select class="combo-button-select" [value]="editor.getAttributes('orderedList').listStyle"
+                    (change)="applyListStyle('orderedList', $any($event.target).value)">
+          <option value="decimal">
             decimal
-          </mat-option>
-          <mat-option value="lower-latin"
-                      (click)="applyListStyle('orderedList', 'lower-latin')">
+          </option>
+          <option value="lower-latin">
             lower-latin
-          </mat-option>
-
-          <mat-option value="upper-latin"
-                      (click)="applyListStyle('orderedList', 'upper-latin')">
+          </option>
+          <option value="upper-latin">
             upper-latin
-          </mat-option>
-          <mat-option value="lower-roman"
-                      (click)="applyListStyle('orderedList', 'lower-roman')">
+          </option>
+          <option value="lower-roman">
             lower-roman
-          </mat-option>
-          <mat-option value="upper-roman"
-                      (click)="applyListStyle('orderedList', 'upper-roman')">
+          </option>
+          <option value="upper-roman">
             upper-roman
-          </mat-option>
-          <mat-option value="lower-greek"
-                      (click)="applyListStyle('orderedList', 'lower-greek')">
+          </option>
+          <option value="lower-greek">
             lower-greek
-          </mat-option>
-        </mat-select>
+          </option>
+        </select>
       </div>
     </fieldset>
 
@@ -179,7 +172,7 @@
         <mat-icon>format_align_justify</mat-icon>
       </button>
     </fieldset>
-    <fieldset class="fx-row-start-stretch">
+    <fieldset class="fx-row-start-start">
       <legend>Einrückung</legend>
       <button mat-icon-button matTooltip="Einrücken" [matTooltipShowDelay]="300"
               (click)="indent()">

@@ -29,7 +29,7 @@ import { Measurement } from 'common/models/elements/element';
   `,
   styles: [
     '.panel {display: flex; flex-direction: row; gap: 15px;}',
-    '.panel .mat-form-field {width: 100px;}'
+    '.panel .mat-mdc-form-field {width: 100px;}'
   ]
 })
 export class SizeInputPanelComponent {

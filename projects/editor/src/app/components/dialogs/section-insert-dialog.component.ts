@@ -29,7 +29,7 @@ import { IDService } from 'editor/src/app/services/id.service';
     </mat-dialog-actions>
   `,
   styles: [
-    '.mat-mdc-dialog-content {width: 400px; height: 200px;}',
+    '.mat-mdc-dialog-content {width: 448px; height: 240px;}',
     '.paste-area {position: absolute; width: 400px; height: 200px; border: 1px solid; overflow: hidden}',
     '.message-area {position: absolute; width: 400px; height: 200px; text-align: center; font-size: large;}'
   ]

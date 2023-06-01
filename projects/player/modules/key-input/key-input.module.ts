@@ -7,6 +7,7 @@ import { KeypadLayoutComponent } from './components/keypad-layout/keypad-layout.
 import { KeyboardComponent } from './components/keyboard/keyboard.component';
 import { KeyboardKeyComponent } from './components/keyboard-key/keyboard-key.component';
 import { GetAlternativeKeyPipe } from './pipes/get-alternative-key.pipe';
+import { CharacterIconComponent } from './components/character-icon/character-icon.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { GetAlternativeKeyPipe } from './pipes/get-alternative-key.pipe';
     KeypadLayoutComponent,
     KeyboardComponent,
     KeyboardKeyComponent,
-    GetAlternativeKeyPipe
+    GetAlternativeKeyPipe,
+    CharacterIconComponent
   ],
   imports: [
     CommonModule,

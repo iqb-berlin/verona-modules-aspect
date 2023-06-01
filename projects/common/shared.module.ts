@@ -74,7 +74,7 @@ import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
-import { MeasurePipe } from 'common/pipes/grid-size';
+import { MeasurePipe } from 'common/pipes/measure.pipe';
 
 @NgModule({
   imports: [

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Section } from 'common/models/section';
-import { MeasurePipe } from 'common/pipes/grid-size';
+import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { SectionComponent } from './section.component';
 
 describe('SectionComponent', () => {

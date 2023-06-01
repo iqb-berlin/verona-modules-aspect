@@ -27,7 +27,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row)) : [];
     this.label = element.label !== undefined ? element.label : 'Optionentabelle Beschriftung';
     this.label2 = element.label2 !== undefined ? element.label2 : 'Optionentabelle Erste Spalte';
-    this.position = UIElement.initPositionProps(element.position);
+    this.position = UIElement.initPositionProps({ marginBottom: { value: 35, unit: 'px' }, ...element.position });
     this.styling = {
       ...UIElement.initStylingProps({
         backgroundColor: 'transparent',

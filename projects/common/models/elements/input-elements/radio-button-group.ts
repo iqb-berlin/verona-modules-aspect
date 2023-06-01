@@ -20,7 +20,7 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     if (element.options) this.options = [...element.options];
     if (element.alignment) this.alignment = element.alignment;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
-    this.position = UIElement.initPositionProps({ marginBottom: { value: 30, unit: 'px' }, ...element.position });
+    this.position = UIElement.initPositionProps({ ...element.position });
     this.styling = {
       ...UIElement.initStylingProps({
         backgroundColor: 'transparent',

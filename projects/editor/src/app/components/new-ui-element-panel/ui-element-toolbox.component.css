@@ -8,11 +8,8 @@
   font-size: medium;
   margin-bottom: 3px;
   width: 100%;
-}
-
-::ng-deep aspect-ui-element-toolbox .mat-button-wrapper {
-  width: 100%;
   display: inline-block;
+  padding: 0 0 0 10px;
 }
 
 .mat-expansion-panel-header {

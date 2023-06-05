@@ -53,7 +53,7 @@
   display: inherit;
 }
 
-::ng-deep .mat-drawer-content .mat-tab-body-wrapper {
+::ng-deep .mat-drawer-content .mat-mdc-tab-body-wrapper {
   height: 100%;
 }
 
@@ -69,15 +69,9 @@ mat-divider {
   margin-bottom: 10px;
 }
 
-::ng-deep .mat-tab-label:hover .menu-button {
-  visibility: visible;
-}
-
 .menu-button {
   position: absolute;
-  left: 130px;
-  bottom: 6px;
-  visibility: hidden;
+  left: 80%;
 }
 
 aspect-page-canvas {

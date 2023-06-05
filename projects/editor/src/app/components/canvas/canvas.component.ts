@@ -21,18 +21,16 @@ import { SectionDynamicComponent } from './section-dynamic.component';
       height: 100%;
       overflow: auto;
     }
+    .add-section-icon{
+      font-size: 24px;
+      color: white;
+      margin-top: -5px;
+    }
     .add-section-button {
       width: 100%;
       height: 25px;
       background-color: #BABABA;
       margin-top: 10px;
-      border-radius: 10%;
-    }
-    ::ng-deep .add-section-button span.mat-button-wrapper {
-      padding: 0;
-    }
-    ::ng-deep .add-section-button span.mat-button-wrapper mat-icon {
-      vertical-align: unset;
     }
     .hidden {
       display: none !important;
@@ -49,7 +47,7 @@ import { SectionDynamicComponent } from './section-dynamic.component';
       align-items: stretch;
     }
   `]
-})
+  })
 export class CanvasComponent {
   @Input() page!: Page;
   @ViewChildren('sectionComponent')

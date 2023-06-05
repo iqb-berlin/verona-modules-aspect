@@ -13,16 +13,6 @@ $aspect-theme: mat.define-light-theme((
 @include mat.radio-color($aspect-theme);
 @include mat.slider-color($aspect-theme);
 
-.mat-form-field-appearance-outline:not(.mat-focused ){
-  .mat-form-field-outline {
-    color: $aspect-element-border-color;
-  }
-  &:hover {
-    .mat-form-field-outline {
-      color: $aspect-element-border-hover-color;
-    }
-  }
-}
 
 .mat-button-toggle-group-appearance-standard {
   border-color: $aspect-element-border-color;

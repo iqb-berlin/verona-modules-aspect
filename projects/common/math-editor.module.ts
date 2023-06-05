@@ -20,10 +20,16 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
     <div #mathfield [class.read-only]="readonly">
     </div>
   `,
-  styles: [
-    'mat-button-toggle-group {height: 20px;}',
-    ':host ::ng-deep .read-only math-field {outline: unset; border: unset }',
-    ':host ::ng-deep .mat-button-toggle-label-content {line-height: unset}'
+  styles: [`
+    mat-button-toggle-group {
+      height: auto;
+    }
+    :host ::ng-deep .read-only math-field {
+      outline: unset; border: unset;
+    }
+    :host ::ng-deep .mat-button-toggle-label-content {
+      line-height: unset;
+    }`
   ]
 })
 export class MathInputComponent implements AfterViewInit, OnChanges {
@@ -161,7 +167,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.mathFieldElement.setValue(changes.value.currentValue, { mode: 'text' });
+    if (changes.value) {
+      this.mathFieldElement.setValue(changes.value.currentValue, { mode: 'text' });
+    }
   }
 
   setParseMode(event: MatButtonToggleChange) {

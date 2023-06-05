@@ -183,7 +183,7 @@ import { SelectionService } from '../../services/selection.service';
     '::ng-deep .layoutMenu fieldset {margin: 10px 0; display: flex; flex-direction: column; align-items: flex-start;}',
     '::ng-deep .layoutMenu .section-height-input {margin-top: 10px;}',
     '.menuItem {margin-bottom: 5px;}',
-    '::ng-deep .activeAfterID-menu .mat-form-field {width:90%; margin-left: 10px;}'
+    '::ng-deep .activeAfterID-menu .mat-mdc-form-field {width:90%; margin-left: 10px;}'
   ]
 })
 export class SectionMenuComponent implements OnDestroy {

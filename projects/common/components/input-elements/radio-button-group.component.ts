@@ -41,21 +41,26 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [`
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-radio-label {
       white-space: normal;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-radio-label .mat-radio-label-content {
       padding-left: 10px;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     mat-radio-button {
       margin-bottom: 6px; margin-right: 15px;
     }
     .error-message {
       font-size: 75%; line-height: 100%;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     :host ::ng-deep .strike .mat-radio-label {
       text-decoration: line-through;
     }
+    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     :host ::ng-deep .mat-radio-label {
       align-items: baseline;
     }

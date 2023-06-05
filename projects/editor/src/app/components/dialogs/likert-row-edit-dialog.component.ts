@@ -71,6 +71,7 @@ import { TextLabel } from 'common/models/elements/element';
     </mat-dialog-actions>
   `,
   styles: [`
+     /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
      mat-checkbox {
        margin-bottom: 15px;
      }

@@ -2,10 +2,9 @@ import {
   Component, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
-import { CompoundChildOverlayComponent } from './compound-child-overlay.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { InputElement } from 'common/models/elements/element';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { CompoundChildOverlayComponent } from './compound-child-overlay.component';
 
 // TODO background color implementieren
 @Component({
@@ -172,12 +171,9 @@ import { ClozeElement } from 'common/models/elements/compound-elements/cloze/clo
     </ng-template>
   `,
   styles: [
-    ':host ::ng-deep aspect-text-field .mat-form-field-wrapper {height: 100%; padding-bottom: 0; margin: 0}',
-    ':host ::ng-deep aspect-text-field .mat-form-field {height: 100%}',
-    ':host ::ng-deep aspect-text-field .mat-form-field-flex {height: 100%}',
     'p {margin: 0}',
     ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
-    ':host ::ng-deep p:empty::after {content: "\\00A0"}', // render empty p
+    ':host ::ng-deep p:empty::after {content: "\00A0"}', // render empty p
     'p span {font-size: inherit}',
     'sup, sub {line-height: 0;}',
     '.droplist-child {vertical-align: middle;}'

@@ -14,9 +14,7 @@
     [class.right-position-fixed]="singleKey && position !== 'floating' && key === 'Backspace'"
     [class.dark-mode]="darkMode"
     (click)="keyClicked.emit(key);">
-  <span *ngIf="key !== ' ' && key.length === 1">
-    {{key}}
-  </span>
+  <character-icon *ngIf="key !== ' ' && key.length === 1">{{key}}</character-icon>
   <mat-icon *ngIf="key === ' '">space_bar</mat-icon>
   <mat-icon *ngIf="key === 'Backspace'">keyboard_backspace</mat-icon>
   <mat-icon *ngIf="key === 'Shift'">keyboard_arrow_up</mat-icon>

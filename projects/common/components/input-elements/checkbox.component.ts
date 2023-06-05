@@ -28,7 +28,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [
-    ':host ::ng-deep .mat-checkbox-layout {white-space: normal !important}',
+    `
+    /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
+    :host ::ng-deep .mat-checkbox-layout {white-space: normal !important}`,
     '.error-message { position: absolute; display: block; margin-top: 5px; font-size: 75% }'
   ]
 })

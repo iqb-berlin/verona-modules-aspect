@@ -1,15 +1,13 @@
 import {
   OnInit, OnChanges, SimpleChanges, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { MatSliderChange } from '@angular/material/slider';
 import { PlayerProperties, ValueChangeElement } from 'common/models/elements/element';
 import {
   fromEvent, Subject, tap, throttleTime
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-@Component({
-  selector: 'aspect-media-player-control-bar',
+@Component({ selector: 'aspect-media-player-control-bar',
   templateUrl: './media-player-control-bar.component.html',
   styleUrls: ['./media-player-control-bar.component.scss']
 })
@@ -96,14 +94,8 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     this.player.pause();
   }
 
-  setCurrentTime(event: MatSliderChange): void {
-    this.player.currentTime = event.value ? event.value : 0;
-  }
-
-  setVolume(event: MatSliderChange): void {
-    event.source.value = event.value && event.value > this.playerProperties.minVolume ?
-      event.value : this.playerProperties.minVolume;
-    this.player.volume = event.source.value;
+  checkMinVolume(volume: number): void {
+    this.player.volume = volume < this.playerProperties.minVolume ? this.playerProperties.minVolume : volume;
   }
 
   toggleTime(): void {

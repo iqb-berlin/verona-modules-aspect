@@ -2,13 +2,14 @@ import {
   Component, Input, OnChanges, SimpleChanges
 } from '@angular/core';
 import { ConnectedPosition, Overlay, RepositionScrollStrategy } from '@angular/cdk/overlay';
+import { UIElementType } from 'common/models/elements/element';
 import { KeypadService } from '../../services/keypad.service';
 
 @Component({
   selector: 'aspect-floating-keypad',
   templateUrl: './floating-keypad.component.html',
   styleUrls: ['./floating-keypad.component.scss']
-})
+  })
 export class FloatingKeypadComponent implements OnChanges {
   @Input() isKeypadOpen!: boolean;
 
@@ -51,25 +52,28 @@ export class FloatingKeypadComponent implements OnChanges {
       const startPosition = this.keypadService.elementComponent.elementModel.inputAssistanceFloatingStartPosition;
       if (startPosition === 'startBottom') {
         this.overlayPositions = FloatingKeypadComponent.overlayPositionsConfig[startPosition]
-          .map((position, index) => (
-            { ...position, offsetY: this.getOffsetY(index) }
-          ));
+          .map((position, index) => ({
+            ...position,
+            offsetY: this.getOffsetY(this.keypadService.elementComponent.elementModel.type, index > 0)
+          }));
       } else {
         this.overlayPositions = [...FloatingKeypadComponent.overlayPositionsConfig[startPosition]];
       }
     }
   }
 
-  private getOffsetY(index: number): number {
-    if (index > 0) {
-      let positionOffset = 0;
-      if (this.keypadService.elementComponent.elementModel.type === 'text-field') {
-        positionOffset = 20;
-      } else if (this.keypadService.elementComponent.elementModel.type === 'text-field-simple') {
-        positionOffset = -22;
-      }
-      return -(this.keypadService.inputElement.clientHeight + positionOffset);
+  private getOffsetY(type: UIElementType, above: boolean): number {
+    switch (type) {
+      case 'text-field':
+        return above ? -(this.keypadService.inputElement.clientHeight + 2) : 22;
+      case 'text-field-simple':
+        return above ? -(this.keypadService.inputElement.clientHeight - 24) : 2;
+      case 'text-area':
+        return above ? -(this.keypadService.inputElement.clientHeight - 10) : 36;
+      case 'spell-correct':
+        return above ? -(this.keypadService.inputElement.clientHeight - 20) : -34;
+      default:
+        return 0;
     }
-    return this.keypadService.elementComponent.elementModel.type === 'text-field' ? 26 : 8;
   }
 }

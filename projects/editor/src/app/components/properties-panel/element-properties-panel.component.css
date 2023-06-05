@@ -1,6 +1,5 @@
-/*Make tabs not take more width than needed*/
-:host ::ng-deep .mat-tab-label {
-  min-width: 0 !important;
+.properties-panel {
+  overflow: hidden;
 }
 
 mat-tab-group {
@@ -16,12 +15,8 @@ mat-tab-group {
   font-size: medium;
 }
 
-/*prevents small scrolling space around tab content*/
-:host ::ng-deep .mat-tab-body-wrapper {height: 100%}
+:host ::ng-deep .mat-mdc-tab-body-wrapper {height: 100%}
 
-:host ::ng-deep .mat-form-field {
-  margin-bottom: -10px;
-}
 
 :host ::ng-deep mat-checkbox {
   margin-bottom: 5px;
@@ -31,9 +26,6 @@ mat-tab-group {
   width: 100%;
 }
 
-:host ::ng-deep math-field {
-  margin: 0 3px 10px 3px;
-}
 
 .fx-column-start-stretch {
   box-sizing: border-box;

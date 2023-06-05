@@ -66,6 +66,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </div>
   `,
   styles: [`
+    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
     :host ::ng-deep .small-input div.mat-form-field-infix {
       border-top: none;
       padding: 0.75em 0 0.25em 0;

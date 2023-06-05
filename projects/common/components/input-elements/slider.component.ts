@@ -46,12 +46,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div *ngIf="elementModel.barStyle" class="value-marker min-value-marker"></div>
         <div *ngIf="elementModel.barStyle" class="value-marker max-value-marker"></div>
         <mat-slider [class]="elementModel.barStyle ? 'slider-bar-style' : 'slider'"
-                    [isDisabled]="elementModel.readOnly"
-                    [thumbLabel]="elementModel.thumbLabel"
-                    [formControl]="elementFormControl"
+                    [discrete]="elementModel.thumbLabel"
                     [style.width.%]="100"
                     [max]="elementModel.maxValue"
                     [min]="elementModel.minValue">
+          <input matSliderThumb
+                 [isDisabled]="elementModel.readOnly"
+                 [formControl]="elementFormControl"
+          />
         </mat-slider>
       </div>
       <mat-error *ngIf="elementFormControl.touched && elementFormControl.errors">
@@ -60,10 +62,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [
-    ':host ::ng-deep .slider-bar-style .mat-slider-thumb {border-radius: 0; border: none; width: 9px; height: 40px;}',
-    ':host ::ng-deep .slider-bar-style .mat-slider-thumb {bottom: -20px; margin-right: 5px; background-color: #006064}',
-    ':host ::ng-deep .slider-bar-style .mat-slider-track-fill {background-color: rgba(0,0,0,0);}',
-    ':host ::ng-deep .slider-bar-style .mat-slider-track-background {background-color: rgba(0,0,0,0);}',
+    `
+    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+    :host ::ng-deep .slider-bar-style .mat-slider-thumb {border-radius: 0; border: none; width: 9px; height: 40px;}`,
+    `
+    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+    :host ::ng-deep .slider-bar-style .mat-slider-thumb {bottom: -20px; margin-right: 5px; background-color: #006064}`,
+    `
+    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+    :host ::ng-deep .slider-bar-style .mat-slider-track-fill {background-color: rgba(0,0,0,0);}`,
+    `
+    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
+    :host ::ng-deep .slider-bar-style .mat-slider-track-background {background-color: rgba(0,0,0,0);}`,
 
     '.container {display: grid; grid-template-rows: auto auto;}',
     '.container {grid-template-columns: repeat(3, minmax(0, auto)) minmax(100px, 8fr) repeat(4, minmax(0, auto));}',

@@ -37,7 +37,7 @@ import TextFieldComponentExtension from './angular-node-views/text-field-compone
 @Component({
   selector: 'aspect-rich-text-editor',
   templateUrl: './rich-text-editor.component.html',
-  styleUrls: ['./rich-text-editor.component.css']
+  styleUrls: ['./rich-text-editor.component.scss']
 })
 export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() content!: string | Record<string, any>;
@@ -304,5 +304,9 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   insertButton() {
     this.editor.commands.insertContent('<aspect-nodeview-button></aspect-nodeview-button>');
     this.editor.commands.focus();
+  }
+
+  gggg(event: Event) {
+    console.log(event);
   }
 }

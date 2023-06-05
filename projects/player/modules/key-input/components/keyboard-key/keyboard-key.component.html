@@ -5,9 +5,9 @@
       {{key}}
       <span *ngIf="alternativeKey !== null" class="alternativeKey">{{alternativeKey}}</span>
   </ng-container>
-  <mat-icon *ngIf="key === 'Return'">keyboard_return</mat-icon>
-  <mat-icon *ngIf="key === 'Backspace'">keyboard_backspace</mat-icon>
-  <mat-icon *ngIf="key === 'Shift'">keyboard_arrow_up</mat-icon>
-  <mat-icon *ngIf="key === 'ShiftUp'">keyboard_capslock</mat-icon>
-  <mat-icon *ngIf="key === 'Space'">space_bar</mat-icon>
+  <mat-icon *ngIf="key === 'Return'" class="center-icon">keyboard_return</mat-icon>
+  <mat-icon *ngIf="key === 'Backspace'" class="center-icon">keyboard_backspace</mat-icon>
+  <mat-icon *ngIf="key === 'Shift'" class="center-icon">keyboard_arrow_up</mat-icon>
+  <mat-icon *ngIf="key === 'ShiftUp'" class="center-icon">keyboard_capslock</mat-icon>
+  <mat-icon *ngIf="key === 'Space'" class="center-icon">space_bar</mat-icon>
 </button>

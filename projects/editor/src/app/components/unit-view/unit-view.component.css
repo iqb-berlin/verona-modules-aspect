@@ -69,15 +69,9 @@ mat-divider {
   margin-bottom: 10px;
 }
 
-
-::ng-deep .mdc-tab:hover .menu-button {
-  visibility: visible;
-}
-
 .menu-button {
   position: absolute;
   left: 80%;
-  visibility: hidden;
 }
 
 aspect-page-canvas {

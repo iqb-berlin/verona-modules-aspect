@@ -11,8 +11,7 @@ describe('VeronaPostService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(VeronaPostService);
-    service.isStandalone = false;
-    service.sessionId = 'test';
+    service.sessionID = 'test';
     service.stateReportPolicy = 'eager';
   });
 
@@ -87,7 +86,7 @@ describe('VeronaPostService', () => {
         eventSubscription.unsubscribe();
         done();
       });
-    service.sendVopReadyNotification(metadata);
+    VeronaPostService.sendReadyNotification(metadata);
   });
 
   it('should post a VopUnitNavigationRequestedNotification', done => {
@@ -121,6 +120,6 @@ describe('VeronaPostService', () => {
         eventSubscription.unsubscribe();
         done();
       });
-    service.sendVopWindowFocusChangedNotification(true);
+    VeronaPostService.sendVopWindowFocusChangedNotification(true);
   });
 });

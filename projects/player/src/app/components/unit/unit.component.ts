@@ -50,7 +50,7 @@ export class UnitComponent implements OnInit {
       this.playerConfig = message.playerConfig || {};
       LogService.info('player: unitStateElementCodes', this.unitStateService.elementCodes);
       this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
-      this.veronaPostService.sessionId = message.sessionId;
+      this.veronaPostService.sessionID = message.sessionId;
       this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
       this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
         JSON.parse(message.unitState.dataParts.elementCodes) : [];

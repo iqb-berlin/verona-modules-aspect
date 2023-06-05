@@ -23,14 +23,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.setLocales();
-    this.initVeronaPostService();
+    VeronaPostService.sendReadyNotification(this.metaDataService.playerMetadata);
     this.nativeEventService.focus
-      .subscribe(isFocused => this.veronaPostService.sendVopWindowFocusChangedNotification(isFocused));
-  }
-
-  private initVeronaPostService(): void {
-    this.veronaPostService.isStandalone = this.isStandalone;
-    this.veronaPostService.sendVopReadyNotification(this.metaDataService.playerMetadata);
+      .subscribe(isFocused => VeronaPostService.sendVopWindowFocusChangedNotification(isFocused));
   }
 
   private setLocales(): void {

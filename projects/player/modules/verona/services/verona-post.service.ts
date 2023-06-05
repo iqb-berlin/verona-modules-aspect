@@ -15,8 +15,7 @@ import {
   providedIn: 'root'
 })
 export class VeronaPostService {
-  private _isStandalone: boolean = true;
-  private _sessionId: string = 'unKnown';
+  sessionID: string | undefined;
   private _stateReportPolicy: StateReportPolicy = 'eager';
   private cachedVopStateChangedNotificationValues: {
     unitState?: UnitState,
@@ -24,25 +23,12 @@ export class VeronaPostService {
     log?: LogData[]
   } = {};
 
-  set sessionId(sessionId: string) {
-    this._sessionId = sessionId;
-  }
-
-  set isStandalone(isStandalone: boolean) {
-    this._isStandalone = isStandalone;
-  }
-
   set stateReportPolicy(stateReportPolicy: StateReportPolicy) {
     this._stateReportPolicy = stateReportPolicy;
   }
 
-  private send(message: VopMessage): void {
-    // prevent posts in local (dev) mode
-    if (!this._isStandalone) {
-      window.parent.postMessage(message, '*');
-    } else {
-      LogService.debug('player: no host detected');
-    }
+  private static sendMessage(message: VopMessage): void {
+    window.parent.postMessage(message, '*');
   }
 
   sendVopStateChangedNotification(values: {
@@ -51,7 +37,7 @@ export class VeronaPostService {
     log?: LogData[]
   }, requested: boolean = false): void {
     if (this._stateReportPolicy === 'eager' || requested) {
-      this.send(this.createVopStateChangedNotification(
+      VeronaPostService.sendMessage(this.createVopStateChangedNotification(
         { ...this.cachedVopStateChangedNotificationValues, ...values }
       ));
     } else {
@@ -66,16 +52,16 @@ export class VeronaPostService {
   }): VopStateChangedNotification {
     return {
       type: 'vopStateChangedNotification',
-      sessionId: this._sessionId,
+      sessionId: this.sessionID as string,
       timeStamp: Date.now(),
       ...(values)
     };
   }
 
-  sendVopReadyNotification(playerMetadata: VopMetaData): void {
+  static sendReadyNotification(playerMetadata: VopMetaData): void {
     if (playerMetadata) {
       LogService.debug('player: sendVopReadyNotification', playerMetadata);
-      this.send({
+      VeronaPostService.sendMessage({
         type: 'vopReadyNotification',
         metadata: playerMetadata
       });
@@ -84,19 +70,19 @@ export class VeronaPostService {
     }
   }
 
-  sendVopUnitNavigationRequestedNotification = (target: NavigationTarget): void => {
-    this.send({
+  sendVopUnitNavigationRequestedNotification(target: NavigationTarget): void {
+    VeronaPostService.sendMessage({
       type: 'vopUnitNavigationRequestedNotification',
-      sessionId: this._sessionId,
+      sessionId: this.sessionID as string,
       target: target
     });
-  };
+  }
 
-  sendVopWindowFocusChangedNotification = (focused: boolean): void => {
-    this.send({
+  static sendVopWindowFocusChangedNotification(focused: boolean): void {
+    VeronaPostService.sendMessage({
       type: 'vopWindowFocusChangedNotification',
       timeStamp: Date.now(),
       hasFocus: focused
     });
-  };
+  }
 }

@@ -17,3 +17,6 @@ input[type=color] {
   cursor: pointer;
 }
 
+mat-checkbox {
+  height: 25px;
+}

@@ -98,6 +98,8 @@ import {
 } from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
+import { ComboButtonComponent } from './components/util/combo-button.component';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -155,7 +157,8 @@ import { SizeInputPanelComponent } from './components/util/size-input-panel.comp
     GetValidDropListsPipe,
     GetAnchorIdsPipe,
     ScrollPageIndexPipe,
-    SizeInputPanelComponent
+    SizeInputPanelComponent,
+    ComboButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -181,7 +184,9 @@ import { SizeInputPanelComponent } from './components/util/size-input-panel.comp
     }),
     MatListModule,
     MatRadioModule,
-    MathEditorModule
+    MathEditorModule,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService }

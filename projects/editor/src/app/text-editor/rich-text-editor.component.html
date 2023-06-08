@@ -33,10 +33,10 @@
         <mat-icon>strikethrough_s</mat-icon>
       </button>
     </fieldset>
-    <fieldset class="fx-row-start-start">
+    <fieldset class="fx-row-start-start" [style.gap.px]="5">
       <legend>Schrift</legend>
-      <mat-form-field class="dropdown">
-        <mat-label>Schriftgröße</mat-label>
+      <mat-form-field class="dropdown" appearance="outline" [style.width.px]="90">
+        <mat-label>Größe</mat-label>
         <mat-select [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize">
           <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
           <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
@@ -53,31 +53,21 @@
           <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="combo-button fx-row-start-stretch"
-           [style.background-color]="selectedFontColor">
-        <button mat-icon-button matTooltip="Textfarbe"
-                (click)="applyFontColor()">
-          <mat-icon>format_color_text</mat-icon>
-        </button>
-        <mat-select (click)="textColorInput.click()"></mat-select>
-        <input matInput type="color" #textColorInput hidden
-               (input)="selectedFontColor = $any($event.target).value; applyFontColor()">
-      </div>
-      <div class="combo-button fx-row-start-stretch"
-           [style.background-color]="selectedHighlightColor">
-        <button mat-icon-button matTooltip="Texthintergrund"
-                (click)="applyHighlightColor()">
-          <mat-icon>format_color_fill</mat-icon>
-        </button>
-        <mat-select (click)="textHighlightColorInput.click()"></mat-select>
-        <input matInput type="color" #textHighlightColorInput hidden
-               (input)="selectedHighlightColor = $any($event.target).value; applyHighlightColor()">
-      </div>
+      <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedFontColor"
+                           [tooltip]="'Textfarbe'" [icon]="'format_color_text'"
+                           (applySelection)="applyFontColor()"
+                           (selectionChanged)="selectedFontColor = $event">
+      </aspect-combo-button>
+      <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedHighlightColor"
+                           [tooltip]="'Texthintergrund'" [icon]="'format_color_fill'"
+                           (applySelection)="applyHighlightColor()"
+                           (selectionChanged)="selectedHighlightColor = $event">
+      </aspect-combo-button>
     </fieldset>
-    <fieldset class="fx-row-start-start" [style.gap.px]="10" >
+    <fieldset class="fx-row-start-start" [style.gap.px]="5" >
       <legend>Absatz</legend>
-      <mat-form-field class="dropdown">
-        <mat-label>Absatztyp</mat-label>
+      <mat-form-field class="dropdown" appearance="outline" [style.width.px]="135">
+        <mat-label>Typ</mat-label>
         <mat-select [value]="editor.getAttributes('heading').level?.toString() || ''"
                     (valueChange)="toggleHeading($event)">
           <mat-option value="1">H1</mat-option>
@@ -87,8 +77,8 @@
           <mat-option value="">Paragraph</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="dropdown">
-        <mat-label>Absatzabstand</mat-label>
+      <mat-form-field class="dropdown" appearance="outline" [style.width.px]="90">
+        <mat-label>Abstand</mat-label>
         <mat-select matTooltip="Achtung: Gilt nur für zukünftig angelegte Absätze" [matTooltipShowDelay]="300"
                     [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
                     (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
@@ -99,53 +89,26 @@
       </mat-form-field>
     </fieldset>
 
-    <fieldset class="fx-row-start-stretch">
+    <fieldset class="fx-row-start-stretch" [style.gap.px]="5">
       <legend>Listen</legend>
-      <div class="combo-button fx-row-start-stretch"
-           [style.background-color]="editor.isActive('bulletList') ? 'lightgrey' : ''">
-        <button mat-icon-button matTooltip="Aufzählung" [matTooltipShowDelay]="300"
-                [class.active]="editor.isActive('bulletList')"
-                (click)="toggleBulletList()">
-          <mat-icon>format_list_bulleted</mat-icon>
-        </button>
-        <select class="combo-button-select" [value]="editor.getAttributes('bulletList').listStyle"
-                    (change)="applyListStyle('bulletList', $any($event.target).value )">
-          <option value="disc">disc</option>
-          <option value="circle">circle</option>
-          <option value="square">square</option>
-        </select>
-      </div>
-      <div class="combo-button fx-row-start-stretch"
-           [style.background-color]="editor.isActive('orderedList') ? 'lightgrey' : ''">
-        <button mat-icon-button matTooltip="Aufzählung (nummeriert)" [matTooltipShowDelay]="300"
-                [class.active]="editor.isActive('orderedList')"
-                (click)="toggleOrderedList()">
-          <mat-icon>format_list_numbered</mat-icon>
-        </button>
-        <select class="combo-button-select" [value]="editor.getAttributes('orderedList').listStyle"
-                    (change)="applyListStyle('orderedList', $any($event.target).value)">
-          <option value="decimal">
-            decimal
-          </option>
-          <option value="lower-latin">
-            lower-latin
-          </option>
-          <option value="upper-latin">
-            upper-latin
-          </option>
-          <option value="lower-roman">
-            lower-roman
-          </option>
-          <option value="upper-roman">
-            upper-roman
-          </option>
-          <option value="lower-greek">
-            lower-greek
-          </option>
-        </select>
-      </div>
+      <aspect-combo-button [inputType]="'list'"
+                           [selectedValue]="editor.getAttributes('bulletList').listStyle"
+                           [availableValues]="['disc', 'circle', 'square']"
+                           [tooltip]="'Aufzählung'" [icon]="'format_list_bulleted'"
+                           [isActive]="editor.isActive('bulletList')"
+                           (applySelection)="toggleBulletList()"
+                           (selectionChanged)="applyListStyle('bulletList', $event)">
+      </aspect-combo-button>
+      <aspect-combo-button [inputType]="'list'"
+                           [selectedValue]="editor.getAttributes('orderedList').listStyle"
+                           [availableValues]="['decimal', 'lower-latin', 'upper-latin',
+                                               'lower-roman', 'upper-roman', 'lower-greek']"
+                           [tooltip]="'Aufzählung (nummeriert)'" [icon]="'format_list_numbered'"
+                           [isActive]="editor.isActive('orderedList')"
+                           (applySelection)="toggleOrderedList()"
+                           (selectionChanged)="applyListStyle('orderedList', $event)">
+      </aspect-combo-button>
     </fieldset>
-
   </div>
 
   <div class="fx-row-space-between-stretch">
@@ -190,8 +153,8 @@
               (click)="unhangIndent()">
         <mat-icon>view_headline</mat-icon>
       </button>
-      <mat-form-field class="indent-size-input" appearance="fill">
-        <mat-label>Einrücktiefe</mat-label>
+      <mat-form-field class="indent-size-input" appearance="outline" [style.width.px]="90">
+        <mat-label>Tiefe</mat-label>
         <input matInput type="text" [(ngModel)]="selectedIndentSize">
       </mat-form-field>
     </fieldset>
@@ -200,19 +163,19 @@
       <legend>Bild</legend>
       <button mat-icon-button matTooltip="Bild in Zeile einfügen" [matTooltipShowDelay]="300"
               (click)="insertImage()">
-        <mat-icon>burst_mode</mat-icon>
+        <mat-icon style="transform: scale(1.1);">burst_mode</mat-icon>
       </button>
       <button mat-icon-button matTooltip="Bild in eigenem Absatz einfügen" [matTooltipShowDelay]="300"
               (click)="insertBlockImage('none')">
-        <mat-icon>image</mat-icon>
+        <mat-icon style="transform: scale(0.9);">image</mat-icon>
       </button>
       <button mat-icon-button matTooltip="Bild rechts einfügen" [matTooltipShowDelay]="300"
               (click)="insertBlockImage('right')">
-        <mat-icon style="transform: scaleX(-1);">art_track</mat-icon>
+        <mat-icon style="transform: scale(-1.5, 1.5);">art_track</mat-icon>
       </button>
       <button mat-icon-button matTooltip="Bild links einfügen" [matTooltipShowDelay]="300"
               (click)="insertBlockImage('left')">
-        <mat-icon>art_track</mat-icon>
+        <mat-icon style="transform: scale(1.5);">art_track</mat-icon>
       </button>
     </fieldset>
 
@@ -277,19 +240,12 @@
               (click)="toggleBlockquote()">
         <mat-icon>format_quote</mat-icon>
       </button>
-      <div *ngIf="!clozeMode" class="combo-button fx-row-start-stretch"
-           [style.background-color]="selectedAnchorColor">
-        <button mat-icon-button matTooltip="Bereich markieren"
-                (click)="applyAnchorId()">
-          <mat-icon>read_more</mat-icon>
-        </button>
-        <mat-select matTooltip="Bereichsfarbe wählen"
-                    (click)="anchorIdColorInput.click()"
-                    (focus)="setSelectedAnchorIdText()">
-        </mat-select>
-        <input matInput type="color" #anchorIdColorInput hidden
-               (input)="selectedAnchorColor = $any($event.target).value; applyAnchorId()">
-      </div>
+      <aspect-combo-button *ngIf="!clozeMode"
+                           [inputType]="'color'" [selectedValue]="selectedAnchorColor"
+                           [tooltip]="'Bereich markieren'" [icon]="'read_more'"
+                           (applySelection)="applyAnchorId()"
+                           (selectionChanged)="selectedAnchorColor = $event">
+      </aspect-combo-button>
     </fieldset>
   </div>
   <div *ngIf="clozeMode" class="fx-row-space-around-center" >

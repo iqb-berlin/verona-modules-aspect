@@ -1,5 +1,7 @@
 tiptap-editor {
-  height: 57%;
+  height: 60%;
+  border: 1px solid;
+  margin: 0 20px;
 }
 :host ::ng-deep div.ProseMirror {
   height: 99%;
@@ -36,57 +38,39 @@ button.active {
   background-color: lightgrey;
 }
 
-.combo-button {
-  margin-top: -2px;
-  margin-left: 10px;
-}
-.combo-button mat-select {
-  margin-top: 20%;
-}
-
-.combo-button-select {
-  border: none;
-  outline: none;
-  max-width: 15px;
-}
-
 .editor-control-panel {
   margin-bottom: 20px;
   background: linear-gradient(to top right, #FFF5F8, #FAFAFA);
   font: unset;
-  max-width: 1000px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
 }
 
-.small-dropdown {
-  width: 70px;
+:host ::ng-deep .dropdown .mat-mdc-form-field-infix {
+  min-height: unset;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.dropdown {
-  width: 110px;
+:host ::ng-deep .dropdown .mdc-notched-outline__notch {
+  max-width: unset !important;
 }
 
-.indent-size-input {
-  width: 90px;
-  top: -7px;
+:host ::ng-deep .indent-size-input .mat-mdc-form-field-flex {
+  height: 45px;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-:host ::ng-deep .indent-size-input .mat-form-field-flex {
-  padding: 5px;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-:host ::ng-deep .indent-size-input .mat-form-field-infix {
-  padding: .25em 0 .15em 0;
+:host ::ng-deep .indent-size-input .mat-mdc-form-field-infix {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 :host fieldset {
-  height: 65px;
+  height: 55px;
   box-sizing: content-box !important;
   border-radius: 3px;
-  padding: 5px 2px 10px 2px;
+  padding: 5px 5px 10px 5px;
 }
 
 .fx-column-start-stretch {

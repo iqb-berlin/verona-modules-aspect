@@ -52,3 +52,7 @@ mat-tab-group {
 .fx-align-self-center {
   align-self: center;
 }
+
+:host ::ng-deep .mdc-tab {
+  min-width: unset;
+}

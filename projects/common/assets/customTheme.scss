@@ -32,3 +32,8 @@ math-field {
     outline-color: #3f51b5; //TODO $outline-color-primary
   }
 }
+
+:root {
+  --mdc-typography-button-letter-spacing: normal;
+}
+

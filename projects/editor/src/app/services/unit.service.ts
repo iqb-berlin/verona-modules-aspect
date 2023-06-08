@@ -245,7 +245,7 @@ export class UnitService {
         } else {
           this.idService.removeId(element.id);
           this.idService.addID(value as string);
-          element.id = value as string;
+          element.setProperty('id', value);
         }
       } else if (property === 'document') {
         element.setProperty(property, value);

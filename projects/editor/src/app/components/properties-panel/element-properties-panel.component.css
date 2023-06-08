@@ -17,11 +17,6 @@ mat-tab-group {
 
 :host ::ng-deep .mat-mdc-tab-body-wrapper {height: 100%}
 
-
-:host ::ng-deep mat-checkbox {
-  margin-bottom: 5px;
-}
-
 :host ::ng-deep .wide-form-field {
   width: 100%;
 }

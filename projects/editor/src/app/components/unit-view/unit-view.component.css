@@ -23,6 +23,15 @@
   display: inherit;
 }
 
+.show-properties-button {
+  padding-bottom: 140px;
+}
+
+.show-properties-button span {
+  transform: rotate(90deg);
+  display: inherit;
+}
+
 .fx-column-start-stretch {
   box-sizing: border-box;
   display: flex;
@@ -44,15 +53,6 @@
   box-sizing: border-box;
 }
 
-.show-properties-button {
-  padding-bottom: 140px;
-}
-
-.show-properties-button span {
-  transform: rotate(90deg);
-  display: inherit;
-}
-
 ::ng-deep .mat-drawer-content .mat-mdc-tab-body-wrapper {
   height: 100%;
 }
@@ -71,9 +71,20 @@ mat-divider {
 
 .menu-button {
   position: absolute;
-  left: 80%;
+  left: 100%;
 }
 
 aspect-page-canvas {
   height: 100%; display: block;
+}
+
+:host ::ng-deep .mdc-tab {
+  min-width: 160px;
+}
+
+:host ::ng-deep .mat-mdc-icon-button .mat-mdc-button-persistent-ripple::before {
+  top: 15%;
+  left: 15%;
+  right: 15%;
+  bottom: 15%;
 }

@@ -19,7 +19,7 @@
         <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
           <ng-template mat-tab-label>
             <ng-container *ngIf="page.alwaysVisible">
-            <mat-icon class="page-alwaysVisible-icon">assignment</mat-icon>
+              <mat-icon class="page-alwaysVisible-icon">assignment</mat-icon>
             </ng-container>
             <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === false">
               {{'page' | translate }} {{i + 1}}
@@ -28,7 +28,9 @@
               {{'page' | translate }} {{i}}
             </ng-container>
 
-            <button mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu">
+            <button *ngIf="selectedPageIndex == i"
+                    mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu"
+                    [matTooltip]="'Seiteneinstellungen'">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #pageMenu="matMenu">
@@ -104,7 +106,6 @@
                 </mat-form-field>
               </div>
             </mat-menu>
-
           </ng-template>
           <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch" [page]="page"></aspect-page-canvas>
         </mat-tab>

@@ -4,8 +4,8 @@ import { AnswerScheme, UIElement } from 'common/models/elements/element';
 export class Page {
   [index: string]: unknown;
   sections: Section[] = [];
-  hasMaxWidth: boolean = false;
-  maxWidth: number = 900;
+  hasMaxWidth: boolean = true;
+  maxWidth: number = 750;
   margin: number = 30;
   backgroundColor: string = '#ffffff';
   alwaysVisible: boolean = false;

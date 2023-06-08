@@ -7,6 +7,7 @@ import { ImageComponent } from 'common/components/media-elements/image.component
 
 export class ImageElement extends UIElement implements PositionedUIElement {
   src: string | null = null;
+  alt: string = 'Bild nicht gefunden';
   scale: boolean = false;
   magnifier: boolean = false;
   magnifierSize: number = 100;
@@ -17,6 +18,7 @@ export class ImageElement extends UIElement implements PositionedUIElement {
   constructor(element: Partial<ImageElement>) {
     super({ height: 100, ...element });
     if (element.src) this.src = element.src;
+    if (element.alt) this.alt = element.alt;
     if (element.scale) this.scale = element.scale;
     if (element.magnifier) this.magnifier = element.magnifier;
     if (element.magnifierSize) this.magnifierSize = element.magnifierSize;

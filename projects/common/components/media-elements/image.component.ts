@@ -18,7 +18,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
       <img #image
            draggable="false"
            [src]="elementModel.src | safeResourceUrl"
-           [alt]="'imageNotFound' | translate"
+           [alt]="elementModel.alt"
            [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">
       <aspect-image-magnifier *ngIf="elementModel.magnifier && ( magnifierVisible || project === 'editor')"
                         [imageId]="elementModel.id"

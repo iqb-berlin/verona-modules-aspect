@@ -54,6 +54,13 @@
           (click)="changeMediaSrc(combinedProperties.type)">
     <mat-icon>upload_file</mat-icon>
   </button>
+
+  <mat-form-field *ngIf="combinedProperties.alt !== undefined">
+    <mat-label>Alternativtext</mat-label>
+    <input matInput type="text" [value]="$any(combinedProperties.alt)"
+           (input)="updateModel.emit({property: 'alt', value: $any($event.target).value })">
+  </mat-form-field>
+
   <button *ngIf="combinedProperties.player"
           class="fx-align-self-center"
           mat-raised-button

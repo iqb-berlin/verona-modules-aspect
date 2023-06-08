@@ -9,10 +9,10 @@ import { PositionProperties, UIElementValue } from 'common/models/elements/eleme
     <fieldset>
       <legend>Position</legend>
       <div *ngIf="!positionProperties.dynamicPositioning; else elseBlock"
-           class="fx-row-start-stretch fx-fix-gap-10">
+           class="flex-row">
         <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
                                positionProperties.xPosition !== undefined"
-                        class="fx-flex">
+                        appearance="outline">
           <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
           <input matInput type="number" #xPosition="ngModel" min="0"
                  [ngModel]="positionProperties.xPosition"
@@ -21,7 +21,7 @@ import { PositionProperties, UIElementValue } from 'common/models/elements/eleme
         </mat-form-field>
         <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
                                  positionProperties.yPosition !== undefined"
-                        class="fx-flex">
+                        appearance="outline">
           <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
           <input matInput type="number" #yPosition="ngModel" min="0"
                  [ngModel]="positionProperties.yPosition"
@@ -32,26 +32,26 @@ import { PositionProperties, UIElementValue } from 'common/models/elements/eleme
 
       <ng-template #elseBlock>
         {{'propertiesPanel.grid' | translate }}
-        <div class="fx-row-start-stretch fx-fix-gap-10">
-          <mat-form-field class="fx-flex">
+        <div class="flex-row">
+          <mat-form-field appearance="outline">
             <mat-label>{{'column' | translate }}</mat-label>
             <input matInput type="number" [ngModel]="positionProperties.gridColumn"
                    (ngModelChange)="updateModel.emit({ property: 'gridColumn', value: $event })">
           </mat-form-field>
-          <mat-form-field class="fx-flex-40">
+          <mat-form-field appearance="outline">
             <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridColumnRange"
                    (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })">
           </mat-form-field>
         </div>
-        <div class="fx-row-start-stretch fx-fix-gap-10">
-          <mat-form-field class="fx-flex">
+        <div class="flex-row">
+          <mat-form-field appearance="outline">
             <mat-label>{{'row' | translate }}</mat-label>
             <input matInput type="number" [ngModel]="positionProperties.gridRow"
                    (ngModelChange)="updateModel.emit({ property: 'gridRow', value: $event })">
           </mat-form-field>
-          <mat-form-field class="fx-flex-40">
+          <mat-form-field appearance="outline">
             <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridRowRange"
@@ -117,7 +117,8 @@ import { PositionProperties, UIElementValue } from 'common/models/elements/eleme
     </fieldset>
   `,
   styles: [
-    'mat-form-field {width: 110px;}'
+    'mat-form-field {width: 140px;}',
+    '.flex-row {display: flex; flex-direction: row; gap: 10px;}'
   ]
 })
 export class PositionFieldSetComponent {

@@ -44,6 +44,7 @@ import { SelectionService } from '../../../../services/selection.service';
                     [disabled]="!combinedProperties.highlightableYellow &&
                     !combinedProperties.highlightableTurquoise &&
                     !combinedProperties.highlightableOrange"
+                    [style.margin-top.px]="5"
                     [checked]="$any(combinedProperties.hasSelectionPopup)"
                     (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
         {{'propertiesPanel.hasSelectionPopup' | translate }}
@@ -58,6 +59,11 @@ import { SelectionService } from '../../../../services/selection.service';
       background-color: rgba(0,0,0,.04);
       cursor: pointer;
       margin-bottom: 10px;
+      padding: 10px;
+    }
+
+    .text-text:hover {
+      background-color: rgba(110, 0, 110, .04);
     }
 
     .fx-column-start-stretch {

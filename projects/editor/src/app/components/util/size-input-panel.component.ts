@@ -7,13 +7,13 @@ import { Measurement } from 'common/models/elements/element';
   selector: 'aspect-size-input-panel',
   template: `
     <div class="panel">
-      <mat-form-field>
+      <mat-form-field [style.width.%]="25">
         <mat-label>{{label}}</mat-label>
         <input matInput type="number"
                [(ngModel)]="value"
                (change)="valueUpdated.emit(getCombinedString())">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field [style.width.%]="40">
         <mat-label>Einheit</mat-label>
         <mat-select [(ngModel)]="unit"
                     (selectionChange)="valueUpdated.emit(getCombinedString())">
@@ -28,8 +28,7 @@ import { Measurement } from 'common/models/elements/element';
     </div>
   `,
   styles: [
-    '.panel {display: flex; flex-direction: row; gap: 15px;}',
-    '.panel .mat-mdc-form-field {width: 100px;}'
+    '.panel {display: flex; flex-direction: row;}'
   ]
 })
 export class SizeInputPanelComponent {

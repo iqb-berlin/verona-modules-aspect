@@ -17,6 +17,6 @@ input[type=color] {
   cursor: pointer;
 }
 
-mat-checkbox {
+mat-checkbox .mdc-form-field {
   height: 25px;
 }

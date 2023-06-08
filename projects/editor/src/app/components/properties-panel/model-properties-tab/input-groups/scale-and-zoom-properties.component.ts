@@ -59,6 +59,10 @@ import { UIElement } from 'common/models/elements/element';
     .fx-fix-gap-5 {
       gap: 5px;
     }
+
+    mat-slider {
+        max-width: 90%;
+    }
   `]
 })
 export class ScaleAndZoomPropertiesComponent {

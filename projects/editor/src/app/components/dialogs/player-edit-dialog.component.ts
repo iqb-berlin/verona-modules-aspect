@@ -5,7 +5,7 @@ import { PlayerProperties } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-player-edit-dialog',
   template: `
-    <mat-dialog-content class="fx-row-start-stretch">
+    <mat-dialog-content [style.height.%]="90">
       <mat-tab-group>
         <mat-tab label="{{ 'player.appearance' | translate }}">
           <div class="fx-column-start-stretch">
@@ -114,20 +114,21 @@ import { PlayerProperties } from 'common/models/elements/element';
     </mat-dialog-actions>
     `,
   styles: [`
-    .fx-row-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
     .fx-column-start-stretch {
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       align-items: stretch;
+    }
+
+    mat-tab-group {
+      height: 100%;
+    }
+
+    :host ::ng-deep .mat-mdc-tab-body-wrapper {
+      margin-top: 10px;
+      height: 100%;
     }
   `]
 })

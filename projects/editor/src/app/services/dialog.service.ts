@@ -92,7 +92,8 @@ export class DialogService {
 
   showPlayerEditDialog(playerProps: PlayerProperties): Observable<PlayerProperties> {
     const dialogRef = this.dialog.open(PlayerEditDialogComponent, {
-      data: { playerProps }
+      data: { playerProps },
+      height: '600px'
     });
     return dialogRef.afterClosed();
   }

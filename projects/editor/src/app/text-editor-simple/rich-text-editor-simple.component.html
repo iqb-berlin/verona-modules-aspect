@@ -37,26 +37,16 @@
 
   <fieldset  class="fx-row-start-stretch">
     <legend>Schrift</legend>
-    <div class="combo-button fx-row-start-stretch"
-         [style.background-color]="selectedFontColor">
-      <button mat-icon-button matTooltip="Textfarbe"
-              (click)="applyFontColor()">
-        <mat-icon>format_color_text</mat-icon>
-      </button>
-      <mat-select (click)="textColorInput.click()"></mat-select>
-      <input matInput type="color" #textColorInput hidden
-             (input)="selectedFontColor = $any($event.target).value; applyFontColor()">
-    </div>
-    <div class="combo-button fx-row-start-stretch"
-         [style.background-color]="selectedHighlightColor">
-      <button mat-icon-button matTooltip="Texthintergrund"
-              (click)="applyHighlightColor()">
-        <mat-icon>format_color_fill</mat-icon>
-      </button>
-      <mat-select (click)="textHighlightColorInput.click()"></mat-select>
-      <input matInput type="color" #textHighlightColorInput hidden
-             (input)="selectedHighlightColor = $any($event.target).value; applyHighlightColor()">
-    </div>
+    <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedFontColor"
+                         [tooltip]="'Textfarbe'" [icon]="'format_color_text'"
+                         (applySelection)="applyFontColor()"
+                         (selectionChanged)="selectedFontColor = $event">
+    </aspect-combo-button>
+    <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedHighlightColor"
+                         [tooltip]="'Texthintergrund'" [icon]="'format_color_fill'"
+                         (applySelection)="applyHighlightColor()"
+                         (selectionChanged)="selectedHighlightColor = $event">
+    </aspect-combo-button>
   </fieldset>
 
   <fieldset>

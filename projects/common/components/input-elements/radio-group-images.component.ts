@@ -6,7 +6,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   selector: 'aspect-radio-group-images',
   template: `
       <label id="radio-group-label"
-              [innerHTML]="elementModel.label | safeResourceHTML">
+             [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
       <mat-radio-group aria-labelledby="radio-group-label"
                        [style.grid-template-columns]="elementModel.itemsPerRow !== null ?
@@ -16,24 +16,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                        [value]="elementModel.value">
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
-                          class="fx-column-end-center"
                           [value]="i">
-          <img *ngIf="option.imgSrc && (option.imgPosition === 'above' || option.imgPosition === 'left')"
-               [style.object-fit]="'scale-down'"
-               [style.max-width.%]="100"
-               [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
-          <div [innerHTML]="option.text | safeResourceHTML"
-               [style.background-color]="elementModel.styling.backgroundColor"
-               [style.color]="elementModel.styling.fontColor"
-               [style.font-family]="elementModel.styling.font"
-               [style.font-size.px]="elementModel.styling.fontSize"
-               [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-               [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-               [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"></div>
-          <img *ngIf="option.imgSrc && (option.imgPosition === 'below' || option.imgPosition === 'right')"
-               [style.object-fit]="'scale-down'"
-               [style.max-width.%]="100"
-               [src]="option.imgSrc | safeResourceUrl" alt="Image Placeholder">
+          <aspect-text-image-panel [label]="option" [styling]="elementModel.styling"></aspect-text-image-panel>
         </mat-radio-button>
       </mat-radio-group>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
@@ -42,43 +26,26 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
   `,
   styles: [`
-    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
     mat-radio-group {
-    display: grid;
+      display: grid;
     }
-    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
-    :host ::ng-deep .mat-radio-label {
+
+    :host ::ng-deep mat-radio-button .mdc-form-field {
+      display: flex;
       flex-direction: column-reverse;
-    }
-    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
-    :host ::ng-deep .mat-radio-label .mat-radio-container {
-      margin-top: 15px;
-      margin-left: 10px;
-    }
-    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
-    :host ::ng-deep .mat-radio-label .mat-radio-label-content {
-      text-align: center;
-    }
-    /* TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version. */
-    mat-radio-button {
       margin-bottom: 60px;
     }
+
+    :host ::ng-deep mat-radio-button .mdc-form-field label {
+      margin: 0;
+      padding: 0;
+    }
+
     .error-message {
       font-size: 75%;
-    }
-    .fx-column-end-center {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      align-items: center;
     }
   `]
 })
 export class RadioGroupImagesComponent extends FormElementComponent {
   @Input() elementModel!: RadioButtonGroupComplexElement;
-
-  selectOption(index: number): void {
-    this.elementFormControl.setValue(index);
-  }
 }

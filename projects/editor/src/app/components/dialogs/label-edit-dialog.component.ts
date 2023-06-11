@@ -25,9 +25,7 @@ import { FileService } from 'common/services/file.service';
             </mat-select>
           </mat-form-field>
         </div>
-        <img [src]="newLabel.imgSrc"
-             [style.object-fit]="'scale-down'"
-             [width]="200">
+        <aspect-text-image-panel [label]="newLabel"></aspect-text-image-panel>
       </div>
 
     </mat-dialog-content>

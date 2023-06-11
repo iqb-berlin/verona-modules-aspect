@@ -75,6 +75,7 @@ import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
+import { TextImagePanelComponent } from 'common/components/text-image-panel.component';
 
 @NgModule({
   imports: [
@@ -142,7 +143,8 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
     GetValuePipe,
     MathFieldComponent,
     DynamicRowsDirective,
-    MeasurePipe
+    MeasurePipe,
+    TextImagePanelComponent
   ],
   exports: [
     CommonModule,
@@ -182,7 +184,8 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
     ImageComponent,
     GeometryComponent,
     MathFieldComponent,
-    MeasurePipe
+    MeasurePipe,
+    TextImagePanelComponent
   ]
 })
 export class SharedModule {

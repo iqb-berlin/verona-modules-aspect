@@ -10,7 +10,7 @@ import { FileService } from 'common/services/file.service';
       <aspect-rich-text-editor-simple [(content)]="newLabel.text">
       </aspect-rich-text-editor-simple>
 
-      <div *ngIf="newLabel.imgSrc !== undefined" class="fx-row-space-between-center">
+      <div *ngIf="newLabel.imgSrc !== undefined" class="image-panel">
         <div class="fx-column-start-stretch fx-fix-gap-10">
           <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
           <button mat-raised-button (click)="newLabel.imgSrc = null">{{ 'removeImage' | translate }}</button>
@@ -46,20 +46,21 @@ import { FileService } from 'common/services/file.service';
       align-items: stretch;
     }
 
-    .fx-row-space-between-center {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     .fx-fix-gap-20 {
       gap: 20px;
     }
 
     .fx-fix-gap-10 {
       gap: 10px;
+    }
+
+    .image-panel {
+      display: flex;
+    }
+
+    .image-panel aspect-text-image-panel {
+      margin-left: auto;
+      margin-right: auto;
     }
   `]
 })

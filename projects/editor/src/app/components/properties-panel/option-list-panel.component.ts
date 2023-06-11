@@ -13,7 +13,7 @@ import { Label } from 'common/models/elements/element';
         <mat-label>{{textFieldLabel}}</mat-label>
         <input #newItem matInput type="text" placeholder="Fragetext"
                (keyup.enter)="addListItem(newItem.value); newItem.select()">
-        <button mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"
+        <button mat-icon-button matSuffix color="primary"
                 (click)="addListItem(newItem.value); newItem.select()">
           <mat-icon>add</mat-icon>
         </button>

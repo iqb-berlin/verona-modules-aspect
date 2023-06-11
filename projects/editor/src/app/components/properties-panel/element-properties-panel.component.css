@@ -51,3 +51,7 @@ mat-tab-group {
 :host ::ng-deep .mdc-tab {
   min-width: unset;
 }
+
+.button-group {
+  border: 3px groove;
+}

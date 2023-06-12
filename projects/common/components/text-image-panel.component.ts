@@ -6,7 +6,7 @@ import { BasicStyles, TextImageLabel } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-text-image-panel',
   template: `
-    <div class="panel" [ngClass]="{'column': label.imgPosition === 'above',
+    <div class="wrapper" [ngClass]="{'column': label.imgPosition === 'above',
                                    'column-reverse': label.imgPosition === 'below',
                                    'row': label.imgPosition === 'left',
                                    'row-reverse': label.imgPosition === 'right'}">
@@ -26,12 +26,17 @@ import { BasicStyles, TextImageLabel } from 'common/models/elements/element';
     </div>
   `,
   styles: [`
-    .panel {display: flex;}
+    :host {align-self: center;}
+    .wrapper {display: flex;}
     .column {flex-direction: column;}
     .column-reverse {flex-direction: column-reverse;}
     .row {flex-direction: row;}
     .row-reverse {flex-direction: row-reverse;}
-    .text {display: flex; align-items: center;}
+    .text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   `]
 })
 export class TextImagePanelComponent {

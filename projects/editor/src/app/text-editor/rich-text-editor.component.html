@@ -187,31 +187,44 @@
       </button>
       <mat-menu #specialCharsMenu="matMenu" yPosition="above">
         <button mat-button (click)="insertSpecialChar('&nbsp;')"
-                [matTooltip]="'Geschütztes Leerzeichen'">&blank;</button>
+                [matTooltip]="'Nicht umbrechendes Leerzeichen'">&blank;</button>
         <button mat-button (click)="insertSpecialChar('&#8239;')"
-                [matTooltip]="'Geschütztes Leerzeichen (schmal)'">&blank;<sub>2</sub></button>
-        <button mat-button (click)="insertSpecialChar('&ndash;')">&ndash;</button>
+                [matTooltip]="'Schmales nicht umbrechendes Leerzeichen'">&blank;<sub>2</sub></button>
+        <button mat-button (click)="insertSpecialChar('&ndash;')"
+                [matTooltip]="'Halbgeviertstrich'">&ndash;</button>
         <button mat-button (click)="insertSpecialChar('&#8209;')"
-                [matTooltip]="'Geschützter Bindestrich'">—</button>
-        <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
-        <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
+                [matTooltip]="'Nicht umbrechender Viertelgeviertstrich'">—</button>
         <br>
-        <button mat-button (click)="insertSpecialChar('&lsquo;')">&lsquo;</button>
-        <button mat-button (click)="insertSpecialChar('&rsquo;')">&rsquo;</button>
-        <button mat-button (click)="insertSpecialChar('&sbquo;')">&sbquo;</button>
-        <button mat-button (click)="insertSpecialChar('&bdquo;')">&bdquo;</button>
-        <button mat-button (click)="insertSpecialChar('&ldquo;')">&ldquo;</button>
-        <button mat-button (click)="insertSpecialChar('&rdquo;')">&rdquo;</button>
+        <button mat-button (click)="insertSpecialChar('&lsquo;')"
+                [matTooltip]="'Einfaches Anführungszeichen links'">&lsquo;</button>
+        <button mat-button (click)="insertSpecialChar('&rsquo;')"
+                [matTooltip]="'Einfaches Anführungszeichen rechts'">&rsquo;</button>
+        <button mat-button (click)="insertSpecialChar('&sbquo;')"
+                [matTooltip]="'Niedriges Komma-Anführungszeichen'">&sbquo;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&bdquo;')"
+                [matTooltip]="'Doppeltes Anführungszeichen unten'">&bdquo;</button>
+        <button mat-button (click)="insertSpecialChar('&ldquo;')"
+                [matTooltip]="'Doppeltes Anführungszeichen oben'">&ldquo;</button>
+        <button mat-button (click)="insertSpecialChar('&rdquo;')"
+                [matTooltip]="'Rechtes doppeltes Anführungszeichen'">&rdquo;</button>
+        <br>
+        <button mat-button (click)="insertSpecialChar('&lsaquo;')"
+                [matTooltip]="'Einfaches spitzes Anführungszeichen links'">&lsaquo;</button>
+        <button mat-button (click)="insertSpecialChar('&rsaquo;')"
+                [matTooltip]="'Einfaches spitzes Anführungszeichen rechts'">&rsaquo;</button>
+        <button mat-button (click)="insertSpecialChar('&laquo;')"
+                [matTooltip]="'Doppeltes spitzes Anführungszeichen links'">&laquo;</button>
+        <button mat-button (click)="insertSpecialChar('&raquo;')"
+                [matTooltip]="'Doppeltes spitzes Anführungszeichen rechts'">&raquo;</button>
+        <br>
         <button mat-button (click)="insertSpecialChar('&micro;')">&micro;</button>
-        <br>
         <button mat-button (click)="insertSpecialChar('&ccedil;')">&ccedil;</button>
         <button mat-button (click)="insertSpecialChar('&Ccedil;')">&Ccedil;</button>
         <button mat-button (click)="insertSpecialChar('&AElig;')">&AElig;</button>
         <br>
-        <button mat-button (click)="insertSpecialChar('&lsaquo;')">&lsaquo;</button>
-        <button mat-button (click)="insertSpecialChar('&rsaquo;')">&rsaquo;</button>
-        <button mat-button (click)="insertSpecialChar('&laquo;')">&laquo;</button>
-        <button mat-button (click)="insertSpecialChar('&raquo;')">&raquo;</button>
+        <button mat-button (click)="insertSpecialChar('&female;')">&female;</button>
+        <button mat-button (click)="insertSpecialChar('&male;')">&male;</button>
         <br>
         <button mat-button (click)="insertSpecialChar('&cent;')">&cent;</button>
         <button mat-button (click)="insertSpecialChar('&pound;')">&pound;</button>

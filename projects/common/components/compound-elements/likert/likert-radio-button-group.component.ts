@@ -16,20 +16,13 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
            [style.grid-row-start]="1"
            [style.grid-row-end]="2"
            [style.place-self]="'start'"
+           [style.align-self]="'center'"
            [style.align-items]="'center'"
            [class.fx-row-start-stretch]="elementModel.rowLabel.imgPosition === 'left' ||
                                          elementModel.rowLabel.imgPosition === 'right'"
            [class.fx-column-start-stretch]="elementModel.rowLabel.imgPosition === 'above' ||
                                             elementModel.rowLabel.imgPosition === 'below'">
-        <img *ngIf="elementModel.rowLabel.imgSrc &&
-                    (elementModel.rowLabel.imgPosition === 'above' || elementModel.rowLabel.imgPosition === 'left')"
-             [src]="elementModel.rowLabel.imgSrc | safeResourceUrl" alt="Image Placeholder"
-             [style.object-fit]="'scale-down'" [style.max-width.%]="100">
-        <div [innerHTML]="elementModel.rowLabel.text | safeResourceHTML"></div>
-        <img *ngIf="elementModel.rowLabel.imgSrc &&
-                    (elementModel.rowLabel.imgPosition === 'below' || elementModel.rowLabel.imgPosition === 'right')"
-             [src]="elementModel.rowLabel.imgSrc | safeResourceUrl" alt="Image Placeholder"
-             [style.object-fit]="'scale-down'" [style.max-width.%]="100">
+        <aspect-text-image-panel [label]="elementModel.rowLabel"></aspect-text-image-panel>
       </div>
 
       <mat-radio-button *ngFor="let column of [].constructor(elementModel.columnCount); let j = index"

@@ -7,60 +7,59 @@ import { TextLabel } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-likert-row-edit-dialog',
   template: `
-    <mat-dialog-content class="fx-column-start-stretch">
-      <aspect-rich-text-editor-simple [(content)]="newLikertRow.rowLabel.text">
-      </aspect-rich-text-editor-simple>
+    <mat-dialog-content>
+      <div class="fx-column-start-stretch">
+        <aspect-rich-text-editor-simple [(content)]="newLikertRow.rowLabel.text">
+        </aspect-rich-text-editor-simple>
 
-      <mat-form-field [style.margin-top.px]="15">
-        <mat-label>{{'id' | translate }}</mat-label>
-        <input matInput type="text" [(ngModel)]="newLikertRow.id">
-      </mat-form-field>
+        <mat-form-field [style.margin-top.px]="15">
+          <mat-label>{{'id' | translate }}</mat-label>
+          <input matInput type="text" [(ngModel)]="newLikertRow.id">
+        </mat-form-field>
 
-      <mat-checkbox [(ngModel)]="newLikertRow.readOnly">
-        {{'propertiesPanel.readOnly' | translate }}
-      </mat-checkbox>
+        <mat-checkbox [(ngModel)]="newLikertRow.readOnly">
+          {{'propertiesPanel.readOnly' | translate }}
+        </mat-checkbox>
 
-      <mat-form-field appearance="fill">
-        <mat-label>{{'preset' | translate }}</mat-label>
-        <mat-select [(ngModel)]="newLikertRow.value">
-          <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
-          <mat-option *ngFor="let column of data.options; let i = index" [value]="i"
-                      [innerHTML]="'<span>' + column.text + ' (Index: ' + i + ')</span>' | safeResourceHTML">
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>{{'preset' | translate }}</mat-label>
+          <mat-select [(ngModel)]="newLikertRow.value">
+            <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
+            <mat-option *ngFor="let column of data.options; let i = index" [value]="i"
+                        [innerHTML]="'<span>' + column.text + ' (Index: ' + i + ')</span>' | safeResourceHTML">
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>{{'verticalButtonAlignment' | translate }}</mat-label>
-        <mat-select [(ngModel)]="newLikertRow.verticalButtonAlignment">
-          <mat-option *ngFor="let option of ['auto', 'center']"
-                      [value]="option">
-            {{ option | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>{{'verticalButtonAlignment' | translate }}</mat-label>
+          <mat-select [(ngModel)]="newLikertRow.verticalButtonAlignment">
+            <mat-option *ngFor="let option of ['auto', 'center']"
+                        [value]="option">
+              {{ option | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-      <div class="fx-row-space-between-center">
-        <div class="fx-column-start-stretch fx-fix-gap-10">
-          <button mat-raised-button (click)="loadImage()">
-            {{ 'loadImage' | translate }}</button>
-          <button mat-raised-button (click)="newLikertRow.rowLabel.imgSrc = null">
-            {{ 'removeImage' | translate }}</button>
-          <mat-form-field>
-            <mat-label>{{'imagePosition' | translate }}</mat-label>
-            <mat-select [(ngModel)]="newLikertRow.rowLabel.imgPosition">
-              <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
-                          [value]="option">
-                {{ option | translate }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="fx-row-space-between-center">
+          <div class="fx-column-start-stretch fx-fix-gap-10">
+            <button mat-raised-button (click)="loadImage()">
+              {{ 'loadImage' | translate }}</button>
+            <button mat-raised-button (click)="newLikertRow.rowLabel.imgSrc = null">
+              {{ 'removeImage' | translate }}</button>
+            <mat-form-field>
+              <mat-label>{{'imagePosition' | translate }}</mat-label>
+              <mat-select [(ngModel)]="newLikertRow.rowLabel.imgPosition">
+                <mat-option *ngFor="let option of ['above', 'below', 'left', 'right']"
+                            [value]="option">
+                  {{ option | translate }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <aspect-text-image-panel [label]="newLikertRow.rowLabel"></aspect-text-image-panel>
         </div>
-
-        <img [src]="newLikertRow.rowLabel.imgSrc"
-             [style.object-fit]="'scale-down'" [width]="200">
       </div>
-
     </mat-dialog-content>
 
     <mat-dialog-actions>
@@ -71,7 +70,6 @@ import { TextLabel } from 'common/models/elements/element';
     </mat-dialog-actions>
   `,
   styles: [`
-     /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
      mat-checkbox {
        margin-bottom: 15px;
      }
@@ -94,6 +92,11 @@ import { TextLabel } from 'common/models/elements/element';
 
      .fx-fix-gap-10 {
        gap: 10px;
+     }
+
+     aspect-text-image-panel {
+       margin-left: auto;
+       margin-right: auto;
      }
   `]
 })

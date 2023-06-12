@@ -209,12 +209,12 @@
     {{'propertiesPanel.showFullscreenButton' | translate }}
   </mat-checkbox>
 
-  <mat-form-field *ngIf="combinedProperties.customToolBar != null"
+  <mat-form-field *ngIf="combinedProperties.customToolbar != null"
                   matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.customToolbar' | translate }}</mat-label>
     <input matInput [value]="$any(combinedProperties.customToolbar)"
-           (input)="updateModel.emit({ property: 'customToolBar', value: $any($event.target).value })">
+           (input)="updateModel.emit({ property: 'customToolbar', value: $any($event.target).value })">
   </mat-form-field>
 
   <mat-checkbox *ngIf="combinedProperties.enableModeSwitch !== undefined"

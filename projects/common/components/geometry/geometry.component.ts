@@ -96,7 +96,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       enableShiftDragZoom: this.elementModel.enableShiftDragZoom,
       showZoomButtons: this.elementModel.showZoomButtons,
       showFullscreenButton: this.elementModel.showFullscreenButton,
-      customToolBar: this.elementModel.customToolBar,
+      customToolBar: this.elementModel.customToolbar,
       enableUndoRedo: this.elementModel.enableUndoRedo,
       showResetIcon: false, // use custom html button icon
       showMenuBar: false,

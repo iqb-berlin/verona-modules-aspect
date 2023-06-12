@@ -9,19 +9,23 @@ import { PlayerProperties } from 'common/models/elements/element';
       <mat-tab-group>
         <mat-tab label="{{ 'player.appearance' | translate }}">
           <div class="fx-column-start-stretch">
-            <mat-checkbox [checked]="newPlayerConfig.startControl || data.playerProps.startControl"
+            <mat-checkbox #startControl
+                          [checked]="newPlayerConfig.startControl || data.playerProps.startControl"
                           (change)="newPlayerConfig.startControl = $event.checked">
               {{ 'player.startControl' | translate }}
             </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.pauseControl || data.playerProps.pauseControl"
+            <mat-checkbox [disabled]="!startControl.checked"
+                          [checked]="newPlayerConfig.pauseControl || data.playerProps.pauseControl"
                           (change)="newPlayerConfig.pauseControl = $event.checked">
               {{ 'player.pauseControl' | translate }}
             </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.progressBar || data.playerProps.progressBar"
+            <mat-checkbox #progressControl
+                          [checked]="newPlayerConfig.progressBar || data.playerProps.progressBar"
                           (change)="newPlayerConfig.progressBar = $event.checked">
               {{ 'player.progressBar' | translate }}
             </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.interactiveProgressbar || data.playerProps.interactiveProgressbar"
+            <mat-checkbox [disabled]="!progressControl.checked"
+                          [checked]="newPlayerConfig.interactiveProgressbar || data.playerProps.interactiveProgressbar"
                           (change)="newPlayerConfig.interactiveProgressbar = $event.checked">
               {{ 'player.interactiveProgressbar' | translate }}
             </mat-checkbox>
@@ -41,11 +45,13 @@ import { PlayerProperties } from 'common/models/elements/element';
                      [ngModel]="newPlayerConfig.minVolume || data.playerProps.minVolume"
                      (ngModelChange)="newPlayerConfig.minVolume = $event">
             </mat-form-field>
-            <mat-checkbox [checked]="newPlayerConfig.muteControl || data.playerProps.muteControl"
+            <mat-checkbox #muteControl
+                          [checked]="newPlayerConfig.muteControl || data.playerProps.muteControl"
                           (change)="newPlayerConfig.muteControl = $event.checked">
               {{ 'player.muteControl' | translate }}
             </mat-checkbox>
-            <mat-checkbox [checked]="newPlayerConfig.interactiveMuteControl || data.playerProps.interactiveMuteControl"
+            <mat-checkbox [disabled]="!muteControl.checked"
+                          [checked]="newPlayerConfig.interactiveMuteControl || data.playerProps.interactiveMuteControl"
                           (change)="newPlayerConfig.interactiveMuteControl = $event.checked">
               {{ 'player.interactiveMuteControl' | translate }}
             </mat-checkbox>

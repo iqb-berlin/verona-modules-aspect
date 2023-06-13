@@ -18,19 +18,19 @@ test-unit:
     paths:
       - .npm/
 
-deploy:
-  stage: deploy
-  only:
-    refs:
-      - master
-  before_script:
-    - npm ci --cache .npm --prefer-offline
-  script:
-    - npm run build-editor
-    - npm run build-player
-    - ./scripts/deploy.sh $TESTSTUDIO_USERNAME $TESTSTUDIO_PASSWORD
-  artifacts:
-    paths:
-      - dist/iqb-editor-aspect-nightly.html
-      - dist/iqb-player-aspect-nightly.html
-    expire_in: 1 week
+#deploy:
+#  stage: deploy
+#  only:
+#    refs:
+#      - master
+#  before_script:
+#    - npm ci --cache .npm --prefer-offline
+#  script:
+#    - npm run build-editor
+#    - npm run build-player
+#    - ./scripts/deploy.sh $TESTSTUDIO_USERNAME $TESTSTUDIO_PASSWORD
+#  artifacts:
+#    paths:
+#      - dist/iqb-editor-aspect-nightly.html
+#      - dist/iqb-player-aspect-nightly.html
+#    expire_in: 1 week

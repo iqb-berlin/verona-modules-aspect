@@ -72,7 +72,7 @@
                  [(selectedIndex)]="selectedIndex">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
       <mat-tab [label]="'pageIndication' | translate: {index: i + 1}">
-        <div [style.min-height]="'calc(' + minHeight.scrollPages + 'vh - ' + ((page.margin * 2) + tabHeaderHeight) + 'px)'"
+        <div [style.height]="'calc(' + minHeight.scrollPages + 'vh - ' + ((page.margin * 2) + tabHeaderHeight) + 'px)'"
              [style.background-color]="page.backgroundColor"
              [style.padding.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">

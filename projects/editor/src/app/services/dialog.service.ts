@@ -36,9 +36,9 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showConfirmDialog(text: string): Observable<boolean> {
+  showConfirmDialog(text: string, isWarning: boolean = false): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: { text }
+      data: { text, isWarning }
     });
     return dialogRef.afterClosed();
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { firstValueFrom, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
@@ -20,6 +21,7 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { ElementFactory } from 'common/util/element.factory';
+import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
@@ -32,6 +34,7 @@ export class UnitService {
   unit: Unit;
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
@@ -62,6 +65,49 @@ export class UnitService {
   }
 
   unitUpdated(): void {
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  addPage(): void {
+    this.unit.pages.push(new Page());
+    this.selectionService.selectedPageIndex = this.unit.pages.length - 1;
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  deleteSelectedPage(): void {
+    const referencedButton = ReferenceManager.getReferencedButton(
+      this.selectionService.selectedPageIndex, this.unit);
+    const dialogText = referencedButton ?
+      `Seite wird von Knopf ${referencedButton.id} referenziert. Seite löschen?` :
+      'Seite löschen?';
+    this.dialogService.showConfirmDialog(dialogText, referencedButton !== undefined)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((result: boolean) => {
+        if (result) {
+          this.unit.pages.splice(this.selectionService.selectedPageIndex, 1);
+          this.selectionService.selectPreviousPage();
+          this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+        }
+      });
+  }
+
+  moveSelectedPage(direction: 'left' | 'right') {
+    /* check of movement is allowed
+    * - alwaysVisible has to be index 0
+    * - don't move left when already the leftmost
+    * - don't move right when already the last
+    */
+    if ((direction === 'left' && this.selectionService.selectedPageIndex === 1 && this.unit.pages[0].alwaysVisible) ||
+      (direction === 'left' && this.selectionService.selectedPageIndex === 0) ||
+      (direction === 'right' && this.selectionService.selectedPageIndex === this.unit.pages.length - 1)) {
+      this.messageService.showWarning('page can\'t be moved'); // TODO translate
+      return;
+    }
+    ArrayUtils.moveArrayItem(
+      this.unit.pages[this.selectionService.selectedPageIndex],
+      this.unit.pages,
+      direction === 'left' ? 'up' : 'down'
+    );
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 

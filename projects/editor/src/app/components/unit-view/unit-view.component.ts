@@ -14,7 +14,6 @@ import { SelectionService } from '../../services/selection.service';
   styleUrls: ['./unit-view.component.css']
 })
 export class UnitViewComponent implements OnDestroy {
-  selectedPageIndex: number = 0;
   pagesLoaded = true;
   private ngUnsubscribe = new Subject<void>();
 
@@ -24,48 +23,20 @@ export class UnitViewComponent implements OnDestroy {
               private messageService: MessageService) { }
 
   selectPage(newIndex: number): void {
-    this.selectedPageIndex = newIndex;
-    this.selectionService.selectedPageIndex = this.selectedPageIndex;
-    this.selectionService.selectedPageSectionIndex = 0;
+    this.selectionService.selectPage(newIndex);
   }
 
   addPage(): void {
-    this.unitService.unit.pages.push(new Page());
-
-    this.selectedPageIndex = this.unitService.unit.pages.length - 1;
-    this.selectionService.selectedPageIndex = this.selectedPageIndex;
-    this.selectionService.selectedPageSectionIndex = 0;
-
-    this.unitService.unitUpdated();
+    this.unitService.addPage();
   }
 
-  movePage(page: Page, direction: 'up' | 'down'): void {
-    if ((direction === 'up' && this.unitService.unit.pages.indexOf(page) === 1 &&
-        this.unitService.unit.pages[0].alwaysVisible) ||
-        (direction === 'up' && this.unitService.unit.pages.indexOf(page) === 0) ||
-        (direction === 'down' &&
-          this.unitService.unit.pages.indexOf(page) === this.unitService.unit.pages.length - 1)) {
-      this.messageService.showWarning('page can\'t be moved'); // TODO translate
-      return;
-    }
-    ArrayUtils.moveArrayItem(page, this.unitService.unit.pages, direction);
+  movePage(page: Page, direction: 'left' | 'right'): void {
+    this.unitService.moveSelectedPage(direction);
     this.refreshTabs();
-    direction === 'up' ? this.selectedPageIndex -= 1 : this.selectedPageIndex += 1;
-    this.unitService.unitUpdated();
   }
 
-  deletePage(page: Page): void {
-    this.dialogService.showConfirmDialog('Seite löschen?')
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((result: boolean) => {
-        if (result) {
-          this.unitService.unit.pages.splice(this.unitService.unit.pages.indexOf(page), 1);
-          this.unitService.unitUpdated();
-          this.selectedPageIndex -= 1;
-        }
-      });
-    this.selectionService.selectedPageIndex = this.selectedPageIndex;
-    this.selectionService.selectedPageSectionIndex = 0;
+  deletePage(): void {
+    this.unitService.deleteSelectedPage();
   }
 
   updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
@@ -73,7 +44,7 @@ export class UnitViewComponent implements OnDestroy {
       if (property === 'alwaysVisible' && value === true) {
         this.movePageToFront(page);
         page.alwaysVisible = true;
-        this.selectedPageIndex = 0;
+        this.selectionService.selectedPageIndex = 0;
         this.refreshTabs();
       }
       page[property] = value;

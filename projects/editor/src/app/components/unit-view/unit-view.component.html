@@ -14,7 +14,7 @@
     <mat-drawer-content>
       <mat-tab-group *ngIf="pagesLoaded"
                      [style.height.%]="100" mat-align-tabs="start" mat-stretch-tabs="false"
-                     [selectedIndex]="selectedPageIndex"
+                     [selectedIndex]="selectionService.selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)">
         <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
           <ng-template mat-tab-label>
@@ -28,7 +28,7 @@
               {{'page' | translate }} {{i}}
             </ng-container>
 
-            <button *ngIf="selectedPageIndex == i"
+            <button *ngIf="selectionService.selectedPageIndex == i"
                     mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu"
                     [matTooltip]="'Seiteneinstellungen'">
               <mat-icon>more_vert</mat-icon>
@@ -36,16 +36,16 @@
             <mat-menu #pageMenu="matMenu">
               <div (click)="$event.stopPropagation()">
                 <button *ngIf="!page.alwaysVisible"
-                        mat-menu-item (click)="movePage(page,'up')">
+                        mat-menu-item (click)="movePage(page,'left')">
                   <mat-icon>west</mat-icon>
                   <span>{{'forward' | translate }}</span>
                 </button>
                 <button *ngIf="!page.alwaysVisible"
-                        mat-menu-item (click)="movePage(page, 'down')">
+                        mat-menu-item (click)="movePage(page, 'right')">
                   <mat-icon>east</mat-icon>
                   <span>{{'backward' | translate }}</span>
                 </button>
-                <button mat-menu-item (click)="deletePage(page)">
+                <button mat-menu-item (click)="deletePage()">
                   <mat-icon>delete</mat-icon>
                   <span>{{'delete' | translate }}</span>
                 </button>

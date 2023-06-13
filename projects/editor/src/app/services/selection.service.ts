@@ -44,4 +44,13 @@ export class SelectionService {
     this.selectedElementComponents = [];
     this._selectedElements.next([]);
   }
+
+  selectPage(index: number) {
+    this.selectedPageIndex = index;
+    this.selectedPageSectionIndex = 0;
+  }
+
+  selectPreviousPage() {
+    this.selectPage(Math.max(this.selectedPageIndex - 1, 0));
+  }
 }

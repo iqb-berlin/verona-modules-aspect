@@ -276,6 +276,7 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
+  /* Reorder elements by their position properties, so the tab order is correct */
   reorderElements() {
     const sectionElementList = this.unit.pages[this.selectionService.selectedPageIndex]
       .sections[this.selectionService.selectedPageSectionIndex].elements;
@@ -441,7 +442,7 @@ export class UnitService {
   }
 
   /* Used by props panel to show available dropLists to connect */
-  getDropListElementIDs(): string[] {
+  getAllDropListElementIDs(): string[] {
     const allDropLists = [
       ...this.unit.getAllElements('drop-list'),
       ...this.unit.getAllElements('drop-list-simple')];

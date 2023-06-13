@@ -194,7 +194,7 @@ export class GetValidDropListsPipe implements PipeTransform {
 
   transform(idList: string[] | undefined): string[] {
     if (!idList) return [];
-    return this.unitService.getDropListElementIDs()
+    return this.unitService.getAllDropListElementIDs()
       .filter(dropListID => !idList.includes(dropListID));
   }
 }

@@ -48,12 +48,12 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </mat-form-field>
   `,
   styles: [`
-    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep .small-input div.mat-form-field-infix {
-      border-top: none; padding: 0.55em 0 0.25em 0;
+    :host ::ng-deep .small-input div.mdc-notched-outline {
+        top: 0.45em;
+        bottom: 0.45em;
+        height: unset;
     }
-    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep .small-input .mat-form-field-outline-gap {
+    :host ::ng-deep .small-input .mdc-notched-outline__notch {
       display: none;
     }
     .fx-row-center-baseline {

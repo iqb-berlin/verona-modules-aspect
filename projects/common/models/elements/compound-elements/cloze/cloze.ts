@@ -1,9 +1,7 @@
 import {
-  BasicStyles,
   CompoundElement,
   InputElement,
   PositionedUIElement,
-  PositionProperties,
   UIElement, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
@@ -15,6 +13,7 @@ import {
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class ClozeElement extends CompoundElement implements PositionedUIElement {
   document: ClozeDocument = { type: 'doc', content: [] };
@@ -25,7 +24,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
   };
 
   constructor(element: Partial<ClozeElement>) {
-    super({ height: 200, ...element });
+    super({ dimensions: { height: 200 } as DimensionProperties, ...element });
     if (element.columnCount) this.columnCount = element.columnCount;
     this.document = ClozeElement.initDocument(element.document);
     this.position = UIElement.initPositionProps(element.position);

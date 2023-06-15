@@ -1,6 +1,8 @@
 import packageJSON from '../../../package.json';
 import { Page } from 'common/models/page';
-import { AnswerScheme, UIElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
+
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
 export class Unit {
   type = 'aspect-unit-definition';

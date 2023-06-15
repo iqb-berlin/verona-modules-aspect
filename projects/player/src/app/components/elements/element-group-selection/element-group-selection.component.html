@@ -1,50 +1,52 @@
-<div [class]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
-         'fixed-size-content-wrapper' : 'inline-container'">
-  <div [class]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
-            'fixed-size-content' : 'inline-container'"
-       [style.width]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
-                      elementModel.width + 'px' : '100%'"
-       [style.height]="elementModel.position?.dynamicPositioning && elementModel.position?.fixedSize ?
-                      elementModel.height + 'px' : '100%'">
-          <aspect-text-input-group-element
-              *ngIf="'textInputGroup' === selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-text-input-group-element>
-          <aspect-media-player-group-element
-              *ngIf="'mediaPlayerGroup' === selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-media-player-group-element>
-          <aspect-input-group-element
-              *ngIf="'inputGroup' === selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-input-group-element>
-          <aspect-compound-group-element
-              *ngIf="'compoundGroup' === selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-compound-group-element>
-          <aspect-text-group-element
-              *ngIf="'textGroup' === selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-text-group-element>
-          <aspect-interactive-group-element
-              *ngIf="'interactiveGroup' === selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-interactive-group-element>
-          <aspect-external-app-group-element
-              *ngIf="'externalAppGroup' === selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-external-app-group-element>
-          <aspect-base-group-element
-              *ngIf="!selectedGroup"
-              [elementModel]="elementModel"
-              [pageIndex]="pageIndex">
-          </aspect-base-group-element>
-  </div>
+  <div [style.width]="elementModel.dimensions.isWidthFixed ? elementModel.dimensions.width + 'px' : null"
+       [style.height]="elementModel.dimensions.isHeightFixed ? elementModel.dimensions.height + 'px' : null"
+       [style.min-width]="!elementModel.dimensions.isWidthFixed && elementModel.dimensions.minWidth ?
+                            elementModel.dimensions.minWidth + 'px' : null"
+       [style.max-width]="!elementModel.dimensions.isWidthFixed && elementModel.dimensions.maxWidth ?
+                            elementModel.dimensions.maxWidth + 'px' : null"
+       [style.min-height]="!elementModel.dimensions.isHeightFixed && elementModel.dimensions.minHeight ?
+                             elementModel.dimensions.minHeight + 'px' : null"
+       [style.max-height]="!elementModel.dimensions.isHeightFixed && elementModel.dimensions.maxHeight ?
+                             elementModel.dimensions.maxHeight + 'px' : null">
+  <aspect-text-input-group-element
+      *ngIf="'textInputGroup' === selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-text-input-group-element>
+  <aspect-media-player-group-element
+      *ngIf="'mediaPlayerGroup' === selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-media-player-group-element>
+  <aspect-input-group-element
+      *ngIf="'inputGroup' === selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-input-group-element>
+  <aspect-compound-group-element
+      *ngIf="'compoundGroup' === selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-compound-group-element>
+  <aspect-text-group-element
+      *ngIf="'textGroup' === selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-text-group-element>
+  <aspect-interactive-group-element
+      *ngIf="'interactiveGroup' === selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-interactive-group-element>
+  <aspect-external-app-group-element
+      *ngIf="'externalAppGroup' === selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-external-app-group-element>
+  <aspect-base-group-element
+      *ngIf="!selectedGroup"
+      [elementModel]="elementModel"
+      [pageIndex]="pageIndex">
+  </aspect-base-group-element>
 </div>
+

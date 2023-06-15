@@ -19,7 +19,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       <!--Add dummy div - otherwise toggle button with empty options will not be in one line-->
       <div *ngIf="elementModel.options.length === 0"
            class="fx-row-center-center"
-           [style.min-height.px]="elementModel.height - 2"
+           [style.min-height.px]="elementModel.dimensions.height - 2"
            [style.width]="100">
         <span>&nbsp;</span>
       </div>

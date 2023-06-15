@@ -1,9 +1,16 @@
 import { Type } from '@angular/core';
-import {
-  BasicStyles, ButtonAction, PositionProperties, UIElement, UnitNavParam
-} from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
+import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+
+export interface ButtonEvent {
+  action: ButtonAction;
+  param: UnitNavParam | number | string;
+}
+
+export type ButtonAction = 'unitNav' | 'pageNav' | 'highlightText';
+export type UnitNavParam = 'previous' | 'next' | 'first' | 'last' | 'end';
 
 export class ButtonElement extends UIElement {
   label: string = 'Knopf';

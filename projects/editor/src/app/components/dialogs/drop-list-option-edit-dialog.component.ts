@@ -1,7 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
-import { DragNDropValueObject } from 'common/models/elements/element';
+
+
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 
 @Component({
   selector: 'aspect-drop-list-option-edit-dialog',

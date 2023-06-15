@@ -1,11 +1,13 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, CompoundElement, UIElement,
-  PositionedUIElement, PositionProperties, UIElementValue, TextImageLabel, OptionElement
+  CompoundElement, UIElement,
+  PositionedUIElement, UIElementValue, OptionElement
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { LikertComponent } from 'common/components/compound-elements/likert/likert.component';
+import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { TextImageLabel } from 'common/models/elements/label-interfaces';
 
 export class LikertElement extends CompoundElement implements PositionedUIElement, OptionElement {
   rows: LikertRowElement[] = [];
@@ -22,7 +24,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   };
 
   constructor(element: Partial<LikertElement>) {
-    super({ width: 250, height: 200, ...element });
+    super({ dimensions: { width: 250, height: 200 } as DimensionProperties, ...element });
     if (element.options) this.options = [...element.options];
     if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
     this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row)) : [];

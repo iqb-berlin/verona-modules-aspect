@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { TextImageLabel } from 'common/models/elements/element';
 import { FileService } from 'common/services/file.service';
+
+import { TextImageLabel } from 'common/models/elements/label-interfaces';
 
 @Component({
   selector: 'aspect-label-edit-dialog',

@@ -1,10 +1,12 @@
 import { Type } from '@angular/core';
 import {
-  AnswerScheme,
-  PositionedUIElement, PositionProperties, UIElement
+  PositionedUIElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
+import { PositionProperties } from 'common/models/elements/property-group-interfaces';
+
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
 export class GeometryElement extends UIElement implements PositionedUIElement {
   appDefinition: string = '';

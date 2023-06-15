@@ -1,9 +1,11 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, PositionedUIElement, PositionProperties, AnswerScheme, UIElement, TextInputElement
+  PositionedUIElement, UIElement, TextInputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class TextFieldElement extends TextInputElement implements PositionedUIElement {
   appearance: 'fill' | 'outline' = 'outline';
@@ -22,7 +24,7 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
   };
 
   constructor(element: Partial<TextFieldElement>) {
-    super({ width: 180, height: 120, ...element });
+    super({ dimensions: { width: 180, height: 120 }, ...element });
     if (element.appearance) this.appearance = element.appearance;
     if (element.minLength !== undefined) this.minLength = element.minLength;
     if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;

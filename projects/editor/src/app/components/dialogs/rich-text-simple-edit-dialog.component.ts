@@ -1,6 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { TextLabel } from 'common/models/elements/element';
+
+
+import { TextLabel } from 'common/models/elements/label-interfaces';
 
 @Component({
   selector: 'aspect-rich-text-simple-edit-dialog',

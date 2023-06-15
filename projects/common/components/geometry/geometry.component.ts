@@ -1,12 +1,12 @@
 import {
   AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2
 } from '@angular/core';
-import { ElementComponent } from 'common/directives/element-component.directive';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
-import { ValueChangeElement } from 'common/models/elements/element';
-import { ExternalResourceService } from 'common/services/external-resource.service';
 import { debounceTime, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ElementComponent } from 'common/directives/element-component.directive';
+import { GeometryElement } from 'common/models/elements/geometry/geometry';
+import { ExternalResourceService } from 'common/services/external-resource.service';
+import { ValueChangeElement } from 'common/models/elements/element';
 
 declare const GGBApplet: any;
 

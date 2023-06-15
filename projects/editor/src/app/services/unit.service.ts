@@ -10,9 +10,9 @@ import { SanitizationService } from 'common/services/sanitization.service';
 import { Unit } from 'common/models/unit';
 import {
   CompoundElement,
-  DragNDropValueObject, InputElement,
-  InputElementValue, TextLabel, PlayerElement, PlayerProperties, PositionedUIElement,
-  UIElement, UIElementType, UIElementValue, Hotspot, PositionProperties
+  InputElement,
+  InputElementValue, PlayerElement, PositionedUIElement,
+  UIElement, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
@@ -26,6 +26,9 @@ import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';
+import { PlayerProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Injectable({
   providedIn: 'root'
@@ -318,6 +321,15 @@ export class UnitService {
       element.setPositionProperty(property, value);
     });
     this.reorderElements();
+    this.elementPropertyUpdated.next();
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | null): void {
+    console.log('updateElementsDimensionsProperty', property, value);
+    elements.forEach(element => {
+      element.setDimensionsProperty(property, value);
+    });
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }

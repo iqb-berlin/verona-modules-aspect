@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PlayerConfig, VopStartCommand } from 'player/modules/verona/models/verona';
 import { Unit } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { DragNDropValueObject, InputElement } from 'common/models/elements/element';
+import { InputElement } from 'common/models/elements/element';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Page } from 'common/models/page';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
@@ -13,6 +13,8 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
+
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 
 @Component({
   selector: 'aspect-unit',

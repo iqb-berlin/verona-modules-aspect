@@ -34,9 +34,10 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
              [style.z-index]="5">
           <mat-icon>aspect_ratio</mat-icon>
         </div>
-        <div class="aspect-inserted-element" [style.width.px]="element.width"
-             [style.overflow]="'auto'"
-             [style.height.px]="element.height">
+        <div class="aspect-inserted-element"
+             [style.width.px]="element.dimensions.width"
+             [style.height.px]="element.dimensions.height"
+             [style.overflow]="'auto'">
           <ng-template #elementContainer></ng-template>
         </div>
       </div>
@@ -55,13 +56,13 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
   private oldY: number = 0;
 
   resizeDragStart(): void {
-    this.oldX = this.element.width;
-    this.oldY = this.element.height;
+    this.oldX = this.element.dimensions.width;
+    this.oldY = this.element.dimensions.height;
   }
 
   resizeElement(event: CdkDragMove): void {
-    this.element.width = Math.max(this.oldX + event.distance.x, 0);
-    this.element.height = Math.max(this.oldY + event.distance.y, 0);
+    this.element.dimensions.width = Math.max(this.oldX + event.distance.x, 0);
+    this.element.dimensions.height = Math.max(this.oldY + event.distance.y, 0);
   }
 
   updateModel(event: CdkDragEnd): void {

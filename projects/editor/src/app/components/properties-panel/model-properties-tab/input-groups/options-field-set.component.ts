@@ -1,9 +1,6 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import {
-  TextLabel, TextImageLabel, OptionElement, Label
-} from 'common/models/elements/element';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from 'editor/src/app/services/unit.service';
@@ -11,6 +8,8 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
+import { Label, TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
+import { OptionElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-options-field-set',

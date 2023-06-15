@@ -1,11 +1,14 @@
 import {
-  BasicStyles, InputElement, AnswerScheme, AnswerSchemeValue, TextLabel, UIElement
+  InputElement, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   ToggleButtonComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/toggle-button.component';
+import { BasicStyles } from 'common/models/elements/property-group-interfaces';
+import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { TextLabel } from 'common/models/elements/label-interfaces';
 
 export class ToggleButtonElement extends InputElement {
   options: TextLabel[] = [];
@@ -19,7 +22,7 @@ export class ToggleButtonElement extends InputElement {
   };
 
   constructor(element: Partial<ToggleButtonElement>) {
-    super({ height: 30, ...element });
+    super({ dimensions: { height: 30 }, ...element });
     if (element.options) this.options = [...element.options];
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
     if (element.strikeSelectedOption) this.strikeSelectedOption = element.strikeSelectedOption;

@@ -1,11 +1,12 @@
 import {
   OnInit, OnChanges, SimpleChanges, OnDestroy, Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { PlayerProperties, ValueChangeElement } from 'common/models/elements/element';
 import {
   fromEvent, Subject, tap, throttleTime
 } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
+import { ValueChangeElement } from 'common/models/elements/element';
 
 @Component({ selector: 'aspect-media-player-control-bar',
   templateUrl: './media-player-control-bar.component.html',

@@ -2,7 +2,9 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Hotspot } from 'common/models/elements/element';
+
+
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Component({
   selector: 'aspect-hotspot-list-panel',

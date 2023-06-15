@@ -1,8 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ButtonElement } from 'common/models/elements/button/button';
-import { ButtonEvent } from 'common/models/elements/element';
+import { ButtonElement, ButtonEvent } from 'common/models/elements/button/button';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({

@@ -6,7 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
-  InputElementValue, TextLabel, TextImageLabel, UIElement, Hotspot
+  InputElementValue, UIElement
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { FileService } from 'common/services/file.service';
@@ -15,6 +15,8 @@ import { firstValueFrom } from 'rxjs';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
+import { TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Component({
   selector: 'aspect-element-model-properties-component',

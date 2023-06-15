@@ -9,8 +9,9 @@ import {
   copyArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { DragNDropValueObject } from 'common/models/elements/element';
 import { FormElementComponent } from '../../directives/form-element-component.directive';
+
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 
 @Component({
   selector: 'aspect-drop-list',

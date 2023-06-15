@@ -1,7 +1,8 @@
 import {
   Component, Input
 } from '@angular/core';
-import { BasicStyles, TextImageLabel } from 'common/models/elements/element';
+import { TextImageLabel } from 'common/models/elements/label-interfaces';
+import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 
 @Component({
   selector: 'aspect-text-image-panel',

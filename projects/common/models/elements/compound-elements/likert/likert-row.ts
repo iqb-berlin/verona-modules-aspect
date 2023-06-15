@@ -1,11 +1,13 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, AnswerScheme, AnswerSchemeValue, TextImageLabel
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   LikertRadioButtonGroupComponent
 } from 'common/components/compound-elements/likert/likert-radio-button-group.component';
+import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { TextImageLabel } from 'common/models/elements/label-interfaces';
 
 export class LikertRowElement extends InputElement {
   rowLabel: TextImageLabel = { text: '', imgSrc: null, imgPosition: 'above' };

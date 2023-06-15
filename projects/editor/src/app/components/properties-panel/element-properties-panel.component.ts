@@ -6,11 +6,13 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'common/services/message.service';
-import { Hotspot, TextLabel, UIElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from '../canvas/overlays/canvas-element-overlay';
+import { TextLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 

@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  DragNDropValueObject,
-  Hotspot,
   InputElement,
   InputElementValue,
   UIElement,
@@ -12,8 +10,9 @@ import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
-import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
+import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { TextMarkingService } from './text-marking.service';
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 
 @Injectable({
   providedIn: 'root'

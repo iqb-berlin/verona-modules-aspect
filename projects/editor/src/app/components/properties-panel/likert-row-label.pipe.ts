@@ -1,6 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { TextImageLabel } from 'common/models/elements/element';
+
+
+import { TextImageLabel } from 'common/models/elements/label-interfaces';
 
 @Pipe({
   name: 'LikertRowLabel'

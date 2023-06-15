@@ -1,12 +1,13 @@
 import {
   Component, Input
 } from '@angular/core';
-import { PositionedUIElement, PositionProperties } from 'common/models/elements/element';
+import { PositionedUIElement } from 'common/models/elements/element';
+import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 
 @Component({
-  selector: 'aspect-element-postion-properties',
+  selector: 'aspect-position-and-dimension-properties',
   template: `
     <div class="fx-column-start-stretch">
       <aspect-position-field-set
@@ -59,7 +60,7 @@ import { SelectionService } from '../../../services/selection.service';
   `]
 })
 export class ElementPositionPropertiesComponent {
-  @Input() dimensions!: { width?: number; height?: number; dynamicWidth: boolean; };
+  @Input() dimensions!: DimensionProperties;
   @Input() positionProperties: PositionProperties | undefined;
 
   constructor(public unitService: UnitService, public selectionService: SelectionService) { }

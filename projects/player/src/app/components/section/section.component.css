@@ -12,3 +12,13 @@
 .no-pointer-events {
   pointer-events: none;
 }
+
+.centered-horizontal {
+  display: flex;
+  justify-content: center;
+}
+
+.centered-vertical {
+  display: flex;
+  align-items: center;
+}

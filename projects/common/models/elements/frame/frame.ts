@@ -1,9 +1,10 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, PositionedUIElement, PositionProperties, UIElement
+  PositionedUIElement, UIElement
 } from 'common/models/elements/element';
 import { FrameComponent } from 'common/components/frame/frame.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
+import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class FrameElement extends UIElement implements PositionedUIElement {
   hasBorderTop: boolean = true;

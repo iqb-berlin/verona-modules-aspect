@@ -1,10 +1,11 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { Hotspot } from 'common/models/elements/element';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Component({
   selector: 'aspect-hotspot-field-set',

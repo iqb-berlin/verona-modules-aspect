@@ -74,8 +74,8 @@ export class CanvasComponent {
         if (newXPosition < 0) {
           newXPosition = 0;
         }
-        if (this.page.hasMaxWidth && newXPosition > this.page.maxWidth - element.width) {
-          newXPosition = this.page.maxWidth - element.width;
+        if (this.page.hasMaxWidth && newXPosition > this.page.maxWidth - element.dimensions.width) {
+          newXPosition = this.page.maxWidth - element.dimensions.width;
         }
         this.unitService.updateElementsPositionProperty([element], 'xPosition', newXPosition);
 
@@ -83,8 +83,8 @@ export class CanvasComponent {
         if (newYPosition < 0) {
           newYPosition = 0;
         }
-        if (newYPosition > this.getPageHeight() - element.height) {
-          newYPosition = this.getPageHeight() - element.height;
+        if (newYPosition > this.getPageHeight() - element.dimensions.height) {
+          newYPosition = this.getPageHeight() - element.dimensions.height;
         }
         this.unitService.updateElementsPositionProperty([element], 'yPosition', newYPosition);
       });

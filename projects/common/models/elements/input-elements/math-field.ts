@@ -1,9 +1,11 @@
 import {
-  AnswerScheme, BasicStyles, InputElement, PositionProperties, UIElement
+  InputElement, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class MathFieldElement extends InputElement {
   enableModeSwitch: boolean = false;

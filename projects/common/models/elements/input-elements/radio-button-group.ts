@@ -1,10 +1,12 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, InputElement, TextLabel, PositionedUIElement, PositionProperties, OptionElement,
-  AnswerScheme, AnswerSchemeValue, UIElement
+  InputElement, OptionElement, PositionedUIElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
+import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { TextLabel } from 'common/models/elements/label-interfaces';
+import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class RadioButtonGroupElement extends InputElement implements PositionedUIElement, OptionElement {
   options: TextLabel[] = [];
@@ -16,7 +18,7 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
   };
 
   constructor(element: Partial<RadioButtonGroupElement>) {
-    super({ height: 100, ...element });
+    super({ dimensions: { height: 100 }, ...element });
     if (element.options) this.options = [...element.options];
     if (element.alignment) this.alignment = element.alignment;
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;

@@ -1,5 +1,7 @@
 import { Section } from 'common/models/section';
-import { AnswerScheme, UIElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
+
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
 export class Page {
   [index: string]: unknown;

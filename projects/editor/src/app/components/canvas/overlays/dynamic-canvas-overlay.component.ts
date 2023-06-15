@@ -9,8 +9,8 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->
     <div #draggableElement class="draggable-element"
-         [class.fixed-size-content-wrapper]="element.position?.dynamicPositioning &&
-                                               element.position?.fixedSize"
+         [class.centered-horizontal]="element.dimensions.isWidthFixed"
+         [class.centered-vertical]="element.dimensions.isHeightFixed"
          [class.temporaryHighlight]="temporaryHighlight"
          tabindex="-1"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
@@ -20,12 +20,16 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
          [style.outline]="isSelected ? 'purple solid 1px' : ''"
          [style.z-index]="isSelected ? 2 : 1">
       <div *cdkDragPlaceholder></div>
-      <div [class.fixed-size-content]="element.position?.dynamicPositioning &&
-            element.position?.fixedSize"
-           [style.width]="element.position?.dynamicPositioning && element.position?.fixedSize ?
-                      element.width + 'px' : '100%'"
-           [style.height]="element.position?.dynamicPositioning && element.position?.fixedSize ?
-                      element.height + 'px' : '100%'">
+      <div [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width + 'px' : '100%'"
+           [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : '100%'"
+           [style.min-width]="!element.dimensions.isWidthFixed && element.dimensions.minWidth ?
+                                element.dimensions.minWidth + 'px' : null"
+           [style.max-width]="!element.dimensions.isWidthFixed && element.dimensions.maxWidth ?
+                                element.dimensions.maxWidth + 'px' : null"
+           [style.min-height]="!element.dimensions.isHeightFixed && element.dimensions.minHeight ?
+                                element.dimensions.minHeight + 'px' : null"
+           [style.max-height]="!element.dimensions.isHeightFixed && element.dimensions.maxHeight ?
+                                element.dimensions.maxHeight + 'px' : null">
         <ng-template #elementContainer></ng-template>
       </div>
     </div>
@@ -33,7 +37,9 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
   styles: [
     '.draggable-element {width: 100%; height: 100%}',
     '.draggable-element:active {cursor: grabbing}',
-    '.temporaryHighlight {z-index: 100}'
+    '.temporaryHighlight {z-index: 100}',
+    '.centered-horizontal {display: flex; justify-content: center;}',
+    '.centered-vertical {display: flex; align-items: center;}'
   ]
 })
 export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {

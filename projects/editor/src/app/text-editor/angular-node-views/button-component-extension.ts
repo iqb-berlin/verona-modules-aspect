@@ -3,7 +3,7 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { ButtonNodeviewComponent } from 'editor/src/app/text-editor/angular-node-views/button-nodeview.component';
-import { BasicStyles } from 'common/models/elements/element';
+import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 
 const ButtonComponentExtension = (injector: Injector): Node => {
   return Node.create({

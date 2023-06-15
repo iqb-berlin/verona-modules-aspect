@@ -1,9 +1,23 @@
 import { Type } from '@angular/core';
-import {
-  InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue, UIElement, Hotspot
-} from 'common/models/elements/element';
+import { InputElement, PositionedUIElement, UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
+import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { PositionProperties } from 'common/models/elements/property-group-interfaces';
+
+export interface Hotspot {
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  shape: 'ellipse' | 'rectangle' | 'triangle';
+  borderWidth: number;
+  borderColor: string;
+  backgroundColor: string;
+  rotation: number;
+  value: boolean;
+  readOnly: boolean
+}
 
 export class HotspotImageElement extends InputElement implements PositionedUIElement {
   value: Hotspot[];
@@ -11,7 +25,7 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
   position: PositionProperties;
 
   constructor(element: Partial<HotspotImageElement>) {
-    super({ height: 100, ...element });
+    super({ dimensions: { height: 100 }, ...element });
     this.value = element.value !== undefined ? [...element.value] : [];
     if (element.src) this.src = element.src;
     this.position = UIElement.initPositionProps(element.position);

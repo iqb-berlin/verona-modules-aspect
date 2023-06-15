@@ -27,8 +27,8 @@
     <ng-container *ngFor="let element of section.elements">
       <aspect-element-group-selection
         [class.no-pointer-events]="element.type === 'frame'"
-        [style.min-width.px]="element.width"
-        [style.min-height.px]="element.position.useMinHeight ? element.height : null"
+        [class.centered-horizontal]="element.dimensions.isWidthFixed"
+        [class.centered-vertical]="element.dimensions.isHeightFixed"
         [style.margin-left]="[element.position.marginLeft] | measure"
         [style.margin-right]="[element.position.marginRight] | measure"
         [style.margin-top]="[element.position.marginTop] | measure"

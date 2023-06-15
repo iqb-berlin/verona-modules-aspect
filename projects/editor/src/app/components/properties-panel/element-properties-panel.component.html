@@ -25,11 +25,9 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">format_shapes</mat-icon>
       </ng-template>
-      <aspect-element-postion-properties [dimensions]="{ width: combinedProperties.width,
-                                                         height: combinedProperties.height,
-                                                         dynamicWidth: $any(combinedProperties).dynamicWidth}"
-                                         [positionProperties]="combinedProperties.position">
-      </aspect-element-postion-properties>
+      <aspect-position-and-dimension-properties [dimensions]="combinedProperties.dimensions"
+                                               [positionProperties]="combinedProperties.position">
+      </aspect-position-and-dimension-properties>
     </mat-tab>
 
     <mat-tab *ngIf="combinedProperties.styling">

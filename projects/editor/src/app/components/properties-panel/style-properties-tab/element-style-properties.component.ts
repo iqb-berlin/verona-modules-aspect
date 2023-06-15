@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { BasicStyles, ExtendedStyles } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit.service';
+import { BasicStyles, ExtendedStyles } from 'common/models/elements/property-group-interfaces';
 
 @Component({
   selector: 'aspect-element-style-properties',

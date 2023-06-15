@@ -1,9 +1,9 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { ElementComponent } from '../../directives/element-component.directive';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
   selector: 'aspect-image',

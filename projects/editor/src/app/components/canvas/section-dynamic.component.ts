@@ -32,8 +32,6 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
       <aspect-dynamic-canvas-overlay *ngFor="let element of section.elements"
                                      #elementComponent
                                      [element]="$any(element)"
-                                     [style.min-width.px]="element.width"
-                                     [style.min-height.px]="element.position.useMinHeight ? element.height : null"
                                      [style.margin-left]="[element.position.marginLeft] | measure"
                                      [style.margin-right]="[element.position.marginRight] | measure"
                                      [style.margin-top]="[element.position.marginTop] | measure"

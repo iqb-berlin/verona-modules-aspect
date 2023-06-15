@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MediaPlayerGroupElementComponent } from './media-player-group-element.component';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { Subject } from 'rxjs';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
+
+import { ValueChangeElement } from 'common/models/elements/classes';
 
 describe('MediaPlayerGroupElementComponent', () => {
   let component: MediaPlayerGroupElementComponent;

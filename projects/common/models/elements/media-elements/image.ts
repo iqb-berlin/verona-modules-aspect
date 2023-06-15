@@ -1,9 +1,12 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, PositionProperties, AnswerScheme, UIElement
+  PositionedUIElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
+import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
 export class ImageElement extends UIElement implements PositionedUIElement {
   src: string | null = null;
@@ -16,7 +19,7 @@ export class ImageElement extends UIElement implements PositionedUIElement {
   position: PositionProperties;
 
   constructor(element: Partial<ImageElement>) {
-    super({ height: 100, ...element });
+    super({ dimensions: { height: 100 } as DimensionProperties, ...element });
     if (element.src) this.src = element.src;
     if (element.alt) this.alt = element.alt;
     if (element.scale) this.scale = element.scale;

@@ -8,7 +8,7 @@ import {
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import {
-  CompoundElement, InputElement, InputElementValue, UnitNavParam
+  CompoundElement, InputElement, InputElementValue
 } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
@@ -21,6 +21,8 @@ import { KeypadService } from '../../../services/keypad.service';
 import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
+
+import { UnitNavParam } from 'common/models/elements/button/button';
 
 @Component({
   selector: 'aspect-compound-group-element',

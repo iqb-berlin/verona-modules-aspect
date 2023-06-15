@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  DragNDropValueObject,
-  PlayerProperties,
-  TextImageLabel, Label, Hotspot
-} from 'common/models/elements/element';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { Section } from 'common/models/section';
@@ -22,6 +17,9 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
+import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
+import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Injectable({
   providedIn: 'root'

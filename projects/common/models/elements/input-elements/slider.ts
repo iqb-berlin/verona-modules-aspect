@@ -1,9 +1,11 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, InputElement, PositionedUIElement, PositionProperties, AnswerScheme, AnswerSchemeValue, UIElement
+  InputElement, PositionedUIElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SliderComponent } from 'common/components/input-elements/slider.component';
+import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class SliderElement extends InputElement implements PositionedUIElement {
   minValue: number = 0;

@@ -28,9 +28,9 @@ import { RadioButtonGroupElement } from 'common/models/elements/input-elements/r
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
-import { DragNDropValueObject, Hotspot } from 'common/models/elements/element';
-import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
+import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 
 describe('ElementModelElementCodeMappingService', () => {
   let service: ElementModelElementCodeMappingService;

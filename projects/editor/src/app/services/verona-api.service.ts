@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { Unit } from 'common/models/unit';
-import { AnswerScheme } from 'common/models/elements/element';
+
+
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
 @Injectable({
   providedIn: 'root'

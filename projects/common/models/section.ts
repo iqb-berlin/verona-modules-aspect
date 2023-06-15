@@ -3,14 +3,13 @@ import {
   PositionedUIElement,
   UIElement,
   UIElementValue,
-  AnswerScheme,
   PlayerElement,
-  InputElement,
-  Measurement
+  InputElement, Measurement
 } from 'common/models/elements/element';
 import { TextElement } from 'common/models/elements/text/text';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { ElementFactory } from 'common/util/element.factory';
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
 export class Section {
   [index: string]: unknown;

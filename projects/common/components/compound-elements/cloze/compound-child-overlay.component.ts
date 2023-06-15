@@ -8,8 +8,8 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
 import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { ValueChangeElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-compound-child-overlay',

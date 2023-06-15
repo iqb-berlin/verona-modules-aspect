@@ -3,11 +3,32 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { Type } from '@angular/core';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { Label, TextLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import {
+  BasicStyles, ExtendedStyles,
+  DimensionProperties, PlayerProperties, PositionProperties
+} from 'common/models/elements/property-group-interfaces';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
 | 'drop-list' | 'drop-list-simple' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry'
 | 'math-field';
+
+export interface OptionElement extends UIElement {
+  getNewOptionLabel(optionText: string): Label;
+}
+
+export interface Measurement {
+  value: number;
+  unit: string
+}
+
+export interface ValueChangeElement {
+  id: string;
+  value: InputElementValue;
+}
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] |
@@ -20,9 +41,8 @@ export abstract class UIElement {
   [index: string]: unknown;
   id: string;
   type: UIElementType;
-  width: number = 180;
-  height: number = 60;
   position?: PositionProperties;
+  dimensions: DimensionProperties;
   styling?: BasicStyles & ExtendedStyles;
   player?: PlayerProperties;
 
@@ -30,8 +50,7 @@ export abstract class UIElement {
     if (!element.type) throw Error('Element has no type!');
     this.type = element.type;
     this.id = element.id || 'id_placeholder';
-    if (element.width !== undefined) this.width = element.width;
-    if (element.height !== undefined) this.height = element.height;
+    this.dimensions = UIElement.initDimensionProps({ ...element.dimensions });
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -49,6 +68,10 @@ export abstract class UIElement {
 
   setPositionProperty(property: string, value: UIElementValue): void {
     (this.position as PositionProperties)[property] = value;
+  }
+
+  setDimensionsProperty(property: string, value: number | null): void {
+    this.dimensions[property] = value;
   }
 
   setPlayerProperty(property: string, value: UIElementValue): void {
@@ -83,6 +106,19 @@ export abstract class UIElement {
       marginTop: defaults.marginTop !== undefined ? defaults.marginTop as Measurement : { value: 0, unit: 'px' },
       marginBottom: defaults.marginBottom !== undefined ? defaults.marginBottom as Measurement : { value: 0, unit: 'px' },
       zIndex: defaults.zIndex !== undefined ? defaults.zIndex as number : 0
+    };
+  }
+
+  static initDimensionProps(properties: Partial<DimensionProperties>): DimensionProperties {
+    return {
+      width: properties.width !== undefined ? properties.width : 180,
+      height: properties.height !== undefined ? properties.height : 60,
+      isWidthFixed: properties.isWidthFixed !== undefined ? properties.isWidthFixed : false,
+      isHeightFixed: properties.isHeightFixed !== undefined ? properties.isHeightFixed : false,
+      minWidth: properties.minWidth !== undefined ? properties.minWidth : null,
+      maxWidth: properties.maxWidth !== undefined ? properties.maxWidth : null,
+      minHeight: properties.minHeight !== undefined ? properties.minHeight : null,
+      maxHeight: properties.maxHeight !== undefined ? properties.maxHeight : null
     };
   }
 
@@ -128,7 +164,7 @@ export abstract class InputElement extends UIElement {
   requiredWarnMessage: string = 'Eingabe erforderlich';
   readOnly: boolean = false;
 
-  protected constructor(element: Partial<InputElement>) {
+  protected constructor(element: Record<string, any>) {
     super(element);
     if (element.label !== undefined) this.label = element.label;
     if (element.value !== undefined) this.value = element.value;
@@ -156,7 +192,8 @@ export abstract class TextInputElement extends InputElement {
   hasBackspaceKey: boolean = false;
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
-  protected constructor(element: Partial<TextInputElement>) {
+
+  protected constructor(element: Record<string, any>) {
     super(element);
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistanceCustomKeys !== undefined) {
@@ -183,7 +220,7 @@ export abstract class CompoundElement extends UIElement {
 export abstract class PlayerElement extends UIElement {
   player: PlayerProperties;
 
-  protected constructor(element: Partial<PlayerElement>) {
+  protected constructor(element: Record<string, any>) {
     super(element);
     this.player = {
       autostart: element.player?.autostart !== undefined ? element.player?.autostart as boolean : false,
@@ -230,145 +267,10 @@ export abstract class PlayerElement extends UIElement {
   }
 }
 
-export interface AnswerSchemeValue {
-  value: string;
-  label: string;
-}
-
-export interface AnswerScheme {
-  id: string;
-  type: string;
-  format?: string;
-  multiple?: boolean;
-  nullable?: boolean;
-  values?: AnswerSchemeValue[];
-  valuesComplete?: boolean;
-}
-
 export interface PositionedUIElement extends UIElement {
   position: PositionProperties;
 }
 
-export interface PositionProperties {
-  [index: string]: unknown;
-  fixedSize: boolean;
-  dynamicPositioning: boolean;
-  xPosition: number;
-  yPosition: number;
-  useMinHeight: boolean;
-  gridColumn: number | null;
-  gridColumnRange: number;
-  gridRow: number | null;
-  gridRowRange: number;
-  marginLeft: Measurement;
-  marginRight: Measurement;
-  marginTop: Measurement;
-  marginBottom: Measurement;
-  zIndex: number;
-}
-
-export interface BasicStyles {
-  [index: string]: unknown;
-  fontColor: string;
-  font: string;
-  fontSize: number;
-  bold: boolean;
-  italic: boolean;
-  underline: boolean;
-  backgroundColor: string;
-}
-
-export interface ExtendedStyles {
-  [index: string]: unknown;
-  lineHeight?: number;
-  borderRadius?: number;
-  itemBackgroundColor?: string;
-  borderWidth?: number;
-  borderColor?: string;
-  borderStyle?: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
-  lineColoring?: boolean;
-  lineColoringColor?: string;
-  selectionColor?: string;
-}
-
-export interface PlayerElement {
+export interface PlayerElement extends UIElement {
   player: PlayerProperties;
-}
-
-export interface PlayerProperties {
-  [index: string]: unknown;
-  autostart: boolean;
-  autostartDelay: number;
-  loop: boolean;
-  startControl: boolean;
-  pauseControl: boolean;
-  progressBar: boolean;
-  interactiveProgressbar: boolean;
-  volumeControl: boolean;
-  defaultVolume: number;
-  minVolume: number;
-  muteControl: boolean;
-  interactiveMuteControl: boolean;
-  hintLabel: string;
-  hintLabelDelay: number;
-  activeAfterID: string;
-  minRuns: number;
-  maxRuns: number | null;
-  showRestRuns: boolean;
-  showRestTime: boolean;
-  playbackTime: number;
-}
-
-export interface Hotspot {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-  shape: 'ellipse' | 'rectangle' | 'triangle';
-  borderWidth: number;
-  borderColor: string;
-  backgroundColor: string;
-  rotation: number;
-  value: boolean;
-  readOnly: boolean
-}
-
-export interface ValueChangeElement {
-  id: string;
-  value: InputElementValue;
-}
-
-export interface ButtonEvent {
-  action: ButtonAction;
-  param: UnitNavParam | number | string;
-}
-
-export type ButtonAction = 'unitNav' | 'pageNav' | 'highlightText';
-
-export type UnitNavParam = 'previous' | 'next' | 'first' | 'last' | 'end';
-
-export interface OptionElement extends UIElement {
-  getNewOptionLabel(optionText: string): Label;
-}
-
-export interface TextLabel {
-  text: string;
-}
-
-export interface TextImageLabel extends TextLabel {
-  imgSrc: string | null;
-  imgPosition: 'above' | 'below' | 'left' | 'right';
-}
-
-export interface DragNDropValueObject extends TextImageLabel {
-  id: string;
-  originListID: string;
-  originListIndex: number;
-}
-
-export type Label = TextLabel | TextImageLabel | DragNDropValueObject;
-
-export interface Measurement {
-  value: number;
-  unit: string
 }

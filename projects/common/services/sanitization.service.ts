@@ -6,10 +6,7 @@ import DropListExtension from 'common/models/elements/compound-elements/cloze/ti
 import TextFieldExtension from 'common/models/elements/compound-elements/cloze/tiptap-editor-extensions/text-field';
 import { Unit } from 'common/models/unit';
 import {
-  BasicStyles, DragNDropValueObject, ExtendedStyles,
-  InputElement, PlayerProperties,
-  PositionedUIElement, PositionProperties, TextImageLabel,
-  UIElement, UIElementValue
+  InputElement, PositionedUIElement, UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
@@ -29,6 +26,14 @@ import { RadioButtonGroupElement } from 'common/models/elements/input-elements/r
 import { MessageService } from 'common/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import packageJSON from '../../../package.json';
+import {
+  BasicStyles,
+  ExtendedStyles,
+  PlayerProperties,
+  PositionProperties
+} from 'common/models/elements/property-group-interfaces';
+
+import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';
 
 @Injectable({
   providedIn: 'root'

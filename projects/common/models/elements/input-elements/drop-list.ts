@@ -1,12 +1,13 @@
 import { Type } from '@angular/core';
 import {
   InputElement,
-  DragNDropValueObject,
-  BasicStyles, PositionProperties,
-  AnswerScheme, AnswerSchemeValue, UIElement, UIElementValue
+  UIElement, UIElementValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
+import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class DropListElement extends InputElement {
   value: DragNDropValueObject[];
@@ -23,7 +24,7 @@ export class DropListElement extends InputElement {
   };
 
   constructor(element: Partial<DropListElement>) {
-    super({ height: 100, ...element });
+    super({ dimensions: { height: 100, minHeight: 100 }, ...element });
     this.value = element.value !== undefined ?
       element.value.map(val => ({ ...val })) :
       [];
@@ -37,7 +38,7 @@ export class DropListElement extends InputElement {
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
     }
     this.position = element.position ?
-      UIElement.initPositionProps({ useMinHeight: true, ...element.position as Partial<PositionProperties> }) :
+      UIElement.initPositionProps({ ...element.position as Partial<PositionProperties> }) :
       undefined;
     this.styling = UIElement.initStylingProps({
       backgroundColor: '#ededed',

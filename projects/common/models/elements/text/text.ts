@@ -1,10 +1,13 @@
 import { Type } from '@angular/core';
 import {
-  BasicStyles, PositionedUIElement,
-  PositionProperties, AnswerScheme, UIElement
+  PositionedUIElement,
+  UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
+
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class TextElement extends UIElement implements PositionedUIElement {
   text: string = 'Lorem ipsum dolor sit amet';
@@ -19,7 +22,7 @@ export class TextElement extends UIElement implements PositionedUIElement {
   };
 
   constructor(element: Partial<TextElement>) {
-    super({ height: 98, ...element });
+    super({ dimensions: { height: 98 } as DimensionProperties, ...element });
     if (element.text) this.text = element.text;
     if (element.highlightableOrange) this.highlightableOrange = element.highlightableOrange;
     if (element.highlightableTurquoise) this.highlightableTurquoise = element.highlightableTurquoise;

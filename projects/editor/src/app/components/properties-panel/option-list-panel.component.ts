@@ -2,7 +2,9 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Label } from 'common/models/elements/element';
+
+
+import { Label } from 'common/models/elements/label-interfaces';
 
 @Component({
   selector: 'aspect-option-list-panel',

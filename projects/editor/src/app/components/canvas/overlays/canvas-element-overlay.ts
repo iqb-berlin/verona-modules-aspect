@@ -9,10 +9,9 @@ import { CompoundElementComponent } from 'common/directives/compound-element.dir
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import { CompoundChildOverlayComponent } from
   'common/components/compound-elements/cloze/compound-child-overlay.component';
-import { DragNDropValueObject, UIElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
-import { DropListComponent } from 'common/components/input-elements/drop-list.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';

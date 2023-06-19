@@ -1,14 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TextGroupElementComponent } from './text-group-element.component';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import {
   FloatingMarkingBarComponent
 } from 'player/src/app/components/floating-marking-bar/floating-marking-bar.component';
 import { TextElement } from 'common/models/elements/text/text';
-
-import { ValueChangeElement } from 'common/models/elements/classes';
+import { ValueChangeElement } from 'common/models/elements/element';
+import { TextGroupElementComponent } from './text-group-element.component';
 
 describe('TextGroupElementComponent', () => {
   let component: TextGroupElementComponent;
@@ -59,5 +60,4 @@ describe('TextGroupElementComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });

@@ -17,34 +17,34 @@
 </ng-template>
 
 <ng-template #dynamicElements>
-  <div
-      class="dynamic-section"
-      [style.grid-template-columns]="section.autoColumnSize ? undefined : section.gridColumnSizes | measure"
-      [style.grid-template-rows]="section.autoRowSize ? undefined : section.gridRowSizes | measure"
-      [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
-      [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
-      [style.background-color]="section.backgroundColor">
-    <ng-container *ngFor="let element of section.elements">
-      <aspect-element-group-selection
-        [class.no-pointer-events]="element.type === 'frame'"
-        [class.centered-horizontal]="element.dimensions.isWidthFixed"
-        [class.centered-vertical]="element.dimensions.isHeightFixed"
-        [style.margin-left]="[element.position.marginLeft] | measure"
-        [style.margin-right]="[element.position.marginRight] | measure"
-        [style.margin-top]="[element.position.marginTop] | measure"
-        [style.margin-bottom]="[element.position.marginBottom] | measure"
-        [style.grid-column-start]="element.position.gridColumn"
-        [style.grid-column-end]="element.position.gridColumn ?
-          element.position.gridColumn + element.position.gridColumnRange:
-          null"
-        [style.grid-row-start]="element.position.gridRow"
-        [style.grid-row-end]="element.position.gridRow ?
-          element.position.gridRow + element.position.gridRowRange:
-          null"
-        [style.z-index]="element.position.zIndex"
-        [elementModel]="element"
-        [pageIndex]="pageIndex">
-      </aspect-element-group-selection>
+  <div class="dynamic-section"
+       [style.grid-template-columns]="section.autoColumnSize ? undefined : section.gridColumnSizes | measure"
+       [style.grid-template-rows]="section.autoRowSize ? undefined : section.gridRowSizes | measure"
+       [style.grid-auto-columns]="section.autoColumnSize ? 'auto' : undefined"
+       [style.grid-auto-rows]="section.autoRowSize ? 'auto' : undefined"
+       [style.background-color]="section.backgroundColor"
+       [style.height.px]="section.autoRowSize ? undefined : section.height">
+     <ng-container *ngFor="let element of section.elements">
+       <aspect-element-group-selection
+         [class.no-pointer-events]="element.type === 'frame'"
+         [class.centered-horizontal]="element.dimensions.isWidthFixed"
+         [class.centered-vertical]="element.dimensions.isHeightFixed"
+         [style.margin-left]="[element.position.marginLeft] | measure"
+         [style.margin-right]="[element.position.marginRight] | measure"
+         [style.margin-top]="[element.position.marginTop] | measure"
+         [style.margin-bottom]="[element.position.marginBottom] | measure"
+         [style.grid-column-start]="element.position.gridColumn"
+         [style.grid-column-end]="element.position.gridColumn ?
+           element.position.gridColumn + element.position.gridColumnRange:
+           null"
+         [style.grid-row-start]="element.position.gridRow"
+         [style.grid-row-end]="element.position.gridRow ?
+           element.position.gridRow + element.position.gridRowRange:
+           null"
+         [style.z-index]="element.position.zIndex"
+         [elementModel]="element"
+         [pageIndex]="pageIndex">
+     </aspect-element-group-selection>
     </ng-container>
   </div>
 </ng-template>

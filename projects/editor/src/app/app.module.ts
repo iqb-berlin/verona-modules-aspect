@@ -27,6 +27,25 @@ import {
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/hotspot-field-set.component';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
 import { MathEditorModule } from 'common/math-editor.module';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import {
+  StateVariablesDialogComponent
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
+import {
+  VisibilityRuleEditorComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
+import {
+  ShowStateVariablesButtonComponent
+} from 'editor/src/app/components/new-ui-element-panel/state-variables-button/show-state-variables-button.component';
+import {
+  StateVariableEditorComponent
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variable-editor.component';
+import {
+  ButtonActionParamStateVariableComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/button-properties/button-action-param-state-variable.component';
+import {
+  VisibilityRulesDialogComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -73,7 +92,7 @@ import { OptionsFieldSetComponent } from
 import { TextPropertiesFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
 import { ButtonPropertiesComponent, GetAnchorIdsPipe, ScrollPageIndexPipe } from
-  './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
+  './components/properties-panel/model-properties-tab/input-groups/button-properties/button-properties.component';
 import { SliderPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
 import { TextFieldElementPropertiesComponent } from
@@ -99,7 +118,9 @@ import {
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
 import { ComboButtonComponent } from './components/util/combo-button.component';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import {
+  GetStateVariableIdsPipe
+} from './components/properties-panel/model-properties-tab/input-groups/button-properties/get-state-variable-ids.pipe';
 
 @NgModule({
   declarations: [
@@ -158,7 +179,14 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
     GetAnchorIdsPipe,
     ScrollPageIndexPipe,
     SizeInputPanelComponent,
-    ComboButtonComponent
+    ComboButtonComponent,
+    VisibilityRuleEditorComponent,
+    StateVariablesDialogComponent,
+    ShowStateVariablesButtonComponent,
+    StateVariableEditorComponent,
+    ButtonActionParamStateVariableComponent,
+    GetStateVariableIdsPipe,
+    VisibilityRulesDialogComponent
   ],
   imports: [
     BrowserModule,

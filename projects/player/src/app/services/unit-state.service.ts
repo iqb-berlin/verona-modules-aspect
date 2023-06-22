@@ -53,16 +53,25 @@ export class UnitStateService {
 
   registerElement(elementId: string,
                   elementValue: InputElementValue,
-                  domElement: Element,
-                  pageIndex: number): void {
-    this.elementIdPageIndexMap[elementId] = pageIndex;
+                  domElement: Element | null,
+                  pageIndex: number | null): void {
+    if (pageIndex !== null) {
+      this.elementIdPageIndexMap[elementId] = pageIndex;
+    }
     this.addElementCode(elementId, elementValue, domElement);
   }
 
   changeElementCodeValue(elementValue: ValueChangeElement): void {
-    LogService.info(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
+    LogService.debug(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
     this.setElementCodeValue(elementValue.id, elementValue.value);
-    this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
+    const unitStateElementCode = this.getElementCodeById(elementValue.id);
+    if (unitStateElementCode) {
+      if (unitStateElementCode.status !== 'DERIVED') {
+        this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
+      } else {
+        this._elementCodeChanged.next(unitStateElementCode);
+      }
+    }
   }
 
   changeElementCodeStatus(elementStatus: StatusChangeElement): void {
@@ -139,18 +148,20 @@ export class UnitStateService {
     }
   }
 
-  private addElementCode(id: string, value: InputElementValue, domElement: Element): void {
+  private addElementCode(id: string, value: InputElementValue, domElement: Element | null): void {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       // when reloading a unit, elementCodes are already pushed
-      unitStateElementCode = { id: id, value: value, status: 'NOT_REACHED' };
+      const status = domElement ? 'NOT_REACHED' : 'DERIVED';
+      unitStateElementCode = { id, value, status };
       this.elementCodes.push(unitStateElementCode);
       this._elementCodeChanged.next(unitStateElementCode);
-    } else if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes.length) {
+    } else if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes
+      .filter(e => e.status !== 'DERIVED').length) {
       // if all elements are registered, we can rebuild the presentedPages array
       this.buildPresentedPages();
     }
-    if (unitStateElementCode.status === 'NOT_REACHED') {
+    if (domElement && unitStateElementCode.status === 'NOT_REACHED') {
       this.addIntersectionDetection(id, domElement);
     }
   }

@@ -22,13 +22,15 @@ import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { ElementFactory } from 'common/util/element.factory';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
-import { DialogService } from './dialog.service';
-import { VeronaAPIService } from './verona-api.service';
-import { SelectionService } from './selection.service';
-import { IDService } from './id.service';
 import { PlayerProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { VisibilityRule } from 'common/models/visibility-rule';
+import { StateVariable } from 'common/models/state-variable';
+import { IDService } from './id.service';
+import { SelectionService } from './selection.service';
+import { VeronaAPIService } from './verona-api.service';
+import { DialogService } from './dialog.service';
 
 @Injectable({
   providedIn: 'root'
@@ -265,7 +267,7 @@ export class UnitService {
     return newElement;
   }
 
-  updateSectionProperty(section: Section, property: string, value: string | number | boolean | { value: number; unit: string }[]): void {
+  updateSectionProperty(section: Section, property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]): void {
     if (property === 'dynamicPositioning') {
       section.dynamicPositioning = value as boolean;
       section.elements.forEach((element: UIElement) => {
@@ -280,7 +282,7 @@ export class UnitService {
 
   updateElementsProperty(elements: UIElement[],
                          property: string,
-                         value: InputElementValue | LikertRowElement[] | Hotspot[] |
+                         value: InputElementValue | LikertRowElement[] | Hotspot[] | StateVariable |
                          TextLabel | TextLabel[] | ClozeDocument | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
@@ -510,5 +512,10 @@ export class UnitService {
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
     this.deleteSection(this.unit.pages[pageIndex].sections[sectionIndex]);
     this.addSection(this.unit.pages[pageIndex], newSection);
+  }
+
+  updateStateVariables(stateVariables: StateVariable[]): void {
+    this.unit.stateVariables = stateVariables;
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 }

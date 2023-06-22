@@ -10,6 +10,17 @@ import {
   GeogebraAppDefinitionDialogComponent
 } from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog.component';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
+import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
+import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import {
+  StateVariablesDialogComponent
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
+import { VisibilityRule } from 'common/models/visibility-rule';
+import {
+  VisibilityRulesDialogComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+import { StateVariable } from 'common/models/state-variable';
 import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -17,9 +28,6 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
-import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Injectable({
   providedIn: 'root'
@@ -120,6 +128,25 @@ export class DialogService {
   showGeogebraAppDefinitionDialog(): Observable<string> {
     const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
       data: { },
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showVisibilityRulesDialog(visibilityRules: VisibilityRule[],
+                            controlIds: string[],
+                            activeAfterIdDelay: number
+  ): Observable<{ visibilityRules: VisibilityRule[], activeAfterIdDelay: number }> {
+    const dialogRef = this.dialog.open(VisibilityRulesDialogComponent, {
+      data: { visibilityRules, controlIds, activeAfterIdDelay },
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showStateVariablesDialog(stateVariables: StateVariable[]): Observable<StateVariable[]> {
+    const dialogRef = this.dialog.open(StateVariablesDialogComponent, {
+      data: { stateVariables: stateVariables },
       autoFocus: false
     });
     return dialogRef.afterClosed();

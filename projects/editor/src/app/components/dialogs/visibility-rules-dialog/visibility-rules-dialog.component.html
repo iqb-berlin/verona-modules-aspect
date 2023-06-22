@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Regeln zur Sichtbarkeit</h1>
+<div mat-dialog-content class="fx-colum-start-stretch fx-gap-20">
+  <ng-container *ngIf="controlIds.length">
+    <div class="fx-row-end-stretch">
+      <button mat-icon-button
+              matSuffix
+              color="primary"
+              (click)="addVisibilityRule()">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <mat-form-field *ngIf="visibilityRules.length">
+      <mat-label>Verzögerung in ms</mat-label>
+      <input matInput
+             placeholder="Verzögerung in ms"
+             [(ngModel)]="activeAfterIdDelay">
+    </mat-form-field>
+  </ng-container>
+
+  <p *ngIf="!controlIds.length">Bitte zuerst Elemente oder Player-Variablen anlegen</p>
+
+  <div *ngFor="let rule of visibilityRules; let i = index"
+       class="fx-row-start-stretch fx-gap-10">
+    <aspect-visibility-rule-editor [controlIds]="controlIds"
+                            [(visibilityRule)]="visibilityRules[i]">
+    </aspect-visibility-rule-editor>
+    <button mat-icon-button
+            matSuffix
+            color="warn"
+            (click)="deleteVisibilityRule(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button
+          mat-dialog-close>
+    Abbrechen
+  </button>
+  <button *ngIf="controlIds.length"
+          mat-button
+          [mat-dialog-close]="{visibilityRules:visibilityRules, activeAfterIdDelay}">
+    Speichern
+  </button>
+</div>

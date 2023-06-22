@@ -1,6 +1,5 @@
 import {
-  Component, OnDestroy, Input, Output, EventEmitter,
-  ViewChild, ElementRef
+  Component, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,6 +9,7 @@ import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
+import { VisibilityRule } from 'common/models/visibility-rule';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
@@ -42,28 +42,59 @@ import { SelectionService } from '../../services/selection.service';
            [value]="$any(section.backgroundColor)"
            (change)="updateModel('backgroundColor', $any($event.target).value)">
 
-    <button mat-mini-fab [matMenuTriggerFor]="activeAfterIDMenu"
+    <button mat-mini-fab
+            (click)="showVisibilityRulesDialog()"
             [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
       <mat-icon>disabled_visible</mat-icon>
     </button>
-    <mat-menu #activeAfterIDMenu="matMenu"
-              class="activeAfterID-menu" xPosition="before">
-      <mat-form-field appearance="outline">
-        <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>
-        <input matInput
-               [value]="$any(section.activeAfterID)"
-               (click)="$any($event).stopPropagation()"
-               (change)="updateModel('activeAfterID', $any($event.target).value)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>{{'section-menu.activeAfterIdDelay' | translate }}</mat-label>
-        <input matInput type="number" step="1000" min="0"
-               [disabled]="!section.activeAfterID"
-               [value]="$any(section.activeAfterIdDelay)"
-               (click)="$any($event).stopPropagation()"
-               (change)="updateModel('activeAfterIdDelay', $any($event.target).value)">
-      </mat-form-field>
-    </mat-menu>
+    <!--    <mat-menu #activeAfterIDMenu="matMenu"-->
+    <!--              class="activeAfterID-menu" xPosition="before">-->
+
+    <!--      <aspect-rules [elementIds]="elementIds"-->
+    <!--                    [rules]="section.rules"-->
+    <!--      (click)="$event.stopPropagation()">-->
+    <!--      </aspect-rules>-->
+
+
+    <!--      <mat-form-field appearance="outline">-->
+    <!--        <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>-->
+    <!--        <input matInput-->
+    <!--               [value]="$any(section.activeAfterID)"-->
+    <!--               (click)="$any($event).stopPropagation()"-->
+    <!--               (change)="updateModel('activeAfterID', $any($event.target).value)">-->
+    <!--      </mat-form-field>-->
+    <!--      <mat-form-field appearance="outline">-->
+    <!--        <mat-label>{{'section-menu.activeAfterIdDelay' | translate }}</mat-label>-->
+    <!--        <input matInput type="number" step="1000" min="0"-->
+    <!--               [disabled]="!section.activeAfterID"-->
+    <!--               [value]="$any(section.activeAfterIdDelay)"-->
+    <!--               (click)="$any($event).stopPropagation()"-->
+    <!--               (change)="updateModel('activeAfterIdDelay', $any($event.target).value)">-->
+    <!--      </mat-form-field>-->
+
+
+    <!--      <button mat-icon-button-->
+    <!--              matSuffix-->
+    <!--              color="primary"-->
+    <!--              (click)="addRule($event)">-->
+    <!--        <mat-icon>add</mat-icon>-->
+    <!--      </button>-->
+    <!--      <ng-container *ngFor="let rule of section.rules; let i = index">-->
+    <!--        <aspect-rule [elementIds]="elementIds"-->
+    <!--                     [rule]="rule"-->
+    <!--                     (ruleChange)="updateRule(i, $event)"-->
+    <!--                     (click)="$event.stopPropagation()">-->
+    <!--        </aspect-rule>-->
+    <!--        <button mat-icon-button-->
+    <!--                matSuffix-->
+    <!--                color="primary"-->
+    <!--                (click)="deleteRule(i)">-->
+    <!--          <mat-icon>delete</mat-icon>-->
+    <!--        </button>-->
+    <!--      </ng-container>-->
+
+
+    <!--    </mat-menu>-->
     <button mat-mini-fab [matMenuTriggerFor]="layoutMenu"
             [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
       <mat-icon>space_dashboard</mat-icon>
@@ -206,7 +237,9 @@ export class SectionMenuComponent implements OnDestroy {
               private idService: IDService,
               private clipboard: Clipboard) { }
 
-  updateModel(property: string, value: string | number | boolean | { value: number; unit: string }[]): void {
+  updateModel(
+    property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]
+  ): void {
     this.unitService.updateSectionProperty(this.section, property, value);
   }
 
@@ -284,5 +317,22 @@ export class SectionMenuComponent implements OnDestroy {
           this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
         }
       });
+  }
+
+  showVisibilityRulesDialog(): void {
+    this.dialogService.showVisibilityRulesDialog(this.section.visibilityRules, this.getControlIds(), this.section.activeAfterIdDelay)
+      .subscribe(rulesWithDelay => {
+        if (rulesWithDelay) {
+          this.updateModel('visibilityRules', rulesWithDelay.visibilityRules);
+          this.updateModel('activeAfterIdDelay', rulesWithDelay.activeAfterIdDelay);
+        }
+      });
+  }
+
+  private getControlIds(): string[] {
+    return this.unitService.unit.getAllElements()
+      .map(element => element.id)
+      .concat(this.unitService.unit.stateVariables
+        .map(element => element.id));
   }
 }

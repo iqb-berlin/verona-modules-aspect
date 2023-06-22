@@ -1,0 +1,19 @@
+<div class="fx-row-start-stretch fx-gap-10">
+  <mat-form-field>
+    <mat-label>Id</mat-label>
+    <input matInput
+           placeholder="Id"
+           [(ngModel)]="stateVariable.id"
+           (ngModelChange)="stateVariableChange.emit(stateVariable)">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Wert</mat-label>
+    <input matInput
+           placeholder="Initialwert"
+           [(ngModel)]="stateVariable.value"
+           (ngModelChange)="stateVariableChange.emit(stateVariable)">
+  </mat-form-field>
+</div>
+
+

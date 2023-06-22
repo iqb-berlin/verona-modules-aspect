@@ -3,13 +3,14 @@ import { UIElement } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { StateVariable } from 'common/models/state-variable';
 
 export interface ButtonEvent {
   action: ButtonAction;
-  param: UnitNavParam | number | string;
+  param: UnitNavParam | number | string | StateVariable
 }
 
-export type ButtonAction = 'unitNav' | 'pageNav' | 'highlightText';
+export type ButtonAction = 'unitNav' | 'pageNav' | 'highlightText' | 'stateVariableChange';
 export type UnitNavParam = 'previous' | 'next' | 'first' | 'last' | 'end';
 
 export class ButtonElement extends UIElement {
@@ -17,7 +18,7 @@ export class ButtonElement extends UIElement {
   imageSrc: string | null = null;
   asLink: boolean = false;
   action: null | ButtonAction = null;
-  actionParam: null | UnitNavParam | number | string = null;
+  actionParam: null | UnitNavParam | number | string | StateVariable = null;
   position: PositionProperties | undefined;
   styling: BasicStyles & {
     borderRadius: number;

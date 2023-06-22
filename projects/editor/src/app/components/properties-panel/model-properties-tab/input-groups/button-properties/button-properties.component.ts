@@ -6,8 +6,9 @@ import { FileService } from 'common/services/file.service';
 import { UIElement } from 'common/models/elements/element';
 import { TextComponent } from 'common/components/text/text.component';
 import { Page } from 'common/models/page';
-import { UnitService } from '../../../../services/unit.service';
-import { SelectionService } from '../../../../services/selection.service';
+import { StateVariable } from 'common/models/state-variable';
+import { UnitService } from '../../../../../services/unit.service';
+import { SelectionService } from '../../../../../services/selection.service';
 
 @Component({
   selector: 'aspect-button-properties',
@@ -28,46 +29,59 @@ import { SelectionService } from '../../../../services/selection.service';
           <mat-option [value]="null">
             {{ 'propertiesPanel.none' | translate }}
           </mat-option>
-          <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'highlightText']"
+          <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange']"
                       [value]="option">
             {{ 'propertiesPanel.' + option | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <ng-container *ngIf="combinedProperties.action === 'stateVariableChange'">
+        <aspect-button-action-param-state-variable
+          *ngIf="unitService.unit.stateVariables.length"
+          [stateVariableIds]="unitService.unit.stateVariables | getStateVariableIds"
+          [stateVariable]="combinedProperties.actionParam ?
+                           $any(combinedProperties.actionParam) :
+                           {id: unitService.unit.stateVariables[0].id, value: unitService.unit.stateVariables[0].value}"
+          (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
+        </aspect-button-action-param-state-variable>
+        <p *ngIf="!unitService.unit.stateVariables.length">Bitte zuerst Player-Variablen anlegen</p>
+      </ng-container>
+
+      <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange'"
+                      appearance="fill">
         <mat-label>{{'propertiesPanel.actionParam' | translate }}</mat-label>
-          <mat-select [disabled]="combinedProperties.action === null"
-                      [value]="combinedProperties.actionParam"
-                      [matTooltipDisabled]="combinedProperties.action !== 'pageNav'"
-                      [matTooltip]="'propertiesPanel.pageNavSelectionHint' | translate"
-                      (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
+        <mat-select [disabled]="combinedProperties.action === null"
+                    [value]="combinedProperties.actionParam"
+                    [matTooltipDisabled]="combinedProperties.action !== 'pageNav'"
+                    [matTooltip]="'propertiesPanel.pageNavSelectionHint' | translate"
+                    (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
 
-            <ng-container *ngIf="combinedProperties.action === 'pageNav'">
-              <ng-container *ngFor="let page of (unitService.unit.pages | scrollPages); index as i">
-                <mat-option *ngIf="(unitService.unit.pages | scrollPageIndex: selectionService.selectedPageIndex) !== i"
-                            [value]="i">
-                  {{'page' | translate}} {{i + 1}}
-                </mat-option>
-              </ng-container>
-            </ng-container>
-
-
-            <ng-container *ngIf="combinedProperties.action === 'unitNav'">
-              <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
-                          [value]="option">
-                {{ 'propertiesPanel.' + option | translate }}
+          <ng-container *ngIf="combinedProperties.action === 'pageNav'">
+            <ng-container *ngFor="let page of (unitService.unit.pages | scrollPages); index as i">
+              <mat-option *ngIf="(unitService.unit.pages | scrollPageIndex: selectionService.selectedPageIndex) !== i"
+                          [value]="i">
+                {{'page' | translate}} {{i + 1}}
               </mat-option>
             </ng-container>
+          </ng-container>
 
-            <ng-container *ngIf="combinedProperties.action === 'highlightText'">
-              <mat-option *ngFor="let option of (textComponents | getAnchorIds) "
-                          [value]="option">
-                {{ option  }}
-              </mat-option>
-            </ng-container>
 
-          </mat-select>
+          <ng-container *ngIf="combinedProperties.action === 'unitNav'">
+            <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
+                        [value]="option">
+              {{ 'propertiesPanel.' + option | translate }}
+            </mat-option>
+          </ng-container>
+
+          <ng-container *ngIf="combinedProperties.action === 'highlightText'">
+            <mat-option *ngFor="let option of (textComponents | getAnchorIds) "
+                        [value]="option">
+              {{ option  }}
+            </mat-option>
+          </ng-container>
+
+        </mat-select>
       </mat-form-field>
 
       <div class="image-panel" (mouseenter)="hoveringImage = true" (mouseleave)="hoveringImage = false">
@@ -86,7 +100,9 @@ import { SelectionService } from '../../../../services/selection.service';
 export class ButtonPropertiesComponent {
   @Input() combinedProperties!: UIElement;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | null, isInputValid?: boolean | null }>();
+    new EventEmitter<{
+      property: string; value: string | number | boolean | StateVariable | null, isInputValid?: boolean | null
+    }>();
 
   hoveringImage = false;
   textComponents: { [id: string]: TextComponent } = {};

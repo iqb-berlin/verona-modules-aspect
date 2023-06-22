@@ -1,0 +1,33 @@
+<h1 mat-dialog-title>Player-Variablen bearbeiten</h1>
+<div mat-dialog-content class="fx-colum-start-stretch fx-gap-20">
+  <div class="fx-row-end-stretch">
+    <button mat-icon-button
+            matSuffix
+            color="primary"
+            (click)="addStateVariable()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div *ngFor="let stateVariable of stateVariables; let i = index"
+       class="fx-row-start-stretch fx-gap-10">
+    <aspect-state-variable-editor
+      [(stateVariable)]="stateVariables[i]">
+    </aspect-state-variable-editor>
+    <button mat-icon-button
+            matSuffix
+            color="warn"
+            (click)="deleteStateVariable(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button
+          mat-dialog-close>
+    Abbrechen
+  </button>
+  <button mat-button
+          [mat-dialog-close]="stateVariables">
+    Speichern
+  </button>
+</div>

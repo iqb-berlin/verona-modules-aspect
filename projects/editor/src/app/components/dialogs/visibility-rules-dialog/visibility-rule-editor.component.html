@@ -1,0 +1,31 @@
+<div class="fx-row-start-stretch fx-gap-10">
+  <mat-form-field>
+    <mat-label>Id</mat-label>
+    <mat-select [(ngModel)]="visibilityRule.id"
+                (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
+      <mat-option *ngFor="let id of controlIds"
+                  [value]="id">
+        {{id}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Operator</mat-label>
+    <mat-select [(ngModel)]="visibilityRule.operator"
+                (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
+      <mat-option *ngFor="let operator of VisibilityRule.operators"
+                  [value]="operator">
+        {{operator}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Wert</mat-label>
+    <input matInput
+           placeholder="Wert"
+           [(ngModel)]="visibilityRule.value"
+           (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
+  </mat-form-field>
+</div>

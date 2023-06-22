@@ -2,21 +2,18 @@ import {
   Component, EventEmitter,
   Input, Output
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-  InputElementValue, UIElement
-} from 'common/models/elements/element';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { InputElementValue, UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { FileService } from 'common/services/file.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { firstValueFrom } from 'rxjs';
+import { TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { StateVariable } from 'common/models/state-variable';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
-import { TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -28,14 +25,13 @@ export class ElementModelPropertiesComponent {
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
-    value: InputElementValue | TextImageLabel[] | LikertRowElement[] | TextLabel[] | Hotspot[]
+    value: InputElementValue | TextImageLabel[] | LikertRowElement[] | TextLabel[] | Hotspot[] | StateVariable
     isInputValid?: boolean | null
   }>();
 
   constructor(public unitService: UnitService,
               public selectionService: SelectionService,
-              public dialogService: DialogService,
-              public sanitizer: DomSanitizer) { }
+              public dialogService: DialogService) { }
 
   addListValue(property: string, value: string): void {
     this.updateModel.emit({

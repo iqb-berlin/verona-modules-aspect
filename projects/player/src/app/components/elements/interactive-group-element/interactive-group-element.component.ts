@@ -5,7 +5,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/button/button';
 import { FrameElement } from 'common/models/elements/frame/frame';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { InputElementValue } from 'common/models/elements/element';
+import { InputElementValue, ValueChangeElement } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { NavigationService } from '../../../services/navigation.service';
@@ -58,6 +58,9 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
         break;
       case 'highlightText':
         this.anchorService.toggleAnchor(navigationEvent.param as string);
+        break;
+      case 'stateVariableChange':
+        this.unitStateService.changeElementCodeValue(navigationEvent.param as ValueChangeElement);
         break;
       default:
     }

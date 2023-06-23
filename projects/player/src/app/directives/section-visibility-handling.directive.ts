@@ -50,17 +50,17 @@ export class SectionVisibilityHandlingDirective implements OnInit {
 
   displaySection(): void {
     if (this.isSectionVisible()) {
-      if (this.section.activeAfterIdDelay) {
+      if (this.section.visibilityDelay) {
         // sollte die gleiche id wie die dazugehörige Rule benutzen
         if (!this.unitStateService.getElementCodeById('test-3000')) {
-          const st = new TimerStateVariable('test-3000', 0, this.section.activeAfterIdDelay);
+          const st = new TimerStateVariable('test-3000', 0, this.section.visibilityDelay);
           this.unitStateService.registerElement(st.id, st.value, null, null);
           st.run();
           st.elementValueChanged.subscribe((value: ValueChangeElement) => {
             this.unitStateService.changeElementCodeValue(value);
           });
         }
-        if ((this.unitStateService.getElementCodeById('test-3000')?.value as number) >= this.section.activeAfterIdDelay) {
+        if ((this.unitStateService.getElementCodeById('test-3000')?.value as number) >= this.section.visibilityDelay) {
           this.elementRef.nativeElement.style.display = 'block';
         } else {
           this.elementRef.nativeElement.style.display = 'none';
@@ -110,7 +110,7 @@ export class SectionVisibilityHandlingDirective implements OnInit {
   private get isScrollSection(): boolean {
     return this.pageSections
       .filter(pageSection => pageSection.activeAfterID === this.section.activeAfterID &&
-        pageSection.activeAfterIdDelay === this.section.activeAfterIdDelay &&
+        pageSection.visibilityDelay === this.section.visibilityDelay &&
         pageSection.getAllElements().length)
       .findIndex(section => section === this.section) === 0;
   }

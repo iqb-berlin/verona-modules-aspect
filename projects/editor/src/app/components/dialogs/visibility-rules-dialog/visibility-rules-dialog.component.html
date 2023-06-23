@@ -13,7 +13,7 @@
       <mat-label>Verzögerung in ms</mat-label>
       <input matInput
              placeholder="Verzögerung in ms"
-             [(ngModel)]="activeAfterIdDelay">
+             [(ngModel)]="visibilityDelay">
     </mat-form-field>
   </ng-container>
 
@@ -22,7 +22,7 @@
   <div *ngFor="let rule of visibilityRules; let i = index"
        class="fx-row-start-stretch fx-gap-10">
     <aspect-visibility-rule-editor [controlIds]="controlIds"
-                            [(visibilityRule)]="visibilityRules[i]">
+                                   [(visibilityRule)]="visibilityRules[i]">
     </aspect-visibility-rule-editor>
     <button mat-icon-button
             matSuffix
@@ -39,7 +39,7 @@
   </button>
   <button *ngIf="controlIds.length"
           mat-button
-          [mat-dialog-close]="{visibilityRules:visibilityRules, activeAfterIdDelay}">
+          [mat-dialog-close]="{visibilityRules, visibilityDelay}">
     Speichern
   </button>
 </div>

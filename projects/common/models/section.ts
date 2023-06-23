@@ -22,7 +22,7 @@ export class Section {
   autoRowSize: boolean = true;
   gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
   gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }];
-  activeAfterIdDelay: number = 0;
+  visibilityDelay: number = 0;
   visibilityRules: VisibilityRule[] = [];
 
   constructor(blueprint?: Record<string, any>) {
@@ -34,7 +34,7 @@ export class Section {
     if (sanitizedBlueprint.autoRowSize !== undefined) this.autoRowSize = sanitizedBlueprint.autoRowSize;
     if (sanitizedBlueprint.gridColumnSizes !== undefined) this.gridColumnSizes = sanitizedBlueprint.gridColumnSizes;
     if (sanitizedBlueprint.gridRowSizes !== undefined) this.gridRowSizes = sanitizedBlueprint.gridRowSizes;
-    if (sanitizedBlueprint.activeAfterIdDelay) this.activeAfterIdDelay = sanitizedBlueprint.activeAfterIdDelay;
+    if (sanitizedBlueprint.visibilityDelay) this.visibilityDelay = sanitizedBlueprint.visibilityDelay;
     if (sanitizedBlueprint.visibilityRules) {
       this.visibilityRules = sanitizedBlueprint.visibilityRules
         .map(rule => new VisibilityRule(rule.id, rule.operator, rule.value));

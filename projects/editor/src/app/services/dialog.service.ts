@@ -135,10 +135,10 @@ export class DialogService {
 
   showVisibilityRulesDialog(visibilityRules: VisibilityRule[],
                             controlIds: string[],
-                            activeAfterIdDelay: number
-  ): Observable<{ visibilityRules: VisibilityRule[], activeAfterIdDelay: number }> {
+                            visibilityDelay: number
+  ): Observable<{ visibilityRules: VisibilityRule[], visibilityDelay: number }> {
     const dialogRef = this.dialog.open(VisibilityRulesDialogComponent, {
-      data: { visibilityRules, controlIds, activeAfterIdDelay },
+      data: { visibilityRules, controlIds, visibilityDelay },
       autoFocus: false
     });
     return dialogRef.afterClosed();

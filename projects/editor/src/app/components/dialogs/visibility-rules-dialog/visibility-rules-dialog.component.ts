@@ -8,17 +8,17 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class VisibilityRulesDialogComponent {
   visibilityRules!: VisibilityRule[];
   controlIds!: string[];
-  activeAfterIdDelay!: number;
+  visibilityDelay!: number;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: {
       visibilityRules: VisibilityRule[],
-      activeAfterIdDelay: number,
+      visibilityDelay: number,
       controlIds: string[],
     }
   ) {
     this.visibilityRules = [...data.visibilityRules];
-    this.activeAfterIdDelay = data.activeAfterIdDelay;
+    this.visibilityDelay = data.visibilityDelay;
     this.controlIds = data.controlIds;
   }
 

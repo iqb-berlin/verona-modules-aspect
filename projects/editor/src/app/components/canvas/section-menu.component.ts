@@ -320,11 +320,12 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   showVisibilityRulesDialog(): void {
-    this.dialogService.showVisibilityRulesDialog(this.section.visibilityRules, this.getControlIds(), this.section.activeAfterIdDelay)
+    this.dialogService
+      .showVisibilityRulesDialog(this.section.visibilityRules, this.getControlIds(), this.section.visibilityDelay)
       .subscribe(rulesWithDelay => {
         if (rulesWithDelay) {
           this.updateModel('visibilityRules', rulesWithDelay.visibilityRules);
-          this.updateModel('activeAfterIdDelay', rulesWithDelay.activeAfterIdDelay);
+          this.updateModel('visibilityDelay', rulesWithDelay.visibilityDelay);
         }
       });
   }

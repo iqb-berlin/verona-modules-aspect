@@ -1,16 +1,16 @@
 <div class="fx-row-start-stretch fx-gap-10">
   <mat-form-field>
-    <mat-label>Id</mat-label>
+    <mat-label>{{'stateVariableId' | translate}}</mat-label>
     <input matInput
-           placeholder="Id"
+           [placeholder]="'stateVariableId' | translate"
            [(ngModel)]="stateVariable.id"
            (ngModelChange)="stateVariableChange.emit(stateVariable)">
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Wert</mat-label>
+    <mat-label>{{'stateVariableValue' | translate}}</mat-label>
     <input matInput
-           placeholder="Initialwert"
+           [placeholder]="'stateVariableValue' | translate"
            [(ngModel)]="stateVariable.value"
            (ngModelChange)="stateVariableChange.emit(stateVariable)">
   </mat-form-field>

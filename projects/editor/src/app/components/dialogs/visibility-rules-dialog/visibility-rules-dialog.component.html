@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Regeln zur Sichtbarkeit</h1>
+<h1 mat-dialog-title>{{'section.manageVisibilityRules' | translate}}</h1>
 <div mat-dialog-content class="fx-colum-start-stretch fx-gap-20">
   <ng-container *ngIf="controlIds.length">
     <div class="fx-row-end-stretch">
@@ -12,21 +12,21 @@
     <div *ngIf="visibilityRules.length"
          class="fx-row-start-stretch fx-gap-10">
       <mat-form-field >
-        <mat-label>Verzögerung in ms</mat-label>
+        <mat-label>{{'section.visibilityDelay' | translate}}</mat-label>
         <input matInput
                type="number"
                step="1000"
-               placeholder="Verzögerung in ms"
+               [placeholder]="'section.visibilityDelay' | translate"
                [(ngModel)]="visibilityDelay">
       </mat-form-field>
       <mat-checkbox
         [(ngModel)]="animatedVisibility">
-        Scrollen beim Anzeigen
+        {{'section.animatedVisibility' | translate}}
       </mat-checkbox>
     </div>
   </ng-container>
 
-  <p *ngIf="!controlIds.length">Bitte zuerst Elemente oder Player-Variablen anlegen</p>
+  <p *ngIf="!controlIds.length">{{'section.addElementsOrStateVariables' | translate}}</p>
 
   <div *ngFor="let rule of visibilityRules; let i = index"
        class="fx-row-start-stretch fx-gap-10">
@@ -44,11 +44,11 @@
 <div mat-dialog-actions>
   <button mat-button
           mat-dialog-close>
-    Abbrechen
+    {{'cancel' | translate}}
   </button>
   <button *ngIf="controlIds.length"
           mat-button
           [mat-dialog-close]="{visibilityRules, visibilityDelay, animatedVisibility:animatedVisibility}">
-    Speichern
+    {{'save' | translate}}
   </button>
 </div>

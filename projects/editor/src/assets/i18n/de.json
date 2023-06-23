@@ -30,6 +30,20 @@
   "auto": "oben",
   "center": "zentriert",
   "allowReplacement": "Verdrängen erlauben",
+  "stateVariable": "Statusvariable",
+  "stateVariables": "Statusvariablen",
+  "stateVariableValue": "Wert der Statusvariable",
+  "stateVariableId": "Id der Statusvariable",
+  "manageStateVariables": "Statusvariablen verwalten",
+  "section": {
+    "manageVisibilityRules": "Sichtbarkeit verwalten",
+    "animatedVisibility": "Scrollen beim Anzeigen",
+    "visibilityDelay": "Verzögerung der Anzeige",
+    "controlId": "Statusvariable/Element-ID",
+    "operator": "Operator",
+    "addElementsOrStateVariables": "Bitte zuerst Elemente oder Statusvariablen anlegen",
+    "value": "Wert"
+  },
   "toolbar": {
     "loadUnit": "Unit laden",
     "saveUnit": "Unit speichern"
@@ -102,6 +116,7 @@
     "unitNav": "Unitnavigation",
     "pageNav": "Seitennavigation",
     "highlightText": "Textabschnitt hervorheben",
+    "stateVariableChange": "Statusvariable ändern",
     "previous": "Vorherige Unit",
     "next": "Nächste Unit",
     "first": "Erste Unit",
@@ -283,9 +298,7 @@
     "width": "Breite",
     "fraction": "Anteile",
     "pixel": "Bildpunkte",
-    "percent": "Prozent",
-    "activeAfterID": "Sichtbar nach A/V-ID",
-    "activeAfterIdDelay": "Verzögerung der Sichtbarkeit"
+    "percent": "Prozent"
   },
   "Bitte kopierten Abschnitt einfügen": "Bitte kopierten Abschnitt einfügen",
   "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",

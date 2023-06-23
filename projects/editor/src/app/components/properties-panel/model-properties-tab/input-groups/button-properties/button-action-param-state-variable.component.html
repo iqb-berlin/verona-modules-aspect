@@ -1,6 +1,6 @@
 <div class="fx-column-start-stretch">
   <mat-form-field>
-    <mat-label>Id</mat-label>
+    <mat-label>{{'stateVariableId' | translate}}</mat-label>
     <mat-select [(ngModel)]="stateVariable.id"
                 (ngModelChange)="stateVariableChange.emit(stateVariable)">
       <mat-option *ngFor="let id of stateVariableIds"
@@ -11,9 +11,9 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-label>Wert</mat-label>
+    <mat-label>{{'stateVariableValue' | translate}}</mat-label>
     <input matInput
-           placeholder="Initialwert"
+           [placeholder]="'stateVariableValue' | translate"
            [(ngModel)]="stateVariable.value"
            (ngModelChange)="stateVariableChange.emit(stateVariable)">
   </mat-form-field>

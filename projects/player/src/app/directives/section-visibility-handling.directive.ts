@@ -1,23 +1,22 @@
 import {
-  Directive, ElementRef, Input, OnInit
+  Directive, ElementRef, Input, OnDestroy, OnInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
-import { ElementCodeStatusValue } from 'player/modules/verona/models/verona';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { TimerStateVariable } from 'player/src/app/classes/timer-state-variable';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { ElementCode, ElementCodeStatusValue } from 'player/modules/verona/models/verona';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]'
 })
-export class SectionVisibilityHandlingDirective implements OnInit {
-  @Input() mediaStatusChanged!: Subject<string>;
+export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Input() section!: Section;
   @Input() pageSections!: Section[];
 
-  private isVisible: boolean = true;
+  private isSectionSeen: boolean = false;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
@@ -30,50 +29,71 @@ export class SectionVisibilityHandlingDirective implements OnInit {
       this.unitStateService.elementCodeChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(code => {
-          this.displaySection();
+          if (this.isRuleCode(code)) {
+            this.displayHiddenSection();
+          }
         });
+      this.isSectionSeen = this.hasSeenElements();
+    } else {
+      this.isSectionSeen = true;
     }
-
-    // this.setVisibility(!this.section.activeAfterID);
-    // if (!this.isVisible) {
-    //   this.mediaStatusChanged
-    //     .pipe(
-    //       takeUntil(this.ngUnsubscribe),
-    //       delay(this.section.activeAfterIdDelay))
-    //     .subscribe((id: string): void => {
-    //       this.ngUnsubscribe.next();
-    //       this.ngUnsubscribe.complete();
-    //       this.setActiveAfterID(id);
-    //     });
-    // }
   }
 
-  displaySection(): void {
-    if (this.isSectionVisible()) {
+  private isRuleCode(code: ElementCode): boolean {
+    return this.section.visibilityRules
+      .map(rule => rule.id)
+      .some(id => id === code.id) ||
+      (!!this.section.visibilityDelay && code.id === this.timerStateVariableId);
+  }
+
+  private get timerStateVariableId(): string {
+    return `${this.section.visibilityRules[0].id}-
+    ${this.section.visibilityRules[0].value}-
+    ${this.section.visibilityDelay}`;
+  }
+
+  private initTimerStateVariable(): void {
+    const timerStateVariable = new TimerStateVariable(
+      this.timerStateVariableId, this.section.visibilityDelay
+    );
+    this.unitStateService.registerElement(timerStateVariable.id, timerStateVariable.value);
+    timerStateVariable.timerStateValueChanged
+      .subscribe((value: ValueChangeElement) => {
+        this.unitStateService.changeElementCodeValue(value);
+      });
+    timerStateVariable.run();
+  }
+
+  private displayHiddenSection(): void {
+    if (this.areVisibilityRulesFulfilled()) {
       if (this.section.visibilityDelay) {
-        // sollte die gleiche id wie die dazugehörige Rule benutzen
-        if (!this.unitStateService.getElementCodeById('test-3000')) {
-          const st = new TimerStateVariable('test-3000', 0, this.section.visibilityDelay);
-          this.unitStateService.registerElement(st.id, st.value, null, null);
-          st.run();
-          st.elementValueChanged.subscribe((value: ValueChangeElement) => {
-            this.unitStateService.changeElementCodeValue(value);
-          });
+        if (!this.unitStateService.getElementCodeById(this.timerStateVariableId)) {
+          this.initTimerStateVariable();
         }
-        if ((this.unitStateService.getElementCodeById('test-3000')?.value as number) >= this.section.visibilityDelay) {
-          this.elementRef.nativeElement.style.display = 'block';
-        } else {
-          this.elementRef.nativeElement.style.display = 'none';
-        }
+        this.setVisibility(
+          (this.unitStateService
+            .getElementCodeById(this.timerStateVariableId)?.value as number) >= this.section.visibilityDelay);
+      } else {
+        this.setVisibility(true);
       }
     } else {
-      this.elementRef.nativeElement.style.display = 'none';
+      this.setVisibility(false);
     }
   }
 
-  isSectionVisible(): boolean {
+  private setVisibility(visible: boolean): void {
+    this.elementRef.nativeElement.style.display = visible ? null : 'none';
+    if (visible && this.section.animatedVisibility && !this.isSectionSeen) {
+      this.isSectionSeen = true;
+      this.elementRef.nativeElement.style.scrollMarginTop = 100;
+      setTimeout(() => {
+        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
+  }
+
+  private areVisibilityRulesFulfilled(): boolean {
     return this.section.visibilityRules.some(rule => {
-      console.log(this.section.visibilityRules, rule.id, this.unitStateService.getElementCodeById(rule.id));
       if (this.unitStateService.getElementCodeById(rule.id)) {
         switch (rule.operator) {
           case '=':
@@ -84,6 +104,10 @@ export class SectionVisibilityHandlingDirective implements OnInit {
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) > Number(rule.value);
           case '<':
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) < Number(rule.value);
+          case '>=':
+            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) >= Number(rule.value);
+          case '<=':
+            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) <= Number(rule.value);
           default:
             return false;
         }
@@ -92,30 +116,7 @@ export class SectionVisibilityHandlingDirective implements OnInit {
     });
   }
 
-  private setVisibility(isVisible: boolean): void {
-    this.isVisible = isVisible || this.hasSeenElements;
-    this.elementRef.nativeElement.style.display = this.isVisible ? null : 'none';
-  }
-
-  private setActiveAfterID(id: string): void {
-    this.setVisibility(id === this.section.activeAfterID);
-    if (this.isScrollSection) {
-      this.elementRef.nativeElement.style.scrollMarginTop = 100;
-      setTimeout(() => {
-        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    }
-  }
-
-  private get isScrollSection(): boolean {
-    return this.pageSections
-      .filter(pageSection => pageSection.activeAfterID === this.section.activeAfterID &&
-        pageSection.visibilityDelay === this.section.visibilityDelay &&
-        pageSection.getAllElements().length)
-      .findIndex(section => section === this.section) === 0;
-  }
-
-  private get hasSeenElements(): boolean {
+  private hasSeenElements(): boolean {
     return this.section.getAllElements()
       .map(element => this.unitStateService.getElementCodeById(element.id))
       .some(code => (code ? ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED : false));

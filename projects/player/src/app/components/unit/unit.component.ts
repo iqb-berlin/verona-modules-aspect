@@ -69,7 +69,7 @@ export class UnitComponent implements OnInit {
       JSON.parse(message.unitState.dataParts.elementCodes) : [];
     unitDefinition.stateVariables
       .map(stateVariable => this.unitStateService
-        .registerElement(stateVariable.id, stateVariable.value, null, null));
+        .registerElement(stateVariable.id, stateVariable.value));
   }
 
   private reset(): void {

@@ -53,8 +53,8 @@ export class UnitStateService {
 
   registerElement(elementId: string,
                   elementValue: InputElementValue,
-                  domElement: Element | null,
-                  pageIndex: number | null): void {
+                  domElement: Element | null = null,
+                  pageIndex: number | null = null): void {
     if (pageIndex !== null) {
       this.elementIdPageIndexMap[elementId] = pageIndex;
     }

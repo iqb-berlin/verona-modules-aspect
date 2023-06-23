@@ -5,22 +5,24 @@ export class TimerStateVariable {
   id: string;
   value: number;
   duration: number;
-  elementValueChanged = new EventEmitter<ValueChangeElement>();
+  timerStateValueChanged = new EventEmitter<ValueChangeElement>();
+  timerStateEnded = new EventEmitter();
 
   private interval: number = 0;
 
-  constructor(id: string, value: number, duration: number) {
+  constructor(id: string, duration: number, value = 0) {
     this.id = id;
-    this.value = value;
     this.duration = duration;
+    this.value = value;
   }
 
   run(): void {
     if (!this.interval) {
       this.interval = setInterval(() => {
         this.value += 1000;
-        this.elementValueChanged.emit({ id: this.id, value: this.value });
+        this.timerStateValueChanged.emit({ id: this.id, value: this.value });
         if (this.value >= this.duration) {
+          this.timerStateEnded.emit();
           this.stop();
         }
       }, 1000);

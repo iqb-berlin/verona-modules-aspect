@@ -27,8 +27,7 @@ describe('SectionComponent', () => {
       autoColumnSize: true,
       autoRowSize: true,
       gridColumnSizes: '1fr 1fr',
-      gridRowSizes: '1fr',
-      activeAfterID: ''
+      gridRowSizes: '1fr'
     });
     fixture.detectChanges();
   });

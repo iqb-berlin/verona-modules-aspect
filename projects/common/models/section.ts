@@ -22,7 +22,6 @@ export class Section {
   autoRowSize: boolean = true;
   gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
   gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }];
-  activeAfterID: string | null = null;
   activeAfterIdDelay: number = 0;
   visibilityRules: VisibilityRule[] = [];
 
@@ -35,7 +34,6 @@ export class Section {
     if (sanitizedBlueprint.autoRowSize !== undefined) this.autoRowSize = sanitizedBlueprint.autoRowSize;
     if (sanitizedBlueprint.gridColumnSizes !== undefined) this.gridColumnSizes = sanitizedBlueprint.gridColumnSizes;
     if (sanitizedBlueprint.gridRowSizes !== undefined) this.gridRowSizes = sanitizedBlueprint.gridRowSizes;
-    if (sanitizedBlueprint.activeAfterID) this.activeAfterID = sanitizedBlueprint.activeAfterID;
     if (sanitizedBlueprint.activeAfterIdDelay) this.activeAfterIdDelay = sanitizedBlueprint.activeAfterIdDelay;
     if (sanitizedBlueprint.visibilityRules) {
       this.visibilityRules = sanitizedBlueprint.visibilityRules

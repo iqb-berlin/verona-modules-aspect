@@ -2,7 +2,7 @@
     *ngIf="elementModel.type === 'button'"
     #elementComponent
     [elementModel]="elementModel | cast: ButtonElement"
-    (navigateTo)="navigateTo($event)">
+    (buttonActionEvent)="applyButtonAction($event)">
 </aspect-button>
 <aspect-frame
     *ngIf="elementModel.type === 'frame'"

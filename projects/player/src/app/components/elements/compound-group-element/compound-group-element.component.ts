@@ -66,7 +66,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
         this.manageOnKeyDown(child as TextFieldSimpleComponent, childModel);
       }
       if (childModel.type === 'button') {
-        this.addNavigationEventListener(child as ButtonComponent);
+        this.addButtonActionEventListener(child as ButtonComponent);
       }
     });
   }
@@ -129,24 +129,24 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     }
   }
 
-  private addNavigationEventListener(button: ButtonComponent) {
-    button.navigateTo
+  private addButtonActionEventListener(button: ButtonComponent) {
+    button.buttonActionEvent
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(navigationEvent => {
-        switch (navigationEvent.action) {
+      .subscribe(buttonEvent => {
+        switch (buttonEvent.action) {
           case 'unitNav':
             this.veronaPostService.sendVopUnitNavigationRequestedNotification(
-              (navigationEvent.param as UnitNavParam)
+              (buttonEvent.param as UnitNavParam)
             );
             break;
           case 'pageNav':
-            this.navigationService.setPage(navigationEvent.param as number);
+            this.navigationService.setPage(buttonEvent.param as number);
             break;
           case 'highlightText':
-            this.anchorService.toggleAnchor(navigationEvent.param as string);
+            this.anchorService.toggleAnchor(buttonEvent.param as string);
             break;
           case 'stateVariableChange':
-            this.unitStateService.changeElementCodeValue(navigationEvent.param as ValueChangeElement);
+            this.unitStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
             break;
           default:
         }

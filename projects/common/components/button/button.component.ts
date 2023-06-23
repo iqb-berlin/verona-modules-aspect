@@ -19,11 +19,10 @@ import { ElementComponent } from '../../directives/element-component.directive';
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [style.border-radius.px]="elementModel.styling.borderRadius"
-         (click)="$event.preventDefault(); elementModel.action && elementModel.actionParam !== null ?
-                                             navigateTo.emit({
-                                                action: elementModel.action,
-                                                param: elementModel.actionParam
-                                             }) : false">
+         (click)="$event.preventDefault();
+                  elementModel.action && elementModel.actionParam !== null ?
+                  buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam})) :
+                  false">
         <!--preventDefault to prevent form submission-->
         {{elementModel.label}}
       </a>
@@ -41,25 +40,19 @@ import { ElementComponent } from '../../directives/element-component.directive';
             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
             [style.border-radius.px]="elementModel.styling.borderRadius"
             (click)="elementModel.action && elementModel.actionParam !== null ?
-               navigateTo.emit({
-                  action: elementModel.action,
-                  param: elementModel.actionParam
-               }) :
-               false">
+                     buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam })) :
+                     false">
       {{elementModel.label}}
     </button>
     <input
-        *ngIf="elementModel.imageSrc" type="image"
-        [src]="elementModel.imageSrc | safeResourceUrl"
-        [class]="elementModel.position?.dynamicPositioning &&
+      *ngIf="elementModel.imageSrc" type="image"
+      [src]="elementModel.imageSrc | safeResourceUrl"
+      [class]="elementModel.position?.dynamicPositioning &&
                  !elementModel.position?.fixedSize ? 'dynamic-image' : 'static-image'"
-        [alt]="'imageNotFound' | translate"
-        (click)="elementModel.action && elementModel.actionParam !== null?
-           navigateTo.emit({
-              action: elementModel.action,
-              param: elementModel.actionParam
-           }) :
-           false">
+      [alt]="'imageNotFound' | translate"
+      (click)="elementModel.action !== null && elementModel.actionParam !== null?
+               buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam })) :
+               false">
   `,
   styles: [
     '.dynamic-image {width: 100%; height: fit-content;}',
@@ -69,5 +62,5 @@ import { ElementComponent } from '../../directives/element-component.directive';
 })
 export class ButtonComponent extends ElementComponent {
   @Input() elementModel!: ButtonElement;
-  @Output() navigateTo = new EventEmitter<ButtonEvent>();
+  @Output() buttonActionEvent = new EventEmitter<ButtonEvent>();
 }

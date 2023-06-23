@@ -46,21 +46,21 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
       this.pageIndex);
   }
 
-  navigateTo(navigationEvent: ButtonEvent): void {
-    switch (navigationEvent.action) {
+  applyButtonAction(buttonEvent: ButtonEvent): void {
+    switch (buttonEvent.action) {
       case 'unitNav':
         this.veronaPostService.sendVopUnitNavigationRequestedNotification(
-          (navigationEvent.param as UnitNavParam)
+          (buttonEvent.param as UnitNavParam)
         );
         break;
       case 'pageNav':
-        this.navigationService.setPage(navigationEvent.param as number);
+        this.navigationService.setPage(buttonEvent.param as number);
         break;
       case 'highlightText':
-        this.anchorService.toggleAnchor(navigationEvent.param as string);
+        this.anchorService.toggleAnchor(buttonEvent.param as string);
         break;
       case 'stateVariableChange':
-        this.unitStateService.changeElementCodeValue(navigationEvent.param as ValueChangeElement);
+        this.unitStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
         break;
       default:
     }

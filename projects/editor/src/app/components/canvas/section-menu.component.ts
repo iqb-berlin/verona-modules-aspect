@@ -325,13 +325,15 @@ export class SectionMenuComponent implements OnDestroy {
         this.section.visibilityRules,
         this.getControlIds(),
         this.section.visibilityDelay,
-        this.section.animatedVisibility
+        this.section.animatedVisibility,
+        this.section.enableReHide
       )
       .subscribe(visibilityConfig => {
         if (visibilityConfig) {
           this.updateModel('visibilityRules', visibilityConfig.visibilityRules);
           this.updateModel('visibilityDelay', visibilityConfig.visibilityDelay);
           this.updateModel('animatedVisibility', visibilityConfig.animatedVisibility);
+          this.updateModel('enableReHide', visibilityConfig.enableReHide);
         }
       });
   }

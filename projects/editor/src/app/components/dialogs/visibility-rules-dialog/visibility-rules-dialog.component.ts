@@ -3,13 +3,15 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  templateUrl: './visibility-rules-dialog.component.html'
+  templateUrl: './visibility-rules-dialog.component.html',
+  styleUrls: ['./visibility-rules-dialog.component.scss']
 })
 export class VisibilityRulesDialogComponent {
   visibilityRules!: VisibilityRule[];
   controlIds!: string[];
   visibilityDelay!: number;
   animatedVisibility!: boolean;
+  enableReHide!: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: {
@@ -17,11 +19,13 @@ export class VisibilityRulesDialogComponent {
       visibilityDelay: number,
       animatedVisibility: boolean,
       controlIds: string[],
+      enableReHide: boolean,
     }
   ) {
     this.visibilityRules = [...data.visibilityRules];
     this.visibilityDelay = data.visibilityDelay;
     this.animatedVisibility = data.animatedVisibility;
+    this.enableReHide = data.enableReHide;
     this.controlIds = data.controlIds;
   }
 

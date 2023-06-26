@@ -11,15 +11,22 @@
     </div>
     <div *ngIf="visibilityRules.length"
          class="fx-row-start-stretch fx-gap-10">
-      <mat-form-field >
+      <mat-checkbox
+        class="fixed-size-field"
+        [(ngModel)]="enableReHide">
+        {{'section.enableReHide' | translate}}
+      </mat-checkbox>
+      <mat-form-field class="fixed-size-field">
         <mat-label>{{'section.visibilityDelay' | translate}}</mat-label>
         <input matInput
                type="number"
                step="1000"
+               [disabled]="enableReHide"
                [placeholder]="'section.visibilityDelay' | translate"
                [(ngModel)]="visibilityDelay">
       </mat-form-field>
       <mat-checkbox
+        [disabled]="enableReHide"
         [(ngModel)]="animatedVisibility">
         {{'section.animatedVisibility' | translate}}
       </mat-checkbox>

@@ -39,6 +39,7 @@
     "manageVisibilityRules": "Sichtbarkeit verwalten",
     "animatedVisibility": "Scrollen beim Anzeigen",
     "visibilityDelay": "Verzögerung der Anzeige",
+    "enableReHide": "Erneutes Ausblenden erlauben",
     "controlId": "Statusvariable/Element-ID",
     "operator": "Operator",
     "addElementsOrStateVariables": "Bitte zuerst Elemente oder Statusvariablen anlegen",

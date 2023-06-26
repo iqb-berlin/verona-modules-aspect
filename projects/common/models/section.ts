@@ -24,6 +24,7 @@ export class Section {
   gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }];
   visibilityDelay: number = 0;
   animatedVisibility: boolean = false;
+  enableReHide: boolean = false;
   visibilityRules: VisibilityRule[] = [];
 
   constructor(blueprint?: Record<string, any>) {
@@ -37,6 +38,7 @@ export class Section {
     if (sanitizedBlueprint.gridRowSizes !== undefined) this.gridRowSizes = sanitizedBlueprint.gridRowSizes;
     if (sanitizedBlueprint.visibilityDelay) this.visibilityDelay = sanitizedBlueprint.visibilityDelay;
     if (sanitizedBlueprint.animatedVisibility) this.animatedVisibility = sanitizedBlueprint.animatedVisibility;
+    if (sanitizedBlueprint.enableReHide) this.enableReHide = sanitizedBlueprint.enableReHide;
     if (sanitizedBlueprint.visibilityRules) {
       this.visibilityRules = sanitizedBlueprint.visibilityRules
         .map(rule => new VisibilityRule(rule.id, rule.operator, rule.value));

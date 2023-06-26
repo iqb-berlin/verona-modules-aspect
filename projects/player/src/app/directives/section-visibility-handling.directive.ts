@@ -16,8 +16,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Input() section!: Section;
   @Input() pageSections!: Section[];
 
-  private isSectionSeen: boolean = false;
   private ngUnsubscribe = new Subject<void>();
+  private rulesAreFulfilled: boolean = false;
 
   constructor(
     private elementRef: ElementRef,
@@ -26,6 +26,13 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.section.visibilityRules.length) {
+      this.addSubscription();
+    }
+  }
+
+  private addSubscription(): void {
+    if (this.section.enableReHide || !this.hasSeenElements()) {
+      this.displayHiddenSection();
       this.unitStateService.elementCodeChanged
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(code => {
@@ -33,9 +40,6 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
             this.displayHiddenSection();
           }
         });
-      this.isSectionSeen = this.hasSeenElements();
-    } else {
-      this.isSectionSeen = true;
     }
   }
 
@@ -65,14 +69,14 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private displayHiddenSection(): void {
-    if (this.areVisibilityRulesFulfilled()) {
+    if (this.areVisibilityRulesFulfilled() || this.rulesAreFulfilled) {
       if (this.section.visibilityDelay) {
         if (!this.unitStateService.getElementCodeById(this.timerStateVariableId)) {
+          this.rulesAreFulfilled = true;
           this.initTimerStateVariable();
         }
-        this.setVisibility(
-          (this.unitStateService
-            .getElementCodeById(this.timerStateVariableId)?.value as number) >= this.section.visibilityDelay);
+        this.setVisibility((this.unitStateService
+          .getElementCodeById(this.timerStateVariableId)?.value as number) >= this.section.visibilityDelay);
       } else {
         this.setVisibility(true);
       }
@@ -83,13 +87,22 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   private setVisibility(visible: boolean): void {
     this.elementRef.nativeElement.style.display = visible ? null : 'none';
-    if (visible && this.section.animatedVisibility && !this.isSectionSeen) {
-      this.isSectionSeen = true;
-      this.elementRef.nativeElement.style.scrollMarginTop = 100;
-      setTimeout(() => {
-        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+    if (visible) {
+      if (this.section.animatedVisibility && !this.hasSeenElements()) {
+        this.scrollIntoView();
+      }
+      if (!this.section.enableReHide) {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+      }
     }
+  }
+
+  private scrollIntoView(): void {
+    this.elementRef.nativeElement.style.scrollMarginTop = 100;
+    setTimeout(() => {
+      this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   }
 
   private areVisibilityRulesFulfilled(): boolean {
@@ -119,7 +132,9 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private hasSeenElements(): boolean {
     return this.section.getAllElements()
       .map(element => this.unitStateService.getElementCodeById(element.id))
-      .some(code => (code ? ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED : false));
+      .some(code => (code ?
+        ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED :
+        false));
   }
 
   ngOnDestroy(): void {

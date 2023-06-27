@@ -3,8 +3,7 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  templateUrl: './visibility-rules-dialog.component.html',
-  styleUrls: ['./visibility-rules-dialog.component.scss']
+  templateUrl: './visibility-rules-dialog.component.html'
 })
 export class VisibilityRulesDialogComponent {
   visibilityRules!: VisibilityRule[];

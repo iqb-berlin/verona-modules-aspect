@@ -81,9 +81,16 @@ blockquote p {
   justify-content: flex-end;
 }
 
-.fx-colum-start-stretch {
+.fx-column-start-stretch {
   display: flex;
   align-items: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.fx-column-start-start {
+  display: flex;
+  align-items: flex-start;
   flex-direction: column;
   justify-content: flex-start;
 }

@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>{{'section.manageVisibilityRules' | translate}}</h1>
-<div mat-dialog-content class="fx-colum-start-stretch fx-gap-20">
+<div mat-dialog-content class="fx-column-start-stretch fx-gap-20">
   <ng-container *ngIf="controlIds.length">
     <div class="fx-row-end-stretch">
       <button mat-icon-button
@@ -10,13 +10,17 @@
       </button>
     </div>
     <div *ngIf="visibilityRules.length"
-         class="fx-row-start-stretch fx-gap-10">
+         class="fx-column-start-start">
       <mat-checkbox
-        class="fixed-size-field"
         [(ngModel)]="enableReHide">
         {{'section.enableReHide' | translate}}
       </mat-checkbox>
-      <mat-form-field class="fixed-size-field">
+      <mat-checkbox
+        [disabled]="enableReHide"
+        [(ngModel)]="animatedVisibility">
+        {{'section.animatedVisibility' | translate}}
+      </mat-checkbox>
+      <mat-form-field>
         <mat-label>{{'section.visibilityDelay' | translate}}</mat-label>
         <input matInput
                type="number"
@@ -25,11 +29,6 @@
                [placeholder]="'section.visibilityDelay' | translate"
                [(ngModel)]="visibilityDelay">
       </mat-form-field>
-      <mat-checkbox
-        [disabled]="enableReHide"
-        [(ngModel)]="animatedVisibility">
-        {{'section.animatedVisibility' | translate}}
-      </mat-checkbox>
     </div>
   </ng-container>
 

@@ -78,3 +78,6 @@ iqb-aspect-definition@1.0.0
   object ({value: number; unit: string})
 - Section.gridColumnSizes and Section.gridRowSizes now have a unit attached and are therefore an object
   ({value: number; unit: string})
+
+3.12.0
+- Likert: new property: stickyHeaders

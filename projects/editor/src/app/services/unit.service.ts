@@ -8,6 +8,10 @@ import { MessageService } from 'common/services/message.service';
 import { ArrayUtils } from 'common/util/array';
 import { SanitizationService } from 'common/services/sanitization.service';
 import { Unit } from 'common/models/unit';
+import { PlayerProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { ButtonElement } from 'common/models/elements/button/button';
 import {
   CompoundElement,
   InputElement,
@@ -18,17 +22,15 @@ import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-ele
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { TextElement } from 'common/models/elements/text/text';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { ElementFactory } from 'common/util/element.factory';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';
-import { PlayerProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
-import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +39,7 @@ export class UnitService {
   unit: Unit;
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
+  referenceManager: ReferenceManager;
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
@@ -48,6 +51,7 @@ export class UnitService {
               private translateService: TranslateService,
               private idService: IDService) {
     this.unit = new Unit();
+    this.referenceManager = new ReferenceManager(this.unit);
   }
 
   loadUnitDefinition(unitDefinition: string): void {
@@ -56,6 +60,7 @@ export class UnitService {
       try {
         const unitDef = JSON.parse(unitDefinition);
         this.unit = new Unit(unitDef);
+        this.referenceManager = new ReferenceManager(this.unit);
       } catch (e) {
         console.error(e);
         this.messageService.showError('Unit definition konnte nicht gelesen werden!');
@@ -77,21 +82,9 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  deleteSelectedPage(): void {
-    const referencedButton = ReferenceManager.getReferencedButton(
-      this.selectionService.selectedPageIndex, this.unit);
-    const dialogText = referencedButton ?
-      `Seite wird von Knopf ${referencedButton.id} referenziert. Seite löschen?` :
-      'Seite löschen?';
-    this.dialogService.showConfirmDialog(dialogText, referencedButton !== undefined)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((result: boolean) => {
-        if (result) {
-          this.unit.pages.splice(this.selectionService.selectedPageIndex, 1);
-          this.selectionService.selectPreviousPage();
-          this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
-        }
-      });
+  deletePage(pageIndex: number): void {
+    this.unit.pages.splice(pageIndex, 1);
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   moveSelectedPage(direction: 'left' | 'right') {
@@ -119,11 +112,8 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  deleteSection(section: Section): void {
-    this.unit.pages[this.selectionService.selectedPageIndex].sections.splice(
-      this.unit.pages[this.selectionService.selectedPageIndex].sections.indexOf(section),
-      1
-    );
+  deleteSection(pageIndex: number, sectionIndex: number): void {
+    this.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
@@ -197,11 +187,37 @@ export class UnitService {
   }
 
   deleteElements(elements: UIElement[]): void {
-    this.freeUpIds(elements);
-    this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
-      section.elements = section.elements.filter(element => !elements.includes(element));
-    });
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    const refs =
+      this.referenceManager.getElementsReferences(elements);
+    console.log('element refs', refs);
+    if (refs.length > 0) {
+      this.dialogService.showDeleteReferenceDialog(refs)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            ReferenceManager.deleteReferences(refs);
+            this.freeUpIds(elements);
+            this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
+              section.elements = section.elements.filter(element => !elements.includes(element));
+            });
+            this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+          } else {
+            this.messageService.showReferencePanel(refs);
+          }
+        });
+    } else {
+      this.dialogService.showConfirmDialog('Element(e) löschen?')
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            this.freeUpIds(elements);
+            this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
+              section.elements = section.elements.filter(element => !elements.includes(element));
+            });
+            this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+          }
+        });
+    }
   }
 
   private freeUpIds(elements: UIElement[]): void {
@@ -296,13 +312,10 @@ export class UnitService {
           this.idService.addID(value as string);
           element.setProperty('id', value);
         }
+      } else if (element.type === 'text' && property === 'text') {
+        this.handleTextElementChange(element as TextElement, value as string);
       } else if (property === 'document') {
-        element.setProperty(property, value);
-        ClozeElement.getDocumentChildElements(value as ClozeDocument).forEach(clozeChild => {
-          if (clozeChild.id === 'cloze-child-id-placeholder') {
-            clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
-          }
-        });
+        this.handleClozeDocumentChange(element as ClozeElement, value as ClozeDocument);
       } else {
         element.setProperty(property, value);
         if (element.type === 'geometry') this.geometryElementPropertyUpdated.next(element.id);
@@ -310,6 +323,64 @@ export class UnitService {
     });
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  handleTextElementChange(element: TextElement, value: string): void {
+    const deletedAnchorIDs = UnitService.getRemovedTextAnchorIDs(element, value);
+    const refs = this.referenceManager.getTextAnchorReferences(deletedAnchorIDs);
+    if (refs.length > 0) {
+      this.dialogService.showDeleteReferenceDialog(refs)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            ReferenceManager.deleteReferences(refs);
+            element.setProperty('text', value);
+          } else {
+            this.messageService.showReferencePanel(refs);
+          }
+        });
+    } else {
+      element.setProperty('text', value);
+    }
+  }
+
+  static getRemovedTextAnchorIDs(element: TextElement, newValue: string): string[] {
+    return TextElement.getAnchorIDs(element.text)
+      .filter(el => !TextElement.getAnchorIDs(newValue).includes(el));
+  }
+
+  handleClozeDocumentChange(element: ClozeElement, newValue: ClozeDocument): void {
+    const deletedElements = UnitService.getRemovedClozeElements(element, newValue);
+    const refs = this.referenceManager.getElementsReferences(deletedElements);
+    if (refs.length > 0) {
+      this.dialogService.showDeleteReferenceDialog(refs)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            ReferenceManager.deleteReferences(refs);
+            this.applyClozeDocumentChange(element, newValue);
+          } else {
+            this.messageService.showReferencePanel(refs);
+          }
+        });
+    } else {
+      this.applyClozeDocumentChange(element, newValue);
+    }
+  }
+
+  applyClozeDocumentChange(element: ClozeElement, value: ClozeDocument): void {
+    element.setProperty('document', value);
+    ClozeElement.getDocumentChildElements(value as ClozeDocument).forEach(clozeChild => {
+      if (clozeChild.id === 'cloze-child-id-placeholder') {
+        clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
+      }
+    });
+  }
+
+  static getRemovedClozeElements(cloze: ClozeElement, newClozeDoc: ClozeDocument): UIElement[] {
+    const newElements = ClozeElement.getDocumentChildElements(newClozeDoc);
+    return cloze.getChildElements()
+      .filter(element => !newElements.includes(element));
   }
 
   updateSelectedElementsPositionProperty(property: string, value: UIElementValue): void {
@@ -508,7 +579,7 @@ export class UnitService {
   }
 
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
-    this.deleteSection(this.unit.pages[pageIndex].sections[sectionIndex]);
+    this.deleteSection(pageIndex, sectionIndex);
     this.addSection(this.unit.pages[pageIndex], newSection);
   }
 }

@@ -14,6 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -74,8 +75,10 @@ import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
-import { TextImagePanelComponent } from 'common/components/text-image-panel.component';
+import { MeasurePipe } from './pipes/measure.pipe';
+import { TextImagePanelComponent } from './components/text-image-panel.component';
+import { ReferenceListComponent } from './components/reference-list.component';
+import { ReferenceListSnackbarComponent } from './services/message.service';
 
 @NgModule({
   imports: [
@@ -97,7 +100,8 @@ import { TextImagePanelComponent } from 'common/components/text-image-panel.comp
     MatSliderModule,
     MatButtonToggleModule,
     MatProgressSpinnerModule,
-    MathEditorModule
+    MathEditorModule,
+    MatListModule
   ],
   declarations: [
     ButtonComponent,
@@ -144,7 +148,9 @@ import { TextImagePanelComponent } from 'common/components/text-image-panel.comp
     MathFieldComponent,
     DynamicRowsDirective,
     MeasurePipe,
-    TextImagePanelComponent
+    TextImagePanelComponent,
+    ReferenceListComponent,
+    ReferenceListSnackbarComponent
   ],
   exports: [
     CommonModule,
@@ -185,7 +191,8 @@ import { TextImagePanelComponent } from 'common/components/text-image-panel.comp
     GeometryComponent,
     MathFieldComponent,
     MeasurePipe,
-    TextImagePanelComponent
+    TextImagePanelComponent,
+    ReferenceListComponent
   ]
 })
 export class SharedModule {

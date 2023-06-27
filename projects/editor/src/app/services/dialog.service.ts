@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { Section } from 'common/models/section';
+import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
+import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog.component';
 import {
@@ -17,9 +20,8 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
-import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
+import { ReferenceList } from 'editor/src/app/services/reference-manager';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +39,14 @@ export class DialogService {
   showConfirmDialog(text: string, isWarning: boolean = false): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: { text, isWarning }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showDeleteReferenceDialog(refs: ReferenceList[]): Observable<boolean> {
+    const dialogRef = this.dialog.open(DeleteReferenceDialogComponent, {
+      data: { refs },
+      autoFocus: 'button'
     });
     return dialogRef.afterClosed();
   }

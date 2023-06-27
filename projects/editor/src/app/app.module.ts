@@ -16,6 +16,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 
 import { APIService, SharedModule } from 'common/shared.module';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
@@ -99,7 +100,8 @@ import {
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
 import { ComboButtonComponent } from './components/util/combo-button.component';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -158,7 +160,8 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
     GetAnchorIdsPipe,
     ScrollPageIndexPipe,
     SizeInputPanelComponent,
-    ComboButtonComponent
+    ComboButtonComponent,
+    DeleteReferenceDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -172,6 +175,7 @@ import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
     MatToolbarModule,
     MatMenuModule,
     MatSliderModule,
+    MatSnackBarModule,
     MatExpansionModule,
     MatSidenavModule,
     MatDividerModule,

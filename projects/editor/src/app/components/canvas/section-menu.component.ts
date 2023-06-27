@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'common/services/message.service';
-import { UIElement } from 'common/models/elements/element';
+import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -340,6 +340,7 @@ export class SectionMenuComponent implements OnDestroy {
 
   private getControlIds(): string[] {
     return this.unitService.unit.getAllElements()
+      .filter(element => !(element instanceof CompoundElement))
       .map(element => element.id)
       .concat(this.unitService.unit.stateVariables
         .map(element => element.id));

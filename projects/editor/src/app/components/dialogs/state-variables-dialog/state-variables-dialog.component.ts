@@ -13,7 +13,7 @@ export class StateVariablesDialogComponent {
   }
 
   addStateVariable() {
-    this.stateVariables.push(new StateVariable('NewState', '1'));
+    this.stateVariables.push({ id: 'NewState', value: '1' });
   }
 
   deleteStateVariable(index: number) {

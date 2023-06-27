@@ -8,6 +8,6 @@ import { StateVariable } from 'common/models/state-variable';
   templateUrl: './state-variable-editor.component.html'
 })
 export class StateVariableEditorComponent {
-  @Input() stateVariable: StateVariable = new StateVariable('', '');
+  @Input() stateVariable: StateVariable = { id: '', value: '' };
   @Output() stateVariableChange = new EventEmitter<StateVariable>();
 }

@@ -110,9 +110,9 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       if (this.unitStateService.getElementCodeById(rule.id)) {
         switch (rule.operator) {
           case '=':
-            return this.unitStateService.getElementCodeById(rule.id)?.value === rule.value;
+            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() === rule.value;
           case '!=':
-            return this.unitStateService.getElementCodeById(rule.id)?.value !== rule.value;
+            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() !== rule.value;
           case '>':
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) > Number(rule.value);
           case '<':
@@ -121,6 +121,23 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) >= Number(rule.value);
           case '<=':
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) <= Number(rule.value);
+          case 'contains':
+            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString().includes(rule.value);
+          case 'pattern':
+            // We use a similar implementation to Angular's PatternValidator
+            if (this.unitStateService.getElementCodeById(rule.id)?.value !== null) {
+              let regexStr = (rule.value.charAt(0) !== '^') ? `^${rule.value}` : rule.value;
+              if (rule.value.charAt(rule.value.length - 1) !== '$') regexStr += '$';
+              const regex = new RegExp(regexStr);
+              return regex.test(this.unitStateService.getElementCodeById(rule.id)?.value?.toString() as string);
+            }
+            return false;
+          case 'minLength':
+            return (this.unitStateService.getElementCodeById(rule.id)?.value as string)
+              .toString()?.length >= Number(rule.value);
+          case 'maxLength':
+            return (this.unitStateService.getElementCodeById(rule.id)?.value as string)
+              .toString()?.length <= Number(rule.value);
           default:
             return false;
         }

@@ -45,6 +45,12 @@
     "addElementsOrStateVariables": "Bitte zuerst Elemente oder Statusvariablen anlegen",
     "value": "Wert"
   },
+  "visibilityRule": {
+    "contains": "Enthält",
+    "pattern":  "Muster",
+    "minLength": "Minimale Länge",
+    "maxLength": "Maximale Länge"
+  },
   "toolbar": {
     "loadUnit": "Unit laden",
     "saveUnit": "Unit speichern"

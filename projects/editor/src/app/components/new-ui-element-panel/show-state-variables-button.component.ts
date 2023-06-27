@@ -4,9 +4,16 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
   selector: 'aspect-show-state-variables-button',
-  templateUrl: './show-state-variables-button.component.html',
-  styleUrls: ['./show-state-variables-button.component.scss']
+  template: `<button mat-flat-button
+                     class="show-state-variables-button"
+                     color="primary"
+                     [style.width.%]="100"
+                     (click)="showStateVariablesDialog()">
+    <mat-icon>integration_instructions</mat-icon>
+    <span>{{'stateVariable' | translate}}</span>
+  </button>`
 })
+
 export class ShowStateVariablesButtonComponent {
   constructor(private dialogService: DialogService,
               private unitService: UnitService) { }

@@ -36,7 +36,7 @@ import {
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
 import {
   ShowStateVariablesButtonComponent
-} from 'editor/src/app/components/new-ui-element-panel/state-variables-button/show-state-variables-button.component';
+} from 'editor/src/app/components/new-ui-element-panel/show-state-variables-button.component';
 import {
   StateVariableEditorComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variable-editor.component';

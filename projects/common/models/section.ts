@@ -39,10 +39,7 @@ export class Section {
     if (sanitizedBlueprint.visibilityDelay) this.visibilityDelay = sanitizedBlueprint.visibilityDelay;
     if (sanitizedBlueprint.animatedVisibility) this.animatedVisibility = sanitizedBlueprint.animatedVisibility;
     if (sanitizedBlueprint.enableReHide) this.enableReHide = sanitizedBlueprint.enableReHide;
-    if (sanitizedBlueprint.visibilityRules) {
-      this.visibilityRules = sanitizedBlueprint.visibilityRules
-        .map(rule => new VisibilityRule(rule.id, rule.operator, rule.value));
-    }
+    if (sanitizedBlueprint.visibilityRules) this.visibilityRules = sanitizedBlueprint.visibilityRules;
     this.elements =
       sanitizedBlueprint.elements?.map(element => ElementFactory.createElement({
         ...element,

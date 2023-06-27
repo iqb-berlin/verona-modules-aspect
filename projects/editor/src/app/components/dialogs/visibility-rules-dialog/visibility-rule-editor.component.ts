@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { VisibilityRule } from 'common/models/visibility-rule';
+import { VisibilityRule, VisibilityRuleOperators } from 'common/models/visibility-rule';
 
 @Component({
   selector: 'aspect-visibility-rule-editor',
@@ -12,5 +12,5 @@ export class VisibilityRuleEditorComponent {
   @Input() visibilityRule!: VisibilityRule;
 
   @Output() visibilityRuleChange = new EventEmitter<VisibilityRule>();
-  protected readonly VisibilityRule = VisibilityRule;
+  protected readonly VisibilityRuleOperators = VisibilityRuleOperators;
 }

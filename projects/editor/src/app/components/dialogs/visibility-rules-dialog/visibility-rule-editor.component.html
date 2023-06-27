@@ -14,7 +14,7 @@
     <mat-label>{{'section.operator' | translate}}</mat-label>
     <mat-select [(ngModel)]="visibilityRule.operator"
                 (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
-      <mat-option *ngFor="let operator of VisibilityRule.operators"
+      <mat-option *ngFor="let operator of VisibilityRuleOperators"
                   [value]="operator">
         {{operator}}
       </mat-option>

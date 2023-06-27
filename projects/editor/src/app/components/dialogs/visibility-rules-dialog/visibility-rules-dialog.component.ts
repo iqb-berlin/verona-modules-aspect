@@ -30,7 +30,7 @@ export class VisibilityRulesDialogComponent {
   }
 
   addVisibilityRule(): void {
-    this.visibilityRules.push(new VisibilityRule('', '=', ''));
+    this.visibilityRules.push({ id: '', operator: '=', value: '' });
   }
 
   deleteVisibilityRule(index: number): void {

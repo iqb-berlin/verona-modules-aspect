@@ -50,11 +50,3 @@ button {
 .button-group {
   border: 3px groove;
 }
-
-:host ::ng-deep .mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
-  right: 6px;
-}
-
-:host ::ng-deep .mat-badge-medium.mat-badge-above .mat-badge-content {
-  top: 6px;
-}

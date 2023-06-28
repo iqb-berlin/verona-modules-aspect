@@ -9,11 +9,24 @@ import { UnitService } from 'editor/src/app/services/unit.service';
                      color="primary"
                      matBadgeColor="accent"
                      [matBadge]="stateVariablesCount"
-                     [style.width.%]="100"
                      (click)="showStateVariablesDialog()">
     <mat-icon>integration_instructions</mat-icon>
     <span>{{'stateVariable' | translate}}</span>
-  </button>`
+  </button>`,
+  styles: [`
+    button {
+      text-align: left;
+      font-size: medium;
+      width: 100%;
+      display: inline-block;
+    }
+    :host ::ng-deep .mat-badge-medium.mat-badge-overlap.mat-badge-after .mat-badge-content {
+      right: 12px;
+    }
+    :host ::ng-deep .mat-badge-medium.mat-badge-above .mat-badge-content {
+      top: 8px;
+    }
+  `]
 })
 
 export class ShowStateVariablesButtonComponent {

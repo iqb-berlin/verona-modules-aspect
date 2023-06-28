@@ -42,7 +42,7 @@ import { SelectionService } from '../../../../../services/selection.service';
           [stateVariableIds]="unitService.unit.stateVariables | getStateVariableIds"
           [stateVariable]="combinedProperties.actionParam ?
                            $any(combinedProperties.actionParam) :
-                           {id: unitService.unit.stateVariables[0].id, value: unitService.unit.stateVariables[0].value}"
+                           { id: unitService.unit.stateVariables[0].id, value: '' }"
           (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
         </aspect-button-action-param-state-variable>
         <p *ngIf="!unitService.unit.stateVariables.length">Bitte zuerst Player-Variablen anlegen</p>

@@ -25,7 +25,7 @@ export class StateVariablesDialogComponent {
   }
 
   addStateVariable() {
-    this.stateVariables.push({ id: 'NewState', value: '1' });
+    this.stateVariables.push({ id: 'NewState', value: '' });
   }
 
   deleteStateVariable(index: number) {

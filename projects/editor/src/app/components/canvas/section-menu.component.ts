@@ -10,10 +10,10 @@ import { Section } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
+import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -48,54 +48,6 @@ import { ReferenceManager } from 'editor/src/app/services/reference-manager';
             [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
       <mat-icon>disabled_visible</mat-icon>
     </button>
-    <!--    <mat-menu #activeAfterIDMenu="matMenu"-->
-    <!--              class="activeAfterID-menu" xPosition="before">-->
-
-    <!--      <aspect-rules [elementIds]="elementIds"-->
-    <!--                    [rules]="section.rules"-->
-    <!--      (click)="$event.stopPropagation()">-->
-    <!--      </aspect-rules>-->
-
-
-    <!--      <mat-form-field appearance="outline">-->
-    <!--        <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>-->
-    <!--        <input matInput-->
-    <!--               [value]="$any(section.activeAfterID)"-->
-    <!--               (click)="$any($event).stopPropagation()"-->
-    <!--               (change)="updateModel('activeAfterID', $any($event.target).value)">-->
-    <!--      </mat-form-field>-->
-    <!--      <mat-form-field appearance="outline">-->
-    <!--        <mat-label>{{'section-menu.activeAfterIdDelay' | translate }}</mat-label>-->
-    <!--        <input matInput type="number" step="1000" min="0"-->
-    <!--               [disabled]="!section.activeAfterID"-->
-    <!--               [value]="$any(section.activeAfterIdDelay)"-->
-    <!--               (click)="$any($event).stopPropagation()"-->
-    <!--               (change)="updateModel('activeAfterIdDelay', $any($event.target).value)">-->
-    <!--      </mat-form-field>-->
-
-
-    <!--      <button mat-icon-button-->
-    <!--              matSuffix-->
-    <!--              color="primary"-->
-    <!--              (click)="addRule($event)">-->
-    <!--        <mat-icon>add</mat-icon>-->
-    <!--      </button>-->
-    <!--      <ng-container *ngFor="let rule of section.rules; let i = index">-->
-    <!--        <aspect-rule [elementIds]="elementIds"-->
-    <!--                     [rule]="rule"-->
-    <!--                     (ruleChange)="updateRule(i, $event)"-->
-    <!--                     (click)="$event.stopPropagation()">-->
-    <!--        </aspect-rule>-->
-    <!--        <button mat-icon-button-->
-    <!--                matSuffix-->
-    <!--                color="primary"-->
-    <!--                (click)="deleteRule(i)">-->
-    <!--          <mat-icon>delete</mat-icon>-->
-    <!--        </button>-->
-    <!--      </ng-container>-->
-
-
-    <!--    </mat-menu>-->
     <button mat-mini-fab [matMenuTriggerFor]="layoutMenu"
             [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
       <mat-icon>space_dashboard</mat-icon>

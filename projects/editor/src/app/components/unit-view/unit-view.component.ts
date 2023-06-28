@@ -2,8 +2,8 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'common/services/message.service';
-import { ArrayUtils } from 'common/util/array';
 import { Page } from 'common/models/page';
+import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
@@ -36,7 +36,45 @@ export class UnitViewComponent implements OnDestroy {
   }
 
   deletePage(): void {
-    this.unitService.deleteSelectedPage();
+    let refs = this.unitService.referenceManager.getPageElementsReferences(
+      this.unitService.unit.pages[this.selectionService.selectedPageIndex]
+    );
+
+    const pageNavButtonRefs = this.unitService.referenceManager.getPageButtonReferences(
+      this.selectionService.selectedPageIndex
+    );
+    if (pageNavButtonRefs.length > 0) {
+      refs = refs.concat([{
+        element: {
+          id: `Seite ${this.selectionService.selectedPageIndex + 1}`,
+          type: 'page'
+        },
+        refs: pageNavButtonRefs
+      }]);
+    }
+
+    if (refs.length > 0) {
+      this.dialogService.showDeleteReferenceDialog(refs)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            ReferenceManager.deleteReferences(refs);
+            this.unitService.deletePage(this.selectionService.selectedPageIndex);
+            this.selectionService.selectPreviousPage();
+          } else {
+            this.messageService.showReferencePanel(refs);
+          }
+        });
+    } else {
+      this.dialogService.showConfirmDialog('Seite löschen?')
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            this.unitService.deletePage(this.selectionService.selectedPageIndex);
+            this.selectionService.selectPreviousPage();
+          }
+        });
+    }
   }
 
   updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {

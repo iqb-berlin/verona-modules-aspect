@@ -13,6 +13,7 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
+import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -248,17 +249,32 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   deleteSection(): void {
-    this.dialogService.showConfirmDialog('Abschnitt löschen?')
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((result: boolean) => {
-        if (result) {
-          this.unitService.deleteSection(this.section);
-          if (this.sectionIndex === this.selectionService.selectedPageSectionIndex &&
-            this.selectionService.selectedPageSectionIndex > 0) {
-            this.selectionService.selectedPageSectionIndex -= 1;
+    const refs =
+      this.unitService.referenceManager.getSectionElementsReferences([this.section]);
+    if (refs.length > 0) {
+      this.dialogService.showDeleteReferenceDialog(refs)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            ReferenceManager.deleteReferences(refs);
+            this.unitService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
+            this.selectionService.selectedPageSectionIndex =
+              Math.max(0, this.selectionService.selectedPageSectionIndex - 1);
+          } else {
+            this.messageService.showReferencePanel(refs);
           }
-        }
-      });
+        });
+    } else {
+      this.dialogService.showConfirmDialog('Abschnitt löschen?')
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((result: boolean) => {
+          if (result) {
+            this.unitService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
+            this.selectionService.selectedPageSectionIndex =
+              Math.max(0, this.selectionService.selectedPageSectionIndex - 1);
+          }
+        });
+    }
   }
 
   /* Add or remove elements to size array. Default value 1fr. */

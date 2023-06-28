@@ -64,4 +64,15 @@ export class TextElement extends UIElement implements PositionedUIElement {
   getElementComponent(): Type<ElementComponent> {
     return TextComponent;
   }
+
+  getAnchorIDs(): string[] {
+    return TextElement.getAnchorIDs(this.text);
+  }
+
+  static getAnchorIDs(text: string): string[] {
+    const parser = new DOMParser();
+    return Array.from(parser.parseFromString(text, 'text/html')
+      .getElementsByTagName('aspect-anchor'))
+      .map(element => element.getAttribute('data-anchor-id') as string);
+  }
 }

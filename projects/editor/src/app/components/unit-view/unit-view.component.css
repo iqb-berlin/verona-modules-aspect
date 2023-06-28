@@ -88,3 +88,7 @@ aspect-page-canvas {
   right: 15%;
   bottom: 15%;
 }
+
+:host ::ng-deep div.mat-mdc-tab * {
+  pointer-events: auto;
+}

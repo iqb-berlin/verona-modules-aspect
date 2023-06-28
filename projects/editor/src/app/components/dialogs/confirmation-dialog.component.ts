@@ -4,13 +4,14 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'aspect-confirmation-dialog',
   template: `
-    <mat-dialog-content [class.warning] = "data.isWarning">
+    <div mat-dialog-title>Bestätigen</div>
+    <div mat-dialog-content [class.warning] = "data.isWarning">
         {{data.text}}
-    </mat-dialog-content>
-    <mat-dialog-actions>
+    </div>
+    <div mat-dialog-actions>
       <button mat-button [mat-dialog-close]="true">{{'confirm' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
-    </mat-dialog-actions>
+    </div>
     `,
   styles: [
     '.warning {color: red;}'

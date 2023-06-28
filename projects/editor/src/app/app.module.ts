@@ -16,7 +16,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-
 import { APIService, SharedModule } from 'common/shared.module';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 import { HotspotListPanelComponent } from 'editor/src/app/components/properties-panel/hotspot-list-panel.component';
@@ -46,6 +45,7 @@ import {
 import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -118,6 +118,7 @@ import {
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
 import { ComboButtonComponent } from './components/util/combo-button.component';
+import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
 import {
   GetStateVariableIdsPipe
 } from './components/properties-panel/model-properties-tab/input-groups/button-properties/get-state-variable-ids.pipe';
@@ -180,6 +181,7 @@ import {
     ScrollPageIndexPipe,
     SizeInputPanelComponent,
     ComboButtonComponent,
+    DeleteReferenceDialogComponent,
     VisibilityRuleEditorComponent,
     StateVariablesDialogComponent,
     ShowStateVariablesButtonComponent,
@@ -200,6 +202,7 @@ import {
     MatToolbarModule,
     MatMenuModule,
     MatSliderModule,
+    MatSnackBarModule,
     MatExpansionModule,
     MatSidenavModule,
     MatDividerModule,

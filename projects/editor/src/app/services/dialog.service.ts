@@ -21,6 +21,7 @@ import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { StateVariable } from 'common/models/state-variable';
+import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -28,6 +29,7 @@ import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edi
 import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
+import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +47,14 @@ export class DialogService {
   showConfirmDialog(text: string, isWarning: boolean = false): Observable<boolean> {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       data: { text, isWarning }
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showDeleteReferenceDialog(refs: ReferenceList[]): Observable<boolean> {
+    const dialogRef = this.dialog.open(DeleteReferenceDialogComponent, {
+      data: { refs },
+      autoFocus: 'button'
     });
     return dialogRef.afterClosed();
   }

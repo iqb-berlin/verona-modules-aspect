@@ -1,13 +1,5 @@
 <h1 mat-dialog-title>{{'manageStateVariables' | translate}}</h1>
 <div mat-dialog-content class="fx-column-start-stretch fx-gap-20">
-  <div class="fx-row-end-stretch">
-    <button mat-icon-button
-            matSuffix
-            color="primary"
-            (click)="addStateVariable()">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
   <div *ngFor="let stateVariable of stateVariables; let i = index"
        class="fx-row-start-stretch fx-gap-10">
     <aspect-state-variable-editor
@@ -20,14 +12,19 @@
       <mat-icon>delete</mat-icon>
     </button>
   </div>
+  <button mat-button
+          class="add-button"
+          (click)="addStateVariable()">
+    <mat-icon class="add-icon">add</mat-icon>
+  </button>
 </div>
 <div mat-dialog-actions>
   <button mat-button
-          mat-dialog-close>
-    {{'cancel' | translate }}
-  </button>
-  <button mat-button
           [mat-dialog-close]="stateVariables">
     {{'save' | translate }}
+  </button>
+  <button mat-button
+          mat-dialog-close>
+    {{'cancel' | translate }}
   </button>
 </div>

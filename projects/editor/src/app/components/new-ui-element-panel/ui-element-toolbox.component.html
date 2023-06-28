@@ -142,7 +142,9 @@
       </mat-expansion-panel>
     </mat-accordion>
   </div>
-  <aspect-show-state-variables-button></aspect-show-state-variables-button>
+  <aspect-show-state-variables-button class="button-group"
+                                      [stateVariablesCount]="unitService.unit.stateVariables.length">
+  </aspect-show-state-variables-button>
 </div>
 
 

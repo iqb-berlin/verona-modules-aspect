@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { UnitService } from 'editor/src/app/services/unit.service';
 
@@ -7,6 +7,8 @@ import { UnitService } from 'editor/src/app/services/unit.service';
   template: `<button mat-flat-button
                      class="show-state-variables-button"
                      color="primary"
+                     matBadgeColor="accent"
+                     [matBadge]="stateVariablesCount"
                      [style.width.%]="100"
                      (click)="showStateVariablesDialog()">
     <mat-icon>integration_instructions</mat-icon>
@@ -15,6 +17,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 })
 
 export class ShowStateVariablesButtonComponent {
+  @Input() stateVariablesCount!: number;
   constructor(private dialogService: DialogService,
               private unitService: UnitService) { }
 

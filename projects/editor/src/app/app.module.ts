@@ -46,6 +46,7 @@ import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatBadgeModule } from '@angular/material/badge';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -217,7 +218,8 @@ import {
     MatRadioModule,
     MathEditorModule,
     CdkConnectedOverlay,
-    CdkOverlayOrigin
+    CdkOverlayOrigin,
+    MatBadgeModule
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService }

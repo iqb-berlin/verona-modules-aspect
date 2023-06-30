@@ -241,7 +241,6 @@ export class UnitService {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {
       newSection.elements.push(element as PositionedUIElement);
-      (element as PositionedUIElement).position.dynamicPositioning = newSection.dynamicPositioning;
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
@@ -282,14 +281,7 @@ export class UnitService {
   }
 
   updateSectionProperty(section: Section, property: string, value: string | number | boolean | { value: number; unit: string }[]): void {
-    if (property === 'dynamicPositioning') {
-      section.dynamicPositioning = value as boolean;
-      section.elements.forEach((element: UIElement) => {
-        (element as PositionedUIElement).position.dynamicPositioning = value as boolean;
-      });
-    } else {
-      section.setProperty(property, value);
-    }
+    section.setProperty(property, value);
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }

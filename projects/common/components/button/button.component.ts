@@ -50,9 +50,8 @@ import { ElementComponent } from '../../directives/element-component.directive';
     </button>
     <input
         *ngIf="elementModel.imageSrc" type="image"
+        class="image"
         [src]="elementModel.imageSrc | safeResourceUrl"
-        [class]="elementModel.position?.dynamicPositioning &&
-                 !elementModel.position?.fixedSize ? 'dynamic-image' : 'static-image'"
         [alt]="'imageNotFound' | translate"
         (click)="elementModel.action && elementModel.actionParam !== null?
            navigateTo.emit({
@@ -62,9 +61,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
            false">
   `,
   styles: [
-    '.dynamic-image {width: 100%; height: fit-content;}',
-    '.static-image {max-width: 100%; max-height: 100%; display: grid;}', // grid: to prevent scrollbars
-    '.fill-container {width: 100%; height: 100%;}'
+    '.image {width: 100%; height: 100%; object-fit: contain;}'
   ]
 })
 export class ButtonComponent extends ElementComponent {

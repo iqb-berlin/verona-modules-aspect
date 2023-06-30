@@ -223,7 +223,6 @@ export class SanitizationService {
     }
     return {
       ...element,
-      dynamicPositioning: sectionDynamicPositioning,
       gridColumn: element.gridColumn !== undefined ?
         element.gridColumn : element.gridColumnStart,
       gridColumnRange: element.gridColumnEnd - element.gridColumnStart,

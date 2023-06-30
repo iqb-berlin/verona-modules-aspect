@@ -2,11 +2,8 @@ import { Measurement } from 'common/models/elements/element';
 
 export interface PositionProperties {
   [index: string]: unknown;
-  // fixedSize: boolean;
-  dynamicPositioning: boolean;
   xPosition: number;
   yPosition: number;
-  // useMinHeight: boolean;
   gridColumn: number | null;
   gridColumnRange: number;
   gridRow: number | null;

@@ -3,16 +3,21 @@ import {
 } from '@angular/core';
 import { UIElementValue } from 'common/models/elements/element';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
   selector: 'aspect-position-field-set',
   template: `
     <fieldset>
       <legend>Position</legend>
-      <div *ngIf="!positionProperties.dynamicPositioning; else elseBlock"
+      <div *ngIf="!unitService.unit
+                    .pages[selectionService.selectedPageIndex]
+                    .sections[selectionService.selectedPageSectionIndex]
+                    .dynamicPositioning;
+                    else elseBlock"
            class="flex-row">
-        <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
-                               positionProperties.xPosition !== undefined"
+        <mat-form-field *ngIf="positionProperties.xPosition !== undefined"
                         appearance="outline">
           <mat-label>{{'propertiesPanel.xPosition' | translate }}</mat-label>
           <input matInput type="number" #xPosition="ngModel" min="0"
@@ -20,8 +25,7 @@ import { PositionProperties } from 'common/models/elements/property-group-interf
                  (ngModelChange)="updateModel.emit(
                         { property: 'xPosition', value: $event, isInputValid: xPosition.valid && $event !== null })">
         </mat-form-field>
-        <mat-form-field *ngIf="!positionProperties.dynamicPositioning &&
-                                 positionProperties.yPosition !== undefined"
+        <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
                         appearance="outline">
           <mat-label>{{'propertiesPanel.yPosition' | translate }}</mat-label>
           <input matInput type="number" #yPosition="ngModel" min="0"
@@ -130,4 +134,6 @@ export class PositionFieldSetComponent {
       value: UIElementValue,
       isInputValid?: boolean | null
     }>();
+
+  constructor(public unitService: UnitService, public selectionService: SelectionService) {}
 }

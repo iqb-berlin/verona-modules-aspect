@@ -8,6 +8,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
                      class="show-state-variables-button"
                      color="primary"
                      matBadgeColor="accent"
+                     [matBadgeHidden]="!stateVariablesCount"
                      [matBadge]="stateVariablesCount"
                      (click)="showStateVariablesDialog()">
     <mat-icon>integration_instructions</mat-icon>

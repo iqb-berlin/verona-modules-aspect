@@ -66,7 +66,7 @@ import {
 import { TextMarkingBarComponent } from './components/text/text-marking-bar/text-marking-bar.component';
 import { StyleMarksPipe } from './pipes/styleMarks.pipe';
 import { TextMarkingButtonComponent } from './components/text/text-marking-bar/text-marking-button.component';
-import { CompoundChildOverlayComponent } from './components/compound-elements/cloze/compound-child-overlay.component';
+import { ClozeChildOverlay } from './components/compound-elements/cloze/cloze-child-overlay.component';
 import { MarkListPipe } from './pipes/mark-list.pipe';
 import { IsDisabledDirective } from './directives/is-disabled.directive';
 import { GeometryComponent } from './components/geometry/geometry.component';
@@ -136,7 +136,7 @@ import { ReferenceListSnackbarComponent } from './services/message.service';
     TextMarkingBarComponent,
     StyleMarksPipe,
     TextMarkingButtonComponent,
-    CompoundChildOverlayComponent,
+    ClozeChildOverlay,
     MarkListPipe,
     IsDisabledDirective,
     GeometryComponent,

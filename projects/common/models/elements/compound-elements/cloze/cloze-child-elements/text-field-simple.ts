@@ -6,7 +6,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import {
   TextFieldSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { BasicStyles } from 'common/models/elements/property-group-interfaces';
+import { BasicStyles, DimensionProperties } from 'common/models/elements/property-group-interfaces';
 
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
@@ -24,7 +24,7 @@ export class TextFieldSimpleElement extends TextInputElement {
   };
 
   constructor(element: Partial<TextFieldSimpleElement>) {
-    super({ dimensions: { width: 150, height: 30 }, ...element });
+    super({ dimensions: { width: 150, height: 30, isWidthFixed: true } as DimensionProperties, ...element });
     if (element.minLength) this.minLength = element.minLength;
     if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
     if (element.maxLength) this.maxLength = element.maxLength;

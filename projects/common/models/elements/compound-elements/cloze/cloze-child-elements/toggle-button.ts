@@ -15,7 +15,6 @@ export class ToggleButtonElement extends InputElement {
   strikeOtherOptions: boolean = false;
   strikeSelectedOption: boolean = false;
   verticalOrientation: boolean = false;
-  dynamicWidth: boolean = true;
   styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
@@ -27,7 +26,6 @@ export class ToggleButtonElement extends InputElement {
     if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
     if (element.strikeSelectedOption) this.strikeSelectedOption = element.strikeSelectedOption;
     if (element.verticalOrientation) this.verticalOrientation = element.verticalOrientation;
-    if (element.dynamicWidth !== undefined) this.dynamicWidth = element.dynamicWidth;
     this.styling = {
       ...UIElement.initStylingProps({
         lineHeight: 100,

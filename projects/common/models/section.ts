@@ -53,7 +53,6 @@ export class Section {
   }
 
   addElement(element: PositionedUIElement): void {
-    element.position.dynamicPositioning = this.dynamicPositioning;
     this.elements.push(element);
   }
 

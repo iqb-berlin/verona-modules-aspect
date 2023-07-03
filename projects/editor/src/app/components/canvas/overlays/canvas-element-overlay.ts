@@ -7,8 +7,8 @@ import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
-import { CompoundChildOverlayComponent } from
-  'common/components/compound-elements/cloze/compound-child-overlay.component';
+import { ClozeChildOverlay } from
+    'common/components/compound-elements/cloze/cloze-child-overlay.component';
 import { UIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
@@ -59,8 +59,9 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
       this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
       this.childComponent.instance.childElementSelected
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((elementSelectionEvent: CompoundChildOverlayComponent) => {
+        .subscribe((elementSelectionEvent: ClozeChildOverlay) => {
           this.selectionService.selectElement({ elementComponent: elementSelectionEvent, multiSelect: false });
+          this.selectionService.isClozeChildSelected = true;
         });
     }
 

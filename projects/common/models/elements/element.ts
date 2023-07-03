@@ -94,11 +94,8 @@ export abstract class UIElement {
   static initPositionProps(properties: Partial<PositionProperties> = {}): PositionProperties {
     const defaults = UIElement.sanitizePositionProps(properties);
     return {
-      fixedSize: defaults.fixedSize !== undefined ? defaults.fixedSize as boolean : false,
-      dynamicPositioning: defaults.dynamicPositioning !== undefined ? defaults.dynamicPositioning as boolean : true,
       xPosition: defaults.xPosition !== undefined ? defaults.xPosition as number : 0,
       yPosition: defaults.yPosition !== undefined ? defaults.yPosition as number : 0,
-      useMinHeight: defaults.useMinHeight !== undefined ? defaults.useMinHeight as boolean : false,
       gridColumn: defaults.gridColumn !== undefined ? defaults.gridColumn as number : null,
       gridColumnRange: defaults.gridColumnRange !== undefined ? defaults.gridColumnRange as number : 1,
       gridRow: defaults.gridRow !== undefined ? defaults.gridRow as number : null,
@@ -195,7 +192,7 @@ export abstract class TextInputElement extends InputElement {
   showSoftwareKeyboard: boolean = false;
   softwareKeyboardShowFrench: boolean = false;
 
-  protected constructor(element: Record<string, any>) {
+  protected constructor(element: Partial<TextInputElement>) {
     super(element);
     if (element.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
     if (element.inputAssistanceCustomKeys !== undefined) {

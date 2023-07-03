@@ -73,11 +73,13 @@ iqb-aspect-definition@1.0.0
 - DropList: +allowReplacement
 - DragAndDropValueObject: -returnToOriginOnReplacement; originListID and originListIndex are now mandatory
 
-3.11.0
-- Element.position: margin properties now have a unit attached and are therefore an
-  object ({value: number; unit: string})
+3.12.0
+- PositionProperties:
+  - remove "dynamicPositioning"
+  - remove "fixedSize"
+  - remove "useMinHeight"
+  - margin properties now have a unit attached and are therefore an object ({value: number; unit: string})
 - Section.gridColumnSizes and Section.gridRowSizes now have a unit attached and are therefore an object
   ({value: number; unit: string})
-
-3.12.0
 - Likert: new property: stickyHeaders
+- ToggleButton: dynamicWidth removed

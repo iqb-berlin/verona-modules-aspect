@@ -8,30 +8,10 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
   template: `
     <fieldset>
       <legend>Dimensionen</legend>
-      <mat-checkbox *ngIf="dimensions.dynamicWidth !== undefined"
-                    [checked]="$any(dimensions.dynamicWidth)"
-                    (change)="updateDimensionProperty('dynamicWidth', $event.checked)">
-        {{'propertiesPanel.dynamicWidth' | translate }}
-      </mat-checkbox>
-
-      <ng-container *ngIf="!positionProperties?.dynamicPositioning">
-        <mat-form-field appearance="fill">
-          <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
-          <input matInput type="number" min="0"
-                 [ngModel]="dimensions.width"
-                 (ngModelChange)="updateDimensionProperty('width', $event)">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>
-            {{'propertiesPanel.height' | translate }}
-          </mat-label>
-          <input matInput type="number" min="0"
-                 [ngModel]="dimensions.height"
-                 (ngModelChange)="updateDimensionProperty('height', $event)">
-        </mat-form-field>
-      </ng-container>
-
-      <ng-container *ngIf="positionProperties?.dynamicPositioning">
+      <ng-container *ngIf="unitService.unit.pages[selectionService.selectedPageIndex]
+                    .sections[selectionService.selectedPageSectionIndex].dynamicPositioning ||
+                    selectionService.isClozeChildSelected;
+                    else elseBlock">
         <mat-checkbox #fixedWidth [checked]="$any(dimensions.isWidthFixed)"
                       (change)="updateDimensionProperty('isWidthFixed', $event.checked)">
           {{'propertiesPanel.isWidthFixed' | translate }}
@@ -114,6 +94,23 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
                  (ngModelChange)="updateDimensionProperty('maxHeight', $event)">
         </mat-form-field>
       </ng-container>
+
+      <ng-template #elseBlock>
+        <mat-form-field appearance="fill">
+          <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
+          <input matInput type="number" min="0"
+                 [ngModel]="dimensions.width"
+                 (ngModelChange)="updateDimensionProperty('width', $event)">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>
+            {{'propertiesPanel.height' | translate }}
+          </mat-label>
+          <input matInput type="number" min="0"
+                 [ngModel]="dimensions.height"
+                 (ngModelChange)="updateDimensionProperty('height', $event)">
+        </mat-form-field>
+      </ng-template>
     </fieldset>
   `
 })

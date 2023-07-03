@@ -6,7 +6,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
-import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class TextAreaElement extends TextInputElement implements PositionedUIElement {
   appearance: 'fill' | 'outline' = 'outline';
@@ -22,7 +22,7 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
   };
 
   constructor(element: Partial<TextAreaElement>) {
-    super({ dimensions: { width: 230, height: 132 }, ...element });
+    super({ dimensions: { width: 230, height: 132 } as DimensionProperties, ...element });
     if (element.appearance) this.appearance = element.appearance;
     if (element.resizeEnabled) this.resizeEnabled = element.resizeEnabled;
     if (element.rowCount) this.rowCount = element.rowCount;

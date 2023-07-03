@@ -5,14 +5,14 @@ import {
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
-import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
 export class SpellCorrectElement extends TextInputElement implements PositionedUIElement {
   position: PositionProperties;
   styling: BasicStyles;
 
   constructor(element: Partial<SpellCorrectElement>) {
-    super({ dimensions: { width: 230, height: 80 }, ...element });
+    super({ dimensions: { width: 230, height: 80 } as DimensionProperties, ...element });
     this.position = UIElement.initPositionProps(element.position);
     this.styling = {
       ...UIElement.initStylingProps({ backgroundColor: 'transparent', ...element.styling })

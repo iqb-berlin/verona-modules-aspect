@@ -15,35 +15,36 @@ import { ValueChangeElement } from 'common/models/elements/element';
   selector: 'aspect-compound-child-overlay',
   template: `
     <div [style.border]="isSelected ? 'purple solid 1px' : ''"
-
+         [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width+'px' : null"
+         [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : null"
+         [style.min-width]="!element.dimensions.isWidthFixed && element.dimensions.minWidth ?
+                                                  element.dimensions.minWidth + 'px' : null"
+         [style.max-width]="!element.dimensions.isWidthFixed && element.dimensions.maxWidth ?
+                                                  element.dimensions.maxWidth + 'px' : null"
+         [style.min-height]="!element.dimensions.isHeightFixed && element.dimensions.minHeight ?
+                                                   element.dimensions.minHeight + 'px' : null"
+         [style.max-height]="!element.dimensions.isHeightFixed && element.dimensions.maxHeight ?
+                                                   element.dimensions.maxHeight + 'px' : null"
          (click)="elementSelected.emit(this); $event.stopPropagation();">
       <aspect-text-field-simple *ngIf="element.type === 'text-field-simple'" #childComponent
                                 [style.pointer-events]="editorMode ? 'none' : 'auto'"
                                 [parentForm]="parentForm"
-                                [elementModel]="$any(element)"
-                                [style.width.px]="element.width"
-                                [style.height.px]="element.height">
+                                [elementModel]="$any(element)">
       </aspect-text-field-simple>
       <aspect-drop-list *ngIf="element.type === 'drop-list'" #childComponent
                                [clozeContext]="true"
                                [style.pointer-events]="editorMode ? 'none' : 'auto'"
                                [parentForm]="parentForm"
-                               [elementModel]="$any(element)"
-                               [style.width.px]="element.width"
-                               [style.height.px]="element.height">
+                               [elementModel]="$any(element)">
       </aspect-drop-list>
       <aspect-toggle-button *ngIf="element.type === 'toggle-button'" #childComponent
                             [style.pointer-events]="editorMode ? 'none' : 'auto'"
                             [parentForm]="parentForm"
-                            [elementModel]="$any(element)"
-                            [style.width]="element.dynamicWidth ? 'unset' : element.width+'px'"
-                            [style.height.px]="element.height">
+                            [elementModel]="$any(element)">
       </aspect-toggle-button>
       <aspect-button *ngIf="element.type === 'button'" #childComponent
                      [style.pointer-events]="editorMode ? 'none' : 'auto'"
-                     [elementModel]="$any(element)"
-                     [style.width.px]="element.width"
-                     [style.height.px]="element.height">
+                     [elementModel]="$any(element)">
       </aspect-button>
     </div>
   `,
@@ -51,13 +52,13 @@ import { ValueChangeElement } from 'common/models/elements/element';
     ':host div > * {display: block;}'
   ]
 })
-export class CompoundChildOverlayComponent { // TODO rename to ClozeChildOverlay
+export class ClozeChildOverlay {
   @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement;
   @Input() parentForm!: UntypedFormGroup;
   @Input() editorMode: boolean = false;
   @Input() lineHeight!: number;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
-  @Output() elementSelected = new EventEmitter<CompoundChildOverlayComponent>();
+  @Output() elementSelected = new EventEmitter<ClozeChildOverlay>();
   @ViewChild('childComponent') childComponent!: ElementComponent;
 
   isSelected: boolean = false;

@@ -4,7 +4,7 @@ import {
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
-import { CompoundChildOverlayComponent } from './compound-child-overlay.component';
+import { ClozeChildOverlay } from './cloze-child-overlay.component';
 
 // TODO background color implementieren
 @Component({
@@ -173,7 +173,7 @@ import { CompoundChildOverlayComponent } from './compound-child-overlay.componen
   styles: [
     'p {margin: 0}',
     ':host ::ng-deep p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
-    ':host ::ng-deep p:empty::after {content: "\00A0"}', // render empty p
+    '::ng-deep p:empty::after {content: \'\'; display: inline-block;}', // render empty p
     'p span {font-size: inherit}',
     'sup, sub {line-height: 0;}',
     '.droplist-child {vertical-align: middle;}'
@@ -181,12 +181,12 @@ import { CompoundChildOverlayComponent } from './compound-child-overlay.componen
 })
 export class ClozeComponent extends CompoundElementComponent {
   @Input() elementModel!: ClozeElement;
-  @Output() childElementSelected = new EventEmitter<CompoundChildOverlayComponent>();
-  @ViewChildren(CompoundChildOverlayComponent) compoundChildren!: QueryList<CompoundChildOverlayComponent>;
+  @Output() childElementSelected = new EventEmitter<ClozeChildOverlay>();
+  @ViewChildren(ClozeChildOverlay) compoundChildren!: QueryList<ClozeChildOverlay>;
 
   editorMode: boolean = false;
 
   getFormElementChildrenComponents(): ElementComponent[] {
-    return this.compoundChildren.map((child: CompoundChildOverlayComponent) => child.childComponent);
+    return this.compoundChildren.map((child: ClozeChildOverlay) => child.childComponent);
   }
 }

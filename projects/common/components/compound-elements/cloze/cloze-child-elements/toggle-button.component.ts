@@ -11,7 +11,6 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                              [isDisabled]="elementModel.readOnly"
                              [value]="elementModel.value"
                              [vertical]="elementModel.verticalOrientation"
-                             [style.width]="elementModel.dynamicWidth ? 'unset' : '100%'"
                              [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
                                            (elementFormControl.errors | errorTransform: elementModel) : ''"
                              [matTooltipClass]="'error-tooltip'"

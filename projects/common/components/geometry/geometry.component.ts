@@ -16,7 +16,7 @@ declare const GGBApplet: any;
     <div class="geogebra-container"
          [style.height.px]="elementModel.height"
          [style.width.px]="elementModel.width"
-         [class.center]="this.elementModel.position.fixedSize && this.elementModel.position.dynamicPositioning">
+         [class.center]="this.elementModel.dimensions.isWidthFixed">
       <div [id]="elementModel.id" class="geogebra-applet"></div>
       <button *ngIf="this.elementModel.showResetIcon"
               mat-icon-button

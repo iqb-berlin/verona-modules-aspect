@@ -24,7 +24,6 @@
   <mat-form-field>
     <mat-label>{{'section.value' | translate}}</mat-label>
     <input matInput
-           [placeholder]="'section.value' | translate"
            [(ngModel)]="visibilityRule.value"
            (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
   </mat-form-field>

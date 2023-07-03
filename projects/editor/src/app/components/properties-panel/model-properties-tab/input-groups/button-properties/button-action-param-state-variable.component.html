@@ -13,7 +13,6 @@
   <mat-form-field>
     <mat-label>{{'stateVariableValue' | translate}}</mat-label>
     <input matInput
-           [placeholder]="'stateVariableValue' | translate"
            [(ngModel)]="stateVariable.value"
            (ngModelChange)="stateVariableChange.emit(stateVariable)">
   </mat-form-field>

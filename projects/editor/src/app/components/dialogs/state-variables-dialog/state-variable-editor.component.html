@@ -4,7 +4,6 @@
     <input matInput
            #idInput
            [class.error]="error"
-           [placeholder]="'stateVariableId' | translate"
            [ngModel]="stateVariable.id"
            (input)="checkId(idInput.value)">
   </mat-form-field>
@@ -12,7 +11,6 @@
   <mat-form-field>
     <mat-label>{{'stateVariableValue' | translate}}</mat-label>
     <input matInput
-           [placeholder]="'stateVariableValue' | translate"
            [(ngModel)]="stateVariable.value"
            (ngModelChange)="stateVariableChange.emit(stateVariable)">
   </mat-form-field>

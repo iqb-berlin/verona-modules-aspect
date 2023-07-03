@@ -81,5 +81,18 @@ iqb-aspect-definition@1.0.0
   - margin properties now have a unit attached and are therefore an object ({value: number; unit: string})
 - Section.gridColumnSizes and Section.gridRowSizes now have a unit attached and are therefore an object
   ({value: number; unit: string})
+- Section:
+  - remove "activeAfterIdDelay"
+  - remove "activeAfterId"
+  - add "visibilityRules" (VisibilityRule[]) {id: string; operator: Operator; value: string;}
+  - add "visibilityDelay"
+  - add "animatedVisibility"
+  - add "enableReHide"
 - Likert: new property: stickyHeaders
 - ToggleButton: dynamicWidth removed
+- Button.action:
+  - add "stateVariableChange"
+- Button.actionParam:
+  - add "StateVariable" (StateVariable: {id: string; value: string;})
+- Unit:
+  - add "stateVariables: StateVariable[]" (StateVariable: {id: string; value: string;})

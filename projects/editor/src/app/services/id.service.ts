@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { Unit } from 'common/models/unit';
 import { UIElement } from 'common/models/elements/element';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { MessageService } from 'common/services/message.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IDService {
+  maxIDLength = 20;
   givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,
@@ -33,8 +36,26 @@ export class IDService {
     'toggle-button': 0,
     geometry: 0,
     'math-field': 0,
-    value: 0
+    value: 0,
+    'state-variable': 0
   };
+
+  constructor(private messageService: MessageService, private translateService: TranslateService) { }
+
+  validateAndAddNewID(newId: string, oldId: string): boolean {
+    if (!this.isIdAvailable(newId)) { // prohibit existing IDs
+      this.messageService.showError(this.translateService.instant('idTaken'));
+    } else if (newId.length > this.maxIDLength) {
+      this.messageService.showError('ID länger als 20 Zeichen');
+    } else if (newId.includes(' ')) {
+      this.messageService.showError('ID enthält unerlaubtes Leerzeichen');
+    } else {
+      this.removeId(oldId);
+      this.addID(newId as string);
+      return true;
+    }
+    return false;
+  }
 
   getNewID(type: string): string {
     if (!type) {

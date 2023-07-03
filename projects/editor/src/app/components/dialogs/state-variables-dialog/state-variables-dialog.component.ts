@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { StateVariable } from 'common/models/state-variable';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   templateUrl: './state-variables-dialog.component.html',
@@ -20,12 +21,15 @@ import { StateVariable } from 'common/models/state-variable';
 export class StateVariablesDialogComponent {
   stateVariables: StateVariable[];
 
-  constructor(@Inject(MAT_DIALOG_DATA) private data: { stateVariables: StateVariable[] }) {
+  constructor(
+    private idService: IDService,
+    @Inject(MAT_DIALOG_DATA) private data: { stateVariables: StateVariable[] }) {
     this.stateVariables = [...data.stateVariables];
   }
 
   addStateVariable() {
-    this.stateVariables.push({ id: 'NewState', value: '' });
+    const id = this.idService.getAndRegisterNewID('state-variable');
+    this.stateVariables.push({ id, value: '' });
   }
 
   deleteStateVariable(index: number) {

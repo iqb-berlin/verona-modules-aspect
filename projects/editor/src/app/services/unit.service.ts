@@ -11,7 +11,6 @@ import { Unit } from 'common/models/unit';
 import { PlayerProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
-import { ButtonElement } from 'common/models/elements/button/button';
 import {
   CompoundElement,
   InputElement,
@@ -22,11 +21,12 @@ import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-ele
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { TextElement } from 'common/models/elements/text/text';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { ElementFactory } from 'common/util/element.factory';
-import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { StateVariable } from 'common/models/state-variable';
+import { VisibilityRule } from 'common/models/visibility-rule';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
@@ -280,7 +280,7 @@ export class UnitService {
     return newElement;
   }
 
-  updateSectionProperty(section: Section, property: string, value: string | number | boolean | { value: number; unit: string }[]): void {
+  updateSectionProperty(section: Section, property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]): void {
     section.setProperty(property, value);
     this.elementPropertyUpdated.next();
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
@@ -288,20 +288,12 @@ export class UnitService {
 
   updateElementsProperty(elements: UIElement[],
                          property: string,
-                         value: InputElementValue | LikertRowElement[] | Hotspot[] |
+                         value: InputElementValue | LikertRowElement[] | Hotspot[] | StateVariable |
                          TextLabel | TextLabel[] | ClozeDocument | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
-        if (!this.idService.isIdAvailable((value as string))) { // prohibit existing IDs
-          this.messageService.showError(this.translateService.instant('idTaken'));
-        } else if ((value as string).length > 20) {
-          this.messageService.showError('ID länger als 20 Zeichen');
-        } else if ((value as string).includes(' ')) {
-          this.messageService.showError('ID enthält unerlaubtes Leerzeichen');
-        } else {
-          this.idService.removeId(element.id);
-          this.idService.addID(value as string);
+        if (this.idService.validateAndAddNewID(value as string, element.id)) {
           element.setProperty('id', value);
         }
       } else if (element.type === 'text' && property === 'text') {
@@ -573,5 +565,10 @@ export class UnitService {
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
     this.deleteSection(pageIndex, sectionIndex);
     this.addSection(this.unit.pages[pageIndex], newSection);
+  }
+
+  updateStateVariables(stateVariables: StateVariable[]): void {
+    this.unit.stateVariables = stateVariables;
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 }

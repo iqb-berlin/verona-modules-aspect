@@ -54,8 +54,7 @@ export class UnitComponent implements OnInit {
       this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
       this.veronaPostService.sessionID = message.sessionId;
       this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
-      this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
-        JSON.parse(message.unitState.dataParts.elementCodes) : [];
+      this.initUnitStateService(message, unitDefinition);
       this.elementModelElementCodeMappingService.dragNDropValueObjects = [
         ...unitDefinition.getAllElements('drop-list'),
         ...unitDefinition.getAllElements('drop-list-simple')]
@@ -63,6 +62,14 @@ export class UnitComponent implements OnInit {
     } else {
       LogService.warn('player: message has no unitDefinition');
     }
+  }
+
+  private initUnitStateService(message: VopStartCommand, unitDefinition: Unit): void {
+    this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
+      JSON.parse(message.unitState.dataParts.elementCodes) : [];
+    unitDefinition.stateVariables
+      .map(stateVariable => this.unitStateService
+        .registerElement(stateVariable.id, stateVariable.value));
   }
 
   private reset(): void {

@@ -8,12 +8,13 @@ import {
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import {
-  CompoundElement, InputElement, InputElementValue
+  CompoundElement, InputElement, InputElementValue, ValueChangeElement
 } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
+import { UnitNavParam } from 'common/models/elements/button/button';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -21,8 +22,6 @@ import { KeypadService } from '../../../services/keypad.service';
 import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
-
-import { UnitNavParam } from 'common/models/elements/button/button';
 
 @Component({
   selector: 'aspect-compound-group-element',
@@ -67,7 +66,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
         this.manageOnKeyDown(child as TextFieldSimpleComponent, childModel);
       }
       if (childModel.type === 'button') {
-        this.addNavigationEventListener(child as ButtonComponent);
+        this.addButtonActionEventListener(child as ButtonComponent);
       }
     });
   }
@@ -130,21 +129,24 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     }
   }
 
-  private addNavigationEventListener(button: ButtonComponent) {
-    button.navigateTo
+  private addButtonActionEventListener(button: ButtonComponent) {
+    button.buttonActionEvent
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(navigationEvent => {
-        switch (navigationEvent.action) {
+      .subscribe(buttonEvent => {
+        switch (buttonEvent.action) {
           case 'unitNav':
             this.veronaPostService.sendVopUnitNavigationRequestedNotification(
-              (navigationEvent.param as UnitNavParam)
+              (buttonEvent.param as UnitNavParam)
             );
             break;
           case 'pageNav':
-            this.navigationService.setPage(navigationEvent.param as number);
+            this.navigationService.setPage(buttonEvent.param as number);
             break;
           case 'highlightText':
-            this.anchorService.toggleAnchor(navigationEvent.param as string);
+            this.anchorService.toggleAnchor(buttonEvent.param as string);
+            break;
+          case 'stateVariableChange':
+            this.unitStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
             break;
           default:
         }

@@ -1,0 +1,20 @@
+<div class="fx-column-start-stretch">
+  <mat-form-field>
+    <mat-label>{{'stateVariableId' | translate}}</mat-label>
+    <mat-select [(ngModel)]="stateVariable.id"
+                (ngModelChange)="stateVariableChange.emit(stateVariable)">
+      <mat-option *ngFor="let id of stateVariableIds"
+                  [value]="id">
+        {{id}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{'stateVariableValue' | translate}}</mat-label>
+    <input matInput
+           [(ngModel)]="stateVariable.value"
+           (ngModelChange)="stateVariableChange.emit(stateVariable)">
+  </mat-form-field>
+</div>
+

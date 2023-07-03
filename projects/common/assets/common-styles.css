@@ -66,3 +66,39 @@ blockquote p {
 .cdk-drag-dragging {
   cursor: grabbing;
 }
+
+.fx-row-start-stretch {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.fx-row-end-stretch {
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.fx-column-start-stretch {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.fx-column-start-start {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.fx-gap-10 {
+  gap: 10px;
+}
+
+.fx-gap-20 {
+  gap: 20px;
+}

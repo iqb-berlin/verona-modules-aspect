@@ -1,0 +1,19 @@
+<div class="fx-row-start-stretch fx-gap-10">
+  <mat-form-field>
+    <mat-label>{{'stateVariableId' | translate}}</mat-label>
+    <input matInput
+           #idInput
+           [class.error]="error"
+           [ngModel]="stateVariable.id"
+           (input)="checkId(idInput.value)">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>{{'stateVariableValue' | translate}}</mat-label>
+    <input matInput
+           [(ngModel)]="stateVariable.value"
+           (ngModelChange)="stateVariableChange.emit(stateVariable)">
+  </mat-form-field>
+</div>
+
+

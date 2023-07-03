@@ -4,15 +4,24 @@ import { MatDialog } from '@angular/material/dialog';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { Section } from 'common/models/section';
-import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 import { LabelEditDialogComponent } from 'editor/src/app/components/dialogs/label-edit-dialog.component';
 import {
   GeogebraAppDefinitionDialogComponent
 } from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog.component';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
+import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
+import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import {
+  StateVariablesDialogComponent
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
+import { VisibilityRule } from 'common/models/visibility-rule';
+import {
+  VisibilityRulesDialogComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+import { StateVariable } from 'common/models/state-variable';
+import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -21,7 +30,6 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
-import { ReferenceList } from 'editor/src/app/services/reference-manager';
 
 @Injectable({
   providedIn: 'root'
@@ -130,6 +138,39 @@ export class DialogService {
   showGeogebraAppDefinitionDialog(): Observable<string> {
     const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
       data: { },
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showVisibilityRulesDialog(visibilityRules: VisibilityRule[],
+                            controlIds: string[],
+                            visibilityDelay: number,
+                            animatedVisibility: boolean,
+                            enableReHide: boolean
+  ): Observable<{
+      visibilityRules: VisibilityRule[],
+      visibilityDelay: number,
+      animatedVisibility: boolean,
+      enableReHide: boolean
+    }> {
+    const dialogRef = this.dialog
+      .open(VisibilityRulesDialogComponent, {
+        data: {
+          visibilityRules,
+          controlIds,
+          visibilityDelay,
+          animatedVisibility,
+          enableReHide
+        },
+        autoFocus: false
+      });
+    return dialogRef.afterClosed();
+  }
+
+  showStateVariablesDialog(stateVariables: StateVariable[]): Observable<StateVariable[]> {
+    const dialogRef = this.dialog.open(StateVariablesDialogComponent, {
+      data: { stateVariables: stateVariables },
       autoFocus: false
     });
     return dialogRef.afterClosed();

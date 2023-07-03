@@ -1,20 +1,23 @@
-import { Directive, ElementRef, Input } from '@angular/core';
-import { delay, Subject } from 'rxjs';
+import {
+  Directive, ElementRef, Input, OnDestroy, OnInit
+} from '@angular/core';
+import { Subject } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
-import { ElementCodeStatusValue } from 'player/modules/verona/models/verona';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
+import { TimerStateVariable } from 'player/src/app/classes/timer-state-variable';
+import { ValueChangeElement } from 'common/models/elements/element';
+import { ElementCode, ElementCodeStatusValue } from 'player/modules/verona/models/verona';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]'
 })
-export class SectionVisibilityHandlingDirective {
-  @Input() mediaStatusChanged!: Subject<string>;
+export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Input() section!: Section;
   @Input() pageSections!: Section[];
 
-  private isVisible: boolean = true;
   private ngUnsubscribe = new Subject<void>();
+  private rulesAreFulfilled: boolean = false;
 
   constructor(
     private elementRef: ElementRef,
@@ -22,47 +25,133 @@ export class SectionVisibilityHandlingDirective {
   ) {}
 
   ngOnInit(): void {
-    this.setVisibility(!this.section.activeAfterID);
-    if (!this.isVisible) {
-      this.mediaStatusChanged
-        .pipe(
-          takeUntil(this.ngUnsubscribe),
-          delay(this.section.activeAfterIdDelay))
-        .subscribe((id: string): void => {
-          this.ngUnsubscribe.next();
-          this.ngUnsubscribe.complete();
-          this.setActiveAfterID(id);
+    if (this.section.visibilityRules.length) {
+      this.addSubscription();
+    }
+  }
+
+  private addSubscription(): void {
+    if (this.section.enableReHide || !this.hasSeenElements()) {
+      this.displayHiddenSection();
+      this.unitStateService.elementCodeChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(code => {
+          if (this.isRuleCode(code)) {
+            this.displayHiddenSection();
+          }
         });
     }
   }
 
-  private setVisibility(isVisible: boolean): void {
-    this.isVisible = isVisible || this.hasSeenElements;
-    this.elementRef.nativeElement.style.display = this.isVisible ? null : 'none';
+  private isRuleCode(code: ElementCode): boolean {
+    return this.section.visibilityRules
+      .map(rule => rule.id)
+      .some(id => id === code.id) ||
+      (!!this.section.visibilityDelay && code.id === this.timerStateVariableId);
   }
 
-  private setActiveAfterID(id: string): void {
-    this.setVisibility(id === this.section.activeAfterID);
-    if (this.isScrollSection) {
-      this.elementRef.nativeElement.style.scrollMarginTop = 100;
-      setTimeout(() => {
-        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  private get timerStateVariableId(): string {
+    return `${this.section.visibilityRules[0].id}-
+    ${this.section.visibilityRules[0].value}-
+    ${this.section.visibilityDelay}`;
+  }
+
+  private initTimerStateVariable(): void {
+    const timerStateVariable = new TimerStateVariable(
+      this.timerStateVariableId, this.section.visibilityDelay
+    );
+    this.unitStateService.registerElement(timerStateVariable.id, timerStateVariable.value);
+    timerStateVariable.timerStateValueChanged
+      .subscribe((value: ValueChangeElement) => {
+        this.unitStateService.changeElementCodeValue(value);
       });
+    timerStateVariable.run();
+  }
+
+  private displayHiddenSection(): void {
+    if (this.areVisibilityRulesFulfilled() || this.rulesAreFulfilled) {
+      if (this.section.visibilityDelay) {
+        if (!this.unitStateService.getElementCodeById(this.timerStateVariableId)) {
+          this.rulesAreFulfilled = true;
+          this.initTimerStateVariable();
+        }
+        this.setVisibility((this.unitStateService
+          .getElementCodeById(this.timerStateVariableId)?.value as number) >= this.section.visibilityDelay);
+      } else {
+        this.setVisibility(true);
+      }
+    } else {
+      this.setVisibility(false);
     }
   }
 
-  private get isScrollSection(): boolean {
-    return this.pageSections
-      .filter(pageSection => pageSection.activeAfterID === this.section.activeAfterID &&
-        pageSection.activeAfterIdDelay === this.section.activeAfterIdDelay &&
-        pageSection.getAllElements().length)
-      .findIndex(section => section === this.section) === 0;
+  private setVisibility(visible: boolean): void {
+    this.elementRef.nativeElement.style.display = visible ? null : 'none';
+    if (visible) {
+      if (this.section.animatedVisibility && !this.hasSeenElements()) {
+        this.scrollIntoView();
+      }
+      if (!this.section.enableReHide) {
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+      }
+    }
   }
 
-  private get hasSeenElements(): boolean {
+  private scrollIntoView(): void {
+    this.elementRef.nativeElement.style.scrollMarginTop = 100;
+    setTimeout(() => {
+      this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  private areVisibilityRulesFulfilled(): boolean {
+    return this.section.visibilityRules.some(rule => {
+      if (this.unitStateService.getElementCodeById(rule.id)) {
+        switch (rule.operator) {
+          case '=':
+            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() === rule.value;
+          case '!=':
+            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() !== rule.value;
+          case '>':
+            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) > Number(rule.value);
+          case '<':
+            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) < Number(rule.value);
+          case '>=':
+            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) >= Number(rule.value);
+          case '<=':
+            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) <= Number(rule.value);
+          case 'contains':
+            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString().includes(rule.value);
+          case 'pattern':
+            // We use a similar implementation to Angular's PatternValidator
+            if (this.unitStateService.getElementCodeById(rule.id)?.value !== null) {
+              let regexStr = (rule.value.charAt(0) !== '^') ? `^${rule.value}` : rule.value;
+              if (rule.value.charAt(rule.value.length - 1) !== '$') regexStr += '$';
+              const regex = new RegExp(regexStr);
+              return regex.test(this.unitStateService.getElementCodeById(rule.id)?.value?.toString() as string);
+            }
+            return false;
+          case 'minLength':
+            return (this.unitStateService.getElementCodeById(rule.id)?.value as string)
+              .toString()?.length >= Number(rule.value);
+          case 'maxLength':
+            return (this.unitStateService.getElementCodeById(rule.id)?.value as string)
+              .toString()?.length <= Number(rule.value);
+          default:
+            return false;
+        }
+      }
+      return false;
+    });
+  }
+
+  private hasSeenElements(): boolean {
     return this.section.getAllElements()
       .map(element => this.unitStateService.getElementCodeById(element.id))
-      .some(code => (code ? ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED : false));
+      .some(code => (code ?
+        ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED :
+        false));
   }
 
   ngOnDestroy(): void {

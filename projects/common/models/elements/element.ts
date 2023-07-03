@@ -10,6 +10,8 @@ import {
   BasicStyles, ExtendedStyles,
   DimensionProperties, PlayerProperties, PositionProperties
 } from 'common/models/elements/property-group-interfaces';
+import { VisibilityRule } from 'common/models/visibility-rule';
+import { StateVariable } from 'common/models/state-variable';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
@@ -31,8 +33,8 @@ export interface ValueChangeElement {
 }
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] |
-PositionProperties | PlayerProperties | BasicStyles | Measurement | Measurement[];
+TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable |
+PositionProperties | PlayerProperties | BasicStyles | Measurement | Measurement[] | VisibilityRule[];
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';

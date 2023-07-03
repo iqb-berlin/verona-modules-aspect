@@ -30,6 +30,27 @@
   "auto": "oben",
   "center": "zentriert",
   "allowReplacement": "Verdrängen erlauben",
+  "stateVariable": "Zustandsvariable",
+  "stateVariables": "Zustandsvariablen",
+  "stateVariableValue": "Wert",
+  "stateVariableId": "ID",
+  "manageStateVariables": "Zustandsvariablen verwalten",
+  "section": {
+    "manageVisibilityRules": "Sichtbarkeit verwalten",
+    "animatedVisibility": "Einblenden mit Scroll-Animation",
+    "visibilityDelay": "Verzögertes Einblenden (in ms)",
+    "enableReHide": "Erneutes Ausblenden erlauben, wenn die Bedingungen nicht mehr erfüllt sind",
+    "controlId": "Variablen/Element-ID",
+    "operator": "Operator",
+    "addElementsOrStateVariables": "Bitte zuerst Elemente oder Zustandsvariablen anlegen",
+    "value": "Wert"
+  },
+  "visibilityRule": {
+    "contains": "Enthält",
+    "pattern":  "Muster",
+    "minLength": "Minimale Länge",
+    "maxLength": "Maximale Länge"
+  },
   "toolbar": {
     "loadUnit": "Unit laden",
     "saveUnit": "Unit speichern"
@@ -102,6 +123,7 @@
     "unitNav": "Unitnavigation",
     "pageNav": "Seitennavigation",
     "highlightText": "Textabschnitt hervorheben",
+    "stateVariableChange": "Zustandsvariable ändern",
     "previous": "Vorherige Unit",
     "next": "Nächste Unit",
     "first": "Erste Unit",
@@ -283,9 +305,7 @@
     "width": "Breite",
     "fraction": "Anteile",
     "pixel": "Bildpunkte",
-    "percent": "Prozent",
-    "activeAfterID": "Sichtbar nach A/V-ID",
-    "activeAfterIdDelay": "Verzögerung der Sichtbarkeit"
+    "percent": "Prozent"
   },
   "Bitte kopierten Abschnitt einfügen": "Bitte kopierten Abschnitt einfügen",
   "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?": "Doppelte IDs festgestellt. Weiter mit neu generierten IDs?",

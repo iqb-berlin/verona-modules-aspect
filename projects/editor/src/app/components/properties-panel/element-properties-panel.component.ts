@@ -8,11 +8,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'common/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { TextLabel } from 'common/models/elements/label-interfaces';
+import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { StateVariable } from 'common/models/state-variable';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from '../canvas/overlays/canvas-element-overlay';
-import { TextLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 
@@ -28,7 +29,6 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
 
   interactionEnabled = false;
   interactionIndeterminate = false;
-
 
   constructor(private selectionService: SelectionService, public unitService: UnitService,
               private messageService: MessageService,
@@ -104,7 +104,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] | boolean[] | Hotspot[] |
+              value: string | number | boolean | string[] | boolean[] | Hotspot[] | StateVariable |
               TextLabel | TextLabel[] | LikertRowElement[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {

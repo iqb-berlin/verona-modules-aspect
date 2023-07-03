@@ -1,19 +1,19 @@
 import {
-  Component, OnDestroy, Input, Output, EventEmitter,
-  ViewChild, ElementRef
+  Component, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MessageService } from 'common/services/message.service';
-import { UIElement } from 'common/models/elements/element';
+import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
+import { VisibilityRule } from 'common/models/visibility-rule';
+import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -43,28 +43,11 @@ import { ReferenceManager } from 'editor/src/app/services/reference-manager';
            [value]="$any(section.backgroundColor)"
            (change)="updateModel('backgroundColor', $any($event.target).value)">
 
-    <button mat-mini-fab [matMenuTriggerFor]="activeAfterIDMenu"
+    <button mat-mini-fab
+            (click)="showVisibilityRulesDialog()"
             [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
       <mat-icon>disabled_visible</mat-icon>
     </button>
-    <mat-menu #activeAfterIDMenu="matMenu"
-              class="activeAfterID-menu" xPosition="before">
-      <mat-form-field appearance="outline">
-        <mat-label>{{'section-menu.activeAfterID' | translate }}</mat-label>
-        <input matInput
-               [value]="$any(section.activeAfterID)"
-               (click)="$any($event).stopPropagation()"
-               (change)="updateModel('activeAfterID', $any($event.target).value)">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>{{'section-menu.activeAfterIdDelay' | translate }}</mat-label>
-        <input matInput type="number" step="1000" min="0"
-               [disabled]="!section.activeAfterID"
-               [value]="$any(section.activeAfterIdDelay)"
-               (click)="$any($event).stopPropagation()"
-               (change)="updateModel('activeAfterIdDelay', $any($event.target).value)">
-      </mat-form-field>
-    </mat-menu>
     <button mat-mini-fab [matMenuTriggerFor]="layoutMenu"
             [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
       <mat-icon>space_dashboard</mat-icon>
@@ -207,7 +190,9 @@ export class SectionMenuComponent implements OnDestroy {
               private idService: IDService,
               private clipboard: Clipboard) { }
 
-  updateModel(property: string, value: string | number | boolean | { value: number; unit: string }[]): void {
+  updateModel(
+    property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]
+  ): void {
     this.unitService.updateSectionProperty(this.section, property, value);
   }
 
@@ -300,5 +285,32 @@ export class SectionMenuComponent implements OnDestroy {
           this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
         }
       });
+  }
+
+  showVisibilityRulesDialog(): void {
+    this.dialogService
+      .showVisibilityRulesDialog(
+        this.section.visibilityRules,
+        this.getControlIds(),
+        this.section.visibilityDelay,
+        this.section.animatedVisibility,
+        this.section.enableReHide
+      )
+      .subscribe(visibilityConfig => {
+        if (visibilityConfig) {
+          this.updateModel('visibilityRules', visibilityConfig.visibilityRules);
+          this.updateModel('visibilityDelay', visibilityConfig.visibilityDelay);
+          this.updateModel('animatedVisibility', visibilityConfig.animatedVisibility);
+          this.updateModel('enableReHide', visibilityConfig.enableReHide);
+        }
+      });
+  }
+
+  private getControlIds(): string[] {
+    return this.unitService.unit.getAllElements()
+      .filter(element => !(element instanceof CompoundElement))
+      .map(element => element.id)
+      .concat(this.unitService.unit.stateVariables
+        .map(element => element.id));
   }
 }

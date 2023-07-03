@@ -1,13 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { KeypadKeyComponent } from 'player/modules/key-input/components/keypad-key/keypad-key.component';
+import { Component, Input } from '@angular/core';
 
 describe('KeypadKeyComponent', () => {
   let component: KeypadKeyComponent;
   let fixture: ComponentFixture<KeypadKeyComponent>;
 
+  @Component({ selector: 'character-icon', template: '' })
+  class MockedCharacterIconComponent {
+    @Input() size!: number;
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [KeypadKeyComponent]
+      declarations: [
+        KeypadKeyComponent,
+        MockedCharacterIconComponent
+      ]
     }).compileComponents();
   });
 

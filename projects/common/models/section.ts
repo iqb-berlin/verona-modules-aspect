@@ -10,6 +10,7 @@ import { TextElement } from 'common/models/elements/text/text';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { ElementFactory } from 'common/util/element.factory';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VisibilityRule } from 'common/models/visibility-rule';
 
 export class Section {
   [index: string]: unknown;
@@ -21,8 +22,10 @@ export class Section {
   autoRowSize: boolean = true;
   gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
   gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }];
-  activeAfterID: string | null = null;
-  activeAfterIdDelay: number = 0;
+  visibilityDelay: number = 0;
+  animatedVisibility: boolean = false;
+  enableReHide: boolean = false;
+  visibilityRules: VisibilityRule[] = [];
 
   constructor(blueprint?: Record<string, any>) {
     const sanitizedBlueprint = Section.sanitizeBlueprint(blueprint);
@@ -33,8 +36,10 @@ export class Section {
     if (sanitizedBlueprint.autoRowSize !== undefined) this.autoRowSize = sanitizedBlueprint.autoRowSize;
     if (sanitizedBlueprint.gridColumnSizes !== undefined) this.gridColumnSizes = sanitizedBlueprint.gridColumnSizes;
     if (sanitizedBlueprint.gridRowSizes !== undefined) this.gridRowSizes = sanitizedBlueprint.gridRowSizes;
-    if (sanitizedBlueprint.activeAfterID) this.activeAfterID = sanitizedBlueprint.activeAfterID;
-    if (sanitizedBlueprint.activeAfterIdDelay) this.activeAfterIdDelay = sanitizedBlueprint.activeAfterIdDelay;
+    if (sanitizedBlueprint.visibilityDelay) this.visibilityDelay = sanitizedBlueprint.visibilityDelay;
+    if (sanitizedBlueprint.animatedVisibility) this.animatedVisibility = sanitizedBlueprint.animatedVisibility;
+    if (sanitizedBlueprint.enableReHide) this.enableReHide = sanitizedBlueprint.enableReHide;
+    if (sanitizedBlueprint.visibilityRules) this.visibilityRules = sanitizedBlueprint.visibilityRules;
     this.elements =
       sanitizedBlueprint.elements?.map(element => ElementFactory.createElement({
         ...element,

@@ -16,8 +16,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
-import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
-
 import { APIService, SharedModule } from 'common/shared.module';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
 import { HotspotListPanelComponent } from 'editor/src/app/components/properties-panel/hotspot-list-panel.component';
@@ -28,6 +26,27 @@ import {
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/hotspot-field-set.component';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
 import { MathEditorModule } from 'common/math-editor.module';
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import {
+  StateVariablesDialogComponent
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
+import {
+  VisibilityRuleEditorComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
+import {
+  ShowStateVariablesButtonComponent
+} from 'editor/src/app/components/new-ui-element-panel/show-state-variables-button.component';
+import {
+  StateVariableEditorComponent
+} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variable-editor.component';
+import {
+  ButtonActionParamStateVariableComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/button-properties/button-action-param-state-variable.component';
+import {
+  VisibilityRulesDialogComponent
+} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatBadgeModule } from '@angular/material/badge';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -74,7 +93,7 @@ import { OptionsFieldSetComponent } from
 import { TextPropertiesFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
 import { ButtonPropertiesComponent, GetAnchorIdsPipe, ScrollPageIndexPipe } from
-  './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
+  './components/properties-panel/model-properties-tab/input-groups/button-properties/button-properties.component';
 import { SliderPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
 import { TextFieldElementPropertiesComponent } from
@@ -101,7 +120,9 @@ import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geoge
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
 import { ComboButtonComponent } from './components/util/combo-button.component';
 import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {
+  GetStateVariableIdsPipe
+} from './components/properties-panel/model-properties-tab/input-groups/button-properties/get-state-variable-ids.pipe';
 
 @NgModule({
   declarations: [
@@ -161,7 +182,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     ScrollPageIndexPipe,
     SizeInputPanelComponent,
     ComboButtonComponent,
-    DeleteReferenceDialogComponent
+    DeleteReferenceDialogComponent,
+    VisibilityRuleEditorComponent,
+    StateVariablesDialogComponent,
+    ShowStateVariablesButtonComponent,
+    StateVariableEditorComponent,
+    ButtonActionParamStateVariableComponent,
+    GetStateVariableIdsPipe,
+    VisibilityRulesDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -190,7 +218,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatRadioModule,
     MathEditorModule,
     CdkConnectedOverlay,
-    CdkOverlayOrigin
+    CdkOverlayOrigin,
+    MatBadgeModule
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService }

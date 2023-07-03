@@ -5,6 +5,6 @@ export interface VisibilityRule {
 }
 
 export const VisibilityRuleOperators = [
-  '=', '!=', '<', '<=', '>', '>=', 'contains', 'pattern', 'minLength', 'maxLength'
+  '=', '≠', '<', '≤', '>', '≥', 'contains', 'pattern', 'minLength', 'maxLength'
 ];
 type Operator = typeof VisibilityRuleOperators[number];

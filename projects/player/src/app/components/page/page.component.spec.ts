@@ -23,6 +23,7 @@ describe('PageComponent', () => {
     @Input() mediaStatusChanged!: Subject<string>;
     @Input() section!: Section;
     @Input() pageSections!: Section[];
+    @Input() sectionIndex!: number;
   }
 
   @Directive({ selector: '[aspectInViewDetection]' })

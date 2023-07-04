@@ -58,14 +58,14 @@ export class PlayerStateDirective implements OnInit, OnChanges {
     this.sendVopStateChangedNotification();
   }
 
-  private sendVopStateChangedNotification(requested:boolean = false): void {
+  private sendVopStateChangedNotification(): void {
     const playerState: PlayerState = {
       state: this.state,
       currentPage: this.currentPageIndex.toString(10),
       validPages: this.validPages
     };
     LogService.debug('player: sendVopStateChangedNotification', playerState);
-    this.veronaPostService.sendVopStateChangedNotification({ playerState }, requested);
+    this.veronaPostService.sendVopStateChangedNotification({ playerState });
   }
 
   ngOnDestroy(): void {

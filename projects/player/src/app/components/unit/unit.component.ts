@@ -53,7 +53,6 @@ export class UnitComponent implements OnInit {
       LogService.info('player: unitStateElementCodes', this.unitStateService.elementCodes);
       this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
       this.veronaPostService.sessionID = message.sessionId;
-      this.veronaPostService.stateReportPolicy = message.playerConfig?.stateReportPolicy || 'none';
       this.initUnitStateService(message, unitDefinition);
       this.elementModelElementCodeMappingService.dragNDropValueObjects = [
         ...unitDefinition.getAllElements('drop-list'),

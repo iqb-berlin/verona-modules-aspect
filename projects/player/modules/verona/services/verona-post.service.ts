@@ -4,7 +4,6 @@ import {
   LogData,
   NavigationTarget,
   PlayerState,
-  StateReportPolicy,
   UnitState,
   VopMessage,
   VopMetaData,
@@ -16,16 +15,6 @@ import {
 })
 export class VeronaPostService {
   sessionID: string | undefined;
-  private _stateReportPolicy: StateReportPolicy = 'eager';
-  private cachedVopStateChangedNotificationValues: {
-    unitState?: UnitState,
-    playerState?: PlayerState,
-    log?: LogData[]
-  } = {};
-
-  set stateReportPolicy(stateReportPolicy: StateReportPolicy) {
-    this._stateReportPolicy = stateReportPolicy;
-  }
 
   private static sendMessage(message: VopMessage): void {
     window.parent.postMessage(message, '*');
@@ -35,14 +24,8 @@ export class VeronaPostService {
     unitState?: UnitState,
     playerState?: PlayerState,
     log?: LogData[]
-  }, requested: boolean = false): void {
-    if (this._stateReportPolicy === 'eager' || requested) {
-      VeronaPostService.sendMessage(this.createVopStateChangedNotification(
-        { ...this.cachedVopStateChangedNotificationValues, ...values }
-      ));
-    } else {
-      this.cachedVopStateChangedNotificationValues = { ...this.cachedVopStateChangedNotificationValues, ...values };
-    }
+  }): void {
+    VeronaPostService.sendMessage(this.createVopStateChangedNotification(values));
   }
 
   private createVopStateChangedNotification(values: {

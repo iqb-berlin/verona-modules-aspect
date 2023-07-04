@@ -6,7 +6,7 @@ export enum LogLevel { NONE = 0, ERROR = 1, WARN = 2, INFO = 3, DEBUG = 4 }
   providedIn: 'root'
 })
 export class LogService {
-  static level: LogLevel = 4;
+  static level: LogLevel = 1;
 
   static error(...args: unknown[]): void {
     if (LogService.level >= LogLevel.ERROR) {

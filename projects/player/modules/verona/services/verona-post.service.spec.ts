@@ -12,7 +12,6 @@ describe('VeronaPostService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(VeronaPostService);
     service.sessionID = 'test';
-    service.stateReportPolicy = 'eager';
   });
 
   it('should be created', () => {

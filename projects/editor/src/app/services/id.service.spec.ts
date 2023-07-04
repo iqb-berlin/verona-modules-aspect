@@ -1,11 +1,17 @@
 import { IDService } from 'editor/src/app/services/id.service';
 import { TestBed } from '@angular/core/testing';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('IDService', () => {
   let idService: IDService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [
+        MatSnackBarModule,
+        TranslateModule.forRoot()]
+    });
     idService = TestBed.inject(IDService);
     idService.reset();
   });

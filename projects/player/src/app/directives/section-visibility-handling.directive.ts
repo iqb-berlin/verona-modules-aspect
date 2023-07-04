@@ -35,6 +35,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   private addSubscription(): void {
     if (this.section.enableReHide ||
+      !this.areVisibilityRulesFulfilled() ||
       (this.section.visibilityDelay && !this.isTimerStateFullFilled) ||
       (this.section.animatedVisibility && !this.isAnimatedVisibilityFullFilled)
     ) {
@@ -164,17 +165,9 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
             return false;
         }
       }
-      return false;
+      return true;
     });
   }
-
-  // private hasSeenElements(): boolean {
-  //   return this.section.getAllElements()
-  //     .map(element => this.unitStateService.getElementCodeById(element.id))
-  //     .some(code => (code ?
-  //       ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED :
-  //       false));
-  // }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

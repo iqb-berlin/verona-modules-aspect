@@ -17,6 +17,7 @@ export class UnitStateService {
   private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
   private elementIdPageIndexMap: { [elementId: string]: number } = {};
+  private ignoredPageIndexElementIds: string[] = [];
   private intersectionDetector: IntersectionDetector;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
@@ -57,6 +58,8 @@ export class UnitStateService {
                   pageIndex: number | null = null): void {
     if (pageIndex !== null) {
       this.elementIdPageIndexMap[elementId] = pageIndex;
+    } else {
+      this.ignoredPageIndexElementIds.push(elementId);
     }
     this.addElementCode(elementId, elementValue, domElement);
   }
@@ -83,6 +86,7 @@ export class UnitStateService {
     this.elementCodes = [];
     this.presentedPages = [];
     this.elementIdPageIndexMap = {};
+    this.ignoredPageIndexElementIds = [];
     this.intersectionDetector = new IntersectionDetector(this.document, '0px 0px 0px 0px');
   }
 
@@ -120,7 +124,9 @@ export class UnitStateService {
       unitStateElementCode.status = status;
       this._elementCodeChanged.next(unitStateElementCode);
       if (ElementCodeStatusValue[status] > ElementCodeStatusValue[actualStatus]) {
-        this.checkPresentedPageStatus(this.elementIdPageIndexMap[id]);
+        if (this.elementIdPageIndexMap[id] !== undefined) {
+          this.checkPresentedPageStatus(this.elementIdPageIndexMap[id]);
+        }
       }
     }
   }
@@ -156,8 +162,9 @@ export class UnitStateService {
       unitStateElementCode = { id, value, status };
       this.elementCodes.push(unitStateElementCode);
       this._elementCodeChanged.next(unitStateElementCode);
-    } else if (Object.keys(this.elementIdPageIndexMap).length === this.elementCodes
-      .filter(e => e.status !== 'VIRTUAL').length) {
+    } else if (Object
+      .keys(this.elementIdPageIndexMap).length === this.elementCodes.length - this.ignoredPageIndexElementIds.length
+    ) {
       // if all elements are registered, we can rebuild the presentedPages array
       this.buildPresentedPages();
     }

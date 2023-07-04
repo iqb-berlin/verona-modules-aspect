@@ -225,7 +225,8 @@
     "deleteDroppedItemWithSameID": "Zurücklegen erlauben",
     "deleteDroppedItemWithSameIDTooltip": "Elemente mit gleicher ID werden beim Zurücklegen gelöscht.",
     "setElementInteractionEnabled": "Elementinteraktion erlauben",
-    "enableModeSwitch": "Eingabemodus änderbar"
+    "enableModeSwitch": "Eingabemodus änderbar",
+    "isRelevantForPresentationComplete": "Relevant für \"Presentation Complete\""
   },
   "hotspot": {
     "top": "Abstand von oben",

@@ -228,4 +228,11 @@
                 (change)="updateModel.emit({ property: 'enableModeSwitch', value: $event.checked })">
     {{'propertiesPanel.enableModeSwitch' | translate }}
   </mat-checkbox>
+
+  <mat-checkbox *ngIf="combinedProperties.isRelevantForPresentationComplete !== undefined"
+                [checked]="$any(combinedProperties.isRelevantForPresentationComplete)"
+                (change)="updateModel
+                .emit({ property: 'isRelevantForPresentationComplete', value: $event.checked })">
+    {{'propertiesPanel.isRelevantForPresentationComplete' | translate }}
+  </mat-checkbox>
 </div>

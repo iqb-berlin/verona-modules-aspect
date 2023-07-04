@@ -1,7 +1,7 @@
 import { Directive, Input } from '@angular/core';
-import { UnitStateService } from '../services/unit-state.service';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { InputElementValue, UIElement } from 'common/models/elements/element';
+import { UnitStateService } from '../services/unit-state.service';
 
 @Directive()
 export abstract class ElementGroupDirective {
@@ -12,8 +12,10 @@ export abstract class ElementGroupDirective {
   registerAtUnitStateService(
     id: string, value: InputElementValue, elementComponent: ElementComponent, pageIndex: number
   ): void {
+    const elementModel = elementComponent.elementModel;
+    const relevantPageIndex = elementModel.isRelevantForPresentationComplete ? pageIndex : null;
     this.unitStateService.registerElement(
-      id, value, elementComponent.domElement, pageIndex
+      id, value, elementComponent.domElement, relevantPageIndex
     );
   }
 }

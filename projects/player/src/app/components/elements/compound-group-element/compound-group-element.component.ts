@@ -1,4 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit, Component, OnInit, ViewChild
+} from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -28,7 +30,7 @@ import { DeviceService } from '../../../services/device.service';
   templateUrl: './compound-group-element.component.html',
   styleUrls: ['./compound-group-element.component.scss']
 })
-export class CompoundGroupElementComponent extends ElementFormGroupDirective implements OnInit {
+export class CompoundGroupElementComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;
@@ -52,6 +54,15 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
 
   ngOnInit(): void {
     this.createForm((this.elementModel as CompoundElement).getChildElements() as InputElement[]);
+  }
+
+  ngAfterViewInit(): void {
+    this.registerAtUnitStateService(
+      this.elementModel.id,
+      null,
+      this.elementComponent,
+      this.pageIndex
+    );
   }
 
   registerCompoundChildren(children: ElementComponent[]): void {

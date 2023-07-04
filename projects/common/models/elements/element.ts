@@ -47,11 +47,14 @@ export abstract class UIElement {
   dimensions: DimensionProperties;
   styling?: BasicStyles & ExtendedStyles;
   player?: PlayerProperties;
+  isRelevantForPresentationComplete?: boolean;
 
   constructor(element: Partial<UIElement>) {
     if (!element.type) throw Error('Element has no type!');
     this.type = element.type;
     this.id = element.id || 'id_placeholder';
+    this.isRelevantForPresentationComplete =
+      element.isRelevantForPresentationComplete !== undefined ? element.isRelevantForPresentationComplete : true;
     this.dimensions = UIElement.initDimensionProps({ ...element.dimensions });
   }
 

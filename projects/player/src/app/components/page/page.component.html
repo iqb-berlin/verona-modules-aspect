@@ -3,7 +3,7 @@
      [intersectionContainer]="pagesContainer"
      (intersecting)="selectedIndexChange.emit(scrollPageIndex)">
   <aspect-section
-    *ngFor="let section of page.sections"
+    *ngFor="let section of page.sections; let i = index"
     class="section"
     [class.static-section]="!section.dynamicPositioning"
     [style.backgroundColor]="section.dynamicPositioning ? null : section.backgroundColor"
@@ -11,6 +11,7 @@
     [pageIndex]=pageIndex
     [section]="section"
     aspectSectionVisibilityHandling
+    [sectionIndex]="i"
     [pageSections]="page.sections">
   </aspect-section>
 </div>

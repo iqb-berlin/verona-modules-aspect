@@ -5,9 +5,10 @@ import { Subject } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
-import { TimerStateVariable } from 'player/src/app/classes/timer-state-variable';
+import { StorableTimer } from 'player/src/app/classes/storable-timer';
 import { ValueChangeElement } from 'common/models/elements/element';
-import { ElementCode, ElementCodeStatusValue } from 'player/modules/verona/models/verona';
+import { ElementCode } from 'player/modules/verona/models/verona';
+import { Storable } from 'player/src/app/classes/storable';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]'
@@ -15,6 +16,8 @@ import { ElementCode, ElementCodeStatusValue } from 'player/modules/verona/model
 export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   @Input() section!: Section;
   @Input() pageSections!: Section[];
+  @Input() pageIndex!: number;
+  @Input() sectionIndex!: number;
 
   private ngUnsubscribe = new Subject<void>();
   private rulesAreFulfilled: boolean = false;
@@ -31,7 +34,10 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private addSubscription(): void {
-    if (this.section.enableReHide || !this.hasSeenElements()) {
+    if (this.section.enableReHide ||
+      (this.section.visibilityDelay && !this.isTimerStateFullFilled) ||
+      (this.section.animatedVisibility && !this.isAnimatedVisibilityFullFilled)
+    ) {
       this.displayHiddenSection();
       this.unitStateService.elementCodeChanged
         .pipe(takeUntil(this.ngUnsubscribe))
@@ -43,21 +49,36 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     }
   }
 
+  private get isTimerStateFullFilled(): boolean {
+    return this.unitStateService
+      .getElementCodeById(this.timerStateVariableId)?.value as number >= this.section.visibilityDelay;
+  }
+
+  private get isAnimatedVisibilityFullFilled(): boolean {
+    return this.unitStateService
+      .getElementCodeById(this.animationVariableId)?.value === 1;
+  }
+
   private isRuleCode(code: ElementCode): boolean {
     return this.section.visibilityRules
       .map(rule => rule.id)
       .some(id => id === code.id) ||
-      (!!this.section.visibilityDelay && code.id === this.timerStateVariableId);
+      (!!this.section.visibilityDelay && code.id === this.timerStateVariableId) ||
+      (this.section.animatedVisibility && code.id === this.animationVariableId);
   }
 
   private get timerStateVariableId(): string {
-    return `${this.section.visibilityRules[0].id}-
-    ${this.section.visibilityRules[0].value}-
-    ${this.section.visibilityDelay}`;
+    const firstRule = this.section.visibilityRules[0];
+    return `${firstRule.id}-${firstRule.value}-${this.pageIndex}-${this.sectionIndex}-${this.section.visibilityDelay}`;
+  }
+
+  private get animationVariableId(): string {
+    const firstRule = this.section.visibilityRules[0];
+    return `${firstRule.id}-${firstRule.value}-${this.pageIndex}-${this.sectionIndex}-scroll-animation`;
   }
 
   private initTimerStateVariable(): void {
-    const timerStateVariable = new TimerStateVariable(
+    const timerStateVariable = new StorableTimer(
       this.timerStateVariableId, this.section.visibilityDelay
     );
     this.unitStateService.registerElement(timerStateVariable.id, timerStateVariable.value);
@@ -75,8 +96,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
           this.rulesAreFulfilled = true;
           this.initTimerStateVariable();
         }
-        this.setVisibility((this.unitStateService
-          .getElementCodeById(this.timerStateVariableId)?.value as number) >= this.section.visibilityDelay);
+        this.setVisibility(this.isTimerStateFullFilled);
       } else {
         this.setVisibility(true);
       }
@@ -88,7 +108,9 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private setVisibility(visible: boolean): void {
     this.elementRef.nativeElement.style.display = visible ? null : 'none';
     if (visible) {
-      if (this.section.animatedVisibility && !this.hasSeenElements()) {
+      if (this.section.animatedVisibility && !this.isAnimatedVisibilityFullFilled) {
+        const animationVariable = new Storable(this.animationVariableId, 1);
+        this.unitStateService.registerElement(animationVariable.id, 1);
         this.scrollIntoView();
       }
       if (!this.section.enableReHide) {
@@ -146,13 +168,13 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     });
   }
 
-  private hasSeenElements(): boolean {
-    return this.section.getAllElements()
-      .map(element => this.unitStateService.getElementCodeById(element.id))
-      .some(code => (code ?
-        ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED :
-        false));
-  }
+  // private hasSeenElements(): boolean {
+  //   return this.section.getAllElements()
+  //     .map(element => this.unitStateService.getElementCodeById(element.id))
+  //     .some(code => (code ?
+  //       ElementCodeStatusValue[code.status] > ElementCodeStatusValue.NOT_REACHED :
+  //       false));
+  // }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

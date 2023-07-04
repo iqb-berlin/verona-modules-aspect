@@ -1,19 +1,17 @@
 import { EventEmitter } from '@angular/core';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { Storable } from 'player/src/app/classes/storable';
 
-export class TimerStateVariable {
-  id: string;
-  value: number;
+export class StorableTimer extends Storable {
   duration: number;
   timerStateValueChanged = new EventEmitter<ValueChangeElement>();
   timerStateEnded = new EventEmitter();
 
   private interval: number = 0;
 
-  constructor(id: string, duration: number, value = 0) {
-    this.id = id;
+  constructor(id: string, duration: number, value: number = 0) {
+    super(id, value);
     this.duration = duration;
-    this.value = value;
   }
 
   run(): void {

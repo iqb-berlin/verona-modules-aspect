@@ -111,15 +111,15 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
         switch (rule.operator) {
           case '=':
             return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() === rule.value;
-          case '!=':
+          case '≠':
             return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() !== rule.value;
           case '>':
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) > Number(rule.value);
           case '<':
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) < Number(rule.value);
-          case '>=':
+          case '≥':
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) >= Number(rule.value);
-          case '<=':
+          case '≤':
             return Number(this.unitStateService.getElementCodeById(rule.id)?.value) <= Number(rule.value);
           case 'contains':
             return this.unitStateService.getElementCodeById(rule.id)?.value?.toString().includes(rule.value);

@@ -16,7 +16,7 @@
                 (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
       <mat-option *ngFor="let operator of VisibilityRuleOperators"
                   [value]="operator">
-        {{operator.length > 2 ? ('visibilityRule.' + operator | translate) : operator}}
+        {{operator.length > 1 ? ('visibilityRule.' + operator | translate) : operator}}
       </mat-option>
     </mat-select>
   </mat-form-field>

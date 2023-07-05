@@ -96,3 +96,5 @@ iqb-aspect-definition@1.0.0
   - add "StateVariable" (StateVariable: {id: string; value: string;})
 - Unit:
   - add "stateVariables: StateVariable[]" (StateVariable: {id: string; value: string;})
+- UIElement:
+  - add "isRelevantForPresentationComplete"

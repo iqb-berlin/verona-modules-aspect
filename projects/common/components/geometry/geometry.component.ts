@@ -89,8 +89,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     }
     const params: any = {
       id: this.elementModel.id,
-      width: this.elementModel.width - 4, // must be smaller than the container, otherwise scroll bars will be displayed
-      height: this.elementModel.height - 4,
+      width: this.elementModel.dimensions.width - 4, // must be smaller than the container, otherwise scroll bars will be displayed
+      height: this.elementModel.dimensions.height - 4,
       scale: 1,
       showToolBar: this.elementModel.showToolbar,
       enableShiftDragZoom: this.elementModel.enableShiftDragZoom,

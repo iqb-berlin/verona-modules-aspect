@@ -25,15 +25,13 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
 import { MessageService } from 'common/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import packageJSON from '../../../package.json';
 import {
   BasicStyles,
-  ExtendedStyles,
   PlayerProperties,
   PositionProperties
 } from 'common/models/elements/property-group-interfaces';
-
 import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';
+import packageJSON from '../../../package.json';
 
 @Injectable({
   providedIn: 'root'
@@ -154,7 +152,7 @@ export class SanitizationService {
     let newElement: Partial<UIElement> = {
       ...element,
       position: SanitizationService.getPositionProps(element, sectionDynamicPositioning),
-      styling: SanitizationService.getStyleProps(element) as unknown as BasicStyles & ExtendedStyles,
+      styling: SanitizationService.getStyleProps(element) as unknown as BasicStyles,
       player: SanitizationService.getPlayerProps(element)
     };
     if (newElement.type === 'text') {
@@ -468,22 +466,22 @@ export class SanitizationService {
   }
 
   private static handleToggleButtonElement(element: Record<string, UIElementValue>): ToggleButtonElement {
-    if (element.richTextOptions) {
-      return new ToggleButtonElement({
-        ...element,
-        options: (element.richTextOptions as string[])
-          .map(richTextOption => ({ text: richTextOption }))
-      });
-    }
-    if (element.options && (element.options as unknown[]).length) {
-      if (typeof (element.options as unknown[])[0] === 'string') {
-        return new ToggleButtonElement({
-          ...element,
-          options: (element.options as string[])
-            .map(options => ({ text: options }))
-        });
-      }
-    }
+    // if (element.richTextOptions) {
+    //   return new ToggleButtonElement({
+    //     ...element,
+    //     options: (element.richTextOptions as string[])
+    //       .map(richTextOption => ({ text: richTextOption }))
+    //   });
+    // }
+    // if (element.options && (element.options as unknown[]).length) {
+    //   if (typeof (element.options as unknown[])[0] === 'string') {
+    //     return new ToggleButtonElement({
+    //       ...element,
+    //       options: (element.options as string[])
+    //         .map(options => ({ text: options }))
+    //     });
+    //   }
+    // }
     return element as ToggleButtonElement;
   }
 

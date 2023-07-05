@@ -2,12 +2,14 @@ import { PageProperties } from 'common/models/page';
 import { SectionProperties } from 'common/models/section';
 import { UnitProperties } from 'common/models/unit';
 import packageJSON from '../../../../../../package.json';
+import { VisibilityRule } from 'common/models/visibility-rule';
 
 export class UnitPropertyGenerator {
   static generateUnitProps(): UnitProperties {
     return {
       type: 'aspect-unit-definition',
       version: packageJSON.config.unit_definition_version,
+      stateVariables: [],
       pages: []
     };
   }
@@ -35,8 +37,10 @@ export class UnitPropertyGenerator {
       autoRowSize: true,
       gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }],
       gridRowSizes: [{ value: 1, unit: 'fr' }],
-      activeAfterID: null,
-      activeAfterIdDelay: 0
+      visibilityDelay: 0,
+      animatedVisibility: false,
+      enableReHide: false,
+      visibilityRules: []
     };
   }
 }

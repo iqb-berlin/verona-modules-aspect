@@ -26,6 +26,8 @@ import { GeometryProperties } from 'common/models/elements/geometry/geometry';
 import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { VideoProperties } from 'common/models/elements/media-elements/video';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
+import { StateVariable } from 'common/models/state-variable';
+import { VisibilityRule } from 'common/models/visibility-rule';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';

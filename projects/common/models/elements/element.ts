@@ -33,7 +33,7 @@ export interface ValueChangeElement {
 
 export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
 TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable |
-PositionProperties | PlayerProperties | BasicStyles | Measurement | Measurement[] | VisibilityRule[];
+PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[];
 
 export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
 | 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';

@@ -35,10 +35,10 @@ export class Section {
     this.autoRowSize = blueprint.autoRowSize;
     this.gridColumnSizes = blueprint.gridColumnSizes;
     this.gridRowSizes = blueprint.gridRowSizes;
-    this.visibilityDelay = sanitizedBlueprint.visibilityDelay;
-    this.animatedVisibility = sanitizedBlueprint.animatedVisibility;
-    this.enableReHide = sanitizedBlueprint.enableReHide;
-    this.visibilityRules = sanitizedBlueprint.visibilityRules;
+    this.visibilityDelay = blueprint.visibilityDelay;
+    this.animatedVisibility = blueprint.animatedVisibility;
+    this.enableReHide = blueprint.enableReHide;
+    this.visibilityRules = blueprint.visibilityRules;
     this.elements = blueprint.elements
       .map(element => ElementFactory.createElement(element)) as PositionedUIElement[];
   }
@@ -98,6 +98,8 @@ export interface SectionProperties {
   autoRowSize: boolean;
   gridColumnSizes: { value: number; unit: string }[];
   gridRowSizes: Measurement[];
-  activeAfterID: string | null;
-  activeAfterIdDelay: number;
+  visibilityDelay: number;
+  animatedVisibility: boolean;
+  enableReHide: boolean;
+  visibilityRules: VisibilityRule[];
 }

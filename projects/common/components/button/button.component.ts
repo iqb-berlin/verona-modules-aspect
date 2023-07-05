@@ -18,7 +18,6 @@ import { ElementComponent } from '../../directives/element-component.directive';
          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-         [style.border-radius.px]="elementModel.styling.borderRadius"
          (click)="$event.preventDefault();
                   elementModel.action && elementModel.actionParam !== null ?
                   buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam})) :
@@ -38,6 +37,9 @@ import { ElementComponent } from '../../directives/element-component.directive';
             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+            [style.border-width.px]="elementModel.styling.borderWidth"
+            [style.border-style]="elementModel.styling.borderStyle"
+            [style.border-color]="elementModel.styling.borderColor"
             [style.border-radius.px]="elementModel.styling.borderRadius"
             (click)="elementModel.action && elementModel.actionParam !== null ?
                      buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam })) :

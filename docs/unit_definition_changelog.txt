@@ -94,6 +94,8 @@ iqb-aspect-definition@1.0.0
   - add "stateVariableChange"
 - Button.actionParam:
   - add "StateVariable" (StateVariable: {id: string; value: string;})
+- Button:
+  - new properties: border-width, borderStyle, border-color
 - Unit:
   - add "stateVariables: StateVariable[]" (StateVariable: {id: string; value: string;})
 - UIElement:

@@ -10,6 +10,7 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { Label, TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
 import { OptionElement } from 'common/models/elements/element';
+import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element-properties';
 
 @Component({
   selector: 'aspect-options-field-set',
@@ -93,7 +94,7 @@ export class OptionsFieldSetComponent {
 
   addLikertRow(rowLabelText: string): void {
     const newRow = new LikertRowElement({
-      type: 'likert-row',
+      ...ElementPropertyGenerator.getLikertRow(),
       id: this.idService.getAndRegisterNewID('likert-row'),
       rowLabel: {
         text: rowLabelText,

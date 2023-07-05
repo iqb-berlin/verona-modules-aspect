@@ -1,21 +1,24 @@
 import { Type } from '@angular/core';
 import {
   CompoundElement, UIElement,
-  PositionedUIElement, UIElementValue, OptionElement
+  PositionedUIElement, UIElementValue, OptionElement, UIElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { LikertComponent } from 'common/components/compound-elements/likert/likert.component';
-import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles, PositionProperties
+} from 'common/models/elements/property-group-interfaces';
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
 
-export class LikertElement extends CompoundElement implements PositionedUIElement, OptionElement {
-  rows: LikertRowElement[] = [];
-  options: TextImageLabel[] = [];
-  firstColumnSizeRatio: number = 5;
-  label: string = 'Optionentabelle Beschriftung';
-  label2: string = 'Beschriftung Erste Spalte';
-  stickyHeader: boolean = false;
+export class LikertElement extends CompoundElement implements PositionedUIElement, OptionElement, LikertProperties {
+  type: UIElementType = 'likert';
+  rows: LikertRowElement[];
+  options: TextImageLabel[];
+  firstColumnSizeRatio: number;
+  label: string;
+  label2: string;
+  stickyHeader: boolean;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -23,24 +26,16 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     lineColoringColor: string;
   };
 
-  constructor(element: Partial<LikertElement>) {
-    super({ dimensions: { width: 250, height: 200 } as DimensionProperties, ...element });
-    if (element.options) this.options = [...element.options];
-    if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-    this.rows = element.rows !== undefined ? element.rows?.map(row => new LikertRowElement(row)) : [];
-    this.label = element.label !== undefined ? element.label : 'Optionentabelle Beschriftung';
-    this.label2 = element.label2 !== undefined ? element.label2 : 'Optionentabelle Erste Spalte';
-    this.stickyHeader = element.stickyHeader !== undefined ? element.stickyHeader : false;
-    this.position = UIElement.initPositionProps({ marginBottom: { value: 35, unit: 'px' }, ...element.position });
-    this.styling = {
-      ...UIElement.initStylingProps({
-        backgroundColor: 'white',
-        lineHeight: 135,
-        lineColoring: true,
-        lineColoringColor: '#c9e0e0',
-        ...element.styling
-      })
-    };
+  constructor(element: LikertProperties) {
+    super(element);
+    this.options = element.options;
+    this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+    this.rows = element.rows.map(row => new LikertRowElement(row));
+    this.label = element.label;
+    this.label2 = element.label2;
+    this.stickyHeader = element.stickyHeader;
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   getNewOptionLabel(optionText: string): TextImageLabel {
@@ -67,4 +62,19 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   getChildElements(): UIElement[] {
     return this.rows;
   }
+}
+
+export interface LikertProperties extends UIElementProperties {
+  rows: LikertRowElement[];
+  options: TextImageLabel[];
+  firstColumnSizeRatio: number;
+  label: string;
+  label2: string;
+  stickyHeader: boolean;
+  position: PositionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+    lineColoring: boolean;
+    lineColoringColor: string;
+  };
 }

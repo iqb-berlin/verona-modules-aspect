@@ -4,16 +4,15 @@ import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import packageJSON from '../../../package.json';
 
-export class Unit {
+export class Unit implements UnitProperties {
   type = 'aspect-unit-definition';
   version: string;
-  stateVariables: StateVariable[] = [];
-  pages: Page[] = [];
+  pages: Page[];
 
-  constructor(unit?: Partial<Unit>) {
-    this.version = packageJSON.config.unit_definition_version;
-    this.stateVariables = unit?.stateVariables || [];
-    this.pages = unit?.pages?.map(page => new Page(page)) || [new Page()];
+  constructor(unit: UnitProperties) {
+    this.version = unit.version;
+    this.stateVariables = unit.stateVariables;
+    this.pages = unit.pages.map(page => new Page(page));
   }
 
   getAllElements(elementType?: string): UIElement[] {
@@ -26,4 +25,10 @@ export class Unit {
     ];
     return this.pages.map(page => page.getAnswerScheme(dropLists)).flat();
   }
+}
+
+export interface UnitProperties {
+  type: string;
+  version: string;
+  pages: Page[];
 }

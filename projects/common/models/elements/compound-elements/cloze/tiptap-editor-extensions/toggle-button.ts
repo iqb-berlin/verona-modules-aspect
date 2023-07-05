@@ -1,5 +1,6 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element-properties';
 
 const ToggleButtonExtension =
   Node.create({
@@ -10,7 +11,7 @@ const ToggleButtonExtension =
     addAttributes() {
       return {
         model: {
-          default: new ToggleButtonElement({ type: 'toggle-button' })
+          default: new ToggleButtonElement(ElementPropertyGenerator.getToggleButton())
         }
       };
     },

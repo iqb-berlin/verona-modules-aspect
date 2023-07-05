@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, UIElement
+  PositionedUIElement, UIElement, UIElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
@@ -8,26 +8,27 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
 
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
-export class ImageElement extends UIElement implements PositionedUIElement {
-  src: string | null = null;
-  alt: string = 'Bild nicht gefunden';
-  scale: boolean = false;
-  magnifier: boolean = false;
-  magnifierSize: number = 100;
-  magnifierZoom: number = 1.5;
-  magnifierUsed: boolean = false;
+export class ImageElement extends UIElement implements PositionedUIElement, ImageProperties {
+  type: UIElementType = 'image';
+  src: string | null;
+  alt: string;
+  scale: boolean;
+  magnifier: boolean;
+  magnifierSize: number;
+  magnifierZoom: number;
+  magnifierUsed: boolean;
   position: PositionProperties;
 
-  constructor(element: Partial<ImageElement>) {
-    super({ dimensions: { height: 100 } as DimensionProperties, ...element });
-    if (element.src) this.src = element.src;
-    if (element.alt) this.alt = element.alt;
-    if (element.scale) this.scale = element.scale;
-    if (element.magnifier) this.magnifier = element.magnifier;
-    if (element.magnifierSize) this.magnifierSize = element.magnifierSize;
-    if (element.magnifierZoom) this.magnifierZoom = element.magnifierZoom;
-    if (element.magnifierUsed) this.magnifierUsed = element.magnifierUsed;
-    this.position = UIElement.initPositionProps(element.position);
+  constructor(element: ImageProperties) {
+    super(element);
+    this.src = element.src;
+    this.alt = element.alt;
+    this.scale = element.scale;
+    this.magnifier = element.magnifier;
+    this.magnifierSize = element.magnifierSize;
+    this.magnifierZoom = element.magnifierZoom;
+    this.magnifierUsed = element.magnifierUsed;
+    this.position = element.position;
   }
 
   getElementComponent(): Type<ElementComponent> {
@@ -49,4 +50,15 @@ export class ImageElement extends UIElement implements PositionedUIElement {
       valuesComplete: true
     };
   }
+}
+
+export interface ImageProperties extends UIElementProperties {
+  src: string | null;
+  alt: string;
+  scale: boolean;
+  magnifier: boolean;
+  magnifierSize: number;
+  magnifierZoom: number;
+  magnifierUsed: boolean;
+  position: PositionProperties;
 }

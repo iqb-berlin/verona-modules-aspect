@@ -1,5 +1,5 @@
 import {
-  InputElement, UIElement
+  InputElement, InputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -7,24 +7,19 @@ import { MathFieldComponent } from 'common/components/input-elements/math-field.
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
-export class MathFieldElement extends InputElement {
+export class MathFieldElement extends InputElement implements MathFieldProperties {
+  type: UIElementType = 'math-field';
   enableModeSwitch: boolean = false;
   position: PositionProperties | undefined;
   styling: BasicStyles & {
     lineHeight: number;
   };
 
-  constructor(element: Partial<MathFieldElement>) {
+  constructor(element: MathFieldProperties) {
     super(element);
-    if (element.enableModeSwitch !== undefined) this.enableModeSwitch = element.enableModeSwitch;
-    this.position = element.position ? UIElement.initPositionProps(element.position) : undefined;
-    this.styling = {
-      ...UIElement.initStylingProps({
-        backgroundColor: 'transparent',
-        lineHeight: 135,
-        ...element.styling
-      })
-    };
+    this.enableModeSwitch = element.enableModeSwitch;
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   hasAnswerScheme(): boolean {
@@ -46,4 +41,12 @@ export class MathFieldElement extends InputElement {
   getElementComponent(): Type<ElementComponent> {
     return MathFieldComponent;
   }
+}
+
+export interface MathFieldProperties extends InputElementProperties {
+  enableModeSwitch: boolean;
+  position?: PositionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
 }

@@ -1,5 +1,6 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { ButtonElement } from 'common/models/elements/button/button';
+import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element';
 
 const ButtonExtension =
   Node.create({
@@ -10,7 +11,7 @@ const ButtonExtension =
     addAttributes() {
       return {
         model: {
-          default: new ButtonElement({ type: 'button' })
+          default: new ButtonElement(ElementPropertyGenerator.getButton())
         }
       };
     },

@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, OptionElement, PositionedUIElement, UIElement
+  InputElement, InputElementProperties, OptionElement, PositionedUIElement, UIElement, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
@@ -8,7 +8,9 @@ import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-s
 import { TextLabel } from 'common/models/elements/label-interfaces';
 import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
-export class RadioButtonGroupElement extends InputElement implements PositionedUIElement, OptionElement {
+export class RadioButtonGroupElement extends InputElement
+  implements PositionedUIElement, OptionElement, RadioButtonGroupProperties {
+  type: UIElementType = 'radio';
   options: TextLabel[] = [];
   alignment: 'column' | 'row' = 'column';
   strikeOtherOptions: boolean = false;
@@ -17,19 +19,13 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
     lineHeight: number;
   };
 
-  constructor(element: Partial<RadioButtonGroupElement>) {
-    super({ dimensions: { height: 100 }, ...element });
-    if (element.options) this.options = [...element.options];
-    if (element.alignment) this.alignment = element.alignment;
-    if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
-    this.position = UIElement.initPositionProps({ ...element.position });
-    this.styling = {
-      ...UIElement.initStylingProps({
-        backgroundColor: 'transparent',
-        lineHeight: 135,
-        ...element.styling
-      })
-    };
+  constructor(element: RadioButtonGroupProperties) {
+    super(element);
+    this.options = element.options;
+    this.alignment = element.alignment;
+    this.strikeOtherOptions = element.strikeOtherOptions;
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   hasAnswerScheme(): boolean {
@@ -63,4 +59,14 @@ export class RadioButtonGroupElement extends InputElement implements PositionedU
   getNewOptionLabel(optionText: string): TextLabel {
     return UIElement.createOptionLabel(optionText) as TextLabel;
   }
+}
+
+export interface RadioButtonGroupProperties extends InputElementProperties {
+  options: TextLabel[];
+  alignment: 'column' | 'row';
+  strikeOtherOptions: boolean;
+  position: PositionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
 }

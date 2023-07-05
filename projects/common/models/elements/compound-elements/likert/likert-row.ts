@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement
+  InputElement, InputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
@@ -9,18 +9,19 @@ import {
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
 
-export class LikertRowElement extends InputElement {
-  rowLabel: TextImageLabel = { text: '', imgSrc: null, imgPosition: 'above' };
-  columnCount: number = 0;
-  firstColumnSizeRatio: number = 5;
-  verticalButtonAlignment: 'auto' | 'center' = 'center';
+export class LikertRowElement extends InputElement implements LikertRowProperties {
+  type: UIElementType = 'likert-row';
+  rowLabel: TextImageLabel;
+  columnCount: number;
+  firstColumnSizeRatio: number;
+  verticalButtonAlignment: 'auto' | 'center';
 
-  constructor(element: Partial<LikertRowElement>) {
+  constructor(element: LikertRowProperties) {
     super(element);
-    if (element.rowLabel) this.rowLabel = { ...element.rowLabel };
-    if (element.columnCount) this.columnCount = element.columnCount;
-    if (element.firstColumnSizeRatio) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-    if (element.verticalButtonAlignment) this.verticalButtonAlignment = element.verticalButtonAlignment;
+    this.rowLabel = element.rowLabel;
+    this.columnCount = element.columnCount;
+    this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+    this.verticalButtonAlignment = element.verticalButtonAlignment;
   }
 
   hasAnswerScheme(): boolean {
@@ -51,4 +52,11 @@ export class LikertRowElement extends InputElement {
   getElementComponent(): Type<ElementComponent> {
     return LikertRadioButtonGroupComponent;
   }
+}
+
+export interface LikertRowProperties extends InputElementProperties {
+  rowLabel: TextImageLabel;
+  columnCount: number;
+  firstColumnSizeRatio: number;
+  verticalButtonAlignment: 'auto' | 'center';
 }

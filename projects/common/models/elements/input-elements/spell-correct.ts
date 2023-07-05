@@ -1,22 +1,24 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, UIElement, TextInputElement
+  PositionedUIElement, UIElement, TextInputElement, TextInputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
-import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles,
+  PositionProperties
+} from 'common/models/elements/property-group-interfaces';
 
-export class SpellCorrectElement extends TextInputElement implements PositionedUIElement {
+export class SpellCorrectElement extends TextInputElement implements PositionedUIElement, SpellCorrectProperties {
+  type: UIElementType = 'spell-correct';
   position: PositionProperties;
   styling: BasicStyles;
 
-  constructor(element: Partial<SpellCorrectElement>) {
-    super({ dimensions: { width: 230, height: 80 } as DimensionProperties, ...element });
-    this.position = UIElement.initPositionProps(element.position);
-    this.styling = {
-      ...UIElement.initStylingProps({ backgroundColor: 'transparent', ...element.styling })
-    };
+  constructor(element: SpellCorrectProperties) {
+    super(element);
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   hasAnswerScheme(): boolean {
@@ -38,4 +40,9 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
   getElementComponent(): Type<ElementComponent> {
     return SpellCorrectComponent;
   }
+}
+
+export interface SpellCorrectProperties extends TextInputElementProperties {
+  position: PositionProperties;
+  styling: BasicStyles;
 }

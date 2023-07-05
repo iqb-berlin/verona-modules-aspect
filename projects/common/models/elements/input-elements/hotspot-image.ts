@@ -1,5 +1,10 @@
 import { Type } from '@angular/core';
-import { InputElement, PositionedUIElement, UIElement } from 'common/models/elements/element';
+import {
+  InputElement,
+  InputElementProperties,
+  PositionedUIElement,
+  UIElementType
+} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
@@ -16,19 +21,20 @@ export interface Hotspot {
   backgroundColor: string;
   rotation: number;
   value: boolean;
-  readOnly: boolean
+  readOnly: boolean;
 }
 
-export class HotspotImageElement extends InputElement implements PositionedUIElement {
+export class HotspotImageElement extends InputElement implements PositionedUIElement, HotspotImageProperties {
+  type: UIElementType = 'hotspot-image';
   value: Hotspot[];
   src: string | null = null;
   position: PositionProperties;
 
-  constructor(element: Partial<HotspotImageElement>) {
-    super({ dimensions: { height: 100 }, ...element });
-    this.value = element.value !== undefined ? [...element.value] : [];
-    if (element.src) this.src = element.src;
-    this.position = UIElement.initPositionProps(element.position);
+  constructor(element: HotspotImageProperties) {
+    super(element);
+    this.value = element.value;
+    this.src = element.src;
+    this.position = element.position;
   }
 
   hasAnswerScheme(): boolean {
@@ -65,4 +71,10 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
   getElementComponent(): Type<ElementComponent> {
     return HotspotImageComponent;
   }
+}
+
+export interface HotspotImageProperties extends InputElementProperties {
+  value: Hotspot[];
+  src: string | null;
+  position: PositionProperties;
 }

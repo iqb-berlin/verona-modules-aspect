@@ -8,9 +8,9 @@ import {
 } from 'common/models/elements/element';
 import { TextElement } from 'common/models/elements/text/text';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { ElementFactory } from 'common/util/element.factory';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
+import { ElementFactory } from 'common/util/element.factory';
 
 export class Section {
   [index: string]: unknown;
@@ -27,25 +27,20 @@ export class Section {
   enableReHide: boolean = false;
   visibilityRules: VisibilityRule[] = [];
 
-  constructor(blueprint?: Record<string, any>) {
-    const sanitizedBlueprint = Section.sanitizeBlueprint(blueprint);
-    if (sanitizedBlueprint.height) this.height = sanitizedBlueprint.height;
-    if (sanitizedBlueprint.backgroundColor) this.backgroundColor = sanitizedBlueprint.backgroundColor;
-    if (sanitizedBlueprint.dynamicPositioning !== undefined) this.dynamicPositioning = sanitizedBlueprint.dynamicPositioning;
-    if (sanitizedBlueprint.autoColumnSize !== undefined) this.autoColumnSize = sanitizedBlueprint.autoColumnSize;
-    if (sanitizedBlueprint.autoRowSize !== undefined) this.autoRowSize = sanitizedBlueprint.autoRowSize;
-    if (sanitizedBlueprint.gridColumnSizes !== undefined) this.gridColumnSizes = sanitizedBlueprint.gridColumnSizes;
-    if (sanitizedBlueprint.gridRowSizes !== undefined) this.gridRowSizes = sanitizedBlueprint.gridRowSizes;
-    if (sanitizedBlueprint.visibilityDelay) this.visibilityDelay = sanitizedBlueprint.visibilityDelay;
-    if (sanitizedBlueprint.animatedVisibility) this.animatedVisibility = sanitizedBlueprint.animatedVisibility;
-    if (sanitizedBlueprint.enableReHide) this.enableReHide = sanitizedBlueprint.enableReHide;
-    if (sanitizedBlueprint.visibilityRules) this.visibilityRules = sanitizedBlueprint.visibilityRules;
-    this.elements =
-      sanitizedBlueprint.elements?.map(element => ElementFactory.createElement({
-        ...element,
-        position: UIElement.initPositionProps(element.position)
-      }) as PositionedUIElement) ||
-      [];
+  constructor(blueprint: SectionProperties) {
+    this.height = blueprint.height;
+    this.backgroundColor = blueprint.backgroundColor;
+    this.dynamicPositioning = blueprint.dynamicPositioning;
+    this.autoColumnSize = blueprint.autoColumnSize;
+    this.autoRowSize = blueprint.autoRowSize;
+    this.gridColumnSizes = blueprint.gridColumnSizes;
+    this.gridRowSizes = blueprint.gridRowSizes;
+    this.visibilityDelay = sanitizedBlueprint.visibilityDelay;
+    this.animatedVisibility = sanitizedBlueprint.animatedVisibility;
+    this.enableReHide = sanitizedBlueprint.enableReHide;
+    this.visibilityRules = sanitizedBlueprint.visibilityRules;
+    this.elements = blueprint.elements
+      .map(element => ElementFactory.createElement(element)) as PositionedUIElement[];
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -92,4 +87,17 @@ export class Section {
         blueprint.gridRowSizes as Measurement[]
     };
   }
+}
+
+export interface SectionProperties {
+  elements: PositionedUIElement[];
+  height: number;
+  backgroundColor: string;
+  dynamicPositioning: boolean;
+  autoColumnSize: boolean;
+  autoRowSize: boolean;
+  gridColumnSizes: { value: number; unit: string }[];
+  gridRowSizes: Measurement[];
+  activeAfterID: string | null;
+  activeAfterIdDelay: number;
 }

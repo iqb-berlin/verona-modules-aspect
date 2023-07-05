@@ -1,42 +1,40 @@
 import { Type } from '@angular/core';
 import {
   PositionedUIElement,
-  UIElement
+  UIElement, UIElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
 
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
-import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles,
+  PositionProperties
+} from 'common/models/elements/property-group-interfaces';
 
-export class TextElement extends UIElement implements PositionedUIElement {
-  text: string = 'Lorem ipsum dolor sit amet';
-  highlightableOrange: boolean = false;
-  highlightableTurquoise: boolean = false;
-  highlightableYellow: boolean = false;
-  hasSelectionPopup: boolean = true;
-  columnCount: number = 1;
+export class TextElement extends UIElement implements PositionedUIElement, TextProperties {
+  type: UIElementType = 'text';
+  text: string;
+  highlightableOrange: boolean;
+  highlightableTurquoise: boolean;
+  highlightableYellow: boolean;
+  hasSelectionPopup: boolean;
+  columnCount: number;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextElement>) {
-    super({ dimensions: { height: 98 } as DimensionProperties, ...element });
-    if (element.text) this.text = element.text;
-    if (element.highlightableOrange) this.highlightableOrange = element.highlightableOrange;
-    if (element.highlightableTurquoise) this.highlightableTurquoise = element.highlightableTurquoise;
-    if (element.highlightableYellow) this.highlightableYellow = element.highlightableYellow;
-    if (element.hasSelectionPopup !== undefined) this.hasSelectionPopup = element.hasSelectionPopup;
-    if (element.columnCount) this.columnCount = element.columnCount;
-    this.position = UIElement.initPositionProps(element.position);
-    this.styling = {
-      ...UIElement.initStylingProps({
-        backgroundColor: 'transparent',
-        lineHeight: element.styling?.lineHeight || 135,
-        ...element.styling
-      })
-    };
+  constructor(element: TextProperties) {
+    super(element);
+    this.text = element.text;
+    this.highlightableOrange = element.highlightableOrange;
+    this.highlightableTurquoise = element.highlightableTurquoise;
+    this.highlightableYellow = element.highlightableYellow;
+    this.hasSelectionPopup = element.hasSelectionPopup;
+    this.columnCount = element.columnCount;
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   private isHighlightable(): boolean {
@@ -75,4 +73,17 @@ export class TextElement extends UIElement implements PositionedUIElement {
       .getElementsByTagName('aspect-anchor'))
       .map(element => element.getAttribute('data-anchor-id') as string);
   }
+}
+
+export interface TextProperties extends UIElementProperties {
+  text: string;
+  highlightableOrange: boolean;
+  highlightableTurquoise: boolean;
+  highlightableYellow: boolean;
+  hasSelectionPopup: boolean;
+  columnCount: number;
+  position: PositionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
 }

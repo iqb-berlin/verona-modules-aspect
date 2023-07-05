@@ -3,7 +3,10 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { ButtonNodeviewComponent } from 'editor/src/app/text-editor/angular-node-views/button-nodeview.component';
-import { BasicStyles } from 'common/models/elements/property-group-interfaces';
+import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element-properties';
+import {
+  ElementPropertyGroupGenerator
+} from 'editor/src/app/services/default-property-generators/element-property-groups';
 
 const ButtonComponentExtension = (injector: Injector): Node => {
   return Node.create({
@@ -15,13 +18,14 @@ const ButtonComponentExtension = (injector: Injector): Node => {
       return {
         model: {
           default: new ButtonElement({
-            type: 'button',
+            ...ElementPropertyGenerator.getButton(),
             id: 'cloze-child-id-placeholder',
-            height: 30,
+            dimensions: {
+              ...ElementPropertyGroupGenerator.generateDimensionProps(),
+              height: 30
+            },
             asLink: true,
-            styling: {
-              backgroundColor: 'transparent'
-            } as BasicStyles & { borderRadius: number; }
+            position: undefined
           })
         }
       };

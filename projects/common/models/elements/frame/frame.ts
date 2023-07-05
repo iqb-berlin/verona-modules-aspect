@@ -1,45 +1,47 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, UIElement
+  PositionedUIElement, UIElement, UIElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { FrameComponent } from 'common/components/frame/frame.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { BorderStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
 
-export class FrameElement extends UIElement implements PositionedUIElement {
-  hasBorderTop: boolean = true;
-  hasBorderBottom: boolean = true;
-  hasBorderLeft: boolean = true;
-  hasBorderRight: boolean = true;
-
+export class FrameElement extends UIElement implements PositionedUIElement, FrameProperties {
+  type: UIElementType = 'frame';
+  hasBorderTop: boolean;
+  hasBorderBottom: boolean;
+  hasBorderLeft: boolean;
+  hasBorderRight: boolean;
   position: PositionProperties;
-  styling: BasicStyles & {
-    borderWidth: number;
-    borderColor: string;
-    borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
-    borderRadius: number;
-  };
+  styling: BorderStyles & { backgroundColor: string; };
 
-  constructor(element: Partial<FrameElement>) {
+  constructor(element: FrameProperties) {
     super(element);
-    this.hasBorderTop = element.hasBorderTop !== undefined ? element.hasBorderTop : true;
-    this.hasBorderBottom = element.hasBorderBottom !== undefined ? element.hasBorderBottom : true;
-    this.hasBorderLeft = element.hasBorderLeft !== undefined ? element.hasBorderLeft : true;
-    this.hasBorderRight = element.hasBorderRight !== undefined ? element.hasBorderRight : true;
-    this.position = UIElement.initPositionProps({ zIndex: -1, ...element.position });
+    this.hasBorderTop = element.hasBorderTop;
+    this.hasBorderBottom = element.hasBorderBottom;
+    this.hasBorderLeft = element.hasBorderLeft;
+    this.hasBorderRight = element.hasBorderRight;
+    this.position = element.position;
     this.styling = {
-      ...UIElement.initStylingProps({
-        backgroundColor: 'transparent',
-        borderWidth: 1,
-        borderColor: 'black',
-        borderStyle: 'solid',
-        borderRadius: 0,
-        ...element.styling
-      })
+      ...element.styling,
+      backgroundColor: element.styling.backgroundColor,
+      borderWidth: element.styling.borderWidth,
+      borderColor: element.styling.borderColor,
+      borderStyle: element.styling.borderStyle,
+      borderRadius: element.styling.borderRadius
     };
   }
 
   getElementComponent(): Type<ElementComponent> {
     return FrameComponent;
   }
+}
+
+export interface FrameProperties extends UIElementProperties {
+  hasBorderTop: boolean;
+  hasBorderBottom: boolean;
+  hasBorderLeft: boolean;
+  hasBorderRight: boolean;
+  position: PositionProperties;
+  styling: BorderStyles & { backgroundColor: string; };
 }

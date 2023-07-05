@@ -1,15 +1,18 @@
 import { Type } from '@angular/core';
 import {
-  InputElement,
-  UIElement, UIElementValue
+  InputElement, InputElementProperties,
+  UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
-import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles
+} from 'common/models/elements/property-group-interfaces';
 
-export class DropListElement extends InputElement {
+export class DropListElement extends InputElement implements DropListProperties {
+  type: UIElementType = 'drop-list';
   value: DragNDropValueObject[];
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
@@ -18,33 +21,27 @@ export class DropListElement extends InputElement {
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#006064';
-  position: PositionProperties | undefined;
   styling: BasicStyles & {
     itemBackgroundColor: string;
   };
 
-  constructor(element: Partial<DropListElement>) {
-    super({ dimensions: { height: 100, minHeight: 100 }, ...element });
+  constructor(element: DropListProperties) {
+    super(element);
     this.value = element.value !== undefined ?
       element.value.map(val => ({ ...val })) :
       [];
-    if (element.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
-    if (element.connectedTo) this.connectedTo = [...element.connectedTo];
-    if (element.copyOnDrop !== undefined) this.copyOnDrop = element.copyOnDrop;
-    if (element.allowReplacement !== undefined) this.allowReplacement = element.allowReplacement;
-    if (element.orientation) this.orientation = element.orientation;
-    if (element.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
-    if (element.highlightReceivingDropListColor) {
-      this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
-    }
-    this.position = element.position ?
-      UIElement.initPositionProps({ ...element.position as Partial<PositionProperties> }) :
-      undefined;
-    this.styling = UIElement.initStylingProps({
-      backgroundColor: '#ededed',
-      itemBackgroundColor: '#c9e0e0',
-      ...element.styling
-    });
+    this.onlyOneItem = element.onlyOneItem;
+    this.connectedTo = [...element.connectedTo];
+    this.copyOnDrop = element.copyOnDrop;
+    this.allowReplacement = element.allowReplacement;
+    this.orientation = element.orientation;
+    this.highlightReceivingDropList = element.highlightReceivingDropList;
+    this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
+
+    this.styling = {
+      ...element.styling,
+      itemBackgroundColor: element.styling.itemBackgroundColor
+    };
   }
 
   /* Set originListID and originListIndex if applicable. */
@@ -95,4 +92,18 @@ export class DropListElement extends InputElement {
   getElementComponent(): Type<ElementComponent> {
     return DropListComponent;
   }
+}
+
+export interface DropListProperties extends InputElementProperties {
+  value: DragNDropValueObject[];
+  onlyOneItem: boolean;
+  connectedTo: string[];
+  copyOnDrop: boolean;
+  allowReplacement: boolean;
+  orientation: 'vertical' | 'horizontal' | 'flex';
+  highlightReceivingDropList: boolean;
+  highlightReceivingDropListColor: string;
+  styling: BasicStyles & {
+    itemBackgroundColor: string;
+  };
 }

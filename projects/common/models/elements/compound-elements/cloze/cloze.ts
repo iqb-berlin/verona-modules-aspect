@@ -2,7 +2,7 @@ import {
   CompoundElement,
   InputElement,
   PositionedUIElement,
-  UIElement, UIElementType, UIElementValue
+  UIElement, UIElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -13,24 +13,26 @@ import {
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { ButtonElement } from 'common/models/elements/button/button';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles,
+  PositionProperties
+} from 'common/models/elements/property-group-interfaces';
 
-export class ClozeElement extends CompoundElement implements PositionedUIElement {
+export class ClozeElement extends CompoundElement implements PositionedUIElement, ClozeProperties {
+  type: UIElementType = 'cloze';
   document: ClozeDocument = { type: 'doc', content: [] };
-  columnCount: number = 1;
+  columnCount: number;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
 
-  constructor(element: Partial<ClozeElement>) {
-    super({ dimensions: { height: 200 } as DimensionProperties, ...element });
-    if (element.columnCount) this.columnCount = element.columnCount;
+  constructor(element: ClozeProperties) {
+    super(element);
+    this.columnCount = element.columnCount;
     this.document = ClozeElement.initDocument(element.document);
-    this.position = UIElement.initPositionProps(element.position);
-    this.styling = {
-      ...UIElement.initStylingProps({ lineHeight: 150, ...element.styling })
-    };
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -66,7 +68,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     });
   }
 
-  private static initDocument(document?: ClozeDocument): ClozeDocument {
+  static initDocument(document?: ClozeDocument): ClozeDocument {
     return {
       ...document,
       type: 'doc',
@@ -166,6 +168,15 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
       .filter((word: ClozeDocumentParagraphPart) => ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(word.type))
       .reduce((accumulator: any[], currentValue: any) => accumulator.concat(currentValue.attrs.model), []);
   }
+}
+
+export interface ClozeProperties extends UIElementProperties {
+  document: ClozeDocument;
+  columnCount: number;
+  position: PositionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
 }
 
 export interface ClozeDocument {

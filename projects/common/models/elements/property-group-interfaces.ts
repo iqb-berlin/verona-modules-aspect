@@ -27,7 +27,20 @@ export interface DimensionProperties {
   maxHeight: number | null;
 }
 
-export interface BasicStyles {
+export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;
+export type BasicStyles = FontStyles & { backgroundColor: string };
+
+export interface OtherStyles {
+  [index: string]: unknown;
+  backgroundColor?: string;
+  lineHeight?: number;
+  itemBackgroundColor?: string;
+  lineColoring?: boolean;
+  lineColoringColor?: string;
+  selectionColor?: string;
+}
+
+export interface FontStyles {
   [index: string]: unknown;
   fontColor: string;
   font: string;
@@ -35,20 +48,14 @@ export interface BasicStyles {
   bold: boolean;
   italic: boolean;
   underline: boolean;
-  backgroundColor: string;
 }
 
-export interface ExtendedStyles {
+export interface BorderStyles {
   [index: string]: unknown;
-  lineHeight?: number;
-  borderRadius?: number;
-  itemBackgroundColor?: string;
-  borderWidth?: number;
-  borderColor?: string;
-  borderStyle?: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
-  lineColoring?: boolean;
-  lineColoringColor?: string;
-  selectionColor?: string;
+  borderWidth: number;
+  borderColor: string;
+  borderStyle: 'solid' | 'dotted' | 'dashed' | 'double' | 'groove' | 'ridge' | 'inset' | 'outset';
+  borderRadius: number;
 }
 
 export interface PlayerProperties {

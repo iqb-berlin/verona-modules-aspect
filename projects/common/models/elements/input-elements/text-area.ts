@@ -1,43 +1,40 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, UIElement, TextInputElement
+  PositionedUIElement, UIElement, TextInputElement, TextInputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
-import { BasicStyles, DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles, PositionProperties
+} from 'common/models/elements/property-group-interfaces';
 
-export class TextAreaElement extends TextInputElement implements PositionedUIElement {
-  appearance: 'fill' | 'outline' = 'outline';
-  resizeEnabled: boolean = false;
-  hasDynamicRowCount: boolean = false;
-  rowCount: number = 3;
-  expectedCharactersCount: number = 300;
-  hasReturnKey: boolean = false;
-  hasKeyboardIcon: boolean = false;
+export class TextAreaElement extends TextInputElement implements PositionedUIElement, TextAreaProperties {
+  type: UIElementType = 'text-area';
+  appearance: 'fill' | 'outline';
+  resizeEnabled: boolean;
+  hasDynamicRowCount: boolean;
+  rowCount: number;
+  expectedCharactersCount: number;
+  hasReturnKey: boolean;
+  hasKeyboardIcon: boolean;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextAreaElement>) {
-    super({ dimensions: { width: 230, height: 132 } as DimensionProperties, ...element });
-    if (element.appearance) this.appearance = element.appearance;
-    if (element.resizeEnabled) this.resizeEnabled = element.resizeEnabled;
-    if (element.rowCount) this.rowCount = element.rowCount;
-    if (element.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
-    if (element.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
-    if (element.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
-    if (element.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
-    this.position = UIElement.initPositionProps(element.position);
-    this.styling = {
-      ...UIElement.initStylingProps({
-        backgroundColor: 'transparent',
-        lineHeight: 135,
-        ...element.styling
-      })
-    };
+  constructor(element: TextAreaProperties) {
+    super(element);
+    this.appearance = element.appearance;
+    this.resizeEnabled = element.resizeEnabled;
+    this.rowCount = element.rowCount;
+    this.hasDynamicRowCount = element.hasDynamicRowCount;
+    this.expectedCharactersCount = element.expectedCharactersCount;
+    this.hasReturnKey = element.hasReturnKey;
+    this.hasKeyboardIcon = element.hasKeyboardIcon;
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   hasAnswerScheme(): boolean {
@@ -59,4 +56,18 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
   getElementComponent(): Type<ElementComponent> {
     return TextAreaComponent;
   }
+}
+
+export interface TextAreaProperties extends TextInputElementProperties {
+  appearance: 'fill' | 'outline';
+  resizeEnabled: boolean;
+  hasDynamicRowCount: boolean;
+  rowCount: number;
+  expectedCharactersCount: number;
+  hasReturnKey: boolean;
+  hasKeyboardIcon: boolean;
+  position: PositionProperties;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
 }

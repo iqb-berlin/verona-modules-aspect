@@ -1,20 +1,24 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, PositionedUIElement, UIElement
+  InputElement, InputElementProperties, PositionedUIElement, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
-import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles,
+  PositionProperties
+} from 'common/models/elements/property-group-interfaces';
 
-export class CheckboxElement extends InputElement implements PositionedUIElement {
+export class CheckboxElement extends InputElement implements PositionedUIElement, CheckboxProperties {
+  type: UIElementType = 'checkbox';
   position: PositionProperties;
   styling: BasicStyles;
 
-  constructor(element: Partial<CheckboxElement>) {
-    super({ dimensions: { width: 215 }, ...element });
-    this.position = UIElement.initPositionProps(element.position);
-    this.styling = UIElement.initStylingProps(element.styling);
+  constructor(element: CheckboxProperties) {
+    super(element);
+    this.position = element.position;
+    this.styling = element.styling;
   }
 
   hasAnswerScheme(): boolean {
@@ -43,4 +47,9 @@ export class CheckboxElement extends InputElement implements PositionedUIElement
   getElementComponent(): Type<ElementComponent> {
     return CheckboxComponent;
   }
+}
+
+export interface CheckboxProperties extends InputElementProperties {
+  position: PositionProperties;
+  styling: BasicStyles;
 }

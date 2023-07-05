@@ -1,41 +1,39 @@
 import {
-  UIElement, TextInputElement
+  TextInputElement, TextInputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   TextFieldSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { BasicStyles, DimensionProperties } from 'common/models/elements/property-group-interfaces';
-
+import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 
-export class TextFieldSimpleElement extends TextInputElement {
-  minLength: number | null = null;
-  minLengthWarnMessage: string = 'Eingabe zu kurz';
-  maxLength: number | null = null;
-  maxLengthWarnMessage: string = 'Eingabe zu lang';
-  isLimitedToMaxLength: boolean = false;
-  pattern: string | null = null;
-  patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
+export class TextFieldSimpleElement extends TextInputElement implements TextFieldSimpleProperties {
+  type: UIElementType = 'text-field-simple';
+  minLength: number | null;
+  minLengthWarnMessage: string;
+  maxLength: number | null;
+  maxLengthWarnMessage: string;
+  isLimitedToMaxLength: boolean;
+  pattern: string | null;
+  patternWarnMessage: string;
   clearable: boolean = false;
   styling: BasicStyles & {
     lineHeight: number;
   };
 
-  constructor(element: Partial<TextFieldSimpleElement>) {
-    super({ dimensions: { width: 150, height: 30, isWidthFixed: true } as DimensionProperties, ...element });
-    if (element.minLength) this.minLength = element.minLength;
-    if (element.minLengthWarnMessage !== undefined) this.minLengthWarnMessage = element.minLengthWarnMessage;
-    if (element.maxLength) this.maxLength = element.maxLength;
-    if (element.maxLengthWarnMessage !== undefined) this.maxLengthWarnMessage = element.maxLengthWarnMessage;
-    if (element.isLimitedToMaxLength) this.isLimitedToMaxLength = element.isLimitedToMaxLength;
-    if (element.pattern) this.pattern = element.pattern;
-    if (element.patternWarnMessage !== undefined) this.patternWarnMessage = element.patternWarnMessage;
-    if (element.clearable) this.clearable = element.clearable;
-    this.styling = {
-      ...UIElement.initStylingProps({ lineHeight: 100, backgroundColor: 'transparent', ...element.styling })
-    };
+  constructor(element: TextFieldSimpleProperties) {
+    super(element);
+    this.minLength = element.minLength;
+    this.minLengthWarnMessage = element.minLengthWarnMessage;
+    this.maxLength = element.maxLength;
+    this.maxLengthWarnMessage = element.maxLengthWarnMessage;
+    this.isLimitedToMaxLength = element.isLimitedToMaxLength;
+    this.pattern = element.pattern;
+    this.patternWarnMessage = element.patternWarnMessage;
+    this.clearable = element.clearable;
+    this.styling = element.styling;
   }
 
   hasAnswerScheme(): boolean {
@@ -57,4 +55,18 @@ export class TextFieldSimpleElement extends TextInputElement {
   getElementComponent(): Type<ElementComponent> {
     return TextFieldSimpleComponent;
   }
+}
+
+export interface TextFieldSimpleProperties extends TextInputElementProperties {
+  minLength: number | null;
+  minLengthWarnMessage: string;
+  maxLength: number | null;
+  maxLengthWarnMessage: string;
+  isLimitedToMaxLength: boolean;
+  pattern: string | null;
+  patternWarnMessage: string;
+  clearable: boolean;
+  styling: BasicStyles & {
+    lineHeight: number;
+  };
 }

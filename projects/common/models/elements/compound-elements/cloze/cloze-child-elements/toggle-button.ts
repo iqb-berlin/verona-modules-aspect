@@ -1,5 +1,5 @@
 import {
-  InputElement, UIElement
+  InputElement, InputElementProperties, UIElement, UIElementType
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -10,30 +10,24 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { TextLabel } from 'common/models/elements/label-interfaces';
 
-export class ToggleButtonElement extends InputElement {
-  options: TextLabel[] = [];
-  strikeOtherOptions: boolean = false;
-  strikeSelectedOption: boolean = false;
-  verticalOrientation: boolean = false;
+export class ToggleButtonElement extends InputElement implements ToggleButtonProperties {
+  type: UIElementType = 'toggle-button';
+  options: TextLabel[];
+  strikeOtherOptions: boolean;
+  strikeSelectedOption: boolean;
+  verticalOrientation: boolean;
   styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
   };
 
-  constructor(element: Partial<ToggleButtonElement>) {
-    super({ dimensions: { height: 30 }, ...element });
-    if (element.options) this.options = [...element.options];
-    if (element.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
-    if (element.strikeSelectedOption) this.strikeSelectedOption = element.strikeSelectedOption;
-    if (element.verticalOrientation) this.verticalOrientation = element.verticalOrientation;
-    this.styling = {
-      ...UIElement.initStylingProps({
-        lineHeight: 100,
-        selectionColor: '#c7f3d0',
-        backgroundColor: 'transparent',
-        ...element.styling
-      })
-    };
+  constructor(element: ToggleButtonProperties) {
+    super(element);
+    this.options = element.options;
+    this.strikeOtherOptions = element.strikeOtherOptions;
+    this.strikeSelectedOption = element.strikeSelectedOption;
+    this.verticalOrientation = element.verticalOrientation;
+    this.styling = element.styling;
   }
 
   hasAnswerScheme(): boolean {
@@ -67,4 +61,15 @@ export class ToggleButtonElement extends InputElement {
   getNewOptionLabel(optionText: string): TextLabel {
     return UIElement.createOptionLabel(optionText) as TextLabel;
   }
+}
+
+export interface ToggleButtonProperties extends InputElementProperties {
+  options: TextLabel[];
+  strikeOtherOptions: boolean;
+  strikeSelectedOption: boolean;
+  verticalOrientation: boolean;
+  styling: BasicStyles & {
+    lineHeight: number;
+    selectionColor: string;
+  };
 }

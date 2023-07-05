@@ -12,10 +12,8 @@ import { PlayerProperties, PositionProperties } from 'common/models/elements/pro
 import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
-  CompoundElement,
-  InputElement,
-  InputElementValue, PlayerElement, PositionedUIElement,
-  UIElement, UIElementType, UIElementValue
+  CompoundElement, InputElement, InputElementValue, PlayerElement, PositionedUIElement,
+  UIElement, UIElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
@@ -24,13 +22,17 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { ElementFactory } from 'common/util/element.factory';
+import { GeometryProperties } from 'common/models/elements/geometry/geometry';
+import { AudioProperties } from 'common/models/elements/media-elements/audio';
+import { VideoProperties } from 'common/models/elements/media-elements/video';
+import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
-import { StateVariable } from 'common/models/state-variable';
-import { VisibilityRule } from 'common/models/visibility-rule';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';
+import { UnitPropertyGenerator } from './default-property-generators/unit-properties';
+import { ElementPropertyGenerator } from './default-property-generators/element-properties';
 
 @Injectable({
   providedIn: 'root'
@@ -50,24 +52,33 @@ export class UnitService {
               private sanitizer: DomSanitizer,
               private translateService: TranslateService,
               private idService: IDService) {
-    this.unit = new Unit();
+    this.unit = UnitService.createEmptyUnit();
     this.referenceManager = new ReferenceManager(this.unit);
+  }
+
+  private static createEmptyUnit(): Unit {
+    return new Unit({
+      ...UnitPropertyGenerator.generateUnitProps(),
+      pages: [new Page({
+        ...UnitPropertyGenerator.generatePageProps(),
+        sections: [new Section(UnitPropertyGenerator.generateSectionProps())]
+      })]
+    });
   }
 
   loadUnitDefinition(unitDefinition: string): void {
     this.idService.reset();
     if (unitDefinition) {
+      let unitDef;
       try {
-        const unitDef = JSON.parse(unitDefinition);
-        this.unit = new Unit(unitDef);
-        this.referenceManager = new ReferenceManager(this.unit);
+        unitDef = JSON.parse(unitDefinition);
       } catch (e) {
+        // eslint-disable-next-line no-console
         console.error(e);
         this.messageService.showError('Unit definition konnte nicht gelesen werden!');
-        this.unit = new Unit();
       }
-    } else {
-      this.unit = new Unit();
+      this.unit = new Unit(unitDef);
+      this.referenceManager = new ReferenceManager(this.unit);
     }
     this.idService.registerUnitIds(this.unit);
   }
@@ -77,7 +88,10 @@ export class UnitService {
   }
 
   addPage(): void {
-    this.unit.pages.push(new Page());
+    this.unit.pages.push(new Page({
+      ...UnitPropertyGenerator.generatePageProps(),
+      sections: [new Section(UnitPropertyGenerator.generateSectionProps())]
+    }));
     this.selectionService.selectedPageIndex = this.unit.pages.length - 1;
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
@@ -107,8 +121,10 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  addSection(page: Page, newSection?: Partial<Section>): void {
-    page.sections.push(new Section(newSection as Record<string, UIElementValue>));
+  addSection(page: Page, section?: Section): void {
+    page.sections.push(
+      section || new Section(UnitPropertyGenerator.generateSectionProps())
+    );
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
@@ -120,7 +136,7 @@ export class UnitService {
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
     const newSection: Section = new Section({
       ...section,
-      elements: section.elements.map(element => this.duplicateElement(element))
+      elements: section.elements.map(element => this.duplicateElement(element) as PositionedUIElement)
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
@@ -142,15 +158,13 @@ export class UnitService {
     this.addElementToSection(elementType, this.unit.pages[pageIndex].sections[sectionIndex]);
   }
 
-  async addElementToSection(elementType: UIElementType,
-                            section: Section,
+  async addElementToSection(elementType: UIElementType, section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    const newElement: { type: string } & Partial<PositionedUIElement> = {
-      type: elementType
-    };
+    const newElementProperties = ElementPropertyGenerator.generateElementBlueprint(elementType);
     if (['geometry'].includes(elementType)) {
-      newElement.appDefinition = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
-      if (!newElement.appDefinition) return; // dialog canceled
+      (newElementProperties as GeometryProperties).appDefinition =
+        await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
+      if (!(newElementProperties as GeometryProperties).appDefinition) return; // dialog canceled
     }
     if (['audio', 'video', 'image', 'hotspot-image'].includes(elementType)) {
       let mediaSrc = '';
@@ -167,29 +181,34 @@ export class UnitService {
           break;
         // no default
       }
-      newElement.src = mediaSrc;
+      (newElementProperties as AudioProperties | VideoProperties | ImageProperties).src = mediaSrc;
     }
 
     if (coordinates) {
-      newElement.position = {
+      newElementProperties.position = {
         ...(section.dynamicPositioning && { gridColumn: coordinates.x }),
         ...(section.dynamicPositioning && { gridRow: coordinates.y }),
         ...(!section.dynamicPositioning && { yPosition: coordinates.y }),
         ...(!section.dynamicPositioning && { yPosition: coordinates.y })
       } as PositionProperties;
     }
-    section.addElement(ElementFactory.createElement({
-      ...newElement,
-      id: this.idService.getAndRegisterNewID(newElement.type),
-      position: { ...newElement.position } as PositionProperties
-    }) as PositionedUIElement);
+
+    section.addElement(this.createElement(elementType, newElementProperties) as PositionedUIElement);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+  }
+
+  private createElement(elementType: UIElementType, props: UIElementProperties): UIElement {
+    return ElementFactory.createElement({
+      type: elementType,
+      ...props,
+      id: this.idService.getAndRegisterNewID(elementType)
+    });
   }
 
   deleteElements(elements: UIElement[]): void {
     const refs =
       this.referenceManager.getElementsReferences(elements);
-    console.log('element refs', refs);
+    // console.log('element refs', refs);
     if (refs.length > 0) {
       this.dialogService.showDeleteReferenceDialog(refs)
         .pipe(takeUntil(this.ngUnsubscribe))

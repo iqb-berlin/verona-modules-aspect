@@ -3,6 +3,7 @@ import { UIElement, UIElementProperties, UIElementType } from 'common/models/ele
 import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { BasicStyles, BorderStyles } from 'common/models/elements/property-group-interfaces';
+import { StateVariable } from 'common/models/state-variable';
 
 export class ButtonElement extends UIElement implements ButtonProperties {
   type: UIElementType = 'button';
@@ -39,8 +40,8 @@ export interface ButtonProperties extends UIElementProperties {
 
 export interface ButtonEvent {
   action: ButtonAction;
-  param: UnitNavParam | number | string;
+  param: UnitNavParam | number | string | StateVariable
 }
 
-export type ButtonAction = 'unitNav' | 'pageNav' | 'highlightText';
+export type ButtonAction = 'unitNav' | 'pageNav' | 'highlightText' | 'stateVariableChange';
 export type UnitNavParam = 'previous' | 'next' | 'first' | 'last' | 'end';

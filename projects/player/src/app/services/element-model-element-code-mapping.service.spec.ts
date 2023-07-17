@@ -29,8 +29,8 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
-import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
 describe('ElementModelElementCodeMappingService', () => {
   let service: ElementModelElementCodeMappingService;
@@ -235,6 +235,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'a',
         id: 'value_1',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -243,6 +244,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'b',
         id: 'value_2',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -251,6 +253,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'c',
         id: 'value_3',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -259,6 +262,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'd',
         id: 'value_4',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -267,6 +271,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -278,6 +283,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -293,6 +299,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'a',
         id: 'value_1',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -301,6 +308,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'b',
         id: 'value_2',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 1
@@ -309,6 +317,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'c',
         id: 'value_3',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 2
@@ -317,6 +326,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'd',
         id: 'value_4',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 3
@@ -325,6 +335,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 4
@@ -336,6 +347,7 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        audioSrc: null,
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 4

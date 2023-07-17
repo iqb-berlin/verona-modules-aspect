@@ -100,3 +100,5 @@ iqb-aspect-definition@1.0.0
   - add "stateVariables: StateVariable[]" (StateVariable: {id: string; value: string;})
 - UIElement:
   - add "isRelevantForPresentationComplete"
+- DragNDropValueObject:
+  - add "audioSrc"

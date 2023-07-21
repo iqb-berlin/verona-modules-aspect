@@ -36,6 +36,10 @@ export class ElementPropertyGenerator {
       asLink: false,
       action: null,
       actionParam: null,
+      tooltipText: '',
+      tooltipPosition: 'above',
+      superscriptLabel: false,
+      subscriptLabel: false,
       styling: {
         ...ElementPropertyGroupGenerator.generateFontStylingProps(),
         ...ElementPropertyGroupGenerator.generateBorderStylingProps(),

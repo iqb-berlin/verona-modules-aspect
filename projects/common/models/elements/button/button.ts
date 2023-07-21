@@ -13,6 +13,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   action: null | ButtonAction;
   actionParam: null | UnitNavParam | number | string;
   styling: BasicStyles & BorderStyles;
+  tooltipText: string;
+  tooltipPosition: 'left' | 'right' | 'above' | 'below';
+  superscriptLabel: boolean;
+  subscriptLabel: boolean;
 
   constructor(element: ButtonProperties) {
     super(element);
@@ -22,6 +26,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
     this.action = element.action;
     this.actionParam = element.actionParam;
     this.styling = element.styling;
+    this.tooltipText = element.tooltipText;
+    this.tooltipPosition = element.tooltipPosition;
+    this.superscriptLabel = element.superscriptLabel;
+    this.subscriptLabel = element.subscriptLabel;
   }
 
   getElementComponent(): Type<ElementComponent> {
@@ -36,6 +44,10 @@ export interface ButtonProperties extends UIElementProperties {
   action: null | ButtonAction;
   actionParam: null | UnitNavParam | number | string;
   styling: BasicStyles & BorderStyles;
+  tooltipText: string;
+  tooltipPosition: 'left' | 'right' | 'above' | 'below';
+  superscriptLabel: boolean;
+  subscriptLabel: boolean
 }
 
 export interface ButtonEvent {

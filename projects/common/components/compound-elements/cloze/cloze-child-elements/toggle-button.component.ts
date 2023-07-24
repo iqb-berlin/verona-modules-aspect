@@ -7,10 +7,10 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
   template: `
     <mat-button-toggle-group [class.errors]="elementFormControl.errors && elementFormControl.touched"
                              [formControl]="elementFormControl"
-                             [style.height.px]="elementModel.height"
                              [isDisabled]="elementModel.readOnly"
                              [value]="elementModel.value"
                              [vertical]="elementModel.verticalOrientation"
+                             [style.height.px]="elementModel.dimensions.isHeightFixed ? elementModel.dimensions.height : null"
                              [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
                                            (elementFormControl.errors | errorTransform: elementModel) : ''"
                              [matTooltipClass]="'error-tooltip'"
@@ -19,7 +19,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       <div *ngIf="elementModel.options.length === 0"
            class="fx-row-center-center"
            [style.min-height.px]="elementModel.dimensions.height - 2"
-           [style.width]="100">
+           [style.width.%]="100">
         <span>&nbsp;</span>
       </div>
       <mat-button-toggle *ngFor="let option of elementModel.options; let i = index"
@@ -51,6 +51,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
     }
     mat-button-toggle-group {
       display: inline-flex;
+      width: 100%;
       min-width: 70px;
       min-height: 20px;
       max-width: 100%;

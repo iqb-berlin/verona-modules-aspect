@@ -1,40 +1,64 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, UIElement, TextInputElement, TextInputElementProperties, UIElementType
+  PositionedUIElement, TextInputElement, TextInputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
-
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import {
-  BasicStyles, PositionProperties
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class TextAreaElement extends TextInputElement implements PositionedUIElement, TextAreaProperties {
   type: UIElementType = 'text-area';
-  appearance: 'fill' | 'outline';
-  resizeEnabled: boolean;
-  hasDynamicRowCount: boolean;
-  rowCount: number;
-  expectedCharactersCount: number;
-  hasReturnKey: boolean;
-  hasKeyboardIcon: boolean;
+  appearance: 'fill' | 'outline' = 'outline';
+  resizeEnabled: boolean = false;
+  hasDynamicRowCount: boolean = false;
+  rowCount: number = 3;
+  expectedCharactersCount: number = 300;
+  hasReturnKey: boolean = false;
+  hasKeyboardIcon: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
 
-  constructor(element: TextAreaProperties) {
+  constructor(element?: TextAreaProperties) {
     super(element);
-    this.appearance = element.appearance;
-    this.resizeEnabled = element.resizeEnabled;
-    this.rowCount = element.rowCount;
-    this.hasDynamicRowCount = element.hasDynamicRowCount;
-    this.expectedCharactersCount = element.expectedCharactersCount;
-    this.hasReturnKey = element.hasReturnKey;
-    this.hasKeyboardIcon = element.hasKeyboardIcon;
-    this.position = element.position;
-    this.styling = element.styling;
+    if (element && isValid(element)) {
+      this.appearance = element.appearance;
+      this.resizeEnabled = element.resizeEnabled;
+      this.rowCount = element.rowCount;
+      this.hasDynamicRowCount = element.hasDynamicRowCount;
+      this.expectedCharactersCount = element.expectedCharactersCount;
+      this.hasReturnKey = element.hasReturnKey;
+      this.hasKeyboardIcon = element.hasKeyboardIcon;
+      this.position = element.position;
+      this.styling = element.styling;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at TextArea instantiation', element);
+      }
+      if (element?.appearance) this.appearance = element.appearance;
+      if (element?.resizeEnabled) this.resizeEnabled = element.resizeEnabled;
+      if (element?.rowCount) this.rowCount = element.rowCount;
+      if (element?.hasDynamicRowCount) this.hasDynamicRowCount = element.hasDynamicRowCount;
+      if (element?.expectedCharactersCount) this.expectedCharactersCount = element.expectedCharactersCount;
+      if (element?.hasReturnKey) this.hasReturnKey = element.hasReturnKey;
+      if (element?.hasKeyboardIcon) this.hasKeyboardIcon = element.hasKeyboardIcon;
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+        width: 230,
+        height: 132,
+        ...element?.dimensions
+      });
+      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.styling = {
+        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
+        lineHeight: element?.styling?.lineHeight || 135
+      };
+    }
   }
 
   hasAnswerScheme(): boolean {
@@ -70,4 +94,18 @@ export interface TextAreaProperties extends TextInputElementProperties {
   styling: BasicStyles & {
     lineHeight: number;
   };
+}
+
+function isValid(blueprint?: TextAreaProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.appearance !== undefined &&
+  blueprint.resizeEnabled !== undefined &&
+  blueprint.hasDynamicRowCount !== undefined &&
+  blueprint.rowCount !== undefined &&
+  blueprint.expectedCharactersCount !== undefined &&
+  blueprint.hasReturnKey !== undefined &&
+  blueprint.hasKeyboardIcon !== undefined &&
+  PropertyGroupValidators.isValidPosition(blueprint.position) &&
+  PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+  blueprint.styling.lineHeight !== undefined;
 }

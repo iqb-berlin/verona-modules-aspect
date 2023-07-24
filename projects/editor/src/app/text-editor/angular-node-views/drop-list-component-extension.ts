@@ -1,11 +1,7 @@
 import { Injector } from '@angular/core';
 import { Node, mergeAttributes } from '@tiptap/core';
 import { AngularNodeViewRenderer } from 'ngx-tiptap';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import {
-  ElementPropertyGroupGenerator
-} from 'editor/src/app/services/default-property-generators/element-property-groups';
-import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element-properties';
+import { DropListElement, DropListProperties } from 'common/models/elements/input-elements/drop-list';
 import { DropListNodeviewComponent } from './drop-list-nodeview.component';
 
 const DropListComponentExtension = (injector: Injector): Node => {
@@ -18,17 +14,17 @@ const DropListComponentExtension = (injector: Injector): Node => {
       return {
         model: {
           default: new DropListElement({
-            ...ElementPropertyGenerator.getDropList(),
             id: 'cloze-child-id-placeholder',
             onlyOneItem: true,
             dimensions: {
-              ...ElementPropertyGroupGenerator.generateDimensionProps(),
               width: 150,
               height: 30,
-              isWidthFixed: true
+              isWidthFixed: true,
+              isHeightFixed: true,
+              minHeight: null
             },
             position: undefined
-          })
+          } as DropListProperties)
         }
       };
     },

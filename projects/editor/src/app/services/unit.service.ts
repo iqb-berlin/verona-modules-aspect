@@ -6,8 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
 import { ArrayUtils } from 'common/util/array';
-import { SanitizationService } from 'common/services/sanitization.service';
-import { Unit } from 'common/models/unit';
+import { Unit, UnitProperties } from 'common/models/unit';
 import { PlayerProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
@@ -28,13 +27,13 @@ import { VideoProperties } from 'common/models/elements/media-elements/video';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { StateVariable } from 'common/models/state-variable';
 import { VisibilityRule } from 'common/models/visibility-rule';
+import { VersionManager } from 'common/services/version-manager';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';
-import { UnitPropertyGenerator } from './default-property-generators/unit-properties';
-import { ElementPropertyGenerator } from './default-property-generators/element-properties';
+import { UnitDefinitionSanitizer } from './sanitizer';
 
 @Injectable({
   providedIn: 'root'
@@ -50,39 +49,50 @@ export class UnitService {
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
-              private sanitizationService: SanitizationService,
               private sanitizer: DomSanitizer,
               private translateService: TranslateService,
               private idService: IDService) {
-    this.unit = UnitService.createEmptyUnit();
+    this.unit = new Unit();
     this.referenceManager = new ReferenceManager(this.unit);
   }
 
-  private static createEmptyUnit(): Unit {
-    return new Unit({
-      ...UnitPropertyGenerator.generateUnitProps(),
-      pages: [new Page({
-        ...UnitPropertyGenerator.generatePageProps(),
-        sections: [new Section(UnitPropertyGenerator.generateSectionProps())]
-      })]
-    });
+  loadUnitDefinition(unitDefinition: string): void {
+    try {
+      if (!unitDefinition) {
+        throw Error('Unit-Definition nicht gefunden.');
+      }
+      let unitDef = JSON.parse(unitDefinition);
+      if (!VersionManager.hasCompatibleVersion(unitDef)) {
+        if (VersionManager.isNewer(unitDef)) {
+          throw Error('Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.');
+        }
+        if (!VersionManager.needsSanitization(unitDef)) {
+          throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
+        }
+        this.dialogService.showSanitizationDialog().subscribe(() => {
+          unitDef = UnitDefinitionSanitizer.sanitizeUnit(unitDef);
+          this.loadUnit(unitDef);
+          const invalidRefs = this.referenceManager.getAllInvalidRefs();
+          if (invalidRefs.length > 0) {
+            this.referenceManager.removeInvalidRefs(invalidRefs);
+            this.messageService.showFixedReferencePanel(invalidRefs);
+          }
+        });
+      } else {
+        this.loadUnit(unitDef);
+      }
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+      if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
+    }
   }
 
-  loadUnitDefinition(unitDefinition: string): void {
+  private loadUnit(parsedUnitDefinition?: string): void {
     this.idService.reset();
-    if (unitDefinition) {
-      let unitDef;
-      try {
-        unitDef = JSON.parse(unitDefinition);
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e);
-        this.messageService.showError('Unit definition konnte nicht gelesen werden!');
-      }
-      this.unit = new Unit(unitDef);
-      this.referenceManager = new ReferenceManager(this.unit);
-    }
+    this.unit = new Unit(parsedUnitDefinition as unknown as UnitProperties);
     this.idService.registerUnitIds(this.unit);
+    this.referenceManager = new ReferenceManager(this.unit);
   }
 
   unitUpdated(): void {
@@ -90,10 +100,7 @@ export class UnitService {
   }
 
   addPage(): void {
-    this.unit.pages.push(new Page({
-      ...UnitPropertyGenerator.generatePageProps(),
-      sections: [new Section(UnitPropertyGenerator.generateSectionProps())]
-    }));
+    this.unit.pages.push(new Page());
     this.selectionService.selectedPageIndex = this.unit.pages.length - 1;
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
@@ -125,7 +132,7 @@ export class UnitService {
 
   addSection(page: Page, section?: Section): void {
     page.sections.push(
-      section || new Section(UnitPropertyGenerator.generateSectionProps())
+      section || new Section()
     );
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
@@ -162,7 +169,7 @@ export class UnitService {
 
   async addElementToSection(elementType: UIElementType, section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    const newElementProperties = ElementPropertyGenerator.generateElementBlueprint(elementType);
+    const newElementProperties: Partial<UIElementProperties> = {};
     if (['geometry'].includes(elementType)) {
       (newElementProperties as GeometryProperties).appDefinition =
         await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
@@ -195,16 +202,12 @@ export class UnitService {
       } as PositionProperties;
     }
 
-    section.addElement(this.createElement(elementType, newElementProperties) as PositionedUIElement);
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
-  }
-
-  private createElement(elementType: UIElementType, props: UIElementProperties): UIElement {
-    return ElementFactory.createElement({
+    section.addElement(ElementFactory.createElement({
       type: elementType,
-      ...props,
+      ...newElementProperties,
       id: this.idService.getAndRegisterNewID(elementType)
-    });
+    }) as PositionedUIElement);
+    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   deleteElements(elements: UIElement[]): void {

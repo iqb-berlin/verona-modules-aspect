@@ -2,7 +2,6 @@ import { Node, mergeAttributes } from '@tiptap/core';
 import {
   TextFieldSimpleElement
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
-import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element-properties';
 
 const TextFieldExtension =
   Node.create({
@@ -13,9 +12,7 @@ const TextFieldExtension =
     addAttributes() {
       return {
         model: {
-          default: new TextFieldSimpleElement({
-            ...ElementPropertyGenerator.getTextFieldSimple()
-          })
+          default: new TextFieldSimpleElement()
         }
       };
     },

@@ -8,31 +8,52 @@ import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import {
-  TextFieldSimpleElement
+  TextFieldSimpleElement, TextFieldSimpleProperties
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
-import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
-import { ButtonElement } from 'common/models/elements/button/button';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import {
-  BasicStyles,
-  PositionProperties
+  ToggleButtonElement,
+  ToggleButtonProperties
+} from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
+import { ButtonElement, ButtonProperties } from 'common/models/elements/button/button';
+import { DropListElement, DropListProperties } from 'common/models/elements/input-elements/drop-list';
+import {
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class ClozeElement extends CompoundElement implements PositionedUIElement, ClozeProperties {
   type: UIElementType = 'cloze';
   document: ClozeDocument = { type: 'doc', content: [] };
-  columnCount: number;
+  columnCount: number = 1;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
 
-  constructor(element: ClozeProperties) {
+  constructor(element?: ClozeProperties) {
     super(element);
-    this.columnCount = element.columnCount;
-    this.document = ClozeElement.initDocument(element.document);
-    this.position = element.position;
-    this.styling = element.styling;
+    if (element && isValid(element)) {
+      this.columnCount = element.columnCount;
+      this.document = ClozeElement.initDocument(element.document);
+      this.position = element.position;
+      this.styling = element.styling;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at Cloze instantiation', element);
+      }
+      if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
+      this.document = ClozeElement.initDocument(element?.document);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+        height: 200,
+        ...element?.dimensions
+      });
+      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.styling = {
+        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
+        lineHeight: element?.styling?.lineHeight || 150
+      };
+    }
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -63,7 +84,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
       if (['ToggleButton', 'DropList', 'TextField', 'Button'].includes(subNode.type) &&
         subNode.attrs.model.id === 'cloze-child-id-placeholder') {
         subNode.attrs.model =
-          ClozeElement.createChildElement({ ...subNode.attrs.model });
+          ClozeElement.createChildElement(subNode.attrs.model);
       }
     });
   }
@@ -142,21 +163,21 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     let newElement: InputElement | ButtonElement;
     switch (elementModel.type) {
       case 'text-field-simple':
-        newElement = new TextFieldSimpleElement(elementModel as TextFieldSimpleElement);
+        newElement = new TextFieldSimpleElement(elementModel as unknown as TextFieldSimpleProperties);
         break;
       case 'drop-list':
-      case 'drop-list-simple' as UIElementType: // keep here for compatibility
-        newElement = new DropListElement(elementModel as DropListElement);
+        newElement = new DropListElement(elementModel as unknown as DropListProperties);
         break;
       case 'toggle-button':
-        newElement = new ToggleButtonElement(elementModel as ToggleButtonElement);
+        newElement = new ToggleButtonElement(elementModel as unknown as ToggleButtonProperties);
         break;
       case 'button':
-        newElement = new ButtonElement(elementModel as ButtonElement);
+        newElement = new ButtonElement(elementModel as unknown as ButtonProperties);
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);
     }
+    delete newElement.position;
     return newElement;
   }
 
@@ -177,6 +198,15 @@ export interface ClozeProperties extends UIElementProperties {
   styling: BasicStyles & {
     lineHeight: number;
   };
+}
+
+function isValid(blueprint?: ClozeProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.document !== undefined &&
+    blueprint.columnCount !== undefined &&
+    PropertyGroupValidators.isValidPosition(blueprint.position) &&
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    blueprint.styling.lineHeight !== undefined;
 }
 
 export interface ClozeDocument {

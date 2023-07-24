@@ -1,6 +1,5 @@
 import { Node, mergeAttributes } from '@tiptap/core';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element-properties';
 
 const DropListExtension =
   Node.create({
@@ -11,7 +10,7 @@ const DropListExtension =
     addAttributes() {
       return {
         model: {
-          default: new DropListElement(ElementPropertyGenerator.getDropList())
+          default: new DropListElement()
         }
       };
     },

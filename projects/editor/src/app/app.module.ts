@@ -123,6 +123,7 @@ import { DeleteReferenceDialogComponent } from './components/dialogs/delete-refe
 import {
   GetStateVariableIdsPipe
 } from './components/properties-panel/model-properties-tab/input-groups/button-properties/get-state-variable-ids.pipe';
+import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
 
 @NgModule({
   declarations: [
@@ -189,7 +190,8 @@ import {
     StateVariableEditorComponent,
     ButtonActionParamStateVariableComponent,
     GetStateVariableIdsPipe,
-    VisibilityRulesDialogComponent
+    VisibilityRulesDialogComponent,
+    SanitizationDialogComponent
   ],
   imports: [
     BrowserModule,

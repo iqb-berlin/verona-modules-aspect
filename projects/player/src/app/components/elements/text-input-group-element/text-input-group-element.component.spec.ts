@@ -42,12 +42,7 @@ describe('TextInputGroupElementComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 'test' });
     component = fixture.componentInstance;
-    component.elementModel = new TextFieldElement({
-      type: 'text-field',
-      id: 'test',
-      width: 0,
-      height: 0
-    });
+    component.elementModel = new TextFieldElement();
     fixture.detectChanges();
   });
 

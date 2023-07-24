@@ -39,13 +39,7 @@ describe('CompoundGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CompoundGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new LikertElement({
-      type: 'likert',
-      id: 'test',
-      width: 0,
-      height: 0,
-      rows: []
-    });
+    component.elementModel = new LikertElement();
     fixture.detectChanges();
   });
 

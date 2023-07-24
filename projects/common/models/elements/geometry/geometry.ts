@@ -4,33 +4,57 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { PositionProperties } from 'common/models/elements/property-group-interfaces';
-
+import {
+  PositionProperties,
+  PropertyGroupGenerators, PropertyGroupValidators
+} from 'common/models/elements/property-group-interfaces';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class GeometryElement extends UIElement implements PositionedUIElement, GeometryProperties {
   type: UIElementType = 'geometry';
-  appDefinition: string;
-  showResetIcon: boolean;
-  enableUndoRedo: boolean;
-  showToolbar: boolean;
-  enableShiftDragZoom: boolean;
-  showZoomButtons: boolean;
-  showFullscreenButton: boolean;
-  customToolbar: string;
+  appDefinition: string = '';
+  showResetIcon: boolean = true;
+  enableUndoRedo: boolean = true;
+  showToolbar: boolean = true;
+  enableShiftDragZoom: boolean = true;
+  showZoomButtons: boolean = true;
+  showFullscreenButton: boolean = true;
+  customToolbar: string = '';
   position: PositionProperties;
 
-  constructor(element: GeometryProperties) {
+  constructor(element?: GeometryProperties) {
     super(element);
-    this.appDefinition = element.appDefinition;
-    this.showResetIcon = element.showResetIcon;
-    this.enableUndoRedo = element.enableUndoRedo;
-    this.showToolbar = element.showToolbar;
-    this.enableShiftDragZoom = element.enableShiftDragZoom;
-    this.showZoomButtons = element.showZoomButtons;
-    this.showFullscreenButton = element.showFullscreenButton;
-    this.customToolbar = element.customToolbar;
-    this.position = element.position;
+    if (element && isValid(element)) {
+      this.appDefinition = element.appDefinition;
+      this.showResetIcon = element.showResetIcon;
+      this.enableUndoRedo = element.enableUndoRedo;
+      this.showToolbar = element.showToolbar;
+      this.enableShiftDragZoom = element.enableShiftDragZoom;
+      this.showZoomButtons = element.showZoomButtons;
+      this.showFullscreenButton = element.showFullscreenButton;
+      this.customToolbar = element.customToolbar;
+      this.position = element.position;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at Geometry instantiation', element);
+      }
+      if (element?.appDefinition !== undefined) this.appDefinition = element.appDefinition;
+      if (element?.showResetIcon !== undefined) this.showResetIcon = element.showResetIcon;
+      if (element?.enableUndoRedo !== undefined) this.enableUndoRedo = element.enableUndoRedo;
+      if (element?.showToolbar !== undefined) this.showToolbar = element.showToolbar;
+      if (element?.enableShiftDragZoom !== undefined) this.enableShiftDragZoom = element.enableShiftDragZoom;
+      if (element?.showZoomButtons !== undefined) this.showZoomButtons = element.showZoomButtons;
+      if (element?.showFullscreenButton !== undefined) this.showFullscreenButton = element.showFullscreenButton;
+      if (element?.customToolbar !== undefined) this.customToolbar = element.customToolbar;
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+        width: 600,
+        height: 400,
+        ...element?.dimensions
+      });
+      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+    }
   }
 
   hasAnswerScheme(): boolean {
@@ -64,4 +88,17 @@ export interface GeometryProperties extends UIElementProperties {
   showFullscreenButton: boolean;
   customToolbar: string;
   position: PositionProperties;
+}
+
+function isValid(blueprint?: GeometryProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.appDefinition !== undefined &&
+    blueprint.showResetIcon !== undefined &&
+    blueprint.enableUndoRedo !== undefined &&
+    blueprint.showToolbar !== undefined &&
+    blueprint.enableShiftDragZoom !== undefined &&
+    blueprint.showZoomButtons !== undefined &&
+    blueprint.showFullscreenButton !== undefined &&
+    blueprint.customToolbar !== undefined &&
+    PropertyGroupValidators.isValidPosition(blueprint.position);
 }

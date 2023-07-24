@@ -8,20 +8,34 @@ import {
 } from 'common/components/compound-elements/likert/likert-radio-button-group.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {
   type: UIElementType = 'likert-row';
-  rowLabel: TextImageLabel;
-  columnCount: number;
-  firstColumnSizeRatio: number;
-  verticalButtonAlignment: 'auto' | 'center';
+  rowLabel: TextImageLabel = { text: '', imgSrc: null, imgPosition: 'above' };
+  columnCount: number = 0;
+  firstColumnSizeRatio: number = 5;
+  verticalButtonAlignment: 'auto' | 'center' = 'center';
 
-  constructor(element: LikertRowProperties) {
+  constructor(element?: LikertRowProperties) {
     super(element);
-    this.rowLabel = element.rowLabel;
-    this.columnCount = element.columnCount;
-    this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-    this.verticalButtonAlignment = element.verticalButtonAlignment;
+    if (element && isValid(element)) {
+      this.rowLabel = element.rowLabel;
+      this.columnCount = element.columnCount;
+      this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+      this.verticalButtonAlignment = element.verticalButtonAlignment;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at Likert-Row instantiation', element);
+      }
+      if (element?.rowLabel !== undefined) this.rowLabel = element.rowLabel;
+      if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
+      if (element?.firstColumnSizeRatio !== undefined) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+      if (element?.verticalButtonAlignment !== undefined) {
+        this.verticalButtonAlignment = element.verticalButtonAlignment;
+      }
+    }
   }
 
   hasAnswerScheme(): boolean {
@@ -59,4 +73,12 @@ export interface LikertRowProperties extends InputElementProperties {
   columnCount: number;
   firstColumnSizeRatio: number;
   verticalButtonAlignment: 'auto' | 'center';
+}
+
+function isValid(blueprint?: LikertRowProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.rowLabel !== undefined &&
+    blueprint.columnCount !== undefined &&
+    blueprint.firstColumnSizeRatio !== undefined &&
+    blueprint.verticalButtonAlignment !== undefined;
 }

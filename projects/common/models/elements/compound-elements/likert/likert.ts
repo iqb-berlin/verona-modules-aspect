@@ -7,18 +7,20 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { LikertComponent } from 'common/components/compound-elements/likert/likert.component';
 import {
-  BasicStyles, PositionProperties
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class LikertElement extends CompoundElement implements PositionedUIElement, OptionElement, LikertProperties {
   type: UIElementType = 'likert';
-  rows: LikertRowElement[];
-  options: TextImageLabel[];
-  firstColumnSizeRatio: number;
-  label: string;
-  label2: string;
-  stickyHeader: boolean;
+  rows: LikertRowElement[] = [];
+  options: TextImageLabel[] = [];
+  firstColumnSizeRatio: number = 5;
+  label: string = 'Optionentabelle Beschriftung';
+  label2: string = 'Beschriftung Erste Spalte';
+  stickyHeader: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -26,16 +28,46 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     lineColoringColor: string;
   };
 
-  constructor(element: LikertProperties) {
+  constructor(element?: LikertProperties) {
     super(element);
-    this.options = element.options;
-    this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-    this.rows = element.rows.map(row => new LikertRowElement(row));
-    this.label = element.label;
-    this.label2 = element.label2;
-    this.stickyHeader = element.stickyHeader;
-    this.position = element.position;
-    this.styling = element.styling;
+    if (element && isValid(element)) {
+      this.options = element.options;
+      this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+      this.rows = element.rows.map(row => new LikertRowElement(row));
+      this.label = element.label;
+      this.label2 = element.label2;
+      this.stickyHeader = element.stickyHeader;
+      this.position = element.position;
+      this.styling = element.styling;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at Likert instantiation', element);
+      }
+      if (element?.options !== undefined) this.options = element.options;
+      if (element?.firstColumnSizeRatio !== undefined) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
+      if (element?.rows !== undefined) this.rows = element.rows.map(row => new LikertRowElement(row));
+      if (element?.label !== undefined) this.label = element.label;
+      if (element?.label2 !== undefined) this.label2 = element.label2;
+      if (element?.stickyHeader !== undefined) this.stickyHeader = element.stickyHeader;
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+        width: 250,
+        height: 200,
+        ...element?.dimensions
+      });
+      this.position = PropertyGroupGenerators.generatePositionProps({
+        marginBottom: { value: 35, unit: 'px' },
+        ...element?.position
+      });
+      this.styling = {
+        ...PropertyGroupGenerators.generateBasicStyleProps({
+          backgroundColor: 'white',
+          ...element?.styling
+        }),
+        lineHeight: element?.styling?.lineHeight || 135,
+        lineColoring: element?.styling?.lineColoring !== undefined ? element?.styling.lineColoring : true,
+        lineColoringColor: element?.styling?.lineColoringColor || '#c9e0e0'
+      };
+    }
   }
 
   getNewOptionLabel(optionText: string): TextImageLabel {
@@ -77,4 +109,19 @@ export interface LikertProperties extends UIElementProperties {
     lineColoring: boolean;
     lineColoringColor: string;
   };
+}
+
+function isValid(blueprint?: LikertProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.rows !== undefined &&
+    blueprint.options !== undefined &&
+    blueprint.firstColumnSizeRatio !== undefined &&
+    blueprint.label !== undefined &&
+    blueprint.label2 !== undefined &&
+    blueprint.stickyHeader !== undefined &&
+    PropertyGroupValidators.isValidPosition(blueprint.position) &&
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    blueprint.styling.lineHeight !== undefined &&
+    blueprint.styling.lineColoring !== undefined &&
+    blueprint.styling.lineColoringColor !== undefined;
 }

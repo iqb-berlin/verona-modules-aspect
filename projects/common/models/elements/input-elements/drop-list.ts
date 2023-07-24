@@ -8,8 +8,10 @@ import { DropListComponent } from 'common/components/input-elements/drop-list.co
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {
-  BasicStyles
+  BasicStyles, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class DropListElement extends InputElement implements DropListProperties {
   type: UIElementType = 'drop-list';
@@ -25,23 +27,48 @@ export class DropListElement extends InputElement implements DropListProperties 
     itemBackgroundColor: string;
   };
 
-  constructor(element: DropListProperties) {
+  constructor(element?: DropListProperties) {
     super(element);
-    this.value = element.value !== undefined ?
-      element.value.map(val => ({ ...val })) :
-      [];
-    this.onlyOneItem = element.onlyOneItem;
-    this.connectedTo = [...element.connectedTo];
-    this.copyOnDrop = element.copyOnDrop;
-    this.allowReplacement = element.allowReplacement;
-    this.orientation = element.orientation;
-    this.highlightReceivingDropList = element.highlightReceivingDropList;
-    this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
-
-    this.styling = {
-      ...element.styling,
-      itemBackgroundColor: element.styling.itemBackgroundColor
-    };
+    if (element && isValid(element)) {
+      this.value = element.value.map(val => ({ ...val }));
+      this.onlyOneItem = element.onlyOneItem;
+      this.connectedTo = [...element.connectedTo];
+      this.copyOnDrop = element.copyOnDrop;
+      this.allowReplacement = element.allowReplacement;
+      this.orientation = element.orientation;
+      this.highlightReceivingDropList = element.highlightReceivingDropList;
+      this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
+      this.styling = element.styling;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at DropList instantiation', element);
+      }
+      this.value = element?.value !== undefined ?
+        element.value.map(val => ({ ...val })) :
+        [];
+      if (element?.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
+      if (element?.connectedTo) this.connectedTo = [...element.connectedTo];
+      if (element?.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
+      if (element?.allowReplacement) this.allowReplacement = element.allowReplacement;
+      if (element?.orientation) this.orientation = element.orientation;
+      if (element?.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
+      if (element?.highlightReceivingDropListColor) {
+        this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
+      }
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+        height: 100,
+        minHeight: 100,
+        ...element?.dimensions
+      });
+      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.styling = {
+        ...PropertyGroupGenerators.generateBasicStyleProps({
+          backgroundColor: '#ededed',
+          ...element?.styling
+        }),
+        itemBackgroundColor: element?.styling?.itemBackgroundColor || '#c9e0e0'
+      };
+    }
   }
 
   /* Set originListID and originListIndex if applicable. */
@@ -106,4 +133,18 @@ export interface DropListProperties extends InputElementProperties {
   styling: BasicStyles & {
     itemBackgroundColor: string;
   };
+}
+
+function isValid(blueprint?: DropListProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.value !== undefined &&
+    blueprint.onlyOneItem !== undefined &&
+    blueprint.connectedTo !== undefined &&
+    blueprint.copyOnDrop !== undefined &&
+    blueprint.allowReplacement !== undefined &&
+    blueprint.orientation !== undefined &&
+    blueprint.highlightReceivingDropList !== undefined &&
+    blueprint.highlightReceivingDropListColor !== undefined &&
+    blueprint.styling !== undefined &&
+    blueprint.styling.itemBackgroundColor !== undefined;
 }

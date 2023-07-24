@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from 'editor/src/app/services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
@@ -10,7 +10,6 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { Label, TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
 import { OptionElement } from 'common/models/elements/element';
-import { ElementPropertyGenerator } from 'editor/src/app/services/default-property-generators/element-properties';
 
 @Component({
   selector: 'aspect-options-field-set',
@@ -94,7 +93,6 @@ export class OptionsFieldSetComponent {
 
   addLikertRow(rowLabelText: string): void {
     const newRow = new LikertRowElement({
-      ...ElementPropertyGenerator.getLikertRow(),
       id: this.idService.getAndRegisterNewID('likert-row'),
       rowLabel: {
         text: rowLabelText,
@@ -102,7 +100,7 @@ export class OptionsFieldSetComponent {
         imgPosition: 'above'
       },
       columnCount: (this.combinedProperties.options as unknown[]).length
-    });
+    } as LikertRowProperties);
     (this.combinedProperties.rows as LikertRowElement[]).push(newRow);
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
   }

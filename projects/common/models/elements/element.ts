@@ -7,10 +7,12 @@ import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { Label, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, Stylings
+  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators, Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { StateVariable } from 'common/models/state-variable';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
@@ -46,21 +48,36 @@ export interface UIElementProperties {
   player?: PlayerProperties;
 }
 
+function isValidUIElementProperties(blueprint?: UIElementProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.id !== undefined &&
+    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions);
+}
+
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
-  id: string;
+  id: string = 'id-placeholder';
   abstract type: UIElementType;
   position?: PositionProperties;
   dimensions: DimensionProperties;
   styling?: Stylings;
   player?: PlayerProperties;
-  isRelevantForPresentationComplete?: boolean;
+  isRelevantForPresentationComplete?: boolean = true;
 
-  constructor(element: UIElementProperties) {
-    this.id = element.id;
-    this.dimensions = element.dimensions;
-    this.position = element.position;
-    this.styling = element.styling;
+  constructor(element?: UIElementProperties) {
+    if (element && isValidUIElementProperties(element)) {
+      this.id = element.id;
+      this.dimensions = element.dimensions;
+      this.position = element.position;
+      this.styling = element.styling;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at UIElement instantiation', element);
+      }
+      if (element?.id) this.id = element.id;
+      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
+    }
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -118,20 +135,40 @@ export interface InputElementProperties extends UIElementProperties {
   readOnly: boolean;
 }
 
-export abstract class InputElement extends UIElement implements InputElementProperties {
-  label: string;
-  value: InputElementValue;
-  required: boolean;
-  requiredWarnMessage: string;
-  readOnly: boolean;
+function isValidInputElementProperties(blueprint?: InputElementProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint?.label !== undefined &&
+    blueprint?.value !== undefined &&
+    blueprint?.required !== undefined &&
+    blueprint?.requiredWarnMessage !== undefined &&
+    blueprint?.readOnly !== undefined;
+}
 
-  protected constructor(element: InputElementProperties) {
+export abstract class InputElement extends UIElement implements InputElementProperties {
+  label: string = 'Beschriftung';
+  value: InputElementValue = null;
+  required: boolean = false;
+  requiredWarnMessage: string = 'Eingabe erforderlich';
+  readOnly: boolean = false;
+
+  protected constructor(element?: InputElementProperties) {
     super(element);
-    this.label = element.label;
-    this.value = element.value;
-    this.required = element.required;
-    this.requiredWarnMessage = element.requiredWarnMessage;
-    this.readOnly = element.readOnly;
+    if (element && isValidInputElementProperties(element)) {
+      this.label = element.label;
+      this.value = element.value;
+      this.required = element.required;
+      this.requiredWarnMessage = element.requiredWarnMessage;
+      this.readOnly = element.readOnly;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at InputElement instantiation', element);
+      }
+      if (element?.label) this.label = element.label;
+      if (element?.value) this.value = element.value;
+      if (element?.required) this.required = element.required;
+      if (element?.requiredWarnMessage) this.requiredWarnMessage = element.requiredWarnMessage;
+      if (element?.readOnly) this.readOnly = element.readOnly;
+    }
   }
 
   abstract getAnswerScheme(options?: unknown): AnswerScheme;
@@ -155,28 +192,56 @@ export interface TextInputElementProperties extends InputElementProperties {
   softwareKeyboardShowFrench: boolean;
 }
 
-export abstract class TextInputElement extends InputElement implements TextInputElementProperties {
-  inputAssistancePreset: InputAssistancePreset;
-  inputAssistanceCustomKeys: string;
-  inputAssistancePosition: 'floating' | 'right';
-  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter';
-  restrictedToInputAssistanceChars: boolean;
-  hasArrowKeys: boolean;
-  hasBackspaceKey: boolean;
-  showSoftwareKeyboard: boolean;
-  softwareKeyboardShowFrench: boolean;
+function isValidTextInputElementProperties(blueprint?: TextInputElementProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.inputAssistancePreset !== undefined &&
+    blueprint.inputAssistanceCustomKeys !== undefined &&
+    blueprint.inputAssistancePosition !== undefined &&
+    blueprint.inputAssistanceFloatingStartPosition !== undefined &&
+    blueprint.restrictedToInputAssistanceChars !== undefined &&
+    blueprint.hasArrowKeys !== undefined &&
+    blueprint.hasBackspaceKey !== undefined &&
+    blueprint.showSoftwareKeyboard !== undefined &&
+    blueprint.softwareKeyboardShowFrench !== undefined;
+}
 
-  protected constructor(element: TextInputElementProperties) {
+export abstract class TextInputElement extends InputElement implements TextInputElementProperties {
+  inputAssistancePreset: InputAssistancePreset = null;
+  inputAssistanceCustomKeys: string = '';
+  inputAssistancePosition: 'floating' | 'right' = 'floating';
+  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
+  restrictedToInputAssistanceChars: boolean = true;
+  hasArrowKeys: boolean = false;
+  hasBackspaceKey: boolean = false;
+  showSoftwareKeyboard: boolean = false;
+  softwareKeyboardShowFrench: boolean = false;
+
+  protected constructor(element?: TextInputElementProperties) {
     super(element);
-    this.inputAssistancePreset = element.inputAssistancePreset;
-    this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
-    this.inputAssistancePosition = element.inputAssistancePosition;
-    this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-    this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
-    this.hasArrowKeys = element.hasArrowKeys;
-    this.hasBackspaceKey = element.hasBackspaceKey;
-    this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-    this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
+    if (element && isValidTextInputElementProperties(element)) {
+      this.inputAssistancePreset = element.inputAssistancePreset;
+      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      this.inputAssistancePosition = element.inputAssistancePosition;
+      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+      this.hasArrowKeys = element.hasArrowKeys;
+      this.hasBackspaceKey = element.hasBackspaceKey;
+      this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
+    } else {
+      if (environment.strictInstantiation) {
+        throw Error('Error at TextInputElement instantiation');
+      }
+      if (element?.inputAssistancePreset) this.inputAssistancePreset = element.inputAssistancePreset;
+      if (element?.inputAssistanceCustomKeys) this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      if (element?.inputAssistancePosition) this.inputAssistancePosition = element.inputAssistancePosition;
+      if (element?.inputAssistanceFloatingStartPosition) this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      if (element?.restrictedToInputAssistanceChars) this.restrictedToInputAssistanceChars = element.restrictedToInputAssistanceChars;
+      if (element?.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
+      if (element?.hasBackspaceKey) this.hasBackspaceKey = element.hasBackspaceKey;
+      if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      if (element?.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
+    }
   }
 }
 
@@ -188,12 +253,24 @@ export interface PlayerElementBlueprint extends UIElementProperties {
   player: PlayerProperties;
 }
 
+function isValidPlayerElementBlueprint(blueprint?: PlayerElementBlueprint): boolean {
+  if (!blueprint) return false;
+  return blueprint.player !== undefined;
+}
+
 export abstract class PlayerElement extends UIElement implements PlayerElementBlueprint {
   player: PlayerProperties;
 
-  protected constructor(element: PlayerElementBlueprint) {
+  protected constructor(element?: PlayerElementBlueprint) {
     super(element);
-    this.player = element.player;
+    if (element && isValidPlayerElementBlueprint(element)) {
+      this.player = element.player;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at PlayerElement instantiation', element);
+      }
+      this.player = PropertyGroupGenerators.generatePlayerProps(element?.player);
+    }
   }
 
   hasAnswerScheme(): boolean {

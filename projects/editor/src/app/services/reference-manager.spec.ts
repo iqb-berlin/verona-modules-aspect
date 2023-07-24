@@ -2,22 +2,23 @@ import { TestBed } from '@angular/core/testing';
 import * as singleElement from 'test-data/unit-definitions/reference-testing/single-element.json';
 import * as elementRef from 'test-data/unit-definitions/reference-testing/element-ref.json';
 import * as elementRef2 from 'test-data/unit-definitions/reference-testing/2elements-ref.json';
-import { default as section1 } from 'test-data/unit-definitions/reference-testing/section-deletion.json';
-import { default as section2 } from 'test-data/unit-definitions/reference-testing/section2.json';
-import { default as pageRefs } from 'test-data/unit-definitions/reference-testing/pageRefs.json';
-import { default as cloze } from 'test-data/unit-definitions/reference-testing/cloze.json';
-import { default as pageNav } from 'test-data/unit-definitions/reference-testing/pageNav.json';
+import * as section1 from 'test-data/unit-definitions/reference-testing/section-deletion.json';
+import * as section2 from 'test-data/unit-definitions/reference-testing/section2.json';
+import * as pageRefs from 'test-data/unit-definitions/reference-testing/pageRefs.json';
+import * as cloze from 'test-data/unit-definitions/reference-testing/cloze.json';
+import * as pageNav from 'test-data/unit-definitions/reference-testing/pageNav.json';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { APIService } from 'common/shared.module';
-import { UnitService } from 'editor/src/app/services/unit.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { Section } from 'common/models/section';
-import { Page } from 'common/models/page';
-import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
+import { Page, PageProperties } from 'common/models/page';
+import { ClozeElement, ClozeProperties } from 'common/models/elements/compound-elements/cloze/cloze';
+import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { Unit, UnitProperties } from 'common/models/unit';
 
 describe('ReferenceManager', () => {
   class ApiStubService {
@@ -27,7 +28,6 @@ describe('ReferenceManager', () => {
     }
   }
 
-  let unitService: UnitService;
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
@@ -35,7 +35,6 @@ describe('ReferenceManager', () => {
       ],
       imports: [MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, TranslateModule.forRoot()]
     });
-    unitService = TestBed.inject(UnitService);
   });
 
   it('should load data', () => {
@@ -43,7 +42,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find no refs for single element', () => {
-    unitService.loadUnitDefinition(JSON.stringify(singleElement));
+    const refMan = new ReferenceManager(new Unit(singleElement as unknown as UnitProperties));
     const element = {
       type: 'drop-list',
       id: 'drop-list_1',
@@ -51,13 +50,12 @@ describe('ReferenceManager', () => {
       value: [],
       connectedTo: []
     } as unknown as DropListElement;
-    expect(unitService.referenceManager.getElementsReferences([element]))
+    expect(refMan.getElementsReferences([element]))
       .toEqual([]);
   });
 
   it('should find refs when deleting element', () => {
-    unitService.loadUnitDefinition(JSON.stringify(elementRef));
-
+    const refMan = new ReferenceManager(new Unit(elementRef as unknown as UnitProperties));
     const element = {
       type: 'drop-list',
       id: 'drop-list_1',
@@ -66,11 +64,11 @@ describe('ReferenceManager', () => {
       connectedTo: []
     } as unknown as DropListElement;
 
-    expect(unitService.referenceManager.getElementsReferences([element]).length)
-      .toEqual(1);
-    expect(unitService.referenceManager.getElementsReferences([element])[0].element)
+    expect(refMan.getElementsReferences([element])
+      .length).toEqual(1);
+    expect(refMan.getElementsReferences([element])[0].element)
       .toEqual(jasmine.objectContaining({ ...element }));
-    expect(unitService.referenceManager.getElementsReferences([element])[0].refs[0])
+    expect(refMan.getElementsReferences([element])[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'drop-list',
         id: 'drop-list_2'
@@ -78,8 +76,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find 2 refs when deleting 2 elements', () => {
-    unitService.loadUnitDefinition(JSON.stringify(elementRef2));
-
+    const refMan = new ReferenceManager(new Unit(elementRef2 as unknown as UnitProperties));
     const element1 = {
       type: 'drop-list',
       id: 'drop-list_1',
@@ -91,7 +88,7 @@ describe('ReferenceManager', () => {
       id: 'audio_1'
     } as AudioElement;
 
-    const refs = unitService.referenceManager.getElementsReferences([element1, element2]);
+    const refs = refMan.getElementsReferences([element1, element2]);
 
     expect(refs.length)
       .toEqual(2);
@@ -110,9 +107,9 @@ describe('ReferenceManager', () => {
   });
 
   it('should find ref when deleting section', () => {
-    unitService.loadUnitDefinition(JSON.stringify(section1));
-    const section = section1.pages[0].sections[0] as unknown as Section;
-    const refs = unitService.referenceManager.getSectionElementsReferences([section]);
+    const refMan = new ReferenceManager(new Unit(section1 as unknown as UnitProperties));
+    const section = JSON.parse(JSON.stringify(section1)).pages[0].sections[0] as unknown as Section;
+    const refs = refMan.getSectionElementsReferences([section]);
 
     expect(refs.length)
       .toEqual(1);
@@ -124,9 +121,9 @@ describe('ReferenceManager', () => {
   });
 
   it('should find refs when deleting section but ignore refs within same section', () => {
-    unitService.loadUnitDefinition(JSON.stringify(section2));
-    const section = section2.pages[0].sections[0] as unknown as Section;
-    const refs = unitService.referenceManager.getSectionElementsReferences([section]);
+    const refMan = new ReferenceManager(new Unit(section2 as unknown as UnitProperties));
+    const section = JSON.parse(JSON.stringify(section2)).pages[0].sections[0] as unknown as Section;
+    const refs = refMan.getSectionElementsReferences([section]);
 
     expect(refs.length)
       .toEqual(1);
@@ -138,9 +135,9 @@ describe('ReferenceManager', () => {
   });
 
   it('should ignore refs within same page', () => {
-    unitService.loadUnitDefinition(JSON.stringify(pageRefs));
-    const page = new Page(pageRefs.pages[0]);
-    const refs = unitService.referenceManager.getPageElementsReferences(page);
+    const refMan = new ReferenceManager(new Unit(pageRefs as unknown as UnitProperties));
+    const page = new Page(JSON.parse(JSON.stringify(pageRefs)).pages[0] as unknown as PageProperties);
+    const refs = refMan.getPageElementsReferences(page);
 
     expect(refs.length)
       .toEqual(1);
@@ -152,10 +149,10 @@ describe('ReferenceManager', () => {
   });
 
   it('should find cloze refs but ignore refs within same cloze', () => {
-    unitService.loadUnitDefinition(JSON.stringify(cloze));
-    const clozeElement =
-      new ClozeElement(cloze.pages[0].sections[0].elements[0] as unknown as Partial<ClozeElement>);
-    const refs = unitService.referenceManager.getElementsReferences([clozeElement]);
+    const refMan = new ReferenceManager(new Unit(cloze as unknown as UnitProperties));
+    const clozeElement = new ClozeElement(
+      JSON.parse(JSON.stringify(cloze)).pages[0].sections[0].elements[0] as unknown as ClozeProperties);
+    const refs = refMan.getElementsReferences([clozeElement]);
 
     expect(refs.length)
       .toEqual(1);
@@ -167,12 +164,14 @@ describe('ReferenceManager', () => {
   });
 
   it('should find page refs via buttons', () => {
-    unitService.loadUnitDefinition(JSON.stringify(pageNav));
-    const refs = unitService.referenceManager.getPageButtonReferences(0);
+    const refMan = new ReferenceManager(new Unit(pageNav as unknown as UnitProperties));
+    const refs = refMan.getButtonReferencesForPage(0);
 
     expect(refs.length)
       .toEqual(1);
-    expect(refs[0])
+    expect(refs[0].refs.length)
+      .toEqual(1);
+    expect(refs[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'button',
         id: 'button_2'

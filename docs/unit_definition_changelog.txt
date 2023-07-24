@@ -73,7 +73,19 @@ iqb-aspect-definition@1.0.0
 - DropList: +allowReplacement
 - DragAndDropValueObject: -returnToOriginOnReplacement; originListID and originListIndex are now mandatory
 
-3.12.0
+4.0.0
+- UIElement:
+  - remove width
+  - remove height
+  - add DimensionProperties:
+      width: number;
+      height: number;
+      isWidthFixed: boolean;
+      isHeightFixed: boolean;
+      minWidth: number | null;
+      maxWidth: number | null;
+      minHeight: number | null;
+      maxHeight: number | null;
 - PositionProperties:
   - remove "dynamicPositioning"
   - remove "fixedSize"

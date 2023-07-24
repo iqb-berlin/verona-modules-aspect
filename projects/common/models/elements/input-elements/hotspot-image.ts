@@ -8,7 +8,11 @@ import {
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
-import { PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+} from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export interface Hotspot {
   top: number;
@@ -26,15 +30,28 @@ export interface Hotspot {
 
 export class HotspotImageElement extends InputElement implements PositionedUIElement, HotspotImageProperties {
   type: UIElementType = 'hotspot-image';
-  value: Hotspot[];
+  value: Hotspot[] = [];
   src: string | null = null;
   position: PositionProperties;
 
-  constructor(element: HotspotImageProperties) {
+  constructor(element?: HotspotImageProperties) {
     super(element);
-    this.value = element.value;
-    this.src = element.src;
-    this.position = element.position;
+    if (element && isValid(element)) {
+      this.value = element.value;
+      this.src = element.src;
+      this.position = element.position;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at HotspotImage instantiation', element);
+      }
+      if (element?.value) this.value = element.value;
+      if (element?.src) this.src = element.src;
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+        height: 100,
+        ...element?.dimensions
+      });
+      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+    }
   }
 
   hasAnswerScheme(): boolean {
@@ -77,4 +94,11 @@ export interface HotspotImageProperties extends InputElementProperties {
   value: Hotspot[];
   src: string | null;
   position: PositionProperties;
+}
+
+function isValid(blueprint?: HotspotImageProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.value !== undefined &&
+    blueprint.src !== undefined &&
+    PropertyGroupValidators.isValidPosition(blueprint.position);
 }

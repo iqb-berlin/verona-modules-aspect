@@ -17,14 +17,70 @@ export class ReferenceManager {
     this.unit = unit;
   }
 
-  getPageButtonReferences(pageIndex: number): ButtonElement[] {
+  getAllInvalidRefs(): UIElement[] {
+    return [...this.getInvalidPageRefs(), ...this.getInvalidDropListRefs(), ...this.getInvalidAudioRefs()];
+  }
+
+  getInvalidPageRefs(): ButtonElement[] {
+    const allRefs: ButtonElement[] = [];
+    const allButtons = this.unit.getAllElements('button') as ButtonElement[];
+    const validPageRange = this.unit.pages.length;
+    allButtons.forEach(button => {
+      if (button.action === 'pageNav' &&
+          typeof button.actionParam === 'number' &&
+          (button.actionParam + 1) > validPageRange) {
+        allRefs.push(button);
+      }
+    });
+    return allRefs;
+  }
+
+  private getInvalidDropListRefs(): DropListElement[] {
+    const allDropLists = this.unit.getAllElements('drop-list') as DropListElement[];
+    const allDropListIDs = allDropLists.map(dropList => dropList.id);
+    return allDropLists.filter(dropList => dropList.connectedTo
+      .filter(connectedList => !allDropListIDs.includes(connectedList)).length > 0);
+  }
+
+  private getInvalidAudioRefs(): AudioElement[] {
+    const allAudios = this.unit.getAllElements('audio') as AudioElement[];
+    const allAudioIDs = allAudios.map(audio => audio.id);
+    return allAudios.filter(audio => !allAudioIDs.includes(audio.player.activeAfterID));
+  }
+
+  removeInvalidRefs(refs: UIElement[]): void {
+    refs.forEach(ref => {
+      switch (ref.type) {
+        case 'button':
+          (ref as ButtonElement).actionParam = null;
+          break;
+        case 'drop-list':
+          (ref as DropListElement).connectedTo = (ref as DropListElement).connectedTo
+            .filter(connectedList => this.unit.getAllElements('drop-list')
+              .map(dropList => dropList.id).includes(connectedList));
+          break;
+        case 'audio':
+          (ref as AudioElement).player.activeAfterID = '';
+          break;
+        // no default
+      }
+    });
+  }
+
+  getButtonReferencesForPage(pageIndex: number): ReferenceList[] {
     const page = this.unit.pages[pageIndex];
     const allButtons = this.unit.getAllElements('button') as ButtonElement[];
     const pageButtonIDs = (page.getAllElements('button') as ButtonElement[])
       .map(pageButton => pageButton.id);
-    return allButtons
-      .filter(button => button.action === 'pageNav' && button.actionParam === pageIndex)
-      .filter(button => !pageButtonIDs.includes(button.id));
+    return [{
+      element: {
+        id: `Seite ${pageIndex + 1}`,
+        type: 'page'
+      },
+      refs: allButtons
+        .filter(button => button.action === 'pageNav' && button.actionParam === pageIndex)
+        .filter(button => !pageButtonIDs.includes(button.id))
+    }];
   }
 
   getPageElementsReferences(page: Page): ReferenceList[] {
@@ -106,11 +162,9 @@ export class ReferenceManager {
   }
 
   getTextReferences(textElements: TextElement[], ignoredElementIDs: string[] = []): ReferenceList[] {
-    // console.log('getTextReferences', textElements, ignoredElementIDs);
-    const x = textElements
+    return textElements
       .map(textElement => this.getTextAnchorReferences(textElement.getAnchorIDs(), ignoredElementIDs))
       .flat();
-    return x;
   }
 
   getTextAnchorReferences(deletedAnchorIDs: string[], ignoredElementIDs: string[] = []): ReferenceList[] {

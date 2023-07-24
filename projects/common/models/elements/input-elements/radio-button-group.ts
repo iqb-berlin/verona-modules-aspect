@@ -6,7 +6,11 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { TextLabel } from 'common/models/elements/label-interfaces';
-import { BasicStyles, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+} from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class RadioButtonGroupElement extends InputElement
   implements PositionedUIElement, OptionElement, RadioButtonGroupProperties {
@@ -19,13 +23,31 @@ export class RadioButtonGroupElement extends InputElement
     lineHeight: number;
   };
 
-  constructor(element: RadioButtonGroupProperties) {
+  constructor(element?: RadioButtonGroupProperties) {
     super(element);
-    this.options = element.options;
-    this.alignment = element.alignment;
-    this.strikeOtherOptions = element.strikeOtherOptions;
-    this.position = element.position;
-    this.styling = element.styling;
+    if (element && isValid(element)) {
+      this.options = element.options;
+      this.alignment = element.alignment;
+      this.strikeOtherOptions = element.strikeOtherOptions;
+      this.position = element.position;
+      this.styling = element.styling;
+    } else {
+      if (environment.strictInstantiation) {
+        throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
+      }
+      if (element?.options) this.options = element.options;
+      if (element?.alignment) this.alignment = element.alignment;
+      if (element?.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
+      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+        height: 100,
+        ...element?.dimensions
+      });
+      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.styling = {
+        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
+        lineHeight: element?.styling?.lineHeight || 135
+      };
+    }
   }
 
   hasAnswerScheme(): boolean {
@@ -69,4 +91,14 @@ export interface RadioButtonGroupProperties extends InputElementProperties {
   styling: BasicStyles & {
     lineHeight: number;
   };
+}
+
+function isValid(blueprint?: RadioButtonGroupProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.options !== undefined &&
+    blueprint.alignment !== undefined &&
+    blueprint.strikeOtherOptions !== undefined &&
+    PropertyGroupValidators.isValidPosition(blueprint.position) &&
+    PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    blueprint.styling.lineHeight !== undefined;
 }

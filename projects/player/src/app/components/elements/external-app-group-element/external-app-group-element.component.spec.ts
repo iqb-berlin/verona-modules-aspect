@@ -36,12 +36,7 @@ describe('ExternalAppGroupElementComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
     component = fixture.componentInstance;
-    component.elementModel = new GeometryElement({
-      type: 'geometry',
-      id: 'test',
-      width: 0,
-      height: 0
-    });
+    component.elementModel = new GeometryElement();
     fixture.detectChanges();
   });
 

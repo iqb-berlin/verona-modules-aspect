@@ -78,7 +78,11 @@ import { GetValuePipe, MathFieldComponent } from './components/input-elements/ma
 import { MeasurePipe } from './pipes/measure.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel.component';
 import { ReferenceListComponent } from './components/reference-list.component';
-import { ReferenceListSnackbarComponent } from './services/message.service';
+import {
+  FixedReferencesSnackbarComponent,
+  ReferenceListSnackbarComponent
+} from './services/message.service';
+import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
 
 @NgModule({
   imports: [
@@ -150,7 +154,9 @@ import { ReferenceListSnackbarComponent } from './services/message.service';
     MeasurePipe,
     TextImagePanelComponent,
     ReferenceListComponent,
-    ReferenceListSnackbarComponent
+    ReferenceListSnackbarComponent,
+    FixedReferencesSnackbarComponent,
+    UnitDefErrorDialogComponent
   ],
   exports: [
     CommonModule,

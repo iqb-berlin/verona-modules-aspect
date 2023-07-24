@@ -40,12 +40,7 @@ describe('InputGroupElementComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
     component = fixture.componentInstance;
-    component.elementModel = new RadioButtonGroupElement({
-      type: 'radio',
-      id: 'test',
-      width: 0,
-      height: 0
-    });
+    component.elementModel = new RadioButtonGroupElement();
     fixture.detectChanges();
   });
 

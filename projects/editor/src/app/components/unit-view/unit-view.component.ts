@@ -40,18 +40,10 @@ export class UnitViewComponent implements OnDestroy {
       this.unitService.unit.pages[this.selectionService.selectedPageIndex]
     );
 
-    const pageNavButtonRefs = this.unitService.referenceManager.getPageButtonReferences(
+    const pageNavButtonRefs = this.unitService.referenceManager.getButtonReferencesForPage(
       this.selectionService.selectedPageIndex
     );
-    if (pageNavButtonRefs.length > 0) {
-      refs = refs.concat([{
-        element: {
-          id: `Seite ${this.selectionService.selectedPageIndex + 1}`,
-          type: 'page'
-        },
-        refs: pageNavButtonRefs
-      }]);
-    }
+    refs = refs.concat(pageNavButtonRefs);
 
     if (refs.length > 0) {
       this.dialogService.showDeleteReferenceDialog(refs)

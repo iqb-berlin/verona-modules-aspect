@@ -49,12 +49,7 @@ describe('TextGroupElementComponent', () => {
     spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
       .returnValue({ id: 'test', status: 'NOT_REACHED', value: [] });
     component = fixture.componentInstance;
-    component.elementModel = new TextElement({
-      type: 'text',
-      id: 'test',
-      width: 0,
-      height: 0
-    });
+    component.elementModel = new TextElement();
   });
 
   it('should create', () => {

@@ -61,6 +61,10 @@
                 {
                   "replace": "projects/editor/src/environments/environment.ts",
                   "with": "projects/editor/src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "projects/common/environment.ts",
+                  "with": "projects/editor/src/environments/environment.ts"
                 }
               ],
               "outputHashing": "all"
@@ -71,7 +75,13 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/common/environment.ts",
+                  "with": "projects/editor/src/environments/environment.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -114,7 +124,13 @@
               "projects/editor/src/styles.css",
               "projects/common/assets/customTheme.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "fileReplacements": [
+              {
+                "replace": "projects/common/environment.ts",
+                "with": "projects/editor/src/environments/environment.ts"
+              }
+            ]
           }
         }
       }
@@ -229,7 +245,13 @@
             "styles": [
               "projects/player/src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "fileReplacements": [
+              {
+                "replace": "projects/common/environment.ts",
+                "with": "projects/editor/src/environments/environment.ts"
+              }
+            ]
           }
         }
       }

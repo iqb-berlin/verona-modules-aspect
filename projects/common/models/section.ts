@@ -11,6 +11,7 @@ import { ImageElement } from 'common/models/elements/media-elements/image';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/util/element.factory';
+import { environment } from 'common/environment';
 
 export class Section {
   [index: string]: unknown;
@@ -27,20 +28,40 @@ export class Section {
   enableReHide: boolean = false;
   visibilityRules: VisibilityRule[] = [];
 
-  constructor(blueprint: SectionProperties) {
-    this.height = blueprint.height;
-    this.backgroundColor = blueprint.backgroundColor;
-    this.dynamicPositioning = blueprint.dynamicPositioning;
-    this.autoColumnSize = blueprint.autoColumnSize;
-    this.autoRowSize = blueprint.autoRowSize;
-    this.gridColumnSizes = blueprint.gridColumnSizes;
-    this.gridRowSizes = blueprint.gridRowSizes;
-    this.visibilityDelay = blueprint.visibilityDelay;
-    this.animatedVisibility = blueprint.animatedVisibility;
-    this.enableReHide = blueprint.enableReHide;
-    this.visibilityRules = blueprint.visibilityRules;
-    this.elements = blueprint.elements
-      .map(element => ElementFactory.createElement(element)) as PositionedUIElement[];
+  constructor(section?: SectionProperties) {
+    if (section && isValid(section)) {
+      this.height = section.height;
+      this.backgroundColor = section.backgroundColor;
+      this.dynamicPositioning = section.dynamicPositioning;
+      this.autoColumnSize = section.autoColumnSize;
+      this.autoRowSize = section.autoRowSize;
+      this.gridColumnSizes = section.gridColumnSizes;
+      this.gridRowSizes = section.gridRowSizes;
+      this.visibilityDelay = section.visibilityDelay;
+      this.animatedVisibility = section.animatedVisibility;
+      this.enableReHide = section.enableReHide;
+      this.visibilityRules = section.visibilityRules;
+      this.elements = section.elements
+        .map(element => ElementFactory.createElement(element)) as PositionedUIElement[];
+    } else {
+      if (environment.strictInstantiation) {
+        throw Error('Error at Section instantiation');
+      }
+      if (section?.height !== undefined) this.height = section.height;
+      if (section?.backgroundColor !== undefined) this.backgroundColor = section.backgroundColor;
+      if (section?.dynamicPositioning !== undefined) this.dynamicPositioning = section.dynamicPositioning;
+      if (section?.autoColumnSize !== undefined) this.autoColumnSize = section.autoColumnSize;
+      if (section?.autoRowSize !== undefined) this.autoRowSize = section.autoRowSize;
+      if (section?.gridColumnSizes !== undefined) this.gridColumnSizes = section.gridColumnSizes;
+      if (section?.gridRowSizes !== undefined) this.gridRowSizes = section.gridRowSizes;
+      if (section?.visibilityDelay !== undefined) this.visibilityDelay = section.visibilityDelay;
+      if (section?.animatedVisibility !== undefined) this.animatedVisibility = section.animatedVisibility;
+      if (section?.enableReHide !== undefined) this.enableReHide = section.enableReHide;
+      if (section?.visibilityRules !== undefined) this.visibilityRules = section.visibilityRules;
+      this.elements = section?.elements !== undefined ?
+        section.elements.map(element => ElementFactory.createElement(element)) as PositionedUIElement[] :
+        [];
+    }
   }
 
   setProperty(property: string, value: UIElementValue): void {
@@ -69,24 +90,6 @@ export class Section {
         (element as InputElement).getAnswerScheme(dropLists) :
         (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme()));
   }
-
-  static sanitizeBlueprint(blueprint?: Record<string, UIElementValue>): Partial<Section> {
-    if (!blueprint) return {};
-
-    return {
-      ...blueprint,
-      gridColumnSizes: typeof blueprint.gridColumnSizes === 'string' ?
-        (blueprint.gridColumnSizes as string)
-          .split(' ')
-          .map(size => ({ value: Number(size.slice(0, -2)), unit: size.slice(-2) })) :
-        blueprint.gridColumnSizes as Measurement[],
-      gridRowSizes: typeof blueprint.gridRowSizes === 'string' ?
-        (blueprint.gridRowSizes as string)
-          .split(' ')
-          .map(size => ({ value: Number(size.slice(0, -2)), unit: size.slice(-2) })) :
-        blueprint.gridRowSizes as Measurement[]
-    };
-  }
 }
 
 export interface SectionProperties {
@@ -102,4 +105,20 @@ export interface SectionProperties {
   animatedVisibility: boolean;
   enableReHide: boolean;
   visibilityRules: VisibilityRule[];
+}
+
+function isValid(blueprint?: SectionProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.elements !== undefined &&
+    blueprint.height !== undefined &&
+    blueprint.backgroundColor !== undefined &&
+    blueprint.dynamicPositioning !== undefined &&
+    blueprint.autoColumnSize !== undefined &&
+    blueprint.autoRowSize !== undefined &&
+    blueprint.gridColumnSizes !== undefined &&
+    blueprint.gridRowSizes !== undefined &&
+    blueprint.visibilityDelay !== undefined &&
+    blueprint.animatedVisibility !== undefined &&
+    blueprint.enableReHide !== undefined &&
+    blueprint.visibilityRules !== undefined;
 }

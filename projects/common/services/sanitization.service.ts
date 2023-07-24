@@ -381,6 +381,7 @@ export class SanitizationService {
           id: 'id_placeholder',
           text: option,
           imgSrc: null,
+          audioSrc: null,
           imgPosition: 'above',
           originListID: newElement.id as string,
           originListIndex: index
@@ -396,6 +397,7 @@ export class SanitizationService {
           id: 'id_placeholder',
           text: value,
           imgSrc: null,
+          audioSrc: null,
           imgPosition: 'above',
           originListID: newElement.id as string,
           originListIndex: index

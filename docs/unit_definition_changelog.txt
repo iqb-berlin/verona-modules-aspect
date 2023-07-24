@@ -107,8 +107,10 @@ iqb-aspect-definition@1.0.0
 - Button.actionParam:
   - add "StateVariable" (StateVariable: {id: string; value: string;})
 - Button:
-  - new properties: border-width, borderStyle, border-color
+  - new properties: border-width, borderStyle, border-color, superscriptLabel, subscriptLabel, tooltipText, tooltipPosition
 - Unit:
   - add "stateVariables: StateVariable[]" (StateVariable: {id: string; value: string;})
 - UIElement:
   - add "isRelevantForPresentationComplete"
+- DragNDropValueObject:
+  - add "audioSrc"

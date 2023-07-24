@@ -7,11 +7,11 @@ import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MessageService } from 'common/services/message.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { IDService } from 'editor/src/app/services/id.service';
+import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
 
-import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';
 
 @Component({
   selector: 'aspect-drop-list-properties',
@@ -141,6 +141,7 @@ export class DropListPropertiesComponent {
         {
           text: value,
           imgSrc: null,
+          audioSrc: null,
           imgPosition: 'above',
           id: this.unitService.getNewValueID(),
           originListID: 'id_placeholder',

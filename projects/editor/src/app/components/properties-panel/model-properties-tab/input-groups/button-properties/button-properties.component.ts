@@ -13,89 +13,179 @@ import { SelectionService } from '../../../../../services/selection.service';
 @Component({
   selector: 'aspect-button-properties',
   template: `
-    <fieldset *ngIf="combinedProperties.asLink !== undefined">
-      <legend>Knopf</legend>
+    <ng-container *ngIf="combinedProperties.asLink !== undefined">
+      <fieldset>
+      <legend>{{'propertiesPanel.presentation' | translate}}</legend>
+        <div class="fx-column-start-stretch fx-gap-20">
 
-      <mat-checkbox *ngIf="combinedProperties.asLink !== undefined"
-                    [checked]="$any(combinedProperties).asLink"
-                    (change)="updateModel.emit({ property: 'asLink', value: $event.checked })">
-        {{'propertiesPanel.asLink' | translate }}
-      </mat-checkbox>
+          <div class="fx-row-space-between-stretch">
+            <button mat-button
+                    class="fx-fill"
+                    [class.checked]="!combinedProperties.imageSrc && !combinedProperties.asLink"
+                    (click)="removeImage(); updateModel.emit({ property: 'asLink', value: false });">
+              {{'propertiesPanel.button' | translate}}</button>
+            <button mat-button class="fx-fill"
+                    [class.checked]="!!combinedProperties.imageSrc && !combinedProperties.asLink"
+                    (click)="loadImage(); updateModel.emit({ property: 'asLink', value: false });">
+              {{'propertiesPanel.image' | translate}}</button>
+            <button mat-button
+                    class="fx-fill"
+                    [class.checked]="!combinedProperties.imageSrc && !!combinedProperties.asLink"
+                    (click)="removeImage(); updateModel.emit({ property: 'asLink', value: true });">
+              {{'propertiesPanel.link' | translate}}</button>
+          </div>
 
-      <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.action' | translate }}</mat-label>
-        <mat-select [value]="combinedProperties.action"
-                    (selectionChange)="updateModel.emit({ property: 'action', value: $event.value })">
-          <mat-option [value]="null">
-            {{ 'propertiesPanel.none' | translate }}
-          </mat-option>
-          <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange']"
-                      [value]="option">
-            {{ 'propertiesPanel.' + option | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+          <div *ngIf="!!combinedProperties.imageSrc">
+            <div>
+              <button mat-raised-button
+                      [disabled]="combinedProperties.asLink"
+                      (click)="loadImage()">
+                {{'updateImage' | translate }}
+              </button>
+              <button mat-raised-button
+                      class="fx-fill"
+                      (click)="removeImage()">
+                {{'removeImage' | translate }}
+              </button>
+            </div>
+            <img class="image-preview"
+                 [src]="combinedProperties.imageSrc">
+          </div>
 
-      <ng-container *ngIf="combinedProperties.action === 'stateVariableChange'">
-        <aspect-button-action-param-state-variable
-          *ngIf="unitService.unit.stateVariables.length"
-          [stateVariableIds]="unitService.unit.stateVariables | getStateVariableIds"
-          [stateVariable]="combinedProperties.actionParam ?
-                           $any(combinedProperties.actionParam) :
-                           { id: unitService.unit.stateVariables[0].id, value: '' }"
-          (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
-        </aspect-button-action-param-state-variable>
-        <p *ngIf="!unitService.unit.stateVariables.length">Bitte zuerst Player-Variablen anlegen</p>
-      </ng-container>
-
-      <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange'"
-                      appearance="fill">
-        <mat-label>{{'propertiesPanel.actionParam' | translate }}</mat-label>
-        <mat-select [disabled]="combinedProperties.action === null"
-                    [value]="combinedProperties.actionParam"
-                    [matTooltipDisabled]="combinedProperties.action !== 'pageNav'"
-                    [matTooltip]="'propertiesPanel.pageNavSelectionHint' | translate"
-                    (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
-
-          <ng-container *ngIf="combinedProperties.action === 'pageNav'">
-            <ng-container *ngFor="let page of (unitService.unit.pages | scrollPages); index as i">
-              <mat-option *ngIf="(unitService.unit.pages | scrollPageIndex: selectionService.selectedPageIndex) !== i"
-                          [value]="i">
-                {{'page' | translate}} {{i + 1}}
+          <div *ngIf="!combinedProperties.asLink && !combinedProperties.imageSrc">
+            <mat-checkbox [checked]="!!combinedProperties.superscriptLabel"
+                          [disabled]="!!combinedProperties.subscriptLabel"
+                          (change)="updateModel.emit({ property: 'superscriptLabel', value: $event.checked })">
+              {{'propertiesPanel.superscriptLabel' | translate }}
+            </mat-checkbox>
+            <mat-checkbox [checked]="!!combinedProperties.subscriptLabel"
+                          [disabled]="!!combinedProperties.superscriptLabel"
+                          (change)="updateModel.emit({ property: 'subscriptLabel', value: $event.checked })">
+              {{'propertiesPanel.subscriptLabel' | translate }}
+            </mat-checkbox>
+          </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>{{'propertiesPanel.tooltip' | translate}}</legend>
+        <div class="fx-column-start-stretch">
+          <mat-form-field *ngIf="combinedProperties.tooltipText !== undefined">
+            <mat-label>{{'propertiesPanel.tooltipText' | translate}}</mat-label>
+            <input matInput
+                   [ngModel]="combinedProperties.tooltipText"
+                   (ngModelChange)="updateModel.emit({ property: 'tooltipText', value: $event })">
+          </mat-form-field>
+          <mat-form-field *ngIf="combinedProperties.tooltipPosition !== undefined" appearance="fill">
+            <mat-label>{{'propertiesPanel.tooltipPosition' | translate }}</mat-label>
+            <mat-select [value]="combinedProperties.tooltipPosition"
+                        (selectionChange)="updateModel.emit({ property: 'tooltipPosition', value: $event.value })">
+              <mat-option *ngFor="let option of ['left', 'right', 'above', 'below']"
+                          [value]="option">
+                {{ 'propertiesPanel.' + option | translate }}
               </mat-option>
-            </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>{{'propertiesPanel.action' | translate}}</legend>
+        <div class="fx-column-start-stretch">
+          <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">
+            <mat-label>{{'propertiesPanel.action' | translate }}</mat-label>
+            <mat-select [value]="combinedProperties.action"
+                        (selectionChange)="updateModel.emit({ property: 'action', value: $event.value })">
+              <mat-option [value]="null">
+                {{ 'propertiesPanel.none' | translate }}
+              </mat-option>
+              <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange']"
+                          [value]="option">
+                {{ 'propertiesPanel.' + option | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <ng-container *ngIf="combinedProperties.action === 'stateVariableChange'">
+            <aspect-button-action-param-state-variable
+              *ngIf="unitService.unit.stateVariables.length"
+              [stateVariableIds]="unitService.unit.stateVariables | getStateVariableIds"
+              [stateVariable]="combinedProperties.actionParam ?
+                               $any(combinedProperties.actionParam) :
+                               { id: unitService.unit.stateVariables[0].id, value: '' }"
+              (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
+            </aspect-button-action-param-state-variable>
+            <p *ngIf="!unitService.unit.stateVariables.length">Bitte zuerst Player-Variablen anlegen</p>
           </ng-container>
 
+          <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange'"
+                          appearance="fill">
+            <mat-label>{{'propertiesPanel.actionParam' | translate }}</mat-label>
+            <mat-select [disabled]="combinedProperties.action === null"
+                        [value]="combinedProperties.actionParam"
+                        [matTooltipDisabled]="combinedProperties.action !== 'pageNav'"
+                        [matTooltip]="'propertiesPanel.pageNavSelectionHint' | translate"
+                        (selectionChange)="updateModel.emit({ property: 'actionParam', value: $event.value })">
 
-          <ng-container *ngIf="combinedProperties.action === 'unitNav'">
-            <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
-                        [value]="option">
-              {{ 'propertiesPanel.' + option | translate }}
-            </mat-option>
-          </ng-container>
+              <ng-container *ngIf="combinedProperties.action === 'pageNav'">
+                <ng-container *ngFor="let page of (unitService.unit.pages | scrollPages); index as i">
+                  <mat-option *ngIf="(unitService.unit.pages | scrollPageIndex: selectionService.selectedPageIndex) !== i"
+                              [value]="i">
+                    {{'page' | translate}} {{i + 1}}
+                  </mat-option>
+                </ng-container>
+              </ng-container>
 
-          <ng-container *ngIf="combinedProperties.action === 'highlightText'">
-            <mat-option *ngFor="let option of (textComponents | getAnchorIds) "
-                        [value]="option">
-              {{ option  }}
-            </mat-option>
-          </ng-container>
 
-        </mat-select>
-      </mat-form-field>
+              <ng-container *ngIf="combinedProperties.action === 'unitNav'">
+                <mat-option *ngFor="let option of [undefined, 'previous', 'next', 'first', 'last', 'end']"
+                            [value]="option">
+                  {{ 'propertiesPanel.' + option | translate }}
+                </mat-option>
+              </ng-container>
 
-      <div class="image-panel" (mouseenter)="hoveringImage = true" (mouseleave)="hoveringImage = false">
-        <button *ngIf="combinedProperties.imageSrc === null || hoveringImage"
-                class="add-image-button" mat-raised-button
-                (click)="loadImage()">{{'loadImage' | translate }}</button>
-        <button *ngIf="combinedProperties.imageSrc !== null && hoveringImage"
-                class="remove-image-button" mat-raised-button
-                (click)="removeImage()">{{'removeImage' | translate }}</button>
-        <img *ngIf="combinedProperties.imageSrc"
-             [src]="combinedProperties.imageSrc">
-      </div>
-    </fieldset>
-  `
+              <ng-container *ngIf="combinedProperties.action === 'highlightText'">
+                <mat-option *ngFor="let option of (textComponents | getAnchorIds) "
+                            [value]="option">
+                  {{ option  }}
+                </mat-option>
+              </ng-container>
+
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </fieldset>
+    </ng-container>
+  `,
+  styles: [`
+    .checked {
+      background-color: #ccc;
+    }
+    .image-preview  {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .fx-fill {
+      flex: 1 1 0;
+    }
+    .fx-gap-20 {
+      gap: 20px;
+    }
+    .fx-row-space-between-stretch{
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: stretch;
+    }
+
+    .fx-column-start-stretch {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;}
+  `]
 })
 export class ButtonPropertiesComponent {
   @Input() combinedProperties!: UIElement;
@@ -106,6 +196,7 @@ export class ButtonPropertiesComponent {
 
   hoveringImage = false;
   textComponents: { [id: string]: TextComponent } = {};
+  checked = false;
 
   constructor(public unitService: UnitService, public selectionService: SelectionService) {
     this.textComponents = TextComponent.textComponents;

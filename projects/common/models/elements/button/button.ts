@@ -17,6 +17,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   action: null | ButtonAction = null;
   actionParam: null | UnitNavParam | number | string = null;
   styling: BasicStyles & BorderStyles;
+  tooltipText: string = 'TODO';
+  tooltipPosition: 'left' | 'right' | 'above' | 'below' = 'left';
+  superscriptLabel: boolean = false;
+  subscriptLabel: boolean = false; // TODO
 
   constructor(element?: ButtonProperties) {
     super(element);
@@ -27,6 +31,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       this.action = element.action;
       this.actionParam = element.actionParam;
       this.styling = element.styling;
+      this.tooltipText = element.tooltipText;
+      this.tooltipPosition = element.tooltipPosition;
+      this.superscriptLabel = element.superscriptLabel;
+      this.subscriptLabel = element.subscriptLabel;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Button instantiation', element);
@@ -36,6 +44,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       if (element?.asLink !== undefined) this.asLink = element.asLink;
       if (element?.action !== undefined) this.action = element.action;
       if (element?.actionParam !== undefined) this.actionParam = element.actionParam;
+      if (element?.tooltipText !== undefined) this.tooltipText = element.tooltipText;
+      if (element?.tooltipPosition !== undefined) this.tooltipPosition = element.tooltipPosition;
+      if (element?.superscriptLabel !== undefined) this.superscriptLabel = element.superscriptLabel;
+      if (element?.subscriptLabel !== undefined) this.subscriptLabel = element.subscriptLabel;
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = element?.styling !== undefined ?
         element.styling :
@@ -58,6 +70,10 @@ export interface ButtonProperties extends UIElementProperties {
   action: null | ButtonAction;
   actionParam: null | UnitNavParam | number | string;
   styling: BasicStyles & BorderStyles;
+  tooltipText: string;
+  tooltipPosition: 'left' | 'right' | 'above' | 'below';
+  superscriptLabel: boolean;
+  subscriptLabel: boolean
 }
 
 function isValid(blueprint?: ButtonProperties): boolean {
@@ -67,6 +83,10 @@ function isValid(blueprint?: ButtonProperties): boolean {
   blueprint.asLink !== undefined &&
   blueprint.action !== undefined &&
   blueprint.actionParam !== undefined &&
+  blueprint.tooltipText !== undefined &&
+  blueprint.tooltipPosition !== undefined &&
+  blueprint.superscriptLabel !== undefined &&
+  blueprint.subscriptLabel !== undefined &&
   PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
   PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
 }

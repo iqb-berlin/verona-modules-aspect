@@ -9,9 +9,8 @@ import {
   copyArrayItem
 } from '@angular/cdk/drag-drop';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { FormElementComponent } from '../../directives/form-element-component.directive';
-
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { FormElementComponent } from '../../directives/form-element-component.directive';
 
 @Component({
   selector: 'aspect-drop-list',
@@ -54,13 +53,26 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
              class="list-item text-list-item"
              [class.hide-list-item]="parentForm && (elementModel.allowReplacement || elementModel.copyOnDrop) &&
                                      elementFormControl.value.length === 1 && showsPlaceholder"
+             [class.audio-list-item]="dropListValueElement.audioSrc"
              cdkDrag [cdkDragData]="dropListValueElement"
              (cdkDragStarted)="dragStart($event)"
              (cdkDragEnded)="dragEnd()"
              [style.background-color]="elementModel.styling.itemBackgroundColor">
-          <span>{{dropListValueElement.text}}</span>
+          <ng-container *ngIf="dropListValueElement.audioSrc">
+            <audio #player
+                   [src]="dropListValueElement.audioSrc | safeResourceUrl">
+            </audio>
+            <div class="audio-button"
+                 (click)="player.play()">
+              <mat-icon>play_arrow</mat-icon>
+            </div>
+          </ng-container>
+          <div class="text-padding">
+            {{dropListValueElement.text}}
+          </div>
           <ng-template cdkDragPreview matchSize>
             <div class="text-preview"
+                 [class.audio-list-item]="dropListValueElement.audioSrc"
                  [class.cloze-context-preview]="clozeContext"
                  [style.color]="elementModel.styling.fontColor"
                  [style.font-family]="elementModel.styling.font"
@@ -69,7 +81,11 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
                  [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                  [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                  [style.background-color]="elementModel.styling.itemBackgroundColor">
-              <span>{{dropListValueElement.text}}</span>
+                <div *ngIf="dropListValueElement.audioSrc"
+                     class="audio-button">
+                  <mat-icon>play_arrow</mat-icon>
+                </div>
+              <div class="text-padding">{{dropListValueElement.text}}</div>
             </div>
           </ng-template>
         </div>
@@ -96,7 +112,7 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
                                     (!elementFormControl.value.length && !showsPlaceholder) ||
                                     (elementFormControl.value.length === 1 && !showsPlaceholder && dragging) :
                                     !elementModel.value.length;">
-        <span class="baseline-helper">&nbsp;</span>
+        <div class="baseline-helper text-padding">&nbsp;</div>
         <mat-error *ngIf="elementFormControl.errors &&
                           elementFormControl.touched &&
                           !classReference.highlightReceivingDropList"
@@ -105,6 +121,11 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
     </div>
   `,
   styles: [
+    '.audio-button {cursor: pointer;}',
+    '.audio-button:hover {color: #006064;}',
+    '.cloze-context .list-item.text-list-item .audio-button .mat-icon {height: 19px;}',
+    ':not(.cloze-context) .list-item.text-list-item .audio-button .mat-icon {margin-top: 5px; padding-left: 3px;}',
+    '.audio-list-item {display: flex; flex-direction: row; align-items: center; justify-content: flex-start;}',
     '.list {width: 100%; height: 100%; background-color: rgb(244, 244, 242); border-radius: 5px;}',
     '.list {display: flex; box-sizing: border-box; padding: 5px;}',
     '.list.vertical-orientation {flex-direction: column;}',
@@ -116,13 +137,17 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
     '.error {padding: 3px; border: 2px solid #f44336 !important;}',
     '.list-item:active {cursor: grabbing;}',
     '.list-item {border-radius: 5px;}',
-    ':not(.cloze-context) .list-item.text-list-item {padding: 10px;}',
-    '.cloze-context .list-item.text-list-item {padding: 0 5px;}',
+    ':not(.cloze-context) .list-item.text-list-item:not(.audio-list-item) .text-padding {padding: 10px;}',
+    ':not(.cloze-context) .list-item.text-list-item.audio-list-item .text-padding {padding: 10px 10px 10px 5px;}',
+    '.cloze-context .list-item.text-list-item .text-padding {padding: 0 5px;}',
     '.cloze-context.only-one-item .list-item {height: 100%; display: flex; align-items: center; justify-content: center;}',
     '.image-list-item {align-self: flex-start;}',
     '.hide-list-item {display: none !important; transform: unset !important;}',
     '.cdk-drag-preview {border-radius: 5px; box-shadow: 2px 2px 5px black;}',
-    '.cdk-drag-preview.text-preview {padding: 10px; box-sizing: border-box;}',
+    '.cdk-drag-preview.text-preview {box-sizing: border-box;}',
+    '.cdk-drag-preview.text-preview:not(.audio-list-item) .text-padding{padding: 10px;}',
+    '.cdk-drag-preview.text-preview.audio-list-item .text-padding{padding: 10px 10px 10px 5px;}',
+    '.cdk-drag-preview.text-preview .audio-button .mat-icon {margin-top: 5px; padding-left: 3px;}',
     '.cdk-drag-preview.cloze-context-preview {padding: 0 2px; display: flex; align-items: center; justify-content: center;}',
     '.cdk-drop-list-dragging .cdk-drag {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-placeholder {background-color: #ccc !important;}',

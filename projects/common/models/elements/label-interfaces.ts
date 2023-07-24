@@ -11,6 +11,7 @@ export interface DragNDropValueObject extends TextImageLabel {
   id: string;
   originListID: string;
   originListIndex: number;
+  audioSrc: string | null;
 }
 
 export type Label = TextLabel | TextImageLabel | DragNDropValueObject;

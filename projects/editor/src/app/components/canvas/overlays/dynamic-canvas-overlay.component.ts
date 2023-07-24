@@ -22,14 +22,10 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
       <div *cdkDragPlaceholder></div>
       <div [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width + 'px' : '100%'"
            [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : '100%'"
-           [style.min-width]="!element.dimensions.isWidthFixed && element.dimensions.minWidth ?
-                                element.dimensions.minWidth + 'px' : null"
-           [style.max-width]="!element.dimensions.isWidthFixed && element.dimensions.maxWidth ?
-                                element.dimensions.maxWidth + 'px' : null"
-           [style.min-height]="!element.dimensions.isHeightFixed && element.dimensions.minHeight ?
-                                element.dimensions.minHeight + 'px' : null"
-           [style.max-height]="!element.dimensions.isHeightFixed && element.dimensions.maxHeight ?
-                                element.dimensions.maxHeight + 'px' : null">
+           [style.min-width]="element.dimensions.minWidth ? element.dimensions.minWidth + 'px' : null"
+           [style.max-width]="element.dimensions.maxWidth ? element.dimensions.maxWidth + 'px' : null"
+           [style.min-height]="element.dimensions.minHeight ? element.dimensions.minHeight + 'px' : null"
+           [style.max-height]="element.dimensions.maxHeight ? element.dimensions.maxHeight + 'px' : null">
         <ng-template #elementContainer></ng-template>
       </div>
     </div>

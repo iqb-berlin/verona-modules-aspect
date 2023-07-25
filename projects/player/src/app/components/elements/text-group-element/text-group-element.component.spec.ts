@@ -3,7 +3,6 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import {
   FloatingMarkingBarComponent
 } from 'player/src/app/components/floating-marking-bar/floating-marking-bar.component';
@@ -14,7 +13,6 @@ import { TextGroupElementComponent } from './text-group-element.component';
 describe('TextGroupElementComponent', () => {
   let component: TextGroupElementComponent;
   let fixture: ComponentFixture<TextGroupElementComponent>;
-  let mockUnitStateService: UnitStateService;
 
   @Component({ selector: 'aspect-text', template: '' })
   class TextStubComponent {
@@ -43,11 +41,7 @@ describe('TextGroupElementComponent', () => {
   });
 
   beforeEach(() => {
-    mockUnitStateService = TestBed.inject(UnitStateService);
     fixture = TestBed.createComponent(TextGroupElementComponent);
-    spyOn(mockUnitStateService, 'registerElement');
-    spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
-      .returnValue({ id: 'test', status: 'NOT_REACHED', value: [] });
     component = fixture.componentInstance;
     component.elementModel = new TextElement();
   });

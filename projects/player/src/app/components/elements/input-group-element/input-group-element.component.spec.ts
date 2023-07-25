@@ -3,14 +3,12 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Component, Input } from '@angular/core';
 import { UntypedFormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
 import { InputGroupElementComponent } from './input-group-element.component';
 
 describe('InputGroupElementComponent', () => {
   let component: InputGroupElementComponent;
   let fixture: ComponentFixture<InputGroupElementComponent>;
-  let mockUnitStateService: UnitStateService;
 
   @Component({ selector: 'aspect-radio-button-group', template: '' })
   class RadioStubComponent {
@@ -34,11 +32,7 @@ describe('InputGroupElementComponent', () => {
   });
 
   beforeEach(() => {
-    mockUnitStateService = TestBed.inject(UnitStateService);
     fixture = TestBed.createComponent(InputGroupElementComponent);
-    spyOn(mockUnitStateService, 'registerElement');
-    spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
-      .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
     component = fixture.componentInstance;
     component.elementModel = new RadioButtonGroupElement();
     fixture.detectChanges();

@@ -4,7 +4,6 @@ import {
 }
   from '@angular/core';
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
-import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { Subject } from 'rxjs';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { ValueChangeElement } from 'common/models/elements/element';
@@ -13,7 +12,6 @@ import { MediaPlayerGroupElementComponent } from './media-player-group-element.c
 describe('MediaPlayerGroupElementComponent', () => {
   let component: MediaPlayerGroupElementComponent;
   let fixture: ComponentFixture<MediaPlayerGroupElementComponent>;
-  let mockUnitStateService: UnitStateService;
 
   @Component({ selector: 'aspect-audio', template: '' })
   class AudioStubComponent {
@@ -38,11 +36,7 @@ describe('MediaPlayerGroupElementComponent', () => {
   });
 
   beforeEach(() => {
-    mockUnitStateService = TestBed.inject(UnitStateService);
     fixture = TestBed.createComponent(MediaPlayerGroupElementComponent);
-    spyOn(mockUnitStateService, 'registerElement');
-    spyOn(mockUnitStateService, 'getElementCodeById').withArgs('test').and
-      .returnValue({ id: 'test', status: 'NOT_REACHED', value: 0 });
     component = fixture.componentInstance;
     component.elementModel = new AudioElement();
     fixture.detectChanges();

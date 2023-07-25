@@ -35,7 +35,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
             [style.background-color]="elementModel.styling.backgroundColor"
             [style.color]="elementModel.styling.fontColor"
             [style.font-family]="elementModel.styling.font"
-            [style.font-size]="elementModel.subscriptLabel || elementModel.superscriptLabel ?
+            [style.font-size]="elementModel.labelAlignment !== 'baseline' ?
                                 'smaller' :
                                 elementModel.styling.fontSize + 'px'"
             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
@@ -44,11 +44,9 @@ import { ElementComponent } from '../../directives/element-component.directive';
             [style.border-style]="elementModel.styling.borderStyle"
             [style.border-color]="elementModel.styling.borderColor"
             [style.border-radius.px]="elementModel.styling.borderRadius"
-            [style.vertical-align]="elementModel.subscriptLabel ?
-                                      'sub' :
-                                      elementModel.superscriptLabel ? 'super' : 'baseline'"
+            [style.vertical-align]="elementModel.labelAlignment"
             [style.font-weight]="elementModel.styling.bold ? 'bold' :
-                                  elementModel.subscriptLabel || elementModel.superscriptLabel ?
+                                  elementModel.labelAlignment !== 'baseline' ?
                                     400 : ''"
             #tooltip="matTooltip"
             [matTooltip]="elementModel.tooltipText"

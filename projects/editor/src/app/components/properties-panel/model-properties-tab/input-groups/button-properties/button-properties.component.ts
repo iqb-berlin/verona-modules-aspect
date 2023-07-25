@@ -53,15 +53,17 @@ import { SelectionService } from '../../../../../services/selection.service';
           </div>
 
           <div *ngIf="!combinedProperties.asLink && !combinedProperties.imageSrc">
-            <mat-checkbox [checked]="!!combinedProperties.superscriptLabel"
-                          [disabled]="!!combinedProperties.subscriptLabel"
-                          (change)="updateModel.emit({ property: 'superscriptLabel', value: $event.checked })">
-              {{'propertiesPanel.superscriptLabel' | translate }}
+            <mat-checkbox [checked]="combinedProperties.labelAlignment === 'super'"
+                          [disabled]="combinedProperties.labelAlignment === 'sub'"
+                          (change)="updateModel.emit({ property: 'labelAlignment',
+                                                       value: $event.checked ? 'super' : 'baseline' })">
+              {{'propertiesPanel.super' | translate }}
             </mat-checkbox>
-            <mat-checkbox [checked]="!!combinedProperties.subscriptLabel"
-                          [disabled]="!!combinedProperties.superscriptLabel"
-                          (change)="updateModel.emit({ property: 'subscriptLabel', value: $event.checked })">
-              {{'propertiesPanel.subscriptLabel' | translate }}
+            <mat-checkbox [checked]="combinedProperties.labelAlignment === 'sub'"
+                          [disabled]="combinedProperties.labelAlignment === 'super'"
+                          (change)="updateModel.emit({ property: 'labelAlignment',
+                                                       value: $event.checked ? 'sub' : 'baseline' })">
+              {{'propertiesPanel.sub' | translate }}
             </mat-checkbox>
           </div>
         </div>

@@ -381,6 +381,7 @@ export class UnitService {
     ClozeElement.getDocumentChildElements(value as ClozeDocument).forEach(clozeChild => {
       if (clozeChild.id === 'cloze-child-id-placeholder') {
         clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
+        delete clozeChild.position;
       }
     });
   }

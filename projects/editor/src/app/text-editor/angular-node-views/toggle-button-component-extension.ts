@@ -24,8 +24,7 @@ const ToggleButtonComponentExtension = (injector: Injector): Node => {
               isWidthFixed: false,
               isHeightFixed: true,
               minHeight: null
-            },
-            position: undefined
+            }
           } as ToggleButtonProperties)
         }
       };

@@ -22,8 +22,7 @@ const DropListComponentExtension = (injector: Injector): Node => {
               isWidthFixed: true,
               isHeightFixed: true,
               minHeight: null
-            },
-            position: undefined
+            }
           } as DropListProperties)
         }
       };

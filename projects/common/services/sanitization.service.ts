@@ -14,8 +14,8 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { TextElement } from 'common/models/elements/text/text';
 import {
   ClozeDocument,
-  ClozeDocumentParagraph,
-  ClozeDocumentParagraphPart,
+  ClozeDocumentWrapperNode,
+  ClozeDocumentContentNode,
   ClozeElement
 } from 'common/models/elements/compound-elements/cloze/cloze';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
@@ -327,10 +327,10 @@ export class SanitizationService {
       document: {
         ...doc,
         content: doc.content
-          .map((paragraph: ClozeDocumentParagraph) => ({
+          .map((paragraph: ClozeDocumentWrapperNode) => ({
             ...paragraph,
             content: paragraph.content ? paragraph.content
-              .map((paraPart: ClozeDocumentParagraphPart) => (
+              .map((paraPart: ClozeDocumentContentNode) => (
                 ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(paraPart.type) ?
                   {
                     ...paraPart,

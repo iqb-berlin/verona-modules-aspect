@@ -1,8 +1,6 @@
 import {
-  CompoundElement,
-  InputElement,
-  PositionedUIElement,
-  UIElement, UIElementProperties, UIElementType, UIElementValue
+  CompoundElement, InputElement, PositionedUIElement,
+  UIElement, UIElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -11,8 +9,7 @@ import {
   TextFieldSimpleElement, TextFieldSimpleProperties
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/text-field-simple';
 import {
-  ToggleButtonElement,
-  ToggleButtonProperties
+  ToggleButtonElement, ToggleButtonProperties
 } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { ButtonElement, ButtonProperties } from 'common/models/elements/button/button';
 import { DropListElement, DropListProperties } from 'common/models/elements/input-elements/drop-list';
@@ -35,7 +32,8 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     super(element);
     if (element && isValid(element)) {
       this.columnCount = element.columnCount;
-      this.document = ClozeElement.initDocument(element.document);
+      this.document = element.document;
+      this.instantiateChildElements();
       this.position = element.position;
       this.styling = element.styling;
     } else {
@@ -43,7 +41,8 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
         throw new InstantiationEror('Error at Cloze instantiation', element);
       }
       if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
-      this.document = ClozeElement.initDocument(element?.document);
+      this.document = element?.document || ClozeElement.getDefaultDocument();
+      this.instantiateChildElements();
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 200,
         ...element?.dimensions
@@ -56,61 +55,28 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     }
   }
 
-  setProperty(property: string, value: UIElementValue): void {
-    if (property === 'document') {
-      this.document = value as ClozeDocument;
-      this.document.content.forEach((node: any) => {
-        if (node.type === 'paragraph' || node.type === 'heading') {
-          ClozeElement.createSubNodeElements(node);
-        } else if (node.type === 'bulletList' || node.type === 'orderedList') {
-          node.content.forEach((listItem: any) => {
-            listItem.content.forEach((listItemParagraph: any) => {
-              ClozeElement.createSubNodeElements(listItemParagraph);
-            });
-          });
-        } else if (node.type === 'blockquote') {
-          node.content.forEach((blockQuoteItem: any) => {
-            ClozeElement.createSubNodeElements(blockQuoteItem);
-          });
+  static getCustomNodes(content: (ClozeDocumentWrapperNode | ClozeDocumentContentNode)[]): CustomDocumentNode[] {
+    if (!content) return [];
+    return content
+      .reduce((accumulator: CustomDocumentNode[], node: ClozeDocumentWrapperNode | ClozeDocumentContentNode) => {
+        if (node.type && ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(node.type)) {
+          accumulator.push(node as CustomDocumentNode);
         }
-      });
-    } else {
-      super.setProperty(property, value);
-    }
+        accumulator.push(...ClozeElement.getCustomNodes((node as ClozeDocumentWrapperNode).content));
+        return accumulator;
+      }, []);
   }
 
-  private static createSubNodeElements(node: any) {
-    node.content?.forEach((subNode: any) => {
-      if (['ToggleButton', 'DropList', 'TextField', 'Button'].includes(subNode.type) &&
-        subNode.attrs.model.id === 'cloze-child-id-placeholder') {
-        subNode.attrs.model =
-          ClozeElement.createChildElement(subNode.attrs.model);
-      }
+  instantiateChildElements() {
+    ClozeElement.getCustomNodes(this.document.content).forEach((customNode: CustomDocumentNode) => {
+      customNode.attrs.model = ClozeElement.createChildElement(customNode.attrs.model);
     });
   }
 
-  static initDocument(document?: ClozeDocument): ClozeDocument {
+  static getDefaultDocument(): ClozeDocument {
     return {
-      ...document,
       type: 'doc',
-      content: document?.content ? document.content
-        .map((paragraph: ClozeDocumentParagraph) => ({
-          ...paragraph,
-          content: paragraph.content ? paragraph.content
-            .map((paraPart: ClozeDocumentParagraphPart) => (
-              ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(paraPart.type) ?
-                {
-                  ...paraPart,
-                  attrs: {
-                    ...paraPart.attrs,
-                    model: ClozeElement.createChildElement(paraPart.attrs?.model as InputElement)
-                  }
-                } :
-                {
-                  ...paraPart
-                }
-            )) : undefined
-        })) : [{
+      content: [{
         type: 'paragraph',
         attrs: {
           textAlign: 'left',
@@ -126,7 +92,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
           }
         ]
       }]
-    } as ClozeDocument;
+    };
   }
 
   getElementComponent(): Type<ElementComponent> {
@@ -134,29 +100,11 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
   }
 
   getChildElements(): UIElement[] {
-    return ClozeElement.getDocumentChildElements(this.document);
+    return ClozeElement.getCustomNodes(this.document.content).map(el => el.attrs.model);
   }
 
-  static getDocumentChildElements(document: ClozeDocument): UIElement[] {
-    if (!document) return [];
-    const clozeDocument: ClozeDocument = document;
-    const elementList: InputElement[] = [];
-    clozeDocument.content.forEach((documentPart: ClozeDocumentParagraph) => {
-      if (documentPart.type === 'paragraph' || documentPart.type === 'heading') {
-        elementList.push(...ClozeElement.getParagraphCustomElements(documentPart));
-      } else if (documentPart.type === 'bulletList' || documentPart.type === 'orderedList') {
-        documentPart.content.forEach((listItem: any) => {
-          listItem.content.forEach((listItemParagraph: any) => {
-            elementList.push(...ClozeElement.getParagraphCustomElements(listItemParagraph));
-          });
-        });
-      } else if (documentPart.type === 'blockquote') {
-        documentPart.content.forEach((blockQuoteItem: any) => {
-          elementList.push(...ClozeElement.getParagraphCustomElements(blockQuoteItem));
-        });
-      }
-    });
-    return elementList;
+  static getDocumentChildElements(doc: ClozeDocument): UIElement[] {
+    return ClozeElement.getCustomNodes(doc.content).map(el => el.attrs.model);
   }
 
   private static createChildElement(elementModel: Partial<UIElement>): InputElement | ButtonElement {
@@ -177,17 +125,8 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);
     }
-    delete newElement.position;
+    delete newElement.position; // Cloze children do not have a position, they are inline
     return newElement;
-  }
-
-  private static getParagraphCustomElements(documentPart: any): InputElement[] {
-    if (!documentPart.content) {
-      return [];
-    }
-    return documentPart.content
-      .filter((word: ClozeDocumentParagraphPart) => ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(word.type))
-      .reduce((accumulator: any[], currentValue: any) => accumulator.concat(currentValue.attrs.model), []);
   }
 }
 
@@ -211,20 +150,20 @@ function isValid(blueprint?: ClozeProperties): boolean {
 
 export interface ClozeDocument {
   type: string;
-  content: ClozeDocumentParagraph[]
+  content: ClozeDocumentWrapperNode[]
 }
 
-export interface ClozeDocumentParagraph {
+export interface ClozeDocumentWrapperNode {
   type: string;
-  attrs: Record<string, string | number | boolean>;
-  content: ClozeDocumentParagraphPart[];
+  attrs: Record<string, unknown>;
+  content: (ClozeDocumentWrapperNode | ClozeDocumentContentNode)[];
 }
 
-export interface ClozeDocumentParagraphPart {
+export interface ClozeDocumentContentNode {
   type: string;
   text?: string;
-  marks?: Record<string, any>[];
-  attrs?: Record<string, string | number | boolean | InputElement>;
+  marks?: Record<string, unknown>[];
+  attrs?: Record<string, string | number | boolean | UIElement>;
 }
 
 export interface ClozeMarks {
@@ -234,4 +173,11 @@ export interface ClozeMarks {
   fontSize?: string;
   color?: string;
   'background-color'?: string;
+}
+
+interface CustomDocumentNode extends ClozeDocumentContentNode {
+  type: 'TextField' | 'DropList' | 'ToggleButton' | 'Button';
+  attrs: {
+    model: UIElement
+  }
 }

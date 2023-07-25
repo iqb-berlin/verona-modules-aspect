@@ -18,8 +18,7 @@ const ButtonComponentExtension = (injector: Injector): Node => {
             dimensions: {
               height: 30
             },
-            asLink: true,
-            position: undefined
+            asLink: true
           } as ButtonProperties)
         }
       };

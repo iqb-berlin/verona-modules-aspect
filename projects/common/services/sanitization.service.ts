@@ -324,27 +324,27 @@ export class SanitizationService {
 
     return {
       ...element,
-      document: {
-        ...doc,
-        content: doc.content
-          .map((paragraph: ClozeDocumentWrapperNode) => ({
-            ...paragraph,
-            content: paragraph.content ? paragraph.content
-              .map((paraPart: ClozeDocumentContentNode) => (
-                ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(paraPart.type) ?
-                  {
-                    ...paraPart,
-                    attrs: {
-                      ...paraPart.attrs,
-                      model: this.sanitizeElement(childElements.shift() as Record<string, UIElementValue>)
-                    }
-                  } :
-                  {
-                    ...paraPart
-                  }
-              )) : undefined
-          }))
-      } as ClozeDocument
+    //   document: {
+    //     ...doc,
+    //     content: doc.content
+    //       .map((paragraph: ClozeDocumentWrapperNode) => ({
+    //         ...paragraph,
+    //         content: paragraph.content ? paragraph.content
+    //           .map((paraPart: ClozeDocumentContentNode) => (
+    //             ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(paraPart.type) ?
+    //               {
+    //                 ...paraPart,
+    //                 attrs: {
+    //                   ...paraPart.attrs,
+    //                   model: this.sanitizeElement(childElements.shift() as Record<string, UIElementValue>)
+    //                 }
+    //               } :
+    //               {
+    //                 ...paraPart
+    //               }
+    //           )) : undefined
+    //       }))
+    //   } as ClozeDocument
     } as ClozeElement;
   }
 

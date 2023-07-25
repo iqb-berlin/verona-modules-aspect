@@ -46,12 +46,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       if (element?.tooltipPosition !== undefined) this.tooltipPosition = element.tooltipPosition;
       if (element?.labelAlignment !== undefined) this.labelAlignment = element.labelAlignment;
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
-      this.styling = element?.styling !== undefined ?
-        element.styling :
-        {
-          ...PropertyGroupGenerators.generateBasicStyleProps(),
-          ...PropertyGroupGenerators.generateBorderStylingProps()
-        };
+      this.styling = {
+        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
+        ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)
+      };
     }
   }
 

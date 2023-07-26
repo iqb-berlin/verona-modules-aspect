@@ -18,7 +18,7 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   actionParam: null | UnitNavParam | number | string = null;
   styling: BasicStyles & BorderStyles;
   tooltipText: string = '';
-  tooltipPosition: 'left' | 'right' | 'above' | 'below' = 'left';
+  tooltipPosition: 'left' | 'right' | 'above' | 'below' = 'below';
   labelAlignment: 'super' | 'sub' | 'baseline' = 'baseline';
 
   constructor(element?: ButtonProperties) {

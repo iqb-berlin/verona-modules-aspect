@@ -16,12 +16,9 @@ import { ElementComponent } from '../../directives/element-component.directive';
        [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-       #tooltip="matTooltip"
-       [matTooltip]="elementModel.tooltipText"
-       [matTooltipPosition]="elementModel.tooltipPosition"
-       [matTooltipHideDelay]="tooltipDelay"
-       (pointerdown)="tooltipDelay = 3000; tooltip.show()"
-       (mouseleave)="tooltipDelay = 0; tooltip.hide();"
+       pointerEventTooltip
+       [tooltipPosition]="elementModel.tooltipPosition"
+       [tooltipText]="elementModel.tooltipText"
        (click)="$event.preventDefault();
                 elementModel.action && elementModel.actionParam !== null ?
                 buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam})) :
@@ -48,12 +45,9 @@ import { ElementComponent } from '../../directives/element-component.directive';
             [style.font-weight]="elementModel.styling.bold ? 'bold' :
                                   elementModel.labelAlignment !== 'baseline' ?
                                     400 : ''"
-            #tooltip="matTooltip"
-            [matTooltip]="elementModel.tooltipText"
-            [matTooltipPosition]="elementModel.tooltipPosition"
-            [matTooltipHideDelay]="tooltipDelay"
-            (pointerdown)="tooltipDelay = 3000; tooltip.show()"
-            (mouseleave)="tooltipDelay = 0; tooltip.hide();"
+            pointerEventTooltip
+            [tooltipPosition]="elementModel.tooltipPosition"
+            [tooltipText]="elementModel.tooltipText"
             (click)="elementModel.action && elementModel.actionParam !== null ?
                      buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam })) :
                      false">
@@ -65,12 +59,9 @@ import { ElementComponent } from '../../directives/element-component.directive';
            class="full-size image"
            [src]="elementModel.imageSrc | safeResourceUrl"
            [alt]="'imageNotFound' | translate"
-           #tooltip="matTooltip"
-           [matTooltip]="elementModel.tooltipText"
-           [matTooltipPosition]="elementModel.tooltipPosition"
-           [matTooltipHideDelay]="tooltipDelay"
-           (pointerdown)="tooltipDelay = 3000; tooltip.show()"
-           (mouseleave)="tooltipDelay = 0; tooltip.hide();"
+           pointerEventTooltip
+           [tooltipPosition]="elementModel.tooltipPosition"
+           [tooltipText]="elementModel.tooltipText"
            (click)="elementModel.action !== null && elementModel.actionParam !== null?
                     buttonActionEvent.emit($any({ action: elementModel.action, param: elementModel.actionParam })) :
                     false">
@@ -82,8 +73,6 @@ import { ElementComponent } from '../../directives/element-component.directive';
   ]
 })
 export class ButtonComponent extends ElementComponent {
-  tooltipDelay: number = 3000;
-
   @Input() elementModel!: ButtonElement;
   @Output() buttonActionEvent = new EventEmitter<ButtonEvent>();
 }

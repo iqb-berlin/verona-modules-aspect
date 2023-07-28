@@ -1,5 +1,7 @@
 import { Type } from '@angular/core';
-import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
+import {
+  TooltipPosition, UIElement, UIElementProperties, UIElementType
+} from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
@@ -18,7 +20,7 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   actionParam: null | UnitNavParam | number | string = null;
   styling: BasicStyles & BorderStyles;
   tooltipText: string = '';
-  tooltipPosition: 'left' | 'right' | 'above' | 'below' = 'below';
+  tooltipPosition: TooltipPosition = 'below';
   labelAlignment: 'super' | 'sub' | 'baseline' = 'baseline';
 
   constructor(element?: ButtonProperties) {
@@ -66,7 +68,7 @@ export interface ButtonProperties extends UIElementProperties {
   actionParam: null | UnitNavParam | number | string;
   styling: BasicStyles & BorderStyles;
   tooltipText: string;
-  tooltipPosition: 'left' | 'right' | 'above' | 'below';
+  tooltipPosition: TooltipPosition;
   labelAlignment: 'super' | 'sub' | 'baseline';
 }
 

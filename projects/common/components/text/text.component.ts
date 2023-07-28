@@ -31,6 +31,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
            [style.column-count]="elementModel.columnCount"
+           tooltipEventTooltip
            [innerHTML]="savedText || elementModel.text | safeResourceHTML"
            (pointerdown)="startTextSelection($event)">
       </div>

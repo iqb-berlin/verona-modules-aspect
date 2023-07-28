@@ -27,6 +27,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { MathEditorModule } from 'common/math-editor.module';
 import { DynamicRowsDirective } from 'common/directives/dynamic-rows.directive';
+import { TooltipEventTooltipDirective } from 'common/components/tooltip/tooltip-event-tooltip.directive';
+import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
+import { PointerEventTooltipDirective } from 'common/components/tooltip/pointer-event-tooltip.directive';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -156,7 +159,10 @@ import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.
     ReferenceListComponent,
     ReferenceListSnackbarComponent,
     FixedReferencesSnackbarComponent,
-    UnitDefErrorDialogComponent
+    UnitDefErrorDialogComponent,
+    TooltipComponent,
+    TooltipEventTooltipDirective,
+    PointerEventTooltipDirective
   ],
   exports: [
     CommonModule,

@@ -1,6 +1,6 @@
 import {
   CompoundElement, InputElement, PositionedUIElement,
-  UIElement, UIElementProperties, UIElementType
+  UIElement, UIElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -52,6 +52,15 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         lineHeight: element?.styling?.lineHeight || 150
       };
+    }
+  }
+
+  setProperty(property: string, value: UIElementValue): void {
+    if (property === 'document') {
+      this.document = value as ClozeDocument;
+      this.instantiateChildElements();
+    } else {
+      super.setProperty(property, value);
     }
   }
 

@@ -67,6 +67,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
                     false">
   `,
   styles: [
+    ':host {display: flex !important; width: 100%; height: 100%;}',
     '.full-size {width: 100%; height: 100%;}',
     '.image {object-fit: contain;}',
     '.mdc-button {min-width: unset;}'

@@ -9,6 +9,9 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
                           [elementModel]="node.attrs.model"
                           [matTooltip]="'ID: ' + node.attrs.model.id">
     </aspect-toggle-button>
-  `
+  `,
+  styles: [
+    ':host {display: inline-block;}'
+  ]
 })
 export class ToggleButtonNodeviewComponent extends AngularNodeViewComponent { }

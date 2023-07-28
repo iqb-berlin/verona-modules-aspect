@@ -8,7 +8,10 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
                               [elementModel]="node.attrs.model"
                               [matTooltip]="'ID: ' + node.attrs.model.id">
     </aspect-text-field-simple>
-  `
+  `,
+  styles: [
+    ':host {display: inline-block;}'
+  ]
 })
 export class TextFieldNodeviewComponent extends AngularNodeViewComponent {
 }

@@ -8,6 +8,9 @@ import { AngularNodeViewComponent } from 'ngx-tiptap';
                    [elementModel]="node.attrs.model"
                    [matTooltip]="'ID: ' + node.attrs.model.id">
     </aspect-button>
-  `
+  `,
+  styles: [
+    ':host {display: inline-block;}'
+  ]
 })
 export class ButtonNodeviewComponent extends AngularNodeViewComponent { }

@@ -46,6 +46,7 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
     </mat-button-toggle-group>
   `,
   styles: [`
+    :host {display:flex !important; width: 100%; height: 100%;}
     .errors {
       border: 2px solid #f44336 !important;
     }

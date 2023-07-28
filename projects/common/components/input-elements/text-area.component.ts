@@ -50,15 +50,21 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </mat-error>
     </mat-form-field>
   `,
-  styles: [
-    '.keyboard-icon {position: absolute; right: 0; font-size: 150%;}',
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep div.mat-form-field-infix {padding-top: 0.2em; padding-bottom: 0.2em;}`,
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version. */
-    :host ::ng-deep .no-label .mat-form-field-outline-gap {border-top-color: unset !important}`
-  ]
+  styles: [`
+      :host ::ng-deep .small-input div.mdc-notched-outline {
+        top: 0.45em;
+        bottom: 0.45em;
+        height: unset;
+      }
+      :host ::ng-deep .small-input .mdc-notched-outline__notch {
+        display: none;
+      }
+      .keyboard-icon {
+        position: absolute;
+        right: 0;
+        font-size: 150%;
+      }
+  `]
 })
 export class TextAreaComponent extends TextInputComponent {
   @Input() elementModel!: TextAreaElement;

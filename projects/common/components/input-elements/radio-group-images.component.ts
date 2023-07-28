@@ -17,7 +17,14 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [value]="i">
-          <aspect-text-image-panel [label]="option" [styling]="elementModel.styling"></aspect-text-image-panel>
+          <aspect-text-image-panel [label]="option"
+                                   [style.color]="elementModel.styling.fontColor"
+                                   [style.font-family]="elementModel.styling.font"
+                                   [style.font-size.px]="elementModel.styling.fontSize"
+                                   [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+                                   [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+                                   [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          </aspect-text-image-panel>
         </mat-radio-button>
       </mat-radio-group>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"

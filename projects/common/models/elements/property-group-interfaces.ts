@@ -97,6 +97,7 @@ export abstract class PropertyGroupValidators {
   }
 
   static isValidPosition(blueprint: PositionProperties): boolean {
+    if (!blueprint) return false;
     return blueprint.xPosition !== undefined &&
       blueprint.yPosition !== undefined &&
       blueprint.gridColumn !== undefined &&
@@ -111,11 +112,13 @@ export abstract class PropertyGroupValidators {
   }
 
   static isValidBasicStyles(blueprint: BasicStyles): boolean {
+    if (!blueprint) return false;
     return blueprint.backgroundColor !== undefined &&
       PropertyGroupValidators.isValidFontStyles(blueprint);
   }
 
   static isValidFontStyles(blueprint: FontStyles): boolean {
+    if (!blueprint) return false;
     return blueprint.fontColor !== undefined &&
       blueprint.font !== undefined &&
       blueprint.fontSize !== undefined &&
@@ -125,6 +128,7 @@ export abstract class PropertyGroupValidators {
   }
 
   static isValidBorderStyles(blueprint: BorderStyles): boolean {
+    if (!blueprint) return false;
     return blueprint.borderWidth !== undefined &&
       blueprint.borderColor !== undefined &&
       blueprint.borderStyle !== undefined &&

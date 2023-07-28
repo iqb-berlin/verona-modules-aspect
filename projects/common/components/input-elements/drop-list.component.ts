@@ -121,6 +121,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [
+    ':host {display: flex !important; width: 100%; height: 100%;}',
     '.audio-button {cursor: pointer;}',
     '.audio-button:hover {color: #006064;}',
     '.cloze-context .list-item.text-list-item .audio-button .mat-icon {height: 19px;}',

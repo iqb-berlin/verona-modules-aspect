@@ -45,7 +45,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div *ngIf="elementModel.barStyle" class="arrow-head"></div>
         <div *ngIf="elementModel.barStyle" class="value-marker min-value-marker"></div>
         <div *ngIf="elementModel.barStyle" class="value-marker max-value-marker"></div>
-        <mat-slider [class]="elementModel.barStyle ? 'slider-bar-style' : 'slider'"
+        <mat-slider [class]="elementModel.barStyle ? 'slider-bar-style slider-color' : 'slider slider-color'"
                     [discrete]="elementModel.thumbLabel"
                     [style.width.%]="100"
                     [max]="elementModel.maxValue"
@@ -61,34 +61,79 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
     </div>
   `,
-  styles: [
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
-    :host ::ng-deep .slider-bar-style .mat-slider-thumb {border-radius: 0; border: none; width: 9px; height: 40px;}`,
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
-    :host ::ng-deep .slider-bar-style .mat-slider-thumb {bottom: -20px; margin-right: 5px; background-color: #006064}`,
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
-    :host ::ng-deep .slider-bar-style .mat-slider-track-fill {background-color: rgba(0,0,0,0);}`,
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of slider that may no longer apply for the MDC version. */
-    :host ::ng-deep .slider-bar-style .mat-slider-track-background {background-color: rgba(0,0,0,0);}`,
-
-    '.container {display: grid; grid-template-rows: auto auto;}',
-    '.container {grid-template-columns: repeat(3, minmax(0, auto)) minmax(100px, 8fr) repeat(4, minmax(0, auto));}',
-    '.min-value {text-align: center; grid-column: 1/4; grid-row: 1/2;}',
-    '.max-value {text-align: center; grid-column: 5/8;grid-row: 1/2;}',
-    '.slider-bar-style {grid-column: 2/7; grid-row: 2/3; margin: 0 -7px 0 -7px;}',
-    '.slider {grid-column: 4/5; grid-row: 1/2;}',
-    '.value-marker {width: 2px; height: 20px; background-color: #555; margin-top: 14px}',
-    '.min-value-marker {grid-column: 2/3;grid-row: 2/3;}',
-    '.max-value-marker {grid-column: 6/7;grid-row: 2/3;}',
-    '.arrow-line {height: 2px; width: 100%; background-color: #555; grid-column: 2/8; grid-row: 2/3; margin-top: 23px}',
-    '.arrow-head {width: 0; height: 0; margin-top: 15px; grid-column: 8/9;grid-row: 2/3;}',
-    '.arrow-head {border-top: 8px solid transparent; border-bottom: 8px solid transparent;}',
-    '.arrow-head {border-left: 20px solid #555;}'
-  ]
+  styles: [`
+    :host ::ng-deep .slider-bar-style.mat-mdc-slider .mdc-slider__thumb-knob {
+      border-radius: 0;
+      border: 0 none;
+      width: 9px;
+      height: 30px;
+    }
+    .container {
+      display: grid;
+      grid-template-rows: auto auto;
+      grid-template-columns: repeat(3, minmax(0, auto)) minmax(100px, 8fr) repeat(4, minmax(0, auto));}
+    .min-value {
+      text-align: center;
+      grid-column: 1/4;
+      grid-row: 1/2;
+    }
+    .max-value {
+      text-align: center;
+      grid-column: 5/8;
+      grid-row: 1/2;
+    }
+    .slider-color {
+      --mdc-slider-handle-color: #006064;
+      --mdc-slider-focus-handle-color: #006064;
+      --mdc-slider-hover-handle-color: #006064;
+      --mdc-slider-active-track-color: #006064;
+      --mdc-slider-inactive-track-color: #006064;
+      --mdc-slider-with-tick-marks-active-container-color: #fff;
+      --mdc-slider-with-tick-marks-inactive-container-color: #006064;
+      --mat-mdc-slider-ripple-color: #006064;
+      --mat-mdc-slider-hover-ripple-color: null;
+      --mat-mdc-slider-focus-ripple-color: null;
+    }
+    .slider-bar-style {
+      grid-column: 2/7;
+      grid-row: 2/3;
+      margin: 0;
+    }
+    .slider {
+      grid-column: 4/5;
+      grid-row: 1/2;
+    }
+    .value-marker {
+      width: 2px;
+      height: 20px;
+      background-color: #555;
+      margin-top: 14px
+    }
+    .min-value-marker {
+      grid-column: 2/3;
+      grid-row: 2/3;
+    }
+    .max-value-marker {
+      grid-column: 6/7;
+      grid-row: 2/3;}
+    .arrow-line {
+      height: 2px;
+      width: 100%;
+      background-color: #555;
+      grid-column: 2/8;
+      grid-row: 2/3;
+      margin-top: 23px}
+    .arrow-head {
+      width: 0;
+      height: 0;
+      margin-top: 15px;
+      grid-column: 8/9;
+      grid-row: 2/3;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 20px solid #555;
+    }
+  `]
 })
 export class SliderComponent extends FormElementComponent {
   @Input() elementModel!: SliderElement;

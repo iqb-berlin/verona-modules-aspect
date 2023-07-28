@@ -210,7 +210,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
   inputAssistanceCustomKeys: string = '';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
-  restrictedToInputAssistanceChars: boolean = true;
+  restrictedToInputAssistanceChars: boolean = false;
   hasArrowKeys: boolean = false;
   hasBackspaceKey: boolean = false;
   showSoftwareKeyboard: boolean = false;

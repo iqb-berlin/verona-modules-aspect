@@ -24,6 +24,10 @@ import { StateVariable } from 'common/models/state-variable';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
 import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/sanitization-dialog.component';
+import {
+  TooltipPropertiesDialogComponent
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
+import { TooltipPosition } from 'common/models/elements/element';
 import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -186,6 +190,17 @@ export class DialogService {
   showStateVariablesDialog(stateVariables: StateVariable[]): Observable<StateVariable[]> {
     const dialogRef = this.dialog.open(StateVariablesDialogComponent, {
       data: { stateVariables: stateVariables },
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showTooltipDialog(
+    tooltipText: string | undefined, tooltipPosition: TooltipPosition | undefined
+  ): Observable<{ tooltipText: string, tooltipPosition: TooltipPosition, action: 'save' | 'delete' }> {
+    const dialogRef = this.dialog.open(TooltipPropertiesDialogComponent, {
+      data: { tooltipText, tooltipPosition },
+      width: '500px',
       autoFocus: false
     });
     return dialogRef.afterClosed();

@@ -23,6 +23,8 @@ import { FileService } from 'common/services/file.service';
 import ButtonComponentExtension from 'editor/src/app/text-editor/angular-node-views/button-component-extension';
 import { BlockImage } from 'editor/src/app/text-editor/extensions/block-image';
 import { InlineImage } from 'editor/src/app/text-editor/extensions/inline-image';
+import { Tooltip } from 'editor/src/app/text-editor/extensions/tooltip';
+import { DialogService } from 'editor/src/app/services/dialog.service';
 import { AnchorId } from './extensions/anchorId';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
@@ -81,14 +83,15 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     HangingIndent,
     InlineImage,
     BlockImage,
-    Blockquote
+    Blockquote,
+    Tooltip
   ];
 
   editor: Editor = new Editor({
     extensions: this.defaultExtensions
   });
 
-  constructor(private injector: Injector) { }
+  constructor(private injector: Injector, private dialogService: DialogService) { }
 
   ngOnInit(): void {
     const activeExtensions = this.defaultExtensions;
@@ -125,6 +128,24 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   toggleSuperscript(): void {
     this.editor.chain().toggleSuperscript().focus().run();
+  }
+
+  showTooltipPropertiesDialog(): void {
+    this.dialogService.showTooltipDialog(
+      this.editor.getAttributes('tooltip').tooltipText,
+      this.editor.getAttributes('tooltip').tooltipPosition
+    ).subscribe(result => {
+      if (result) {
+        if (result.action === 'delete') {
+          this.editor.chain().focus().unsetTooltip().run();
+        } else {
+          this.editor.chain().focus().setTooltip({
+            tooltipText: result.tooltipText,
+            tooltipPosition: result.tooltipPosition
+          }).run();
+        }
+      }
+    });
   }
 
   toggleSubscript(): void {
@@ -179,10 +200,6 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     } else {
       console.warn('No text selected for anchor!');
     }
-  }
-
-  setSelectedAnchorIdText() {
-    this.selectedAnchorIdText = window.getSelection()?.toString() as string;
   }
 
   private getAnchorIdFromSelection(): string {
@@ -304,9 +321,5 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   insertButton() {
     this.editor.commands.insertContent('<aspect-nodeview-button></aspect-nodeview-button>');
     this.editor.commands.focus();
-  }
-
-  gggg(event: Event) {
-    console.log(event);
   }
 }

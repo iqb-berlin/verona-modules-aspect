@@ -47,6 +47,9 @@ import {
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
+import {
+  TooltipPropertiesDialogComponent
+} from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -191,7 +194,8 @@ import { SanitizationDialogComponent } from './components/dialogs/sanitization-d
     ButtonActionParamStateVariableComponent,
     GetStateVariableIdsPipe,
     VisibilityRulesDialogComponent,
-    SanitizationDialogComponent
+    SanitizationDialogComponent,
+    TooltipPropertiesDialogComponent
   ],
   imports: [
     BrowserModule,

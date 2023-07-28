@@ -297,3 +297,5 @@ export interface PositionedUIElement extends UIElement {
 export interface PlayerElement extends UIElement {
   player: PlayerProperties;
 }
+
+export type TooltipPosition = 'left' | 'right' | 'above' | 'below';

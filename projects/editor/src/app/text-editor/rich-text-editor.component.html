@@ -181,6 +181,11 @@
 
     <fieldset class="fx-row-start-stretch">
       <legend>Sonderelemente</legend>
+      <button mat-icon-button matTooltip="Tooltip" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
+              [class.active]="editor.isActive('tooltip')"
+              (click)="showTooltipPropertiesDialog()">
+        <mat-icon>announcement</mat-icon>
+      </button>
       <button mat-icon-button class="special-chars-button" matTooltip="Sonderzeichen" [matTooltipShowDelay]="300"
               [matMenuTriggerFor]="specialCharsMenu">
         <mat-icon>emoji_symbols</mat-icon>

@@ -27,12 +27,18 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
     </div>
   `,
-  styles: [
-    `
-    /* TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version. */
-    :host ::ng-deep .mat-checkbox-layout {white-space: normal !important}`,
-    '.error-message { position: absolute; display: block; margin-top: 5px; font-size: 75% }'
-  ]
+  styles: [`
+    :host ::ng-deep .mdc-form-field {
+      font-size: inherit;
+      font-weight: inherit;
+    }
+    .error-message {
+      position: absolute;
+      display: block;
+      margin-top: 5px;
+      font-size: 75%;
+    }
+ `]
 })
 export class CheckboxComponent extends FormElementComponent {
   @Input() elementModel!: CheckboxElement;

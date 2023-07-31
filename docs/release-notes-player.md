@@ -13,7 +13,7 @@ Player
   Die Funktionalität kann zur Darstellung von Text, nach dem Hören eines Audios und  
   in Verbindung mit Zustandsvariablen zur Darstellung von Hypertexten verwendet werden
 
-### Verbessserungen
+### Verbesserungen
 - Entfernt überflüssige leere Fläche von immer sichtbaren Seiten, wenn diese oben dargestellt werden
 
 ### Fehlerbehebungen

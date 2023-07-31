@@ -72,15 +72,19 @@ export class ReferenceManager {
     const allButtons = this.unit.getAllElements('button') as ButtonElement[];
     const pageButtonIDs = (page.getAllElements('button') as ButtonElement[])
       .map(pageButton => pageButton.id);
-    return [{
-      element: {
-        id: `Seite ${pageIndex + 1}`,
-        type: 'page'
-      },
-      refs: allButtons
-        .filter(button => button.action === 'pageNav' && button.actionParam === pageIndex)
-        .filter(button => !pageButtonIDs.includes(button.id))
-    }];
+    const refs = allButtons
+      .filter(button => button.action === 'pageNav' && button.actionParam === pageIndex)
+      .filter(button => !pageButtonIDs.includes(button.id));
+    if (refs.length > 0) {
+      return [{
+        element: {
+          id: `Seite ${pageIndex + 1}`,
+          type: 'page'
+        },
+        refs: refs
+      }];
+    }
+    return [];
   }
 
   getPageElementsReferences(page: Page): ReferenceList[] {

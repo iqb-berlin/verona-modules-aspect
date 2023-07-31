@@ -57,34 +57,37 @@ export class UnitService {
   }
 
   loadUnitDefinition(unitDefinition: string): void {
-    try {
-      if (!unitDefinition) {
-        throw Error('Unit-Definition nicht gefunden.');
-      }
-      let unitDef = JSON.parse(unitDefinition);
-      if (!VersionManager.hasCompatibleVersion(unitDef)) {
-        if (VersionManager.isNewer(unitDef)) {
-          throw Error('Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.');
-        }
-        if (!VersionManager.needsSanitization(unitDef)) {
-          throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
-        }
-        this.dialogService.showSanitizationDialog().subscribe(() => {
-          unitDef = UnitDefinitionSanitizer.sanitizeUnit(unitDef);
-          this.loadUnit(unitDef);
-          const invalidRefs = this.referenceManager.getAllInvalidRefs();
-          if (invalidRefs.length > 0) {
-            this.referenceManager.removeInvalidRefs(invalidRefs);
-            this.messageService.showFixedReferencePanel(invalidRefs);
+    if (unitDefinition) {
+      try {
+        let unitDef = JSON.parse(unitDefinition);
+        if (!VersionManager.hasCompatibleVersion(unitDef)) {
+          if (VersionManager.isNewer(unitDef)) {
+            throw Error('Unit-Version ist neuer als dieser Editor. Bitte mit der neuesten Version öffnen.');
           }
-        });
-      } else {
-        this.loadUnit(unitDef);
+          if (!VersionManager.needsSanitization(unitDef)) {
+            throw Error('Unit-Version ist veraltet. Sie kann mit Version 1.38/1.39 aktualisiert werden.');
+          }
+          this.dialogService.showSanitizationDialog().subscribe(() => {
+            unitDef = UnitDefinitionSanitizer.sanitizeUnit(unitDef);
+            this.loadUnit(unitDef);
+            const invalidRefs = this.referenceManager.getAllInvalidRefs();
+            if (invalidRefs.length > 0) {
+              this.referenceManager.removeInvalidRefs(invalidRefs);
+              this.messageService.showFixedReferencePanel(invalidRefs);
+            }
+          });
+        } else {
+          this.loadUnit(unitDef);
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.error(e);
+        if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
       }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e);
-      if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
+    } else {
+      this.idService.reset();
+      this.unit = new Unit();
+      this.referenceManager = new ReferenceManager(this.unit);
     }
   }
 

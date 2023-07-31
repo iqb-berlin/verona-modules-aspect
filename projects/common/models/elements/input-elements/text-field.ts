@@ -13,6 +13,7 @@ import { InstantiationEror } from 'common/util/errors';
 
 export class TextFieldElement extends TextInputElement implements PositionedUIElement, TextFieldProperties {
   type: UIElementType = 'text-field';
+  value: { text: string; crossedOut: boolean; } = { text: 'ttt', crossedOut: false };
   appearance: 'fill' | 'outline' = 'outline';
   minLength: number | null = null;
   minLengthWarnMessage: string = 'Eingabe zu kurz';
@@ -27,6 +28,8 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
   styling: BasicStyles & {
     lineHeight: number;
   };
+
+  enableCrossOut = true;
 
   constructor(element?: TextFieldProperties) {
     super(element);

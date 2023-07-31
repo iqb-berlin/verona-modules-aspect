@@ -23,9 +23,10 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
              autocapitalize="none"
              autocorrect="off"
              spellcheck="false"
-             value="{{elementModel.value}}"
-             [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
+             value="{{elementModel.value.text}}"
              [formControl]="elementFormControl"
+             [class.cross-out]="elementFormControl.value.crossedOut"
+             [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
              [pattern]="$any(elementModel.pattern)"
              [readonly]="elementModel.readOnly"
              (paste)="elementModel.isLimitedToMaxLength && elementModel.maxLength ? $event.preventDefault() : null"
@@ -35,10 +36,19 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       <div matSuffix
            class="fx-row-center-baseline">
         <mat-icon *ngIf="!elementFormControl.touched && elementModel.hasKeyboardIcon">keyboard_outline</mat-icon>
+        <button *ngIf="elementModel.enableCrossOut"
+                type="button"
+                mat-icon-button
+                [class.active]="elementFormControl.value.crossedOut"
+                (click)="elementFormControl.setValue(
+                  { text: elementFormControl.value.text, crossedOut: !elementFormControl.value.crossedOut }
+                )">
+          <mat-icon>strikethrough_s</mat-icon>
+        </button>
         <button *ngIf="elementModel.clearable"
                 type="button"
                 mat-icon-button aria-label="Clear"
-                (click)="elementFormControl.setValue('')">
+                (click)="elementFormControl.setValue({ text: '', crossedOut: false })">
           <mat-icon>close</mat-icon>
         </button>
       </div>
@@ -62,6 +72,12 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       flex-direction: row;
       justify-content: center;
       align-items: baseline;
+    }
+    .cross-out {
+      text-decoration: line-through;
+    }
+    button.active {
+      background-color: lightgrey;
     }
   `]
 })

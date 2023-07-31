@@ -241,7 +241,8 @@
     "button": "Knopf",
     "link": "Hyperlink",
     "presentation": "Darstellung",
-    "tooltip": "Tooltip"
+    "tooltip": "Tooltip",
+    "stickyHeader": "Haftende Kopfzeile"
   },
   "hotspot": {
     "top": "Abstand von oben",

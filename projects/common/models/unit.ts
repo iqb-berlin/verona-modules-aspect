@@ -40,7 +40,7 @@ export class Unit implements UnitProperties {
 
 function isValid(blueprint?: UnitProperties): boolean {
   if (!blueprint) return false;
-  return blueprint.version !== undefined &&
+  return blueprint.version === VersionManager.getCurrentVersion() &&
     blueprint.stateVariables !== undefined &&
     blueprint.type !== undefined &&
     blueprint.pages !== undefined;

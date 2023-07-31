@@ -18,8 +18,13 @@ export class VersionManager {
 
   static hasCompatibleVersion(unitDefinition: Record<string, unknown>): boolean {
     const unitDefinitionVersion = VersionManager.getUnitDefinitionVersion(unitDefinition);
-    return !VersionManager.isNewer(unitDefinition) &&
+    const result = !VersionManager.isNewer(unitDefinition) &&
       VersionManager.isSameMajor(unitDefinitionVersion);
+    if (!result) {
+      console.log('Current version: ', VersionManager.currentVersion);
+      console.log('Found version: ', unitDefinitionVersion);
+    }
+    return result;
   }
 
   static isNewer(unitDefinition: Record<string, unknown>): boolean {

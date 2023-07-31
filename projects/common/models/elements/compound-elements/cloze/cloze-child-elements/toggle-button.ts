@@ -16,7 +16,7 @@ import { InstantiationEror } from 'common/util/errors';
 
 export class ToggleButtonElement extends InputElement implements ToggleButtonProperties {
   type: UIElementType = 'toggle-button';
-  options: TextLabel[] = [];
+  options: TextLabel[] = [{ text: 'Option A' }, { text: 'Option B' }];
   strikeOtherOptions: boolean = false;
   strikeSelectedOption: boolean = false;
   verticalOrientation: boolean = false;

@@ -37,7 +37,11 @@
 // }
 
 Cypress.Commands.add('openPlayer', () => {
-  cy.visit('/');
+  cy.visit('http://localhost:4202/');
+});
+
+Cypress.Commands.add('openEditor', () => {
+  cy.visit('http://localhost:4201/');
 });
 
 Cypress.Commands.add('loadUnit', (filename: string) => {

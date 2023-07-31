@@ -5,6 +5,7 @@ declare global {
     interface Chainable {
       loadUnit(value: string): Chainable<JQuery<HTMLElement>>;
       openPlayer(): Chainable<JQuery<HTMLElement>>;
+      openEditor(): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

@@ -75,6 +75,7 @@ export class UnitService {
               this.referenceManager.removeInvalidRefs(invalidRefs);
               this.messageService.showFixedReferencePanel(invalidRefs);
             }
+            this.unitUpdated();
           });
         } else {
           this.loadUnit(unitDef);

@@ -1,5 +1,56 @@
 Editor
 ======
+## 2.0.0-beta
+### Neue Funktionen
+- Versionshandhabung
+  - keine Unterstützung für Unit-Definitionen, die Editorversionen vor 1.37 erstellt wurden
+  - Warnung, wenn alte Unit-Defintion geladen wird.
+- alle Elemente haben haben nun folgende Dimensionseigenschaften:
+  - Mindesthöhe
+  - Maximalhöhe
+  - Mindestbreite
+  - Maximalbreite
+- Elementabstände haben eine Einheit (Pixel oder Anteile)
+- Bildelemente haben einen Alternativtext, der angezeigt wird, wenn das Bild nicht geladen wird
+- Optionentabelle: neue Eigenschaft "Haftende Kopfzeile"
+  Wenn gesetzt, wandert die Kopfzeile beim Scrollen mit und bleibt immer sichtbar, solange die Tabelle im Sichtbereich ist
+- Ablegeoptionen können eine Audioquelle beinhalten
+- Knopf:
+  - Tooltip kann hinzugefügt werden
+  - Randeigenschaften hinzugefügt (ähnlich dem Element "Rahmen")
+  - neue Aktion: "Zustandsvariable ändern"
+- Text:
+  - Textabschnitte können ausgewählt und mit einem Tooltip versehen werden
+- Regeln zur Sichtbarkeit von Seitenabschnitten wurden überarbeitet
+  - Werte von Zustandsvariablen und Elementen bestimmen die Sichtbarkeit
+  - Knopfelemente verändern die Werte von Zustandsvariablen
+- alle Elemente haben Eigenschaft "Relevant für 'Presentation Complete'"
+
+### Verbesserungen
+- Referenzüberprüfung beim Löschen von Elementen, die mögliche Verweisziele sind
+  - Werden entsprechende Elemente (betrifft im Moment: Ablegelisten, Audio/Video und Knöpfe) 
+    oder Seiten/Seitenabschnitte, die diese beinhalten, gelöscht, wird überprüft, ob auf sie verwiesen wird.
+    Wenn das der Fall ist, wird in einem Dialog darauf hingewiesen. Es gibt die Option, die Verweise zu entfernen
+    (und damit die verweisenden Elemente evtl. unbrauchbar zu machen) oder abzubrechen. Bei Abbruch wird eine Liste
+    der betreffenden Elemente dargestellt, damit manuell korrigiert werden kann.
+  - Überprüfung findet auch beim Laden von Units statt. Hier werden fehlerhafte Verweise direkt entfernt.
+- Abschnittselemente werden so angelegt/sortiert, dass die Tabulatorreihenfolge
+  (bei der Anzeige im Player) sich an der optischen Reihenfolge orientiert
+- Element-IDs auf 20 Zeichen limitiert und keine Leerzeichen erlaubt
+- Feste Seitenbreite mit 750px als Voreinstellung
+- Optionsfeld im Lückentext hat als Voreinstellung 2 Optionen
+- Eingabehilfe: "Bearbeitung anderer Zeichen verhindern" ist nicht mehr voreingestellt
+- neues Sonderzeichen im TextEditor: geschützter Bindestrich
+- Lückentext-Optionsfeld: durchgestrichener Text hat breitere Linie
+- Verbesserte Oberflächengestaltung:
+  - Seitenabschnittsmenu
+  - TextEditor
+  - Dialog für Medienelemente
+
+### Fehlerbehebungen
+- Geometrie: customToolbar wird korrekt gespeichert
+- Selektionsrahmen für Lückentext-Elemente verbessert
+
 ## 1.39.0
 ### Neue Funktionen
 - Das Präfix "aspect" im Dateinamen wird durch "iqb" ersetzt.

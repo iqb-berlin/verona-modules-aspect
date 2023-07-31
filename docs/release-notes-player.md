@@ -1,5 +1,26 @@
 Player
 ======
+## 2.0.0-beta.1
+### Neue Funktionen
+- Unterstützt die Anzeige von Tooltips innerhalb von markierbaren Texten
+- Unterstützt die Anzeige von Tooltips bei Buttons
+- Ablegeelemente verfügen über einen optionalen Button zum Abspielen von Audios
+- Beim Senden von "Presentation Complete" werden nur diejenigen Elemente berücksichtigt,  
+  die als "relevant für Presentation complete" gesetzt sind
+- Unterstützt  die Regeln zur Sichtbarkeit von Abschnitten, indem die erreichten Werte 
+  von Elementen und Zustandsvariablen berücksichtigt werden.  
+  Die Funktionalität kann zur Darstellung von Text, nach dem Hören eines Audios und  
+  in Verbindung mit Zustandsvariablen zur Darstellung von Hypertexten verwendet werden
+
+### Verbessserungen
+- Entfernt überflüssige leere Fläche von immer sichtbaren Seiten, wenn diese "oben" dargestellt werden
+
+### Fehlerbehebungen
+- Korrigiert Klebefunktionalität von Markier-Buttons bei eingestelltem "Blätter-Modus
+- Behebt Fehler beim Ausblenden des Scroll-Buttons am unteren Bildrand 
+
+
+
 ## 1.32.0
 ### Neue Funktionen
 - Das Präfix "aspect" im Dateinamen wird durch "iqb" ersetzt.

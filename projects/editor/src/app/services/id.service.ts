@@ -61,6 +61,9 @@ export class IDService {
     if (!type) {
       throw Error('ID-Service: No type given!');
     }
+    if (Object.keys(this.idCounter).indexOf(type) === -1) {
+      throw Error(`Invalid Type: ${type}`);
+    }
     do {
       this.idCounter[type] += 1;
     } while (!this.isIdAvailable(`${type}_${this.idCounter[type]}`));

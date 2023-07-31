@@ -1,25 +1,24 @@
 Player
 ======
-## 2.0.0-beta.1
+## 2.0.0-beta
 ### Neue Funktionen
+- Unterstützt nur Unit-Definitionen, die mit der aktuellen Editor-Version erstellt wurden
 - Unterstützt die Anzeige von Tooltips innerhalb von markierbaren Texten
-- Unterstützt die Anzeige von Tooltips bei Buttons
-- Ablegeelemente verfügen über einen optionalen Button zum Abspielen von Audios
+- Unterstützt die Anzeige von Tooltips bei Knopfelementen
+- Ablegeelemente verfügen über einen optionalen Abspielknopf für Audios
 - Beim Senden von "Presentation Complete" werden nur diejenigen Elemente berücksichtigt,  
-  die als "relevant für Presentation complete" gesetzt sind
-- Unterstützt  die Regeln zur Sichtbarkeit von Abschnitten, indem die erreichten Werte 
+  die als "Relevant für 'Presentation Complete'" gesetzt sind
+- Unterstützt die Regeln zur Sichtbarkeit von Abschnitten, indem die erreichten Werte 
   von Elementen und Zustandsvariablen berücksichtigt werden.  
   Die Funktionalität kann zur Darstellung von Text, nach dem Hören eines Audios und  
   in Verbindung mit Zustandsvariablen zur Darstellung von Hypertexten verwendet werden
 
 ### Verbessserungen
-- Entfernt überflüssige leere Fläche von immer sichtbaren Seiten, wenn diese "oben" dargestellt werden
+- Entfernt überflüssige leere Fläche von immer sichtbaren Seiten, wenn diese oben dargestellt werden
 
 ### Fehlerbehebungen
-- Korrigiert Klebefunktionalität von Markier-Buttons bei eingestelltem "Blätter-Modus
-- Behebt Fehler beim Ausblenden des Scroll-Buttons am unteren Bildrand 
-
-
+- Korrigiert Haftfunktionalität von Markierknöpfen bei eingestelltem "Blätter-Modus"
+- Behebt Fehler beim Ausblenden der Bildlaufknöpfe am unteren Bildrand
 
 ## 1.32.0
 ### Neue Funktionen

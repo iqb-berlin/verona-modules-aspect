@@ -35,6 +35,7 @@ import { OrderedListExtension } from './extensions/ordered-list';
 import ToggleButtonComponentExtension from './angular-node-views/toggle-button-component-extension';
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
+import CheckboxComponentExtension from './angular-node-views/checkbox-component-extension';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -100,6 +101,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       activeExtensions.push(DropListComponentExtension(this.injector));
       activeExtensions.push(TextFieldComponentExtension(this.injector));
       activeExtensions.push(ButtonComponentExtension(this.injector));
+      activeExtensions.push(CheckboxComponentExtension(this.injector));
     }
     this.editor = new Editor({
       extensions: activeExtensions
@@ -320,6 +322,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   insertButton() {
     this.editor.commands.insertContent('<aspect-nodeview-button></aspect-nodeview-button>');
+    this.editor.commands.focus();
+  }
+
+  insertCheckbox() {
+    this.editor.commands.insertContent('<aspect-nodeview-checkbox></aspect-nodeview-checkbox>');
     this.editor.commands.focus();
   }
 }

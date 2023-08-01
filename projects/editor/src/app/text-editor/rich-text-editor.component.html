@@ -283,6 +283,10 @@
             (click)="insertButton()">
       <mat-icon>smart_button</mat-icon>
     </button>
+    <button mat-icon-button matTooltip="Knopf" [matTooltipShowDelay]="300"
+            (click)="insertCheckbox()">
+      <mat-icon>check_box</mat-icon>
+    </button>
   </div>
 </div>
 <tiptap-editor [editor]="editor" [ngModel]="content" mat-dialog-content

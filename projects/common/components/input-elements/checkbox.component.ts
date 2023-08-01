@@ -12,6 +12,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       <mat-checkbox #checkbox class="example-margin"
                     [formControl]="elementFormControl"
                     [checked]="$any(elementModel.value)"
+                    [class.cross-out]="elementModel.crossOutChecked && elementFormControl.value"
                     [style.color]="elementModel.styling.fontColor"
                     [style.font-family]="elementModel.styling.font"
                     [style.font-size.px]="elementModel.styling.fontSize"
@@ -37,6 +38,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       display: block;
       margin-top: 5px;
       font-size: 75%;
+    }
+    .cross-out {
+      text-decoration: line-through;
+      text-decoration-thickness: 3px;
     }
  `]
 })

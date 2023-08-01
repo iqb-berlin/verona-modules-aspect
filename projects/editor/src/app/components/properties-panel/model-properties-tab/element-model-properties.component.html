@@ -150,6 +150,12 @@
     {{'propertiesPanel.stickyHeader' | translate }}
   </mat-checkbox>
 
+  <mat-checkbox *ngIf="combinedProperties.crossOutChecked !== undefined"
+                [checked]="$any(combinedProperties.crossOutChecked)"
+                (change)="updateModel.emit({ property: 'crossOutChecked', value: $event.checked })">
+    {{'propertiesPanel.crossOutChecked' | translate }}
+  </mat-checkbox>
+
   <mat-form-field *ngIf="combinedProperties.firstColumnSizeRatio != null"
                   matTooltip="{{'propertiesPanel.firstColumnSizeRatioExplanation' | translate }}"
                   appearance="fill">

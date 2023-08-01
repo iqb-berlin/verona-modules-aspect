@@ -43,10 +43,16 @@ import { ValueChangeElement } from 'common/models/elements/element';
                      [style.pointer-events]="editorMode ? 'none' : 'auto'"
                      [elementModel]="$any(element)">
       </aspect-button>
+      <aspect-checkbox *ngIf="element.type === 'checkbox'" #childComponent
+                     [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                     [elementModel]="$any(element)">
+      </aspect-checkbox>
     </div>
   `,
   styles: [
-    ':host div > * {display: block;}'
+    ':host div > * {display: block;}',
+    ':host ::ng-deep mat-checkbox .mdc-form-field {vertical-align: baseline;}',
+    ':host ::ng-deep mat-checkbox .mdc-checkbox {display: none;}'
   ]
 })
 export class ClozeChildOverlay {

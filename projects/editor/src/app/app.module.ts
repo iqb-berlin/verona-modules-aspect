@@ -127,6 +127,7 @@ import {
   GetStateVariableIdsPipe
 } from './components/properties-panel/model-properties-tab/input-groups/button-properties/get-state-variable-ids.pipe';
 import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
+import { CheckboxNodeviewComponent } from 'editor/src/app/text-editor/angular-node-views/checkbox-nodeview.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +145,7 @@ import { SanitizationDialogComponent } from './components/dialogs/sanitization-d
     RichTextEditorComponent,
     ToggleButtonNodeviewComponent,
     TextFieldNodeviewComponent,
+    CheckboxNodeviewComponent,
     DropListNodeviewComponent,
     ButtonNodeviewComponent,
     ElementStylePropertiesComponent,

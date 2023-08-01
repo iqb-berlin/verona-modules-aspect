@@ -114,3 +114,7 @@ iqb-aspect-definition@1.0.0
   - add "isRelevantForPresentationComplete"
 - DragNDropValueObject:
   - add "audioSrc"
+
+4.1.0
+- Checkbox:
+  - new property: crossOutChecked

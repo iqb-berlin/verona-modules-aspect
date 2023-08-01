@@ -18,6 +18,7 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
+import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-elements/checkbox';
 
 export class ClozeElement extends CompoundElement implements PositionedUIElement, ClozeProperties {
   type: UIElementType = 'cloze';
@@ -27,6 +28,8 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
   styling: BasicStyles & {
     lineHeight: number;
   };
+
+  static validChildElements = ['TextField', 'DropList', 'ToggleButton', 'Button', 'Checkbox'];
 
   constructor(element?: ClozeProperties) {
     super(element);
@@ -68,7 +71,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     if (!content) return [];
     return content
       .reduce((accumulator: CustomDocumentNode[], node: ClozeDocumentWrapperNode | ClozeDocumentContentNode) => {
-        if (node.type && ['TextField', 'DropList', 'ToggleButton', 'Button'].includes(node.type)) {
+        if (node.type && ClozeElement.validChildElements.includes(node.type)) {
           accumulator.push(node as CustomDocumentNode);
         }
         accumulator.push(...ClozeElement.getCustomNodes((node as ClozeDocumentWrapperNode).content));
@@ -130,6 +133,9 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
         break;
       case 'button':
         newElement = new ButtonElement(elementModel as unknown as ButtonProperties);
+        break;
+      case 'checkbox':
+        newElement = new CheckboxElement(elementModel as unknown as CheckboxProperties);
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

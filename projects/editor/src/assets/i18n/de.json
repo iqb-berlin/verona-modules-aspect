@@ -242,7 +242,8 @@
     "link": "Hyperlink",
     "presentation": "Darstellung",
     "tooltip": "Tooltip",
-    "stickyHeader": "Haftende Kopfzeile"
+    "stickyHeader": "Haftende Kopfzeile",
+    "crossOutChecked": "Auswahl durchstreichen"
   },
   "hotspot": {
     "top": "Abstand von oben",

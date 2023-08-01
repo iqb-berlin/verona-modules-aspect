@@ -155,7 +155,7 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
                [style.vertical-align]="'middle'">
         </ng-container>
         <aspect-compound-child-overlay
-          *ngIf="['ToggleButton', 'DropList', 'TextField', 'Button'] | arrayIncludes:subPart.type"
+          *ngIf="ClozeElement.validChildElements | arrayIncludes:subPart.type"
           [style.display]="'inline-block'"
           [style.vertical-align]="subPart.attrs.model.type === 'drop-list' &&
                                     subPart.attrs.model.onlyOneItem === false ||
@@ -184,6 +184,7 @@ export class ClozeComponent extends CompoundElementComponent {
   @Output() childElementSelected = new EventEmitter<ClozeChildOverlay>();
   @ViewChildren(ClozeChildOverlay) compoundChildren!: QueryList<ClozeChildOverlay>;
 
+  protected readonly ClozeElement = ClozeElement;
   editorMode: boolean = false;
 
   getFormElementChildrenComponents(): ElementComponent[] {

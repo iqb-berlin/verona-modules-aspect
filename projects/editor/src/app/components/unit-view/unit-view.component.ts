@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { MessageService } from 'common/services/message.service';
 import { Page } from 'common/models/page';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { PageChangeService } from 'common/services/page-change.service';
 import { UnitService } from '../../services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
@@ -19,6 +20,7 @@ export class UnitViewComponent implements OnDestroy {
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
+              public pageChangeService: PageChangeService,
               private dialogService: DialogService,
               private messageService: MessageService) { }
 

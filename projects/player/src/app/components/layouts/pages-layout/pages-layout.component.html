@@ -69,7 +69,9 @@
                  [isHidden]="hidePageLabels"
                  (heightChanged)="tabHeaderHeight = $event"
                  mat-align-tabs="start"
-                 [(selectedIndex)]="selectedIndex">
+                 preserveContent="true"
+                 [(selectedIndex)]="selectedIndex"
+                 (animationDone)="pageChangeService.pageChanged.emit()">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
       <mat-tab [label]="'pageIndication' | translate: {index: i + 1}">
         <div [style.height]="'calc(' + minHeight.scrollPages + 'vh - ' + ((page.margin * 2) + tabHeaderHeight) + 'px)'"

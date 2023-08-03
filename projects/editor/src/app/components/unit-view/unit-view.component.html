@@ -13,9 +13,11 @@
 
     <mat-drawer-content>
       <mat-tab-group *ngIf="pagesLoaded"
+                     preserveContent="true"
                      [style.height.%]="100" mat-align-tabs="start" mat-stretch-tabs="false"
                      [selectedIndex]="selectionService.selectedPageIndex"
-                     (selectedIndexChange)="selectPage($event)">
+                     (selectedIndexChange)="selectPage($event)"
+                     (animationDone)="pageChangeService.pageChanged.emit()">
         <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
           <ng-template mat-tab-label>
             <ng-container *ngIf="page.alwaysVisible">

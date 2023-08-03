@@ -1,12 +1,13 @@
 import {
   AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2
 } from '@angular/core';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { ExternalResourceService } from 'common/services/external-resource.service';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { PageChangeService } from 'common/services/page-change.service';
 
 declare const GGBApplet: any;
 
@@ -17,7 +18,7 @@ declare const GGBApplet: any;
          [style.height.px]="elementModel.height"
          [style.width.px]="elementModel.width"
          [class.center]="this.elementModel.dimensions.isWidthFixed">
-      <div [id]="elementModel.id" class="geogebra-applet"></div>
+      <div [id]="elementModel.id"  class="geogebra-applet"></div>
       <button *ngIf="this.elementModel.showResetIcon"
               mat-icon-button
               [style.top.px]="this.elementModel.showToolbar ? 50 : 0"
@@ -46,11 +47,15 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
 
   private ngUnsubscribe = new Subject<void>();
   private geometryUpdated = new EventEmitter<void>();
+  private pageChangeSubscription: Subscription;
 
   constructor(public elementRef: ElementRef,
               private renderer: Renderer2,
+              private pageChangeService: PageChangeService,
               private externalResourceService: ExternalResourceService) {
     super(elementRef);
+    this.externalResourceService.initializeGeoGebra(this.renderer);
+    this.pageChangeSubscription = pageChangeService.pageChanged.subscribe(() => this.loadApplet());
     this.geometryUpdated
       .pipe(
         debounceTime(500),
@@ -63,12 +68,18 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.externalResourceService.initializeGeoGebra(this.renderer);
-    this.externalResourceService.isGeoGebraLoaded()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isLoaded: boolean) => {
-        if (isLoaded) this.initApplet();
-      });
+    this.loadApplet();
+  }
+
+  private loadApplet(): void {
+    if (document.contains(this.domElement)) {
+      this.pageChangeSubscription.unsubscribe();
+      this.externalResourceService.isGeoGebraLoaded()
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((isLoaded: boolean) => {
+          if (isLoaded) this.initApplet();
+        });
+    }
   }
 
   refresh(): void {
@@ -82,7 +93,6 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   private initApplet(): void {
-    console.log('Initializing GeoGebra applet');
     if (!this.appDefinition) {
       console.error('Geogebra Applet definition not found.');
       return;
@@ -133,12 +143,11 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     };
     const applet = new GGBApplet(params, '5.0');
     applet.setHTML5Codebase(this.externalResourceService.getGeoGebraHTML5URL());
-    // Needs timeout for loading new unit file in editor. For unknown reasons the component
-    // does not get re-initialized.
-    setTimeout(() => applet.inject(this.elementModel.id));
+    applet.inject(this.elementModel.id);
   }
 
   ngOnDestroy(): void {
+    this.pageChangeSubscription.unsubscribe();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

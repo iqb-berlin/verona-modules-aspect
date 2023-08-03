@@ -8,8 +8,10 @@ import { VeronaPostService } from 'player/modules/verona/services/verona-post.se
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { VopPageNavigationCommand } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
+import { PageChangeService } from 'common/services/page-change.service';
 import { NativeEventService } from '../../../services/native-event.service';
 
+export const globalAnimationDuration = 300;
 @Component({
   selector: 'aspect-pages-layout',
   templateUrl: './pages-layout.component.html',
@@ -52,7 +54,8 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private veronaPostService: VeronaPostService,
     private navigationService: NavigationService,
-    private veronaSubscriptionService: VeronaSubscriptionService
+    private veronaSubscriptionService: VeronaSubscriptionService,
+    protected pageChangeService: PageChangeService
   ) {
   }
 

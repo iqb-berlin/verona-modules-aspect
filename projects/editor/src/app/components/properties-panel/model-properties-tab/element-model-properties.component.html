@@ -190,6 +190,11 @@
     </button>
   </mat-form-field>
 
+  <mat-checkbox *ngIf="combinedProperties.showToolbar !== undefined"
+                [checked]="$any(combinedProperties.showToolbar)"
+                (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
+    {{'propertiesPanel.showToolbar' | translate }}
+  </mat-checkbox>
   <mat-checkbox *ngIf="combinedProperties.showResetIcon !== undefined"
                 [checked]="$any(combinedProperties.showResetIcon)"
                 (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">
@@ -199,11 +204,6 @@
                 [checked]="$any(combinedProperties.enableUndoRedo)"
                 (change)="updateModel.emit({ property: 'enableUndoRedo', value: $event.checked })">
     {{'propertiesPanel.enableUndoRedo' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.showToolbar !== undefined"
-                [checked]="$any(combinedProperties.showToolbar)"
-                (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
-    {{'propertiesPanel.showToolbar' | translate }}
   </mat-checkbox>
   <mat-checkbox *ngIf="combinedProperties.enableShiftDragZoom !== undefined"
                 [checked]="$any(combinedProperties.enableShiftDragZoom)"

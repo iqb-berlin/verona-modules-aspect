@@ -17,7 +17,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
   appDefinition: string = '';
   showResetIcon: boolean = true;
   enableUndoRedo: boolean = true;
-  showToolbar: boolean = true;
+  showToolbar: boolean = false;
   enableShiftDragZoom: boolean = true;
   showZoomButtons: boolean = true;
   showFullscreenButton: boolean = true;

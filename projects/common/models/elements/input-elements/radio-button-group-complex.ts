@@ -38,7 +38,6 @@ export class RadioButtonGroupComplexElement extends InputElement
         ...element?.dimensions
       });
       this.position = PropertyGroupGenerators.generatePositionProps({
-        marginBottom: { value: 40, unit: 'px' },
         ...element?.position
       });
       this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);

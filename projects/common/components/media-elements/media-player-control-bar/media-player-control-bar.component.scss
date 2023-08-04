@@ -90,3 +90,7 @@
 .hint-border{
   border: 2px #f44336 solid;
 }
+
+:host ::ng-deep mat-slider input {
+  pointer-events: inherit !important;
+}

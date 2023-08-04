@@ -70,11 +70,6 @@ export class UnitService {
           this.dialogService.showSanitizationDialog().subscribe(() => {
             unitDef = UnitDefinitionSanitizer.sanitizeUnit(unitDef);
             this.loadUnit(unitDef);
-            const invalidRefs = this.referenceManager.getAllInvalidRefs();
-            if (invalidRefs.length > 0) {
-              this.referenceManager.removeInvalidRefs(invalidRefs);
-              this.messageService.showFixedReferencePanel(invalidRefs);
-            }
             this.unitUpdated();
           });
         } else {
@@ -97,6 +92,13 @@ export class UnitService {
     this.unit = new Unit(parsedUnitDefinition as unknown as UnitProperties);
     this.idService.registerUnitIds(this.unit);
     this.referenceManager = new ReferenceManager(this.unit);
+
+    const invalidRefs = this.referenceManager.getAllInvalidRefs();
+    if (invalidRefs.length > 0) {
+      this.referenceManager.removeInvalidRefs(invalidRefs);
+      this.messageService.showFixedReferencePanel(invalidRefs);
+      this.unitUpdated();
+    }
   }
 
   unitUpdated(): void {

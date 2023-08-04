@@ -568,8 +568,9 @@ export class UnitService {
         break;
       case 'audio':
       case 'video':
-        this.dialogService.showPlayerEditDialog((element as PlayerElement).player)
+        this.dialogService.showPlayerEditDialog(element.id, (element as PlayerElement).player)
           .subscribe((result: PlayerProperties) => {
+            if (!result) return;
             Object.keys(result).forEach(
               key => this.updateElementsPlayerProperty([element], key, result[key] as UIElementValue)
             );

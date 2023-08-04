@@ -34,6 +34,12 @@ import { ReferenceList } from 'editor/src/app/services/reference-manager';
           <div *ngIf="element.type == 'audio'" matListItemTitle>
             Audio: {{element.id}}
           </div>
+          <mat-icon *ngIf="element.type == 'video'" matListItemIcon>
+            ondemand_video
+          </mat-icon>
+          <div *ngIf="element.type == 'video'" matListItemTitle>
+            Video: {{element.id}}
+          </div>
         </mat-list-item>
       </mat-list>
     </ng-container>

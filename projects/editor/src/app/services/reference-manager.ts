@@ -7,6 +7,7 @@ import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { Page } from 'common/models/page';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { TextElement } from 'common/models/elements/text/text';
+import { VideoElement } from 'common/models/elements/media-elements/video';
 
 export class ReferenceManager {
   /* Element types that may have references */
@@ -18,7 +19,7 @@ export class ReferenceManager {
   }
 
   getAllInvalidRefs(): UIElement[] {
-    return [...this.getInvalidPageRefs(), ...this.getInvalidDropListRefs(), ...this.getInvalidAudioRefs()];
+    return [...this.getInvalidPageRefs(), ...this.getInvalidDropListRefs(), ...this.getInvalidPlayerElementRefs()];
   }
 
   getInvalidPageRefs(): ButtonElement[] {
@@ -42,10 +43,15 @@ export class ReferenceManager {
       .filter(connectedList => !allDropListIDs.includes(connectedList)).length > 0);
   }
 
-  private getInvalidAudioRefs(): AudioElement[] {
-    const allAudios = this.unit.getAllElements('audio') as AudioElement[];
-    const allAudioIDs = allAudios.map(audio => audio.id);
-    return allAudios.filter(audio => !allAudioIDs.includes(audio.player.activeAfterID));
+  private getInvalidPlayerElementRefs(): (AudioElement | VideoElement)[] {
+    const allAudioAndVideos: (AudioElement | VideoElement)[] = [
+      ...this.unit.getAllElements('audio') as AudioElement[],
+      ...this.unit.getAllElements('video') as VideoElement[]
+    ];
+    const allAudioAndVideoIDs = allAudioAndVideos.map(element => element.id);
+    return allAudioAndVideos.filter(
+      element => element.player.activeAfterID !== '' &&
+                                           !allAudioAndVideoIDs.includes(element.player.activeAfterID));
   }
 
   removeInvalidRefs(refs: UIElement[]): void {
@@ -109,7 +115,7 @@ export class ReferenceManager {
       .concat(otherIgnoredElementIDs);
     const dropListRefs = this.getDropListsReferences(elements
       .filter(element => element.type === 'drop-list') as DropListElement[], ignoredElementIDs);
-    const audioRefs = this.getAudioReferences(elements
+    const audioRefs = this.getAudioVideoReferences(elements
       .filter(element => element.type === 'audio') as AudioElement[], ignoredElementIDs);
     const clozeRefs = this.getClozeReferences(elements
       .filter(element => element.type === 'cloze') as ClozeElement[], ignoredElementIDs);
@@ -136,19 +142,23 @@ export class ReferenceManager {
     return allRefs;
   }
 
-  private getAudioReferences(audios: AudioElement[], ignoredElementIDs: string[] = []): ReferenceList[] {
+  private getAudioVideoReferences(playerElements: (AudioElement | VideoElement)[], ignoredElementIDs: string[] = [])
+    : ReferenceList[] {
     const allRefs: ReferenceList[] = [];
-    const allAudios = this.unit.getAllElements('audio') as AudioElement[];
+    const allAudioAndVideos: (AudioElement | VideoElement)[] = [
+      ...this.unit.getAllElements('audio') as AudioElement[],
+      ...this.unit.getAllElements('video') as VideoElement[]
+    ];
 
-    audios.forEach(audio => {
-      const otherConnectedAudios = allAudios
-        .filter(foundAudio => foundAudio.id !== audio.id &&
-                                           !ignoredElementIDs.includes(foundAudio.id) &&
-                                           foundAudio.player.activeAfterID === audio.id);
-      if (otherConnectedAudios.length > 0) {
+    playerElements.forEach(element => {
+      const refs = allAudioAndVideos
+        .filter(foundElement => foundElement.id !== element.id &&
+                                                          !ignoredElementIDs.includes(foundElement.id) &&
+                                                          foundElement.player.activeAfterID === element.id);
+      if (refs.length > 0) {
         allRefs.push({
-          element: audio,
-          refs: otherConnectedAudios
+          element: element,
+          refs: refs
         });
       }
     });

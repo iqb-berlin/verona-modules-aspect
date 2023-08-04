@@ -1,6 +1,7 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, Pipe, PipeTransform } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
+import { UnitService } from 'editor/src/app/services/unit.service';
 
 @Component({
   selector: 'aspect-player-edit-dialog',
@@ -89,11 +90,17 @@ import { PlayerProperties } from 'common/models/elements/property-group-interfac
                           (change)="newPlayerConfig.loop = $event.checked">
               {{ 'player.loop' | translate }}
             </mat-checkbox>
+
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.activeAfterID' | translate }}</mat-label>
-              <input matInput type="text" [value]="newPlayerConfig.activeAfterID || data.playerProps.activeAfterID"
-                     (input)="newPlayerConfig.activeAfterID = $any($event.target).value">
+              <mat-select [ngModel]="newPlayerConfig.activeAfterID || data.playerProps.activeAfterID"
+                          (ngModelChange)="newPlayerConfig.activeAfterID = $event">
+                <mat-option *ngFor="let id of (data.elementID | getValidAudioVideoIDs)" [value]="id">
+                  {{id}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
+
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
               <input matInput type="number" min="0"
@@ -140,6 +147,20 @@ import { PlayerProperties } from 'common/models/elements/property-group-interfac
 })
 export class PlayerEditDialogComponent {
   newPlayerConfig: PlayerProperties = {} as PlayerProperties;
-  constructor(@Inject(MAT_DIALOG_DATA)public data: { playerProps: PlayerProperties }) {
+  constructor(@Inject(MAT_DIALOG_DATA)public data: { elementID: string, playerProps: PlayerProperties }) {
+  }
+}
+
+@Pipe({
+  name: 'getValidAudioVideoIDs'
+})
+export class GetValidAudioVideoIDsPipe implements PipeTransform {
+  constructor(private unitService: UnitService) {}
+
+  transform(ignoreID: string): string[] {
+    const allAudioVideoIDs: string[] = [
+      ...this.unitService.unit.getAllElements('audio').map(audio => audio.id),
+      ...this.unitService.unit.getAllElements('video').map(video => video.id)];
+    return allAudioVideoIDs.filter(elementID => elementID !== ignoreID);
   }
 }

@@ -68,7 +68,10 @@ import { RichTextEditorComponent } from './text-editor/rich-text-editor.componen
 import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog.component';
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
-import { PlayerEditDialogComponent } from './components/dialogs/player-edit-dialog.component';
+import {
+  GetValidAudioVideoIDsPipe,
+  PlayerEditDialogComponent
+} from './components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
 import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
@@ -197,7 +200,8 @@ import { CheckboxNodeviewComponent } from 'editor/src/app/text-editor/angular-no
     GetStateVariableIdsPipe,
     VisibilityRulesDialogComponent,
     SanitizationDialogComponent,
-    TooltipPropertiesDialogComponent
+    TooltipPropertiesDialogComponent,
+    GetValidAudioVideoIDsPipe
   ],
   imports: [
     BrowserModule,

@@ -21,6 +21,11 @@ Editor
   - neue Aktion: "Zustandsvariable ändern"
 - Text:
   - Textabschnitte können ausgewählt und mit einem Tooltip versehen werden
+- Kontrollkästchen:
+  - Kann jetzt den Text durchgestrichen darstellen, wenn ausgewählt.
+- Lückentext:
+  - Kann jetzt Kinder vom Typ Kontrollkästchen beinhalten. Diese werden ohne Kasten dargestellt und
+    "Auswahl durchstreichen" ist vorausgewählt.
 - Regeln zur Sichtbarkeit von Seitenabschnitten wurden überarbeitet
   - Werte von Zustandsvariablen und Elementen bestimmen die Sichtbarkeit
   - Knopfelemente verändern die Werte von Zustandsvariablen

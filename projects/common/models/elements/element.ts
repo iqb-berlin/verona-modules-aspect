@@ -42,6 +42,7 @@ export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOpe
 
 export interface UIElementProperties {
   id: string;
+  isRelevantForPresentationComplete: boolean;
   dimensions: DimensionProperties;
   position?: PositionProperties;
   styling?: Stylings;
@@ -51,22 +52,24 @@ export interface UIElementProperties {
 function isValidUIElementProperties(blueprint?: UIElementProperties): boolean {
   if (!blueprint) return false;
   return blueprint.id !== undefined &&
+    blueprint.isRelevantForPresentationComplete !== undefined &&
     PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions);
 }
 
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
   id: string = 'id-placeholder';
+  isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
   position?: PositionProperties;
   dimensions: DimensionProperties;
   styling?: Stylings;
   player?: PlayerProperties;
-  isRelevantForPresentationComplete?: boolean = true;
 
   constructor(element?: UIElementProperties) {
     if (element && isValidUIElementProperties(element)) {
       this.id = element.id;
+      this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       this.dimensions = element.dimensions;
       this.position = element.position;
       this.styling = element.styling;
@@ -75,6 +78,9 @@ export abstract class UIElement implements UIElementProperties {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
       if (element?.id) this.id = element.id;
+      if (element?.isRelevantForPresentationComplete !== undefined) {
+        this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
+      }
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
     }

@@ -65,7 +65,7 @@ import { SelectionService } from '../../services/selection.service';
             <input matInput type="number"
                    [value]="$any(section.height)"
                    (click)="$any($event).stopPropagation()"
-                   (change)="updateModel('height', $any($event.target).value)">
+                   (change)="updateModel('height', $any($event.target).value || 0)">
           </mat-form-field>
         </ng-container>
         <div *ngIf="section.dynamicPositioning">
@@ -83,7 +83,7 @@ import { SelectionService } from '../../services/selection.service';
                 <input matInput type="number"
                        [value]="$any(section.gridColumnSizes.length)"
                        (click)="$any($event).stopPropagation()"
-                       (change)="modifySizeArray('gridColumnSizes', $any($event).target.value)">
+                       (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0)">
               </mat-form-field>
               <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
                 <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
@@ -109,7 +109,7 @@ import { SelectionService } from '../../services/selection.service';
                 <input matInput type="number"
                        [value]="$any(section.height)"
                        (click)="$any($event).stopPropagation()"
-                       (change)="updateModel('height', $any($event.target).value)">
+                       (change)="updateModel('height', $any($event.target).value || 0)">
               </mat-form-field>
 
               <mat-form-field appearance="outline">
@@ -117,7 +117,7 @@ import { SelectionService } from '../../services/selection.service';
                 <input matInput type="number"
                        [value]="$any(section.gridRowSizes.length)"
                        (click)="$any($event).stopPropagation()"
-                       (change)="modifySizeArray('gridRowSizes', $any($event).target.value)">
+                       (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0)">
               </mat-form-field>
               <ng-container *ngFor="let size of section.gridRowSizes ; let i = index">
                 <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"

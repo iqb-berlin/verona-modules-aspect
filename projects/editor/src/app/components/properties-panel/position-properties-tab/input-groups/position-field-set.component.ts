@@ -23,7 +23,9 @@ import { UnitService } from 'editor/src/app/services/unit.service';
           <input matInput type="number" #xPosition="ngModel" min="0"
                  [ngModel]="positionProperties.xPosition"
                  (ngModelChange)="updateModel.emit(
-                        { property: 'xPosition', value: $event, isInputValid: xPosition.valid && $event !== null })">
+                        { property: 'xPosition', value: $event, isInputValid: xPosition.valid && $event !== null })"
+                 (change)="positionProperties.xPosition = positionProperties.xPosition ?
+                                                          positionProperties.xPosition : 0">
         </mat-form-field>
         <mat-form-field *ngIf="positionProperties.yPosition !== undefined"
                         appearance="outline">
@@ -31,7 +33,9 @@ import { UnitService } from 'editor/src/app/services/unit.service';
           <input matInput type="number" #yPosition="ngModel" min="0"
                  [ngModel]="positionProperties.yPosition"
                  (ngModelChange)="updateModel.emit(
-                        { property: 'yPosition', value: $event, isInputValid: yPosition.valid && $event !== null })">
+                        { property: 'yPosition', value: $event, isInputValid: yPosition.valid && $event !== null })"
+                 (change)="positionProperties.yPosition = positionProperties.yPosition ?
+                                                          positionProperties.yPosition : 0">
         </mat-form-field>
       </div>
 
@@ -47,7 +51,9 @@ import { UnitService } from 'editor/src/app/services/unit.service';
             <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridColumnRange"
-                   (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })">
+                   (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })"
+                   (change)="positionProperties.gridColumnRange = positionProperties.gridColumnRange ?
+                                                                  positionProperties.gridColumnRange : 0">
           </mat-form-field>
         </div>
         <div class="flex-row">
@@ -60,7 +66,9 @@ import { UnitService } from 'editor/src/app/services/unit.service';
             <mat-label>{{'propertiesPanel.rowRange' | translate }}</mat-label>
             <input matInput type="number"
                    [ngModel]="positionProperties.gridRowRange"
-                   (ngModelChange)="updateModel.emit({ property: 'gridRowRange', value: $event })">
+                   (ngModelChange)="updateModel.emit({ property: 'gridRowRange', value: $event })"
+                   (change)="positionProperties.gridRowRange = positionProperties.gridRowRange ?
+                                                               positionProperties.gridRowRange : 0">
           </mat-form-field>
         </div>
 
@@ -117,6 +125,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
                (ngModelChange)="updateModel.emit({ property: 'zIndex',
                                                        value: $event,
                                                        isInputValid: zIndex.valid && $event !== null })"
+               (change)="positionProperties.zIndex = positionProperties.zIndex ? positionProperties.zIndex : 0"
                matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
       </mat-form-field>
     </fieldset>

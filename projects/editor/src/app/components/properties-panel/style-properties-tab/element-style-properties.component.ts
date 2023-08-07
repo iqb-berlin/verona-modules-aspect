@@ -87,14 +87,16 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
         <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>
         <input matInput type="number" #fontSize="ngModel" min="0"
                [ngModel]="styles.fontSize"
-               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('fontSize', $event)">
+               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('fontSize', $event)"
+               (change)="styles.fontSize = styles.fontSize ? styles.fontSize : 0">
       </mat-form-field>
       <mat-form-field *ngIf="styles.lineHeight !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.lineHeight' | translate }}</mat-label>
         <input matInput type="number" #lineHeight="ngModel" min="0"
                [ngModel]="styles.lineHeight"
-               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('lineHeight', $event)">
+               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('lineHeight', $event)"
+               (change)="styles.lineHeight = styles.lineHeight ? styles.lineHeight : 0">
       </mat-form-field>
 
       <mat-checkbox *ngIf="styles.bold !== undefined"
@@ -121,7 +123,8 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
       <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
         <input matInput type="number" [ngModel]="styles.borderRadius"
-               (input)="unitService.updateSelectedElementsStyleProperty('borderRadius', $any($event.target).value)">
+               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('borderRadius', $any($event.target).value)"
+               (change)="styles.borderRadius = styles.borderRadius ? styles.borderRadius : 0">
       </mat-form-field>
 
       <mat-form-field *ngIf="styles.borderColor !== undefined"
@@ -154,7 +157,8 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
         <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
         <input matInput type="number" #borderWidth="ngModel"
                [ngModel]="styles.borderWidth"
-               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('borderWidth', $event)">
+               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('borderWidth', $event)"
+               (change)="styles.borderRadius = styles.borderRadius ? styles.borderRadius : 0">
       </mat-form-field>
     </fieldset>
   `,

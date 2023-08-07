@@ -19,7 +19,9 @@ import { SelectionService } from '../../../../services/selection.service';
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.columnCount' | translate }}</mat-label>
         <input matInput type="number" [value]="$any(combinedProperties.columnCount)"
-               (input)="updateModel.emit({ property: 'columnCount', value: $any($event.target).value })">
+               (input)="updateModel.emit({ property: 'columnCount', value: $any($event.target).value })"
+               (change)="combinedProperties.columnCount = combinedProperties.columnCount ?
+                                                            combinedProperties.columnCount : 0">
       </mat-form-field>
       <div *ngIf="combinedProperties.highlightableYellow !== undefined ||
                 combinedProperties.highlightableTurquoise !== undefined ||

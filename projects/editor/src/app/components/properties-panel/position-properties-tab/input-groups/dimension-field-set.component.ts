@@ -21,7 +21,8 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
           <input matInput type="number" min="0"
                  [disabled]="!fixedWidth.checked"
                  [ngModel]="dimensions.width"
-                 (ngModelChange)="updateDimensionProperty('width', $event)">
+                 (ngModelChange)="updateDimensionProperty('width', $event)"
+                 (change)="dimensions.width = dimensions.width ? dimensions.width : 0">
         </mat-form-field>
 
         <mat-checkbox #fixedHeight [checked]="$any(dimensions.isHeightFixed)"
@@ -35,7 +36,8 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
           <input matInput type="number" min="0"
                  [disabled]="!fixedHeight.checked"
                  [ngModel]="dimensions.height"
-                 (ngModelChange)="updateDimensionProperty('height', $event)">
+                 (ngModelChange)="updateDimensionProperty('height', $event)"
+                 (change)="dimensions.height = dimensions.height ? dimensions.height : 0">
         </mat-form-field>
 
         <mat-checkbox #minWidthEnabled [checked]="dimensions.minWidth !== null"
@@ -100,7 +102,8 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
           <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
           <input matInput type="number" min="0"
                  [ngModel]="dimensions.width"
-                 (ngModelChange)="updateDimensionProperty('width', $event)">
+                 (ngModelChange)="updateDimensionProperty('width', $event)"
+                 (change)="dimensions.width = dimensions.width ? dimensions.width : 0">
         </mat-form-field>
         <mat-form-field>
           <mat-label>
@@ -108,7 +111,8 @@ import { DimensionProperties, PositionProperties } from 'common/models/elements/
           </mat-label>
           <input matInput type="number" min="0"
                  [ngModel]="dimensions.height"
-                 (ngModelChange)="updateDimensionProperty('height', $event)">
+                 (ngModelChange)="updateDimensionProperty('height', $event)"
+                 (change)="dimensions.height = dimensions.height ? dimensions.height : 0">
         </mat-form-field>
       </ng-template>
     </fieldset>

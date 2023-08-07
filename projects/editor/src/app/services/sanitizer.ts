@@ -101,14 +101,14 @@ export abstract class UnitDefinitionSanitizer {
   private static sanitizePositionMargins(position: Record<string, unknown>) {
     return {
       ...position,
-      marginLeft: typeof position.marginLeft === 'number' ?
-        { value: position.marginLeft, unit: 'px' } : position.marginLeft,
-      marginRight: typeof position.marginRight === 'number' ?
-        { value: position.marginRight, unit: 'px' } : position.marginRight,
-      marginTop: typeof position.marginTop === 'number' ?
-        { value: position.marginTop, unit: 'px' } : position.marginTop,
-      marginBottom: typeof position.marginBottom === 'number' ?
-        { value: position.marginBottom, unit: 'px' } : position.marginBottom
+      marginLeft: !position.marginLeft || typeof position.marginLeft === 'number' ?
+        { value: position.marginLeft || 0, unit: 'px' } : position.marginLeft,
+      marginRight: !position.marginRight || typeof position.marginRight === 'number' ?
+        { value: position.marginRight || 0, unit: 'px' } : position.marginRight,
+      marginTop: !position.marginTop || typeof position.marginTop === 'number' ?
+        { value: position.marginTop || 0, unit: 'px' } : position.marginTop,
+      marginBottom: !position.marginBottom || typeof position.marginBottom === 'number' ?
+        { value: position.marginBottom || 0, unit: 'px' } : position.marginBottom
     };
   }
 

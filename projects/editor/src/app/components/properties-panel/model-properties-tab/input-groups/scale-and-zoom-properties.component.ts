@@ -27,7 +27,9 @@ import { UIElement } from 'common/models/elements/element';
                (ngModelChange)="updateModel.emit({
                     property: 'magnifierSize',
                     value: $event,
-                    isInputValid: magnifierSize.valid})">
+                    isInputValid: magnifierSize.valid})"
+               (change)="combinedProperties.magnifierSize = combinedProperties.magnifierSize ?
+                                                            combinedProperties.magnifierSize : 0">
       </mat-form-field>
 
       <div *ngIf="combinedProperties.magnifierZoom !== undefined"

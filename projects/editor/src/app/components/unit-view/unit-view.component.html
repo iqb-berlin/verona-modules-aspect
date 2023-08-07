@@ -65,14 +65,14 @@
                   <input matInput type="number" min="0" #maxWidth="ngModel"
                          [ngModel]="page.maxWidth"
                          (click)="$event.stopPropagation()"
-                         (ngModelChange)="updateModel(page,'maxWidth', $event, maxWidth.valid)">
+                         (ngModelChange)="updateModel(page,'maxWidth', $event || 0, maxWidth.valid)">
                 </mat-form-field>
                 <mat-form-field class="menuItem" appearance="fill">
                   <mat-label>{{'pageProperties.marginWidth' | translate }}</mat-label>
                   <input matInput type="number" min="0" #margin="ngModel"
                          [ngModel]="page.margin"
                          (click)="$event.stopPropagation()"
-                         (ngModelChange)="updateModel(page,'margin', $event, margin.valid)">
+                         (ngModelChange)="updateModel(page,'margin', $event || 0, margin.valid)">
                 </mat-form-field>
                 <mat-form-field class="menuItem" appearance="fill">
                   <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
@@ -104,7 +104,7 @@
                   <input matInput type="number" min="0" max="100"
                          [ngModel]="page.alwaysVisibleAspectRatio"
                          (click)="$event.stopPropagation()"
-                         (ngModelChange)="updateModel(page, 'alwaysVisibleAspectRatio', $event)">
+                         (ngModelChange)="updateModel(page, 'alwaysVisibleAspectRatio', $event || 0)">
                 </mat-form-field>
               </div>
             </mat-menu>

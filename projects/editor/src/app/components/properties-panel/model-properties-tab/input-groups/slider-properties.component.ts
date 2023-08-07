@@ -12,7 +12,9 @@ import {
              (ngModelChange)="updateModel.emit({
                     property: 'minValue',
                     value: $event,
-                    isInputValid: minValue.valid})">
+                    isInputValid: minValue.valid})"
+             (change)="combinedProperties.minValue = combinedProperties.minValue ?
+                                                            combinedProperties.minValue : 0">
     </mat-form-field>
     <mat-form-field *ngIf="combinedProperties.maxValue !== undefined" appearance="fill">
       <mat-label>{{'propertiesPanel.maxValue' | translate }}</mat-label>
@@ -21,7 +23,9 @@ import {
              (ngModelChange)="updateModel.emit({
                     property: 'maxValue',
                     value: $event,
-                    isInputValid: maxValue.valid})">
+                    isInputValid: maxValue.valid})"
+             (change)="combinedProperties.maxValue = combinedProperties.maxValue ?
+                                                            combinedProperties.maxValue : 0">
     </mat-form-field>
     <mat-checkbox *ngIf="combinedProperties.showValues !== undefined"
                   [checked]="$any(combinedProperties.showValues)"

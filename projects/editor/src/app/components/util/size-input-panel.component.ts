@@ -39,6 +39,7 @@ export class SizeInputPanelComponent {
   @Output() valueUpdated = new EventEmitter<Measurement>();
 
   getCombinedString(): { value: number; unit: string } {
+    this.value = this.value ? this.value : 0;
     return { value: this.value, unit: this.unit };
   }
 }

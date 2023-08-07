@@ -18,7 +18,8 @@
              step="1000"
              [disabled]="enableReHide"
              [placeholder]="'section.visibilityDelay' | translate"
-             [(ngModel)]="visibilityDelay">
+             [(ngModel)]="visibilityDelay"
+             (change)="visibilityDelay = visibilityDelay || 0">
     </mat-form-field>
   </div>
 

@@ -284,7 +284,7 @@ export class UnitService {
   }
 
   private duplicateElement(element: UIElement): UIElement {
-    const newElement = ElementFactory.createElement(element);
+    const newElement = ElementFactory.createElement(JSON.parse(JSON.stringify(element)));
     newElement.id = this.idService.getAndRegisterNewID(newElement.type);
 
     if (newElement.position) {

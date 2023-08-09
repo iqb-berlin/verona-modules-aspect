@@ -69,7 +69,7 @@ export class UnitStateService {
     this.setElementCodeValue(elementValue.id, elementValue.value);
     const unitStateElementCode = this.getElementCodeById(elementValue.id);
     if (unitStateElementCode) {
-      if (unitStateElementCode.status !== 'VIRTUAL') {
+      if (unitStateElementCode.status !== 'UNSET') {
         this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
       } else {
         this._elementCodeChanged.next(unitStateElementCode);
@@ -158,7 +158,7 @@ export class UnitStateService {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       // when reloading a unit, elementCodes are already pushed
-      const status = domElement ? 'NOT_REACHED' : 'VIRTUAL';
+      const status = domElement ? 'NOT_REACHED' : 'UNSET';
       unitStateElementCode = { id, value, status };
       this.elementCodes.push(unitStateElementCode);
       this._elementCodeChanged.next(unitStateElementCode);

@@ -12,7 +12,7 @@ import { IntersectionDetector } from '../classes/intersection-detector';
   providedIn: 'root'
 })
 export class UnitStateService {
-  private _elementCodes: ElementCode[] = [];
+  elementCodes: ElementCode[] = [];
   private _pagePresented = new Subject<number>();
   private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
@@ -27,14 +27,6 @@ export class UnitStateService {
   getElementCodeById(id: string): ElementCode | undefined {
     return this.elementCodes
       .find((elementCode: ElementCode): boolean => elementCode.id === id);
-  }
-
-  set elementCodes(unitStateElementCodes: ElementCode[]) {
-    this._elementCodes = unitStateElementCodes;
-  }
-
-  get elementCodes(): ElementCode[] {
-    return this._elementCodes;
   }
 
   get elementCodeChanged(): Observable<ElementCode> {

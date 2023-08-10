@@ -17,6 +17,7 @@ import { VeronaPostService } from 'player/modules/verona/services/verona-post.se
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { UnitNavParam } from 'common/models/elements/button/button';
+import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -47,7 +48,8 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     private veronaPostService: VeronaPostService,
     private navigationService: NavigationService,
     private anchorService: AnchorService,
-    public validationService: ValidationService
+    public validationService: ValidationService,
+    private stateVariableStateService: StateVariableStateService
   ) {
     super();
   }
@@ -157,7 +159,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
             this.anchorService.toggleAnchor(buttonEvent.param as string);
             break;
           case 'stateVariableChange':
-            this.unitStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
+            this.stateVariableStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
             break;
           default:
         }

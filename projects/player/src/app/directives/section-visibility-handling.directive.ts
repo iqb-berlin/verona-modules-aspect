@@ -1,7 +1,7 @@
 import {
   Directive, ElementRef, Input, OnDestroy, OnInit
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
@@ -9,6 +9,7 @@ import { StorableTimer } from 'player/src/app/classes/storable-timer';
 import { ValueChangeElement } from 'common/models/elements/element';
 import { ElementCode } from 'player/modules/verona/models/verona';
 import { Storable } from 'player/src/app/classes/storable';
+import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]'
@@ -24,7 +25,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   constructor(
     private elementRef: ElementRef,
-    private unitStateService: UnitStateService
+    private unitStateService: UnitStateService,
+    private stateVariableStateService: StateVariableStateService
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +42,10 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       (this.section.animatedVisibility && !this.isAnimatedVisibilityFullFilled)
     ) {
       this.displayHiddenSection();
-      this.unitStateService.elementCodeChanged
+      merge(
+        this.unitStateService.elementCodeChanged,
+        this.stateVariableStateService.elementCodeChanged
+      )
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(code => {
           if (this.isRuleCode(code)) {
@@ -51,12 +56,12 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private get isTimerStateFullFilled(): boolean {
-    return this.unitStateService
+    return this.stateVariableStateService
       .getElementCodeById(this.timerStateVariableId)?.value as number >= this.section.visibilityDelay;
   }
 
   private get isAnimatedVisibilityFullFilled(): boolean {
-    return this.unitStateService
+    return this.stateVariableStateService
       .getElementCodeById(this.animationVariableId)?.value === 1;
   }
 
@@ -82,10 +87,10 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     const timerStateVariable = new StorableTimer(
       this.timerStateVariableId, this.section.visibilityDelay
     );
-    this.unitStateService.registerElement(timerStateVariable.id, timerStateVariable.value);
+    this.stateVariableStateService.registerElementCode(timerStateVariable.id, timerStateVariable.value);
     timerStateVariable.timerStateValueChanged
       .subscribe((value: ValueChangeElement) => {
-        this.unitStateService.changeElementCodeValue(value);
+        this.stateVariableStateService.changeElementCodeValue(value);
       });
     timerStateVariable.run();
   }
@@ -93,7 +98,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private displayHiddenSection(): void {
     if (this.areVisibilityRulesFulfilled() || this.rulesAreFulfilled) {
       if (this.section.visibilityDelay) {
-        if (!this.unitStateService.getElementCodeById(this.timerStateVariableId)) {
+        if (!this.stateVariableStateService.getElementCodeById(this.timerStateVariableId)) {
           this.rulesAreFulfilled = true;
           this.initTimerStateVariable();
         }
@@ -111,7 +116,8 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     if (visible) {
       if (this.section.animatedVisibility && !this.isAnimatedVisibilityFullFilled) {
         const animationVariable = new Storable(this.animationVariableId, 1);
-        this.unitStateService.registerElement(animationVariable.id, 1);
+        this.stateVariableStateService.registerElementCode(animationVariable.id, 0);
+        this.stateVariableStateService.changeElementCodeValue({ id: animationVariable.id, value: 1 });
         this.scrollIntoView();
       }
       if (!this.section.enableReHide) {
@@ -119,6 +125,11 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
         this.ngUnsubscribe.complete();
       }
     }
+  }
+
+  private getAnyElementCodeById(id: string): ElementCode | undefined {
+    return this.unitStateService.getElementCodeById(id) ||
+      this.stateVariableStateService.getElementCodeById(id);
   }
 
   private scrollIntoView(): void {
@@ -130,42 +141,42 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   private areVisibilityRulesFulfilled(): boolean {
     return this.section.visibilityRules.some(rule => {
-      if (this.unitStateService.getElementCodeById(rule.id)) {
+      if (this.getAnyElementCodeById(rule.id)) {
         switch (rule.operator) {
           case '=':
-            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() === rule.value;
+            return this.getAnyElementCodeById(rule.id)?.value?.toString() === rule.value;
           case '≠':
-            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString() !== rule.value;
+            return this.getAnyElementCodeById(rule.id)?.value?.toString() !== rule.value;
           case '>':
-            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) > Number(rule.value);
+            return Number(this.getAnyElementCodeById(rule.id)?.value) > Number(rule.value);
           case '<':
-            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) < Number(rule.value);
+            return Number(this.getAnyElementCodeById(rule.id)?.value) < Number(rule.value);
           case '≥':
-            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) >= Number(rule.value);
+            return Number(this.getAnyElementCodeById(rule.id)?.value) >= Number(rule.value);
           case '≤':
-            return Number(this.unitStateService.getElementCodeById(rule.id)?.value) <= Number(rule.value);
+            return Number(this.getAnyElementCodeById(rule.id)?.value) <= Number(rule.value);
           case 'contains':
-            return this.unitStateService.getElementCodeById(rule.id)?.value?.toString().includes(rule.value);
+            return this.getAnyElementCodeById(rule.id)?.value?.toString().includes(rule.value);
           case 'pattern':
             // We use a similar implementation to Angular's PatternValidator
-            if (this.unitStateService.getElementCodeById(rule.id)?.value !== null) {
+            if (this.getAnyElementCodeById(rule.id)?.value !== null) {
               let regexStr = (rule.value.charAt(0) !== '^') ? `^${rule.value}` : rule.value;
               if (rule.value.charAt(rule.value.length - 1) !== '$') regexStr += '$';
               const regex = new RegExp(regexStr);
-              return regex.test(this.unitStateService.getElementCodeById(rule.id)?.value?.toString() as string);
+              return regex.test(this.getAnyElementCodeById(rule.id)?.value?.toString() as string);
             }
             return false;
           case 'minLength':
-            return (this.unitStateService.getElementCodeById(rule.id)?.value as string)
+            return (this.getAnyElementCodeById(rule.id)?.value as string)
               .toString()?.length >= Number(rule.value);
           case 'maxLength':
-            return (this.unitStateService.getElementCodeById(rule.id)?.value as string)
+            return (this.getAnyElementCodeById(rule.id)?.value as string)
               .toString()?.length <= Number(rule.value);
           default:
             return false;
         }
       }
-      return true;
+      return false;
     });
   }
 

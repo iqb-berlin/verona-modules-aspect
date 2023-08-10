@@ -18,6 +18,7 @@ import { VersionManager } from 'common/services/version-manager';
 import { InstantiationEror } from 'common/util/errors';
 import { MatDialog } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
+import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 
 @Component({
   selector: 'aspect-unit',
@@ -29,6 +30,7 @@ export class UnitComponent implements OnInit {
   playerConfig: PlayerConfig = {};
 
   constructor(public unitStateService: UnitStateService,
+              public stateVariableStateService: StateVariableStateService,
               private metaDataService: MetaDataService,
               private veronaPostService: VeronaPostService,
               private veronaSubscriptionService: VeronaSubscriptionService,
@@ -62,7 +64,7 @@ export class UnitComponent implements OnInit {
         LogService.info('player: unitStateElementCodes', this.unitStateService.elementCodes);
         this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
         this.veronaPostService.sessionID = message.sessionId;
-        this.initUnitStateService(message, unit);
+        this.initElementCodes(message, unit);
         this.elementModelElementCodeMappingService.dragNDropValueObjects = [
           ...unit.getAllElements('drop-list'),
           ...unit.getAllElements('drop-list-simple')]
@@ -92,12 +94,14 @@ export class UnitComponent implements OnInit {
     });
   }
 
-  private initUnitStateService(message: VopStartCommand, unitDefinition: Unit): void {
+  private initElementCodes(message: VopStartCommand, unitDefinition: Unit): void {
     this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
       JSON.parse(message.unitState.dataParts.elementCodes) : [];
+    this.stateVariableStateService.elementCodes = message.unitState?.dataParts?.stateVariableCodes ?
+      JSON.parse(message.unitState.dataParts.stateVariableCodes) : [];
     unitDefinition.stateVariables
-      .map(stateVariable => this.unitStateService
-        .registerElement(stateVariable.id, stateVariable.value));
+      .map(stateVariable => this.stateVariableStateService
+        .registerElementCode(stateVariable.id, stateVariable.value));
   }
 
   private reset(): void {

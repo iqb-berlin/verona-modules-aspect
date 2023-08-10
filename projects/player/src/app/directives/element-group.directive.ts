@@ -14,7 +14,7 @@ export abstract class ElementGroupDirective {
   ): void {
     const elementModel = elementComponent.elementModel;
     const relevantPageIndex = elementModel.isRelevantForPresentationComplete ? pageIndex : null;
-    this.unitStateService.registerElement(
+    this.unitStateService.registerElementCode(
       id, value, elementComponent.domElement, relevantPageIndex
     );
   }

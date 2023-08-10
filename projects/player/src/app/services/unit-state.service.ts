@@ -5,32 +5,23 @@ import {
   Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue
 } from 'player/modules/verona/models/verona';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { InputElementValue, ValueChangeElement } from 'common/models/elements/element';
+import { InputElementValue } from 'common/models/elements/element';
+import { ElementCodeService } from 'player/src/app/classes/element-code-service';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnitStateService {
-  elementCodes: ElementCode[] = [];
+export class UnitStateService extends ElementCodeService {
   private _pagePresented = new Subject<number>();
-  private _elementCodeChanged = new Subject<ElementCode>();
   private presentedPages: number[] = [];
   private elementIdPageIndexMap: { [elementId: string]: number } = {};
   private ignoredPageIndexElementIds: string[] = [];
   private intersectionDetector: IntersectionDetector;
 
   constructor(@Inject(DOCUMENT) private document: Document) {
+    super();
     this.intersectionDetector = new IntersectionDetector(document, '0px 0px 0px 0px');
-  }
-
-  getElementCodeById(id: string): ElementCode | undefined {
-    return this.elementCodes
-      .find((elementCode: ElementCode): boolean => elementCode.id === id);
-  }
-
-  get elementCodeChanged(): Observable<ElementCode> {
-    return this._elementCodeChanged.asObservable();
   }
 
   get pagePresented(): Observable<number> {
@@ -44,10 +35,10 @@ export class UnitStateService {
     return (this.elementPageIndices.length === this.presentedPages.length) ? 'complete' : 'some';
   }
 
-  registerElement(elementId: string,
-                  elementValue: InputElementValue,
-                  domElement: Element | null = null,
-                  pageIndex: number | null = null): void {
+  registerElementCode(elementId: string,
+                      elementValue: InputElementValue,
+                      domElement: Element | null = null,
+                      pageIndex: number | null = null): void {
     if (pageIndex !== null) {
       this.elementIdPageIndexMap[elementId] = pageIndex;
     } else {
@@ -56,26 +47,13 @@ export class UnitStateService {
     this.addElementCode(elementId, elementValue, domElement);
   }
 
-  changeElementCodeValue(elementValue: ValueChangeElement): void {
-    LogService.debug(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
-    this.setElementCodeValue(elementValue.id, elementValue.value);
-    const unitStateElementCode = this.getElementCodeById(elementValue.id);
-    if (unitStateElementCode) {
-      if (unitStateElementCode.status !== 'UNSET') {
-        this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
-      } else {
-        this._elementCodeChanged.next(unitStateElementCode);
-      }
-    }
-  }
-
   changeElementCodeStatus(elementStatus: StatusChangeElement): void {
     LogService.debug(`player: changeElementStatus ${elementStatus.id}: ${elementStatus.status}`);
     this.setElementCodeStatus(elementStatus.id, elementStatus.status);
   }
 
   reset(): void {
-    this.elementCodes = [];
+    super.reset();
     this.presentedPages = [];
     this.elementIdPageIndexMap = {};
     this.ignoredPageIndexElementIds = [];
@@ -102,14 +80,7 @@ export class UnitStateService {
     }, []);
   }
 
-  private setElementCodeValue(id: string, value: InputElementValue): void {
-    const unitStateElementCode = this.getElementCodeById(id);
-    if (unitStateElementCode) {
-      unitStateElementCode.value = value;
-    }
-  }
-
-  private setElementCodeStatus(id: string, status: ElementCodeStatus): void {
+  override setElementCodeStatus(id: string, status: ElementCodeStatus): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       const actualStatus = unitStateElementCode.status;
@@ -150,13 +121,10 @@ export class UnitStateService {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       // when reloading a unit, elementCodes are already pushed
-      const status = domElement ? 'NOT_REACHED' : 'UNSET';
-      unitStateElementCode = { id, value, status };
-      this.elementCodes.push(unitStateElementCode);
-      this._elementCodeChanged.next(unitStateElementCode);
-    } else if (Object
-      .keys(this.elementIdPageIndexMap).length === this.elementCodes.length - this.ignoredPageIndexElementIds.length
-    ) {
+      unitStateElementCode = { id, value, status: 'NOT_REACHED' };
+      this.addInitialElementCode(unitStateElementCode);
+    } else if (Object.keys(this.elementIdPageIndexMap)
+      .length === this.elementCodes.length - this.ignoredPageIndexElementIds.length) {
       // if all elements are registered, we can rebuild the presentedPages array
       this.buildPresentedPages();
     }

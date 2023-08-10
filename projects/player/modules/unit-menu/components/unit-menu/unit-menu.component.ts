@@ -21,6 +21,9 @@ import { Page } from 'common/models/page';
 export class UnitMenuComponent {
   @Input() scrollPages!: Page[];
   @Input() elementCodes!: ElementCode[];
+  @Input() stateVariableCodes!: ElementCode[];
+
+  private postTarget: Window = window;
 
   private vopStartCommandMessage: VopStartCommand = {
     type: 'vopStartCommand',
@@ -59,25 +62,30 @@ export class UnitMenuComponent {
   }
 
   reloadUnit(): void {
-    this.vopStartCommandMessage.unitState = { dataParts: { elementCodes: JSON.stringify(this.elementCodes) } };
+    this.vopStartCommandMessage.unitState = {
+      dataParts: {
+        elementCodes: JSON.stringify(this.elementCodes),
+        stateVariableCodes: JSON.stringify(this.stateVariableCodes)
+      }
+    };
     this.postMessage(this.vopStartCommandMessage);
   }
 
   goToPage(pageIndex: number) {
     this.vopPageNavigationCommandMessage.target = pageIndex.toString();
-    window.postMessage( this.vopPageNavigationCommandMessage, '*');
+    this.postTarget.postMessage(this.vopPageNavigationCommandMessage, '*');
   }
 
   stop() {
-    window.postMessage( this.vopStopCommandMessage, '*');
+    this.postTarget.postMessage(this.vopStopCommandMessage, '*');
   }
 
   continue() {
-    window.postMessage( this.vopContinueCommandMessage, '*');
+    this.postTarget.postMessage(this.vopContinueCommandMessage, '*');
   }
 
   request() {
-    window.postMessage( this.vopGetStateRequestMessage, '*');
+    this.postTarget.postMessage(this.vopGetStateRequestMessage, '*');
   }
 
   private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState): void {
@@ -88,6 +96,6 @@ export class UnitMenuComponent {
   }
 
   private postMessage = (message: VopStartCommand | VopPageNavigationCommand): void => {
-    window.postMessage(message, '*');
+    this.postTarget.postMessage(message, '*');
   };
 }

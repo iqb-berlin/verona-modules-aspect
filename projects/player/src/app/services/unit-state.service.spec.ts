@@ -30,7 +30,7 @@ describe('UnitStateService', () => {
   it('should register an element', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element', 'TEST', element, 1);
+    service.registerElementCode('element', 'TEST', element, 1);
     expect(service.elementCodes).toEqual([{ id: 'element', status: 'NOT_REACHED', value: 'TEST' }]);
   });
 
@@ -63,14 +63,14 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be none', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element', 'TEST', element, 1);
+    service.registerElementCode('element', 'TEST', element, 1);
     expect(service.presentedPagesProgress).toEqual('none');
   });
 
   it('presentedPagesProgress should be complete', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element', 'TEST', element, 1);
+    service.registerElementCode('element', 'TEST', element, 1);
     service.changeElementCodeStatus({ id: 'element', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('complete');
   });
@@ -78,8 +78,8 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be none', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element_1', 'TEST1', element, 1);
-    service.registerElement('element_2', 'TEST2', element, 1);
+    service.registerElementCode('element_1', 'TEST1', element, 1);
+    service.registerElementCode('element_2', 'TEST2', element, 1);
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('none');
   });
@@ -87,8 +87,8 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be some', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element_1', 'TEST1', element, 1);
-    service.registerElement('element_2', 'TEST2', element, 2);
+    service.registerElementCode('element_1', 'TEST1', element, 1);
+    service.registerElementCode('element_2', 'TEST2', element, 2);
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('some');
   });
@@ -96,8 +96,8 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be complete', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element_1', 'TEST1', element, 1);
-    service.registerElement('element_2', 'TEST2', element, 2);
+    service.registerElementCode('element_1', 'TEST1', element, 1);
+    service.registerElementCode('element_2', 'TEST2', element, 2);
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
     service.changeElementCodeStatus({ id: 'element_2', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('complete');
@@ -106,7 +106,7 @@ describe('UnitStateService', () => {
   it('presented page with index 1 should be added', done => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element_1', 'TEST1', element, 1);
+    service.registerElementCode('element_1', 'TEST1', element, 1);
     service.pagePresented
       .subscribe(index => {
         expect(index).toEqual(1);
@@ -118,7 +118,7 @@ describe('UnitStateService', () => {
   it('presented page with index 1 should be added', done => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElement('element_1', 'TEST1', element, 1);
+    service.registerElementCode('element_1', 'TEST1', element, 1);
     service.pagePresented
       .subscribe(index => {
         expect(index).toEqual(1);

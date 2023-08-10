@@ -5,6 +5,7 @@ import { Progress, UnitState } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { LogService } from 'player/modules/logging/services/log.service';
+import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { UnitStateService } from '../services/unit-state.service';
 import { MediaPlayerService } from '../services/media-player.service';
 import { ValidationService } from '../services/validation.service';
@@ -17,6 +18,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
 
   constructor(
     private unitStateService: UnitStateService,
+    private stateVariableStateService: StateVariableStateService,
     private mediaPlayerService: MediaPlayerService,
     private veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
@@ -27,7 +29,8 @@ export class UnitStateDirective implements OnInit, OnDestroy {
     merge(
       this.mediaPlayerService.mediaStatusChanged,
       this.unitStateService.pagePresented,
-      this.unitStateService.elementCodeChanged
+      this.unitStateService.elementCodeChanged,
+      this.stateVariableStateService.elementCodeChanged
     )
       .pipe(
         debounceTime(500),
@@ -45,10 +48,13 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   private sendVopStateChangedNotification(): void {
-    LogService.debug('player: this.unitStateService.unitStateElementCodes',
+    LogService.debug('player: this.unitStateService.elementCodes',
       this.unitStateService.elementCodes);
+    LogService.debug('player: this.stateVariableStateService.elementCodes',
+      this.stateVariableStateService.elementCodes);
     const unitState: UnitState = {
       dataParts: {
+        stateVariableCodes: JSON.stringify(this.stateVariableStateService.elementCodes),
         elementCodes: JSON.stringify(this.unitStateService.elementCodes)
       },
       presentationProgress: this.presentationProgress,
@@ -61,6 +67,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.unitStateService.reset();
+    this.stateVariableStateService.reset();
     this.mediaPlayerService.reset();
     this.validatorService.reset();
     this.ngUnsubscribe.next();

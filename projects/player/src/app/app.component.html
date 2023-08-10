@@ -3,6 +3,7 @@
     *ngIf="isStandalone"
     class="unit-definition-menu"
     [scrollPages]="unit.pages | scrollPages"
-    [elementCodes]="unit.unitStateService.elementCodes">
+    [elementCodes]="unit.unitStateService.elementCodes"
+    [stateVariableCodes]="unit.stateVariableStateService.elementCodes">
   </aspect-unit-menu>
 </aspect-unit>

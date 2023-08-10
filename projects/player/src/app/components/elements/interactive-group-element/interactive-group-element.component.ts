@@ -8,6 +8,7 @@ import { ImageElement } from 'common/models/elements/media-elements/image';
 import { InputElementValue, ValueChangeElement } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
+import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { NavigationService } from '../../../services/navigation.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -29,7 +30,8 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
     public veronaPostService: VeronaPostService,
     public navigationService: NavigationService,
     private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-    private anchorService: AnchorService
+    private anchorService: AnchorService,
+    private stateVariableStateService: StateVariableStateService
   ) {
     super();
   }
@@ -60,7 +62,7 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
         this.anchorService.toggleAnchor(buttonEvent.param as string);
         break;
       case 'stateVariableChange':
-        this.unitStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
+        this.stateVariableStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
         break;
       default:
     }

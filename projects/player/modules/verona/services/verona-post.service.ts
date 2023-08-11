@@ -15,9 +15,10 @@ import {
 })
 export class VeronaPostService {
   sessionID: string | undefined;
+  postTarget: Window = window.parent;
 
-  private static sendMessage(message: VopMessage): void {
-    window.parent.postMessage(message, '*');
+  private sendMessage(message: VopMessage): void {
+    this.postTarget.postMessage(message, '*');
   }
 
   sendVopStateChangedNotification(values: {
@@ -25,7 +26,7 @@ export class VeronaPostService {
     playerState?: PlayerState,
     log?: LogData[]
   }): void {
-    VeronaPostService.sendMessage(this.createVopStateChangedNotification(values));
+    this.sendMessage(this.createVopStateChangedNotification(values));
   }
 
   private createVopStateChangedNotification(values: {
@@ -41,10 +42,10 @@ export class VeronaPostService {
     };
   }
 
-  static sendReadyNotification(playerMetadata: VopMetaData): void {
+  sendReadyNotification(playerMetadata: VopMetaData): void {
     if (playerMetadata) {
       LogService.debug('player: sendVopReadyNotification', playerMetadata);
-      VeronaPostService.sendMessage({
+      this.sendMessage({
         type: 'vopReadyNotification',
         metadata: playerMetadata
       });
@@ -54,15 +55,15 @@ export class VeronaPostService {
   }
 
   sendVopUnitNavigationRequestedNotification(target: NavigationTarget): void {
-    VeronaPostService.sendMessage({
+    this.sendMessage({
       type: 'vopUnitNavigationRequestedNotification',
       sessionId: this.sessionID as string,
       target: target
     });
   }
 
-  static sendVopWindowFocusChangedNotification(focused: boolean): void {
-    VeronaPostService.sendMessage({
+  sendVopWindowFocusChangedNotification(focused: boolean): void {
+    this.sendMessage({
       type: 'vopWindowFocusChangedNotification',
       timeStamp: Date.now(),
       hasFocus: focused

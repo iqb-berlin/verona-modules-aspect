@@ -85,7 +85,7 @@ describe('VeronaPostService', () => {
         eventSubscription.unsubscribe();
         done();
       });
-    VeronaPostService.sendReadyNotification(metadata);
+    service.sendReadyNotification(metadata);
   });
 
   it('should post a VopUnitNavigationRequestedNotification', done => {
@@ -119,6 +119,6 @@ describe('VeronaPostService', () => {
         eventSubscription.unsubscribe();
         done();
       });
-    VeronaPostService.sendVopWindowFocusChangedNotification(true);
+    service.sendVopWindowFocusChangedNotification(true);
   });
 });

@@ -10,5 +10,10 @@
   "dialogContent": {
     "wrongUnitDefinitionType": "Der Player benötigt einen Unit-Definition-Type in der Version {{version}}.",
     "wrongUnitStateDataType": "Der Player benötigt einen Unit-State-Data-Type in der Version {{version}}."
+  },
+  "errorMessage": {
+    "unitDefinitionIsNotReadable": "Unit definition konnte nicht gelesen werden!",
+    "unitDefinitionIsNewer": "Unit-Version ist neuer als dieser Player. Bitte mit der neuesten Version öffnen.",
+    "unitDefinitionIsOutdated": "Unit-Version ist veraltet. Sie kann im neuesten Editor geöffnet und aktualisiert werden."
   }
 }

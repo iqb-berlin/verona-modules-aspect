@@ -19,6 +19,7 @@ import { InstantiationEror } from 'common/util/errors';
 import { MatDialog } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'aspect-unit',
@@ -38,7 +39,8 @@ export class UnitComponent implements OnInit {
               private sanitizationService: SanitizationService,
               private anchorService: AnchorService,
               private dialog: MatDialog,
-              private changeDetectorRef: ChangeDetectorRef) {
+              private changeDetectorRef: ChangeDetectorRef,
+              private translateService: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -54,9 +56,9 @@ export class UnitComponent implements OnInit {
         const unitDefinition = JSON.parse(message.unitDefinition as string);
         if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
           if (VersionManager.isNewer(unitDefinition)) {
-            throw Error('Unit-Version ist neuer als dieser Player. Bitte mit der neuesten Version öffnen.');
+            throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
           }
-          throw Error('Unit-Version ist veraltet. Sie kann im neuesten Editor geöffnet und aktualisiert werden.');
+          throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
         }
         const unit: Unit = new Unit(unitDefinition);
         this.pages = unit.pages;
@@ -75,11 +77,11 @@ export class UnitComponent implements OnInit {
         if (e instanceof InstantiationEror) {
           // eslint-disable-next-line no-console
           console.error('Failing element blueprint: ', e.faultyBlueprint);
-          this.showErrorDialog('Unit definition konnte nicht gelesen werden!');
+          this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
         } else if (e instanceof Error) {
           this.showErrorDialog(e.message);
         } else {
-          this.showErrorDialog('Unit definition konnte nicht gelesen werden!');
+          this.showErrorDialog(this.translateService.instant('errorMessage.unitDefinitionIsNotReadable'));
         }
       }
     } else {

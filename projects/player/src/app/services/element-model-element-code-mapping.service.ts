@@ -11,8 +11,8 @@ import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
-import { TextMarkingService } from './text-marking.service';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { TextMarkingService } from './text-marking.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +21,7 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
-  mapToElementModelValue = (elementCodeValue: InputElementValue | undefined, elementModel: UIElement)
-  : InputElementValue => {
+  mapToElementModelValue(elementCodeValue: InputElementValue | undefined, elementModel: UIElement): InputElementValue {
     switch (elementModel.type) {
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
@@ -62,9 +61,9 @@ export class ElementModelElementCodeMappingService {
       default:
         return elementCodeValue !== undefined ? elementCodeValue : (elementModel as InputElement).value;
     }
-  };
+  }
 
-  mapToElementCodeValue = (elementModelValue: InputElementValue, elementType: UIElementType): InputElementValue => {
+  static mapToElementCodeValue(elementModelValue: InputElementValue, elementType: UIElementType): InputElementValue {
     switch (elementType) {
       case 'drop-list':
         return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
@@ -81,7 +80,7 @@ export class ElementModelElementCodeMappingService {
       default:
         return elementModelValue;
     }
-  };
+  }
 
   private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {
     return this.dragNDropValueObjects.find(dropListValue => dropListValue.id === id);

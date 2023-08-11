@@ -38,7 +38,7 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
 
   ngAfterViewInit(): void {
     const initialValue: InputElementValue = this.elementModel.type === 'image' ?
-      this.elementModelElementCodeMappingService.mapToElementCodeValue(
+      ElementModelElementCodeMappingService.mapToElementCodeValue(
         (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type) :
       null;
     this.registerAtUnitStateService(

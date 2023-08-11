@@ -50,7 +50,7 @@ export class TextInputGroupElementComponent extends ElementFormGroupDirective im
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
-      this.elementModelElementCodeMappingService
+      ElementModelElementCodeMappingService
         .mapToElementCodeValue((this.elementModel as InputElement).value, this.elementModel.type),
       this.elementComponent,
       this.pageIndex

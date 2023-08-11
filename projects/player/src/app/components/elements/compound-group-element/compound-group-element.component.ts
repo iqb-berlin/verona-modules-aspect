@@ -72,7 +72,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
       const childModel = child.elementModel as InputElement;
       const initialValue: InputElementValue = childModel.type === 'button' ?
         null :
-        this.elementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type);
+        ElementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type);
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
       if (childModel.type === 'text-field-simple') {
         this.manageKeyInputToggling(child as TextFieldSimpleComponent, childModel);

@@ -32,7 +32,7 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
-      this.elementModelElementCodeMappingService.mapToElementCodeValue(
+      ElementModelElementCodeMappingService.mapToElementCodeValue(
         this.appDefinition,
         this.elementModel.type
       ),

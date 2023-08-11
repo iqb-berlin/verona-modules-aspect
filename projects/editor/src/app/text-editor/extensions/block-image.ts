@@ -37,7 +37,7 @@ export const BlockImage = Image.extend({
     return [
       {
         tag: 'img',
-        getAttrs: node => (node as HTMLElement).style.verticalAlign !== 'middle' && !this.options.inline && null
+        getAttrs: () => !this.options.inline && null
       }
     ];
   },

@@ -54,16 +54,10 @@ export class UnitComponent implements OnInit {
       try {
         LogService.debug('player: unitDefinition', message.unitDefinition);
         const unitDefinition = JSON.parse(message.unitDefinition as string);
-        if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
-          if (VersionManager.isNewer(unitDefinition)) {
-            throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
-          }
-          throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
-        }
+        this.checkUnitdefinitionVersion(unitDefinition);
         const unit: Unit = new Unit(unitDefinition);
         this.pages = unit.pages;
         this.playerConfig = message.playerConfig || {};
-        LogService.info('player: unitStateElementCodes', this.unitStateService.elementCodes);
         this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
         this.veronaPostService.sessionID = message.sessionId;
         this.initElementCodes(message, unit);
@@ -86,6 +80,15 @@ export class UnitComponent implements OnInit {
       }
     } else {
       LogService.warn('player: message has no unitDefinition');
+    }
+  }
+
+  private checkUnitdefinitionVersion(unitDefinition: Record<string, unknown>): void {
+    if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
+      if (VersionManager.isNewer(unitDefinition)) {
+        throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
+      }
+      throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));
     }
   }
 

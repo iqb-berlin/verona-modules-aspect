@@ -7,14 +7,6 @@ body {
   display: inline;
 }
 
-.error-tooltip {
-  border: 1px solid #f44336;
-  margin-top: 8px !important;
-  font-size: 12px;
-  background-color: white;
-  color: #f44336 !important;
-}
-
 .active-anchor {
   scroll-margin: 100px 0;
 }

@@ -155,7 +155,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     '.cdk-drag-placeholder {transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);}',
     '.cdk-drag-placeholder * {visibility: hidden;}',
     '.static-placeholder .cdk-drag-placeholder {transform: unset !important;}',
-    '.error-message {font-size: 75%;}',
+    '.error-message {font-size: 12px;}',
     '.baseline-helper {width: 0; display: inline-block;}'
   ]
 })

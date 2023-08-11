@@ -9,6 +9,10 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
 @Component({
   selector: 'aspect-text-field-simple',
   template: `
+    <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
+      [elementModel]="elementModel"
+      [elementFormControl]="elementFormControl">
+    </aspect-cloze-child-error-message>
     <input #input
            class="cloze-child"
            autocomplete="off"
@@ -16,9 +20,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
            autocorrect="off"
            spellcheck="false"
            [class.errors]="elementFormControl.errors && elementFormControl.touched"
-           [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
-                         (elementFormControl.errors | errorTransform: elementModel) : ''"
-           [matTooltipClass]="'error-tooltip'"
            [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.color]="elementModel.styling.fontColor"

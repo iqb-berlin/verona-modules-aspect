@@ -7,7 +7,7 @@ import { UIElement } from 'common/models/elements/element';
 })
 export class ErrorTransformPipe implements PipeTransform {
   transform(validationErrors: ValidationErrors, elementModel: UIElement): string {
-    const validationMessages = this.getValidationMessages(elementModel);
+    const validationMessages = ErrorTransformPipe.getValidationMessages(elementModel);
     let returnMessage = '';
 
     Object.keys(validationErrors).forEach(errorKey => {
@@ -19,7 +19,7 @@ export class ErrorTransformPipe implements PipeTransform {
     return returnMessage;
   }
 
-  private getValidationMessages = (elementModel: UIElement): Record<string, string> => ({
+  private static getValidationMessages = (elementModel: UIElement): Record<string, string> => ({
     required: elementModel.requiredWarnMessage as string,
     minlength: elementModel.minLengthWarnMessage as string,
     maxlength: elementModel.maxLengthWarnMessage as string,

@@ -5,15 +5,16 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
 @Component({
   selector: 'aspect-toggle-button',
   template: `
+    <aspect-cloze-child-error-message *ngIf="elementFormControl.errors && elementFormControl.touched"
+                                      [elementModel]="elementModel"
+                                      [elementFormControl]="elementFormControl">
+    </aspect-cloze-child-error-message>
     <mat-button-toggle-group [class.errors]="elementFormControl.errors && elementFormControl.touched"
                              [formControl]="elementFormControl"
                              [isDisabled]="elementModel.readOnly"
                              [value]="elementModel.value"
                              [vertical]="elementModel.verticalOrientation"
                              [style.height.px]="elementModel.dimensions.isHeightFixed ? elementModel.dimensions.height : null"
-                             [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
-                                           (elementFormControl.errors | errorTransform: elementModel) : ''"
-                             [matTooltipClass]="'error-tooltip'"
                              (focusout)="elementFormControl.markAsTouched()">
       <!--Add dummy div - otherwise toggle button with empty options will not be in one line-->
       <div *ngIf="elementModel.options.length === 0"

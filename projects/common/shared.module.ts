@@ -30,6 +30,7 @@ import { DynamicRowsDirective } from 'common/directives/dynamic-rows.directive';
 import { TooltipEventTooltipDirective } from 'common/components/tooltip/tooltip-event-tooltip.directive';
 import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
 import { PointerEventTooltipDirective } from 'common/components/tooltip/pointer-event-tooltip.directive';
+import { ClozeChildErrorMessage } from 'common/components/compound-elements/cloze/cloze-child-error-message';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -162,7 +163,8 @@ import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.
     UnitDefErrorDialogComponent,
     TooltipComponent,
     TooltipEventTooltipDirective,
-    PointerEventTooltipDirective
+    PointerEventTooltipDirective,
+    ClozeChildErrorMessage
   ],
   exports: [
     CommonModule,

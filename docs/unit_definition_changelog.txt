@@ -114,7 +114,9 @@ iqb-aspect-definition@1.0.0
   - add "isRelevantForPresentationComplete"
 - DragNDropValueObject:
   - add "audioSrc"
+- TextAreaElement:
+  - add "hasAutoHeight"
 
 4.1.0
 - Checkbox:
-  - new property: crossOutChecked
+  - new property: crossOutChecked //warum nicht 4.0.0?

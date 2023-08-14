@@ -37,7 +37,7 @@ import { TextFieldComponent } from './components/input-elements/text-field.compo
 import {
   TextFieldSimpleComponent
 } from './components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { TextAreaComponent } from './components/input-elements/text-area.component';
+import { AutoHeightDirective, TextAreaComponent } from './components/input-elements/text-area.component';
 import { CheckboxComponent } from './components/input-elements/checkbox.component';
 import { DropdownComponent } from './components/input-elements/dropdown.component';
 import { RadioButtonGroupComponent } from './components/input-elements/radio-button-group.component';
@@ -164,7 +164,8 @@ import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.
     TooltipComponent,
     TooltipEventTooltipDirective,
     PointerEventTooltipDirective,
-    ClozeChildErrorMessage
+    ClozeChildErrorMessage,
+    AutoHeightDirective
   ],
   exports: [
     CommonModule,

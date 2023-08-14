@@ -16,6 +16,7 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
   hasDynamicRowCount: boolean = false;
+  hasAutoHeight: boolean = false;
   rowCount: number = 3;
   expectedCharactersCount: number = 300;
   hasReturnKey: boolean = false;
@@ -32,6 +33,7 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
       this.resizeEnabled = element.resizeEnabled;
       this.rowCount = element.rowCount;
       this.hasDynamicRowCount = element.hasDynamicRowCount;
+      this.hasAutoHeight = element.hasAutoHeight;
       this.expectedCharactersCount = element.expectedCharactersCount;
       this.hasReturnKey = element.hasReturnKey;
       this.hasKeyboardIcon = element.hasKeyboardIcon;
@@ -86,6 +88,7 @@ export interface TextAreaProperties extends TextInputElementProperties {
   appearance: 'fill' | 'outline';
   resizeEnabled: boolean;
   hasDynamicRowCount: boolean;
+  hasAutoHeight: boolean;
   rowCount: number;
   expectedCharactersCount: number;
   hasReturnKey: boolean;
@@ -101,6 +104,7 @@ function isValid(blueprint?: TextAreaProperties): boolean {
   return blueprint.appearance !== undefined &&
   blueprint.resizeEnabled !== undefined &&
   blueprint.hasDynamicRowCount !== undefined &&
+  blueprint.hasAutoHeight !== undefined &&
   blueprint.rowCount !== undefined &&
   blueprint.expectedCharactersCount !== undefined &&
   blueprint.hasReturnKey !== undefined &&

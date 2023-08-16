@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { animate, style, transition, trigger } from '@angular/animations';
+import {
+  animate, style, transition, trigger
+} from '@angular/animations';
 import { KeypadService } from '../../../services/keypad.service';
 import { KeyboardService } from '../../../services/keyboard.service';
-import { DeviceService } from '../../../services/device.service';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'aspect-player-layout',
@@ -31,12 +31,8 @@ import { BehaviorSubject } from 'rxjs';
   ]
 })
 export class PlayerLayoutComponent {
-  isPlayerRunning: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-
   constructor(
     public keypadService: KeypadService,
-    public keyboardService: KeyboardService,
-    public deviceService: DeviceService
+    public keyboardService: KeyboardService
   ) { }
-
 }

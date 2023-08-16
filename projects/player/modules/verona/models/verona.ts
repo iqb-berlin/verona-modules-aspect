@@ -1,7 +1,6 @@
 import { InputElementValue } from 'common/models/elements/element';
 
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
-export type RunningState = 'running' | 'stopped';
 export type Progress = 'none' | 'some' | 'complete';
 export type PagingMode = 'separate' | 'concat-scroll' | 'concat-scroll-snap';
 export type ElementCodeStatus = 'UNSET' | 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
@@ -37,7 +36,6 @@ export interface UnitState {
 }
 
 export interface PlayerState {
-  state: RunningState;
   validPages?: Record<string, string>;
   currentPage?: string;
 }
@@ -67,22 +65,6 @@ export interface VopPageNavigationCommand {
   type: 'vopPageNavigationCommand';
   sessionId: string;
   target: string;
-}
-
-export interface VopGetStateRequest {
-  type: 'vopGetStateRequest';
-  sessionId: string;
-  stop: boolean;
-}
-
-export interface VopStopCommand {
-  type: 'vopStopCommand';
-  sessionId: string;
-}
-
-export interface VopContinueCommand {
-  type: 'vopContinueCommand';
-  sessionId: string;
 }
 
 export interface VopReadyNotification {
@@ -144,9 +126,6 @@ export type VopMessage =
   VopStartCommand |
   VopNavigationDeniedNotification |
   VopPageNavigationCommand |
-  VopGetStateRequest |
-  VopStopCommand |
-  VopContinueCommand |
   VopReadyNotification |
   VopStateChangedNotification |
   VopWindowFocusChangedNotification |

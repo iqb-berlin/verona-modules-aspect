@@ -4,11 +4,8 @@ import {
   ElementCode,
   PagingMode,
   UnitState,
-  VopContinueCommand,
-  VopGetStateRequest,
   VopPageNavigationCommand,
-  VopStartCommand,
-  VopStopCommand
+  VopStartCommand
 } from 'player/modules/verona/models/verona';
 import { Page } from 'common/models/page';
 
@@ -41,22 +38,6 @@ export class UnitMenuComponent {
     target: '0'
   };
 
-  private vopStopCommandMessage: VopStopCommand = {
-    type: 'vopStopCommand',
-    sessionId: 'dev'
-  };
-
-  private vopContinueCommandMessage: VopContinueCommand = {
-    type: 'vopContinueCommand',
-    sessionId: 'dev'
-  };
-
-  private vopGetStateRequestMessage: VopGetStateRequest = {
-    type: 'vopGetStateRequest',
-    sessionId: 'dev',
-    stop: true
-  };
-
   async load(pagingMode: PagingMode): Promise<void> {
     await this.loadUnit(await FileService.loadFile(['.json', '.voud']), pagingMode, {});
   }
@@ -74,18 +55,6 @@ export class UnitMenuComponent {
   goToPage(pageIndex: number) {
     this.vopPageNavigationCommandMessage.target = pageIndex.toString();
     this.postTarget.postMessage(this.vopPageNavigationCommandMessage, '*');
-  }
-
-  stop() {
-    this.postTarget.postMessage(this.vopStopCommandMessage, '*');
-  }
-
-  continue() {
-    this.postTarget.postMessage(this.vopContinueCommandMessage, '*');
-  }
-
-  request() {
-    this.postTarget.postMessage(this.vopGetStateRequestMessage, '*');
   }
 
   private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState): void {

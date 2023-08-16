@@ -4,7 +4,6 @@ import { AlwaysVisiblePagePipe } from 'player/src/app/pipes/always-visible-page.
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
 import { ValidPagesPipe } from 'player/src/app/pipes/valid-pages.pipe';
 import { Component, Directive, Input } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { Page } from 'common/models/page';
 import { APIService } from 'common/shared.module';
 import { PlayerLayoutComponent } from './player-layout.component';
@@ -16,7 +15,6 @@ describe('PlayerLayoutComponent', () => {
   class PlayerStateStubDirective {
     @Input() validPages!: Record<string, string>;
     @Input() currentPageIndex!: number;
-    @Input() isPlayerRunning!: BehaviorSubject<boolean>;
   }
   class ApiStubService {
     // eslint-disable-next-line class-methods-use-this

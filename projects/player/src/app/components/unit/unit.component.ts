@@ -3,7 +3,6 @@ import { PlayerConfig, VopStartCommand } from 'player/modules/verona/models/vero
 import { Unit } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
-import { SanitizationService } from 'common/services/sanitization.service';
 import { Page } from 'common/models/page';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -36,7 +35,6 @@ export class UnitComponent implements OnInit {
               private veronaPostService: VeronaPostService,
               private veronaSubscriptionService: VeronaSubscriptionService,
               private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-              private sanitizationService: SanitizationService,
               private anchorService: AnchorService,
               private dialog: MatDialog,
               private changeDetectorRef: ChangeDetectorRef,

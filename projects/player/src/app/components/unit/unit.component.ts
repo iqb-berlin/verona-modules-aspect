@@ -52,7 +52,7 @@ export class UnitComponent implements OnInit {
       try {
         LogService.debug('player: unitDefinition', message.unitDefinition);
         const unitDefinition = JSON.parse(message.unitDefinition as string);
-        this.checkUnitdefinitionVersion(unitDefinition);
+        this.checkUnitDefinitionVersion(unitDefinition);
         const unit: Unit = new Unit(unitDefinition);
         this.pages = unit.pages;
         this.playerConfig = message.playerConfig || {};
@@ -81,7 +81,7 @@ export class UnitComponent implements OnInit {
     }
   }
 
-  private checkUnitdefinitionVersion(unitDefinition: Record<string, unknown>): void {
+  private checkUnitDefinitionVersion(unitDefinition: Record<string, unknown>): void {
     if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
       if (VersionManager.isNewer(unitDefinition)) {
         throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));

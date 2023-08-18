@@ -44,8 +44,9 @@ import { ValueChangeElement } from 'common/models/elements/element';
                      [elementModel]="$any(element)">
       </aspect-button>
       <aspect-checkbox *ngIf="element.type === 'checkbox'" #childComponent
-                     [style.pointer-events]="editorMode ? 'none' : 'auto'"
-                     [elementModel]="$any(element)">
+                       [style.pointer-events]="editorMode ? 'none' : 'auto'"
+                       [parentForm]="parentForm"
+                       [elementModel]="$any(element)">
       </aspect-checkbox>
     </div>
   `,

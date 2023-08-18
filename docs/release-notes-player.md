@@ -3,7 +3,6 @@ Player
 ## 2.0.0-beta.2
 ### Neue Funktionen
 - Passt die Höhe von Eingabebereichen mit eingestellter "Automatischer Höhenanpassung" während der Eingabe an
-- Unterstützt neues Lückentext Element "Kontrollkästchen", das zum Durchstreichen von Wörtern verwendet werden kann 
 
 ### Verbesserungen
 - Verbessert die Anzeige von Validierungsfehlern in Lückentextelementen

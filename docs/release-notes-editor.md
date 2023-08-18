@@ -2,9 +2,7 @@ Editor
 ======
 ## 2.0.0-beta.2
 ### Neue Funktionen
-- Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung"
-- Kontrollkästchen kann als neues Lückentextelement verwendet werden. Das eigentliche 
-  Kontrollkästchen wird dabei nicht angezeigt. 
+- Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung" 
 - Korrigiert beim Laden alter Unit-Definitionen Elemente mit gelöschten Breiten- und Höheneigenschaften 
 
 ### Verbesserungen

@@ -1,5 +1,22 @@
 Editor
 ======
+## 2.0.0-beta.2
+### Neue Funktionen
+- Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung"
+- Kontrollkästchen kann als neues Lückentextelement verwendet werden. Das eigentliche 
+  Kontrollkästchen wird dabei nicht angezeigt. 
+- Korrigiert beim Laden alter Unit-Definitionen Elemente mit gelöschten Breiten- und Höheneigenschaften 
+
+### Verbesserungen
+- Als Tooltip gekennzeichnete Bereiche werden im Textbearbeitungsdialog hellgrau hinterlegt
+- Zeigt den Zurücksetzenknopf von GGB-Elementen unterhalb des Elements an
+- Verhindert in den Einstellungsmöglichkeiten von Elementen das Löschen von Zahlwerten aus Zahleingabefeldern 
+
+### Fehlerbehebungen
+- Behebt Fehler beim Duplizieren von Lückentext-Elementen
+- Behebt Fehler beim Laden von GGB-Elementen, die sich nicht auf der ersten Seite einer Unit-Definition befinden
+
+
 ## 2.0.0-beta
 ### Neue Funktionen
 - Versionshandhabung

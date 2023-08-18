@@ -1,5 +1,23 @@
 Player
 ======
+## 2.0.0-beta.2
+### Neue Funktionen
+- Passt die Höhe von Eingabebereichen mit eingestellter "Automatischer Höhenanpassung" während der Eingabe an
+- Unterstützt neues Lückentext Element "Kontrollkästchen", das zum Durchstreichen von Wörtern verwendet werden kann 
+
+### Verbesserungen
+- Verbessert die Anzeige von Validierungsfehlern in Lückentextelementen
+  Es können gleichzeitig Fehler von mehreren Elementen dargestellt werden, da
+  keine Tooltipfunktionalität mehr verwendet wird.
+
+### Fehlerbehebungen
+- Setzt die Einstellung der Mindesthöhe für Elemente um
+
+### Sonstiges
+- Entfernt die Unterstützung für nicht mehr genutzte Verona Schnittstellen
+
+  
+
 ## 2.0.0-beta
 ### Neue Funktionen
 - Unterstützt nur Unit-Definitionen, die mit der aktuellen Editor-Version erstellt wurden

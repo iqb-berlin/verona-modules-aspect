@@ -116,7 +116,5 @@ iqb-aspect-definition@1.0.0
   - add "audioSrc"
 - TextAreaElement:
   - add "hasAutoHeight"
-
-4.1.0
 - Checkbox:
-  - new property: crossOutChecked //warum nicht 4.0.0?
+  - new property: crossOutChecked

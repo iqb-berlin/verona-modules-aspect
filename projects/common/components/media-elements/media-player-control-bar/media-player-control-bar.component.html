@@ -44,7 +44,7 @@
                 [max]="player.duration"
                 [disabled]="disabled || !playerProperties.interactiveProgressbar || !active || !dependencyDissolved">
       <input matSliderThumb
-             [(ngModel)]="player.currentTime"/>
+             [(value)]="player.currentTime"/>
     </mat-slider>
   </ng-container>
   <ng-container *ngIf="playerProperties.showRestTime">
@@ -76,7 +76,7 @@
                 step="0.01"
                 max="1">
       <input matSliderThumb
-             [(ngModel)]="player.volume"
+             [(value)]="player.volume"
              (valueChange)="checkMinVolume($event)"/>
     </mat-slider>
   </ng-container>

@@ -2,7 +2,7 @@
      (mousedown)="$event.preventDefault(); $event.stopPropagation()">
   <div *ngIf="addInputAssistanceToKeyboard"
        class="specialCharacters fx-space-between-center-wrap">
-    <aspect-keyboard-key *ngFor="let key of frenchRow; let i = index"
+    <aspect-keyboard-key *ngFor="let key of additionalRow; let i = index"
                   class="key"
                   [key]="key"
                   [alternativeKey]="null"

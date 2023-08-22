@@ -4,8 +4,10 @@ import { SpellCorrectComponent } from 'common/components/input-elements/spell-co
 import {
   TextFieldSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
+import { InputAssistancePreset } from 'common/models/elements/element';
 
 export abstract class InputService {
+  preset: InputAssistancePreset = null;
   elementComponent!: TextFieldComponent | TextAreaComponent | SpellCorrectComponent | TextFieldSimpleComponent;
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
   isOpen: boolean = false;

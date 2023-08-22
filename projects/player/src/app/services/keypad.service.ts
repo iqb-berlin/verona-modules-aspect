@@ -5,14 +5,12 @@ import { SpellCorrectComponent } from 'common/components/input-elements/spell-co
 import {
   TextFieldSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { InputAssistancePreset } from 'common/models/elements/element';
 import { InputService } from '../classes/input-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeypadService extends InputService {
-  preset: InputAssistancePreset = null;
   position: 'floating' | 'right' = 'floating';
 
   toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },

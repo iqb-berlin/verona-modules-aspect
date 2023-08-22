@@ -27,6 +27,7 @@ export class KeyboardService extends InputService {
        elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
     void {
     this.addInputAssistanceToKeyboard = elementComponent.elementModel.addInputAssistanceToKeyboard;
+    this.preset = elementComponent.elementModel.inputAssistancePreset;
     this.setCurrentKeyInputElement(inputElement, elementComponent);
     this.isOpen = true;
   }

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import { InputService } from '../classes/input-service';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
 import {
   TextFieldSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
+import { InputService } from '../classes/input-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeyboardService extends InputService {
-  alternativeKeyboardShowFrench: boolean = false;
+  addInputAssistanceToKeyboard: boolean = false;
 
   toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
          elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent,
@@ -23,10 +23,10 @@ export class KeyboardService extends InputService {
     }
   }
 
-  open( inputElement: HTMLElement,
-        elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
+  open(inputElement: HTMLElement,
+       elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
     void {
-    this.alternativeKeyboardShowFrench = elementComponent.elementModel.softwareKeyboardShowFrench;
+    this.addInputAssistanceToKeyboard = elementComponent.elementModel.addInputAssistanceToKeyboard;
     this.setCurrentKeyInputElement(inputElement, elementComponent);
     this.isOpen = true;
   }
@@ -39,7 +39,7 @@ export class KeyboardService extends InputService {
   }
 
   private isViewHighEnoughToCenterElement(): boolean {
-    return  window.innerHeight < this.getKeyboardHeight() * 2;
+    return window.innerHeight < this.getKeyboardHeight() * 2;
   }
 
   private isElementHiddenByKeyboard(): boolean {
@@ -47,6 +47,6 @@ export class KeyboardService extends InputService {
   }
 
   private getKeyboardHeight(): number {
-    return this.alternativeKeyboardShowFrench ? 400 : 350;
+    return this.addInputAssistanceToKeyboard ? 400 : 350;
   }
 }

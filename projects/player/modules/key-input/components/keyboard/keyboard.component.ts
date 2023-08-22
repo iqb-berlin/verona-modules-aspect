@@ -9,7 +9,7 @@ import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
   styleUrls: ['./keyboard.component.scss']
 })
 export class KeyboardComponent {
-  @Input() showFrenchCharacters!: boolean;
+  @Input() addInputAssistanceToKeyboard!: boolean;
   @Output() keyClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() backspaceClicked = new EventEmitter();
 

@@ -8,7 +8,7 @@ export class DeviceService {
   private readonly isTouch!: boolean;
 
   constructor() {
-    this.isTouch = (('ontouchstart' in window) || (navigator && navigator.maxTouchPoints > 0));
+    this.isTouch = ('ontouchstart' in window) || (navigator && navigator.maxTouchPoints > 0);
   }
 
   get isMobileWithoutHardwareKeyboard(): boolean {

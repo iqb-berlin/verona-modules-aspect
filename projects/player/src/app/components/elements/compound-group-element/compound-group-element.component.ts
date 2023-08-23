@@ -102,10 +102,17 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
       });
   }
 
+  private shallOpenKeypad(elementModel: InputElement): boolean {
+    return !!elementModel.inputAssistancePreset &&
+      !(elementModel.showSoftwareKeyboard &&
+        elementModel.addInputAssistanceToKeyboard &&
+        this.deviceService.isMobileWithoutHardwareKeyboard);
+  }
+
   private toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                          elementComponent: TextFieldSimpleComponent,
                          elementModel: InputElement): void {
-    if (elementModel.inputAssistancePreset) {
+    if (this.shallOpenKeypad(elementModel)) {
       this.keypadService.toggle(focusedTextInput, elementComponent);
       this.isKeypadOpen = this.keypadService.isOpen;
     }

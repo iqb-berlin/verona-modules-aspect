@@ -1,5 +1,10 @@
 Editor
 ======
+## 2.0.0-beta.3
+### Neue Funktionen
+- Ersetzt die Einstellung "Tastatur: Französische Sonderzeichen" durch "Tastatur mit Eingabehilfe erweitern"
+
+
 ## 2.0.0-beta.2
 ### Neue Funktionen
 - Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung" 

@@ -1,13 +1,14 @@
 Player
 ======
-## Neue Funktionen
-- Die virtuelle Tastatur des Players kann durch die ausgewählte Eingabehilfe erweitert werden.
-  Auf Tablets wird in diesem Fall lediglich die Tastatur nicht aber die Eingabehilfe eingeblendet.   
+## 2.0.0-beta.3
+### Neue Funktionen
+- Die virtuelle Tastatur des Players kann durch die ausgewählte Eingabehilfe erweitert werden
+  Auf Tablets wird in diesem Fall lediglich die Tastatur nicht aber die Eingabehilfe eingeblendet
 
-## Verbesserungen
+### Verbesserungen
 - Verbessert die Darstellung der virtuellen Tastatur auf Tablets
 
-## Fehlerbehebungen
+### Fehlerbehebungen
 - Behebt bei Audio- und Videoelementen Darstellungsprobleme der Fortschritts- und Lautstärkeanzeige auf Tablets
 - Korrigiert Abspielprobleme von Audios und Videos auf iPads (entstanden durch Angular-/Material-Update in Version 2.0.0-beta)
 

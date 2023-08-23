@@ -169,11 +169,11 @@ describe('KeyboardService', () => {
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('alternativeKeyboardShowFrench should be set to "false"', () => {
+  it('addInputAssistanceToKeyboard should be set to "false"', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldComponent, true);
-    expect(service.alternativeKeyboardShowFrench).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBeFalse();
   });
 
   // textFieldSimple
@@ -276,11 +276,11 @@ describe('KeyboardService', () => {
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('alternativeKeyboardShowFrench should be set to "false"', () => {
+  it('addInputAssistanceToKeyboard should be set to "false"', () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, true);
-    expect(service.alternativeKeyboardShowFrench).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBeFalse();
   });
 
   // textArea
@@ -383,11 +383,11 @@ describe('KeyboardService', () => {
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('alternativeKeyboardShowFrench should be set to "false"', () => {
+  it('addInputAssistanceToKeyboard should be set to "false"', () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, textAreaComponent, true);
-    expect(service.alternativeKeyboardShowFrench).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBeFalse();
   });
 
   // spellCorrect
@@ -490,10 +490,10 @@ describe('KeyboardService', () => {
     expect(service.inputElement.value).toEqual('');
   });
 
-  it('alternativeKeyboardShowFrench should be set to "false"', () => {
+  it('addInputAssistanceToKeyboard should be set to "false"', () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, spellCorrectComponent, true);
-    expect(service.alternativeKeyboardShowFrench).toBeFalse();
+    expect(service.addInputAssistanceToKeyboard).toBeFalse();
   });
 });

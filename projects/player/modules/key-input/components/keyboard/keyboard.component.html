@@ -1,9 +1,9 @@
 <div class="keyboard-container"
      (mousedown)="$event.preventDefault(); $event.stopPropagation()">
   <div *ngIf="addInputAssistanceToKeyboard"
-       class="specialCharacters fx-space-between-center-wrap">
+       class="additional-characters fx-space-between-center-wrap">
     <aspect-keyboard-key *ngFor="let key of additionalRow; let i = index"
-                  class="key"
+                  class="key additional-character"
                   [key]="key"
                   [alternativeKey]="null"
                   (keyClicked)="evaluateClickedKeyValue($event)">

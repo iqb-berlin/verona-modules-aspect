@@ -1,9 +1,17 @@
-.alternativeKey {
+.alternative-key {
   color: grey;
   position: absolute;
-  top: -5px;
-  font-size: 1.4vw;
-  padding-left: 10px;
+  top: -10px;
+  font-size: 1.3vw;
+  padding-left: 12px;
+}
+
+.key.control {
+  background-color: #eee;
+}
+
+.character {
+  width: 2vw;
 }
 
 .key {
@@ -13,7 +21,9 @@
   height: 100%;
   min-width: unset;
   .center-icon {
-    margin-left: 2px;
-    margin-right: 2px;
+    height: unset;
+    width: unset;
+    margin: 0;
+    font-size: inherit;
   }
 }

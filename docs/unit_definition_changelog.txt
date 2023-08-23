@@ -118,3 +118,6 @@ iqb-aspect-definition@1.0.0
   - add "hasAutoHeight"
 - Checkbox:
   - new property: crossOutChecked
+- TextAreaElement, TextFieldElement, TextFieldSimpleElement, SpellCorrectElement:
+  - remove property: softwareKeyboardShowFrench
+  - new property: addInputAssistanceToKeyboard

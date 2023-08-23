@@ -70,6 +70,9 @@ export abstract class UnitDefinitionSanitizer {
 
   private static sanitizeElement(element: Record<string, unknown>) {
     if (element.type === 'cloze') UnitDefinitionSanitizer.sanitizeClose(element);
+    if (['text-field', 'text-area', 'spell-correct', 'text-field-simple'].includes(element.type as string)) {
+      UnitDefinitionSanitizer.sanitizeTextInputElement(element);
+    }
     return {
       ...element,
       dimensions: UnitDefinitionSanitizer.sanitizeDimensionProps(element),
@@ -112,6 +115,12 @@ export abstract class UnitDefinitionSanitizer {
     };
   }
 
+  private static sanitizeTextInputElement(textInput: Record<string, unknown>) {
+    textInput.addInputAssistanceToKeyboard = textInput.softwareKeyboardShowFrench;
+    delete textInput.softwareKeyboardShowFrench;
+    return textInput;
+  }
+
   private static sanitizeClose(cloze: Record<string, unknown>) {
     const children = ClozeElement.getDocumentChildElements(cloze.document as ClozeDocument);
     children.forEach((child: Record<string, unknown>) => {
@@ -127,6 +136,10 @@ export abstract class UnitDefinitionSanitizer {
     const toggleButtons = children.filter(child => child.type === 'toggle-button');
     toggleButtons.forEach(toggleButton => {
       toggleButton.dimensions.isWidthFixed = !toggleButton.dynamicWidth;
+    });
+    const textInputs = children.filter(child => child.type === 'text-field-simple');
+    textInputs.forEach(textInput => {
+      UnitDefinitionSanitizer.sanitizeTextInputElement(textInput);
     });
     return cloze;
   }

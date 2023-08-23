@@ -1,22 +1,31 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
 import { KeyLayout } from 'player/modules/key-input/configs/key-layout';
+import { InputAssistancePreset } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-keyboard',
   templateUrl: './keyboard.component.html',
   styleUrls: ['./keyboard.component.scss']
 })
-export class KeyboardComponent {
-  @Input() showFrenchCharacters!: boolean;
+export class KeyboardComponent implements OnInit {
+  @Input() preset!: InputAssistancePreset;
+  @Input() addInputAssistanceToKeyboard!: boolean;
+  @Input() customKeys!: string;
   @Output() keyClicked: EventEmitter<string> = new EventEmitter<string>();
   @Output() backspaceClicked = new EventEmitter();
 
   shift = false;
   layout = KeyLayout.get('keyboard');
   rows: string[][] = this.layout.default;
-  frenchRow: string[] = KeyLayout.get('french').default.flat().filter(key => key.length === 1);
+  additionalRow: string[] = [];
+
+  ngOnInit(): void {
+    if (this.preset && this.addInputAssistanceToKeyboard) {
+      this.additionalRow = this.getAdditionalRowWithAdditionalKeys('default');
+    }
+  }
 
   evaluateClickedKeyValue(key: string): void {
     switch (key) {
@@ -47,8 +56,21 @@ export class KeyboardComponent {
   private toggleShift(): void {
     this.shift = !this.shift;
     this.rows = this.shift ? this.layout.shift : this.layout.default;
-    this.frenchRow = this.shift ?
-      KeyLayout.get('french').shift.flat().filter(key => key.length === 1) :
-      KeyLayout.get('french').default.flat().filter(key => key.length === 1);
+    if (this.preset && this.addInputAssistanceToKeyboard) {
+      this.additionalRow = this.shift && this.getAdditionalRow('shift').length > 0 ?
+        this.getAdditionalRowWithAdditionalKeys('shift') :
+        this.getAdditionalRowWithAdditionalKeys('default');
+    }
+  }
+
+  private getAdditionalRow(layoutKey: 'default' | 'shift' | 'additional'): string[] {
+    return KeyLayout
+      .get(this.preset, this.customKeys)[layoutKey]
+      .flat()
+      .filter(key => key.length === 1);
+  }
+
+  private getAdditionalRowWithAdditionalKeys(layoutKey: 'default' | 'shift'): string[] {
+    return [...this.getAdditionalRow(layoutKey), ...this.getAdditionalRow('additional')];
   }
 }

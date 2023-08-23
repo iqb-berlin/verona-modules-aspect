@@ -57,9 +57,16 @@ export class TextInputGroupElementComponent extends ElementFormGroupDirective im
     );
   }
 
+  private shallOpenKeypad(): boolean {
+    return !!this.elementModel.inputAssistancePreset &&
+      !(this.elementModel.showSoftwareKeyboard &&
+        this.elementModel.addInputAssistanceToKeyboard &&
+        this.deviceService.isMobileWithoutHardwareKeyboard);
+  }
+
   toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
                  elementComponent: TextAreaComponent | TextFieldComponent | SpellCorrectComponent): void {
-    if (this.elementModel.inputAssistancePreset) {
+    if (this.shallOpenKeypad()) {
       this.keypadService.toggle(focusedTextInput, elementComponent);
       this.isKeypadOpen = this.keypadService.isOpen;
     }

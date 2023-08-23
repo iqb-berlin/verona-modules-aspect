@@ -12,7 +12,7 @@
   "inputAssistancePosition": "floating",
   "restrictedToInputAssistanceChars": true,
   "showSoftwareKeyboard": false,
-  "softwareKeyboardShowFrench": false,
+  "addInputAssistanceToKeyboard": false,
   "position": {
     "fixedSize": false,
     "dynamicPositioning": false,

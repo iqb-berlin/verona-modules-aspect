@@ -195,7 +195,7 @@ export interface TextInputElementProperties extends InputElementProperties {
   hasArrowKeys: boolean;
   hasBackspaceKey: boolean;
   showSoftwareKeyboard: boolean;
-  softwareKeyboardShowFrench: boolean;
+  addInputAssistanceToKeyboard: boolean;
 }
 
 function isValidTextInputElementProperties(blueprint?: TextInputElementProperties): boolean {
@@ -208,7 +208,7 @@ function isValidTextInputElementProperties(blueprint?: TextInputElementPropertie
     blueprint.hasArrowKeys !== undefined &&
     blueprint.hasBackspaceKey !== undefined &&
     blueprint.showSoftwareKeyboard !== undefined &&
-    blueprint.softwareKeyboardShowFrench !== undefined;
+    blueprint.addInputAssistanceToKeyboard !== undefined;
 }
 
 export abstract class TextInputElement extends InputElement implements TextInputElementProperties {
@@ -220,7 +220,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
   hasArrowKeys: boolean = false;
   hasBackspaceKey: boolean = false;
   showSoftwareKeyboard: boolean = false;
-  softwareKeyboardShowFrench: boolean = false;
+  addInputAssistanceToKeyboard: boolean = false;
 
   protected constructor(element?: TextInputElementProperties) {
     super(element);
@@ -233,7 +233,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       this.hasArrowKeys = element.hasArrowKeys;
       this.hasBackspaceKey = element.hasBackspaceKey;
       this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
+      this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
     } else {
       if (environment.strictInstantiation) {
         throw Error('Error at TextInputElement instantiation');
@@ -246,7 +246,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       if (element?.hasArrowKeys) this.hasArrowKeys = element.hasArrowKeys;
       if (element?.hasBackspaceKey) this.hasBackspaceKey = element.hasBackspaceKey;
       if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      if (element?.softwareKeyboardShowFrench) this.softwareKeyboardShowFrench = element.softwareKeyboardShowFrench;
+      if (element?.addInputAssistanceToKeyboard) this.softwareKeyboardShowFrench = element.addInputAssistanceToKeyboard;
     }
   }
 }

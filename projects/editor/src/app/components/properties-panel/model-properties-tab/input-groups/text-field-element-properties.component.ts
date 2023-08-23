@@ -97,9 +97,9 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
     </mat-checkbox>
     <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
                   [disabled]="!combinedProperties.showSoftwareKeyboard"
-                  [checked]="$any(combinedProperties.softwareKeyboardShowFrench)"
-                  (change)="updateModel.emit({ property: 'softwareKeyboardShowFrench', value: $event.checked })">
-      {{'propertiesPanel.softwareKeyboardShowFrench' | translate }}
+                  [checked]="$any(combinedProperties.addInputAssistanceToKeyboard)"
+                  (change)="updateModel.emit({ property: 'addInputAssistanceToKeyboard', value: $event.checked })">
+      {{'propertiesPanel.addInputAssistanceToKeyboard' | translate }}
     </mat-checkbox>
 
     <mat-form-field *ngIf="combinedProperties.inputAssistancePreset !== undefined" appearance="fill"

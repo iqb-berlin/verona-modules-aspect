@@ -18,7 +18,7 @@
   "inputAssistancePosition": "floating",
   "restrictedToInputAssistanceChars": true,
   "showSoftwareKeyboard": true,
-  "softwareKeyboardShowFrench": false,
+  "addInputAssistanceToKeyboard": false,
   "clearable": false,
   "styling": {
     "fontColor": "#000000",

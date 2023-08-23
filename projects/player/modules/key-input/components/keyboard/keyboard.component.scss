@@ -1,13 +1,18 @@
 .character-rows {
   background-color: lightgray;
-  padding: 0 50px;
+  padding: 0 4px;
   display: grid;
+  gap: 4px;
 }
 
-.specialCharacters {
-  margin-left: 10%;
-  margin-right: 10%;
-  background-color: grey;
+.additional-character {
+  flex: 1 1 0;
+}
+
+.additional-characters {
+  background-color: lightgray;
+  gap: 4px;
+  padding: 4px 4px 0 4px;
 }
 
 .fx-space-between-center-wrap {
@@ -20,16 +25,10 @@
 }
 
 .key {
-  margin: 4px;
   min-height: 50px;
 }
 
 .keyboard-container {
   position: relative;
   z-index: 10000;
-}
-
-::ng-deep .keyboard-container .iconButton mat-icon {
-  font-size: 2vw;
-  width: unset;
 }

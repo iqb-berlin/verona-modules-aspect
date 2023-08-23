@@ -23,10 +23,7 @@ export class KeyboardComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.preset && this.addInputAssistanceToKeyboard) {
-      this.additionalRow = KeyLayout
-        .get(this.preset, this.customKeys).default
-        .flat()
-        .filter(key => key.length === 1);
+      this.additionalRow = this.getAdditionalRowWithAdditionalKeys('default');
     }
   }
 
@@ -60,19 +57,20 @@ export class KeyboardComponent implements OnInit {
     this.shift = !this.shift;
     this.rows = this.shift ? this.layout.shift : this.layout.default;
     if (this.preset && this.addInputAssistanceToKeyboard) {
-      this.additionalRow = this.shift &&
-      KeyLayout
-        .get(this.preset, this.customKeys).shift
-        .flat()
-        .filter(key => key.length === 1).length ?
-        KeyLayout
-          .get(this.preset, this.customKeys).shift
-          .flat()
-          .filter(key => key.length === 1) :
-        KeyLayout
-          .get(this.preset, this.customKeys).default
-          .flat()
-          .filter(key => key.length === 1);
+      this.additionalRow = this.shift && this.getAdditionalRow('shift').length > 0 ?
+        this.getAdditionalRowWithAdditionalKeys('shift') :
+        this.getAdditionalRowWithAdditionalKeys('default');
     }
+  }
+
+  private getAdditionalRow(layoutKey: 'default' | 'shift' | 'additional'): string[] {
+    return KeyLayout
+      .get(this.preset, this.customKeys)[layoutKey]
+      .flat()
+      .filter(key => key.length === 1);
+  }
+
+  private getAdditionalRowWithAdditionalKeys(layoutKey: 'default' | 'shift'): string[] {
+    return [...this.getAdditionalRow(layoutKey), ...this.getAdditionalRow('additional')];
   }
 }

@@ -67,7 +67,7 @@ export class KeyboardComponent implements OnInit {
     return KeyLayout
       .get(this.preset, this.customKeys)[layoutKey]
       .flat()
-      .filter(key => key.length === 1);
+      .filter(key => key.length === 1 && Number.isNaN(Number(key))); // filter out special and non-numeric keys
   }
 
   private getAdditionalRowWithAdditionalKeys(layoutKey: 'default' | 'shift'): string[] {

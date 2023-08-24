@@ -7,6 +7,7 @@
 
 .additional-character {
   flex: 1 1 0;
+  max-width: 100px;
 }
 
 .additional-characters {
@@ -15,11 +16,11 @@
   padding: 4px 4px 0 4px;
 }
 
-.fx-space-between-center-wrap {
+.fx-center-center-wrap {
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }

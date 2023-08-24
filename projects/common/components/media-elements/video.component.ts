@@ -19,11 +19,13 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                                        (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                        (elementValueChanged)="elementValueChanged.emit($event)">
         <video #player
+               [style.width.%]="100"
+               [src]="elementModel.src | safeResourceUrl"
+               disablepictureinpicture="true"
+               (contextmenu)="$event.preventDefault()"
                (loadedmetadata)="isLoaded.next(true)"
                (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
-               (pause)="mediaPlayStatusChanged.emit(null)"
-               [style.width.%]="100"
-               [src]="elementModel.src | safeResourceUrl">
+               (pause)="mediaPlayStatusChanged.emit(null)">
         </video>
       </aspect-media-player-control-bar>
       <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>

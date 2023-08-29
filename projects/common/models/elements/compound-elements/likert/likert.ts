@@ -78,12 +78,25 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     super.setProperty(property, value);
     if (property === 'rows') {
       this.rows = value as LikertRowElement[];
+      if (this.rows.length) {
+        this.rows[this.rows.length - 1]
+          .setProperty('isRelevantForPresentationComplete', this.isRelevantForPresentationComplete);
+      }
     }
     if (property === 'options') {
-      this.getChildElements().forEach(childElement => childElement.setProperty('columnCount', this.options.length));
+      this.getChildElements()
+        .forEach(childElement => childElement
+          .setProperty('columnCount', this.options.length));
     }
     if (property === 'readOnly') {
-      this.getChildElements().forEach(childElement => childElement.setProperty('readOnly', value));
+      this.getChildElements()
+        .forEach(childElement => childElement
+          .setProperty('readOnly', value));
+    }
+    if (property === 'isRelevantForPresentationComplete') {
+      this.getChildElements()
+        .forEach(childElement => childElement
+          .setProperty('isRelevantForPresentationComplete', value));
     }
   }
 

@@ -65,7 +65,8 @@
 </ng-template>
 
 <ng-template #scrollPagesSeparatedView let-pagesContainer>
-  <mat-tab-group aspectPageLabel
+  <mat-tab-group [style.min-height.vh]="aspectRatioColumn.scrollPages"
+                 aspectPageLabel
                  [isHidden]="hidePageLabels"
                  (heightChanged)="tabHeaderHeight = $event"
                  mat-align-tabs="start"
@@ -74,8 +75,7 @@
                  (animationDone)="pageChangeService.pageChanged.emit()">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
       <mat-tab [label]="'pageIndication' | translate: {index: i + 1}">
-        <div [style.height]="'calc(' + minHeight.scrollPages + 'vh - ' + ((page.margin * 2) + tabHeaderHeight) + 'px)'"
-             [style.background-color]="page.backgroundColor"
+        <div [style.background-color]="page.backgroundColor"
              [style.padding.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
           <aspect-page [pageIndex]="pages | pageIndex: page"

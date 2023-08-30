@@ -5,10 +5,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 @Component({
   selector: 'aspect-radio-group-images',
   template: `
-      <label id="radio-group-label"
+      <label [id]="elementModel.id+'-radio-group-label'"
              [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
-      <mat-radio-group aria-labelledby="radio-group-label"
+      <mat-radio-group [attr.aria-labelledby]="elementModel.id+'-radio-group-label'"
                        [style.grid-template-columns]="elementModel.itemsPerRow !== null ?
                                                       'repeat(' + elementModel.itemsPerRow + ', 1fr)' :
                                                       'repeat(' + elementModel.options.length + ', 1fr)'"
@@ -17,7 +17,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <mat-radio-button *ngFor="let option of elementModel.options; let i = index"
                           [style.pointer-events]="elementModel.readOnly ? 'none' : 'unset'"
                           [value]="i">
-          <aspect-text-image-panel [label]="option"
+          <aspect-text-image-panel class="radio-button-label"
+                                   [label]="option"
                                    [style.color]="elementModel.styling.fontColor"
                                    [style.font-family]="elementModel.styling.font"
                                    [style.font-size.px]="elementModel.styling.fontSize"
@@ -33,6 +34,9 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       </mat-error>
   `,
   styles: [`
+    .radio-button-label {
+      cursor: pointer;
+    }
     mat-radio-group {
       display: grid;
     }

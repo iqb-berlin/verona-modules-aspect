@@ -16,10 +16,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [style.line-height.%]="elementModel.styling.lineHeight">
-      <label id="radio-group-label"
+      <label [id]="elementModel.id +'-radio-group-label'"
              [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
-      <mat-radio-group aria-labelledby="radio-group-label"
+      <mat-radio-group [attr.aria-labelledby]="elementModel.id +'-radio-group-label'"
                        [class.fx-column-start-stretch]="elementModel.alignment === 'column'"
                        [class.fx-row-start-stretch]="elementModel.alignment === 'row'"
                        [formControl]="elementFormControl"
@@ -41,11 +41,13 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [`
+    .radio-button-label{
+        cursor: pointer;
+    }
     :host ::ng-deep .mdc-form-field {
       font-size: inherit;
       font-weight: inherit;
     }
-
     :host ::ng-deep .strike .mdc-form-field {
       text-decoration: line-through;
     }

@@ -45,7 +45,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 [readonly]="elementModel.readOnly"
                 [style.min-width.%]="100"
                 [style.line-height.%]="elementModel.styling.lineHeight"
-                [style.resize]="elementModel.resizeEnabled ? 'both' : 'none'"
+                [style.resize]="elementModel.resizeEnabled ? 'vertical' : 'none'"
                 (keydown)="onKeyDown.emit({keyboardEvent: $event, inputElement: input})"
                 (focus)="focusChanged.emit({ inputElement: input, focused: true })"
                 (blur)="focusChanged.emit({ inputElement: input, focused: false })">

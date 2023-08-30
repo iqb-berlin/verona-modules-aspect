@@ -15,6 +15,9 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                              [value]="elementModel.value"
                              [vertical]="elementModel.verticalOrientation"
                              [style.height.px]="elementModel.dimensions.isHeightFixed ? elementModel.dimensions.height : null"
+                             [matTooltip]="elementFormControl.errors && elementFormControl.touched ?
+                                           (elementFormControl.errors | errorTransform: elementModel) : ''"
+                             [matTooltipClass]="'error-tooltip'"
                              (focusout)="elementFormControl.markAsTouched()">
       <!--Add dummy div - otherwise toggle button with empty options will not be in one line-->
       <div *ngIf="elementModel.options.length === 0"
@@ -60,8 +63,9 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
       justify-content: center;
       box-sizing: border-box;
     }
+
     :host ::ng-deep .mat-button-toggle-label-content {
-      line-height: unset;
+      line-height: unset !important;
     }
     :host ::ng-deep .mat-button-toggle-button {
       height: 100%;

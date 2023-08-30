@@ -38,13 +38,13 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
         <button #buttonElement
                 mat-button
                 type="button"
+                class="spell-correct-button"
                 [disabled]="elementModel.readOnly"
                 [style.color]="elementModel.styling.fontColor"
                 [style.font-family]="elementModel.styling.font"
                 [style.font-size.px]="elementModel.styling.fontSize"
                 [style.font-weight]="elementModel.styling.bold ? 'bold' : '400'"
                 [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-                [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                 [style.width.%]="100"
                 [style.margin-top]="'-20px'"
                 [style.text-decoration-line]="(inputElement && inputElement.focused) ||
@@ -66,6 +66,9 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </div>
   `,
   styles: [`
+    .spell-correct-button {
+      text-decoration-thickness: 3px;
+    }
     .fx-column-start-stretch {
       box-sizing: border-box;
       display: flex;

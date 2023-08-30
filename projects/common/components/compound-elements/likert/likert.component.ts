@@ -44,7 +44,7 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
              [style.grid-column-end]="3 + i"
              [style.grid-row-start]="1"
              [style.grid-row-end]="2">
-          <aspect-text-image-panel [label]="option"></aspect-text-image-panel>
+          <aspect-text-image-panel class="likert-column-label" [label]="option"></aspect-text-image-panel>
         </div>
 
         <ng-container *ngFor="let row of elementModel.rows; let i = index">
@@ -65,6 +65,9 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
     </div>
   `,
   styles: [`
+    .likert-column-label {
+      text-align: center;
+    }
     .wrapper {
       width: 100%;
       height: 100%;

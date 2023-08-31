@@ -9,7 +9,8 @@ export abstract class BaseTooltipDirective implements OnDestroy {
   @Input() tooltipText = '';
   @Input() tooltipPosition: TooltipPosition = 'below';
   tooltipElement!: HTMLElement;
-  hideDelay: number = 3000;
+  private hideDelay: number = 5000;
+  private timeoutId: number | null = null;
   private componentRef: ComponentRef<TooltipComponent> | null = null;
 
   constructor(protected viewContainerRef: ViewContainerRef) {}
@@ -22,7 +23,7 @@ export abstract class BaseTooltipDirective implements OnDestroy {
   }
 
   hideTooltipWithDelay(): void {
-    setTimeout(() => this.hideTooltip(), this.hideDelay);
+    this.timeoutId = setTimeout(() => this.hideTooltip(), this.hideDelay);
   }
 
   hideTooltip(): void {
@@ -80,6 +81,10 @@ export abstract class BaseTooltipDirective implements OnDestroy {
   }
 
   private destroyComponent(): void {
+    if (this.timeoutId !== null) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
     if (this.componentRef) {
       this.componentRef.destroy();
       this.componentRef = null;

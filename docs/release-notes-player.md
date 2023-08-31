@@ -4,6 +4,7 @@ Player
 ### Fehlerbehebungen
 - Behebt Fehler beim Exkludieren von Optionsfeldern bei "Presentation Complete" (Problem seit Version 2.0.0-beta)
 - Korrigiert die Dimension von Seiten im "Blätter-Modus" (Problem seit Versionen 2.0.0-beta)
+- Verhindert das zeitverzögerte Ausblenden von Tooltips im Desktop-Browser (Problem seit Version 2.0.0-beta)
 
 ## Verbesserungen
 - Unterbindet das Öffnen eines Kontextmenüs für Videos

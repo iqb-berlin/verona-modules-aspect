@@ -1,5 +1,15 @@
 Player
 ======
+## next
+### Fehlerbehebungen
+- Behebt Fehler beim Exkludieren von Optionsfeldern bei "Presentation Complete" (Problem seit Version 2.0.0-beta)
+- Korrigiert die Dimension von Seiten im "Blätter-Modus" (Problem seit Versionen 2.0.0-beta)
+
+## Verbesserungen
+- Unterbindet das Öffnen eines Kontextmenüs für Videos
+- Unterbindet den Bild in Bild Modus für Videos (Ausnahme: Firefox)
+- Bei Eingabehilfen, die die virtuelle Tastatur erweitern, werden Zahlen ausgeblendet, da die Tastatur bereits über Zahlen verfügt
+
 ## 2.0.0-beta.3
 ### Neue Funktionen
 - Die virtuelle Tastatur des Players kann durch die ausgewählte Eingabehilfe erweitert werden

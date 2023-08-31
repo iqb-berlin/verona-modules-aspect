@@ -1,9 +1,18 @@
 Editor
 ======
+## next
+### Fehlerbehebungen
+- Korrigiert die Zeilenausrichtung von Optionsfeldern innerhalb von Lückentexten (Problem seit Version 2.0.0-beta.2)
+- Zentriert die Spaltenbeschriftungen von Optionstabellen (Problem seit Version 2.0.0-beta)
+- Verwendet Zeiger-Cursor für die Beschriftung und Bildern von Optionen in Optionsfeldern (Problem seit Version 2.0.0-beta)
+
+### Verbesserungen
+- Verstärkt die Linie zum Durchstreichen von Wörtern bei "Wort korrigieren"
+- Unterbindet die horizontale Vergrößerung von größenverstellbaren Eingabebereichen
+
 ## 2.0.0-beta.3
 ### Neue Funktionen
 - Ersetzt die Einstellung "Tastatur: Französische Sonderzeichen" durch "Tastatur mit Eingabehilfe erweitern"
-
 
 ## 2.0.0-beta.2
 ### Neue Funktionen

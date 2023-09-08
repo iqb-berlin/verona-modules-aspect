@@ -5,8 +5,3 @@ html, body { height: 100%; }
 input[type=color] {
   cursor: pointer;
 }
-
-@font-face {
-  font-family: 'Nunito-Sans';
-  src: url('NunitoSans-VariableFont_YTLC,opsz,wdth,wght.ttf');
-}

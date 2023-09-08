@@ -41,7 +41,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
     '::ng-deep .turquoise-selection ::selection {background-color: #9de8eb}',
     '::ng-deep .orange-selection ::selection {background-color: #ffa06a}',
     '::ng-deep .delete-selection ::selection {background-color: lightgrey}',
-    '::ng-deep .text-container p strong {letter-spacing: 0.04em; font-weight: 600;}', // bold less bold
+    '::ng-deep .text-container p strong {letter-spacing: 0.02em; font-weight: 750;}',
     '::ng-deep .text-container p:empty::after {content: \'\'; display: inline-block;}', // render empty p
     '::ng-deep .text-container h1 {font-weight: bold; font-size: 20px;}',
     '::ng-deep .text-container h2 {font-weight: bold; font-size: 18px;}',

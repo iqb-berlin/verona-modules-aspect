@@ -11,7 +11,6 @@ import { ElementComponent } from '../../directives/element-component.directive';
        href="{{elementModel.action+'-'+elementModel.actionParam}}"
        [style.background-color]="elementModel.styling.backgroundColor"
        [style.color]="elementModel.styling.fontColor"
-       [style.font-family]="elementModel.styling.font"
        [style.font-size.px]="elementModel.styling.fontSize"
        [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
@@ -31,7 +30,6 @@ import { ElementComponent } from '../../directives/element-component.directive';
             class="full-size"
             [style.background-color]="elementModel.styling.backgroundColor"
             [style.color]="elementModel.styling.fontColor"
-            [style.font-family]="elementModel.styling.font"
             [style.font-size]="elementModel.labelAlignment !== 'baseline' ?
                                 'smaller' :
                                 elementModel.styling.fontSize + 'px'"

@@ -24,7 +24,6 @@ import { ElementComponent } from '../../directives/element-component.directive';
            [class.delete-selection]="selectedColor === 'delete'"
            [style.background-color]="elementModel.styling.backgroundColor"
            [style.color]="elementModel.styling.fontColor"
-           [style.font-family]="elementModel.styling.font"
            [style.font-size.px]="elementModel.styling.fontSize"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"

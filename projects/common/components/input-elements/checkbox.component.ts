@@ -14,7 +14,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                     [checked]="$any(elementModel.value)"
                     [class.cross-out]="elementModel.crossOutChecked && elementFormControl.value"
                     [style.color]="elementModel.styling.fontColor"
-                    [style.font-family]="elementModel.styling.font"
                     [style.font-size.px]="elementModel.styling.fontSize"
                     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"

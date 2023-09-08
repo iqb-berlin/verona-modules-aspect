@@ -10,7 +10,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
          [style.background-color]="elementModel.styling.backgroundColor">
       <div *ngIf="elementModel.label"
            [style.color]="elementModel.styling.fontColor"
-           [style.font-family]="elementModel.styling.font"
            [style.font-size.px]="elementModel.styling.fontSize"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
@@ -22,7 +21,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div *ngIf="elementModel.showValues"
              class="min-value"
              [style.color]="elementModel.styling.fontColor"
-             [style.font-family]="elementModel.styling.font"
              [style.font-size.px]="elementModel.styling.fontSize"
              [style.line-height.%]="elementModel.styling.lineHeight"
              [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
@@ -33,7 +31,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         <div *ngIf="elementModel.showValues"
              class="max-value"
              [style.color]="elementModel.styling.fontColor"
-             [style.font-family]="elementModel.styling.font"
              [style.font-size.px]="elementModel.styling.fontSize"
              [style.line-height.%]="elementModel.styling.lineHeight"
              [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"

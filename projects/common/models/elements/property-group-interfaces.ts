@@ -176,7 +176,7 @@ export abstract class PropertyGroupGenerators {
   static generateFontStylingProps(defaults: Partial<FontStyles> = {}): FontStyles {
     return {
       fontColor: defaults.fontColor !== undefined ? defaults.fontColor as string : '#000000',
-      font: defaults?.font !== undefined ? defaults.font as string : 'Roboto',
+      font: defaults?.font !== undefined ? defaults.font as string : 'NunitoSans',
       fontSize: defaults?.fontSize !== undefined ? defaults.fontSize as number : 20,
       bold: defaults?.bold !== undefined ? defaults.bold as boolean : false,
       italic: defaults?.italic !== undefined ? defaults.italic as boolean : false,

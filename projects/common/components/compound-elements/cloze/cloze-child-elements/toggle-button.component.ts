@@ -39,7 +39,6 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-                         [style.font-family]="elementModel.styling.font"
                          [style.background-color]="elementFormControl.value !== null &&
                                                  elementFormControl.value === i ?
                                                  elementModel.styling.selectionColor :

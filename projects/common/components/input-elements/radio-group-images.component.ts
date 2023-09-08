@@ -20,7 +20,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
           <aspect-text-image-panel class="radio-button-label"
                                    [label]="option"
                                    [style.color]="elementModel.styling.fontColor"
-                                   [style.font-family]="elementModel.styling.font"
                                    [style.font-size.px]="elementModel.styling.fontSize"
                                    [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                                    [style.font-style]="elementModel.styling.italic ? 'italic' : ''"

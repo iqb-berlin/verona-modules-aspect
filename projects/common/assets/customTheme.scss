@@ -1,6 +1,11 @@
 @use '../../../node_modules/@angular/material/index' as mat;
 @import '../../../node_modules/@angular/material/theming';
 
+$aspect-typography: mat.define-typography-config(
+  $font-family: 'NunitoSans',
+);
+@include angular-material-typography($aspect-typography);
+
 $aspect-element-border-color: #ccc;
 $aspect-element-border-hover-color: #333;
 $aspect-primary: mat.define-palette(mat.$pink-palette);

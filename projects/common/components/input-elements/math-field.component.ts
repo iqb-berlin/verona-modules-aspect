@@ -11,7 +11,6 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
   template: `
   <div [style.line-height.%]="elementModel.styling.lineHeight"
        [style.color]="elementModel.styling.fontColor"
-       [style.font-family]="elementModel.styling.font"
        [style.font-size.px]="elementModel.styling.fontSize"
        [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"

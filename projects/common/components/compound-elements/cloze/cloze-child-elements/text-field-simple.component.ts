@@ -23,7 +23,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
            [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.color]="elementModel.styling.fontColor"
-           [style.font-family]="elementModel.styling.font"
            [style.font-size.px]="elementModel.styling.fontSize"
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"

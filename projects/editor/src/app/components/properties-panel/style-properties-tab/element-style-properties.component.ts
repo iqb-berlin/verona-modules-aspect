@@ -76,12 +76,12 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
              [value]="styles.fontColor"
              (input)="unitService.updateSelectedElementsStyleProperty('fontColor', $any($event.target).value)">
 
-      <mat-form-field *ngIf="styles.font !== undefined"
-                      appearance="fill" class="mdInput textsingleline">
-        <mat-label>{{'propertiesPanel.font' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.font" disabled
-               (input)="unitService.updateSelectedElementsStyleProperty('font', $any($event.target).value)">
-      </mat-form-field>
+<!--      <mat-form-field *ngIf="styles.font !== undefined"-->
+<!--                      appearance="fill" class="mdInput textsingleline">-->
+<!--        <mat-label>{{'propertiesPanel.font' | translate }}</mat-label>-->
+<!--        <input matInput type="text" [value]="styles.font" disabled-->
+<!--               (input)="unitService.updateSelectedElementsStyleProperty('font', $any($event.target).value)">-->
+<!--      </mat-form-field>-->
       <mat-form-field *ngIf="styles.fontSize !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.fontSize' | translate }}</mat-label>

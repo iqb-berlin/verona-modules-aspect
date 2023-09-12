@@ -1,52 +1,9 @@
 Player
 ======
-## 2.0.0-beta5
-- Knopf: Radiusänderung funktioniert jetzt
-- Eingabefeld: Hintergrundfarbe überdeckt nicht mehr den vorbelegten Text
-
-## 2.0.0-beta4
-## Verbesserungen
-- Umstellung der Schriftart von Roboto zu Nunito Sans
-- Unterbindet das Öffnen eines Kontextmenüs für Videos
-- Unterbindet den Bild in Bild Modus für Videos (Ausnahme: Firefox)
-- Bei Eingabehilfen, die die virtuelle Tastatur erweitern, werden Zahlen ausgeblendet, da die Tastatur bereits über Zahlen verfügt
-
-### Fehlerbehebungen
-- Behebt Fehler beim Exkludieren von Optionsfeldern bei "Presentation Complete" (Problem seit Version 2.0.0-beta)
-- Korrigiert die Dimension von Seiten im "Blätter-Modus" (Problem seit Versionen 2.0.0-beta)
-- Verhindert das zeitverzögerte Ausblenden von Tooltips im Desktop-Browser (Problem seit Version 2.0.0-beta)
-
-## 2.0.0-beta.3
-### Neue Funktionen
-- Die virtuelle Tastatur des Players kann durch die ausgewählte Eingabehilfe erweitert werden
-  Auf Tablets wird in diesem Fall lediglich die Tastatur nicht aber die Eingabehilfe eingeblendet
-
-### Verbesserungen
-- Verbessert die Darstellung der virtuellen Tastatur auf Tablets
-
-### Fehlerbehebungen
-- Behebt bei Audio- und Videoelementen Darstellungsprobleme der Fortschritts- und Lautstärkeanzeige auf Tablets
-- Korrigiert Abspielprobleme von Audios und Videos auf iPads (entstanden durch Angular-/Material-Update in Version 2.0.0-beta)
-
-
-## 2.0.0-beta.2
-### Neue Funktionen
-- Passt die Höhe von Eingabebereichen mit eingestellter "Automatischer Höhenanpassung" während der Eingabe an
-
-### Verbesserungen
-- Verbessert die Anzeige von Validierungsfehlern in Lückentextelementen
-  Es können gleichzeitig Fehler von mehreren Elementen dargestellt werden, da
-  keine Tooltipfunktionalität mehr verwendet wird.
-
-### Fehlerbehebungen
-- Setzt die Einstellung der Mindesthöhe für Elemente um
-
-### Sonstiges
-- Entfernt die Unterstützung für nicht mehr genutzte Verona Schnittstellen
-
-## 2.0.0-beta
+## 2.0.0
 ### Neue Funktionen
 - Unterstützt nur Unit-Definitionen, die mit der aktuellen Editor-Version erstellt wurden
+- Umstellung der Schriftart von Roboto zu Nunito Sans
 - Unterstützt die Anzeige von Tooltips innerhalb von markierbaren Texten
 - Unterstützt die Anzeige von Tooltips bei Knopfelementen
 - Ablegeelemente verfügen über einen optionalen Abspielknopf für Audios
@@ -56,9 +13,18 @@ Player
   von Elementen und Zustandsvariablen berücksichtigt werden.  
   Die Funktionalität kann zur Darstellung von Text, nach dem Hören eines Audios und  
   in Verbindung mit Zustandsvariablen zur Darstellung von Hypertexten verwendet werden
+- Die virtuelle Tastatur des Players kann durch die ausgewählte Eingabehilfe erweitert werden
+  Auf Tablets wird in diesem Fall lediglich die Tastatur nicht aber die Eingabehilfe eingeblendet
+- Passt die Höhe von Eingabebereichen mit eingestellter "Automatischer Höhenanpassung" während der Eingabe an
 
 ### Verbesserungen
 - Entfernt überflüssige leere Fläche von immer sichtbaren Seiten, wenn diese oben dargestellt werden
+- Unterbindet das Öffnen eines Kontextmenüs für Videos
+- Unterbindet den Bild in Bild Modus für Videos (Ausnahme: Firefox)
+- Bei Eingabehilfen, die die virtuelle Tastatur erweitern, werden Zahlen ausgeblendet, da die Tastatur bereits über Zahlen verfügt
+- Verbessert die Anzeige von Validierungsfehlern in Lückentextelementen
+  Es können gleichzeitig Fehler von mehreren Elementen dargestellt werden, da
+  keine Tooltipfunktionalität mehr verwendet wird.
 
 ### Fehlerbehebungen
 - Korrigiert Haftfunktionalität von Markierknöpfen bei eingestelltem "Blätter-Modus"

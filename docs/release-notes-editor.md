@@ -1,45 +1,12 @@
 Editor
 ======
-## 2.0.0-beta5
-- Knopf: Radiusänderung funktioniert jetzt
-- Eingabefeld: Hintergrundfarbe überdeckt nicht mehr den vorbelegten Text
-
-## 2.0.0-beta4
-### Verbesserungen
-- Umstellung der Schriftart von Roboto zu Nunito Sans
-  Zugehöriges Eigenschaftsfeld entfernt.
-- Verstärkt die Linie zum Durchstreichen von Wörtern bei "Wort korrigieren"
-- Unterbindet die horizontale Vergrößerung von größenverstellbaren Eingabebereichen
-
-### Fehlerbehebungen
-- Korrigiert die Zeilenausrichtung von Optionsfeldern innerhalb von Lückentexten (Problem seit Version 2.0.0-beta.2)
-- Zentriert die Spaltenbeschriftungen von Optionstabellen (Problem seit Version 2.0.0-beta)
-- Verwendet Zeiger-Cursor für die Beschriftung und Bildern von Optionen in Optionsfeldern (Problem seit Version 2.0.0-beta)
-
-## 2.0.0-beta.3
-### Neue Funktionen
-- Ersetzt die Einstellung "Tastatur: Französische Sonderzeichen" durch "Tastatur mit Eingabehilfe erweitern"
-
-## 2.0.0-beta.2
-### Neue Funktionen
-- Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung"
-- Korrigiert beim Laden alter Unit-Definitionen Elemente mit gelöschten Breiten- und Höheneigenschaften
-
-### Verbesserungen
-- Als Tooltip gekennzeichnete Bereiche werden im Textbearbeitungsdialog hellgrau hinterlegt
-- Zeigt den Zurücksetzenknopf von GGB-Elementen unterhalb des Elements an
-- Verhindert in den Einstellungsmöglichkeiten von Elementen das Löschen von Zahlwerten aus Zahleingabefeldern
-
-### Fehlerbehebungen
-- Behebt Fehler beim Duplizieren von Lückentext-Elementen
-- Behebt Fehler beim Laden von GGB-Elementen, die sich nicht auf der ersten Seite einer Unit-Definition befinden
-
-
-## 2.0.0-beta
+## 2.0.0
 ### Neue Funktionen
 - Versionshandhabung
   - keine Unterstützung für Unit-Definitionen, die Editorversionen vor 1.37 erstellt wurden
   - Warnung, wenn alte Unit-Defintion geladen wird.
+- Umstellung der Schriftart von Roboto zu Nunito Sans
+  Zugehöriges Eigenschaftsfeld entfernt.
 - alle Elemente haben haben nun folgende Dimensionseigenschaften:
   - Mindesthöhe
   - Maximalhöhe
@@ -65,6 +32,8 @@ Editor
   - Werte von Zustandsvariablen und Elementen bestimmen die Sichtbarkeit
   - Knopfelemente verändern die Werte von Zustandsvariablen
 - alle Elemente haben Eigenschaft "Relevant für 'Presentation Complete'"
+- Ersetzt die Einstellung "Tastatur: Französische Sonderzeichen" durch "Tastatur mit Eingabehilfe erweitern"
+- Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung"
 
 ### Verbesserungen
 - Referenzüberprüfung beim Löschen von Elementen, die mögliche Verweisziele sind
@@ -86,10 +55,15 @@ Editor
   - Seitenabschnittsmenu
   - TextEditor
   - Dialog für Medienelemente
+- Als Tooltip gekennzeichnete Bereiche werden im Textbearbeitungsdialog hellgrau hinterlegt
+- Zeigt den Zurücksetzenknopf von GGB-Elementen unterhalb des Elements an
+- Verhindert in den Einstellungsmöglichkeiten von Elementen das Löschen von Zahlwerten aus Zahleingabefeldern
 
 ### Fehlerbehebungen
 - Geometrie: customToolbar wird korrekt gespeichert
 - Selektionsrahmen für Lückentext-Elemente verbessert
+- Behebt Fehler beim Duplizieren von Lückentext-Elementen
+- Behebt Fehler beim Laden von GGB-Elementen, die sich nicht auf der ersten Seite einer Unit-Definition befinden
 
 ## 1.39.0
 ### Neue Funktionen

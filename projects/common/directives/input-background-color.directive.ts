@@ -2,7 +2,7 @@ import {
   Directive, ElementRef, Input, OnChanges, SimpleChanges
 } from '@angular/core';
 
-@Directive({ selector: '[aspectInputBackgroundColor]'})
+@Directive({ selector: '[aspectInputBackgroundColor]' })
 export class InputBackgroundColorDirective implements OnChanges {
   @Input() backgroundColor!: string;
   @Input() appearance!: string;
@@ -21,7 +21,7 @@ export class InputBackgroundColorDirective implements OnChanges {
   private setBackgroundColor(): void {
     let targetElements: HTMLElement[];
     if (this.appearance === 'outline') {
-      targetElements = this.elementRef.nativeElement.querySelector('div.mdc-notched-outline')?.children;
+      targetElements = [this.elementRef.nativeElement.querySelector('div.mdc-notched-outline')];
     } else {
       targetElements = [this.elementRef.nativeElement.querySelector('div.mat-mdc-text-field-wrapper')];
     }
@@ -29,6 +29,7 @@ export class InputBackgroundColorDirective implements OnChanges {
     if (targetElements) {
       Array.from(targetElements).forEach((element: HTMLElement) => {
         element.style.setProperty('background-color', this.backgroundColor);
+        element.style.setProperty('z-index', '-1'); // color covers the text otherwise
       });
     }
   }

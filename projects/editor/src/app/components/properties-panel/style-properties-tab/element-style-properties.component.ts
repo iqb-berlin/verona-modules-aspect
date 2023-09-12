@@ -123,7 +123,7 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
       <mat-form-field *ngIf="styles.borderRadius !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.borderRadius' | translate }}</mat-label>
         <input matInput type="number" [ngModel]="styles.borderRadius"
-               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('borderRadius', $any($event.target).value)"
+               (ngModelChange)="unitService.updateSelectedElementsStyleProperty('borderRadius', $event)"
                (change)="styles.borderRadius = styles.borderRadius ? styles.borderRadius : 0">
       </mat-form-field>
 

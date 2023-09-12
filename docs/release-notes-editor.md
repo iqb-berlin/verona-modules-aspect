@@ -1,5 +1,9 @@
 Editor
 ======
+## 2.0.0-beta5
+- Knopf: Radiusänderung funktioniert jetzt
+- Eingabefeld: Hintergrundfarbe überdeckt nicht mehr den vorbelegten Text
+
 ## 2.0.0-beta4
 ### Verbesserungen
 - Umstellung der Schriftart von Roboto zu Nunito Sans
@@ -18,13 +22,13 @@ Editor
 
 ## 2.0.0-beta.2
 ### Neue Funktionen
-- Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung" 
-- Korrigiert beim Laden alter Unit-Definitionen Elemente mit gelöschten Breiten- und Höheneigenschaften 
+- Neue Einstellungsmöglichkeit für Eingabebereiche: "Automatischer Höhenanpassung"
+- Korrigiert beim Laden alter Unit-Definitionen Elemente mit gelöschten Breiten- und Höheneigenschaften
 
 ### Verbesserungen
 - Als Tooltip gekennzeichnete Bereiche werden im Textbearbeitungsdialog hellgrau hinterlegt
 - Zeigt den Zurücksetzenknopf von GGB-Elementen unterhalb des Elements an
-- Verhindert in den Einstellungsmöglichkeiten von Elementen das Löschen von Zahlwerten aus Zahleingabefeldern 
+- Verhindert in den Einstellungsmöglichkeiten von Elementen das Löschen von Zahlwerten aus Zahleingabefeldern
 
 ### Fehlerbehebungen
 - Behebt Fehler beim Duplizieren von Lückentext-Elementen
@@ -64,7 +68,7 @@ Editor
 
 ### Verbesserungen
 - Referenzüberprüfung beim Löschen von Elementen, die mögliche Verweisziele sind
-  - Werden entsprechende Elemente (betrifft im Moment: Ablegelisten, Audio/Video und Knöpfe) 
+  - Werden entsprechende Elemente (betrifft im Moment: Ablegelisten, Audio/Video und Knöpfe)
     oder Seiten/Seitenabschnitte, die diese beinhalten, gelöscht, wird überprüft, ob auf sie verwiesen wird.
     Wenn das der Fall ist, wird in einem Dialog darauf hingewiesen. Es gibt die Option, die Verweise zu entfernen
     (und damit die verweisenden Elemente evtl. unbrauchbar zu machen) oder abzubrechen. Bei Abbruch wird eine Liste
@@ -96,7 +100,7 @@ Editor
 
 ## 1.38.0
 ### Fehlerbehebungen
-- Korrigiert das Setzen der Seitennavigation im Knopfelement 
+- Korrigiert das Setzen der Seitennavigation im Knopfelement
 
 ## 1.37.5
 - Unterstützt die aktuelle Fehlerbehebung im Player

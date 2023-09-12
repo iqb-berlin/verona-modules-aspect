@@ -1,5 +1,9 @@
 Player
 ======
+## 2.0.0-beta5
+- Knopf: Radiusänderung funktioniert jetzt
+- Eingabefeld: Hintergrundfarbe überdeckt nicht mehr den vorbelegten Text
+
 ## 2.0.0-beta4
 ## Verbesserungen
 - Umstellung der Schriftart von Roboto zu Nunito Sans
@@ -48,7 +52,7 @@ Player
 - Ablegeelemente verfügen über einen optionalen Abspielknopf für Audios
 - Beim Senden von "Presentation Complete" werden nur diejenigen Elemente berücksichtigt,  
   die als "Relevant für 'Presentation Complete'" gesetzt sind
-- Unterstützt die Regeln zur Sichtbarkeit von Abschnitten, indem die erreichten Werte 
+- Unterstützt die Regeln zur Sichtbarkeit von Abschnitten, indem die erreichten Werte
   von Elementen und Zustandsvariablen berücksichtigt werden.  
   Die Funktionalität kann zur Darstellung von Text, nach dem Hören eines Audios und  
   in Verbindung mit Zustandsvariablen zur Darstellung von Hypertexten verwendet werden
@@ -75,7 +79,7 @@ Player
 - Verbessert die Positionsbestimmung für schwebende Eingabehilfen
 
 ### Fehlerbehebungen
-- Korrigiert die Darstellung von Platzhaltern in Ablegelisten von Lückentexten 
+- Korrigiert die Darstellung von Platzhaltern in Ablegelisten von Lückentexten
 - Korrigiert die Position der Tasten in rechts positionierten Eingabehilfen
 
 ## 1.30.5
@@ -98,7 +102,7 @@ Player
 ## 1.30.2
 ### Verbesserungen
 - Wenn ein Element ein anderes Element in einer Ablegeliste verdrängen soll,
-  wird die Darstellung des zu verdrängenden Listenelements unterbunden, sobald der Platzhalter erscheint. 
+  wird die Darstellung des zu verdrängenden Listenelements unterbunden, sobald der Platzhalter erscheint.
 
 ## 1.30.1
 ### Fehlerbehebungen

@@ -137,6 +137,15 @@ export class UnitService {
   }
 
   addSection(page: Page, section?: Section): void {
+    // register section IDs
+    if (section) {
+      section.elements.forEach(element => {
+        if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
+          (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
+        }
+        this.idService.addID(element.id);
+      });
+    }
     page.sections.push(
       section || new Section()
     );

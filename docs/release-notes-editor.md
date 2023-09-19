@@ -1,5 +1,9 @@
 Editor
 ======
+## 2.0.1
+### Fehlerbehebungen
+- Element-IDs eingefügter Abschnitte werden korrekt registriert
+
 ## 2.0.0
 ### Neue Funktionen
 - Versionshandhabung

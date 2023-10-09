@@ -1,5 +1,9 @@
 Player
 ======
+## 2.0.1
+### Änderungen
+- Passt das Einbinden des Symbols für den Radiergummi an die Sicherheitseinstellungen des Testcenters an
+
 ## 2.0.0
 ### Neue Funktionen
 - Unterstützt nur Unit-Definitionen, die mit der aktuellen Editor-Version erstellt wurden

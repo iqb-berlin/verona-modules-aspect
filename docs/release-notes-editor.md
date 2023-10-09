@@ -1,5 +1,10 @@
 Editor
 ======
+## 2.0.2
+### Änderungen 
+- Passt das Einbinden des Symbols für den Radiergummi an die Sicherheitseinstellungen des Testcenters an 
+
+
 ## 2.0.1
 ### Fehlerbehebungen
 - Element-IDs eingefügter Abschnitte werden korrekt registriert

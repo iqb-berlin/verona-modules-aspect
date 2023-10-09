@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
@@ -20,7 +20,6 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
-import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -210,14 +209,7 @@ import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.
     ReferenceListComponent
   ]
 })
-export class SharedModule {
-  constructor(iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) {
-    iconRegistry.addSvgIcon(
-      'rubber-black',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/images/rubber-black.svg')
-    );
-  }
-}
+export class SharedModule {}
 
 export abstract class APIService {
   abstract getResourceURL(): string;

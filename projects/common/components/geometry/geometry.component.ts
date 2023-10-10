@@ -51,7 +51,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
               private externalResourceService: ExternalResourceService) {
     super(elementRef);
     this.externalResourceService.initializeGeoGebra(this.renderer);
-    this.pageChangeSubscription = pageChangeService.pageChanged.subscribe(() => this.loadApplet());
+    this.pageChangeSubscription = pageChangeService.pageChanged
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      ).subscribe(() => this.loadApplet());
     this.geometryUpdated
       .pipe(
         debounceTime(500),

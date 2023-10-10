@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { PageChangeService } from 'common/services/page-change.service';
 
 @Component({
   selector: 'aspect-page-scroll-button',
@@ -24,7 +25,11 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(private elementRef: ElementRef) {
+  constructor(private elementRef: ElementRef,
+              private pageChangeService: PageChangeService) {
+    this.pageChangeService.pageChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => this.checkScrollPosition(this.elementRef.nativeElement));
     this.isVisible
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(value => {

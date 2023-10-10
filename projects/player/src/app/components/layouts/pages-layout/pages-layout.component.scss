@@ -41,3 +41,13 @@
   overflow: auto;
 }
 
+:host ::ng-deep .mat-mdc-tab-body-content {
+  height: 100%;
+  overflow: unset;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-wrapper, :host ::ng-deep .mat-mdc-tab-body {
+  display: unset;
+}
+
+

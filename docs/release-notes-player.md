@@ -1,5 +1,10 @@
 Player
 ======
+## 2.0.2
+### Fehlerbehebungen
+- Korrigiert das automatische Haften von Markierknöpfen und den Kopfzeilen von Optionstabellen 
+  (Problem in Version 2.0.0 und 2.0.1)
+
 ## 2.0.1
 ### Änderungen
 - Passt das Einbinden des Symbols für den Radiergummi an die Sicherheitseinstellungen des Testcenters an

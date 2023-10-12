@@ -1,5 +1,9 @@
 Player
 ======
+## 2.0.3
+### Fehlerbehebungen
+- Korrigiert Sichtbarkeitsregeln von Abschnitten mit undefinierten (leeren) Werten
+
 ## 2.0.2
 ### Fehlerbehebungen
 - Korrigiert das automatische Haften von Markierknöpfen und den Kopfzeilen von Optionstabellen 

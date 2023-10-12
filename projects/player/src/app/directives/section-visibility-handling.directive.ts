@@ -142,42 +142,43 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private areVisibilityRulesFulfilled(): boolean {
     return this.section.visibilityRules.some(rule => {
       if (this.getAnyElementCodeById(rule.id)) {
+        const codeValue = this.getAnyElementCodeById(rule.id)?.value;
+        const value = codeValue || codeValue === 0 ? codeValue : '';
         switch (rule.operator) {
           case '=':
-            return this.getAnyElementCodeById(rule.id)?.value?.toString() === rule.value;
+            return value.toString() === rule.value;
           case '≠':
-            return this.getAnyElementCodeById(rule.id)?.value?.toString() !== rule.value;
+            return value.toString() !== rule.value;
           case '>':
-            return Number(this.getAnyElementCodeById(rule.id)?.value) > Number(rule.value);
+            return Number(value) > Number(rule.value);
           case '<':
-            return Number(this.getAnyElementCodeById(rule.id)?.value) < Number(rule.value);
+            return Number(value) < Number(rule.value);
           case '≥':
-            return Number(this.getAnyElementCodeById(rule.id)?.value) >= Number(rule.value);
+            return Number(value) >= Number(rule.value);
           case '≤':
-            return Number(this.getAnyElementCodeById(rule.id)?.value) <= Number(rule.value);
+            return Number(value) <= Number(rule.value);
           case 'contains':
-            return this.getAnyElementCodeById(rule.id)?.value?.toString().includes(rule.value);
+            return value.toString().includes(rule.value);
           case 'pattern':
-            // We use a similar implementation to Angular's PatternValidator
-            if (this.getAnyElementCodeById(rule.id)?.value !== null) {
-              let regexStr = (rule.value.charAt(0) !== '^') ? `^${rule.value}` : rule.value;
-              if (rule.value.charAt(rule.value.length - 1) !== '$') regexStr += '$';
-              const regex = new RegExp(regexStr);
-              return regex.test(this.getAnyElementCodeById(rule.id)?.value?.toString() as string);
-            }
-            return false;
+            return SectionVisibilityHandlingDirective.isPatternMatching(value.toString(), rule.value);
           case 'minLength':
-            return (this.getAnyElementCodeById(rule.id)?.value as string)
-              .toString()?.length >= Number(rule.value);
+            return value.toString().length >= Number(rule.value);
           case 'maxLength':
-            return (this.getAnyElementCodeById(rule.id)?.value as string)
-              .toString()?.length <= Number(rule.value);
+            return value.toString().length <= Number(rule.value);
           default:
             return false;
         }
       }
       return false;
     });
+  }
+
+  private static isPatternMatching(value: string, ruleValue: string): boolean {
+    // We use a similar implementation to Angular's PatternValidator
+    let regexStr = (ruleValue.charAt(0) !== '^') ? `^${ruleValue}` : ruleValue;
+    if (ruleValue.charAt(ruleValue.length - 1) !== '$') regexStr += '$';
+    const regex = new RegExp(regexStr);
+    return regex.test(value.toString());
   }
 
   ngOnDestroy(): void {

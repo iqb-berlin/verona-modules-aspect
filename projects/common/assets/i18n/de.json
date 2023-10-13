@@ -8,5 +8,7 @@
   "reload_unit": "Unit inkl. Zustand erneut laden",
   "stop_command": "Teste 'Stop-Command'",
   "continue_command": "Teste 'Continue-Command'",
-  "request_command": "Teste 'Get-Request-Command'"
+  "request_command": "Teste 'Get-Request-Command'",
+  "confirm": "Bestätigen",
+  "cancel": "Abbrechen"
 }

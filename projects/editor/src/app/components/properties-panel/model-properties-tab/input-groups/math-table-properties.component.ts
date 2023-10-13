@@ -18,7 +18,7 @@ import { UIElement } from 'common/models/elements/element';
         <mat-label>Operation</mat-label>
         <mat-select [value]="combinedProperties.operation"
                     (selectionChange)="updateModel.emit({ property: 'operation', value: $event.value })">
-          <mat-option *ngFor="let operation of ['add', 'subtract', 'multiply']" [value]="operation">
+          <mat-option *ngFor="let operation of ['addition', 'subtraction', 'multiplication']" [value]="operation">
             {{operation | translate}}
           </mat-option>
         </mat-select>

@@ -18,7 +18,7 @@ export class ElementGroupSelectionComponent implements OnInit {
       name: 'inputGroup',
       types: [
         'checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images',
-        'dropdown', 'hotspot-image', 'math-field'
+        'dropdown', 'hotspot-image', 'math-field', 'text-area-math'
       ]
     },
     { name: 'compoundGroup', types: ['cloze', 'likert'] },

@@ -1,51 +1,48 @@
 <form class="inline-container"
       [formGroup]="form">
-  <aspect-checkbox
-      *ngIf="elementModel.type === 'checkbox'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: CheckboxElement">
+  <aspect-checkbox *ngIf="elementModel.type === 'checkbox'"
+                   #elementComponent
+                   [parentForm]="form"
+                   [elementModel]="elementModel | cast: CheckboxElement">
   </aspect-checkbox>
-  <aspect-slider
-      *ngIf="elementModel.type === 'slider'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: SliderElement">
+  <aspect-slider *ngIf="elementModel.type === 'slider'"
+                 #elementComponent
+                 [parentForm]="form"
+                 [elementModel]="elementModel | cast: SliderElement">
   </aspect-slider>
-  <aspect-drop-list
-      *ngIf="elementModel.type === 'drop-list'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: DropListElement">
+  <aspect-drop-list *ngIf="elementModel.type === 'drop-list'"
+                    #elementComponent
+                    [parentForm]="form"
+                    [elementModel]="elementModel | cast: DropListElement">
   </aspect-drop-list>
-  <aspect-radio-button-group
-      *ngIf="elementModel.type === 'radio'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: RadioButtonGroupElement">
+  <aspect-radio-button-group *ngIf="elementModel.type === 'radio'"
+                             #elementComponent
+                             [parentForm]="form"
+                             [elementModel]="elementModel | cast: RadioButtonGroupElement">
   </aspect-radio-button-group>
-  <aspect-radio-group-images
-      *ngIf="elementModel.type === 'radio-group-images'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: RadioButtonGroupComplexElement">
+  <aspect-radio-group-images *ngIf="elementModel.type === 'radio-group-images'"
+                             #elementComponent
+                             [parentForm]="form"
+                             [elementModel]="elementModel | cast: RadioButtonGroupComplexElement">
   </aspect-radio-group-images>
-  <aspect-hotspot-image
-    *ngIf="elementModel.type === 'hotspot-image'"
-    #elementComponent
-    [parentForm]="form"
-    [elementModel]="elementModel | cast: HotspotImageElement">
+  <aspect-hotspot-image *ngIf="elementModel.type === 'hotspot-image'"
+                        #elementComponent
+                        [parentForm]="form"
+                        [elementModel]="elementModel | cast: HotspotImageElement">
   </aspect-hotspot-image>
-  <aspect-dropdown
-      *ngIf="elementModel.type === 'dropdown'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: DropdownElement">
+  <aspect-dropdown *ngIf="elementModel.type === 'dropdown'"
+                   #elementComponent
+                   [parentForm]="form"
+                   [elementModel]="elementModel | cast: DropdownElement">
   </aspect-dropdown>
-  <aspect-math-field
-      *ngIf="elementModel.type === 'math-field'"
-      #elementComponent
-      [parentForm]="form"
-      [elementModel]="elementModel | cast: MathFieldElement">
+  <aspect-math-field *ngIf="elementModel.type === 'math-field'"
+                     #elementComponent
+                     [parentForm]="form"
+                     [elementModel]="elementModel | cast: MathFieldElement">
   </aspect-math-field>
+  <aspect-text-area-math *ngIf="elementModel.type === 'text-area-math'"
+                         #elementComponent
+                         [parentForm]="form"
+                         [elementModel]="elementModel | cast: TextAreaMathElement">
+  </aspect-text-area-math>
 </form>

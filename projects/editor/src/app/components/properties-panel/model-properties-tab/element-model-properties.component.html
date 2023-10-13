@@ -108,7 +108,8 @@
     {{'propertiesPanel.hasDynamicRowCount' | translate }}
   </mat-checkbox>
 
-  <mat-form-field *ngIf="combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false"
+  <mat-form-field *ngIf="(combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === false) ||
+                         (combinedProperties.rowCount != null && combinedProperties.hasDynamicRowCount === undefined)"
                   appearance="fill" class="mdInput textsingleline">
     <mat-label>{{'rows' | translate }}</mat-label>
     <input matInput type="number" [value]="$any(combinedProperties.rowCount)"

@@ -25,6 +25,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
 import { MathTableElement } from 'common/models/elements/input-elements/math-table';
+import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -50,7 +51,8 @@ export abstract class ElementFactory {
     geometry: GeometryElement,
     'hotspot-image': HotspotImageElement,
     'math-field': MathFieldElement,
-    'math-table': MathTableElement
+    'math-table': MathTableElement,
+    'text-area-math': TextAreaMathElement
   };
 
   static createElement(element: { type: string } & Partial<UIElement>): UIElement {

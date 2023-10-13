@@ -125,6 +125,10 @@
   </mat-form-field>
 
 
+  <aspect-math-table-properties [combinedProperties]="combinedProperties"
+                                (updateModel)="updateModel.emit($event)">
+  </aspect-math-table-properties>
+
   <aspect-button-properties [combinedProperties]="combinedProperties"
                             (updateModel)="updateModel.emit($event)">
   </aspect-button-properties>

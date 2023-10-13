@@ -15,6 +15,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
+import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -74,6 +75,16 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
         (elementID: string) => {
           if (this.element.type === 'geometry' && this.element.id === elementID) {
             (this.childComponent.instance as GeometryComponent).refresh();
+          }
+        }
+      );
+    // same for math table
+    this.unitService.mathTableElementPropertyUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (elementID: string) => {
+          if (this.element.type === 'math-table' && this.element.id === elementID) {
+            (this.childComponent.instance as MathTableComponent).refresh();
           }
         }
       );

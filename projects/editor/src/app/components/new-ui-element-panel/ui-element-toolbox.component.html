@@ -59,6 +59,11 @@
           <mat-icon>calculate</mat-icon>
           {{'toolbox.math-field' | translate }}
         </button>
+        <button mat-stroked-button (click)="addUIElement('math-table')"
+                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','math-table');">
+          <mat-icon>apps</mat-icon>
+          Rechenkästchen
+        </button>
       </mat-expansion-panel>
       <mat-expansion-panel expanded>
         <mat-expansion-panel-header>

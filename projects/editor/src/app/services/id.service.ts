@@ -36,6 +36,7 @@ export class IDService {
     'toggle-button': 0,
     geometry: 0,
     'math-field': 0,
+    'math-table': 0,
     value: 0,
     'state-variable': 0
   };

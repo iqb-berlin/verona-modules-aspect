@@ -17,7 +17,7 @@ import { InstantiationEror } from 'common/util/errors';
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry'
-| 'math-field';
+| 'math-field' | 'math-table';
 
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;

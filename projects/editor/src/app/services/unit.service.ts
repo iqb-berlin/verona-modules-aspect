@@ -46,6 +46,7 @@ export class UnitService {
   unit: Unit;
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
+  mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   referenceManager: ReferenceManager;
   private ngUnsubscribe = new Subject<void>();
 
@@ -339,6 +340,7 @@ export class UnitService {
       } else {
         element.setProperty(property, value);
         if (element.type === 'geometry') this.geometryElementPropertyUpdated.next(element.id);
+        if (element.type === 'math-table') this.mathTableElementPropertyUpdated.next(element.id);
       }
     });
     this.elementPropertyUpdated.next();

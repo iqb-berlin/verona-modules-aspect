@@ -10,6 +10,7 @@ import { SelectionService } from '../../services/selection.service';
 })
 export class UiElementToolboxComponent {
   hoverRadioButton: boolean = false;
+  hoverFormulaButton: boolean = false;
   constructor(private selectionService: SelectionService, public unitService: UnitService) { }
 
   async addUIElement(elementType: UIElementType): Promise<void> {

@@ -314,7 +314,9 @@
     "toggle-button": "Optionsfeld",
     "geometry": "Geometrie",
     "hotspot-image": "Bildbereiche",
-    "math-field": "Formel"
+    "formula": "Formel",
+    "math-field": "Feld",
+    "math-area": "Bereich"
   },
   "section-menu": {
     "height": "Höhe",

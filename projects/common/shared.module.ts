@@ -16,7 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-
+import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSliderModule } from '@angular/material/slider';
@@ -87,6 +87,7 @@ import {
 } from './services/message.service';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
 import { MathTableComponent } from './components/input-elements/math-table.component';
+import { TextAreaMathComponent } from './components/input-elements/text-area-math/text-area-math.component';
 
 @NgModule({
   imports: [
@@ -109,7 +110,9 @@ import { MathTableComponent } from './components/input-elements/math-table.compo
     MatButtonToggleModule,
     MatProgressSpinnerModule,
     MathEditorModule,
-    MatListModule
+    MatListModule,
+    CdkConnectedOverlay,
+    CdkOverlayOrigin
   ],
   declarations: [
     ButtonComponent,
@@ -117,6 +120,7 @@ import { MathTableComponent } from './components/input-elements/math-table.compo
     TextFieldComponent,
     TextFieldSimpleComponent,
     TextAreaComponent,
+    TextAreaMathComponent,
     ImageComponent,
     AudioComponent,
     VideoComponent,
@@ -208,7 +212,8 @@ import { MathTableComponent } from './components/input-elements/math-table.compo
     MathFieldComponent,
     MeasurePipe,
     TextImagePanelComponent,
-    ReferenceListComponent
+    ReferenceListComponent,
+    TextAreaMathComponent
   ]
 })
 export class SharedModule {}

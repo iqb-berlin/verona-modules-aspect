@@ -87,6 +87,7 @@ import {
   ReferenceListSnackbarComponent
 } from './services/message.service';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
+import { MathTableComponent } from './components/input-elements/math-table.component';
 
 @NgModule({
   imports: [
@@ -165,7 +166,8 @@ import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.
     TooltipEventTooltipDirective,
     PointerEventTooltipDirective,
     ClozeChildErrorMessage,
-    AutoHeightDirective
+    AutoHeightDirective,
+    MathTableComponent
   ],
   exports: [
     CommonModule,

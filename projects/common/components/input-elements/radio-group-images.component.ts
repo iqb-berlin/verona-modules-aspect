@@ -38,6 +38,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     }
     mat-radio-group {
       display: grid;
+      align-items: end;
     }
 
     :host ::ng-deep mat-radio-button .mdc-form-field {

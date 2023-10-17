@@ -19,8 +19,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
              [innerHTML]="elementModel.label | safeResourceHTML">
       </label>
       <mat-radio-group [attr.aria-labelledby]="elementModel.id +'-radio-group-label'"
-                       [class.fx-column-start-stretch]="elementModel.alignment === 'column'"
-                       [class.fx-row-start-stretch]="elementModel.alignment === 'row'"
+                       [style.flex-direction]="elementModel.alignment === 'column' ? 'column' : 'row'"
                        [formControl]="elementFormControl"
                        [value]="elementModel.value"
                        [style.margin-top.px]="elementModel.label !== '' ? 10 : 0">
@@ -40,8 +39,20 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     </div>
   `,
   styles: [`
-    .radio-button-label{
+    mat-radio-group {
+      display: flex;
+    }
+    .radio-button-label {
         cursor: pointer;
+    }
+    mat-radio-button {
+      margin-bottom: 8px;
+    }
+    :host ::ng-deep mat-radio-button .mdc-form-field {
+      align-items: flex-start;
+    }
+    :host ::ng-deep mat-radio-button .mdc-form-field .mdc-radio {
+      padding-top: 0;
     }
     :host ::ng-deep .mdc-form-field {
       font-size: inherit;
@@ -52,20 +63,6 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     }
     .error-message {
       font-size: 12px; line-height: 100%;
-    }
-    .fx-row-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
     }
   `]
 })

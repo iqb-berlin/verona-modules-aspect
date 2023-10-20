@@ -117,23 +117,12 @@ export class UnitService {
   }
 
   moveSelectedPage(direction: 'left' | 'right') {
-    /* check of movement is allowed
-    * - alwaysVisible has to be index 0
-    * - don't move left when already the leftmost
-    * - don't move right when already the last
-    */
-    if ((direction === 'left' && this.selectionService.selectedPageIndex === 1 && this.unit.pages[0].alwaysVisible) ||
-      (direction === 'left' && this.selectionService.selectedPageIndex === 0) ||
-      (direction === 'right' && this.selectionService.selectedPageIndex === this.unit.pages.length - 1)) {
-      this.messageService.showWarning('page can\'t be moved'); // TODO translate
-      return;
+    if (this.unit.canPageBeMoved(this.selectionService.selectedPageIndex, direction)) {
+      this.unit.movePage(this.selectionService.selectedPageIndex, direction);
+      this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
+    } else {
+      this.messageService.showWarning('Seite kann nicht verschoben werden.');
     }
-    ArrayUtils.moveArrayItem(
-      this.unit.pages[this.selectionService.selectedPageIndex],
-      this.unit.pages,
-      direction === 'left' ? 'up' : 'down'
-    );
-    this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
   addSection(page: Page, section?: Section): void {

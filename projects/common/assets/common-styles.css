@@ -102,3 +102,8 @@ blockquote p {
 .fx-gap-20 {
   gap: 20px;
 }
+
+/* Put overlay below the MathLive keyboard, which default z-index is 105. */
+.reduced-overlay-index.cdk-overlay-container {
+  z-index: 100 !important;
+}

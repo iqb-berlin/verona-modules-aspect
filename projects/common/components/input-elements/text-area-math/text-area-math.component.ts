@@ -5,6 +5,7 @@ import {
 import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
 import { MathInputComponent } from 'common/math-editor.module';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'aspect-text-area-math',
@@ -18,6 +19,7 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
       <mat-icon>functions</mat-icon>
     </button>
     <ng-template cdkConnectedOverlay
+                 [cdkConnectedOverlayDisableClose]="true"
                  [cdkConnectedOverlayOrigin]="trigger"
                  [cdkConnectedOverlayOpen]="isOverlayOpen">
       <div class="formula-overlay"
@@ -73,7 +75,7 @@ import { FormElementComponent } from 'common/directives/form-element-component.d
     '.textarea span {height: 100%;}',
     '.textarea span:focus {outline: 2px solid #3f51b5;}',
     '::ng-deep math-field:focus {outline: 2px solid #3f51b5;}',
-    '.formula {display: inline-block;}',
+    '.formula {display: inline;}',
     '.formula-overlay {display: flex; flex-direction: column; background-color: lightgray; padding: 10px;}',
     '.formula-overlay aspect-mathlive-math-field {background-color: white;}'
   ]
@@ -90,7 +92,8 @@ export class TextAreaMathComponent extends FormElementComponent implements OnIni
   textareaIsFocused: boolean = false;
 
   constructor(public elementRef: ElementRef,
-              private renderer: Renderer2) {
+              private renderer: Renderer2,
+              private overlayContainer: OverlayContainer) {
     super(elementRef);
   }
 
@@ -101,6 +104,7 @@ export class TextAreaMathComponent extends FormElementComponent implements OnIni
 
   onConfirmFormula(): void {
     this.isOverlayOpen = false;
+    this.overlayContainer.getContainerElement().classList.remove('reduced-overlay-index');
 
     if (this.elementModel.readOnly) return;
     const formula = this.createFormula(this.mathfieldRef.getMathMLValue());
@@ -158,6 +162,11 @@ export class TextAreaMathComponent extends FormElementComponent implements OnIni
   }
 
   toggleFormulaOverlay(): void {
+    if (this.isOverlayOpen) {
+      this.overlayContainer.getContainerElement().classList.remove('reduced-overlay-index');
+    } else {
+      this.overlayContainer.getContainerElement().classList.add('reduced-overlay-index');
+    }
     this.isOverlayOpen = !this.isOverlayOpen;
     this.setRange();
   }
@@ -171,6 +180,7 @@ export class TextAreaMathComponent extends FormElementComponent implements OnIni
 
   cancelFormula() {
     this.isOverlayOpen = false;
+    this.overlayContainer.getContainerElement().classList.remove('reduced-overlay-index');
     const selection = window.getSelection() as Selection;
     selection.removeAllRanges();
     selection.addRange(this.range);

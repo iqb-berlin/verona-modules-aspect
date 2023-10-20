@@ -142,6 +142,7 @@ export class UnitService {
   }
 
   deleteSection(pageIndex: number, sectionIndex: number): void {
+    this.freeUpIds(this.unit.pages[pageIndex].sections[sectionIndex].getAllElements());
     this.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }

@@ -74,7 +74,8 @@ import { OverlayContainer } from '@angular/cdk/overlay';
     '.textarea {border: 1px solid black; border-radius: 3px; flex-grow: 1; margin: 1px;}',
     '.textarea span {height: 100%;}',
     '.textarea span:focus {outline: 2px solid #3f51b5;}',
-    '::ng-deep math-field:focus {outline: 2px solid #3f51b5;}',
+    'aspect-mathlive-math-field {font-size: x-large;}',
+    ':host ::ng-deep math-field:focus {outline: 2px solid #3f51b5;}',
     '.formula {display: inline;}',
     '.formula-overlay {display: flex; flex-direction: column; background-color: lightgray; padding: 10px;}',
     '.formula-overlay aspect-mathlive-math-field {background-color: white;}'

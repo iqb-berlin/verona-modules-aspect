@@ -1,5 +1,10 @@
 Player
 ======
+## 2.0.4
+- Klappliste-Element repariert (ist wieder anklickbar)
+- Optionsfelder: Textausrichtung bei mehrzeiligen Optionen orientiert sich wieder an der ersten Zeile
+- Optionsfelder mit Bild: Optionen richten sich wieder nach unten aus
+
 ## 2.0.3
 ### Fehlerbehebungen
 - Korrigiert Sichtbarkeitsregeln von Abschnitten mit undefinierten (leeren) Werten

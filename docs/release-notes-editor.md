@@ -1,5 +1,15 @@
 Editor
 ======
+## 2.0.3
+### Fehlerbehebungen
+- Element-IDs gelöschter Abschnitte werden korrekt verfügbar gemacht
+  Damit können Abschnitte die kopiert und direkt gelöscht werden, eingefügt werden und
+  die IDs bleiben erhalten.
+- Klappliste-Element repariert
+  Wird nun im Editor angezeigt und ist im Player anklickbar.
+- Optionsfelder: Textausrichtung bei mehrzeiligen Optionen orientiert sich wieder an der ersten Zeile
+- Optionsfelder mit Bild: Optionen richten sich wieder nach unten aus
+
 ## 2.0.2
 ### Änderungen 
 - Passt das Einbinden des Symbols für den Radiergummi an die Sicherheitseinstellungen des Testcenters an 

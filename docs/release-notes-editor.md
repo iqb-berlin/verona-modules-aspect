@@ -5,7 +5,6 @@ Editor
 - Für die Bedingungen zur Sichtbarkeit von Abschnitten kann nun die 
   logische Verknüpfung festgelegt werden: UND / ODER  
 
-## 2.0.3
 ### Fehlerbehebungen
 - Element-IDs gelöschter Abschnitte werden korrekt verfügbar gemacht
   Damit können Abschnitte die kopiert und direkt gelöscht werden, eingefügt werden und

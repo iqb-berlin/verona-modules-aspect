@@ -1,5 +1,10 @@
 Editor
 ======
+## 2.1.0
+### Neue Funktionen
+- Für die Bedingungen zur Sichtbarkeit von Abschnitten kann nun die 
+  logische Verknüpfung festgelegt werden: UND / ODER  
+
 ## 2.0.3
 ### Fehlerbehebungen
 - Element-IDs gelöschter Abschnitte werden korrekt verfügbar gemacht

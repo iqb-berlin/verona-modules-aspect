@@ -10,6 +10,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
 import { ElementCode } from 'player/modules/verona/models/verona';
 import { Storable } from 'player/src/app/classes/storable';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
+import { VisibilityRule } from 'common/models/visibility-rule';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]'
@@ -140,37 +141,54 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private areVisibilityRulesFulfilled(): boolean {
-    return this.section.visibilityRules.some(rule => {
+    const methodName = this.section.logicalConnectiveOfRules === 'disjunction' ? 'some' : 'every';
+    return this.section.visibilityRules[methodName](rule => {
       if (this.getAnyElementCodeById(rule.id)) {
-        const codeValue = this.getAnyElementCodeById(rule.id)?.value;
-        const value = codeValue || codeValue === 0 ? codeValue : '';
-        switch (rule.operator) {
-          case '=':
-            return value.toString() === rule.value;
-          case '≠':
-            return value.toString() !== rule.value;
-          case '>':
-            return Number(value) > Number(rule.value);
-          case '<':
-            return Number(value) < Number(rule.value);
-          case '≥':
-            return Number(value) >= Number(rule.value);
-          case '≤':
-            return Number(value) <= Number(rule.value);
-          case 'contains':
-            return value.toString().includes(rule.value);
-          case 'pattern':
-            return SectionVisibilityHandlingDirective.isPatternMatching(value.toString(), rule.value);
-          case 'minLength':
-            return value.toString().length >= Number(rule.value);
-          case 'maxLength':
-            return value.toString().length <= Number(rule.value);
-          default:
-            return false;
-        }
+        return this.isRuleFullFilled(rule);
       }
       return false;
     });
+  }
+
+  isRuleFullFilled(rule: VisibilityRule): boolean {
+    let isFullFilled;
+    const codeValue = this.getAnyElementCodeById(rule.id)?.value;
+    const value = codeValue || codeValue === 0 ? codeValue : '';
+    switch (rule.operator) {
+      case '=':
+        isFullFilled = value.toString() === rule.value;
+        break;
+      case '≠':
+        isFullFilled = value.toString() !== rule.value;
+        break;
+      case '>':
+        isFullFilled = Number(value) > Number(rule.value);
+        break;
+      case '<':
+        isFullFilled = Number(value) < Number(rule.value);
+        break;
+      case '≥':
+        isFullFilled = Number(value) >= Number(rule.value);
+        break;
+      case '≤':
+        isFullFilled = Number(value) <= Number(rule.value);
+        break;
+      case 'contains':
+        isFullFilled = value.toString().includes(rule.value);
+        break;
+      case 'pattern':
+        isFullFilled = SectionVisibilityHandlingDirective.isPatternMatching(value.toString(), rule.value);
+        break;
+      case 'minLength':
+        isFullFilled = value.toString().length >= Number(rule.value);
+        break;
+      case 'maxLength':
+        isFullFilled = value.toString().length <= Number(rule.value);
+        break;
+      default:
+        isFullFilled = false;
+    }
+    return isFullFilled;
   }
 
   private static isPatternMatching(value: string, ruleValue: string): boolean {

@@ -2,6 +2,7 @@ import { Section } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class Page {
   [index: string]: unknown;
@@ -26,7 +27,7 @@ export class Page {
       this.sections = page.sections.map(section => new Section(section));
     } else {
       if (environment.strictInstantiation) {
-        throw Error('Error at Page instantiation');
+        throw new InstantiationEror('Error at Page instantiation');
       }
       if (page?.hasMaxWidth !== undefined) this.hasMaxWidth = page.hasMaxWidth;
       if (page?.maxWidth !== undefined) this.maxWidth = page.maxWidth;

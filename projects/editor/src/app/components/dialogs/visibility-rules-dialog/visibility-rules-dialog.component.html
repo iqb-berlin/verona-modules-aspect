@@ -2,6 +2,11 @@
 <div mat-dialog-content class="fx-column-start-stretch fx-gap-20">
   <div *ngIf="controlIds.length && visibilityRules.length"
        class="fx-column-start-start">
+    <label>{{'section.logicalConnectiveOfRules' | translate}}</label>
+    <mat-radio-group [(ngModel)]="logicalConnectiveOfRules">
+      <mat-radio-button value="disjunction">{{'section.rulesDisjunction' | translate}}</mat-radio-button>
+      <mat-radio-button value="conjunction">{{'section.rulesConjunction' | translate}}</mat-radio-button>
+    </mat-radio-group>
     <mat-checkbox
       [(ngModel)]="enableReHide">
       {{'section.enableReHide' | translate}}
@@ -47,7 +52,9 @@
 <div mat-dialog-actions>
   <button *ngIf="controlIds.length"
           mat-button
-          [mat-dialog-close]="{visibilityRules, visibilityDelay, animatedVisibility, enableReHide}">
+          [mat-dialog-close]="{
+            visibilityRules, logicalConnectiveOfRules, visibilityDelay, animatedVisibility, enableReHide
+          }">
     {{'save' | translate}}
   </button>
   <button mat-button

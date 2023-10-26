@@ -19,6 +19,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class VisibilityRulesDialogComponent {
   visibilityRules!: VisibilityRule[];
+  logicalConnectiveOfRules!: 'disjunction' | 'conjunction';
   controlIds!: string[];
   visibilityDelay!: number;
   animatedVisibility!: boolean;
@@ -27,6 +28,7 @@ export class VisibilityRulesDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: {
       visibilityRules: VisibilityRule[],
+      logicalConnectiveOfRules: 'disjunction' | 'conjunction',
       visibilityDelay: number,
       animatedVisibility: boolean,
       controlIds: string[],
@@ -34,6 +36,7 @@ export class VisibilityRulesDialogComponent {
     }
   ) {
     this.visibilityRules = [...data.visibilityRules];
+    this.logicalConnectiveOfRules = data.logicalConnectiveOfRules;
     this.visibilityDelay = data.visibilityDelay;
     this.animatedVisibility = data.animatedVisibility;
     this.enableReHide = data.enableReHide;

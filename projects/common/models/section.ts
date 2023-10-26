@@ -12,6 +12,7 @@ import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/util/element.factory';
 import { environment } from 'common/environment';
+import { InstantiationEror } from 'common/util/errors';
 
 export class Section {
   [index: string]: unknown;
@@ -26,6 +27,7 @@ export class Section {
   visibilityDelay: number = 0;
   animatedVisibility: boolean = false;
   enableReHide: boolean = false;
+  logicalConnectiveOfRules: 'disjunction' | 'conjunction' = 'disjunction';
   visibilityRules: VisibilityRule[] = [];
 
   constructor(section?: SectionProperties) {
@@ -40,12 +42,13 @@ export class Section {
       this.visibilityDelay = section.visibilityDelay;
       this.animatedVisibility = section.animatedVisibility;
       this.enableReHide = section.enableReHide;
+      this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
       this.visibilityRules = section.visibilityRules;
       this.elements = section.elements
         .map(element => ElementFactory.createElement(element)) as PositionedUIElement[];
     } else {
       if (environment.strictInstantiation) {
-        throw Error('Error at Section instantiation');
+        throw new InstantiationEror('Error at Section instantiation');
       }
       if (section?.height !== undefined) this.height = section.height;
       if (section?.backgroundColor !== undefined) this.backgroundColor = section.backgroundColor;
@@ -57,6 +60,7 @@ export class Section {
       if (section?.visibilityDelay !== undefined) this.visibilityDelay = section.visibilityDelay;
       if (section?.animatedVisibility !== undefined) this.animatedVisibility = section.animatedVisibility;
       if (section?.enableReHide !== undefined) this.enableReHide = section.enableReHide;
+      if (section?.logicalConnectiveOfRules !== undefined) this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
       if (section?.visibilityRules !== undefined) this.visibilityRules = section.visibilityRules;
       this.elements = section?.elements !== undefined ?
         section.elements.map(element => ElementFactory.createElement(element)) as PositionedUIElement[] :
@@ -104,6 +108,7 @@ export interface SectionProperties {
   visibilityDelay: number;
   animatedVisibility: boolean;
   enableReHide: boolean;
+  logicalConnectiveOfRules: 'disjunction' | 'conjunction';
   visibilityRules: VisibilityRule[];
 }
 
@@ -120,5 +125,6 @@ function isValid(blueprint?: SectionProperties): boolean {
     blueprint.visibilityDelay !== undefined &&
     blueprint.animatedVisibility !== undefined &&
     blueprint.enableReHide !== undefined &&
+    blueprint.logicalConnectiveOfRules !== undefined &&
     blueprint.visibilityRules !== undefined;
 }

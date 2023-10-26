@@ -82,8 +82,8 @@ export class UnitComponent implements OnInit {
   }
 
   private checkUnitDefinitionVersion(unitDefinition: Record<string, unknown>): void {
-    if (!VersionManager.hasCompatibleVersion(unitDefinition)) {
-      if (VersionManager.isNewer(unitDefinition)) {
+    if (unitDefinition.version !== VersionManager.getCurrentVersion()) {
+      if (!VersionManager.hasCompatibleVersion(unitDefinition) && VersionManager.isNewer(unitDefinition)) {
         throw Error(this.translateService.instant('errorMessage.unitDefinitionIsNewer'));
       }
       throw Error(this.translateService.instant('errorMessage.unitDefinitionIsOutdated'));

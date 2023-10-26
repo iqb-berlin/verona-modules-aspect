@@ -293,6 +293,7 @@ export class SectionMenuComponent implements OnDestroy {
     this.dialogService
       .showVisibilityRulesDialog(
         this.section.visibilityRules,
+        this.section.logicalConnectiveOfRules,
         this.getControlIds(),
         this.section.visibilityDelay,
         this.section.animatedVisibility,
@@ -301,6 +302,7 @@ export class SectionMenuComponent implements OnDestroy {
       .subscribe(visibilityConfig => {
         if (visibilityConfig) {
           this.updateModel('visibilityRules', visibilityConfig.visibilityRules);
+          this.updateModel('logicalConnectiveOfRules', visibilityConfig.logicalConnectiveOfRules);
           this.updateModel('visibilityDelay', visibilityConfig.visibilityDelay);
           this.updateModel('animatedVisibility', visibilityConfig.animatedVisibility);
           this.updateModel('enableReHide', visibilityConfig.enableReHide);

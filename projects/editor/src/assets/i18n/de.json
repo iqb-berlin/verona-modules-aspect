@@ -40,14 +40,17 @@
   "stateVariableId": "ID",
   "manageStateVariables": "Zustandsvariablen verwalten",
   "section": {
-    "manageVisibilityRules": "Sichtbarkeit verwalten",
+    "manageVisibilityRules": "Bedingungen zur Sichtbarkeit von Abschnitten bearbeiten",
     "animatedVisibility": "Einblenden mit Scroll-Animation",
     "visibilityDelay": "Verzögertes Einblenden (in ms)",
     "enableReHide": "Erneutes Ausblenden erlauben, wenn die Bedingungen nicht mehr erfüllt sind",
     "controlId": "Variablen/Element-ID",
     "operator": "Operator",
     "addElementsOrStateVariables": "Bitte zuerst Elemente oder Zustandsvariablen anlegen",
-    "value": "Wert"
+    "value": "Wert",
+    "rulesDisjunction": "ODER",
+    "rulesConjunction": "UND",
+    "logicalConnectiveOfRules": "Logische Verknüpfung der Bedingungen:"
   },
   "visibilityRule": {
     "contains": "Enthält",

@@ -163,12 +163,14 @@ export class DialogService {
   }
 
   showVisibilityRulesDialog(visibilityRules: VisibilityRule[],
+                            logicalConnectiveOfRules: 'disjunction' | 'conjunction',
                             controlIds: string[],
                             visibilityDelay: number,
                             animatedVisibility: boolean,
                             enableReHide: boolean
   ): Observable<{
       visibilityRules: VisibilityRule[],
+      logicalConnectiveOfRules: 'disjunction' | 'conjunction',
       visibilityDelay: number,
       animatedVisibility: boolean,
       enableReHide: boolean
@@ -177,6 +179,7 @@ export class DialogService {
       .open(VisibilityRulesDialogComponent, {
         data: {
           visibilityRules,
+          logicalConnectiveOfRules,
           controlIds,
           visibilityDelay,
           animatedVisibility,

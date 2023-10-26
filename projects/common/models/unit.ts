@@ -4,6 +4,7 @@ import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
+import { InstantiationEror } from 'common/util/errors';
 import { ArrayUtils } from 'common/util/array';
 
 export class Unit implements UnitProperties {
@@ -19,7 +20,7 @@ export class Unit implements UnitProperties {
       this.pages = unit.pages.map(page => new Page(page));
     } else {
       if (environment.strictInstantiation) {
-        throw Error('Error at unit instantiation');
+        throw new InstantiationEror('Error at unit instantiation');
       }
       this.version = VersionManager.getCurrentVersion();
       if (unit?.stateVariables !== undefined) this.stateVariables = unit.stateVariables;

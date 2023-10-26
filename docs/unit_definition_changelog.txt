@@ -121,3 +121,7 @@ iqb-aspect-definition@1.0.0
 - TextAreaElement, TextFieldElement, TextFieldSimpleElement, SpellCorrectElement:
   - remove property: softwareKeyboardShowFrench
   - new property: addInputAssistanceToKeyboard
+
+4.0.0
+  - Section
+    - new property: logicalConnectiveOfRules: 'disjunction' | 'conjunction'

@@ -1,6 +1,12 @@
 Player
 ======
-## 2.0.4
+## 2.1.0
+### Neue Funktionen
+- Der Player zeigt nur Unitdefinitionen an, die mit der gleichen Editor-Version erstellt wurden.
+  Ältere Unitdefinitionen müssen daher zunächst mit einem Editor in der Version 2.1 geöffnet 
+  und gespeichert werden.
+
+### Fehlerbehebungen
 - Klappliste-Element repariert (ist wieder anklickbar)
 - Optionsfelder: Textausrichtung bei mehrzeiligen Optionen orientiert sich wieder an der ersten Zeile
 - Optionsfelder mit Bild: Optionen richten sich wieder nach unten aus

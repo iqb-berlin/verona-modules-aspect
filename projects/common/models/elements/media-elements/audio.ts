@@ -19,7 +19,7 @@ export class AudioElement extends PlayerElement implements PositionedUIElement, 
     super(element);
     if (element && isValid(element)) {
       this.src = element.src;
-      this.position = element.position;
+      this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Audio instantiation', element);
@@ -32,6 +32,10 @@ export class AudioElement extends PlayerElement implements PositionedUIElement, 
       });
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
     }
+  }
+
+  getDuplicate(): AudioElement {
+    return new AudioElement(this);
   }
 
   getElementComponent(): Type<ElementComponent> {

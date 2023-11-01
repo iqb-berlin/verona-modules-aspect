@@ -38,7 +38,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.orientation = element.orientation;
       this.highlightReceivingDropList = element.highlightReceivingDropList;
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
-      this.styling = element.styling;
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at DropList instantiation', element);
@@ -69,6 +69,10 @@ export class DropListElement extends InputElement implements DropListProperties 
         itemBackgroundColor: element?.styling?.itemBackgroundColor || '#c9e0e0'
       };
     }
+  }
+
+  getDuplicate(): DropListElement {
+    return new DropListElement(this);
   }
 
   /* Set originListID and originListIndex if applicable. */

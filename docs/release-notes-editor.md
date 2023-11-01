@@ -1,5 +1,14 @@
 Editor
 ======
+## 2.1.1
+### Änderungen
+- Duplizierte Elemente verlieren ihren Wert für Spalte/Zeile (Raster - dynamisches Layout)
+  Damit liegen duplizierte Elemente nicht mehr deckungsgleich übereinander.
+  (Gilt nicht für Elemente duplizierter Seitenabschnitte.)
+### Fehlerbehebungen
+- Sichtbarkeitseinstellungen duplizierter Abschnitte repariert
+  Einstellungen an Kopien werden nicht mehr auf das Ursprungselement angewendet.
+
 ## 2.1.0
 ### Neue Funktionen
 - Für die Bedingungen zur Sichtbarkeit von Abschnitten kann nun die 

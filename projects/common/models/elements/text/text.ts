@@ -35,8 +35,8 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
       this.highlightableYellow = element.highlightableYellow;
       this.hasSelectionPopup = element.hasSelectionPopup;
       this.columnCount = element.columnCount;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Text instantiation', element);
@@ -57,6 +57,10 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
         lineHeight: element?.styling?.lineHeight || 135
       };
     }
+  }
+
+  getDuplicate(): TextElement {
+    return new TextElement(this);
   }
 
   private isHighlightable(): boolean {

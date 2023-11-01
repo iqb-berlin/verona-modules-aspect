@@ -71,8 +71,8 @@ export abstract class UIElement implements UIElementProperties {
       this.id = element.id;
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       this.dimensions = element.dimensions;
-      this.position = element.position;
-      this.styling = element.styling;
+      if (element.position) this.position = { ...element.position };
+      if (element.styling) this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
@@ -129,6 +129,8 @@ export abstract class UIElement implements UIElementProperties {
       imgPosition: addImg ? 'above' : undefined
     };
   }
+
+  abstract getDuplicate(): UIElement;
 }
 
 export type InputElementValue = string[] | string | number | boolean | TextLabel[] | null | Hotspot[] | boolean[];

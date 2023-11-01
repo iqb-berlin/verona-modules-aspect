@@ -7,7 +7,11 @@ import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
 import { ArrayUtils } from 'common/util/array';
 import { Unit, UnitProperties } from 'common/models/unit';
-import { PlayerProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import {
+  PlayerProperties,
+  PositionProperties,
+  PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
@@ -209,6 +213,7 @@ export class UnitService {
 
     section.addElement(ElementFactory.createElement({
       type: elementType,
+      position: PropertyGroupGenerators.generatePositionProps(newElementProperties.position),
       ...newElementProperties,
       id: this.idService.getAndRegisterNewID(elementType)
     }) as PositionedUIElement);
@@ -274,33 +279,35 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  duplicateElementsInSection(elements: UIElement[], pageIndex: number, sectionIndex: number): void {
-    const section = this.unit.pages[pageIndex].sections[sectionIndex];
-    elements.forEach((element: UIElement) => {
-      section.elements.push(this.duplicateElement(element) as PositionedUIElement);
+  duplicateSelectedElements(): void {
+    const selectedSection =
+      this.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedPageSectionIndex];
+    this.selectionService.getSelectedElements().forEach((element: UIElement) => {
+      selectedSection.elements.push(this.duplicateElement(element, true) as PositionedUIElement);
     });
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  private duplicateElement(element: UIElement): UIElement {
-    const newElement = ElementFactory.createElement(JSON.parse(JSON.stringify(element)));
-    newElement.id = this.idService.getAndRegisterNewID(newElement.type);
+  /* - Also changes position of the element to not cover copied element.
+     - Also changes and registers all copied IDs. */
+  private duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
+    const newElement = element.getDuplicate();
 
-    if (newElement.position) {
+    if (newElement.position && adjustPosition) {
       newElement.position.xPosition += 10;
       newElement.position.yPosition += 10;
+      newElement.position.gridRow = null;
+      newElement.position.gridColumn = null;
     }
 
-    if (newElement.type === 'likert') { // replace row Ids with fresh ones (likert)
-      (newElement.rows as LikertRowElement[]).forEach((rowObject: { id: string }) => {
-        rowObject.id = this.idService.getAndRegisterNewID('likert-row');
+    newElement.id = this.idService.getAndRegisterNewID(newElement.type);
+    if (newElement instanceof CompoundElement) {
+      newElement.getChildElements().forEach((child: UIElement) => {
+        child.id = this.idService.getAndRegisterNewID(child.type);
       });
     }
-    if (newElement.type === 'cloze') {
-      ClozeElement.getDocumentChildElements((newElement as ClozeElement).document).forEach(clozeChild => {
-        clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
-      });
-    }
+
+    // Special care with DropLists as they are no CompoundElement yet still have children with IDs
     if (newElement.type === 'drop-list') {
       (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
         valueObject.id = this.idService.getAndRegisterNewID('value');

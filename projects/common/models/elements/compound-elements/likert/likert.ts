@@ -31,14 +31,14 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   constructor(element?: LikertProperties) {
     super(element);
     if (element && isValid(element)) {
-      this.options = element.options;
+      this.options = [...element.options];
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
       this.rows = element.rows.map(row => new LikertRowElement(row));
       this.label = element.label;
       this.label2 = element.label2;
       this.stickyHeader = element.stickyHeader;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Likert instantiation', element);
@@ -106,6 +106,10 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
 
   getChildElements(): UIElement[] {
     return this.rows;
+  }
+
+  getDuplicate(): LikertElement {
+    return new LikertElement(this);
   }
 }
 

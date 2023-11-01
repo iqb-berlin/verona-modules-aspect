@@ -24,8 +24,8 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     if (element && isValid(element)) {
       this.options = element.options;
       this.allowUnset = element.allowUnset;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Dropdown instantiation', element);
@@ -40,6 +40,10 @@ export class DropdownElement extends InputElement implements PositionedUIElement
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
     }
+  }
+
+  getDuplicate(): DropdownElement {
+    return new DropdownElement(this);
   }
 
   hasAnswerScheme(): boolean {

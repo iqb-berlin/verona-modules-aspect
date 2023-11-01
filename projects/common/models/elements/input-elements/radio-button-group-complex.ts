@@ -25,8 +25,8 @@ export class RadioButtonGroupComplexElement extends InputElement
     if (element && isValid(element)) {
       this.options = element.options;
       this.itemsPerRow = element.itemsPerRow;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
@@ -42,6 +42,10 @@ export class RadioButtonGroupComplexElement extends InputElement
       });
       this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
     }
+  }
+
+  getDuplicate(): RadioButtonGroupComplexElement {
+    return new RadioButtonGroupComplexElement(this);
   }
 
   hasAnswerScheme(): boolean {

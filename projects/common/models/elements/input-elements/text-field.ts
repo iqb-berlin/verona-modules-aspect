@@ -41,8 +41,8 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
       this.hasKeyboardIcon = element.hasKeyboardIcon;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextField instantiation', element);
@@ -88,6 +88,10 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
 
   getElementComponent(): Type<ElementComponent> {
     return TextFieldComponent;
+  }
+
+  getDuplicate(): TextFieldElement {
+    return new TextFieldElement(this);
   }
 }
 

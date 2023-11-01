@@ -18,10 +18,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   asLink: boolean = false;
   action: null | ButtonAction = null;
   actionParam: null | UnitNavParam | number | string = null;
-  styling: BasicStyles & BorderStyles;
   tooltipText: string = '';
   tooltipPosition: TooltipPosition = 'below';
   labelAlignment: 'super' | 'sub' | 'baseline' = 'baseline';
+  styling: BasicStyles & BorderStyles;
 
   constructor(element?: ButtonProperties) {
     super(element);
@@ -31,10 +31,10 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       this.asLink = element.asLink;
       this.action = element.action;
       this.actionParam = element.actionParam;
-      this.styling = element.styling;
       this.tooltipText = element.tooltipText;
       this.tooltipPosition = element.tooltipPosition;
       this.labelAlignment = element.labelAlignment;
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Button instantiation', element);
@@ -47,12 +47,15 @@ export class ButtonElement extends UIElement implements ButtonProperties {
       if (element?.tooltipText !== undefined) this.tooltipText = element.tooltipText;
       if (element?.tooltipPosition !== undefined) this.tooltipPosition = element.tooltipPosition;
       if (element?.labelAlignment !== undefined) this.labelAlignment = element.labelAlignment;
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         ...PropertyGroupGenerators.generateBorderStylingProps(element?.styling)
       };
     }
+  }
+
+  getDuplicate(): ButtonElement {
+    return new ButtonElement(this);
   }
 
   getElementComponent(): Type<ElementComponent> {

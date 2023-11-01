@@ -37,8 +37,8 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
       this.expectedCharactersCount = element.expectedCharactersCount;
       this.hasReturnKey = element.hasReturnKey;
       this.hasKeyboardIcon = element.hasKeyboardIcon;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextArea instantiation', element);
@@ -81,6 +81,10 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
 
   getElementComponent(): Type<ElementComponent> {
     return TextAreaComponent;
+  }
+
+  getDuplicate(): TextAreaElement {
+    return new TextAreaElement(this);
   }
 }
 

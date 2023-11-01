@@ -35,7 +35,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
       this.showZoomButtons = element.showZoomButtons;
       this.showFullscreenButton = element.showFullscreenButton;
       this.customToolbar = element.customToolbar;
-      this.position = element.position;
+      this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Geometry instantiation', element);
@@ -75,6 +75,10 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
 
   getElementComponent(): Type<ElementComponent> {
     return GeometryComponent;
+  }
+
+  getDuplicate(): GeometryElement {
+    return new GeometryElement(this);
   }
 }
 

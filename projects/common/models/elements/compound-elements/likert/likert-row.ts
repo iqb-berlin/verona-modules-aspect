@@ -66,6 +66,10 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   getElementComponent(): Type<ElementComponent> {
     return LikertRadioButtonGroupComponent;
   }
+
+  getDuplicate(): LikertRowElement {
+    return new LikertRowElement(this);
+  }
 }
 
 export interface LikertRowProperties extends InputElementProperties {

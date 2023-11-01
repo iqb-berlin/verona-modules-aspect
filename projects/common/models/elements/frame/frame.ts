@@ -26,8 +26,8 @@ export class FrameElement extends UIElement implements PositionedUIElement, Fram
       this.hasBorderBottom = element.hasBorderBottom;
       this.hasBorderLeft = element.hasBorderLeft;
       this.hasBorderRight = element.hasBorderRight;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Frame instantiation', element);
@@ -52,6 +52,10 @@ export class FrameElement extends UIElement implements PositionedUIElement, Fram
 
   getElementComponent(): Type<ElementComponent> {
     return FrameComponent;
+  }
+
+  getDuplicate(): FrameElement {
+    return new FrameElement(this);
   }
 }
 

@@ -32,7 +32,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       this.strikeOtherOptions = element.strikeOtherOptions;
       this.strikeSelectedOption = element.strikeSelectedOption;
       this.verticalOrientation = element.verticalOrientation;
-      this.styling = element.styling;
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at ToggleButton instantiation', element);
@@ -83,6 +83,10 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
 
   getNewOptionLabel(optionText: string): TextLabel {
     return UIElement.createOptionLabel(optionText) as TextLabel;
+  }
+
+  getDuplicate(): ToggleButtonElement {
+    return new ToggleButtonElement(this);
   }
 }
 

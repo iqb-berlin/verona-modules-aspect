@@ -21,7 +21,7 @@ export class VideoElement extends PlayerElement implements PositionedUIElement, 
     if (element && isValid(element)) {
       this.src = element.src;
       this.scale = element.scale;
-      this.position = element.position;
+      this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Video instantiation', element);
@@ -39,6 +39,10 @@ export class VideoElement extends PlayerElement implements PositionedUIElement, 
 
   getElementComponent(): Type<ElementComponent> {
     return VideoComponent;
+  }
+
+  getDuplicate(): VideoElement {
+    return new VideoElement(this);
   }
 }
 

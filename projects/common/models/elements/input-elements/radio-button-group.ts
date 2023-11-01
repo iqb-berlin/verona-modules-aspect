@@ -29,8 +29,8 @@ export class RadioButtonGroupElement extends InputElement
       this.options = element.options;
       this.alignment = element.alignment;
       this.strikeOtherOptions = element.strikeOtherOptions;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
@@ -48,6 +48,10 @@ export class RadioButtonGroupElement extends InputElement
         lineHeight: element?.styling?.lineHeight || 135
       };
     }
+  }
+
+  getDuplicate(): RadioButtonGroupElement {
+    return new RadioButtonGroupElement(this);
   }
 
   hasAnswerScheme(): boolean {

@@ -19,8 +19,8 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
   constructor(element?: SpellCorrectProperties) {
     super(element);
     if (element && isValid(element)) {
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at SpellCorrect instantiation', element);
@@ -53,6 +53,10 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
 
   getElementComponent(): Type<ElementComponent> {
     return SpellCorrectComponent;
+  }
+
+  getDuplicate(): SpellCorrectElement {
+    return new SpellCorrectElement(this);
   }
 }
 

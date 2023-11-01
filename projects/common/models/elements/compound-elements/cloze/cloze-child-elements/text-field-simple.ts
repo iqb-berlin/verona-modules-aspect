@@ -38,7 +38,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       this.pattern = element.pattern;
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
-      this.styling = element.styling;
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextFieldSimple instantiation', element);
@@ -82,6 +82,10 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
 
   getElementComponent(): Type<ElementComponent> {
     return TextFieldSimpleComponent;
+  }
+
+  getDuplicate(): TextFieldSimpleElement {
+    return new TextFieldSimpleElement(this);
   }
 }
 

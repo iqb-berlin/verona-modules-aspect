@@ -33,7 +33,7 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
       this.magnifierSize = element.magnifierSize;
       this.magnifierZoom = element.magnifierZoom;
       this.magnifierUsed = element.magnifierUsed;
-      this.position = element.position;
+      this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Image instantiation', element);
@@ -71,6 +71,10 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
       values: [],
       valuesComplete: true
     };
+  }
+
+  getDuplicate(): ImageElement {
+    return new ImageElement(this);
   }
 }
 

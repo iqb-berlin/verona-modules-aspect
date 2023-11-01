@@ -23,8 +23,8 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     super(element);
     if (element && isValid(element)) {
       this.enableModeSwitch = element.enableModeSwitch;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Mathfield instantiation', element);
@@ -36,6 +36,10 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
         lineHeight: element?.styling?.lineHeight || 135
       };
     }
+  }
+
+  getDuplicate(): MathFieldElement {
+    return new MathFieldElement(this);
   }
 
   hasAnswerScheme(): boolean {

@@ -39,7 +39,7 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
     if (element && isValid(element)) {
       this.value = element.value;
       this.src = element.src;
-      this.position = element.position;
+      this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at HotspotImage instantiation', element);
@@ -52,6 +52,10 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
       });
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
     }
+  }
+
+  getDuplicate(): HotspotImageElement {
+    return new HotspotImageElement(this);
   }
 
   hasAnswerScheme(): boolean {

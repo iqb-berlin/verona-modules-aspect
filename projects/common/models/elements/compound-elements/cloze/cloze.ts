@@ -35,10 +35,10 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     super(element);
     if (element && isValid(element)) {
       this.columnCount = element.columnCount;
-      this.document = element.document;
+      this.document = { ...element.document };
       this.instantiateChildElements();
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Cloze instantiation', element);
@@ -109,6 +109,10 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
 
   getElementComponent(): Type<ElementComponent> {
     return ClozeComponent;
+  }
+
+  getDuplicate(): ClozeElement {
+    return new ClozeElement(this);
   }
 
   getChildElements(): UIElement[] {

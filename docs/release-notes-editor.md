@@ -1,17 +1,21 @@
 Editor
 ======
-## 2.1.2
+## 2.1.1
 ### Änderungen
+- Duplizierte Elemente verlieren ihren Wert für Spalte/Zeile (Raster - dynamisches Layout)
+  Damit liegen duplizierte Elemente nicht mehr deckungsgleich übereinander.
+  (Gilt nicht für Elemente duplizierter Seitenabschnitte.)
 - "Zurücksetzen"-Knopf des Geogebra-Elements
   - Position oberhalb des Elements
   - mit Beschriftung "neu anlegen"
   - neues Icon
-
-## 2.1.1 deleted
+### Fehlerbehebungen
+- Sichtbarkeitseinstellungen duplizierter Abschnitte repariert
+  Einstellungen an Kopien werden nicht mehr auf das Ursprungselement angewendet.
 
 ## 2.1.0
 ### Neue Funktionen
-- Für die Bedingungen zur Sichtbarkeit von Abschnitten kann nun die 
+- Für die Bedingungen zur Sichtbarkeit von Abschnitten kann nun die
   logische Verknüpfung festgelegt werden: UND / ODER  
 
 ### Fehlerbehebungen
@@ -24,8 +28,8 @@ Editor
 - Optionsfelder mit Bild: Optionen richten sich wieder nach unten aus
 
 ## 2.0.2
-### Änderungen 
-- Passt das Einbinden des Symbols für den Radiergummi an die Sicherheitseinstellungen des Testcenters an 
+### Änderungen
+- Passt das Einbinden des Symbols für den Radiergummi an die Sicherheitseinstellungen des Testcenters an
 
 
 ## 2.0.1

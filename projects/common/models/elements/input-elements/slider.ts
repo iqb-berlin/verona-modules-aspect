@@ -31,8 +31,8 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
       this.showValues = element.showValues;
       this.barStyle = element.barStyle;
       this.thumbLabel = element.thumbLabel;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Slider instantiation', element);
@@ -74,6 +74,10 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
 
   getElementComponent(): Type<ElementComponent> {
     return SliderComponent;
+  }
+
+  getDuplicate(): SliderElement {
+    return new SliderElement(this);
   }
 }
 

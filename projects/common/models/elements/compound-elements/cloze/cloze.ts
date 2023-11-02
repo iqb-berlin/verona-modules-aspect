@@ -35,7 +35,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     super(element);
     if (element && isValid(element)) {
       this.columnCount = element.columnCount;
-      this.document = { ...element.document };
+      this.document = structuredClone(element.document);
       this.instantiateChildElements();
       this.position = { ...element.position };
       this.styling = { ...element.styling };
@@ -44,7 +44,7 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
         throw new InstantiationEror('Error at Cloze instantiation', element);
       }
       if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
-      this.document = element?.document || ClozeElement.getDefaultDocument();
+      this.document = structuredClone(element?.document) || ClozeElement.getDefaultDocument();
       this.instantiateChildElements();
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 200,

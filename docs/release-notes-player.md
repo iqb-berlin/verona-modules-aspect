@@ -1,5 +1,12 @@
 Player
 ======
+## 2.1.1
+### Änderungen
+- "Zurücksetzen"-Knopf des Geogebra-Elements
+  - Position oberhalb des Elements
+  - mit Beschriftung "neu anlegen"
+  - neues Icon
+  
 ## 2.1.0
 ### Neue Funktionen
 - Der Player zeigt nur Unitdefinitionen an, die mit der gleichen Editor-Version erstellt wurden.

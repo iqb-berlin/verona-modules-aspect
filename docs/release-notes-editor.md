@@ -5,6 +5,11 @@ Editor
 - Duplizierte Elemente verlieren ihren Wert für Spalte/Zeile (Raster - dynamisches Layout)
   Damit liegen duplizierte Elemente nicht mehr deckungsgleich übereinander.
   (Gilt nicht für Elemente duplizierter Seitenabschnitte.)
+- Zurücksetzen-Knopf des Geogebra-Elements
+  - Position oberhalb des Elements
+  - mit Beschriftung "neu anlegen"
+  - neues Icon 
+  
 ### Fehlerbehebungen
 - Sichtbarkeitseinstellungen duplizierter Abschnitte repariert
   Einstellungen an Kopien werden nicht mehr auf das Ursprungselement angewendet.

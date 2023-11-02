@@ -18,19 +18,22 @@ declare const GGBApplet: any;
          [style.height.px]="elementModel.height"
          [style.width.px]="elementModel.width"
          [class.center]="this.elementModel.dimensions.isWidthFixed">
-      <div [id]="elementModel.id"  class="geogebra-applet"></div>
       <button *ngIf="this.elementModel.showResetIcon"
-              mat-raised-button
+              class="reset-button"
+              mat-stroked-button
               (click)="reset()">
-        <div><mat-icon  class="reset-icon">restart_alt</mat-icon></div>
+        <mat-icon class="reset-icon">autorenew</mat-icon>neu anfangen
       </button>
+      <div [id]="elementModel.id"  class="geogebra-applet"></div>
     </div>
     <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
   `,
   styles: [
     ':host {display: block; width: 100%; height: 100%;}',
     '.geogebra-container {position: relative;}',
-    '.center {margin: auto;}'
+    '.center {margin: auto;}',
+    '.geogebra-container .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
+    '.reset-button {margin-bottom: 3px;}'
   ]
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {

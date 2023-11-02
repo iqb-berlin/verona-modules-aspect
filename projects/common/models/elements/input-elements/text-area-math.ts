@@ -29,8 +29,8 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     if (element && isValid(element)) {
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
-      this.position = element.position;
-      this.styling = element.styling;
+      this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextAreaMath instantiation', element);
@@ -61,6 +61,10 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
 
   getElementComponent(): Type<ElementComponent> {
     return TextAreaMathComponent;
+  }
+
+  getDuplicate(): TextAreaMathElement {
+    return new TextAreaMathElement(this);
   }
 }
 

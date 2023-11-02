@@ -26,9 +26,9 @@ export class MathTableElement extends UIElement implements MathTableProperties {
     super(element);
     if (element && isValid(element)) {
       this.operation = element.operation;
-      this.terms = element.terms;
+      this.terms = [...element.terms];
       this.result = element.result;
-      this.styling = element.styling;
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at MathTable instantiation', element);
@@ -54,6 +54,10 @@ export class MathTableElement extends UIElement implements MathTableProperties {
 
   getElementComponent(): Type<ElementComponent> {
     return MathTableComponent;
+  }
+
+  getDuplicate(): MathTableElement {
+    return new MathTableElement(this);
   }
 }
 

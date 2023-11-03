@@ -37,8 +37,8 @@ export class Section {
       this.dynamicPositioning = section.dynamicPositioning;
       this.autoColumnSize = section.autoColumnSize;
       this.autoRowSize = section.autoRowSize;
-      this.gridColumnSizes = { ...section.gridColumnSizes };
-      this.gridRowSizes = { ...section.gridRowSizes };
+      this.gridColumnSizes = [...section.gridColumnSizes];
+      this.gridRowSizes = [...section.gridRowSizes];
       this.visibilityDelay = section.visibilityDelay;
       this.animatedVisibility = section.animatedVisibility;
       this.enableReHide = section.enableReHide;
@@ -55,8 +55,8 @@ export class Section {
       if (section?.dynamicPositioning !== undefined) this.dynamicPositioning = section.dynamicPositioning;
       if (section?.autoColumnSize !== undefined) this.autoColumnSize = section.autoColumnSize;
       if (section?.autoRowSize !== undefined) this.autoRowSize = section.autoRowSize;
-      if (section?.gridColumnSizes !== undefined) this.gridColumnSizes = { ...section.gridColumnSizes };
-      if (section?.gridRowSizes !== undefined) this.gridRowSizes = { ...section.gridRowSizes };
+      if (section?.gridColumnSizes !== undefined) this.gridColumnSizes = [...section.gridColumnSizes];
+      if (section?.gridRowSizes !== undefined) this.gridRowSizes = [...section.gridRowSizes];
       if (section?.visibilityDelay !== undefined) this.visibilityDelay = section.visibilityDelay;
       if (section?.animatedVisibility !== undefined) this.animatedVisibility = section.animatedVisibility;
       if (section?.enableReHide !== undefined) this.enableReHide = section.enableReHide;

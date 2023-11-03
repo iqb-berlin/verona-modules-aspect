@@ -1,5 +1,14 @@
 Editor
 ======
+## 2.1.2
+### Änderungen
+- "Zurücksetzen"-Knopf des Geogebra-Elements
+  - Position oberhalb des Elements
+  - mit Beschriftung "neu anlegen"
+  - neues Icon
+
+## 2.1.1 deleted
+
 ## 2.1.0
 ### Neue Funktionen
 - Für die Bedingungen zur Sichtbarkeit von Abschnitten kann nun die 

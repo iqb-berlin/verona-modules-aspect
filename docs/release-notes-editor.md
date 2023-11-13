@@ -1,5 +1,8 @@
 Editor
 ======
+## 2.1.2
+### Fehlerbehebungen
+- Optionentabelle: Auswahlelement zur Vorbelegung von Zeilen (Dialog) zeigt nun korrekt den gewählten Wert an
 ## 2.1.1
 ### Änderungen
 - Duplizierte Elemente verlieren ihren Wert für Spalte/Zeile (Raster - dynamisches Layout)

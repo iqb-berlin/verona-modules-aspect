@@ -26,6 +26,10 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
         <mat-form-field appearance="fill">
           <mat-label>{{'preset' | translate }}</mat-label>
           <mat-select [(ngModel)]="newLikertRow.value">
+            <mat-select-trigger
+              [innerHTML]="newLikertRow.value !== null ?
+                '<span>' + data.options[newLikertRow.value].text + '</span>' : 'undefiniert' | safeResourceHTML">
+            </mat-select-trigger>
             <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
             <mat-option *ngFor="let column of data.options; let i = index" [value]="i"
                         [innerHTML]="'<span>' + column.text + ' (Index: ' + i + ')</span>' | safeResourceHTML">

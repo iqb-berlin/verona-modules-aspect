@@ -60,7 +60,6 @@ export class ClozeChildOverlay {
   @Input() element!: ToggleButtonElement | TextFieldSimpleElement | DropListElement;
   @Input() parentForm!: UntypedFormGroup;
   @Input() editorMode: boolean = false;
-  @Input() lineHeight!: number;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() elementSelected = new EventEmitter<ClozeChildOverlay>();
   @ViewChild('childComponent') childComponent!: ElementComponent;

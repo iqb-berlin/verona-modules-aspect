@@ -83,7 +83,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
             { class: 'separator w5' },
             { latex: '<' },
             { latex: '>' },
-            { latex: '\\neq' },
+            { latex: '\\ne' },
             { class: 'separator w5' },
             { latex: '€' },
             { class: 'separator w5' },

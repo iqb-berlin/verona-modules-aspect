@@ -5,7 +5,7 @@ stages:
   - deploy
 
 default:
-  image: iqbberlin/ci-node-chromium:latest
+  image: iqbberlin/aspect-test:latest
 
 test-unit:
   stage: test

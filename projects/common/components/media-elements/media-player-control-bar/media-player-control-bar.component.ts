@@ -95,8 +95,10 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     this.player.pause();
   }
 
-  checkMinVolume(volume: number): void {
-    this.player.volume = volume < this.playerProperties.minVolume ? this.playerProperties.minVolume : volume;
+  checkMinVolume(volume: any): void {
+    setTimeout(() => {
+      this.player.volume = volume < this.playerProperties.minVolume ? this.playerProperties.minVolume : volume;
+    });
   }
 
   toggleTime(): void {

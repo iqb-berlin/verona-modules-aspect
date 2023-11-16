@@ -16,7 +16,6 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
          [style.background-color]="elementModel.styling.backgroundColor"
          [style.color]="elementModel.styling.fontColor"
          [style.font-size.px]="elementModel.styling.fontSize"
-         [style.line-height.%]="elementModel.styling.lineHeight"
          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
@@ -57,7 +56,8 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
             [style.padding.px]="3"
             [elementModel]="row"
             [firstColumnSizeRatio]="elementModel.firstColumnSizeRatio"
-            [parentForm]="parentForm">
+            [parentForm]="parentForm"
+            [style.line-height.%]="elementModel.styling.lineHeight">
           </aspect-likert-radio-button-group>
         </ng-container>
       </div>

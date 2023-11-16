@@ -1,6 +1,8 @@
 Editor
 ======
 ## 2.1.2
+### Änderungen
+- Optionentabelle: Zeilenhöhe bezieht sich nur noch auf die Zeilen und nicht die Überschriften
 ### Fehlerbehebungen
 - Optionentabelle: Auswahlelement zur Vorbelegung von Zeilen (Dialog) zeigt nun korrekt den gewählten Wert an
 - Eingabefeld: Aussehen 'ausgefüllt' repariert

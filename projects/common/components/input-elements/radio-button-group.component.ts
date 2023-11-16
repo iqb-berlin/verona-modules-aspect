@@ -51,8 +51,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
     :host ::ng-deep mat-radio-button .mdc-form-field {
       align-items: flex-start;
     }
-    :host ::ng-deep mat-radio-button .mdc-form-field .mdc-radio {
-      padding-top: 0;
+    :host ::ng-deep mat-radio-button .mdc-form-field .mdc-label {
+      padding-top: calc((var(--mdc-radio-state-layer-size) - 20px) / 2);
     }
     :host ::ng-deep .mdc-form-field {
       font-size: inherit;

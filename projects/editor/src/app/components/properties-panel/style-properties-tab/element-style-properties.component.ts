@@ -12,11 +12,13 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
         {{'propertiesPanel.lineColoring' | translate }}
       </mat-checkbox>
 
-      <mat-form-field *ngIf="styles.lineColoring && styles.lineColoringColor !== undefined"
+      <mat-form-field *ngIf="styles.lineColoringColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.lineColoringColor' | translate }}</mat-label>
         <input matInput type="text" [value]="styles.lineColoringColor"
-               (input)="unitService.updateSelectedElementsStyleProperty('lineColoringColor', $any($event.target).value)">
+               [disabled]="!styles.lineColoring || styles.lineColoringColor === undefined"
+               (input)="unitService.updateSelectedElementsStyleProperty(
+                          'lineColoringColor', $any($event.target).value)">
         <button mat-icon-button matSuffix (click)="lineColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>

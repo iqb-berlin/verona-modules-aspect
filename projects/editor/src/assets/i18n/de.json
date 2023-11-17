@@ -189,6 +189,8 @@
     "addInputAssistanceToKeyboard": "Tastatur mit Eingabehilfe erweitern",
     "lineColoring": "Zeilenfärbung",
     "lineColoringColor": "Zeilenfarbe",
+    "firstLineColoring": "Färbung erster Zeile",
+    "firstLineColoringColor": "Farbe erster Zeile",
     "scale": "Skalieren",
     "magnifier": "Lupe",
     "magnifierSize": "Größe der Lupe",

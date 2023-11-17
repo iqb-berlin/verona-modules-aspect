@@ -25,6 +25,28 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
              [value]="styles.lineColoringColor"
              (input)="unitService.updateSelectedElementsStyleProperty('lineColoringColor', $any($event.target).value)">
 
+      <mat-checkbox *ngIf="styles.firstLineColoring !== undefined"
+                    [checked]="$any(styles.firstLineColoring)"
+                    (change)="unitService.updateSelectedElementsStyleProperty('firstLineColoring', $event.checked)">
+        {{'propertiesPanel.firstLineColoring' | translate }}
+      </mat-checkbox>
+
+      <mat-form-field *ngIf="styles.firstLineColoringColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.firstLineColoringColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="styles.firstLineColoringColor"
+               [disabled]="!styles.firstLineColoring || styles.firstLineColoringColor === undefined"
+               (input)="unitService.updateSelectedElementsStyleProperty(
+                          'firstLineColoringColor', $any($event.target).value)">
+        <button mat-icon-button matSuffix (click)="firstLineColorInput.click()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-form-field>
+      <input matInput type="color" hidden #firstLineColorInput
+             [value]="styles.firstLineColoringColor"
+             (input)="unitService.updateSelectedElementsStyleProperty(
+                'firstLineColoringColor', $any($event.target).value)">
+
       <mat-form-field *ngIf="styles.selectionColor !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.selectionColor' | translate }}</mat-label>
         <input matInput type="text" [value]="styles.selectionColor"

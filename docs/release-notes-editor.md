@@ -1,6 +1,8 @@
 Editor
 ======
 ## 2.1.2
+### Neue Funktionen
+- Optionentabelle: Neue Gestaltungsoption: Färbung erster Zeile
 ### Änderungen
 - Optionentabelle: Zeilenhöhe bezieht sich nur noch auf die Zeilen und nicht die Überschriften
 ### Fehlerbehebungen

@@ -52,7 +52,7 @@ import { MediaPlayerControlBarComponent }
 import {
   MediaPlayerTimeFormatPipe
 } from './components/media-elements/media-player-control-bar/media-player-time-format.pipe';
-import { LikertComponent } from './components/compound-elements/likert/likert.component';
+import { LikertComponent, LikertRowBackgroundColorPipe } from './components/compound-elements/likert/likert.component';
 import {
   LikertRadioButtonGroupComponent
 } from './components/compound-elements/likert/likert-radio-button-group.component';
@@ -164,7 +164,8 @@ import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.
     TooltipEventTooltipDirective,
     PointerEventTooltipDirective,
     ClozeChildErrorMessage,
-    AutoHeightDirective
+    AutoHeightDirective,
+    LikertRowBackgroundColorPipe
   ],
   exports: [
     CommonModule,

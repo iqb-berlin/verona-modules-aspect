@@ -26,6 +26,8 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     lineHeight: number;
     lineColoring: boolean;
     lineColoringColor: string;
+    firstLineColoring: boolean;
+    firstLineColoringColor: string;
   };
 
   constructor(element?: LikertProperties) {
@@ -65,7 +67,9 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
         }),
         lineHeight: element?.styling?.lineHeight || 135,
         lineColoring: element?.styling?.lineColoring !== undefined ? element?.styling.lineColoring : true,
-        lineColoringColor: element?.styling?.lineColoringColor || '#c9e0e0'
+        lineColoringColor: element?.styling?.lineColoringColor || '#c9e0e0',
+        firstLineColoring: element?.styling?.firstLineColoring || false,
+        firstLineColoringColor: element?.styling?.firstLineColoringColor || '#c7f3d0'
       };
     }
   }
@@ -125,6 +129,8 @@ export interface LikertProperties extends UIElementProperties {
     lineHeight: number;
     lineColoring: boolean;
     lineColoringColor: string;
+    firstLineColoring: boolean;
+    firstLineColoringColor: string;
   };
 }
 
@@ -140,5 +146,7 @@ function isValid(blueprint?: LikertProperties): boolean {
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling.lineHeight !== undefined &&
     blueprint.styling.lineColoring !== undefined &&
-    blueprint.styling.lineColoringColor !== undefined;
+    blueprint.styling.lineColoringColor !== undefined &&
+    blueprint.styling.firstLineColoring !== undefined &&
+    blueprint.styling.firstLineColoringColor !== undefined;
 }

@@ -1,10 +1,12 @@
 import {
-  Component, Input, QueryList, ViewChildren
+  Component, Input, Pipe, PipeTransform, QueryList, ViewChildren
 } from '@angular/core';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
+import { Measurement } from 'common/models/elements/element';
+import { BasicStyles } from 'common/models/elements/property-group-interfaces';
 
 @Component({
   selector: 'aspect-likert',
@@ -47,8 +49,9 @@ import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.com
 
         <ng-container *ngFor="let row of elementModel.rows; let i = index">
           <aspect-likert-radio-button-group
-            [style.background-color]="elementModel.styling.lineColoring && i % 2 === 0 ?
-                                      elementModel.styling.lineColoringColor : ''"
+            [style.background-color]="elementModel.styling.lineColoring | LikertRowBackgroundColor:
+              elementModel.styling.lineColoringColor:elementModel.styling.firstLineColoring:
+              elementModel.styling.firstLineColoringColor:i"
             [style.grid-column-start]="1"
             [style.grid-column-end]="elementModel.options.length + 2"
             [style.grid-row-start]="2 + i"
@@ -97,5 +100,16 @@ export class LikertComponent extends CompoundElementComponent {
 
   getFormElementChildrenComponents(): ElementComponent[] {
     return this.compoundChildren.toArray();
+  }
+}
+
+@Pipe({
+  name: 'LikertRowBackgroundColor'
+})
+export class LikertRowBackgroundColorPipe implements PipeTransform {
+  transform(lineColoring: boolean, lineColoringColor: string, firstLineColoring: boolean,
+            firstLineColoringColor: string, rowIndex: number): string {
+    if (rowIndex === 0 && firstLineColoring) return firstLineColoringColor;
+    return lineColoring && rowIndex % 2 === 0 ? lineColoringColor : 'transparent';
   }
 }

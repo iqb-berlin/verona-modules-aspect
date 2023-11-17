@@ -56,6 +56,8 @@ export interface OtherStyles {
   itemBackgroundColor?: string;
   lineColoring?: boolean;
   lineColoringColor?: string;
+  firstLineColoring?: boolean;
+  firstLineColoringColor?: string;
   selectionColor?: string;
 }
 

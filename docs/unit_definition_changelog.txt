@@ -125,3 +125,8 @@ iqb-aspect-definition@1.0.0
 4.0.0
   - Section
     - new property: logicalConnectiveOfRules: 'disjunction' | 'conjunction'
+
+4.1.0
+- Likert:
+  - new property: styling.firstLineColoring
+  - new property: styling.firstLineColoringColor

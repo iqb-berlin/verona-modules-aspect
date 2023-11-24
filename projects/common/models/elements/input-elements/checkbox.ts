@@ -6,7 +6,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import {
-  BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
@@ -14,14 +14,12 @@ import { InstantiationEror } from 'common/util/errors';
 export class CheckboxElement extends InputElement implements CheckboxProperties {
   type: UIElementType = 'checkbox';
   crossOutChecked: boolean = false;
-  position: PositionProperties;
   styling: BasicStyles;
 
   constructor(element?: CheckboxProperties) {
     super(element);
     if (element && isValid(element)) {
       this.crossOutChecked = element.crossOutChecked;
-      this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -32,7 +30,6 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
         width: 215,
         ...element?.dimensions
       });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
     }
   }
@@ -71,13 +68,11 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
 
 export interface CheckboxProperties extends InputElementProperties {
   crossOutChecked: boolean;
-  position: PositionProperties;
   styling: BasicStyles;
 }
 
 function isValid(blueprint?: CheckboxProperties): boolean {
   if (!blueprint) return false;
   return blueprint.crossOutChecked !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }

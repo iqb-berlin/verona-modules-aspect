@@ -130,3 +130,5 @@ iqb-aspect-definition@1.0.0
 - Likert:
   - new property: styling.firstLineColoring
   - new property: styling.firstLineColoringColor
+- new Element: MathTable
+- new Element: TextAreaMath

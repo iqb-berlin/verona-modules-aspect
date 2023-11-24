@@ -5,6 +5,7 @@ import { first, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
 import { TextElement } from 'common/models/elements/text/text';
+import { ValueChangeElement } from 'common/models/elements/element';
 import { TextMarkingService } from '../../../services/text-marking.service';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
@@ -51,6 +52,14 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
       ElementModelElementCodeMappingService.mapToElementCodeValue(this.initialValue, this.elementModel.type),
       this.elementComponent,
       this.pageIndex);
+  }
+
+  changeElementCodeValue(value: ValueChangeElement): void {
+    this.unitStateService.changeElementCodeValue({
+      id: value.id,
+      value: ElementModelElementCodeMappingService
+        .mapToElementCodeValue(value.value, this.elementModel.type)
+    });
   }
 
   applyMarkingData(

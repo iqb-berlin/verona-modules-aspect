@@ -21,7 +21,7 @@ export class TextMarkingService {
         TextMarkingService.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
-          value: TextMarkingService.getMarkedTextIndices(element.innerHTML)
+          value: element.innerHTML
         });
         textComponent.savedText = element.innerHTML;
       } else {

@@ -54,10 +54,24 @@
           <mat-icon>format_strikethrough</mat-icon>
           {{'toolbox.spell-correct' | translate }}
         </button>
-        <button mat-stroked-button (click)="addUIElement('math-field')"
-                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','math-field');">
-          <mat-icon>calculate</mat-icon>
-          {{'toolbox.math-field' | translate }}
+        <div class="fx-row-start-stretch" (mouseover)="hoverFormulaButton = true" (mouseleave)="hoverFormulaButton = false">
+          <button *ngIf="!hoverFormulaButton" mat-stroked-button>
+            <mat-icon>calculate</mat-icon>
+            {{'toolbox.formula' | translate }}
+          </button>
+          <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('math-field')"
+                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','math-field')">
+            {{'toolbox.math-field' | translate }}
+          </button>
+          <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('text-area-math')"
+                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area-math')">
+            {{'toolbox.math-area' | translate }}
+          </button>
+        </div>
+        <button mat-stroked-button (click)="addUIElement('math-table')"
+                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','math-table');">
+          <mat-icon>apps</mat-icon>
+          Rechenkästchen
         </button>
       </mat-expansion-panel>
       <mat-expansion-panel expanded>
@@ -67,7 +81,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="fx-row-start-stretch" (mouseover)="hoverRadioButton = true" (mouseleave)="hoverRadioButton = false">
-          <button *ngIf="!hoverRadioButton" class="radio-button-placeholder" mat-stroked-button>
+          <button *ngIf="!hoverRadioButton" mat-stroked-button>
             <mat-icon>radio_button_checked</mat-icon>
             {{'toolbox.radio' | translate }}
           </button>
@@ -146,5 +160,3 @@
                                       [stateVariablesCount]="unitService.unit.stateVariables.length">
   </aspect-show-state-variables-button>
 </div>
-
-

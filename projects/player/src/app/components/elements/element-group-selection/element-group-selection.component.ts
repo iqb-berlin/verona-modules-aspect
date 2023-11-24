@@ -18,12 +18,12 @@ export class ElementGroupSelectionComponent implements OnInit {
       name: 'inputGroup',
       types: [
         'checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images',
-        'dropdown', 'hotspot-image', 'math-field'
+        'dropdown', 'hotspot-image', 'math-field', 'text-area-math'
       ]
     },
     { name: 'compoundGroup', types: ['cloze', 'likert'] },
     { name: 'textGroup', types: ['text'] },
-    { name: 'interactiveGroup', types: ['button', 'image'] },
+    { name: 'interactiveGroup', types: ['button', 'image', 'math-table'] },
     { name: 'externalAppGroup', types: ['geometry'] }
   ];
 

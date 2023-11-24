@@ -4,15 +4,17 @@
     [elementModel]="elementModel | cast: ButtonElement"
     (buttonActionEvent)="applyButtonAction($event)">
 </aspect-button>
-<aspect-frame
-    *ngIf="elementModel.type === 'frame'"
-    #elementComponent
-    [elementModel]="elementModel | cast: FrameElement">
-</aspect-frame>
 <aspect-image
     *ngIf="elementModel.type === 'image'"
     #elementComponent
     [elementModel]="elementModel | cast: ImageElement"
-    (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
+    (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-image>
+<aspect-math-table
+  *ngIf="elementModel.type === 'math-table'"
+  #elementComponent
+  [elementModel]="elementModel | cast: MathTableElement"
+  [tableModel]="tableModel"
+  (elementValueChanged)="changeElementCodeValue($event)">
+</aspect-math-table>
 

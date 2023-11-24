@@ -1,5 +1,3 @@
-import { InputElementValue } from 'common/models/elements/element';
-
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 export type Progress = 'none' | 'some' | 'complete';
 export type PagingMode = 'separate' | 'concat-scroll' | 'concat-scroll-snap';
@@ -22,10 +20,12 @@ export interface PlayerConfig {
   directDownloadUrl?: string;
 }
 
+export type ElementCodeValue = string[] | string | number | boolean | null | boolean[];
+
 export interface ElementCode {
   id: string;
   status: ElementCodeStatus;
-  value: InputElementValue;
+  value: ElementCodeValue;
 }
 
 export interface UnitState {

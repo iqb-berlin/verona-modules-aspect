@@ -1,5 +1,13 @@
 Player
 ======
+## 2.2.0
+Unterstützt neue Elemente und Einstellungen von Editor 2.2.0
+### Änderungen
+- Tastatur: Erscheint nicht auf nicht-mobil Geräten
+### Fehlerbehebungen
+- Positionierung von Eingabefeldern in Lückentexten (IPad)
+- Checkbox in Lückentexten repariert
+
 ## 2.1.2
 ### Änderungen
 - "Zurücksetzen"-Knopf des Geogebra-Elements
@@ -8,11 +16,11 @@ Player
   - neues Icon
 
 ## 2.1.1 deleted
-  
+
 ## 2.1.0
 ### Neue Funktionen
 - Der Player zeigt nur Unitdefinitionen an, die mit der gleichen Editor-Version erstellt wurden.
-  Ältere Unitdefinitionen müssen daher zunächst mit einem Editor in der Version 2.1 geöffnet 
+  Ältere Unitdefinitionen müssen daher zunächst mit einem Editor in der Version 2.1 geöffnet
   und gespeichert werden.
 
 ### Fehlerbehebungen
@@ -26,7 +34,7 @@ Player
 
 ## 2.0.2
 ### Fehlerbehebungen
-- Korrigiert das automatische Haften von Markierknöpfen und den Kopfzeilen von Optionstabellen 
+- Korrigiert das automatische Haften von Markierknöpfen und den Kopfzeilen von Optionstabellen
   (Problem in Version 2.0.0 und 2.0.1)
 
 ## 2.0.1

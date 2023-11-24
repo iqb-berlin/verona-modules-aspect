@@ -2,10 +2,9 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import {
-  Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue
+  Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue, ElementCodeValue
 } from 'player/modules/verona/models/verona';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { InputElementValue } from 'common/models/elements/element';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
@@ -36,7 +35,7 @@ export class UnitStateService extends ElementCodeService {
   }
 
   registerElementCode(elementId: string,
-                      elementValue: InputElementValue,
+                      elementValue: ElementCodeValue,
                       domElement: Element | null = null,
                       pageIndex: number | null = null): void {
     if (pageIndex !== null) {
@@ -117,7 +116,7 @@ export class UnitStateService extends ElementCodeService {
     }
   }
 
-  private addElementCode(id: string, value: InputElementValue, domElement: Element | null): void {
+  private addElementCode(id: string, value: ElementCodeValue, domElement: Element | null): void {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       // when reloading a unit, elementCodes are already pushed

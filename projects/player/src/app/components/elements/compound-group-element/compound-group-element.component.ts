@@ -10,7 +10,7 @@ import {
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import {
-  CompoundElement, InputElement, InputElementValue, ValueChangeElement
+  CompoundElement, InputElement, InputElementValue
 } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
@@ -166,7 +166,9 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
             this.anchorService.toggleAnchor(buttonEvent.param as string);
             break;
           case 'stateVariableChange':
-            this.stateVariableStateService.changeElementCodeValue(buttonEvent.param as ValueChangeElement);
+            this.stateVariableStateService.changeElementCodeValue(
+              buttonEvent.param as { id: string, value: string }
+            );
             break;
           default:
         }

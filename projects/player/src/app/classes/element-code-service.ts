@@ -1,6 +1,5 @@
-import { ElementCode, ElementCodeStatus } from 'player/modules/verona/models/verona';
+import { ElementCode, ElementCodeStatus, ElementCodeValue } from 'player/modules/verona/models/verona';
 import { Observable, Subject } from 'rxjs';
-import { InputElementValue, ValueChangeElement } from 'common/models/elements/element';
 import { LogService } from 'player/modules/logging/services/log.service';
 
 export abstract class ElementCodeService {
@@ -16,7 +15,7 @@ export abstract class ElementCodeService {
     return this._elementCodeChanged.asObservable();
   }
 
-  changeElementCodeValue(elementValue: ValueChangeElement): void {
+  changeElementCodeValue(elementValue: { id: string, value: ElementCodeValue }): void {
     LogService.debug(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
     this.setElementCodeValue(elementValue.id, elementValue.value);
     this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
@@ -39,7 +38,7 @@ export abstract class ElementCodeService {
     this._elementCodeChanged.next(unitStateElementCode);
   }
 
-  protected setElementCodeValue(id: string, value: InputElementValue): void {
+  protected setElementCodeValue(id: string, value: ElementCodeValue): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;

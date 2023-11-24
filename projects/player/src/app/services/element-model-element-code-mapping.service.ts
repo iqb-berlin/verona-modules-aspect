@@ -12,6 +12,7 @@ import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { ElementCodeValue } from 'player/modules/verona/models/verona';
 import { TextMarkingService } from './text-marking.service';
 
 @Injectable({
@@ -21,8 +22,12 @@ import { TextMarkingService } from './text-marking.service';
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
-  mapToElementModelValue(elementCodeValue: InputElementValue | undefined, elementModel: UIElement): InputElementValue {
+  mapToElementModelValue(elementCodeValue: ElementCodeValue | undefined, elementModel: UIElement): InputElementValue {
     switch (elementModel.type) {
+      case 'math-table':
+        return (elementCodeValue !== undefined) ?
+          JSON.parse(elementCodeValue as string) :
+          [];
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
           (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectById(id)) as DragNDropValueObject[] :
@@ -63,8 +68,17 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
-  static mapToElementCodeValue(elementModelValue: InputElementValue, elementType: UIElementType): InputElementValue {
+  static mapToElementCodeValue(elementModelValue: InputElementValue, elementType: UIElementType): ElementCodeValue {
     switch (elementType) {
+      case 'audio':
+      case 'video':
+        return elementModelValue as number;
+      case 'geometry':
+        return elementModelValue as string;
+      case 'image':
+        return elementModelValue as boolean;
+      case 'math-table':
+        return JSON.stringify(elementModelValue);
       case 'drop-list':
         return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
       case 'hotspot-image':
@@ -78,7 +92,7 @@ export class ElementModelElementCodeMappingService {
       case 'likert-row':
         return elementModelValue !== null ? elementModelValue as number + 1 : null;
       default:
-        return elementModelValue;
+        return elementModelValue as ElementCodeValue;
     }
   }
 

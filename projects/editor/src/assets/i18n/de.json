@@ -316,7 +316,9 @@
     "toggle-button": "Optionsfeld",
     "geometry": "Geometrie",
     "hotspot-image": "Bildbereiche",
-    "math-field": "Formel"
+    "formula": "Formel",
+    "math-field": "Feld",
+    "math-area": "Bereich"
   },
   "section-menu": {
     "height": "Höhe",
@@ -339,5 +341,8 @@
   "limitItemPerRow": "Elemente je Zeile begrenzen",
   "numberGreater0": "Zahlenwert größer 0",
   "itemsPerRow": "Anzahl der Elemente",
-  "loadGeogebraFile": "GGB-Datei hochladen"
+  "loadGeogebraFile": "GGB-Datei hochladen",
+  "addition": "Addition",
+  "subtraction": "Subtraktion",
+  "multiplication": "Multiplikation"
 }

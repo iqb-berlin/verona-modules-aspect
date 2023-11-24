@@ -33,11 +33,13 @@ import { StateVariable } from 'common/models/state-variable';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { VersionManager } from 'common/services/version-manager';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { MathTableRow } from 'common/models/elements/input-elements/math-table';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';
 import { UnitDefinitionSanitizer } from './sanitizer';
+
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +48,7 @@ export class UnitService {
   unit: Unit;
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
+  mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   referenceManager: ReferenceManager;
   private ngUnsubscribe = new Subject<void>();
 
@@ -325,7 +328,7 @@ export class UnitService {
   updateElementsProperty(elements: UIElement[],
                          property: string,
                          value: InputElementValue | LikertRowElement[] | Hotspot[] | StateVariable |
-                         TextLabel | TextLabel[] | ClozeDocument | null): void {
+                         TextLabel | TextLabel[] | MathTableRow[] | ClozeDocument | null): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
@@ -339,6 +342,7 @@ export class UnitService {
       } else {
         element.setProperty(property, value);
         if (element.type === 'geometry') this.geometryElementPropertyUpdated.next(element.id);
+        if (element.type === 'math-table') this.mathTableElementPropertyUpdated.next(element.id);
       }
     });
     this.elementPropertyUpdated.next();

@@ -1,13 +1,19 @@
 Editor
 ======
-## 2.1.2
+## 2.2.0
 ### Neue Funktionen
+- Rechenkästchen: Nachbildung von schriftlichem Rechnen
+  - Einträge können via Doppelklick durchgetrichen werden. Das gilt für Helferzeilen und Minuenden.
+  - Terme und das Ergebnis können durch Leerzeichen oder Unterstriche mit editierbaren Lücken versehen werden.
+- Formel-Bereich: Eingabebereich mit der Möglichkeit Formeln einzubetten
 - Optionentabelle: Neue Gestaltungsoption: Färbung erster Zeile
 ### Änderungen
 - Optionentabelle: Zeilenhöhe bezieht sich nur noch auf die Zeilen und nicht die Überschriften
 ### Fehlerbehebungen
 - Optionentabelle: Auswahlelement zur Vorbelegung von Zeilen (Dialog) zeigt nun korrekt den gewählten Wert an
 - Eingabefeld: Aussehen 'ausgefüllt' repariert
+- Formeleditor: Klammern werden nicht mehr automatisch geschlossen
+
 ## 2.1.1
 ### Änderungen
 - Duplizierte Elemente verlieren ihren Wert für Spalte/Zeile (Raster - dynamisches Layout)

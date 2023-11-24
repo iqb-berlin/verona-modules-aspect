@@ -4,7 +4,7 @@
     [savedText]="initialValue"
     (markingDataChanged)="applyMarkingData($event)"
     (textSelectionStart)="startTextSelection($event)"
-    (elementValueChanged)="unitStateService.changeElementCodeValue($event)">
+    (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-text>
 <aspect-floating-marking-bar *ngIf="elementModel.hasSelectionPopup"
     [elementComponent]="elementComponent"

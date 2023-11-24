@@ -8,6 +8,7 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
+import { ValueChangeElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-external-app-group-element',
@@ -38,5 +39,13 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
       ),
       this.elementComponent,
       this.pageIndex);
+  }
+
+  changeElementCodeValue(value: ValueChangeElement): void {
+    this.unitStateService.changeElementCodeValue({
+      id: value.id,
+      value: ElementModelElementCodeMappingService
+        .mapToElementCodeValue(value.value, this.elementModel.type)
+    });
   }
 }

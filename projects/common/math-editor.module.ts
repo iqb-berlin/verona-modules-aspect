@@ -34,7 +34,7 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
 })
 export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() value!: string;
-  @Input() readonly!: boolean;
+  @Input() readonly: boolean = false;
   @Input() enableModeSwitch: boolean = false;
   @ViewChild('mathfield') mathfieldRef!: ElementRef;
 
@@ -45,7 +45,8 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     virtualKeyboards: 'aspect-keyboard roman greek',
     keypressSound: null,
     plonkSound: null,
-    decimalSeparator: ','
+    decimalSeparator: ',',
+    smartFence: false
     // defaultMode: 'math'
   });
 
@@ -83,7 +84,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
             { class: 'separator w5' },
             { latex: '<' },
             { latex: '>' },
-            { latex: '\\neq' },
+            { latex: '\\ne' },
             { class: 'separator w5' },
             { latex: '€' },
             { class: 'separator w5' },
@@ -176,6 +177,10 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     // TODO Keyboard moving up and down on focus loss may be avoided by using useSharedVirtualKeyboard
     this.mathFieldElement.mode = event.value;
     (this.mathfieldRef.nativeElement.childNodes[0] as HTMLElement).focus();
+  }
+
+  getMathMLValue(): string {
+    return this.mathFieldElement.getValue('math-ml');
   }
 }
 

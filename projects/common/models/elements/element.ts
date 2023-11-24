@@ -7,17 +7,24 @@ import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { Label, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
-  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators, Stylings
+  DimensionProperties,
+  PlayerProperties,
+  PositionProperties,
+  PropertyGroupGenerators,
+  PropertyGroupValidators,
+  Stylings
 } from 'common/models/elements/property-group-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
+import { MathTableRow } from 'common/models/elements/input-elements/math-table';
+
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry'
-| 'math-field';
+| 'math-field' | 'math-table' | 'text-area-math';
 
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;
@@ -133,7 +140,8 @@ export abstract class UIElement implements UIElementProperties {
   abstract getDuplicate(): UIElement;
 }
 
-export type InputElementValue = string[] | string | number | boolean | TextLabel[] | null | Hotspot[] | boolean[];
+export type InputElementValue = TextLabel[] | Hotspot[] | MathTableRow[] | string[] | string | number | boolean[] |
+boolean | null;
 
 export interface InputElementProperties extends UIElementProperties {
   label: string;

@@ -11,6 +11,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import { StateVariable } from 'common/models/state-variable';
+import { MathTableRow } from 'common/models/elements/input-elements/math-table';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from '../canvas/overlays/canvas-element-overlay';
@@ -105,7 +106,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
 
   updateModel(property: string,
               value: string | number | boolean | string[] | boolean[] | Hotspot[] | StateVariable |
-              TextLabel | TextLabel[] | LikertRowElement[] | null,
+              TextLabel | TextLabel[] | LikertRowElement[] | MathTableRow[] | null,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.unitService.updateElementsProperty(this.selectedElements, property, value);

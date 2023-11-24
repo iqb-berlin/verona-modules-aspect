@@ -15,7 +15,7 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
        [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-       [style.backgroundColor]="elementModel.styling.backgroundColor">
+       [style.background-color]="elementModel.styling.backgroundColor">
       <label>{{elementModel.label}}</label><br>
       <aspect-mathlive-math-field [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
                                   [readonly]="elementModel.readOnly"

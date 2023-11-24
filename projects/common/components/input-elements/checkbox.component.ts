@@ -32,6 +32,12 @@ import { FormElementComponent } from '../../directives/form-element-component.di
       font-size: inherit;
       font-weight: inherit;
     }
+    :host ::ng-deep mat-checkbox .mdc-form-field {
+      align-items: flex-start;
+    }
+    :host ::ng-deep mat-checkbox .mdc-form-field .mdc-label {
+      padding-top: calc((var(--mdc-checkbox-state-layer-size) - 18px) / 2);
+    }
     .error-message {
       position: absolute;
       display: block;

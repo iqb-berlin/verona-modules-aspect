@@ -175,13 +175,15 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   }
 
   private static createResultRow(term: string, width: number): MathTableRow {
-    const editable = term === '';
     return {
       rowType: 'result',
       cells: [
         ...Array(width - term.length).fill(undefined)
-          .map(() => ({ value: '', isEditable: editable })),
-        ...term.split('').map(char => ({ value: char }))
+          .map(() => ({ value: '', isEditable: term === '' })),
+        ...term.split('').map(char => ({
+          value: char === '_' ? ' ' : char, // underscore acts as space alternative
+          isEditable: char === ' ' || char === '_'
+        }))
       ]
     };
   }

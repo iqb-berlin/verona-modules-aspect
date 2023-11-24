@@ -122,11 +122,11 @@ iqb-aspect-definition@1.0.0
   - remove property: softwareKeyboardShowFrench
   - new property: addInputAssistanceToKeyboard
 
-4.0.0
+4.1.0
   - Section
     - new property: logicalConnectiveOfRules: 'disjunction' | 'conjunction'
 
-4.1.0
+4.2.0
 - Likert:
   - new property: styling.firstLineColoring
   - new property: styling.firstLineColoringColor

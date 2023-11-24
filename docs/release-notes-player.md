@@ -4,6 +4,7 @@ Player
 Unterstützt neue Elemente und Einstellungen von Editor 2.2.0
 ### Änderungen
 - Tastatur: Erscheint nicht auf nicht-mobil Geräten
+- Font-Format ausgetauscht
 ### Fehlerbehebungen
 - Positionierung von Eingabefeldern in Lückentexten (IPad)
 - Checkbox in Lückentexten repariert

@@ -9,6 +9,7 @@ Editor
 - Optionentabelle: Neue Gestaltungsoption: Färbung erster Zeile
 ### Änderungen
 - Optionentabelle: Zeilenhöhe bezieht sich nur noch auf die Zeilen und nicht die Überschriften
+- Font-Format ausgetauscht
 ### Fehlerbehebungen
 - Optionentabelle: Auswahlelement zur Vorbelegung von Zeilen (Dialog) zeigt nun korrekt den gewählten Wert an
 - Eingabefeld: Aussehen 'ausgefüllt' repariert

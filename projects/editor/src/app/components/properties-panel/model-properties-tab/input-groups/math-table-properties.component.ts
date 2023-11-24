@@ -24,7 +24,7 @@ import { UIElement } from 'common/models/elements/element';
         </mat-select>
       </mat-form-field>
 
-      Terme
+      {{'termRows' | translate}}
       <div *ngFor="let term of $any(combinedProperties).terms; let i = index;"
            class="term-list">
         <ng-container *ngIf="combinedProperties.operation !== 'multiply' || i < 2">
@@ -42,12 +42,12 @@ import { UIElement } from 'common/models/elements/element';
 
       <button mat-button class="add-button"
               (click)="addTerm()">
-        <mat-icon>add</mat-icon> Term hinzufügen
+        <mat-icon>add</mat-icon>{{'addTermRow' | translate}}
       </button>
 
       <mat-form-field (input)="updateModel.emit({ property: 'result', value: $any($event.target).value })">
-        <mat-label>Ergebnis</mat-label>
-        <input matInput type="number" [value]="combinedProperties.result">
+        <mat-label>{{'resultRow' | translate}}</mat-label>
+        <input matInput [value]="combinedProperties.result">
       </mat-form-field>
     </div>
   `,

@@ -344,5 +344,8 @@
   "loadGeogebraFile": "GGB-Datei hochladen",
   "addition": "Addition",
   "subtraction": "Subtraktion",
-  "multiplication": "Multiplikation"
+  "multiplication": "Multiplikation",
+  "termRows": "Termzeilen",
+  "addTermRow": "Termzeile hinzufügen",
+  "resultRow": "Ergebniszeile"
 }

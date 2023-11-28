@@ -17,7 +17,7 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
   }
 
   @Input() isSnapMode!: boolean;
-
+  @Input() concatScrollPadding!: number;
   @Output() scrollToNextPage: EventEmitter<void> = new EventEmitter<void>();
 
   isVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -60,7 +60,8 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
 
   scrollDown(): void {
     const nextScrollTop = this.elementRef.nativeElement.scrollTop + 2;
-    if (this.isSnapMode && this.getBottomsOfPages()
+    const pageBottoms: number[] = this.getBottomsOfPages();
+    if (this.isSnapMode && pageBottoms.length > 1 && pageBottoms
       .filter((page: number) => Math
         .abs(page - (nextScrollTop + this.elementRef.nativeElement.offsetHeight)) <= 2).length === 1) {
       this.clearScrollIng();
@@ -74,7 +75,7 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     return [...this.elementRef.nativeElement.querySelectorAll('aspect-page')]
       .map(page => page.parentElement?.offsetHeight)
       .reduce((acc, v, i) => {
-        i === 0 ? acc.push(v) : acc.push(v + acc[i - 1]);
+        i === 0 ? acc.push(v + this.concatScrollPadding) : acc.push(v + acc[i - 1]);
         return acc;
       }, []);
   }

@@ -1,5 +1,6 @@
 <div aspectInViewDetection
      detectionType="top"
+     [topPadding]="concatScrollPadding || 0"
      [intersectionContainer]="pagesContainer"
      (intersecting)="selectedIndexChange.emit(scrollPageIndex)">
   <aspect-section
@@ -17,6 +18,7 @@
 </div>
 <div aspectInViewDetection
      detectionType="bottom"
+     [topPadding]="concatScrollPadding || 0"
      [intersectionContainer]="pagesContainer"
      (intersecting)="selectedIndexChange.emit(scrollPageIndex)">
 </div>

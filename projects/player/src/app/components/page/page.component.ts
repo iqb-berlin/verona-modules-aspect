@@ -2,7 +2,6 @@ import {
   Component, Input, Output, EventEmitter
 } from '@angular/core';
 import { Page } from 'common/models/page';
-import { MediaPlayerService } from '../../services/media-player.service';
 
 @Component({
   selector: 'aspect-page',
@@ -16,7 +15,6 @@ export class PageComponent {
   @Input() pageIndex!: number;
   @Input() scrollPageIndex!: number;
   @Input() pagesContainer!: HTMLElement;
+  @Input() concatScrollPadding!: number;
   @Output() selectedIndexChange = new EventEmitter<number>();
-
-  constructor(public mediaPlayerService: MediaPlayerService) {}
 }

@@ -31,6 +31,7 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   layoutAlignment: 'row' | 'column' = 'row';
   hidePageLabels: boolean = true;
   tabHeaderHeight: number = 0;
+  concatScrollPadding: number = 50; // Use the same value in Css
 
   maxWidth: { alwaysVisiblePage: number, scrollPages: number, allPages: number } =
     { alwaysVisiblePage: 0, scrollPages: 0, allPages: 0 };

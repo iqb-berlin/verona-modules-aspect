@@ -46,6 +46,7 @@
     <aspect-page-scroll-button class="page-container"
                                cdkScrollable
                                [isSnapMode]="scrollPageMode === 'concat-scroll-snap'"
+                               [concatScrollPadding]="concatScrollPadding"
                                [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'"
                                [style.max-height.%]="aspectRatioColumn.scrollPages"
                                [style.max-width.%]="aspectRatioRow.scrollPages"
@@ -100,6 +101,7 @@
          [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
          [style.padding.px]="page.margin"
          aspectScrollToIndex
+         [scrollPagesLength]="scrollPages.length"
          [selectIndex]="selectIndex"
          [index]="i">
       <div *ngIf="!hidePageLabels"
@@ -109,6 +111,7 @@
       <aspect-page [pageIndex]="pages | pageIndex: page"
                    [scrollPageIndex]="i"
                    [pagesContainer]="pagesContainer"
+                   [concatScrollPadding]="scrollPageMode === 'concat-scroll-snap' ? concatScrollPadding : 0"
                    [page]="page"
                    [isLastPage]="last"
                    (selectedIndexChange)="setSelectedIndex($event)">

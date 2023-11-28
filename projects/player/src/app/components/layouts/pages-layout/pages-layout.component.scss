@@ -21,6 +21,8 @@
 .concat-scroll-snap {
   scroll-snap-type: y mandatory;
   scroll-padding: 0;
+  scroll-padding-bottom: 50px; // same value in component
+  scroll-snap-stop: always;
 }
 
 .page-container{

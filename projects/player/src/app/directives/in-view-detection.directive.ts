@@ -12,6 +12,7 @@ export class InViewDetectionDirective implements OnInit, OnDestroy {
   @Input() detectionType!: 'top' | 'bottom';
   @Output() intersecting = new EventEmitter();
   @Input() intersectionContainer!: HTMLElement;
+  @Input() topPadding!: number;
 
   intersectionDetector!: IntersectionDetector;
 
@@ -20,7 +21,7 @@ export class InViewDetectionDirective implements OnInit, OnDestroy {
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    const constraint = this.detectionType === 'top' ? '0px 0px -99% 0px' : '99% 0px 0px 0px';
+    const constraint = this.detectionType === 'top' ? `${this.topPadding}px 0% -90% 0%` : '-90% 0% 0% 0%';
     this.intersectionDetector = new IntersectionDetector(this.intersectionContainer, constraint);
     this.intersectionDetector.observe(this.elementRef.nativeElement);
     this.intersectionDetector.intersecting

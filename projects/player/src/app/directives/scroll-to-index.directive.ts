@@ -10,19 +10,23 @@ import { takeUntil } from 'rxjs/operators';
 export class ScrollToIndexDirective implements OnInit, OnDestroy {
   @Input() selectIndex!: Subject<number>;
   @Input() index!: number;
+  @Input() scrollPagesLength!: number;
 
   private ngUnsubscribe = new Subject<void>();
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
-    this.selectIndex
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((selectedIndex: number): void => {
-        if (selectedIndex === this.index) {
-          this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
+    if (this.scrollPagesLength > 1) {
+      this.selectIndex
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((selectedIndex: number): void => {
+          if (selectedIndex === this.index) {
+            setTimeout(() => this.elementRef.nativeElement
+              .scrollIntoView({ behavior: 'smooth', block: 'start' }));
+          }
+        });
+    }
   }
 
   ngOnDestroy(): void {

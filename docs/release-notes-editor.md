@@ -5,6 +5,7 @@ Editor
 - Rechenkästchen: Fehlende Helferzeilen bei Addition und Subtraktion hinzugefügt
 - Rechenkästchen: Minuend statt Subtrahend durchstreichbar
 - Lückentext: Eingabefeld hat den gleichen Font wie alle Elemente drumherum (NunitoSans)
+- Lückentext: Als durchgestrichen formatierter Text erscheint jetzt als solcher
 
 ## 2.2.0
 ### Neue Funktionen

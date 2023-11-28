@@ -132,7 +132,8 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
       <ng-container *ngFor="let subPart of part.content">
         <ng-container *ngIf="$any(subPart).type === 'text' &&
                              (!(subPart.marks | markList | arrayIncludes:'superscript')) &&
-                             (!(subPart.marks | markList | arrayIncludes:'subscript'))">
+                             (!(subPart.marks | markList | arrayIncludes:'subscript')) &&
+                             (!(subPart.marks | markList | arrayIncludes:'strike'))">
           <span [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</span>
         </ng-container>
         <ng-container *ngIf="$any(subPart).type === 'text' && ((subPart.marks | markList) | arrayIncludes:'superscript')">
@@ -140,6 +141,9 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
         </ng-container>
         <ng-container *ngIf="$any(subPart).type === 'text' && ((subPart.marks | markList) | arrayIncludes:'subscript')">
           <sub [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</sub>
+        </ng-container>
+        <ng-container *ngIf="$any(subPart).type === 'text' && ((subPart.marks | markList) | arrayIncludes:'strike')">
+          <s [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</s>
         </ng-container>
         <ng-container *ngIf="$any(subPart).type === 'image'">
           <img [src]="subPart.attrs.src" [alt]="subPart.attrs.alt"

@@ -23,7 +23,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
            [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
            [style.line-height.%]="elementModel.styling.lineHeight"
            [style.color]="elementModel.styling.fontColor"
-           [style.font-family]="elementModel.styling.font"
            [style.font-size.px]="elementModel.styling.fontSize"
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
@@ -39,7 +38,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
   `,
   styles: [
     '.cloze-child {border: 1px solid #ccc; border-radius: 4px;}',
-    'input {width: 100%; height: 100%; padding: 0 2px; box-sizing: border-box}',
+    'input {width: 100%; height: 100%; padding: 0 2px; box-sizing: border-box; font-family: inherit;}',
     'input:hover {border: 1px solid currentColor;}',
     'input:focus {border: 1px solid #3f51b5; outline: 0}',
     '.errors {border: 2px solid #f44336 !important;}'

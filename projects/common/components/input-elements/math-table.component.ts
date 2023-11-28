@@ -104,6 +104,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
         .map((term: string, i: number) => MathTableComponent.createNormalRow(
           term, width - operatorOffset, i > 0 ? '+' : ' '
         )),
+      MathTableComponent.createHelperRow(width),
       MathTableComponent.createResultRow(this.elementModel.result, width)
     ];
   }
@@ -121,6 +122,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
         .map((term: string, i: number) => MathTableComponent.createNormalRow(
           term, width - operatorOffset, i > 0 ? '−' : ' ', i > 0
         )),
+      MathTableComponent.createHelperRow(width),
       MathTableComponent.createResultRow(this.elementModel.result, width)
     ];
   }

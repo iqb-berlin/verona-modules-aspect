@@ -1,5 +1,11 @@
 Editor
 ======
+## 2.2.1
+### Fehlerbehebungen
+- Rechenkästchen: Fehlende Helferzeilen bei Addition und Subtraktion hinzugefügt
+- Rechenkästchen: Minuend statt Subtrahend durchstreichbar
+- Lückentext: Eingabefeld hat den gleichen Font wie alle Elemente drumherum (NunitoSans)
+
 ## 2.2.0
 ### Neue Funktionen
 - Rechenkästchen: Nachbildung von schriftlichem Rechnen

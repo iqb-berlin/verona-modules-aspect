@@ -2,6 +2,8 @@ Player
 ======
 ## 2.2.1
 Unterstützt Fehlerbehebungen aus Editor 2.2.1
+### Fehlerbehebungen
+- Verbessert das "magnetische" Scroll-Verhalten
 
 ## 2.2.0
 Unterstützt neue Elemente und Einstellungen von Editor 2.2.0

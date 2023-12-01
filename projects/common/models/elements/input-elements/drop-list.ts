@@ -4,7 +4,7 @@ import {
   UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { DropListComponent } from 'common/components/input-elements/drop-list.component';
+import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {
@@ -16,6 +16,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class DropListElement extends InputElement implements DropListProperties {
   type: UIElementType = 'drop-list';
   value: DragNDropValueObject[];
+  isSortList: boolean = false;
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
@@ -30,7 +31,17 @@ export class DropListElement extends InputElement implements DropListProperties 
   constructor(element?: DropListProperties) {
     super(element);
     if (element && isValid(element)) {
-      this.value = element.value.map(val => ({ ...val }));
+      this.value = element.value.map((value, index) => ({
+        text: value.text,
+        imgSrc: value.imgSrc,
+        imgPosition: value.imgPosition,
+        id: value.id,
+        originListID: this.id,
+        originListIndex: index,
+        audioSrc: value.audioSrc
+      }
+      ));
+      this.isSortList = element.isSortList;
       this.onlyOneItem = element.onlyOneItem;
       this.connectedTo = [...element.connectedTo];
       this.copyOnDrop = element.copyOnDrop;
@@ -44,8 +55,17 @@ export class DropListElement extends InputElement implements DropListProperties 
         throw new InstantiationEror('Error at DropList instantiation', element);
       }
       this.value = element?.value !== undefined ?
-        element.value.map(val => ({ ...val })) :
+        this.value = element.value.map((value, index) => ({
+          text: value.text,
+          imgSrc: value.imgSrc,
+          imgPosition: value.imgPosition,
+          id: value.id,
+          originListID: this.id,
+          originListIndex: index,
+          audioSrc: value.audioSrc
+        })) :
         [];
+      if (element?.isSortList) this.isSortList = element.isSortList;
       if (element?.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
       if (element?.connectedTo) this.connectedTo = [...element.connectedTo];
       if (element?.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
@@ -127,6 +147,7 @@ export class DropListElement extends InputElement implements DropListProperties 
 
 export interface DropListProperties extends InputElementProperties {
   value: DragNDropValueObject[];
+  isSortList: boolean;
   onlyOneItem: boolean;
   connectedTo: string[];
   copyOnDrop: boolean;
@@ -142,6 +163,7 @@ export interface DropListProperties extends InputElementProperties {
 function isValid(blueprint?: DropListProperties): boolean {
   if (!blueprint) return false;
   return blueprint.value !== undefined &&
+    blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&
     blueprint.connectedTo !== undefined &&
     blueprint.copyOnDrop !== undefined &&

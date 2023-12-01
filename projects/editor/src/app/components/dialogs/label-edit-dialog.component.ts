@@ -26,7 +26,7 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
             </mat-select>
           </mat-form-field>
         </div>
-        <aspect-text-image-panel [label]="newLabel"></aspect-text-image-panel>
+        <aspect-text-image-panel [label]="newLabel" [style.justify-content]="'center'"></aspect-text-image-panel>
       </div>
 
     </mat-dialog-content>

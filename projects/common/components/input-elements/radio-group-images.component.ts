@@ -35,6 +35,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   styles: [`
     .radio-button-label {
       cursor: pointer;
+      justify-content: center;
     }
     mat-radio-group {
       display: grid;

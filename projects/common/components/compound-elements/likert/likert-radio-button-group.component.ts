@@ -22,7 +22,8 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
                                          elementModel.rowLabel.imgPosition === 'right'"
            [class.fx-column-start-stretch]="elementModel.rowLabel.imgPosition === 'above' ||
                                             elementModel.rowLabel.imgPosition === 'below'">
-        <aspect-text-image-panel [label]="elementModel.rowLabel"></aspect-text-image-panel>
+        <aspect-text-image-panel [label]="elementModel.rowLabel"
+                                 [style.justify-content]="'center'"></aspect-text-image-panel>
       </div>
 
       <mat-radio-button *ngFor="let column of [].constructor(elementModel.columnCount); let j = index"

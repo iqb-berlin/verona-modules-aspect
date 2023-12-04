@@ -29,7 +29,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
     </div>
   `,
   styles: [`
-    :host {align-self: center;}
+    :host {align-self: center; justify-content: inherit;}
     .wrapper {
       display: flex;
       justify-content: inherit;

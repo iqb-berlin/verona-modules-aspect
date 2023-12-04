@@ -90,7 +90,10 @@ import { DragOperatorService } from './drag-operator.service';
     .image-item {
       padding: 5px;
     }
-    .cloze-context .drop-list-item {padding: 0 5px;}
+    .cloze-context .drop-list-item {
+      padding: 0 5px;
+      justify-content: center;
+    }
     .drop-list-item.show-as-placeholder { /* set via controller */
       background-color: #ccc !important;
       color: transparent !important;

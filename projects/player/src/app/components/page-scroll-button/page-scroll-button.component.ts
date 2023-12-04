@@ -16,12 +16,19 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     this.checkScrollPosition(element);
   }
 
+  @HostListener('scrollend')
+  onScrollEnd() {
+    this.scrollingEnded.emit();
+    setTimeout(() => { this.isBlocked = false; });
+  }
+
   @Input() isSnapMode!: boolean;
-  @Input() concatScrollPadding!: number;
-  @Output() scrollToNextPage: EventEmitter<void> = new EventEmitter<void>();
+  @Output() scrollToNextPage: EventEmitter<number> = new EventEmitter<number>();
+  @Output() scrollingEnded: EventEmitter<void> = new EventEmitter<void>();
 
   isVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   scrollIntervalId!: number;
+  isBlocked = false;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -48,8 +55,8 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     this.isVisible.next(element.scrollHeight - element.offsetHeight > element.scrollTop + 10);
   }
 
-  toggleScrolling(scrolling: boolean) {
-    if (scrolling) {
+  toggleScrolling(scrolling: boolean): void {
+    if (scrolling && !this.isBlocked) {
       this.scrollIntervalId = setInterval(() => {
         this.scrollDown();
       });
@@ -58,24 +65,34 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  scrollDown(): void {
+  private scrollDown(): void {
     const nextScrollTop = this.elementRef.nativeElement.scrollTop + 2;
-    const pageBottoms: number[] = this.getBottomsOfPages();
-    if (this.isSnapMode && pageBottoms.length > 1 && pageBottoms
-      .filter((page: number) => Math
-        .abs(page - (nextScrollTop + this.elementRef.nativeElement.offsetHeight)) <= 2).length === 1) {
-      this.clearScrollIng();
-      this.scrollToNextPage.emit();
+    if (this.isSnapMode) {
+      const pageBottoms: number[] = this.getBottomsOfPages();
+      if (pageBottoms.length > 1) {
+        const pageIndex = pageBottoms
+          .findIndex(bottom => Math
+            .abs(bottom - (nextScrollTop + this.elementRef.nativeElement.offsetHeight)) <= 2);
+        if (pageIndex > -1) {
+          this.clearScrollIng();
+          this.isBlocked = true;
+          this.scrollToNextPage.emit(pageIndex + 1);
+        } else {
+          this.elementRef.nativeElement.scrollTo(0, nextScrollTop);
+        }
+      } else {
+        this.elementRef.nativeElement.scrollTo(0, nextScrollTop);
+      }
     } else {
-      this.elementRef.nativeElement.scrollTop = nextScrollTop;
+      this.elementRef.nativeElement.scrollTo(0, nextScrollTop);
     }
   }
 
   private getBottomsOfPages(): number[] {
     return [...this.elementRef.nativeElement.querySelectorAll('aspect-page')]
       .map(page => page.parentElement?.offsetHeight)
-      .reduce((acc, v, i) => {
-        i === 0 ? acc.push(v + this.concatScrollPadding) : acc.push(v + acc[i - 1]);
+      .reduce((acc, current, index) => {
+        index === 0 ? acc.push(current) : acc.push(current + acc[index - 1]);
         return acc;
       }, []);
   }

@@ -8,7 +8,7 @@ import { KeyboardService } from '../../../services/keyboard.service';
 @Component({
   selector: 'aspect-player-layout',
   templateUrl: './player-layout.component.html',
-  styleUrls: ['./player-layout.component.css'],
+  styleUrls: ['./player-layout.component.scss'],
   animations: [
     trigger('keypadSlideInOut', [
       transition(':enter', [

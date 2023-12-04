@@ -23,15 +23,17 @@
          [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
          [class.left-container]="alwaysVisiblePagePosition === 'left'"
          [style.max-width]="containerMaxWidth.alwaysVisiblePage">
-      <div [style.min-height]="'calc(' + minHeight.alwaysVisiblePage + 'vh - ' + (alwaysVisiblePage.margin * 2) + 'px)'"
+      <div *ngIf="alwaysVisiblePage"
+           [style.min-height]="'calc(' + minHeight.alwaysVisiblePage + 'vh - ' + (alwaysVisiblePage.margin * 2) + 'px)'"
            [style.background-color]="alwaysVisiblePage.backgroundColor"
            [style.max-width]="alwaysVisiblePage.hasMaxWidth ? alwaysVisiblePage.maxWidth + 'px' : '100%'"
-           [style.padding.px]="alwaysVisiblePage.margin">
+           [style.padding.px]="alwaysVisiblePage && alwaysVisiblePage.margin || 0">
         <div *ngIf="!hidePageLabels"
              class="mat-tab-label">
           {{'alwaysVisiblePage' | translate}}
         </div>
-        <aspect-page [pageIndex]="pages | pageIndex: alwaysVisiblePage"
+        <aspect-page *ngIf="alwaysVisiblePage"
+                     [pageIndex]="pages | pageIndex: alwaysVisiblePage"
                      [isLastPage]="false"
                      [pagesContainer]="alwaysVisiblePageContainer"
                      [page]="alwaysVisiblePage">
@@ -46,11 +48,11 @@
     <aspect-page-scroll-button class="page-container"
                                cdkScrollable
                                [isSnapMode]="scrollPageMode === 'concat-scroll-snap'"
-                               [concatScrollPadding]="concatScrollPadding"
-                               [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap'"
+                               [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap' && !isSnapBlocked"
                                [style.max-height.%]="aspectRatioColumn.scrollPages"
                                [style.max-width.%]="aspectRatioRow.scrollPages"
-                               (scrollToNextPage)="scrollToNextPage()">
+                               (scrollToNextPage)="scrollToNextPage($event)"
+                               (scrollingEnded)="onScrollingEnded()">
       <div #pagesScrolledContainer
            [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
            [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
@@ -97,7 +99,7 @@
                                'calc(' + minHeight.scrollPages + 'vh - ' + (page.margin * 2) + 'px)' :
                                'unset'"
          [style.background-color]="page.backgroundColor"
-         [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap'"
+         [class.concat-scroll-snap-align]="scrollPageMode === 'concat-scroll-snap' && !isSnapBlocked"
          [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'"
          [style.padding.px]="page.margin"
          aspectScrollToIndex
@@ -111,7 +113,7 @@
       <aspect-page [pageIndex]="pages | pageIndex: page"
                    [scrollPageIndex]="i"
                    [pagesContainer]="pagesContainer"
-                   [concatScrollPadding]="scrollPageMode === 'concat-scroll-snap' ? concatScrollPadding : 0"
+                   [pagingMode]="scrollPageMode"
                    [page]="page"
                    [isLastPage]="last"
                    (selectedIndexChange)="setSelectedIndex($event)">

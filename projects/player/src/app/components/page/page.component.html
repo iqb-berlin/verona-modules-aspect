@@ -1,14 +1,13 @@
 <div aspectInViewDetection
      detectionType="top"
-     [topPadding]="concatScrollPadding || 0"
      [intersectionContainer]="pagesContainer"
      (intersecting)="selectedIndexChange.emit(scrollPageIndex)">
   <aspect-section
     *ngFor="let section of page.sections; let i = index"
     class="section"
     [class.static-section]="!section.dynamicPositioning"
-    [style.backgroundColor]="section.dynamicPositioning ? null : section.backgroundColor"
-    [style.minHeight]="section.dynamicPositioning ? 'auto' : section.height + 'px'"
+    [style.background-color]="section.dynamicPositioning ? null : section.backgroundColor"
+    [style.min-height]="section.dynamicPositioning ? 'auto' : section.height + 'px'"
     [pageIndex]=pageIndex
     [section]="section"
     aspectSectionVisibilityHandling
@@ -18,7 +17,7 @@
 </div>
 <div aspectInViewDetection
      detectionType="bottom"
-     [topPadding]="concatScrollPadding || 0"
+     [class.concat-scroll-padding]="pagingMode==='concat-scroll-snap'"
      [intersectionContainer]="pagesContainer"
      (intersecting)="selectedIndexChange.emit(scrollPageIndex)">
 </div>

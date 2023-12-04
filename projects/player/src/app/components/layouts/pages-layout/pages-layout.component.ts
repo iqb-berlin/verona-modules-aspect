@@ -4,14 +4,12 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Page } from 'common/models/page';
-import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { VopPageNavigationCommand } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { PageChangeService } from 'common/services/page-change.service';
 import { NativeEventService } from '../../../services/native-event.service';
 
-export const globalAnimationDuration = 300;
 @Component({
   selector: 'aspect-pages-layout',
   templateUrl: './pages-layout.component.html',
@@ -31,7 +29,8 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   layoutAlignment: 'row' | 'column' = 'row';
   hidePageLabels: boolean = true;
   tabHeaderHeight: number = 0;
-  concatScrollPadding: number = 50; // Use the same value in Css
+
+  isSnapBlocked: boolean = false;
 
   maxWidth: { alwaysVisiblePage: number, scrollPages: number, allPages: number } =
     { alwaysVisiblePage: 0, scrollPages: 0, allPages: 0 };
@@ -53,7 +52,6 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private nativeEventService: NativeEventService,
     private changeDetectorRef: ChangeDetectorRef,
-    private veronaPostService: VeronaPostService,
     private navigationService: NavigationService,
     private veronaSubscriptionService: VeronaSubscriptionService,
     protected pageChangeService: PageChangeService
@@ -78,7 +76,7 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setSelectedIndex(selectedIndex: number): void {
-    this.selectedIndex = selectedIndex;
+    setTimeout(() => { this.selectedIndex = selectedIndex; });
   }
 
   private calculateCenterPositionInRowLayout(): void {
@@ -171,13 +169,19 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  scrollToNextPage() {
-    if (this.selectedIndex < this.scrollPages.length - 1) {
-      this.selectIndex.next(this.selectedIndex + 1);
+  scrollToNextPage(pageIndex: number): void {
+    if (pageIndex <= this.scrollPages.length - 1) {
+      this.isSnapBlocked = true;
+      // Timeout 200: Make sure that a possible concat-scroll-browser-action is completed
+      setTimeout(() => this.selectIndex.next(pageIndex), 200);
     }
   }
 
-  private calculatePageMinHeight() {
+  onScrollingEnded(): void {
+    setTimeout(() => { this.isSnapBlocked = false; }, 100);
+  }
+
+  private calculatePageMinHeight(): void {
     if (this.alwaysVisiblePage) {
       this.minHeight.alwaysVisiblePage =
         this.layoutAlignment === 'row' ? 100 : this.alwaysVisiblePage.alwaysVisibleAspectRatio;

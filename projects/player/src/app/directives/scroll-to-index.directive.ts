@@ -10,6 +10,7 @@ import { takeUntil } from 'rxjs/operators';
 export class ScrollToIndexDirective implements OnInit, OnDestroy {
   @Input() selectIndex!: Subject<number>;
   @Input() index!: number;
+  @Input() fast!: boolean;
   @Input() scrollPagesLength!: number;
 
   private ngUnsubscribe = new Subject<void>();

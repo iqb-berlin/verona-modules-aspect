@@ -16,7 +16,7 @@ import { DragOperatorService } from './drag-operator.service';
 @Component({
   selector: 'aspect-drop-list',
   template: `
-    <div *ngIf="clozeContext" [style.color]="'transparent'">-</div>
+    <div *ngIf="clozeContext" [style.width.px]="0">&nbsp;</div>
     <div class="drop-list" id="{{elementModel.id}}" #droplist
          [class.cloze-context]="clozeContext"
          [class.hovered]="!elementModel.isSortList && isHovered"
@@ -48,7 +48,6 @@ import { DragOperatorService } from './drag-operator.service';
         <aspect-text-image-panel [label]="item"></aspect-text-image-panel>
       </div>
     </div>
-    <div *ngIf="clozeContext" [style.color]="'transparent'">-</div>
     <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                class="error-message">
       {{elementFormControl.errors | errorTransform: elementModel}}

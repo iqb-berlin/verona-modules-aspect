@@ -11,7 +11,7 @@ import { LikertRowElement } from 'common/models/elements/compound-elements/liker
 import { TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import { StateVariable } from 'common/models/state-variable';
-import { MathTableRow } from 'common/models/elements/input-elements/math-table';
+import { MathTableRow } from 'common/components/input-elements/math-table.component';
 import { UnitService } from '../../services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from '../canvas/overlays/canvas-element-overlay';

@@ -76,15 +76,4 @@ function isValid(blueprint?: MathTableProperties): boolean {
          PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }
 
-export interface MathTableCell {
-  value: string;
-  canBeCrossedOut?: boolean;
-  isCrossedOut?: boolean;
-  isSmallCell?: boolean;
-  isEditable?: boolean;
-}
 
-export interface MathTableRow {
-  rowType: 'normal' | 'result' | 'helper';
-  cells: MathTableCell[];
-}

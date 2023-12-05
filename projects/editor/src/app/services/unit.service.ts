@@ -32,14 +32,13 @@ import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { StateVariable } from 'common/models/state-variable';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { VersionManager } from 'common/services/version-manager';
+import { MathTableRow } from 'common/components/input-elements/math-table.component';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
-import { MathTableRow } from 'common/models/elements/input-elements/math-table';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';
 import { SelectionService } from './selection.service';
 import { IDService } from './id.service';
 import { UnitDefinitionSanitizer } from './sanitizer';
-
 
 @Injectable({
   providedIn: 'root'

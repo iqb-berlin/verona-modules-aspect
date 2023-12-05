@@ -1,4 +1,4 @@
-import { MathTableCell, MathTableElement, MathTableRow } from 'common/models/elements/input-elements/math-table';
+import { MathTableElement } from 'common/models/elements/input-elements/math-table';
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
@@ -17,16 +17,16 @@ import { ValueChangeElement } from 'common/models/elements/element';
              [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
         <tr *ngFor="let row of tableModel"
-            [style.height.px]="row.cells.length && row.cells[0].isSmallCell ? elementModel.styling.fontSize * 1.5 :
+            [style.height.px]="row.cells.length && row.isHelperRow ? elementModel.styling.fontSize * 1.5 :
                                                                             elementModel.styling.fontSize * 2"
-            [style.font-size]="row.cells.length && row.cells[0].isSmallCell && '70%'">
+            [style.font-size]="row.cells.length && row.isHelperRow && '70%'">
           <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
               [style.width.px]="elementModel.styling.fontSize * 2"
               [class.strike-through]="cell.isCrossedOut"
               [textContent]="cell.value"
               (paste)="$event.preventDefault()"
-              (keydown)="onCharEnter(cell, $event)"
-              (dblclick)="(cell.isSmallCell || cell.canBeCrossedOut) && cell.value !== '' && toggleStrikeThrough(cell)">
+              (keydown)="onCharEnter($event, row, cell)"
+              (dblclick)="toggleStrikeThrough(row, cell)">
           </td>
         </tr>
       </table>
@@ -116,8 +116,8 @@ export class MathTableComponent extends ElementComponent implements OnInit {
       this.elementModel.result.length
     );
     return [
-      MathTableComponent.createHelperRow(width),
-      MathTableComponent.createHelperRow(width),
+      MathTableComponent.createHelperRow(width, true),
+      MathTableComponent.createHelperRow(width, true),
       ...this.elementModel.terms
         .map((term: string, i: number) => MathTableComponent.createNormalRow(
           term, width - operatorOffset, i > 0 ? '−' : ' ', i === 0
@@ -151,10 +151,18 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     };
   }
 
-  private static createHelperRow(width: number): MathTableRow {
+  /* '1digit' also means no crossing out. '2digit' the opposite. */
+  private static createHelperRow(width: number, is2DigitHelperRow: boolean = false): MathTableRow {
     return {
       rowType: 'helper',
-      cells: [...Array(width).fill(undefined).map(() => ({ value: '', isSmallCell: true, isEditable: true }))]
+      cells: [...Array(width).fill(undefined).map(() => ({
+        value: '',
+        isSmallCell: true,
+        isEditable: true
+      }))],
+      isHelperRow: true,
+      is2DigitHelperRow,
+      canBeCrossedOut: is2DigitHelperRow
     };
   }
 
@@ -169,10 +177,10 @@ export class MathTableComponent extends ElementComponent implements OnInit {
           .map(() => ({ value: '', isEditable: term === '' })),
         ...term.split('').map(char => ({
           value: char === '_' ? ' ' : char, // underscore acts as space alternative
-          isEditable: char === ' ' || char === '_',
-          canBeCrossedOut: isStrikable
+          isEditable: char === ' ' || char === '_'
         }))
-      ]
+      ],
+      canBeCrossedOut: isStrikable
     };
   }
 
@@ -205,7 +213,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     this.emitModel();
   }
 
-  onCharEnter(cell: MathTableCell, event: KeyboardEvent) {
+  onCharEnter(event: KeyboardEvent, row: MathTableRow, cell: MathTableCell) {
     if (event.key === 'Tab') return; // allow normal Tab usage
     event.preventDefault();
     if (['Backspace', 'Delete'].includes(event.key)) {
@@ -214,25 +222,36 @@ export class MathTableComponent extends ElementComponent implements OnInit {
       cell.isCrossedOut = false;
     }
     const allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-    if (this.elementModel.operation === 'multiplication' && !cell.isSmallCell) {
+    if (this.elementModel.operation === 'multiplication' && !row.isHelperRow) {
       allowedKeys.push('+', '-', '*', ':', '/');
     }
     if (!allowedKeys.includes(event.key)) return;
-    if (cell.isSmallCell && cell.value.length === 1) {
+
+    if (row.is2DigitHelperRow && cell.value.length === 1) {
       cell.value += event.key;
-    } else if (event.key === '*') { // replace star by custom division sign
-      cell.value = '•';
-    } else if (event.key === '/') { // also allow slash for division sign
-      cell.value = ':';
-    } else if (event.key === '-') { // use longer minus char
-      cell.value = '−';
     } else {
-      cell.value = event.key;
+      cell.value = MathTableComponent.getCharReplacement(event.key);
     }
+
     this.emitModel();
   }
 
-  toggleStrikeThrough(cell: MathTableCell) {
+  private static getCharReplacement(char: string): string {
+    switch (char) {
+      case '*':
+        return '•';
+      case '/':
+        return ':';
+      case '-':
+        return '−';
+      default:
+        return char;
+    }
+  }
+
+  toggleStrikeThrough(row: MathTableRow, cell: MathTableCell) {
+    if (!(row.is2DigitHelperRow || row.canBeCrossedOut)) return;
+    if (cell.value === '') return;
     cell.isCrossedOut = !cell.isCrossedOut;
     this.emitModel();
   }
@@ -240,4 +259,18 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   emitModel(): void {
     this.elementValueChanged.emit({ id: this.elementModel.id, value: this.tableModel });
   }
+}
+
+export interface MathTableCell {
+  value: string;
+  isCrossedOut?: boolean;
+  isEditable?: boolean;
+}
+
+export interface MathTableRow {
+  rowType: 'normal' | 'result' | 'helper';
+  cells: MathTableCell[];
+  isHelperRow?: boolean;
+  is2DigitHelperRow?: boolean;
+  canBeCrossedOut?: boolean;
 }

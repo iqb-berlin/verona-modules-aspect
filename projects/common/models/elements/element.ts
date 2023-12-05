@@ -18,8 +18,7 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
-
-import { MathTableRow } from 'common/models/elements/input-elements/math-table';
+import { MathTableRow } from 'common/components/input-elements/math-table.component';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'

@@ -1,8 +1,16 @@
 Player
 ======
+## 2.2.2
+### Änderungen
+- Verlängert bei "magnetischem Scroll-Verhalten" die einzelnen Seiten einer Unit,
+  um Elemente an den Seitenenden besser erreichen zu können
+### Fehlerbehebungen
+- Unterbindet bei "magnetischem Scroll-Verhalten" das "Zurückspringen" von Seiten 
+  bei Benutzung des Scroll-Knopfes unter Firefox
+
 ## 2.2.1
 Unterstützt Fehlerbehebungen aus Editor 2.2.1
-### Fehlerbehebungen
+### Verbesserung
 - Verbessert das "magnetische" Scroll-Verhalten
 
 ## 2.2.0

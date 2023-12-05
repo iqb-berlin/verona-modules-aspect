@@ -15,7 +15,6 @@ export class PageComponent {
   @Input() isLastPage!: boolean;
   @Input() pageIndex!: number;
   @Input() scrollPageIndex!: number;
-  @Input() pagesContainer!: HTMLElement;
   @Input() pagingMode!: PagingMode;
   @Output() selectedIndexChange = new EventEmitter<number>();
 }

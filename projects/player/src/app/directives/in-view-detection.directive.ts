@@ -1,5 +1,6 @@
 import {
-  Directive, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output
+  AfterViewInit,
+  Directive, ElementRef, EventEmitter, Input, OnDestroy, Output
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -8,10 +9,9 @@ import { IntersectionDetector } from '../classes/intersection-detector';
 @Directive({
   selector: '[aspectInViewDetection]'
 })
-export class InViewDetectionDirective implements OnInit, OnDestroy {
+export class InViewDetectionDirective implements AfterViewInit, OnDestroy {
   @Input() detectionType!: 'top' | 'bottom';
   @Output() intersecting = new EventEmitter();
-  @Input() intersectionContainer!: HTMLElement;
   @Input() topPadding!: number;
 
   intersectionDetector!: IntersectionDetector;
@@ -20,13 +20,16 @@ export class InViewDetectionDirective implements OnInit, OnDestroy {
 
   constructor(private elementRef: ElementRef) {}
 
-  ngOnInit(): void {
-    const constraint = this.detectionType === 'top' ? '0px' : '0px';
-    this.intersectionDetector = new IntersectionDetector(this.intersectionContainer, constraint);
-    this.intersectionDetector.observe(this.elementRef.nativeElement);
-    this.intersectionDetector.intersecting
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => this.intersecting.emit());
+  ngAfterViewInit(): void {
+    const intersectionContainer = this.elementRef.nativeElement.closest('aspect-page-scroll-button');
+    if (intersectionContainer) {
+      const constraint = this.detectionType === 'top' ? '0px' : '0px';
+      this.intersectionDetector = new IntersectionDetector(intersectionContainer, constraint);
+      this.intersectionDetector.observe(this.elementRef.nativeElement);
+      this.intersectionDetector.intersecting
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => this.intersecting.emit());
+    }
   }
 
   ngOnDestroy(): void {

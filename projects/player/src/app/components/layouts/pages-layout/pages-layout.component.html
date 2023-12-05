@@ -19,8 +19,7 @@
                              [isSnapMode]="false"
                              [style.max-height.%]="aspectRatioColumn.alwaysVisiblePage"
                              [style.max-width.%]="aspectRatioRow.alwaysVisiblePage">
-    <div #alwaysVisiblePageContainer
-         [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
+    <div [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
          [class.left-container]="alwaysVisiblePagePosition === 'left'"
          [style.max-width]="containerMaxWidth.alwaysVisiblePage">
       <div *ngIf="alwaysVisiblePage"
@@ -35,7 +34,6 @@
         <aspect-page *ngIf="alwaysVisiblePage"
                      [pageIndex]="pages | pageIndex: alwaysVisiblePage"
                      [isLastPage]="false"
-                     [pagesContainer]="alwaysVisiblePageContainer"
                      [page]="alwaysVisiblePage">
         </aspect-page>
       </div>
@@ -53,12 +51,10 @@
                                [style.max-width.%]="aspectRatioRow.scrollPages"
                                (scrollToNextPage)="scrollToNextPage($event)"
                                (scrollingEnded)="onScrollingEnded()">
-      <div #pagesScrolledContainer
-           [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
+      <div #pagesScroll [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
            [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
            [style.max-width]="containerMaxWidth.scrollPages">
-        <ng-container [ngTemplateOutletContext]="{pagesContainer: pagesScrolledContainer}"
-                      [ngTemplateOutlet]="scrollPageMode === 'separate' ?
+        <ng-container [ngTemplateOutlet]="scrollPageMode === 'separate' ?
                                             scrollPagesSeparatedView :
                                             scrollPagesScrolledView">
         </ng-container>
@@ -67,7 +63,7 @@
   </ng-container>
 </ng-template>
 
-<ng-template #scrollPagesSeparatedView let-pagesContainer>
+<ng-template #scrollPagesSeparatedView>
   <mat-tab-group [style.min-height.vh]="aspectRatioColumn.scrollPages"
                  [style.display]="'block'"
                  aspectPageLabel
@@ -84,7 +80,6 @@
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
           <aspect-page [pageIndex]="pages | pageIndex: page"
                        [isLastPage]="last"
-                       [pagesContainer]="pagesContainer"
                        [page]="page">
           </aspect-page>
         </div>
@@ -93,7 +88,7 @@
   </mat-tab-group>
 </ng-template>
 
-<ng-template #scrollPagesScrolledView let-pagesContainer>
+<ng-template #scrollPagesScrolledView>
   <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
     <div [style.min-height]="scrollPageMode === 'concat-scroll-snap' ?
                                'calc(' + minHeight.scrollPages + 'vh - ' + (page.margin * 2) + 'px)' :
@@ -112,7 +107,6 @@
       </div>
       <aspect-page [pageIndex]="pages | pageIndex: page"
                    [scrollPageIndex]="i"
-                   [pagesContainer]="pagesContainer"
                    [pagingMode]="scrollPageMode"
                    [page]="page"
                    [isLastPage]="last"

@@ -30,7 +30,6 @@ describe('PageComponent', () => {
   class InViewDetection {
     @Input() detectionType!: 'top' | 'bottom';
     @Output() intersecting = new EventEmitter();
-    @Input() intersectionContainer!: HTMLElement;
   }
 
   beforeEach(async () => {

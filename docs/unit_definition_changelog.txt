@@ -135,3 +135,5 @@ iqb-aspect-definition@1.0.0
 
 4.3.0
 - Geometry: new property: trackedVariables
+- new property in "OtherStyles": lastHelperRowColor
+- MathTable: new styling property: lastHelperRowColor

@@ -6,6 +6,20 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
   selector: 'aspect-element-style-properties',
   template: `
     <div class="fx-column-start-stretch" *ngIf="styles">
+      <mat-form-field *ngIf="styles.lastHelperRowColor !== undefined"
+                      appearance="fill" class="mdInput textsingleline">
+        <mat-label>{{'propertiesPanel.lastHelperRowColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="styles.lastHelperRowColor"
+               (input)="unitService.updateSelectedElementsStyleProperty(
+                          'lastHelperRowColor', $any($event.target).value)">
+        <button mat-icon-button matSuffix (click)="lastHelperRowColorInput.click()">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </mat-form-field>
+      <input matInput type="color" hidden #lastHelperRowColorInput
+             [value]="styles.lastHelperRowColor"
+             (input)="unitService.updateSelectedElementsStyleProperty('lastHelperRowColor', $any($event.target).value)">
+
       <mat-checkbox *ngIf="styles.lineColoring !== undefined"
                     [checked]="$any(styles.lineColoring)"
                     (change)="unitService.updateSelectedElementsStyleProperty('lineColoring', $event.checked)">

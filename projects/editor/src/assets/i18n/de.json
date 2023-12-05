@@ -250,7 +250,8 @@
     "presentation": "Darstellung",
     "tooltip": "Tooltip",
     "stickyHeader": "Haftende Kopfzeile",
-    "crossOutChecked": "Auswahl durchstreichen"
+    "crossOutChecked": "Auswahl durchstreichen",
+    "lastHelperRowColor": "Farbe unterer Hilfszeile"
   },
   "hotspot": {
     "top": "Abstand von oben",

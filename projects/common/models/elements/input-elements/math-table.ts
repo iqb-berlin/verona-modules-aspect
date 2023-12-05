@@ -16,7 +16,9 @@ export class MathTableElement extends UIElement implements MathTableProperties {
   operation: 'addition' | 'subtraction' | 'multiplication' = 'addition';
   terms: string[] = ['123', '456', '789'];
   result: string = '';
-  styling: BasicStyles;
+  styling: BasicStyles & {
+    lastHelperRowColor: string;
+  };
 
   constructor(element?: MathTableProperties) {
     super(element);
@@ -32,7 +34,10 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       if (element?.operation !== undefined) this.operation = element.operation;
       if (element?.terms !== undefined) this.terms = [...element.terms];
       if (element?.result !== undefined) this.result = element.result;
-      this.styling = PropertyGroupGenerators.generateBasicStyleProps(element?.styling);
+      this.styling = {
+        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
+        lastHelperRowColor: 'transparent'
+      };
     }
   }
 
@@ -65,7 +70,9 @@ export interface MathTableProperties extends UIElementProperties {
   operation: 'addition' | 'subtraction' | 'multiplication';
   terms: string[];
   result: string;
-  styling: BasicStyles;
+  styling: BasicStyles & {
+    lastHelperRowColor: string;
+  };
 }
 
 function isValid(blueprint?: MathTableProperties): boolean {
@@ -75,5 +82,3 @@ function isValid(blueprint?: MathTableProperties): boolean {
          blueprint.result !== undefined &&
          PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }
-
-

@@ -16,10 +16,11 @@ import { ValueChangeElement } from 'common/models/elements/element';
              [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
              [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
              [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
-        <tr *ngFor="let row of tableModel"
+        <tr *ngFor="let row of tableModel; let index = index"
             [style.height.px]="row.cells.length && row.isHelperRow ? elementModel.styling.fontSize * 1.5 :
                                                                             elementModel.styling.fontSize * 2"
-            [style.font-size]="row.cells.length && row.isHelperRow && '70%'">
+            [style.font-size]="row.cells.length && row.isHelperRow && '70%'"
+            [style.background-color]="index === tableModel.length - 2 ? elementModel.styling.lastHelperRowColor : 'transparent'">
           <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
               [style.width.px]="elementModel.styling.fontSize * 2"
               [class.strike-through]="cell.isCrossedOut"

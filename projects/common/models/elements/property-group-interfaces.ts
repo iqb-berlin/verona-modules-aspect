@@ -59,6 +59,7 @@ export interface OtherStyles {
   firstLineColoring?: boolean;
   firstLineColoringColor?: string;
   selectionColor?: string;
+  lastHelperRowColor?: string;
 }
 
 export interface PlayerProperties {

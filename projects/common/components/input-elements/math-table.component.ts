@@ -99,7 +99,6 @@ export class MathTableComponent extends ElementComponent implements OnInit {
       this.elementModel.result.length
     );
     return [
-      MathTableComponent.createHelperRow(width),
       ...this.elementModel.terms
         .map((term: string, i: number) => MathTableComponent.createNormalRow(
           term, width - operatorOffset, i > 0 ? '+' : ' '

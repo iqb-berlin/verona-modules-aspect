@@ -325,10 +325,7 @@ export class UnitService {
     this.veronaApiService.sendVoeDefinitionChangedNotification(this.unit);
   }
 
-  updateElementsProperty(elements: UIElement[],
-                         property: string,
-                         value: InputElementValue | LikertRowElement[] | Hotspot[] | StateVariable |
-                         TextLabel | TextLabel[] | MathTableRow[] | ClozeDocument | null): void {
+  updateElementsProperty(elements: UIElement[], property: string, value: unknown): void {
     console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
@@ -341,7 +338,7 @@ export class UnitService {
         this.handleClozeDocumentChange(element as ClozeElement, value as ClozeDocument);
       } else {
         element.setProperty(property, value);
-        if (element.type === 'geometry') this.geometryElementPropertyUpdated.next(element.id);
+        if (element.type === 'geometry' && property !== 'trackedVariables') this.geometryElementPropertyUpdated.next(element.id);
         if (element.type === 'math-table') this.mathTableElementPropertyUpdated.next(element.id);
       }
     });

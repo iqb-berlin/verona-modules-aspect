@@ -206,11 +206,6 @@
     </button>
   </mat-form-field>
 
-  <mat-checkbox *ngIf="combinedProperties.showToolbar !== undefined"
-                [checked]="$any(combinedProperties.showToolbar)"
-                (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
-    {{'propertiesPanel.showToolbar' | translate }}
-  </mat-checkbox>
   <mat-checkbox *ngIf="combinedProperties.showResetIcon !== undefined"
                 [checked]="$any(combinedProperties.showResetIcon)"
                 (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">
@@ -237,12 +232,32 @@
     {{'propertiesPanel.showFullscreenButton' | translate }}
   </mat-checkbox>
 
+  <mat-checkbox *ngIf="combinedProperties.showToolbar !== undefined"
+                [checked]="$any(combinedProperties.showToolbar)"
+                (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
+    {{'propertiesPanel.showToolbar' | translate }}
+  </mat-checkbox>
   <mat-form-field *ngIf="combinedProperties.customToolbar != null"
                   matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.customToolbar' | translate }}</mat-label>
-    <input matInput [value]="$any(combinedProperties.customToolbar)"
+    <input matInput [disabled]="!combinedProperties.showToolbar"
+           [value]="$any(combinedProperties.customToolbar)"
            (input)="updateModel.emit({ property: 'customToolbar', value: $any($event.target).value })">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="combinedProperties.trackedVariables !== undefined"
+                  class="wide-form-field" appearance="fill">
+    <mat-label>{{'propertiesPanel.trackedVariables' | translate }}</mat-label>
+    <mat-select multiple [ngModel]="combinedProperties.trackedVariables"
+                (ngModelChange)="setGeometryVariables($event)">
+      <mat-select-trigger>
+        {{'propertiesPanel.trackedVariables' | translate }} ({{$any(combinedProperties.trackedVariables).length}})
+      </mat-select-trigger>
+      <mat-option *ngFor="let variable of geometryObjects | async" [value]="variable">
+        {{variable}}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 
   <mat-checkbox *ngIf="combinedProperties.enableModeSwitch !== undefined"

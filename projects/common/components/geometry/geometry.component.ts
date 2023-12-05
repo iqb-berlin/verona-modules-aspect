@@ -1,7 +1,9 @@
 import {
   AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2
 } from '@angular/core';
-import { debounceTime, Subject, Subscription } from 'rxjs';
+import {
+  BehaviorSubject, debounceTime, Subject, Subscription
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
@@ -19,12 +21,11 @@ declare const GGBApplet: any;
          [style.width.px]="elementModel.width"
          [class.center]="this.elementModel.dimensions.isWidthFixed">
       <button *ngIf="this.elementModel.showResetIcon"
-              class="reset-button"
-              mat-stroked-button
+              mat-stroked-button class="reset-button"
               (click)="reset()">
-        <mat-icon class="reset-icon">autorenew</mat-icon>neu anfangen
+        <mat-icon class="reset-icon">autorenew</mat-icon>{{'geometry_reset' | translate }}
       </button>
-      <div [id]="elementModel.id"  class="geogebra-applet"></div>
+      <div [id]="elementModel.id" class="geogebra-applet"></div>
     </div>
     <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
   `,
@@ -38,14 +39,14 @@ declare const GGBApplet: any;
 })
 export class GeometryComponent extends ElementComponent implements AfterViewInit, OnDestroy {
   @Input() elementModel!: GeometryElement;
-  @Input() appDefinition!: string;
+  @Input() appDefinition: string | undefined;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
 
-  isLoaded: Subject<boolean> = new Subject();
-  geoGebraApi!: any;
+  isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  geoGebraAPI!: any;
 
   private ngUnsubscribe = new Subject<void>();
-  private geometryUpdated = new EventEmitter<void>();
+  private geometryUpdated = new EventEmitter<void>(); // local subscription to be able to debounce
   private pageChangeSubscription: Subscription;
 
   constructor(public elementRef: ElementRef,
@@ -54,19 +55,25 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
               private externalResourceService: ExternalResourceService) {
     super(elementRef);
     this.externalResourceService.initializeGeoGebra(this.renderer);
+
     this.pageChangeSubscription = pageChangeService.pageChanged
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      ).subscribe(() => this.loadApplet());
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => this.loadApplet());
+
     this.geometryUpdated
-      .pipe(
-        debounceTime(500),
-        takeUntil(this.ngUnsubscribe)
-      ).subscribe((): void => this.elementValueChanged
-        .emit({
-          id: this.elementModel.id,
-          value: this.geoGebraApi.getBase64()
-        }));
+      .pipe(debounceTime(500), takeUntil(this.ngUnsubscribe))
+      .subscribe(() => this.elementValueChanged.emit({
+        id: this.elementModel.id,
+        value: {
+          appDefinition: this.geoGebraAPI.getBase64(),
+          variables: this.elementModel.trackedVariables
+            .map(variable => ({ id: variable, value: this.getVariableValue(variable) }))
+        }
+      }));
+  }
+
+  private getVariableValue(name: string): string {
+    return this.geoGebraAPI.getValueString(name);
   }
 
   ngAfterViewInit(): void {
@@ -78,8 +85,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       this.pageChangeSubscription.unsubscribe();
       this.externalResourceService.isGeoGebraLoaded()
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((isLoaded: boolean) => {
-          if (isLoaded) this.initApplet();
+        .subscribe((isGeoGebraLoaded: boolean) => {
+          if (isGeoGebraLoaded) this.initApplet();
         });
     }
   }
@@ -95,11 +102,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   private initApplet(): void {
-    if (!this.appDefinition) {
-      console.error('Geogebra Applet definition not found.');
-      return;
-    }
-    const params: any = {
+    const params = {
       id: this.elementModel.id,
       width: this.elementModel.dimensions.width - 4, // must be smaller than the container, otherwise scroll bars will be displayed
       height: this.elementModel.dimensions.height - 4,
@@ -119,26 +122,26 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       errorDialogsActive: true,
       showLogging: false,
       useBrowserForJS: false,
-      ggbBase64: this.appDefinition,
+      ggbBase64: this.appDefinition || this.elementModel.appDefinition,
       appletOnLoad: (geoGebraApi: any) => {
-        this.geoGebraApi = geoGebraApi;
+        this.geoGebraAPI = geoGebraApi;
         this.isLoaded.next(true);
-        this.geoGebraApi.registerAddListener(() => {
+        this.geoGebraAPI.registerAddListener(() => {
           this.geometryUpdated.emit();
         });
-        this.geoGebraApi.registerRemoveListener(() => {
+        this.geoGebraAPI.registerRemoveListener(() => {
           this.geometryUpdated.emit();
         });
-        this.geoGebraApi.registerUpdateListener(() => {
+        this.geoGebraAPI.registerUpdateListener(() => {
           this.geometryUpdated.emit();
         });
-        this.geoGebraApi.registerRenameListener(() => {
+        this.geoGebraAPI.registerRenameListener(() => {
           this.geometryUpdated.emit();
         });
-        this.geoGebraApi.registerClearListener(() => {
+        this.geoGebraAPI.registerClearListener(() => {
           this.geometryUpdated.emit();
         });
-        this.geoGebraApi.registerClientListener(() => {
+        this.geoGebraAPI.registerClientListener(() => {
           this.geometryUpdated.emit();
         });
       }
@@ -146,6 +149,10 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
     const applet = new GGBApplet(params, '5.0');
     applet.setHTML5Codebase(this.externalResourceService.getGeoGebraHTML5URL());
     applet.inject(this.elementModel.id);
+  }
+
+  getGeometryObjects(): string[] {
+    return this.geoGebraAPI.getAllObjectNames();
   }
 
   ngOnDestroy(): void {

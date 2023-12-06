@@ -112,11 +112,12 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     const operatorOffset = 1; // offset for operatorChar
     const width = Math.max(
       ...this.elementModel.terms.map(term => term.length + operatorOffset),
-      this.elementModel.result.length
+      this.elementModel.result.length,
+      2 // have at least one empty column, so the table does not disappear completely when terms are empty
     );
     return [
       ...this.elementModel.terms
-        .map((term: string, i: number) => MathTableComponent.createNormalRow(
+        .map(term => MathTableComponent.createNormalRow(
           term, width - operatorOffset
         ))
     ];

@@ -8,47 +8,57 @@ import { ValueChangeElement } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-math-table',
   template: `
-    <div class="wrapper">
-      <table [class.multiplication]="elementModel.operation === 'multiplication'"
-             [style.color]="elementModel.styling.fontColor"
-             [style.background-color]="elementModel.styling.backgroundColor"
-             [style.font-size.px]="elementModel.styling.fontSize"
-             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
-        <tr *ngFor="let row of tableModel; let index = index"
-            [style.height.px]="row.cells.length && row.isHelperRow ? elementModel.styling.fontSize * 1.5 :
-                                                                            elementModel.styling.fontSize * 2"
-            [style.font-size]="row.cells.length && row.isHelperRow && '70%'"
-            [style.background-color]="index === tableModel.length - 2 ? elementModel.styling.lastHelperRowColor : 'transparent'">
-          <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
-              [style.width.px]="elementModel.styling.fontSize * 2"
-              [class.strike-through]="cell.isCrossedOut"
-              [textContent]="cell.value"
-              (paste)="$event.preventDefault()"
-              (keydown)="onCharEnter($event, row, cell)"
-              (dblclick)="toggleStrikeThrough(row, cell)">
-          </td>
-        </tr>
-      </table>
-      <button *ngIf="elementModel.operation === 'multiplication'"
-              [matTooltip]="'weitere Zeile einfügen'"
-              [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
-              [style.width.px]="elementModel.styling.fontSize * 2.5"
-              [style.height.px]="elementModel.styling.fontSize * 2.5"
-              (click)="addRow()">
-        <mat-icon>add</mat-icon>
-      </button>
-      <button *ngIf="elementModel.operation === 'multiplication'"
-              [matTooltip]="'letzte Zeile entfernen'"
-              [disabled]="tableModel.length == 4"
-              [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
-              [style.width.px]="elementModel.styling.fontSize * 2.5"
-              [style.height.px]="elementModel.styling.fontSize * 2.5"
-              (click)="removeRow()">
-        <mat-icon>delete</mat-icon>
-      </button>
+    <div *ngIf="elementModel.terms.length == 0 ||
+                elementModel.operation === 'multiplication' && elementModel.terms.length < 2; else elseBlock"
+          class="terms-missing-warning">
+      Weitere Termzeilen benötigt
     </div>
+    <ng-template #elseBlock>
+      <div class="wrapper">
+        <table [class.multiplication]="elementModel.operation === 'multiplication'"
+               [style.color]="elementModel.styling.fontColor"
+               [style.background-color]="elementModel.styling.backgroundColor"
+               [style.font-size.px]="elementModel.styling.fontSize"
+               [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+               [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+               [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+          <tr *ngFor="let row of tableModel; let index = index"
+              [style.height.px]="row.cells.length && row.isHelperRow ? elementModel.styling.fontSize * 1.5 :
+                                                                              elementModel.styling.fontSize * 2"
+              [style.font-size]="row.cells.length && row.isHelperRow && '70%'"
+              [style.background-color]="index === tableModel.length - 2 ?
+                                        elementModel.styling.lastHelperRowColor : 'transparent'"
+              [class.underline]="(index === tableModel.length - 2 && elementModel.operation !== 'none') ||
+                (index === 0 && elementModel.operation === 'none' && elementModel.isFirstLineUnderlined)">
+            <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
+                [style.width.px]="elementModel.styling.fontSize * 2"
+                [class.strike-through]="cell.isCrossedOut"
+                [textContent]="cell.value"
+                (paste)="$event.preventDefault()"
+                (keydown)="onCharEnter($event, row, cell)"
+                (dblclick)="toggleStrikeThrough(row, cell)">
+            </td>
+          </tr>
+        </table>
+        <button *ngIf="elementModel.operation === 'multiplication'"
+                [matTooltip]="'weitere Zeile einfügen'"
+                [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
+                [style.width.px]="elementModel.styling.fontSize * 2.5"
+                [style.height.px]="elementModel.styling.fontSize * 2.5"
+                (click)="addRow()">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button *ngIf="elementModel.operation === 'multiplication'"
+                [matTooltip]="'letzte Zeile entfernen'"
+                [disabled]="tableModel.length == 4"
+                [style.margin-bottom.px]="elementModel.styling.fontSize * 2.5"
+                [style.width.px]="elementModel.styling.fontSize * 2.5"
+                [style.height.px]="elementModel.styling.fontSize * 2.5"
+                (click)="removeRow()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </ng-template>
   `,
   styles: [
     '.wrapper {display: flex; flex-direction: row;}',
@@ -57,8 +67,9 @@ import { ValueChangeElement } from 'common/models/elements/element';
     'td {border: 1px solid grey; text-align: center; caret-color: transparent;}',
     'td.strike-through {text-decoration: line-through; text-decoration-thickness: 3px;}',
     'td:focus {background-color: #00606425; outline: unset;}',
-    'table tr:last-child {border-top: 3px solid black;}',
-    'table.multiplication tr:first-child {border-bottom: 3px solid black;}'
+    'table .underline {border-bottom: 3px solid black;}',
+    'table.multiplication tr:first-child {border-bottom: 3px solid black;}',
+    '.terms-missing-warning {font-size: larger; color: red;}'
   ]
 })
 export class MathTableComponent extends ElementComponent implements OnInit {
@@ -76,6 +87,10 @@ export class MathTableComponent extends ElementComponent implements OnInit {
 
   private createTableModel(): void {
     switch (this.elementModel.operation) {
+      case 'none': {
+        this.tableModel = this.createCustomModel();
+        break;
+      }
       case 'addition': {
         this.tableModel = this.createAdditionModel();
         break;
@@ -91,6 +106,20 @@ export class MathTableComponent extends ElementComponent implements OnInit {
       default:
         throw new Error(`Unknown math operation: ${this.elementModel.operation}`);
     }
+  }
+
+  private createCustomModel(): MathTableRow[] {
+    const operatorOffset = 1; // offset for operatorChar
+    const width = Math.max(
+      ...this.elementModel.terms.map(term => term.length + operatorOffset),
+      this.elementModel.result.length
+    );
+    return [
+      ...this.elementModel.terms
+        .map((term: string, i: number) => MathTableComponent.createNormalRow(
+          term, width - operatorOffset
+        ))
+    ];
   }
 
   private createAdditionModel(): MathTableRow[] {
@@ -128,6 +157,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   }
 
   private createMultiplicationModel(): MathTableRow[] {
+    if (this.elementModel.terms.length < 2) return [];
     const width = Math.max(this.elementModel.terms[0].length + this.elementModel.terms[1].length + 3,
       this.elementModel.result.length);
     return [
@@ -224,6 +254,9 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     const allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
     if (this.elementModel.operation === 'multiplication' && !row.isHelperRow) {
       allowedKeys.push('+', '-', '*', ':', '/');
+    }
+    if (this.elementModel.operation === 'none' && this.elementModel.allowArithmeticChars) {
+      allowedKeys.push('+', '-', '*', ':', '/', '=');
     }
     if (!allowedKeys.includes(event.key)) return;
 

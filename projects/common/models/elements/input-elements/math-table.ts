@@ -13,9 +13,11 @@ import {
 
 export class MathTableElement extends UIElement implements MathTableProperties {
   type: UIElementType = 'math-table';
-  operation: 'addition' | 'subtraction' | 'multiplication' = 'addition';
-  terms: string[] = ['123', '456', '789'];
+  operation: 'none' | 'addition' | 'subtraction' | 'multiplication' = 'addition';
+  terms: string[] = ['123', '456'];
   result: string = '';
+  allowArithmeticChars: boolean = false;
+  isFirstLineUnderlined: boolean = true;
   styling: BasicStyles & {
     lastHelperRowColor: string;
   };
@@ -26,6 +28,8 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       this.operation = element.operation;
       this.terms = [...element.terms];
       this.result = element.result;
+      this.allowArithmeticChars = element.allowArithmeticChars;
+      this.isFirstLineUnderlined = element.isFirstLineUnderlined;
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -34,6 +38,8 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       if (element?.operation !== undefined) this.operation = element.operation;
       if (element?.terms !== undefined) this.terms = [...element.terms];
       if (element?.result !== undefined) this.result = element.result;
+      if (element?.allowArithmeticChars !== undefined) this.allowArithmeticChars = element.allowArithmeticChars;
+      if (element?.isFirstLineUnderlined !== undefined) this.isFirstLineUnderlined = element.isFirstLineUnderlined;
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         lastHelperRowColor: 'transparent'
@@ -67,9 +73,11 @@ export class MathTableElement extends UIElement implements MathTableProperties {
 }
 
 export interface MathTableProperties extends UIElementProperties {
-  operation: 'addition' | 'subtraction' | 'multiplication';
+  operation: 'none' | 'addition' | 'subtraction' | 'multiplication';
   terms: string[];
   result: string;
+  allowArithmeticChars: boolean;
+  isFirstLineUnderlined: boolean;
   styling: BasicStyles & {
     lastHelperRowColor: string;
   };
@@ -80,5 +88,7 @@ function isValid(blueprint?: MathTableProperties): boolean {
   return blueprint.operation !== undefined &&
          blueprint.terms !== undefined &&
          blueprint.result !== undefined &&
+         blueprint.allowArithmeticChars !== undefined &&
+         blueprint.isFirstLineUnderlined !== undefined &&
          PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }

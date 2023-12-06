@@ -251,7 +251,9 @@
     "tooltip": "Tooltip",
     "stickyHeader": "Haftende Kopfzeile",
     "crossOutChecked": "Auswahl durchstreichen",
-    "lastHelperRowColor": "Farbe unterer Hilfszeile"
+    "lastHelperRowColor": "Farbe unterer Hilfszeile",
+    "allowArithmeticChars": "Rechen- und Gleichheitszeichen erlauben",
+    "isFirstLineUnderlined": "Unterstreichung erste Zeile"
   },
   "hotspot": {
     "top": "Abstand von oben",
@@ -346,6 +348,7 @@
   "addition": "Addition",
   "subtraction": "Subtraktion",
   "multiplication": "Multiplikation",
+  "none": "keine",
   "termRows": "Termzeilen",
   "addTermRow": "Termzeile hinzufügen",
   "resultRow": "Ergebniszeile"

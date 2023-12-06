@@ -10,5 +10,6 @@
   "continue_command": "Teste 'Continue-Command'",
   "request_command": "Teste 'Get-Request-Command'",
   "confirm": "Bestätigen",
-  "cancel": "Abbrechen"
+  "cancel": "Abbrechen",
+  "geometry_reset": "neu anfangen"
 }

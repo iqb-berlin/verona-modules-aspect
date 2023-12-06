@@ -93,7 +93,7 @@ export abstract class UIElement implements UIElementProperties {
     }
   }
 
-  setProperty(property: string, value: UIElementValue): void {
+  setProperty(property: string, value: unknown): void {
     if (Array.isArray(this[property])) { // keep array reference intact
       (this[property] as UIElementValue[])
         .splice(0, (this[property] as UIElementValue[]).length, ...(value as UIElementValue[]));
@@ -140,7 +140,7 @@ export abstract class UIElement implements UIElementProperties {
   abstract getDuplicate(): UIElement;
 }
 
-export type InputElementValue = TextLabel[] | Hotspot[] | MathTableRow[] | string[] | string | number | boolean[] |
+export type InputElementValue = TextLabel[] | Hotspot[] | MathTableRow[] | GeometryValue | string[] | string | number | boolean[] |
 boolean | null;
 
 export interface InputElementProperties extends UIElementProperties {
@@ -315,3 +315,8 @@ export interface PlayerElement extends UIElement {
 }
 
 export type TooltipPosition = 'left' | 'right' | 'above' | 'below';
+
+interface GeometryValue {
+  appDefinition: string;
+  variables: { id: string, value: any }[];
+}

@@ -132,3 +132,6 @@ iqb-aspect-definition@1.0.0
   - new property: styling.firstLineColoringColor
 - new Element: MathTable
 - new Element: TextAreaMath
+
+4.3.0
+- Geometry: new property: trackedVariables

@@ -105,8 +105,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   updateModel(property: string,
-              value: string | number | boolean | string[] | boolean[] | Hotspot[] | StateVariable |
-              TextLabel | TextLabel[] | LikertRowElement[] | MathTableRow[] | null,
+              value: unknown,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.unitService.updateElementsProperty(this.selectedElements, property, value);

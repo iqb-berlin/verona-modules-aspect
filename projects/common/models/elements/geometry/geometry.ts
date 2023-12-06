@@ -15,6 +15,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class GeometryElement extends UIElement implements PositionedUIElement, GeometryProperties {
   type: UIElementType = 'geometry';
   appDefinition: string = '';
+  trackedVariables: string[] = [];
   showResetIcon: boolean = true;
   enableUndoRedo: boolean = true;
   showToolbar: boolean = true;
@@ -28,6 +29,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
     super(element);
     if (element && isValid(element)) {
       this.appDefinition = element.appDefinition;
+      this.trackedVariables = [...element.trackedVariables];
       this.showResetIcon = element.showResetIcon;
       this.enableUndoRedo = element.enableUndoRedo;
       this.showToolbar = element.showToolbar;
@@ -41,6 +43,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
         throw new InstantiationEror('Error at Geometry instantiation', element);
       }
       if (element?.appDefinition !== undefined) this.appDefinition = element.appDefinition;
+      if (element?.trackedVariables !== undefined) this.trackedVariables = [...element.trackedVariables];
       if (element?.showResetIcon !== undefined) this.showResetIcon = element.showResetIcon;
       if (element?.enableUndoRedo !== undefined) this.enableUndoRedo = element.enableUndoRedo;
       if (element?.showToolbar !== undefined) this.showToolbar = element.showToolbar;
@@ -84,6 +87,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
 
 export interface GeometryProperties extends UIElementProperties {
   appDefinition: string;
+  trackedVariables: string[];
   showResetIcon: boolean;
   enableUndoRedo: boolean;
   showToolbar: boolean;
@@ -97,6 +101,7 @@ export interface GeometryProperties extends UIElementProperties {
 function isValid(blueprint?: GeometryProperties): boolean {
   if (!blueprint) return false;
   return blueprint.appDefinition !== undefined &&
+    blueprint.trackedVariables !== undefined &&
     blueprint.showResetIcon !== undefined &&
     blueprint.enableUndoRedo !== undefined &&
     blueprint.showToolbar !== undefined &&

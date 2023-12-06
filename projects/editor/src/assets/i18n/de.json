@@ -227,7 +227,7 @@
     "showResetIcon": "Zurücksetzen-Knopf anzeigen",
     "enableUndoRedo": "Schritt rückgängig/wiederherstellen",
     "appDefinition": "GGB-Definition",
-    "showToolbar": "Werkzeugleiste (muss in GGB aktiviert sein)",
+    "showToolbar": "Werkzeugleiste anzeigen",
     "showZoomButtons": "Zoom-Knöpfe anzeigen",
     "showFullscreenButton": "Vollbild-Knopf anzeigen",
     "enableShiftDragZoom": "Bewegen und Zoom erlauben",

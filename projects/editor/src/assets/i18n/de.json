@@ -253,7 +253,8 @@
     "crossOutChecked": "Auswahl durchstreichen",
     "lastHelperRowColor": "Farbe unterer Hilfszeile",
     "allowArithmeticChars": "Rechen- und Gleichheitszeichen erlauben",
-    "isFirstLineUnderlined": "Unterstreichung erste Zeile"
+    "isFirstLineUnderlined": "Unterstreichung erste Zeile",
+    "trackedVariables": "Ergebnisvariablen"
   },
   "hotspot": {
     "top": "Abstand von oben",

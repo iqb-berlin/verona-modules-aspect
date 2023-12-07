@@ -222,7 +222,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
         ...Array(width - term.length).fill(undefined)
           .map(() => ({ value: '', isEditable: term === '' })),
         ...term.split('').map(char => ({
-          value: char === '_' ? ' ' : char, // underscore acts as space alternative
+          value: char === '_' ? ' ' : MathTableComponent.getCharReplacement(char), // underscore as space alternative
           isEditable: char === ' ' || char === '_'
         }))
       ],
@@ -237,7 +237,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
         ...Array(width - term.length).fill(undefined)
           .map(() => ({ value: '', isEditable: term === '' })),
         ...term.split('').map(char => ({
-          value: char === '_' ? ' ' : char, // underscore acts as space alternative
+          value: char === '_' ? ' ' : MathTableComponent.getCharReplacement(char), // underscore as space alternative
           isEditable: char === ' ' || char === '_'
         }))
       ]

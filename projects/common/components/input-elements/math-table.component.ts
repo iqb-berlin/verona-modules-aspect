@@ -15,7 +15,15 @@ import { ValueChangeElement } from 'common/models/elements/element';
     </div>
     <ng-template #elseBlock>
       <div class="wrapper">
-        <table [class.multiplication]="elementModel.operation === 'multiplication'"
+        <table [class.underline-first-row]="elementModel.operation === 'multiplication' ||
+                                            (elementModel.operation === 'variable' &&
+                                              elementModel.variableLayoutOptions.isFirstLineUnderlined &&
+                                              !elementModel.variableLayoutOptions.showTopHelperRows)"
+               [class.underline-third-row]="elementModel.operation === 'variable' &&
+                                            elementModel.variableLayoutOptions.isFirstLineUnderlined &&
+                                            elementModel.variableLayoutOptions.showTopHelperRows"
+               [class.has-result-row]="elementModel.operation !== 'variable' ||
+                                       elementModel.variableLayoutOptions.showResultRow"
                [style.color]="elementModel.styling.fontColor"
                [style.background-color]="elementModel.styling.backgroundColor"
                [style.font-size.px]="elementModel.styling.fontSize"
@@ -27,9 +35,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
                                                                               elementModel.styling.fontSize * 2"
               [style.font-size]="row.cells.length && row.isHelperRow && '70%'"
               [style.background-color]="index === tableModel.length - 2 ?
-                                        elementModel.styling.lastHelperRowColor : 'transparent'"
-              [class.underline]="(index === tableModel.length - 2 && elementModel.operation !== 'none') ||
-                (index === 0 && elementModel.operation === 'none' && elementModel.isFirstLineUnderlined)">
+                                        elementModel.styling.lastHelperRowColor : 'transparent'">
             <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
                 [style.width.px]="elementModel.styling.fontSize * 2"
                 [class.strike-through]="cell.isCrossedOut"
@@ -67,8 +73,9 @@ import { ValueChangeElement } from 'common/models/elements/element';
     'td {border: 1px solid grey; text-align: center; caret-color: transparent;}',
     'td.strike-through {text-decoration: line-through; text-decoration-thickness: 3px;}',
     'td:focus {background-color: #00606425; outline: unset;}',
-    'table .underline {border-bottom: 3px solid black;}',
-    'table.multiplication tr:first-child {border-bottom: 3px solid black;}',
+    'table.underline-first-row tr:first-child {border-bottom: 3px solid black;}',
+    'table.underline-third-row tr:nth-child(3) {border-bottom: 3px solid black;}',
+    'table.has-result-row tr:last-child {border-top: 3px solid black;}',
     '.terms-missing-warning {font-size: larger; color: red;}'
   ]
 })
@@ -87,8 +94,8 @@ export class MathTableComponent extends ElementComponent implements OnInit {
 
   private createTableModel(): void {
     switch (this.elementModel.operation) {
-      case 'none': {
-        this.tableModel = this.createCustomModel();
+      case 'variable': {
+        this.tableModel = this.createVariableModel();
         break;
       }
       case 'addition': {
@@ -108,18 +115,26 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     }
   }
 
-  private createCustomModel(): MathTableRow[] {
-    const operatorOffset = 1; // offset for operatorChar
+  private createVariableModel(): MathTableRow[] {
+    const operatorOffset = 0; // offset for operatorChar
     const width = Math.max(
       ...this.elementModel.terms.map(term => term.length + operatorOffset),
       this.elementModel.result.length,
-      2 // have at least one empty column, so the table does not disappear completely when terms are empty
+      1 // have at least one empty column, so the table does not disappear completely when terms are empty
     );
     return [
+      ...this.elementModel.variableLayoutOptions.showTopHelperRows ?
+        [MathTableComponent.createHelperRow(width, true)] : [],
+      ...this.elementModel.variableLayoutOptions.showTopHelperRows ?
+        [MathTableComponent.createHelperRow(width, true)] : [],
       ...this.elementModel.terms
-        .map(term => MathTableComponent.createNormalRow(
-          term, width - operatorOffset
-        ))
+        .map((term: string, i: number) => MathTableComponent.createNormalRow(
+          term, width - operatorOffset, undefined, i === 0
+        )),
+      ...this.elementModel.variableLayoutOptions.showResultRow ?
+        [MathTableComponent.createHelperRow(width)] : [],
+      ...this.elementModel.variableLayoutOptions.showResultRow ?
+        [MathTableComponent.createResultRow(this.elementModel.result, width)] : []
     ];
   }
 
@@ -256,7 +271,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     if (this.elementModel.operation === 'multiplication' && !row.isHelperRow) {
       allowedKeys.push('+', '-', '*', ':', '/');
     }
-    if (this.elementModel.operation === 'none' && this.elementModel.allowArithmeticChars) {
+    if (this.elementModel.operation === 'variable' && this.elementModel.variableLayoutOptions.allowArithmeticChars) {
       allowedKeys.push('+', '-', '*', ':', '/', '=');
     }
     if (!allowedKeys.includes(event.key)) return;

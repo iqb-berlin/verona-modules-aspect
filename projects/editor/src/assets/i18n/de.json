@@ -254,6 +254,9 @@
     "lastHelperRowColor": "Farbe unterer Hilfszeile",
     "allowArithmeticChars": "Rechen- und Gleichheitszeichen erlauben",
     "isFirstLineUnderlined": "Unterstreichung erste Zeile",
+    "showResultRow": "Ergebniszeile",
+    "showTopHelperRows": "obere Helferzeilen",
+    "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
     "trackedVariables": "Ergebnisvariablen"
   },
   "hotspot": {
@@ -349,7 +352,7 @@
   "addition": "Addition",
   "subtraction": "Subtraktion",
   "multiplication": "Multiplikation",
-  "none": "keine",
+  "variable": "variables Layout",
   "termRows": "Termzeilen",
   "addTermRow": "Termzeile hinzufügen",
   "resultRow": "Ergebniszeile"

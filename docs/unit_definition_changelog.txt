@@ -138,6 +138,10 @@ iqb-aspect-definition@1.0.0
 - new property in "OtherStyles": lastHelperRowColor
 - MathTable:
   - new styling property: lastHelperRowColor
-  - new property: allowArithmeticChars
-  - new property: isFirstLineUnderlined
-  - new property value: operation: 'none'
+  - new property value: operation: 'variable'
+  - new property: variableLayoutOptions: {
+                      allowArithmeticChars: boolean;
+                      isFirstLineUnderlined: boolean;
+                      showResultRow: boolean;
+                      showTopHelperRows: boolean;
+                      allowFirstLineCrossOut: boolean; }

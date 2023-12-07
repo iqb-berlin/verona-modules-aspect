@@ -18,7 +18,7 @@ import { UIElement } from 'common/models/elements/element';
         <mat-label>Operation</mat-label>
         <mat-select [value]="combinedProperties.operation"
                     (selectionChange)="updateModel.emit({ property: 'operation', value: $event.value })">
-          <mat-option *ngFor="let operation of ['none', 'addition', 'subtraction', 'multiplication']"
+          <mat-option *ngFor="let operation of ['addition', 'subtraction', 'multiplication', 'variable']"
                       [value]="operation">
             {{operation | translate}}
           </mat-option>
@@ -50,22 +50,44 @@ import { UIElement } from 'common/models/elements/element';
 
       <mat-form-field (input)="updateModel.emit({ property: 'result', value: $any($event.target).value })">
         <mat-label>{{'resultRow' | translate}}</mat-label>
-        <input matInput [disabled]="combinedProperties.operation === 'none'" [value]="combinedProperties.result">
+        <input matInput [disabled]="combinedProperties.operation === 'variable' &&
+                                    !$any(combinedProperties.variableLayoutOptions).showResultRow"
+               [value]="combinedProperties.result">
       </mat-form-field>
 
-      <mat-checkbox *ngIf="combinedProperties.allowArithmeticChars !== undefined"
-                    [disabled]="combinedProperties.operation !== 'none'"
-                    [checked]="$any(combinedProperties.allowArithmeticChars)"
-                    (change)="updateModel.emit({ property: 'allowArithmeticChars', value: $event.checked })">
-        {{'propertiesPanel.allowArithmeticChars' | translate }}
-      </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.isFirstLineUnderlined !== undefined"
-                    [disabled]="combinedProperties.operation !== 'none'"
-                    [checked]="$any(combinedProperties.isFirstLineUnderlined)"
-                    (change)="updateModel.emit({ property: 'isFirstLineUnderlined', value: $event.checked })">
-        {{'propertiesPanel.isFirstLineUnderlined' | translate }}
-      </mat-checkbox>
+      <button mat-raised-button color="primary"
+              [disabled]="combinedProperties.operation !== 'variable'"
+              [matMenuTriggerFor]="variableLayoutOptions">
+        Optionen für variables Layout
+      </button>
+      <mat-menu #variableLayoutOptions="matMenu">
+        <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).allowArithmeticChars"
+                      (click)="$event.stopPropagation()"
+                      (change)="updateModel.emit({ property: 'allowArithmeticChars', value: $event.checked })">
+          {{'propertiesPanel.allowArithmeticChars' | translate }}
+        </mat-checkbox>
+        <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).isFirstLineUnderlined"
+                      (click)="$event.stopPropagation()"
+                      (change)="updateModel.emit({ property: 'isFirstLineUnderlined', value: $event.checked })">
+          {{'propertiesPanel.isFirstLineUnderlined' | translate }}
+        </mat-checkbox>
+        <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showResultRow"
+                      (click)="$event.stopPropagation()"
+                      (change)="updateModel.emit({ property: 'showResultRow', value: $event.checked })">
+          {{'propertiesPanel.showResultRow' | translate }}
+        </mat-checkbox>
+        <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showTopHelperRows"
+                      (click)="$event.stopPropagation()"
+                      (change)="updateModel.emit({ property: 'showTopHelperRows', value: $event.checked })">
+          {{'propertiesPanel.showTopHelperRows' | translate }}
+        </mat-checkbox>
+        <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).allowFirstLineCrossOut"
+                      (click)="$event.stopPropagation()"
+                      (change)="updateModel.emit({ property: 'allowFirstLineCrossOut', value: $event.checked })">
+          {{'propertiesPanel.allowFirstLineCrossOut' | translate }}
+        </mat-checkbox>
+      </mat-menu>
     </div>
   `,
   styles: [`

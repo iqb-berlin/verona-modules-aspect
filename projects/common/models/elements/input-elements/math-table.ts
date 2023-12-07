@@ -1,4 +1,4 @@
-import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
+import { UIElement, UIElementProperties, UIElementType, UIElementValue } from 'common/models/elements/element';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -13,11 +13,22 @@ import {
 
 export class MathTableElement extends UIElement implements MathTableProperties {
   type: UIElementType = 'math-table';
-  operation: 'none' | 'addition' | 'subtraction' | 'multiplication' = 'addition';
+  operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' = 'addition';
   terms: string[] = ['123', '456'];
   result: string = '';
-  allowArithmeticChars: boolean = false;
-  isFirstLineUnderlined: boolean = true;
+  variableLayoutOptions: {
+    allowArithmeticChars: boolean;
+    isFirstLineUnderlined: boolean;
+    showResultRow: boolean;
+    showTopHelperRows: boolean;
+    allowFirstLineCrossOut: boolean; } = {
+      allowArithmeticChars: false,
+      isFirstLineUnderlined: true,
+      showResultRow: false,
+      showTopHelperRows: false,
+      allowFirstLineCrossOut: false
+    };
+
   styling: BasicStyles & {
     lastHelperRowColor: string;
   };
@@ -28,8 +39,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       this.operation = element.operation;
       this.terms = [...element.terms];
       this.result = element.result;
-      this.allowArithmeticChars = element.allowArithmeticChars;
-      this.isFirstLineUnderlined = element.isFirstLineUnderlined;
+      this.variableLayoutOptions = { ...element.variableLayoutOptions };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -38,12 +48,19 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       if (element?.operation !== undefined) this.operation = element.operation;
       if (element?.terms !== undefined) this.terms = [...element.terms];
       if (element?.result !== undefined) this.result = element.result;
-      if (element?.allowArithmeticChars !== undefined) this.allowArithmeticChars = element.allowArithmeticChars;
-      if (element?.isFirstLineUnderlined !== undefined) this.isFirstLineUnderlined = element.isFirstLineUnderlined;
+      if (element?.variableLayoutOptions !== undefined) this.variableLayoutOptions = { ...element.variableLayoutOptions };
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         lastHelperRowColor: 'transparent'
       };
+    }
+  }
+
+  setProperty(property: string, value: unknown): void {
+    if (Object.keys(this.variableLayoutOptions).includes(property)) {
+      this.variableLayoutOptions[property as keyof typeof this.variableLayoutOptions] = value as boolean;
+    } else {
+      super.setProperty(property, value);
     }
   }
 
@@ -73,11 +90,16 @@ export class MathTableElement extends UIElement implements MathTableProperties {
 }
 
 export interface MathTableProperties extends UIElementProperties {
-  operation: 'none' | 'addition' | 'subtraction' | 'multiplication';
+  operation: 'variable' | 'addition' | 'subtraction' | 'multiplication';
   terms: string[];
   result: string;
-  allowArithmeticChars: boolean;
-  isFirstLineUnderlined: boolean;
+  variableLayoutOptions: {
+    allowArithmeticChars: boolean;
+    isFirstLineUnderlined: boolean;
+    showResultRow: boolean;
+    showTopHelperRows: boolean;
+    allowFirstLineCrossOut: boolean;
+  }
   styling: BasicStyles & {
     lastHelperRowColor: string;
   };
@@ -88,7 +110,11 @@ function isValid(blueprint?: MathTableProperties): boolean {
   return blueprint.operation !== undefined &&
          blueprint.terms !== undefined &&
          blueprint.result !== undefined &&
-         blueprint.allowArithmeticChars !== undefined &&
-         blueprint.isFirstLineUnderlined !== undefined &&
+         blueprint.variableLayoutOptions !== undefined &&
+         blueprint.variableLayoutOptions.allowArithmeticChars !== undefined &&
+         blueprint.variableLayoutOptions.isFirstLineUnderlined !== undefined &&
+         blueprint.variableLayoutOptions.showResultRow !== undefined &&
+         blueprint.variableLayoutOptions.showTopHelperRows !== undefined &&
+         blueprint.variableLayoutOptions.allowFirstLineCrossOut !== undefined &&
          PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }

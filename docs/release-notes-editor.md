@@ -1,5 +1,13 @@
 Editor
 ======
+## 2.3.0
+### Neue Funktionen
+- Geometrie: Es können nun Variablen der Aufgabe ausgewählt werden, welche in den Ergebnisdaten
+  gesondert ausgewiesen werden.
+- Rechenkästchen:
+  - neue Operation: "variables Layout". Mit dieser Einstellung wird keine Rechenoperation vorgegeben.
+    Weitere Einstellungen sind via Menu auswählbar.
+
 ## 2.2.1
 ### Fehlerbehebungen
 - Rechenkästchen: Fehlende Helferzeilen bei Addition und Subtraktion hinzugefügt

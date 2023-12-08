@@ -1,5 +1,9 @@
 Player
 ======
+## 2.3.0
+### Neue Funktionen
+- Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0
+
 ## 2.2.2
 ### Änderungen
 - Verlängert bei "magnetischem Scroll-Verhalten" die einzelnen Seiten einer Unit,

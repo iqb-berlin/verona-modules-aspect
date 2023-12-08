@@ -34,7 +34,9 @@ import { ValueChangeElement } from 'common/models/elements/element';
               [style.height.px]="row.cells.length && row.isHelperRow ? elementModel.styling.fontSize * 1.5 :
                                                                               elementModel.styling.fontSize * 2"
               [style.font-size]="row.cells.length && row.isHelperRow && '70%'"
-              [style.background-color]="index === tableModel.length - 2 ?
+              [style.background-color]="index === tableModel.length - 2 &&
+                                        elementModel.operation === 'variable' &&
+                                        elementModel.variableLayoutOptions.showResultRow ?
                                         elementModel.styling.lastHelperRowColor : 'transparent'">
             <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
                 [style.width.px]="elementModel.styling.fontSize * 2"

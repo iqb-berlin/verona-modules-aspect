@@ -167,7 +167,6 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     this.dragImageRef?.instance.unsetDragPreview();
     this.dragOpService.endDrag();
     document.body.classList.remove('dragging-active'); // remove class for cursor while dragging
-    this.cdr.detectChanges(); // reset placeholder CSS
   }
 
   listenForHover() {

@@ -17,6 +17,7 @@ import { DragOperatorService } from './drag-operator.service';
   selector: 'aspect-drop-list',
   template: `
     <div *ngIf="clozeContext" [style.width.px]="0">&nbsp;</div>
+    <!-- TODO testen, ob touchstart keine Probleme macht -->
     <div class="drop-list" id="{{elementModel.id}}" #droplist
          [class.cloze-context]="clozeContext"
          [class.hovered]="!elementModel.isSortList && isHovered"
@@ -31,7 +32,9 @@ import { DragOperatorService } from './drag-operator.service';
          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-         [style.background-color]="elementModel.styling.backgroundColor">
+         [style.background-color]="elementModel.styling.backgroundColor"
+         (touchstart)="elementFormControl.markAsTouched()"
+         (click)="elementFormControl.markAsTouched()">
       <div *ngFor="let item of viewModel; let i = index;"
            class="drop-list-item" [class.image-item]="item.imgSrc"
            #listItem
@@ -47,11 +50,11 @@ import { DragOperatorService } from './drag-operator.service';
            [style.background-color]="elementModel.styling.itemBackgroundColor">
         <aspect-text-image-panel [label]="item"></aspect-text-image-panel>
       </div>
-    </div>
     <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                class="error-message">
       {{elementFormControl.errors | errorTransform: elementModel}}
     </mat-error>
+    </div>
   `,
   styles: [`
     :host {display: flex !important; width: 100%; height: 100%;}
@@ -97,6 +100,10 @@ import { DragOperatorService } from './drag-operator.service';
       background-color: #ccc !important;
       color: transparent !important;
       pointer-events: none;
+    }
+    .cloze-context .error-message {
+      white-space: nowrap;
+      font-size: smaller;
     }
     `
   ]

@@ -154,11 +154,6 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
         <aspect-compound-child-overlay
           *ngIf="ClozeElement.validChildElements | arrayIncludes:subPart.type"
           [style.display]="'inline-block'"
-          [style.vertical-align]="subPart.attrs.model.type === 'drop-list' &&
-                                    subPart.attrs.model.onlyOneItem === false ||
-                                  subPart.attrs.model.type === 'toggle-button' &&
-                                    subPart.attrs.model.verticalOrientation === true ?
-                                  'middle' : 'baseline'"
           [parentForm]="parentForm"
           [element]="$any(subPart).attrs.model"
           [editorMode]="editorMode"

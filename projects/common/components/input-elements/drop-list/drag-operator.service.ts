@@ -202,15 +202,15 @@ export class DragOperatorService {
                        sourceList: DropListComponent,
                        targetList: DropListComponent,
                        allLists: { [id: string]: DropListComponent }): boolean {
-    return DragOperatorService.checkConnected(sourceList, targetList) &&
+    return sourceList.elementModel.id === targetList.elementModel.id ||
+      DragOperatorService.checkConnected(sourceList, targetList) &&
       DragOperatorService.checkOnlyOneItem(targetList, allLists) &&
       DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList);
   }
 
   /* Drop is only allowed in connected Lists AND THE SAME LIST. */
   private static checkConnected(sourceList: DropListComponent, targetList: DropListComponent): boolean {
-    return sourceList.elementModel.id === targetList.elementModel.id ||
-      sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
+    return sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
   }
 
   /* Return false, when drop is not allowed */

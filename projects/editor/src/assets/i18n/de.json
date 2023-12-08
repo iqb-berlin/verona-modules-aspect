@@ -250,7 +250,15 @@
     "presentation": "Darstellung",
     "tooltip": "Tooltip",
     "stickyHeader": "Haftende Kopfzeile",
-    "crossOutChecked": "Auswahl durchstreichen"
+    "crossOutChecked": "Auswahl durchstreichen",
+    "lastHelperRowColor": "Farbe unterer Hilfszeile",
+    "allowArithmeticChars": "Rechen- und Gleichheitszeichen erlauben",
+    "isFirstLineUnderlined": "Unterstreichung erste Zeile",
+    "showResultRow": "Ergebniszeile",
+    "showTopHelperRows": "obere Helferzeilen",
+    "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
+    "trackedVariables": "Ergebnisvariablen",
+    "isSortList": "Sortierliste"
   },
   "hotspot": {
     "top": "Abstand von oben",

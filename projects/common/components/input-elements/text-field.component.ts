@@ -14,7 +14,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                     [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
                     [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                     [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-                    [style.--bla]="elementModel.styling.backgroundColor"
+                    [style.--backgroundColor]="elementModel.styling.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
       <input matInput #input
@@ -55,8 +55,11 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     :host ::ng-deep .small-input .mdc-notched-outline__notch {
       display: none;
     }
-    :host ::ng-deep .mat-mdc-text-field-wrapper {
-      background-color: var(--bla) !important;
+    :host ::ng-deep .mat-mdc-text-field-wrapper .mdc-notched-outline * {
+      background-color: var(--backgroundColor) !important;
+    }
+    :host ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+      background-color: var(--backgroundColor) !important;
     }
     .fx-row-center-baseline {
       box-sizing: border-box;

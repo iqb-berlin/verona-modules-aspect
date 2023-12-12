@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  GeometryValue,
   InputElement,
   InputElementValue,
   UIElement,
@@ -15,6 +16,7 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { ElementCodeValue } from 'player/modules/verona/models/verona';
 import { TextMarkingService } from './text-marking.service';
 
+type MapElementType = UIElementType | 'geometry-variable';
 @Injectable({
   providedIn: 'root'
 })
@@ -68,13 +70,13 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
-  static mapToElementCodeValue(elementModelValue: InputElementValue, elementType: UIElementType): ElementCodeValue {
+  static mapToElementCodeValue(elementModelValue: InputElementValue, elementType: MapElementType): ElementCodeValue {
     switch (elementType) {
       case 'audio':
       case 'video':
         return elementModelValue as number;
       case 'geometry':
-        return elementModelValue as string;
+        return (elementModelValue as GeometryValue).appDefinition as string;
       case 'image':
         return elementModelValue as boolean;
       case 'math-table':

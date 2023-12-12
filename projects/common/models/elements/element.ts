@@ -315,7 +315,12 @@ export interface PlayerElement extends UIElement {
 
 export type TooltipPosition = 'left' | 'right' | 'above' | 'below';
 
-interface GeometryValue {
+export interface GeometryValue {
   appDefinition: string;
-  variables: { id: string, value: any }[];
+  variables: GeometryVariable[];
+}
+
+export interface GeometryVariable {
+  id: string;
+  value: string;
 }

@@ -120,7 +120,8 @@ export class UnitStateService extends ElementCodeService {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       // when reloading a unit, elementCodes are already pushed
-      unitStateElementCode = { id, value, status: 'NOT_REACHED' };
+      const status = domElement ? 'NOT_REACHED' : 'UNSET';
+      unitStateElementCode = { id, value, status };
       this.addInitialElementCode(unitStateElementCode);
     } else if (Object.keys(this.elementIdPageIndexMap)
       .length === this.elementCodes.length - this.ignoredPageIndexElementIds.length) {

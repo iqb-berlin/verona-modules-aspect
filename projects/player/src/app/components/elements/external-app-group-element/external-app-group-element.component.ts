@@ -8,7 +8,7 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { ValueChangeElement } from 'common/models/elements/element';
+import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/models/elements/element';
 
 @Component({
   selector: 'aspect-external-app-group-element',
@@ -39,6 +39,34 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
       ),
       this.elementComponent,
       this.pageIndex);
+    this.registerGeometryVariables();
+  }
+
+  private registerGeometryVariables(): void {
+    (this.elementModel as GeometryElement).trackedVariables
+      .forEach(variableName => this.registerGeometryVariable(variableName));
+  }
+
+  private registerGeometryVariable(variableName: string): void {
+    this.unitStateService.registerElementCode(
+      this.getGeometryVariableId(variableName), null
+    );
+  }
+
+  private getGeometryVariableId(variableName: string): string {
+    return `${this.elementModel.id}_${variableName}`;
+  }
+
+  private changeGeometryVariableValue(variable: GeometryVariable): void {
+    this.unitStateService.changeElementCodeValue({
+      id: this.getGeometryVariableId(variable.id),
+      value: ElementModelElementCodeMappingService
+        .mapToElementCodeValue(variable.value, 'geometry-variable')
+    });
+  }
+
+  private changeGeometryVariableValues(variables: GeometryVariable[]): void {
+    variables.forEach(variable => this.changeGeometryVariableValue(variable));
   }
 
   changeElementCodeValue(value: ValueChangeElement): void {
@@ -47,5 +75,6 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
       value: ElementModelElementCodeMappingService
         .mapToElementCodeValue(value.value, this.elementModel.type)
     });
+    this.changeGeometryVariableValues((value.value as GeometryValue).variables);
   }
 }

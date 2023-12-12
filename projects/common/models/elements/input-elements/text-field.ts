@@ -76,7 +76,7 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
       type: 'string',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value !== '',
+      nullable: false,
       values: [],
       valuesComplete: false
     };

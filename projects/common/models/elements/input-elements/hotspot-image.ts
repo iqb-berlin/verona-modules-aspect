@@ -7,7 +7,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import {
   PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -65,24 +65,17 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
       format: '',
       multiple: true,
       nullable: false,
-      values: this.getAnswerSchemeValues(),
+      // values: this.getAnswerSchemeValues(),
+      valuePositionLabels: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(): string[] {
     return this.value
-      .map(hotspot => (
-        [{
-          value: 'true',
-          // eslint-disable-next-line max-len
-          label: `Gefüllt top: ${hotspot.top}, left: ${hotspot.left}, height: ${hotspot.height}, width: ${hotspot.width}, shape: ${hotspot.shape}, value: ${hotspot.value}`
-        }, {
-          value: 'false',
-          // eslint-disable-next-line max-len
-          label: `Nicht gefüllt: top: ${hotspot.top}, left: ${hotspot.left}, height: ${hotspot.height}, width: ${hotspot.width}, shape: ${hotspot.shape}, value: ${hotspot.value}`
-        }
-        ])).flat();
+      // eslint-disable-next-line max-len
+      .map((hotspot, index) => `${hotspot.shape}(${index})`
+        .charAt(0).toUpperCase() + `${hotspot.shape}(${index})`.slice(1));
   }
 
   getElementComponent(): Type<ElementComponent> {

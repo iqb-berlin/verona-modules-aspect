@@ -10,5 +10,6 @@ export interface AnswerScheme {
   multiple?: boolean;
   nullable?: boolean;
   values?: AnswerSchemeValue[];
+  valuePositionLabels?: string[];
   valuesComplete?: boolean;
 }

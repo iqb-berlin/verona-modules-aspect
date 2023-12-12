@@ -54,7 +54,7 @@ export class RadioButtonGroupComplexElement extends InputElement
       type: 'integer',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value !== 0,
+      nullable: false,
       values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };

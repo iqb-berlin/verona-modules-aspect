@@ -70,7 +70,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       type: 'string',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value !== '',
+      nullable: false,
       values: [],
       valuesComplete: false
     };

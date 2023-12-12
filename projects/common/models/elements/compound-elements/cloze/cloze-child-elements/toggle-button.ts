@@ -59,7 +59,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       type: 'integer',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value === 0,
+      nullable: false,
       values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };

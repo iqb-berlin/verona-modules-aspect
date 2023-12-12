@@ -48,7 +48,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
       type: 'string',
       format: 'latex',
       multiple: false,
-      nullable: !this.value && this.value !== '',
+      nullable: false,
       values: [],
       valuesComplete: false
     };

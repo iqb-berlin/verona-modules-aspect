@@ -69,7 +69,7 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
       type: 'string',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value !== '',
+      nullable: false,
       values: [],
       valuesComplete: false
     };

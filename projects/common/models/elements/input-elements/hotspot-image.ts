@@ -58,10 +58,6 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
     return new HotspotImageElement(this);
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

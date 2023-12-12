@@ -42,10 +42,6 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     return new MathFieldElement(this);
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

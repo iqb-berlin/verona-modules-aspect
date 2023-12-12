@@ -47,10 +47,6 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     }
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

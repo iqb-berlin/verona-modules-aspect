@@ -64,10 +64,6 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     }
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

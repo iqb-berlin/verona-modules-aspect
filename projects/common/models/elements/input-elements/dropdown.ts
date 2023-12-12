@@ -46,10 +46,6 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     return new DropdownElement(this);
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

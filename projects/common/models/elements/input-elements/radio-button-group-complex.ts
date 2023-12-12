@@ -48,10 +48,6 @@ export class RadioButtonGroupComplexElement extends InputElement
     return new RadioButtonGroupComplexElement(this);
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

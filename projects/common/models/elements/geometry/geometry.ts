@@ -60,10 +60,6 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
     }
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getGeometryVariableId(variableName: string): string {
     return `${this.id}_${variableName}`;
   }

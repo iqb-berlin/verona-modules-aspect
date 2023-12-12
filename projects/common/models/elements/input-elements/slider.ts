@@ -50,10 +50,6 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
     }
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

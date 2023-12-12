@@ -38,10 +38,6 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
     return new CheckboxElement(this);
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

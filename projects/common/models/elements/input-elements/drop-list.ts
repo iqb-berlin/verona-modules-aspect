@@ -89,10 +89,6 @@ export class DropListElement extends InputElement implements DropListProperties 
     }
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(options: Array<DropListElement>): AnswerScheme {
     return {
       id: this.id,

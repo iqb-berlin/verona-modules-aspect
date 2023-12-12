@@ -53,10 +53,6 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     }
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
-  }
-
   getAnswerScheme(): AnswerScheme {
     return {
       id: this.id,

@@ -1,5 +1,9 @@
 Player
 ======
+## 2.2.3
+### Fehlerbehebungen
+- Behebt Fehler (in Version 2.2.2) beim Aufgabenwechsel im IQB-Studio bei geöffnetem Vorschau-Reiter    
+
 ## 2.2.2
 ### Änderungen
 - Verlängert bei "magnetischem Scroll-Verhalten" die einzelnen Seiten einer Unit,

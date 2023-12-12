@@ -8,7 +8,7 @@ import {
   PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
@@ -68,9 +68,17 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
       format: '',
       multiple: false,
       nullable: false,
-      values: [],
+      values: this.getAnswerSchemeValues(),
       valuesComplete: true
     };
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+    return [
+      { value: 'true', label: 'Lupe benutzt' },
+      { value: 'false', label: 'Lupe nicht benutzt' }
+    ];
   }
 
   getDuplicate(): ImageElement {

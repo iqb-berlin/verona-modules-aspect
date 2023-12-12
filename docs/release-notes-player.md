@@ -2,7 +2,11 @@ Player
 ======
 ## 2.3.0
 ### Neue Funktionen
-- Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0
+- Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0 
+
+## 2.2.3
+### Fehlerbehebungen
+- Behebt Fehler (in Version 2.2.2) beim Aufgabenwechsel im IQB-Studio bei geöffnetem Vorschau-Reiter
 
 ## 2.2.2
 ### Änderungen

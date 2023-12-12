@@ -64,8 +64,25 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
     return Boolean(this.getAnswerScheme);
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getGeometryVariableId(variableName: string): string {
+    return `${this.id}_${variableName}`;
+  }
+
+  getVariableAnswerScheme(variableName: string): AnswerScheme {
     return {
+      id: this.getGeometryVariableId(variableName),
+      type: 'string',
+      format: 'ggb-var',
+      multiple: false,
+      nullable: false,
+      values: [],
+      valuesComplete: false
+    };
+  }
+
+  getAnswerScheme(): AnswerScheme[] {
+    const answerSchemes = this.trackedVariables.map(variable => this.getVariableAnswerScheme(variable));
+    answerSchemes.push({
       id: this.id,
       type: 'string',
       format: 'ggb-file',
@@ -73,7 +90,8 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
       nullable: false,
       values: [],
       valuesComplete: false
-    };
+    });
+    return answerSchemes;
   }
 
   getElementComponent(): Type<ElementComponent> {

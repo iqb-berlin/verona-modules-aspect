@@ -49,17 +49,13 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
 
   private registerGeometryVariable(variableName: string): void {
     this.unitStateService.registerElementCode(
-      this.getGeometryVariableId(variableName), null
+      (this.elementModel as GeometryElement).getGeometryVariableId(variableName), null
     );
-  }
-
-  private getGeometryVariableId(variableName: string): string {
-    return `${this.elementModel.id}_${variableName}`;
   }
 
   private changeGeometryVariableValue(variable: GeometryVariable): void {
     this.unitStateService.changeElementCodeValue({
-      id: this.getGeometryVariableId(variable.id),
+      id: (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
       value: ElementModelElementCodeMappingService
         .mapToElementCodeValue(variable.value, 'geometry-variable')
     });

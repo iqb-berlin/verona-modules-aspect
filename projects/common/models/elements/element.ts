@@ -294,9 +294,9 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
       type: 'string',
       format: 'playback',
       multiple: false,
-      nullable: true,
+      nullable: false,
       values: [],
-      valuesComplete: true
+      valuesComplete: false
     };
   }
 }

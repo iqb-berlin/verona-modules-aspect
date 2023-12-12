@@ -92,7 +92,8 @@ export class Section {
       .filter(element => element.hasAnswerScheme())
       .map(element => ((element.type === 'drop-list') ?
         (element as InputElement).getAnswerScheme(dropLists) :
-        (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme()));
+        (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme()))
+      .flat();
   }
 }
 

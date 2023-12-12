@@ -53,7 +53,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
       type: 'string',
       format: 'math-ml',
       multiple: false,
-      nullable: !this.value && this.value !== '',
+      nullable: false,
       values: [],
       valuesComplete: false
     };

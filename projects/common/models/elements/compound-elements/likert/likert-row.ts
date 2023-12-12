@@ -39,29 +39,32 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
+    // disable from direct call of getAnswerScheme
+    // this is done by its parent container
+    return false;
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(options: TextImageLabel[]): AnswerScheme {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
-      nullable: !this.value && this.value !== 0,
-      values: this.getAnswerSchemeValues(),
+      nullable: false,
+      values: this.getAnswerSchemeValues(options),
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
-    return [
-      {
-        value: !this.value && this.value !== 0 ? 'null' : (this.value as number + 1).toString(),
-        label: InputElement.stripHTML(this.rowLabel.text)
-      } // TODO Image
-    ];
+  // eslint-disable-next-line class-methods-use-this
+  private getAnswerSchemeValues(options: TextImageLabel[]): AnswerSchemeValue[] {
+    return options
+      .map((option, index) => ({
+        value: (index + 1).toString(),
+        label: InputElement.stripHTML(option.text)
+      }));
   }
 
   getElementComponent(): Type<ElementComponent> {

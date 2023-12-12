@@ -123,7 +123,7 @@ export abstract class UIElement implements UIElementProperties {
   }
 
   hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerSchemeValues);
+    return Boolean(this.getAnswerScheme);
   }
 
   abstract getElementComponent(): Type<ElementComponent>;

@@ -1,4 +1,4 @@
-import { UIElement, UIElementProperties, UIElementType, UIElementValue } from 'common/models/elements/element';
+import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -62,10 +62,6 @@ export class MathTableElement extends UIElement implements MathTableProperties {
     } else {
       super.setProperty(property, value);
     }
-  }
-
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
   }
 
   getAnswerScheme(): AnswerScheme {

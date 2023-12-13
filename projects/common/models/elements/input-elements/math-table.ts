@@ -71,8 +71,8 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       format: 'math-table',
       multiple: false,
       nullable: false,
-      values: [], // TODO: list of all possibilities?
-      valuesComplete: this.operation !== 'multiplication'
+      values: [],
+      valuesComplete: false
     };
   }
 

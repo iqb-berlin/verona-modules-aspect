@@ -20,8 +20,8 @@ import { FormElementComponent } from '../../directives/form-element-component.di
                     (click)="$event.preventDefault()">
         </mat-option>
         <mat-option *ngFor="let option of elementModel.options; let i = index" [value]="i"
-                    [class.read-only]="elementModel.readOnly">
-          {{option.text}}
+                    [class.read-only]="elementModel.readOnly"
+                    [innerHTML]="option.text | safeResourceHTML">
         </mat-option>
       </mat-select>
       <mat-error *ngIf="elementFormControl.errors">

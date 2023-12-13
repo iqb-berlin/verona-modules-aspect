@@ -6,19 +6,19 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
   selector: 'aspect-element-style-properties',
   template: `
     <div class="fx-column-start-stretch" *ngIf="styles">
-      <mat-form-field *ngIf="styles.lastHelperRowColor !== undefined"
+      <mat-form-field *ngIf="styles.helperRowColor !== undefined"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>{{'propertiesPanel.lastHelperRowColor' | translate }}</mat-label>
-        <input matInput type="text" [value]="styles.lastHelperRowColor"
+        <mat-label>{{'propertiesPanel.helperRowColor' | translate }}</mat-label>
+        <input matInput type="text" [value]="styles.helperRowColor"
                (input)="unitService.updateSelectedElementsStyleProperty(
-                          'lastHelperRowColor', $any($event.target).value)">
-        <button mat-icon-button matSuffix (click)="lastHelperRowColorInput.click()">
+                          'helperRowColor', $any($event.target).value)">
+        <button mat-icon-button matSuffix (click)="helperRowColorInput.click()">
           <mat-icon>edit</mat-icon>
         </button>
       </mat-form-field>
-      <input matInput type="color" hidden #lastHelperRowColorInput
-             [value]="styles.lastHelperRowColor"
-             (input)="unitService.updateSelectedElementsStyleProperty('lastHelperRowColor', $any($event.target).value)">
+      <input matInput type="color" hidden #helperRowColorInput
+             [value]="styles.helperRowColor"
+             (input)="unitService.updateSelectedElementsStyleProperty('helperRowColor', $any($event.target).value)">
 
       <mat-checkbox *ngIf="styles.lineColoring !== undefined"
                     [checked]="$any(styles.lineColoring)"

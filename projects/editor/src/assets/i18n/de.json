@@ -251,7 +251,7 @@
     "tooltip": "Tooltip",
     "stickyHeader": "Haftende Kopfzeile",
     "crossOutChecked": "Auswahl durchstreichen",
-    "lastHelperRowColor": "Farbe unterer Hilfszeile",
+    "helperRowColor": "Farbe der Hilfszeile(n)",
     "allowArithmeticChars": "Rechen- und Gleichheitszeichen erlauben",
     "isFirstLineUnderlined": "Unterstreichung erste Zeile",
     "showResultRow": "Ergebniszeile",

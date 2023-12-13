@@ -35,7 +35,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
                                                                               elementModel.styling.fontSize * 2"
               [style.font-size]="row.cells.length && row.isHelperRow && '70%'"
               [style.background-color]="row.isHelperRow ?
-                                        elementModel.styling.lastHelperRowColor : 'transparent'">
+                                        elementModel.styling.helperRowColor : 'transparent'">
             <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
                 [style.width.px]="elementModel.styling.fontSize * 2"
                 [class.strike-through]="cell.isCrossedOut"

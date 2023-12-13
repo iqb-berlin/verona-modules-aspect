@@ -30,7 +30,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
     };
 
   styling: BasicStyles & {
-    lastHelperRowColor: string;
+    helperRowColor: string;
   };
 
   constructor(element?: MathTableProperties) {
@@ -51,7 +51,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       if (element?.variableLayoutOptions !== undefined) this.variableLayoutOptions = { ...element.variableLayoutOptions };
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lastHelperRowColor: 'transparent'
+        helperRowColor: 'transparent'
       };
     }
   }
@@ -97,7 +97,7 @@ export interface MathTableProperties extends UIElementProperties {
     allowFirstLineCrossOut: boolean;
   }
   styling: BasicStyles & {
-    lastHelperRowColor: string;
+    helperRowColor: string;
   };
 }
 

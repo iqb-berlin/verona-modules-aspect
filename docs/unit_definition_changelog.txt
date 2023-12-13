@@ -135,9 +135,9 @@ iqb-aspect-definition@1.0.0
 
 4.3.0
 - Geometry: new property: trackedVariables
-- new property in "OtherStyles": lastHelperRowColor
+- new property in "OtherStyles": helperRowColor
 - MathTable:
-  - new styling property: lastHelperRowColor
+  - new styling property: helperRowColor
   - new property value: operation: 'variable'
   - new property: variableLayoutOptions: {
                       allowArithmeticChars: boolean;

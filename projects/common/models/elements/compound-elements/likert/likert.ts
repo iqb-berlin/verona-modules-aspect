@@ -118,7 +118,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   }
 
   getAnswerScheme(): AnswerScheme[] {
-    return this.rows.map(row => row.getAnswerScheme(this.options));
+    return this.rows.map(row => row.getChildAnswerScheme(this.options));
   }
 }
 

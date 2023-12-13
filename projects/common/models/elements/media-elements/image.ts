@@ -57,11 +57,8 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
     return ImageComponent;
   }
 
-  hasAnswerScheme(): boolean {
-    return this.magnifier;
-  }
-
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): AnswerScheme | AnswerScheme[] {
+    if (!this.magnifier) return [];
     return {
       id: this.id,
       type: 'boolean',

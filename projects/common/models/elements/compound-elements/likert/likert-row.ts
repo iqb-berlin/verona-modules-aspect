@@ -39,14 +39,7 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  hasAnswerScheme(): boolean {
-    // disable from direct call of getAnswerScheme
-    // this is done by its parent container
-    return false;
-  }
-
-  getAnswerScheme(options: TextImageLabel[]): AnswerScheme {
+  getChildAnswerScheme(options: TextImageLabel[]): AnswerScheme {
     return {
       id: this.id,
       type: 'integer',

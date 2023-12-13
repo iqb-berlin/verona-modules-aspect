@@ -122,8 +122,9 @@ export abstract class UIElement implements UIElementProperties {
     return [];
   }
 
-  hasAnswerScheme(): boolean {
-    return Boolean(this.getAnswerScheme);
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
+  getAnswerScheme(options?: unknown): AnswerScheme | AnswerScheme[] {
+    return [];
   }
 
   abstract getElementComponent(): Type<ElementComponent>;
@@ -185,8 +186,6 @@ export abstract class InputElement extends UIElement implements InputElementProp
       if (element?.readOnly) this.readOnly = element.readOnly;
     }
   }
-
-  abstract getAnswerScheme(options?: unknown): AnswerScheme;
 
   static stripHTML(htmlString: string): string {
     const parser = new DOMParser();

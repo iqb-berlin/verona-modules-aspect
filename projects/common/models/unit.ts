@@ -6,6 +6,7 @@ import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
 import { InstantiationEror } from 'common/util/errors';
 import { ArrayUtils } from 'common/util/array';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 
 export class Unit implements UnitProperties {
   type = 'aspect-unit-definition';
@@ -33,8 +34,8 @@ export class Unit implements UnitProperties {
   }
 
   getAnswerScheme(): AnswerScheme[] {
-    const dropLists = [
-      ...this.getAllElements('drop-list')
+    const dropLists: DropListElement[] = [
+      ...this.getAllElements('drop-list') as DropListElement[]
     ];
     return this.pages.map(page => page.getAnswerScheme(dropLists)).flat();
   }

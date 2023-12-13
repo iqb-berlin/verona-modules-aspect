@@ -69,11 +69,8 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
         this.highlightableOrange;
   }
 
-  hasAnswerScheme(): boolean {
-    return this.isHighlightable();
-  }
-
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): AnswerScheme | AnswerScheme[] {
+    if (!this.isHighlightable()) return [];
     return {
       id: this.id,
       type: 'string',

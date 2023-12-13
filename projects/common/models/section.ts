@@ -3,16 +3,14 @@ import {
   PositionedUIElement,
   UIElement,
   UIElementValue,
-  PlayerElement,
-  InputElement, Measurement
+  Measurement
 } from 'common/models/elements/element';
-import { TextElement } from 'common/models/elements/text/text';
-import { ImageElement } from 'common/models/elements/media-elements/image';
 import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/util/element.factory';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 
 export class Section {
   [index: string]: unknown;
@@ -87,12 +85,11 @@ export class Section {
     return allElements;
   }
 
-  getAnswerScheme(dropLists: UIElement[]): AnswerScheme[] {
+  getAnswerScheme(dropLists: DropListElement[]): AnswerScheme[] {
     return this.getAllElements()
-      .filter(element => element.hasAnswerScheme())
       .map(element => ((element.type === 'drop-list') ?
-        (element as InputElement).getAnswerScheme(dropLists) :
-        (element as InputElement | PlayerElement | TextElement | ImageElement).getAnswerScheme()))
+        element.getAnswerScheme(dropLists) :
+        element.getAnswerScheme()))
       .flat();
   }
 }

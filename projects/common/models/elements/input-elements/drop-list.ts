@@ -1,7 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties,
-  UIElementType, UIElementValue
+  InputElement, InputElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
@@ -89,7 +88,7 @@ export class DropListElement extends InputElement implements DropListProperties 
     }
   }
 
-  getAnswerScheme(options: Array<DropListElement>): AnswerScheme {
+  getAnswerScheme(options: DropListElement[]): AnswerScheme {
     return {
       id: this.id,
       type: 'string',
@@ -101,7 +100,7 @@ export class DropListElement extends InputElement implements DropListProperties 
     };
   }
 
-  private getAnswerSchemeValues(dropLists: Array<DropListElement>): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(dropLists: DropListElement[]): AnswerSchemeValue[] {
     const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id));
     if (valueDropLists.length || this.isSortingList()) {
       return [this, ...valueDropLists]

@@ -325,7 +325,8 @@
     "hotspot-image": "Bildbereiche",
     "formula": "Formel",
     "math-field": "Feld",
-    "math-area": "Bereich"
+    "math-area": "Bereich",
+    "math-table": "Rechenkästchen"
   },
   "section-menu": {
     "height": "Höhe",

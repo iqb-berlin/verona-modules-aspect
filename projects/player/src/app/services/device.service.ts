@@ -6,14 +6,12 @@ import { Injectable } from '@angular/core';
 export class DeviceService {
   hasHardwareKeyboard: boolean = false;
   private readonly isTouch!: boolean;
-  private readonly isMobile!: boolean;
 
   constructor() {
-    this.isTouch = ('ontouchstart' in window) || (navigator && navigator.maxTouchPoints > 0);
-    this.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    this.isTouch = ('ontouchstart' in window) || (navigator && navigator.maxTouchPoints > 1);
   }
 
   get isMobileWithoutHardwareKeyboard(): boolean {
-    return this.isMobile && this.isTouch && !this.hasHardwareKeyboard;
+    return this.isTouch && !this.hasHardwareKeyboard;
   }
 }

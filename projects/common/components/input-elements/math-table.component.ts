@@ -120,6 +120,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     const width = Math.max(
       ...this.elementModel.terms.map(term => term.length + operatorOffset),
       this.elementModel.result.length,
+      this.elementModel.resultHelperRow.length,
       1 // have at least one empty column, so the table does not disappear completely when terms are empty
     );
     return [
@@ -129,12 +130,12 @@ export class MathTableComponent extends ElementComponent implements OnInit {
         [MathTableComponent.createHelperRow(width, true)] : [],
       ...this.elementModel.terms
         .map((term: string, i: number) => MathTableComponent.createNormalRow(
-          term, width - operatorOffset, undefined, i === 0
+          width - operatorOffset, term, undefined, i === 0
         )),
       ...this.elementModel.variableLayoutOptions.showResultRow ?
-        [MathTableComponent.createHelperRow(width)] : [],
+        [MathTableComponent.createHelperRow(width, false, this.elementModel.resultHelperRow)] : [],
       ...this.elementModel.variableLayoutOptions.showResultRow ?
-        [MathTableComponent.createResultRow(this.elementModel.result, width)] : []
+        [MathTableComponent.createResultRow(width, this.elementModel.result)] : []
     ];
   }
 
@@ -142,15 +143,16 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     const operatorOffset = 1; // offset for operatorChar
     const width = Math.max(
       ...this.elementModel.terms.map(term => term.length + operatorOffset),
-      this.elementModel.result.length
+      this.elementModel.result.length,
+      this.elementModel.resultHelperRow.length
     );
     return [
       ...this.elementModel.terms
         .map((term: string, i: number) => MathTableComponent.createNormalRow(
-          term, width - operatorOffset, i > 0 ? '+' : ' '
+          width - operatorOffset, term, i > 0 ? '+' : ' '
         )),
-      MathTableComponent.createHelperRow(width),
-      MathTableComponent.createResultRow(this.elementModel.result, width)
+      MathTableComponent.createHelperRow(width, false, this.elementModel.resultHelperRow),
+      MathTableComponent.createResultRow(width, this.elementModel.result)
     ];
   }
 
@@ -158,33 +160,35 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     const operatorOffset = 1; // offset for operatorChar
     const width = Math.max(
       ...this.elementModel.terms.map(term => term.length + operatorOffset),
-      this.elementModel.result.length
+      this.elementModel.result.length,
+      this.elementModel.resultHelperRow.length
     );
     return [
       MathTableComponent.createHelperRow(width, true),
       MathTableComponent.createHelperRow(width, true),
       ...this.elementModel.terms
         .map((term: string, i: number) => MathTableComponent.createNormalRow(
-          term, width - operatorOffset, i > 0 ? '−' : ' ', i === 0
+          width - operatorOffset, term, i > 0 ? '−' : ' ', i === 0
         )),
-      MathTableComponent.createHelperRow(width),
-      MathTableComponent.createResultRow(this.elementModel.result, width)
+      MathTableComponent.createHelperRow(width, false, this.elementModel.resultHelperRow),
+      MathTableComponent.createResultRow(width, this.elementModel.result)
     ];
   }
 
   private createMultiplicationModel(): MathTableRow[] {
     if (this.elementModel.terms.length < 2) return [];
     const width = Math.max(this.elementModel.terms[0].length + this.elementModel.terms[1].length + 3,
-      this.elementModel.result.length);
+      this.elementModel.result.length,
+      this.elementModel.resultHelperRow.length);
     return [
-      MathTableComponent.createMultiplicationRow(this.elementModel.terms[0], this.elementModel.terms[1], width),
-      MathTableComponent.createNormalRow('', width),
-      MathTableComponent.createHelperRow(width),
-      MathTableComponent.createResultRow(this.elementModel.result, width)
+      MathTableComponent.createMultiplicationRow(width, this.elementModel.terms[0], this.elementModel.terms[1]),
+      MathTableComponent.createNormalRow(width, ''),
+      MathTableComponent.createHelperRow(width, false, this.elementModel.resultHelperRow),
+      MathTableComponent.createResultRow(width, this.elementModel.result)
     ];
   }
 
-  static createMultiplicationRow(term1: string, term2: string, width: number): MathTableRow {
+  static createMultiplicationRow(width: number, term1: string, term2: string): MathTableRow {
     return {
       rowType: 'normal',
       cells: [
@@ -198,14 +202,13 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   }
 
   /* '1digit' also means no crossing out. '2digit' the opposite. */
-  private static createHelperRow(width: number, is2DigitHelperRow: boolean = false): MathTableRow {
+  private static createHelperRow(width: number, is2DigitHelperRow: boolean, term?: string): MathTableRow {
     return {
       rowType: 'helper',
-      cells: [...Array(width).fill(undefined).map(() => ({
-        value: '',
-        isSmallCell: true,
-        isEditable: true
-      }))],
+      cells: [
+        ...MathTableComponent.createCharCells(width, term),
+        ...MathTableComponent.fillCharCells(term)
+      ],
       isHelperRow: true,
       is2DigitHelperRow,
       canBeCrossedOut: is2DigitHelperRow
@@ -213,33 +216,25 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   }
 
   /* Empty cells have to have an extra map to ensure new object refs. */
-  private static createNormalRow(term: string, width: number, operatorChar?: string,
+  private static createNormalRow(width: number, term: string, operatorChar?: string,
                                  isStrikable: boolean = false): MathTableRow {
     return {
       rowType: 'normal',
       cells: [
         ...operatorChar ? [{ value: operatorChar }] : [],
-        ...Array(width - term.length).fill(undefined)
-          .map(() => ({ value: '', isEditable: term === '' })),
-        ...term.split('').map(char => ({
-          value: char === '_' ? ' ' : MathTableComponent.getCharReplacement(char), // underscore as space alternative
-          isEditable: char === ' ' || char === '_'
-        }))
+        ...MathTableComponent.createCharCells(width, term),
+        ...MathTableComponent.fillCharCells(term)
       ],
       canBeCrossedOut: isStrikable
     };
   }
 
-  private static createResultRow(term: string, width: number): MathTableRow {
+  private static createResultRow(width: number, term: string): MathTableRow {
     return {
       rowType: 'result',
       cells: [
-        ...Array(width - term.length).fill(undefined)
-          .map(() => ({ value: '', isEditable: term === '' })),
-        ...term.split('').map(char => ({
-          value: char === '_' ? ' ' : MathTableComponent.getCharReplacement(char), // underscore as space alternative
-          isEditable: char === ' ' || char === '_'
-        }))
+        ...MathTableComponent.createCharCells(width, term),
+        ...MathTableComponent.fillCharCells(term)
       ]
     };
   }
@@ -249,7 +244,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     this.tableModel.splice(
       this.tableModel.length - 2,
       0,
-      MathTableComponent.createNormalRow('', width)
+      MathTableComponent.createNormalRow(width, '')
     );
     this.emitModel();
   }
@@ -283,6 +278,20 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     }
 
     this.emitModel();
+  }
+
+  private static fillCharCells(term: string | undefined): MathTableCell[] {
+    if (!term) return [];
+    return term.split('').map(char => ({
+      value: char === '_' ? ' ' : MathTableComponent.getCharReplacement(char), // underscore as space alternative
+      isEditable: char === ' ' || char === '_'
+    }));
+  }
+
+  private static createCharCells(width: number, term: string | undefined): MathTableCell[] {
+    const termLength = term ? term.length : 0;
+    return Array(width - termLength).fill(null)
+      .map(() => ({ value: '', isEditable: !term }));
   }
 
   private static getCharReplacement(char: string): string {

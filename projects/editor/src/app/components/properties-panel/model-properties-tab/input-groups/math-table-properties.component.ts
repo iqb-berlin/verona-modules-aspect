@@ -48,6 +48,13 @@ import { UIElement } from 'common/models/elements/element';
         <mat-icon>add</mat-icon>{{'addTermRow' | translate}}
       </button>
 
+      <mat-form-field (input)="updateModel.emit({ property: 'resultHelperRow', value: $any($event.target).value })">
+        <mat-label>{{'resultHelperRow' | translate}}</mat-label>
+        <input matInput [disabled]="combinedProperties.operation === 'variable' &&
+                                    !$any(combinedProperties.variableLayoutOptions).showResultRow"
+               [value]="combinedProperties.resultHelperRow">
+      </mat-form-field>
+
       <mat-form-field (input)="updateModel.emit({ property: 'result', value: $any($event.target).value })">
         <mat-label>{{'resultRow' | translate}}</mat-label>
         <input matInput [disabled]="combinedProperties.operation === 'variable' &&
@@ -75,7 +82,7 @@ import { UIElement } from 'common/models/elements/element';
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showResultRow"
                       (click)="$event.stopPropagation()"
                       (change)="updateModel.emit({ property: 'showResultRow', value: $event.checked })">
-          {{'propertiesPanel.showResultRow' | translate }}
+          {{'propertiesPanel.showResultRowWithHelperRow' | translate }}
         </mat-checkbox>
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showTopHelperRows"
                       (click)="$event.stopPropagation()"

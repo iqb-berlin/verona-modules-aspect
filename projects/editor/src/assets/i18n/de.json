@@ -254,7 +254,7 @@
     "helperRowColor": "Farbe der Hilfszeile(n)",
     "allowArithmeticChars": "Rechen- und Gleichheitszeichen erlauben",
     "isFirstLineUnderlined": "Unterstreichung erste Zeile",
-    "showResultRow": "Ergebniszeile",
+    "showResultRowWithHelperRow": "Ergebniszeile mit Hilfszeile",
     "showTopHelperRows": "obere Helferzeilen",
     "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
     "trackedVariables": "Ergebnisvariablen"
@@ -356,5 +356,6 @@
   "variable": "variables Layout",
   "termRows": "Termzeilen",
   "addTermRow": "Termzeile hinzufügen",
-  "resultRow": "Ergebniszeile"
+  "resultRow": "Ergebniszeile",
+  "resultHelperRow": "Untere Hilfszeile"
 }

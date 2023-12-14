@@ -16,6 +16,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' = 'addition';
   terms: string[] = ['123', '456'];
   result: string = '';
+  resultHelperRow: string = '';
   variableLayoutOptions: {
     allowArithmeticChars: boolean;
     isFirstLineUnderlined: boolean;
@@ -39,6 +40,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       this.operation = element.operation;
       this.terms = [...element.terms];
       this.result = element.result;
+      this.resultHelperRow = element.resultHelperRow;
       this.variableLayoutOptions = { ...element.variableLayoutOptions };
       this.styling = { ...element.styling };
     } else {
@@ -48,6 +50,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       if (element?.operation !== undefined) this.operation = element.operation;
       if (element?.terms !== undefined) this.terms = [...element.terms];
       if (element?.result !== undefined) this.result = element.result;
+      if (element?.resultHelperRow !== undefined) this.resultHelperRow = element.resultHelperRow;
       if (element?.variableLayoutOptions !== undefined) this.variableLayoutOptions = { ...element.variableLayoutOptions };
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
@@ -89,6 +92,7 @@ export interface MathTableProperties extends UIElementProperties {
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication';
   terms: string[];
   result: string;
+  resultHelperRow: string;
   variableLayoutOptions: {
     allowArithmeticChars: boolean;
     isFirstLineUnderlined: boolean;
@@ -106,6 +110,7 @@ function isValid(blueprint?: MathTableProperties): boolean {
   return blueprint.operation !== undefined &&
          blueprint.terms !== undefined &&
          blueprint.result !== undefined &&
+         blueprint.resultHelperRow !== undefined &&
          blueprint.variableLayoutOptions !== undefined &&
          blueprint.variableLayoutOptions.allowArithmeticChars !== undefined &&
          blueprint.variableLayoutOptions.isFirstLineUnderlined !== undefined &&

@@ -12,14 +12,12 @@ import {
   PositionProperties,
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
-import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {
-  CompoundElement, InputElement, InputElementValue, PlayerElement, PositionedUIElement,
+  CompoundElement, InputElement, PlayerElement, PositionedUIElement,
   UIElement, UIElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { TextElement } from 'common/models/elements/text/text';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { Page } from 'common/models/page';
@@ -32,7 +30,6 @@ import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { StateVariable } from 'common/models/state-variable';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { VersionManager } from 'common/services/version-manager';
-import { MathTableRow } from 'common/components/input-elements/math-table.component';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from './dialog.service';
 import { VeronaAPIService } from './verona-api.service';

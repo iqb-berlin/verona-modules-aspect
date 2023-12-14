@@ -119,3 +119,17 @@ function isValid(blueprint?: MathTableProperties): boolean {
          blueprint.variableLayoutOptions.allowFirstLineCrossOut !== undefined &&
          PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }
+
+export interface MathTableCell {
+  value: string;
+  isCrossedOut?: boolean;
+  isEditable?: boolean;
+}
+
+export interface MathTableRow {
+  rowType: 'normal' | 'result' | 'helper';
+  cells: MathTableCell[];
+  isHelperRow?: boolean;
+  is2DigitHelperRow?: boolean;
+  canBeCrossedOut?: boolean;
+}

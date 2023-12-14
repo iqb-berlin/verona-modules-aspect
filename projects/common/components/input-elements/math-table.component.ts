@@ -1,4 +1,4 @@
-import { MathTableElement } from 'common/models/elements/input-elements/math-table';
+import { MathTableCell, MathTableElement, MathTableRow } from 'common/models/elements/input-elements/math-table';
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
@@ -317,18 +317,4 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   emitModel(): void {
     this.elementValueChanged.emit({ id: this.elementModel.id, value: this.tableModel });
   }
-}
-
-export interface MathTableCell {
-  value: string;
-  isCrossedOut?: boolean;
-  isEditable?: boolean;
-}
-
-export interface MathTableRow {
-  rowType: 'normal' | 'result' | 'helper';
-  cells: MathTableCell[];
-  isHelperRow?: boolean;
-  is2DigitHelperRow?: boolean;
-  canBeCrossedOut?: boolean;
 }

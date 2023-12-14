@@ -68,7 +68,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
     return {
       id: this.getGeometryVariableId(variableName),
       type: 'string',
-      format: 'ggb-var',
+      format: 'ggb-variable',
       multiple: false,
       nullable: false,
       values: [],

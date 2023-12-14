@@ -69,7 +69,7 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
     this.unitStateService.changeElementCodeValue({
       id: value.id,
       value: ElementModelElementCodeMappingService
-        .mapToElementCodeValue(value.value, this.elementModel.type)
+        .mapToElementCodeValue((value.value as GeometryValue).appDefinition, this.elementModel.type)
     });
     this.changeGeometryVariableValues((value.value as GeometryValue).variables);
   }

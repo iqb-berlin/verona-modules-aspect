@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {
-  GeometryValue,
   InputElement,
   InputElementValue,
   UIElement,
@@ -76,7 +75,8 @@ export class ElementModelElementCodeMappingService {
       case 'video':
         return elementModelValue as number;
       case 'geometry':
-        return (elementModelValue as GeometryValue).appDefinition as string;
+      case 'geometry-variable':
+        return elementModelValue as string;
       case 'image':
         return elementModelValue as boolean;
       case 'math-table':

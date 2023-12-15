@@ -3,6 +3,8 @@ Player
 ## 2.3.0
 ### Neue Funktionen
 - Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0
+### Änderungen
+- Eingestellte IQB-Tastatur erscheint wieder auf Windows-Devices mit Touchscreen
 
 ## 2.2.3
 ### Fehlerbehebungen

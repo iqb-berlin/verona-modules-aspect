@@ -2,7 +2,7 @@ Player
 ======
 ## 2.3.0
 ### Neue Funktionen
-- Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0 
+- Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0
 
 ## 2.2.3
 ### Fehlerbehebungen

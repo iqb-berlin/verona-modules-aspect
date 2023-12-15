@@ -7,6 +7,9 @@ Editor
 - Rechenkästchen:
   - neue Operation: "variables Layout". Mit dieser Einstellung wird keine Rechenoperation vorgegeben.
     Weitere Einstellungen sind via Menu auswählbar.
+  - Die untere Hilfszeile kann analog zu Term- und Ergebniszeilen vorbelegt werden
+### Fehlerbehebungen
+- Zeigt HTML-Formatierungen der Optionen von Klapplisten korrekt an
 
 ## 2.2.1
 ### Fehlerbehebungen

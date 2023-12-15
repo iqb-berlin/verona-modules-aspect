@@ -292,8 +292,8 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
-      type: 'string', // TODO: change to float after updating npm package!
-      format: 'non-negative',
+      type: 'number',
+      format: '',
       multiple: false,
       nullable: false,
       values: [],

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import {
-  Progress, StatusChangeElement, ElementCode, ElementCodeStatus, ElementCodeStatusValue, ElementCodeValue
+  Progress, StatusChangeElement, Response, ResponseStatusType, ElementCodeStatusValue, ResponseValueType
 } from 'player/modules/verona/models/verona';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
@@ -35,7 +35,7 @@ export class UnitStateService extends ElementCodeService {
   }
 
   registerElementCode(elementId: string,
-                      elementValue: ElementCodeValue,
+                      elementValue: ResponseValueType,
                       domElement: Element | null = null,
                       pageIndex: number | null = null): void {
     if (pageIndex !== null) {
@@ -79,7 +79,7 @@ export class UnitStateService extends ElementCodeService {
     }, []);
   }
 
-  override setElementCodeStatus(id: string, status: ElementCodeStatus): void {
+  override setElementCodeStatus(id: string, status: ResponseStatusType): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       const actualStatus = unitStateElementCode.status;
@@ -103,7 +103,7 @@ export class UnitStateService extends ElementCodeService {
     if (this.presentedPages.indexOf(pageIndex) === -1) {
       const notDisplayedElements = Object.entries(this.elementIdPageIndexMap)
         .filter((map: [string, number]): boolean => map[1] === pageIndex)
-        .map((pageElement: [string, number]): ElementCode | undefined => this
+        .map((pageElement: [string, number]): Response | undefined => this
           .getElementCodeById(pageElement[0]))
         .filter(pageElement => pageElement && ElementCodeStatusValue[pageElement.status] <
           ElementCodeStatusValue.DISPLAYED);
@@ -116,7 +116,7 @@ export class UnitStateService extends ElementCodeService {
     }
   }
 
-  private addElementCode(id: string, value: ElementCodeValue, domElement: Element | null): void {
+  private addElementCode(id: string, value: ResponseValueType, domElement: Element | null): void {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       // when reloading a unit, elementCodes are already pushed

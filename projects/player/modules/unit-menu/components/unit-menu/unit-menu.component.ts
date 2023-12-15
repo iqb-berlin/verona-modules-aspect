@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import {
-  ElementCode,
+  Response,
   PagingMode,
   UnitState,
   VopPageNavigationCommand,
@@ -17,8 +17,8 @@ import { Page } from 'common/models/page';
 })
 export class UnitMenuComponent {
   @Input() scrollPages!: Page[];
-  @Input() elementCodes!: ElementCode[];
-  @Input() stateVariableCodes!: ElementCode[];
+  @Input() elementCodes!: Response[];
+  @Input() stateVariableCodes!: Response[];
 
   private postTarget: Window = window;
 

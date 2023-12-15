@@ -12,7 +12,7 @@ import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
-import { ElementCodeValue } from 'player/modules/verona/models/verona';
+import { ResponseValueType } from 'player/modules/verona/models/verona';
 import { TextMarkingService } from './text-marking.service';
 
 type MapElementType = UIElementType | 'geometry-variable';
@@ -23,7 +23,7 @@ type MapElementType = UIElementType | 'geometry-variable';
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
-  mapToElementModelValue(elementCodeValue: ElementCodeValue | undefined, elementModel: UIElement): InputElementValue {
+  mapToElementModelValue(elementCodeValue: ResponseValueType | undefined, elementModel: UIElement): InputElementValue {
     switch (elementModel.type) {
       case 'math-table':
         return (elementCodeValue !== undefined) ?
@@ -69,7 +69,7 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
-  static mapToElementCodeValue(elementModelValue: InputElementValue, elementType: MapElementType): ElementCodeValue {
+  static mapToElementCodeValue(elementModelValue: InputElementValue, elementType: MapElementType): ResponseValueType {
     switch (elementType) {
       case 'audio':
       case 'video':
@@ -94,7 +94,7 @@ export class ElementModelElementCodeMappingService {
       case 'likert-row':
         return elementModelValue !== null ? elementModelValue as number + 1 : null;
       default:
-        return elementModelValue as ElementCodeValue;
+        return elementModelValue as ResponseValueType;
     }
   }
 

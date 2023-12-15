@@ -1,12 +1,12 @@
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 export type Progress = 'none' | 'some' | 'complete';
 export type PagingMode = 'separate' | 'concat-scroll' | 'concat-scroll-snap';
-export type ElementCodeStatus = 'UNSET' | 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
+export type ResponseStatusType = 'UNSET' | 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
 export enum ElementCodeStatusValue { UNSET = 0, NOT_REACHED = 1, DISPLAYED = 2, VALUE_CHANGED = 3}
 
 export interface StatusChangeElement {
   id: string;
-  status: ElementCodeStatus;
+  status: ResponseStatusType;
 }
 
 export interface PlayerConfig {
@@ -20,12 +20,12 @@ export interface PlayerConfig {
   directDownloadUrl?: string;
 }
 
-export type ElementCodeValue = string[] | string | number | boolean | null | boolean[];
+export type ResponseValueType = string[] | string | number | boolean | null | boolean[];
 
-export interface ElementCode {
+export interface Response {
   id: string;
-  status: ElementCodeStatus;
-  value: ElementCodeValue;
+  status: ResponseStatusType;
+  value: ResponseValueType;
 }
 
 export interface UnitState {

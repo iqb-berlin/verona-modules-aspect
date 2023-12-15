@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ElementCode } from 'player/modules/verona/models/verona';
+import { Response } from 'player/modules/verona/models/verona';
 import { UnitStateService } from './unit-state.service';
 
 describe('UnitStateService', () => {
@@ -14,15 +14,15 @@ describe('UnitStateService', () => {
   });
 
   it('should get element by id', () => {
-    const element1: ElementCode = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: ElementCode = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
+    const element1: Response = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
+    const element2: Response = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
     service.elementCodes = [element1, element2];
     expect(service.getElementCodeById('element_1')).toEqual(element1);
   });
 
   it('should return undefined for a not registered element id', () => {
-    const element1: ElementCode = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: ElementCode = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
+    const element1: Response = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
+    const element2: Response = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
     service.elementCodes = [element1, element2];
     expect(service.getElementCodeById('element_3')).toBeUndefined();
   });

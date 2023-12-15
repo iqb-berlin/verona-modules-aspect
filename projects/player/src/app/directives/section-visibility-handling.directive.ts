@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { StorableTimer } from 'player/src/app/classes/storable-timer';
 import { ValueChangeElement } from 'common/models/elements/element';
-import { ElementCode } from 'player/modules/verona/models/verona';
+import { Response } from 'player/modules/verona/models/verona';
 import { Storable } from 'player/src/app/classes/storable';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
@@ -66,7 +66,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       .getElementCodeById(this.animationVariableId)?.value === 1;
   }
 
-  private isRuleCode(code: ElementCode): boolean {
+  private isRuleCode(code: Response): boolean {
     return this.section.visibilityRules
       .map(rule => rule.id)
       .some(id => id === code.id) ||
@@ -131,7 +131,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     }
   }
 
-  private getAnyElementCodeById(id: string): ElementCode | undefined {
+  private getAnyElementCodeById(id: string): Response | undefined {
     return this.unitStateService.getElementCodeById(id) ||
       this.stateVariableStateService.getElementCodeById(id);
   }

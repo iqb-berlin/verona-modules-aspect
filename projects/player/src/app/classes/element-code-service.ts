@@ -1,27 +1,27 @@
-import { ElementCode, ElementCodeStatus, ElementCodeValue } from 'player/modules/verona/models/verona';
+import { Response, ResponseStatusType, ResponseValueType } from 'player/modules/verona/models/verona';
 import { Observable, Subject } from 'rxjs';
 import { LogService } from 'player/modules/logging/services/log.service';
 
 export abstract class ElementCodeService {
-  elementCodes: ElementCode[] = [];
-  protected _elementCodeChanged = new Subject<ElementCode>();
+  elementCodes: Response[] = [];
+  protected _elementCodeChanged = new Subject<Response>();
 
-  getElementCodeById(id: string): ElementCode | undefined {
+  getElementCodeById(id: string): Response | undefined {
     return this.elementCodes
-      .find((elementCode: ElementCode): boolean => elementCode.id === id);
+      .find((elementCode: Response): boolean => elementCode.id === id);
   }
 
-  get elementCodeChanged(): Observable<ElementCode> {
+  get elementCodeChanged(): Observable<Response> {
     return this._elementCodeChanged.asObservable();
   }
 
-  changeElementCodeValue(elementValue: { id: string, value: ElementCodeValue }): void {
+  changeElementCodeValue(elementValue: { id: string, value: ResponseValueType }): void {
     LogService.debug(`player: changeElementValue ${elementValue.id}: ${elementValue.value}`);
     this.setElementCodeValue(elementValue.id, elementValue.value);
     this.setElementCodeStatus(elementValue.id, 'VALUE_CHANGED');
   }
 
-  setElementCodeStatus(id: string, status: ElementCodeStatus): void {
+  setElementCodeStatus(id: string, status: ResponseStatusType): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       unitStateElementCode.status = status;
@@ -33,12 +33,12 @@ export abstract class ElementCodeService {
     this.elementCodes = [];
   }
 
-  protected addInitialElementCode(unitStateElementCode: ElementCode): void {
+  protected addInitialElementCode(unitStateElementCode: Response): void {
     this.elementCodes.push(unitStateElementCode);
     this._elementCodeChanged.next(unitStateElementCode);
   }
 
-  protected setElementCodeValue(id: string, value: ElementCodeValue): void {
+  protected setElementCodeValue(id: string, value: ResponseValueType): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (unitStateElementCode) {
       unitStateElementCode.value = value;

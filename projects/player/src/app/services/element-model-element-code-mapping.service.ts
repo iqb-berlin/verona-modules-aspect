@@ -12,7 +12,7 @@ import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
-import { ResponseValueType } from 'player/modules/verona/models/verona';
+import { ResponseValueType } from '@iqb/responses';
 import { TextMarkingService } from './text-marking.service';
 
 type MapElementType = UIElementType | 'geometry-variable';

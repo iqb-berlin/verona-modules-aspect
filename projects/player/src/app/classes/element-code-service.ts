@@ -1,6 +1,6 @@
-import { Response, ResponseStatusType, ResponseValueType } from 'player/modules/verona/models/verona';
 import { Observable, Subject } from 'rxjs';
 import { LogService } from 'player/modules/logging/services/log.service';
+import { Response, ResponseStatusType, ResponseValueType } from '@iqb/responses';
 
 export abstract class ElementCodeService {
   elementCodes: Response[] = [];

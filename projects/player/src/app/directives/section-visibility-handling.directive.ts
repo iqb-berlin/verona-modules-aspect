@@ -7,10 +7,10 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { StorableTimer } from 'player/src/app/classes/storable-timer';
 import { ValueChangeElement } from 'common/models/elements/element';
-import { Response } from 'player/modules/verona/models/verona';
 import { Storable } from 'player/src/app/classes/storable';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
+import { Response } from '@iqb/responses';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]'

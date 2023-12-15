@@ -142,8 +142,8 @@ export abstract class UIElement implements UIElementProperties {
   abstract getDuplicate(): UIElement;
 }
 
-export type InputElementValue = TextLabel[] | Hotspot[] | MathTableRow[] | GeometryValue | string[] | string | number | boolean[] |
-boolean | null;
+export type InputElementValue = TextLabel[] | Hotspot[] | MathTableRow[] | GeometryValue | string[] | string |
+number[] | number | boolean[] | boolean | null;
 
 export interface InputElementProperties extends UIElementProperties {
   label: string;

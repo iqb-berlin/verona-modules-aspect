@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Response } from 'player/modules/verona/models/verona';
+import { Response } from '@iqb/responses';
 import { UnitStateService } from './unit-state.service';
 
 describe('UnitStateService', () => {

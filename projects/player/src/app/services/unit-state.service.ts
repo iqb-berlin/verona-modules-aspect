@@ -1,11 +1,10 @@
 import { Inject, Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
-import {
-  Progress, StatusChangeElement, Response, ResponseStatusType, ElementCodeStatusValue, ResponseValueType
-} from 'player/modules/verona/models/verona';
+import { Progress, StatusChangeElement, ElementCodeStatusValue } from 'player/modules/verona/models/verona';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
+import { Response, ResponseStatusType, ResponseValueType } from '@iqb/responses';
 import { IntersectionDetector } from '../classes/intersection-detector';
 
 @Injectable({

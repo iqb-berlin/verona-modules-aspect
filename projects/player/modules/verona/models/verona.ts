@@ -1,8 +1,12 @@
+import { ResponseStatusType } from '@iqb/responses';
+
 export type NavigationTarget = 'first' | 'last' | 'previous' | 'next' | 'end';
 export type Progress = 'none' | 'some' | 'complete';
 export type PagingMode = 'separate' | 'concat-scroll' | 'concat-scroll-snap';
-export type ResponseStatusType = 'UNSET' | 'NOT_REACHED' | 'DISPLAYED' | 'VALUE_CHANGED';
-export enum ElementCodeStatusValue { UNSET = 0, NOT_REACHED = 1, DISPLAYED = 2, VALUE_CHANGED = 3}
+export enum ElementCodeStatusValue {
+  UNSET = 0, NOT_REACHED = 1, DISPLAYED = 2, VALUE_CHANGED = 3, VALUE_DERIVED = 4, SOURCE_MISSING = 5,
+  DERIVE_ERROR = 6, CODING_COMPLETE = 7, NO_CODING = 8, CODING_INCOMPLETE = 9, CODING_ERROR = 10
+}
 
 export interface StatusChangeElement {
   id: string;
@@ -18,14 +22,6 @@ export interface PlayerConfig {
   startPage?: string;
   enabledNavigationTargets?: NavigationTarget[];
   directDownloadUrl?: string;
-}
-
-export type ResponseValueType = string[] | string | number | boolean | null | boolean[];
-
-export interface Response {
-  id: string;
-  status: ResponseStatusType;
-  value: ResponseValueType;
 }
 
 export interface UnitState {

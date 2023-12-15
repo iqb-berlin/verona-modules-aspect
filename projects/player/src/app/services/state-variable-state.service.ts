@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElementCodeService } from 'player/src/app/classes/element-code-service';
-import { ResponseValueType } from 'player/modules/verona/models/verona';
+import { ResponseValueType } from '@iqb/responses';
 
 @Injectable({
   providedIn: 'root'

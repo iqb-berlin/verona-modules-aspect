@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import {
-  Response,
   PagingMode,
   UnitState,
   VopPageNavigationCommand,
   VopStartCommand
 } from 'player/modules/verona/models/verona';
 import { Page } from 'common/models/page';
+import { Response } from '@iqb/responses';
 
 @Component({
   selector: 'aspect-unit-menu',

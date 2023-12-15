@@ -48,8 +48,8 @@ export class RadioButtonGroupComplexElement extends InputElement
     return new RadioButtonGroupComplexElement(this);
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'integer',
       format: '',
@@ -59,7 +59,7 @@ export class RadioButtonGroupComplexElement extends InputElement
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   private getVariableInfoValues(): VariableValue[] {

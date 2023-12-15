@@ -118,7 +118,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
   }
 
   getVariableInfos(): VariableInfo[] {
-    return this.rows.map(row => row.getVariableInfosOfChild(this.options));
+    return this.rows.map(row => row.getVariableInfoOfRow(this.options));
   }
 }
 

@@ -64,8 +64,8 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string',
       format: '',
@@ -75,7 +75,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 
   getElementComponent(): Type<ElementComponent> {

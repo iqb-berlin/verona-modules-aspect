@@ -50,8 +50,8 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'integer',
       format: '',
@@ -61,7 +61,7 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   private getVariableInfoValues(): VariableValue[] {

@@ -69,9 +69,9 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
         this.highlightableOrange;
   }
 
-  getVariableInfos(): VariableInfo | VariableInfo[] {
+  getVariableInfos(): VariableInfo[] {
     if (!this.isHighlightable()) return [];
-    return {
+    return [{
       id: this.id,
       type: 'string',
       format: 'text-selection',
@@ -81,7 +81,7 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 
   getElementComponent(): Type<ElementComponent> {

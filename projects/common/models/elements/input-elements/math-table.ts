@@ -67,8 +67,8 @@ export class MathTableElement extends UIElement implements MathTableProperties {
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string',
       format: 'math-table',
@@ -78,7 +78,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 
   getElementComponent(): Type<ElementComponent> {

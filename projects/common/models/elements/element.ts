@@ -125,7 +125,7 @@ export abstract class UIElement implements UIElementProperties {
   }
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
-  getVariableInfos(options?: unknown): VariableInfo | VariableInfo[] {
+  getVariableInfos(options?: unknown): VariableInfo[] {
     return [];
   }
 
@@ -289,8 +289,8 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string', // TODO: change to float after updating npm package!
       format: 'non-negative',
@@ -300,7 +300,7 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 }
 

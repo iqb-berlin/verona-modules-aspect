@@ -38,8 +38,8 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
     return new CheckboxElement(this);
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'boolean',
       format: '',
@@ -49,7 +49,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   private getVariableInfoValues(): VariableValue[] {

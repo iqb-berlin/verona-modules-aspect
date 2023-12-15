@@ -64,7 +64,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
     return `${this.id}_${variableName}`;
   }
 
-  getVariableAnswerScheme(variableName: string): VariableInfo {
+  getVariableInfoOfGeometryVariable(variableName: string): VariableInfo {
     return {
       id: this.getGeometryVariableId(variableName),
       type: 'string',
@@ -79,7 +79,8 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
   }
 
   getVariableInfos(): VariableInfo[] {
-    const answerSchemes = this.trackedVariables.map(variable => this.getVariableAnswerScheme(variable));
+    const answerSchemes = this.trackedVariables.map(variable => this
+      .getVariableInfoOfGeometryVariable(variable));
     answerSchemes.push({
       id: this.id,
       type: 'string',

@@ -88,8 +88,8 @@ export class DropListElement extends InputElement implements DropListProperties 
     }
   }
 
-  getVariableInfos(options: DropListElement[]): VariableInfo {
-    return {
+  getVariableInfos(options: DropListElement[]): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string',
       format: '',
@@ -99,7 +99,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   private getVariableInfoValues(dropLists: DropListElement[]): VariableValue[] {

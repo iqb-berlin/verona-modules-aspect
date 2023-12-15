@@ -58,8 +58,8 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
     return new HotspotImageElement(this);
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'boolean',
       format: '',
@@ -69,7 +69,7 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
       valuePositionLabels: this.getAnswerSchemePositionLabels(),
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   private getAnswerSchemePositionLabels(): string[] {

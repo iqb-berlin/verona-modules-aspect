@@ -35,8 +35,8 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string',
       format: '',
@@ -46,7 +46,7 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 
   getElementComponent(): Type<ElementComponent> {

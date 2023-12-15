@@ -39,7 +39,7 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     }
   }
 
-  getVariableInfosOfChild(options: TextImageLabel[]): VariableInfo {
+  getVariableInfoOfRow(options: TextImageLabel[]): VariableInfo {
     return {
       id: this.id,
       type: 'integer',

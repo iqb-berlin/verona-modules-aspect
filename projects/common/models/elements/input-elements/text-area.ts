@@ -63,8 +63,8 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string',
       format: '',
@@ -74,7 +74,7 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 
   getElementComponent(): Type<ElementComponent> {

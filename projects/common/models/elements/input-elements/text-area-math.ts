@@ -47,8 +47,8 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string',
       format: 'math-ml',
@@ -58,7 +58,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 
   getElementComponent(): Type<ElementComponent> {

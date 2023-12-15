@@ -42,8 +42,8 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     return new MathFieldElement(this);
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'string',
       format: 'latex',
@@ -53,7 +53,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
       valuePositionLabels: [],
       page: '',
       valuesComplete: false
-    };
+    }];
   }
 
   getElementComponent(): Type<ElementComponent> {

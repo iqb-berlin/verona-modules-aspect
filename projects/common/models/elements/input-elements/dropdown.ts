@@ -46,8 +46,8 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     return new DropdownElement(this);
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'integer',
       format: '',
@@ -57,7 +57,7 @@ export class DropdownElement extends InputElement implements PositionedUIElement
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   private getVariableInfoValues(): VariableValue[] {

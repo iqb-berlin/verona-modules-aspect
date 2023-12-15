@@ -53,8 +53,8 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     }
   }
 
-  getVariableInfos(): VariableInfo {
-    return {
+  getVariableInfos(): VariableInfo[] {
+    return [{
       id: this.id,
       type: 'integer',
       format: '',
@@ -64,7 +64,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   private getVariableInfoValues(): VariableValue[] {

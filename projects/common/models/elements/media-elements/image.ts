@@ -56,9 +56,9 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
     return ImageComponent;
   }
 
-  getVariableInfos(): VariableInfo | VariableInfo[] {
+  getVariableInfos(): VariableInfo[] {
     if (!this.magnifier) return [];
-    return {
+    return [{
       id: this.id,
       type: 'boolean',
       format: '',
@@ -68,7 +68,7 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
-    };
+    }];
   }
 
   // eslint-disable-next-line class-methods-use-this

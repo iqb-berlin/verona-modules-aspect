@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
   BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -38,7 +38,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
     return new CheckboxElement(this);
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'boolean',
@@ -46,11 +46,13 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       multiple: false,
       nullable: false,
       values: this.getAnswerSchemeValues(),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(): VariableValue[] {
     return [
       { value: 'true', label: `Angekreuzt: ${this.label}` },
       { value: 'false', label: `Nicht Angekreuzt: ${this.label}` }

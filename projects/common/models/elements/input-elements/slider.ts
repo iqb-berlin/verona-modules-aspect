@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SliderComponent } from 'common/components/input-elements/slider.component';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -50,7 +50,7 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
@@ -58,14 +58,16 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
       multiple: false,
       nullable: !this.value && this.value !== 0,
       values: this.getAnswerSchemeValues(),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(): VariableValue[] {
     return Array.from({ length: (this.maxValue + 1 - this.minValue) }, (_, index) => (
       { value: (index + this.minValue).toString(), label: (index + this.minValue).toString() }
-    )) as AnswerSchemeValue[];
+    )) as VariableValue[];
   }
 
   getElementComponent(): Type<ElementComponent> {

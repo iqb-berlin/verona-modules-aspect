@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subject } from 'rxjs';
 import { Unit } from 'common/models/unit';
-
-
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +40,7 @@ export class VeronaAPIService {
     return this.resourceURL || 'assets';
   }
 
-  private send(message: Record<string, string | AnswerScheme[]>): void {
+  private send(message: Record<string, string | VariableInfo[]>): void {
     // prevent posts in local (dev) mode
     if (!this.isStandalone) {
       window.parent.postMessage(message, '*');

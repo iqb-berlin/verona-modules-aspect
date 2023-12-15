@@ -6,7 +6,7 @@ import {
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
 
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -69,7 +69,7 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
         this.highlightableOrange;
   }
 
-  getAnswerScheme(): AnswerScheme | AnswerScheme[] {
+  getAnswerScheme(): VariableInfo | VariableInfo[] {
     if (!this.isHighlightable()) return [];
     return {
       id: this.id,
@@ -78,6 +78,8 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
       multiple: true,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

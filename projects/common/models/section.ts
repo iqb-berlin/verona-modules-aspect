@@ -5,7 +5,7 @@ import {
   UIElementValue,
   Measurement
 } from 'common/models/elements/element';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/util/element.factory';
 import { environment } from 'common/environment';
@@ -85,7 +85,7 @@ export class Section {
     return allElements;
   }
 
-  getAnswerScheme(dropLists: DropListElement[]): AnswerScheme[] {
+  getAnswerScheme(dropLists: DropListElement[]): VariableInfo[] {
     return this.getAllElements()
       .map(element => ((element.type === 'drop-list') ?
         element.getAnswerScheme(dropLists) :

@@ -4,7 +4,7 @@ import {
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -42,7 +42,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     return new MathFieldElement(this);
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'string',
@@ -50,6 +50,8 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

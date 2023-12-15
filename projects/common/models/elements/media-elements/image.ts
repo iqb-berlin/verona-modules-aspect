@@ -7,8 +7,7 @@ import { ImageComponent } from 'common/components/media-elements/image.component
 import {
   PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
-
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
@@ -57,7 +56,7 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
     return ImageComponent;
   }
 
-  getAnswerScheme(): AnswerScheme | AnswerScheme[] {
+  getAnswerScheme(): VariableInfo | VariableInfo[] {
     if (!this.magnifier) return [];
     return {
       id: this.id,
@@ -66,12 +65,14 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
       multiple: false,
       nullable: false,
       values: this.getAnswerSchemeValues(),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(): VariableValue[] {
     return [
       { value: 'true', label: 'Lupe benutzt' },
       { value: 'false', label: 'Lupe nicht benutzt' }

@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -35,7 +35,7 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'string',
@@ -43,6 +43,8 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
       multiple: false,
       nullable: true,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

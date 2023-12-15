@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -70,7 +70,7 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'string',
@@ -78,6 +78,8 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

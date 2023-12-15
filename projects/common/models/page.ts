@@ -1,6 +1,6 @@
 import { Section } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
@@ -45,7 +45,7 @@ export class Page {
     return this.sections.map(section => section.getAllElements(elementType)).flat();
   }
 
-  getAnswerScheme(dropLists: DropListElement[]): AnswerScheme[] {
+  getAnswerScheme(dropLists: DropListElement[]): VariableInfo[] {
     return this.sections.map(section => section.getAnswerScheme(dropLists)).flat();
   }
 }

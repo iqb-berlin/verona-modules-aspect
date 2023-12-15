@@ -9,7 +9,7 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math.component';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
@@ -47,7 +47,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'string',
@@ -55,6 +55,8 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

@@ -9,10 +9,10 @@ import {
 import {
   BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { TextLabel } from 'common/models/elements/label-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 
 export class ToggleButtonElement extends InputElement implements ToggleButtonProperties {
   type: UIElementType = 'toggle-button';
@@ -53,7 +53,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
@@ -61,11 +61,13 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       multiple: false,
       nullable: false,
       values: this.getAnswerSchemeValues(),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(): VariableValue[] {
     return this.options
       .map((option, index) => ({
         value: (index + 1).toString(),

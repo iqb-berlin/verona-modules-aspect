@@ -1,6 +1,6 @@
 import { Page } from 'common/models/page';
 import { UIElement } from 'common/models/elements/element';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
@@ -33,7 +33,7 @@ export class Unit implements UnitProperties {
     return this.pages.map(page => page.getAllElements(elementType)).flat();
   }
 
-  getAnswerScheme(): AnswerScheme[] {
+  getAnswerScheme(): VariableInfo[] {
     const dropLists: DropListElement[] = [
       ...this.getAllElements('drop-list') as DropListElement[]
     ];

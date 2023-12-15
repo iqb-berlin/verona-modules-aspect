@@ -12,7 +12,7 @@ import {
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 
 export class LikertElement extends CompoundElement implements PositionedUIElement, OptionElement, LikertProperties {
   type: UIElementType = 'likert';
@@ -117,7 +117,7 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     return new LikertElement(this);
   }
 
-  getAnswerScheme(): AnswerScheme[] {
+  getAnswerScheme(): VariableInfo[] {
     return this.rows.map(row => row.getChildAnswerScheme(this.options));
   }
 }

@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 import { TextLabel } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
@@ -54,7 +54,7 @@ export class RadioButtonGroupElement extends InputElement
     return new RadioButtonGroupElement(this);
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
@@ -62,11 +62,13 @@ export class RadioButtonGroupElement extends InputElement
       multiple: false,
       nullable: false,
       values: this.getAnswerSchemeValues(),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(): VariableValue[] {
     return this.options
       .map((option, index) => ({
         value: (index + 1).toString(),

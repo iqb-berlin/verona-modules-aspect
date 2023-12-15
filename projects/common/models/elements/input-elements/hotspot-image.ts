@@ -7,7 +7,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import {
   PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
@@ -58,20 +58,21 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
     return new HotspotImageElement(this);
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'boolean',
       format: '',
       multiple: true,
       nullable: false,
-      // values: this.getAnswerSchemeValues(),
-      valuePositionLabels: this.getAnswerSchemeValues(),
+      values: [],
+      valuePositionLabels: this.getAnswerSchemePositionLabels(),
+      page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): string[] {
+  private getAnswerSchemePositionLabels(): string[] {
     return this.value
       // eslint-disable-next-line max-len
       .map((hotspot, index) => `${hotspot.shape}(${index})`

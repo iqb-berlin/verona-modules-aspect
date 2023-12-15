@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropdownComponent } from 'common/components/input-elements/dropdown.component';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 import { TextLabel } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
@@ -46,7 +46,7 @@ export class DropdownElement extends InputElement implements PositionedUIElement
     return new DropdownElement(this);
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
@@ -54,11 +54,13 @@ export class DropdownElement extends InputElement implements PositionedUIElement
       multiple: false,
       nullable: this.allowUnset,
       values: this.getAnswerSchemeValues(),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(): VariableValue[] {
     return this.options
       .map((option, index) => ({
         value: (index + 1).toString(),

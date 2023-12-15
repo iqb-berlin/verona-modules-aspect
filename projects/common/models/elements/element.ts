@@ -3,7 +3,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { Type } from '@angular/core';
 import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+
 import { Label, TextLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
@@ -20,6 +20,7 @@ import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
 import { MathTableRow } from 'common/models/elements/input-elements/math-table';
+import { VariableInfo } from '@iqb/responses';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
@@ -124,7 +125,7 @@ export abstract class UIElement implements UIElementProperties {
   }
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
-  getAnswerScheme(options?: unknown): AnswerScheme | AnswerScheme[] {
+  getAnswerScheme(options?: unknown): VariableInfo | VariableInfo[] {
     return [];
   }
 
@@ -288,14 +289,16 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
-      type: 'string',
-      format: 'playback',
+      type: 'string', // TODO: change to float after updating npm package!
+      format: 'non-negative',
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

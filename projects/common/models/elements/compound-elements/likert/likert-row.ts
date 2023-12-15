@@ -6,10 +6,10 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import {
   LikertRadioButtonGroupComponent
 } from 'common/components/compound-elements/likert/likert-radio-button-group.component';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {
   type: UIElementType = 'likert-row';
@@ -39,7 +39,7 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     }
   }
 
-  getChildAnswerScheme(options: TextImageLabel[]): AnswerScheme {
+  getChildAnswerScheme(options: TextImageLabel[]): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
@@ -47,12 +47,14 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
       multiple: false,
       nullable: false,
       values: this.getAnswerSchemeValues(options),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private getAnswerSchemeValues(options: TextImageLabel[]): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(options: TextImageLabel[]): VariableValue[] {
     return options
       .map((option, index) => ({
         value: (index + 1).toString(),

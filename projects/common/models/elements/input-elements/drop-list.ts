@@ -4,7 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list.component';
-import { AnswerScheme, AnswerSchemeValue } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo, VariableValue } from '@iqb/responses';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PropertyGroupGenerators
@@ -88,7 +88,7 @@ export class DropListElement extends InputElement implements DropListProperties 
     }
   }
 
-  getAnswerScheme(options: DropListElement[]): AnswerScheme {
+  getAnswerScheme(options: DropListElement[]): VariableInfo {
     return {
       id: this.id,
       type: 'string',
@@ -96,11 +96,13 @@ export class DropListElement extends InputElement implements DropListProperties 
       multiple: true,
       nullable: false,
       values: this.getAnswerSchemeValues(options),
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(dropLists: DropListElement[]): AnswerSchemeValue[] {
+  private getAnswerSchemeValues(dropLists: DropListElement[]): VariableValue[] {
     const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id));
     if (valueDropLists.length || this.isSortingList()) {
       return [this, ...valueDropLists]

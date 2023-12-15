@@ -8,7 +8,7 @@ import {
   PositionProperties,
   PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
@@ -64,7 +64,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
     return `${this.id}_${variableName}`;
   }
 
-  getVariableAnswerScheme(variableName: string): AnswerScheme {
+  getVariableAnswerScheme(variableName: string): VariableInfo {
     return {
       id: this.getGeometryVariableId(variableName),
       type: 'string',
@@ -72,11 +72,13 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }
 
-  getAnswerScheme(): AnswerScheme[] {
+  getAnswerScheme(): VariableInfo[] {
     const answerSchemes = this.trackedVariables.map(variable => this.getVariableAnswerScheme(variable));
     answerSchemes.push({
       id: this.id,
@@ -85,6 +87,8 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     });
     return answerSchemes;

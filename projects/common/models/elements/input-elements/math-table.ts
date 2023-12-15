@@ -1,5 +1,5 @@
 import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
+import { VariableInfo } from '@iqb/responses';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
@@ -67,7 +67,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'string',
@@ -75,6 +75,8 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

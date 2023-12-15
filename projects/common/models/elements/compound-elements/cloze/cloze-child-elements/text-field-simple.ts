@@ -9,9 +9,9 @@ import {
 import {
   BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
-import { AnswerScheme } from 'common/models/elements/answer-scheme-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
+import { VariableInfo } from '@iqb/responses';
 
 export class TextFieldSimpleElement extends TextInputElement implements TextFieldSimpleProperties {
   type: UIElementType = 'text-field-simple';
@@ -64,7 +64,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     }
   }
 
-  getAnswerScheme(): AnswerScheme {
+  getAnswerScheme(): VariableInfo {
     return {
       id: this.id,
       type: 'string',
@@ -72,6 +72,8 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
       multiple: false,
       nullable: false,
       values: [],
+      valuePositionLabels: [],
+      page: '',
       valuesComplete: false
     };
   }

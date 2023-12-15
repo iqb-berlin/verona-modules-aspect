@@ -66,7 +66,6 @@ export class VeronaAPIService {
       unitDefinitionType: `${unit.type}@${unit.version}`,
       variables: unit.getVariableInfos()
     });
-    console.log('variables', unit.getVariableInfos());
   }
 
   get voeStartCommand(): Observable<VoeStartCommand> {

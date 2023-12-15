@@ -50,21 +50,21 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: !this.value && this.value !== 0,
-      values: this.getAnswerSchemeValues(),
+      values: this.getVariableInfoValues(),
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): VariableValue[] {
+  private getVariableInfoValues(): VariableValue[] {
     return Array.from({ length: (this.maxValue + 1 - this.minValue) }, (_, index) => (
       { value: (index + this.minValue).toString(), label: (index + this.minValue).toString() }
     )) as VariableValue[];

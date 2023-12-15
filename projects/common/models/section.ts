@@ -85,11 +85,11 @@ export class Section {
     return allElements;
   }
 
-  getAnswerScheme(dropLists: DropListElement[]): VariableInfo[] {
+  getVariableInfos(dropLists: DropListElement[]): VariableInfo[] {
     return this.getAllElements()
       .map(element => ((element.type === 'drop-list') ?
-        element.getAnswerScheme(dropLists) :
-        element.getAnswerScheme()))
+        element.getVariableInfos(dropLists) :
+        element.getVariableInfos()))
       .flat();
   }
 }

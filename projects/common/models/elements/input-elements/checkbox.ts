@@ -38,21 +38,21 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
     return new CheckboxElement(this);
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'boolean',
       format: '',
       multiple: false,
       nullable: false,
-      values: this.getAnswerSchemeValues(),
+      values: this.getVariableInfoValues(),
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): VariableValue[] {
+  private getVariableInfoValues(): VariableValue[] {
     return [
       { value: 'true', label: `Angekreuzt: ${this.label}` },
       { value: 'false', label: `Nicht Angekreuzt: ${this.label}` }

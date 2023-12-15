@@ -42,7 +42,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     return new MathFieldElement(this);
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string',

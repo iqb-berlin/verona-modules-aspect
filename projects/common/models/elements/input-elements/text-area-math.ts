@@ -47,7 +47,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string',

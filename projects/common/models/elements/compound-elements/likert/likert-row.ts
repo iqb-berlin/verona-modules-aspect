@@ -39,14 +39,14 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
     }
   }
 
-  getChildAnswerScheme(options: TextImageLabel[]): VariableInfo {
+  getVariableInfosOfChild(options: TextImageLabel[]): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: false,
-      values: this.getAnswerSchemeValues(options),
+      values: this.getVariableInfoValues(options),
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
@@ -54,7 +54,7 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private getAnswerSchemeValues(options: TextImageLabel[]): VariableValue[] {
+  private getVariableInfoValues(options: TextImageLabel[]): VariableValue[] {
     return options
       .map((option, index) => ({
         value: (index + 1).toString(),

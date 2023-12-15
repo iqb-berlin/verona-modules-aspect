@@ -48,21 +48,21 @@ export class RadioButtonGroupComplexElement extends InputElement
     return new RadioButtonGroupComplexElement(this);
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'integer',
       format: '',
       multiple: false,
       nullable: false,
-      values: this.getAnswerSchemeValues(),
+      values: this.getVariableInfoValues(),
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(): VariableValue[] {
+  private getVariableInfoValues(): VariableValue[] {
     return this.options
       .map((option, index) => ({
         value: (index + 1).toString(),

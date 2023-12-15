@@ -69,7 +69,7 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
         this.highlightableOrange;
   }
 
-  getAnswerScheme(): VariableInfo | VariableInfo[] {
+  getVariableInfos(): VariableInfo | VariableInfo[] {
     if (!this.isHighlightable()) return [];
     return {
       id: this.id,

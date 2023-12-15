@@ -45,8 +45,8 @@ export class Page {
     return this.sections.map(section => section.getAllElements(elementType)).flat();
   }
 
-  getAnswerScheme(dropLists: DropListElement[]): VariableInfo[] {
-    return this.sections.map(section => section.getAnswerScheme(dropLists)).flat();
+  getVariableInfos(dropLists: DropListElement[]): VariableInfo[] {
+    return this.sections.map(section => section.getVariableInfos(dropLists)).flat();
   }
 }
 

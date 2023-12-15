@@ -88,21 +88,21 @@ export class DropListElement extends InputElement implements DropListProperties 
     }
   }
 
-  getAnswerScheme(options: DropListElement[]): VariableInfo {
+  getVariableInfos(options: DropListElement[]): VariableInfo {
     return {
       id: this.id,
       type: 'string',
       format: '',
       multiple: true,
       nullable: false,
-      values: this.getAnswerSchemeValues(options),
+      values: this.getVariableInfoValues(options),
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
     };
   }
 
-  private getAnswerSchemeValues(dropLists: DropListElement[]): VariableValue[] {
+  private getVariableInfoValues(dropLists: DropListElement[]): VariableValue[] {
     const valueDropLists = dropLists.filter(dropList => dropList.connectedTo.includes(this.id));
     if (valueDropLists.length || this.isSortingList()) {
       return [this, ...valueDropLists]

@@ -58,7 +58,7 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
     return new HotspotImageElement(this);
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'boolean',

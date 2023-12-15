@@ -64,7 +64,7 @@ export class VeronaAPIService {
       timeStamp: String(Date.now()),
       unitDefinition: JSON.stringify(unit),
       unitDefinitionType: `${unit.type}@${unit.version}`,
-      variables: unit.getAnswerScheme()
+      variables: unit.getVariableInfos()
     });
   }
 

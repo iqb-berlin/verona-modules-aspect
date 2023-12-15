@@ -70,7 +70,7 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string',

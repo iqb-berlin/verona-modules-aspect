@@ -78,7 +78,7 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
     };
   }
 
-  getAnswerScheme(): VariableInfo[] {
+  getVariableInfos(): VariableInfo[] {
     const answerSchemes = this.trackedVariables.map(variable => this.getVariableAnswerScheme(variable));
     answerSchemes.push({
       id: this.id,

@@ -33,11 +33,11 @@ export class Unit implements UnitProperties {
     return this.pages.map(page => page.getAllElements(elementType)).flat();
   }
 
-  getAnswerScheme(): VariableInfo[] {
+  getVariableInfos(): VariableInfo[] {
     const dropLists: DropListElement[] = [
       ...this.getAllElements('drop-list') as DropListElement[]
     ];
-    return this.pages.map(page => page.getAnswerScheme(dropLists)).flat();
+    return this.pages.map(page => page.getVariableInfos(dropLists)).flat();
   }
 
   /* check if movement is allowed

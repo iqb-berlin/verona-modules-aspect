@@ -35,7 +35,7 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string',

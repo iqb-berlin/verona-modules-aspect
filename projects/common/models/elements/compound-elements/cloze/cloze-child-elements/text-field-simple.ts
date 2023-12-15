@@ -64,7 +64,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string',

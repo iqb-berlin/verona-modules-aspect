@@ -125,7 +125,7 @@ export abstract class UIElement implements UIElementProperties {
   }
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
-  getAnswerScheme(options?: unknown): VariableInfo | VariableInfo[] {
+  getVariableInfos(options?: unknown): VariableInfo | VariableInfo[] {
     return [];
   }
 
@@ -289,7 +289,7 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string', // TODO: change to float after updating npm package!

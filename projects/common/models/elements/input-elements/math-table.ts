@@ -67,7 +67,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string',

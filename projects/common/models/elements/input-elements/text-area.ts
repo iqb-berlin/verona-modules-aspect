@@ -63,7 +63,7 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
     }
   }
 
-  getAnswerScheme(): VariableInfo {
+  getVariableInfos(): VariableInfo {
     return {
       id: this.id,
       type: 'string',

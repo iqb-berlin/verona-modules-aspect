@@ -56,7 +56,7 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
     return ImageComponent;
   }
 
-  getAnswerScheme(): VariableInfo | VariableInfo[] {
+  getVariableInfos(): VariableInfo | VariableInfo[] {
     if (!this.magnifier) return [];
     return {
       id: this.id,
@@ -64,7 +64,7 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
       format: '',
       multiple: false,
       nullable: false,
-      values: this.getAnswerSchemeValues(),
+      values: this.getVariableInfoValues(),
       valuePositionLabels: [],
       page: '',
       valuesComplete: true
@@ -72,7 +72,7 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private getAnswerSchemeValues(): VariableValue[] {
+  private getVariableInfoValues(): VariableValue[] {
     return [
       { value: 'true', label: 'Lupe benutzt' },
       { value: 'false', label: 'Lupe nicht benutzt' }

@@ -1,5 +1,4 @@
 import {
-  ChangeDetectorRef,
   Component, ComponentRef, EventEmitter,
   Input, OnDestroy, OnInit, Output
 } from '@angular/core';
@@ -39,8 +38,7 @@ export class ElementModelPropertiesComponent implements OnInit, OnDestroy {
 
   constructor(public unitService: UnitService,
               public selectionService: SelectionService,
-              public dialogService: DialogService,
-              private cdr: ChangeDetectorRef) { }
+              public dialogService: DialogService) { }
 
   ngOnInit(): void {
     this.initGeometryListener();
@@ -54,8 +52,7 @@ export class ElementModelPropertiesComponent implements OnInit, OnDestroy {
           return of(false);
         }
         return (this.selectionService.selectedElementComponents[0].childComponent as ComponentRef<GeometryComponent>)
-          .instance.isLoaded
-          .pipe(takeUntil(this.ngUnsubscribe));
+          .instance.isLoaded.asObservable();
       }))
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((isLoaded: boolean) => {

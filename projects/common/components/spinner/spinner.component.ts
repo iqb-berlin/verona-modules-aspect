@@ -21,9 +21,11 @@ export class SpinnerComponent implements OnInit {
   ngOnInit(): void {
     this.isLoaded
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this.isLoading = false;
-        this.changeDetectionRef.detectChanges();
+      .subscribe(isLoaded => {
+        if (isLoaded) {
+          this.isLoading = false;
+          this.changeDetectionRef.detectChanges();
+        }
       });
   }
 

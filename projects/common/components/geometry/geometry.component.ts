@@ -1,7 +1,9 @@
 import {
   AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, Renderer2
 } from '@angular/core';
-import { debounceTime, Subject, Subscription } from 'rxjs';
+import {
+  BehaviorSubject, debounceTime, Subject, Subscription
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
@@ -40,7 +42,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   @Input() appDefinition: string | undefined;
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
 
-  isLoaded: Subject<boolean> = new Subject<boolean>();
+  isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   geoGebraAPI!: any;
 
   private ngUnsubscribe = new Subject<void>();

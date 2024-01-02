@@ -16,7 +16,7 @@ import { DragOperatorService } from './drag-operator.service';
 @Component({
   selector: 'aspect-drop-list',
   template: `
-    <div *ngIf="clozeContext" [style.width.px]="0">&nbsp;</div>
+    <span *ngIf="clozeContext" [style.width.px]="0">&nbsp;</span>
     <!-- TODO testen, ob touchstart keine Probleme macht -->
     <div class="drop-list" id="{{elementModel.id}}" #droplist
          [class.cloze-context]="clozeContext"
@@ -56,57 +56,7 @@ import { DragOperatorService } from './drag-operator.service';
     </mat-error>
     </div>
   `,
-  styles: [`
-    :host {display: flex !important; width: 100%; height: 100%;}
-    .drop-list {
-      width: 100%; height: 100%;
-      display: flex;
-      gap: 5px;
-      box-sizing: border-box;
-      padding: 5px;
-      background-color: rgb(244, 244, 242);
-      border-radius: 5px;
-      cursor: grab;
-    }
-    .drop-list.row {
-      flex-direction: row;
-    }
-    .drop-list.column {
-      flex-direction: column;
-    }
-    .drop-list.float {
-      place-content: center space-around; align-items: center; flex-flow: row wrap;
-    }
-    .cloze-context.drop-list {padding: 0; color: transparent;}
-    .drop-list.hovered {filter: brightness(80%)}
-    .drop-list.isHighlighted {
-      border: 2px solid;
-      padding: 3px;
-    }
-    .drop-list-item {
-      padding: 10px;
-      border-radius: 5px;
-      cursor: grab;
-      transition: all .3s linear;
-    }
-    .image-item {
-      padding: 5px;
-    }
-    .cloze-context .drop-list-item {
-      padding: 0 5px;
-      justify-content: center;
-    }
-    .drop-list-item.show-as-placeholder { /* set via controller */
-      background-color: #ccc !important;
-      color: transparent !important;
-      pointer-events: none;
-    }
-    .cloze-context .error-message {
-      white-space: nowrap;
-      font-size: smaller;
-    }
-    `
-  ]
+  styleUrls: ['./drop-list.component.css']
 })
 export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: DropListElement;

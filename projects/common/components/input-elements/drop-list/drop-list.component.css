@@ -51,6 +51,7 @@
 
 .image-item {
   padding: 0;
+  align-self: flex-start;
 }
 
 .cloze-context .drop-list-item {

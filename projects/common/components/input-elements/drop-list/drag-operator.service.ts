@@ -154,12 +154,10 @@ export class DragOperatorService {
       return;
     }
     if (DragOperatorService.isReplace(targetList, this.dropLists)) {
-      this.moveItem(
-        targetList.elementFormControl.value[0],
-        targetList,
-        0,
-        this.dropLists[targetList.elementFormControl.value[0].originListID]
-      );
+      const originList = this.dropLists[targetList.elementFormControl.value[0].originListID];
+      this.moveItem(targetList.elementFormControl.value[0], targetList,0, originList);
+      originList.updateFormvalue();
+      originList.refreshItemsFromForm();
     }
     // TODO haut logisch noch nicht ganz hin mit den festen Indize
     const targetIndex = this.dragOperation?.sortingPlaceholderIndex !== undefined ?

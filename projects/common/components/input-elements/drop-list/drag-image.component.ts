@@ -32,7 +32,7 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
       padding: 0 5px;
     }
     .image-item {
-      padding: 5px;
+      padding: 0;
     }
   `
   ]

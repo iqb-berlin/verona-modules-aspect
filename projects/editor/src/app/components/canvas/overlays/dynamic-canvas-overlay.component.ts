@@ -20,7 +20,8 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
          [style.outline]="isSelected ? 'purple solid 1px' : ''"
          [style.z-index]="isSelected ? 2 : 1">
       <div *cdkDragPlaceholder></div>
-      <div [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width + 'px' : '100%'"
+      <div [class.prevent-interaction]="preventInteraction"
+           [style.width]="element.dimensions.isWidthFixed ? element.dimensions.width + 'px' : '100%'"
            [style.height]="element.dimensions.isHeightFixed ? element.dimensions.height + 'px' : '100%'"
            [style.min-width]="element.dimensions.minWidth ? element.dimensions.minWidth + 'px' : null"
            [style.max-width]="element.dimensions.maxWidth ? element.dimensions.maxWidth + 'px' : null"
@@ -35,7 +36,8 @@ import { CanvasElementOverlay } from './canvas-element-overlay';
     '.draggable-element:active {cursor: grabbing}',
     '.temporaryHighlight {z-index: 100}',
     '.centered-horizontal {display: flex; justify-content: center;}',
-    '.centered-vertical {display: flex; align-items: center;}'
+    '.centered-vertical {display: flex; align-items: center;}',
+    ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}'
   ]
 })
 export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {

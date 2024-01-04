@@ -23,6 +23,8 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;
+  // Make children not clickable. This way there is no interference with drag-and-drop via overlay.
+  preventInteraction = true;
   childComponent!: ComponentRef<ElementComponent | CompoundElementComponent>;
   private ngUnsubscribe = new Subject<void>();
 
@@ -41,9 +43,6 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     if (this.childComponent.instance instanceof FormElementComponent) {
       (this.childComponent.instance as FormElementComponent).elementFormControl.setValue(this.element.value);
     }
-
-    // Make children not clickable. This way the only relevant events are managed by the overlay.
-    this.childComponent.location.nativeElement.style.pointerEvents = 'none';
 
     if (this.childComponent.instance instanceof ClozeComponent) {
       this.childComponent.instance.editorMode = true;
@@ -111,11 +110,11 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   }
 
   setInteractionEnabled(isEnabled: boolean): void {
-    this.childComponent.location.nativeElement.style.pointerEvents = isEnabled ? 'unset' : 'none';
+    this.preventInteraction = !isEnabled;
   }
 
   isInteractionEnabled(): boolean {
-    return this.childComponent.location.nativeElement.style.pointerEvents !== 'none';
+    return !this.preventInteraction
   }
 
   ngOnDestroy(): void {

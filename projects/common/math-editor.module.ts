@@ -142,24 +142,17 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
             {
               class: 'action',
               label: "<svg><use xlink:href='#svg-arrow-left' /></svg>",
-              // command: ['performWithFeedback', 'moveToPreviousChar']
-              // command: ['performWithFeedback', 'moveToPreviousChar']
-              command: ['switchMode', 'math',
-                '\\frac{#0}{#0}']
-              // command: ['insert', '\\frac{#0}{#0}']
+              command: ['performWithFeedback', 'moveToPreviousChar']
             },
             {
               class: 'action',
               label: "<svg><use xlink:href='#svg-arrow-right' /></svg>",
-              // command: ['performWithFeedback', 'moveToNextChar']
-              command: ['switchMode', 'math']
+              command: ['performWithFeedback', 'moveToNextChar']
             },
             {
               class: 'action font-glyph bottom right',
               label: '&#x232b;',
-              // ifMode: 'math',
               command: ['performWithFeedback', 'deleteBackward']
-              // command: ['insert', '\\sqrt{#0}', { format: 'latex' }]
             }
           ]
         ]

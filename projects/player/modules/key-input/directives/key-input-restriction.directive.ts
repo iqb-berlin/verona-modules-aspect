@@ -44,6 +44,11 @@ export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnD
         event.preventDefault();
         event.stopPropagation();
       }
+    } else if (keyboardEvent.key === 'Delete') {
+      if (!this.canEdit(false)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
     } else if (!keyboardEvent || !this.allowedKeys.includes(keyboardEvent.key)) {
       event.preventDefault();
       event.stopPropagation();

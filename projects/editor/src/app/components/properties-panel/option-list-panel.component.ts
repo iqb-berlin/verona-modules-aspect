@@ -25,7 +25,10 @@ import { Label } from 'common/models/elements/label-interfaces';
            (cdkDropListDropped)="moveListValue($event)">
         <div *ngFor="let item of itemList; let i = index" cdkDrag
              class="option-draggable fx-row-start-stretch">
-          <div class="fx-flex fx-align-self-center" [innerHTML]="item.text | safeResourceHTML"></div>
+          <div class="item-box fx-align-self-center">
+            <div *ngIf="$any(item).id" class="item-id">{{ $any(item).id }}</div>
+            <div [innerHTML]="item.text | safeResourceHTML"></div>
+          </div>
           <img [src]="$any(item).imgSrc"
                [style.object-fit]="'scale-down'" [style.height.px]="40">
           <button mat-icon-button color="primary"
@@ -41,6 +44,20 @@ import { Label } from 'common/models/elements/label-interfaces';
     </fieldset>
   `,
   styles: [`
+    .item-box {
+      align-self: center;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 0;
+    }
+    .item-id {
+      align-self: start;
+      font-size: smaller;
+      margin-bottom: 4px;
+      background-color: lightgray;
+      padding: 0 5px;
+      border-radius: 5px;
+    }
     .fx-column-start-stretch {
       box-sizing: border-box;
       display: flex;
@@ -48,22 +65,12 @@ import { Label } from 'common/models/elements/label-interfaces';
       justify-content: flex-start;
       align-items: stretch;
     }
-
     .fx-row-start-stretch {
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
       align-items: stretch;
-    }
-
-    .fx-align-self-center {
-      align-self: center;
-    }
-
-    .fx-flex {
-      flex: 1 1 0;
-      box-sizing: border-box;
     }
   `]
 })

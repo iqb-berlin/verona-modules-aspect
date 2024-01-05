@@ -1,9 +1,11 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  Component, EventEmitter, Input, Output, Pipe, PipeTransform
+  Component, EventEmitter, Input, Output, Pipe, PipeTransform, ViewChild
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 import { MessageService } from 'common/services/message.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -11,7 +13,6 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
 import { UnitService } from '../../../../services/unit.service';
 import { SelectionService } from '../../../../services/selection.service';
 import { DialogService } from '../../../../services/dialog.service';
-
 
 @Component({
   selector: 'aspect-drop-list-properties',
@@ -29,11 +30,16 @@ import { DialogService } from '../../../../services/dialog.service';
       <mat-form-field *ngIf="combinedProperties.connectedTo !== null"
                       class="wide-form-field" appearance="fill">
         <mat-label>{{'propertiesPanel.connectedDropLists' | translate }}</mat-label>
-        <mat-select multiple [ngModel]="combinedProperties.connectedTo"
+        <mat-select #selectConnectedLists multiple
+                    [ngModel]="combinedProperties.connectedTo"
                     (ngModelChange)="toggleConnectedDropList($event)">
           <mat-select-trigger>
             {{'propertiesPanel.connectedDropLists' | translate }} ({{$any(combinedProperties.connectedTo).length}})
           </mat-select-trigger>
+          <button mat-stroked-button [style.margin-bottom.px]="5"
+                  (click)="toggleSelectAll()">
+            Alle Auswählen
+          </button>
           <mat-option *ngFor="let id of (combinedProperties.idList | getValidDropLists)" [value]="id">
             {{id}}
           </mat-option>
@@ -111,6 +117,7 @@ export class DropListPropertiesComponent {
     value: string | number | boolean | string[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();
+  @ViewChild('selectConnectedLists') selectConnected!: MatSelect;
 
   constructor(public unitService: UnitService,
               private selectionService: SelectionService,
@@ -185,6 +192,10 @@ export class DropListPropertiesComponent {
       property: 'connectedTo',
       value: connectedDropListList
     });
+  }
+
+  toggleSelectAll() {
+    this.selectConnected.options.forEach((item: MatOption) => item.select());
   }
 }
 

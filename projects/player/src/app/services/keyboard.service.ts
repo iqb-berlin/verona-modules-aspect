@@ -5,7 +5,7 @@ import { SpellCorrectComponent } from 'common/components/input-elements/spell-co
 import {
   TextFieldSimpleComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { InputService } from '../classes/input-service';
+import { InputService } from './input-service';
 
 @Injectable({
   providedIn: 'root'

@@ -14,8 +14,9 @@
         [hasArrowKeys]="keypadService.elementComponent.elementModel.hasArrowKeys"
         [hasBackspaceKey]="keypadService.elementComponent.elementModel.hasBackspaceKey"
         [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
-        (backSpaceClicked)="keypadService.deleteCharacters(true)"
-        (keyClicked)="keypadService.enterKey($event)">
+        (backSpaceClicked)="keypadService.deleteCharacters.emit(true)"
+        (keyClicked)="keypadService.enterKey.emit($event)"
+        (select)="keypadService.select.emit($event)">
     </aspect-keypad>
   </div>
   <aspect-keyboard
@@ -25,7 +26,7 @@
       [addInputAssistanceToKeyboard]="keyboardService.addInputAssistanceToKeyboard"
       [preset]="keyboardService.preset"
       [customKeys]="keyboardService.elementComponent.elementModel.inputAssistanceCustomKeys"
-      (keyClicked)="keyboardService.enterKey($event)"
-      (backspaceClicked)="keyboardService.deleteCharacters(true)">
+      (keyClicked)="keyboardService.enterKey.emit($event)"
+      (backspaceClicked)="keyboardService.deleteCharacters.emit(true)">
   </aspect-keyboard>
 </div>

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UIElement, UIElementType } from 'common/models/elements/element';
-import { ElementGroup, ElementGroupName } from '../../../models/element-group';
+import { ElementGroupInterface, ElementGroupName } from '../../../models/element-group.interface';
 
 @Component({
   selector: 'aspect-element-group-selection',
@@ -11,7 +11,7 @@ export class ElementGroupSelectionComponent implements OnInit {
   @Input() elementModel!: UIElement;
   @Input() pageIndex!: number;
 
-  groups: ElementGroup[] = [
+  groups: ElementGroupInterface[] = [
     { name: 'textInputGroup', types: ['text-field', 'text-area', 'spell-correct'] },
     { name: 'mediaPlayerGroup', types: ['audio', 'video'] },
     {

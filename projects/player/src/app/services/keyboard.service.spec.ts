@@ -93,82 +93,6 @@ describe('KeyboardService', () => {
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should set the inputElement of the service', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement).toEqual(input.inputElement);
-  });
-
-  it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement.value).toEqual('n');
-  });
-
-  it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, textFieldComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('n!');
-  });
-
-  it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 1);
-    service.toggle(input, textFieldComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('!');
-  });
-
-  it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, textFieldComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 0);
-    service.toggle(input, textFieldComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, textFieldComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should delete all characters', () => {
-    const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, textFieldComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
-  });
-
   it('addInputAssistanceToKeyboard should be set to "false"', () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
@@ -198,82 +122,6 @@ describe('KeyboardService', () => {
     const input = { inputElement: element, focused: true };
     service.toggle(input, textFieldSimpleComponent, false);
     expect(service.isOpen).toBeFalse();
-  });
-
-  it('should set the inputElement of the service', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement).toEqual(input.inputElement);
-  });
-
-  it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement.value).toEqual('n');
-  });
-
-  it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('n!');
-  });
-
-  it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 1);
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('!');
-  });
-
-  it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 0);
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should delete all characters', () => {
-    const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, textFieldSimpleComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
   });
 
   it('addInputAssistanceToKeyboard should be set to "false"', () => {
@@ -307,90 +155,12 @@ describe('KeyboardService', () => {
     expect(service.isOpen).toBeFalse();
   });
 
-  it('should set the inputElement of the service', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, textAreaComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement).toEqual(input.inputElement);
-  });
-
-  it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, textAreaComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement.value).toEqual('n');
-  });
-
-  it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, textAreaComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('n!');
-  });
-
-  it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 1);
-    service.toggle(input, textAreaComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('!');
-  });
-
-  it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, textAreaComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 0);
-    service.toggle(input, textAreaComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, textAreaComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should delete all characters', () => {
-    const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, textAreaComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
-  });
-
   it('addInputAssistanceToKeyboard should be set to "false"', () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
     service.toggle(input, textAreaComponent, true);
     expect(service.addInputAssistanceToKeyboard).toBeFalse();
   });
-
-  // spellCorrect
 
   it('should toggle keyboard to open', () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
@@ -412,82 +182,6 @@ describe('KeyboardService', () => {
     const input = { inputElement: element, focused: true };
     service.toggle(input, spellCorrectComponent, false);
     expect(service.isOpen).toBeFalse();
-  });
-
-  it('should set the inputElement of the service', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, spellCorrectComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement).toEqual(input.inputElement);
-  });
-
-  it('enter "n" should set the inputElement.value of the service value to "n"', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, spellCorrectComponent, true);
-    service.enterKey('n');
-    expect(service.inputElement.value).toEqual('n');
-  });
-
-  it('enter "!" should set the inputElement.value of the service value to "n!"', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, spellCorrectComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('n!');
-  });
-
-  it('enter "!" should replace the inputElement.value of the service with to "!"', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 1);
-    service.toggle(input, spellCorrectComponent, true);
-    service.enterKey('!');
-    expect(service.inputElement.value).toEqual('!');
-  });
-
-  it('deleterCharacters with parameter true should deleterCharacters backwards', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(1, 1);
-    service.toggle(input, spellCorrectComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should deleterCharacters forwards', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'n';
-    element.setSelectionRange(0, 0);
-    service.toggle(input, spellCorrectComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter true should delete all characters', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, spellCorrectComponent, true);
-    service.deleteCharacters(true);
-    expect(service.inputElement.value).toEqual('');
-  });
-
-  it('deleterCharacters with parameter false should delete all characters', () => {
-    const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    element.value = 'all values';
-    element.setSelectionRange(0, element.value.length);
-    service.toggle(input, spellCorrectComponent, true);
-    service.deleteCharacters(false);
-    expect(service.inputElement.value).toEqual('');
   });
 
   it('addInputAssistanceToKeyboard should be set to "false"', () => {

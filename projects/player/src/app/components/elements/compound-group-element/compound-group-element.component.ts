@@ -18,11 +18,12 @@ import { NavigationService } from 'player/src/app/services/navigation.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { UnitNavParam } from 'common/models/elements/button/button';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
+import { Subscription } from 'rxjs';
+import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
 import { KeypadService } from '../../../services/keypad.service';
-import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
 
@@ -31,16 +32,20 @@ import { DeviceService } from '../../../services/device.service';
   templateUrl: './compound-group-element.component.html',
   styleUrls: ['./compound-group-element.component.scss']
 })
-export class CompoundGroupElementComponent extends ElementFormGroupDirective implements OnInit, AfterViewInit {
+export class CompoundGroupElementComponent extends TextInputGroupDirective implements OnInit, AfterViewInit {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;
 
   isKeypadOpen: boolean = false;
+  inputElement!: HTMLTextAreaElement | HTMLInputElement;
+  enterKeySubscription!: Subscription;
+  deleteCharactersSubscription!: Subscription;
+  selectSubscription!: Subscription;
 
   constructor(
-    private keyboardService: KeyboardService,
-    private deviceService: DeviceService,
+    public keyboardService: KeyboardService,
+    public deviceService: DeviceService,
     public keypadService: KeypadService,
     public unitStateService: UnitStateService,
     public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
@@ -75,7 +80,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
         ElementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type);
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
       if (childModel.type === 'text-field-simple') {
-        this.manageKeyInputToggling(child as TextFieldSimpleComponent, childModel);
+        this.manageKeyInputToggling(child as TextFieldSimpleComponent);
         this.manageOnKeyDown(child as TextFieldSimpleComponent, childModel);
       }
       if (childModel.type === 'button') {
@@ -93,33 +98,13 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
       });
   }
 
-  private manageKeyInputToggling(textFieldSimpleComponent: TextFieldSimpleComponent, elementModel: InputElement): void {
+  private manageKeyInputToggling(textFieldSimpleComponent: TextFieldSimpleComponent): void {
     (textFieldSimpleComponent)
       .focusChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(focusedTextInput => {
-        this.toggleKeyInput(focusedTextInput, textFieldSimpleComponent, elementModel);
+        this.toggleKeyInput(focusedTextInput, textFieldSimpleComponent);
       });
-  }
-
-  private shallOpenKeypad(elementModel: InputElement): boolean {
-    return !!elementModel.inputAssistancePreset &&
-      !(elementModel.showSoftwareKeyboard &&
-        elementModel.addInputAssistanceToKeyboard &&
-        this.deviceService.isMobileWithoutHardwareKeyboard);
-  }
-
-  private toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                         elementComponent: TextFieldSimpleComponent,
-                         elementModel: InputElement): void {
-    if (this.shallOpenKeypad(elementModel)) {
-      this.keypadService.toggle(focusedTextInput, elementComponent);
-      this.isKeypadOpen = this.keypadService.isOpen;
-    }
-    if (elementModel.showSoftwareKeyboard && !elementModel.readOnly) {
-      this.keyboardService
-        .toggle(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
-    }
   }
 
   private onKeyDown(event: {
@@ -127,26 +112,7 @@ export class CompoundGroupElementComponent extends ElementFormGroupDirective imp
     inputElement: HTMLInputElement | HTMLTextAreaElement
   }, elementModel: InputElement): void {
     this.detectHardwareKeyboard(elementModel);
-    CompoundGroupElementComponent.checkInputLimitation(event, elementModel);
-  }
-
-  private static checkInputLimitation(event: {
-    keyboardEvent: KeyboardEvent;
-    inputElement: HTMLInputElement | HTMLTextAreaElement
-  }, elementModel: InputElement): void {
-    if (elementModel.maxLength &&
-      elementModel.isLimitedToMaxLength &&
-      event.inputElement.value.length === elementModel.maxLength &&
-      !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'].includes(event.keyboardEvent.key)) {
-      event.keyboardEvent.preventDefault();
-    }
-  }
-
-  private detectHardwareKeyboard(elementModel: InputElement): void {
-    if (elementModel.showSoftwareKeyboard) {
-      this.deviceService.hasHardwareKeyboard = true;
-      this.keyboardService.close();
-    }
+    this.checkInputLimitation(event, elementModel);
   }
 
   private addButtonActionEventListener(button: ButtonComponent) {

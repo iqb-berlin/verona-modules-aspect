@@ -17,7 +17,8 @@
       [hasArrowKeys]="keypadService.elementComponent.elementModel.hasArrowKeys"
       [hasBackspaceKey]="keypadService.elementComponent.elementModel.hasBackspaceKey"
       [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
-      (backSpaceClicked)="keypadService.deleteCharacters(true)"
-      (keyClicked)="keypadService.enterKey($event)">
+      (backSpaceClicked)="keypadService.deleteCharacters.emit(true)"
+      (keyClicked)="keypadService.enterKey.emit($event)"
+      (select)="keypadService.select.emit($event)">
   </aspect-keypad>
 </ng-template>

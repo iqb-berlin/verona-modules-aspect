@@ -1,5 +1,9 @@
 Player
 ======
+## 2.2.4
+### Fehlerbehebungen
+- Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf einer Aufgabe wieder her
+
 ## 2.2.3
 ### Fehlerbehebungen
 - Behebt Fehler (in Version 2.2.2) beim Aufgabenwechsel im IQB-Studio bei geöffnetem Vorschau-Reiter    

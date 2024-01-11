@@ -56,7 +56,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       }
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 100,
-        minHeight: 100,
+        minHeight: 57,
         ...element?.dimensions
       });
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);

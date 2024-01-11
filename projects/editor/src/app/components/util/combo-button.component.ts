@@ -5,8 +5,9 @@ import {
 @Component({
   selector: 'aspect-combo-button',
   template: `
-    <div class="root-panel"
-         [style.background-color]="inputType === 'color' ? selectedValue : isActive ? 'lightgrey' : 'unset'">
+    <div class="root-panel" [style.outline]="inputType === 'color' && '1px solid'"
+         [style.outline-color]="selectedValue"
+         [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'">
       <button class="apply-button" mat-icon-button [matTooltip]="tooltip"
               (click)="applySelection.emit()">
         <mat-icon>{{icon}}</mat-icon>
@@ -47,6 +48,7 @@ import {
       flex-direction: row;
       border: 1px solid;
       border-radius: 5px;
+      border-color: var(--mdc-outlined-text-field-outline-color);
     }
     mat-select {
       margin-top: 20%;
@@ -58,7 +60,11 @@ import {
       width: 24px;
       border: unset;
       background-color: unset;
-      padding: unset;
+      padding: 0;
+      margin-left: -5px;
+    }
+    .select-trigger-button:hover {
+      background-color: grey;
     }
     .apply-button {
       height: 42px;

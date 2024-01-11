@@ -71,125 +71,137 @@ describe('KeypadService', () => {
 
   // textField
 
-  it('should toggle keypad to open', () => {
+  it('should toggle keypad to open', async () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldComponent);
+    await service.toggleAsync(input, textFieldComponent).then(value => {
+      expect(value).toBeTruthy();
+    });
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to close', () => {
+  it('should toggle keypad to close', async () => {
     service.isOpen = true;
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
-    service.toggle(input, textFieldComponent);
+    await service.toggleAsync(input, textFieldComponent);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('preset should be set to "french"', () => {
+  it('preset should be set to "french"', async () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldComponent);
+    await service.toggleAsync(input, textFieldComponent);
     expect(service.preset).toEqual('french');
   });
 
-  it('position should be set to "floating"', () => {
+  it('position should be set to "floating"', async () => {
     const element = textFieldComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldComponent);
+    await service.toggleAsync(input, textFieldComponent);
     expect(service.position).toEqual('floating');
   });
 
   // textFieldSimple
 
-  it('should toggle keypad to open', () => {
+  it('should toggle keypad to open', async () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldSimpleComponent);
+    await service.toggleAsync(input, textFieldSimpleComponent).then(value => {
+      expect(value).toBeTruthy();
+    });
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to close', () => {
+  it('should toggle keypad to close', async () => {
     service.isOpen = true;
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
-    service.toggle(input, textFieldSimpleComponent);
+    await service.toggleAsync(input, textFieldSimpleComponent);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('preset should be set to "french"', () => {
+  it('preset should be set to "french"', async () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldSimpleComponent);
+    await service.toggleAsync(input, textFieldSimpleComponent);
     expect(service.preset).toEqual('french');
   });
 
-  it('position should be set to "floating"', () => {
+  it('position should be set to "floating"', async () => {
     const element = textFieldSimpleComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textFieldSimpleComponent);
+    await service.toggleAsync(input, textFieldSimpleComponent);
     expect(service.position).toEqual('floating');
   });
 
   // textArea
 
-  it('should toggle keypad to open', () => {
+  it('should toggle keypad to open', async () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textAreaComponent);
+    await service.toggleAsync(input, textAreaComponent).then(value => {
+      expect(value).toBeTruthy();
+    });
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to close', () => {
+  it('should toggle keypad to close', async () => {
     service.isOpen = true;
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: false };
-    service.toggle(input, textAreaComponent);
+    await service.toggleAsync(input, textAreaComponent);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('preset should be set to "french"', () => {
+  it('preset should be set to "french"', async () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textAreaComponent);
+    await service.toggleAsync(input, textAreaComponent);
     expect(service.preset).toEqual('french');
   });
 
-  it('position should be set to "floating"', () => {
+  it('position should be set to "floating"', async () => {
     const element = textAreaComponent.domElement.querySelector('textarea') as HTMLTextAreaElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, textAreaComponent);
+    await service.toggleAsync(input, textAreaComponent);
     expect(service.position).toEqual('floating');
   });
 
   // spellCorrect
 
-  it('should toggle keypad to open', () => {
+  it('should toggle keypad to open', async () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, spellCorrectComponent);
+    await service.toggleAsync(input, spellCorrectComponent).then(value => {
+      expect(value).toBeTruthy();
+    });
     expect(service.isOpen).toBeTruthy();
   });
 
-  it('should toggle keypad to close', () => {
+  it('should toggle keypad to close', async () => {
     service.isOpen = true;
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: false };
-    service.toggle(input, spellCorrectComponent);
+    await service.toggleAsync(input, spellCorrectComponent);
     expect(service.isOpen).toBeFalse();
   });
 
-  it('preset should be set to "french"', () => {
+  it('preset should be set to "french"', async () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
-    const input = { inputElement: element, focused: true };
-    service.toggle(input, spellCorrectComponent);
-    expect(service.preset).toEqual('french');
+    const input = {
+      inputElement: element,
+      focused: true
+    };
+    await service.toggleAsync(input, spellCorrectComponent);
+    expect(service.preset)
+      .toEqual('french');
   });
 
-  it('position should be set to "floating"', () => {
+  it('position should be set to "floating"', async () => {
     const element = spellCorrectComponent.domElement.querySelector('input') as HTMLInputElement;
     const input = { inputElement: element, focused: true };
-    service.toggle(input, spellCorrectComponent);
+    await service.toggleAsync(input, spellCorrectComponent);
     expect(service.position).toEqual('floating');
   });
 });

@@ -39,9 +39,9 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   isKeypadOpen: boolean = false;
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
-  enterKeySubscription!: Subscription;
-  deleteCharactersSubscription!: Subscription;
-  selectSubscription!: Subscription;
+  keypadEnterKeySubscription!: Subscription;
+  keypadDeleteCharactersSubscription!: Subscription;
+  keypadSelectSubscription!: Subscription;
 
   constructor(
     public keyboardService: KeyboardService,

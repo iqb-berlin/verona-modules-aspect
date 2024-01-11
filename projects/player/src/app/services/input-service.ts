@@ -14,6 +14,7 @@ export abstract class InputService {
   @Output() enterKey = new EventEmitter<string>();
   @Output() deleteCharacters = new EventEmitter<boolean>();
   @Output() select = new EventEmitter<string>();
+  @Output() willToggle = new EventEmitter<boolean>();
 
   setCurrentKeyInputElement(
     focusedElement: HTMLElement,

@@ -13,9 +13,12 @@ import { TextInputComponentType } from 'player/src/app/models/text-input-compone
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
   isKeypadOpen: boolean = false;
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
-  enterKeySubscription!: Subscription;
-  deleteCharactersSubscription!: Subscription;
-  selectSubscription!: Subscription;
+
+  keypadEnterKeySubscription!: Subscription;
+  keypadDeleteCharactersSubscription!: Subscription;
+  keypadSelectSubscription!: Subscription;
+  keyboardEnterKeySubscription!: Subscription;
+  keyboardDeleteCharactersSubscription!: Subscription;
 
   abstract deviceService: DeviceService;
   abstract keypadService: KeypadService;
@@ -28,26 +31,33 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
         this.deviceService.isMobileWithoutHardwareKeyboard);
   }
 
-  toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                 elementComponent: TextInputComponentType): void {
-    if (this.shallOpenKeypad(elementComponent.elementModel)) {
-      this.keypadService.toggle(focusedTextInput, elementComponent);
-      this.setInputElement(focusedTextInput.inputElement);
-      this.isKeypadOpen = this.keypadService.isOpen;
-      if (this.isKeypadOpen) {
-        this.subscribeForInputEvents(elementComponent.elementModel, elementComponent);
-      } else {
-        this.unsubscribeFromInputEvents();
-      }
-    }
+  async toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
+                       elementComponent: TextInputComponentType): Promise<void> {
+    const promises: Promise<boolean>[] = [];
     if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
-      this.keyboardService
-        .toggle(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard);
-      if (this.keyboardService.isOpen) {
-        this.subscribeForInputEvents(elementComponent.elementModel, elementComponent);
-      } else {
-        this.unsubscribeFromInputEvents();
-      }
+      promises.push(this.keyboardService
+        .toggleAsync(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard));
+    }
+    if (this.shallOpenKeypad(elementComponent.elementModel)) {
+      promises.push(this.keypadService.toggleAsync(focusedTextInput, elementComponent));
+    }
+    if (promises.length) {
+      await Promise.all(promises).then(() => {
+        if (this.keyboardService.isOpen) {
+          this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
+        } else {
+          this.unsubscribeFromKeyboardEvents();
+        }
+        if (this.keypadService.isOpen) {
+          this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
+        } else {
+          this.unsubscribeFromKeypadEvents();
+        }
+        this.isKeypadOpen = this.keypadService.isOpen;
+        if (this.keyboardService.isOpen || this.keypadService.isOpen) {
+          this.setInputElement(focusedTextInput.inputElement);
+        }
+      });
     }
   }
 
@@ -71,19 +81,31 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     }
   }
 
-  private subscribeForInputEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
-    this.enterKeySubscription = this.keypadService.enterKey
+  private subscribeForKeypadEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
+    this.keypadEnterKeySubscription = this.keypadService.enterKey
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
-    this.deleteCharactersSubscription = this.keypadService.deleteCharacters
+    this.keypadDeleteCharactersSubscription = this.keypadService.deleteCharacters
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
-    this.selectSubscription = this.keypadService.select
+    this.keypadSelectSubscription = this.keypadService.select
       .subscribe(key => this.select(key));
   }
 
-  private unsubscribeFromInputEvents(): void {
-    if (this.selectSubscription) this.selectSubscription.unsubscribe();
-    if (this.enterKeySubscription) this.enterKeySubscription.unsubscribe();
-    if (this.deleteCharactersSubscription) this.deleteCharactersSubscription.unsubscribe();
+  private unsubscribeFromKeypadEvents(): void {
+    if (this.keypadSelectSubscription) this.keypadSelectSubscription.unsubscribe();
+    if (this.keypadEnterKeySubscription) this.keypadEnterKeySubscription.unsubscribe();
+    if (this.keypadDeleteCharactersSubscription) this.keypadDeleteCharactersSubscription.unsubscribe();
+  }
+
+  private subscribeForKeyboardEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
+    this.keyboardEnterKeySubscription = this.keyboardService.enterKey
+      .subscribe(key => this.enterKey(key, elementModel, elementComponent));
+    this.keyboardDeleteCharactersSubscription = this.keyboardService.deleteCharacters
+      .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
+  }
+
+  private unsubscribeFromKeyboardEvents(): void {
+    if (this.keyboardEnterKeySubscription) this.keyboardEnterKeySubscription.unsubscribe();
+    if (this.keyboardDeleteCharactersSubscription) this.keyboardDeleteCharactersSubscription.unsubscribe();
   }
 
   private setInputElement(inputElement: HTMLElement): void {
@@ -199,7 +221,8 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   ngOnDestroy(): void {
-    this.unsubscribeFromInputEvents();
+    this.unsubscribeFromKeypadEvents();
+    this.unsubscribeFromKeyboardEvents();
     super.ngOnDestroy();
   }
 }

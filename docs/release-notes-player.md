@@ -5,7 +5,10 @@ Player
 
 ### Änderungen 
 - Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation 
-  unterbunden (dabei kann es zu einem kurzen Flackern kommen).    
+  unterbunden (dabei kann es zu einem kurzen Flackern kommen).
+
+### Fehlerbehebungen
+- Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos 
 
 ## 2.3.0
 ### Neue Funktionen

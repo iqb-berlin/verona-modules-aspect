@@ -24,12 +24,8 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   result: string = '';
   resultHelperRow: string = '';
   inputAssistancePreset: InputAssistancePreset = null;
-  inputAssistanceCustomKeys: string = '';
   inputAssistancePosition: 'floating' | 'right' = 'floating';
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
-  restrictedToInputAssistanceChars: boolean = false;
-  hasArrowKeys: boolean = false;
-  hasBackspaceKey: boolean = false;
   showSoftwareKeyboard: boolean = false;
   addInputAssistanceToKeyboard: boolean = false;
   variableLayoutOptions: {
@@ -59,7 +55,6 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       this.variableLayoutOptions = { ...element.variableLayoutOptions };
       this.styling = { ...element.styling };
       this.inputAssistancePreset = element.inputAssistancePreset;
-      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
       this.inputAssistancePosition = element.inputAssistancePosition;
       this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
       this.showSoftwareKeyboard = element.showSoftwareKeyboard;

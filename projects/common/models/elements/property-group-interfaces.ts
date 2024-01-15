@@ -120,7 +120,10 @@ export abstract class PropertyGroupValidators {
 
   static isValidKeyInputElementProperties(blueprint: KeyInputElementProperties): boolean {
     if (!blueprint) return false;
-    return true;
+    return blueprint.inputAssistancePreset !== undefined &&
+      blueprint.inputAssistancePosition !== undefined &&
+      blueprint.inputAssistanceFloatingStartPosition &&
+      blueprint.showSoftwareKeyboard !== undefined;
   }
 
   static isValidBasicStyles(blueprint: BasicStyles): boolean {
@@ -237,11 +240,10 @@ export abstract class PropertyGroupGenerators {
   static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {
     return {
       inputAssistancePreset: properties.inputAssistancePreset !== undefined ? properties.inputAssistancePreset as InputAssistancePreset : null,
-      inputAssistanceCustomKeys: properties.inputAssistanceCustomKeys !== undefined ? properties.inputAssistanceCustomKeys as string : '',
       inputAssistancePosition: properties.inputAssistancePosition !== undefined ? properties.inputAssistancePosition as 'floating' | 'right' : 'floating',
       inputAssistanceFloatingStartPosition: properties.inputAssistanceFloatingStartPosition !== undefined ? properties.inputAssistanceFloatingStartPosition as 'startBottom' | 'endCenter' : 'startBottom',
       showSoftwareKeyboard: properties.showSoftwareKeyboard !== undefined ? properties.showSoftwareKeyboard as boolean : false,
-      addInputAssistanceToKeyboard: properties.addInputAssistanceToKeyboard !== undefined ? properties.addInputAssistanceToKeyboard as boolean : false
+      addInputAssistanceToKeyboard: properties.addInputAssistanceToKeyboard !== undefined ? properties.addInputAssistanceToKeyboard : false
     };
   }
 }

@@ -10,10 +10,10 @@
           [inputElement]="keypadService.inputElement"
           [position]="keypadService.position"
           [preset]="keypadService.preset"
-          [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys"
-          [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
-          [hasArrowKeys]="keypadService.elementComponent.elementModel.hasArrowKeys"
-          [hasBackspaceKey]="keypadService.elementComponent.elementModel.hasBackspaceKey"
+          [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys | inputAssistanceCustomKeys"
+          [restrictToAllowedKeys]="!!keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
+          [hasArrowKeys]="!!keypadService.elementComponent.elementModel.hasArrowKeys"
+          [hasBackspaceKey]="!!keypadService.elementComponent.elementModel.hasBackspaceKey"
           [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"
           (backSpaceClicked)="keypadService.deleteCharacters.emit(true)"
           (keyClicked)="keypadService.enterKey.emit($event)"
@@ -27,7 +27,7 @@
       (@keyboardSlideInOut.done)="keyboardService.scrollElement()"
       [addInputAssistanceToKeyboard]="keyboardService.addInputAssistanceToKeyboard"
       [preset]="keyboardService.preset"
-      [customKeys]="keyboardService.elementComponent.elementModel.inputAssistanceCustomKeys"
+      [customKeys]="keyboardService.elementComponent.elementModel.inputAssistanceCustomKeys | inputAssistanceCustomKeys"
       (keyClicked)="keyboardService.enterKey.emit($event)"
       (backspaceClicked)="keyboardService.deleteCharacters.emit(true)">
   </aspect-keyboard>

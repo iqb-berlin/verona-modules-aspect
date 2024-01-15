@@ -191,7 +191,8 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
     row: MathTableRow,
     cell: MathTableCell
   ): void {
-    (this.elementComponent as MathTableComponent).setCellValue(key, cell, row);
+    const char = key === '·' ? '*' : key;
+    (this.elementComponent as MathTableComponent).setCellValue(char, cell, row);
   }
 
   detectHardwareKeyboard(): void {

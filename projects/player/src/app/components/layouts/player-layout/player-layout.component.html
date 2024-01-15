@@ -11,8 +11,7 @@
           [position]="keypadService.position"
           [preset]="keypadService.preset"
           [customKeys]="keypadService.elementComponent.elementModel.inputAssistanceCustomKeys"
-          [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars &&
-                                   !keypadService.elementComponent.elementModel.showSoftwareKeyboard"
+          [restrictToAllowedKeys]="keypadService.elementComponent.elementModel.restrictedToInputAssistanceChars"
           [hasArrowKeys]="keypadService.elementComponent.elementModel.hasArrowKeys"
           [hasBackspaceKey]="keypadService.elementComponent.elementModel.hasBackspaceKey"
           [hasReturnKey]="keypadService.elementComponent.elementModel | hasReturnKey"

@@ -34,7 +34,7 @@
   </ng-container>
   <ng-container *ngIf="playerProperties.maxRuns && playerProperties.showRestRuns">
     <div class="runs mat-typography">
-      {{ runCounter + 1 }} / {{ playerProperties.maxRuns }}
+      {{ runCounter === playerProperties.maxRuns ? runCounter : runCounter + 1 }} / {{ playerProperties.maxRuns }}
     </div>
   </ng-container>
   <ng-container *ngIf="playerProperties.progressBar">

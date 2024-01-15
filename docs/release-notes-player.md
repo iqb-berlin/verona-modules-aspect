@@ -1,5 +1,12 @@
 Player
 ======
+## 2.4.0
+- Unterstützt Tastatur und Eingabehilfe für Rechenkästchen
+
+### Änderungen 
+- Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation 
+  unterbunden (dabei kann es zu einem kurzen Flackern kommen).    
+
 ## 2.3.0
 ### Neue Funktionen
 - Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0

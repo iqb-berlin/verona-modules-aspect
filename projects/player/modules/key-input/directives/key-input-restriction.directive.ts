@@ -4,7 +4,7 @@ import {
 
 @Directive()
 export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnDestroy {
-  @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
+  @Input() inputElement!: HTMLElement;
   @Input() restrictToAllowedKeys!: boolean;
   @Input() hasArrowKeys!: boolean;
   @Input() hasReturnKey!: boolean;
@@ -13,7 +13,7 @@ export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnD
   allowedKeys: string[] = [];
 
   ngAfterViewInit(): void {
-    if (this.inputElement && this.restrictToAllowedKeys) {
+    if (this.restrictToAllowedKeys) {
       this.inputElement.addEventListener('keydown', this.restrict.bind(this));
       this.inputElement.addEventListener('paste', KeyInputRestrictionDirective.preventPaste);
     }
@@ -25,8 +25,8 @@ export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnD
 
   private restrict(event: Event): void {
     const keyboardEvent: KeyboardEvent = event as KeyboardEvent;
-    // This Hack prevents the input of unidentified keys like '`'
-    if (keyboardEvent.key === 'Unidentified') {
+    // Prevent Dead keys
+    if (['Dead', 'Process', 'Unidentified'].includes(keyboardEvent.key)) {
       this.inputElement.blur();
       setTimeout(() => this.inputElement.focus());
     } else if (this.arrows.includes(keyboardEvent.key)) {
@@ -40,30 +40,35 @@ export abstract class KeyInputRestrictionDirective implements AfterViewInit, OnD
         event.stopPropagation();
       }
     } else if (keyboardEvent.key === 'Backspace') {
-      if (!this.canEdit(true)) {
+      if (!this.canEdit('Backspace')) {
         event.preventDefault();
         event.stopPropagation();
       }
     } else if (keyboardEvent.key === 'Delete') {
-      if (!this.canEdit(false)) {
+      if (!this.canEdit('Delete')) {
         event.preventDefault();
         event.stopPropagation();
       }
     } else if (!keyboardEvent || !this.allowedKeys.includes(keyboardEvent.key)) {
       event.preventDefault();
       event.stopPropagation();
-    } else if (!this.canEdit(false)) {
+    } else if (!this.canEdit(null)) {
       event.preventDefault();
       event.stopPropagation();
     }
   }
 
-  canEdit(deleteKey: boolean): boolean {
-    if (this.restrictToAllowedKeys) {
+  canEdit(deleteKey: 'Backspace' | 'Delete' | null): boolean {
+    if (this.restrictToAllowedKeys &&
+      (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement)
+    ) {
       let selectionStart = this.inputElement.selectionStart || 0;
-      const selectionEnd = this.inputElement.selectionEnd || 0;
-      if (deleteKey && selectionStart === selectionEnd) {
+      let selectionEnd = this.inputElement.selectionEnd || 0;
+      if (deleteKey === 'Backspace' && selectionStart === selectionEnd) {
         selectionStart -= 1;
+      }
+      if (deleteKey === 'Delete' && selectionStart === selectionEnd) {
+        selectionEnd += 1;
       }
       const selectedKeys = this.inputElement.value.substring(selectionStart, selectionEnd).split('');
       return selectedKeys.every(key => this.allowedKeys.includes(key));

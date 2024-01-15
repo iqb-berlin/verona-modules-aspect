@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
+import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { InputService } from './input-service';
 
 @Injectable({
@@ -9,7 +10,7 @@ export class KeypadService extends InputService {
   position: 'floating' | 'right' = 'floating';
 
   async toggleAsync(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                    elementComponent: TextInputComponentType): Promise<boolean> {
+                    elementComponent: TextInputComponentType | MathTableComponent): Promise<boolean> {
     this.willToggle.emit(this.isOpen);
     return new Promise(resolve => {
       setTimeout(() => resolve(this.toggle(focusedTextInput, elementComponent)), 100);
@@ -17,7 +18,7 @@ export class KeypadService extends InputService {
   }
 
   private toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                 elementComponent: TextInputComponentType): boolean {
+                 elementComponent: TextInputComponentType | MathTableComponent): boolean {
     if (focusedTextInput.focused) {
       this.open(focusedTextInput.inputElement, elementComponent);
     } else {
@@ -27,7 +28,7 @@ export class KeypadService extends InputService {
   }
 
   open(inputElement: HTMLElement,
-       elementComponent: TextInputComponentType):
+       elementComponent: TextInputComponentType | MathTableComponent):
     void {
     this.preset = elementComponent.elementModel.inputAssistancePreset;
     this.position = elementComponent.elementModel.inputAssistancePosition;

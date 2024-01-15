@@ -196,29 +196,37 @@ export abstract class InputElement extends UIElement implements InputElementProp
   }
 }
 
-export interface TextInputElementProperties extends InputElementProperties {
+export interface KeyInputElementProperties {
   inputAssistancePreset: InputAssistancePreset;
   inputAssistanceCustomKeys: string;
   inputAssistancePosition: 'floating' | 'right';
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter';
-  restrictedToInputAssistanceChars: boolean;
-  hasArrowKeys: boolean;
-  hasBackspaceKey: boolean;
   showSoftwareKeyboard: boolean;
   addInputAssistanceToKeyboard: boolean;
 }
 
-function isValidTextInputElementProperties(blueprint?: TextInputElementProperties): boolean {
+export interface TextInputElementProperties extends KeyInputElementProperties, InputElementProperties {
+  restrictedToInputAssistanceChars: boolean;
+  hasArrowKeys: boolean;
+  hasBackspaceKey: boolean;
+}
+
+function isValidKeyInputProperties(blueprint?: KeyInputElementProperties): boolean {
   if (!blueprint) return false;
   return blueprint.inputAssistancePreset !== undefined &&
     blueprint.inputAssistanceCustomKeys !== undefined &&
     blueprint.inputAssistancePosition !== undefined &&
     blueprint.inputAssistanceFloatingStartPosition !== undefined &&
-    blueprint.restrictedToInputAssistanceChars !== undefined &&
-    blueprint.hasArrowKeys !== undefined &&
-    blueprint.hasBackspaceKey !== undefined &&
     blueprint.showSoftwareKeyboard !== undefined &&
     blueprint.addInputAssistanceToKeyboard !== undefined;
+}
+
+function isValidTextInputElementProperties(blueprint?: TextInputElementProperties): boolean {
+  if (!blueprint) return false;
+  return blueprint.restrictedToInputAssistanceChars !== undefined &&
+    blueprint.hasArrowKeys !== undefined &&
+    blueprint.hasBackspaceKey !== undefined &&
+    isValidKeyInputProperties(blueprint);
 }
 
 export abstract class TextInputElement extends InputElement implements TextInputElementProperties {

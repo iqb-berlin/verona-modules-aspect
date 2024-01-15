@@ -13,7 +13,7 @@ export class KeypadComponent implements OnInit {
   @Input() preset!: InputAssistancePreset;
   @Input() customKeys!: string;
   @Input() position!: 'floating' | 'right';
-  @Input() inputElement!: HTMLTextAreaElement | HTMLInputElement;
+  @Input() inputElement!: HTMLElement;
   @Input() restrictToAllowedKeys!: boolean;
   @Input() hasArrowKeys!: boolean;
   @Input() hasReturnKey!: boolean;

@@ -1,4 +1,10 @@
-import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
+import {
+  InputAssistancePreset,
+  KeyInputElementProperties,
+  UIElement,
+  UIElementProperties,
+  UIElementType
+} from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -11,12 +17,21 @@ import {
   PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 
-export class MathTableElement extends UIElement implements MathTableProperties {
+export class MathTableElement extends UIElement implements MathTableProperties, KeyInputElementProperties {
   type: UIElementType = 'math-table';
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication' = 'addition';
   terms: string[] = ['123', '456'];
   result: string = '';
   resultHelperRow: string = '';
+  inputAssistancePreset: InputAssistancePreset = null;
+  inputAssistanceCustomKeys: string = '';
+  inputAssistancePosition: 'floating' | 'right' = 'floating';
+  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
+  restrictedToInputAssistanceChars: boolean = false;
+  hasArrowKeys: boolean = false;
+  hasBackspaceKey: boolean = false;
+  showSoftwareKeyboard: boolean = false;
+  addInputAssistanceToKeyboard: boolean = false;
   variableLayoutOptions: {
     allowArithmeticChars: boolean;
     isFirstLineUnderlined: boolean;
@@ -43,6 +58,12 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       this.resultHelperRow = element.resultHelperRow;
       this.variableLayoutOptions = { ...element.variableLayoutOptions };
       this.styling = { ...element.styling };
+      this.inputAssistancePreset = element.inputAssistancePreset;
+      this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
+      this.inputAssistancePosition = element.inputAssistancePosition;
+      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at MathTable instantiation', element);
@@ -52,6 +73,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
       if (element?.result !== undefined) this.result = element.result;
       if (element?.resultHelperRow !== undefined) this.resultHelperRow = element.resultHelperRow;
       if (element?.variableLayoutOptions !== undefined) this.variableLayoutOptions = { ...element.variableLayoutOptions };
+      Object.assign(this, PropertyGroupGenerators.generateKeyInputProps(element));
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         helperRowColor: 'transparent'
@@ -90,7 +112,7 @@ export class MathTableElement extends UIElement implements MathTableProperties {
   }
 }
 
-export interface MathTableProperties extends UIElementProperties {
+export interface MathTableProperties extends UIElementProperties, KeyInputElementProperties {
   operation: 'variable' | 'addition' | 'subtraction' | 'multiplication';
   terms: string[];
   result: string;
@@ -119,6 +141,7 @@ function isValid(blueprint?: MathTableProperties): boolean {
          blueprint.variableLayoutOptions.showResultRow !== undefined &&
          blueprint.variableLayoutOptions.showTopHelperRows !== undefined &&
          blueprint.variableLayoutOptions.allowFirstLineCrossOut !== undefined &&
+         PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&
          PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
 }
 

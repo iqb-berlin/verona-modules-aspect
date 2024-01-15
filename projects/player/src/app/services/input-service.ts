@@ -1,14 +1,15 @@
 import { InputAssistancePreset } from 'common/models/elements/element';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
+import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export abstract class InputService {
   preset: InputAssistancePreset = null;
-  elementComponent!: TextInputComponentType;
-  inputElement!: HTMLTextAreaElement | HTMLInputElement;
+  elementComponent!: TextInputComponentType | MathTableComponent;
+  inputElement!: HTMLTextAreaElement | HTMLInputElement | HTMLElement;
   isOpen: boolean = false;
 
   @Output() enterKey = new EventEmitter<string>();
@@ -18,11 +19,9 @@ export abstract class InputService {
 
   setCurrentKeyInputElement(
     focusedElement: HTMLElement,
-    elementComponent: TextInputComponentType
+    elementComponent: TextInputComponentType | MathTableComponent
   ): void {
-    this.inputElement = elementComponent.elementModel.type === 'text-area' ?
-      focusedElement as HTMLTextAreaElement :
-      focusedElement as HTMLInputElement;
+    this.inputElement = focusedElement;
     this.elementComponent = elementComponent;
   }
 

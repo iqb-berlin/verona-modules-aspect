@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
-import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
-import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
-import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
-import {
-  TextFieldSimpleComponent
-} from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
-import { InputService } from '../classes/input-service';
+import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
+import { MathTableComponent } from 'common/components/input-elements/math-table.component';
+import { InputService } from './input-service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +9,26 @@ import { InputService } from '../classes/input-service';
 export class KeypadService extends InputService {
   position: 'floating' | 'right' = 'floating';
 
-  toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-         elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
-    void {
+  async toggleAsync(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
+                    elementComponent: TextInputComponentType | MathTableComponent): Promise<boolean> {
+    this.willToggle.emit(this.isOpen);
+    return new Promise(resolve => {
+      setTimeout(() => resolve(this.toggle(focusedTextInput, elementComponent)), 100);
+    });
+  }
+
+  private toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
+                 elementComponent: TextInputComponentType | MathTableComponent): boolean {
     if (focusedTextInput.focused) {
       this.open(focusedTextInput.inputElement, elementComponent);
     } else {
       this.close();
     }
+    return this.isOpen;
   }
 
   open(inputElement: HTMLElement,
-       elementComponent: TextAreaComponent | TextFieldComponent | TextFieldSimpleComponent | SpellCorrectComponent):
+       elementComponent: TextInputComponentType | MathTableComponent):
     void {
     this.preset = elementComponent.elementModel.inputAssistancePreset;
     this.position = elementComponent.elementModel.inputAssistancePosition;

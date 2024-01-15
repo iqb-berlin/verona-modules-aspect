@@ -37,11 +37,15 @@ import { ValueChangeElement } from 'common/models/elements/element';
               [style.background-color]="row.isHelperRow ?
                                         elementModel.styling.helperRowColor : 'transparent'">
             <td *ngFor="let cell of row.cells" [attr.contenteditable]="cell.isEditable"
+                #input
                 [style.width.px]="elementModel.styling.fontSize * 2"
                 [class.strike-through]="cell.isCrossedOut"
                 [textContent]="cell.value"
+                [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
+                (focus)="focusChanged.emit({ inputElement: input, row, cell, focused: true })"
+                (blur)="focusChanged.emit({ inputElement: input, row, cell, focused: false })"
                 (paste)="$event.preventDefault()"
-                (keydown)="onCharEnter($event, row, cell)"
+                (keydown)="onKeyDown.emit(); onCharEnter($event, row, cell); "
                 (dblclick)="toggleStrikeThrough(row, cell)">
             </td>
           </tr>
@@ -81,8 +85,16 @@ import { ValueChangeElement } from 'common/models/elements/element';
 })
 export class MathTableComponent extends ElementComponent implements OnInit {
   @Input() elementModel!: MathTableElement;
-  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Input() tableModel: MathTableRow[] = [];
+
+  @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
+  @Output() onKeyDown = new EventEmitter<void>();
+  @Output() focusChanged = new EventEmitter<{
+    inputElement: HTMLTableCellElement;
+    row: MathTableRow,
+    cell: MathTableCell,
+    focused: boolean
+  }>();
 
   ngOnInit() {
     if (!this.tableModel.length) this.createTableModel();
@@ -255,11 +267,21 @@ export class MathTableComponent extends ElementComponent implements OnInit {
   }
 
   onCharEnter(event: KeyboardEvent, row: MathTableRow, cell: MathTableCell) {
-    if (event.key === 'Tab') return; // allow normal Tab usage
-    event.preventDefault();
-    if (['Backspace', 'Delete'].includes(event.key)) {
+    // Prevent Dead keys
+    if (['Dead', 'Process', 'Unidentified'].includes(event.key)) {
+      const input = event.target as HTMLTableCellElement;
+      input.blur();
+      setTimeout(() => input.focus());
+    } else {
+      if (event.key === 'Tab') return; // allow normal Tab usage
+      event.preventDefault();
+      this.setCellValue(event.key, cell, row);
+    }
+  }
+
+  setCellValue(char: string, cell: MathTableCell, row: MathTableRow): void {
+    if (['Backspace', 'Delete'].includes(char)) {
       cell.value = '';
-      (event.target as HTMLElement).textContent = '';
       cell.isCrossedOut = false;
     }
     const allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
@@ -269,14 +291,13 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     if (this.elementModel.operation === 'variable' && this.elementModel.variableLayoutOptions.allowArithmeticChars) {
       allowedKeys.push('+', '-', '*', ':', '/', '=');
     }
-    if (!allowedKeys.includes(event.key)) return;
+    if (!allowedKeys.includes(char)) return;
 
     if (row.is2DigitHelperRow && cell.value.length === 1) {
-      cell.value += event.key;
+      cell.value += char;
     } else {
-      cell.value = MathTableComponent.getCharReplacement(event.key);
+      cell.value = MathTableComponent.getCharReplacement(char);
     }
-
     this.emitModel();
   }
 

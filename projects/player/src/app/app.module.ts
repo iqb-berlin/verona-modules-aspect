@@ -52,6 +52,7 @@ import { UnitComponent } from './components/unit/unit.component';
 import { PageScrollButtonComponent } from './components/page-scroll-button/page-scroll-button.component';
 import { ExternalAppGroupElementComponent } from
   './components/elements/external-app-group-element/external-app-group-element.component';
+import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-keys.pipe';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { ExternalAppGroupElementComponent } from
     SectionVisibilityHandlingDirective,
     UnitComponent,
     PageScrollButtonComponent,
-    ExternalAppGroupElementComponent
+    ExternalAppGroupElementComponent,
+    InputAssistanceCustomKeysPipe
   ],
   imports: [
     BrowserModule,

@@ -15,6 +15,12 @@
   #elementComponent
   [elementModel]="elementModel | cast: MathTableElement"
   [tableModel]="tableModel"
+  (onKeyDown)="detectHardwareKeyboard();"
+  (focusChanged)="toggleKeyInput($event)"
   (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-math-table>
+
+<aspect-floating-keypad
+  [isKeypadOpen]="isKeypadOpen && keypadService.position === 'floating'">
+</aspect-floating-keypad>
 

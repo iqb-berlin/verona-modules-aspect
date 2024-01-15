@@ -107,11 +107,20 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.inputAssistancePreset"
                   (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
-        <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators', 'numbersAndBasicOperators',
-       'comparisonOperators', 'squareDashDot', 'placeValue', 'space', 'comma', 'custom']"
-                    [value]="option">
-          {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
-        </mat-option>
+        <ng-container *ngIf="combinedProperties.type !== 'math-table'">
+          <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators',
+                                            'numbersAndBasicOperators', 'comparisonOperators', 'squareDashDot',
+                                            'placeValue', 'space', 'comma', 'custom']"
+                      [value]="option">
+            {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+          </mat-option>
+        </ng-container>
+        <ng-container *ngIf="combinedProperties.type === 'math-table'">
+          <mat-option *ngFor="let option of [null, 'numbers', 'numbersAndBasicOperators']"
+                      [value]="option">
+            {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+          </mat-option>
+        </ng-container>
       </mat-select>
     </mat-form-field>
 

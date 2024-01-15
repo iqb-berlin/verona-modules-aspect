@@ -146,3 +146,11 @@ iqb-aspect-definition@1.0.0
                       showResultRow: boolean;
                       showTopHelperRows: boolean;
                       allowFirstLineCrossOut: boolean; }
+
+4.4.0
+- MathTable:
+ - new property: inputAssistancePreset
+ - new property: inputAssistancePosition
+ - new property: inputAssistanceFloatingStartPosition
+ - new property: showSoftwareKeyboard
+ - new property: addInputAssistanceToKeyboard

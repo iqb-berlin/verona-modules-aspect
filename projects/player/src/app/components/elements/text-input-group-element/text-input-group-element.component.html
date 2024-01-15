@@ -5,7 +5,7 @@
     #elementComponent
     [parentForm]="form"
     [elementModel]="elementModel | cast: TextAreaElement"
-    (onKeyDown)="detectHardwareKeyboard(); checkInputLimitation($event)"
+    (onKeyDown)="detectHardwareKeyboard(elementModel); checkInputLimitation($event, elementModel)"
     (focusChanged)="toggleKeyInput($event, elementComponent)">
   </aspect-text-area>
   <aspect-text-field
@@ -13,7 +13,7 @@
     #elementComponent
     [parentForm]="form"
     [elementModel]="elementModel | cast: TextFieldElement"
-    (onKeyDown)="detectHardwareKeyboard(); checkInputLimitation($event)"
+    (onKeyDown)="detectHardwareKeyboard(elementModel); checkInputLimitation($event, elementModel)"
     (focusChanged)="toggleKeyInput($event, elementComponent)">
   </aspect-text-field>
   <aspect-spell-correct
@@ -21,7 +21,7 @@
     #elementComponent
     [parentForm]="form"
     [elementModel]="elementModel | cast: SpellCorrectElement"
-    (onKeyDown)="detectHardwareKeyboard(); checkInputLimitation($event)"
+    (onKeyDown)="detectHardwareKeyboard(elementModel); checkInputLimitation($event, elementModel)"
     (focusChanged)="toggleKeyInput($event, elementComponent)">
   </aspect-spell-correct>
 </form>

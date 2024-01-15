@@ -1,5 +1,9 @@
 // eslint-disable-next-line max-classes-per-file
-import { Measurement } from 'common/models/elements/element';
+import {
+  InputAssistancePreset,
+  KeyInputElementProperties,
+  Measurement
+} from 'common/models/elements/element';
 
 export interface PositionProperties {
   [index: string]: unknown;
@@ -114,6 +118,14 @@ export abstract class PropertyGroupValidators {
       blueprint.zIndex !== undefined;
   }
 
+  static isValidKeyInputElementProperties(blueprint: KeyInputElementProperties): boolean {
+    if (!blueprint) return false;
+    return blueprint.inputAssistancePreset !== undefined &&
+      blueprint.inputAssistancePosition !== undefined &&
+      blueprint.inputAssistanceFloatingStartPosition &&
+      blueprint.showSoftwareKeyboard !== undefined;
+  }
+
   static isValidBasicStyles(blueprint: BasicStyles): boolean {
     if (!blueprint) return false;
     return blueprint.backgroundColor !== undefined &&
@@ -222,6 +234,16 @@ export abstract class PropertyGroupGenerators {
       showRestRuns: properties.showRestRuns !== undefined ? properties.showRestRuns as boolean : false,
       showRestTime: properties.showRestTime !== undefined ? properties.showRestTime as boolean : true,
       playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0
+    };
+  }
+
+  static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {
+    return {
+      inputAssistancePreset: properties.inputAssistancePreset !== undefined ? properties.inputAssistancePreset as InputAssistancePreset : null,
+      inputAssistancePosition: properties.inputAssistancePosition !== undefined ? properties.inputAssistancePosition as 'floating' | 'right' : 'floating',
+      inputAssistanceFloatingStartPosition: properties.inputAssistanceFloatingStartPosition !== undefined ? properties.inputAssistanceFloatingStartPosition as 'startBottom' | 'endCenter' : 'startBottom',
+      showSoftwareKeyboard: properties.showSoftwareKeyboard !== undefined ? properties.showSoftwareKeyboard as boolean : false,
+      addInputAssistanceToKeyboard: properties.addInputAssistanceToKeyboard !== undefined ? properties.addInputAssistanceToKeyboard : false
     };
   }
 }

@@ -10,7 +10,7 @@
           [darkMode]="key === 'Backspace' || key==='Shift' || key==='ShiftUp'"
           [horizontalOval]="key === 'Backspace'"
           [position]="position"
-          (keyClicked)="canEdit(key === 'Backspace') ? evaluateClickedKeyValue($event) : null">
+          (keyClicked)="canEdit(key === 'Backspace' ? 'Backspace' : null ) ? evaluateClickedKeyValue($event) : null">
       </aspect-keypad-key>
       <ng-container *ngIf="last && lastRowKey && preset  === 'french'">
         <aspect-keypad-key *ngIf="hasReturnKey"
@@ -49,7 +49,7 @@
                     [style.grid-column-end]="columnIndex+2"
                     [style.grid-row-start]="rowIndex + 1"
                     [style.grid-row-end]="rowIndex + 2"
-                    (keyClicked)="canEdit(false) ? evaluateClickedKeyValue($event) : null">
+                    (keyClicked)="canEdit(null) ? evaluateClickedKeyValue($event) : null">
         </aspect-keypad-key>
         <aspect-keypad-key *ngIf="key === '='"
                     [key]="key"
@@ -59,7 +59,7 @@
                     [style.grid-column-end]="3"
                     [style.grid-row-start]="1"
                     [style.grid-row-end]="3"
-                    (keyClicked)="canEdit(false) ? evaluateClickedKeyValue($event) : null">
+                    (keyClicked)="canEdit(null) ? evaluateClickedKeyValue($event) : null">
         </aspect-keypad-key>
       </ng-container>
     </ng-container>

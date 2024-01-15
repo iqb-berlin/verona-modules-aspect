@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   animate, style, transition, trigger
 } from '@angular/animations';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { KeypadService } from '../../../services/keypad.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 
@@ -30,9 +32,57 @@ import { KeyboardService } from '../../../services/keyboard.service';
     ])
   ]
 })
-export class PlayerLayoutComponent {
+export class PlayerLayoutComponent implements OnDestroy {
+  isKeypadAnimationDisabled: boolean = false;
+  isKeyboardAnimationDisabled: boolean = false;
+  private isKeypadToggling: number = 0;
+  private isKeyboardToggling: number = 0;
+  private ngUnsubscribe = new Subject<void>();
+
   constructor(
     public keypadService: KeypadService,
     public keyboardService: KeyboardService
-  ) { }
+  ) {
+    this.keypadService.willToggle
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        if (!this.isKeypadToggling) {
+          this.setIsKeypadToggling(); // to check whether there is a directly consecutive opening and closing
+        } else {
+          this.isKeypadAnimationDisabled = true;
+        }
+      });
+    this.keyboardService.willToggle
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        if (!this.isKeyboardToggling) {
+          this.setIsKeyboardToggling(); // to check whether there is a directly consecutive opening and closing
+        } else {
+          this.isKeyboardAnimationDisabled = true;
+        }
+      });
+  }
+
+  setIsKeypadToggling(): void {
+    this.isKeypadToggling = setTimeout(() => {
+      clearTimeout(this.isKeypadToggling);
+      this.isKeypadToggling = 0;
+      this.isKeypadAnimationDisabled = false;
+    }, 200);
+  }
+
+  setIsKeyboardToggling(): void {
+    this.isKeyboardToggling = setTimeout(() => {
+      clearTimeout(this.isKeyboardToggling);
+      this.isKeyboardToggling = 0;
+      this.isKeyboardAnimationDisabled = false;
+    }, 200);
+  }
+
+  ngOnDestroy(): void {
+    if (this.isKeypadToggling) clearTimeout(this.isKeypadToggling);
+    if (this.isKeyboardToggling) clearTimeout(this.isKeyboardToggling);
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
 }

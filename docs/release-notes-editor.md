@@ -3,6 +3,8 @@ Editor
 ## 2.4.0
 ### Neue Funktionen
 - Rechenkästchen: Tastatur und Eingabehilfe (Ziffern / Ziffern & Basis-Operatoren) können hinzugefügt werden. 
+- Ablegeliste: ID der Optionen wird im Eigenschaftenbereich angezeigt 
+- Ablegeliste: Knopf zum Verbinden aller verfügbaren Ablegelisten
 
 ## 2.3.0
 ### Neue Funktionen

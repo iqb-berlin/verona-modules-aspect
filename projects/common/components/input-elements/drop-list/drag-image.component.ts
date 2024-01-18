@@ -30,6 +30,7 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
     }
     .drag-preview.cloze-context {
       padding: 0 5px;
+      justify-content: center;
     }
     .image-item {
       padding: 0;

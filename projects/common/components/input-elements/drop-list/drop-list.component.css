@@ -41,6 +41,10 @@
   padding: 3px;
 }
 
+.cloze-context.drop-list.isHighlighted {
+  padding: 0;
+}
+
 .drop-list-item {
   padding: 10px;
   border-radius: 5px;

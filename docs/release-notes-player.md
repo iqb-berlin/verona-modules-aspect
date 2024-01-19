@@ -1,5 +1,10 @@
 Player
 ======
+## 2.2.5
+### Änderungen
+- Für das Einblenden der IQB-Tastatur wird wie in den vorhergehenden Version (< 2.2.0)
+  wieder auf die Überprüfung des Betriebssystem verzichtet
+
 ## 2.2.4
 ### Fehlerbehebungen
 - Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf einer Aufgabe wieder her

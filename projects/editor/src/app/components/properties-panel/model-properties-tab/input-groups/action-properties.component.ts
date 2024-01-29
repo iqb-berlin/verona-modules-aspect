@@ -33,9 +33,7 @@ import { Page } from 'common/models/page';
             <aspect-action-param-state-variable
               *ngIf="unitService.unit.stateVariables.length"
               [stateVariableIds]="unitService.unit.stateVariables | getStateVariableIds"
-              [stateVariable]="combinedProperties.actionParam ?
-                               $any(combinedProperties.actionParam) :
-                               { id: unitService.unit.stateVariables[0].id, value: '' }"
+              [stateVariable]="combinedProperties.actionParam | getStateVariable : unitService.unit.stateVariables"
               (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
             </aspect-action-param-state-variable>
             <p *ngIf="!unitService.unit.stateVariables.length">{{'propertiesPanel.addStateVariables' | translate}}</p>
@@ -108,6 +106,16 @@ export class ActionPropertiesComponent {
 export class GetStateVariableIdsPipe implements PipeTransform {
   transform(stateVariables: StateVariable[]): string[] {
     return stateVariables.map(stateVariable => stateVariable.id);
+  }
+}
+
+@Pipe({
+  name: 'getStateVariable'
+})
+export class GetStateVariablePipe implements PipeTransform {
+  transform(actionParam: unknown, stateVariables: StateVariable[]): StateVariable {
+    if (actionParam && typeof actionParam === 'object') return actionParam as StateVariable;
+    return { id: stateVariables[0].id, value: '' };
   }
 }
 

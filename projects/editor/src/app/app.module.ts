@@ -51,7 +51,7 @@ import {
   TooltipPropertiesDialogComponent
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
 import {
-  ActionPropertiesComponent, GetAnchorIdsPipe, GetStateVariableIdsPipe, ScrollPageIndexPipe
+  ActionPropertiesComponent, GetAnchorIdsPipe, GetStateVariableIdsPipe, GetStateVariablePipe, ScrollPageIndexPipe
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/action-properties.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -192,6 +192,7 @@ import {
     GeogebraAppDefinitionDialogComponent,
     GetValidDropListsPipe,
     GetAnchorIdsPipe,
+    GetStateVariablePipe,
     ScrollPageIndexPipe,
     SizeInputPanelComponent,
     ComboButtonComponent,

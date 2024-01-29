@@ -50,6 +50,9 @@ import { MatBadgeModule } from '@angular/material/badge';
 import {
   TooltipPropertiesDialogComponent
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
+import {
+  ActionPropertiesComponent, GetAnchorIdsPipe, GetStateVariableIdsPipe, ScrollPageIndexPipe
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/action-properties.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
@@ -98,8 +101,8 @@ import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
 import { TextPropertiesFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
-import { ButtonPropertiesComponent, GetAnchorIdsPipe, ScrollPageIndexPipe } from
-  './components/properties-panel/model-properties-tab/input-groups/button-properties/button-properties.component';
+import { ButtonPropertiesComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
 import { SliderPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
 import { TextFieldElementPropertiesComponent } from
@@ -126,9 +129,6 @@ import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geoge
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
 import { ComboButtonComponent } from './components/util/combo-button.component';
 import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
-import {
-  GetStateVariableIdsPipe
-} from './components/properties-panel/model-properties-tab/input-groups/button-properties/get-state-variable-ids.pipe';
 import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
 import { CheckboxNodeviewComponent } from './text-editor/angular-node-views/checkbox-nodeview.component';
 import {
@@ -172,6 +172,7 @@ import {
     OptionsFieldSetComponent,
     TextPropertiesFieldSetComponent,
     ButtonPropertiesComponent,
+    ActionPropertiesComponent,
     SliderPropertiesComponent,
     TextFieldElementPropertiesComponent,
     ScaleAndZoomPropertiesComponent,

@@ -23,6 +23,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
   private rulesAreFulfilled: boolean = false;
+  private timerStateVariable: StorableTimer | null = null;
 
   constructor(
     private elementRef: ElementRef,
@@ -84,27 +85,39 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
     return `${firstRule.id}-${firstRule.value}-${this.pageIndex}-${this.sectionIndex}-scroll-animation`;
   }
 
-  private initTimerStateVariable(): void {
-    const timerStateVariable = new StorableTimer(
-      this.timerStateVariableId, this.section.visibilityDelay
+  private initTimerStateVariable(initialValue: number): void {
+    this.timerStateVariable = new StorableTimer(
+      this.timerStateVariableId, initialValue, this.section.visibilityDelay
     );
-    this.stateVariableStateService.registerElementCode(timerStateVariable.id, timerStateVariable.value);
-    timerStateVariable.timerStateValueChanged
+    this.timerStateVariable.timerStateValueChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((value: ValueChangeElement) => {
         this.stateVariableStateService.changeElementCodeValue({
           id: value.id,
           value: value.value as number
         });
       });
-    timerStateVariable.run();
+    this.timerStateVariable.timerStateEnded
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.destroyTimerStateVariable();
+      });
+    this.stateVariableStateService.registerElementCode(this.timerStateVariable.id, this.timerStateVariable.value);
+    this.timerStateVariable.run();
+  }
+
+  private destroyTimerStateVariable(): void {
+    this.timerStateVariable?.stop();
+    this.timerStateVariable = null;
   }
 
   private displayHiddenSection(): void {
     if (this.areVisibilityRulesFulfilled() || this.rulesAreFulfilled) {
       if (this.section.visibilityDelay) {
-        if (!this.stateVariableStateService.getElementCodeById(this.timerStateVariableId)) {
+        if (!this.timerStateVariable) {
           this.rulesAreFulfilled = true;
-          this.initTimerStateVariable();
+          this.initTimerStateVariable(this.stateVariableStateService
+            .getElementCodeById(this.timerStateVariableId)?.value as number || 0);
         }
         this.setVisibility(this.isTimerStateFullFilled);
       } else {
@@ -125,6 +138,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
         this.scrollIntoView();
       }
       if (!this.section.enableReHide) {
+        this.destroyTimerStateVariable();
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
       }
@@ -203,6 +217,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroyTimerStateVariable();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

@@ -9,7 +9,7 @@ export class StorableTimer extends Storable {
 
   private interval: number = 0;
 
-  constructor(id: string, duration: number, value: number = 0) {
+  constructor(id: string, value: number, duration: number) {
     super(id, value);
     this.duration = duration;
   }
@@ -21,7 +21,6 @@ export class StorableTimer extends Storable {
         this.timerStateValueChanged.emit({ id: this.id, value: this.value });
         if (this.value >= this.duration) {
           this.timerStateEnded.emit();
-          this.stop();
         }
       }, 1000);
     }

@@ -17,7 +17,7 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   imageSrc: string | null = null;
   asLink: boolean = false;
   action: null | ButtonAction = null;
-  actionParam: null | UnitNavParam | number | string = null;
+  actionParam: null | UnitNavParam | number | string | StateVariable = null;
   tooltipText: string = '';
   tooltipPosition: TooltipPosition = 'below';
   labelAlignment: 'super' | 'sub' | 'baseline' = 'baseline';
@@ -71,7 +71,7 @@ export interface ButtonProperties extends UIElementProperties {
   imageSrc: string | null;
   asLink: boolean;
   action: null | ButtonAction;
-  actionParam: null | UnitNavParam | number | string;
+  actionParam: null | UnitNavParam | number | string | StateVariable;
   styling: BasicStyles & BorderStyles;
   tooltipText: string;
   tooltipPosition: TooltipPosition;

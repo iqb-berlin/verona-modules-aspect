@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import { UIElement } from 'common/models/elements/element';
-import { StateVariable } from 'common/models/state-variable';
 
 @Component({
   selector: 'aspect-button-properties',
@@ -84,10 +83,6 @@ import { StateVariable } from 'common/models/state-variable';
           </mat-form-field>
         </div>
       </fieldset>
-      <aspect-action-properties
-        [combinedProperties]="combinedProperties"
-        (updateModel)="updateModel.emit($event)">
-      </aspect-action-properties>
     </ng-container>
   `,
   styles: [`
@@ -125,7 +120,7 @@ export class ButtonPropertiesComponent {
   @Input() combinedProperties!: UIElement;
   @Output() updateModel =
     new EventEmitter<{
-      property: string; value: string | number | boolean | StateVariable | null, isInputValid?: boolean | null
+      property: string; value: string | number | boolean | null, isInputValid?: boolean | null
     }>();
 
   checked = false;

@@ -30,6 +30,7 @@ import { TooltipEventTooltipDirective } from 'common/components/tooltip/tooltip-
 import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
 import { PointerEventTooltipDirective } from 'common/components/tooltip/pointer-event-tooltip.directive';
 import { ClozeChildErrorMessage } from 'common/components/compound-elements/cloze/cloze-child-error-message';
+import { TriggerComponent } from 'common/components/trigger/trigger.component';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -116,6 +117,7 @@ import { TextAreaMathComponent } from './components/input-elements/text-area-mat
   ],
   declarations: [
     ButtonComponent,
+    TriggerComponent,
     TextComponent,
     TextFieldComponent,
     TextFieldSimpleComponent,
@@ -207,6 +209,7 @@ import { TextAreaMathComponent } from './components/input-elements/text-area-mat
     HotspotImageComponent,
     LikertComponent,
     ButtonComponent,
+    TriggerComponent,
     FrameComponent,
     ImageComponent,
     GeometryComponent,

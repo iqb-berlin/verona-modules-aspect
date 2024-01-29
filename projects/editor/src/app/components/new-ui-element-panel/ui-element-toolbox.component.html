@@ -153,6 +153,11 @@
           <mat-icon>architecture</mat-icon>
           {{'toolbox.geometry' | translate }}
         </button>
+        <button mat-stroked-button (click)="addUIElement('trigger')"
+                draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','trigger')">
+          <mat-icon>bolt</mat-icon>
+          {{'toolbox.trigger' | translate }}
+        </button>
       </mat-expansion-panel>
     </mat-accordion>
   </div>

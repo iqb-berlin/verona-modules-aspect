@@ -327,7 +327,8 @@
     "formula": "Formel",
     "math-field": "Feld",
     "math-area": "Bereich",
-    "math-table": "Rechenkästchen"
+    "math-table": "Rechenkästchen",
+    "trigger": "Auslöser"
   },
   "section-menu": {
     "height": "Höhe",

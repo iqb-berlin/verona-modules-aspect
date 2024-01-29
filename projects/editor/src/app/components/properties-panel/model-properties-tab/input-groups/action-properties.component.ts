@@ -22,7 +22,7 @@ import { Page } from 'common/models/page';
               <mat-option [value]="null">
                 {{ 'propertiesPanel.none' | translate }}
               </mat-option>
-              <mat-option *ngFor="let option of ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange']"
+              <mat-option *ngFor="let option of actions"
                           [value]="option">
                 {{ 'propertiesPanel.' + option | translate }}
               </mat-option>
@@ -88,6 +88,7 @@ import { Page } from 'common/models/page';
 
 export class ActionPropertiesComponent {
   @Input() combinedProperties!: UIElement;
+  @Input() actions!: string[];
   @Output() updateModel =
     new EventEmitter<{
       property: string; value: string | number | boolean | StateVariable | null, isInputValid?: boolean | null

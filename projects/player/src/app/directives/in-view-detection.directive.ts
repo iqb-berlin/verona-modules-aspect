@@ -21,7 +21,7 @@ export class InViewDetectionDirective implements AfterViewInit, OnDestroy {
   constructor(private elementRef: ElementRef) {}
 
   ngAfterViewInit(): void {
-    const intersectionContainer = this.elementRef.nativeElement.closest('aspect-page-scroll-button');
+    const intersectionContainer = this.elementRef.nativeElement.closest('aspect-page-scroll-button') || document;
     if (intersectionContainer) {
       const constraint = this.detectionType === 'top' ? '0px' : '0px';
       this.intersectionDetector = new IntersectionDetector(intersectionContainer, constraint);

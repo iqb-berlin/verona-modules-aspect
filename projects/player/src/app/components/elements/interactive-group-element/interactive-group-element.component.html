@@ -19,6 +19,15 @@
   (focusChanged)="toggleKeyInput($event)"
   (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-math-table>
+<aspect-trigger
+  *ngIf="elementModel.type === 'trigger'"
+  #elementComponent
+  [elementModel]="elementModel | cast: TriggerElement"
+  (triggerActionEvent)="applyTriggerAction($event)"
+  aspectInViewDetection
+  detectionType="top"
+  (intersecting)="elementComponent.emitEvent()">>
+</aspect-trigger>
 
 <aspect-floating-keypad
   [isKeypadOpen]="isKeypadOpen && keypadService.position === 'floating'">

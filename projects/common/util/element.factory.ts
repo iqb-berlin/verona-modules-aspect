@@ -26,11 +26,13 @@ import { HotspotImageElement } from 'common/models/elements/input-elements/hotsp
 import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
 import { MathTableElement } from 'common/models/elements/input-elements/math-table';
 import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
+import { TriggerElement } from 'common/models/elements/trigger/trigger';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
     text: TextElement,
     button: ButtonElement,
+    trigger: TriggerElement,
     'text-field': TextFieldElement,
     'text-field-simple': TextFieldSimpleElement,
     'text-area': TextAreaElement,

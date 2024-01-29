@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/button/button';
+import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger/trigger';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { UIElement, ValueChangeElement } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
@@ -29,6 +30,7 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
   ButtonElement!: ButtonElement;
   ImageElement!: ImageElement;
   MathTableElement!: MathTableElement;
+  TriggerElement!: TriggerElement;
 
   tableModel: MathTableRow[] = [];
 
@@ -92,12 +94,19 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
       case 'pageNav':
         this.navigationService.setPage(buttonEvent.param as number);
         break;
+      default:
+        this.applyTriggerAction(buttonEvent as TriggerActionEvent);
+    }
+  }
+
+  applyTriggerAction(triggerActionEvent: TriggerActionEvent): void {
+    switch (triggerActionEvent.action) {
       case 'highlightText':
-        this.anchorService.toggleAnchor(buttonEvent.param as string);
+        this.anchorService.toggleAnchor(triggerActionEvent.param as string);
         break;
       case 'stateVariableChange':
         this.stateVariableStateService.changeElementCodeValue(
-          buttonEvent.param as { id: string, value: string }
+          triggerActionEvent.param as { id: string, value: string }
         );
         break;
       default:

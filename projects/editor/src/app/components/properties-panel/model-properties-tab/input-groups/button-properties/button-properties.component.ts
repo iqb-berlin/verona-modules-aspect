@@ -116,7 +116,7 @@ import { SelectionService } from '../../../../../services/selection.service';
                                { id: unitService.unit.stateVariables[0].id, value: '' }"
               (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
             </aspect-button-action-param-state-variable>
-            <p *ngIf="!unitService.unit.stateVariables.length">Bitte zuerst Player-Variablen anlegen</p>
+            <p *ngIf="!unitService.unit.stateVariables.length">{{'propertiesPanel.addStateVariables' | translate}}</p>
           </ng-container>
 
           <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange'"

@@ -132,6 +132,7 @@
     "hasAutoHeight": "Automatische Höhenanpassung",
     "action": "Aktion",
     "actionParam": "Aktionsparameter",
+    "addStateVariables": "Bitte zuerst Zustandsvariablen anlegen",
     "unitNav": "Unitnavigation",
     "pageNav": "Seitennavigation",
     "highlightText": "Textabschnitt hervorheben",

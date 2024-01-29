@@ -148,6 +148,7 @@ iqb-aspect-definition@1.0.0
                       allowFirstLineCrossOut: boolean; }
 
 4.4.0
+- New Trigger Element
 - MathTable:
  - new property: inputAssistancePreset
  - new property: inputAssistancePosition

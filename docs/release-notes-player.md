@@ -2,19 +2,31 @@ Player
 ======
 ## 2.4.0
 - Unterstützt Tastatur und Eingabehilfe für Rechenkästchen
+- Unterstützt neues Auslöser-Element und blendet seine Sichtbarkeit aus 
 
 ### Änderungen 
 - Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation 
   unterbunden (dabei kann es zu einem kurzen Flackern kommen).
 
 ### Fehlerbehebungen
-- Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos 
+- Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos
+- Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf 
+  einer Aufgabe wieder her
 
 ## 2.3.0
 ### Neue Funktionen
 - Unterstützt neue Funktionen für Geometrie und Rechenkästchen aus Editor 2.3.0
 ### Änderungen
 - Eingestellte IQB-Tastatur erscheint wieder auf Windows-Devices mit Touchscreen
+
+## 2.2.5
+### Änderungen
+- Für das Einblenden der IQB-Tastatur wird wie in den vorhergehenden Version (< 2.2.0)
+  wieder auf die Überprüfung des Betriebssystem verzichtet
+
+## 2.2.4
+### Fehlerbehebungen
+- Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf einer Aufgabe wieder her
 
 ## 2.2.3
 ### Fehlerbehebungen

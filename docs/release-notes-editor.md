@@ -5,6 +5,10 @@ Editor
 - Rechenkästchen: Tastatur und Eingabehilfe (Ziffern / Ziffern & Basis-Operatoren) können hinzugefügt werden. 
 - Ablegeliste: ID der Optionen wird im Eigenschaftenbereich angezeigt 
 - Ablegeliste: Knopf zum Verbinden aller verfügbaren Ablegelisten
+- Rechenkästchen: Eingabehilfe und Tastatur können eingestellt werden
+- Neues Element: Auslöser
+  - Element ist nur im Editor sichtbar 
+  - Eingestellte Aktion wird bei der Ankunft des unsichtbaren Elements im Bildbereich des Browsers ausgelöst
 
 ## 2.3.0
 ### Neue Funktionen

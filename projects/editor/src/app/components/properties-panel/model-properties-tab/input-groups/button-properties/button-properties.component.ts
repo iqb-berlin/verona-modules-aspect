@@ -108,14 +108,14 @@ import { SelectionService } from '../../../../../services/selection.service';
           </mat-form-field>
 
           <ng-container *ngIf="combinedProperties.action === 'stateVariableChange'">
-            <aspect-button-action-param-state-variable
+            <aspect-action-param-state-variable
               *ngIf="unitService.unit.stateVariables.length"
               [stateVariableIds]="unitService.unit.stateVariables | getStateVariableIds"
               [stateVariable]="combinedProperties.actionParam ?
                                $any(combinedProperties.actionParam) :
                                { id: unitService.unit.stateVariables[0].id, value: '' }"
               (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
-            </aspect-button-action-param-state-variable>
+            </aspect-action-param-state-variable>
             <p *ngIf="!unitService.unit.stateVariables.length">{{'propertiesPanel.addStateVariables' | translate}}</p>
           </ng-container>
 

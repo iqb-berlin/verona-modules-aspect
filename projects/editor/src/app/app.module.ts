@@ -40,8 +40,8 @@ import {
   StateVariableEditorComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variable-editor.component';
 import {
-  ButtonActionParamStateVariableComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/button-properties/button-action-param-state-variable.component';
+  ActionParamStateVariableComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
 import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
@@ -199,7 +199,7 @@ import {
     StateVariablesDialogComponent,
     ShowStateVariablesButtonComponent,
     StateVariableEditorComponent,
-    ButtonActionParamStateVariableComponent,
+    ActionParamStateVariableComponent,
     GetStateVariableIdsPipe,
     VisibilityRulesDialogComponent,
     SanitizationDialogComponent,

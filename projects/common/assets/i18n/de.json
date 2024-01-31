@@ -2,13 +2,6 @@
   "pageIndication": "Seite {{index}}",
   "close": "Schließen",
   "imageNotFound": "Bild nicht gefunden",
-  "load_separate": "Unit im 'Blätter'-Modus laden",
-  "load_scroll": "Unit im 'Scroll'-Modus laden",
-  "load_snap": "Unit im 'Snap'-Modus laden",
-  "reload_unit": "Unit inkl. Zustand erneut laden",
-  "stop_command": "Teste 'Stop-Command'",
-  "continue_command": "Teste 'Continue-Command'",
-  "request_command": "Teste 'Get-Request-Command'",
   "confirm": "Bestätigen",
   "cancel": "Abbrechen",
   "geometry_reset": "neu anfangen"

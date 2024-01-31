@@ -6,6 +6,7 @@ import { ValidPagesPipe } from 'player/src/app/pipes/valid-pages.pipe';
 import { Component, Directive, Input } from '@angular/core';
 import { Page } from 'common/models/page';
 import { APIService } from 'common/shared.module';
+import { PagingMode } from 'player/modules/verona/models/verona';
 import { PlayerLayoutComponent } from './player-layout.component';
 
 describe('PlayerLayoutComponent', () => {
@@ -26,7 +27,7 @@ describe('PlayerLayoutComponent', () => {
   @Component({ selector: 'aspect-pages-layout', template: '' })
   class PagesLayoutStubComponent {
     @Input() pages!: Page[];
-    @Input() scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
+    @Input() scrollPageMode!: PagingMode;
     @Input() alwaysVisiblePage!: Page | null;
     @Input() scrollPages!: Page[];
     @Input() hasScrollPages!: boolean;

@@ -15,5 +15,10 @@
     "unitDefinitionIsNotReadable": "Unit definition konnte nicht gelesen werden!",
     "unitDefinitionIsNewer": "Unit-Version ist neuer als dieser Player. Bitte mit der neuesten Version öffnen.",
     "unitDefinitionIsOutdated": "Unit-Version ist veraltet. Sie kann im neuesten Editor geöffnet und aktualisiert werden."
-  }
+  },
+  "load_separate": "Unit im 'Blätter'-Modus laden",
+  "load_buttons": "Unit im 'Buttons'-Modus laden",
+  "load_scroll": "Unit im 'Scroll'-Modus laden",
+  "load_snap": "Unit im 'Snap'-Modus laden",
+  "reload_unit": "Unit inkl. Zustand erneut laden"
 }

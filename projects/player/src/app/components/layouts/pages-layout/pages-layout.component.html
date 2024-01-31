@@ -54,7 +54,7 @@
       <div #pagesScroll [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
            [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
            [style.max-width]="containerMaxWidth.scrollPages">
-        <ng-container [ngTemplateOutlet]="scrollPageMode === 'separate' ?
+        <ng-container [ngTemplateOutlet]="scrollPageMode === 'separate' || scrollPageMode === 'buttons'  ?
                                             scrollPagesSeparatedView :
                                             scrollPagesScrolledView">
         </ng-container>
@@ -65,6 +65,8 @@
 
 <ng-template #scrollPagesSeparatedView>
   <mat-tab-group [style.min-height.vh]="aspectRatioColumn.scrollPages"
+                 [class.buttons-mode]="scrollPageMode==='buttons'"
+                 [animationDuration]="scrollPageMode === 'buttons' ? '0ms' : '300ms'"
                  [style.display]="'block'"
                  aspectPageLabel
                  [isHidden]="hidePageLabels"
@@ -72,16 +74,24 @@
                  mat-align-tabs="start"
                  preserveContent="true"
                  [(selectedIndex)]="selectedIndex"
-                 (animationDone)="pageChangeService.pageChanged.emit()">
+                 (animationDone)="onAnimationDone(scrollPageMode === 'buttons' ? 300 : 0)">
     <ng-container *ngFor="let page of scrollPages; let i = index; let last = last">
       <mat-tab [label]="'pageIndication' | translate: {index: i + 1}">
         <div [style.background-color]="page.backgroundColor"
              [style.padding.px]="page.margin"
              [style.max-width]="page.hasMaxWidth ? page.maxWidth + 'px' : '100%'">
+          <aspect-page-nav-button *ngIf="scrollPageMode==='buttons' && i !== 0"
+                                  direction="previous"
+                                  (clicked)="setSelectedIndex(selectedIndex-1)">
+          </aspect-page-nav-button>
           <aspect-page [pageIndex]="pages | pageIndex: page"
                        [isLastPage]="last"
                        [page]="page">
           </aspect-page>
+          <aspect-page-nav-button *ngIf="scrollPageMode==='buttons' && !last"
+                                  direction="next"
+                                  (clicked)="setSelectedIndex(selectedIndex+1)">
+          </aspect-page-nav-button>
         </div>
       </mat-tab>
     </ng-container>

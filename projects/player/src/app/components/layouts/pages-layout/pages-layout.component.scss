@@ -42,6 +42,21 @@
   overflow: auto;
 }
 
+:host ::ng-deep .buttons-mode .mat-mdc-tab-body.mat-mdc-tab-body-active {
+  animation: fade-in 300ms;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    top: 100vh;
+  }
+  100% {
+    opacity: 1;
+    top: 0;
+  }
+}
+
 :host ::ng-deep .mat-mdc-tab-body-content {
   height: 100%;
   overflow: unset;

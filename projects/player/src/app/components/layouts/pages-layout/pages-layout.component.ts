@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Page } from 'common/models/page';
 import { NavigationService } from 'player/src/app/services/navigation.service';
-import { VopPageNavigationCommand } from 'player/modules/verona/models/verona';
+import { PagingMode, VopPageNavigationCommand } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { PageChangeService } from 'common/services/page-change.service';
 import { NativeEventService } from '../../../services/native-event.service';
@@ -18,7 +18,7 @@ import { NativeEventService } from '../../../services/native-event.service';
 
 export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pages!: Page[];
-  @Input() scrollPageMode!: 'separate' | 'concat-scroll' | 'concat-scroll-snap';
+  @Input() scrollPageMode!: PagingMode;
   @Input() alwaysVisiblePage!: Page | null;
   @Input() scrollPages!: Page[];
   @Input() hasScrollPages!: boolean;
@@ -190,5 +190,9 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.minHeight.scrollPages = 100;
     }
+  }
+
+  onAnimationDone(delay: number): void {
+    setTimeout(() => this.pageChangeService.pageChanged.emit(), delay);
   }
 }

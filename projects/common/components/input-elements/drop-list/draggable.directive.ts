@@ -26,11 +26,13 @@ export class DraggableDirective {
     event.preventDefault();
     if (!isTouchEvent(event) && event.button !== 0) return; // no right-click
 
-    const sourceElement: HTMLElement | null = (event.target as HTMLElement).closest('.drop-list-item');
-    if (!sourceElement) return;
+    if ((event.target as HTMLElement).getAttribute('data-draggable-audio')) return;
+
+    const sourceItem: HTMLElement | null = (event.target as HTMLElement).closest('.drop-list-item');
+    if (!sourceItem) return;
 
     this.dragStart.emit({
-      sourceElement: sourceElement,
+      sourceElement: sourceItem,
       x: isTouchEvent(event) ? event.touches?.[0].clientX : event.clientX,
       y: isTouchEvent(event) ? event.touches?.[0].clientY : event.clientY,
       dragType: isTouchEvent(event) ? 'touch' : 'mouse'

@@ -10,17 +10,15 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
                                      'column-reverse': label.imgPosition === 'below',
                                      'row': label.imgPosition === 'left',
                                      'row-reverse': label.imgPosition === 'right'}">
-      <ng-container *ngIf="$any(label).audioSrc">
+      <div *ngIf="$any(label).audioSrc"
+           class="audio-button"
+           (click)="player.play()">
         <audio #player
                [src]="$any(label).audioSrc | safeResourceUrl">
         </audio>
-<!--             [style.pointer-events]="'auto'"-->
-<!--             (mousedown)="$event.stopPropagation()"-->
-        <div class="audio-button"
-             (click)="player.play()">
-          <mat-icon>play_arrow</mat-icon>
-        </div>
-      </ng-container>
+        <mat-icon data-draggable-audio="true">play_arrow</mat-icon>
+      </div>
+
       <img *ngIf="label.imgSrc"
            [style.object-fit]="'scale-down'"
            [style.max-width.%]="100"
@@ -29,7 +27,10 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
     </div>
   `,
   styles: [`
-    :host {align-self: center; justify-content: inherit;}
+    :host {
+      align-self: center;
+      justify-content: inherit;
+    }
     .wrapper {
       display: flex;
       justify-content: inherit;
@@ -50,10 +51,12 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
       font-style: inherit;
       text-decoration: inherit;
       background-color: inherit;
+      margin: 10px;
     }
     .audio-button {
       cursor: pointer;
       display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
+      padding: 0 5px;
     }
     .audio-button:hover {color: #006064;}
   `]

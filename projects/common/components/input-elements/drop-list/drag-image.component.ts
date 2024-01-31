@@ -23,7 +23,6 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
       position: fixed;
       display: block;
       box-sizing: border-box;
-      padding: 10px;
       border-radius: 5px;
       pointer-events: none;
       box-shadow: 2px 2px 5px black;

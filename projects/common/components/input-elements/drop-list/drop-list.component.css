@@ -46,7 +46,6 @@
 }
 
 .drop-list-item {
-  padding: 10px;
   border-radius: 5px;
   cursor: grab;
   transition: all .3s linear;

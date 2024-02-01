@@ -13,12 +13,13 @@ import { SelectionService } from '../../../services/selection.service';
       <aspect-position-field-set
         *ngIf="positionProperties"
         [positionProperties]="positionProperties"
+        [isZIndexDisabled]="isZIndexDisabled"
         (updateModel)="unitService.updateSelectedElementsPositionProperty($event.property, $event.value)">
       </aspect-position-field-set>
 
-      <aspect-dimension-field-set
-        [positionProperties]="positionProperties"
-        [dimensions]="dimensions">
+      <aspect-dimension-field-set *ngIf="dimensions"
+                                  [positionProperties]="positionProperties"
+                                  [dimensions]="dimensions">
       </aspect-dimension-field-set>
 
       <ng-container *ngIf="(selectionService.selectedElements | async)!.length > 1">
@@ -60,8 +61,9 @@ import { SelectionService } from '../../../services/selection.service';
   `]
 })
 export class ElementPositionPropertiesComponent {
-  @Input() dimensions!: DimensionProperties;
+  @Input() dimensions!: DimensionProperties | null;
   @Input() positionProperties: PositionProperties | undefined;
+  @Input() isZIndexDisabled: boolean = false;
 
   constructor(public unitService: UnitService, public selectionService: SelectionService) { }
 

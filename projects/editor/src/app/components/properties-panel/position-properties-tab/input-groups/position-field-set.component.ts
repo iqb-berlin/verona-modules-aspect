@@ -117,17 +117,19 @@ import { UnitService } from 'editor/src/app/services/unit.service';
         </div>
       </ng-template>
 
-      Stapelung<br>
-      <mat-form-field *ngIf="positionProperties.zIndex !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
-        <input matInput type="number" #zIndex="ngModel"
-               [ngModel]="positionProperties.zIndex"
-               (ngModelChange)="updateModel.emit({ property: 'zIndex',
-                                                       value: $event,
-                                                       isInputValid: zIndex.valid && $event !== null })"
-               (change)="positionProperties.zIndex = positionProperties.zIndex ? positionProperties.zIndex : 0"
-               matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
-      </mat-form-field>
+      <ng-container *ngIf="!isZIndexDisabled">
+        Stapelung<br>
+        <mat-form-field appearance="fill">
+          <mat-label>{{'propertiesPanel.zIndex' | translate }}</mat-label>
+          <input matInput type="number" #zIndex="ngModel"
+                 [ngModel]="positionProperties.zIndex"
+                 (ngModelChange)="updateModel.emit({ property: 'zIndex',
+                                                         value: $event,
+                                                         isInputValid: zIndex.valid && $event !== null })"
+                 (change)="positionProperties.zIndex = positionProperties.zIndex ? positionProperties.zIndex : 0"
+                 matTooltip="Priorität beim Stapeln von Elementen. Der höhere Index erscheint vorne.">
+        </mat-form-field>
+      </ng-container>
     </fieldset>
   `,
   styles: [
@@ -137,6 +139,7 @@ import { UnitService } from 'editor/src/app/services/unit.service';
 })
 export class PositionFieldSetComponent {
   @Input() positionProperties!: PositionProperties;
+  @Input() isZIndexDisabled: boolean = false;
   @Output() updateModel =
     new EventEmitter<{
       property: string;

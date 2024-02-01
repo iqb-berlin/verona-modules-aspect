@@ -25,8 +25,10 @@
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">format_shapes</mat-icon>
       </ng-template>
-      <aspect-position-and-dimension-properties [dimensions]="combinedProperties.dimensions"
-                                               [positionProperties]="combinedProperties.position">
+      <aspect-position-and-dimension-properties
+        [dimensions]="combinedProperties.type === 'trigger' ? null : combinedProperties.dimensions"
+        [positionProperties]="combinedProperties.position"
+        [isZIndexDisabled]="combinedProperties.type === 'trigger'">
       </aspect-position-and-dimension-properties>
     </mat-tab>
 

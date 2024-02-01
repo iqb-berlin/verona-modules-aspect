@@ -87,7 +87,9 @@ export class DialogService {
 
   showDropListOptionEditDialog(value: DragNDropValueObject): Observable<DragNDropValueObject> {
     const dialogRef = this.dialog.open(DropListOptionEditDialogComponent, {
-      data: { value }
+      data: { value },
+      height: '700px',
+      width: '600px'
     });
     return dialogRef.afterClosed();
   }

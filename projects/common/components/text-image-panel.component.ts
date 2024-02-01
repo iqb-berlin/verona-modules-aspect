@@ -23,7 +23,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
            [style.object-fit]="'scale-down'"
            [style.max-width.%]="100"
            [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
-      <div class="text" [innerHTML]="label.text | safeResourceHTML"></div>
+      <div *ngIf="label.text !== ''" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
     </div>
   `,
   styles: [`

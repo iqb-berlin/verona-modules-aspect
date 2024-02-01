@@ -38,6 +38,8 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
 
+    this.preventInteraction = this.element.type !== 'cloze';
+
     this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
 
     if (this.childComponent.instance instanceof FormElementComponent) {

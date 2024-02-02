@@ -47,7 +47,8 @@ import { DragOperatorService } from './drag-operator.service';
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
            [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-           [style.background-color]="elementModel.styling.itemBackgroundColor">
+           [style.background-color]="elementModel.styling.itemBackgroundColor"
+           [class.read-only]="elementModel.readOnly">
         <aspect-text-image-panel [label]="item"></aspect-text-image-panel>
       </div>
     <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"

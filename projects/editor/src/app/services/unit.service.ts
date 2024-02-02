@@ -135,6 +135,9 @@ export class UnitService {
         if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
           (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
         }
+        if (['likert', 'cloze'].includes((element as UIElement).type as string)) {
+          element.getChildElements().forEach(el => this.idService.addID(el.id));
+        }
         this.idService.addID(element.id);
       });
     }

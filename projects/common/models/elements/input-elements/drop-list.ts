@@ -30,7 +30,17 @@ export class DropListElement extends InputElement implements DropListProperties 
   constructor(element?: DropListProperties) {
     super(element);
     if (element && isValid(element)) {
-      this.value = element.value.map(val => ({ ...val }));
+      this.value = element.value.map((value, index) => ({
+        text: value.text,
+        imgSrc: value.imgSrc,
+        imgPosition: value.imgPosition,
+        id: value.id,
+        originListID: this.id,
+        originListIndex: index,
+        audioSrc: value.audioSrc
+      }
+      ));
+      this.isSortList = element.isSortList;
       this.onlyOneItem = element.onlyOneItem;
       this.connectedTo = [...element.connectedTo];
       this.copyOnDrop = element.copyOnDrop;
@@ -44,7 +54,15 @@ export class DropListElement extends InputElement implements DropListProperties 
         throw new InstantiationEror('Error at DropList instantiation', element);
       }
       this.value = element?.value !== undefined ?
-        element.value.map(val => ({ ...val })) :
+        this.value = element.value.map((value, index) => ({
+          text: value.text,
+          imgSrc: value.imgSrc,
+          imgPosition: value.imgPosition,
+          id: value.id,
+          originListID: this.id,
+          originListIndex: index,
+          audioSrc: value.audioSrc
+        })) :
         [];
       if (element?.isSortList) this.isSortList = element.isSortList;
       if (element?.onlyOneItem) this.onlyOneItem = element.onlyOneItem;

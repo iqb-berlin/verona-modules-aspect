@@ -6,19 +6,18 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
 @Component({
   selector: 'aspect-text-image-panel',
   template: `
-    <div class="wrapper" [ngClass]="{'column': label.imgPosition === 'above',
+    <div *ngIf="$any(label).audioSrc"
+         class="audio-button"
+         (click)="player.play()">
+      <audio #player
+             [src]="$any(label).audioSrc | safeResourceUrl">
+      </audio>
+      <mat-icon data-draggable-audio="true">play_arrow</mat-icon>
+    </div>
+    <div class="image-wrapper" [ngClass]="{'column': label.imgPosition === 'above',
                                      'column-reverse': label.imgPosition === 'below',
                                      'row': label.imgPosition === 'left',
                                      'row-reverse': label.imgPosition === 'right'}">
-      <div *ngIf="$any(label).audioSrc"
-           class="audio-button"
-           (click)="player.play()">
-        <audio #player
-               [src]="$any(label).audioSrc | safeResourceUrl">
-        </audio>
-        <mat-icon data-draggable-audio="true">play_arrow</mat-icon>
-      </div>
-
       <img *ngIf="label.imgSrc"
            [style.object-fit]="'scale-down'"
            [style.max-width.%]="100"
@@ -30,8 +29,10 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
     :host {
       align-self: center;
       justify-content: inherit;
+      display: flex;
+      max-height: 100%;
     }
-    .wrapper {
+    .image-wrapper {
       display: flex;
       justify-content: inherit;
       max-height: 100%;
@@ -43,7 +44,6 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
     .text {
       display: flex;
       align-items: center;
-      justify-content: inherit;
       color: inherit;
       font-family: inherit;
       font-size: inherit;
@@ -53,12 +53,23 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
       background-color: inherit;
       margin: 10px;
     }
+    .column .text, .column-reverse .text {
+      justify-content: center;
+    }
     .audio-button {
       cursor: pointer;
-      display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
+      align-self: center;
       padding: 0 5px;
+      display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
     }
-    .audio-button:hover {color: #006064;}
+    .audio-button:hover {color: #006064;
+    }
+    .column img, .column-reverse img {
+      height: 100%;
+    }
+    .row img, .row-reverse img {
+      width: 100%;
+    }
   `]
 })
 export class TextImagePanelComponent {

@@ -69,6 +69,7 @@ import { BasicStyles } from 'common/models/elements/property-group-interfaces';
   styles: [`
     .likert-column-label {
       text-align: center;
+      justify-content: center;
     }
     .wrapper {
       width: 100%;

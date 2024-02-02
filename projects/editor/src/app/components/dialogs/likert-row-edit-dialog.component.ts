@@ -63,7 +63,8 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
               </mat-select>
             </mat-form-field>
           </div>
-          <aspect-text-image-panel [label]="newLikertRow.rowLabel"></aspect-text-image-panel>
+          <aspect-text-image-panel [label]="newLikertRow.rowLabel"
+                                   [style.justify-content]="'center'"></aspect-text-image-panel>
         </div>
       </div>
     </mat-dialog-content>

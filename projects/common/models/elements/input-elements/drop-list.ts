@@ -3,7 +3,7 @@ import {
   InputElement, InputElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { DropListComponent } from 'common/components/input-elements/drop-list.component';
+import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {

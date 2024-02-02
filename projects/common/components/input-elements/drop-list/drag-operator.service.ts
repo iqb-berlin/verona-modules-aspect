@@ -1,0 +1,244 @@
+import { Injectable } from '@angular/core';
+import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { DragOperation } from 'common/components/input-elements/drop-list/drag-operation';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DragOperatorService {
+  dropLists: { [id: string]: DropListComponent } = {};
+  dragOperation: DragOperation | undefined;
+
+  registerComponent(comp: DropListComponent): void {
+    this.dropLists[comp.elementModel.id] = comp;
+  }
+
+  startDrag(sourceElement: HTMLElement, sourceListComponent: DropListComponent, sourceIndex: number,
+            item: DragNDropValueObject, dragType: 'mouse' | 'touch') {
+    this.dragOperation =
+      new DragOperation(sourceElement, sourceListComponent, sourceIndex, item, dragType, this.dropLists);
+
+    this.initDrag();
+  }
+
+  initDrag(): void {
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    this.dragOperation.sourceElement?.classList.add('show-as-placeholder');
+    this.dragOperation.sourceElement.style.pointerEvents = 'none';
+
+    this.dragOperation.sourceComponent.isHovered = true;
+
+    if (this.dragOperation.sourceComponent.elementModel.highlightReceivingDropList) {
+      this.dragOperation.eligibleTargetListsIDs.forEach(listID => {
+        this.dropLists[listID].isHighlighted = true; // TODO kapseln
+        this.dropLists[listID].cdr.detectChanges();
+      });
+    }
+    if (this.dragOperation.dragType === 'mouse') this.setListItemListeners();
+  }
+
+  endDrag(): void {
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    this.dragOperation.sourceElement.classList.remove('show-as-placeholder');
+    this.dragOperation.sourceElement.style.pointerEvents = 'auto';
+
+    this.dragOperation.placeholderElement?.classList.remove('show-as-placeholder');
+
+    this.resetListEffects();
+    if (this.dragOperation.dragType === 'mouse') {
+      Object.values(this.dropLists).forEach(listComp => {
+        listComp.stopListenForHover();
+      });
+    }
+    this.dragOperation.targetComponent?.refreshItemsFromForm();
+    this.dragOperation.targetComponent?.cdr.detectChanges(); // reset placeholder CSS
+  }
+
+  private resetListEffects(): void {
+    this.dragOperation?.eligibleTargetListsIDs.forEach(listID => {
+      this.dropLists[listID].isHovered = false;
+      this.dropLists[listID].isHighlighted = false;
+      this.dropLists[listID].cdr.detectChanges();
+    });
+  }
+
+  setTargetList(listId: string): void {
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    const targetListComp = this.dropLists[listId];
+    this.dragOperation.targetComponent = targetListComp;
+    if (targetListComp.elementModel.isSortList) {
+      if (this.dragOperation.sourceComponent !== targetListComp) {
+        this.addSortPlaceholder();
+      } else {
+        this.dragOperation.sortingPlaceholderIndex = this.dragOperation.sourceIndex;
+      }
+    }
+  }
+
+  addSortPlaceholder(): void {
+    if (!this.dragOperation?.targetComponent) throw new Error('dragOP undefined');
+    this.dragOperation.isForeignPlaceholderActive = true;
+    this.dragOperation.sortingPlaceholderIndex =
+      this.dragOperation.targetComponent.viewModel.push(this.dragOperation.draggedItem) - 1;
+    this.dragOperation.targetComponent.cdr.detectChanges();
+    this.dragOperation.placeholderElement =
+      this.dragOperation.targetComponent.droplistItems?.toArray()[this.dragOperation.sortingPlaceholderIndex]
+        .nativeElement as HTMLElement;
+    this.dragOperation.placeholderElement.classList.add('show-as-placeholder');
+  }
+
+  unSetTargetList(): void {
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    this.dragOperation.targetComponent = undefined;
+    this.dragOperation.sortingPlaceholderIndex = undefined;
+  }
+
+  private setListItemListeners(): void {
+    this.dragOperation?.eligibleTargetListsIDs.forEach(listID => {
+      this.dropLists[listID].listenForHover();
+    });
+  }
+
+  positionSortPlaceholder(targetIndex: number): void {
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    const list = this.dragOperation.targetComponent!.viewModel;
+    const sourceIndex = this.dragOperation.sortingPlaceholderIndex!;
+    const item = list.splice(sourceIndex, 1)[0];
+    list.splice(targetIndex, 0, item);
+    this.dragOperation.sortingPlaceholderIndex = targetIndex;
+  }
+
+  handleDrop(): void {
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    if (this.dragOperation.sourceComponent && this.dragOperation.targetComponent &&
+      DragOperatorService.isDropAllowed(this.dragOperation.draggedItem,
+        this.dragOperation.sourceComponent,
+        this.dragOperation.targetComponent,
+        this.dropLists)) {
+      if (this.dragOperation.sourceComponent === this.dragOperation.targetComponent) {
+        if (!this.dragOperation.targetComponent.elementModel.isSortList) return;
+        const item =
+          this.dragOperation.targetComponent!.elementFormControl.value.splice(this.dragOperation.sourceIndex, 1)[0];
+        this.dragOperation.targetComponent!.elementFormControl.value
+          .splice(this.dragOperation.sortingPlaceholderIndex, 0, item);
+      } else {
+        this.moveItem(this.dragOperation.draggedItem,
+          this.dragOperation.sourceComponent,
+          this.dragOperation.sourceIndex,
+          this.dragOperation.targetComponent);
+      }
+      this.dragOperation.sourceComponent?.updateFormvalue();
+      this.dragOperation.targetComponent?.updateFormvalue();
+      this.dragOperation.sourceComponent?.refreshItemsFromForm();
+      this.dragOperation.targetComponent?.refreshItemsFromForm();
+    }
+  }
+
+  moveItem(item: DragNDropValueObject | undefined,
+           sourceList: DropListComponent,
+           sourceListIndex: number,
+           targetList: DropListComponent): void {
+    DragOperatorService.removeItem(sourceList, sourceListIndex);
+    this.addItem(item as DragNDropValueObject, targetList);
+  }
+
+  static removeItem(list: DropListComponent, index: number): DragNDropValueObject {
+    return list.elementModel.copyOnDrop ?
+      list.elementFormControl.value[index] :
+      list.elementFormControl.value.splice(index, 1)[0];
+  }
+
+  addItem(item: DragNDropValueObject, targetList: DropListComponent): void {
+    if (DragOperatorService.isPutBack(item, targetList)) {
+      return;
+    }
+    if (DragOperatorService.isReplace(targetList, this.dropLists)) {
+      const originList = this.dropLists[targetList.elementFormControl.value[0].originListID];
+      this.moveItem(targetList.elementFormControl.value[0], targetList,0, originList);
+      originList.updateFormvalue();
+      originList.refreshItemsFromForm();
+    }
+    // TODO haut logisch noch nicht ganz hin mit den festen Indize
+    const targetIndex = this.dragOperation?.sortingPlaceholderIndex !== undefined ?
+      this.dragOperation?.sortingPlaceholderIndex :
+      targetList.elementFormControl.value.length;
+    targetList.elementFormControl.value.splice(targetIndex, 0, item);
+  }
+
+  hoverToggle = true;
+
+  checkHovered(x: number, y: number): void {
+    const el = document.elementFromPoint(x, y);
+    const sourceElement: HTMLElement | null = (el as HTMLElement).closest('.drop-list');
+    const targetListID = sourceElement?.id;
+
+    if (targetListID &&
+        this.dragOperation?.eligibleTargetListsIDs.includes(this.dropLists[targetListID].elementModel.id)) {
+      if (!this.hoverToggle) {
+        this.dropLists[targetListID].dragEnter();
+      }
+      this.hoverToggle = true;
+      this.checkHoverSort(el);
+    } else {
+      if (this.hoverToggle) {
+        this.dragOperation?.targetComponent?.dragLeave();
+      }
+      this.hoverToggle = false;
+    }
+  }
+
+  private checkHoverSort(el: Element | null): void {
+    if (this.dragOperation?.targetComponent?.elementModel.isSortList &&
+        el?.getAttribute('data-aspect-draggable')) {
+      const targetIndex = Array.from((el.parentNode as HTMLElement).children).indexOf(el);
+      this.positionSortPlaceholder(targetIndex);
+    }
+  }
+
+  static isDropAllowed(draggedItem: DragNDropValueObject | undefined,
+                       sourceList: DropListComponent,
+                       targetList: DropListComponent,
+                       allLists: { [id: string]: DropListComponent }): boolean {
+    return sourceList.elementModel.id === targetList.elementModel.id ||
+      DragOperatorService.checkConnected(sourceList, targetList) &&
+      DragOperatorService.checkOnlyOneItem(targetList, allLists) &&
+      DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList);
+  }
+
+  /* Drop is only allowed in connected Lists AND THE SAME LIST. */
+  private static checkConnected(sourceList: DropListComponent, targetList: DropListComponent): boolean {
+    return sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
+  }
+
+  /* Return false, when drop is not allowed */
+  private static checkOnlyOneItem(targetList: DropListComponent,
+                                  allLists: { [id: string]: DropListComponent }): boolean {
+    return !(targetList.elementModel.onlyOneItem &&
+      targetList.elementFormControl.value.length > 0 &&
+      !DragOperatorService.isReplace(targetList, allLists));
+  }
+
+  /* Don't allow moving item into copy list that not originate from there. */
+  private static checkAddForeignItemToCopyList(draggedItem: DragNDropValueObject | undefined,
+                                               targetList: DropListComponent): boolean {
+    return !(targetList.elementModel.copyOnDrop && draggedItem?.originListID !== targetList.elementModel.id);
+  }
+
+  static isPutBack(draggedItem: DragNDropValueObject | undefined, targetList: DropListComponent): boolean {
+    return targetList.elementModel.copyOnDrop && draggedItem?.originListID === targetList.elementModel.id;
+  }
+
+  static isReplace(targetList: DropListComponent,
+                   allLists: { [id: string]: DropListComponent }): boolean {
+    return targetList.elementModel.onlyOneItem &&
+      targetList.elementFormControl.value.length === 1 &&
+      targetList.elementModel.allowReplacement &&
+      DragOperatorService.isDropAllowed(
+        targetList.elementFormControl.value[0],
+        targetList,
+        allLists[targetList.elementFormControl.value[0].originListID],
+        allLists
+      );
+  }
+}

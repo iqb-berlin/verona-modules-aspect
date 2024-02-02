@@ -59,7 +59,7 @@ import {
 } from './components/compound-elements/likert/likert-radio-button-group.component';
 import { ImageMagnifierComponent } from './components/media-elements/image-magnifier.component';
 import { RadioGroupImagesComponent } from './components/input-elements/radio-group-images.component';
-import { DropListComponent } from './components/input-elements/drop-list.component';
+import { DropListComponent } from './components/input-elements/drop-list/drop-list.component';
 import { ClozeComponent } from './components/compound-elements/cloze/cloze.component';
 import { SliderComponent } from './components/input-elements/slider.component';
 import { SpellCorrectComponent } from './components/input-elements/spell-correct.component';
@@ -88,7 +88,10 @@ import {
 } from './services/message.service';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
 import { MathTableComponent } from './components/input-elements/math-table.component';
+
 import { TextAreaMathComponent } from './components/input-elements/text-area-math.component';
+import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
+import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
 
 @NgModule({
   imports: [
@@ -113,7 +116,8 @@ import { TextAreaMathComponent } from './components/input-elements/text-area-mat
     MathEditorModule,
     MatListModule,
     CdkConnectedOverlay,
-    CdkOverlayOrigin
+    CdkOverlayOrigin,
+    DraggableDirective
   ],
   declarations: [
     ButtonComponent,
@@ -173,7 +177,8 @@ import { TextAreaMathComponent } from './components/input-elements/text-area-mat
     ClozeChildErrorMessage,
     AutoHeightDirective,
     LikertRowBackgroundColorPipe,
-    MathTableComponent
+    MathTableComponent,
+    DragImageComponent
   ],
   exports: [
     CommonModule,

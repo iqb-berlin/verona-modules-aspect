@@ -258,7 +258,8 @@
     "showResultRowWithHelperRow": "Ergebniszeile mit Hilfszeile",
     "showTopHelperRows": "obere Helferzeilen",
     "allowFirstLineCrossOut": "Durchstreichen in erster Zeile",
-    "trackedVariables": "Ergebnisvariablen"
+    "trackedVariables": "Ergebnisvariablen",
+    "isSortList": "Sortierliste"
   },
   "hotspot": {
     "top": "Abstand von oben",

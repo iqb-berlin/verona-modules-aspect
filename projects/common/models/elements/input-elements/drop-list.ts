@@ -15,6 +15,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class DropListElement extends InputElement implements DropListProperties {
   type: UIElementType = 'drop-list';
   value: DragNDropValueObject[];
+  isSortList: boolean = false;
   onlyOneItem: boolean = false;
   connectedTo: string[] = [];
   copyOnDrop: boolean = false;
@@ -45,6 +46,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.value = element?.value !== undefined ?
         element.value.map(val => ({ ...val })) :
         [];
+      if (element?.isSortList) this.isSortList = element.isSortList;
       if (element?.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
       if (element?.connectedTo) this.connectedTo = [...element.connectedTo];
       if (element?.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
@@ -124,6 +126,7 @@ export class DropListElement extends InputElement implements DropListProperties 
 
 export interface DropListProperties extends InputElementProperties {
   value: DragNDropValueObject[];
+  isSortList: boolean;
   onlyOneItem: boolean;
   connectedTo: string[];
   copyOnDrop: boolean;
@@ -139,6 +142,7 @@ export interface DropListProperties extends InputElementProperties {
 function isValid(blueprint?: DropListProperties): boolean {
   if (!blueprint) return false;
   return blueprint.value !== undefined &&
+    blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&
     blueprint.connectedTo !== undefined &&
     blueprint.copyOnDrop !== undefined &&

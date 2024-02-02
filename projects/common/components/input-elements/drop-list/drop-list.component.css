@@ -1,0 +1,78 @@
+:host {
+  display: flex !important;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+}
+
+.drop-list {
+  width: 100%; height: 100%;
+  display: flex;
+  gap: 5px;
+  box-sizing: border-box;
+  padding: 5px;
+  background-color: rgb(244, 244, 242);
+  border-radius: 5px;
+  cursor: grab;
+}
+
+.drop-list.row {
+  flex-direction: row;
+}
+
+.drop-list.column {
+  flex-direction: column;
+}
+
+.drop-list.float {
+  place-content: center space-around; align-items: center; flex-flow: row wrap;
+}
+
+.cloze-context.drop-list {
+  justify-content: center;
+  padding: 0;
+  color: transparent;
+}
+
+.drop-list.hovered {filter: brightness(80%)}
+
+.drop-list.isHighlighted {
+  border: 2px solid;
+  padding: 3px;
+}
+
+.cloze-context.drop-list.isHighlighted {
+  padding: 0;
+}
+
+.drop-list-item {
+  border-radius: 5px;
+  cursor: grab;
+  transition: all .3s linear;
+  max-height: 100%;
+}
+
+.image-item {
+  padding: 0;
+  align-self: flex-start;
+}
+
+.cloze-context .drop-list-item {
+  padding: 0 5px;
+  justify-content: center;
+}
+
+.drop-list-item.show-as-placeholder { /* set via controller */
+  background-color: #ccc !important;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.cloze-context .error-message {
+  white-space: nowrap;
+  font-size: smaller;
+}
+
+.read-only {
+  pointer-events: none;
+}

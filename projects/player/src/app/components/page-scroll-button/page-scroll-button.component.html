@@ -1,5 +1,8 @@
 <ng-content></ng-content>
-<div class="fx-column-center-center scroll-button-container">
+<div class="fx-column-center-center scroll-button-container"
+     [class.left]="containerPosition === 'left'"
+     [class.right]="containerPosition === 'right'"
+     [style.maxWidth]="containerMaxWidth">
   <button *ngIf="isVisible.value"
           mat-fab
           class="scroll-button"

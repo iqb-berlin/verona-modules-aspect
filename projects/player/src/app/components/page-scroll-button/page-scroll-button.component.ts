@@ -23,6 +23,8 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     setTimeout(() => { this.isBlocked = false; });
   }
 
+  @Input() containerPosition!: 'left' | 'right' | null;
+  @Input() containerMaxWidth!: string;
   @Input() isVisibleIndexPages!: BehaviorSubject<IsVisibleIndex[]>;
   @Input() isSnapMode!: boolean;
   @Output() scrollToNextPage: EventEmitter<void> = new EventEmitter<void>();

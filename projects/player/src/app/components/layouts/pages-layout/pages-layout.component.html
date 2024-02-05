@@ -18,7 +18,11 @@
                              cdkScrollable
                              [isSnapMode]="false"
                              [style.max-height.%]="aspectRatioColumn.alwaysVisiblePage"
-                             [style.max-width.%]="aspectRatioRow.alwaysVisiblePage">
+                             [style.max-width.%]="aspectRatioRow.alwaysVisiblePage"
+                             [containerMaxWidth]="layoutAlignment === 'row' ? containerMaxWidth.scrollPages : '100%'"
+                             [containerPosition]="alwaysVisiblePagePosition === 'left' && hasScrollPages  ?
+                                                    'left' : alwaysVisiblePagePosition === 'right' && hasScrollPages ?
+                                                      'right' : null">
     <div [class.center-pages]="layoutAlignment === 'column' || !hasScrollPages"
          [class.left-container]="alwaysVisiblePagePosition === 'left'"
          [style.max-width]="containerMaxWidth.alwaysVisiblePage">
@@ -50,12 +54,18 @@
                                [class.concat-scroll-snap]="scrollPageMode === 'concat-scroll-snap' && !isSnapBlocked"
                                [style.max-height.%]="aspectRatioColumn.scrollPages"
                                [style.max-width.%]="aspectRatioRow.scrollPages"
+                               [containerMaxWidth]="layoutAlignment === 'row' && !!alwaysVisiblePage ?
+                                                      containerMaxWidth.scrollPages : '100%'"
+                               [containerPosition]="alwaysVisiblePagePosition === 'left' && !!alwaysVisiblePage ?
+                                                        'right' :
+                                                        alwaysVisiblePagePosition === 'right' && !!alwaysVisiblePage ?
+                                                          'left' : null"
                                (scrollToNextPage)="scrollToNextPage()"
                                (scrollingEnded)="onScrollingEnded()">
-      <div #pagesScroll [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
+      <div [class.center-pages]="layoutAlignment === 'column' || !alwaysVisiblePage"
            [class.left-container]="alwaysVisiblePage && alwaysVisiblePagePosition === 'right'"
            [style.max-width]="containerMaxWidth.scrollPages">
-        <ng-container [ngTemplateOutlet]="scrollPageMode === 'separate' || scrollPageMode === 'buttons'  ?
+        <ng-container [ngTemplateOutlet]="scrollPageMode === 'separate' || scrollPageMode === 'buttons' ?
                                             scrollPagesSeparatedView :
                                             scrollPagesScrolledView">
         </ng-container>

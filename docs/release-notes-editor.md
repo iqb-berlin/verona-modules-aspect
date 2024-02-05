@@ -10,6 +10,14 @@ Editor
   - Element ist nur im Editor sichtbar 
   - Eingestellte Aktion wird bei der Ankunft des unsichtbaren Elements im Bildbereich des Browsers ausgelöst
 
+## Fehlerbehebungen
+- Legt für Kinderelemente von Optionstabellen unf Lückentexten beim Einfügen von kopierten 
+  Abschnitten neue IDs an
+
+## Änderungen
+- Überarbeitung des Optionsdialogs für Ablegelisten 
+
+
 ## 2.3.0
 ### Neue Funktionen
 - Geometrie: Es können nun Variablen der Aufgabe ausgewählt werden, welche in den Ergebnisdaten

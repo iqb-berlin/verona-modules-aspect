@@ -2,11 +2,15 @@ Player
 ======
 ## 2.4.0
 - Unterstützt Tastatur und Eingabehilfe für Rechenkästchen
-- Unterstützt neues Auslöser-Element und blendet seine Sichtbarkeit aus 
+- Unterstützt neuen Verona API Modus zum Seitenwechsel 'Buttons'
+- Unterstützt neues Auslöser-Element
 
 ### Änderungen 
+- Seiten, die ausschließlich ausgeblendete Abschnitte beinhalten, werden ausgeblendet und 
+  aus der Navigationsleiste des Testcenters und des Studios entfernt 
 - Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation 
   unterbunden (dabei kann es zu einem kurzen Flackern kommen).
+- Zentriert den eingeblendeten Seiten-Scroll-Button in Bezug zur eingestellten Seitengröße
 
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos

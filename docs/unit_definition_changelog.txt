@@ -150,11 +150,10 @@ iqb-aspect-definition@1.0.0
 4.4.0
 - New Trigger Element
 - MathTable:
- - new property: inputAssistancePreset
- - new property: inputAssistancePosition
- - new property: inputAssistanceFloatingStartPosition
- - new property: showSoftwareKeyboard
- - new property: addInputAssistanceToKeyboard
-
-4.5.0
-- DropList: new property: isSortList
+  - new property: inputAssistancePreset
+  - new property: inputAssistancePosition
+  - new property: inputAssistanceFloatingStartPosition
+  - new property: showSoftwareKeyboard
+  - new property: addInputAssistanceToKeyboard
+- DropList:
+  - new property: isSortList

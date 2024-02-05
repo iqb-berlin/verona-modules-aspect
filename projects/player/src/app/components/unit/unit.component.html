@@ -2,7 +2,7 @@
 <aspect-player-layout *ngIf="pages?.length"
                       aspectUnitState
                       aspectPlayerState
-                      [validPages]="pages | validPages"
+                      [isVisibleIndexPages]="pagesLayout.isVisibleIndexPages"
                       [currentPageIndex]="pagesLayout.selectedIndex">
   <aspect-pages-layout #pagesLayout
                        [style.height.%]="100"

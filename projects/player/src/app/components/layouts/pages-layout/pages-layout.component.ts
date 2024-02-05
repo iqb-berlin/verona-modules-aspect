@@ -1,13 +1,16 @@
 import {
   AfterViewInit, ChangeDetectorRef, Component, Input, OnDestroy, OnInit
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Page } from 'common/models/page';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { PagingMode, VopPageNavigationCommand } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { PageChangeService } from 'common/services/page-change.service';
+import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
+import { HasNextPagePipe } from 'player/src/app/pipes/has-next-page.pipe';
+import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe';
 import { NativeEventService } from '../../../services/native-event.service';
 
 @Component({
@@ -18,6 +21,7 @@ import { NativeEventService } from '../../../services/native-event.service';
 
 export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() pages!: Page[];
+  @Input() isVisibleIndexPages: BehaviorSubject<IsVisibleIndex[]> = new BehaviorSubject<IsVisibleIndex[]>([]);
   @Input() scrollPageMode!: PagingMode;
   @Input() alwaysVisiblePage!: Page | null;
   @Input() scrollPages!: Page[];
@@ -29,7 +33,6 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   layoutAlignment: 'row' | 'column' = 'row';
   hidePageLabels: boolean = true;
   tabHeaderHeight: number = 0;
-
   isSnapBlocked: boolean = false;
 
   maxWidth: { alwaysVisiblePage: number, scrollPages: number, allPages: number } =
@@ -76,7 +79,8 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setSelectedIndex(selectedIndex: number): void {
-    setTimeout(() => { this.selectedIndex = selectedIndex; });
+    this.selectedIndex = selectedIndex;
+    window.dispatchEvent(new Event('resize'));
   }
 
   private calculateCenterPositionInRowLayout(): void {
@@ -169,12 +173,35 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  scrollToNextPage(pageIndex: number): void {
-    if (pageIndex <= this.scrollPages.length - 1) {
-      this.isSnapBlocked = true;
-      // Timeout 200: Make sure that a possible concat-scroll-browser-action is completed
-      setTimeout(() => this.selectIndex.next(pageIndex), 200);
+  scrollToNextPage(): void {
+    const index = HasNextPagePipe
+      .getNextPageIndex(this.selectedIndex, this.isVisibleIndexPages.value);
+    // Timeout 200: Make sure that a possible concat-scroll-browser-action is completed
+    if (index !== null) setTimeout(() => this.selectIndex.next(index), 200);
+  }
+
+  setNextSelectedIndex(): void {
+    const index = HasNextPagePipe
+      .getNextPageIndex(this.selectedIndex, this.isVisibleIndexPages.value);
+    if (index !== null) this.selectIndex.next(index);
+  }
+
+  setPreviousSelectedIndex(): void {
+    const index = HasPreviousPagePipe
+      .getPreviousPageIndex(this.selectedIndex, this.isVisibleIndexPages.value);
+    if (index !== null) this.selectIndex.next(index);
+  }
+
+  setIsVisibleIndexPages(changedPage: IsVisibleIndex): void {
+    const isVisibleIndexPages = this.isVisibleIndexPages.value.map(element => element);
+    let page = isVisibleIndexPages
+      .find(element => element.index === changedPage.index);
+    if (!page) {
+      page = changedPage;
+      isVisibleIndexPages.push(page);
     }
+    page.isVisible = changedPage.isVisible;
+    this.isVisibleIndexPages.next(isVisibleIndexPages);
   }
 
   onScrollingEnded(): void {
@@ -193,6 +220,7 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onAnimationDone(delay: number): void {
+    window.dispatchEvent(new Event('resize'));
     setTimeout(() => this.pageChangeService.pageChanged.emit(), delay);
   }
 }

@@ -4,7 +4,7 @@ import { Section } from 'common/models/section';
 @Component({
   selector: 'aspect-section',
   templateUrl: './section.component.html',
-  styleUrls: ['./section.component.css']
+  styleUrls: ['./section.component.scss']
 })
 export class SectionComponent {
   @Input() section!: Section;

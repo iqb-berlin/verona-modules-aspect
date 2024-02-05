@@ -13,6 +13,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { AsOverlayOriginPipe } from 'player/src/app/pipes/as-overlay-origin.pipe';
 import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { PageNavButtonComponent } from 'player/src/app/components/page-nav-button/page-nav-button.component';
+import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -44,7 +45,6 @@ import {
 } from './components/elements/interactive-group-element/interactive-group-element.component';
 import { PlayerLayoutComponent } from './components/layouts/player-layout/player-layout.component';
 import { UnitStateDirective } from './directives/unit-state.directive';
-import { ValidPagesPipe } from './pipes/valid-pages.pipe';
 import { AlwaysVisiblePagePipe } from './pipes/always-visible-page.pipe';
 import { PageIndexPipe } from './pipes/page-index.pipe';
 import { PlayerStateDirective } from './directives/player-state.directive';
@@ -54,6 +54,8 @@ import { PageScrollButtonComponent } from './components/page-scroll-button/page-
 import { ExternalAppGroupElementComponent } from
   './components/elements/external-app-group-element/external-app-group-element.component';
 import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-keys.pipe';
+import { HasNextPagePipe } from './pipes/has-next-page.pipe';
+import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,6 @@ import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-k
     InteractiveGroupElementComponent,
     PlayerLayoutComponent,
     UnitStateDirective,
-    ValidPagesPipe,
     AlwaysVisiblePagePipe,
     PageIndexPipe,
     PlayerStateDirective,
@@ -88,7 +89,10 @@ import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-k
     PageScrollButtonComponent,
     ExternalAppGroupElementComponent,
     InputAssistanceCustomKeysPipe,
-    PageNavButtonComponent
+    PageNavButtonComponent,
+    HasPreviousPagePipe,
+    HasNextPagePipe,
+    IsValidPagePipe
   ],
   imports: [
     BrowserModule,

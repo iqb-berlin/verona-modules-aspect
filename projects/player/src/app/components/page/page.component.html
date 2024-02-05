@@ -11,7 +11,8 @@
     [section]="section"
     aspectSectionVisibilityHandling
     [sectionIndex]="i"
-    [pageSections]="page.sections">
+    [pageSections]="page.sections"
+    (isVisibleIndexChange)="setIsVisibleIndexSections($event)">
   </aspect-section>
 </div>
 <div aspectInViewDetection

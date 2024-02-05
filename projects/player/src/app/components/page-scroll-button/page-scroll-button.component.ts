@@ -4,6 +4,7 @@ import {
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageChangeService } from 'common/services/page-change.service';
+import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
 
 @Component({
   selector: 'aspect-page-scroll-button',
@@ -22,8 +23,9 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
     setTimeout(() => { this.isBlocked = false; });
   }
 
+  @Input() isVisibleIndexPages!: BehaviorSubject<IsVisibleIndex[]>;
   @Input() isSnapMode!: boolean;
-  @Output() scrollToNextPage: EventEmitter<number> = new EventEmitter<number>();
+  @Output() scrollToNextPage: EventEmitter<void> = new EventEmitter<void>();
   @Output() scrollingEnded: EventEmitter<void> = new EventEmitter<void>();
 
   isVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -49,6 +51,13 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     // give media elements time to load
     setTimeout(() => this.checkScrollPosition(this.elementRef.nativeElement), 200);
+    if (this.isVisibleIndexPages) {
+      this.isVisibleIndexPages
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((): void => {
+          setTimeout(() => this.checkScrollPosition(this.elementRef.nativeElement), 200);
+        });
+    }
   }
 
   private checkScrollPosition(element: HTMLElement): void {
@@ -76,7 +85,7 @@ export class PageScrollButtonComponent implements AfterViewInit, OnDestroy {
         if (pageIndex > -1) {
           this.clearScrollIng();
           this.isBlocked = true;
-          this.scrollToNextPage.emit(pageIndex + 1);
+          this.scrollToNextPage.emit();
         } else {
           this.elementRef.nativeElement.scrollTo(0, nextScrollTop);
         }

@@ -2,7 +2,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AlwaysVisiblePagePipe } from 'player/src/app/pipes/always-visible-page.pipe';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
-import { ValidPagesPipe } from 'player/src/app/pipes/valid-pages.pipe';
 import { Component, Directive, Input } from '@angular/core';
 import { Page } from 'common/models/page';
 import { APIService } from 'common/shared.module';
@@ -40,7 +39,6 @@ describe('PlayerLayoutComponent', () => {
         PlayerLayoutComponent,
         PagesLayoutStubComponent,
         AlwaysVisiblePagePipe,
-        ValidPagesPipe,
         ScrollPagesPipe,
         PlayerStateStubDirective
       ],

@@ -8,7 +8,8 @@ import { takeUntil } from 'rxjs/operators';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
 import { ValueChangeElement } from 'common/models/elements/element';
 
-@Component({ selector: 'aspect-media-player-control-bar',
+@Component({
+  selector: 'aspect-media-player-control-bar',
   templateUrl: './media-player-control-bar.component.html',
   styleUrls: ['./media-player-control-bar.component.scss']
 })
@@ -95,7 +96,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
     this.player.pause();
   }
 
-  checkMinVolume(volume: any): void {
+  checkMinVolume(volume: number): void {
     setTimeout(() => {
       this.player.volume = volume < this.playerProperties.minVolume ? this.playerProperties.minVolume : volume;
     });
@@ -156,9 +157,11 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   private _play(): void {
-    this.player.play().then(() => {},
-      // eslint-disable-next-line no-console
-      () => console.error('player: cannot play this media file'));
+    this.player.play().then(() => {
+      setTimeout(() => this.sendPlaybackTimeChanged());
+    },
+    // eslint-disable-next-line no-console
+    () => console.error('player: cannot play this media file'));
   }
 
   private sendPlaybackTimeChanged() {

@@ -1,21 +1,20 @@
 Player
 ======
 ## 2.4.0
+### Neue Funktionen
 - Unterstützt Tastatur und Eingabehilfe für Rechenkästchen
 - Unterstützt neuen Verona API Modus zum Seitenwechsel 'Buttons'
 - Unterstützt neues Auslöser-Element
 
-### Änderungen 
-- Seiten, die ausschließlich ausgeblendete Abschnitte beinhalten, werden ausgeblendet und 
-  aus der Navigationsleiste des Testcenters und des Studios entfernt 
-- Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation 
-  unterbunden (dabei kann es zu einem kurzen Flackern kommen).
+### Änderungen
+- Seiten, die ausschließlich ausgeblendete Abschnitte beinhalten, werden ausgeblendet und aus der Navigationsleiste des Testcenters und des Studios entfernt
+- Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation unterbunden
 - Zentriert den eingeblendeten Seiten-Scroll-Button in Bezug zur eingestellten Seitengröße
+- Audios/Videos informieren nun unmittelbar nach dem Starten über ihre Statusänderung
 
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos
-- Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf 
-  einer Aufgabe wieder her
+- Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf einer Aufgabe wieder her
 
 ## 2.3.0
 ### Neue Funktionen

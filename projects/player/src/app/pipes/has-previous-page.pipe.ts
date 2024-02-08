@@ -11,8 +11,8 @@ export class HasPreviousPagePipe implements PipeTransform {
   }
 
   static getPreviousPageIndex(index: number, isVisibleIndexPages: IsVisibleIndex[]): number | null {
-    const page = isVisibleIndexPages
-      .find(element => element.isVisible && element.index < index);
-    return page ? page.index : null;
+    const pages = isVisibleIndexPages
+      .filter(element => element.isVisible && element.index < index);
+    return pages.length ? pages[pages.length - 1].index : null;
   }
 }

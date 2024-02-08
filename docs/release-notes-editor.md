@@ -2,20 +2,19 @@ Editor
 ======
 ## 2.4.0
 ### Neue Funktionen
-- Rechenkästchen: Tastatur und Eingabehilfe (Ziffern / Ziffern & Basis-Operatoren) können hinzugefügt werden. 
-- Ablegeliste: ID der Optionen wird im Eigenschaftenbereich angezeigt 
-- Ablegeliste: Knopf zum Verbinden aller verfügbaren Ablegelisten
-- Rechenkästchen: Eingabehilfe und Tastatur können eingestellt werden
+- Rechenkästchen: Tastatur und Eingabehilfe (Ziffern / Ziffern & Basis-Operatoren) können hinzugefügt werden
+- Ablegeliste:
+  -  ID der Optionen wird im Eigenschaftenbereich angezeigt
+  -  Knopf zum Verbinden aller verfügbaren Ablegelisten
 - Neues Element: Auslöser
-  - Element ist nur im Editor sichtbar 
+  - Element ist nur im Editor sichtbar
   - Eingestellte Aktion wird bei der Ankunft des unsichtbaren Elements im Bildbereich des Browsers ausgelöst
 
-## Fehlerbehebungen
-- Legt für Kinderelemente von Optionstabellen unf Lückentexten beim Einfügen von kopierten 
-  Abschnitten neue IDs an
+### Fehlerbehebungen
+- Legt für Kinderelemente von Optionstabellen und Lückentexten beim Einfügen von kopierten Abschnitten neue IDs an. verhindert damit den Fehler "Doppelte Ids"
 
-## Änderungen
-- Überarbeitung des Optionsdialogs für Ablegelisten 
+### Änderungen
+- Überarbeitung des Optionsdialogs für Ablegelisten
 
 
 ## 2.3.0

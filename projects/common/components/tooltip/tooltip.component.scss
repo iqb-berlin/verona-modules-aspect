@@ -1,28 +1,29 @@
+:host {
+  display: block;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .tooltip {
-  background-color: black;
-  border-radius: 4px;
-  color: #ffffff;
-  font-size: 13px;
-  max-width: 30%;
-  padding: 3px 6px;
+  box-sizing: border-box;
   position: absolute;
   z-index: 10;
-  &--below {
-    transform:translateX(-50%);
-    margin-top: 7px;
-  }
-
-  &--above {
-    transform:translate(-50%, -100%);
-    margin-bottom: 7px;
-  }
-
-  &--left {
-    transform:translate(calc(-100% - 7px), -50%);
-  }
-
-  &--right {
-    transform:translateY(-50%);
-    margin-left: 7px;
+  animation: fade-in 300ms;
+  margin-left: 5px;
+  pointer-events: none;
+  .tooltip-text {
+    background-color: black;
+    border-radius: 4px;
+    padding: 3px 6px;
+    color: #ffffff;
+    font-size: 13px;
+    width: fit-content;
   }
 }

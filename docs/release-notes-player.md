@@ -11,10 +11,12 @@ Player
 - Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation unterbunden
 - Zentriert den eingeblendeten Seiten-Scroll-Button in Bezug zur eingestellten Seitengröße
 - Audios/Videos informieren nun unmittelbar nach dem Starten über ihre Statusänderung
+- Überarbeitung der Postion und Dimension von Tooltips 
 
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos
 - Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf einer Aufgabe wieder her
+
 
 ## 2.3.0
 ### Neue Funktionen

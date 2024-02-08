@@ -96,7 +96,8 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       {{'propertiesPanel.showSoftwareKeyboard' | translate }}
     </mat-checkbox>
     <mat-checkbox *ngIf="combinedProperties.hideNativeKeyboard !== undefined"
-                  [disabled]="!combinedProperties.inputAssistancePreset || (!!combinedProperties.inputAssistancePreset && !!combinedProperties.showSoftwareKeyboard)"
+                  [disabled]="!combinedProperties.inputAssistancePreset ||
+                    (!!combinedProperties.inputAssistancePreset && !!combinedProperties.showSoftwareKeyboard)"
                   [checked]="$any(combinedProperties.hideNativeKeyboard)"
                   (change)="updateModel.emit({ property: 'hideNativeKeyboard', value: $event.checked })">
       {{'propertiesPanel.hideNativeKeyboard' | translate }}
@@ -122,7 +123,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
           </mat-option>
         </ng-container>
         <ng-container *ngIf="combinedProperties.type === 'math-table'">
-          <mat-option *ngFor="let option of [null, 'numbers', 'numbersAndBasicOperators']"
+          <mat-option *ngFor="let option of [null, 'numbers', 'numbersAndBasicOperators', 'numbersAndOperators']"
                       [value]="option">
             {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
           </mat-option>

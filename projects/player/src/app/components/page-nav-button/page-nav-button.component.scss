@@ -3,26 +3,19 @@
 }
 
 .page-toggle-button {
-  cursor: pointer;
   box-sizing: border-box;
-  border: 1px solid #bbb;
-  border-radius: 4px;
   width: 100%;
-  height: 60px;
-  background-color: white;
   padding: 0 10%;
   .page-nav-button {
+    cursor: pointer;
     width: 100%;
     fill: #f3f3f3;
     stroke: #222;
     stroke-width: 0.5;
     svg {
-      filter: drop-shadow(1px 3px 2px rgb(0 0 0 / 0.2));
+      filter: drop-shadow(1px 3px 3px rgb(0 0 0 / 0.2));
     }
-  }
-  &:hover {
-    border: 1px solid #000;
-    .page-nav-button {
+    &:hover {
       fill: #ddd;
     }
   }
@@ -30,6 +23,7 @@
 
 .previous {
   @extend .page-toggle-button;
+  margin-bottom: 20px;
 }
 
 .next {

@@ -123,7 +123,8 @@ export abstract class PropertyGroupValidators {
     return blueprint.inputAssistancePreset !== undefined &&
       blueprint.inputAssistancePosition !== undefined &&
       blueprint.inputAssistanceFloatingStartPosition &&
-      blueprint.showSoftwareKeyboard !== undefined;
+      blueprint.showSoftwareKeyboard !== undefined &&
+      blueprint.hideNativeKeyboard !== undefined;
   }
 
   static isValidBasicStyles(blueprint: BasicStyles): boolean {
@@ -239,11 +240,18 @@ export abstract class PropertyGroupGenerators {
 
   static generateKeyInputProps(properties: Partial<KeyInputElementProperties> = {}): KeyInputElementProperties {
     return {
-      inputAssistancePreset: properties.inputAssistancePreset !== undefined ? properties.inputAssistancePreset as InputAssistancePreset : null,
-      inputAssistancePosition: properties.inputAssistancePosition !== undefined ? properties.inputAssistancePosition as 'floating' | 'right' : 'floating',
-      inputAssistanceFloatingStartPosition: properties.inputAssistanceFloatingStartPosition !== undefined ? properties.inputAssistanceFloatingStartPosition as 'startBottom' | 'endCenter' : 'startBottom',
-      showSoftwareKeyboard: properties.showSoftwareKeyboard !== undefined ? properties.showSoftwareKeyboard as boolean : false,
-      addInputAssistanceToKeyboard: properties.addInputAssistanceToKeyboard !== undefined ? properties.addInputAssistanceToKeyboard : false
+      inputAssistancePreset: properties.inputAssistancePreset !== undefined ?
+        properties.inputAssistancePreset as InputAssistancePreset : null,
+      inputAssistancePosition: properties.inputAssistancePosition !== undefined ?
+        properties.inputAssistancePosition as 'floating' | 'right' : 'floating',
+      inputAssistanceFloatingStartPosition: properties.inputAssistanceFloatingStartPosition !== undefined ?
+        properties.inputAssistanceFloatingStartPosition as 'startBottom' | 'endCenter' : 'startBottom',
+      showSoftwareKeyboard: properties.showSoftwareKeyboard !== undefined ?
+        properties.showSoftwareKeyboard as boolean : false,
+      addInputAssistanceToKeyboard: properties.addInputAssistanceToKeyboard !== undefined ?
+        properties.addInputAssistanceToKeyboard : false,
+      hideNativeKeyboard: properties.hideNativeKeyboard !== undefined ?
+        properties.hideNativeKeyboard : false
     };
   }
 }

@@ -21,7 +21,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                  autocorrect="off"
                  spellcheck="false"
                  value="{{elementModel.value}}"
-                 [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
+                 [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
                  [style.text-align]="'center'"
                  [readonly]="elementModel.readOnly"
                  [style.color]="elementModel.styling.fontColor"

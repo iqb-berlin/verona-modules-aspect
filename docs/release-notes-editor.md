@@ -9,6 +9,7 @@ Editor
 - Neues Element: Auslöser
   - Element ist nur im Editor sichtbar
   - Eingestellte Aktion wird bei der Ankunft des unsichtbaren Elements im Bildbereich des Browsers ausgelöst
+- Auf mobilen Geräten kann bei Eingabehilfen das zusätzliche Einblenden der Betriebssystem-Tastatur ausgeschaltet werden 
 
 ### Fehlerbehebungen
 - Legt für Kinderelemente von Optionstabellen und Lückentexten beim Einfügen von kopierten Abschnitten neue IDs an. verhindert damit den Fehler "Doppelte Ids"

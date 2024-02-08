@@ -92,8 +92,14 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
 
     <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
                   [checked]="$any(combinedProperties.showSoftwareKeyboard)"
-                  (change)="updateModel.emit({ property: 'showSoftwareKeyboard', value: $event.checked })">
+                  (change)="updateShowSoftwareKeyboard($event.checked)">
       {{'propertiesPanel.showSoftwareKeyboard' | translate }}
+    </mat-checkbox>
+    <mat-checkbox *ngIf="combinedProperties.hideNativeKeyboard !== undefined"
+                  [disabled]="!combinedProperties.inputAssistancePreset || (!!combinedProperties.inputAssistancePreset && !!combinedProperties.showSoftwareKeyboard)"
+                  [checked]="$any(combinedProperties.hideNativeKeyboard)"
+                  (change)="updateModel.emit({ property: 'hideNativeKeyboard', value: $event.checked })">
+      {{'propertiesPanel.hideNativeKeyboard' | translate }}
     </mat-checkbox>
     <mat-checkbox *ngIf="combinedProperties.showSoftwareKeyboard !== undefined"
                   [disabled]="!combinedProperties.showSoftwareKeyboard"
@@ -106,7 +112,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                     class="wide-form-field">
       <mat-label>{{'propertiesPanel.inputAssistance' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.inputAssistancePreset"
-                  (selectionChange)="updateModel.emit({ property: 'inputAssistancePreset', value: $event.value })">
+                  (selectionChange)="updateInputAssistancePreset($event.value)">
         <ng-container *ngIf="combinedProperties.type !== 'math-table'">
           <mat-option *ngFor="let option of [null, 'french', 'numbers', 'numbersAndOperators',
                                             'numbersAndBasicOperators', 'comparisonOperators', 'squareDashDot',
@@ -192,9 +198,28 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
     </mat-checkbox>
   `
 })
+
 export class TextFieldElementPropertiesComponent {
   @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel = new EventEmitter<{
-    property: string; value: string | number | boolean | string[], isInputValid?: boolean | null
+    property: string;
+    value: string | number | boolean | string[] | null;
+    isInputValid?: boolean | null;
   }>();
+
+  updateInputAssistancePreset(inputAssistancePreset: string | null): void {
+    this.updateModel.emit({ property: 'inputAssistancePreset', value: inputAssistancePreset });
+    if (!inputAssistancePreset && !this.combinedProperties.showSoftwareKeyboard) {
+      this.updateModel.emit({ property: 'hideNativeKeyboard', value: false });
+    }
+  }
+
+  updateShowSoftwareKeyboard(showSoftwareKeyboard: boolean): void {
+    this.updateModel.emit({ property: 'showSoftwareKeyboard', value: showSoftwareKeyboard });
+    if (showSoftwareKeyboard) {
+      this.updateModel.emit({ property: 'hideNativeKeyboard', value: true });
+    } else if (!this.combinedProperties.inputAssistancePreset) {
+      this.updateModel.emit({ property: 'hideNativeKeyboard', value: false });
+    }
+  }
 }

@@ -41,7 +41,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
                 [style.width.px]="elementModel.styling.fontSize * 2"
                 [class.strike-through]="cell.isCrossedOut"
                 [textContent]="cell.value"
-                [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
+                [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
                 (focus)="focusChanged.emit({ inputElement: input, row, cell, focused: true })"
                 (blur)="focusChanged.emit({ inputElement: input, row, cell, focused: false })"
                 (paste)="$event.preventDefault()"

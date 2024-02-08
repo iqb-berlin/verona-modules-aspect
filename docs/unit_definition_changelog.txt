@@ -154,6 +154,9 @@ iqb-aspect-definition@1.0.0
   - new property: inputAssistancePosition
   - new property: inputAssistanceFloatingStartPosition
   - new property: showSoftwareKeyboard
+  - new property: hideNativeKeyboard
   - new property: addInputAssistanceToKeyboard
 - DropList:
   - new property: isSortList
+- TextAreaElement, TextFieldElement, TextFieldSimpleElement, SpellCorrectElement, MathTableElement:
+  - new property: hideNativeKeyboard

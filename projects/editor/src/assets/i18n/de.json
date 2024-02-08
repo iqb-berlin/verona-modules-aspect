@@ -188,6 +188,7 @@
     "floating": "schwebend",
     "showSoftwareKeyboard": "Tastatur einblenden",
     "addInputAssistanceToKeyboard": "Tastatur mit Eingabehilfe erweitern",
+    "hideNativeKeyboard": "Betriebssystem-Tastatur unterbinden",
     "lineColoring": "Zeilenfärbung",
     "lineColoringColor": "Zeilenfarbe",
     "firstLineColoring": "Färbung erster Zeile",

@@ -5,6 +5,7 @@ Player
 - Unterstützt Tastatur und Eingabehilfe für Rechenkästchen
 - Unterstützt neuen Verona API Modus zum Seitenwechsel 'Buttons'
 - Unterstützt neues Auslöser-Element
+- Unterstützt die Option des Ausblendens der Betriebssystem-Tastatur bei Eingabehilfen 
 
 ### Änderungen
 - Seiten, die ausschließlich ausgeblendete Abschnitte beinhalten, werden ausgeblendet und aus der Navigationsleiste des Testcenters und des Studios entfernt

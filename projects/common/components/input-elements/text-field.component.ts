@@ -23,7 +23,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
              autocorrect="off"
              spellcheck="false"
              value="{{elementModel.value}}"
-             [attr.inputmode]="elementModel.showSoftwareKeyboard ? 'none' : 'text'"
+             [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
              [formControl]="elementFormControl"
              [pattern]="$any(elementModel.pattern)"
              [readonly]="elementModel.readOnly"

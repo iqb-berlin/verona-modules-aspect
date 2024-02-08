@@ -202,6 +202,7 @@ export interface KeyInputElementProperties {
   inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter';
   showSoftwareKeyboard: boolean;
   addInputAssistanceToKeyboard: boolean;
+  hideNativeKeyboard: boolean;
 }
 
 export interface TextInputElementProperties extends KeyInputElementProperties, InputElementProperties {
@@ -217,7 +218,8 @@ function isValidKeyInputProperties(blueprint?: KeyInputElementProperties): boole
     blueprint.inputAssistancePosition !== undefined &&
     blueprint.inputAssistanceFloatingStartPosition !== undefined &&
     blueprint.showSoftwareKeyboard !== undefined &&
-    blueprint.addInputAssistanceToKeyboard !== undefined;
+    blueprint.addInputAssistanceToKeyboard !== undefined &&
+    blueprint.hideNativeKeyboard !== undefined;
 }
 
 function isValidTextInputElementProperties(blueprint?: TextInputElementProperties): boolean {
@@ -239,6 +241,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
   hasBackspaceKey: boolean = false;
   showSoftwareKeyboard: boolean = false;
   addInputAssistanceToKeyboard: boolean = false;
+  hideNativeKeyboard: boolean = false;
 
   protected constructor(element?: TextInputElementProperties) {
     super(element);
@@ -251,6 +254,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       this.hasArrowKeys = element.hasArrowKeys;
       this.hasBackspaceKey = element.hasBackspaceKey;
       this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      this.hideNativeKeyboard = element.hideNativeKeyboard;
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
     } else {
       if (environment.strictInstantiation) {
@@ -265,6 +269,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
       if (element?.hasBackspaceKey) this.hasBackspaceKey = element.hasBackspaceKey;
       if (element?.showSoftwareKeyboard) this.showSoftwareKeyboard = element.showSoftwareKeyboard;
       if (element?.addInputAssistanceToKeyboard) this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
+      if (element?.hideNativeKeyboard) this.hideNativeKeyboard = element.hideNativeKeyboard;
     }
   }
 }

@@ -15,7 +15,8 @@ export class KeyboardService extends InputService {
     this.willToggle.emit(this.isOpen);
     return new Promise(resolve => {
       setTimeout(() => resolve(
-        this.toggle(focusedTextInput, elementComponent, isMobileWithoutHardwareKeyboard)), 100
+        this.toggle(focusedTextInput, elementComponent, isMobileWithoutHardwareKeyboard)),
+      100
       );
     });
   }
@@ -40,20 +41,22 @@ export class KeyboardService extends InputService {
 
   scrollElement(): void {
     if (this.isOpen && this.isElementHiddenByKeyboard()) {
-      const scrollPositionTarget = this.isViewHighEnoughToCenterElement() ? 'start' : 'center';
+      const scrollPositionTarget = this.isViewHighEnoughToCenterElement() ? 'center' : 'start';
       this.elementComponent.domElement.scrollIntoView({ block: scrollPositionTarget });
     }
   }
 
   private isViewHighEnoughToCenterElement(): boolean {
-    return window.innerHeight < this.getKeyboardHeight() * 2;
+    return window.innerHeight - this.getKeyboardHeight() >
+      this.elementComponent.domElement.getBoundingClientRect().height;
   }
 
   private isElementHiddenByKeyboard(): boolean {
-    return window.innerHeight - this.elementComponent.domElement.getBoundingClientRect().top < this.getKeyboardHeight();
+    return window.innerHeight - this.elementComponent.domElement.getBoundingClientRect().bottom <
+      this.getKeyboardHeight();
   }
 
   private getKeyboardHeight(): number {
-    return this.addInputAssistanceToKeyboard ? 400 : 350;
+    return this.addInputAssistanceToKeyboard ? 380 : 280;
   }
 }

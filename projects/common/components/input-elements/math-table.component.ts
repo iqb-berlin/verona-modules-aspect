@@ -295,7 +295,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     if (!allowedKeys.includes(char)) return;
 
     if (row.is2DigitHelperRow && cell.value.length === 1) {
-      cell.value += char;
+      cell.value += MathTableComponent.getCharReplacement(char);
     } else {
       cell.value = MathTableComponent.getCharReplacement(char);
     }

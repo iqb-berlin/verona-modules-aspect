@@ -7,15 +7,13 @@ import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
-import { ClozeChildOverlay } from
-    'common/components/compound-elements/cloze/cloze-child-overlay.component';
+import { ClozeChildOverlay } from 'common/components/compound-elements/cloze/cloze-child-overlay.component';
 import { UIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
+import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { UnitService } from '../../../services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
-import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -116,7 +114,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   }
 
   isInteractionEnabled(): boolean {
-    return !this.preventInteraction
+    return !this.preventInteraction;
   }
 
   ngOnDestroy(): void {

@@ -181,11 +181,11 @@ export abstract class InputElement extends UIElement implements InputElementProp
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at InputElement instantiation', element);
       }
-      if (element?.label) this.label = element.label;
-      if (element?.value) this.value = element.value;
-      if (element?.required) this.required = element.required;
-      if (element?.requiredWarnMessage) this.requiredWarnMessage = element.requiredWarnMessage;
-      if (element?.readOnly) this.readOnly = element.readOnly;
+      if (element?.label !== undefined) this.label = element.label;
+      if (element?.value !== undefined) this.value = element.value;
+      if (element?.required !== undefined) this.required = element.required;
+      if (element?.requiredWarnMessage !== undefined) this.requiredWarnMessage = element.requiredWarnMessage;
+      if (element?.readOnly !== undefined) this.readOnly = element.readOnly;
     }
   }
 

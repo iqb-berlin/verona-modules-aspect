@@ -7,6 +7,7 @@ Player
 - Unterstützt neues Auslöser-Element
 - Unterstützt die Option des Ausblendens der Betriebssystem-Tastatur bei Eingabehilfen
 - Unterbindet das Auswählen von Eingaben in Rechenkästchen
+- Tastatur verfügt über Knopf zum Schließen
 
 ### Änderungen
 - Seiten, die a- - Tastatur verfügt über Knopf zum Schließenusschließlich ausgeblendete Abschnitte beinhalten, werden ausgeblendet und aus der Navigationsleiste des Testcenters und des Studios entfernt
@@ -14,6 +15,7 @@ Player
 - Zentriert den eingeblendeten Seiten-Scroll-Button in Bezug zur eingestellten Seitengröße
 - Audios/Videos informieren nun unmittelbar nach dem Starten über ihre Statusänderung
 - Überarbeitung der Postion und Dimension von Tooltips 
+- Überarbeitung der Positionierung von Eingabeelementen beim Öffenen der Tastatur  
 
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos

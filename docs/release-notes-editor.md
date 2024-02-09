@@ -13,6 +13,7 @@ Editor
 
 ### Fehlerbehebungen
 - Legt für Kinderelemente von Optionstabellen und Lückentexten beim Einfügen von kopierten Abschnitten neue IDs an. verhindert damit den Fehler "Doppelte Ids"
+- Korrigiert die Vorauswahl bei Optionstabellen
 
 ### Änderungen
 - Überarbeitung des Optionsdialogs für Ablegelisten

@@ -2,8 +2,6 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-
-
 import { TextLabel } from 'common/models/elements/label-interfaces';
 
 @Component({
@@ -28,7 +26,7 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
           <mat-select [(ngModel)]="newLikertRow.value">
             <mat-select-trigger
               [innerHTML]="newLikertRow.value !== null ?
-                '<span>' + data.options[newLikertRow.value].text + '</span>' : 'undefiniert' | safeResourceHTML">
+                '<span>' + data.options[$any(newLikertRow.value)].text + '</span>' : 'undefiniert' | safeResourceHTML">
             </mat-select-trigger>
             <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
             <mat-option *ngFor="let column of data.options; let i = index" [value]="i"

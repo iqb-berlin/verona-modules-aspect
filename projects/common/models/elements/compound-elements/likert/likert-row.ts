@@ -13,7 +13,6 @@ import { VariableInfo, VariableValue } from '@iqb/responses';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {
   type: UIElementType = 'likert-row';
-  value: number | null = null;
   rowLabel: TextImageLabel = { text: '', imgSrc: null, imgPosition: 'above' };
   columnCount: number = 0;
   firstColumnSizeRatio: number = 5;

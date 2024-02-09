@@ -10,7 +10,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
   template: `
     <div *ngIf="elementModel.terms.length == 0 ||
                 elementModel.operation === 'multiplication' && elementModel.terms.length < 2; else elseBlock"
-          class="terms-missing-warning">
+         class="terms-missing-warning">
       Weitere Termzeilen benötigt
     </div>
     <ng-template #elseBlock>
@@ -43,6 +43,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
                 [textContent]="cell.value"
                 [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
                 (focus)="focusChanged.emit({ inputElement: input, row, cell, focused: true })"
+                (selectstart)="preventSelection($event)"
                 (blur)="focusChanged.emit({ inputElement: input, row, cell, focused: false })"
                 (paste)="$event.preventDefault()"
                 (keydown)="onKeyDown.emit(); onCharEnter($event, row, cell); "
@@ -337,5 +338,13 @@ export class MathTableComponent extends ElementComponent implements OnInit {
 
   emitModel(): void {
     this.elementValueChanged.emit({ id: this.elementModel.id, value: this.tableModel });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  preventSelection(event: Event): void {
+    const selection = window.getSelection() as Selection;
+    setTimeout(() => selection.removeAllRanges());
+    event.preventDefault();
+    event.stopPropagation();
   }
 }

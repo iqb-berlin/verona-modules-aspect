@@ -1,4 +1,13 @@
-<div class="keyboard-container"
+<div class="down-key-back">
+  <button class="down-key"
+          mat-raised-button>
+  <span>
+    <mat-icon class="center-icon">keyboard_arrow_down</mat-icon>
+  </span>
+  </button>
+</div>
+
+<div class="keyboard-container" [style.float]="'none'"
      (mousedown)="$event.preventDefault(); $event.stopPropagation()">
   <div *ngIf="addInputAssistanceToKeyboard && additionalRow.length"
        class="additional-characters fx-center-center-wrap">

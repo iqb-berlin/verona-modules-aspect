@@ -33,3 +33,29 @@
   position: relative;
   z-index: 10000;
 }
+
+
+.down-key-back {
+  margin-left: auto;
+  margin-right: 0;
+  margin-top: -45px;
+  width: 5%;
+  padding: 4px 4px 0 4px;
+  background-color: #ddd;
+  border-top-left-radius: 4px;
+  z-index: 10;
+  position: relative;
+  .down-key{
+    min-width: unset;
+    height: 45px;
+    width: 100%;
+    font-size: 2vw;
+    background-color: #ddd;
+    .center-icon {
+      height: unset;
+      width: unset;
+      padding-top: 8px;
+      font-size: inherit;
+    }
+  }
+}

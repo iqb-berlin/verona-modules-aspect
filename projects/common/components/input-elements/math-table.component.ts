@@ -1,6 +1,6 @@
 import { MathTableCell, MathTableElement, MathTableRow } from 'common/models/elements/input-elements/math-table';
 import {
-  Component, EventEmitter, Input, OnInit, Output
+  Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ValueChangeElement } from 'common/models/elements/element';
@@ -41,7 +41,8 @@ import { ValueChangeElement } from 'common/models/elements/element';
                 [style.width.px]="elementModel.styling.fontSize * 2"
                 [class.strike-through]="cell.isCrossedOut"
                 [textContent]="cell.value"
-                [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
+                [attr.inputmode]="elementModel.showSoftwareKeyboard ||
+                                    elementModel.hideNativeKeyboard ? 'none' : 'text'"
                 (focus)="focusChanged.emit({ inputElement: input, row, cell, focused: true })"
                 (selectstart)="preventSelection($event)"
                 (blur)="focusChanged.emit({ inputElement: input, row, cell, focused: false })"
@@ -85,6 +86,8 @@ import { ValueChangeElement } from 'common/models/elements/element';
   ]
 })
 export class MathTableComponent extends ElementComponent implements OnInit {
+  @ViewChildren('input') cells!: QueryList<ElementRef>;
+
   @Input() elementModel!: MathTableElement;
   @Input() tableModel: MathTableRow[] = [];
 
@@ -267,7 +270,7 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     this.emitModel();
   }
 
-  onCharEnter(event: KeyboardEvent, row: MathTableRow, cell: MathTableCell) {
+  onCharEnter(event: KeyboardEvent, row: MathTableRow, cell: MathTableCell): void {
     // Prevent Dead keys
     if (['Dead', 'Process', 'Unidentified'].includes(event.key)) {
       const input = event.target as HTMLTableCellElement;
@@ -280,10 +283,87 @@ export class MathTableComponent extends ElementComponent implements OnInit {
     }
   }
 
+  private getNextCellIndexInRow(cellIndex: number, rowIndex: number): number {
+    if (cellIndex < this.tableModel[rowIndex].cells.length - 1) {
+      if (this.tableModel[rowIndex].cells[cellIndex + 1].isEditable) {
+        return this.getFlatCellIndex(cellIndex + 1, rowIndex);
+      }
+      return this.getNextCellIndexInRow(cellIndex + 1, rowIndex);
+    }
+    return -1;
+  }
+
+  private getPreviousCellIndexInRow(cellIndex: number, rowIndex: number): number {
+    if (cellIndex) {
+      if (this.tableModel[rowIndex].cells[cellIndex - 1].isEditable) {
+        return this.getFlatCellIndex(cellIndex - 1, rowIndex);
+      }
+      return this.getPreviousCellIndexInRow(cellIndex - 1, rowIndex);
+    }
+    return -1;
+  }
+
+  private getCellIndexInNextRow(cellIndex: number, rowIndex: number): number {
+    if (rowIndex < this.tableModel.length - 1) {
+      if (this.tableModel[rowIndex + 1].cells[cellIndex].isEditable) {
+        return this.getFlatCellIndex(cellIndex, rowIndex + 1);
+      }
+      return this.getCellIndexInNextRow(cellIndex, rowIndex + 1);
+    }
+    return -1;
+  }
+
+  private getCellIndexInPreviousRow(cellIndex: number, rowIndex: number): number {
+    if (rowIndex) {
+      if (this.tableModel[rowIndex - 1].cells[cellIndex].isEditable) {
+        return this.getFlatCellIndex(cellIndex, rowIndex - 1);
+      }
+      return this.getCellIndexInPreviousRow(cellIndex, rowIndex - 1);
+    }
+    return -1;
+  }
+
+  private getFlatCellIndex(cellIndex: number, rowIndex: number): number {
+    const tableRowLength = this.tableModel[0].cells.length;
+    const flatIndex = (tableRowLength * rowIndex) + cellIndex;
+    if (flatIndex <= tableRowLength * this.tableModel.length - 1 + tableRowLength) {
+      return flatIndex;
+    }
+    return -1;
+  }
+
+  private focusCell(index: number): void {
+    if (index > -1) {
+      const allCells: HTMLTableCellElement[] = this.cells
+        .toArray().map(e => e.nativeElement as HTMLTableCellElement);
+      allCells[index].focus();
+    }
+  }
+
   setCellValue(char: string, cell: MathTableCell, row: MathTableRow): void {
     if (['Backspace', 'Delete'].includes(char)) {
       cell.value = '';
       cell.isCrossedOut = false;
+    }
+    if (['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(char)) {
+      const currentRowIndex = this.tableModel.findIndex(tableRow => row === tableRow);
+      const currentCellIndex = row.cells.findIndex(rowCell => rowCell === cell);
+
+      if (char === 'ArrowRight') {
+        this.focusCell(this.getNextCellIndexInRow(currentCellIndex, currentRowIndex));
+      }
+
+      if (char === 'ArrowLeft') {
+        this.focusCell(this.getPreviousCellIndexInRow(currentCellIndex, currentRowIndex));
+      }
+
+      if (char === 'ArrowDown') {
+        this.focusCell(this.getCellIndexInNextRow(currentCellIndex, currentRowIndex));
+      }
+
+      if (char === 'ArrowUp') {
+        this.focusCell(this.getCellIndexInPreviousRow(currentCellIndex, currentRowIndex));
+      }
     }
     const allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
     if (this.elementModel.operation === 'multiplication' && !row.isHelperRow) {

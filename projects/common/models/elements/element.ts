@@ -203,12 +203,12 @@ export interface KeyInputElementProperties {
   showSoftwareKeyboard: boolean;
   addInputAssistanceToKeyboard: boolean;
   hideNativeKeyboard: boolean;
+  hasArrowKeys: boolean;
 }
 
 export interface TextInputElementProperties extends KeyInputElementProperties, InputElementProperties {
   inputAssistanceCustomKeys: string;
   restrictedToInputAssistanceChars: boolean;
-  hasArrowKeys: boolean;
   hasBackspaceKey: boolean;
 }
 
@@ -219,14 +219,14 @@ function isValidKeyInputProperties(blueprint?: KeyInputElementProperties): boole
     blueprint.inputAssistanceFloatingStartPosition !== undefined &&
     blueprint.showSoftwareKeyboard !== undefined &&
     blueprint.addInputAssistanceToKeyboard !== undefined &&
-    blueprint.hideNativeKeyboard !== undefined;
+    blueprint.hideNativeKeyboard !== undefined &&
+    blueprint.hasArrowKeys !== undefined;
 }
 
 function isValidTextInputElementProperties(blueprint?: TextInputElementProperties): boolean {
   if (!blueprint) return false;
   return blueprint.restrictedToInputAssistanceChars !== undefined &&
     blueprint.inputAssistanceCustomKeys !== undefined &&
-    blueprint.hasArrowKeys !== undefined &&
     blueprint.hasBackspaceKey !== undefined &&
     isValidKeyInputProperties(blueprint);
 }

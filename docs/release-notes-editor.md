@@ -2,7 +2,9 @@ Editor
 ======
 ## 2.4.0
 ### Neue Funktionen
-- Rechenkästchen: Tastatur und Eingabehilfe (Ziffern / Ziffern & Basis-Operatoren / Ziffern & Operatoren & '=') können hinzugefügt werden
+- Rechenkästchen: 
+    - Tastatur und Eingabehilfe (Ziffern / Ziffern & Basis-Operatoren / Ziffern & Operatoren & '=') können hinzugefügt werden
+    - Pfeiltastennavigation zwischen den einzelnen Kästchen ist möglich
 - Ablegeliste:
   -  ID der Optionen wird im Eigenschaftenbereich angezeigt
   -  Knopf zum Verbinden aller verfügbaren Ablegelisten

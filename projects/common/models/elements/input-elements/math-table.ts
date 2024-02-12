@@ -29,6 +29,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   showSoftwareKeyboard: boolean = false;
   addInputAssistanceToKeyboard: boolean = false;
   hideNativeKeyboard: boolean = false;
+  hasArrowKeys: boolean = false;
   variableLayoutOptions: {
     allowArithmeticChars: boolean;
     isFirstLineUnderlined: boolean;
@@ -61,6 +62,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
       this.showSoftwareKeyboard = element.showSoftwareKeyboard;
       this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
       this.hideNativeKeyboard = element.hideNativeKeyboard;
+      this.hasArrowKeys = element.hasArrowKeys;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at MathTable instantiation', element);

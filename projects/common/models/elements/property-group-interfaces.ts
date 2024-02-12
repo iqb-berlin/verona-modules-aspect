@@ -124,7 +124,8 @@ export abstract class PropertyGroupValidators {
       blueprint.inputAssistancePosition !== undefined &&
       blueprint.inputAssistanceFloatingStartPosition &&
       blueprint.showSoftwareKeyboard !== undefined &&
-      blueprint.hideNativeKeyboard !== undefined;
+      blueprint.hideNativeKeyboard !== undefined &&
+      blueprint.hasArrowKeys !== undefined;
   }
 
   static isValidBasicStyles(blueprint: BasicStyles): boolean {
@@ -251,7 +252,9 @@ export abstract class PropertyGroupGenerators {
       addInputAssistanceToKeyboard: properties.addInputAssistanceToKeyboard !== undefined ?
         properties.addInputAssistanceToKeyboard : false,
       hideNativeKeyboard: properties.hideNativeKeyboard !== undefined ?
-        properties.hideNativeKeyboard : false
+        properties.hideNativeKeyboard : false,
+      hasArrowKeys: properties.hasArrowKeys !== undefined ?
+        properties.hasArrowKeys : false
     };
   }
 }

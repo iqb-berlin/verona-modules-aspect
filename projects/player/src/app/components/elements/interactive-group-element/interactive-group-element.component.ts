@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, OnInit, ViewChild
+  AfterViewInit, Component, OnDestroy, OnInit, ViewChild
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/button/button';
@@ -25,7 +25,8 @@ import { NavigationService } from '../../../services/navigation.service';
   templateUrl: './interactive-group-element.component.html',
   styleUrls: ['./interactive-group-element.component.scss']
 })
-export class InteractiveGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit {
+export class InteractiveGroupElementComponent
+  extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   ButtonElement!: ButtonElement;
   ImageElement!: ImageElement;
@@ -37,6 +38,7 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
   isKeypadOpen: boolean = false;
   keypadEnterKeySubscription!: Subscription;
   keypadDeleteCharactersSubscription!: Subscription;
+  keypadSelectSubscription!: Subscription;
 
   keyboardEnterKeySubscription!: Subscription;
   keyboardDeleteCharactersSubscription!: Subscription;
@@ -173,11 +175,14 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
       .subscribe(key => this.enterKey(key, row, cell));
     this.keypadDeleteCharactersSubscription = this.keypadService.deleteCharacters
       .subscribe(() => this.enterKey('Delete', row, cell));
+    this.keypadSelectSubscription = this.keypadService.select
+      .subscribe(key => this.enterKey(key, row, cell));
   }
 
   private unsubscribeFromKeypadEvents(): void {
     if (this.keypadEnterKeySubscription) this.keypadEnterKeySubscription.unsubscribe();
     if (this.keypadDeleteCharactersSubscription) this.keypadDeleteCharactersSubscription.unsubscribe();
+    if (this.keypadSelectSubscription) this.keypadSelectSubscription.unsubscribe();
   }
 
   private subscribeForKeyboardEvents(
@@ -209,5 +214,10 @@ export class InteractiveGroupElementComponent extends ElementGroupDirective impl
       this.deviceService.hasHardwareKeyboard = true;
       this.keyboardService.close();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeFromKeypadEvents();
+    this.unsubscribeFromKeyboardEvents();
   }
 }

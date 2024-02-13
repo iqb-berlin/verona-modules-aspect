@@ -48,7 +48,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() clozeMode: boolean = false;
   @Output() contentChange = new EventEmitter<string | Record<string, any>>();
 
-  selectedFontColor = 'lightgrey';
+  selectedFontColor = 'black';
   selectedHighlightColor = 'lightgrey';
   selectedAnchorColor = '#adff2f';
   selectedAnchorIdText = '';

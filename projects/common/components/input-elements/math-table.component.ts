@@ -45,10 +45,11 @@ import { ValueChangeElement } from 'common/models/elements/element';
                                     elementModel.hideNativeKeyboard ? 'none' : 'text'"
                 (focus)="focusChanged.emit({ inputElement: input, row, cell, focused: true })"
                 (selectstart)="preventSelection($event)"
+                (pointerup)="preventSelection($event)"
                 (blur)="focusChanged.emit({ inputElement: input, row, cell, focused: false })"
                 (paste)="$event.preventDefault()"
                 (keydown)="onKeyDown.emit(); onCharEnter($event, row, cell); "
-                (dblclick)="toggleStrikeThrough(row, cell)">
+                (dblclick)="toggleStrikeThrough(row, cell); preventSelection($event)">
             </td>
           </tr>
         </table>

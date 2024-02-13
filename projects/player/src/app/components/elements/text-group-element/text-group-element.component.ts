@@ -89,6 +89,8 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
           },
           pointerUp.ctrlKey
         );
+        pointerUp.preventDefault();
+        pointerUp.stopPropagation();
       });
   }
 

@@ -20,7 +20,7 @@ Player
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Anzahl der Durchläufe von Audios und Videos
 - Stellt die bereits abgelaufene Zeit beim Einlenden von Abschnitten beim erneuten Aufruf einer Aufgabe wieder her
-
+- Rechenkästchen: Verhindert auf Tablets das Öffnen des nativen Kontextmenüs für ausgewählten Text 
 
 ## 2.3.0
 ### Neue Funktionen

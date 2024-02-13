@@ -16,7 +16,8 @@ Editor
 ### Fehlerbehebungen
 - Legt für Kinderelemente von Optionstabellen und Lückentexten beim Einfügen von kopierten Abschnitten neue IDs an. verhindert damit den Fehler "Doppelte Ids"
 - Korrigiert die Vorauswahl bei Optionstabellen
-- Hintergrundfarbe von Eingabefeldern verdeckt nicht länder den eingegebenen Text 
+- Hintergrundfarbe von Eingabefeldern verdeckt nicht länder den eingegebenen Text
+- Korrigiert bei doppelter Eingabe die Darstellung von Rechenzeichen bei Rechenkästchen  
 
 ### Änderungen
 - Die voreingestellte Schriftfarbe im Text-Editors ist schwarz 

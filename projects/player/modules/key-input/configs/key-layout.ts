@@ -125,14 +125,14 @@ export class KeyLayout {
             ['q', 'w', 'e', 'r', 't', 'z', 'u', 'i', 'o', 'p', 'ü', 'Return'],
             ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'ö', 'ä'],
             ['Shift', 'y', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '-', 'Shift'],
-            ['Space']
+            ['Space', 'close']
           ],
           shift: [
             ['!', '"', '§', '$', '%', '&', '/', '(', ')', '=', '?', 'Backspace'],
             ['Q', 'W', 'E', 'R', 'T', 'Z', 'U', 'I', 'O', 'P', 'Ü', 'Return'],
             ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ö', 'Ä'],
             ['ShiftUp', 'Y', 'X', 'C', 'V', 'B', 'N', 'M', ';', ':', '_', 'ShiftUp'],
-            ['Space']
+            ['Space', 'close']
           ],
           additional: [[]]
         };

@@ -10,7 +10,7 @@ Player
 - Tastatur verfügt über Knopf zum Schließen
 
 ### Änderungen
-- Seiten, die a- - Tastatur verfügt über Knopf zum Schließenusschließlich ausgeblendete Abschnitte beinhalten, werden ausgeblendet und aus der Navigationsleiste des Testcenters und des Studios entfernt
+- Seiten, die ausschließlich ausgeblendete Abschnitte beinhalten, werden ausgeblendet und aus der Navigationsleiste des Testcenters und des Studios entfernt
 - Beim Fokus-Wechsel zwischen Elementen mit Eingabehilfe oder Tastatur wird deren Animation unterbunden
 - Zentriert den eingeblendeten Seiten-Scroll-Button in Bezug zur eingestellten Seitengröße
 - Audios/Videos informieren nun unmittelbar nach dem Starten über ihre Statusänderung

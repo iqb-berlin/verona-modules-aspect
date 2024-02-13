@@ -10,6 +10,10 @@
   background-color: #eee;
 }
 
+.key.dark-control {
+  background-color: #ddd;
+}
+
 .character {
   width: 2vw;
 }
@@ -21,6 +25,7 @@
   height: 100%;
   min-width: unset;
   .center-icon {
+    padding-top: 6px;
     height: unset;
     width: unset;
     margin: 0;

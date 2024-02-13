@@ -29,6 +29,10 @@ export class KeyboardComponent implements OnInit {
 
   evaluateClickedKeyValue(key: string): void {
     switch (key) {
+      case 'close': {
+        (document.activeElement as HTMLElement).blur();
+        break;
+      }
       case 'Shift':
       case 'ShiftUp': {
         this.toggleShift();

@@ -1,5 +1,6 @@
 <button class="key"
-        [class.control]="key !== 'Space' && key.length > 1"
+        [class.control]="key !== 'Space' && key !== 'close' && key.length > 1"
+        [class.dark-control]="key === 'close'"
         mat-raised-button
         (click)="keyClicked.emit(key)">
   <div *ngIf="key.length === 1"
@@ -13,5 +14,6 @@
     <mat-icon *ngIf="key === 'Shift'" class="center-icon">keyboard_arrow_up</mat-icon>
     <mat-icon *ngIf="key === 'ShiftUp'" class="center-icon">keyboard_capslock</mat-icon>
     <mat-icon *ngIf="key === 'Space'" class="center-icon">space_bar</mat-icon>
+    <mat-icon *ngIf="key === 'close'" class="center-icon">keyboard_hide</mat-icon>
   </span>
 </button>

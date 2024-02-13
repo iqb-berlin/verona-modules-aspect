@@ -18,6 +18,7 @@ Editor
 - Korrigiert die Vorauswahl bei Optionstabellen
 
 ### Änderungen
+- Die voreingestellte Schriftfarbe im Text-Editors ist schwarz 
 - Überarbeitung des Optionsdialogs für Ablegelisten
 
 

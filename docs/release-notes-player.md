@@ -2,7 +2,10 @@ Player
 ======
 ## next 2.4.1
 ### Änderungen
-- Stellt sicher, dass auch Audios/Videos mit langer Ladezeit nach dem Starten über ihre Statusänderung informieren   
+- Stellt sicher, dass auch Audios/Videos mit langer Ladezeit nach dem Starten über ihre Statusänderung informieren
+
+### Fehlerbehebungen
+- Behebt Darstellungsfehler aud dem iPad beim Fortschrittsbalken und der Zeitanzeige von Audios/Videos
 
 ## 2.4.0
 ### Neue Funktionen

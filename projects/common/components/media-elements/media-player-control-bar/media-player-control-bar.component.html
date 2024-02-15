@@ -41,10 +41,11 @@
     <mat-slider class="duration"
                 min="0"
                 step="0.01"
-                [max]="player.duration"
+                [max]="duration"
                 [disabled]="disabled || !playerProperties.interactiveProgressbar || !active || !dependencyDissolved">
       <input matSliderThumb
-             [(value)]="player.currentTime"/>
+             [ngModel]="currentTime"
+             (ngModelChange)="setCurrentTime($event)"/>
     </mat-slider>
   </ng-container>
   <ng-container *ngIf="playerProperties.showRestTime">
@@ -66,8 +67,8 @@
             [disabled]="!playerProperties.interactiveMuteControl"
             [class.enabled-control]="playerProperties.interactiveMuteControl"
             (click)="toggleVolume()">
-      <mat-icon class="player-icon" *ngIf="!player.muted">volume_up</mat-icon>
-      <mat-icon class="player-icon" *ngIf="player.muted">volume_off</mat-icon>
+      <mat-icon class="player-icon" *ngIf="!muted">volume_up</mat-icon>
+      <mat-icon class="player-icon" *ngIf="muted">volume_off</mat-icon>
     </button>
   </ng-container>
   <ng-container *ngIf="playerProperties.volumeControl">
@@ -76,7 +77,7 @@
                 step="0.01"
                 max="1">
       <input matSliderThumb
-             [(value)]="player.volume"
+             [(ngModel)]="volume"
              (valueChange)="checkMinVolume($event)"/>
     </mat-slider>
   </ng-container>

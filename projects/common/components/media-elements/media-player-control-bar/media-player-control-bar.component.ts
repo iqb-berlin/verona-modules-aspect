@@ -32,11 +32,13 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   pausing: boolean = false;
   runCounter: number = 0;
   lastVolume: number = 0;
+  volume: number = 0;
   restTimeMode: boolean = true;
   showHint: boolean = false;
   disabled: boolean = true;
   playbackTime: number = 0;
   valid: boolean = false;
+  muted: boolean = false;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -74,11 +76,16 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
         }
       }
     };
-    this.player.onvolumechange = () => {
-      this.player.muted = !this.player.volume;
-    };
-    this.player.volume = this.playerProperties.defaultVolume;
-    this.lastVolume = this.player.volume;
+    this.player.onvolumechange = (() => {
+      this.volume = this.player.volume;
+      this.muted = !this.volume;
+      this.player.muted = this.muted;
+    });
+    this.volume = this.playerProperties.defaultVolume;
+    this.muted = !this.volume;
+    this.lastVolume = this.volume;
+    this.player.volume = this.volume;
+    this.player.muted = this.muted;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -97,9 +104,12 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   checkMinVolume(volume: number): void {
-    setTimeout(() => {
-      this.player.volume = volume < this.playerProperties.minVolume ? this.playerProperties.minVolume : volume;
-    });
+    this.volume = volume < this.playerProperties.minVolume ? this.playerProperties.minVolume : volume;
+    this.player.volume = this.volume;
+  }
+
+  setCurrentTime(currenTime: number) {
+    this.player.currentTime = currenTime * 60;
   }
 
   toggleTime(): void {
@@ -107,12 +117,13 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   }
 
   toggleVolume(): void {
-    if (this.player.volume > this.playerProperties.minVolume) {
-      this.lastVolume = this.player.volume;
-      this.player.volume = this.playerProperties.minVolume;
+    if (this.volume > this.playerProperties.minVolume) {
+      this.lastVolume = this.volume;
+      this.volume = this.playerProperties.minVolume;
     } else {
-      this.player.volume = this.lastVolume;
+      this.volume = this.lastVolume;
     }
+    this.player.volume = this.volume;
   }
 
   private checkValidState(runCounter: number): boolean {

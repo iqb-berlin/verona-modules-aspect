@@ -158,10 +158,20 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
 
   private _play(): void {
     this.player.play().then(() => {
-      setTimeout(() => this.sendPlaybackTimeChanged());
+      setTimeout(() => this.sendPlaybackTimeChangedWithDelay(0));
     },
     // eslint-disable-next-line no-console
     () => console.error('player: cannot play this media file'));
+  }
+
+  private sendPlaybackTimeChangedWithDelay(delay: number): void {
+    setTimeout(() => {
+      if (this.player.currentTime) {
+        this.sendPlaybackTimeChanged();
+      } else if (delay < 1000) {
+        this.sendPlaybackTimeChangedWithDelay(delay + 100);
+      }
+    }, delay);
   }
 
   private sendPlaybackTimeChanged() {

@@ -1,5 +1,9 @@
 Player
 ======
+## next 2.4.1
+### Änderungen
+- Stellt sicher, dass auch Audios/Videos mit langer Ladezeit nach dem Starten über ihre Statusänderung informieren   
+
 ## 2.4.0
 ### Neue Funktionen
 - Unterstützt Tastatur und Eingabehilfe für Rechenkästchen

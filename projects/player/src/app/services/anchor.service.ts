@@ -7,13 +7,17 @@ import { delay, of, Subscription } from 'rxjs';
 export class AnchorService {
   private activeAnchors: { [id: string]: Subscription } = {};
 
-  toggleAnchor(anchorId: string) {
+  toggleAnchor(anchorId: string): void {
     if (this.activeAnchors[anchorId]) {
       this.removeAnchor(anchorId);
     } else {
-      this.reset();
-      this.addAnchor(anchorId);
+      this.showAnchor(anchorId);
     }
+  }
+
+  showAnchor(anchorId: string): void {
+    this.reset();
+    this.addAnchor(anchorId);
   }
 
   private addAnchor(anchorId: string): void {

@@ -96,6 +96,9 @@ export class InteractiveGroupElementComponent
       case 'pageNav':
         this.navigationService.setPage(buttonEvent.param as number);
         break;
+      case 'highlightText':
+        this.anchorService.toggleAnchor(buttonEvent.param as string);
+        break;
       default:
         this.applyTriggerAction(buttonEvent as TriggerActionEvent);
     }
@@ -104,7 +107,7 @@ export class InteractiveGroupElementComponent
   applyTriggerAction(triggerActionEvent: TriggerActionEvent): void {
     switch (triggerActionEvent.action) {
       case 'highlightText':
-        this.anchorService.toggleAnchor(triggerActionEvent.param as string);
+        this.anchorService.showAnchor(triggerActionEvent.param as string);
         break;
       case 'stateVariableChange':
         this.stateVariableStateService.changeElementCodeValue(

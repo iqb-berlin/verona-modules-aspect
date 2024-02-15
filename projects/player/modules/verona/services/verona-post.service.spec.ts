@@ -71,7 +71,7 @@ describe('VeronaPostService', () => {
       type: 'player',
       id: 'iqb-player-aspect',
       version: 'version-placeholder',
-      specVersion: '5.0',
+      specVersion: '5.2',
       metadataVersion: '2.0'
     };
     const expectedReadyNotification: VopReadyNotification = {

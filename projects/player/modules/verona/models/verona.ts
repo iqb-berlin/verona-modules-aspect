@@ -14,6 +14,7 @@ export interface StatusChangeElement {
 }
 
 export interface PlayerConfig {
+  printMode?: 'off' | 'on' | 'on-with-ids';
   unitNumber?: number;
   unitTitle?: number;
   unitId?: number;

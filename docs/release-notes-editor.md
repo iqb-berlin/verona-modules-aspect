@@ -1,5 +1,10 @@
 Editor
 ======
+## next 2.4.1
+### Fehlerbehebungen
+- Korrigiert den Bereich der Hintergrundfarbe bei Eingabefeldern ohne Beschriftung 
+
+
 ## 2.4.0
 ### Neue Funktionen
 - Rechenkästchen: 

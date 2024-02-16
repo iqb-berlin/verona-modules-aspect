@@ -155,7 +155,7 @@ export class DragOperatorService {
     }
     if (DragOperatorService.isReplace(targetList, this.dropLists)) {
       const originList = this.dropLists[targetList.elementFormControl.value[0].originListID];
-      this.moveItem(targetList.elementFormControl.value[0], targetList,0, originList);
+      this.moveItem(targetList.elementFormControl.value[0], targetList, 0, originList);
       originList.updateFormvalue();
       originList.refreshItemsFromForm();
     }
@@ -200,7 +200,7 @@ export class DragOperatorService {
                        sourceList: DropListComponent,
                        targetList: DropListComponent,
                        allLists: { [id: string]: DropListComponent }): boolean {
-    return sourceList.elementModel.id === targetList.elementModel.id ||
+    return sourceList.elementModel.id === targetList.elementModel.id || // TODO: Use parenthesis
       DragOperatorService.checkConnected(sourceList, targetList) &&
       DragOperatorService.checkOnlyOneItem(targetList, allLists) &&
       DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList);

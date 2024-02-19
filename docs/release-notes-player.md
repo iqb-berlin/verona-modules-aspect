@@ -6,6 +6,8 @@ Player
 
 ### Fehlerbehebungen
 - Behebt Darstellungsfehler aud dem iPad beim Fortschrittsbalken und der Zeitanzeige von Audios/Videos
+- Ermöglicht bei "Wort korrigieren" die Eingabe von Zeichen ohne zunächst das falsch geschriebene Wort durchstreichen zu müssen 
+
 
 ## 2.4.0
 ### Neue Funktionen

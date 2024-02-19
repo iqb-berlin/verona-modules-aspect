@@ -11,10 +11,10 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     <div [style.width.%]="100"
          [style.height.%]="100">
       <div class="fx-column-start-stretch"
-           aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
            [style.width.%]="100"
            [style.height.%]="100">
-        <mat-form-field class="small-input">
+        <mat-form-field class="small-input"
+                        [style.--backgroundColor]="elementModel.styling.backgroundColor">
           <input matInput #input
                  autocomplete="off"
                  autocapitalize="none"
@@ -64,6 +64,15 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </div>
   `,
   styles: [`
+    :host ::ng-deep .mat-mdc-form-field-infix  {
+      z-index: 1;
+    }
+    :host ::ng-deep .mat-mdc-text-field-wrapper .mdc-notched-outline * {
+      background-color: var(--backgroundColor) !important;
+    }
+    :host ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+      background-color: var(--backgroundColor) !important;
+    }
     .spell-correct-button {
       text-decoration-thickness: 3px;
     }

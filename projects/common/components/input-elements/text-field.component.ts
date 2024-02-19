@@ -17,11 +17,6 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                     [style.--backgroundColor]="elementModel.styling.backgroundColor"
                     [appearance]="$any(elementModel.appearance)">
       <mat-label>{{elementModel.label}}</mat-label>
-      <div *ngIf="elementModel.styling.backgroundColor && elementModel.styling.backgroundColor !== 'transparent'"
-           class="background-color-container"
-           [class.border-bottom-radius]="elementModel.appearance === 'outline'"
-           [class.small-input]="elementModel.label === '' && elementModel.appearance === 'outline'">
-      </div>
       <input matInput #input
              autocomplete="off"
              autocapitalize="none"
@@ -60,30 +55,15 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     :host ::ng-deep .small-input .mdc-notched-outline__notch {
       display: none;
     }
-    .background-color-container.small-input{
-      top: 0.45em;
-      bottom: 0.45em;
+    :host ::ng-deep .mat-mdc-form-field-infix  {
+      z-index: 1;
     }
-    .background-color-container {
-      background-color: var(--backgroundColor) !important;
-      position: absolute;
-      top: 0;
-      right: -4px;
-      bottom: 0;
-      left: -16px;
-      z-index: -1;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-    }
-    .border-bottom-radius {
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
-
-    :host ::ng-deep .mat-mdc-text-field-wrapper .mdc-notched-outline mat-label {
+    :host ::ng-deep .mat-mdc-text-field-wrapper .mdc-notched-outline * {
       background-color: var(--backgroundColor) !important;
     }
-
+    :host ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+      background-color: var(--backgroundColor) !important;
+    }
     .fx-row-center-baseline {
       box-sizing: border-box;
       display: flex;

@@ -14,7 +14,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       [style.width.%]="100"
       [style.height.%]="100"
       [style.min-height.%]="100"
-      aspectInputBackgroundColor [backgroundColor]="elementModel.styling.backgroundColor"
+      [style.--backgroundColor]="elementModel.styling.backgroundColor"
       [style.color]="elementModel.styling.fontColor"
       [style.font-size.px]="elementModel.styling.fontSize"
       [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
@@ -55,19 +55,20 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </mat-form-field>
   `,
   styles: [`
-      :host ::ng-deep .small-input div.mdc-notched-outline {
-        top: 0.45em;
-        bottom: 0.45em;
-        height: unset;
-      }
-      :host ::ng-deep .small-input .mdc-notched-outline__notch {
-        display: none;
-      }
-      .keyboard-icon {
-        position: absolute;
-        right: 0;
-        font-size: 150%;
-      }
+    :host ::ng-deep .mat-mdc-form-field-infix  {
+      z-index: 1;
+    }
+    :host ::ng-deep .mat-mdc-text-field-wrapper .mdc-notched-outline * {
+      background-color: var(--backgroundColor) !important;
+    }
+    :host ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field--filled {
+      background-color: var(--backgroundColor) !important;
+    }
+    .keyboard-icon {
+      position: absolute;
+      right: 0;
+      font-size: 150%;
+    }
   `]
 })
 export class TextAreaComponent extends TextInputComponent {

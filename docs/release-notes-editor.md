@@ -2,7 +2,8 @@ Editor
 ======
 ## next 2.4.1
 ### Fehlerbehebungen
-- Korrigiert den Bereich der Hintergrundfarbe bei Eingabefeldern ohne Beschriftung 
+- Korrigiert bei Eingabefeldern den Bereich der Hintergrundfarbe ohne Beschriftung 
+- Färbt bei Eingabebereichen die Beschriftung auf die gleiche Weise wie bei Eingabefeldern
 
 
 ## 2.4.0

@@ -5,6 +5,9 @@ Editor
 - Korrigiert bei Eingabefeldern den Bereich der Hintergrundfarbe ohne Beschriftung 
 - Färbt bei Eingabebereichen die Beschriftung auf die gleiche Weise wie bei Eingabefeldern
 
+### Änderungen
+- Fügt in den Medienoptionen Hinweis hinzu, dass die Lautstärkeregelung nicht auf iPads funktioniert 
+
 
 ## 2.4.0
 ### Neue Funktionen

@@ -286,7 +286,7 @@
     "pauseControl": "Pausieren erlauben",
     "progressBar": "Fortschrittsbalken anzeigen",
     "interactiveProgressbar": "Fortschrittssteuerung erlauben",
-    "volumeControl": "Lautstärkeregelung anzeigen",
+    "volumeControl": "Lautstärkeregelung anzeigen (nicht für iPad)",
     "muteControl": "Stummschaltung anzeigen",
     "interactiveMuteControl": "Stummschaltung erlauben",
     "minVolume": "Minimale Lautstärke",

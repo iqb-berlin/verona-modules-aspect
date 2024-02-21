@@ -136,7 +136,12 @@ export class UnitService {
           (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
         }
         if (['likert', 'cloze'].includes((element as UIElement).type as string)) {
-          element.getChildElements().forEach(el => this.idService.addID(el.id));
+          element.getChildElements().forEach(el => {
+            this.idService.addID(el.id);
+            if ((element as UIElement).type === 'drop-list') {
+              (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
+            }
+          });
         }
         this.idService.addID(element.id);
       });
@@ -306,6 +311,11 @@ export class UnitService {
     if (newElement instanceof CompoundElement) {
       newElement.getChildElements().forEach((child: UIElement) => {
         child.id = this.idService.getAndRegisterNewID(child.type);
+        if (child.type === 'drop-list') {
+          (child.value as DragNDropValueObject[]).forEach(valueObject => {
+            valueObject.id = this.idService.getAndRegisterNewID('value');
+          });
+        }
       });
     }
 

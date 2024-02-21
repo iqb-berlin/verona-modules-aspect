@@ -27,7 +27,8 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   interactionEnabled = false;
   interactionIndeterminate = false;
 
-  constructor(private selectionService: SelectionService, public unitService: UnitService,
+  constructor(protected selectionService: SelectionService,
+              public unitService: UnitService,
               private messageService: MessageService,
               public sanitizer: DomSanitizer,
               private translateService: TranslateService) { }

@@ -48,14 +48,11 @@
                   (change)="setElementInteractionEnabled($event.checked)">
       {{'propertiesPanel.setElementInteractionEnabled' | translate }}
     </mat-checkbox>
-    <button mat-raised-button [disabled]="selectedElements.length > 1 ||
-                                          combinedProperties.type == 'toggle-button' ||
-                                          combinedProperties.type == 'text-field-simple'"
+    <button mat-raised-button [disabled]="selectedElements.length > 1 || selectionService.isClozeChildSelected"
             (click)="duplicateElement()">
       {{'propertiesPanel.duplicateElement' | translate }}
     </button>
-    <button mat-raised-button color="warn" [disabled]="combinedProperties.type == 'toggle-button' ||
-                                                       combinedProperties.type == 'text-field-simple'"
+    <button mat-raised-button color="warn" [disabled]="selectionService.isClozeChildSelected"
             (click)="deleteElement()">
       {{'propertiesPanel.deleteElement' | translate }}
     </button>

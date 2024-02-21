@@ -119,7 +119,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
 
   private displayHiddenSection(): void {
     if (this.areVisibilityRulesFulfilled() || this.rulesAreFulfilled) {
-      if (this.section.visibilityDelay) {
+      if (this.section.visibilityDelay && !this.section.enableReHide) {
         if (!this.timerStateVariable) {
           this.rulesAreFulfilled = true;
           this.initTimerStateVariable(this.stateVariableStateService
@@ -137,7 +137,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private setVisibility(visible: boolean): void {
     this.elementRef.nativeElement.style.display = visible ? 'unset' : 'none';
     if (visible) {
-      if (this.section.animatedVisibility && !this.isAnimatedVisibilityFullFilled) {
+      if (this.section.animatedVisibility && !this.section.enableReHide && !this.isAnimatedVisibilityFullFilled) {
         const animationVariable = new Storable(this.animationVariableId, 1);
         this.stateVariableStateService.registerElementCode(animationVariable.id, 0);
         this.stateVariableStateService.changeElementCodeValue({ id: animationVariable.id, value: 1 });

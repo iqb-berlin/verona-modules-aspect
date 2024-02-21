@@ -1,17 +1,32 @@
 Editor
 ======
-## next 2.4.1
-### Fehlerbehebungen
-- Korrigiert bei Eingabefeldern den Bereich der Hintergrundfarbe ohne Beschriftung 
-- Färbt bei Eingabebereichen die Beschriftung auf die gleiche Weise wie bei Eingabefeldern
-
+## 2.4.1
 ### Änderungen
-- Fügt in den Medienoptionen Hinweis hinzu, dass die Lautstärkeregelung nicht auf iPads funktioniert 
+- Fügt in den Medienoptionen den Hinweis hinzu, dass die Lautstärkeregelung nicht auf iPads funktioniert
+- Ablegeliste:
+  - Ursprungsliste wird nicht mehr als valide Zielliste hervorgehoben (außer bei Sortierlisten)
+
+### Fehlerbehebungen
+- Eingabefeld & Eingabebereich:
+  - Korrigiert den Bereich der Hintergrundfarbe (bei entfernter Beschriftung)
+- Ablegeliste
+  - Listen mit nur einem erlaubten, aber ersetzbaren Element, bei denen das zu ersetzende
+    Element bereits in seiner Ursprungsliste liegt, können nicht mehr mit weiteren
+    Elementen befüllt werden.
+  - Listen in die Elemente verdrängt wurden, die aber nicht mit der Ursprungsliste
+    des Dragvorgangs verbunden sind, werden korrekt aktualisiert.
+- Lückentext:
+  - Ablegelisten innerhalb von Lückentexten können nicht mehr dupliziert oder gelöscht
+    werden (Knöpfe sind deaktiviert)
+  - IDs von Ablegelistenoptionen werden beim Einfügen registriert und können nicht mehr
+    zu doppelten IDs führen
+  - IDs von Ablegelistenoptionen werden beim Duplizieren korrekt neu vergeben und
+    können nicht mehr zu doppelten IDs führen
 
 
 ## 2.4.0
 ### Neue Funktionen
-- Rechenkästchen: 
+- Rechenkästchen:
     - Tastatur und Eingabehilfe (Ziffern / Ziffern & Basis-Operatoren / Ziffern & Operatoren & '=') können hinzugefügt werden
     - Pfeiltastennavigation zwischen den einzelnen Kästchen ist möglich
 - Ablegeliste:
@@ -29,7 +44,7 @@ Editor
 - Korrigiert bei doppelter Eingabe die Darstellung von Rechenzeichen bei Rechenkästchen  
 
 ### Änderungen
-- Die voreingestellte Schriftfarbe im Text-Editors ist schwarz 
+- Die voreingestellte Schriftfarbe im Text-Editors ist schwarz
 - Überarbeitung des Optionsdialogs für Ablegelisten
 
 

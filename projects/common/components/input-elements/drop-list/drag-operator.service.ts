@@ -51,16 +51,16 @@ export class DragOperatorService {
         listComp.stopListenForHover();
       });
     }
-    this.dragOperation.targetComponent?.refreshItemsFromForm();
-    this.dragOperation.targetComponent?.cdr.detectChanges(); // reset placeholder CSS
   }
 
   private resetListEffects(): void {
-    this.dragOperation?.eligibleTargetListsIDs.forEach(listID => {
-      this.dropLists[listID].isHovered = false;
-      this.dropLists[listID].isHighlighted = false;
-      this.dropLists[listID].cdr.detectChanges();
-    });
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    [...this.dragOperation.eligibleTargetListsIDs, this.dragOperation.sourceComponent.elementModel.id]
+      .forEach(listID => {
+        this.dropLists[listID].isHovered = false;
+        this.dropLists[listID].isHighlighted = false;
+        this.dropLists[listID].cdr.detectChanges();
+      });
   }
 
   setTargetList(listId: string): void {
@@ -200,10 +200,10 @@ export class DragOperatorService {
                        sourceList: DropListComponent,
                        targetList: DropListComponent,
                        allLists: { [id: string]: DropListComponent }): boolean {
-    return sourceList.elementModel.id === targetList.elementModel.id || // TODO: Use parenthesis
-      DragOperatorService.checkConnected(sourceList, targetList) &&
+    return (sourceList.elementModel.isSortList) ||
+      (DragOperatorService.checkConnected(sourceList, targetList) &&
       DragOperatorService.checkOnlyOneItem(targetList, allLists) &&
-      DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList);
+      DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList));
   }
 
   /* Drop is only allowed in connected Lists AND THE SAME LIST. */

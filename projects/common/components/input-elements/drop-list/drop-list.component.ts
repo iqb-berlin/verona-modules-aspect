@@ -108,7 +108,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     this.isHovered = false;
     this.dragOpService.unSetTargetList();
     if (this.elementModel.isSortList) {
-      this.refreshItemsFromForm();
+      this.refreshViewModel();
     }
     this.cdr.detectChanges();
   }
@@ -156,7 +156,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     this.dragImageRef.instance.styling = this.elementModel.styling;
   }
 
-  refreshItemsFromForm() {
+  refreshViewModel() {
     this.viewModel = [...this.elementFormControl.value];
   }
 

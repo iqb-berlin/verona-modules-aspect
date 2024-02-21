@@ -130,8 +130,8 @@ export class DragOperatorService {
       }
       this.dragOperation.sourceComponent?.updateFormvalue();
       this.dragOperation.targetComponent?.updateFormvalue();
-      this.dragOperation.sourceComponent?.refreshItemsFromForm();
-      this.dragOperation.targetComponent?.refreshItemsFromForm();
+      this.dragOperation.sourceComponent?.refreshViewModel();
+      this.dragOperation.targetComponent?.refreshViewModel();
     }
   }
 
@@ -157,7 +157,8 @@ export class DragOperatorService {
       const originList = this.dropLists[targetList.elementFormControl.value[0].originListID];
       this.moveItem(targetList.elementFormControl.value[0], targetList, 0, originList);
       originList.updateFormvalue();
-      originList.refreshItemsFromForm();
+      originList.refreshViewModel();
+      originList.cdr.detectChanges();
     }
     // TODO haut logisch noch nicht ganz hin mit den festen Indize
     const targetIndex = this.dragOperation?.sortingPlaceholderIndex !== undefined ?

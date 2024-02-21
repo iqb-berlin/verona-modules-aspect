@@ -50,8 +50,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   }
 
   private addSubscription(): void {
-    // prevent ExpressionChangedAfterItHasBeenCheckedError in snap and scroll mode
-    setTimeout(() => this.displayHiddenSection());
+    this.displayHiddenSection();
     merge(
       this.unitStateService.elementCodeChanged,
       this.stateVariableStateService.elementCodeChanged

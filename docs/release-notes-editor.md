@@ -1,5 +1,9 @@
 Editor
 ======
+## 2.4.2
+### Fehlerbehebungen
+- Korrigiert die Anzeige der Vorbelegung für Klapplisten und Optionsfelder im Eigenschaftenbereich
+
 ## 2.4.1
 ### Änderungen
 - Fügt in den Medienoptionen den Hinweis hinzu, dass die Lautstärkeregelung nicht auf iPads funktioniert

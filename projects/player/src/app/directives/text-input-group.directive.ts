@@ -66,7 +66,6 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     keyboardEvent: KeyboardEvent;
     inputElement: HTMLInputElement | HTMLTextAreaElement
   }, elementModel: UIElement): void {
-    console.log('checkInputLimitation');
     if (elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
       event.inputElement.value.length === elementModel.maxLength &&

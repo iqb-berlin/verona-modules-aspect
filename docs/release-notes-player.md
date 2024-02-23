@@ -1,6 +1,10 @@
 Player
 ======
-## next 2.4.1
+## 2.4.2
+### Fehlerbehebungen
+- Eingabefeld im Lückentest: Eingestellte Zeichenbegrenzung wird von IQB-Tastatur berücksichtigt  
+
+## 2.4.1
 ### Änderungen
 - Stellt sicher, dass auch Audios/Videos mit langer Ladezeit nach dem Starten über ihre Statusänderung informieren
 

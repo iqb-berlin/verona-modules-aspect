@@ -66,6 +66,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     keyboardEvent: KeyboardEvent;
     inputElement: HTMLInputElement | HTMLTextAreaElement
   }, elementModel: UIElement): void {
+    console.log('checkInputLimitation');
     if (elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
       event.inputElement.value.length === elementModel.maxLength &&
@@ -176,7 +177,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   private enterKey(key: string, elementModel: UIElement, elementComponent: ElementComponent): void {
     if (!(elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
-      this.inputElement.value.length === this.elementModel.maxLength)) {
+      this.inputElement.value.length === elementModel.maxLength)) {
       const selectionStart = this.inputElement.selectionStart || 0;
       const selectionEnd = this.inputElement.selectionEnd || 0;
       const newSelection = selectionStart ? selectionStart + 1 : 1;

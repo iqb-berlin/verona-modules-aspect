@@ -8,6 +8,7 @@ export class FileService {
     const anchor = document.createElement('a');
     anchor.download = 'export.json';
     anchor.href = window.URL.createObjectURL(new File([unitJSON], 'export.json'));
+    document.body.appendChild(anchor);
     anchor.click();
   }
 

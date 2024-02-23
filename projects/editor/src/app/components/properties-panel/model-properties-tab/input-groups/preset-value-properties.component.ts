@@ -27,6 +27,10 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       <mat-label>{{'preset' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.value"
                   (selectionChange)="updateModel.emit({ property: 'value', value: $event.value })">
+        <mat-select-trigger [innerHTML]="combinedProperties.value !== undefined && combinedProperties.value !== null ?
+                                         $any(combinedProperties.options)[$any(combinedProperties.value)].text :
+                                         ''">
+        </mat-select-trigger>
         <mat-option [value]="null">{{'propertiesPanel.undefined' | translate }}</mat-option>
         <mat-option *ngFor="let option of $any(combinedProperties.options); let i = index" [value]="i">
           <div [innerHTML]="option.text + ' (Index: ' + i + ')' | safeResourceHTML"></div>

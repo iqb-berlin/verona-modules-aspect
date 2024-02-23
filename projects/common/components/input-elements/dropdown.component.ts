@@ -15,6 +15,10 @@ import { FormElementComponent } from '../../directives/form-element-component.di
         {{ elementModel.label }}
       </mat-label>
       <mat-select [formControl]="elementFormControl" [value]="elementModel.value">
+        <mat-select-trigger [innerHTML]="elementFormControl.value !== null ?
+                                         (elementModel.options[elementFormControl.value].text | safeResourceHTML) :
+                                         ''">
+        </mat-select-trigger>
         <mat-option *ngIf="elementModel.allowUnset" [value]="null"
                     [class.read-only]="elementModel.readOnly"
                     (click)="$event.preventDefault()">
@@ -31,7 +35,7 @@ import { FormElementComponent } from '../../directives/form-element-component.di
   `,
   styles: [
     'mat-form-field {width: 100%; height: 100%;}',
-    'read-only {pointer-events: none;}',
+    '.read-only {pointer-events: none;}',
     ':host ::ng-deep mat-form-field .mat-mdc-text-field-wrapper.mdc-text-field {background-color: inherit !important;}',
     ':host ::ng-deep mat-form-field .mat-mdc-form-field-subscript-wrapper {background-color: white;}'
   ]

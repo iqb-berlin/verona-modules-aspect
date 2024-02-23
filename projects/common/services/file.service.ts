@@ -11,6 +11,7 @@ export class FileService {
     anchor.click();
   }
 
+  /* DEPRECATED: Use static upload-inputs instead! */
   static async loadFile(fileTypes: string[] = [], asBase64: boolean = false): Promise<string> {
     return new Promise<string>((resolve, reject) => {
       const fileUploadElement = document.createElement('input');
@@ -29,15 +30,27 @@ export class FileService {
     });
   }
 
+  /* DEPRECATED: Use static upload-inputs instead! */
   static loadImage(): Promise<string> {
     return FileService.loadFile(['image/*'], true);
   }
 
+  /* DEPRECATED: Use static upload-inputs instead! */
   static loadAudio(): Promise<string> {
     return FileService.loadFile(['audio/*'], true);
   }
 
+  /* DEPRECATED: Use static upload-inputs instead! */
   static loadVideo(): Promise<string> {
     return FileService.loadFile(['video/*'], true);
+  }
+
+  static async readFileAsText(file: File, asBase64: boolean = false): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject();
+      asBase64 ? reader.readAsDataURL(file) : reader.readAsText(file);
+    });
   }
 }

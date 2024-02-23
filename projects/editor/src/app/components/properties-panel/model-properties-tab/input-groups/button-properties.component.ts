@@ -20,8 +20,11 @@ import { UIElement } from 'common/models/elements/element';
               {{'propertiesPanel.button' | translate}}</button>
             <button mat-button class="fx-fill"
                     [class.checked]="!!combinedProperties.imageSrc && !combinedProperties.asLink"
-                    (click)="loadImage(); updateModel.emit({ property: 'asLink', value: false });">
+                    (click)="imageUpload.click(); updateModel.emit({ property: 'asLink', value: false });">
               {{'propertiesPanel.image' | translate}}</button>
+            <input type="file" hidden accept="image/*"
+                   #imageUpload id="button-image-upload"
+                   (change)="loadImage($event)">
             <button mat-button
                     class="fx-fill"
                     [class.checked]="!combinedProperties.imageSrc && !!combinedProperties.asLink"
@@ -33,7 +36,7 @@ import { UIElement } from 'common/models/elements/element';
             <div>
               <button mat-raised-button
                       [disabled]="combinedProperties.asLink"
-                      (click)="loadImage()">
+                      (click)="imageUpload.click();">
                 {{'updateImage' | translate }}
               </button>
               <button mat-raised-button
@@ -125,8 +128,9 @@ export class ButtonPropertiesComponent {
 
   checked = false;
 
-  async loadImage(): Promise<void> {
-    this.updateModel.emit({ property: 'imageSrc', value: await FileService.loadImage() });
+  async loadImage(event: any): Promise<void> {
+    const imgSrc = await FileService.readFileAsText((event.target as HTMLInputElement).files?.[0] as File, true);
+    this.updateModel.emit({ property: 'imageSrc', value: imgSrc });
   }
 
   removeImage(): void {

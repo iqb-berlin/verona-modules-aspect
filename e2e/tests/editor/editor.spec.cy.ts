@@ -1,29 +1,15 @@
+import {
+  addButton, addPage, navigateToPage, selectFromDropdown
+} from '../helper-functions';
+
 describe('Basic Unit', () => {
   beforeEach(() => {
     cy.viewport(1300, 800);
     cy.openEditor();
   });
 
-  function addPage() {
-    cy.contains('add').click();
-  }
-
-  function navigateToPage(pageIndex: number) {
-    cy.contains(`Seite ${pageIndex}`).click();
-  }
-
-  function selectFromDropdown(dropdownName: string, optionName: string) {
-    cy.contains('div', dropdownName).find('mat-select').click();
-    cy.get('.cdk-overlay-container').contains(optionName).click();
-  }
-
-  function addButton() {
-    cy.contains('Sonstige').click();
-    cy.contains('Knopf').scrollIntoView().click();
-  }
-
   /* Check for any false-positives */
-  it('pass some basic crosschecks', () => {
+  it('pass some basic checks', () => {
     cy.contains('Knopf-not-existing').should('not.exist');
     cy.contains('Seite 1').should('exist');
   });
@@ -75,5 +61,10 @@ describe('Basic Unit', () => {
     cy.get('.cdk-overlay-container').contains('Element wird referenziert');
     cy.get('.cdk-overlay-container').contains('button_2');
     cy.get('.cdk-overlay-container').contains('button_1').should('not.exist');
+  });
+
+  it('saves a unit definition to file', () => {
+    addPage();
+    cy.saveUnit();
   });
 });

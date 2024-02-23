@@ -55,3 +55,32 @@ Cypress.Commands.add('loadUnit', (filename: string) => {
     });
   });
 });
+
+Cypress.Commands.add('saveUnit', (filepath: string = 'e2e/downloads/export.json') => {
+  cy.contains('Unit speichern').click();
+  cy.get('a[download]')
+    .then(anchor => (
+      new Cypress.Promise((resolve, reject) => {
+        // Use XHR to get the blob that corresponds to the object URL.
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', anchor.prop('href'), true);
+        xhr.responseType = 'blob';
+
+        // Once loaded, use FileReader to get the string back from the blob.
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            const blob = xhr.response;
+            const reader = new FileReader();
+            reader.onload = () => {
+              // Once we have a string, resolve the promise to let
+              // the Cypress chain continue, e.g. to assert on the result.
+              resolve(reader.result);
+              cy.writeFile(filepath, reader.result as string);
+            };
+            reader.readAsText(blob);
+          }
+        };
+        xhr.send();
+      })
+    ));
+});

@@ -1,8 +1,8 @@
 import {
-  addPage, navigateToPage, selectFromDropdown
+  addPage, addPostMessageStub, navigateToPage, selectFromDropdown
 } from '../helper-functions';
 
-describe('Basic Unit', { testIsolation: false }, () => {
+describe('Button element', { testIsolation: false }, () => {
   it('creates basic buttons in editor', () => {
     cy.openEditor();
     cy.contains('Sonstige').click();
@@ -64,12 +64,13 @@ describe('Basic Unit', { testIsolation: false }, () => {
     cy.contains('button', 'Knopf-next-unit').click();
     cy.get('@postMessage')
       .should('be.calledWithMatch',
-        Cypress.sinon.match(message => message.type === 'vopUnitNavigationRequestedNotification' &&
-          message.target === 'next'));
+        Cypress.sinon.match({
+          type: 'vopUnitNavigationRequestedNotification',
+          target: 'next'
+        }));
   });
 
   it('finds and uses a button with page nav', () => {
-    addPostMessageStub();
     cy.contains('button', 'Knopf-page-2').click();
     cy.contains('Knopf-seite-2');
   });
@@ -78,13 +79,4 @@ describe('Basic Unit', { testIsolation: false }, () => {
     cy.get('input[type="image"').should('have.attr', 'alt', 'Bild nicht gefunden');
     cy.get('[src^="data:image"]');
   });
-
-  function addPostMessageStub() {
-    const postMessageStub = cy.stub().as('postMessage');
-    cy.window().then(window => {
-      window.parent.addEventListener('message', e => {
-        postMessageStub(e.data);
-      });
-    });
-  }
 });

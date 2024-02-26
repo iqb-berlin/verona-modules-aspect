@@ -20,3 +20,36 @@ export function addButton() {
   });
   cy.contains('Knopf').click();
 }
+
+export function addPostMessageStub() {
+  const postMessageStub = cy.stub().as('postMessage');
+  cy.window().then(window => {
+    window.parent.addEventListener('message', e => {
+      postMessageStub(e.data);
+    });
+  });
+}
+
+export function assertValueChanged(id: string, value: any): void {
+  cy.get('@postMessage')
+    .should('be.calledWithMatch',
+      Cypress.sinon.match.has('unitState',
+        Cypress.sinon.match.has(
+          'dataParts', Cypress.sinon.match.has('elementCodes',
+            Cypress.sinon.match(
+              `{"id":"${id}","value":${value},"status":"VALUE_CHANGED"}`))
+        )));
+
+  // alternative without 'has'
+  // -------------------------
+  // cy.get('@postMessage')
+  //   .should('be.calledWithMatch',
+  //     Cypress.sinon.match({
+  //       type: 'vopStateChangedNotification',
+  //       unitState: Cypress.sinon.match({
+  //         dataParts: Cypress.sinon.match({
+  //           elementCodes: Cypress.sinon.match('{"id":"dropdown_2","value":2,"status":"VALUE_CHANGED"}')
+  //         })
+  //       })
+  //     }));
+}

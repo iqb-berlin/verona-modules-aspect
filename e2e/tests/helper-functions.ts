@@ -11,6 +11,28 @@ export function selectFromDropdown(dropdownName: string, optionName: string) {
   cy.get('.cdk-overlay-container').contains(optionName).click();
 }
 
+export function addOption(optionName: string): void {
+  cy.contains('fieldset', 'Optionen')
+    .contains('mat-form-field', 'Neue Option')
+    .find('input')
+    .clear()
+    .type(`${optionName}{enter}`);
+}
+
+export function setLabelText(labelText: string): void {
+  cy.contains('fieldset', 'Eingabeelement')
+    .contains('div', 'Beschriftung').find('input')
+    .clear()
+    .type(labelText);
+}
+
+export function setCheckbox(labelText: string): void {
+  cy.get('aspect-element-model-properties-component')
+    .contains('mat-checkbox', labelText)
+    .find('[type="checkbox"]')
+    .click();
+}
+
 export function addButton() {
   // Check if expansion panel is already open; this is important for non-isolated tests
   cy.get('mat-expansion-panel').contains('Sonstige').then(expansionPanel => {

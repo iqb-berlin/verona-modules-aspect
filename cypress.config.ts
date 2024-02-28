@@ -9,7 +9,9 @@ export default defineConfig({
     supportFile: 'e2e/support/e2e.ts',
     specPattern: 'e2e/tests/**/*.spec.cy.ts',
     screenshotsFolder: 'e2e/screenshots',
+    videosFolder: 'e2e/videos',
     downloadsFolder: 'e2e/downloads',
-    screenshotOnRunFailure: true
+    screenshotOnRunFailure: true,
+    video: false
   }
 });

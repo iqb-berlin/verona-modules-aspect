@@ -16,7 +16,8 @@
     "node-build-editor": "ng build --project editor --output-hashing=none && node scripts/wrap_and_pack.js editor $npm_package_config_editor_version projects/editor/src/html_wrapper/index.html",
     "node-build-player": "ng build --project player --output-hashing=none && node scripts/wrap_and_pack.js player $npm_package_config_player_version projects/player/src/html_wrapper/index.html",
     "test": "ng test",
-    "e2e": "node node_modules/testcafe/bin/testcafe.js 'chrome' e2e-tests/editor/test.ts"
+    "e2e": "npx cypress open",
+    "e2e-headless": "npx cypress run"
   },
   "private": true,
   "eslintConfig": {

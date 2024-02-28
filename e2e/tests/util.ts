@@ -6,9 +6,11 @@ export function navigateToPage(pageIndex: number) {
   cy.contains(`Seite ${pageIndex}`).click();
 }
 
-export function selectFromDropdown(dropdownName: string, optionName: string) {
-  cy.contains('div', dropdownName).find('mat-select').click();
-  cy.get('.cdk-overlay-container').contains(optionName).click();
+export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {
+  cy.get('aspect-element-model-properties-component')
+    .contains('mat-form-field', dropdownName).find('mat-select').click();
+  cy.get('.cdk-overlay-container').contains(optionName).click({ force: true });
+  if (closeOverlay) cy.get('body').click();
 }
 
 export function addOption(optionName: string): void {
@@ -33,14 +35,16 @@ export function setCheckbox(labelText: string): void {
     .click();
 }
 
-export function addButton() {
+export function addElement(element: string, expansionPanel?: string): void {
   // Check if expansion panel is already open; this is important for non-isolated tests
-  cy.get('mat-expansion-panel').contains('Sonstige').then(expansionPanel => {
-    if (!expansionPanel.hasClass('mat-expanded')) {
-      cy.contains('Sonstige').click();
-    }
-  });
-  cy.contains('Knopf').click();
+  if (expansionPanel) {
+    cy.get('mat-expansion-panel').contains('Sonstige').then(expansionPanelElement => {
+      if (!expansionPanelElement.hasClass('mat-expanded')) {
+        cy.contains(expansionPanel).click();
+      }
+    });
+  }
+  cy.contains(element).click();
 }
 
 export function addPostMessageStub() {
@@ -74,4 +78,12 @@ export function assertValueChanged(id: string, value: any): void {
   //         })
   //       })
   //     }));
+}
+
+export function addTextElement(text: string): void {
+  addElement('Text');
+  cy.get('.text-text').click();
+  cy.get('.ProseMirror p').clear();
+  cy.get('.ProseMirror p').type(text);
+  cy.contains('Speichern').click();
 }

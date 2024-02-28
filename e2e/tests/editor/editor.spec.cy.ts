@@ -1,6 +1,6 @@
 import {
-  addButton, addPage, navigateToPage, selectFromDropdown
-} from '../helper-functions';
+  addElement, addPage, navigateToPage, selectFromDropdown
+} from '../util';
 
 describe('Basic Unit', () => {
   beforeEach(() => {
@@ -25,8 +25,7 @@ describe('Basic Unit', () => {
 
   it('creates a button element with label text', () => {
     cy.get('aspect-page-canvas').contains('Knopf').should('not.exist');
-
-    addButton();
+    addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('input').clear().type('Neue Beschriftung');
     cy.get('aspect-page-canvas').contains('Neue Beschriftung').should('exist');
   });
@@ -40,8 +39,8 @@ describe('Basic Unit', () => {
     addPage();
     addPage();
     navigateToPage(1);
-    addButton();
-    addButton();
+    addElement('Knopf', 'Sonstige');
+    addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('input').clear().type('PageRef');
     selectFromDropdown('Aktion', 'Seitennavigation');
     selectFromDropdown('Aktionsparameter', '2');

@@ -4,7 +4,7 @@ import {
   assertValueChanged,
   setCheckbox,
   setLabelText
-} from '../helper-functions';
+} from '../util';
 
 describe('Dropdown element', { testIsolation: false }, () => {
   it('creates basic dropdown with 2 options', () => {

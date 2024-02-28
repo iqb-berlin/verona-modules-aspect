@@ -1,6 +1,6 @@
 import {
   addPage, addPostMessageStub, navigateToPage, selectFromDropdown
-} from '../helper-functions';
+} from '../util';
 
 describe('Button element', { testIsolation: false }, () => {
   it('creates basic buttons in editor', () => {

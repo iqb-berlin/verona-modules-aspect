@@ -201,7 +201,7 @@ export class DragOperatorService {
                        sourceList: DropListComponent,
                        targetList: DropListComponent,
                        allLists: { [id: string]: DropListComponent }): boolean {
-    return (sourceList.elementModel.isSortList) ||
+    return (sourceList.elementModel.id === targetList.elementModel.id && sourceList.elementModel.isSortList) ||
       (DragOperatorService.checkConnected(sourceList, targetList) &&
       DragOperatorService.checkOnlyOneItem(targetList, allLists) &&
       DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList));

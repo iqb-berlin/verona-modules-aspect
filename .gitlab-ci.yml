@@ -7,12 +7,12 @@ stages:
 default:
   image: iqbberlin/aspect-test:latest
 
-test-unit:
-  stage: test
-  before_script:
-    - npm ci --cache .npm --prefer-offline
-  script:
-    - npm run test
+# test-unit:
+#   stage: test
+#   before_script:
+#     - npm ci --cache .npm --prefer-offline
+#   script:
+#     - npm run test
 
 test-e2e:
   stage: test

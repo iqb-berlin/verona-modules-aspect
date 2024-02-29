@@ -19,8 +19,8 @@ test-e2e:
   before_script:
     - npm ci --cache .npm --prefer-offline
   script:
-    - npm run start-editor-local
-    - npm run start-player-local
+    - nohup npm run start-editor-local &
+    - nohup npm run start-player-local &
     - npm run e2e-headless
 
 #deploy:

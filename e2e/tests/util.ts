@@ -38,7 +38,7 @@ export function setCheckbox(labelText: string): void {
 export function addElement(element: string, expansionPanel?: string): void {
   // Check if expansion panel is already open; this is important for non-isolated tests
   if (expansionPanel) {
-    cy.get('mat-expansion-panel').contains('Sonstige').then(expansionPanelElement => {
+    cy.contains('mat-expansion-panel', expansionPanel).then(expansionPanelElement => {
       if (!expansionPanelElement.hasClass('mat-expanded')) {
         cy.contains(expansionPanel).click();
       }

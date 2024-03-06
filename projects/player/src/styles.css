@@ -11,12 +11,24 @@ body {
   scroll-margin: 100px 0;
 }
 
-.active-anchor > mark, .active-anchor > aspect-marked {
-  background-color: unset !important;
+.active-anchor > mark, .active-anchor > aspect-marked[style*="background-color: rgb(249, 248, 113)"] {
+  background-color: #bfbe57 !important;
+}
+.active-nested-anchor > mark, .active-nested-anchor > aspect-marked[style*="background-color: rgb(249, 248, 113)"] {
+  background-color: #bfbe57 !important;
 }
 
-.active-nested-anchor > mark, .active-nested-anchor > aspect-marked {
-  background-color: unset !important;
+
+.active-anchor > mark, .active-anchor > aspect-marked[style*="background-color: rgb(157, 232, 235)"] {
+  background-color: #80bdbf !important;
+}
+.active-nested-anchor > mark, .active-nested-anchor > aspect-marked[style*="background-color: rgb(157, 232, 235)"] {
+  background-color: #80bdbf !important;
+}
+
+
+.active-anchor > mark, .active-anchor > aspect-marked[style*="background-color: rgb(255, 160, 106)"] {
+  background-color: #bf7850 !important;
 }
 
 aspect-anchor:not(.active-anchor):not(.active-nested-anchor) {

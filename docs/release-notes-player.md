@@ -1,5 +1,10 @@
 Player
 ======
+## 2.4.4
+### Änderungen
+- Textelement:
+  - Markierte Bereiche werden innerhalb hervorgehobener Bereiche anzeigt
+
 ## 2.4.2
 ### Fehlerbehebungen
 - Eingabefeld im Lückentest: Eingestellte Zeichenbegrenzung wird von IQB-Tastatur berücksichtigt  

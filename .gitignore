@@ -47,3 +47,6 @@ Thumbs.db
 
 projects/common/assets/GeoGebra
 example_data/proprietary
+
+# E2E test data
+e2e/downloads

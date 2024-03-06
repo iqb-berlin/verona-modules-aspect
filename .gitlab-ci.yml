@@ -22,6 +22,12 @@ test-e2e:
     - nohup npm run start-editor-local &
     - nohup npm run start-player-local &
     - npm run e2e-headless
+  artifacts:
+    when: always
+    paths:
+      - e2e/downloads/**/*.*
+      - e2e/videos/**/*.mp4
+      - e2e/screenshots/**/*.png
 
 #deploy:
 #  stage: deploy

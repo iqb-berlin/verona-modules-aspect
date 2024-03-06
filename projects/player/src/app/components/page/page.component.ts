@@ -35,11 +35,13 @@ export class PageComponent {
   }
 
   emitIsVisibleIndexChange() {
-    this.isVisibleIndexChange.emit(
-      {
-        index: this.scrollPageIndex,
-        isVisible: !this.isVisibleIndexSections.every(section => !section.isVisible)
-      }
-    );
+    setTimeout(() => {
+      this.isVisibleIndexChange.emit(
+        {
+          index: this.scrollPageIndex,
+          isVisible: !this.isVisibleIndexSections.every(section => !section.isVisible)
+        }
+      );
+    });
   }
 }

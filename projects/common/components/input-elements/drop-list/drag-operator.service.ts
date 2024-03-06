@@ -10,6 +10,7 @@ export class DragOperatorService {
   dropLists: { [id: string]: DropListComponent } = {};
   dragOperation: DragOperation | undefined;
 
+
   registerComponent(comp: DropListComponent): void {
     this.dropLists[comp.elementModel.id] = comp;
   }
@@ -200,16 +201,21 @@ export class DragOperatorService {
   static isDropAllowed(draggedItem: DragNDropValueObject | undefined,
                        sourceList: DropListComponent,
                        targetList: DropListComponent,
-                       allLists: { [id: string]: DropListComponent }): boolean {
-    return (sourceList.elementModel.id === targetList.elementModel.id && sourceList.elementModel.isSortList) ||
-      (DragOperatorService.checkConnected(sourceList, targetList) &&
+                       allLists: { [id: string]: DropListComponent },
+                       ignoreConnection: boolean = false): boolean {
+    return DragOperatorService.checkIsSourceList(sourceList, targetList) &&
+      DragOperatorService.checkConnected(sourceList, targetList, ignoreConnection) &&
       DragOperatorService.checkOnlyOneItem(targetList, allLists) &&
-      DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList));
+      DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList);
   }
 
-  /* Drop is only allowed in connected Lists AND THE SAME LIST. */
-  private static checkConnected(sourceList: DropListComponent, targetList: DropListComponent): boolean {
-    return sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
+  private static checkIsSourceList(sourceList: DropListComponent, targetList: DropListComponent): boolean {
+    return (sourceList.elementModel.id === targetList.elementModel.id && sourceList.elementModel.isSortList) ||
+      sourceList.elementModel.id !== targetList.elementModel.id;
+  }
+
+  private static checkConnected(sourceList: DropListComponent, targetList: DropListComponent, ignoreConnection: boolean = false): boolean {
+    return ignoreConnection || sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
   }
 
   /* Return false, when drop is not allowed */
@@ -239,7 +245,8 @@ export class DragOperatorService {
         targetList.elementFormControl.value[0],
         targetList,
         allLists[targetList.elementFormControl.value[0].originListID],
-        allLists
+        allLists,
+        true
       );
   }
 }

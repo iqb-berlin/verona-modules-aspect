@@ -1,5 +1,10 @@
 Allgemein
 =========
+## editor/2.4.4+player/2.4.4
+## Änderungen
+- Ablegeliste:
+  - Ersetzte (aka Verdrängen) Elemente ignorieren Listenverbindungen
+
 ## editor/2.4.3+player/2.4.3
 ### Fehlerbehebungen
 - Ablegeliste:

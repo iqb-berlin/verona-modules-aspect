@@ -50,7 +50,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   selectedFontColor = 'black';
   selectedHighlightColor = 'lightgrey';
-  selectedAnchorColor = '#adff2f';
+  selectedAnchorColor = '#dccce6';
   selectedAnchorIdText = '';
   selectedFontSize = '20px';
   selectedIndentSize = 20;

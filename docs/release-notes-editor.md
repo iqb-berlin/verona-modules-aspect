@@ -1,5 +1,10 @@
 Editor
 ======
+## 2.4.4
+## Änderungen
+- Texteditor:
+  - Ändert die Voreinstellung der Farbe zur Hervorhebung von Bereichen
+
 ## 2.4.2
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Vorbelegung für Klapplisten und Optionsfelder im Eigenschaftenbereich

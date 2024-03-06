@@ -4,6 +4,7 @@ Editor
 ## Änderungen
 - Texteditor:
   - Ändert die Voreinstellung der Farbe zur Hervorhebung von Bereichen
+  - Ändert Tooltip zu "Bereich hervorheben"
 
 ## 2.4.2
 ### Fehlerbehebungen

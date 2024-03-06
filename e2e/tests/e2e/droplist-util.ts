@@ -6,6 +6,8 @@ export function addList(title: string, options: string[] = [], settings?: Record
   options.forEach(option => addOption(option));
   if (settings?.highlightReceivingDropList) setCheckbox('Potentielle Ablagen hervorheben');
   if (settings?.sortList) setCheckbox('Sortierliste');
+  if (settings?.onlyOneItem) setCheckbox('Nur ein Element');
+  if (settings?.allowReplacement) setCheckbox('Verdrängen erlauben');
 }
 
 export function addOption(optionName: string): void {

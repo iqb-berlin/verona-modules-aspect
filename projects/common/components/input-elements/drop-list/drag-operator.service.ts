@@ -209,13 +209,17 @@ export class DragOperatorService {
       DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList);
   }
 
+  /* Only allow drops in other lists, except for sortlists. */
   private static checkIsSourceList(sourceList: DropListComponent, targetList: DropListComponent): boolean {
     return (sourceList.elementModel.id === targetList.elementModel.id && sourceList.elementModel.isSortList) ||
       sourceList.elementModel.id !== targetList.elementModel.id;
   }
 
+  /* Check list connection, sortlist is an exception since source and target can be the same. */
   private static checkConnected(sourceList: DropListComponent, targetList: DropListComponent, ignoreConnection: boolean = false): boolean {
-    return ignoreConnection || sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
+    return ignoreConnection ||
+      (sourceList.elementModel.id === targetList.elementModel.id && sourceList.elementModel.isSortList) ||
+      sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
   }
 
   /* Return false, when drop is not allowed */

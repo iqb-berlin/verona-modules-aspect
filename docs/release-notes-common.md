@@ -1,5 +1,10 @@
 Allgemein
 =========
+## editor/2.4.5+player/2.4.5
+### Fehlerbehebungen
+- Ablegeliste:
+  - Sortierlisten erlauben wieder Ablegen in die Ausgangsliste
+
 ## editor/2.4.4+player/2.4.4
 ## Änderungen
 - Ablegeliste:

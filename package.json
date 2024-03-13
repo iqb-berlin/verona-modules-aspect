@@ -110,7 +110,7 @@
     "@iqb/eslint-config": "^2.1.1",
     "@types/jasmine": "~4.3.2",
     "@types/node": "^20.2.5",
-    "cypress": "^12.13.0",
+    "cypress": "^13.6.6",
     "iqb-dev-components": "^1.4.1",
     "jasmine-core": "^5.0.0",
     "karma": "~6.4.2",

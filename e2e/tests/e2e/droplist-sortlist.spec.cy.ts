@@ -11,7 +11,7 @@ describe('Droplist element', { testIsolation: false }, () => {
       { highlightReceivingDropList: true, sortList: true });
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_1', true);
 
-    addList('Sortierliste OHNE Hervorhebung (connected to drop-list_1)', ['EEE'], { sortList: true });
+    addList('Sortierliste OHNE Hervorhebung (connected to drop-list_1)', ['EEE', 'FFF', 'GGG'], { sortList: true });
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_1', true);
 
     // connect first list to second
@@ -47,7 +47,7 @@ describe('Droplist element', { testIsolation: false }, () => {
   it('drags to connected list', () => {
     dragTo('drop-list_1', 'AAA', 'drop-list_3');
     cy.get('#drop-list_3').children()
-      .should('have.length', 1);
+      .should('have.length', 3);
     dragTo('drop-list_1', 'AAA', 'drop-list_2');
     cy.get('#drop-list_1').children()
       .should('have.length', 1);
@@ -56,6 +56,13 @@ describe('Droplist element', { testIsolation: false }, () => {
   });
 
   it('reorders sort items', () => {
-    // TODO
+    cy.get('#drop-list_3').contains('.drop-list-item', 'EEE')
+      .trigger('mousedown', { button: 0 });
+    cy.get('#drop-list_3').contains('.drop-list-item', 'FFF')
+      .trigger('mouseenter', { bubbles: false, force: true, button: 0 });
+    cy.get('.drag-preview')
+      .trigger('mouseup', { force: true });
+    cy.get('#drop-list_3').find('.drop-list-item').eq(0).contains('FFF');
+    cy.get('#drop-list_3').find('.drop-list-item').eq(1).contains('EEE');
   });
 });

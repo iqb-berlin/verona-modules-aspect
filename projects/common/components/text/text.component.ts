@@ -32,6 +32,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
            [style.column-count]="elementModel.columnCount"
            tooltipEventTooltip
            [innerHTML]="savedText || elementModel.text | safeResourceHTML"
+           (contextmenu)="$event.preventDefault()"
            (pointerdown)="startTextSelection($event)">
       </div>
     </div>

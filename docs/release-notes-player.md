@@ -1,5 +1,10 @@
 Player
 ======
+## 2.4.5
+### Änderungen
+- Markieren von Text
+  - Verhindert unter Windows Mobile das Öffenen des Kontextmenüs  
+
 ## 2.4.4
 ### Änderungen
 - Textelement:

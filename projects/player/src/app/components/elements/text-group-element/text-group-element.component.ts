@@ -120,7 +120,13 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
       } else if (this.selectedMode && this.selectedColor) {
         this.applyMarkingDataToText(this.selectedMode, this.selectedColor);
       } else if (!this.isMarkingBarOpen) {
-        this.openMarkingBar(textSelectionPosition);
+        // hack for windows mobile to prevent opening marking bar while selection is removed on FF
+        setTimeout(() => {
+          const selectionTest = window.getSelection();
+          if (selectionTest && TextMarkingService.isSelectionValid(selectionTest) && selectionTest.rangeCount > 0) {
+            this.openMarkingBar(textSelectionPosition);
+          }
+        }, 100);
       }
     }
   }

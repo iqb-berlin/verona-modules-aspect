@@ -2,7 +2,7 @@
 
 Repository for the Aspect Editor and Player. The applications have a shared code base, but can be run and built separately.
 
-Meant to be used in [IQB-Teststudio](https://github.com/iqb-berlin/teststudio-lite-setup) and [IQB-Testcenter](https://github.com/iqb-berlin/testcenter-setup).
+Meant to be used in [IQB-Studio](https://github.com/iqb-berlin/studio-lite) and [IQB-Testcenter](https://github.com/iqb-berlin/testcenter-setup).
 
 Both conform to the Verona API definition:
 

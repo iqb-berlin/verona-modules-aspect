@@ -95,7 +95,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
 
   dragMove(e: DragEvent) {
     this.dragImageRef?.instance.setDragPreviewPosition(e.x, e.y);
-    if (this.dragOpService.dragOperation?.dragType === 'touch') this.dragOpService.checkHovered(e.x, e.y);
+    if (this.dragOpService.dragOperation?.dragType === 'touch') this.dragOpService.checkHoveredListOrElement(e.x, e.y);
   }
 
   dragEnter(): void {

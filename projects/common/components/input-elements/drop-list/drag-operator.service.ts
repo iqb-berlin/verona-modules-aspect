@@ -168,32 +168,31 @@ export class DragOperatorService {
     targetList.elementFormControl.value.splice(targetIndex, 0, item);
   }
 
-  hoverToggle = true;
+  isListHovered = true;
 
-  checkHovered(x: number, y: number): void {
+  checkHoveredListOrElement(x: number, y: number): void {
     const el = document.elementFromPoint(x, y);
-    const sourceElement: HTMLElement | null = (el as HTMLElement).closest('.drop-list');
-    const targetListID = sourceElement?.id;
+    const hoveredListID = (el as HTMLElement).closest('.drop-list')?.id;
 
-    if (targetListID &&
-        this.dragOperation?.eligibleTargetListsIDs.includes(this.dropLists[targetListID].elementModel.id)) {
-      if (!this.hoverToggle) {
-        this.dropLists[targetListID].dragEnter();
+    if (hoveredListID &&
+        this.dragOperation?.eligibleTargetListsIDs.includes(this.dropLists[hoveredListID].elementModel.id)) {
+      if (!this.isListHovered) {
+        this.dropLists[hoveredListID].dragEnter();
       }
-      this.hoverToggle = true;
-      this.checkHoverSort(el);
+      this.isListHovered = true;
+      if (this.dropLists[hoveredListID].elementModel.isSortList) this.checkHoveredListItem(el);
     } else {
-      if (this.hoverToggle) {
+      if (this.isListHovered) {
         this.dragOperation?.targetComponent?.dragLeave();
       }
-      this.hoverToggle = false;
+      this.isListHovered = false;
     }
   }
 
-  private checkHoverSort(el: Element | null): void {
-    if (this.dragOperation?.targetComponent?.elementModel.isSortList &&
-        el?.getAttribute('data-aspect-draggable')) {
-      const targetIndex = Array.from((el.parentNode as HTMLElement).children).indexOf(el);
+  private checkHoveredListItem(el: Element | null): void {
+    const hoveredListItem = el?.closest('.drop-list-item');
+    if (hoveredListItem) {
+      const targetIndex = Array.from((hoveredListItem.parentNode as HTMLElement).children).indexOf(hoveredListItem);
       this.positionSortPlaceholder(targetIndex);
     }
   }

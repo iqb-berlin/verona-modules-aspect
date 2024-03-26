@@ -1,5 +1,6 @@
 import { addElement, addTextElement, setCheckbox } from '../util';
 
+/* Adds text element as label for the droplist */
 export function addList(title: string, options: string[] = [], settings?: Record<string, boolean>): void {
   addTextElement(title);
   addElement('Ablegeliste', '(Zu)Ordnung');

@@ -82,7 +82,8 @@ export function assertValueChanged(id: string, value: any): void {
 
 export function addTextElement(text: string): void {
   addElement('Text');
-  cy.get('.text-text').click();
+  cy.get('aspect-element-model-properties-component')
+    .contains('edit').click();
   cy.get('.ProseMirror p').clear();
   cy.get('.ProseMirror p').type(text);
   cy.contains('Speichern').click();

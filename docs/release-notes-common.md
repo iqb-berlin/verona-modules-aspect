@@ -1,5 +1,10 @@
 Allgemein
 =========
+## editor/2.4.6+player/2.4.6
+### Fehlerbehebungen
+- Ablegeliste:
+  - Sortierlisten auf Touchscreen repariert
+
 ## editor/2.4.5+player/2.4.5
 ### Fehlerbehebungen
 - Ablegeliste:

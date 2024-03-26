@@ -1,5 +1,9 @@
 Editor
 ======
+## 2.4.6
+## Änderungen
+- kleine Gestaltungsverbesserungen bei Textelementeigenschaften und an der Bildvorschau in Dialogen
+
 ## 2.4.4
 ## Änderungen
 - Texteditor:

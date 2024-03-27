@@ -7,6 +7,7 @@ import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface
 export class HasNextPagePipe implements PipeTransform {
   transform(index: number, isVisibleIndexPages: IsVisibleIndex[]): boolean {
     if (!isVisibleIndexPages) return false;
+    isVisibleIndexPages.sort((a, b) => a.index - b.index);
     return HasNextPagePipe.getNextPageIndex(index, isVisibleIndexPages) !== null;
   }
 

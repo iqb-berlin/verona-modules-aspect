@@ -35,9 +35,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
     .image-wrapper {
       display: flex;
       justify-content: inherit;
-      max-height: 350px;
-      max-width: 600px;
-      padding: 0 20px;
+      max-height: 100%;
     }
     .column {flex-direction: column;}
     .column-reverse {flex-direction: column-reverse;}

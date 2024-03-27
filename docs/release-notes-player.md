@@ -1,9 +1,13 @@
 Player
 ======
+## 2.4.7
+### Fehlerbehebungen
+- Behebt Fehler bei der Zurück-Navigation im Schaltflächen-Blätter-Modus
+
 ## 2.4.5
 ### Änderungen
 - Markieren von Text
-  - Verhindert unter Windows Mobile das Öffnen des Kontextmenüs  
+  - Verhindert unter Windows Mobile das Öffnen des Kontextmenüs 
 
 ## 2.4.4
 ### Änderungen

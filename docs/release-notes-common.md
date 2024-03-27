@@ -1,5 +1,10 @@
 Allgemein
 =========
+## editor/2.4.7+player/2.4.8
+### Fehlerbehebungen
+- Verbesserte Bildvorschau in Dialogen (Editor) wurde rückgängig gemacht
+  Hierdurch wurde die Anzeige diverser anderer Elemente (MC, CMC, Ablegeliste) beeinträchtigt.
+
 ## editor/2.4.6+player/2.4.6
 ### Fehlerbehebungen
 - Ablegeliste:

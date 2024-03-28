@@ -156,6 +156,9 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
           [style.display]="'inline-block'"
           [parentForm]="parentForm"
           [element]="$any(subPart).attrs.model"
+          [style.vertical-align]="subPart.attrs.model.type === 'toggle-button' &&
+                                    subPart.attrs.model.verticalOrientation === true ?
+                                      'middle' : 'baseline'"
           [editorMode]="editorMode"
           (elementSelected)="childElementSelected.emit($event)">
         </aspect-compound-child-overlay>

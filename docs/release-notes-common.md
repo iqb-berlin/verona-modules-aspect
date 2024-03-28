@@ -1,5 +1,9 @@
 Allgemein
 =========
+## editor/2.4.8+player/2.4.9
+### Fehlerbehebungen
+- Korrigiert die Positionierung von vertikal ausgerichteten Optionsfeldern in Lückentexten
+
 ## editor/2.4.7+player/2.4.8
 ### Fehlerbehebungen
 - Verbesserte Bildvorschau in Dialogen (Editor) wurde rückgängig gemacht

@@ -34,6 +34,8 @@ import { DragOperatorService } from './drag-operator.service';
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
          [style.background-color]="elementModel.styling.backgroundColor"
          (touchstart)="elementFormControl.markAsTouched()"
+         (mouseenter)="dragOpService.isDragActive && dragEnter()"
+         (mouseleave)="dragOpService.isDragActive && dragLeave()"
          (click)="elementFormControl.markAsTouched()">
       <div *ngFor="let item of viewModel; let i = index;"
            class="drop-list-item" [class.image-item]="item.imgSrc"
@@ -42,6 +44,7 @@ import { DragOperatorService } from './drag-operator.service';
            (dragStart)="dragStart($event, item, i, this)"
            (dragMove)="dragMove($event)"
            (dragEnd)="dragEnd()"
+           (mouseenter)="dragOpService.isDragActive && listItemDragEnter(i)"
            [style.color]="elementModel.styling.fontColor"
            [style.font-size.px]="elementModel.styling.fontSize"
            [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
@@ -70,10 +73,6 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   isHovered = false;
   isHighlighted = false;
 
-  private unlistenMouseEnter: (() => void) | undefined;
-  private unlistenMouseLeave: (() => void) | undefined;
-  private unlistenItemMouseEnter: (() => void)[] = [];
-
   constructor(public dragOpService: DragOperatorService, public elementRef: ElementRef,
               private renderer2: Renderer2, public cdr: ChangeDetectorRef, private overlay: Overlay) {
     super(elementRef);
@@ -99,6 +98,9 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   }
 
   dragEnter(): void {
+    // Workaround for the mouseenter event after reordering, thus triggering a source index reset.
+    if (this.dragOpService.isListHovered) return;
+    if (!this.dragOpService.isListEligible(this.elementModel.id)) return;
     this.isHovered = true;
     this.dragOpService.setTargetList(this.elementModel.id);
     this.cdr.detectChanges();
@@ -120,34 +122,9 @@ export class DropListComponent extends FormElementComponent implements OnInit {
     document.body.classList.remove('dragging-active'); // remove class for cursor while dragging
   }
 
-  listenForHover() {
-    this.unlistenMouseEnter = this.renderer2.listen(this.droplistRef?.nativeElement, 'mouseenter', () => {
-      // Workaround for Windows+Firefox, which creates the event after reordering, thus triggering a source index reset.
-      if (this.dragOpService.isListHovered) return;
-      this.dragEnter();
-    });
-    this.unlistenMouseLeave = this.renderer2.listen(this.droplistRef?.nativeElement, 'mouseleave', () => {
-      this.dragLeave();
-    });
-
-    if (this.elementModel.isSortList) {
-      this.droplistItems?.toArray()
-        .forEach(listItem => {
-          this.unlistenItemMouseEnter.push(
-            this.renderer2.listen(listItem.nativeElement, 'mouseenter', (event: MouseEvent) => {
-              const targetIndex = Array.from(this.droplistRef?.nativeElement.children).indexOf(event.target);
-              this.dragOpService.positionSortPlaceholder(targetIndex);
-              this.cdr.detectChanges();
-            })
-          );
-        });
-    }
-  }
-
-  stopListenForHover() {
-    this.unlistenMouseEnter?.();
-    this.unlistenMouseLeave?.();
-    this.unlistenItemMouseEnter.forEach(listener => listener());
+  listItemDragEnter(index: number): void {
+    if (!this.elementModel.isSortList) return;
+    this.dragOpService.positionSortPlaceholder(index);
   }
 
   initDragImageOverlay() {

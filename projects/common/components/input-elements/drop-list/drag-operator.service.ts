@@ -9,7 +9,7 @@ import { DragOperation } from 'common/components/input-elements/drop-list/drag-o
 export class DragOperatorService {
   dropLists: { [id: string]: DropListComponent } = {};
   dragOperation: DragOperation | undefined;
-
+  isDragActive = false;
 
   registerComponent(comp: DropListComponent): void {
     this.dropLists[comp.elementModel.id] = comp;
@@ -19,6 +19,7 @@ export class DragOperatorService {
             item: DragNDropValueObject, dragType: 'mouse' | 'touch') {
     this.dragOperation =
       new DragOperation(sourceElement, sourceListComponent, sourceIndex, item, dragType, this.dropLists);
+    this.isDragActive = true;
 
     this.initDrag();
   }
@@ -36,22 +37,15 @@ export class DragOperatorService {
         this.dropLists[listID].cdr.detectChanges();
       });
     }
-    if (this.dragOperation.dragType === 'mouse') this.setListItemListeners();
   }
 
   endDrag(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
+    this.isDragActive = false;
     this.dragOperation.sourceElement.classList.remove('show-as-placeholder');
     this.dragOperation.sourceElement.style.pointerEvents = 'auto';
-
     this.dragOperation.placeholderElement?.classList.remove('show-as-placeholder');
-
     this.resetListEffects();
-    if (this.dragOperation.dragType === 'mouse') {
-      Object.values(this.dropLists).forEach(listComp => {
-        listComp.stopListenForHover();
-      });
-    }
   }
 
   private resetListEffects(): void {
@@ -97,12 +91,6 @@ export class DragOperatorService {
     this.isListHovered = false;
   }
 
-  private setListItemListeners(): void {
-    this.dragOperation?.eligibleTargetListsIDs.forEach(listID => {
-      this.dropLists[listID].listenForHover();
-    });
-  }
-
   positionSortPlaceholder(targetIndex: number): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     const list = this.dragOperation.targetComponent!.viewModel;
@@ -110,6 +98,11 @@ export class DragOperatorService {
     const item = list.splice(sourceIndex, 1)[0];
     list.splice(targetIndex, 0, item);
     this.dragOperation.sortingPlaceholderIndex = targetIndex;
+  }
+
+  isListEligible(listID: string): boolean {
+    if (!this.dragOperation) throw new Error('dragOP undefined');
+    return this.dragOperation.eligibleTargetListsIDs.includes(listID);
   }
 
   handleDrop(): void {

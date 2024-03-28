@@ -22,9 +22,15 @@ export function addOption(optionName: string): void {
 export function dragTo(list: string, item: string, targetList: string): void {
   cy.get(`#${list}`).contains('.drop-list-item', item)
     .trigger('mousedown', { button: 0 });
+
   // Moving the mouse is actually not necessary, since the mouseenter event is not triggered.
   // It is triggered manually in the next step.
   // cy.get('.drag-preview').trigger('mousemove', { force: true, clientX: 640, clientY: 199 });
+
+  // Leave first, to change a variable and actually handle mouseenter events
+  cy.get(`#${list}`)
+    .trigger('mouseleave');
+
   cy.get(`#${targetList}`)
     .trigger('mouseenter');
   cy.get('.drag-preview')

@@ -122,6 +122,8 @@ export class DropListComponent extends FormElementComponent implements OnInit {
 
   listenForHover() {
     this.unlistenMouseEnter = this.renderer2.listen(this.droplistRef?.nativeElement, 'mouseenter', () => {
+      // Workaround for Windows+Firefox, which creates the event after reordering, thus triggering a source index reset.
+      if (this.dragOpService.isListHovered) return;
       this.dragEnter();
     });
     this.unlistenMouseLeave = this.renderer2.listen(this.droplistRef?.nativeElement, 'mouseleave', () => {

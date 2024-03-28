@@ -68,6 +68,7 @@ export class DragOperatorService {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     const targetListComp = this.dropLists[listId];
     this.dragOperation.targetComponent = targetListComp;
+    this.isListHovered = true;
     if (targetListComp.elementModel.isSortList) {
       if (this.dragOperation.sourceComponent !== targetListComp) {
         this.addSortPlaceholder();
@@ -93,6 +94,7 @@ export class DragOperatorService {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     this.dragOperation.targetComponent = undefined;
     this.dragOperation.sortingPlaceholderIndex = undefined;
+    this.isListHovered = false;
   }
 
   private setListItemListeners(): void {

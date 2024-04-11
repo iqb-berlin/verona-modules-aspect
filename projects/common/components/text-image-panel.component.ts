@@ -62,13 +62,8 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
       padding: 0 5px;
       display: flex; flex-direction: row; align-items: center; justify-content: flex-start;
     }
-    .audio-button:hover {color: #006064;
-    }
-    .column img, .column-reverse img {
-      height: 100%;
-    }
-    .row img, .row-reverse img {
-      width: 100%;
+    .audio-button:hover {
+      color: #006064;
     }
   `]
 })

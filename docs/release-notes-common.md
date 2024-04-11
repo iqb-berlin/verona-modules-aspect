@@ -1,5 +1,10 @@
 Allgemein
 =========
+## editor/2.4.9+player/2.4.10
+### Fehlerbehebungen
+- Optionstabellen und Optionsfelder mit Bildern:
+  - Behebt fehlerhafte Größendarstellung von Bildern auf iPads beim ersten Laden der Aufgabe
+
 ## editor/2.4.8+player/2.4.9
 ### Fehlerbehebungen
 - Korrigiert die Positionierung von vertikal ausgerichteten Optionsfeldern in Lückentexten

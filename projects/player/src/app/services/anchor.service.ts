@@ -45,17 +45,25 @@ export class AnchorService {
     ) as HTMLElement[];
     anchors.forEach(anchor => {
       if (!showAnchor && anchor.dataset.parentAnchorColor) {
-        anchor.style.backgroundColor = anchor.dataset.parentAnchorColor as string;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        anchor.attributes.style.textContent = `background-color: ${anchor.dataset.parentAnchorColor as string};`;
       } else {
-        anchor.style.backgroundColor = anchor.dataset.anchorColor as string;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        anchor.attributes.style.textContent = `background-color: ${anchor.dataset.anchorColor as string};`;
       }
       anchor.classList.toggle('active-anchor');
     });
     nestedAnchors.forEach(anchor => {
       if (showAnchor) {
-        anchor.style.backgroundColor = (anchor.dataset.parentAnchorColor) as string;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        anchor.attributes.style.textContent = `background-color: ${anchor.dataset.parentAnchorColor as string};`;
       } else {
-        anchor.style.backgroundColor = anchor.dataset.anchorColor as string;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        anchor.attributes.style.textContent = `background-color: ${anchor.dataset.anchorColor as string};`;
       }
       anchor.classList.toggle('active-nested-anchor');
     });

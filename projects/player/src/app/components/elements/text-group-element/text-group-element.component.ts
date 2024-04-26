@@ -6,6 +6,7 @@ import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
 import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingService } from '../../../services/text-marking.service';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
@@ -34,7 +35,8 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   constructor(
     private nativeEventService: NativeEventService,
     private unitStateElementMapperService: ElementModelElementCodeMappingService,
-    public unitStateService: UnitStateService
+    public unitStateService: UnitStateService,
+    private anchorService: AnchorService
   ) {
     super();
   }
@@ -77,6 +79,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
 
   startTextSelection(pointerDown: PointerEvent): void {
     this.isMarkingBarOpen = false;
+    this.anchorService.reset();
     this.nativeEventService.pointerUp
       .pipe(takeUntil(this.ngUnsubscribe), first())
       .subscribe((pointerUp: PointerEvent) => {

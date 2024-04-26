@@ -23,6 +23,11 @@ type MapElementType = UIElementType | 'geometry-variable';
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
+  private static modifyAnchors(text: string): string {
+    const regEx = /<aspect-anchor /g;
+    return text.replace(regEx, '<aspect-anchor class="" ');
+  }
+
   mapToElementModelValue(elementCodeValue: ResponseValueType | undefined, elementModel: UIElement): InputElementValue {
     switch (elementModel.type) {
       case 'math-table':
@@ -41,8 +46,10 @@ export class ElementModelElementCodeMappingService {
       case 'text':
         return (elementCodeValue !== undefined) ?
           TextMarkingService
-            .restoreMarkedTextIndices(elementCodeValue as string[], (elementModel as TextElement).text) :
-          (elementModel as TextElement).text;
+            .restoreMarkedTextIndices(
+              elementCodeValue as string[],
+              ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
+          ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
       case 'audio':
         return elementCodeValue !== undefined ?
           elementCodeValue as number :

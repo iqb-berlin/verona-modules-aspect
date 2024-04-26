@@ -1,5 +1,9 @@
 Player
 ======
+## 2.4.11
+### Fehlerbehebungen
+- Korrigiert das Markieren von Text, der Texthervorhebungen beinhaltet
+
 ## 2.4.7
 ### Fehlerbehebungen
 - Behebt Fehler bei der Zurück-Navigation im Schaltflächen-Blätter-Modus

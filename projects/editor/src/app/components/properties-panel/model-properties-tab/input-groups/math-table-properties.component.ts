@@ -66,7 +66,7 @@ import { UIElement } from 'common/models/elements/element';
       <button mat-raised-button color="primary"
               [disabled]="combinedProperties.operation !== 'variable'"
               [matMenuTriggerFor]="variableLayoutOptions">
-        Optionen für variables Layout
+        Variables Layout anpassen
       </button>
       <mat-menu #variableLayoutOptions="matMenu">
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).allowArithmeticChars"

@@ -164,7 +164,7 @@
     "patternWarnMessage": "Muster Warnmeldung",
     "clearable": "Knopf zum Leeren anzeigen",
     "hasKeyboardIcon": "Tastatursymbol anzeigen",
-    "inputAssistance": "Eingabehilfe",
+    "inputAssistance": "Eingabehilfe auswählen",
     "restrictedToInputAssistanceChars": "Bearbeitung anderer Zeichen verhindern",
     "hasReturnKey": "Eingabetaste hinzufügen",
     "hasBackspaceKey": "Löschtaste hinzufügen",

@@ -49,7 +49,7 @@
           class="fx-align-self-center"
           mat-raised-button
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">
-    Text editieren
+    Text und Elemente editieren
   </button>
 
   <button *ngIf="combinedProperties.src"
@@ -70,7 +70,7 @@
           class="fx-align-self-center"
           mat-raised-button
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">
-    Medienoptionen
+    Medienoptionen anpassen
   </button>
 
   <aspect-text-properties-field-set [combinedProperties]="combinedProperties"
@@ -130,7 +130,6 @@
            (input)="updateModel.emit({ property: 'expectedCharactersCount', value: $any($event.target).value || 0 })">
   </mat-form-field>
 
-
   <aspect-math-table-properties [combinedProperties]="combinedProperties"
                                 (updateModel)="updateModel.emit($event)">
   </aspect-math-table-properties>
@@ -145,7 +144,6 @@
     [combinedProperties]="combinedProperties"
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
-
 
   <aspect-slider-properties [combinedProperties]="combinedProperties"
                             (updateModel)="updateModel.emit($event)">

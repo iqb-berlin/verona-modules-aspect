@@ -13,8 +13,8 @@ import { Label } from 'common/models/elements/label-interfaces';
       <legend>{{title | translate }}</legend>
       <mat-form-field appearance="outline">
         <mat-label>{{textFieldLabel}}</mat-label>
-        <input #newItem matInput type="text" placeholder="Fragetext"
-               (keyup.enter)="addListItem(newItem.value); newItem.select()">
+        <textarea #newItem matInput cdkTextareaAutosize type="text"
+                  (keyup.enter)="addListItem(newItem.value); newItem.select()"></textarea>
         <button mat-icon-button matSuffix color="primary"
                 (click)="addListItem(newItem.value); newItem.select()">
           <mat-icon>add</mat-icon>

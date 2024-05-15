@@ -18,14 +18,19 @@
   <mat-form-field *ngIf="combinedProperties.label !== undefined && combinedProperties.required === undefined"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
-    <input matInput type="text" [value]="$any(combinedProperties.label)"
-           (input)="updateModel.emit({property: 'label', value: $any($event.target).value })">
+    <textarea matInput type="text"
+              [value]="$any(combinedProperties.label)"
+              (input)="updateModel.emit({property: 'label', value: $any($event.target).value })">
+    </textarea>
+
   </mat-form-field>
 
   <mat-form-field *ngIf="combinedProperties.label2 !== undefined" appearance="fill">
     <mat-label>{{'propertiesPanel.label2' | translate }}</mat-label>
-    <input matInput type="text" [value]="$any(combinedProperties.label2)"
-           (input)="updateModel.emit({property: 'label2', value: $any($event.target).value })">
+    <textarea matInput type="text"
+              [value]="$any(combinedProperties.label2)"
+              (input)="updateModel.emit({property: 'label2', value: $any($event.target).value })">
+    </textarea>
   </mat-form-field>
 
   <aspect-options-field-set [combinedProperties]="combinedProperties"

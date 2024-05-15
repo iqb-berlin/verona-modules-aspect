@@ -10,8 +10,10 @@ import { UIElement } from 'common/models/elements/element';
       <legend>Eingabeelement</legend>
       <mat-form-field *ngIf="combinedProperties.label !== undefined" appearance="fill">
         <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
-        <input matInput type="text" [value]="$any(combinedProperties.label)"
-               (input)="updateModel.emit({property: 'label', value: $any($event.target).value })">
+        <textarea matInput type="text"
+                  [value]="$any(combinedProperties.label)"
+                  (input)="updateModel.emit({ property: 'label', value: $any($event.target).value })">
+            </textarea>
       </mat-form-field>
 
       <mat-checkbox *ngIf="combinedProperties.readOnly !== undefined"

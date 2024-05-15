@@ -55,3 +55,9 @@ mat-tab-group {
 .button-group {
   border: 3px groove;
 }
+
+.no-selection {
+  text-align: center;
+  padding-top: 10%;
+  font-size: large;
+}

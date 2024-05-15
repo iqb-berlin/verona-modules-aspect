@@ -39,14 +39,15 @@ import {
 import {
   StateVariableEditorComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variable-editor.component';
-import {
-  ActionParamStateVariableComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
+import { ActionParamStateVariableComponent } from
+  'editor/src/app/components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
 import {
   VisibilityRulesDialogComponent
 } from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
+import { InputAssistancePropertiesComponent } from
+  'editor/src/app/components/properties-panel/model-properties-tab/input-groups/input-assistance-properties.component';
 import {
   TooltipPropertiesDialogComponent
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
@@ -97,6 +98,7 @@ import { ElementModelPropertiesComponent } from
   './components/properties-panel/model-properties-tab/element-model-properties.component';
 import { DynamicSectionHelperGridComponent } from './components/canvas/dynamic-section-helper-grid.component';
 import { ElementGridChangeListenerDirective } from './components/canvas/element-grid-change-listener.directive';
+
 import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
 import { TextPropertiesFieldSetComponent } from
@@ -207,7 +209,8 @@ import {
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoIDsPipe,
-    MathTablePropertiesComponent
+    MathTablePropertiesComponent,
+    InputAssistancePropertiesComponent
   ],
   imports: [
     BrowserModule,

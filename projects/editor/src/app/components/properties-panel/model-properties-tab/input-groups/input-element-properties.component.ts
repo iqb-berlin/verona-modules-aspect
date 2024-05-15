@@ -8,7 +8,9 @@ import { UIElement } from 'common/models/elements/element';
   template: `
     <fieldset *ngIf="combinedProperties.required !== undefined" class="fx-column-start-stretch">
       <legend>Eingabeelement</legend>
-      <mat-form-field *ngIf="combinedProperties.label !== undefined" appearance="fill">
+      <mat-form-field *ngIf="combinedProperties.label !== undefined &&
+                             combinedProperties.type !== 'drop-list'"
+                      appearance="fill">
         <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
         <textarea matInput type="text"
                   [value]="$any(combinedProperties.label)"

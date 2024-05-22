@@ -42,3 +42,8 @@ aspect-anchor:not(.active-anchor):not(.active-nested-anchor) {
 .dragging-active * {
   cursor: inherit !important;
 }
+
+/*Fix underline color to be the same as parent u-element*/
+u>span {
+  text-decoration: underline;
+}

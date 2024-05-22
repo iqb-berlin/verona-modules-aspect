@@ -10,6 +10,10 @@ fieldset {
   min-width: 0;
 }
 
+u>span {
+  text-decoration: underline;
+}
+
 /*Flex Styles*/
 
 .fx-column-start-stretch {

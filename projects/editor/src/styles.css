@@ -5,3 +5,30 @@ html, body { height: 100%; }
 input[type=color] {
   cursor: pointer;
 }
+
+/*Flex Styles*/
+
+.fx-column-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.fx-row-start-stretch {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.fx-align-self-center {
+  align-self: center;
+}
+
+.fx-flex {
+  flex: 1 1 0;
+  box-sizing: border-box;
+}

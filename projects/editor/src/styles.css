@@ -6,6 +6,10 @@ input[type=color] {
   cursor: pointer;
 }
 
+fieldset {
+  min-width: 0;
+}
+
 /*Flex Styles*/
 
 .fx-column-start-stretch {

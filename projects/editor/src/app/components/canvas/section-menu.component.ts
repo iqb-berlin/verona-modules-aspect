@@ -23,8 +23,8 @@ import { SelectionService } from '../../services/selection.service';
             [matTooltipPosition]="'left'">
       <mat-icon>list</mat-icon>
     </button>
-    <mat-menu #elementListMenu="matMenu" class="layoutMenu" xPosition="before">
-      <mat-action-list>
+    <mat-menu #elementListMenu="matMenu" xPosition="before">
+      <mat-action-list [style.padding.px]="5">
         <ng-container *ngIf="section.elements.length === 0">
           Keine Elemente im Abschnitt
         </ng-container>
@@ -48,12 +48,13 @@ import { SelectionService } from '../../services/selection.service';
             [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
       <mat-icon>disabled_visible</mat-icon>
     </button>
+
     <button mat-mini-fab [matMenuTriggerFor]="layoutMenu"
             [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
       <mat-icon>space_dashboard</mat-icon>
     </button>
-    <mat-menu #layoutMenu="matMenu" class="layoutMenu" xPosition="before">
-      <div (click)="$event.stopPropagation()">
+    <mat-menu #layoutMenu="matMenu" xPosition="before">
+      <div (click)="$event.stopPropagation()" class="layoutMenu">
         <mat-checkbox class="menuItem" [checked]="section.dynamicPositioning"
                       (click)="$any($event).stopPropagation()"
                       (change)="updateModel('dynamicPositioning', $event.checked)">
@@ -71,7 +72,6 @@ import { SelectionService } from '../../services/selection.service';
         <div *ngIf="section.dynamicPositioning">
           <fieldset>
             <legend>{{'section-menu.columns' | translate }}</legend>
-
             <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
                           (click)="$any($event).stopPropagation()"
                           (change)="updateModel('autoColumnSize', $event.checked)">
@@ -163,9 +163,9 @@ import { SelectionService } from '../../services/selection.service';
     </button>
   `,
   styles: [
-    '::ng-deep .layoutMenu {padding: 0 15px; width: 250px;}',
-    '::ng-deep .layoutMenu fieldset {margin: 10px 0; display: flex; flex-direction: column; align-items: flex-start;}',
-    '::ng-deep .layoutMenu .section-height-input {margin-top: 10px;}',
+    '.layoutMenu {padding: 5px; width: 250px;}',
+    'aspect-size-input-panel {max-width: 100%;}',
+    '.layoutMenu fieldset {display: flex; flex-direction: column; align-items: flex-start;}',
     '.menuItem {margin-bottom: 5px;}',
     '::ng-deep .activeAfterID-menu .mat-mdc-form-field {width:90%; margin-left: 10px;}'
   ]

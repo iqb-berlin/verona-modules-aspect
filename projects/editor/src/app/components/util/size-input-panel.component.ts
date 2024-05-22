@@ -6,29 +6,27 @@ import { Measurement } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-size-input-panel',
   template: `
-    <div class="panel">
-      <mat-form-field [style.width.px]="125">
-        <mat-label>{{label}}</mat-label>
-        <input matInput type="number"
-               [(ngModel)]="value"
-               (change)="valueUpdated.emit(getCombinedString())">
-      </mat-form-field>
-      <mat-form-field [style.width.px]="160">
-        <mat-label>Einheit</mat-label>
-        <mat-select [(ngModel)]="unit"
-                    (selectionChange)="valueUpdated.emit(getCombinedString())">
-          <mat-option *ngIf="allowedUnits.includes('fr')"
-                      value="fr">{{'section-menu.fraction' | translate }}</mat-option>
-          <mat-option *ngIf="allowedUnits.includes('px')"
-                      value="px">{{'section-menu.pixel' | translate }}</mat-option>
-          <mat-option *ngIf="allowedUnits.includes('%')"
-                      value="%">{{'section-menu.percent' | translate }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    <mat-form-field [style.width.%]="40">
+      <mat-label>{{label}}</mat-label>
+      <input matInput type="number"
+             [(ngModel)]="value"
+             (change)="valueUpdated.emit(getCombinedString())">
+    </mat-form-field>
+    <mat-form-field [style.width.%]="60">
+      <mat-label>Einheit</mat-label>
+      <mat-select [(ngModel)]="unit"
+                  (selectionChange)="valueUpdated.emit(getCombinedString())">
+        <mat-option *ngIf="allowedUnits.includes('fr')"
+                    value="fr">{{'section-menu.fraction' | translate }}</mat-option>
+        <mat-option *ngIf="allowedUnits.includes('px')"
+                    value="px">{{'section-menu.pixel' | translate }}</mat-option>
+        <mat-option *ngIf="allowedUnits.includes('%')"
+                    value="%">{{'section-menu.percent' | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   `,
   styles: [
-    '.panel {display: flex; flex-direction: row;}'
+    ':host {display: flex; flex-direction: row;}'
   ]
 })
 export class SizeInputPanelComponent {

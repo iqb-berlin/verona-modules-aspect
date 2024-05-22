@@ -2,20 +2,54 @@
 import {
   Component, EventEmitter, Input, Output, Pipe, PipeTransform, ViewChild
 } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
 import { MessageService } from 'common/services/message.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { IDService } from 'editor/src/app/services/id.service';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';
-import { UnitService } from '../../../../services/unit.service';
-import { SelectionService } from '../../../../services/selection.service';
-import { DialogService } from '../../../../services/dialog.service';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { UnitService } from 'editor/src/app/services/unit.service';
+import { DialogService } from 'editor/src/app/services/dialog.service';
+
+@Pipe({
+  name: 'getValidDropLists',
+  standalone: true
+})
+export class GetValidDropListsPipe implements PipeTransform {
+  constructor(private unitService: UnitService) {}
+
+  transform(idList: string[] | undefined): string[] {
+    if (!idList) return [];
+    return this.unitService.getAllDropListElementIDs()
+      .filter(dropListID => !idList.includes(dropListID));
+  }
+}
 
 @Component({
   selector: 'aspect-drop-list-properties',
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    OptionListPanelComponent,
+    FormsModule,
+    MatButtonModule,
+    NgForOf,
+    MatTooltipModule,
+    GetValidDropListsPipe
+  ],
   template: `
     <div *ngIf="combinedProperties.type === 'drop-list'"
          class="fx-column-start-stretch">
@@ -123,18 +157,14 @@ export class DropListPropertiesComponent {
     value: string | number | boolean | string[] | DragNDropValueObject[],
     isInputValid?: boolean | null
   }>();
+
   @ViewChild('selectConnectedLists') selectConnected!: MatSelect;
 
   constructor(public unitService: UnitService,
-              private selectionService: SelectionService,
               private dialogService: DialogService,
               private idManager: IDService,
               private messageService: MessageService,
               private translateService: TranslateService) { }
-
-  notifyListChange(changedList: DragNDropValueObject[]): void {
-    this.updateModel.emit({ property: 'value', value: changedList });
-  }
 
   updateAllowReplacement(value: boolean) {
     if (value) this.updateOnlyOneItem(true);
@@ -202,18 +232,5 @@ export class DropListPropertiesComponent {
 
   toggleSelectAll() {
     this.selectConnected.options.forEach((item: MatOption) => item.select());
-  }
-}
-
-@Pipe({
-  name: 'getValidDropLists'
-})
-export class GetValidDropListsPipe implements PipeTransform {
-  constructor(private unitService: UnitService) {}
-
-  transform(idList: string[] | undefined): string[] {
-    if (!idList) return [];
-    return this.unitService.getAllDropListElementIDs()
-      .filter(dropListID => !idList.includes(dropListID));
   }
 }

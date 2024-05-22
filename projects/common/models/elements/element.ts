@@ -196,6 +196,14 @@ export abstract class InputElement extends UIElement implements InputElementProp
   }
 }
 
+export function isInputElement(el: UIElement): el is InputElement {
+  return el.label !== undefined &&
+    el.value !== undefined &&
+    el.required !== undefined &&
+    el.requiredWarnMessage !== undefined &&
+    el.readOnly !== undefined;
+}
+
 export interface KeyInputElementProperties {
   inputAssistancePreset: InputAssistancePreset;
   inputAssistancePosition: 'floating' | 'right';

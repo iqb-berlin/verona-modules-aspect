@@ -14,10 +14,11 @@ import { OptionElement } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-options-field-set',
   template: `
-    <!--dropdown-->
+    <!--dropdown, radio-button-group-->
 <!--                              [useRichText]="combinedProperties.type === 'radio'"-->
     <aspect-option-list-panel *ngIf="combinedProperties.options !== undefined"
-                              [title]="'propertiesPanel.options'" [textFieldLabel]="'Neue Option'"
+                              [title]="'propertiesPanel.options'"
+                              [textFieldLabel]="'Neue Option'"
                               [itemList]="$any(combinedProperties.options)"
                               (addItem)="addOption('options', $event)"
                               (removeItem)="removeOption('options', $event)"
@@ -30,9 +31,7 @@ import { OptionElement } from 'common/models/elements/element';
                               [itemList]="$any(combinedProperties).rows | LikertRowLabel"
                               [title]="'rows'"
                               [textFieldLabel]="'Neue Zeile'"
-
                               (changedItemOrder)="moveLikertRow($event)"
-
                               (addItem)="addLikertRow($event)"
                               (removeItem)="removeLikertRow($event)"
                               (editItem)="editLikertRow($event)">

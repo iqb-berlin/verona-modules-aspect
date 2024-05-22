@@ -3,13 +3,33 @@ import {
 } from '@angular/core';
 import { FileService } from 'common/services/file.service';
 import { UIElement } from 'common/models/elements/element';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'aspect-button-properties',
+  standalone: true,
+  imports: [
+    NgIf,
+    NgForOf,
+    TranslateModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    FormsModule
+  ],
   template: `
     <ng-container *ngIf="combinedProperties.asLink !== undefined">
       <fieldset>
-      <legend>{{'propertiesPanel.presentation' | translate}}</legend>
+        <legend>{{ 'propertiesPanel.presentation' | translate }}</legend>
         <div class="fx-column-start-stretch fx-gap-20">
 
           <div class="fx-row-space-between-stretch">
@@ -17,11 +37,13 @@ import { UIElement } from 'common/models/elements/element';
                     class="fx-fill"
                     [class.checked]="!combinedProperties.imageSrc && !combinedProperties.asLink"
                     (click)="removeImage(); updateModel.emit({ property: 'asLink', value: false });">
-              {{'propertiesPanel.button' | translate}}</button>
+              {{ 'propertiesPanel.button' | translate }}
+            </button>
             <button mat-button class="fx-fill"
                     [class.checked]="!!combinedProperties.imageSrc && !combinedProperties.asLink"
                     (click)="imageUpload.click(); updateModel.emit({ property: 'asLink', value: false });">
-              {{'propertiesPanel.image' | translate}}</button>
+              {{ 'propertiesPanel.image' | translate }}
+            </button>
             <input type="file" hidden accept="image/*"
                    #imageUpload id="button-image-upload"
                    (change)="loadImage($event)">
@@ -29,7 +51,8 @@ import { UIElement } from 'common/models/elements/element';
                     class="fx-fill"
                     [class.checked]="!combinedProperties.imageSrc && !!combinedProperties.asLink"
                     (click)="removeImage(); updateModel.emit({ property: 'asLink', value: true });">
-              {{'propertiesPanel.link' | translate}}</button>
+              {{ 'propertiesPanel.link' | translate }}
+            </button>
           </div>
 
           <div *ngIf="!!combinedProperties.imageSrc">
@@ -37,12 +60,12 @@ import { UIElement } from 'common/models/elements/element';
               <button mat-raised-button
                       [disabled]="combinedProperties.asLink"
                       (click)="imageUpload.click();">
-                {{'updateImage' | translate }}
+                {{ 'updateImage' | translate }}
               </button>
               <button mat-raised-button
                       class="fx-fill"
                       (click)="removeImage()">
-                {{'removeImage' | translate }}
+                {{ 'removeImage' | translate }}
               </button>
             </div>
             <img class="image-preview"
@@ -54,28 +77,28 @@ import { UIElement } from 'common/models/elements/element';
                           [disabled]="combinedProperties.labelAlignment === 'sub'"
                           (change)="updateModel.emit({ property: 'labelAlignment',
                                                        value: $event.checked ? 'super' : 'baseline' })">
-              {{'propertiesPanel.super' | translate }}
+              {{ 'propertiesPanel.super' | translate }}
             </mat-checkbox>
             <mat-checkbox [checked]="combinedProperties.labelAlignment === 'sub'"
                           [disabled]="combinedProperties.labelAlignment === 'super'"
                           (change)="updateModel.emit({ property: 'labelAlignment',
                                                        value: $event.checked ? 'sub' : 'baseline' })">
-              {{'propertiesPanel.sub' | translate }}
+              {{ 'propertiesPanel.sub' | translate }}
             </mat-checkbox>
           </div>
         </div>
       </fieldset>
       <fieldset>
-        <legend>{{'propertiesPanel.tooltip' | translate}}</legend>
+        <legend>{{ 'propertiesPanel.tooltip' | translate }}</legend>
         <div class="fx-column-start-stretch">
           <mat-form-field *ngIf="combinedProperties.tooltipText !== undefined">
-            <mat-label>{{'propertiesPanel.tooltipText' | translate}}</mat-label>
+            <mat-label>{{ 'propertiesPanel.tooltipText' | translate }}</mat-label>
             <input matInput
                    [ngModel]="combinedProperties.tooltipText"
                    (ngModelChange)="updateModel.emit({ property: 'tooltipText', value: $event })">
           </mat-form-field>
           <mat-form-field *ngIf="combinedProperties.tooltipPosition !== undefined" appearance="fill">
-            <mat-label>{{'propertiesPanel.tooltipPosition' | translate }}</mat-label>
+            <mat-label>{{ 'propertiesPanel.tooltipPosition' | translate }}</mat-label>
             <mat-select [value]="combinedProperties.tooltipPosition"
                         (selectionChange)="updateModel.emit({ property: 'tooltipPosition', value: $event.value })">
               <mat-option *ngFor="let option of ['left', 'right', 'above', 'below']"
@@ -92,7 +115,8 @@ import { UIElement } from 'common/models/elements/element';
     .checked {
       background-color: #ccc;
     }
-    .image-preview  {
+
+    .image-preview {
       max-width: 100%;
       max-height: 100%;
     }
@@ -100,10 +124,12 @@ import { UIElement } from 'common/models/elements/element';
     .fx-fill {
       flex: 1 1 0;
     }
+
     .fx-gap-20 {
       gap: 20px;
     }
-    .fx-row-space-between-stretch{
+
+    .fx-row-space-between-stretch {
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
@@ -116,7 +142,8 @@ import { UIElement } from 'common/models/elements/element';
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      align-items: stretch;}
+      align-items: stretch;
+    }
   `]
 })
 export class ButtonPropertiesComponent {

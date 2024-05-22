@@ -3,25 +3,54 @@ import {
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { moveItemInArray } from '@angular/cdk/drag-drop';
-
+import { CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'aspect-hotspot-field-set',
+  selector: 'aspect-hotspot-props',
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    CdkDrag,
+    CdkDropList,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatIconModule,
+    NgForOf
+  ],
   template: `
-    <aspect-hotspot-list-panel *ngIf="combinedProperties.value !== undefined"
-                               [itemList]="$any(combinedProperties.value)"
-                               [title]="'propertiesPanel.hotspots' | translate"
-                               [textFieldLabel]="'propertiesPanel.newHotspot' | translate"
-                               (changedItemOrder)="moveHotspot($event)"
-                               (addItem)="addHotspot()"
-                               (removeItem)="removeHotspot($event)"
-                               (editItem)="editHotspot($event)">
-    </aspect-hotspot-list-panel>
+    <fieldset class="fx-column-start-stretch">
+      <legend>{{'propertiesPanel.hotspots' | translate }}</legend>
+      <button class="fx-align-self-center" mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"
+              (click)="addHotspot()">
+        <mat-icon>add</mat-icon>
+      </button>
+
+      <div class="drop-list" cdkDropList [cdkDropListData]="combinedProperties.value"
+           (cdkDropListDropped)="moveHotspot($event)">
+        <div *ngFor="let item of $any(combinedProperties.value); let i = index" cdkDrag
+             class="option-draggable fx-row-start-stretch">
+          <div class="fx-flex fx-align-self-center">{{'hotspot.'+item.shape | translate}}</div>
+          <button mat-icon-button color="primary"
+                  (click)="editHotspot(i)">
+            <mat-icon>build</mat-icon>
+          </button>
+          <button mat-icon-button color="primary"
+                  (click)="removeHotspot(i)">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
+      </div>
+    </fieldset>
   `
 })
-export class HotspotFieldSetComponent {
+export class HotspotPropsComponent {
   @Input() combinedProperties!: CombinedProperties;
   @Output() updateModel = new EventEmitter<{ property: string; value: Hotspot[] }>();
 

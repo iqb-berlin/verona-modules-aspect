@@ -1,9 +1,12 @@
+// eslint-disable-next-line max-classes-per-file
 import {
   Component, ComponentRef, EventEmitter,
-  Input, OnDestroy, OnInit, Output
+  Input, OnDestroy, OnInit, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { InputElementValue, UIElement } from 'common/models/elements/element';
+import {
+  InputElement, InputElementValue, isInputElement, UIElement, UIElementValue
+} from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { FileService } from 'common/services/file.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
@@ -24,44 +27,21 @@ import { DialogService } from '../../../services/dialog.service';
   templateUrl: './element-model-properties.component.html',
   styleUrls: ['./element-model-properties.component.css']
 })
-export class ElementModelPropertiesComponent implements OnInit, OnDestroy {
+export class ElementModelPropertiesComponent implements OnDestroy {
   @Input() combinedProperties!: CombinedProperties;
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
-    value: InputElementValue | TextImageLabel[] | LikertRowElement[] | TextLabel[] | Hotspot[] | StateVariable
+    // value: InputElementValue | TextImageLabel[] | LikertRowElement[] | TextLabel[] | Hotspot[] | StateVariable
+    value: UIElementValue
     isInputValid?: boolean | null
   }>();
 
-  geometryObjects: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
               public selectionService: SelectionService,
               public dialogService: DialogService) { }
-
-  ngOnInit(): void {
-    this.initGeometryListener();
-  }
-
-  initGeometryListener(): void {
-    this.selectionService.selectedElements.pipe(
-      switchMap((selectedElements: UIElement[]) => {
-        if (selectedElements.length !== 1 ||
-          selectedElements[0].type !== 'geometry') {
-          return of(false);
-        }
-        return (this.selectionService.selectedElementComponents[0].childComponent as ComponentRef<GeometryComponent>)
-          .instance.isLoaded.asObservable();
-      }))
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((isLoaded: boolean) => {
-        if (!isLoaded) return;
-        this.geometryObjects.next(
-          (this.selectionService.selectedElementComponents[0].childComponent as ComponentRef<GeometryComponent>)
-            .instance.getGeometryObjects());
-      });
-  }
 
   addListValue(property: string, value: string): void {
     this.updateModel.emit({
@@ -104,20 +84,18 @@ export class ElementModelPropertiesComponent implements OnInit, OnDestroy {
     this.updateModel.emit({ property: 'src', value: mediaSrc });
   }
 
-  async showGeogebraAppDefDialog() {
-    const appDefinition = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
-    if (appDefinition) this.updateModel.emit({ property: 'appDefinition', value: appDefinition });
-  }
-
-  setGeometryVariables(variables: string[]) {
-    this.updateModel.emit({
-      property: 'trackedVariables',
-      value: variables
-    });
-  }
-
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+}
+
+@Pipe({
+  name: 'isInputElement',
+  standalone: true
+})
+export class IsInputElementPipe implements PipeTransform {
+  transform(el: UIElement): el is InputElement {
+    return isInputElement(el);
   }
 }

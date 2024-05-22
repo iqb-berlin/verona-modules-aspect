@@ -7,7 +7,8 @@
     <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
   </mat-form-field>
 
-  <aspect-input-element-properties [combinedProperties]="combinedProperties"
+  <aspect-input-element-properties *ngIf="combinedProperties | isInputElement"
+                                   [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">
   </aspect-input-element-properties>
 
@@ -15,14 +16,14 @@
                                   (updateModel)="updateModel.emit($event)">
   </aspect-preset-value-properties>
 
-  <mat-form-field *ngIf="combinedProperties.label !== undefined && combinedProperties.required === undefined"
+  <!-- non-InputElement elements that have labels, i.e. Likert, Button-->
+  <mat-form-field *ngIf="combinedProperties.label !== undefined && !(combinedProperties | isInputElement)"
                   appearance="fill">
     <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
     <textarea matInput type="text"
               [value]="$any(combinedProperties.label)"
               (input)="updateModel.emit({property: 'label', value: $any($event.target).value })">
     </textarea>
-
   </mat-form-field>
 
   <mat-form-field *ngIf="combinedProperties.label2 !== undefined" appearance="fill">
@@ -37,27 +38,23 @@
                             (updateModel)="updateModel.emit($event)">
   </aspect-options-field-set>
 
-  <aspect-hotspot-field-set *ngIf="combinedProperties.type === 'hotspot-image'"
-                            [combinedProperties]="combinedProperties"
-                            (updateModel)="updateModel.emit($event)">
-  </aspect-hotspot-field-set>
-
-  <aspect-border-properties [combinedProperties]="combinedProperties"
-                            (updateModel)="updateModel.emit($event)"></aspect-border-properties>
-
-  <button *ngIf="combinedProperties.document"
-          class="fx-align-self-center"
-          mat-raised-button
-          (click)="unitService.showDefaultEditDialog(selectedElements[0])">
-    Text und Elemente editieren
-  </button>
-
   <button *ngIf="combinedProperties.src"
           class="media-src-button fx-align-self-center"
           mat-fab color="primary"
           [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
           (click)="changeMediaSrc(combinedProperties.type)">
     <mat-icon>upload_file</mat-icon>
+  </button>
+
+  <aspect-ele-specific-props [combinedProperties]="combinedProperties"
+                             (updateModel)="updateModel.emit($event)">
+  </aspect-ele-specific-props>
+
+  <button *ngIf="combinedProperties.document"
+          class="fx-align-self-center"
+          mat-raised-button
+          (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+    Text und Elemente editieren
   </button>
 
   <mat-form-field *ngIf="combinedProperties.alt !== undefined">
@@ -72,10 +69,6 @@
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">
     Medienoptionen anpassen
   </button>
-
-  <aspect-text-properties-field-set [combinedProperties]="combinedProperties"
-                                    (updateModel)="updateModel.emit($event)">
-  </aspect-text-properties-field-set>
 
   <mat-form-field *ngIf="combinedProperties.alignment" appearance="fill">
     <mat-label>{{'propertiesPanel.alignment' | translate }}</mat-label>
@@ -105,7 +98,6 @@
     {{'propertiesPanel.hasAutoHeight' | translate }}
   </mat-checkbox>
 
-
   <mat-checkbox *ngIf="combinedProperties.hasDynamicRowCount !== undefined"
                 [disabled]="$any(combinedProperties.hasAutoHeight)"
                 [checked]="$any(combinedProperties.hasDynamicRowCount)"
@@ -130,24 +122,12 @@
            (input)="updateModel.emit({ property: 'expectedCharactersCount', value: $any($event.target).value || 0 })">
   </mat-form-field>
 
-  <aspect-math-table-properties [combinedProperties]="combinedProperties"
-                                (updateModel)="updateModel.emit($event)">
-  </aspect-math-table-properties>
-
-  <aspect-button-properties [combinedProperties]="combinedProperties"
-                            (updateModel)="updateModel.emit($event)">
-  </aspect-button-properties>
-
   <aspect-action-properties *ngIf="combinedProperties.action !== undefined"
     [actions]="combinedProperties.type === 'button' ? ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange'] :
                                                       ['highlightText', 'stateVariableChange']"
     [combinedProperties]="combinedProperties"
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>
-
-  <aspect-slider-properties [combinedProperties]="combinedProperties"
-                            (updateModel)="updateModel.emit($event)">
-  </aspect-slider-properties>
 
   <ng-container *ngIf="combinedProperties.type === 'checkbox'">
     {{'preset' | translate }}
@@ -206,84 +186,7 @@
     {{'propertiesPanel.verticalOrientation' | translate }}
   </mat-checkbox>
 
-  <aspect-drop-list-properties [combinedProperties]="combinedProperties"
-                               (updateModel)="updateModel.emit($event)">
-  </aspect-drop-list-properties>
-
-  <mat-form-field *ngIf="combinedProperties.appDefinition != null"
-                  matTooltip="{{'propertiesPanel.appDefinition' | translate }}"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.appDefinition' | translate }}</mat-label>
-    <input matInput disabled
-           [value]="$any(combinedProperties.appDefinition)"
-           (input)="updateModel.emit({ property: 'appDefinition', value: $any($event.target).value })">
-    <button mat-icon-button matSuffix (click)="showGeogebraAppDefDialog()">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </mat-form-field>
-
-  <mat-checkbox *ngIf="combinedProperties.showResetIcon !== undefined"
-                [checked]="$any(combinedProperties.showResetIcon)"
-                (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">
-    {{'propertiesPanel.showResetIcon' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.enableUndoRedo !== undefined"
-                [checked]="$any(combinedProperties.enableUndoRedo)"
-                (change)="updateModel.emit({ property: 'enableUndoRedo', value: $event.checked })">
-    {{'propertiesPanel.enableUndoRedo' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.enableShiftDragZoom !== undefined"
-                [checked]="$any(combinedProperties.enableShiftDragZoom)"
-                (change)="updateModel.emit({ property: 'enableShiftDragZoom', value: $event.checked })">
-    {{'propertiesPanel.enableShiftDragZoom' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.showZoomButtons !== undefined"
-                [checked]="$any(combinedProperties.showZoomButtons)"
-                (change)="updateModel.emit({ property: 'showZoomButtons', value: $event.checked })">
-    {{'propertiesPanel.showZoomButtons' | translate }}
-  </mat-checkbox>
-  <mat-checkbox *ngIf="combinedProperties.showFullscreenButton !== undefined"
-                [checked]="$any(combinedProperties.showFullscreenButton)"
-                (change)="updateModel.emit({ property: 'showFullscreenButton', value: $event.checked })">
-    {{'propertiesPanel.showFullscreenButton' | translate }}
-  </mat-checkbox>
-
-  <mat-checkbox *ngIf="combinedProperties.showToolbar !== undefined"
-                [checked]="$any(combinedProperties.showToolbar)"
-                (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
-    {{'propertiesPanel.showToolbar' | translate }}
-  </mat-checkbox>
-  <mat-form-field *ngIf="combinedProperties.customToolbar != null"
-                  matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
-                  appearance="fill">
-    <mat-label>{{'propertiesPanel.customToolbar' | translate }}</mat-label>
-    <input matInput [disabled]="!combinedProperties.showToolbar"
-           [value]="$any(combinedProperties.customToolbar)"
-           (input)="updateModel.emit({ property: 'customToolbar', value: $any($event.target).value })">
-  </mat-form-field>
-
-  <mat-form-field *ngIf="combinedProperties.trackedVariables !== undefined"
-                  class="wide-form-field" appearance="fill">
-    <mat-label>{{'propertiesPanel.trackedVariables' | translate }}</mat-label>
-    <mat-select multiple [ngModel]="combinedProperties.trackedVariables"
-                (ngModelChange)="setGeometryVariables($event)">
-      <mat-select-trigger>
-        {{'propertiesPanel.trackedVariables' | translate }} ({{$any(combinedProperties.trackedVariables).length}})
-      </mat-select-trigger>
-      <mat-option *ngFor="let variable of geometryObjects | async" [value]="variable">
-        {{variable}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-checkbox *ngIf="combinedProperties.enableModeSwitch !== undefined"
-                [checked]="$any(combinedProperties.enableModeSwitch)"
-                (change)="updateModel.emit({ property: 'enableModeSwitch', value: $event.checked })">
-    {{'propertiesPanel.enableModeSwitch' | translate }}
-  </mat-checkbox>
-
-  <mat-checkbox *ngIf="combinedProperties.isRelevantForPresentationComplete !== undefined"
-                [style.margin-top.px]="20"
+  <mat-checkbox [style.margin-top.px]="20"
                 [checked]="$any(combinedProperties.isRelevantForPresentationComplete)"
                 (change)="updateModel
                 .emit({ property: 'isRelevantForPresentationComplete', value: $event.checked })">

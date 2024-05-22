@@ -18,12 +18,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { APIService, SharedModule } from 'common/shared.module';
 import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/section-insert-dialog.component';
-import { HotspotListPanelComponent } from 'editor/src/app/components/properties-panel/hotspot-list-panel.component';
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { MatRadioModule } from '@angular/material/radio';
-import {
-  HotspotFieldSetComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/hotspot-field-set.component';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
 import { MathEditorModule } from 'common/math-editor.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
@@ -36,6 +32,12 @@ import {
 import {
   ShowStateVariablesButtonComponent
 } from 'editor/src/app/components/new-ui-element-panel/show-state-variables-button.component';
+import {
+  TextFieldElementPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
+import {
+  ScaleAndZoomPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
 import {
   StateVariableEditorComponent
 } from 'editor/src/app/components/dialogs/state-variables-dialog/state-variable-editor.component';
@@ -94,25 +96,13 @@ import { ElementPositionPropertiesComponent } from
   './components/properties-panel/position-properties-tab/element-position-properties.component';
 import { ElementStylePropertiesComponent } from
   './components/properties-panel/style-properties-tab/element-style-properties.component';
-import { ElementModelPropertiesComponent } from
+import { ElementModelPropertiesComponent, IsInputElementPipe } from
   './components/properties-panel/model-properties-tab/element-model-properties.component';
 import { DynamicSectionHelperGridComponent } from './components/canvas/dynamic-section-helper-grid.component';
 import { ElementGridChangeListenerDirective } from './components/canvas/element-grid-change-listener.directive';
 
 import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
-import { TextPropertiesFieldSetComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/text-properties-field-set.component';
-import { ButtonPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/button-properties.component';
-import { SliderPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/slider-properties.component';
-import { TextFieldElementPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
-import { ScaleAndZoomPropertiesComponent } from
-  './components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
-import { DropListPropertiesComponent, GetValidDropListsPipe } from
-  './components/properties-panel/model-properties-tab/input-groups/drop-list-properties.component';
 import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
 import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
 import { SelectPropertiesComponent } from
@@ -121,21 +111,18 @@ import { InputElementPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/input-element-properties.component';
 import { PresetValuePropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/preset-value-properties.component';
-import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
 import { LikertRowLabelPipe } from './components/properties-panel/likert-row-label.pipe';
 import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
-import {
-  BorderPropertiesComponent
-} from './components/properties-panel/model-properties-tab/input-groups/border-properties.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
 import { ComboButtonComponent } from './components/util/combo-button.component';
 import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
 import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
 import { CheckboxNodeviewComponent } from './text-editor/angular-node-views/checkbox-nodeview.component';
+import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
 import {
-  MathTablePropertiesComponent
-} from './components/properties-panel/model-properties-tab/input-groups/math-table-properties.component';
+  EleSpecificPropsComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
 
 @NgModule({
   declarations: [
@@ -172,27 +159,18 @@ import {
     DynamicSectionHelperGridComponent,
     ElementGridChangeListenerDirective,
     OptionsFieldSetComponent,
-    TextPropertiesFieldSetComponent,
-    ButtonPropertiesComponent,
     ActionPropertiesComponent,
-    SliderPropertiesComponent,
     TextFieldElementPropertiesComponent,
     ScaleAndZoomPropertiesComponent,
-    DropListPropertiesComponent,
     RichTextEditorSimpleComponent,
     RichTextSimpleEditDialogComponent,
     SectionInsertDialogComponent,
     SelectPropertiesComponent,
     InputElementPropertiesComponent,
     PresetValuePropertiesComponent,
-    OptionListPanelComponent,
-    HotspotFieldSetComponent,
-    HotspotListPanelComponent,
     LikertRowLabelPipe,
     LabelEditDialogComponent,
-    BorderPropertiesComponent,
     GeogebraAppDefinitionDialogComponent,
-    GetValidDropListsPipe,
     GetAnchorIdsPipe,
     GetStateVariablePipe,
     ScrollPageIndexPipe,
@@ -209,7 +187,6 @@ import {
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoIDsPipe,
-    MathTablePropertiesComponent,
     InputAssistancePropertiesComponent
   ],
   imports: [
@@ -240,7 +217,10 @@ import {
     MathEditorModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
-    MatBadgeModule
+    MatBadgeModule,
+    IsInputElementPipe,
+    OptionListPanelComponent,
+    EleSpecificPropsComponent
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService }

@@ -8,24 +8,43 @@ import {
   ViewChildren
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'aspect-math-table-properties',
+  standalone: true,
+  imports: [
+    NgIf,
+    NgForOf,
+    MatInputModule,
+    MatSelectModule,
+    TranslateModule,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatCheckboxModule
+  ],
   template: `
-    <div *ngIf="combinedProperties.terms !== undefined"
-         [style.display]="'flex'" [style.flex-direction]="'column'">
+    <div [style.display]="'flex'" [style.flex-direction]="'column'">
       <mat-form-field>
         <mat-label>Operation</mat-label>
         <mat-select [value]="combinedProperties.operation"
                     (selectionChange)="updateModel.emit({ property: 'operation', value: $event.value })">
           <mat-option *ngFor="let operation of ['addition', 'subtraction', 'multiplication', 'variable']"
                       [value]="operation">
-            {{operation | translate}}
+            {{ operation | translate }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      {{'termRows' | translate}}
+      {{ 'termRows' | translate }}
       <div *ngFor="let term of $any(combinedProperties).terms; let i = index;"
            class="term-list">
         <ng-container *ngIf="combinedProperties.operation !== 'multiplication' || i < 2">
@@ -45,18 +64,19 @@ import { UIElement } from 'common/models/elements/element';
               [disabled]="combinedProperties.operation === 'multiplication' &&
                           $any(combinedProperties.terms).length >= 2"
               (click)="addTerm()">
-        <mat-icon>add</mat-icon>{{'addTermRow' | translate}}
+        <mat-icon>add</mat-icon>
+        {{ 'addTermRow' | translate }}
       </button>
 
       <mat-form-field (input)="updateModel.emit({ property: 'resultHelperRow', value: $any($event.target).value })">
-        <mat-label>{{'resultHelperRow' | translate}}</mat-label>
+        <mat-label>{{ 'resultHelperRow' | translate }}</mat-label>
         <input matInput [disabled]="combinedProperties.operation === 'variable' &&
                                     !$any(combinedProperties.variableLayoutOptions).showResultRow"
                [value]="combinedProperties.resultHelperRow">
       </mat-form-field>
 
       <mat-form-field (input)="updateModel.emit({ property: 'result', value: $any($event.target).value })">
-        <mat-label>{{'resultRow' | translate}}</mat-label>
+        <mat-label>{{ 'resultRow' | translate }}</mat-label>
         <input matInput [disabled]="combinedProperties.operation === 'variable' &&
                                     !$any(combinedProperties.variableLayoutOptions).showResultRow"
                [value]="combinedProperties.result">
@@ -72,27 +92,27 @@ import { UIElement } from 'common/models/elements/element';
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).allowArithmeticChars"
                       (click)="$event.stopPropagation()"
                       (change)="updateModel.emit({ property: 'allowArithmeticChars', value: $event.checked })">
-          {{'propertiesPanel.allowArithmeticChars' | translate }}
+          {{ 'propertiesPanel.allowArithmeticChars' | translate }}
         </mat-checkbox>
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).isFirstLineUnderlined"
                       (click)="$event.stopPropagation()"
                       (change)="updateModel.emit({ property: 'isFirstLineUnderlined', value: $event.checked })">
-          {{'propertiesPanel.isFirstLineUnderlined' | translate }}
+          {{ 'propertiesPanel.isFirstLineUnderlined' | translate }}
         </mat-checkbox>
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showResultRow"
                       (click)="$event.stopPropagation()"
                       (change)="updateModel.emit({ property: 'showResultRow', value: $event.checked })">
-          {{'propertiesPanel.showResultRowWithHelperRow' | translate }}
+          {{ 'propertiesPanel.showResultRowWithHelperRow' | translate }}
         </mat-checkbox>
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).showTopHelperRows"
                       (click)="$event.stopPropagation()"
                       (change)="updateModel.emit({ property: 'showTopHelperRows', value: $event.checked })">
-          {{'propertiesPanel.showTopHelperRows' | translate }}
+          {{ 'propertiesPanel.showTopHelperRows' | translate }}
         </mat-checkbox>
         <mat-checkbox [checked]="$any(combinedProperties.variableLayoutOptions).allowFirstLineCrossOut"
                       (click)="$event.stopPropagation()"
                       (change)="updateModel.emit({ property: 'allowFirstLineCrossOut', value: $event.checked })">
-          {{'propertiesPanel.allowFirstLineCrossOut' | translate }}
+          {{ 'propertiesPanel.allowFirstLineCrossOut' | translate }}
         </mat-checkbox>
       </mat-menu>
     </div>
@@ -103,6 +123,7 @@ import { UIElement } from 'common/models/elements/element';
       flex-direction: row;
       margin-left: 15px;
     }
+
     .add-button {
       width: 60%;
       border-radius: 0;

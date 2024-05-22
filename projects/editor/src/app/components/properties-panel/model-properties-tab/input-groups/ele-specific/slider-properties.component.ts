@@ -1,9 +1,22 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
   selector: 'aspect-slider-properties',
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    MatInputModule,
+    FormsModule,
+    MatCheckboxModule
+  ],
   template: `
     <mat-form-field *ngIf="combinedProperties.minValue !== undefined" appearance="fill">
       <mat-label>{{'propertiesPanel.minValue' | translate }}</mat-label>

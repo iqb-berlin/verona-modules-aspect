@@ -6,10 +6,10 @@ import { UIElement } from 'common/models/elements/element';
 @Component({
   selector: 'aspect-input-element-properties',
   template: `
-    <fieldset *ngIf="combinedProperties.required !== undefined" class="fx-column-start-stretch">
+    <fieldset class="fx-column-start-stretch">
       <legend>Eingabeelement</legend>
-      <mat-form-field *ngIf="combinedProperties.label !== undefined &&
-                             combinedProperties.type !== 'drop-list'"
+      <!-- DropList label is unused -->
+      <mat-form-field *ngIf="combinedProperties.type !== 'drop-list'"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
         <textarea matInput type="text"
@@ -18,14 +18,12 @@ import { UIElement } from 'common/models/elements/element';
             </textarea>
       </mat-form-field>
 
-      <mat-checkbox *ngIf="combinedProperties.readOnly !== undefined"
-                    [checked]="$any(combinedProperties.readOnly)"
+      <mat-checkbox [checked]="$any(combinedProperties.readOnly)"
                     (change)="updateModel.emit({ property: 'readOnly', value: $event.checked })">
         {{'propertiesPanel.readOnly' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.required !== undefined"
-                    [checked]="$any(combinedProperties.required)"
+      <mat-checkbox [checked]="$any(combinedProperties.required)"
                     (change)="updateModel.emit({ property: 'required', value: $event.checked })">
         {{'propertiesPanel.requiredField' | translate }}
       </mat-checkbox>

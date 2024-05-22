@@ -1,12 +1,23 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedModule } from 'common/shared.module';
 import { TextElement } from 'common/models/elements/text/text';
-import { DialogService } from '../../../../services/dialog.service';
-import { SelectionService } from '../../../../services/selection.service';
+import { DialogService } from '../../../../../services/dialog.service';
+import { SelectionService } from '../../../../../services/selection.service';
 
 @Component({
-  selector: 'aspect-text-properties-field-set',
+  selector: 'aspect-text-props',
+  standalone: true,
+  imports: [
+    NgIf,
+    SharedModule,
+    MatInputModule,
+    MatCheckboxModule
+  ],
   template: `
     <div *ngIf="combinedProperties.text" class="fx-column-start-stretch">
       Text
@@ -63,16 +74,9 @@ import { SelectionService } from '../../../../services/selection.service';
       max-height: 200px;
       overflow: scroll;
     }
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
   `]
 })
-export class TextPropertiesFieldSetComponent {
+export class TextPropsComponent {
   @Input() combinedProperties!: any;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();

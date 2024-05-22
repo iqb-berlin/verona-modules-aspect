@@ -1,13 +1,28 @@
 import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
-
-
+import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { Label } from 'common/models/elements/label-interfaces';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from 'common/shared.module';
+import { MatIconModule } from '@angular/material/icon';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'aspect-option-list-panel',
+  standalone: true,
+  imports: [
+    NgIf,
+    NgForOf,
+    TranslateModule,
+    MatInputModule,
+    MatIconModule,
+    CdkDropList,
+    MatButtonModule,
+    SharedModule // TODO make pipe standalone and remove
+  ],
   template: `
     <fieldset class="fx-column-start-stretch">
       <legend>{{title | translate }}</legend>

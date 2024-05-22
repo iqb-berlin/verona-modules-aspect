@@ -235,7 +235,7 @@
     "enableShiftDragZoom": "Bewegen und Zoom erlauben",
     "customToolbar": "Anpassung Werkzeugleiste",
     "customToolbarHelp": "Hier kann definiert werden, welche Elemente auf der Werkzeigleiste angezeigt werden sollen. Für Details bitte die Dokumentation konsultieren.",
-    "hotspots": "Aktive Bereiche",
+    "hotspots": "Bereiche",
     "newHotspot": "Neuer Bereich",
     "hasDynamicRowCount": "Dynamische Zeilen",
     "expectedCharactersCount": "Erwartete Zeichenanzahl",

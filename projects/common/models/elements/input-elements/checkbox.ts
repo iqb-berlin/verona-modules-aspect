@@ -13,6 +13,7 @@ import { InstantiationEror } from 'common/util/errors';
 
 export class CheckboxElement extends InputElement implements CheckboxProperties {
   type: UIElementType = 'checkbox';
+  value: boolean = false;
   crossOutChecked: boolean = false;
   styling: BasicStyles;
 

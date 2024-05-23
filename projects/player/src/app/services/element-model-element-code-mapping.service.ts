@@ -70,9 +70,11 @@ export class ElementModelElementCodeMappingService {
         return elementCodeValue !== undefined && elementCodeValue !== null ?
           elementCodeValue as number - 1 : (elementModel as InputElement).value;
       case 'geometry':
-        return elementCodeValue !== undefined ? elementCodeValue : (elementModel as GeometryElement).appDefinition;
+        return elementCodeValue !== undefined ?
+          elementCodeValue as string : (elementModel as GeometryElement).appDefinition;
       default:
-        return elementCodeValue !== undefined ? elementCodeValue : (elementModel as InputElement).value;
+        return elementCodeValue !== undefined ?
+          elementCodeValue as InputElementValue : (elementModel as InputElement).value;
     }
   }
 

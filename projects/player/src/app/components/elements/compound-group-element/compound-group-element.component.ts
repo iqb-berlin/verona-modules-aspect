@@ -9,9 +9,7 @@ import {
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import {
-  CompoundElement, InputElement, InputElementValue
-} from 'common/models/elements/element';
+import { CompoundElement, InputElement } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
@@ -20,6 +18,7 @@ import { UnitNavParam } from 'common/models/elements/button/button';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { Subscription } from 'rxjs';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
+import { ResponseValueType } from '@iqb/responses';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -75,7 +74,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   registerCompoundChildren(children: ElementComponent[]): void {
     children.forEach(child => {
       const childModel = child.elementModel as InputElement;
-      const initialValue: InputElementValue = childModel.type === 'button' ?
+      const initialValue: ResponseValueType = childModel.type === 'button' ?
         null :
         ElementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type);
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);

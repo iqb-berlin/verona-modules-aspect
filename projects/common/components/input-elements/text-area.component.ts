@@ -38,7 +38,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
                 [expectedCharactersCount]="elementModel.expectedCharactersCount"
                 [fontSize]="elementModel.styling.fontSize"
                 (dynamicRowsChange)="dynamicRows = $event"
-                [rows]="elementModel.hasDynamicRowCount && dynamicRows ? dynamicRows : elementModel.rows"
+                [rows]="elementModel.hasDynamicRowCount && dynamicRows ? dynamicRows : elementModel.rowCount"
                 [attr.inputmode]="elementModel.showSoftwareKeyboard || elementModel.hideNativeKeyboard ? 'none' : 'text'"
                 [formControl]="elementFormControl"
                 [readonly]="elementModel.readOnly"

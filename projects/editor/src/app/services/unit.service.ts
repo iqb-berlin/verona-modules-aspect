@@ -209,6 +209,7 @@ export class UnitService {
       (newElementProperties as AudioProperties | VideoProperties | ImageProperties).src = mediaSrc;
     }
 
+    // Coordinates are given if an element is dragged directly into a cell
     if (coordinates) {
       newElementProperties.position = {
         ...(section.dynamicPositioning && { gridColumn: coordinates.x }),
@@ -217,6 +218,12 @@ export class UnitService {
         ...(!section.dynamicPositioning && { yPosition: coordinates.y })
       } as PositionProperties;
     }
+
+    // Use z-index -1 for frames
+    newElementProperties.position = {
+      zIndex: elementType === 'frame' ? -1 : 0,
+      ...newElementProperties.position
+    } as PositionProperties;
 
     section.addElement(ElementFactory.createElement({
       type: elementType,

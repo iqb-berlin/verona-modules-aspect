@@ -25,12 +25,14 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
          [gridRowSizes]="section.gridRowSizes"
          [section]="section"
          [sectionIndex]="sectionIndex"
+         [style.isolation]="'isolate'"
          (transferElement)="transferElement.emit($event)">
 
       <!-- Angular content projection is used in the helper grid component, where the following
            is the content.-->
       <aspect-dynamic-canvas-overlay *ngFor="let element of section.elements"
                                      #elementComponent
+                                     [style.z-index]="element.position.zIndex"
                                      [element]="$any(element)"
                                      [style.margin-left]="[element.position.marginLeft] | measure"
                                      [style.margin-right]="[element.position.marginRight] | measure"

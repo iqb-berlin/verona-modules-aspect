@@ -1,6 +1,6 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
-  Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
+  Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
 import { UIElement, UIElementType } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
@@ -29,9 +29,9 @@ import { UnitService } from '../../services/unit.service';
     <ng-content></ng-content>
   `,
   styles: [
-  '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center;}'
+    '.grid-placeholder {border: 5px solid aliceblue; color: lightblue; text-align: center; z-index: -100;}'
   ]
-  })
+})
 export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   @Input() autoColumnSize!: boolean;
   @Input() autoRowSize!: boolean;

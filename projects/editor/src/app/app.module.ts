@@ -123,6 +123,7 @@ import { OptionListPanelComponent } from 'editor/src/app/components/properties-p
 import {
   EleSpecificPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
+import { PageMenu } from 'editor/src/app/components/unit-view/page-menu.component';
 
 @NgModule({
   declarations: [
@@ -220,7 +221,8 @@ import {
     MatBadgeModule,
     IsInputElementPipe,
     OptionListPanelComponent,
-    EleSpecificPropsComponent
+    EleSpecificPropsComponent,
+    PageMenu
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService }

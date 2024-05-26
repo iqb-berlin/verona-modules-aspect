@@ -36,18 +36,6 @@
   height: 100%;
 }
 
-.menuItem {
-  padding: 0 16px;
-}
-
-mat-checkbox.menuItem {
-  padding: 0 16px 10px 16px;
-}
-
-mat-divider {
-  margin-bottom: 10px;
-}
-
 .menu-button {
   position: absolute;
   left: 100%;

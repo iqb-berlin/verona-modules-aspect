@@ -1,5 +1,9 @@
 html, body { height: 100%; }
 
+:root {
+  --warn: #f44336;
+}
+
 .mat-expansion-panel-content {font: unset !important;}
 
 input[type=color] {

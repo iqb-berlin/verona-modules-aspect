@@ -21,7 +21,10 @@
         <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
           <ng-template mat-tab-label>
             <ng-container *ngIf="page.alwaysVisible">
-              <mat-icon class="page-alwaysVisible-icon">assignment</mat-icon>
+              <mat-icon [matTooltip]="'Dauerhaft sichtbare Seite'"
+                        [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
+                sticky_note_2
+              </mat-icon>
             </ng-container>
             <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === false">
               {{'page' | translate }} {{i + 1}}
@@ -32,80 +35,12 @@
 
             <button *ngIf="selectionService.selectedPageIndex == i"
                     mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu"
-                    [matTooltip]="'Seiteneinstellungen'">
+                    [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #pageMenu="matMenu">
               <div (click)="$event.stopPropagation()">
-                <button *ngIf="!page.alwaysVisible"
-                        mat-menu-item (click)="movePage(page,'left')">
-                  <mat-icon>west</mat-icon>
-                  <span>{{'forward' | translate }}</span>
-                </button>
-                <button *ngIf="!page.alwaysVisible"
-                        mat-menu-item (click)="movePage(page, 'right')">
-                  <mat-icon>east</mat-icon>
-                  <span>{{'backward' | translate }}</span>
-                </button>
-                <button mat-menu-item (click)="deletePage()">
-                  <mat-icon>delete</mat-icon>
-                  <span>{{'delete' | translate }}</span>
-                </button>
-                <mat-divider></mat-divider>
-                <mat-checkbox class="menuItem" [checked]="page.hasMaxWidth"
-                              (click)="$event.stopPropagation()"
-                              (change)="updateModel(page, 'hasMaxWidth', $event.source.checked)">
-                  {{'pageProperties.maxWidth' | translate }}
-                </mat-checkbox>
-                <div *ngIf="page.hasMaxWidth" class="menuItem">
-                  {{'pageProperties.pageWidth' | translate}}: {{page.maxWidth + 2 * page.margin}}px
-                </div>
-                <mat-form-field *ngIf="page.hasMaxWidth" class="menuItem" appearance="fill">
-                  <mat-label>{{'pageProperties.sectionWidth' | translate }}</mat-label>
-                  <input matInput type="number" min="0" #maxWidth="ngModel"
-                         [ngModel]="page.maxWidth"
-                         (click)="$event.stopPropagation()"
-                         (ngModelChange)="updateModel(page,'maxWidth', $event || 0, maxWidth.valid)">
-                </mat-form-field>
-                <mat-form-field class="menuItem" appearance="fill">
-                  <mat-label>{{'pageProperties.marginWidth' | translate }}</mat-label>
-                  <input matInput type="number" min="0" #margin="ngModel"
-                         [ngModel]="page.margin"
-                         (click)="$event.stopPropagation()"
-                         (ngModelChange)="updateModel(page,'margin', $event || 0, margin.valid)">
-                </mat-form-field>
-                <mat-form-field class="menuItem" appearance="fill">
-                  <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
-                  <input matInput type="color" #backgroundColor="ngModel"
-                         [ngModel]="page.backgroundColor"
-                         (ngModelChange)="updateModel(page,'backgroundColor', $event, backgroundColor.valid)">
-                </mat-form-field>
-                <mat-checkbox class="menuItem"
-                              [disabled]="unitService.unit.pages.length < 2 || unitService.unit.pages[0].alwaysVisible && i != 0"
-                              [ngModel]="page.alwaysVisible"
-                              (click)="$event.stopPropagation()"
-                              (change)="updateModel(page, 'alwaysVisible', $event.source.checked)">
-                  {{'pageProperties.alwaysVisible' | translate }}
-                </mat-checkbox>
-                <mat-form-field *ngIf="page.alwaysVisible" class="menuItem" appearance="fill">
-                  <mat-label>{{'pageProperties.position' | translate }}</mat-label>
-                  <mat-select [value]="page.alwaysVisiblePagePosition"
-                              (click)="$event.stopPropagation()"
-                              (selectionChange)="updateModel(page, 'alwaysVisiblePagePosition', $event.value)">
-                    <mat-option *ngFor="let option of ['left', 'right', 'top', 'bottom']"
-                                [value]="option">
-                      {{option | translate}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field class="menuItem" appearance="fill"
-                                *ngIf="page.alwaysVisible">
-                  <mat-label>{{'pageProperties.alwaysVisibleAspectRatio' | translate }}</mat-label>
-                  <input matInput type="number" min="0" max="100"
-                         [ngModel]="page.alwaysVisibleAspectRatio"
-                         (click)="$event.stopPropagation()"
-                         (ngModelChange)="updateModel(page, 'alwaysVisibleAspectRatio', $event || 0)">
-                </mat-form-field>
+                <aspect-unit-view-page-menu [page]="page" [pageIndex]="i"></aspect-unit-view-page-menu>
               </div>
             </mat-menu>
           </ng-template>

@@ -64,14 +64,14 @@
   },
   "imagePosition": "Bildposition",
   "pageProperties": {
-    "maxWidth": "Maximalbreite",
+    "maxWidth": "Maximalbreite setzen",
     "sectionWidth": "Abschnittbreite",
     "pageWidth": "effektive Seitenbreite",
     "marginWidth": "Randbreite",
     "backgroundColor": "Hintergrundfarbe",
     "alwaysVisible": "Immer angezeigt",
     "position": "Position",
-    "alwaysVisibleAspectRatio": "Seitenverhältnis (in Prozent)"
+    "alwaysVisibleAspectRatio": "Seitenverhältnis in %"
   },
   "propertiesPanel": {
     "asLink": "als Hyperlink-Text darstellen",

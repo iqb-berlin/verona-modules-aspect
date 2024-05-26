@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { fromEvent, Observable, Subject } from 'rxjs';
+import { fromEvent, Subject } from 'rxjs';
 import { Unit } from 'common/models/unit';
 import { VariableInfo } from '@iqb/responses';
 
@@ -9,10 +9,7 @@ import { VariableInfo } from '@iqb/responses';
 export class VeronaAPIService {
   sessionID: string | undefined;
   resourceURL: string | undefined;
-  private _voeStartCommand = new Subject<VoeStartCommand>();
-  private _voeGetDefinitionRequest = new Subject<VoeGetDefinitionRequest>();
-
-  private isStandalone = window === window.parent;
+  startCommand = new Subject<StartCommand>();
 
   constructor() {
     fromEvent(window, 'message')
@@ -21,18 +18,11 @@ export class VeronaAPIService {
       });
   }
 
-  private handleMessage(messageData: VoeGetDefinitionRequest | VoeStartCommand): void {
-    switch (messageData.type) {
-      case 'voeStartCommand':
-        this.sessionID = messageData.sessionId;
-        this.resourceURL = (messageData as VoeStartCommand).editorConfig.directDownloadUrl;
-        this._voeStartCommand.next(messageData as VoeStartCommand);
-        break;
-      case 'voeGetDefinitionRequest': // No longer part of the API. Kept in for compatibility.
-        this._voeGetDefinitionRequest.next(messageData);
-        break;
-      default:
-        console.warn(`editor: got message of unknown type ${messageData}`);
+  private handleMessage(messageData: GetDefinitionCommand | StartCommand): void {
+    if (messageData.type === 'voeStartCommand') {
+      this.sessionID = messageData.sessionId;
+      this.resourceURL = (messageData as StartCommand).editorConfig.directDownloadUrl;
+      this.startCommand.next(messageData as StartCommand);
     }
   }
 
@@ -42,14 +32,15 @@ export class VeronaAPIService {
 
   private send(message: Record<string, string | VariableInfo[]>): void {
     // prevent posts in local (dev) mode
-    if (!this.isStandalone) {
+    const isStandalone = window === window.parent;
+    if (!isStandalone) {
       window.parent.postMessage(message, '*');
     } else {
       // console.log(`player: ${message.type}`);
     }
   }
 
-  sendVoeReadyNotification(): void {
+  sendReady(): void {
     const metadata: string | null | undefined = document.getElementById('verona-metadata')?.textContent;
     this.send({
       type: 'voeReadyNotification',
@@ -57,7 +48,7 @@ export class VeronaAPIService {
     });
   }
 
-  sendVoeDefinitionChangedNotification(unit: Unit): void {
+  sendChanged(unit: Unit): void {
     this.send({
       type: 'voeDefinitionChangedNotification',
       sessionId: this.sessionID as string,
@@ -67,18 +58,9 @@ export class VeronaAPIService {
       variables: unit.getVariableInfos()
     });
   }
-
-  get voeStartCommand(): Observable<VoeStartCommand> {
-    return this._voeStartCommand.asObservable();
-  }
-
-  // No longer part of the API. Kept in for compatibility.
-  get voeGetDefinitionRequest(): Observable<VoeGetDefinitionRequest> {
-    return this._voeGetDefinitionRequest.asObservable();
-  }
 }
 
-export interface VoeStartCommand extends MessageEvent {
+export interface StartCommand extends MessageEvent {
   sessionId: string,
   unitDefinition: string,
   unitDefinitionType: string,
@@ -87,6 +69,6 @@ export interface VoeStartCommand extends MessageEvent {
   }
 }
 
-export interface VoeGetDefinitionRequest extends MessageEvent {
+export interface GetDefinitionCommand extends MessageEvent {
   sessionId: string
 }

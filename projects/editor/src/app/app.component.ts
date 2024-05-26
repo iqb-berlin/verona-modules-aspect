@@ -42,16 +42,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.veronaApiService.voeStartCommand
-      .subscribe((message: VoeStartCommand): void => {
+    this.veronaApiService.startCommand
+      .subscribe((message: StartCommand): void => {
         this.unitService.loadUnitDefinition(message.unitDefinition);
       });
-    this.veronaApiService.voeGetDefinitionRequest
-      .subscribe(() => {
-        this.veronaApiService.sendVoeDefinitionChangedNotification(this.unitService.unit);
-      });
-
-    this.veronaApiService.sendVoeReadyNotification();
+    this.veronaApiService.sendReady();
     registerLocaleData(localeDe);
   }
 }

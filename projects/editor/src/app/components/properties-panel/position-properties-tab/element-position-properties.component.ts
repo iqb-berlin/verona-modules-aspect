@@ -41,24 +41,7 @@ import { SelectionService } from '../../../services/selection.service';
         </div>
       </ng-container>
     </div>
-  `,
-  styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
-    .fx-row-space-evenly-center {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      align-items: center;
-    }
-  `]
+  `
 })
 export class ElementPositionPropertiesComponent {
   @Input() dimensions!: DimensionProperties | null;

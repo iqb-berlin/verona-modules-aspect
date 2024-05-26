@@ -199,16 +199,7 @@ import { Stylings } from 'common/models/elements/property-group-interfaces';
                (change)="styles.borderRadius = styles.borderRadius ? styles.borderRadius : 0">
       </mat-form-field>
     </fieldset>
-  `,
-  styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-  `]
+  `
 })
 export class ElementStylePropertiesComponent {
   @Input() styles!: Stylings | undefined;

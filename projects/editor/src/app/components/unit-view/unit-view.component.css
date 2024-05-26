@@ -32,27 +32,6 @@
   display: inherit;
 }
 
-.fx-column-start-stretch {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
-}
-
-.fx-row-start-stretch {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: stretch;
-}
-
-.fx-flex {
-  flex: 1 1 0;
-  box-sizing: border-box;
-}
-
 ::ng-deep .mat-drawer-content .mat-mdc-tab-body-wrapper {
   height: 100%;
 }

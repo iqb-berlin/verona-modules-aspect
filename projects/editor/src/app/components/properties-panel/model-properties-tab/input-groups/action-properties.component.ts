@@ -75,15 +75,7 @@ import { Page } from 'common/models/page';
           </mat-form-field>
         </div>
       </fieldset>
-  `,
-  styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;}
-  `]
+  `
 })
 
 export class ActionPropertiesComponent {

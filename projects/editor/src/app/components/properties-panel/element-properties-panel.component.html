@@ -42,7 +42,7 @@
   </mat-tab-group>
 
   <div class="button-group fx-column-start-stretch">
-    <mat-checkbox class="fx-align-self-center"
+    <mat-checkbox [style.align-self]="'center'"
                   [indeterminate]="interactionIndeterminate"
                   [checked]="interactionEnabled"
                   (change)="setElementInteractionEnabled($event.checked)">

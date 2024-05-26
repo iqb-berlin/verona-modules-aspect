@@ -40,7 +40,7 @@ import { MatButtonModule } from '@angular/material/button';
            (cdkDropListDropped)="moveListValue($event)">
         <div *ngFor="let item of itemList; let i = index" cdkDrag
              class="option-draggable fx-row-start-stretch">
-          <div class="item-box fx-align-self-center">
+          <div class="item-box" [style.align-self]="'center'">
             <div *ngIf="$any(item).id" class="item-id">{{ $any(item).id }}</div>
             <div [innerHTML]="item.text | safeResourceHTML"></div>
           </div>
@@ -72,20 +72,6 @@ import { MatButtonModule } from '@angular/material/button';
       background-color: lightgray;
       padding: 0 5px;
       border-radius: 5px;
-    }
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-    .fx-row-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
     }
   `]
 })

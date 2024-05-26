@@ -35,16 +35,7 @@ import { UIElement } from 'common/models/elements/element';
                (input)="updateModel.emit({ property: 'requiredWarnMessage', value: $any($event.target).value })">
       </mat-form-field>
     </fieldset>
-  `,
-  styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-  `]
+  `
 })
 export class InputElementPropertiesComponent {
   @Input() combinedProperties!: UIElement;

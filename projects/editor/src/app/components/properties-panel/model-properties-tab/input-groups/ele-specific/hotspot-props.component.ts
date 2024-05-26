@@ -27,7 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
   template: `
     <fieldset class="fx-column-start-stretch">
       <legend>{{'propertiesPanel.hotspots' | translate }}</legend>
-      <button class="fx-align-self-center" mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"
+      <button [style.align-self]="'center'" mat-mini-fab matSuffix color="primary" [style.bottom.px]="3"
               (click)="addHotspot()">
         <mat-icon>add</mat-icon>
       </button>
@@ -36,7 +36,7 @@ import { MatIconModule } from '@angular/material/icon';
            (cdkDropListDropped)="moveHotspot($event)">
         <div *ngFor="let item of $any(combinedProperties.value); let i = index" cdkDrag
              class="option-draggable fx-row-start-stretch">
-          <div class="fx-flex fx-align-self-center">{{'hotspot.'+item.shape | translate}}</div>
+          <div class="fx-flex" [style.align-self]="'center'">{{'hotspot.'+item.shape | translate}}</div>
           <button mat-icon-button color="primary"
                   (click)="editHotspot(i)">
             <mat-icon>build</mat-icon>

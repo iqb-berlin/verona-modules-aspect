@@ -35,7 +35,8 @@ import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
         </mat-form-field>
       </div>
       <div class="fx-row-space-between-center fx-fix-gap-10">
-        <mat-radio-group [(ngModel)]="newHotspot.shape" class="fx-column-start-stretch fx-flex-50 fx-fix-gap-5">
+        <mat-radio-group [(ngModel)]="newHotspot.shape"
+                         class="fx-column-start-stretch fx-flex-50" [style.gap.px]="5">
           <label>{{'hotspot.shape' | translate}}</label>
           <mat-radio-button value='ellipse'>{{'hotspot.ellipse' | translate}}</mat-radio-button>
           <mat-radio-button value='rectangle'>{{'hotspot.rectangle' | translate}}</mat-radio-button>
@@ -95,36 +96,8 @@ import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
     </mat-dialog-actions>
   `,
   styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
-    .fx-row-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
-    .fx-row-space-between-center {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     .fx-fix-gap-10 {
       gap: 10px;
-    }
-
-    .fx-fix-gap-5 {
-      gap: 5px;
     }
 
     .fx-flex-50 {

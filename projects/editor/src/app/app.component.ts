@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
-import { VeronaAPIService, VoeStartCommand } from './services/verona-api.service';
+import { VeronaAPIService, StartCommand } from './services/verona-api.service';
 import { UnitService } from './services/unit.service';
 
 @Component({
@@ -16,17 +16,6 @@ import { UnitService } from './services/unit.service';
   styles: [`
     .mainView {
       height: 100%;
-    }
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-    .fx-flex {
-      flex: 1 1 0;
-      box-sizing: border-box;
     }
   `]
 })

@@ -39,7 +39,7 @@
   </aspect-options-field-set>
 
   <button *ngIf="combinedProperties.src"
-          class="media-src-button fx-align-self-center"
+          class="media-src-button" [style.align-self]="'center'"
           mat-fab color="primary"
           [matTooltip]="'Medienquelle ändern'" [matTooltipPosition]="'right'"
           (click)="changeMediaSrc(combinedProperties.type)">
@@ -51,7 +51,7 @@
   </aspect-ele-specific-props>
 
   <button *ngIf="combinedProperties.document"
-          class="fx-align-self-center"
+          [style.align-self]="'center'"
           mat-raised-button
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">
     Text und Elemente editieren
@@ -64,7 +64,7 @@
   </mat-form-field>
 
   <button *ngIf="combinedProperties.player"
-          class="fx-align-self-center"
+          [style.align-self]="'center'"
           mat-raised-button
           (click)="unitService.showDefaultEditDialog(selectedElements[0])">
     Medienoptionen anpassen
@@ -131,7 +131,7 @@
 
   <ng-container *ngIf="combinedProperties.type === 'checkbox'">
     {{'preset' | translate }}
-    <mat-button-toggle-group class="fx-align-self-start"
+    <mat-button-toggle-group [style.align-self]="'flex-start'"
                              [value]="combinedProperties.value"
                              (change)="updateModel.emit({ property: 'value', value: $event.value })">
       <mat-button-toggle [value]="true">{{'propertiesPanel.true' | translate }}</mat-button-toggle>

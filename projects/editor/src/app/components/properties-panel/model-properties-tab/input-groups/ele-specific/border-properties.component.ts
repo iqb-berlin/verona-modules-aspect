@@ -33,16 +33,7 @@ import { NgIf } from '@angular/common';
         {{ 'propertiesPanel.hasBorderRight' | translate }}
       </mat-checkbox>
     </div>
-  `,
-  styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-  `]
+  `
 })
 export class BorderPropertiesComponent {
   @Input() combinedProperties!: UIElement;

@@ -36,15 +36,7 @@ import { TooltipPosition } from 'common/models/elements/element';
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
-    `,
-  styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;}
-  `]
+  `
 })
 export class TooltipPropertiesDialogComponent {
   tooltipText: string;

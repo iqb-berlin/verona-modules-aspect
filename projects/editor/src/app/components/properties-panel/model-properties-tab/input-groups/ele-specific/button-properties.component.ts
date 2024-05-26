@@ -30,7 +30,7 @@ import { FormsModule } from '@angular/forms';
     <ng-container *ngIf="combinedProperties.asLink !== undefined">
       <fieldset>
         <legend>{{ 'propertiesPanel.presentation' | translate }}</legend>
-        <div class="fx-column-start-stretch fx-gap-20">
+        <div class="fx-column-start-stretch" [style.gap.px]="20">
 
           <div class="fx-row-space-between-stretch">
             <button mat-button
@@ -123,26 +123,6 @@ import { FormsModule } from '@angular/forms';
 
     .fx-fill {
       flex: 1 1 0;
-    }
-
-    .fx-gap-20 {
-      gap: 20px;
-    }
-
-    .fx-row-space-between-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: stretch;
-    }
-
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
     }
   `]
 })

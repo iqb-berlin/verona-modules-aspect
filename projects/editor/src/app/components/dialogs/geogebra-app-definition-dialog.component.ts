@@ -39,13 +39,6 @@ import { MatDialogRef } from '@angular/material/dialog';
     .status-area {
       margin-top: 10px;
     }
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
   `]
 })
 export class GeogebraAppDefinitionDialogComponent {

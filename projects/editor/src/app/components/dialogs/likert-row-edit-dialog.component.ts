@@ -46,7 +46,7 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
         </mat-form-field>
 
         <div class="fx-row-space-between-center">
-          <div class="fx-column-start-stretch fx-fix-gap-10">
+          <div class="fx-column-start-stretch" [style.gap.px]="10">
             <button mat-raised-button (click)="loadImage()">
               {{ 'loadImage' | translate }}</button>
             <button mat-raised-button (click)="newLikertRow.rowLabel.imgSrc = null">
@@ -77,26 +77,6 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
   styles: [`
      mat-checkbox {
        margin-bottom: 15px;
-     }
-
-     .fx-column-start-stretch {
-       box-sizing: border-box;
-       display: flex;
-       flex-direction: column;
-       justify-content: flex-start;
-       align-items: stretch;
-     }
-
-     .fx-row-space-between-center {
-       box-sizing: border-box;
-       display: flex;
-       flex-direction: row;
-       justify-content: space-between;
-       align-items: center;
-     }
-
-     .fx-fix-gap-10 {
-       gap: 10px;
      }
 
      aspect-text-image-panel {

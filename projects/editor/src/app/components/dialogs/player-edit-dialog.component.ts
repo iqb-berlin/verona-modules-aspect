@@ -141,14 +141,6 @@ import { UnitService } from 'editor/src/app/services/unit.service';
     </mat-dialog-actions>
     `,
   styles: [`
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
     mat-tab-group {
       height: 100%;
     }

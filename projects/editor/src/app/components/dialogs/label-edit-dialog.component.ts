@@ -7,12 +7,12 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
 @Component({
   selector: 'aspect-label-edit-dialog',
   template: `
-    <mat-dialog-content class="fx-column-start-stretch fx-fix-gap-20">
+    <mat-dialog-content class="fx-column-start-stretch" >
       <aspect-rich-text-editor-simple [(content)]="newLabel.text">
       </aspect-rich-text-editor-simple>
 
       <div *ngIf="newLabel.imgSrc !== undefined" class="image-panel">
-        <div class="fx-column-start-stretch fx-fix-gap-10">
+        <div class="fx-column-start-stretch" [style.gap.px]="10">
           <button mat-raised-button (click)="loadImage()">{{ 'loadImage' | translate }}</button>
           <button mat-raised-button (click)="newLabel.imgSrc = null">{{ 'removeImage' | translate }}</button>
           <mat-form-field>
@@ -38,21 +38,6 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
   styles: [`
     aspect-rich-text-editor-simple {
       margin-bottom: 20px;
-    }
-    .fx-column-start-stretch {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: stretch;
-    }
-
-    .fx-fix-gap-20 {
-      gap: 20px;
-    }
-
-    .fx-fix-gap-10 {
-      gap: 10px;
     }
 
     .image-panel {

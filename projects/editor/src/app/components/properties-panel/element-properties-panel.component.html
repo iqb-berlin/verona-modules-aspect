@@ -13,7 +13,7 @@
   <mat-tab-group class="fx-flex" mat-stretch-tabs>
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">build</mat-icon>
+        <mat-icon class="example-tab-icon" [matTooltip]="'Elementspezifische Eigenschaften'">build</mat-icon>
       </ng-template>
       <aspect-element-model-properties-component [combinedProperties]="combinedProperties"
                                                  [selectedElements]="selectedElements"
@@ -23,7 +23,7 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">format_shapes</mat-icon>
+        <mat-icon class="example-tab-icon" [matTooltip]="'Position & Maße'">format_shapes</mat-icon>
       </ng-template>
       <aspect-position-and-dimension-properties
         [dimensions]="combinedProperties.type === 'trigger' ? null : combinedProperties.dimensions"
@@ -34,7 +34,7 @@
 
     <mat-tab *ngIf="combinedProperties.styling">
       <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">palette</mat-icon>
+        <mat-icon class="example-tab-icon" [matTooltip]="'Gestaltung'">palette</mat-icon>
       </ng-template>
         <aspect-element-style-properties [styles]="combinedProperties.styling">
         </aspect-element-style-properties>

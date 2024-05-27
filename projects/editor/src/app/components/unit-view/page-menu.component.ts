@@ -18,16 +18,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'common/services/message.service';
 import { Subject } from 'rxjs';
-import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions, MatTooltipModule } from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageService } from 'editor/src/app/services/unit-services/page.service';
-
-/** Custom options the configure the tooltip's default show/hide delays. */
-export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
-  showDelay: 400,
-  hideDelay: 0,
-  touchendHideDelay: 0,
-  position: 'above'
-};
 
 @Component({
   selector: 'aspect-unit-view-page-menu',
@@ -48,7 +40,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     FormsModule,
     MatTooltipModule
   ],
-  providers: [{provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}],
   templateUrl: 'page-menu.component.html',
   styles: `
     :host {

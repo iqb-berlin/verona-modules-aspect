@@ -124,6 +124,15 @@ import {
   EleSpecificPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
 import { PageMenu } from 'editor/src/app/components/unit-view/page-menu.component';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+
+/** Custom options the configure the tooltip's default show/hide delays. */
+export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
+  showDelay: 400,
+  hideDelay: 0,
+  touchendHideDelay: 0,
+  position: 'above'
+};
 
 @NgModule({
   declarations: [
@@ -225,7 +234,8 @@ import { PageMenu } from 'editor/src/app/components/unit-view/page-menu.componen
     PageMenu
   ],
   providers: [
-    { provide: APIService, useExisting: VeronaAPIService }
+    { provide: APIService, useExisting: VeronaAPIService },
+    {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
   ]
 })
 

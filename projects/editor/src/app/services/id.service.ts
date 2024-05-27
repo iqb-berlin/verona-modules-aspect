@@ -53,7 +53,7 @@ export class IDService {
     } else if (newId.includes(' ')) {
       this.messageService.showError('ID enthält unerlaubtes Leerzeichen');
     } else {
-      this.removeId(oldId);
+      this.unregisterID(oldId);
       this.addID(newId as string);
       return true;
     }
@@ -89,7 +89,7 @@ export class IDService {
   }
 
   /* Remove ID from givenIDs, so it can be used again. */
-  removeId(id: string): void {
+  unregisterID(id: string): void {
     this.givenIDs.splice(this.givenIDs.indexOf(id, 0), 1);
   }
 

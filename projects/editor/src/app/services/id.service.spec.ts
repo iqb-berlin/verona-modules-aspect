@@ -45,7 +45,7 @@ describe('IDService', () => {
     expect(idService.isIdAvailable('text_1')).toBe(true);
     idService.addID('text_1');
     expect(idService.isIdAvailable('text_1')).toBe(false);
-    idService.removeId('text_1');
+    idService.unregisterID('text_1');
     expect(idService.isIdAvailable('text_1')).toBe(true);
   });
 });

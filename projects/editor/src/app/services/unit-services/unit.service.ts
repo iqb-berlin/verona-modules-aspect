@@ -115,19 +115,19 @@ export class UnitService {
     this.veronaApiService.sendChanged(this.unit);
   }
 
-  freeUpIds(elements: UIElement[]): void {
+  unregisterIDs(elements: UIElement[]): void {
     elements.forEach(element => {
       if (element.type === 'drop-list') {
         ((element as DropListElement).value as DragNDropValueObject[]).forEach((value: DragNDropValueObject) => {
-          this.idService.removeId(value.id);
+          this.idService.unregisterID(value.id);
         });
       }
       if (element instanceof CompoundElement) {
         element.getChildElements().forEach((childElement: UIElement) => {
-          this.idService.removeId(childElement.id);
+          this.idService.unregisterID(childElement.id);
         });
       }
-      this.idService.removeId(element.id);
+      this.idService.unregisterID(element.id);
     });
   }
 

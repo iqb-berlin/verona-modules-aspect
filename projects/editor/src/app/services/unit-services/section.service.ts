@@ -8,6 +8,7 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { ArrayUtils } from 'common/util/array';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class SectionService {
   unit = this.unitService.unit;
 
   constructor(private unitService: UnitService,
+              private elementService: ElementService,
               private selectionService: SelectionService,
               private idService: IDService) { }
 
@@ -58,7 +60,7 @@ export class SectionService {
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
     const newSection: Section = new Section({
       ...section,
-      elements: section.elements.map(element => this.unitService.duplicateElement(element) as PositionedUIElement)
+      elements: section.elements.map(element => this.elementService.duplicateElement(element) as PositionedUIElement)
     });
     page.sections.splice(sectionIndex + 1, 0, newSection);
     this.unitService.updateUnitDefinition();
@@ -92,7 +94,7 @@ export class SectionService {
     const selectedSection =
       this.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedPageSectionIndex];
     this.selectionService.getSelectedElements().forEach((element: UIElement) => {
-      selectedSection.elements.push(this.unitService.duplicateElement(element, true) as PositionedUIElement);
+      selectedSection.elements.push(this.elementService.duplicateElement(element, true) as PositionedUIElement);
     });
     this.unitService.updateUnitDefinition();
   }

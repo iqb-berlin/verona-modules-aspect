@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-dimension-field-set',
@@ -123,15 +124,17 @@ export class DimensionFieldSetComponent {
   @Input() positionProperties: PositionProperties | undefined;
   @Input() dimensions!: DimensionProperties;
 
-  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
+  constructor(public unitService: UnitService,
+              public elementService: ElementService,
+              public selectionService: SelectionService) { }
 
   updateDimensionProperty(property: string, value: any): void {
-    this.unitService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, value);
+    this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, value);
   }
 
   toggleProperty(property: string, checked:boolean): void {
     if (!checked) {
-      this.unitService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, null);
+      this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, null);
     }
   }
 }

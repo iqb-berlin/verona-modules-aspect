@@ -3,6 +3,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
+  CompoundElement,
   InputElement, PlayerElement,
   PositionedUIElement,
   UIElement,
@@ -28,6 +29,7 @@ import { MessageService } from 'common/services/message.service';
 import { TextElement } from 'common/models/elements/text/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -153,7 +155,7 @@ export class ElementService {
   }
 
   private handleTextElementChange(element: TextElement, value: string): void {
-    const deletedAnchorIDs = UnitService.getRemovedTextAnchorIDs(element, value);
+    const deletedAnchorIDs = ElementService.getRemovedTextAnchorIDs(element, value);
     const refs = this.unitService.referenceManager.getTextAnchorReferences(deletedAnchorIDs);
     if (refs.length > 0) {
       this.dialogService.showDeleteReferenceDialog(refs)
@@ -171,7 +173,7 @@ export class ElementService {
   }
 
   private handleClozeDocumentChange(element: ClozeElement, newValue: ClozeDocument): void {
-    const deletedElements = UnitService.getRemovedClozeElements(element, newValue);
+    const deletedElements = ElementService.getRemovedClozeElements(element, newValue);
     const refs = this.unitService.referenceManager.getElementsReferences(deletedElements);
     if (refs.length > 0) {
       this.dialogService.showDeleteReferenceDialog(refs)
@@ -321,5 +323,100 @@ export class ElementService {
     });
     this.unitService.elementPropertyUpdated.next();
     this.unitService.updateUnitDefinition();
+  }
+
+  /* - Also changes position of the element to not cover copied element.
+     - Also changes and registers all copied IDs. */
+  duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
+    const newElement = element.getDuplicate();
+
+    if (newElement.position && adjustPosition) {
+      newElement.position.xPosition += 10;
+      newElement.position.yPosition += 10;
+      newElement.position.gridRow = null;
+      newElement.position.gridColumn = null;
+    }
+
+    newElement.id = this.idService.getAndRegisterNewID(newElement.type);
+    if (newElement instanceof CompoundElement) {
+      newElement.getChildElements().forEach((child: UIElement) => {
+        child.id = this.idService.getAndRegisterNewID(child.type);
+        if (child.type === 'drop-list') {
+          (child.value as DragNDropValueObject[]).forEach(valueObject => {
+            valueObject.id = this.idService.getAndRegisterNewID('value');
+          });
+        }
+      });
+    }
+
+    // Special care with DropLists as they are no CompoundElement yet still have children with IDs
+    if (newElement.type === 'drop-list') {
+      (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
+        valueObject.id = this.idService.getAndRegisterNewID('value');
+      });
+    }
+    return newElement;
+  }
+
+  static getRemovedTextAnchorIDs(element: TextElement, newValue: string): string[] {
+    return TextElement.getAnchorIDs(element.text)
+      .filter(el => !TextElement.getAnchorIDs(newValue).includes(el));
+  }
+
+  static getRemovedClozeElements(cloze: ClozeElement, newClozeDoc: ClozeDocument): UIElement[] {
+    const newElements = ClozeElement.getDocumentChildElements(newClozeDoc);
+    return cloze.getChildElements()
+      .filter(element => !newElements.includes(element));
+  }
+
+  updateSelectedElementsPositionProperty(property: string, value: UIElementValue): void {
+    this.updateElementsPositionProperty(this.selectionService.getSelectedElements(), property, value);
+  }
+
+  updateElementsPositionProperty(elements: UIElement[], property: string, value: UIElementValue): void {
+    elements.forEach(element => {
+      element.setPositionProperty(property, value);
+    });
+    this.reorderElements();
+    this.unitService.elementPropertyUpdated.next();
+    this.unitService.updateUnitDefinition();
+  }
+
+  updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | null): void {
+    console.log('updateElementsDimensionsProperty', property, value);
+    elements.forEach(element => {
+      element.setDimensionsProperty(property, value);
+    });
+    this.unitService.elementPropertyUpdated.next();
+    this.unitService.updateUnitDefinition();
+  }
+
+  /* Reorder elements by their position properties, so the tab order is correct */
+  reorderElements() {
+    const sectionElementList = this.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedPageSectionIndex].elements;
+    const isDynamicPositioning = this.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedPageSectionIndex].dynamicPositioning;
+    const sortDynamicPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
+      const rowSort =
+        (a.position.gridRow !== null ? a.position.gridRow : Infinity) -
+        (b.position.gridRow !== null ? b.position.gridRow : Infinity);
+      if (rowSort === 0) {
+        return a.position.gridColumn! - b.position.gridColumn!;
+      }
+      return rowSort;
+    };
+    const sortStaticPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
+      const ySort = a.position.yPosition! - b.position.yPosition!;
+      if (ySort === 0) {
+        return a.position.xPosition! - b.position.xPosition!;
+      }
+      return ySort;
+    };
+    if (isDynamicPositioning) {
+      sectionElementList.sort(sortDynamicPositioning);
+    } else {
+      sectionElementList.sort(sortStaticPositioning);
+    }
   }
 }

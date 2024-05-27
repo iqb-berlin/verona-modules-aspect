@@ -1,31 +1,14 @@
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { firstValueFrom, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {  Subject } from 'rxjs';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'common/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
-import {
-  PlayerProperties,
-  PositionProperties,
-  PropertyGroupGenerators
-} from 'common/models/elements/property-group-interfaces';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {
-  CompoundElement, InputElement, PlayerElement, PositionedUIElement,
-  UIElement, UIElementProperties, UIElementType, UIElementValue
+  CompoundElement, UIElement
 } from 'common/models/elements/element';
-import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
-import { TextElement } from 'common/models/elements/text/text';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { Section } from 'common/models/section';
-import { ElementFactory } from 'common/util/element.factory';
-import { GeometryProperties } from 'common/models/elements/geometry/geometry';
-import { AudioProperties } from 'common/models/elements/media-elements/audio';
-import { VideoProperties } from 'common/models/elements/media-elements/video';
-import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { StateVariable } from 'common/models/state-variable';
-import { VisibilityRule } from 'common/models/visibility-rule';
 import { VersionManager } from 'common/services/version-manager';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from '../dialog.service';
@@ -44,7 +27,6 @@ export class UnitService {
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   referenceManager: ReferenceManager;
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
@@ -129,101 +111,6 @@ export class UnitService {
       }
       this.idService.unregisterID(element.id);
     });
-  }
-
-  /* - Also changes position of the element to not cover copied element.
-     - Also changes and registers all copied IDs. */
-  duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
-    const newElement = element.getDuplicate();
-
-    if (newElement.position && adjustPosition) {
-      newElement.position.xPosition += 10;
-      newElement.position.yPosition += 10;
-      newElement.position.gridRow = null;
-      newElement.position.gridColumn = null;
-    }
-
-    newElement.id = this.idService.getAndRegisterNewID(newElement.type);
-    if (newElement instanceof CompoundElement) {
-      newElement.getChildElements().forEach((child: UIElement) => {
-        child.id = this.idService.getAndRegisterNewID(child.type);
-        if (child.type === 'drop-list') {
-          (child.value as DragNDropValueObject[]).forEach(valueObject => {
-            valueObject.id = this.idService.getAndRegisterNewID('value');
-          });
-        }
-      });
-    }
-
-    // Special care with DropLists as they are no CompoundElement yet still have children with IDs
-    if (newElement.type === 'drop-list') {
-      (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
-        valueObject.id = this.idService.getAndRegisterNewID('value');
-      });
-    }
-    return newElement;
-  }
-
-  static getRemovedTextAnchorIDs(element: TextElement, newValue: string): string[] {
-    return TextElement.getAnchorIDs(element.text)
-      .filter(el => !TextElement.getAnchorIDs(newValue).includes(el));
-  }
-
-  static getRemovedClozeElements(cloze: ClozeElement, newClozeDoc: ClozeDocument): UIElement[] {
-    const newElements = ClozeElement.getDocumentChildElements(newClozeDoc);
-    return cloze.getChildElements()
-      .filter(element => !newElements.includes(element));
-  }
-
-  updateSelectedElementsPositionProperty(property: string, value: UIElementValue): void {
-    this.updateElementsPositionProperty(this.selectionService.getSelectedElements(), property, value);
-  }
-
-  updateElementsPositionProperty(elements: UIElement[], property: string, value: UIElementValue): void {
-    elements.forEach(element => {
-      element.setPositionProperty(property, value);
-    });
-    this.reorderElements();
-    this.elementPropertyUpdated.next();
-    this.updateUnitDefinition();
-  }
-
-  updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | null): void {
-    console.log('updateElementsDimensionsProperty', property, value);
-    elements.forEach(element => {
-      element.setDimensionsProperty(property, value);
-    });
-    this.elementPropertyUpdated.next();
-    this.updateUnitDefinition();
-  }
-
-  /* Reorder elements by their position properties, so the tab order is correct */
-  reorderElements() {
-    const sectionElementList = this.unit.pages[this.selectionService.selectedPageIndex]
-      .sections[this.selectionService.selectedPageSectionIndex].elements;
-    const isDynamicPositioning = this.unit.pages[this.selectionService.selectedPageIndex]
-      .sections[this.selectionService.selectedPageSectionIndex].dynamicPositioning;
-    const sortDynamicPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
-      const rowSort =
-        (a.position.gridRow !== null ? a.position.gridRow : Infinity) -
-        (b.position.gridRow !== null ? b.position.gridRow : Infinity);
-      if (rowSort === 0) {
-        return a.position.gridColumn! - b.position.gridColumn!;
-      }
-      return rowSort;
-    };
-    const sortStaticPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
-      const ySort = a.position.yPosition! - b.position.yPosition!;
-      if (ySort === 0) {
-        return a.position.xPosition! - b.position.xPosition!;
-      }
-      return ySort;
-    };
-    if (isDynamicPositioning) {
-      sectionElementList.sort(sortDynamicPositioning);
-    } else {
-      sectionElementList.sort(sortStaticPositioning);
-    }
   }
 
   saveUnit(): void {

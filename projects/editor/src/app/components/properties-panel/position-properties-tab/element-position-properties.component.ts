@@ -15,7 +15,7 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
         *ngIf="positionProperties"
         [positionProperties]="positionProperties"
         [isZIndexDisabled]="isZIndexDisabled"
-        (updateModel)="unitService.updateSelectedElementsPositionProperty($event.property, $event.value)">
+        (updateModel)="elementService.updateSelectedElementsPositionProperty($event.property, $event.value)">
       </aspect-position-field-set>
 
       <aspect-dimension-field-set *ngIf="dimensions"
@@ -51,7 +51,7 @@ export class ElementPositionPropertiesComponent {
 
   constructor(public unitService: UnitService,
               public selectionService: SelectionService,
-              private elementService: ElementService) { }
+              public elementService: ElementService) { }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
     this.elementService.alignElements(this.selectionService.getSelectedElements() as PositionedUIElement[], direction);

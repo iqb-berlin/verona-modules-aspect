@@ -11,6 +11,7 @@ import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-page-canvas',
@@ -45,6 +46,7 @@ export class CanvasComponent {
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
+              public elementService: ElementService,
               public sectionService: SectionService) { }
 
   moveElementsBetweenSections(elements: UIElement[], previousSectionIndex: number, newSectionIndex: number): void {
@@ -69,7 +71,7 @@ export class CanvasComponent {
         if (this.page.hasMaxWidth && newXPosition > this.page.maxWidth - element.dimensions.width) {
           newXPosition = this.page.maxWidth - element.dimensions.width;
         }
-        this.unitService.updateElementsPositionProperty([element], 'xPosition', newXPosition);
+        this.elementService.updateElementsPositionProperty([element], 'xPosition', newXPosition);
 
         let newYPosition = element.position.yPosition + event.distance.y;
         if (newYPosition < 0) {
@@ -78,7 +80,7 @@ export class CanvasComponent {
         if (newYPosition > this.getPageHeight() - element.dimensions.height) {
           newYPosition = this.getPageHeight() - element.dimensions.height;
         }
-        this.unitService.updateElementsPositionProperty([element], 'yPosition', newYPosition);
+        this.elementService.updateElementsPositionProperty([element], 'yPosition', newYPosition);
       });
     }
   }

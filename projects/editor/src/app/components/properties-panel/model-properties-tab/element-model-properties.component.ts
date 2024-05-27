@@ -18,9 +18,10 @@ import { TextImageLabel, TextLabel } from 'common/models/elements/label-interfac
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import { StateVariable } from 'common/models/state-variable';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { UnitService } from '../../../services/unit.service';
+import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -40,6 +41,7 @@ export class ElementModelPropertiesComponent implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
+              public elementService: ElementService,
               public selectionService: SelectionService,
               public dialogService: DialogService) { }
 

@@ -3,8 +3,9 @@ import {
 } from '@angular/core';
 import { PositionedUIElement } from 'common/models/elements/element';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
-import { UnitService } from '../../../services/unit.service';
+import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-position-and-dimension-properties',
@@ -48,9 +49,11 @@ export class ElementPositionPropertiesComponent {
   @Input() positionProperties: PositionProperties | undefined;
   @Input() isZIndexDisabled: boolean = false;
 
-  constructor(public unitService: UnitService, public selectionService: SelectionService) { }
+  constructor(public unitService: UnitService,
+              public selectionService: SelectionService,
+              private elementService: ElementService) { }
 
   alignElements(direction: 'left' | 'right' | 'top' | 'bottom'): void {
-    this.unitService.alignElements(this.selectionService.getSelectedElements() as PositionedUIElement[], direction);
+    this.elementService.alignElements(this.selectionService.getSelectedElements() as PositionedUIElement[], direction);
   }
 }

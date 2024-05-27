@@ -3,13 +3,14 @@ import {
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
-import { UnitService } from 'editor/src/app/services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { Label, TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
 import { OptionElement } from 'common/models/elements/element';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-options-field-set',
@@ -47,6 +48,7 @@ export class OptionsFieldSetComponent {
     }>();
 
   constructor(private unitService: UnitService,
+              private elementService: ElementService,
               private selectionService: SelectionService,
               public dialogService: DialogService,
               private idService: IDService) { }
@@ -56,7 +58,7 @@ export class OptionsFieldSetComponent {
 
     selectedElements.forEach(element => {
       const newValue = [...this.combinedProperties[property] as Label[], element.getNewOptionLabel(option)];
-      this.unitService.updateElementsProperty([element], property, newValue);
+      this.elementService.updateElementsProperty([element], property, newValue);
     });
   }
 
@@ -112,31 +114,31 @@ export class OptionsFieldSetComponent {
       .subscribe((result: LikertRowElement) => {
         if (result) {
           if (result.id !== row.id) {
-            this.unitService.updateElementsProperty(
+            this.elementService.updateElementsProperty(
               [row],
               'id',
               result.id
             );
           }
           if (result.rowLabel !== row.rowLabel) {
-            this.unitService.updateElementsProperty([row], 'rowLabel', result.rowLabel);
+            this.elementService.updateElementsProperty([row], 'rowLabel', result.rowLabel);
           }
           if (result.value !== row.value) {
-            this.unitService.updateElementsProperty(
+            this.elementService.updateElementsProperty(
               [row],
               'value',
               result.value
             );
           }
           if (result.verticalButtonAlignment !== row.verticalButtonAlignment) {
-            this.unitService.updateElementsProperty(
+            this.elementService.updateElementsProperty(
               [row],
               'verticalButtonAlignment',
               result.verticalButtonAlignment
             );
           }
           if (result.readOnly !== row.readOnly) {
-            this.unitService.updateElementsProperty(
+            this.elementService.updateElementsProperty(
               [row],
               'readOnly',
               result.readOnly

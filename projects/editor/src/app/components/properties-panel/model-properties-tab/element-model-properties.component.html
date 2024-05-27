@@ -53,7 +53,7 @@
   <button *ngIf="combinedProperties.document"
           [style.align-self]="'center'"
           mat-raised-button
-          (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+          (click)="elementService.showDefaultEditDialog(selectedElements[0])">
     Text und Elemente editieren
   </button>
 
@@ -66,7 +66,7 @@
   <button *ngIf="combinedProperties.player"
           [style.align-self]="'center'"
           mat-raised-button
-          (click)="unitService.showDefaultEditDialog(selectedElements[0])">
+          (click)="elementService.showDefaultEditDialog(selectedElements[0])">
     Medienoptionen anpassen
   </button>
 

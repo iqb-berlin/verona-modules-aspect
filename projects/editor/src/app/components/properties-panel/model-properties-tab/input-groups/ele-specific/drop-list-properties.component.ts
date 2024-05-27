@@ -17,7 +17,7 @@ import { OptionListPanelComponent } from 'editor/src/app/components/properties-p
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { UnitService } from 'editor/src/app/services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 
 @Pipe({

@@ -4,7 +4,7 @@ import {
 import { UIElementValue } from 'common/models/elements/element';
 import { PositionProperties } from 'common/models/elements/property-group-interfaces';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-position-field-set',

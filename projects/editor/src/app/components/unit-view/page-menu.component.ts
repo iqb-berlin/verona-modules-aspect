@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,11 +14,12 @@ import { Page } from 'common/models/page';
 import { takeUntil } from 'rxjs/operators';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { SelectionService } from 'editor/src/app/services/selection.service';
-import { UnitService } from 'editor/src/app/services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'common/services/message.service';
 import { Subject } from 'rxjs';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions, MatTooltipModule } from '@angular/material/tooltip';
+import { PageService } from 'editor/src/app/services/unit-services/page.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -48,93 +49,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     MatTooltipModule
   ],
   providers: [{provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}],
-  template: `
-    <div [style]="'display: flex;'">
-      <button [disabled]="page.alwaysVisible"
-              [style]="'justify-content: center'"
-              [matTooltip]="'Seite nach vorn verschieben'"
-              mat-menu-item (click)="movePage(page,'left')">
-        <mat-icon>west</mat-icon>
-      </button>
-      <button [disabled]="page.alwaysVisible"
-              [style]="'justify-content: center;'"
-              [matTooltip]="'Seite nach hinten verschieben'"
-              mat-menu-item (click)="movePage(page, 'right')">
-        <mat-icon>east</mat-icon>
-      </button>
-    </div>
-
-    <button mat-menu-item class="delete-button"
-            [matTooltip]="'Seite löschen'"
-            (click)="deletePage()">
-      <mat-icon>delete</mat-icon>
-    </button>
-
-    <mat-divider></mat-divider>
-
-    <fieldset class="fx-column-start-stretch">
-      <legend>Seitenbreite</legend>
-      <mat-checkbox class="menuItem"
-                    [matTooltip]="'Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt.'"
-                    [checked]="page.hasMaxWidth"
-                    (click)="$event.stopPropagation()"
-                    (change)="updateModel(page, 'hasMaxWidth', $event.source.checked)">
-        Seitenbreite begrenzen
-      </mat-checkbox>
-      <p class="menuItem" [style.margin-top.px]="5" [style.margin-left.px]="10">
-        effektive Seitenbreite: <br>{{page.hasMaxWidth ? page.maxWidth + 2 * page.margin + 'px' : '∞'}}
-      </p>
-      <mat-form-field class="menuItem" appearance="fill">
-        <mat-label>Seitenbreite in px</mat-label>
-        <input matInput type="number" min="0" #maxWidth="ngModel"
-               [disabled]="!page.hasMaxWidth"
-               [ngModel]="page.hasMaxWidth ? page.maxWidth : null"
-               (click)="$event.stopPropagation()"
-               (ngModelChange)="updateModel(page,'maxWidth', $event || 0, maxWidth.valid)">
-      </mat-form-field>
-      <mat-form-field class="menuItem" appearance="fill">
-        <mat-label>Randbreite in px</mat-label>
-        <input matInput type="number" min="0" #margin="ngModel"
-               [ngModel]="page.margin"
-               (click)="$event.stopPropagation()"
-               (ngModelChange)="updateModel(page,'margin', $event || 0, margin.valid)">
-      </mat-form-field>
-    </fieldset>
-
-    <mat-form-field class="menuItem" appearance="fill" [style.margin-top.px]="16">
-      <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
-      <input matInput type="color" #backgroundColor="ngModel"
-             [ngModel]="page.backgroundColor"
-             (ngModelChange)="updateModel(page,'backgroundColor', $event, backgroundColor.valid)">
-    </mat-form-field>
-    <mat-checkbox class="menuItem"
-                  [disabled]="unitService.unit.pages.length < 2 || unitService.unit.pages[0].alwaysVisible && pageIndex != 0"
-                  [ngModel]="page.alwaysVisible"
-                  (click)="$event.stopPropagation()"
-                  (change)="updateModel(page, 'alwaysVisible', $event.source.checked)">
-      Seite dauerhaft sichtbar
-    </mat-checkbox>
-    <mat-form-field class="menuItem" appearance="fill">
-      <mat-label>{{'pageProperties.position' | translate }}</mat-label>
-      <mat-select [disabled]="!page.alwaysVisible"
-                  [value]="page.alwaysVisiblePagePosition"
-                  (click)="$event.stopPropagation()"
-                  (selectionChange)="updateModel(page, 'alwaysVisiblePagePosition', $event.value)">
-        <mat-option *ngFor="let option of ['left', 'right', 'top', 'bottom']"
-                    [value]="option">
-          {{option | translate}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="menuItem" appearance="fill">
-      <mat-label>{{'pageProperties.alwaysVisibleAspectRatio' | translate }}</mat-label>
-      <input matInput type="number" min="0" max="100"
-             [disabled]="!page.alwaysVisible"
-             [ngModel]="page.alwaysVisibleAspectRatio"
-             (click)="$event.stopPropagation()"
-             (ngModelChange)="updateModel(page, 'alwaysVisibleAspectRatio', $event || 0)">
-    </mat-form-field>
-  `,
+  templateUrl: 'page-menu.component.html',
   styles: `
     :host {
       display: flex;
@@ -161,16 +76,18 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
 export class PageMenu implements OnDestroy {
   @Input() page!: Page;
   @Input() pageIndex!: number;
+  @Output() pageOrderChanged = new EventEmitter<void>();
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
+              public pageService: PageService,
               public selectionService: SelectionService,
               private dialogService: DialogService,
               private messageService: MessageService) {}
 
-  movePage(page: Page, direction: 'left' | 'right'): void {
-    this.unitService.moveSelectedPage(direction);
-    this.refreshTabs();
+  movePage(direction: 'left' | 'right'): void {
+    this.pageService.moveSelectedPage(direction);
+    this.pageOrderChanged.emit();
   }
 
   deletePage(): void {
@@ -189,7 +106,7 @@ export class PageMenu implements OnDestroy {
         .subscribe((result: boolean) => {
           if (result) {
             ReferenceManager.deleteReferences(refs);
-            this.unitService.deletePage(this.selectionService.selectedPageIndex);
+            this.pageService.deletePage(this.selectionService.selectedPageIndex);
             this.selectionService.selectPreviousPage();
           } else {
             this.messageService.showReferencePanel(refs);
@@ -200,7 +117,7 @@ export class PageMenu implements OnDestroy {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((result: boolean) => {
           if (result) {
-            this.unitService.deletePage(this.selectionService.selectedPageIndex);
+            this.pageService.deletePage(this.selectionService.selectedPageIndex);
             this.selectionService.selectPreviousPage();
           }
         });
@@ -213,7 +130,7 @@ export class PageMenu implements OnDestroy {
         this.movePageToFront(page);
         page.alwaysVisible = true;
         this.selectionService.selectedPageIndex = 0;
-        this.refreshTabs();
+        this.pageOrderChanged.emit();
       }
       page[property] = value;
       this.unitService.updateUnitDefinition(); // TODO
@@ -228,15 +145,6 @@ export class PageMenu implements OnDestroy {
       this.unitService.unit.pages.splice(pageIndex, 1);
       this.unitService.unit.pages.splice(0, 0, page);
     }
-  }
-
-  /* This is a hack. The tab element gets bugged when changing the underlying array.
-   With this we can temporarily remove it from the DOM and then add it again, re-initializing it. */
-  private refreshTabs(): void { // TODO seems unnecessary (?); moving pages works fine
-    // this.pagesLoaded = false;
-    // setTimeout(() => {
-    //   this.pagesLoaded = true;
-    // });
   }
 
   ngOnDestroy(): void {

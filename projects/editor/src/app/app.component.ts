@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { VeronaAPIService, StartCommand } from './services/verona-api.service';
-import { UnitService } from './services/unit.service';
+import { UnitService } from './services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-editor',

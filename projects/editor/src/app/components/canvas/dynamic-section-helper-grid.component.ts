@@ -4,7 +4,8 @@ import {
 } from '@angular/core';
 import { UIElement, UIElementType } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { UnitService } from '../../services/unit.service';
+import { UnitService } from '../../services/unit-services/unit.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: '[app-dynamic-section-helper-grid]',
@@ -44,7 +45,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   columnCountArray: unknown[] = [];
   rowCountArray: unknown[] = [];
 
-  constructor(public unitService: UnitService) {}
+  constructor(public unitService: UnitService, private elementService: ElementService) {}
 
   ngOnInit(): void {
     this.calculateColumnCount();
@@ -134,7 +135,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
 
   newElementDropped(event: DragEvent, gridX: number, gridY: number): void {
     event.preventDefault();
-    this.unitService.addElementToSection(
+    this.elementService.addElementToSection(
       event.dataTransfer?.getData('elementType') as UIElementType,
       this.section,
       { x: gridX, y: gridY }

@@ -12,8 +12,9 @@ import { UIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
-import { UnitService } from '../../../services/unit.service';
+import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -30,6 +31,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
 
   constructor(public selectionService: SelectionService,
               protected unitService: UnitService,
+              protected elementService: ElementService,
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
@@ -106,7 +108,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   }
 
   openEditDialog(): void {
-    this.unitService.showDefaultEditDialog(this.element);
+    this.elementService.showDefaultEditDialog(this.element);
   }
 
   setInteractionEnabled(isEnabled: boolean): void {

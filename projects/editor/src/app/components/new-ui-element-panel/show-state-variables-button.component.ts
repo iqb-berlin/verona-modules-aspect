@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { UnitService } from 'editor/src/app/services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-show-state-variables-button',

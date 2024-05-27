@@ -66,12 +66,12 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
   }
 
   updateModel(event: CdkDragEnd): void {
-    this.unitService.updateElementsProperty(
+    this.elementService.updateElementsProperty(
       this.selectionService.getSelectedElements(),
       'width',
       Math.max(this.oldX + event.distance.x, 0)
     );
-    this.unitService.updateElementsProperty(
+    this.elementService.updateElementsProperty(
       this.selectionService.getSelectedElements(),
       'height',
       Math.max(this.oldY + event.distance.y, 0)
@@ -82,7 +82,7 @@ export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
     this.selectionService.selectedElements
       .pipe(take(1))
       .subscribe((selectedElements: UIElement[]) => {
-        this.unitService.deleteElements(selectedElements);
+        this.elementService.deleteElements(selectedElements);
         this.selectionService.clearElementSelection();
       })
       .unsubscribe();

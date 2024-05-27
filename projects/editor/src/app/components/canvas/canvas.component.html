@@ -12,8 +12,8 @@
                              [allowMoveUp]="i != 0"
                              [allowMoveDown]="i < page.sections.length - 1"
                              [allowDelete]="page.sections.length > 1"
-                             (moveSection)="unitService.moveSection(section, page, $event)"
-                             (duplicateSection)="unitService.duplicateSection(section, page, i)"
+                             (moveSection)="sectionService.moveSection(section, page, $event)"
+                             (duplicateSection)="sectionService.duplicateSection(section, page, i)"
                              (selectElementComponent)="selectElementOverlay($event)">
         </aspect-section-menu>
         <aspect-section-static *ngIf="!section.dynamicPositioning"

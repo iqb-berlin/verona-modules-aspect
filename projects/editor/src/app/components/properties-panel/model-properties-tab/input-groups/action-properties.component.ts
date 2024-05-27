@@ -5,7 +5,7 @@ import {
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
 import { TextComponent } from 'common/components/text/text.component';
-import { UnitService } from 'editor/src/app/services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { Page } from 'common/models/page';
 

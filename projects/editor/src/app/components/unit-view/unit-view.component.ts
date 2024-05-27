@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { PageChangeService } from 'common/services/page-change.service';
-import { UnitService } from '../../services/unit.service';
+import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
+import { HistoryService } from 'editor/src/app/services/history.service';
+import { PageService } from 'editor/src/app/services/unit-services/page.service';
 
 @Component({
   selector: 'aspect-unit-view',
@@ -13,15 +15,24 @@ export class UnitViewComponent {
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
+              public pageService: PageService,
               public pageChangeService: PageChangeService,
-              private dialogService: DialogService,
-              private messageService: MessageService) { }
+              public historyService: HistoryService) { }
 
   selectPage(newIndex: number): void {
     this.selectionService.selectPage(newIndex);
   }
 
   addPage(): void {
-    this.unitService.addPage();
+    this.pageService.addPage();
+  }
+
+  /* This is a hack. The tab element gets bugged when changing the underlying array.
+     With this we can temporarily remove it from the DOM and then add it again, re-initializing it. */
+  refreshTabs(): void {
+    this.pagesLoaded = false;
+    setTimeout(() => {
+      this.pagesLoaded = true;
+    });
   }
 }

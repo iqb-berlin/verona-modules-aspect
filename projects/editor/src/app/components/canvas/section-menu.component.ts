@@ -11,9 +11,10 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { IDService } from 'editor/src/app/services/id.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
-import { UnitService } from '../../services/unit.service';
+import { UnitService } from '../../services/unit-services/unit.service';
 import { DialogService } from '../../services/dialog.service';
 import { SelectionService } from '../../services/selection.service';
+import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 
 @Component({
   selector: 'aspect-section-menu',
@@ -184,6 +185,7 @@ export class SectionMenuComponent implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
+              private sectionService: SectionService,
               private selectionService: SelectionService,
               private dialogService: DialogService,
               private messageService: MessageService,
@@ -193,7 +195,7 @@ export class SectionMenuComponent implements OnDestroy {
   updateModel(
     property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]
   ): void {
-    this.unitService.updateSectionProperty(this.section, property, value);
+    this.sectionService.updateSectionProperty(this.section, property, value);
   }
 
   selectElement(element: UIElement): void {
@@ -209,7 +211,7 @@ export class SectionMenuComponent implements OnDestroy {
         .subscribe((result: boolean) => {
           if (result) {
             ReferenceManager.deleteReferences(refs);
-            this.unitService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
+            this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
             this.selectionService.selectedPageSectionIndex =
               Math.max(0, this.selectionService.selectedPageSectionIndex - 1);
           } else {
@@ -221,7 +223,7 @@ export class SectionMenuComponent implements OnDestroy {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((result: boolean) => {
           if (result) {
-            this.unitService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
+            this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
             this.selectionService.selectedPageSectionIndex =
               Math.max(0, this.selectionService.selectedPageSectionIndex - 1);
           }
@@ -284,7 +286,7 @@ export class SectionMenuComponent implements OnDestroy {
                 });
             }
           });
-          this.unitService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
+          this.sectionService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
         }
       });
   }

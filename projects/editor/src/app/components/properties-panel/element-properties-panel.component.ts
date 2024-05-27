@@ -8,9 +8,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'common/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { UnitService } from '../../services/unit.service';
+import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from '../canvas/overlays/canvas-element-overlay';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 
@@ -29,6 +31,8 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
 
   constructor(protected selectionService: SelectionService,
               public unitService: UnitService,
+              public sectionService: SectionService,
+              public elementService: ElementService,
               private messageService: MessageService,
               public sanitizer: DomSanitizer,
               private translateService: TranslateService) { }
@@ -105,7 +109,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
               value: unknown,
               isInputValid: boolean | null = true): void {
     if (isInputValid) {
-      this.unitService.updateElementsProperty(this.selectedElements, property, value);
+      this.elementService.updateElementsProperty(this.selectedElements, property, value);
     } else {
       this.messageService.showWarning(this.translateService.instant('inputInvalid'));
     }
@@ -118,11 +122,11 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   deleteElement(): void {
-    this.unitService.deleteElements(this.selectedElements);
+    this.elementService.deleteElements(this.selectedElements);
   }
 
   duplicateElement(): void {
-    this.unitService.duplicateSelectedElements();
+    this.sectionService.duplicateSelectedElements();
   }
 
   ngOnDestroy(): void {

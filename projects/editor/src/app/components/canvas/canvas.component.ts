@@ -5,11 +5,12 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { PositionedUIElement, UIElement } from 'common/models/elements/element';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
-import { UnitService } from '../../services/unit.service';
+import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
 import { SectionStaticComponent } from './section-static.component';
 import { SectionDynamicComponent } from './section-dynamic.component';
+import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 
 @Component({
   selector: 'aspect-page-canvas',
@@ -42,10 +43,12 @@ export class CanvasComponent {
   @ViewChildren('sectionComponent')
     sectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
 
-  constructor(public selectionService: SelectionService, public unitService: UnitService) { }
+  constructor(public selectionService: SelectionService,
+              public unitService: UnitService,
+              public sectionService: SectionService) { }
 
   moveElementsBetweenSections(elements: UIElement[], previousSectionIndex: number, newSectionIndex: number): void {
-    this.unitService.transferElement(elements,
+    this.sectionService.transferElement(elements,
       this.page.sections[previousSectionIndex],
       this.page.sections[newSectionIndex]);
   }
@@ -86,7 +89,7 @@ export class CanvasComponent {
   }
 
   addSection(): void {
-    this.unitService.addSection(this.page);
+    this.sectionService.addSection(this.page);
     this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
   }
 

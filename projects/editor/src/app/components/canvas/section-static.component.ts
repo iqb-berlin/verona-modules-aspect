@@ -3,8 +3,9 @@ import {
 } from '@angular/core';
 import { Section } from 'common/models/section';
 import { UIElementType } from 'common/models/elements/element';
-import { UnitService } from '../../services/unit.service';
+import { UnitService } from '../../services/unit-services/unit.service';
 import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-section-static',
@@ -33,12 +34,12 @@ export class SectionStaticComponent {
   @ViewChild('sectionElement') sectionElement!: ElementRef;
   @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
 
-  constructor(public unitService: UnitService) { }
+  constructor(public unitService: UnitService, private elementService: ElementService) { }
 
   newElementDropped(event: DragEvent): void {
     event.preventDefault();
     const sectionRect = this.sectionElement.nativeElement.getBoundingClientRect();
-    this.unitService.addElementToSection(
+    this.elementService.addElementToSection(
       event.dataTransfer?.getData('elementType') as UIElementType,
       this.section,
       { x: event.clientX - Math.round(sectionRect.left), y: event.clientY - Math.round(sectionRect.top) }

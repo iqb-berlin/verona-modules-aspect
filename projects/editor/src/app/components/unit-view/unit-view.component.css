@@ -1,9 +1,11 @@
 .toolbox_drawer {
   width: 220px;
+  box-shadow: 2px 5px 5px gray;
 }
 
 .properties_drawer {
   width: 340px;
+  box-shadow: -2px -5px 5px gray;
 }
 
 .drawer-button {

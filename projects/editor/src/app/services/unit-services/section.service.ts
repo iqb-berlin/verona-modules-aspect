@@ -98,13 +98,18 @@ export class SectionService {
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
-    ArrayUtils.moveArrayItem(section, page.sections, direction);
-    if (direction === 'up' && this.selectionService.selectedSectionIndex > 0) {
-      this.selectionService.selectedSectionIndex -= 1;
-    } else if (direction === 'down') {
-      this.selectionService.selectedSectionIndex += 1;
-    }
-    this.unitService.updateUnitDefinition();
+    this.unitService.updateUnitDefinition({
+      title: `Abschnitt verschoben`,
+      command: () => {
+        ArrayUtils.moveArrayItem(section, page.sections, direction);
+        direction === 'up' ? this.selectionService.selectedSectionIndex -= 1 : this.selectionService.selectedSectionIndex += 1;
+        return {};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        ArrayUtils.moveArrayItem(section, page.sections, direction === 'up' ? 'down' : 'up');
+        direction === 'up' ? this.selectionService.selectedSectionIndex += 1 : this.selectionService.selectedSectionIndex -= 1;
+      }
+    });
   }
 
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
@@ -113,11 +118,22 @@ export class SectionService {
   }
 
   /* Move element between sections */
-  transferElement(elements: UIElement[], previousSection: Section, newSection: Section): void {
-    previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
-    elements.forEach(element => {
-      newSection.elements.push(element as PositionedUIElement);
+  transferElements(elements: UIElement[], previousSection: Section, newSection: Section): void {
+    this.unitService.updateUnitDefinition({
+      title: `Element zwischen Abschnitten verschoben`,
+      command: () => {
+        previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
+        elements.forEach(element => {
+          newSection.elements.push(element as PositionedUIElement);
+        });
+        return {};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        newSection.elements = newSection.elements.filter(element => !elements.includes(element));
+        elements.forEach(element => {
+          previousSection.elements.push(element as PositionedUIElement);
+        });
+      }
     });
-    this.unitService.updateUnitDefinition();
   }
 }

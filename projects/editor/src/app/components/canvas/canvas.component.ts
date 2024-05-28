@@ -50,7 +50,7 @@ export class CanvasComponent {
               public sectionService: SectionService) { }
 
   moveElementsBetweenSections(elements: UIElement[], previousSectionIndex: number, newSectionIndex: number): void {
-    this.sectionService.transferElement(elements,
+    this.sectionService.transferElements(elements,
       this.page.sections[previousSectionIndex],
       this.page.sections[newSectionIndex]);
   }

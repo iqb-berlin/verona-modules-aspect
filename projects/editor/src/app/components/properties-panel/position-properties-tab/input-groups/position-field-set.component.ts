@@ -13,7 +13,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       <legend>Position</legend>
       <div *ngIf="!unitService.unit
                     .pages[selectionService.selectedPageIndex]
-                    .sections[selectionService.selectedPageSectionIndex]
+                    .sections[selectionService.selectedSectionIndex]
                     .dynamicPositioning;
                     else elseBlock"
            class="flex-row">

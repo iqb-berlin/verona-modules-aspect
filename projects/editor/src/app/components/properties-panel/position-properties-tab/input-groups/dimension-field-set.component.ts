@@ -10,7 +10,7 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
     <fieldset>
       <legend>Dimensionen</legend>
       <ng-container *ngIf="unitService.unit.pages[selectionService.selectedPageIndex]
-                    .sections[selectionService.selectedPageSectionIndex].dynamicPositioning ||
+                    .sections[selectionService.selectedSectionIndex].dynamicPositioning ||
                     selectionService.isClozeChildSelected;
                     else elseBlock">
         <mat-checkbox #fixedWidth [checked]="$any(dimensions.isWidthFixed)"

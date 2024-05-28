@@ -11,7 +11,7 @@ import {
 })
 export class SelectionService {
   selectedPageIndex: number = 0;
-  selectedPageSectionIndex: number = 0;
+  selectedSectionIndex: number = 0;
   private _selectedElements!: BehaviorSubject<UIElement[]>;
   selectedElementComponents: (CanvasElementOverlay | ClozeChildOverlay)[] = [];
   isClozeChildSelected: boolean = false;
@@ -49,7 +49,7 @@ export class SelectionService {
   selectPage(index: number) {
     this.clearElementSelection();
     this.selectedPageIndex = index;
-    this.selectedPageSectionIndex = 0;
+    this.selectedSectionIndex = 0;
   }
 
   selectPreviousPage() {

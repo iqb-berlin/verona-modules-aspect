@@ -212,8 +212,8 @@ export class SectionMenuComponent implements OnDestroy {
           if (result) {
             ReferenceManager.deleteReferences(refs);
             this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
-            this.selectionService.selectedPageSectionIndex =
-              Math.max(0, this.selectionService.selectedPageSectionIndex - 1);
+            this.selectionService.selectedSectionIndex =
+              Math.max(0, this.selectionService.selectedSectionIndex - 1);
           } else {
             this.messageService.showReferencePanel(refs);
           }
@@ -224,8 +224,8 @@ export class SectionMenuComponent implements OnDestroy {
         .subscribe((result: boolean) => {
           if (result) {
             this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
-            this.selectionService.selectedPageSectionIndex =
-              Math.max(0, this.selectionService.selectedPageSectionIndex - 1);
+            this.selectionService.selectedSectionIndex =
+              Math.max(0, this.selectionService.selectedSectionIndex - 1);
           }
         });
     }

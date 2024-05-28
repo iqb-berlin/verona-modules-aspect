@@ -92,7 +92,7 @@ export class CanvasComponent {
 
   addSection(): void {
     this.sectionService.addSection(this.page);
-    this.selectionService.selectedPageSectionIndex = this.page.sections.length - 1;
+    this.selectionService.selectedSectionIndex = this.page.sections.length - 1;
   }
 
   selectElementOverlay(element: UIElement): void {

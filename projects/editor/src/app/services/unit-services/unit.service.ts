@@ -27,6 +27,7 @@ export class UnitService {
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   referenceManager: ReferenceManager;
+  savedSectionCode: string | undefined;
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,

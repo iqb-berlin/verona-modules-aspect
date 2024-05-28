@@ -1,27 +1,41 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Section } from 'common/models/section';
-import { MessageService } from 'common/services/message.service';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subject } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
 import { TranslateService } from '@ngx-translate/core';
 import { IDService } from 'editor/src/app/services/id.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
-  selector: 'app-section-insert-dialog',
   template: `
+    <h2 mat-dialog-title>Seitenabschnitt einfügen</h2>
     <mat-dialog-content>
-      <div (mouseenter)="hovered = true;" (mouseleave)="hovered = false;">
-        <div class="paste-area" contenteditable="true" *ngIf="isPastedTextPresent === false"
-             (paste)="pasteSectionFromClipboard($event)">
-        </div>
-        <div *ngIf="!hovered || isPastedTextPresent" class="message-area" [style.background-color]="operationStatus">
+      <mat-radio-group [style]="'display: flex; flex-direction: column'"
+                       [(ngModel)]="selectedMethod">
+        <mat-radio-button value="savedCode" [disabled]="!savedSectionCode">
+          Gespeicherten Abschnitt einfügen
+        </mat-radio-button>
+          <p *ngIf="savedSectionCode" class="radio-child-item" [style.color]="'green'">
+            Gespeicherter Abschnitt gefunden.
+          </p>
+          <p *ngIf="!savedSectionCode" class="radio-child-item" [style.color]="'var(--warn)'">
+            Kein gespeicherter Abschnitt gefunden.
+          </p>
+        <mat-radio-button value="pastedCode">
+          Abschnitt über Zwischenablage einfügen
+        </mat-radio-button>
+        <div class="radio-child-item message-area" [style.color]="operationStatus">
           {{operationStatusText}}
         </div>
-      </div>
+        <div class="radio-child-item paste-area" contenteditable="true"
+             (click)="selectedMethod = 'pastedCode'"
+             (paste)="pasteSectionFromClipboard($event)">
+        </div>
+      </mat-radio-group>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button *ngIf="operationStatus === 'green' || operationStatus === 'yellow'"
+      <button mat-button *ngIf="selectedMethod == 'savedCode' || operationStatus === 'green' || operationStatus === 'orange'"
               [mat-dialog-close]="newSection">
         {{'confirm' | translate }}
       </button>
@@ -29,26 +43,37 @@ import { IDService } from 'editor/src/app/services/id.service';
     </mat-dialog-actions>
   `,
   styles: [
-    '.mat-mdc-dialog-content {width: 448px; height: 240px;}',
-    '.paste-area {position: absolute; width: 400px; height: 200px; border: 1px solid; overflow: hidden}',
-    '.message-area {position: absolute; width: 400px; height: 200px; text-align: center; font-size: large;}'
+    '.paste-area {width: 250px; height: 60px; border: 1px solid; overflow: hidden}',
+    '.radio-child-item {margin-left: 35px; font-size: smaller;}',
+    ':host ::ng-deep mat-radio-button .mdc-label {font-size: larger;}'
   ]
 })
-export class SectionInsertDialogComponent {
+export class SectionInsertDialogComponent implements OnInit {
   private ngUnsubscribe = new Subject<void>();
 
-  operationStatus: 'red' | 'yellow' | 'green' | 'none' = 'none';
-  operationStatusText: string = this.translateService.instant('Bitte kopierten Abschnitt einfügen');
-  hovered = false;
+  operationStatus: 'red' | 'orange' | 'green' | 'none' = 'none';
+  operationStatusText: string = 'Kopierten Abschnitt einfügen:';
   isPastedTextPresent = false;
   newSection: Section | null = null;
 
+  savedSectionCode: string | undefined;
+  selectedMethod: 'savedCode' | 'pastedCode' = 'pastedCode';
+
   constructor(@Inject(MAT_DIALOG_DATA) public data: { existingSection: Section },
-              private messageService: MessageService,
+              private unitService: UnitService,
               private idManager: IDService,
               private translateService: TranslateService) { }
 
+  ngOnInit(): void {
+    if (this.unitService.savedSectionCode) {
+      this.savedSectionCode = this.unitService.savedSectionCode;
+      this.selectedMethod = 'savedCode';
+      this.newSection = new Section(JSON.parse(this.unitService.savedSectionCode));
+    }
+  }
+
   pasteSectionFromClipboard(event: ClipboardEvent): void {
+    event.preventDefault();
     this.isPastedTextPresent = true;
     const pastedText = event.clipboardData?.getData('Text');
     if (!pastedText) {
@@ -61,7 +86,7 @@ export class SectionInsertDialogComponent {
       if (this.findElementsWithDuplicateID(this.newSection.getAllElements()).length > 0) {
         this.operationStatusText =
           this.translateService.instant('Doppelte IDs festgestellt. Weiter mit neu generierten IDs?');
-        this.operationStatus = 'yellow';
+        this.operationStatus = 'orange';
       } else {
         this.operationStatusText = this.translateService.instant('Abschnitt wurde erfolgreich gelesen.');
         this.operationStatus = 'green';

@@ -135,7 +135,7 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
     </mat-menu>
 
     <button mat-mini-fab [matTooltip]="'Abschnitt kopieren'" [matTooltipPosition]="'left'"
-            (click)="copySectionToClipboard()">
+            (click)="copySection()">
       <mat-icon>content_copy</mat-icon>
     </button>
     <button mat-mini-fab
@@ -262,6 +262,11 @@ export class SectionMenuComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  copySection() {
+    this.copySectionToClipboard();
+    this.unitService.savedSectionCode = JSON.stringify(this.section);
   }
 
   copySectionToClipboard() {

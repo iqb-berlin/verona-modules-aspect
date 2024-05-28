@@ -48,6 +48,18 @@ export class Page {
   getVariableInfos(dropLists: DropListElement[]): VariableInfo[] {
     return this.sections.map(section => section.getVariableInfos(dropLists)).flat();
   }
+
+  addSection(section?: Section, sectionIndex?: number): void {
+    if (sectionIndex !== undefined) {
+      this.sections.splice(sectionIndex, 0, section || new Section());
+    } else {
+      this.sections.push(section || new Section());
+    }
+  }
+
+  deleteSection(sectionIndex: number){
+    this.sections.splice(sectionIndex, 1);
+  }
 }
 
 export interface PageProperties {

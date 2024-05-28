@@ -77,7 +77,7 @@ export class PageMenu implements OnDestroy {
               private messageService: MessageService) {}
 
   movePage(direction: 'left' | 'right'): void {
-    this.pageService.moveSelectedPage(direction);
+    this.pageService.moveSelectedPage(this.selectionService.selectedPageIndex, direction);
     this.pageOrderChanged.emit();
   }
 

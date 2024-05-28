@@ -126,7 +126,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
   }
 
   duplicateElement(): void {
-    this.sectionService.duplicateSelectedElements();
+    this.elementService.duplicateSelectedElements();
   }
 
   ngOnDestroy(): void {

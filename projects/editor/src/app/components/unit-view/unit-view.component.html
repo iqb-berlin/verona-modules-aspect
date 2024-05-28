@@ -54,6 +54,24 @@
             </button>
           </ng-template>
         </mat-tab>
+
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <button mat-icon-button class="history-button" [matMenuTriggerFor]="historyMenu">
+              <mat-icon>history</mat-icon>
+            </button>
+            <mat-menu #historyMenu="matMenu">
+              <h3>Änderungshistorie</h3>
+              <p [style.color]="'red'">Achtung experimentelle Funktion!<br>
+                Benutzung kann Fehler verursachen bis hin zu kaputter Unit.</p>
+              <div *ngFor="let command of historyService.commandList">
+                <p>{{ command.title }}</p>
+              </div>
+              <button *ngIf="historyService.commandList.length > 0" (click)="unitService.rollback()">Rollback</button>
+            </mat-menu>
+          </ng-template>
+        </mat-tab>
+
       </mat-tab-group>
     </mat-drawer-content>
 

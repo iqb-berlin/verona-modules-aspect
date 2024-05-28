@@ -97,6 +97,23 @@ export class UnitService {
     this.veronaApiService.sendChanged(this.unit);
   }
 
+  registerIDs(elements: UIElement[]): void {
+    elements.forEach(element => {
+      if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
+        (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
+      }
+      if (['likert', 'cloze'].includes((element as UIElement).type as string)) {
+        element.getChildElements().forEach(el => {
+          this.idService.addID(el.id);
+          if ((element as UIElement).type === 'drop-list') {
+            (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
+          }
+        });
+      }
+      this.idService.addID(element.id);
+    });
+  }
+
   unregisterIDs(elements: UIElement[]): void {
     elements.forEach(element => {
       if (element.type === 'drop-list') {

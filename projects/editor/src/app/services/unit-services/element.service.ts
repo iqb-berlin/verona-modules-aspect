@@ -35,8 +35,6 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
   providedIn: 'root'
 })
 export class ElementService {
-  unit = this.unitService.unit;
-
   constructor(private unitService: UnitService,
               private selectionService: SelectionService,
               private dialogService: DialogService,
@@ -47,7 +45,7 @@ export class ElementService {
   addElementToSectionByIndex(elementType: UIElementType,
                              pageIndex: number,
                              sectionIndex: number): void {
-    this.addElementToSection(elementType, this.unit.pages[pageIndex].sections[sectionIndex]);
+    this.addElementToSection(elementType, this.unitService.unit.pages[pageIndex].sections[sectionIndex]);
   }
 
   async addElementToSection(elementType: UIElementType, section: Section,
@@ -111,7 +109,7 @@ export class ElementService {
           if (result) {
             ReferenceManager.deleteReferences(refs);
             this.unitService.unregisterIDs(elements);
-            this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
+            this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
               section.elements = section.elements.filter(element => !elements.includes(element));
             });
             this.unitService.updateUnitDefinition();
@@ -124,7 +122,7 @@ export class ElementService {
         .subscribe((result: boolean) => {
           if (result) {
             this.unitService.unregisterIDs(elements);
-            this.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
+            this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
               section.elements = section.elements.filter(element => !elements.includes(element));
             });
             this.unitService.updateUnitDefinition();
@@ -325,6 +323,15 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
+  duplicateSelectedElements(): void {
+    const selectedSection =
+      this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedSectionIndex];
+    this.selectionService.getSelectedElements().forEach((element: UIElement) => {
+      selectedSection.elements.push(this.duplicateElement(element, true) as PositionedUIElement);
+    });
+    this.unitService.updateUnitDefinition();
+  }
+
   /* - Also changes position of the element to not cover copied element.
      - Also changes and registers all copied IDs. */
   duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
@@ -393,10 +400,10 @@ export class ElementService {
 
   /* Reorder elements by their position properties, so the tab order is correct */
   reorderElements() {
-    const sectionElementList = this.unit.pages[this.selectionService.selectedPageIndex]
-      .sections[this.selectionService.selectedPageSectionIndex].elements;
-    const isDynamicPositioning = this.unit.pages[this.selectionService.selectedPageIndex]
-      .sections[this.selectionService.selectedPageSectionIndex].dynamicPositioning;
+    const sectionElementList = this.unitService.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedSectionIndex].elements;
+    const isDynamicPositioning = this.unitService.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedSectionIndex].dynamicPositioning;
     const sortDynamicPositioning = (a: PositionedUIElement, b: PositionedUIElement) => {
       const rowSort =
         (a.position.gridRow !== null ? a.position.gridRow : Infinity) -

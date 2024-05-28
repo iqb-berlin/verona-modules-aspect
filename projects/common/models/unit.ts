@@ -39,25 +39,6 @@ export class Unit implements UnitProperties {
     ];
     return this.pages.map(page => page.getVariableInfos(dropLists)).flat();
   }
-
-  /* check if movement is allowed
-  * - alwaysVisible has to be index 0
-  * - don't move left when already the leftmost
-  * - don't move right when already the last
-  */
-  canPageBeMoved(pageIndex: number, direction: 'left' | 'right'): boolean {
-    return !((direction === 'left' && pageIndex === 1 && this.pages[0].alwaysVisible) ||
-      (direction === 'left' && pageIndex === 0) ||
-      (direction === 'right' && pageIndex === this.pages.length - 1));
-  }
-
-  movePage(pageIndex: number, direction: 'left' | 'right'): void {
-    ArrayUtils.moveArrayItem(
-      this.pages[pageIndex],
-      this.pages,
-      direction === 'left' ? 'up' : 'down'
-    );
-  }
 }
 
 function isValid(blueprint?: UnitProperties): boolean {

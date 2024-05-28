@@ -3,13 +3,12 @@ import { Page } from 'common/models/page';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { MessageService } from 'common/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import { ArrayUtils } from 'common/util/array';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageService {
-  unit = this.unitService.unit;
-
   constructor(private unitService: UnitService,
               private messageService: MessageService,
               private selectionService: SelectionService) { }
@@ -18,12 +17,12 @@ export class PageService {
     this.unitService.updateUnitDefinition({
       title: 'Seite hinzugefügt',
       command: () => {
-        this.unit.pages.push(new Page());
-        this.selectionService.selectedPageIndex = this.unit.pages.length - 1; // TODO selection stuff here is not good
+        this.unitService.unit.pages.push(new Page());
+        this.selectionService.selectedPageIndex = this.unitService.unit.pages.length - 1; // TODO selection stuff here is not good
         return {};
       },
       rollback: () => {
-        this.unit.pages.splice(this.unit.pages.length - 1, 1);
+        this.unitService.unit.pages.splice(this.unitService.unit.pages.length - 1, 1);
         this.selectionService.selectPreviousPage();
       }
     });
@@ -40,17 +39,29 @@ export class PageService {
         };
       },
       rollback: (deletedData: Record<string, unknown>) => {
-        this.unit.pages.splice(deletedData['pageIndex'] as number, 0, deletedData['deletedpage'] as Page);
+        this.unitService.unit.pages.splice(deletedData['pageIndex'] as number, 0, deletedData['deletedpage'] as Page);
       }
     });
   }
 
-  moveSelectedPage(direction: 'left' | 'right') {
-    if (this.unit.canPageBeMoved(this.selectionService.selectedPageIndex, direction)) {
-      this.unit.movePage(this.selectionService.selectedPageIndex, direction);
-      this.unitService.updateUnitDefinition();
-    } else {
-      this.messageService.showWarning('Seite kann nicht verschoben werden.');
-    }
+  moveSelectedPage(pageIndex: number, direction: 'left' | 'right') {
+    this.unitService.updateUnitDefinition({
+      title: 'Seite verschoben',
+      command: () => {
+        ArrayUtils.moveArrayItem(
+          this.unitService.unit.pages[pageIndex],
+          this.unitService.unit.pages,
+          direction === 'left' ? 'up' : 'down'
+        );
+        return {direction};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        ArrayUtils.moveArrayItem(
+          this.unitService.unit.pages[pageIndex],
+          this.unitService.unit.pages,
+          direction === 'left' ? 'up' : 'down'
+        );
+      }
+    });
   }
 }

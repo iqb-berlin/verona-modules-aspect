@@ -3,8 +3,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
-import { PositionedUIElement, UIElement } from 'common/models/elements/element';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { PositionedUIElement, UIElement, UIElementValue } from 'common/models/elements/element';
 import { ArrayUtils } from 'common/util/array';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
@@ -14,71 +13,103 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
   providedIn: 'root'
 })
 export class SectionService {
-  unit = this.unitService.unit;
-
   constructor(private unitService: UnitService,
               private elementService: ElementService,
               private selectionService: SelectionService,
               private idService: IDService) { }
 
   updateSectionProperty(section: Section, property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]): void {
-    section.setProperty(property, value);
-    this.unitService.elementPropertyUpdated.next();
-    this.unitService.updateUnitDefinition();
+    this.unitService.updateUnitDefinition({
+      title: 'Abschnittseigenschaft geändert',
+      command: () => {
+        const oldValue = section[property];
+        section.setProperty(property, value);
+        this.unitService.elementPropertyUpdated.next();
+        return {oldValue};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        section.setProperty(property, deletedData.oldValue as UIElementValue);
+        this.unitService.elementPropertyUpdated.next();
+      }
+    });
   }
 
-  addSection(page: Page, section?: Section): void {
-    // register section IDs
-    if (section) {
-      section.elements.forEach(element => {
-        if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
-          (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
+  addSection(page: Page, section?: Section, sectionIndex?: number): void {
+    this.unitService.updateUnitDefinition({
+      title: 'Abschnitt hinzugefügt',
+      command: () => {
+        const newSection = section;
+        if (section) {
+          this.unitService.registerIDs(section.elements);
         }
-        if (['likert', 'cloze'].includes((element as UIElement).type as string)) {
-          element.getChildElements().forEach(el => {
-            this.idService.addID(el.id);
-            if ((element as UIElement).type === 'drop-list') {
-              (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
-            }
-          });
+        page.addSection(section, sectionIndex);
+        this.selectionService.selectedSectionIndex =
+          Math.max(0, this.selectionService.selectedSectionIndex - 1);
+        return {section, sectionIndex};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        if (deletedData.section) {
+          this.unitService.unregisterIDs((deletedData.section as Section).elements);
         }
-        this.idService.addID(element.id);
-      });
-    }
-    page.sections.push(
-      section || new Section()
-    );
-    this.unitService.updateUnitDefinition();
+        const sectionIndex: number = (deletedData.sectionIndex as number) !== undefined ?
+          (deletedData.sectionIndex as number) :
+          page.sections.length - 1;
+        page.deleteSection(sectionIndex);
+        this.selectionService.selectedSectionIndex =
+          Math.max(0, this.selectionService.selectedSectionIndex - 1);
+      }
+    });
   }
 
   deleteSection(pageIndex: number, sectionIndex: number): void {
-    this.unitService.unregisterIDs(this.unit.pages[pageIndex].sections[sectionIndex].getAllElements());
-    this.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
-    this.unitService.updateUnitDefinition();
+    this.unitService.updateUnitDefinition({
+      title: `Abschnitt gelöscht - Seite ${pageIndex + 1}, Abschnitt ${sectionIndex + 1}`,
+      command: () => {
+        const deletedSection = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
+        this.unitService.unregisterIDs(this.unitService.unit.pages[pageIndex].sections[sectionIndex].getAllElements());
+        this.unitService.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
+        return {deletedSection, pageIndex, sectionIndex};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        this.unitService.registerIDs((deletedData.deletedSection as Section).getAllElements());
+        this.unitService.unit.pages[deletedData.pageIndex as number].addSection(deletedData.deletedSection as Section, sectionIndex)
+      }
+    });
   }
 
   duplicateSection(section: Section, page: Page, sectionIndex: number): void {
-    const newSection: Section = new Section({
-      ...section,
-      elements: section.elements.map(element => this.elementService.duplicateElement(element) as PositionedUIElement)
+    this.unitService.updateUnitDefinition({
+      title: `Abschnitt dupliziert`,
+      command: () => {
+        const newSection: Section = new Section({
+          ...section,
+          elements: section.elements.map(element => this.elementService.duplicateElement(element) as PositionedUIElement)
+        });
+        page.addSection(newSection, sectionIndex + 1);
+        this.selectionService.selectedSectionIndex += 1;
+        return {};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        this.unitService.unregisterIDs(page.sections[sectionIndex + 1].getAllElements());
+        page.deleteSection(sectionIndex + 1);
+        this.selectionService.selectedSectionIndex -= 1;
+      }
     });
-    page.sections.splice(sectionIndex + 1, 0, newSection);
-    this.unitService.updateUnitDefinition();
   }
 
   moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
     ArrayUtils.moveArrayItem(section, page.sections, direction);
-    if (direction === 'up' && this.selectionService.selectedPageSectionIndex > 0) {
-      this.selectionService.selectedPageSectionIndex -= 1;
+    if (direction === 'up' && this.selectionService.selectedSectionIndex > 0) {
+      this.selectionService.selectedSectionIndex -= 1;
     } else if (direction === 'down') {
-      this.selectionService.selectedPageSectionIndex += 1;
+      this.selectionService.selectedSectionIndex += 1;
     }
     this.unitService.updateUnitDefinition();
   }
 
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
     this.deleteSection(pageIndex, sectionIndex);
-    this.addSection(this.unit.pages[pageIndex], newSection);
+    this.addSection(this.unitService.unit.pages[pageIndex], newSection, sectionIndex);
   }
 
   /* Move element between sections */
@@ -86,15 +117,6 @@ export class SectionService {
     previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
     elements.forEach(element => {
       newSection.elements.push(element as PositionedUIElement);
-    });
-    this.unitService.updateUnitDefinition();
-  }
-
-  duplicateSelectedElements(): void {
-    const selectedSection =
-      this.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedPageSectionIndex];
-    this.selectionService.getSelectedElements().forEach((element: UIElement) => {
-      selectedSection.elements.push(this.elementService.duplicateElement(element, true) as PositionedUIElement);
     });
     this.unitService.updateUnitDefinition();
   }

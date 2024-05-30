@@ -23,6 +23,9 @@ export class RadioButtonGroupElement extends InputElement
     lineHeight: number;
   };
 
+  static title: string = 'Optionsfelder';
+  static icon: string = 'radio_button_checked';
+
   constructor(element?: RadioButtonGroupProperties) {
     super(element);
     if (element && isValid(element)) {

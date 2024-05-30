@@ -71,7 +71,7 @@ import { SectionMenuComponent } from './components/canvas/section-menu.component
 import { SectionStaticComponent } from './components/canvas/section-static.component';
 import { SectionDynamicComponent } from './components/canvas/section-dynamic.component';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
-import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog.component';
+import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
 import {
@@ -155,7 +155,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ButtonNodeviewComponent,
     ElementStylePropertiesComponent,
     ElementPositionPropertiesComponent,
-    ConfirmationDialogComponent,
+    DeleteConfirmationDialogComponent,
     TextEditDialogComponent,
     TextEditMultilineDialogComponent,
     PlayerEditDialogComponent,

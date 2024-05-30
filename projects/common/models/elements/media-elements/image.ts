@@ -22,6 +22,9 @@ export class ImageElement extends UIElement implements PositionedUIElement, Imag
   magnifierUsed: boolean = false;
   position: PositionProperties;
 
+  static title: string = 'Bild';
+  static icon: string = 'image';
+
   constructor(element?: ImageProperties) {
     super(element);
     if (element && isValid(element)) {

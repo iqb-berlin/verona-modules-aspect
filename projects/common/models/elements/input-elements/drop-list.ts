@@ -27,6 +27,9 @@ export class DropListElement extends InputElement implements DropListProperties 
     itemBackgroundColor: string;
   };
 
+  static title: string = 'Ablegeliste';
+  static icon: string = 'drag_indicator';
+
   constructor(element?: DropListProperties) {
     super(element);
     if (element && isValid(element)) {

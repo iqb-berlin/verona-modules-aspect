@@ -42,97 +42,115 @@ export class ElementService {
               private idService: IDService,
               private sanitizer: DomSanitizer) { }
 
-  addElementToSectionByIndex(elementType: UIElementType,
-                             pageIndex: number,
-                             sectionIndex: number): void {
-    this.addElementToSection(elementType, this.unitService.unit.pages[pageIndex].sections[sectionIndex]);
-  }
-
   async addElementToSection(elementType: UIElementType, section: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
-    const newElementProperties: Partial<UIElementProperties> = {};
-    if (['geometry'].includes(elementType)) {
-      (newElementProperties as GeometryProperties).appDefinition =
-        await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
-      if (!(newElementProperties as GeometryProperties).appDefinition) return; // dialog canceled
-    }
-    if (['audio', 'video', 'image', 'hotspot-image'].includes(elementType)) {
-      let mediaSrc = '';
-      switch (elementType) {
-        case 'hotspot-image':
-        case 'image':
-          mediaSrc = await FileService.loadImage();
-          break;
-        case 'audio':
-          mediaSrc = await FileService.loadAudio();
-          break;
-        case 'video':
-          mediaSrc = await FileService.loadVideo();
-          break;
-        // no default
+    this.unitService.updateUnitDefinition({
+      title: `Element hinzugefügt (${elementType})`,
+      command: async () => {
+        let newElementProperties: Partial<UIElementProperties> = {};
+        try {
+          newElementProperties = await this.prepareElementProps(elementType, section.dynamicPositioning, coordinates);
+        } catch (e) {
+          if (e == 'dialogCanceled') return {};
+        }
+        const newElementID = this.idService.getAndRegisterNewID(elementType);
+        section.addElement(ElementFactory.createElement({
+          type: elementType,
+          position: PropertyGroupGenerators.generatePositionProps(newElementProperties.position),
+          ...newElementProperties,
+          id: newElementID
+        }) as PositionedUIElement);
+        return {newElementID};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        this.idService.unregisterID(deletedData.newElementID as string);
+        section.deleteElement(deletedData.newElementID as string);
       }
-      (newElementProperties as AudioProperties | VideoProperties | ImageProperties).src = mediaSrc;
-    }
-
-    // Coordinates are given if an element is dragged directly into a cell
-    if (coordinates) {
-      newElementProperties.position = {
-        ...(section.dynamicPositioning && { gridColumn: coordinates.x }),
-        ...(section.dynamicPositioning && { gridRow: coordinates.y }),
-        ...(!section.dynamicPositioning && { yPosition: coordinates.y }),
-        ...(!section.dynamicPositioning && { yPosition: coordinates.y })
-      } as PositionProperties;
-    }
-
-    // Use z-index -1 for frames
-    newElementProperties.position = {
-      zIndex: elementType === 'frame' ? -1 : 0,
-      ...newElementProperties.position
-    } as PositionProperties;
-
-    section.addElement(ElementFactory.createElement({
-      type: elementType,
-      position: PropertyGroupGenerators.generatePositionProps(newElementProperties.position),
-      ...newElementProperties,
-      id: this.idService.getAndRegisterNewID(elementType)
-    }) as PositionedUIElement);
-    this.unitService.updateUnitDefinition();
+    });
   }
 
-  deleteElements(elements: UIElement[]): void {
-    const refs =
-      this.unitService.referenceManager.getElementsReferences(elements);
-    // console.log('element refs', refs);
-    if (refs.length > 0) {
-      this.dialogService.showDeleteReferenceDialog(refs)
-        .subscribe((result: boolean) => {
-          if (result) {
-            ReferenceManager.deleteReferences(refs);
-            this.unitService.unregisterIDs(elements);
-            this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
-              section.elements = section.elements.filter(element => !elements.includes(element));
-            });
-            this.unitService.updateUnitDefinition();
-          } else {
-            this.messageService.showReferencePanel(refs);
-          }
-        });
-    } else {
-      this.dialogService.showConfirmDialog('Element(e) löschen?')
-        .subscribe((result: boolean) => {
-          if (result) {
-            this.unitService.unregisterIDs(elements);
-            this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections.forEach(section => {
-              section.elements = section.elements.filter(element => !elements.includes(element));
-            });
-            this.unitService.updateUnitDefinition();
-          }
-        });
+  private async prepareElementProps(elementType: UIElementType,
+                                    dynamicPositioning: boolean,
+                                    coordinates?: { x: number, y: number }): Promise<Partial<UIElementProperties>> {
+    const newElementProperties: Partial<UIElementProperties> = {};
+
+    switch (elementType) {
+      case "geometry":
+        (newElementProperties as GeometryProperties).appDefinition =
+          await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
+        if (!(newElementProperties as GeometryProperties).appDefinition) return Promise.reject('dialogCanceled'); // dialog canceled
+        break;
+      case "audio":
+        (newElementProperties as AudioProperties).src = await FileService.loadAudio();
+        break;
+      case "video":
+        (newElementProperties as VideoProperties).src = await FileService.loadVideo();
+        break;
+      case "image":
+      case "hotspot-image":
+        (newElementProperties as ImageProperties).src = await FileService.loadImage();
+        break;
+      case 'frame':
+        newElementProperties.position = {
+          zIndex: -1,
+          ...newElementProperties.position
+        } as PositionProperties;
+        break;
+      // no default
     }
+
+    // Coordinates are given if an element is dragged directly onto the canvas
+    if (coordinates) {
+      newElementProperties.position = {
+        ...dynamicPositioning && { gridColumn: coordinates.x },
+        ...dynamicPositioning && { gridRow: coordinates.y },
+        ...!dynamicPositioning && { xPosition: coordinates.x },
+        ...!dynamicPositioning && { yPosition: coordinates.y }
+      } as PositionProperties;
+    }
+    return newElementProperties;
+  }
+
+  async deleteElements(elements: UIElement[]): Promise<void> {
+    this.unitService.updateUnitDefinition({
+      title: elements.length > 1 ? 'Elemente gelöscht' : `Element ${elements[0].id} gelöscht`,
+      command: async () => {
+        if (await this.unitService.prepareDelete('elements', elements)) {
+          this.unitService.unregisterIDs(elements);
+          const elementSections = this.findElementsInSections(elements);
+          elementSections.forEach(x => {
+            this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[x.sectionIndex]
+              .deleteElement(x.element.id);
+          });
+          return {elementSections};
+        }
+        return {};
+      },
+      rollback: (deletedData: Record<string, unknown>) => {
+        this.unitService.registerIDs(elements);
+        (deletedData.elementSections as {sectionIndex: number, element: UIElement}[]).forEach(x => {
+          this.unitService.unit
+            .pages[this.selectionService.selectedPageIndex]
+            .sections[x.sectionIndex]
+            .addElement(x.element as PositionedUIElement); // TODO order check
+        });
+      }
+    });
+  }
+
+  private findElementsInSections(elements: UIElement[]): {sectionIndex: number, element: UIElement}[] {
+    const elementSections: {sectionIndex: number, element: UIElement}[] = []
+    elements.forEach(element => {
+      this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections.forEach((section, i) => {
+        if (section.elements.map(el => el.id).includes(element.id)) {
+          elementSections.push({sectionIndex: i, element});
+        }
+      });
+    });
+    return elementSections;
   }
 
   updateElementsProperty(elements: UIElement[], property: string, value: unknown): void {
-    console.log('updateElementProperty', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
         if (this.idService.validateAndAddNewID(value as string, element.id)) {

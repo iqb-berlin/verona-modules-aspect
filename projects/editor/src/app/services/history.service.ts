@@ -8,7 +8,6 @@ export class HistoryService {
 
   addCommand(command: UnitUpdateCommand, deletedData: Record<string, unknown>): void {
     this.commandList.push({ ...command, deletedData: deletedData });
-    console.log('HISTORY', this.commandList);
   }
 
   rollback(): void {
@@ -20,7 +19,7 @@ export class HistoryService {
 
 export interface UnitUpdateCommand {
   title: string;
-  command: () => Record<string, unknown>;
+  command: () => Record<string, unknown> | Promise<Record<string, unknown>>;
   rollback: (deletedData: Record<string, unknown>) => void;
 }
 

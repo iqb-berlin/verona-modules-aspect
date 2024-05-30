@@ -19,6 +19,9 @@ export class DropdownElement extends InputElement implements PositionedUIElement
   position: PositionProperties;
   styling: BasicStyles;
 
+  static title: string = 'Klappliste';
+  static icon: string = 'menu_open';
+
   constructor(element?: DropdownProperties) {
     super(element);
     if (element && isValid(element)) {

@@ -20,6 +20,9 @@ export class RadioButtonGroupComplexElement extends InputElement
   position: PositionProperties;
   styling: BasicStyles;
 
+  static title: string = 'Optionsfelder (mit Bild)';
+  static icon: string = 'radio_button_checked';
+
   constructor(element?: RadioButtonGroupComplexProperties) {
     super(element);
     if (element && isValid(element)) {

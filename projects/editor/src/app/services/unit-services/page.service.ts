@@ -28,17 +28,24 @@ export class PageService {
     });
   }
 
-  deletePage(pageIndex: number): void {
+  async deletePage(pageIndex: number): Promise<void> {
     this.unitService.updateUnitDefinition({
       title: 'Seite gelöscht',
-      command: () => {
-        const deletedpage = this.unitService.unit.pages.splice(pageIndex, 1)[0];
-        return {
-          pageIndex,
-          deletedpage
-        };
+      command: async () => {
+        const selectedPage = this.unitService.unit.pages[this.selectionService.selectedPageIndex];
+        if (await this.unitService.prepareDelete('page', selectedPage)) {
+          this.unitService.unregisterIDs(selectedPage.getAllElements());
+          const deletedpage = this.unitService.unit.pages.splice(pageIndex, 1)[0];
+          this.selectionService.selectPreviousPage();
+          return {
+            pageIndex,
+            deletedpage
+          };
+        }
+        return {};
       },
       rollback: (deletedData: Record<string, unknown>) => {
+        this.unitService.registerIDs((deletedData['deletedpage'] as Page).getAllElements());
         this.unitService.unit.pages.splice(deletedData['pageIndex'] as number, 0, deletedData['deletedpage'] as Page);
       }
     });

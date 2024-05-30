@@ -31,6 +31,9 @@ export class LikertElement extends CompoundElement implements PositionedUIElemen
     firstLineColoringColor: string;
   };
 
+  static title: string = 'Optionentabelle';
+  static icon: string = 'margin';
+
   constructor(element?: LikertProperties) {
     super(element);
     if (element && isValid(element)) {

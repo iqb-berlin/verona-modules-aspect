@@ -34,6 +34,9 @@ export class HotspotImageElement extends InputElement implements PositionedUIEle
   src: string | null = null;
   position: PositionProperties;
 
+  static title: string = 'Bildbereiche';
+  static icon: string = 'ads_click';
+
   constructor(element?: HotspotImageProperties) {
     super(element);
     if (element && isValid(element)) {

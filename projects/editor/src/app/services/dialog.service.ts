@@ -27,8 +27,8 @@ import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/s
 import {
   TooltipPropertiesDialogComponent
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
-import { TooltipPosition } from 'common/models/elements/element';
-import { ConfirmationDialogComponent } from '../components/dialogs/confirmation-dialog.component';
+import { TooltipPosition, UIElement } from 'common/models/elements/element';
+import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
 import { RichTextEditDialogComponent } from '../components/dialogs/rich-text-edit-dialog.component';
@@ -50,9 +50,9 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showConfirmDialog(text: string, isWarning: boolean = false): Observable<boolean> {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: { text, isWarning }
+  showDeleteConfirmDialog(text: string, elementList?: UIElement[], refs?: ReferenceList[]): Observable<boolean> {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      data: { text, elementList, refs }
     });
     return dialogRef.afterClosed();
   }

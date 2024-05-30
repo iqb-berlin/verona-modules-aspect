@@ -64,15 +64,22 @@ export class SectionService {
   deleteSection(pageIndex: number, sectionIndex: number): void {
     this.unitService.updateUnitDefinition({
       title: `Abschnitt gelöscht - Seite ${pageIndex + 1}, Abschnitt ${sectionIndex + 1}`,
-      command: () => {
-        const deletedSection = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
-        this.unitService.unregisterIDs(this.unitService.unit.pages[pageIndex].sections[sectionIndex].getAllElements());
-        this.unitService.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
-        return {deletedSection, pageIndex, sectionIndex};
+      command: async () => {
+        const sectionToDelete = this.unitService.unit.pages[pageIndex].sections[sectionIndex];
+        if (await this.unitService.prepareDelete('section', sectionToDelete)) {
+          this.unitService.unregisterIDs(sectionToDelete.getAllElements());
+          this.unitService.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
+          this.selectionService.selectedSectionIndex =
+            Math.max(0, this.selectionService.selectedSectionIndex - 1);
+          return {deletedSection: sectionToDelete, pageIndex, sectionIndex};
+        }
+        return {};
       },
       rollback: (deletedData: Record<string, unknown>) => {
         this.unitService.registerIDs((deletedData.deletedSection as Section).getAllElements());
-        this.unitService.unit.pages[deletedData.pageIndex as number].addSection(deletedData.deletedSection as Section, sectionIndex)
+        this.unitService.unit.pages[deletedData.pageIndex as number].addSection(deletedData.deletedSection as Section, sectionIndex);
+        this.selectionService.selectedSectionIndex =
+          Math.max(0, this.selectionService.selectedSectionIndex - 1);
       }
     });
   }

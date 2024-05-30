@@ -29,6 +29,9 @@ export class ClozeElement extends CompoundElement implements PositionedUIElement
     lineHeight: number;
   };
 
+  static title: string = 'Lückentext';
+  static icon: string = 'vertical_split';
+
   static validChildElements = ['TextField', 'DropList', 'ToggleButton', 'Button', 'Checkbox'];
 
   constructor(element?: ClozeProperties) {

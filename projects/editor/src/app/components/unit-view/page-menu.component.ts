@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,11 +11,8 @@ import { NgForOf, NgIf } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Page } from 'common/models/page';
-import { takeUntil } from 'rxjs/operators';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
-import { DialogService } from 'editor/src/app/services/dialog.service';
 import { MessageService } from 'common/services/message.service';
 import { Subject } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -73,7 +70,6 @@ export class PageMenu implements OnDestroy {
   constructor(public unitService: UnitService,
               public pageService: PageService,
               public selectionService: SelectionService,
-              private dialogService: DialogService,
               private messageService: MessageService) {}
 
   movePage(direction: 'left' | 'right'): void {
@@ -82,37 +78,7 @@ export class PageMenu implements OnDestroy {
   }
 
   deletePage(): void {
-    let refs = this.unitService.referenceManager.getPageElementsReferences(
-      this.unitService.unit.pages[this.selectionService.selectedPageIndex]
-    );
-
-    const pageNavButtonRefs = this.unitService.referenceManager.getButtonReferencesForPage(
-      this.selectionService.selectedPageIndex
-    );
-    refs = refs.concat(pageNavButtonRefs);
-
-    if (refs.length > 0) {
-      this.dialogService.showDeleteReferenceDialog(refs)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((result: boolean) => {
-          if (result) {
-            ReferenceManager.deleteReferences(refs);
-            this.pageService.deletePage(this.selectionService.selectedPageIndex);
-            this.selectionService.selectPreviousPage();
-          } else {
-            this.messageService.showReferencePanel(refs);
-          }
-        });
-    } else {
-      this.dialogService.showConfirmDialog('Seite löschen?')
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((result: boolean) => {
-          if (result) {
-            this.pageService.deletePage(this.selectionService.selectedPageIndex);
-            this.selectionService.selectPreviousPage();
-          }
-        });
-    }
+    this.pageService.deletePage(this.selectionService.selectedPageIndex);
   }
 
   updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {

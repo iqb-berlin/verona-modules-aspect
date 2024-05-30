@@ -26,6 +26,9 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
     lineHeight: number;
   };
 
+  static title: string = 'Text';
+  static icon: string = 'text_snippet';
+
   constructor(element?: TextProperties) {
     super(element);
     if (element && isValid(element)) {

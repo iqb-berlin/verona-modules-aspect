@@ -203,32 +203,7 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   deleteSection(): void {
-    const refs =
-      this.unitService.referenceManager.getSectionElementsReferences([this.section]);
-    if (refs.length > 0) {
-      this.dialogService.showDeleteReferenceDialog(refs)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((result: boolean) => {
-          if (result) {
-            ReferenceManager.deleteReferences(refs);
-            this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
-            this.selectionService.selectedSectionIndex =
-              Math.max(0, this.selectionService.selectedSectionIndex - 1);
-          } else {
-            this.messageService.showReferencePanel(refs);
-          }
-        });
-    } else {
-      this.dialogService.showConfirmDialog('Abschnitt löschen?')
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((result: boolean) => {
-          if (result) {
-            this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
-            this.selectionService.selectedSectionIndex =
-              Math.max(0, this.selectionService.selectedSectionIndex - 1);
-          }
-        });
-    }
+    this.sectionService.deleteSection(this.selectionService.selectedPageIndex, this.sectionIndex);
   }
 
   /* Add or remove elements to size array. Default value 1fr. */

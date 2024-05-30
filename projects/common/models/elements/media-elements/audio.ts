@@ -15,6 +15,9 @@ export class AudioElement extends PlayerElement implements PositionedUIElement, 
   src: string | null = null;
   position: PositionProperties;
 
+  static title: string = 'Audio';
+  static icon: string = 'volume_up';
+
   constructor(element?: AudioProperties) {
     super(element);
     if (element && isValid(element)) {

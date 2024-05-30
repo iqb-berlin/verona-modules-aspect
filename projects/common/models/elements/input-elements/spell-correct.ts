@@ -16,6 +16,9 @@ export class SpellCorrectElement extends TextInputElement implements PositionedU
   position: PositionProperties;
   styling: BasicStyles;
 
+  static title: string = 'Wort korrigieren';
+  static icon: string = 'format_strikethrough';
+
   constructor(element?: SpellCorrectProperties) {
     super(element);
     if (element && isValid(element)) {

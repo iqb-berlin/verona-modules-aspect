@@ -10,8 +10,7 @@ import { ReferenceList } from 'editor/src/app/services/reference-manager';
       <aspect-reference-list [refs]="data.refs"></aspect-reference-list>
     </div>
     <div mat-dialog-actions>
-      <button mat-button
-              [mat-dialog-close]="false">
+      <button mat-button [mat-dialog-close]="false">
         Abbrechen
       </button>
       <button mat-button [matTooltipPosition]="'above'"
@@ -23,7 +22,8 @@ import { ReferenceList } from 'editor/src/app/services/reference-manager';
     </div>
     `,
   styles: [
-    '.mat-mdc-dialog-content {display: flex; flex-direction: column;}'
+    '.mat-mdc-dialog-content {display: flex; flex-direction: column;}',
+    ':host ::ng-deep mat-icon {margin-right: 6px !important;}'
   ]
 })
 export class DeleteReferenceDialogComponent {

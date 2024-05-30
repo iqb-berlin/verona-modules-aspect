@@ -17,6 +17,9 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   crossOutChecked: boolean = false;
   styling: BasicStyles;
 
+  static title: string = 'Kontrollkästchen';
+  static icon: string = 'check_box';
+
   constructor(element?: CheckboxProperties) {
     super(element);
     if (element && isValid(element)) {

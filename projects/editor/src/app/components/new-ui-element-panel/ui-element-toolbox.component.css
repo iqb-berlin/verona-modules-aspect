@@ -6,6 +6,10 @@ button {
   display: inline-block;
 }
 
+.template-list {
+  margin-top: 10px;
+}
+
 .mat-expansion-panel-header {
   font-size: large;
 }
@@ -35,4 +39,15 @@ button {
 
 .button-group {
   border: 3px groove;
+}
+
+mat-tab-group {
+  overflow: auto;
+  padding: 0 5px;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-wrapper {height: 100%}
+
+:host ::ng-deep .mdc-tab {
+  min-width: unset;
 }

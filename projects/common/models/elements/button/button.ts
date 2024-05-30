@@ -23,6 +23,9 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   labelAlignment: 'super' | 'sub' | 'baseline' = 'baseline';
   styling: BasicStyles & BorderStyles;
 
+  static title: string = 'Knopf';
+  static icon: string = 'smart_button';
+
   constructor(element?: ButtonProperties) {
     super(element);
     if (element && isValid(element)) {

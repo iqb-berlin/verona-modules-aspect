@@ -10,13 +10,15 @@ import {
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from '../dialog.service';
 import { VeronaAPIService } from '../verona-api.service';
 import { SelectionService } from '../selection.service';
 import { IDService } from '../id.service';
 import { UnitDefinitionSanitizer } from '../sanitizer';
 import { HistoryService, UnitUpdateCommand } from 'editor/src/app/services/history.service';
+import { Page } from 'common/models/page';
+import { Section } from 'common/models/section';
 
 @Injectable({
   providedIn: 'root'
@@ -87,8 +89,14 @@ export class UnitService {
 
   updateUnitDefinition(command?: UnitUpdateCommand): void {
     if (command) {
-      const deletedData = command.command();
-      this.historyService.addCommand(command, deletedData);
+      let deletedData = command.command();
+      if (deletedData instanceof Promise) {
+        deletedData.then((deletedData) => {
+          this.historyService.addCommand(command, deletedData);
+        });
+      } else {
+        this.historyService.addCommand(command, deletedData);
+      }
     }
     this.veronaApiService.sendChanged(this.unit);
   }
@@ -154,5 +162,50 @@ export class UnitService {
   updateStateVariables(stateVariables: StateVariable[]): void {
     this.unit.stateVariables = stateVariables;
     this.updateUnitDefinition();
+  }
+
+  /* Check references and confirm */
+  prepareDelete(deletedObjectType: 'page' | 'section' | 'elements', object: Page | Section | UIElement[]): Promise<boolean> {
+    return new Promise((resolve) => {
+      let refs: ReferenceList[] = [];
+      let dialogText: string = '';
+      switch (deletedObjectType) {
+        case "page":
+          refs = this.referenceManager.getPageElementsReferences(
+            this.unit.pages[this.selectionService.selectedPageIndex]
+          );
+          const pageNavButtonRefs = this.referenceManager.getButtonReferencesForPage(
+            this.selectionService.selectedPageIndex
+          );
+          refs = refs.concat(pageNavButtonRefs);
+          dialogText = `Seite ${this.selectionService.selectedPageIndex + 1} löschen?`;
+          break;
+        case "section":
+          refs = this.referenceManager.getSectionElementsReferences([object as Section]);
+          dialogText = `Abschnitt ${this.selectionService.selectedSectionIndex + 1} löschen?`;
+          break;
+        case "elements":
+          refs = this.referenceManager.getElementsReferences(object as UIElement[]);
+          dialogText = 'Folgende Elemente werden gelöscht:';
+      }
+
+      this.dialogService.showDeleteConfirmDialog(
+        dialogText,
+        deletedObjectType == 'elements' ? object as UIElement[] : undefined,
+        refs)
+        .subscribe((result: boolean) => {
+          if (result) {
+            if (refs.length > 0) ReferenceManager.deleteReferences(refs); // TODO rollback?
+            resolve(true);
+          } else {
+            if (refs.length > 0) this.messageService.showReferencePanel(refs);
+            resolve(false);
+          }
+        });
+    });
+  }
+
+  applyTemplate(templateName: string) {
+    // TODO
   }
 }

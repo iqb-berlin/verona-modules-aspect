@@ -13,6 +13,9 @@ export class TriggerElement extends UIElement implements TriggerProperties {
   action: null | TriggerAction = null;
   actionParam: null | string | StateVariable = null;
 
+  static title: string = 'Auslöser';
+  static icon: string = 'bolt';
+
   constructor(element?: TriggerProperties) {
     super(element);
     if (element && isValid(element)) {

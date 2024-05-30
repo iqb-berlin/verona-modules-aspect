@@ -26,6 +26,9 @@ export class TextAreaElement extends TextInputElement implements PositionedUIEle
     lineHeight: number;
   };
 
+  static title: string = 'Eingabebereich';
+  static icon: string = 'edit_note';
+
   constructor(element?: TextAreaProperties) {
     super(element);
     if (element && isValid(element)) {

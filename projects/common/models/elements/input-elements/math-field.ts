@@ -19,6 +19,9 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     lineHeight: number;
   };
 
+  static title: string = 'Formelfeld';
+  static icon: string = 'calculate';
+
   constructor(element?: MathFieldProperties) {
     super(element);
     if (element && isValid(element)) {

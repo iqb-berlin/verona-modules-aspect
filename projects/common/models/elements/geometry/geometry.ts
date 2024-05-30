@@ -25,6 +25,9 @@ export class GeometryElement extends UIElement implements PositionedUIElement, G
   customToolbar: string = '';
   position: PositionProperties;
 
+  static title: string = 'Geometrie';
+  static icon: string = 'architecture';
+
   constructor(element?: GeometryProperties) {
     super(element);
     if (element && isValid(element)) {

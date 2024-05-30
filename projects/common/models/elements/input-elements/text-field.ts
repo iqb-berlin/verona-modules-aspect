@@ -28,6 +28,9 @@ export class TextFieldElement extends TextInputElement implements PositionedUIEl
     lineHeight: number;
   };
 
+  static title: string = 'Eingabefeld';
+  static icon: string = 'edit';
+
   constructor(element?: TextFieldProperties) {
     super(element);
     if (element && isValid(element)) {

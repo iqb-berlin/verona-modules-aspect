@@ -24,6 +24,9 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     lineHeight: number;
   };
 
+  static title: string = 'Formelbereich';
+  static icon: string = 'calculate';
+
   constructor(element?: TextAreaMathProperties) {
     super(element);
     if (element && isValid(element)) {

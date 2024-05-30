@@ -23,6 +23,9 @@ export class SliderElement extends InputElement implements PositionedUIElement, 
     lineHeight: number;
   };
 
+  static title: string = 'Schieberegler';
+  static icon: string = 'linear_scale';
+
   constructor(element?: SliderProperties) {
     super(element);
     if (element && isValid(element)) {

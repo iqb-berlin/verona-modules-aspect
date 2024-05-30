@@ -19,6 +19,9 @@ export class FrameElement extends UIElement implements PositionedUIElement, Fram
   position: PositionProperties;
   styling: BorderStyles & { backgroundColor: string; };
 
+  static title: string = 'Rahmen';
+  static icon: string = 'crop_square';
+
   constructor(element?: FrameProperties) {
     super(element);
     if (element && isValid(element)) {

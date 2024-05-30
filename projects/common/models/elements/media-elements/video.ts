@@ -16,6 +16,9 @@ export class VideoElement extends PlayerElement implements PositionedUIElement, 
   scale: boolean = false;
   position: PositionProperties;
 
+  static title: string = 'Video';
+  static icon: string = 'ondemand_video';
+
   constructor(element?: VideoProperties) {
     super(element);
     if (element && isValid(element)) {

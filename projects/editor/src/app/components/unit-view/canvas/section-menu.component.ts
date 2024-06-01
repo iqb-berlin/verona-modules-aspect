@@ -11,9 +11,9 @@ import { DropListElement } from 'common/models/elements/input-elements/drop-list
 import { IDService } from 'editor/src/app/services/id.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
-import { UnitService } from '../../services/unit-services/unit.service';
-import { DialogService } from '../../services/dialog.service';
-import { SelectionService } from '../../services/selection.service';
+import { UnitService } from '../../../services/unit-services/unit.service';
+import { DialogService } from '../../../services/dialog.service';
+import { SelectionService } from '../../../services/selection.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 
 @Component({

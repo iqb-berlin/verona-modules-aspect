@@ -5,11 +5,11 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { PositionedUIElement, UIElement } from 'common/models/elements/element';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
-import { UnitService } from '../../services/unit-services/unit.service';
-import { SelectionService } from '../../services/selection.service';
-import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
-import { SectionStaticComponent } from './section-static.component';
-import { SectionDynamicComponent } from './section-dynamic.component';
+import { UnitService } from '../../../services/unit-services/unit.service';
+import { SelectionService } from '../../../services/selection.service';
+import { CanvasElementOverlay } from './canvas-element-overlay';
+import { SectionStaticComponent } from './section-static/section-static.component';
+import { SectionDynamicComponent } from './section-dynamic/section-dynamic.component';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 

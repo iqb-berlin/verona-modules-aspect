@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { UIElement, UIElementType } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { UnitService } from '../../services/unit-services/unit.service';
+import { UnitService } from '../../../../services/unit-services/unit.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({

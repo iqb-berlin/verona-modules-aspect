@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
-import { CanvasElementOverlay } from 'editor/src/app/components/canvas/overlays/canvas-element-overlay';
+import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/canvas/canvas-element-overlay';
 import {
   ClozeChildOverlay
 } from 'common/components/compound-elements/cloze/cloze-child-overlay.component';

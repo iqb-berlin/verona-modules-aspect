@@ -10,7 +10,7 @@ import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
-import { CanvasElementOverlay } from '../canvas/overlays/canvas-element-overlay';
+import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/canvas/canvas-element-overlay';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 

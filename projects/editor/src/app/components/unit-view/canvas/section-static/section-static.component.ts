@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { Section } from 'common/models/section';
 import { UIElementType } from 'common/models/elements/element';
-import { UnitService } from '../../services/unit-services/unit.service';
-import { CanvasElementOverlay } from './overlays/canvas-element-overlay';
+import { UnitService } from '../../../../services/unit-services/unit.service';
+import { CanvasElementOverlay } from '../canvas-element-overlay';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({

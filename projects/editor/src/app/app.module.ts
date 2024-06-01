@@ -61,15 +61,15 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
   './components/new-ui-element-panel/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { CanvasComponent } from './components/canvas/canvas.component';
+import { CanvasComponent } from 'editor/src/app/components/unit-view/canvas/canvas.component';
 import { StaticCanvasOverlayComponent } from
-  './components/canvas/overlays/static-canvas-overlay.component';
+    'editor/src/app/components/unit-view/canvas/section-static/static-canvas-overlay.component';
 import { DynamicCanvasOverlayComponent } from
-  './components/canvas/overlays/dynamic-canvas-overlay.component';
+    'editor/src/app/components/unit-view/canvas/section-dynamic/dynamic-canvas-overlay.component';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import { SectionMenuComponent } from './components/canvas/section-menu.component';
-import { SectionStaticComponent } from './components/canvas/section-static.component';
-import { SectionDynamicComponent } from './components/canvas/section-dynamic.component';
+import { SectionMenuComponent } from 'editor/src/app/components/unit-view/canvas/section-menu.component';
+import { SectionStaticComponent } from 'editor/src/app/components/unit-view/canvas/section-static/section-static.component';
+import { SectionDynamicComponent } from 'editor/src/app/components/unit-view/canvas/section-dynamic/section-dynamic.component';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
 import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
@@ -98,8 +98,8 @@ import { ElementStylePropertiesComponent } from
   './components/properties-panel/style-properties-tab/element-style-properties.component';
 import { ElementModelPropertiesComponent, IsInputElementPipe } from
   './components/properties-panel/model-properties-tab/element-model-properties.component';
-import { DynamicSectionHelperGridComponent } from './components/canvas/dynamic-section-helper-grid.component';
-import { ElementGridChangeListenerDirective } from './components/canvas/element-grid-change-listener.directive';
+import { DynamicSectionHelperGridComponent } from 'editor/src/app/components/unit-view/canvas/section-dynamic/dynamic-section-helper-grid.component';
+import { ElementGridChangeListenerDirective } from 'editor/src/app/components/unit-view/canvas/section-dynamic/element-grid-change-listener.directive';
 
 import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';

@@ -1,7 +1,7 @@
 import {
   Component, Input, ViewChild, ElementRef
 } from '@angular/core';
-import { CanvasElementOverlay } from './canvas-element-overlay';
+import { CanvasElementOverlay } from '../canvas-element-overlay';
 
 @Component({
   selector: 'aspect-dynamic-canvas-overlay',

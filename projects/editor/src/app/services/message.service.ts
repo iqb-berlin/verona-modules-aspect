@@ -2,9 +2,14 @@
 import {
   Component, Inject, Injectable, Input, Optional
 } from '@angular/core';
-import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarModule, MatSnackBarRef } from '@angular/material/snack-bar';
 import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { UIElement } from 'common/models/elements/element';
+import { ReferenceListComponent } from 'editor/src/app/components/reference-list.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { NgForOf, NgIf } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -49,19 +54,28 @@ export class MessageService {
 
 @Component({
   selector: 'aspect-reference-list-snackbar',
+  standalone: true,
+  imports: [
+    ReferenceListComponent,
+    MatSnackBarModule,
+    MatButtonModule
+  ],
   template: `
-    <aspect-reference-list matSnackBarLabel [refs]="refs || data"></aspect-reference-list>
-    <span matSnackBarActions>
-      <button mat-stroked-button matSnackBarAction (click)="snackBarRef.dismiss()">
-        Schließen
-      </button>
-    </span>
+    <div [style.padding.px]="16">
+      <aspect-reference-list matSnackBarLabel [refs]="refs || data"></aspect-reference-list>
+      <span matSnackBarActions>
+        <button mat-stroked-button matSnackBarAction (click)="snackBarRef.dismiss()">
+          Schließen
+        </button>
+      </span>
+    </div>
   `,
   styles: [`
     button {
       color: var(--mat-snack-bar-button-color) !important;
       --mat-mdc-button-persistent-ripple-color: currentColor !important;
     }
+    aspect-reference-list {color: var(--mdc-snackbar-supporting-text-color);}
     `
   ]
 })
@@ -74,6 +88,15 @@ export class ReferenceListSnackbarComponent {
 
 @Component({
   selector: 'aspect-invalid-reference-elements-list-snackbar',
+  standalone: true,
+  imports: [
+    NgIf,
+    NgForOf,
+    MatListModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatButtonModule
+  ],
   template: `
     Invalide Referenzen bei folgenden <br> Elementen wurden entfernt:
     <mat-list>

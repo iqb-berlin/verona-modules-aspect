@@ -26,7 +26,6 @@ import { ElementListComponent } from 'editor/src/app/components/element-list.com
     </ng-container>
   `,
   styles: [
-    'mat-icon {color: inherit !important;}',
     '.mat-mdc-list-item-title {color: inherit !important;}'
   ]
 })

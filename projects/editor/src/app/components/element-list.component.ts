@@ -26,7 +26,8 @@ import { NgForOf } from '@angular/common';
     </mat-list>
   `,
   styles: [
-
+    'mat-icon {color: inherit !important;}',
+    '.mat-mdc-list-item-title {color: inherit !important;}'
   ]
 })
 export class ElementListComponent {

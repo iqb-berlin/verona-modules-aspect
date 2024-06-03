@@ -3,6 +3,7 @@ import {
   ViewChildren, QueryList, ViewChild
 } from '@angular/core';
 import { Section } from 'common/models/section';
+import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { CanvasElementOverlay } from '../canvas-element-overlay';
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
@@ -16,7 +17,7 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
          [style.grid-auto-rows]="'auto'"
          [style.border]="isSelected ? '2px solid #ff4081': '1px dotted'"
          [style.min-height.px]="section.autoRowSize ? 50 : null"
-         [style.height.px]="section.autoRowSize ? dragging ? currentHeight : null : section.height"
+         [style.height.px]="section.autoRowSize ? null : section.height"
          [style.background-color]="section.backgroundColor"
          app-dynamic-section-helper-grid
          [autoColumnSize]="section.autoColumnSize"
@@ -50,7 +51,9 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [cdkDropListData]="{ sectionIndex: sectionIndex }"
                                      [cdkDropListConnectedTo]="dropListList"
                                      [style.position]="'relative'"
-                                     [style.pointer-events]="dragging ? 'none' : 'auto'"
+                                     [style.pointer-events]="dragNDropService.isDragInProgress &&
+                                                             element.type == 'frame' ?
+                                                             'none' : 'auto'"
                                      appElementGridChangeListener
                                      [gridColumn]="element.position.gridColumn"
                                      [gridColumnRange]="element.position.gridColumnRange"
@@ -62,7 +65,6 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
     </div>
   `
 })
-
 export class SectionDynamicComponent {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
@@ -74,6 +76,5 @@ export class SectionDynamicComponent {
   @ViewChild(DynamicSectionHelperGridComponent) helperGrid!: DynamicSectionHelperGridComponent;
   @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
 
-  dragging = false;
-  currentHeight: number = 0;
+  constructor(protected dragNDropService: DragNDropService) { }
 }

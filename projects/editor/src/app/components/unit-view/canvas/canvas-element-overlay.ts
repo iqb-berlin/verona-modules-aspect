@@ -15,6 +15,7 @@ import { MathTableComponent } from 'common/components/input-elements/math-table.
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -32,6 +33,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   constructor(public selectionService: SelectionService,
               protected unitService: UnitService,
               protected elementService: ElementService,
+              protected dragNDropService: DragNDropService,
               private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {

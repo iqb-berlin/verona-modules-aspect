@@ -13,10 +13,10 @@ import { CanvasElementOverlay } from '../canvas-element-overlay';
          [class.centered-vertical]="element.dimensions.isHeightFixed"
          [class.temporaryHighlight]="temporaryHighlight"
          tabindex="-1"
-         cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
          (click)="selectElement($event)" (dblclick)="openEditDialog()"
-         (cdkDragStarted)="selectElement(); moveDragStart()"
-         (cdkDragEnded)="moveDragEnd()"
+         cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
+         (cdkDragStarted)="startDrag()"
+         (cdkDragEnded)="endDrag()"
          [style.outline]="isSelected ? 'purple solid 1px' : ''"
          [style.z-index]="isSelected ? 2 : 1">
       <div *cdkDragPlaceholder></div>
@@ -45,12 +45,23 @@ export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {
   @ViewChild('draggableElement') dragElement!: ElementRef;
   bodyElement: HTMLElement = document.body;
 
-  moveDragStart(): void {
+  startDrag(): void {
+    this.selectElement();
+    this.setCursorFix();
+    this.dragNDropService.isDragInProgress = true;
+  }
+
+  endDrag(): void {
+    this.unsetCursorFix();
+    this.dragNDropService.isDragInProgress = false;
+  }
+
+  setCursorFix(): void {
     this.bodyElement.classList.add('inheritCursors');
     this.bodyElement.style.cursor = 'move';
   }
 
-  moveDragEnd(): void {
+  unsetCursorFix(): void {
     this.bodyElement.classList.remove('inheritCursors');
     this.bodyElement.style.cursor = 'unset';
   }

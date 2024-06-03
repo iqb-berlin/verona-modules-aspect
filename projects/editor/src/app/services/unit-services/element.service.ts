@@ -25,7 +25,7 @@ import {
 import { ElementFactory } from 'common/util/element.factory';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { MessageService } from 'common/services/message.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { TextElement } from 'common/models/elements/text/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';

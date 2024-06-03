@@ -4,8 +4,8 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { MessageService } from 'common/services/message.service';
-import { CompoundElement, UIElement } from 'common/models/elements/element';
+import { MessageService } from 'editor/src/app/services/message.service';
+import { CompoundElement, Measurement, UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';

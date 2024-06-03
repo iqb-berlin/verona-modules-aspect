@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Unit } from 'common/models/unit';
 import { UIElement } from 'common/models/elements/element';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { MessageService } from 'common/services/message.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({

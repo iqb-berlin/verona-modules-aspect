@@ -81,11 +81,6 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
 import { MeasurePipe } from './pipes/measure.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel.component';
-import { ReferenceListComponent } from './components/reference-list.component';
-import {
-  FixedReferencesSnackbarComponent,
-  ReferenceListSnackbarComponent
-} from './services/message.service';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
 import { MathTableComponent } from './components/input-elements/math-table.component';
 
@@ -167,9 +162,6 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     DynamicRowsDirective,
     MeasurePipe,
     TextImagePanelComponent,
-    ReferenceListComponent,
-    ReferenceListSnackbarComponent,
-    FixedReferencesSnackbarComponent,
     UnitDefErrorDialogComponent,
     TooltipComponent,
     TooltipEventTooltipDirective,
@@ -221,7 +213,6 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     MathFieldComponent,
     MeasurePipe,
     TextImagePanelComponent,
-    ReferenceListComponent,
     TextAreaMathComponent,
     MathTableComponent
   ]

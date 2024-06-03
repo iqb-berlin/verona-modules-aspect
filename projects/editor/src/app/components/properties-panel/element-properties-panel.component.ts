@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
-import { MessageService } from 'common/services/message.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from '../../services/unit-services/unit.service';

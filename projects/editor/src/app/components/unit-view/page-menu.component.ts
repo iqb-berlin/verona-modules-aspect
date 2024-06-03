@@ -13,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Page } from 'common/models/page';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
-import { MessageService } from 'common/services/message.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { Subject } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageService } from 'editor/src/app/services/unit-services/page.service';

@@ -6,7 +6,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { MessageService } from 'common/services/message.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { IDService } from 'editor/src/app/services/id.service';
 import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';

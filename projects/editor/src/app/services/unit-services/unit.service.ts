@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {  Subject } from 'rxjs';
 import { FileService } from 'common/services/file.service';
-import { MessageService } from 'common/services/message.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {

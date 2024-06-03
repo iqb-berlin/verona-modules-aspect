@@ -23,7 +23,7 @@ import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { RadioButtonGroupComplexElement } from 'common/models/elements/input-elements/radio-button-group-complex';
 import { RadioButtonGroupElement } from 'common/models/elements/input-elements/radio-button-group';
-import { MessageService } from 'common/services/message.service';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
   BasicStyles,

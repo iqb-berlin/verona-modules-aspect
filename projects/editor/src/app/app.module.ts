@@ -67,7 +67,9 @@ import { StaticCanvasOverlayComponent } from
 import { DynamicCanvasOverlayComponent } from
     'editor/src/app/components/unit-view/canvas/section-dynamic/dynamic-canvas-overlay.component';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import { SectionMenuComponent } from 'editor/src/app/components/unit-view/canvas/section-menu.component';
+import {
+  SectionMenuComponent,
+} from 'editor/src/app/components/unit-view/canvas/section-menu.component';
 import { SectionStaticComponent } from 'editor/src/app/components/unit-view/canvas/section-static/section-static.component';
 import { SectionDynamicComponent } from 'editor/src/app/components/unit-view/canvas/section-dynamic/section-dynamic.component';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
@@ -125,6 +127,8 @@ import {
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
 import { PageMenu } from 'editor/src/app/components/unit-view/page-menu.component';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { ReferenceListComponent } from 'editor/src/app/components/reference-list.component';
+import { ElementListComponent } from 'editor/src/app/components/element-list.component';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -231,7 +235,9 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     IsInputElementPipe,
     OptionListPanelComponent,
     EleSpecificPropsComponent,
-    PageMenu
+    PageMenu,
+    ReferenceListComponent,
+    ElementListComponent
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService },

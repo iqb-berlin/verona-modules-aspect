@@ -9,16 +9,8 @@ import { UIElement } from 'common/models/elements/element';
     <div mat-dialog-title>Löschen bestätigen</div>
     <div mat-dialog-content>
       {{data.text}}
-      <mat-list *ngIf="data.elementList && data.elementList.length > 0">
-        <mat-list-item *ngFor="let element of data.elementList">
-          <mat-icon matListItemIcon>
-            {{$any(element.constructor).icon}}
-          </mat-icon>
-          <div matListItemTitle>
-            {{$any(element.constructor).title}}: <i>{{element.id}}</i>
-          </div>
-        </mat-list-item>
-      </mat-list>
+      <aspect-element-list *ngIf="data.elementList && data.elementList.length > 0"
+                           [elements]="data.elementList"></aspect-element-list>
       <fieldset *ngIf="data.refs && data.refs.length > 0">
         <legend [style.background-color]="'orange'">Referenzen festgestellt</legend>
         <aspect-reference-list [refs]="data.refs"></aspect-reference-list>
@@ -40,7 +32,5 @@ import { UIElement } from 'common/models/elements/element';
   ]
 })
 export class DeleteConfirmationDialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, elementList?: UIElement[], refs?: ReferenceList[] }) {
-    console.log('dialog refs', this.data);
-  }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { text: string, elementList?: UIElement[], refs?: ReferenceList[] }) { }
 }

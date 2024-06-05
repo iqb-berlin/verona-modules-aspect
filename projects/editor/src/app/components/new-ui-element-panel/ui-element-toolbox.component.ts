@@ -23,6 +23,7 @@ import { FrameElement } from 'common/models/elements/frame/frame';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TextElement } from 'common/models/elements/text/text';
+import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 
 @Component({
   selector: 'aspect-ui-element-toolbox',
@@ -35,12 +36,22 @@ export class UiElementToolboxComponent {
 
   constructor(private selectionService: SelectionService,
               public unitService: UnitService,
-              private elementService: ElementService) { }
+              private elementService: ElementService,
+              protected dragNDropService: DragNDropService) { }
 
   addUIElement(elementType: UIElementType): void {
     this.elementService.addElementToSection(
       elementType,
       this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedSectionIndex]);
+  }
+
+  startDrag($event: DragEvent, elementType: string): void {
+    this.dragNDropService.isDragInProgress = true;
+    $event.dataTransfer?.setData('elementType', elementType);
+  }
+
+  endDrag(): void {
+    this.dragNDropService.isDragInProgress = false;
   }
 
   applyTemplate(templateName: string) {

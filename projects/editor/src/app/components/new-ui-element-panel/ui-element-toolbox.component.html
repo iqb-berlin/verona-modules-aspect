@@ -15,22 +15,26 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('text')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text');">
+                  draggable="true" (dragstart)="startDrag($event, 'text')"
+                  (dragend)="endDrag()">
             <mat-icon>{{TextElement.icon}}</mat-icon>
             {{TextElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('image')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','image')">
+                  draggable="true" (dragstart)="startDrag($event, 'image')"
+                  (dragend)="endDrag()">
             <mat-icon>{{ImageElement.icon}}</mat-icon>
             {{ImageElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('audio')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','audio')">
+                  draggable="true" (dragstart)="startDrag($event, 'audio')"
+                  (dragend)="endDrag()">
             <mat-icon>{{AudioElement.icon}}</mat-icon>
             {{AudioElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('video')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','video')">
+                  draggable="true" (dragstart)="startDrag($event, 'video')"
+                  (dragend)="endDrag()">
             <mat-icon>{{VideoElement.icon}}</mat-icon>
             {{VideoElement.title}}
           </button>
@@ -42,22 +46,26 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('text-field')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-field')">
+                  draggable="true" (dragstart)="startDrag($event, 'text-field')"
+                  (dragend)="endDrag()">
             <mat-icon>{{TextFieldElement.icon}}</mat-icon>
             {{TextFieldElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('text-area')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area')">
+                  draggable="true" (dragstart)="startDrag($event, 'text-area')"
+                  (dragend)="endDrag()">
             <mat-icon>{{TextAreaElement.icon}}</mat-icon>
             {{TextAreaElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('cloze')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','cloze')">
+                  draggable="true" (dragstart)="startDrag($event,'cloze')"
+                  (dragend)="endDrag()">
             <mat-icon>{{ClozeElement.icon}}</mat-icon>
             {{ClozeElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('spell-correct')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','spell-correct')">
+                  draggable="true" (dragstart)="startDrag($event,'spell-correct')"
+                  (dragend)="endDrag()">
             <mat-icon>{{SpellCorrectElement.icon}}</mat-icon>
             {{SpellCorrectElement.title}}
           </button>
@@ -67,16 +75,19 @@
               {{'toolbox.formula' | translate }}
             </button>
             <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('math-field')"
-                    draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','math-field')">
+                    draggable="true" (dragstart)="startDrag($event,'math-field')"
+                    (dragend)="endDrag()">
               {{'toolbox.math-field' | translate }}
             </button>
             <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('text-area-math')"
-                    draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','text-area-math')">
+                    draggable="true" (dragstart)="startDrag($event,'text-area-math')"
+                    (dragend)="endDrag()">
               {{'toolbox.math-area' | translate }}
             </button>
           </div>
           <button mat-stroked-button (click)="addUIElement('math-table')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','math-table');">
+                  draggable="true" (dragstart)="startDrag($event,'math-table');"
+                  (dragend)="endDrag()">
             <mat-icon>{{MathTableElement.icon}}</mat-icon>
             {{MathTableElement.title}}
           </button>
@@ -93,36 +104,41 @@
               {{'toolbox.radio' | translate }}
             </button>
             <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio')"
-                    draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio')">
+                    draggable="true" (dragstart)="startDrag($event,'radio')">
               {{'toolbox.simple' | translate }}
             </button>
             <button *ngIf="hoverRadioButton" mat-raised-button (click)="addUIElement('radio-group-images')"
-                    draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','radio-group-images')">
+                    draggable="true" (dragstart)="startDrag($event,'radio-group-images')">
               {{'toolbox.complex' | translate }}
             </button>
           </div>
           <button mat-stroked-button (click)="addUIElement('likert')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','likert')">
+                  draggable="true" (dragstart)="startDrag($event,'likert')"
+                  (dragend)="endDrag()">
             <mat-icon>{{LikertElement.icon}}</mat-icon>
             {{LikertElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('dropdown')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','dropdown')">
+                  draggable="true" (dragstart)="startDrag($event,'dropdown')"
+                  (dragend)="endDrag()">
             <mat-icon>{{DropdownElement.icon}}</mat-icon>
             {{DropdownElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('checkbox')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','checkbox')">
+                  draggable="true" (dragstart)="startDrag($event,'checkbox')"
+                  (dragend)="endDrag()">
             <mat-icon>{{CheckboxElement.icon}}</mat-icon>
             {{CheckboxElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('slider')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','slider')">
+                  draggable="true" (dragstart)="startDrag($event,'slider')"
+                  (dragend)="endDrag()">
             <mat-icon>{{SliderElement.icon}}</mat-icon>
             {{SliderElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('hotspot-image')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','hotspot-image')">
+                  draggable="true" (dragstart)="startDrag($event,'hotspot-image')"
+                  (dragend)="endDrag()">
             <mat-icon>{{HotspotImageElement.icon}}</mat-icon>
             {{HotspotImageElement.title}}
           </button>
@@ -134,7 +150,8 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('drop-list')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','drop-list')">
+                  draggable="true" (dragstart)="startDrag($event,'drop-list')"
+                  (dragend)="endDrag()">
             <mat-icon>{{DropListElement.icon}}</mat-icon>
             {{DropListElement.title}}
           </button>
@@ -146,22 +163,26 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <button mat-stroked-button (click)="addUIElement('button')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','button')">
+                  draggable="true" (dragstart)="startDrag($event,'button')"
+                  (dragend)="endDrag()">
             <mat-icon>{{ButtonElement.icon}}</mat-icon>
             {{ButtonElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('frame')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','frame')">
+                  draggable="true" (dragstart)="startDrag($event,'frame')"
+                  (dragend)="endDrag()">
             <mat-icon>{{FrameElement.icon}}</mat-icon>
             {{FrameElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('geometry')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','geometry');">
+                  draggable="true" (dragstart)="startDrag($event,'geometry');"
+                  (dragend)="endDrag()">
             <mat-icon>{{GeometryElement.icon}}</mat-icon>
             {{GeometryElement.title}}
           </button>
           <button mat-stroked-button (click)="addUIElement('trigger')"
-                  draggable="true" (dragstart)="$event.dataTransfer?.setData('elementType','trigger')">
+                  draggable="true" (dragstart)="startDrag($event,'trigger')"
+                  (dragend)="endDrag()">
             <mat-icon>{{TriggerElement.icon}}</mat-icon>
             {{TriggerElement.title}}
           </button>

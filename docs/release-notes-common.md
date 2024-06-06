@@ -1,5 +1,9 @@
 Allgemein
 =========
+##next
+### Fehlerbehebungen
+- Hoch- und Tiefgestellter Text in Text-Elementen verursacht keine Änderunge der Zeilenhöhe mehr
+
 ## editor/2.4.9+player/2.4.10
 ### Fehlerbehebungen
 - Optionstabellen und Optionsfelder mit Bildern:

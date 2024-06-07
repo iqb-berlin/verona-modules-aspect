@@ -5,7 +5,7 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {
-  CompoundElement, UIElement
+  CompoundElement, PositionedUIElement, UIElement
 } from 'common/models/elements/element';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { StateVariable } from 'common/models/state-variable';
@@ -19,6 +19,15 @@ import { UnitDefinitionSanitizer } from '../sanitizer';
 import { HistoryService, UnitUpdateCommand } from 'editor/src/app/services/history.service';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
+import { MatDialog } from '@angular/material/dialog';
+import { TableWizardComponent } from 'editor/src/app/components/dialogs/wizards/table-wizard.component';
+import {
+  BorderStyles,
+  PositionProperties,
+  PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
+import { FrameElement } from 'common/models/elements/frame/frame';
+import { ElementFactory } from 'common/util/element.factory';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +45,7 @@ export class UnitService {
               private messageService: MessageService,
               private dialogService: DialogService,
               private historyService: HistoryService,
-
+              public dialog: MatDialog,
               private idService: IDService) {
     this.unit = new Unit();
     this.referenceManager = new ReferenceManager(this.unit);
@@ -206,6 +215,64 @@ export class UnitService {
   }
 
   applyTemplate(templateName: string) {
-    // TODO
+    this.openTableWizard();
+  }
+
+  openTableWizard(): void {
+    const selectedSection = this.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedSectionIndex];
+    const dialogRef = this.dialog.open(TableWizardComponent, {
+      data: { section: selectedSection },
+      height: '600px',
+      width: '800px'
+    });
+
+    dialogRef.afterClosed().subscribe((result: { newSection: Section, startRow: number, startColumn: number, endRow: number, endColumn: number, borderStyle: BorderStyles }) => {
+      console.log('result', result);
+      if (result) {
+        // @ts-ignore
+        this.createBorderElements(...Object.values(result));
+      }
+    });
+  }
+
+  private createBorderElements(newSection: Section,
+                               startRow: number, startColumn: number, endRow: number, endColumn: number,
+                               borderStyle: BorderStyles): void {
+    console.log('createBorderElements', arguments);
+    for (let row = startRow; row <= endRow; row += 1) {
+      for (let column = startColumn; column <= endColumn; column += 1) {
+        const skippedBorders: string[] = [];
+        if (row !== startRow) skippedBorders.push('top');
+        if (column !== startColumn) skippedBorders.push('left');
+
+        this.addFrameToSection(newSection, row + 1, column + 1, borderStyle, skippedBorders);
+      }
+    }
+
+    this.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedSectionIndex] = newSection;
+  }
+
+  private addFrameToSection(section: Section,
+                            positionX: number, positionY: number,
+                            borderStyle: BorderStyles,
+                            skipBorderSide: string[] = []): void {
+    let id = `frame-${positionX}-${positionY}`;
+    if (!this.idService.isIdAvailable(id)) id = this.idService.getAndRegisterNewID('frame');
+
+    section.addElement(ElementFactory.createElement({
+      type: 'frame',
+      hasBorderTop: !skipBorderSide.includes('top'),
+      hasBorderBottom: !skipBorderSide.includes('bottom'),
+      hasBorderLeft: !skipBorderSide.includes('left'),
+      hasBorderRight: !skipBorderSide.includes('right'),
+      position: PropertyGroupGenerators.generatePositionProps({
+        gridRow: positionX,
+        gridColumn: positionY
+      }),
+      styling: borderStyle,
+      id: id
+    }) as PositionedUIElement);
   }
 }

@@ -1,5 +1,5 @@
 import {
-  Component, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef
+  Component, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef, Pipe, PipeTransform, OnInit
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -19,9 +19,9 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
 @Component({
   selector: 'aspect-section-menu',
   template: `
-    <button mat-mini-fab [matMenuTriggerFor]="elementListMenu"
-            [matTooltip]="'Elementliste'"
-            [matTooltipPosition]="'left'">
+    <button mat-mini-fab [matTooltip]="'Elementliste'" [matTooltipPosition]="'left'"
+            [matMenuTriggerFor]="elementListMenu"
+            (click)="updateElementList()">
       <mat-icon>list</mat-icon>
     </button>
     <mat-menu #elementListMenu="matMenu" xPosition="before">
@@ -29,9 +29,14 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
         <ng-container *ngIf="section.elements.length === 0">
           Keine Elemente im Abschnitt
         </ng-container>
-        <mat-list-item *ngFor="let element of section.elements"
+        <mat-list-item *ngFor="let element of elementList"
                        (click)="selectElement(element)">
-          {{element.id}}
+          <mat-icon matListItemIcon [style.margin-right.px]="6">
+            {{ $any(element.constructor).icon }}
+          </mat-icon>
+          <div matListItemTitle>
+            {{ $any(element.constructor).title }}: <i>{{ element.id }}</i>
+          </div>
         </mat-list-item>
       </mat-action-list>
     </mat-menu>
@@ -170,7 +175,7 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
     '::ng-deep .activeAfterID-menu .mat-mdc-form-field {width:90%; margin-left: 10px;}'
   ]
 })
-export class SectionMenuComponent implements OnDestroy {
+export class SectionMenuComponent implements OnInit, OnDestroy {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() allowMoveUp!: boolean;
@@ -179,6 +184,8 @@ export class SectionMenuComponent implements OnDestroy {
   @Output() moveSection = new EventEmitter<'up' | 'down'>();
   @Output() duplicateSection = new EventEmitter();
   @Output() selectElementComponent = new EventEmitter<UIElement>();
+
+  elementList: UIElement[] = [];
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
   private ngUnsubscribe = new Subject<void>();
@@ -190,6 +197,19 @@ export class SectionMenuComponent implements OnDestroy {
               private messageService: MessageService,
               private idService: IDService,
               private clipboard: Clipboard) { }
+
+  ngOnInit(): void {
+    this.updateElementList();
+  }
+
+  updateElementList(): void {
+    this.elementList = this.section.elements.sort((el1, el2) => {
+      if (el1.type == 'frame' && el2.type !== 'frame') return -1;
+      if (el1.type !== 'frame' && el2.type == 'frame') return 1;
+      return 0;
+    });
+  }
+
 
   updateModel(
     property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]

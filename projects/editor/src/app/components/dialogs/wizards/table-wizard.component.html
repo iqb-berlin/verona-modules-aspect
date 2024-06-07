@@ -1,0 +1,163 @@
+<div mat-dialog-title>Löschen bestätigen</div>
+<div mat-dialog-content>
+  <mat-stepper [linear]=true [(selectedIndex)]="selectedStep">
+<!--  <mat-stepper [linear]=true >-->
+    <mat-step label="Raster vorbereiten">
+        <mat-radio-group [style]="'display: flex; flex-direction: column'"
+                         [(ngModel)]="createNewGrid"
+                         (ngModelChange)="setActiveSection()">
+          <mat-radio-button [value]="false">
+            Bestehendes Raster verwenden
+          </mat-radio-button>
+          <mat-radio-button [value]="true">
+            Raster anpassen
+          </mat-radio-button>
+
+      <div class="wrapper">
+          <fieldset>
+            <legend>{{ 'section-menu.rows' | translate }}</legend>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
+              <input matInput type="number" [disabled]="!createNewGrid"
+                     [value]="$any(activeSection.gridRowSizes.length)"
+                     (click)="$any($event).stopPropagation()"
+                     (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0)">
+            </mat-form-field>
+            <ng-container *ngFor="let size of activeSection.gridRowSizes ; let i = index">
+              <aspect-size-input-panel [disabled]="!createNewGrid"
+                                       [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
+                                       [value]="size.value"
+                                       [unit]="size.unit"
+                                       [allowedUnits]="['px', 'fr']"
+                                       (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
+              </aspect-size-input-panel>
+            </ng-container>
+          </fieldset>
+          <fieldset>
+            <legend>{{ 'section-menu.columns' | translate }}</legend>
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
+              <input matInput type="number" [disabled]="!createNewGrid"
+                     [value]="$any(activeSection.gridColumnSizes.length)"
+                     (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0)">
+            </mat-form-field>
+            <ng-container *ngFor="let size of activeSection.gridColumnSizes; let i = index">
+              <aspect-size-input-panel [disabled]="!createNewGrid"
+                                       [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
+                                       [value]="size.value"
+                                       [unit]="size.unit"
+                                       [allowedUnits]="['px', 'fr']"
+                                       (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
+              </aspect-size-input-panel>
+            </ng-container>
+          </fieldset>
+      </div>
+        </mat-radio-group>
+    </mat-step>
+    <mat-step label="Tabellenbereich festlegen">
+      <div>
+        <mat-radio-group [style]="'display: flex; flex-direction: column'"
+                         [(ngModel)]="useWholeGrid">
+          <mat-radio-button [value]="true">
+            Tabelle auf komplettes Raster anwenden
+          </mat-radio-button>
+          <mat-radio-button [value]="false">
+            Tabellenbereich definieren
+          </mat-radio-button>
+          <div [style]="'display: flex; flex-direction: column; margin-left: 40px;'">
+            <div class="x-y-inputs">
+              <mat-form-field>
+                <mat-label>Start-Zeile</mat-label>
+                <mat-select [(ngModel)]="tableStartRow" [disabled]="useWholeGrid">
+                  <mat-option *ngFor="let row of activeSection.gridRowSizes; let i = index;" [value]="i">
+                    {{ i + 1 }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Start-Spalte</mat-label>
+                <mat-select [(ngModel)]="tableStartColumn" [disabled]="useWholeGrid">
+                  <mat-option *ngFor="let column of activeSection.gridColumnSizes; let i = index;" [value]="i">
+                    {{ i + 1 }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="x-y-inputs">
+              <mat-form-field>
+                <mat-label>End-Zeile {{tableEndRow}}</mat-label>
+                <mat-select [(ngModel)]="tableEndRow" [disabled]="useWholeGrid">
+                  <mat-option *ngFor="let row of activeSection.gridRowSizes; let i = index;" [value]="i">
+                    {{ i + 1 }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>End-Spalte {{tableEndColumn}}</mat-label>
+                <mat-select [(ngModel)]="tableEndColumn" [disabled]="useWholeGrid">
+                  <mat-option *ngFor="let column of activeSection.gridColumnSizes; let i = index;" [value]="i">
+                    {{ i + 1 }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-radio-group>
+      </div>
+      <div [style]="'align-self: center; margin: 15px; display: flex; flex-direction: row; gap: 15px;'">
+      </div>
+    </mat-step>
+    <mat-step label="Tabelleneigenschaften">
+      <div class="table-props-page">
+        <mat-form-field>
+          <mat-label>Rahmenradius</mat-label>
+          <input matInput type="number" required [(ngModel)]="borderStyle.borderRadius">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>{{'propertiesPanel.borderColor' | translate }}</mat-label>
+          <input matInput type="text" [value]="borderStyle.borderColor"
+                 (input)="borderStyle.borderColor = $any($event.target).value">
+          <button mat-icon-button matSuffix (click)="borderColorInput.click()">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </mat-form-field>
+        <input matInput type="color" hidden #borderColorInput
+               [value]="borderStyle.borderColor"
+               (input)="borderStyle.borderColor = $any($event.target).value">
+
+        <mat-form-field appearance="fill">
+          <mat-label>{{'propertiesPanel.borderStyle' | translate }}</mat-label>
+          <mat-select [value]="borderStyle.borderStyle"
+                      (selectionChange)="borderStyle.borderStyle = $event.value">
+            <mat-option *ngFor="let option of ['solid', 'dotted', 'dashed',
+                                                   'double', 'groove', 'ridge', 'inset', 'outset']"
+                        [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>{{'propertiesPanel.borderWidth' | translate }}</mat-label>
+          <input matInput type="number"
+                 [ngModel]="borderStyle.borderWidth"
+                 (ngModelChange)="borderStyle.borderWidth = $event">
+        </mat-form-field>
+      </div>
+    </mat-step>
+  </mat-stepper>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button *ngIf="selectedStep < 2" (click)="nextStep()">
+    Weiter
+  </button>
+  <button mat-raised-button *ngIf="selectedStep === 2"
+          color="primary"
+          [mat-dialog-close]="{ activeSection, tableStartRow, tableStartColumn, tableEndRow, tableEndColumn, borderStyle }">
+    Tabelle anlegen
+  </button>
+  <button mat-stroked-button [disabled]="selectedStep === 0" (click)="previousStep()">
+    Zurück
+  </button>
+  <button mat-stroked-button mat-dialog-close>Abbrechen</button>
+</div>

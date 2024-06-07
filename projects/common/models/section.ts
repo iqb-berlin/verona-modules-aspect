@@ -20,7 +20,7 @@ export class Section {
   dynamicPositioning: boolean = true;
   autoColumnSize: boolean = true;
   autoRowSize: boolean = true;
-  gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
+  gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }];
   gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }];
   visibilityDelay: number = 0;
   animatedVisibility: boolean = false;

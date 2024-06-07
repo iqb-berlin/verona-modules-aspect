@@ -188,7 +188,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     GetAnchorIdsPipe,
     GetStateVariablePipe,
     ScrollPageIndexPipe,
-    SizeInputPanelComponent,
     ComboButtonComponent,
     DeleteReferenceDialogComponent,
     VisibilityRuleEditorComponent,

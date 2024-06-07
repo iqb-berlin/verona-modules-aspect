@@ -10,13 +10,13 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 @Component({
   selector: '[app-dynamic-section-helper-grid]',
   template: `
-    <ng-container *ngFor="let column of columnCountArray; let x = index">
-      <ng-container *ngFor="let row of rowCountArray; let y = index">
+    <ng-container *ngFor="let row of rowCountArray; let x = index;">
+      <ng-container *ngFor="let column of columnCountArray; let y = index;">
         <div class="grid-placeholder"
-             [style.grid-column-start]="x + 1"
-             [style.grid-column-end]="x + 1"
-             [style.grid-row-start]="y + 1"
-             [style.grid-row-end]="y + 1"
+             [style.grid-row-start]="x + 1"
+             [style.grid-row-end]="x + 1"
+             [style.grid-column-start]="y + 1"
+             [style.grid-column-end]="y + 1"
              cdkDropList [cdkDropListData]="{ sectionIndex: sectionIndex, gridCoordinates: [x + 1, y + 1] }"
              (cdkDropListDropped)="drop($event)"
              id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}"
@@ -117,7 +117,7 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
         'gridRow',
         event.container.data.gridCoordinates[1]
       );
-    } else if (event.item.data.dragType === 'resize') {
+    } else if (event.item.data.dragType === 'resize') { // TODO unused
       this.elementService.updateElementsPositionProperty(
         [dragItemData.element],
         'gridColumnEnd',

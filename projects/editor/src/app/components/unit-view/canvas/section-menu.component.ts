@@ -72,32 +72,6 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
         </ng-container>
         <div *ngIf="section.dynamicPositioning">
           <fieldset>
-            <legend>{{'section-menu.columns' | translate }}</legend>
-            <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
-                          (click)="$any($event).stopPropagation()"
-                          (change)="updateModel('autoColumnSize', $event.checked)">
-              {{'section-menu.autoColumnSize' | translate }}
-            </mat-checkbox>
-            <ng-container *ngIf="!section.autoColumnSize">
-              <mat-form-field appearance="outline">
-                <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
-                <input matInput type="number"
-                       [value]="$any(section.gridColumnSizes.length)"
-                       (click)="$any($event).stopPropagation()"
-                       (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0)">
-              </mat-form-field>
-              <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
-                <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
-                                         [value]="size.value"
-                                         [unit]="size.unit"
-                                         [allowedUnits]="['px', 'fr']"
-                                         (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
-                </aspect-size-input-panel>
-              </ng-container>
-            </ng-container>
-          </fieldset>
-
-          <fieldset>
             <legend>{{'section-menu.rows' | translate }}</legend>
             <mat-checkbox class="menuItem" [checked]="section.autoRowSize"
                           (click)="$any($event).stopPropagation()"
@@ -126,6 +100,31 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
                                          [unit]="size.unit"
                                          [allowedUnits]="['px', 'fr']"
                                          (valueUpdated)="changeGridSize('gridRowSizes', i, $event)">
+                </aspect-size-input-panel>
+              </ng-container>
+            </ng-container>
+          </fieldset>
+          <fieldset>
+            <legend>{{'section-menu.columns' | translate }}</legend>
+            <mat-checkbox class="menuItem" [checked]="section.autoColumnSize"
+                          (click)="$any($event).stopPropagation()"
+                          (change)="updateModel('autoColumnSize', $event.checked)">
+              {{'section-menu.autoColumnSize' | translate }}
+            </mat-checkbox>
+            <ng-container *ngIf="!section.autoColumnSize">
+              <mat-form-field appearance="outline">
+                <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
+                <input matInput type="number"
+                       [value]="$any(section.gridColumnSizes.length)"
+                       (click)="$any($event).stopPropagation()"
+                       (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0)">
+              </mat-form-field>
+              <ng-container *ngFor="let size of section.gridColumnSizes; let i = index">
+                <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
+                                         [value]="size.value"
+                                         [unit]="size.unit"
+                                         [allowedUnits]="['px', 'fr']"
+                                         (valueUpdated)="changeGridSize('gridColumnSizes', i, $event)">
                 </aspect-size-input-panel>
               </ng-container>
             </ng-container>

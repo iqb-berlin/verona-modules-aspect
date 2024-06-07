@@ -43,21 +43,6 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
         {{'propertiesPanel.grid' | translate }}
         <div class="flex-row">
           <mat-form-field appearance="outline">
-            <mat-label>{{'column' | translate }}</mat-label>
-            <input matInput type="number" [ngModel]="positionProperties.gridColumn"
-                   (ngModelChange)="updateModel.emit({ property: 'gridColumn', value: $event })">
-          </mat-form-field>
-          <mat-form-field appearance="outline">
-            <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
-            <input matInput type="number"
-                   [ngModel]="positionProperties.gridColumnRange"
-                   (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })"
-                   (change)="positionProperties.gridColumnRange = positionProperties.gridColumnRange ?
-                                                                  positionProperties.gridColumnRange : 0">
-          </mat-form-field>
-        </div>
-        <div class="flex-row">
-          <mat-form-field appearance="outline">
             <mat-label>{{'row' | translate }}</mat-label>
             <input matInput type="number" [ngModel]="positionProperties.gridRow"
                    (ngModelChange)="updateModel.emit({ property: 'gridRow', value: $event })">
@@ -69,6 +54,21 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                    (ngModelChange)="updateModel.emit({ property: 'gridRowRange', value: $event })"
                    (change)="positionProperties.gridRowRange = positionProperties.gridRowRange ?
                                                                positionProperties.gridRowRange : 0">
+          </mat-form-field>
+        </div>
+        <div class="flex-row">
+          <mat-form-field appearance="outline">
+            <mat-label>{{'column' | translate }}</mat-label>
+            <input matInput type="number" [ngModel]="positionProperties.gridColumn"
+                   (ngModelChange)="updateModel.emit({ property: 'gridColumn', value: $event })">
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>{{'propertiesPanel.columnRange' | translate }}</mat-label>
+            <input matInput type="number"
+                   [ngModel]="positionProperties.gridColumnRange"
+                   (ngModelChange)="updateModel.emit({ property: 'gridColumnRange', value: $event })"
+                   (change)="positionProperties.gridColumnRange = positionProperties.gridColumnRange ?
+                                                                  positionProperties.gridColumnRange : 0">
           </mat-form-field>
         </div>
 

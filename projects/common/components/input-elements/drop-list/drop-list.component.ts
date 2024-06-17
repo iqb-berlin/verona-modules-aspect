@@ -65,7 +65,6 @@ import { DragOperatorService } from './drag-operator.service';
 export class DropListComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: DropListElement;
   @Input() clozeContext: boolean = false;
-  @ViewChild('droplist') droplistRef: ElementRef | undefined;
   @ViewChildren('listItem') droplistItems: QueryList<ElementRef> | undefined;
 
   viewModel!: DragNDropValueObject[];

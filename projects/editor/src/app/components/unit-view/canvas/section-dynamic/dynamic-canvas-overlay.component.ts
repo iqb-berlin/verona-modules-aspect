@@ -42,7 +42,6 @@ import { CanvasElementOverlay } from '../canvas-element-overlay';
 })
 export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {
   @Input() dynamicPositioning!: boolean;
-  @ViewChild('draggableElement') dragElement!: ElementRef;
   bodyElement: HTMLElement = document.body;
 
   startDrag(): void {

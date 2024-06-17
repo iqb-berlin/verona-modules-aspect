@@ -129,6 +129,7 @@ import { PageMenu } from 'editor/src/app/components/unit-view/page-menu.componen
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { ReferenceListComponent } from 'editor/src/app/components/reference-list.component';
 import { ElementListComponent } from 'editor/src/app/components/element-list.component';
+import { MeasurePipe } from 'common/pipes/measure.pipe';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -236,7 +237,9 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     EleSpecificPropsComponent,
     PageMenu,
     ReferenceListComponent,
-    ElementListComponent
+    ElementListComponent,
+    SizeInputPanelComponent,
+    MeasurePipe
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService },

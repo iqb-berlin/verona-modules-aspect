@@ -57,12 +57,6 @@
             <mat-icon>{{TextAreaElement.icon}}</mat-icon>
             {{TextAreaElement.title}}
           </button>
-          <button mat-stroked-button (click)="addUIElement('cloze')"
-                  draggable="true" (dragstart)="startDrag($event,'cloze')"
-                  (dragend)="endDrag()">
-            <mat-icon>{{ClozeElement.icon}}</mat-icon>
-            {{ClozeElement.title}}
-          </button>
           <button mat-stroked-button (click)="addUIElement('spell-correct')"
                   draggable="true" (dragstart)="startDrag($event,'spell-correct')"
                   (dragend)="endDrag()">
@@ -154,6 +148,26 @@
                   (dragend)="endDrag()">
             <mat-icon>{{DropListElement.icon}}</mat-icon>
             {{DropListElement.title}}
+          </button>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Verbund
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <button mat-stroked-button (click)="addUIElement('cloze')"
+                  draggable="true" (dragstart)="startDrag($event,'cloze')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{ClozeElement.icon}}</mat-icon>
+            {{ClozeElement.title}}
+          </button>
+
+          <button mat-stroked-button (click)="addUIElement('table')"
+                  draggable="true" (dragstart)="startDrag($event,'table')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{TableElement.icon}}</mat-icon>
+            {{TableElement.title}}
           </button>
         </mat-expansion-panel>
         <mat-expansion-panel>

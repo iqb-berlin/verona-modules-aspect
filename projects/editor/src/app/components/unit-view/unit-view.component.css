@@ -44,7 +44,7 @@
 }
 
 aspect-page-canvas {
-  height: 100%; display: block;
+  height: 100%;
 }
 
 :host ::ng-deep .mdc-tab {

@@ -16,6 +16,8 @@ import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
+import { TableComponent } from 'common/components/compound-elements/table/table.component';
+import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
@@ -40,7 +42,7 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
     this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
 
-    this.preventInteraction = this.element.type !== 'cloze';
+    this.preventInteraction = this.element.type !== 'cloze' && this.element.type !== 'table';
 
     this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
 
@@ -56,7 +58,19 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((elementSelectionEvent: ClozeChildOverlay) => {
           this.selectionService.selectElement({ elementComponent: elementSelectionEvent, multiSelect: false });
-          this.selectionService.isClozeChildSelected = true;
+          this.selectionService.isCompoundChildSelected = true;
+        });
+    }
+
+    if (this.childComponent.instance instanceof TableComponent) {
+      // make element children clickable to access child elements
+      this.childComponent.location.nativeElement.style.pointerEvents = 'unset';
+      this.childComponent.instance.childElementSelected
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((selectedElementComponent: TableChildOverlay) => {
+          console.log('CanvasElementOverlay: elementSelected received');
+          this.selectionService.selectElement({ elementComponent: selectedElementComponent, multiSelect: false });
+          this.selectionService.isCompoundChildSelected = true;
         });
     }
 
@@ -79,6 +93,16 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
         (elementID: string) => {
           if (this.element.type === 'math-table' && this.element.id === elementID) {
             (this.childComponent.instance as MathTableComponent).refresh();
+          }
+        }
+      );
+
+    this.unitService.tablePropUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (elementID: string) => {
+          if (this.element.type === 'table' && this.element.id === elementID) {
+            (this.childComponent.instance as TableComponent).refresh();
           }
         }
       );

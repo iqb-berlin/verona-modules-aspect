@@ -28,6 +28,7 @@ export class UnitService {
   elementPropertyUpdated: Subject<void> = new Subject<void>();
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
+  tablePropUpdated: Subject<string> = new Subject<string>();
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
 

@@ -30,6 +30,7 @@ import { TextElement } from 'common/models/elements/text/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { TableElement } from 'common/models/elements/compound-elements/table/table';
 
 @Injectable({
   providedIn: 'root'
@@ -151,6 +152,7 @@ export class ElementService {
   }
 
   updateElementsProperty(elements: UIElement[], property: string, value: unknown): void {
+    console.log('updateElementsProperty ', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
         if (this.idService.validateAndAddNewID(value as string, element.id)) {
@@ -164,8 +166,10 @@ export class ElementService {
         element.setProperty(property, value);
         if (element.type === 'geometry' && property !== 'trackedVariables') this.unitService.geometryElementPropertyUpdated.next(element.id);
         if (element.type === 'math-table') this.unitService.mathTableElementPropertyUpdated.next(element.id);
+        if (element.type === 'table') this.unitService.tablePropUpdated.next(element.id);
       }
     });
+
     this.unitService.elementPropertyUpdated.next();
     this.unitService.updateUnitDefinition();
   }
@@ -318,6 +322,17 @@ export class ElementService {
             Object.keys(result).forEach(
               key => this.updateElementsPlayerProperty([element], key, result[key] as UIElementValue)
             );
+          });
+        break;
+      case 'table':
+        this.dialogService.showTableEditDialog(element as TableElement)
+          .subscribe((result: UIElement[]) => {
+            if (result) {
+              result.forEach(el => {
+                if (el.id === 'id-placeholder') el.id = this.idService.getAndRegisterNewID(el.type);
+              });
+              this.updateElementsProperty([element], 'elements', result);
+            }
           });
         break;
       // no default

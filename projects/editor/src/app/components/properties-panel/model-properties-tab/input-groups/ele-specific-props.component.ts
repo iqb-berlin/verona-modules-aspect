@@ -31,6 +31,9 @@ import {
 import {
   TextPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/text-properties-field-set.component';
+import {
+  TablePropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/table-properties.component';
 
 @Component({
   selector: 'aspect-ele-specific-props',
@@ -46,7 +49,8 @@ import {
     GeometryPropsComponent,
     HotspotPropsComponent,
     SliderPropertiesComponent,
-    TextPropsComponent
+    TextPropsComponent,
+    TablePropertiesComponent
   ],
   template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
@@ -90,6 +94,10 @@ import {
     <aspect-text-props [combinedProperties]="combinedProperties"
                        (updateModel)="updateModel.emit($event)">
     </aspect-text-props>
+
+    <aspect-table-properties *ngIf="combinedProperties.type === 'table'"
+                             [combinedProperties]="combinedProperties"
+                             (updateModel)="updateModel.emit($event)"></aspect-table-properties>
   `
 })
 export class EleSpecificPropsComponent {

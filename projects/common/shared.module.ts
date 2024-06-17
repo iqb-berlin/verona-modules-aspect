@@ -160,7 +160,6 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     GetValuePipe,
     MathFieldComponent,
     DynamicRowsDirective,
-    MeasurePipe,
     TextImagePanelComponent,
     UnitDefErrorDialogComponent,
     TooltipComponent,
@@ -211,7 +210,6 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     ImageComponent,
     GeometryComponent,
     MathFieldComponent,
-    MeasurePipe,
     TextImagePanelComponent,
     TextAreaMathComponent,
     MathTableComponent

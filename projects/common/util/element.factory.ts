@@ -1,4 +1,4 @@
-import { UIElement } from 'common/models/elements/element';
+import { UIElement, UIElementType } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
 import { ButtonElement } from 'common/models/elements/button/button';
@@ -27,6 +27,7 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
 import { MathTableElement } from 'common/models/elements/input-elements/math-table';
 import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
+import { TableElement } from 'common/models/elements/compound-elements/table/table';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -54,10 +55,11 @@ export abstract class ElementFactory {
     'hotspot-image': HotspotImageElement,
     'math-field': MathFieldElement,
     'math-table': MathTableElement,
-    'text-area-math': TextAreaMathElement
+    'text-area-math': TextAreaMathElement,
+    table: TableElement
   };
 
-  static createElement(element: { type: string } & Partial<UIElement>): UIElement {
+  static createElement(element: { type: UIElementType } & Partial<UIElement>): UIElement {
     return new ElementFactory.ELEMENT_CLASSES[element.type](element);
   }
 }

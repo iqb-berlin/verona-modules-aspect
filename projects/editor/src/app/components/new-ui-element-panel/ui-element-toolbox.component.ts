@@ -24,6 +24,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TextElement } from 'common/models/elements/text/text';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
+import { TableElement } from 'common/models/elements/compound-elements/table/table';
 
 @Component({
   selector: 'aspect-ui-element-toolbox',
@@ -78,4 +79,5 @@ export class UiElementToolboxComponent {
   protected readonly GeometryElement = GeometryElement;
   protected readonly TriggerElement = TriggerElement;
   protected readonly TextElement = TextElement;
+  protected readonly TableElement = TableElement;
 }

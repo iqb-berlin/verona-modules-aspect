@@ -5,6 +5,7 @@ import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/canvas
 import {
   ClozeChildOverlay
 } from 'common/components/compound-elements/cloze/cloze-child-overlay.component';
+import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class SelectionService {
   selectedPageIndex: number = 0;
   selectedSectionIndex: number = 0;
   private _selectedElements!: BehaviorSubject<UIElement[]>;
-  selectedElementComponents: (CanvasElementOverlay | ClozeChildOverlay)[] = [];
-  isClozeChildSelected: boolean = false;
+  selectedElementComponents: (CanvasElementOverlay | ClozeChildOverlay | TableChildOverlay)[] = [];
+  isCompoundChildSelected: boolean = false;
 
   constructor() {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
@@ -28,20 +29,21 @@ export class SelectionService {
     return this._selectedElements.value;
   }
 
-  selectElement(event: { elementComponent: CanvasElementOverlay | ClozeChildOverlay; multiSelect: boolean }): void {
+  selectElement(event: { elementComponent: CanvasElementOverlay | ClozeChildOverlay | TableChildOverlay; multiSelect: boolean }): void {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
-    this.isClozeChildSelected = false;
+    this.isCompoundChildSelected = false;
     this.selectedElementComponents.push(event.elementComponent);
     event.elementComponent.setSelected(true);
     this._selectedElements.next(this.selectedElementComponents.map(componentElement => componentElement.element));
   }
 
   clearElementSelection(): void {
-    this.selectedElementComponents.forEach((overlayComponent: CanvasElementOverlay | ClozeChildOverlay) => {
-      overlayComponent.setSelected(false);
-    });
+    this.selectedElementComponents
+      .forEach((overlayComponent: CanvasElementOverlay | ClozeChildOverlay | TableChildOverlay) => {
+        overlayComponent.setSelected(false);
+      });
     this.selectedElementComponents = [];
     this._selectedElements.next([]);
   }

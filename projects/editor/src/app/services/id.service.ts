@@ -40,7 +40,8 @@ export class IDService {
     value: 0,
     'state-variable': 0,
     'text-area-math': 0,
-    trigger: 0
+    trigger: 0,
+    table: 0
   };
 
   constructor(private messageService: MessageService, private translateService: TranslateService) { }

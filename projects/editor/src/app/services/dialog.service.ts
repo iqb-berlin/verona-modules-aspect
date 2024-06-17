@@ -36,6 +36,8 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
+import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
+import { TableElement } from 'common/models/elements/compound-elements/table/table';
 
 @Injectable({
   providedIn: 'root'
@@ -159,6 +161,14 @@ export class DialogService {
   showGeogebraAppDefinitionDialog(): Observable<string> {
     const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
       data: { },
+      autoFocus: false
+    });
+    return dialogRef.afterClosed();
+  }
+
+  showTableEditDialog(table: TableElement): Observable<any> {
+    const dialogRef = this.dialog.open(TableEditDialogComponent, {
+      data: { table },
       autoFocus: false
     });
     return dialogRef.afterClosed();

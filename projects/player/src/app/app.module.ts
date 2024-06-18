@@ -14,6 +14,7 @@ import { AsOverlayOriginPipe } from 'player/src/app/pipes/as-overlay-origin.pipe
 import { HasReturnKeyPipe } from 'player/src/app/pipes/has-return-key.pipe';
 import { PageNavButtonComponent } from 'player/src/app/components/page-nav-button/page-nav-button.component';
 import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe';
+import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -108,7 +109,8 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     }),
     OverlayModule,
     ScrollingModule,
-    UnitMenuModule
+    UnitMenuModule,
+    MeasurePipe
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService }

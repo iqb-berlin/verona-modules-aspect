@@ -18,6 +18,9 @@
     *ngIf="elementModel.type === 'table'"
     #elementComponent
     [parentForm]="form"
+    [savedPlaybackTimes]="savedPlaybackTimes"
+    [actualPlayingId]="mediaPlayerService.actualPlayingId"
+    [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"
     [elementModel]="elementModel | cast: TableElement"
     (childrenAdded)="registerCompoundChildren($event)">
   </aspect-table>

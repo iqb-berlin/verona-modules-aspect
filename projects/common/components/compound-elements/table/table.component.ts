@@ -11,6 +11,7 @@ import { PositionedUIElement, UIElementType } from 'common/models/elements/eleme
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'aspect-table',
@@ -65,6 +66,9 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
             </button>
             <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
                                         [parentForm]="parentForm"
+                                        [savedPlaybackTimes]="savedPlaybackTimes"
+                                        [mediaStatusChanged]="mediaStatusChanged"
+                                        [actualPlayingId]="actualPlayingId"
                                         (elementSelected)="childElementSelected.emit($event)">
             </aspect-table-child-overlay>
           </div>
@@ -82,6 +86,9 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {
   @Input() elementModel!: TableElement;
+  @Input() savedPlaybackTimes!: { [key: string]: number };
+  @Input() actualPlayingId!: Subject<string | null>;
+  @Input() mediaStatusChanged!: Subject<string>;
   @Input() editorMode: boolean = false;
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
   @Output() elementRemoved = new EventEmitter<number>();

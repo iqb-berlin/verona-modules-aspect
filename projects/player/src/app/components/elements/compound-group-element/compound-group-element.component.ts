@@ -9,7 +9,9 @@ import {
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import { CompoundElement, InputElement, UIElement } from 'common/models/elements/element';
+import {
+  CompoundElement, InputElement, PositionedUIElement, UIElement
+} from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
@@ -24,6 +26,9 @@ import { ImageElement } from 'common/models/elements/media-elements/image';
 import { TextElement } from 'common/models/elements/text/text';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { ImageComponent } from 'common/components/media-elements/image.component';
+import { AudioComponent } from 'common/components/media-elements/audio.component';
+import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { MediaPlayerService } from 'player/src/app/services/media-player.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -49,6 +54,8 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   keypadDeleteCharactersSubscription!: Subscription;
   keypadSelectSubscription!: Subscription;
 
+  savedPlaybackTimes: { [key: string]: number } = {};
+
   constructor(
     public keyboardService: KeyboardService,
     public deviceService: DeviceService,
@@ -60,13 +67,38 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     private navigationService: NavigationService,
     private anchorService: AnchorService,
     public validationService: ValidationService,
-    private stateVariableStateService: StateVariableStateService
+    private stateVariableStateService: StateVariableStateService,
+    public mediaPlayerService: MediaPlayerService
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.createForm((this.elementModel as CompoundElement).getChildElements() as InputElement[]);
+    if (this.elementModel.type === 'table') {
+      this.initAudioTableChildren();
+    }
+  }
+
+  private initAudioTableChildren(): void {
+    (this.elementModel as TableElement).elements
+      .filter(child => child.type === 'audio')
+      .forEach(element => {
+        this.setSavedPlaybackTimes(element);
+        this.registerAtMediaPlayerService(element as AudioElement);
+      });
+  }
+
+  private registerAtMediaPlayerService(audioElement: AudioElement): void {
+    this.mediaPlayerService.registerMediaElement(
+      audioElement.id,
+      audioElement.player?.minRuns as number === 0
+    );
+  }
+
+  private setSavedPlaybackTimes(element: PositionedUIElement): void {
+    this.savedPlaybackTimes[element.id] = this.elementModelElementCodeMappingService.mapToElementModelValue(
+      this.unitStateService.getElementCodeById(element.id)?.value, element) as number;
   }
 
   ngAfterViewInit(): void {
@@ -86,6 +118,10 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
         case 'image':
           initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
             (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type);
+          break;
+        case 'audio':
+          initialValue = this.elementModelElementCodeMappingService.mapToElementModelValue(
+            this.unitStateService.getElementCodeById(childModel.id)?.value, childModel) as number;
           break;
         case 'button':
           initialValue = null;
@@ -116,16 +152,38 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       this.addButtonActionEventListener(child as ButtonComponent);
     }
     if (childModel.type === 'image') {
-      (child as ImageComponent).elementValueChanged
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(value => {
-          this.unitStateService.changeElementCodeValue({
-            id: value.id,
-            value: ElementModelElementCodeMappingService
-              .mapToElementCodeValue(value.value, this.elementModel.type)
-          });
-        });
+      this.addElementCodeValueSubscription(child as ImageComponent);
     }
+    if (childModel.type === 'audio') {
+      this.addElementCodeValueSubscription(child as AudioComponent);
+      this.addMediaSubscriptions(child as AudioComponent);
+    }
+  }
+
+  private addMediaSubscriptions(child: AudioComponent): void {
+    child.mediaValidStatusChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(mediaId => {
+        this.mediaPlayerService.setValidStatusChanged(mediaId);
+      });
+
+    child.mediaPlayStatusChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(mediaId => {
+        this.mediaPlayerService.setActualPlayingId(mediaId);
+      });
+  }
+
+  private addElementCodeValueSubscription(child: ImageComponent | AudioComponent): void {
+    child.elementValueChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(value => {
+        this.unitStateService.changeElementCodeValue({
+          id: value.id,
+          value: ElementModelElementCodeMappingService
+            .mapToElementCodeValue(value.value, this.elementModel.type)
+        });
+      });
   }
 
   private manageOnKeyDown(

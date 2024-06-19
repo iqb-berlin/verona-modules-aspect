@@ -9,6 +9,8 @@ import { TextFieldComponent } from 'common/components/input-elements/text-field.
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
 import { UntypedFormGroup } from '@angular/forms';
 import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
+import { AudioComponent } from 'common/components/media-elements/audio.component';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'aspect-table-child-overlay',
@@ -33,6 +35,9 @@ import { DropListComponent } from 'common/components/input-elements/drop-list/dr
 export class TableChildOverlay implements OnInit {
   @Input() element!: UIElement;
   @Input() parentForm!: UntypedFormGroup;
+  @Input() savedPlaybackTimes!: { [key: string]: number };
+  @Input() actualPlayingId!: Subject<string | null>;
+  @Input() mediaStatusChanged!: Subject<string>;
   @Output() elementSelected = new EventEmitter<TableChildOverlay>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   childComponent!: ComponentRef<ElementComponent>;
@@ -63,6 +68,12 @@ export class TableChildOverlay implements OnInit {
     if (this.childComponent.instance instanceof DropListComponent) {
       this.childComponent.setInput('clozeContext', true);
       this.childComponent.instance.parentForm = this.parentForm;
+    }
+    if (this.childComponent.instance instanceof AudioComponent) {
+      this.childComponent.instance.savedPlaybackTime =
+        this.savedPlaybackTimes ? this.savedPlaybackTimes[this.element.id] : 0;
+      this.childComponent.instance.actualPlayingId = this.actualPlayingId;
+      this.childComponent.instance.mediaStatusChanged = this.mediaStatusChanged;
     }
   }
 

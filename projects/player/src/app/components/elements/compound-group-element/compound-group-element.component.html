@@ -14,6 +14,13 @@
       [elementModel]="elementModel | cast: LikertElement"
       (childrenAdded)="registerCompoundChildren($event)">
   </aspect-likert>
+  <aspect-table
+    *ngIf="elementModel.type === 'table'"
+    #elementComponent
+    [parentForm]="form"
+    [elementModel]="elementModel | cast: TableElement"
+    (childrenAdded)="registerCompoundChildren($event)">
+  </aspect-table>
 </form>
 
 <aspect-floating-keypad

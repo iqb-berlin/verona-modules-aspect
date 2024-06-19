@@ -21,7 +21,7 @@ export class ElementGroupSelectionComponent implements OnInit {
         'dropdown', 'hotspot-image', 'math-field', 'text-area-math'
       ]
     },
-    { name: 'compoundGroup', types: ['cloze', 'likert'] },
+    { name: 'compoundGroup', types: ['cloze', 'likert', 'table'] },
     { name: 'textGroup', types: ['text'] },
     { name: 'interactiveGroup', types: ['button', 'image', 'math-table', 'trigger'] },
     { name: 'externalAppGroup', types: ['geometry'] }

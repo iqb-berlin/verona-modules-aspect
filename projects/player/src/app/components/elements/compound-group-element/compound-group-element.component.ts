@@ -9,7 +9,7 @@ import {
 } from 'common/components/compound-elements/cloze/cloze-child-elements/text-field-simple.component';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
-import { CompoundElement, InputElement } from 'common/models/elements/element';
+import { CompoundElement, InputElement, UIElement } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { NavigationService } from 'player/src/app/services/navigation.service';
@@ -19,6 +19,11 @@ import { StateVariableStateService } from 'player/src/app/services/state-variabl
 import { Subscription } from 'rxjs';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { ResponseValueType } from '@iqb/responses';
+import { TableElement } from 'common/models/elements/compound-elements/table/table';
+import { ImageElement } from 'common/models/elements/media-elements/image';
+import { TextElement } from 'common/models/elements/text/text';
+import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
+import { ImageComponent } from 'common/components/media-elements/image.component';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -35,6 +40,8 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;
+  TableElement!: TableElement;
+  ImageElement!: ImageElement;
 
   isKeypadOpen: boolean = false;
   inputElement!: HTMLTextAreaElement | HTMLInputElement;
@@ -73,23 +80,58 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   registerCompoundChildren(children: ElementComponent[]): void {
     children.forEach(child => {
-      const childModel = child.elementModel as InputElement;
-      const initialValue: ResponseValueType = childModel.type === 'button' ?
-        null :
-        ElementModelElementCodeMappingService.mapToElementCodeValue(childModel.value, childModel.type);
+      const childModel = child.elementModel;
+      let initialValue: ResponseValueType;
+      switch (childModel.type) {
+        case 'image':
+          initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+            (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type);
+          break;
+        case 'button':
+          initialValue = null;
+          break;
+        case 'text':
+          initialValue = ElementModelElementCodeMappingService
+            .mapToElementCodeValue((childModel as TextElement).text, childModel.type);
+          break;
+        default:
+          initialValue = ElementModelElementCodeMappingService
+            .mapToElementCodeValue((childModel as InputElement).value, childModel.type);
+      }
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
-      if (childModel.type === 'text-field-simple') {
-        this.manageKeyInputToggling(child as TextFieldSimpleComponent);
-        this.manageOnKeyDown(child as TextFieldSimpleComponent, childModel);
-      }
-      if (childModel.type === 'button') {
-        this.addButtonActionEventListener(child as ButtonComponent);
-      }
+      this.registerChildEvents(child, childModel);
     });
   }
 
-  private manageOnKeyDown(textFieldSimpleComponent: TextFieldSimpleComponent, elementModel: InputElement): void {
-    (textFieldSimpleComponent)
+  private registerChildEvents(child: ElementComponent, childModel: UIElement): void {
+    if (childModel.type === 'text-field-simple') {
+      this.manageKeyInputToggling(child as TextFieldSimpleComponent);
+      this.manageOnKeyDown(child as TextFieldSimpleComponent, childModel as InputElement);
+    }
+    if (childModel.type === 'text-field') {
+      this.manageKeyInputToggling(child as TextFieldComponent);
+      this.manageOnKeyDown(child as TextFieldComponent, childModel as InputElement);
+    }
+    if (childModel.type === 'button') {
+      this.addButtonActionEventListener(child as ButtonComponent);
+    }
+    if (childModel.type === 'image') {
+      (child as ImageComponent).elementValueChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(value => {
+          this.unitStateService.changeElementCodeValue({
+            id: value.id,
+            value: ElementModelElementCodeMappingService
+              .mapToElementCodeValue(value.value, this.elementModel.type)
+          });
+        });
+    }
+  }
+
+  private manageOnKeyDown(
+    textInputComponent: TextFieldSimpleComponent | TextFieldComponent,
+    elementModel: InputElement): void {
+    textInputComponent
       .onKeyDown
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(event => {
@@ -97,12 +139,12 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       });
   }
 
-  private manageKeyInputToggling(textFieldSimpleComponent: TextFieldSimpleComponent): void {
-    (textFieldSimpleComponent)
+  private manageKeyInputToggling(textInputComponent: TextFieldSimpleComponent | TextFieldComponent): void {
+    textInputComponent
       .focusChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(focusedTextInput => {
-        this.toggleKeyInput(focusedTextInput, textFieldSimpleComponent);
+        this.toggleKeyInput(focusedTextInput, textInputComponent);
       });
   }
 

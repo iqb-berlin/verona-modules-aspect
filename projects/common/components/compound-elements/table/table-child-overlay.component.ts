@@ -38,6 +38,7 @@ export class TableChildOverlay implements OnInit {
   @Input() savedPlaybackTimes!: { [key: string]: number };
   @Input() actualPlayingId!: Subject<string | null>;
   @Input() mediaStatusChanged!: Subject<string>;
+  @Input() editorMode: boolean = false;
   @Output() elementSelected = new EventEmitter<TableChildOverlay>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   childComponent!: ComponentRef<ElementComponent>;
@@ -57,7 +58,7 @@ export class TableChildOverlay implements OnInit {
       this.childComponent.instance.tableMode = true;
       this.childComponent.instance.parentForm = this.parentForm;
     }
-    // this.childComponent.location.nativeElement.style.pointerEvents = 'none';
+    if (this.editorMode) this.childComponent.location.nativeElement.style.pointerEvents = 'none';
     if (this.element.type !== 'text') {
       this.childComponent.location.nativeElement.style.width = '100%';
       this.childComponent.location.nativeElement.style.height = '100%';

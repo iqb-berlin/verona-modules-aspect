@@ -46,7 +46,7 @@ import { Subject } from 'rxjs';
              [style.grid-row-start]="i + 1"
              [style.grid-column-start]="j + 1">
           <ng-container *ngIf="elementGrid[i][j] === undefined && editorMode">
-            <button mat-mini-fab color="primary"
+            <button mat-mini-fab color="primary" class="button"
                     [matMenuTriggerFor]="menu">
               <mat-icon>add</mat-icon>
             </button>
@@ -60,7 +60,7 @@ import { Subject } from 'rxjs';
             </mat-menu>
           </ng-container>
           <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
-            <button *ngIf="editorMode" class="delete-button" mat-mini-fab color="primary"
+            <button *ngIf="editorMode" class="button" mat-mini-fab color="primary"
                     (click)="removeElement(i, j)">
               <mat-icon>remove</mat-icon>
             </button>
@@ -69,6 +69,7 @@ import { Subject } from 'rxjs';
                                         [savedPlaybackTimes]="savedPlaybackTimes"
                                         [mediaStatusChanged]="mediaStatusChanged"
                                         [actualPlayingId]="actualPlayingId"
+                                        [editorMode]="editorMode"
                                         (elementSelected)="childElementSelected.emit($event)">
             </aspect-table-child-overlay>
           </div>
@@ -78,10 +79,9 @@ import { Subject } from 'rxjs';
   `,
   styles: [`
     .cell-container {display: flex; align-items: center; justify-content: center; min-height: 50px; min-width: 50px;}
-    .delete-button {position: absolute; opacity: 0;}
-    .element-container:hover .delete-button {opacity: 1;}
-    .element-container {width: 100%; height: 100%; display: flex; justify-content: center;}
+    .element-container {width: 100%; height: 100%; display: flex; align-items: flex-end;}
     aspect-table-child-overlay {width: 100%; height: 100%;}
+    .button {position: absolute;}
   `]
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {

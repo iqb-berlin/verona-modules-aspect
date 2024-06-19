@@ -1,5 +1,5 @@
 import {
-  Component, Input, QueryList, ViewChildren
+  Component, Input, OnDestroy, OnInit, QueryList, ViewChildren
 } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { PositionedUIElement, UIElement } from 'common/models/elements/element';
@@ -12,6 +12,8 @@ import { SectionStaticComponent } from './section-static/section-static.componen
 import { SectionDynamicComponent } from './section-dynamic/section-dynamic.component';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'aspect-page-canvas',
@@ -39,15 +41,29 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
     }
   `]
   })
-export class CanvasComponent {
+export class CanvasComponent implements OnInit, OnDestroy {
   @Input() page!: Page;
   @ViewChildren('sectionComponent')
     sectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
+
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
               public elementService: ElementService,
               public sectionService: SectionService) { }
+
+  ngOnInit(): void {
+    this.unitService.sectionCountUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        () => {
+          this.sectionComponents.toArray()
+            .filter(comp => comp instanceof SectionDynamicComponent)
+            .forEach(sectionComp => (sectionComp as SectionDynamicComponent).updateSectionCounter());
+        }
+      );
+  }
 
   moveElementsBetweenSections(elements: UIElement[], previousSectionIndex: number, newSectionIndex: number): void {
     this.sectionService.transferElements(elements,
@@ -113,5 +129,10 @@ export class CanvasComponent {
       }
     }
     return null;
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

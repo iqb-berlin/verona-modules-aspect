@@ -37,6 +37,7 @@ export class PageService {
           this.unitService.unregisterIDs(selectedPage.getAllElements());
           const deletedpage = this.unitService.unit.pages.splice(pageIndex, 1)[0];
           this.selectionService.selectPreviousPage();
+          this.unitService.updateSectionCounter();
           return {
             pageIndex,
             deletedpage
@@ -47,6 +48,7 @@ export class PageService {
       rollback: (deletedData: Record<string, unknown>) => {
         this.unitService.registerIDs((deletedData['deletedpage'] as Page).getAllElements());
         this.unitService.unit.pages.splice(deletedData['pageIndex'] as number, 0, deletedData['deletedpage'] as Page);
+        this.unitService.updateSectionCounter();
       }
     });
   }
@@ -60,6 +62,7 @@ export class PageService {
           this.unitService.unit.pages,
           direction === 'left' ? 'up' : 'down'
         );
+        this.unitService.updateSectionCounter();
         return {direction};
       },
       rollback: (deletedData: Record<string, unknown>) => {
@@ -68,6 +71,7 @@ export class PageService {
           this.unitService.unit.pages,
           direction === 'left' ? 'up' : 'down'
         );
+        this.unitService.updateSectionCounter();
       }
     });
   }

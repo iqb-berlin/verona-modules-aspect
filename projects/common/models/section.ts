@@ -27,6 +27,7 @@ export class Section {
   enableReHide: boolean = false;
   logicalConnectiveOfRules: 'disjunction' | 'conjunction' = 'disjunction';
   visibilityRules: VisibilityRule[] = [];
+  ignoreNumbering: boolean = false;
 
   constructor(section?: SectionProperties) {
     if (section && isValid(section)) {
@@ -44,6 +45,7 @@ export class Section {
       this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
       this.elements = section.elements
         .map(element => ElementFactory.createElement(element)) as PositionedUIElement[];
+      this.ignoreNumbering = section.ignoreNumbering;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Section instantiation');
@@ -63,6 +65,7 @@ export class Section {
       this.elements = section?.elements !== undefined ?
         section.elements.map(element => ElementFactory.createElement(element)) as PositionedUIElement[] :
         [];
+      if (section?.ignoreNumbering !== undefined) this.ignoreNumbering = section.ignoreNumbering;
     }
   }
 
@@ -112,6 +115,7 @@ export interface SectionProperties {
   enableReHide: boolean;
   logicalConnectiveOfRules: 'disjunction' | 'conjunction';
   visibilityRules: VisibilityRule[];
+  ignoreNumbering: boolean;
 }
 
 function isValid(blueprint?: SectionProperties): boolean {
@@ -128,5 +132,6 @@ function isValid(blueprint?: SectionProperties): boolean {
     blueprint.animatedVisibility !== undefined &&
     blueprint.enableReHide !== undefined &&
     blueprint.logicalConnectiveOfRules !== undefined &&
-    blueprint.visibilityRules !== undefined;
+    blueprint.visibilityRules !== undefined &&
+    blueprint.ignoreNumbering !== undefined;
 }

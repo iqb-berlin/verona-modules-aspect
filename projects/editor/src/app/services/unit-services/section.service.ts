@@ -24,6 +24,7 @@ export class SectionService {
       command: () => {
         const oldValue = section[property];
         section.setProperty(property, value);
+        if (property === 'ignoreNumbering') this.unitService.updateSectionCounter();
         this.unitService.elementPropertyUpdated.next();
         return {oldValue};
       },
@@ -71,6 +72,7 @@ export class SectionService {
           this.unitService.unit.pages[pageIndex].sections.splice(sectionIndex, 1);
           this.selectionService.selectedSectionIndex =
             Math.max(0, this.selectionService.selectedSectionIndex - 1);
+          this.unitService.updateSectionCounter();
           return {deletedSection: sectionToDelete, pageIndex, sectionIndex};
         }
         return {};
@@ -80,6 +82,7 @@ export class SectionService {
         this.unitService.unit.pages[deletedData.pageIndex as number].addSection(deletedData.deletedSection as Section, sectionIndex);
         this.selectionService.selectedSectionIndex =
           Math.max(0, this.selectionService.selectedSectionIndex - 1);
+        this.unitService.updateSectionCounter();
       }
     });
   }
@@ -94,12 +97,14 @@ export class SectionService {
         });
         page.addSection(newSection, sectionIndex + 1);
         this.selectionService.selectedSectionIndex += 1;
+        this.unitService.updateSectionCounter();
         return {};
       },
       rollback: (deletedData: Record<string, unknown>) => {
         this.unitService.unregisterIDs(page.sections[sectionIndex + 1].getAllElements());
         page.deleteSection(sectionIndex + 1);
         this.selectionService.selectedSectionIndex -= 1;
+        this.unitService.updateSectionCounter();
       }
     });
   }
@@ -110,11 +115,13 @@ export class SectionService {
       command: () => {
         ArrayUtils.moveArrayItem(section, page.sections, direction);
         direction === 'up' ? this.selectionService.selectedSectionIndex -= 1 : this.selectionService.selectedSectionIndex += 1;
+        this.unitService.updateSectionCounter();
         return {};
       },
       rollback: (deletedData: Record<string, unknown>) => {
         ArrayUtils.moveArrayItem(section, page.sections, direction === 'up' ? 'down' : 'up');
         direction === 'up' ? this.selectionService.selectedSectionIndex += 1 : this.selectionService.selectedSectionIndex -= 1;
+        this.unitService.updateSectionCounter();
       }
     });
   }

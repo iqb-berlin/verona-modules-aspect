@@ -4,6 +4,7 @@ import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 import { HistoryService } from 'editor/src/app/services/history.service';
 import { PageService } from 'editor/src/app/services/unit-services/page.service';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'aspect-unit-view',
@@ -34,5 +35,13 @@ export class UnitViewComponent {
     setTimeout(() => {
       this.pagesLoaded = true;
     });
+  }
+
+  setSectionNumbering(event: MatCheckboxChange) {
+    this.unitService.setSectionNumbering(event.checked);
+  }
+
+  setSectionNumberingPosition(event: MatCheckboxChange) {
+    this.unitService.setSectionNumberingPosition(event.checked ? 'above' : 'left');
   }
 }

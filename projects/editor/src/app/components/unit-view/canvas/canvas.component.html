@@ -32,6 +32,7 @@
                                 class="section drop-list"
                                 [section]="section" [sectionIndex]="i"
                                 [isSelected]="selectionService.selectedSectionIndex === i"
+                                [ignoreSectionCounter]="!unitService.unit.enableSectionNumbering || page.alwaysVisible || section.ignoreNumbering"
                                 (elementSelected)="selectionService.selectedSectionIndex = i"
                                 (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
                                                            $event.previousSectionIndex,

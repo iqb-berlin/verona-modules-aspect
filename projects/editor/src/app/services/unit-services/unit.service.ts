@@ -19,6 +19,7 @@ import { UnitDefinitionSanitizer } from '../sanitizer';
 import { HistoryService, UnitUpdateCommand } from 'editor/src/app/services/history.service';
 import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
+import { SectionCounter } from 'common/util/section-counter';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class UnitService {
   geometryElementPropertyUpdated: Subject<string> = new Subject<string>();
   mathTableElementPropertyUpdated: Subject<string> = new Subject<string>();
   tablePropUpdated: Subject<string> = new Subject<string>();
+  sectionCountUpdated: Subject<void> = new Subject<void>();
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
 
@@ -208,5 +210,23 @@ export class UnitService {
 
   applyTemplate(templateName: string) {
     // TODO
+  }
+
+  updateSectionCounter(): void {
+    SectionCounter.reset();
+    // Wait for the change to propagate through the components
+    setTimeout(() => this.sectionCountUpdated.next());
+  }
+
+  setSectionNumbering(isEnabled: boolean) {
+    this.unit.enableSectionNumbering = isEnabled;
+    this.updateUnitDefinition();
+    this.updateSectionCounter();
+  }
+
+  setSectionNumberingPosition(position: 'above' | 'left') {
+    this.unit.sectionNumberingPosition = position;
+    this.updateUnitDefinition();
+    this.updateSectionCounter();
   }
 }

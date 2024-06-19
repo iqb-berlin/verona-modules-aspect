@@ -4,6 +4,8 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { VeronaAPIService, StartCommand } from './services/verona-api.service';
 import { UnitService } from './services/unit-services/unit.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'aspect-editor',
@@ -25,9 +27,13 @@ export class AppComponent implements OnInit {
 
   constructor(private unitService: UnitService,
               private translateService: TranslateService,
-              private veronaApiService: VeronaAPIService) {
+              private veronaApiService: VeronaAPIService,
+              private matIconRegistry: MatIconRegistry,
+              private domSanitizer: DomSanitizer) {
     translateService.addLangs(['de']);
     translateService.setDefaultLang('de');
+    this.matIconRegistry.addSvgIcon('playlist_remove',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/playlist_remove.svg'));
   }
 
   ngOnInit(): void {

@@ -87,6 +87,7 @@ export class PageMenu implements OnDestroy {
         this.movePageToFront(page);
         page.alwaysVisible = true;
         this.selectionService.selectedPageIndex = 0;
+        this.unitService.updateSectionCounter();
         this.pageOrderChanged.emit();
       }
       page[property] = value;

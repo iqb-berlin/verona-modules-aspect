@@ -72,6 +72,25 @@
           </ng-template>
         </mat-tab>
 
+        <mat-tab disabled>
+          <ng-template mat-tab-label>
+            <button mat-icon-button [matMenuTriggerFor]="numberingMenu">
+              <mat-icon>format_list_numbered</mat-icon>
+            </button>
+            <mat-menu #numberingMenu="matMenu" (click)="$event.stopPropagation()">
+              <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
+                <h3>Abschnittsnummerierung</h3>
+                <mat-checkbox #numberingInput (change)="setSectionNumbering($event)">
+                  Nummerierung aktivieren
+                </mat-checkbox>
+                <mat-checkbox [disabled]="!numberingInput.checked" (change)="setSectionNumberingPosition($event)">
+                  vertikale Ausrichtung
+                </mat-checkbox>
+              </div>
+            </mat-menu>
+          </ng-template>
+        </mat-tab>
+
       </mat-tab-group>
     </mat-drawer-content>
 

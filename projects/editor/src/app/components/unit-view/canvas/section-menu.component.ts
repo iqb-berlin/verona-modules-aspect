@@ -44,6 +44,14 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
            [value]="$any(section.backgroundColor)"
            (change)="updateModel('backgroundColor', $any($event.target).value)">
 
+
+    <button mat-mini-fab [color]="section.ignoreNumbering ? 'primary' : 'accent'"
+            (click)="ignoreNumbering()"
+            [matTooltip]="'Von der Nummerierung ausnehmen'" [matTooltipPosition]="'left'">
+      <mat-icon>playlist_remove</mat-icon>
+    </button>
+
+
     <button mat-mini-fab
             (click)="showVisibilityRulesDialog()"
             [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
@@ -297,5 +305,9 @@ export class SectionMenuComponent implements OnDestroy {
       .map(element => element.id)
       .concat(this.unitService.unit.stateVariables
         .map(element => element.id));
+  }
+
+  ignoreNumbering() {
+    this.updateModel('ignoreNumbering', !this.section.ignoreNumbering);
   }
 }

@@ -13,12 +13,16 @@ export class Unit implements UnitProperties {
   version: string;
   stateVariables: StateVariable[] = [];
   pages: Page[];
+  enableSectionNumbering: boolean = false;
+  sectionNumberingPosition: 'left' | 'above' = 'left';
 
   constructor(unit?: UnitProperties) {
     if (unit && isValid(unit)) {
       this.version = unit.version;
       this.stateVariables = unit.stateVariables;
       this.pages = unit.pages.map(page => new Page(page));
+      this.enableSectionNumbering = unit.enableSectionNumbering;
+      this.sectionNumberingPosition = unit.sectionNumberingPosition;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at unit instantiation');
@@ -26,6 +30,8 @@ export class Unit implements UnitProperties {
       this.version = VersionManager.getCurrentVersion();
       if (unit?.stateVariables !== undefined) this.stateVariables = unit.stateVariables;
       this.pages = unit?.pages.map(page => new Page(page)) || [new Page()];
+      if (unit?.enableSectionNumbering !== undefined) this.enableSectionNumbering = unit.enableSectionNumbering;
+      if (unit?.sectionNumberingPosition !== undefined) this.sectionNumberingPosition = unit.sectionNumberingPosition;
     }
   }
 
@@ -46,7 +52,9 @@ function isValid(blueprint?: UnitProperties): boolean {
   return blueprint.version === VersionManager.getCurrentVersion() &&
     blueprint.stateVariables !== undefined &&
     blueprint.type !== undefined &&
-    blueprint.pages !== undefined;
+    blueprint.pages !== undefined &&
+    blueprint.enableSectionNumbering !== undefined &&
+    blueprint.sectionNumberingPosition !== undefined;
 }
 
 export interface UnitProperties {
@@ -54,4 +62,6 @@ export interface UnitProperties {
   version: string;
   stateVariables: StateVariable[];
   pages: Page[];
+  enableSectionNumbering: boolean;
+  sectionNumberingPosition: 'left' | 'above';
 }

@@ -47,6 +47,7 @@
           </ng-template>
           <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch" [page]="page"></aspect-page-canvas>
         </mat-tab>
+
         <mat-tab disabled>
           <ng-template mat-tab-label>
             <button mat-icon-button (click)="addPage()">
@@ -55,22 +56,23 @@
           </ng-template>
         </mat-tab>
 
-        <mat-tab disabled>
-          <ng-template mat-tab-label>
-            <button mat-icon-button class="history-button" [matMenuTriggerFor]="historyMenu">
-              <mat-icon>history</mat-icon>
-            </button>
-            <mat-menu #historyMenu="matMenu">
-              <h3>Änderungshistorie</h3>
-              <p [style.color]="'red'">Achtung experimentelle Funktion!<br>
-                Benutzung kann Fehler verursachen bis hin zu kaputter Unit.</p>
-              <div *ngFor="let command of historyService.commandList">
-                <p>{{ command.title }}</p>
-              </div>
-              <button *ngIf="historyService.commandList.length > 0" (click)="unitService.rollback()">Rollback</button>
-            </mat-menu>
-          </ng-template>
-        </mat-tab>
+<!--        Commented out for now, until feature works-->
+<!--        <mat-tab disabled>-->
+<!--          <ng-template mat-tab-label>-->
+<!--            <button mat-icon-button class="history-button" [matMenuTriggerFor]="historyMenu">-->
+<!--              <mat-icon>history</mat-icon>-->
+<!--            </button>-->
+<!--            <mat-menu #historyMenu="matMenu">-->
+<!--              <h3>Änderungshistorie</h3>-->
+<!--              <p [style.color]="'red'">Achtung experimentelle Funktion!<br>-->
+<!--                Benutzung kann Fehler verursachen bis hin zu kaputter Unit.</p>-->
+<!--              <div *ngFor="let command of historyService.commandList">-->
+<!--                <p>{{ command.title }}</p>-->
+<!--              </div>-->
+<!--              <button *ngIf="historyService.commandList.length > 0" (click)="unitService.rollback()">Rollback</button>-->
+<!--            </mat-menu>-->
+<!--          </ng-template>-->
+<!--        </mat-tab>-->
 
         <mat-tab disabled>
           <ng-template mat-tab-label>

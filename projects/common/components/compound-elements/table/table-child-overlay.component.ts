@@ -7,6 +7,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
+import { UntypedFormGroup } from '@angular/forms';
+import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 
 @Component({
   selector: 'aspect-table-child-overlay',
@@ -30,6 +32,7 @@ import { CheckboxComponent } from 'common/components/input-elements/checkbox.com
 })
 export class TableChildOverlay implements OnInit {
   @Input() element!: UIElement;
+  @Input() parentForm!: UntypedFormGroup;
   @Output() elementSelected = new EventEmitter<TableChildOverlay>();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   childComponent!: ComponentRef<ElementComponent>;
@@ -42,11 +45,12 @@ export class TableChildOverlay implements OnInit {
     this.childComponent = this.elementContainer.createComponent(this.element.getElementComponent());
     this.childComponent.instance.elementModel = this.element;
 
-    this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
+    // this.childComponent.changeDetectorRef.detectChanges(); // this fires onInit, which initializes the FormControl
 
     if (this.childComponent.instance instanceof TextFieldComponent ||
         this.childComponent.instance instanceof CheckboxComponent) {
       this.childComponent.instance.tableMode = true;
+      this.childComponent.instance.parentForm = this.parentForm;
     }
     // this.childComponent.location.nativeElement.style.pointerEvents = 'none';
     if (this.element.type !== 'text') {
@@ -56,8 +60,9 @@ export class TableChildOverlay implements OnInit {
     if (this.element.type === 'text') {
       this.childComponent.location.nativeElement.style.margin = '5px';
     }
-    if (this.element.type === 'drop-list') {
+    if (this.childComponent.instance instanceof DropListComponent) {
       this.childComponent.setInput('clozeContext', true);
+      this.childComponent.instance.parentForm = this.parentForm;
     }
   }
 

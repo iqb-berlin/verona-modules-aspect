@@ -64,6 +64,7 @@ import { MeasurePipe } from 'common/pipes/measure.pipe';
               <mat-icon>remove</mat-icon>
             </button>
             <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
+                                        [parentForm]="parentForm"
                                         (elementSelected)="childElementSelected.emit($event)">
             </aspect-table-child-overlay>
           </div>

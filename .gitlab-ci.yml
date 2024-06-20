@@ -21,6 +21,7 @@ test-e2e:
   script:
     - nohup npm run start-editor-local &
     - nohup npm run start-player-local &
+    - sleep 20
     - npm run e2e-headless
   artifacts:
     when: always

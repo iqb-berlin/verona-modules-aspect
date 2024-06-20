@@ -5,7 +5,7 @@ import { LogService } from 'player/modules/logging/services/log.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TextMarkingService {
+export class TextMarkingUtils {
   private static readonly MARKING_TAG = 'ASPECT-MARKED';
 
   static applyMarkingDataToText(
@@ -14,11 +14,11 @@ export class TextMarkingService {
     textComponent: TextComponent
   ): void {
     const selection = window.getSelection();
-    if (selection && TextMarkingService.isSelectionValid(selection) && selection.rangeCount > 0) {
+    if (selection && TextMarkingUtils.isSelectionValid(selection) && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const element = textComponent.textContainerRef.nativeElement;
-      if (TextMarkingService.isRangeInside(range, element)) {
-        TextMarkingService.applyRange(range, selection, mode === 'delete', color);
+      if (TextMarkingUtils.isRangeInside(range, element)) {
+        TextMarkingUtils.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
           value: element.innerHTML
@@ -34,14 +34,14 @@ export class TextMarkingService {
   static isSelectionValid = (selection: Selection): boolean => selection.toString().length > 0;
 
   static isRangeInside(range: Range, element: HTMLElement): boolean {
-    return (TextMarkingService.isDescendantOf(range.startContainer, element) &&
-      TextMarkingService.isDescendantOf(range.endContainer, element));
+    return (TextMarkingUtils.isDescendantOf(range.startContainer, element) &&
+      TextMarkingUtils.isDescendantOf(range.endContainer, element));
   }
 
   static getMarkedTextIndices = (htmlText: string): string[] => {
     const markingStartPattern =
-      new RegExp(`<${TextMarkingService.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
-    const markingClosingTag = `</${TextMarkingService.MARKING_TAG.toLowerCase()}>`;
+      new RegExp(`<${TextMarkingUtils.MARKING_TAG.toLowerCase()} [a-z]+="[\\w\\d()-;:, #]+">`);
+    const markingClosingTag = `</${TextMarkingUtils.MARKING_TAG.toLowerCase()}>`;
     let newHtmlText = htmlText;
     const markCollection = [];
     let matchesArray;
@@ -57,7 +57,7 @@ export class TextMarkingService {
           newHtmlText = newHtmlText.replace(startMatch, '');
           const endIndex = newHtmlText.search(endMatch);
           newHtmlText = newHtmlText.replace(endMatch, '');
-          markCollection.push(`${startIndex}-${endIndex}-${TextMarkingService.getMarkingColor(startMatch)}`);
+          markCollection.push(`${startIndex}-${endIndex}-${TextMarkingUtils.getMarkingColor(startMatch)}`);
         }
       }
     } while (matchesArray);
@@ -69,13 +69,13 @@ export class TextMarkingService {
     if (markings.length) {
       const markCollectionReversed = [...markings].reverse();
       const markingDataPattern = /^(\d+)-(\d+)-(.+)$/;
-      const markingClosingTag = `</${TextMarkingService.MARKING_TAG.toLowerCase()}>`;
+      const markingClosingTag = `</${TextMarkingUtils.MARKING_TAG.toLowerCase()}>`;
       markCollectionReversed.forEach(markingData => {
         const matchesArray = markingData.match(markingDataPattern);
         if (matchesArray) {
           const startIndex = Number(matchesArray[1]);
           const endIndex = Number(matchesArray[2]);
-          const startMatch = TextMarkingService.createMarkingStartTag(matchesArray[3]);
+          const startMatch = TextMarkingUtils.createMarkingStartTag(matchesArray[3]);
           newHtmlText = newHtmlText.substring(0, endIndex) + markingClosingTag + newHtmlText.substring(endIndex);
           newHtmlText = newHtmlText.substring(0, startIndex) + startMatch + newHtmlText.substring(startIndex);
         }
@@ -91,46 +91,46 @@ export class TextMarkingService {
     if (node.parentElement === element) {
       return true;
     }
-    return TextMarkingService.isDescendantOf(node.parentNode, element);
+    return TextMarkingUtils.isDescendantOf(node.parentNode, element);
   }
 
   private static getMarkingColor = (tag: string): string => {
     const colors = tag.match(/\d{1,3}, \d{1,3}, \d{1,3}/);
-    return (colors) ? TextMarkingService.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
+    return (colors) ? TextMarkingUtils.rgbToHex(colors[0].split(',').map(value => Number(value))) : 'none';
   };
 
   private static createMarkingStartTag(color: string): string {
-    const rgb = TextMarkingService.hexToRgb(color);
+    const rgb = TextMarkingUtils.hexToRgb(color);
     return `<${
-      TextMarkingService.MARKING_TAG.toLowerCase()
+      TextMarkingUtils.MARKING_TAG.toLowerCase()
     } style="background-color: rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]});">`;
   }
 
   private static applyRange(
     range: Range, selection: Selection, clear: boolean, color: string
   ): void {
-    const nodes: Node[] = TextMarkingService.getSelectedNodes(range, selection);
+    const nodes: Node[] = TextMarkingUtils.getSelectedNodes(range, selection);
     if ((range.startContainer === range.endContainer) && range.startContainer.nodeType === Node.TEXT_NODE) {
       if (clear) {
         if (range.startContainer.nodeType === Node.TEXT_NODE) {
-          TextMarkingService.clearMarkingFromNode(range);
+          TextMarkingUtils.clearMarkingFromNode(range);
         } else {
-          TextMarkingService.clearNodes(nodes, range);
+          TextMarkingUtils.clearNodes(nodes, range);
         }
       } else {
-        TextMarkingService.markNode(range, color);
+        TextMarkingUtils.markNode(range, color);
       }
     } else if (clear) {
-      TextMarkingService.clearNodes(nodes, range);
+      TextMarkingUtils.clearNodes(nodes, range);
     } else {
-      TextMarkingService.markNodes(nodes, range, color);
+      TextMarkingUtils.markNodes(nodes, range, color);
     }
   }
 
   private static getSelectedNodes = (range: Range, selection: Selection): Node[] => {
     let startContainerNodes: Node[] = [];
     const endContainerNodes: Node[] = [];
-    const nodes: Node[] = TextMarkingService.findNodes(range.commonAncestorContainer.childNodes, selection);
+    const nodes: Node[] = TextMarkingUtils.findNodes(range.commonAncestorContainer.childNodes, selection);
     // The range is structured differently in FF and Chrome.
     // With the same selection startcontainer and endcontainer differ.
     // Under certain conditions, startcontainer and endcontainer are not present
@@ -139,7 +139,7 @@ export class TextMarkingService {
       if (range.startContainer.nodeType === Node.TEXT_NODE) {
         startContainerNodes.push(range.startContainer);
       } else {
-        startContainerNodes = TextMarkingService.findNodes(range.startContainer.childNodes, selection);
+        startContainerNodes = TextMarkingUtils.findNodes(range.startContainer.childNodes, selection);
       }
     }
     if (range.endOffset === 0 && !nodes.includes(range.endContainer) && !range.endContainer.childNodes.length) {
@@ -149,12 +149,12 @@ export class TextMarkingService {
   };
 
   private static clearMarkingFromNode(range: Range): void {
-    if (range.startContainer.parentElement?.tagName?.toUpperCase() === TextMarkingService.MARKING_TAG) {
+    if (range.startContainer.parentElement?.tagName?.toUpperCase() === TextMarkingUtils.MARKING_TAG) {
       const previousText = range.startContainer.nodeValue?.substring(0, range.startOffset) || '';
       const text = range.startContainer.nodeValue?.substring(range.startOffset, range.endOffset) || '';
       const nextText = range.startContainer.nodeValue?.substring(range.endOffset) || '';
       if (text) {
-        TextMarkingService.clearMarking(range.startContainer, text, previousText, nextText);
+        TextMarkingUtils.clearMarking(range.startContainer, text, previousText, nextText);
       }
     }
   }
@@ -166,12 +166,12 @@ export class TextMarkingService {
       const color = (node.parentNode as HTMLElement).style.backgroundColor || 'none';
       parentNode?.replaceChild(textElement, node.parentNode);
       if (previousText) {
-        const prev = TextMarkingService.createMarkedElement(color);
+        const prev = TextMarkingUtils.createMarkedElement(color);
         prev.append(document.createTextNode(previousText));
         parentNode?.insertBefore(prev, textElement);
       }
       if (nextText) {
-        const end = TextMarkingService.createMarkedElement(color);
+        const end = TextMarkingUtils.createMarkedElement(color);
         end.append(document.createTextNode(nextText));
         parentNode?.insertBefore(end, textElement.nextSibling);
       }
@@ -181,10 +181,10 @@ export class TextMarkingService {
   private static clearNodes(nodes: Node[], range: Range): void {
     nodes.forEach((node: Node) => {
       const index = nodes.findIndex(rangeNode => rangeNode === node);
-      if (node.parentElement?.tagName.toUpperCase() === TextMarkingService.MARKING_TAG) {
-        const nodeValues = TextMarkingService.getNodeValues(node, nodes, index, range);
+      if (node.parentElement?.tagName.toUpperCase() === TextMarkingUtils.MARKING_TAG) {
+        const nodeValues = TextMarkingUtils.getNodeValues(node, nodes, index, range);
         if (nodeValues.text) {
-          TextMarkingService.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
+          TextMarkingUtils.clearMarking(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText);
         } else {
           LogService.warn('Cannot recreate node for text', nodeValues);
         }
@@ -195,7 +195,7 @@ export class TextMarkingService {
   private static mark(
     node: Node, text: string, previousText: string, nextText: string, color: string
   ): void {
-    const markedElement: HTMLElement = TextMarkingService.createMarkedElement(color);
+    const markedElement: HTMLElement = TextMarkingUtils.createMarkedElement(color);
     markedElement.append(document.createTextNode(text));
     // important!
     const { parentNode } = node;
@@ -231,23 +231,23 @@ export class TextMarkingService {
   };
 
   private static markNode(range: Range, color: string): void {
-    if (range.startContainer.parentElement?.tagName.toUpperCase() !== TextMarkingService.MARKING_TAG) {
-      const markedElement: HTMLElement = TextMarkingService.createMarkedElement(color);
+    if (range.startContainer.parentElement?.tagName.toUpperCase() !== TextMarkingUtils.MARKING_TAG) {
+      const markedElement: HTMLElement = TextMarkingUtils.createMarkedElement(color);
       range.surroundContents(markedElement);
     }
   }
 
   private static markNodes(nodes: Node[], range: Range, color: string): void {
     nodes.forEach((node, index) => {
-      const nodeValues = TextMarkingService.getNodeValues(node, nodes, index, range);
-      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== TextMarkingService.MARKING_TAG) {
-        TextMarkingService.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
+      const nodeValues = TextMarkingUtils.getNodeValues(node, nodes, index, range);
+      if (nodeValues.text && node.parentElement?.tagName.toUpperCase() !== TextMarkingUtils.MARKING_TAG) {
+        TextMarkingUtils.mark(node, nodeValues.text, nodeValues.previousText, nodeValues.nextText, color);
       }
     });
   }
 
   private static createMarkedElement = (color: string): HTMLElement => {
-    const markedElement = document.createElement(TextMarkingService.MARKING_TAG);
+    const markedElement = document.createElement(TextMarkingUtils.MARKING_TAG);
     markedElement.style.backgroundColor = color;
     return markedElement;
   };
@@ -261,7 +261,7 @@ export class TextMarkingService {
         }
         if (node.nodeType === Node.ELEMENT_NODE) {
           if (node.childNodes.length) {
-            nodes.push(...TextMarkingService.findNodes(node.childNodes, selection));
+            nodes.push(...TextMarkingUtils.findNodes(node.childNodes, selection));
           } else if (!nodes.includes(node)) {
             nodes.push(node);
           }

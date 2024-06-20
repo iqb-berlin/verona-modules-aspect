@@ -11,6 +11,7 @@ import { UntypedFormGroup } from '@angular/forms';
 import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 import { AudioComponent } from 'common/components/media-elements/audio.component';
 import { Subject } from 'rxjs';
+import { TextComponent } from 'common/components/text/text.component';
 
 @Component({
   selector: 'aspect-table-child-overlay',
@@ -33,6 +34,7 @@ import { Subject } from 'rxjs';
 export class TableChildOverlay implements OnInit {
   @Input() element!: UIElement;
   @Input() parentForm!: UntypedFormGroup;
+  @Input() savedTexts!: { [key: string]: string };
   @Input() savedPlaybackTimes!: { [key: string]: number };
   @Input() actualPlayingId!: Subject<string | null>;
   @Input() mediaStatusChanged!: Subject<string>;
@@ -61,8 +63,9 @@ export class TableChildOverlay implements OnInit {
       this.childComponent.location.nativeElement.style.width = '100%';
       this.childComponent.location.nativeElement.style.height = '100%';
     }
-    if (this.element.type === 'text') {
+    if (this.childComponent.instance instanceof TextComponent) {
       this.childComponent.location.nativeElement.style.margin = '5px';
+      this.childComponent.instance.savedText = this.savedTexts[this.element.id];
     }
     if (this.childComponent.instance instanceof DropListComponent) {
       this.childComponent.setInput('clozeContext', true);

@@ -18,6 +18,7 @@
     *ngIf="elementModel.type === 'table'"
     #elementComponent
     [parentForm]="form"
+    [savedTexts]="savedTexts"
     [savedPlaybackTimes]="savedPlaybackTimes"
     [actualPlayingId]="mediaPlayerService.actualPlayingId"
     [mediaStatusChanged]="mediaPlayerService.mediaStatusChanged"

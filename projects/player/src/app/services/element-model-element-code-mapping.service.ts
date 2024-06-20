@@ -13,7 +13,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { ResponseValueType } from '@iqb/responses';
-import { TextMarkingService } from './text-marking.service';
+import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
 @Injectable({
@@ -45,7 +45,7 @@ export class ElementModelElementCodeMappingService {
           (elementModel as HotspotImageElement).value;
       case 'text':
         return (elementCodeValue !== undefined) ?
-          TextMarkingService
+          TextMarkingUtils
             .restoreMarkedTextIndices(
               elementCodeValue as string[],
               ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
@@ -95,7 +95,7 @@ export class ElementModelElementCodeMappingService {
       case 'hotspot-image':
         return (elementModelValue as Hotspot[]).map(hotspot => hotspot.value);
       case 'text':
-        return TextMarkingService.getMarkedTextIndices(elementModelValue as string);
+        return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':

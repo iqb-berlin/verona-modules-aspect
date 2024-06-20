@@ -1,16 +1,16 @@
 <aspect-text
     #elementComponent
     [elementModel]="elementModel | cast: TextElement"
-    [savedText]="initialValue"
-    (markingDataChanged)="applyMarkingData($event)"
-    (textSelectionStart)="startTextSelection($event)"
+    [savedText]="savedText"
+    (markingDataChanged)="textMarkingSupport.applyMarkingData($event, elementComponent)"
+    (textSelectionStart)="textMarkingSupport.startTextSelection($event, elementComponent)"
     (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-text>
 <aspect-floating-marking-bar *ngIf="elementModel.hasSelectionPopup"
     [elementComponent]="elementComponent"
-    [isMarkingBarOpen]="isMarkingBarOpen"
-    [textComponentRect]="textComponentRect"
-    [textComponentContainerScrollTop]="textComponentContainerScrollTop"
-    [markingBarPosition]="markingBarPosition"
-    (markingDataChanged)="applyMarkingDataToText($event.mode, $event.color)">
+    [isMarkingBarOpen]="textMarkingSupport.isMarkingBarOpen"
+    [textComponentRect]="textMarkingSupport.textComponentRect"
+    [textComponentContainerScrollTop]="textMarkingSupport.textComponentContainerScrollTop"
+    [markingBarPosition]="textMarkingSupport.markingBarPosition"
+    (markingDataChanged)="textMarkingSupport.applyMarkingDataToText($event.mode, $event.color, elementComponent)">
 </aspect-floating-marking-bar>

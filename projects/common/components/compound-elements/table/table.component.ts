@@ -66,6 +66,7 @@ import { Subject } from 'rxjs';
             </button>
             <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
                                         [parentForm]="parentForm"
+                                        [savedTexts]="savedTexts"
                                         [savedPlaybackTimes]="savedPlaybackTimes"
                                         [mediaStatusChanged]="mediaStatusChanged"
                                         [actualPlayingId]="actualPlayingId"
@@ -87,6 +88,7 @@ import { Subject } from 'rxjs';
 export class TableComponent extends CompoundElementComponent implements OnInit {
   @Input() elementModel!: TableElement;
   @Input() savedPlaybackTimes!: { [key: string]: number };
+  @Input() savedTexts!: { [key: string]: string };
   @Input() actualPlayingId!: Subject<string | null>;
   @Input() mediaStatusChanged!: Subject<string>;
   @Input() editorMode: boolean = false;

@@ -65,7 +65,8 @@ export class TableChildOverlay implements OnInit {
     }
     if (this.childComponent.instance instanceof TextComponent) {
       this.childComponent.location.nativeElement.style.margin = '5px';
-      this.childComponent.instance.savedText = this.savedTexts[this.element.id];
+      this.childComponent.instance.savedText =
+        this.savedTexts ? this.savedTexts[this.element.id] : '';
     }
     if (this.childComponent.instance instanceof DropListComponent) {
       this.childComponent.setInput('clozeContext', true);

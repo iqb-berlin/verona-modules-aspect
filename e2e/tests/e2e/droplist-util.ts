@@ -14,7 +14,7 @@ export function addList(title: string, options: string[] = [], settings?: Record
 export function addOption(optionName: string): void {
   cy.contains('fieldset', 'Vorbelegung')
     .contains('mat-form-field', 'Neue Option')
-    .find('input')
+    .find('textarea')
     .clear()
     .type(`${optionName}{enter}`);
 }

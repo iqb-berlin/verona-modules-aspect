@@ -16,14 +16,14 @@ export function selectFromDropdown(dropdownName: string, optionName: string, clo
 export function addOption(optionName: string): void {
   cy.contains('fieldset', 'Optionen')
     .contains('mat-form-field', 'Neue Option')
-    .find('input')
+    .find('textarea')
     .clear()
     .type(`${optionName}{enter}`);
 }
 
 export function setLabelText(labelText: string): void {
   cy.contains('fieldset', 'Eingabeelement')
-    .contains('div', 'Beschriftung').find('input')
+    .contains('div', 'Beschriftung').find('textarea')
     .clear()
     .type(labelText);
 }

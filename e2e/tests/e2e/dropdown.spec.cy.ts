@@ -49,7 +49,7 @@ describe('Dropdown element', { testIsolation: false }, () => {
     cy.contains('aspect-dropdown', 'Klappliste mit Optionen')
       .find('mat-select')
       .find('mat-select-trigger')
-      .should('have.text', 'BBB');
+      .contains('BBB');
 
     assertValueChanged('dropdown_1', 2);
   });
@@ -58,7 +58,7 @@ describe('Dropdown element', { testIsolation: false }, () => {
     cy.contains('aspect-dropdown', 'Klappliste-deselection')
       .find('mat-select')
       .find('mat-select-trigger')
-      .should('have.text', 'AAA');
+      .contains('AAA');
     cy.contains('div', 'Klappliste-deselection').find('mat-select').click();
     cy.get('.cdk-overlay-container')
       .find('mat-option')

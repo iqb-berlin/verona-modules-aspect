@@ -26,7 +26,7 @@ describe('Basic Unit', () => {
   it('creates a button element with label text', () => {
     cy.get('aspect-page-canvas').contains('Knopf').should('not.exist');
     addElement('Knopf', 'Sonstige');
-    cy.contains('div', 'Beschriftung').find('input').clear().type('Neue Beschriftung');
+    cy.contains('div', 'Beschriftung').find('textarea').clear().type('Neue Beschriftung');
     cy.get('aspect-page-canvas').contains('Neue Beschriftung').should('exist');
   });
 
@@ -41,23 +41,23 @@ describe('Basic Unit', () => {
     navigateToPage(1);
     addElement('Knopf', 'Sonstige');
     addElement('Knopf', 'Sonstige');
-    cy.contains('div', 'Beschriftung').find('input').clear().type('PageRef');
+    cy.contains('div', 'Beschriftung').find('textarea').clear().type('PageRef');
     selectFromDropdown('Aktion', 'Seitennavigation');
     selectFromDropdown('Aktionsparameter', '2');
 
     // Crosscheck: Delete not referenced page
     navigateToPage(3);
     cy.contains('div', 'Seite 3').find('button').click();
-    cy.contains('Löschen').click();
-    cy.get('.cdk-overlay-container').contains('Element wird referenziert').should('not.exist');
-    cy.get('.cdk-overlay-container').contains('Seite löschen?');
+    cy.contains('delete').click();
+    cy.get('.cdk-overlay-container').contains('Referenzen festgestellt').should('not.exist');
+    cy.get('.cdk-overlay-container').contains('Seite 3 löschen?');
     cy.contains('button', 'Bestätigen').click();
 
     navigateToPage(2);
     cy.contains('div', 'Seite 2').find('button').click();
-    cy.contains('Löschen').click();
+    cy.contains('delete').click();
 
-    cy.get('.cdk-overlay-container').contains('Element wird referenziert');
+    cy.get('.cdk-overlay-container').contains('Referenzen festgestellt');
     cy.get('.cdk-overlay-container').contains('button_2');
     cy.get('.cdk-overlay-container').contains('button_1').should('not.exist');
   });

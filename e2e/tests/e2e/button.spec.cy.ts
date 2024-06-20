@@ -11,13 +11,13 @@ describe('Button element', { testIsolation: false }, () => {
 
   it('creates hyperlink button in editor', () => {
     cy.contains('Knopf').click();
-    cy.contains('div', 'Beschriftung').find('input').clear().type('Knopf-Hyper');
+    cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-Hyper');
     cy.contains('Hyperlink').click();
   });
 
   it('creates unit nav button in editor', () => {
     cy.contains('Knopf').click();
-    cy.contains('div', 'Beschriftung').find('input').clear().type('Knopf-next-unit');
+    cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-next-unit');
     selectFromDropdown('Aktion', 'Unitnavigation');
     selectFromDropdown('Aktionsparameter', 'Nächste Unit');
   });
@@ -25,10 +25,10 @@ describe('Button element', { testIsolation: false }, () => {
   it('creates page nav button in editor', () => {
     addPage();
     cy.contains('Knopf').click();
-    cy.contains('div', 'Beschriftung').find('input').clear().type('Knopf-seite-2');
+    cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-seite-2');
     navigateToPage(1);
     cy.contains('Knopf').click();
-    cy.contains('div', 'Beschriftung').find('input').clear().type('Knopf-page-2');
+    cy.contains('div', 'Beschriftung').find('textarea').clear().type('Knopf-page-2');
     selectFromDropdown('Aktion', 'Seitennavigation');
     selectFromDropdown('Aktionsparameter', '2');
   });

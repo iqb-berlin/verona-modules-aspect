@@ -11,9 +11,9 @@ describe('SectionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        SectionComponent, MeasurePipe
+        SectionComponent
       ],
-      imports: [MatDialogModule]
+      imports: [MatDialogModule, MeasurePipe]
     })
       .compileComponents();
   });

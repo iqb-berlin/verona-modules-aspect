@@ -5,6 +5,7 @@ import {
 describe('Button element', { testIsolation: false }, () => {
   it('creates basic buttons in editor', () => {
     cy.openEditor();
+    cy.wait(1000); // Wait for expansion panel to render. Otherwise the last panel is not there yet, sometimes.
     cy.contains('Sonstige').click();
     cy.contains('Knopf').click();
   });

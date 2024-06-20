@@ -27,6 +27,7 @@ export class PagesLayoutComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() scrollPages!: Page[];
   @Input() hasScrollPages!: boolean;
   @Input() alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right';
+  @Input() sectionNumbering!: { enableSectionNumbering: boolean, sectionNumberingPosition: 'left' | 'above' };
 
   selectedIndex: number = 0;
   selectIndex: Subject<number> = new Subject();

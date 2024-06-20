@@ -6,6 +6,7 @@
                       [currentPageIndex]="pagesLayout.selectedIndex">
   <aspect-pages-layout #pagesLayout
                        [style.height.%]="100"
+                       [sectionNumbering]="sectionNumbering"
                        [pages]="pages"
                        [alwaysVisiblePage]="pages | alwaysVisiblePage"
                        [alwaysVisiblePagePosition]="(pages | alwaysVisiblePage)?.alwaysVisiblePagePosition || 'left'"

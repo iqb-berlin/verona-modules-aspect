@@ -1,12 +1,19 @@
-<ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
+<div class="section-wrapper"
+     [ngClass]="sectionNumbering?.sectionNumberingPosition === 'left' ? 'row-align' : 'column-align'">
+  <div *ngIf="sectionNumbering?.enableSectionNumbering" [style.min-width.px]="35" [style.font-size.px]="20">
+    <b *ngIf="sectionCounter">{{sectionCounter}}.</b>
+  </div>
+  <ng-container *ngTemplateOutlet="section.dynamicPositioning ? dynamicElements : staticElements"></ng-container>
+</div>
 
 <ng-template #staticElements>
+  <div class="static-section">
   <ng-container *ngFor="let element of section.elements">
     <aspect-element-group-selection
         class="static-element fixed-size-content"
         [class.no-pointer-events]="element.type === 'frame'"
-        [style.width.px]="element.width"
-        [style.height.px]="element.height"
+        [style.width.px]="element.dimensions.width"
+        [style.height.px]="element.dimensions.height"
         [style.left.px]="element.position.xPosition"
         [style.top.px]="element.position.yPosition"
         [style.z-index]="element.position.zIndex"
@@ -14,6 +21,7 @@
         [pageIndex]="pageIndex">
     </aspect-element-group-selection>
   </ng-container>
+  </div>
 </ng-template>
 
 <ng-template #dynamicElements>
@@ -44,7 +52,7 @@
          [style.z-index]="element.position.zIndex"
          [elementModel]="element"
          [pageIndex]="pageIndex">
-     </aspect-element-group-selection>
+      </aspect-element-group-selection>
     </ng-container>
   </div>
 </ng-template>

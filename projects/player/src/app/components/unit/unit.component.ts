@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { TranslateService } from '@ngx-translate/core';
+import { SectionCounter } from 'common/util/section-counter';
 
 @Component({
   selector: 'aspect-unit',
@@ -28,6 +29,10 @@ import { TranslateService } from '@ngx-translate/core';
 export class UnitComponent implements OnInit {
   pages: Page[] = [];
   playerConfig: PlayerConfig = {};
+  sectionNumbering: { enableSectionNumbering: boolean, sectionNumberingPosition: 'left' | 'above' } = {
+    enableSectionNumbering: false,
+    sectionNumberingPosition: 'left'
+  };
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
@@ -54,6 +59,10 @@ export class UnitComponent implements OnInit {
         const unitDefinition = JSON.parse(message.unitDefinition as string);
         this.checkUnitDefinitionVersion(unitDefinition);
         const unit: Unit = new Unit(unitDefinition);
+        this.sectionNumbering = {
+          enableSectionNumbering: unit.enableSectionNumbering,
+          sectionNumberingPosition: unit.sectionNumberingPosition
+        };
         this.pages = unit.pages;
         this.playerConfig = message.playerConfig || {};
         this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
@@ -111,6 +120,7 @@ export class UnitComponent implements OnInit {
     this.pages = [];
     this.playerConfig = {};
     this.anchorService.reset();
+    SectionCounter.reset();
     this.changeDetectorRef.detectChanges();
   }
 }

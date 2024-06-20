@@ -17,6 +17,10 @@ export class PageComponent {
   @Input() pageIndex!: number;
   @Input() scrollPageIndex!: number;
   @Input() pagingMode!: PagingMode;
+  @Input() sectionNumbering: {
+    enableSectionNumbering: boolean, sectionNumberingPosition: 'left' | 'above'
+  } | undefined;
+
   @Output() selectedIndexChange = new EventEmitter<number>();
   @Output() isVisibleIndexChange = new EventEmitter<IsVisibleIndex>();
 

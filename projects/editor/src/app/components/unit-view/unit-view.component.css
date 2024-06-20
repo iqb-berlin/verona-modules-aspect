@@ -65,9 +65,4 @@ aspect-page-canvas {
 /* History-button tab label */
 :host ::ng-deep .mat-mdc-tab-labels>div:last-child {
   margin-left: auto !important;
-  /*background-color: red !important;*/
-}
-
-.history-button {
-  /*margin-left: auto;*/
 }

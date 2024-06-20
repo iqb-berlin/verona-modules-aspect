@@ -60,11 +60,11 @@
   color: #006064;
 }
 
-.active-control{
- color: #006064;
+.active-control {
+  color: #006064;
 }
 
-.duration{
+.duration {
   flex-grow: 5;
   min-width: 20%;
   margin-top: 3px;
@@ -73,7 +73,7 @@
   @include slider-disabled-color();
 }
 
-.volume{
+.volume {
   flex-grow: 2;
   min-width: 10%;
   margin-top: 3px;
@@ -81,13 +81,13 @@
   @include slider-active-color();
 }
 
-.status-bar{
+.status-bar {
   padding: 10px;
   color: #f44336;
   font-size: 75%;
 }
 
-.hint-border{
+.hint-border {
   border: 2px #f44336 solid;
 }
 

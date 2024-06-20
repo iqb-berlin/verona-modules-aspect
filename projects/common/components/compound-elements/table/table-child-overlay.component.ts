@@ -28,8 +28,6 @@ import { Subject } from 'rxjs';
   `,
   styles: `
     .wrapper {display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;}
-    button {position: absolute; opacity: 0;}
-    button:hover {opacity: 1;}
   `
 })
 export class TableChildOverlay implements OnInit {

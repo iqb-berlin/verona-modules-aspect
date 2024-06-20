@@ -14,6 +14,7 @@ export class AudioElement extends PlayerElement implements PositionedUIElement, 
   type: UIElementType = 'audio';
   src: string | null = null;
   position: PositionProperties;
+  styling: { backgroundColor: string };
 
   static title: string = 'Audio';
   static icon: string = 'volume_up';
@@ -23,6 +24,7 @@ export class AudioElement extends PlayerElement implements PositionedUIElement, 
     if (element && isValid(element)) {
       this.src = element.src;
       this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Audio instantiation', element);
@@ -34,6 +36,10 @@ export class AudioElement extends PlayerElement implements PositionedUIElement, 
         ...element?.dimensions
       });
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.styling = {
+        backgroundColor: '#f1f1f1',
+        ...element?.styling
+      };
     }
   }
 
@@ -49,10 +55,12 @@ export class AudioElement extends PlayerElement implements PositionedUIElement, 
 export interface AudioProperties extends PlayerElementBlueprint {
   src: string | null;
   position: PositionProperties;
+  styling: { backgroundColor: string };
 }
 
 function isValid(blueprint?: AudioProperties): boolean {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
+    blueprint.styling?.backgroundColor !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position);
 }

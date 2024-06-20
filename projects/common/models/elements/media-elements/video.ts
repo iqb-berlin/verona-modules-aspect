@@ -15,6 +15,7 @@ export class VideoElement extends PlayerElement implements PositionedUIElement, 
   src: string | null = null;
   scale: boolean = false;
   position: PositionProperties;
+  styling: { backgroundColor: string };
 
   static title: string = 'Video';
   static icon: string = 'ondemand_video';
@@ -25,6 +26,7 @@ export class VideoElement extends PlayerElement implements PositionedUIElement, 
       this.src = element.src;
       this.scale = element.scale;
       this.position = { ...element.position };
+      this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Video instantiation', element);
@@ -37,6 +39,10 @@ export class VideoElement extends PlayerElement implements PositionedUIElement, 
         ...element?.dimensions
       });
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.styling = {
+        backgroundColor: '#f1f1f1',
+        ...element?.styling
+      };
     }
   }
 
@@ -53,11 +59,13 @@ export interface VideoProperties extends PlayerElementBlueprint {
   src: string | null;
   scale: boolean;
   position: PositionProperties;
+  styling: { backgroundColor: string };
 }
 
 function isValid(blueprint?: VideoProperties): boolean {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
     blueprint.scale !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position);
+    PropertyGroupValidators.isValidPosition(blueprint.position) &&
+    blueprint.styling?.backgroundColor !== undefined;
 }

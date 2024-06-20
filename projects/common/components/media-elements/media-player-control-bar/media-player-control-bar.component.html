@@ -7,7 +7,8 @@
     playerProperties.muteControl ||
     playerProperties.volumeControl"
     class="control-bar"
-    [class.hint-border]="showHint">
+    [class.hint-border]="showHint"
+    [style.background-color]="backgroundColor">
   <ng-container *ngIf="playerProperties.startControl">
     <button *ngIf="!playing || !playerProperties.pauseControl"
             type="button"

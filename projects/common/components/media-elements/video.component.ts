@@ -16,6 +16,7 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                                        [savedPlaybackTime]="savedPlaybackTime"
                                        [playerProperties]="elementModel.player"
                                        [dependencyDissolved]="dependencyDissolved"
+                                       [backgroundColor]="elementModel.styling.backgroundColor"
                                        (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                        (elementValueChanged)="elementValueChanged.emit($event)">
         <video #player

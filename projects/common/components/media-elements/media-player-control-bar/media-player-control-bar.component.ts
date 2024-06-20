@@ -21,6 +21,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
   @Input() project!: 'player' | 'editor';
   @Input() active!: boolean;
   @Input() dependencyDissolved!: boolean;
+  @Input() backgroundColor: string = '#f1f1f1';
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() mediaValidStatusChanged = new EventEmitter<string>();
 

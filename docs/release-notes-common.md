@@ -1,6 +1,8 @@
 Allgemein
 =========
 ##next
+### Neue Funktion
+- Hintergrundfarbe von Audio- und Videoelemente einstellbar
 ### Fehlerbehebungen
 - Hoch- und Tiefgestellter Text in Text-Elementen verursacht keine Änderunge der Zeilenhöhe mehr
 

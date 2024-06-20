@@ -14,6 +14,7 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                                        [playerProperties]="elementModel.player"
                                        [active]="active"
                                        [dependencyDissolved]="dependencyDissolved"
+                                       [backgroundColor]="elementModel.styling.backgroundColor"
                                        (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                        (elementValueChanged)="elementValueChanged.emit($event)">
         <audio #player

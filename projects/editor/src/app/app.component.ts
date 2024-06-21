@@ -27,13 +27,9 @@ export class AppComponent implements OnInit {
 
   constructor(private unitService: UnitService,
               private translateService: TranslateService,
-              private veronaApiService: VeronaAPIService,
-              private matIconRegistry: MatIconRegistry,
-              private domSanitizer: DomSanitizer) {
+              private veronaApiService: VeronaAPIService) {
     translateService.addLangs(['de']);
     translateService.setDefaultLang('de');
-    this.matIconRegistry.addSvgIcon('playlist_remove',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/playlist_remove.svg'));
   }
 
   ngOnInit(): void {

@@ -4,8 +4,6 @@ import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 import { VeronaAPIService, StartCommand } from './services/verona-api.service';
 import { UnitService } from './services/unit-services/unit.service';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'aspect-editor',

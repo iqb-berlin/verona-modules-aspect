@@ -12,7 +12,6 @@ import { InstantiationEror } from 'common/util/errors';
 import { environment } from 'common/environment';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { ElementFactory } from 'common/util/element.factory';
-import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
 
 export class TableElement extends CompoundElement implements PositionedUIElement, TableProperties {
   type: UIElementType = 'table';
@@ -24,7 +23,7 @@ export class TableElement extends CompoundElement implements PositionedUIElement
   styling: BasicStyles & BorderStyles;
 
   static title: string = 'Tabelle';
-  static icon: string = 'table';
+  static icon: string = 'table_view';
 
   constructor(element?: TableProperties) {
     super(element);

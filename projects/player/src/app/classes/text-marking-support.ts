@@ -35,7 +35,7 @@ export class TextMarkingSupport {
 
   startTextSelection(pointerDown: PointerEvent, elementComponent: TextComponent): void {
     this.isMarkingBarOpen = false;
-    this.anchorService.reset();
+    this.anchorService.hideAllAnchors();
     this.nativeEventService.pointerUp
       .pipe(takeUntil(this.ngUnsubscribe), first())
       .subscribe((pointerUp: PointerEvent) => {

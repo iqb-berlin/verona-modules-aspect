@@ -16,7 +16,6 @@ export class AnchorService {
   }
 
   showAnchor(anchorId: string): void {
-    this.reset();
     this.addAnchor(anchorId);
   }
 
@@ -70,6 +69,10 @@ export class AnchorService {
     if (anchors.length && showAnchor) {
       anchors[0].scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+  }
+
+  hideAllAnchors(): void {
+    this.reset();
   }
 
   reset(): void {

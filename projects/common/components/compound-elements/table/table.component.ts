@@ -27,7 +27,8 @@ import { Subject } from 'rxjs';
          [style.grid-template-columns]="elementModel.gridColumnSizes | measure"
          [style.grid-template-rows]="elementModel.gridRowSizes | measure"
          [style.grid-auto-columns]="'auto'"
-         [style.grid-auto-rows]="'auto'">
+         [style.grid-auto-rows]="'auto'"
+         [style.background-color]="elementModel.styling.backgroundColor">
       <ng-container *ngFor="let row of elementGrid; let i = index;">
         <div *ngFor="let column of row; let j = index;"
              class="cell-container"

@@ -3,7 +3,7 @@ import {
   UIElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import {
-  BasicStyles, BorderStyles, PositionProperties,
+  BorderStyles, PositionProperties,
   PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { Type } from '@angular/core';
@@ -20,7 +20,7 @@ export class TableElement extends CompoundElement implements PositionedUIElement
   elements: PositionedUIElement[] = [];
   tableEdgesEnabled: boolean = false;
   position: PositionProperties;
-  styling: BasicStyles & BorderStyles;
+  styling: { backgroundColor: string } & BorderStyles;
 
   static title: string = 'Tabelle';
   static icon: string = 'table_view';
@@ -47,11 +47,12 @@ export class TableElement extends CompoundElement implements PositionedUIElement
       if (element?.tableEdgesEnabled !== undefined) this.tableEdgesEnabled = element.tableEdgesEnabled;
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = {
-        ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
+        backgroundColor: 'transparent',
         ...PropertyGroupGenerators.generateBorderStylingProps({
           borderWidth: 1,
           ...element?.styling
-        })
+        }),
+        ...element?.styling
       };
     }
   }
@@ -80,15 +81,16 @@ export interface TableProperties extends UIElementProperties {
   elements: UIElement[];
   tableEdgesEnabled: boolean;
   position: PositionProperties;
-  styling: BasicStyles & BorderStyles;
+  styling: { backgroundColor: string } & BorderStyles;
 }
 
 function isValid(blueprint?: TableProperties): boolean {
   if (!blueprint) return false;
   return blueprint.gridColumnSizes !== undefined &&
-    blueprint. gridRowSizes !== undefined &&
+    blueprint.gridRowSizes !== undefined &&
     blueprint.elements !== undefined &&
     blueprint.tableEdgesEnabled !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    PropertyGroupValidators.isValidBasicStyles(blueprint.styling);
+    blueprint.styling.backgroundColor !== undefined &&
+    PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
 }

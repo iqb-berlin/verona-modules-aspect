@@ -12,11 +12,13 @@ import { DropListComponent } from 'common/components/input-elements/drop-list/dr
 import { AudioComponent } from 'common/components/media-elements/audio.component';
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'aspect-table-child-overlay',
   standalone: true,
   imports: [
+    NgIf,
     MatButtonModule,
     MatIconModule
   ],
@@ -24,11 +26,16 @@ import { TextComponent } from 'common/components/text/text.component';
     <div class="wrapper"
          [style.border]="isSelected ? 'purple solid 1px' : ''"
          (click)="elementSelected.emit(this); $event.stopPropagation();">
+      <ng-container *ngIf="editorMode">{{$any(element.constructor).title}}</ng-container>
+      <ng-container *ngIf="editorMode && element.id !== 'id-placeholder'"> - {{element.id}}</ng-container>
       <ng-template #elementContainer></ng-template>
     </div>
   `,
   styles: `
-    .wrapper {display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;}
+    .wrapper {width: 100%; height: 100%;}
+    :host ::ng-deep aspect-text-field {width: 100%; height: 100%;}
+    :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}
+    :host ::ng-deep aspect-audio .status-bar {display: none;}
   `
 })
 export class TableChildOverlay implements OnInit {
@@ -58,13 +65,10 @@ export class TableChildOverlay implements OnInit {
       this.childComponent.instance.tableMode = true;
       this.childComponent.instance.parentForm = this.parentForm;
     }
-    if (this.editorMode) this.childComponent.location.nativeElement.style.pointerEvents = 'none';
-    if (this.element.type !== 'text') {
-      this.childComponent.location.nativeElement.style.width = '100%';
-      this.childComponent.location.nativeElement.style.height = '100%';
-    }
+
+    if (!this.parentForm) this.childComponent.location.nativeElement.style.pointerEvents = 'none';
+
     if (this.childComponent.instance instanceof TextComponent) {
-      this.childComponent.location.nativeElement.style.margin = '5px';
       this.childComponent.instance.savedText =
         this.savedTexts ? this.savedTexts[this.element.id] : '';
     }

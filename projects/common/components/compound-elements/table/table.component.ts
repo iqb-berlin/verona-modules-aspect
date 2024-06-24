@@ -61,10 +61,6 @@ import { Subject } from 'rxjs';
             </mat-menu>
           </ng-container>
           <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
-            <button *ngIf="editorMode" class="button" mat-mini-fab color="primary"
-                    (click)="removeElement(i, j)">
-              <mat-icon>remove</mat-icon>
-            </button>
             <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
                                         [parentForm]="parentForm"
                                         [savedTexts]="savedTexts"
@@ -74,16 +70,20 @@ import { Subject } from 'rxjs';
                                         [editorMode]="editorMode"
                                         (elementSelected)="childElementSelected.emit($event)">
             </aspect-table-child-overlay>
+            <button *ngIf="editorMode" class="button" mat-mini-fab color="primary"
+                    (click)="removeElement(i, j)">
+              <mat-icon>remove</mat-icon>
+            </button>
           </div>
         </div>
       </ng-container>
     </div>
   `,
   styles: [`
-    .cell-container {display: flex; align-items: center; justify-content: center; min-height: 50px; min-width: 50px;}
-    .element-container {width: 100%; height: 100%; display: flex; align-items: flex-end;}
+    .cell-container {display: flex; min-height: 50px; min-width: 50px;}
+    .element-container {width: 100%; height: 100%; display: flex; flex-direction: column;}
+    .cell-container > button {align-self: flex-end; justify-self: flex-start;}
     aspect-table-child-overlay {width: 100%; height: 100%;}
-    .button {position: absolute;}
   `]
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {

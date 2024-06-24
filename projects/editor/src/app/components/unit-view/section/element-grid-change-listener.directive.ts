@@ -3,7 +3,8 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[appElementGridChangeListener]'
+  selector: '[appElementGridChangeListener]',
+  standalone: true
 })
 export class ElementGridChangeListenerDirective implements OnChanges {
   @Input() autoColumnSize!: boolean;

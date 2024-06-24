@@ -1,10 +1,16 @@
 import {
-  Component, Input, ViewChild, ElementRef
+  Component, Input
 } from '@angular/core';
-import { CanvasElementOverlay } from '../canvas-element-overlay';
+import { CanvasElementOverlay } from './canvas-element-overlay';
+import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'aspect-dynamic-canvas-overlay',
+  standalone: true,
+  imports: [
+    CdkDrag,
+    CdkDragPlaceholder
+  ],
   template: `
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->
     <!-- DragStart and DragEnd are part of a cursor hack to style the body. See global styling file. -->

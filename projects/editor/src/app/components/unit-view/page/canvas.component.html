@@ -1,0 +1,21 @@
+<div class="canvasBackground fx-flex"
+     (click)="selectionService.clearElementSelection()">
+  <div [style.width.px]="page.hasMaxWidth ? page.maxWidth : null"
+       [style.padding.px]="page.margin"
+       [style.background-color]="page.backgroundColor">
+    <div cdkDropListGroup>
+      <div *ngFor="let section of page.sections; let i = index" [style.position]="'relative'">
+        <aspect-editor-section [section]="section"
+                               [sectionIndex]="i" [lastSectionIndex]="page.sections.length - 1"
+                               [alwaysVisiblePage]="page.alwaysVisible">
+        </aspect-editor-section>
+      </div>
+    </div>
+  </div>
+
+  <button mat-raised-button class="add-section-button"
+          [style.width.px]="page.hasMaxWidth ? page.maxWidth : null"
+          (click)="addSection()">
+    <mat-icon class="add-section-icon">add</mat-icon>
+  </button>
+</div>

@@ -229,4 +229,8 @@ export class UnitService {
     this.updateUnitDefinition();
     this.updateSectionCounter();
   }
+
+  getSelectedPage() {
+    return this.unit.pages[this.selectionService.selectedPageIndex];
+  }
 }

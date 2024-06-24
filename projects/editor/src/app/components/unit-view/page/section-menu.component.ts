@@ -10,14 +10,39 @@ import { Section } from 'common/models/section';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { IDService } from 'editor/src/app/services/id.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
-import { ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { DialogService } from '../../../services/dialog.service';
 import { SelectionService } from '../../../services/selection.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgForOf, NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 
 @Component({
   selector: 'aspect-section-menu',
+  standalone: true,
+  imports: [
+    MatMenuModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatListModule,
+    MatButtonModule,
+    TranslateModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    NgIf,
+    MatInputModule,
+    SizeInputPanelComponent,
+    NgForOf
+  ],
   template: `
     <button mat-mini-fab [matMenuTriggerFor]="elementListMenu"
             [matTooltip]="'Elementliste'"
@@ -44,15 +69,14 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
            [value]="$any(section.backgroundColor)"
            (change)="updateModel('backgroundColor', $any($event.target).value)">
 
-
     <button mat-mini-fab [color]="section.ignoreNumbering ? 'primary' : 'accent'"
             (click)="ignoreNumbering()"
             [matTooltip]="'Von der Nummerierung ausnehmen'" [matTooltipPosition]="'left'">
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="white">
-        <path d="m576-80-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56 56-104-104L576-80ZM120-320v-80h280v80H120Zm0-160v-80h440v80H120Zm0-160v-80h440v80H120Z"/>
+        <path d="m576-80-56-56 104-104-104-104 56-56 104 104 104-104 56 56-104 104 104 104-56
+                 56-104-104L576-80ZM120-320v-80h280v80H120Zm0-160v-80h440v80H120Zm0-160v-80h440v80H120Z"/>
       </svg>
     </button>
-
 
     <button mat-mini-fab
             (click)="showVisibilityRulesDialog()"
@@ -152,21 +176,21 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
             (click)="showSectionInsertDialog()">
       <mat-icon>content_paste</mat-icon>
     </button>
-    <button *ngIf="allowMoveUp" mat-mini-fab
+    <button *ngIf="sectionIndex !== 0" mat-mini-fab
             [matTooltip]="'Nach oben verschieben'" [matTooltipPosition]="'left'"
-            (click)="this.moveSection.emit('up')">
+            (click)="this.moveSection('up')">
       <mat-icon>north</mat-icon>
     </button>
-    <button *ngIf="allowMoveDown" mat-mini-fab
+    <button *ngIf="sectionIndex < lastSectionIndex" mat-mini-fab
             [matTooltip]="'Nach unten verschieben'" [matTooltipPosition]="'left'"
-            (click)="this.moveSection.emit('down')">
+            (click)="this.moveSection('down')">
       <mat-icon>south</mat-icon>
     </button>
     <button mat-mini-fab [matTooltip]="'Duplizieren'" [matTooltipPosition]="'left'"
-            (click)="duplicateSection.emit()">
+            (click)="duplicateSection()">
       <mat-icon>control_point_duplicate</mat-icon>
     </button>
-    <button *ngIf="allowDelete" mat-mini-fab
+    <button *ngIf="lastSectionIndex > 0" mat-mini-fab
             [matTooltip]="'Löschen'" [matTooltipPosition]="'left'"
             (click)="deleteSection()">
       <mat-icon>clear</mat-icon>
@@ -183,11 +207,7 @@ import { SectionService } from 'editor/src/app/services/unit-services/section.se
 export class SectionMenuComponent implements OnDestroy {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
-  @Input() allowMoveUp!: boolean;
-  @Input() allowMoveDown!: boolean;
-  @Input() allowDelete!: boolean;
-  @Output() moveSection = new EventEmitter<'up' | 'down'>();
-  @Output() duplicateSection = new EventEmitter();
+  @Input() lastSectionIndex!: number;
   @Output() selectElementComponent = new EventEmitter<UIElement>();
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
@@ -311,5 +331,13 @@ export class SectionMenuComponent implements OnDestroy {
 
   ignoreNumbering() {
     this.updateModel('ignoreNumbering', !this.section.ignoreNumbering);
+  }
+
+  moveSection(direction: 'up' | 'down') {
+    this.sectionService.moveSection(this.section, direction);
+  }
+
+  duplicateSection() {
+    this.sectionService.duplicateSection(this.section, this.sectionIndex);
   }
 }

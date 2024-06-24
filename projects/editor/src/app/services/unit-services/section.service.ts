@@ -87,7 +87,8 @@ export class SectionService {
     });
   }
 
-  duplicateSection(section: Section, page: Page, sectionIndex: number): void {
+  duplicateSection(section: Section, sectionIndex: number): void {
+    const page = this.unitService.getSelectedPage();
     this.unitService.updateUnitDefinition({
       title: `Abschnitt dupliziert`,
       command: () => {
@@ -109,7 +110,8 @@ export class SectionService {
     });
   }
 
-  moveSection(section: Section, page: Page, direction: 'up' | 'down'): void {
+  moveSection(section: Section, direction: 'up' | 'down'): void {
+    const page = this.unitService.getSelectedPage();
     this.unitService.updateUnitDefinition({
       title: `Abschnitt verschoben`,
       command: () => {

@@ -3,12 +3,21 @@ import {
 } from '@angular/core';
 import { Section } from 'common/models/section';
 import { UIElementType } from 'common/models/elements/element';
-import { UnitService } from '../../../../services/unit-services/unit.service';
-import { CanvasElementOverlay } from '../canvas-element-overlay';
+import { UnitService } from '../../../services/unit-services/unit.service';
+import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import {
+  StaticCanvasOverlayComponent
+} from 'editor/src/app/components/unit-view/element-overlay/static-canvas-overlay.component';
+import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'aspect-section-static',
+  standalone: true,
+  imports: [
+    NgForOf,
+    StaticCanvasOverlayComponent
+  ],
   template: `
     <div #sectionElement class="section-wrapper"
          [style.outline]="isSelected ? '2px solid #ff4081': '1px dotted'"

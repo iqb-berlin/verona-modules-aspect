@@ -1,11 +1,21 @@
 import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { CdkDragEnd, CdkDragMove } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragPlaceholder, CdkDropList } from '@angular/cdk/drag-drop';
 import { UIElement } from 'common/models/elements/element';
-import { CanvasElementOverlay } from '../canvas-element-overlay';
+import { CanvasElementOverlay } from './canvas-element-overlay';
+import { NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'aspect-static-canvas-overlay',
+  standalone: true,
+  imports: [
+    NgIf,
+    CdkDrag,
+    CdkDropList,
+    CdkDragPlaceholder,
+    MatIconModule
+  ],
   template: `
     <!-- Is also a droplist to catch the resize drop and not let it bubble up to the canvas drop handler. -->
     <!-- TabIndex is needed to make the div selectable and catch keyboard events (delete). -->

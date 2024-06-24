@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Page } from 'common/models/page';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
-import { MessageService } from 'editor/src/app/services/message.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ArrayUtils } from 'common/util/array';
 
@@ -10,7 +9,6 @@ import { ArrayUtils } from 'common/util/array';
 })
 export class PageService {
   constructor(private unitService: UnitService,
-              private messageService: MessageService,
               private selectionService: SelectionService) { }
 
   addPage(): void {
@@ -18,7 +16,7 @@ export class PageService {
       title: 'Seite hinzugefügt',
       command: () => {
         this.unitService.unit.pages.push(new Page());
-        this.selectionService.selectedPageIndex = this.unitService.unit.pages.length - 1; // TODO selection stuff here is not good
+        this.selectionService.selectedPageIndex = this.unitService.unit.pages.length - 1;
         return {};
       },
       rollback: () => {
@@ -46,8 +44,8 @@ export class PageService {
         return {};
       },
       rollback: (deletedData: Record<string, unknown>) => {
-        this.unitService.registerIDs((deletedData['deletedpage'] as Page).getAllElements());
-        this.unitService.unit.pages.splice(deletedData['pageIndex'] as number, 0, deletedData['deletedpage'] as Page);
+        this.unitService.registerIDs((deletedData.deletedpage as Page).getAllElements());
+        this.unitService.unit.pages.splice(deletedData.pageIndex as number, 0, deletedData.deletedpage as Page);
         this.unitService.updateSectionCounter();
       }
     });
@@ -63,9 +61,9 @@ export class PageService {
           direction === 'left' ? 'up' : 'down'
         );
         this.unitService.updateSectionCounter();
-        return {direction};
+        return { direction };
       },
-      rollback: (deletedData: Record<string, unknown>) => {
+      rollback: () => {
         ArrayUtils.moveArrayItem(
           this.unitService.unit.pages[pageIndex],
           this.unitService.unit.pages,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
@@ -10,16 +10,16 @@ import {
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
+import { Page } from 'common/models/page';
+import { Section } from 'common/models/section';
+import { SectionCounter } from 'common/util/section-counter';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
+import { HistoryService, UnitUpdateCommand } from 'editor/src/app/services/history.service';
 import { DialogService } from '../dialog.service';
 import { VeronaAPIService } from '../verona-api.service';
 import { SelectionService } from '../selection.service';
 import { IDService } from '../id.service';
 import { UnitDefinitionSanitizer } from '../sanitizer';
-import { HistoryService, UnitUpdateCommand } from 'editor/src/app/services/history.service';
-import { Page } from 'common/models/page';
-import { Section } from 'common/models/section';
-import { SectionCounter } from 'common/util/section-counter';
 
 @Injectable({
   providedIn: 'root'
@@ -92,7 +92,7 @@ export class UnitService {
 
   updateUnitDefinition(command?: UnitUpdateCommand): void {
     if (command) {
-      let deletedData = command.command();
+      const deletedData = command.command();
       if (deletedData instanceof Promise) {
         deletedData.then((deletedData) => {
           this.historyService.addCommand(command, deletedData);
@@ -173,7 +173,7 @@ export class UnitService {
       let refs: ReferenceList[] = [];
       let dialogText: string = '';
       switch (deletedObjectType) {
-        case "page":
+        case 'page':
           refs = this.referenceManager.getPageElementsReferences(
             this.unit.pages[this.selectionService.selectedPageIndex]
           );
@@ -183,18 +183,18 @@ export class UnitService {
           refs = refs.concat(pageNavButtonRefs);
           dialogText = `Seite ${this.selectionService.selectedPageIndex + 1} löschen?`;
           break;
-        case "section":
+        case 'section':
           refs = this.referenceManager.getSectionElementsReferences([object as Section]);
           dialogText = `Abschnitt ${this.selectionService.selectedSectionIndex + 1} löschen?`;
           break;
-        case "elements":
+        case 'elements':
           refs = this.referenceManager.getElementsReferences(object as UIElement[]);
           dialogText = 'Folgende Elemente werden gelöscht:';
       }
 
       this.dialogService.showDeleteConfirmDialog(
         dialogText,
-        deletedObjectType == 'elements' ? object as UIElement[] : undefined,
+        deletedObjectType === 'elements' ? object as UIElement[] : undefined,
         refs)
         .subscribe((result: boolean) => {
           if (result) {

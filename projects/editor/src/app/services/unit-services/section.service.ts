@@ -5,7 +5,6 @@ import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { PositionedUIElement, UIElement, UIElementValue } from 'common/models/elements/element';
 import { ArrayUtils } from 'common/util/array';
-import { IDService } from 'editor/src/app/services/id.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
@@ -15,8 +14,7 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 export class SectionService {
   constructor(private unitService: UnitService,
               private elementService: ElementService,
-              private selectionService: SelectionService,
-              private idService: IDService) { }
+              private selectionService: SelectionService) { }
 
   updateSectionProperty(section: Section, property: string, value: string | number | boolean | VisibilityRule[] | { value: number; unit: string }[]): void {
     this.unitService.updateUnitDefinition({
@@ -26,7 +24,7 @@ export class SectionService {
         section.setProperty(property, value);
         if (property === 'ignoreNumbering') this.unitService.updateSectionCounter();
         this.unitService.elementPropertyUpdated.next();
-        return {oldValue};
+        return { oldValue };
       },
       rollback: (deletedData: Record<string, unknown>) => {
         section.setProperty(property, deletedData.oldValue as UIElementValue);
@@ -39,14 +37,11 @@ export class SectionService {
     this.unitService.updateUnitDefinition({
       title: 'Abschnitt hinzugefügt',
       command: () => {
-        const newSection = section;
-        if (section) {
-          this.unitService.registerIDs(section.elements);
-        }
+        if (section) this.unitService.registerIDs(section.elements);
         page.addSection(section, sectionIndex);
         this.selectionService.selectedSectionIndex =
           Math.max(0, this.selectionService.selectedSectionIndex - 1);
-        return {section, sectionIndex};
+        return { section, sectionIndex };
       },
       rollback: (deletedData: Record<string, unknown>) => {
         if (deletedData.section) {
@@ -73,7 +68,7 @@ export class SectionService {
           this.selectionService.selectedSectionIndex =
             Math.max(0, this.selectionService.selectedSectionIndex - 1);
           this.unitService.updateSectionCounter();
-          return {deletedSection: sectionToDelete, pageIndex, sectionIndex};
+          return { deletedSection: sectionToDelete, pageIndex, sectionIndex };
         }
         return {};
       },
@@ -90,7 +85,7 @@ export class SectionService {
   duplicateSection(section: Section, sectionIndex: number): void {
     const page = this.unitService.getSelectedPage();
     this.unitService.updateUnitDefinition({
-      title: `Abschnitt dupliziert`,
+      title: 'Abschnitt dupliziert',
       command: () => {
         const newSection: Section = new Section({
           ...section,
@@ -101,7 +96,7 @@ export class SectionService {
         this.unitService.updateSectionCounter();
         return {};
       },
-      rollback: (deletedData: Record<string, unknown>) => {
+      rollback: () => {
         this.unitService.unregisterIDs(page.sections[sectionIndex + 1].getAllElements());
         page.deleteSection(sectionIndex + 1);
         this.selectionService.selectedSectionIndex -= 1;
@@ -113,16 +108,18 @@ export class SectionService {
   moveSection(section: Section, direction: 'up' | 'down'): void {
     const page = this.unitService.getSelectedPage();
     this.unitService.updateUnitDefinition({
-      title: `Abschnitt verschoben`,
+      title: 'Abschnitt verschoben',
       command: () => {
         ArrayUtils.moveArrayItem(section, page.sections, direction);
-        direction === 'up' ? this.selectionService.selectedSectionIndex -= 1 : this.selectionService.selectedSectionIndex += 1;
+        direction === 'up' ? this.selectionService.selectedSectionIndex -= 1 :
+          this.selectionService.selectedSectionIndex += 1;
         this.unitService.updateSectionCounter();
         return {};
       },
-      rollback: (deletedData: Record<string, unknown>) => {
+      rollback: () => {
         ArrayUtils.moveArrayItem(section, page.sections, direction === 'up' ? 'down' : 'up');
-        direction === 'up' ? this.selectionService.selectedSectionIndex += 1 : this.selectionService.selectedSectionIndex -= 1;
+        direction === 'up' ? this.selectionService.selectedSectionIndex += 1 :
+          this.selectionService.selectedSectionIndex -= 1;
         this.unitService.updateSectionCounter();
       }
     });
@@ -136,7 +133,7 @@ export class SectionService {
   /* Move element between sections */
   transferElements(elements: UIElement[], previousSection: Section, newSection: Section): void {
     this.unitService.updateUnitDefinition({
-      title: `Element zwischen Abschnitten verschoben`,
+      title: 'Element zwischen Abschnitten verschoben',
       command: () => {
         previousSection.elements = previousSection.elements.filter(element => !elements.includes(element));
         elements.forEach(element => {
@@ -144,7 +141,7 @@ export class SectionService {
         });
         return {};
       },
-      rollback: (deletedData: Record<string, unknown>) => {
+      rollback: () => {
         newSection.elements = newSection.elements.filter(element => !elements.includes(element));
         elements.forEach(element => {
           previousSection.elements.push(element as PositionedUIElement);

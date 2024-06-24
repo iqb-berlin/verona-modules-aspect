@@ -3,12 +3,8 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
-  CompoundElement,
-  InputElement, PlayerElement,
-  PositionedUIElement,
-  UIElement,
-  UIElementProperties,
-  UIElementType, UIElementValue
+  UIElement, CompoundElement, InputElement, PlayerElement, PositionedUIElement,
+  UIElementProperties, UIElementType, UIElementValue
 } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { GeometryProperties } from 'common/models/elements/geometry/geometry';
@@ -18,9 +14,7 @@ import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { VideoProperties } from 'common/models/elements/media-elements/video';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
 import {
-  PlayerProperties,
-  PositionProperties,
-  PropertyGroupGenerators
+  PlayerProperties, PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { ElementFactory } from 'common/util/element.factory';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
@@ -52,7 +46,7 @@ export class ElementService {
         try {
           newElementProperties = await this.prepareElementProps(elementType, section.dynamicPositioning, coordinates);
         } catch (e) {
-          if (e == 'dialogCanceled') return {};
+          if (e === 'dialogCanceled') return {};
         }
         const newElementID = this.idService.getAndRegisterNewID(elementType);
         section.addElement(ElementFactory.createElement({
@@ -61,7 +55,7 @@ export class ElementService {
           ...newElementProperties,
           id: newElementID
         }) as PositionedUIElement);
-        return {newElementID};
+        return { newElementID };
       },
       rollback: (deletedData: Record<string, unknown>) => {
         this.idService.unregisterID(deletedData.newElementID as string);
@@ -76,19 +70,21 @@ export class ElementService {
     const newElementProperties: Partial<UIElementProperties> = {};
 
     switch (elementType) {
-      case "geometry":
+      case 'geometry':
         (newElementProperties as GeometryProperties).appDefinition =
           await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
-        if (!(newElementProperties as GeometryProperties).appDefinition) return Promise.reject('dialogCanceled'); // dialog canceled
+        if (!(newElementProperties as GeometryProperties).appDefinition) {
+          return Promise.reject('dialogCanceled');
+        }
         break;
-      case "audio":
+      case 'audio':
         (newElementProperties as AudioProperties).src = await FileService.loadAudio();
         break;
-      case "video":
+      case 'video':
         (newElementProperties as VideoProperties).src = await FileService.loadVideo();
         break;
-      case "image":
-      case "hotspot-image":
+      case 'image':
+      case 'hotspot-image':
         (newElementProperties as ImageProperties).src = await FileService.loadImage();
         break;
       case 'frame':
@@ -123,13 +119,13 @@ export class ElementService {
             this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[x.sectionIndex]
               .deleteElement(x.element.id);
           });
-          return {elementSections};
+          return { elementSections };
         }
         return {};
       },
       rollback: (deletedData: Record<string, unknown>) => {
         this.unitService.registerIDs(elements);
-        (deletedData.elementSections as {sectionIndex: number, element: UIElement}[]).forEach(x => {
+        (deletedData.elementSections as { sectionIndex: number, element: UIElement }[]).forEach(x => {
           this.unitService.unit
             .pages[this.selectionService.selectedPageIndex]
             .sections[x.sectionIndex]
@@ -139,12 +135,12 @@ export class ElementService {
     });
   }
 
-  private findElementsInSections(elements: UIElement[]): {sectionIndex: number, element: UIElement}[] {
-    const elementSections: {sectionIndex: number, element: UIElement}[] = []
+  private findElementsInSections(elements: UIElement[]): { sectionIndex: number, element: UIElement }[] {
+    const elementSections: { sectionIndex: number, element: UIElement }[] = [];
     elements.forEach(element => {
       this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections.forEach((section, i) => {
         if (section.elements.map(el => el.id).includes(element.id)) {
-          elementSections.push({sectionIndex: i, element});
+          elementSections.push({ sectionIndex: i, element });
         }
       });
     });
@@ -152,7 +148,7 @@ export class ElementService {
   }
 
   updateElementsProperty(elements: UIElement[], property: string, value: unknown): void {
-    console.log('updateElementsProperty ', elements, property, value);
+    // console.log('updateElementsProperty ', elements, property, value);
     elements.forEach(element => {
       if (property === 'id') {
         if (this.idService.validateAndAddNewID(value as string, element.id)) {
@@ -164,7 +160,9 @@ export class ElementService {
         this.handleClozeDocumentChange(element as ClozeElement, value as ClozeDocument);
       } else {
         element.setProperty(property, value);
-        if (element.type === 'geometry' && property !== 'trackedVariables') this.unitService.geometryElementPropertyUpdated.next(element.id);
+        if (element.type === 'geometry' && property !== 'trackedVariables') {
+          this.unitService.geometryElementPropertyUpdated.next(element.id);
+        }
         if (element.type === 'math-table') this.unitService.mathTableElementPropertyUpdated.next(element.id);
         if (element.type === 'table') this.unitService.tablePropUpdated.next(element.id);
       }
@@ -285,7 +283,7 @@ export class ElementService {
         break;
       case 'cloze':
         this.dialogService.showClozeTextEditDialog(
-          (element as ClozeElement).document!,
+          (element as ClozeElement).document,
           (element as ClozeElement).styling.fontSize
         ).subscribe((result: string) => {
           if (result) {
@@ -358,7 +356,8 @@ export class ElementService {
 
   duplicateSelectedElements(): void {
     const selectedSection =
-      this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedSectionIndex];
+      this.unitService.unit.pages[this.selectionService.selectedPageIndex]
+        .sections[this.selectionService.selectedSectionIndex];
     this.selectionService.getSelectedElements().forEach((element: UIElement) => {
       selectedSection.elements.push(this.duplicateElement(element, true) as PositionedUIElement);
     });
@@ -423,7 +422,6 @@ export class ElementService {
   }
 
   updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | null): void {
-    console.log('updateElementsDimensionsProperty', property, value);
     elements.forEach(element => {
       element.setDimensionsProperty(property, value);
     });

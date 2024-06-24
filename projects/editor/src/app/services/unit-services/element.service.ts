@@ -44,7 +44,7 @@ export class ElementService {
       command: async () => {
         let newElementProperties: Partial<UIElementProperties> = {};
         try {
-          newElementProperties = await this.prepareElementProps(elementType, section.dynamicPositioning, coordinates);
+          newElementProperties = await this.prepareElementProps(elementType, section, coordinates);
         } catch (e) {
           if (e === 'dialogCanceled') return {};
         }
@@ -65,7 +65,7 @@ export class ElementService {
   }
 
   private async prepareElementProps(elementType: UIElementType,
-                                    dynamicPositioning: boolean,
+                                    section: Section,
                                     coordinates?: { x: number, y: number }): Promise<Partial<UIElementProperties>> {
     const newElementProperties: Partial<UIElementProperties> = {};
 
@@ -96,13 +96,20 @@ export class ElementService {
       // no default
     }
 
-    // Coordinates are given if an element is dragged directly onto the canvas
-    if (coordinates) {
+    /* Coordinates are given if an element is dragged directly onto the canvas.
+       x and y have different meaning depending on the layouting of the section, being either absolute
+       or grid coordinates. */
+    if (section.dynamicPositioning) {
       newElementProperties.position = {
-        ...dynamicPositioning && { gridColumn: coordinates.x },
-        ...dynamicPositioning && { gridRow: coordinates.y },
-        ...!dynamicPositioning && { xPosition: coordinates.x },
-        ...!dynamicPositioning && { yPosition: coordinates.y }
+        gridRow: coordinates ? coordinates.x : section.getLastRowIndex() + 1,
+        gridColumn: coordinates ? coordinates.y : 1,
+        ...newElementProperties.position
+      } as PositionProperties;
+    } else {
+      newElementProperties.position = {
+        xPosition: coordinates ? coordinates.x : 0,
+        yPosition: coordinates ? coordinates.y : 0,
+        ...newElementProperties.position
       } as PositionProperties;
     }
     return newElementProperties;

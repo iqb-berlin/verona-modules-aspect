@@ -99,6 +99,13 @@ export class Section {
         element.getVariableInfos()))
       .flat();
   }
+
+  getLastRowIndex(): number {
+    const x: number[] = this.elements
+      .map(el => el.position.gridRow)
+      .filter((gridRow: number | null): gridRow is number => gridRow !== null);
+    return Math.max(...x, 0);
+  }
 }
 
 export interface SectionProperties {

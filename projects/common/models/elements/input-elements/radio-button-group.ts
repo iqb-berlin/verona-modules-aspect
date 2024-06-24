@@ -29,7 +29,7 @@ export class RadioButtonGroupElement extends InputElement
   constructor(element?: RadioButtonGroupProperties) {
     super(element);
     if (element && isValid(element)) {
-      this.options = element.options;
+      this.options = [...element.options];
       this.alignment = element.alignment;
       this.strikeOtherOptions = element.strikeOtherOptions;
       this.position = { ...element.position };
@@ -38,7 +38,7 @@ export class RadioButtonGroupElement extends InputElement
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
       }
-      if (element?.options) this.options = element.options;
+      if (element?.options) this.options = [...element.options];
       if (element?.alignment) this.alignment = element.alignment;
       if (element?.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({

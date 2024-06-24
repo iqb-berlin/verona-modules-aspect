@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { NgForOf, NgIf } from '@angular/common';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-table-properties',
@@ -17,9 +19,14 @@ import { TranslateModule } from '@ngx-translate/core';
     NgForOf,
     NgIf,
     SizeInputPanelComponent,
-    TranslateModule
+    TranslateModule,
+    MatButtonModule
   ],
   template: `
+    <button mat-raised-button [style.align-self]="'center'" [style.margin-top.px]="5" [style.margin-bottom.px]="15"
+            (click)="elementService.showDefaultEditDialog()">
+      Elemente anpassen
+    </button>
     <fieldset>
       <legend>{{'section-menu.rows' | translate }}</legend>
       <mat-form-field appearance="outline">
@@ -60,12 +67,16 @@ import { TranslateModule } from '@ngx-translate/core';
                   (change)="updateModel.emit({ property: 'tableEdgesEnabled', value: $event.checked })">
       Tabellenränder zeichnen
     </mat-checkbox>
-  `
+  `,
+  styles:
+    ':host {display: flex; flex-direction: column;}'
 })
 export class TablePropertiesComponent {
   @Input() combinedProperties!: UIElement;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: boolean | { value: number; unit: string }[] | null }>();
+
+  constructor(public elementService: ElementService) { }
 
   /* Add or remove elements to size array. Default value 1fr. */
   modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {

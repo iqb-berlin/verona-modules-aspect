@@ -261,7 +261,8 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  showDefaultEditDialog(element: UIElement): void {
+  showDefaultEditDialog(elementParam?: UIElement): void {
+    const element = elementParam || this.selectionService.getSelectedElements()[0];
     switch (element.type) {
       case 'button':
       case 'dropdown':

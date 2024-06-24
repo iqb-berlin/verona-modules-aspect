@@ -1,18 +1,49 @@
 Editor
 ======
-## 2.4.6
+## next
+### Neue Funktionen
+- Neues Element: Tabelle
+  - Funktioniert ähnlich wie ein Lückentext: Elemente werden in einem Dialog festgelegt, können dann als Sub-Elemente selektiert und angepasst, aber nicht re-positioniert werden.
+  - Das Raster der Tabelle kann ähnlich wie Seitenabschnittsraster angepasst werden, allerdings muss die Rastergröße (Zeilen, Spalten) explizit definiert werden.
+- Neue Elementgruppe: "Verbund" mit den Elementen Tabelle und Lückentext
+- Dialog "Seitenabschnitt einfügen" überarbeitet und mit neuer Funktion erweitert. Es kann nun ein vorher kopierter Abschnitt direkt eingefügt werden, auch wenn er sich nicht mehr in der Zwischenablage befindet. Dies funktioniert nur innerhalb einer Bearbeitungssitzung und nur innerhalb der selben Aufgabe.
+
 ## Änderungen
+- Neu angelegte Elemente bekommen Rasterkoordinaten (sofern sie nicht direkt in eine Rasterspalte gelegt wurden). Die Element werden in der ersten Spalte zeilenweise angelegt.
+- Zeilen-Spalten-Reihenfolge bei Rasterkonfiguration korrigiert ("Zeile zuerst, Spalte später")
+- Seitenabschnitte haben nicht mehr 2 Spalten als Standardwert (bei festen Spaltenbreiten)
+- Einige Texteigenschaften (z.B. Beschriftung) können in Eingabebereichen definiert. Das sollte die Arbeit mit längeren Texten vereinfachen.
+- Seitenmenu überarbeitet (Gruppierung, keine erscheinenden Eingaben etc.)
+- Elemente können direkt in Raster-Zellen gelegt werden, in denen sich bereits ein Rahmen-Element befindet
+- Kleinere Oberflächenänderungen (zur Verbesserung von Übersicht und Verständnis):
+  - Gruppiering von Element-Eigenschaften, z.B. Eingabehilfeoptionen
+  - mehr Hinweise via Tooltip
+  - Elementlisten (an verschiedenen Stellen) zeigen nur zusätzlich noch Bezeichner und Icons neben der ID
+  - kleine Verbesserungen von Layout, Schrift, Farbe und Formulierungen
+
+### Fehlerbehebungen
+- IDs von Elementen auf gelöschten Seiten werden freigegeben
+- Z-Indizes werden bei der Darstellung und Auswahl von Elementen beachtet (Verdeckte Elemente können weiterhin über die Elementliste des Seitenabschnitts gefunden und ausgewählt werden.)
+- Rahmen: Hat jetzt korrekt -1 als z-Index-Standardwert
+- Ablegelisten zeigen die nutzlose Eigenschaft "Beschriftung" nicht mehr an (Es gibt noch mehr Eigenschaften ohne Funktion, diese werden, soweit bekannt, in zukünftigen Veröffentlichungen korrigiert, können auch gern als Fehler gemeldet werden.)
+
+
+## 2.4.6
+### Änderungen
 - kleine Gestaltungsverbesserungen bei Textelementeigenschaften und an der Bildvorschau in Dialogen
 
+
 ## 2.4.4
-## Änderungen
+### Änderungen
 - Texteditor:
   - Ändert die Voreinstellung der Farbe zur Hervorhebung von Bereichen
   - Ändert Tooltip zu "Bereich hervorheben"
 
+
 ## 2.4.2
 ### Fehlerbehebungen
 - Korrigiert die Anzeige der Vorbelegung für Klapplisten und Optionsfelder im Eigenschaftenbereich
+
 
 ## 2.4.1
 ### Änderungen

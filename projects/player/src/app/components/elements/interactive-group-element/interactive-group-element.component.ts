@@ -109,6 +109,9 @@ export class InteractiveGroupElementComponent
       case 'highlightText':
         this.anchorService.showAnchor(triggerActionEvent.param as string);
         break;
+      case 'removeHighlights':
+        this.anchorService.hideAllAnchors();
+        break;
       case 'stateVariableChange':
         this.stateVariableStateService.changeElementCodeValue(
           triggerActionEvent.param as { id: string, value: string }

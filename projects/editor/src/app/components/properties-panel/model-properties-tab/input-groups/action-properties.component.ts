@@ -18,7 +18,7 @@ import { Page } from 'common/models/page';
           <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">
             <mat-label>{{'propertiesPanel.action' | translate }}</mat-label>
             <mat-select [value]="combinedProperties.action"
-                        (selectionChange)="updateModel.emit({ property: 'action', value: $event.value })">
+                        (selectionChange)="resetActionParam(); updateModel.emit({ property: 'action', value: $event.value })">
               <mat-option [value]="null">
                 {{ 'propertiesPanel.none' | translate }}
               </mat-option>
@@ -39,7 +39,7 @@ import { Page } from 'common/models/page';
             <p *ngIf="!unitService.unit.stateVariables.length">{{'propertiesPanel.addStateVariables' | translate}}</p>
           </ng-container>
 
-          <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange'"
+          <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange' && combinedProperties.action !== 'removeHighlights'"
                           appearance="fill">
             <mat-label>{{'propertiesPanel.actionParam' | translate }}</mat-label>
             <mat-select [disabled]="combinedProperties.action === null"
@@ -85,6 +85,10 @@ export class ActionPropertiesComponent {
     new EventEmitter<{
       property: string; value: string | number | boolean | StateVariable | null, isInputValid?: boolean | null
     }>();
+
+  resetActionParam(): void {
+    this.updateModel.emit({ property: 'actionParam', value: null });
+  }
 
   textComponents: { [id: string]: TextComponent } = {};
 

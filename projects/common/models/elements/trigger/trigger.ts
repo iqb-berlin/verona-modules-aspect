@@ -52,7 +52,7 @@ function isValid(blueprint?: TriggerProperties): boolean {
 
 export interface TriggerActionEvent {
   action: TriggerAction;
-  param: string | StateVariable;
+  param: null | string | StateVariable;
 }
 
-export type TriggerAction = 'highlightText' | 'stateVariableChange';
+export type TriggerAction = 'highlightText' | 'stateVariableChange' | 'removeHighlights';

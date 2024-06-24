@@ -161,3 +161,8 @@ iqb-aspect-definition@1.0.0
   - new property: isSortList
 - TextAreaElement, TextFieldElement, TextFieldSimpleElement, SpellCorrectElement, MathTableElement:
   - new property: hideNativeKeyboard
+
+4.5.0
+- Trigger.action:
+  - add "removeHighlights"
+

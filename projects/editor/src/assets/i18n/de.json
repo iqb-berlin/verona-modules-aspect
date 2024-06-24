@@ -136,6 +136,7 @@
     "unitNav": "Unitnavigation",
     "pageNav": "Seitennavigation",
     "highlightText": "Textabschnitt hervorheben",
+    "removeHighlights": "Hervorhebungen ausblenden",
     "stateVariableChange": "Zustandsvariable ändern",
     "previous": "Vorherige Unit",
     "next": "Nächste Unit",

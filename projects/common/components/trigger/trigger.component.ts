@@ -30,7 +30,8 @@ export class TriggerComponent extends ElementComponent {
   @Output() triggerActionEvent = new EventEmitter<TriggerActionEvent>();
 
   emitEvent(): void {
-    if (this.elementModel.action && this.elementModel.actionParam) {
+    if ((this.elementModel.action && this.elementModel.actionParam) ||
+      this.elementModel.action === 'removeHighlights') {
       this.triggerActionEvent
         .emit({
           action: this.elementModel.action,

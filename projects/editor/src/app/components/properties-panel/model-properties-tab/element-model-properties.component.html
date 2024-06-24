@@ -124,7 +124,7 @@
 
   <aspect-action-properties *ngIf="combinedProperties.action !== undefined"
     [actions]="combinedProperties.type === 'button' ? ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange'] :
-                                                      ['highlightText', 'stateVariableChange']"
+                                                      ['highlightText', 'removeHighlights',  'stateVariableChange']"
     [combinedProperties]="combinedProperties"
     (updateModel)="updateModel.emit($event)">
   </aspect-action-properties>

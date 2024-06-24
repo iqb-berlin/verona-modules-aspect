@@ -56,7 +56,13 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
         </ng-container>
         <mat-list-item *ngFor="let element of section.elements"
                        (click)="selectElement(element)">
-          {{element.id}}
+          <mat-icon matListItemIcon [style.margin-right.px]="10">
+            {{ $any(element.constructor).icon }}
+          </mat-icon>
+          <div matListItemTitle>
+            <i>{{ element.id }}</i>
+          </div>
+
         </mat-list-item>
       </mat-action-list>
     </mat-menu>

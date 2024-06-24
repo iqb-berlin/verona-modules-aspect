@@ -126,7 +126,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
 
   removeElement(row: number, col: number): void {
     this.elementRemoved.emit(this.elementGrid.flat()
-      .findIndex(el => el?.position.gridRow === row && el?.position.gridColumn === col));
+      .findIndex(el => el?.position.gridRow === (row + 1) && el?.position.gridColumn === (col + 1)));
     this.refresh();
   }
 }

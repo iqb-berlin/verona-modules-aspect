@@ -94,7 +94,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   @Input() mediaStatusChanged!: Subject<string>;
   @Input() editorMode: boolean = false;
   @Output() elementAdded = new EventEmitter<{ elementType: UIElementType, row: number, col: number }>();
-  @Output() elementRemoved = new EventEmitter<number>();
+  @Output() elementRemoved = new EventEmitter<{ row: number, col: number }>();
   @Output() childElementSelected = new EventEmitter<TableChildOverlay>();
   @ViewChildren(TableChildOverlay) compoundChildren!: QueryList<TableChildOverlay>;
 
@@ -125,8 +125,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   }
 
   removeElement(row: number, col: number): void {
-    this.elementRemoved.emit(this.elementGrid.flat()
-      .findIndex(el => el?.position.gridRow === (row + 1) && el?.position.gridColumn === (col + 1)));
+    this.elementRemoved.emit({ row: row, col: col });
     this.refresh();
   }
 }

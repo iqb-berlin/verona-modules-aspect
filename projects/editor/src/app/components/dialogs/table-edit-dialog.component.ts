@@ -69,7 +69,9 @@ export class TableEditDialogComponent {
     this.tableComp.refresh();
   }
 
-  removeElement(index: number): void {
+  removeElement(coords: { row: number, col: number }): void {
+    const index = this.newTable.elements
+      .findIndex(el => el.position.gridRow === (coords.row + 1) && el.position.gridColumn === (coords.col + 1));
     this.newTable.elements.splice(index, 1);
   }
 }

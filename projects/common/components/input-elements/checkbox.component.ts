@@ -64,5 +64,5 @@ import { FormElementComponent } from '../../directives/form-element-component.di
 })
 export class CheckboxComponent extends FormElementComponent implements OnInit {
   @Input() elementModel!: CheckboxElement;
-  tableMode: boolean = true;
+  tableMode: boolean = false;
 }

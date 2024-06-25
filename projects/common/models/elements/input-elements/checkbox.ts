@@ -23,12 +23,14 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   constructor(element?: CheckboxProperties) {
     super(element);
     if (element && isValid(element)) {
+      this.value = element.value;
       this.crossOutChecked = element.crossOutChecked;
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Checkbox instantiation', element);
       }
+      if (element?.value !== undefined) this.value = element.value;
       if (element?.crossOutChecked !== undefined) this.crossOutChecked = element.crossOutChecked;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         width: 215,
@@ -69,6 +71,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
 }
 
 export interface CheckboxProperties extends InputElementProperties {
+  value: boolean;
   crossOutChecked: boolean;
   styling: BasicStyles;
 }

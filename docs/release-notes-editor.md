@@ -1,12 +1,14 @@
 Editor
 ======
-## next
+## 2.5.0
 ### Neue Funktionen
 - Neues Element: Tabelle
   - Funktioniert ähnlich wie ein Lückentext: Elemente werden in einem Dialog festgelegt, können dann als Sub-Elemente selektiert und angepasst, aber nicht re-positioniert werden.
   - Das Raster der Tabelle kann ähnlich wie Seitenabschnittsraster angepasst werden, allerdings muss die Rastergröße (Zeilen, Spalten) explizit definiert werden.
 - Neue Elementgruppe: "Verbund" mit den Elementen Tabelle und Lückentext
-- Dialog "Seitenabschnitt einfügen" überarbeitet und mit neuer Funktion erweitert. Es kann nun ein vorher kopierter Abschnitt direkt eingefügt werden, auch wenn er sich nicht mehr in der Zwischenablage befindet. Dies funktioniert nur innerhalb einer Bearbeitungssitzung und nur innerhalb der selben Aufgabe.
+- Dialog "Seitenabschnitt einfügen" überarbeitet und mit neuen Funktionen erweitert.
+  - Es kann nun ein vorher kopierter Abschnitt direkt eingefügt werden, auch wenn er sich nicht mehr in der Zwischenablage befindet. Dies funktioniert nur innerhalb einer Bearbeitungssitzung und nur innerhalb der selben Aufgabe.
+  - Der ausgewählte Abschnitt wird standardmäßig nicht mehr ersetzt (außer er ist leer), sondern der neue Abschnitt an seiner Stelle eingefügt. Der Modus kann ausgewählt werden.
 
 ## Änderungen
 - Neu angelegte Elemente bekommen Rasterkoordinaten (sofern sie nicht direkt in eine Rasterspalte gelegt wurden). Die Element werden in der ersten Spalte zeilenweise angelegt.
@@ -26,7 +28,7 @@ Editor
 - Z-Indizes werden bei der Darstellung und Auswahl von Elementen beachtet (Verdeckte Elemente können weiterhin über die Elementliste des Seitenabschnitts gefunden und ausgewählt werden.)
 - Rahmen: Hat jetzt korrekt -1 als z-Index-Standardwert
 - Ablegelisten zeigen die nutzlose Eigenschaft "Beschriftung" nicht mehr an (Es gibt noch mehr Eigenschaften ohne Funktion, diese werden, soweit bekannt, in zukünftigen Veröffentlichungen korrigiert, können auch gern als Fehler gemeldet werden.)
-
+- Duplizierte Optionsfelder haben neue Optionsreferenzen (verändert nicht mehr das Original, wenn man an der Kopie Optionen editiert)
 
 ## 2.4.6
 ### Änderungen

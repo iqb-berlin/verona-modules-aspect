@@ -166,3 +166,8 @@ iqb-aspect-definition@1.0.0
 - Trigger.action:
   - add "removeHighlights"
 
+4.6.0
+- New Element: Table
+- new unit prop: enableSectionNumbering, sectionNumberingPosition
+- new Section prop: ignoreNumbering
+- Audio, Video: styling.background-color

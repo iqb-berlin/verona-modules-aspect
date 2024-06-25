@@ -1,6 +1,6 @@
 Allgemein
 =========
-##next
+## editor/2.5.0+player/2.5.0
 ### Neue Funktion
 - Neues Element: Tabelle
 - Abschnittsnummerierung

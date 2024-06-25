@@ -1,5 +1,9 @@
 Player
 ======
+## 2.5.0
+- Unterstützung neuer Funktionen; siehe Allgemein
+
+
 ## 2.4.11
 ### Fehlerbehebungen
 - Korrigiert das Markieren von Text, der Texthervorhebungen beinhaltet

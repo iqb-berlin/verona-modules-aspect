@@ -126,8 +126,14 @@ export class SectionService {
   }
 
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
-    this.deleteSection(pageIndex, sectionIndex);
-    this.addSection(this.unitService.unit.pages[pageIndex], newSection, sectionIndex);
+    const page = this.unitService.unit.pages[pageIndex];
+    page.deleteSection(sectionIndex);
+    page.addSection(newSection, sectionIndex);
+  }
+
+  insertSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
+    const page = this.unitService.unit.pages[pageIndex];
+    page.addSection(newSection, sectionIndex);
   }
 
   /* Move element between sections */

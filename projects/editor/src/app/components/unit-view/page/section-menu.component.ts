@@ -285,11 +285,11 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   showSectionInsertDialog(): void {
-    this.dialogService.showSectionInsertDialog(this.section)
+    this.dialogService.showSectionInsertDialog(this.section.elements.length === 0)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((newSection: Section) => {
-        if (newSection) {
-          const duplicateIDs = newSection.getAllElements()
+      .subscribe((data: { newSection: Section, replaceSection: boolean }) => {
+        if (data.newSection) {
+          const duplicateIDs = data.newSection.getAllElements()
             .filter(element => !this.idService.isIdAvailable(element.id));
           duplicateIDs.forEach(element => {
             element.id = this.idService.getNewID(element.type);
@@ -301,7 +301,13 @@ export class SectionMenuComponent implements OnDestroy {
                 });
             }
           });
-          this.sectionService.replaceSection(this.selectionService.selectedPageIndex, this.sectionIndex, newSection);
+          if (data.replaceSection) {
+            this.sectionService.replaceSection(
+              this.selectionService.selectedPageIndex, this.sectionIndex, data.newSection);
+          } else {
+            this.sectionService.insertSection(
+              this.selectionService.selectedPageIndex, this.sectionIndex, data.newSection);
+          }
         }
       });
   }

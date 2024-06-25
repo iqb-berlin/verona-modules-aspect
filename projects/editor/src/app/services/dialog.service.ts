@@ -151,9 +151,9 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showSectionInsertDialog(section: Section): Observable<Section> {
+  showSectionInsertDialog(isSelectedSectionEmpty: boolean): Observable<{ newSection: Section, replaceSection: boolean }> {
     const dialogRef = this.dialog.open(SectionInsertDialogComponent, {
-      data: { section }
+      data: { isSelectedSectionEmpty }
     });
     return dialogRef.afterClosed();
   }

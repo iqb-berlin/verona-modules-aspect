@@ -33,10 +33,17 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
              (paste)="pasteSectionFromClipboard($event)">
         </div>
       </mat-radio-group>
+
+      <mat-divider [style.margin-top.px]="20" [style.margin-bottom.px]="10"></mat-divider>
+
+      <mat-checkbox [(ngModel)]="replaceSection">
+        Bestehenden Abschnitt ersetzen
+      </mat-checkbox>
+
     </mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button *ngIf="selectedMethod == 'savedCode' || operationStatus === 'green' || operationStatus === 'orange'"
-              [mat-dialog-close]="newSection">
+              [mat-dialog-close]="{ newSection, replaceSection }">
         {{'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -58,8 +65,9 @@ export class SectionInsertDialogComponent implements OnInit {
 
   savedSectionCode: string | undefined;
   selectedMethod: 'savedCode' | 'pastedCode' = 'pastedCode';
+  replaceSection: boolean = false;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { existingSection: Section },
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { isSelectedSectionEmpty: boolean },
               private unitService: UnitService,
               private idManager: IDService,
               private translateService: TranslateService) { }
@@ -70,6 +78,7 @@ export class SectionInsertDialogComponent implements OnInit {
       this.selectedMethod = 'savedCode';
       this.newSection = new Section(JSON.parse(this.unitService.savedSectionCode));
     }
+    this.replaceSection = this.data.isSelectedSectionEmpty;
   }
 
   pasteSectionFromClipboard(event: ClipboardEvent): void {

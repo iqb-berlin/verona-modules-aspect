@@ -90,9 +90,9 @@ export class UnitService {
     }
   }
 
-  updateUnitDefinition(command?: UnitUpdateCommand): void {
+  async updateUnitDefinition(command?: UnitUpdateCommand): Promise<void> {
     if (command) {
-      const deletedData = command.command();
+      const deletedData = await command.command();
       if (deletedData instanceof Promise) {
         deletedData.then((deletedData) => {
           this.historyService.addCommand(command, deletedData);

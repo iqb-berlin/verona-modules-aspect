@@ -1,8 +1,7 @@
-import { PageIndexPipe } from './page-index.pipe';
 import { Page } from 'common/models/page';
+import { PageIndexPipe } from './page-index.pipe';
 
 describe('PageIndexPipe', () => {
-
   const page: Page = new Page({
     hasMaxWidth: false,
     maxWidth: 0,
@@ -51,5 +50,4 @@ describe('PageIndexPipe', () => {
     const pages = [page, { ...page2, alwaysVisible: true } as Page];
     expect(pipe.transform(pages, { ...page2, alwaysVisible: true } as Page)).toEqual(-1);
   });
-
 });

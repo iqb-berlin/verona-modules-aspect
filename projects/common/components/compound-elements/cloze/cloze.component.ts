@@ -41,6 +41,7 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
                       [ngTemplateOutlet]="paragraphs"
                       [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
         <img *ngIf="part.type === 'blockImage'"
+             imageFullscreen [imgSrc]="$any(part.attrs.src) | safeResourceUrl"
              [src]="part.attrs.src" [alt]="$any(part.attrs.alt)">
       </ng-container>
     </div>
@@ -149,6 +150,7 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
         </ng-container>
         <ng-container *ngIf="$any(subPart).type === 'inlineImage'">
           <img [src]="subPart.attrs.src" [alt]="subPart.attrs.alt"
+               imageFullscreen [imgSrc]="subPart.attrs.src"
                [style.display]="'inline-block'"
                [style.height]="'1em'"
                [style.vertical-align]="'middle'">

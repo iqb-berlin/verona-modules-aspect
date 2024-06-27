@@ -87,6 +87,7 @@ import { MathTableComponent } from './components/input-elements/math-table.compo
 import { TextAreaMathComponent } from './components/input-elements/text-area-math.component';
 import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
+import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 
 @NgModule({
   imports: [
@@ -112,7 +113,8 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     MatListModule,
     CdkConnectedOverlay,
     CdkOverlayOrigin,
-    DraggableDirective
+    DraggableDirective,
+    ImageFullscreenDirective
   ],
   declarations: [
     ButtonComponent,

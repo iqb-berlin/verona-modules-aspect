@@ -4,6 +4,7 @@ import {
 import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
 import { ElementComponent } from '../../directives/element-component.directive';
+import { ImageFullscreenDialog, ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 
 @Component({
   selector: 'aspect-text',
@@ -31,10 +32,12 @@ import { ElementComponent } from '../../directives/element-component.directive';
            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
            [style.column-count]="elementModel.columnCount"
            tooltipEventTooltip
+           (click)="openFullscreenImage($event)"
            [innerHTML]="savedText || elementModel.text | safeResourceHTML"
            (contextmenu)="$event.preventDefault()"
            (pointerdown)="startTextSelection($event)">
       </div>
+      <ng-container imageFullscreen></ng-container>
     </div>
   `,
   styles: [
@@ -65,6 +68,8 @@ export class TextComponent extends ElementComponent implements AfterViewInit, On
     colorName: string | undefined
   }>();
 
+  @ViewChild(ImageFullscreenDirective) imageFullScreenDirective!: ImageFullscreenDirective;
+
   selectedColor!: string | undefined;
 
   static textComponents: { [id: string]: TextComponent } = {};
@@ -85,5 +90,12 @@ export class TextComponent extends ElementComponent implements AfterViewInit, On
 
   ngOnDestroy(): void {
     delete TextComponent.textComponents[this.elementModel.id];
+  }
+
+  openFullscreenImage(event: MouseEvent) {
+    const targetElement = event.target as HTMLImageElement;
+    if (targetElement.nodeName === 'IMG') {
+      this.imageFullScreenDirective.openFullScreenDialog(targetElement.src, targetElement.alt);
+    }
   }
 }

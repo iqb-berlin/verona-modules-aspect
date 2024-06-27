@@ -17,6 +17,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
          (mouseleave)="magnifierVisible = false">
       <img #image
            draggable="false"
+           imageFullscreen [imgSrc]="elementModel.src | safeResourceUrl"
            [src]="elementModel.src | safeResourceUrl"
            [alt]="elementModel.alt"
            [class]="elementModel.scale ? 'fit-image' : 'max-size-image'">

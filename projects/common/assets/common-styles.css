@@ -107,3 +107,12 @@ blockquote p {
 .reduced-overlay-index.cdk-overlay-container {
   z-index: 100 !important;
 }
+
+.image-fullscreen-dialog {
+  max-width: 95vw !important;
+  max-height: 95vh;
+}
+
+.image-fullscreen-dialog mat-dialog-content {
+  max-height: 100%;
+}

@@ -40,6 +40,8 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
         <ng-container *ngIf="part.type === 'paragraph' || part.type === 'heading'"
                       [ngTemplateOutlet]="paragraphs"
                       [ngTemplateOutletContext]="{ $implicit: part }"></ng-container>
+        <img *ngIf="part.type === 'blockImage'"
+             [src]="part.attrs.src" [alt]="$any(part.attrs.alt)">
       </ng-container>
     </div>
 
@@ -145,7 +147,7 @@ import { ClozeChildOverlay } from './cloze-child-overlay.component';
         <ng-container *ngIf="$any(subPart).type === 'text' && ((subPart.marks | markList) | arrayIncludes:'strike')">
           <s [ngStyle]="subPart.marks | styleMarks">{{subPart.text}}</s>
         </ng-container>
-        <ng-container *ngIf="$any(subPart).type === 'image'">
+        <ng-container *ngIf="$any(subPart).type === 'inlineImage'">
           <img [src]="subPart.attrs.src" [alt]="subPart.attrs.alt"
                [style.display]="'inline-block'"
                [style.height]="'1em'"

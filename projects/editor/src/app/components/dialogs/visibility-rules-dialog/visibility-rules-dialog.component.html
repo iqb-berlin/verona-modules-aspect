@@ -12,11 +12,10 @@
       {{'section.enableReHide' | translate}}
     </mat-checkbox>
     <mat-checkbox
-      [disabled]="enableReHide"
       [(ngModel)]="animatedVisibility">
       {{'section.animatedVisibility' | translate}}
     </mat-checkbox>
-    <mat-form-field>
+    <mat-form-field class="visibility-delay">
       <mat-label>{{'section.visibilityDelay' | translate}}</mat-label>
       <input matInput
              type="number"

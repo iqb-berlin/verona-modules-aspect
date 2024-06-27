@@ -7,7 +7,6 @@ import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { StorableTimer } from 'player/src/app/classes/storable-timer';
 import { ValueChangeElement } from 'common/models/elements/element';
-import { Storable } from 'player/src/app/classes/storable';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { Response } from '@iqb/responses';
@@ -68,27 +67,16 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       .getElementCodeById(this.timerStateVariableId)?.value as number >= this.section.visibilityDelay;
   }
 
-  private get isAnimatedVisibilityFullFilled(): boolean {
-    return this.stateVariableStateService
-      .getElementCodeById(this.animationVariableId)?.value === 1;
-  }
-
   private isRuleCode(code: Response): boolean {
     return this.section.visibilityRules
       .map(rule => rule.id)
       .some(id => id === code.id) ||
-      (!!this.section.visibilityDelay && code.id === this.timerStateVariableId) ||
-      (this.section.animatedVisibility && code.id === this.animationVariableId);
+      (!!this.section.visibilityDelay && code.id === this.timerStateVariableId);
   }
 
   private get timerStateVariableId(): string {
     const firstRule = this.section.visibilityRules[0];
     return `${firstRule.id}-${firstRule.value}-${this.pageIndex}-${this.sectionIndex}-${this.section.visibilityDelay}`;
-  }
-
-  private get animationVariableId(): string {
-    const firstRule = this.section.visibilityRules[0];
-    return `${firstRule.id}-${firstRule.value}-${this.pageIndex}-${this.sectionIndex}-scroll-animation`;
   }
 
   private initTimerStateVariable(initialValue: number): void {
@@ -137,10 +125,7 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
   private setVisibility(visible: boolean): void {
     this.elementRef.nativeElement.style.display = visible ? 'unset' : 'none';
     if (visible) {
-      if (this.section.animatedVisibility && !this.section.enableReHide && !this.isAnimatedVisibilityFullFilled) {
-        const animationVariable = new Storable(this.animationVariableId, 1);
-        this.stateVariableStateService.registerElementCode(animationVariable.id, 0);
-        this.stateVariableStateService.changeElementCodeValue({ id: animationVariable.id, value: 1 });
+      if (this.section.animatedVisibility) {
         this.scrollIntoView();
       }
       if (!this.section.enableReHide) {

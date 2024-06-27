@@ -15,6 +15,9 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
       color: white;
       margin-top: -5px;
     }
+    .visibility-delay {
+      width: 434px;
+    }
   `]
 })
 export class VisibilityRulesDialogComponent {

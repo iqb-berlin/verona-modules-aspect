@@ -1,4 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
+import {
+  Inject,
+  Injectable,
+  Renderer2,
+  RendererFactory2
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { Progress, StatusChangeElement, ElementCodeStatusValue } from 'player/modules/verona/models/verona';
@@ -16,9 +21,12 @@ export class UnitStateService extends ElementCodeService {
   private elementIdPageIndexMap: { [elementId: string]: number } = {};
   private ignoredPageIndexElementIds: string[] = [];
   private intersectionDetector: IntersectionDetector;
+  private renderer: Renderer2;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {
+  constructor(@Inject(DOCUMENT) private document: Document,
+              private rendererFactory: RendererFactory2) {
     super();
+    this.renderer = this.rendererFactory.createRenderer(null, null);
     this.intersectionDetector = new IntersectionDetector(document, '0px 0px 0px 0px');
   }
 
@@ -59,7 +67,9 @@ export class UnitStateService extends ElementCodeService {
   }
 
   private addIntersectionDetection(elementId: string, domElement: Element): void {
-    this.intersectionDetector.observe(domElement, elementId);
+    const elementToObserve = this.renderer.createElement('div');
+    this.renderer.appendChild(domElement, elementToObserve);
+    this.intersectionDetector.observe(elementToObserve, elementId);
     this.intersectionDetector.intersecting
       .subscribe((id: string) => {
         if (elementId === id) {

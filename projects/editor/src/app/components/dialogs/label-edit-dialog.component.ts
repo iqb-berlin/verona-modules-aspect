@@ -8,8 +8,8 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
   selector: 'aspect-label-edit-dialog',
   template: `
     <mat-dialog-content class="fx-column-start-stretch" >
-      <aspect-rich-text-editor-simple [(content)]="newLabel.text">
-      </aspect-rich-text-editor-simple>
+      <aspect-rich-text-editor [(content)]="newLabel.text" [showReducedControls]="true">
+      </aspect-rich-text-editor>
 
       <div *ngIf="newLabel.imgSrc !== undefined" class="image-panel">
         <div class="fx-column-start-stretch" [style.gap.px]="10">
@@ -36,12 +36,9 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
     </mat-dialog-actions>
   `,
   styles: [`
-    aspect-rich-text-editor-simple {
-      margin-bottom: 20px;
-    }
-
     .image-panel {
       display: flex;
+      margin-top: 20px;
     }
 
     .image-panel aspect-text-image-panel {

@@ -47,7 +47,8 @@ export class DialogService {
 
   showLabelEditDialog(label: Label): Observable<Label> {
     const dialogRef = this.dialog.open(LabelEditDialogComponent, {
-      data: { label }
+      data: { label },
+      autoFocus: false
     });
     return dialogRef.afterClosed();
   }
@@ -82,7 +83,8 @@ export class DialogService {
 
   showTextEditDialog(text: string): Observable<string> {
     const dialogRef = this.dialog.open(TextEditDialogComponent, {
-      data: { text }
+      data: { text },
+      autoFocus: false
     });
     return dialogRef.afterClosed();
   }
@@ -110,7 +112,6 @@ export class DialogService {
         defaultFontSize,
         clozeMode: false
       },
-      height: '700px',
       autoFocus: false
     });
     return dialogRef.afterClosed();
@@ -123,7 +124,6 @@ export class DialogService {
         defaultFontSize,
         clozeMode: true
       },
-      height: '795px',
       autoFocus: false
     });
     return dialogRef.afterClosed();
@@ -139,7 +139,8 @@ export class DialogService {
 
   showLikertRowEditDialog(row: LikertRowElement, options: TextImageLabel[]): Observable<LikertRowElement> {
     const dialogRef = this.dialog.open(LikertRowEditDialogComponent, {
-      data: { row, options }
+      data: { row, options },
+      autoFocus: false
     });
     return dialogRef.afterClosed();
   }

@@ -9,8 +9,8 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
   template: `
     <mat-dialog-content>
       <div class="fx-column-start-stretch">
-        <aspect-rich-text-editor-simple [(content)]="newLikertRow.rowLabel.text">
-        </aspect-rich-text-editor-simple>
+        <aspect-rich-text-editor [(content)]="newLikertRow.rowLabel.text" [showReducedControls]="true">
+        </aspect-rich-text-editor>
 
         <mat-form-field [style.margin-top.px]="15">
           <mat-label>{{'id' | translate }}</mat-label>

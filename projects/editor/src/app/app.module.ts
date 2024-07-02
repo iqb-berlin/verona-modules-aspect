@@ -105,8 +105,6 @@ import { ElementGridChangeListenerDirective } from 'editor/src/app/components/un
 
 import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
-import { RichTextEditorSimpleComponent } from './text-editor-simple/rich-text-editor-simple.component';
-import { RichTextSimpleEditDialogComponent } from './components/dialogs/rich-text-simple-edit-dialog.component';
 import { SelectPropertiesComponent } from
   './components/properties-panel/model-properties-tab/input-groups/select-properties.component';
 import { InputElementPropertiesComponent } from
@@ -171,8 +169,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ActionPropertiesComponent,
     TextFieldElementPropertiesComponent,
     ScaleAndZoomPropertiesComponent,
-    RichTextEditorSimpleComponent,
-    RichTextSimpleEditDialogComponent,
     SectionInsertDialogComponent,
     SelectPropertiesComponent,
     InputElementPropertiesComponent,

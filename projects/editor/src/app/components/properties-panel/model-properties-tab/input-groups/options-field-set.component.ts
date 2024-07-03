@@ -18,24 +18,28 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
     <!--dropdown, radio-button-group-->
 <!--                              [useRichText]="combinedProperties.type === 'radio'"-->
     <aspect-option-list-panel *ngIf="combinedProperties.options !== undefined"
+                              [combinedProperties]="combinedProperties"
                               [title]="'propertiesPanel.options'"
                               [textFieldLabel]="'Neue Option'"
                               [itemList]="$any(combinedProperties.options)"
-                              (addItem)="addOption('options', $event)"
-                              (removeItem)="removeOption('options', $event)"
-                              (changedItemOrder)="moveOption('options', $event)"
-                              (editItem)="editOption('options', $event)">
+                              (textItemAdded)="addOption('options', $event)"
+                              (imageItemAdded)="addImageOption()"
+                              (itemRemoved)="removeOption('options', $event)"
+                              (itemReordered)="moveOption('options', $event)"
+                              (itemEdited)="editOption('options', $event)">
     </aspect-option-list-panel>
 
     <!--likert-->
     <aspect-option-list-panel *ngIf="combinedProperties.rows !== undefined"
+                              [combinedProperties]="combinedProperties"
                               [itemList]="$any(combinedProperties).rows | LikertRowLabel"
                               [title]="'rows'"
                               [textFieldLabel]="'Neue Zeile'"
-                              (changedItemOrder)="moveLikertRow($event)"
-                              (addItem)="addLikertRow($event)"
-                              (removeItem)="removeLikertRow($event)"
-                              (editItem)="editLikertRow($event)">
+                              (itemReordered)="moveLikertRow($event)"
+                              (textItemAdded)="addLikertRow($event)"
+                              (imageItemAdded)="addLikertRowImage()"
+                              (itemRemoved)="removeLikertRow($event)"
+                              (itemEdited)="editLikertRow($event)">
     </aspect-option-list-panel>
   `
 })
@@ -62,6 +66,20 @@ export class OptionsFieldSetComponent {
     });
   }
 
+  addImageOption() {
+    const selectedElements = this.selectionService.getSelectedElements() as OptionElement[];
+    const newLabel: Label = { text: '', imgSrc: null };
+    this.dialogService.showLabelEditDialog(newLabel)
+      .subscribe((result: Label) => {
+        if (result) {
+          selectedElements.forEach(element => {
+            const newValue = [...this.combinedProperties.options as Label[], result];
+            this.elementService.updateElementsProperty([element], 'options', newValue);
+          });
+        }
+      });
+  }
+
   removeOption(property: string, optionIndex: number): void {
     (this.combinedProperties[property] as Label[]).splice(optionIndex, 1);
     this.updateModel.emit({
@@ -77,9 +95,9 @@ export class OptionsFieldSetComponent {
     this.updateModel.emit({ property: property, value: this.combinedProperties[property] as Label[] });
   }
 
-  async editOption(property: string, optionIndex: number): Promise<void> {
+  editOption(property: string, optionIndex: number): void {
     const selectedOption = (this.combinedProperties[property] as Label[])[optionIndex];
-    await this.dialogService.showLabelEditDialog(selectedOption)
+    this.dialogService.showLabelEditDialog(selectedOption)
       .subscribe((result: Label) => {
         if (result) {
           (this.combinedProperties[property] as Label[])[optionIndex] = result;
@@ -106,11 +124,32 @@ export class OptionsFieldSetComponent {
     this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
   }
 
+  addLikertRowImage(): void {
+    const newRow = new LikertRowElement({
+      id: this.idService.getAndRegisterNewID('likert-row'),
+      rowLabel: {
+        text: '',
+        imgSrc: null,
+        imgPosition: 'above'
+      },
+      columnCount: (this.combinedProperties.options as unknown[]).length
+    } as LikertRowProperties);
+    const columns = this.combinedProperties.options as TextImageLabel[];
+
+    this.dialogService.showLikertRowEditDialog(newRow, columns)
+      .subscribe((result: LikertRowElement) => {
+        if (result) {
+          (this.combinedProperties.rows as LikertRowElement[]).push(result);
+          this.updateModel.emit({ property: 'rows', value: this.combinedProperties.rows as LikertRowElement[] });
+        }
+      });
+  }
+
   async editLikertRow(rowIndex: number): Promise<void> {
     const row = (this.combinedProperties.rows as LikertRowElement[])[rowIndex] as LikertRowElement;
     const columns = this.combinedProperties.options as TextImageLabel[];
 
-    await this.dialogService.showLikertRowEditDialog(row, columns)
+    this.dialogService.showLikertRowEditDialog(row, columns)
       .subscribe((result: LikertRowElement) => {
         if (result) {
           if (result.id !== row.id) {

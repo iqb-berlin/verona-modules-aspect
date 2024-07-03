@@ -55,10 +55,10 @@ export class GetValidDropListsPipe implements PipeTransform {
          class="fx-column-start-stretch">
       <aspect-option-list-panel [title]="'preset'" [textFieldLabel]="'Neue Option'"
                                 [itemList]="$any(combinedProperties.value)"
-                                (addItem)="addOption($event)"
-                                (removeItem)="removeOption($event)"
-                                (changedItemOrder)="moveOption('value', $event)"
-                                (editItem)="editOption($event)">
+                                (textItemAdded)="addOption($event)"
+                                (itemRemoved)="removeOption($event)"
+                                (itemReordered)="moveOption('value', $event)"
+                                (itemEdited)="editOption($event)">
       </aspect-option-list-panel>
 
       <mat-form-field *ngIf="combinedProperties.connectedTo !== null"

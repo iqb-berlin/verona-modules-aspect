@@ -88,10 +88,10 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
 export class LikertRowEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { row: LikertRowElement, options: TextLabel[] }) { }
 
-  newLikertRow = {
+  newLikertRow = new LikertRowElement({
     ...this.data.row,
     rowLabel: { ...this.data.row.rowLabel }
-  };
+  });
 
   async loadImage(): Promise<void> {
     this.newLikertRow.rowLabel.imgSrc = await FileService.loadImage();

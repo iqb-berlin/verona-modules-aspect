@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { UnitComponent } from './unit.component';
+import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 
 describe('UnitComponent', () => {
   let component: UnitComponent;
@@ -11,6 +12,7 @@ describe('UnitComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [UnitComponent],
       imports: [
+        ImageFullscreenDirective,
         MatDialogModule,
         TranslateModule.forRoot()
       ]

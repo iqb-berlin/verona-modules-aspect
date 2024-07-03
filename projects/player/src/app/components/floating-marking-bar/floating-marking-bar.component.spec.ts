@@ -4,6 +4,7 @@ import { CdkOverlayOrigin, OverlayModule } from '@angular/cdk/overlay';
 import { TextComponent } from 'common/components/text/text.component';
 import { APIService } from 'common/shared.module';
 import { Pipe, PipeTransform } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import * as text_130 from '../../../../../../test-data/element-models/text_130.json';
 import { FloatingMarkingBarComponent } from './floating-marking-bar.component';
@@ -42,7 +43,8 @@ describe('FloatingMarkingBarComponent', () => {
         FloatingMarkingBarComponent
       ],
       imports: [
-        OverlayModule
+        OverlayModule,
+        MatDialogModule
       ],
       providers: [{ provide: APIService, useClass: ApiStubService }]
     })

@@ -21,7 +21,7 @@
       </aspect-element-model-properties-component>
     </mat-tab>
 
-    <mat-tab>
+    <mat-tab *ngIf="combinedProperties.position || combinedProperties.dimensions">
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon" [matTooltip]="'Position & Maße'">format_shapes</mat-icon>
       </ng-template>

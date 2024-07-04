@@ -17,7 +17,7 @@ export class TableElement extends CompoundElement implements PositionedUIElement
   type: UIElementType = 'table';
   gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
   gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
-  elements: PositionedUIElement[] = [];
+  elements: UIElement[] = [];
   tableEdgesEnabled: boolean = false;
   position: PositionProperties;
   styling: { backgroundColor: string } & BorderStyles;
@@ -31,7 +31,17 @@ export class TableElement extends CompoundElement implements PositionedUIElement
       this.gridColumnSizes = element.gridColumnSizes;
       this.gridRowSizes = element.gridRowSizes;
       this.elements = element.elements
-        .map(el => ElementFactory.createElement(el)) as PositionedUIElement[];
+        .map(el => {
+          const newElement = ElementFactory.createElement(el);
+          newElement.gridRow = el.gridRow; // add custom table element params
+          newElement.gridColumn = el.gridColumn;
+          if (el.type === 'text-field') {
+            delete newElement.label;
+            delete newElement.appearance;
+          }
+          return newElement;
+        }) as PositionedUIElement[];
+
       this.tableEdgesEnabled = element.tableEdgesEnabled;
       this.position = { ...element.position };
       this.styling = { ...element.styling };

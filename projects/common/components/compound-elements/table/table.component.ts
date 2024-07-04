@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SharedModule } from 'common/shared.module';
-import { PositionedUIElement, UIElementType } from 'common/models/elements/element';
+import { PositionedUIElement, UIElement, UIElementType } from 'common/models/elements/element';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
@@ -98,7 +98,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
   @Output() childElementSelected = new EventEmitter<TableChildOverlay>();
   @ViewChildren(TableChildOverlay) compoundChildren!: QueryList<TableChildOverlay>;
 
-  elementGrid: (PositionedUIElement | undefined)[][] = [];
+  elementGrid: (UIElement | undefined)[][] = [];
 
   ngOnInit(): void {
     this.initElementGrid();
@@ -108,7 +108,7 @@ export class TableComponent extends CompoundElementComponent implements OnInit {
     this.elementGrid = new Array(this.elementModel.gridRowSizes.length).fill(undefined)
       .map(() => new Array(this.elementModel.gridColumnSizes.length).fill(undefined));
     this.elementModel.elements.forEach(el => {
-      this.elementGrid[(el.position.gridRow as number) - 1][(el.position.gridColumn as number) - 1] = el;
+      this.elementGrid[(el.gridRow as number) - 1][(el.gridColumn as number) - 1] = el;
     });
   }
 

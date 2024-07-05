@@ -46,7 +46,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
                 (click)="addListItem(newItem.value); newItem.select()">
           <mat-icon>add</mat-icon>
         </button>
-        <button *ngIf="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
+        <button *ngIf="showImageButton"
                 mat-icon-button matSuffix color="primary"
                 [matTooltip]="'Option mit Bild hinzufügen'"
                 (click)="addImageOption()">
@@ -94,11 +94,11 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
   `]
 })
 export class OptionListPanelComponent {
-  @Input() combinedProperties!: CombinedProperties;
   @Input() title: string | undefined; // Fieldset is only rendered when given
   @Input() textFieldLabel!: string;
   @Input() itemList!: Label[];
   @Input() localMode: boolean = false; // Edit list here instead of emitting events for everything
+  @Input() showImageButton: boolean = false; // Edit list here instead of emitting events for everything
   @Output() textItemAdded = new EventEmitter<string>();
   @Output() imageItemAdded = new EventEmitter<void>();
   @Output() itemRemoved = new EventEmitter<number>();

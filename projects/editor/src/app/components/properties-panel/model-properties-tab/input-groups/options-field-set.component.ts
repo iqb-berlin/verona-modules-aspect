@@ -16,9 +16,8 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
   selector: 'aspect-options-field-set',
   template: `
     <!--dropdown, radio-button-group-->
-<!--                              [useRichText]="combinedProperties.type === 'radio'"-->
     <aspect-option-list-panel *ngIf="combinedProperties.options !== undefined"
-                              [combinedProperties]="combinedProperties"
+                              [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
                               [title]="'propertiesPanel.options'"
                               [textFieldLabel]="'Neue Option'"
                               [itemList]="$any(combinedProperties.options)"
@@ -31,7 +30,7 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 
     <!--likert-->
     <aspect-option-list-panel *ngIf="combinedProperties.rows !== undefined"
-                              [combinedProperties]="combinedProperties"
+                              [showImageButton]="combinedProperties.type !== 'dropdown' && combinedProperties.type !== 'radio'"
                               [itemList]="$any(combinedProperties).rows | LikertRowLabel"
                               [title]="'rows'"
                               [textFieldLabel]="'Neue Zeile'"

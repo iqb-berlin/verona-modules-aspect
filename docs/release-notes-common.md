@@ -14,6 +14,7 @@ Allgemein
 ### Fehlerbehebungen
 - Hoch- und Tiefgestellter Text in Text-Elementen verursacht keine Änderung der Zeilenhöhe mehr
 - Text: Unterstreichung hat die gleiche Farbe wie der zugehörige Text
+- Lückentext: Bilder werden nun angezeigt
 
 
 ## editor/2.4.9+player/2.4.10

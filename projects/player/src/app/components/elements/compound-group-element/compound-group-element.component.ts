@@ -94,7 +94,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       });
   }
 
-  private setTextMarkingSupportForText(element: PositionedUIElement): void {
+  private setTextMarkingSupportForText(element: UIElement): void {
     this.textMarkingSupports[element.id] = new TextMarkingSupport(this.nativeEventService, this.anchorService);
     this.savedTexts[element.id] = this.elementModelElementCodeMappingService
       .mapToElementModelValue(
@@ -118,7 +118,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     );
   }
 
-  private setSavedPlaybackTimeForAudio(element: PositionedUIElement): void {
+  private setSavedPlaybackTimeForAudio(element: UIElement): void {
     this.savedPlaybackTimes[element.id] = this.elementModelElementCodeMappingService.mapToElementModelValue(
       this.unitStateService.getElementCodeById(element.id)?.value, element) as number;
   }

@@ -75,14 +75,15 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
     </mat-dialog-actions>
   `,
   styles: [`
-     mat-checkbox {
-       margin-bottom: 15px;
-     }
+    aspect-rich-text-editor {min-height: 200px;}
+    mat-checkbox {
+      margin-bottom: 15px;
+    }
 
-     aspect-text-image-panel {
-       margin-left: auto;
-       margin-right: auto;
-     }
+    aspect-text-image-panel {
+      margin-left: auto;
+      margin-right: auto;
+    }
   `]
 })
 export class LikertRowEditDialogComponent {

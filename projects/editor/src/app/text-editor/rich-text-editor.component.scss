@@ -1,9 +1,18 @@
-:host ::ng-deep div.ProseMirror {
-  min-height: 350px;
+:host {
+  display: flex;
+  flex-direction: column;
 }
 
-:host ::ng-deep .small-input div.ProseMirror {
-  min-height: 100px;
+tiptap-editor {
+  flex-grow: 1;
+  display: flex;
+  overflow: scroll;
+}
+
+:host ::ng-deep div.ProseMirror {
+  width: 100%;
+  margin: 10px;
+  overflow: scroll;
 }
 
 .editor-control-panel {

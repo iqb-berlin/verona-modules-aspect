@@ -15,6 +15,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
       <button mat-button [mat-dialog-close]="data.content">{{'save' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
+  `,
+  styles: `
+    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
+    aspect-rich-text-editor {min-height: 450px;}
   `
 })
 export class RichTextEditDialogComponent {

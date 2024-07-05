@@ -36,6 +36,7 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
     </mat-dialog-actions>
   `,
   styles: [`
+    aspect-rich-text-editor {min-height: 200px;}
     .image-panel {
       display: flex;
       margin-top: 20px;

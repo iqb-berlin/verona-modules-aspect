@@ -44,4 +44,8 @@ export class UnitViewComponent {
   setSectionNumberingPosition(event: MatCheckboxChange) {
     this.unitService.setSectionNumberingPosition(event.checked ? 'above' : 'left');
   }
+
+  setExpertMode(event: MatCheckboxChange) {
+    this.unitService.setSectionExpertMode(event.checked);
+  }
 }

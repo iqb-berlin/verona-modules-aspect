@@ -33,6 +33,7 @@ export class UnitService {
   sectionCountUpdated: Subject<void> = new Subject<void>();
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
+  expertMode: boolean = false;
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
@@ -228,5 +229,9 @@ export class UnitService {
 
   getSelectedPage() {
     return this.unit.pages[this.selectionService.selectedPageIndex];
+  }
+
+  setSectionExpertMode(checked: boolean) {
+    this.expertMode = checked;
   }
 }

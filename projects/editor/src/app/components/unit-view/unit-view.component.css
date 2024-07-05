@@ -62,7 +62,7 @@ aspect-page-canvas {
   pointer-events: auto;
 }
 
-/* History-button tab label */
-:host ::ng-deep .mat-mdc-tab-labels>div:last-child {
+/* Align menu buttons to right side. */
+:host ::ng-deep .mat-mdc-tab-labels>div:nth-last-child(2) {
   margin-left: auto !important;
 }

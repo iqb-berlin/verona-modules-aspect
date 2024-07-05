@@ -74,7 +74,7 @@
 <!--          </ng-template>-->
 <!--        </mat-tab>-->
 
-        <mat-tab disabled>
+        <mat-tab disabled class="align-right">
           <ng-template mat-tab-label>
             <button mat-icon-button [matMenuTriggerFor]="numberingMenu">
               <mat-icon>format_list_numbered</mat-icon>
@@ -87,6 +87,21 @@
                 </mat-checkbox>
                 <mat-checkbox [disabled]="!numberingInput.checked" (change)="setSectionNumberingPosition($event)">
                   vertikale Ausrichtung
+                </mat-checkbox>
+              </div>
+            </mat-menu>
+          </ng-template>
+        </mat-tab>
+        <mat-tab disabled class="align-right">
+          <ng-template mat-tab-label>
+            <button mat-icon-button [matMenuTriggerFor]="extrasMenu">
+              <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #extrasMenu="matMenu" (click)="$event.stopPropagation()">
+              <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
+                <h3>erweiterte Ansicht</h3>
+                <mat-checkbox [ngModel]="unitService.expertMode" (change)="setExpertMode($event)">
+                  Expertenmodus aktivieren
                 </mat-checkbox>
               </div>
             </mat-menu>

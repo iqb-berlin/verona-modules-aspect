@@ -36,7 +36,6 @@ export class TableElement extends CompoundElement implements PositionedUIElement
           newElement.gridRow = el.gridRow; // add custom table element params
           newElement.gridColumn = el.gridColumn;
           if (el.type === 'text-field') {
-            delete newElement.label;
             delete newElement.appearance;
           }
           return newElement;

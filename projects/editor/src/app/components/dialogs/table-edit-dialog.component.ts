@@ -68,7 +68,6 @@ export class TableEditDialogComponent {
     newEle.gridRow = el.row + 1;
     newEle.gridColumn = el.col + 1;
     if (newEle.type === 'text-field') {
-      delete newEle.label;
       delete newEle.appearance;
     }
     this.newTable.elements.push(newEle);

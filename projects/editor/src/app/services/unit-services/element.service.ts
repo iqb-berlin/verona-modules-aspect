@@ -37,8 +37,9 @@ export class ElementService {
               private idService: IDService,
               private sanitizer: DomSanitizer) { }
 
-  async addElementToSection(elementType: UIElementType, section: Section,
+  async addElementToSection(elementType: UIElementType, sectionParam?: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
+    const section = sectionParam || this.unitService.getSelectedSection();
     this.unitService.updateUnitDefinition({
       title: `Element hinzugefügt (${elementType})`,
       command: async () => {

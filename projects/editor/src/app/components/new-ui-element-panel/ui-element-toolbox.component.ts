@@ -25,6 +25,7 @@ import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TextElement } from 'common/models/elements/text/text';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
+import { TemplateService } from 'editor/src/app/services/template.service';
 
 @Component({
   selector: 'aspect-ui-element-toolbox',
@@ -37,6 +38,7 @@ export class UiElementToolboxComponent {
 
   constructor(private selectionService: SelectionService,
               public unitService: UnitService,
+              private templateService: TemplateService,
               private elementService: ElementService,
               protected dragNDropService: DragNDropService) { }
 
@@ -56,7 +58,7 @@ export class UiElementToolboxComponent {
   }
 
   applyTemplate(templateName: string) {
-    this.unitService.applyTemplate(templateName);
+    this.templateService.applyTemplate(templateName);
   }
 
   protected readonly ClozeElement = ClozeElement;

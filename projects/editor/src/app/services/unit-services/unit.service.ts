@@ -208,10 +208,6 @@ export class UnitService {
     });
   }
 
-  applyTemplate(templateName: string) {
-    // TODO
-  }
-
   updateSectionCounter(): void {
     SectionCounter.reset();
     // Wait for the change to propagate through the components

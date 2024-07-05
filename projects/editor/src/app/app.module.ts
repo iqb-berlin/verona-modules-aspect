@@ -100,9 +100,6 @@ import { ElementStylePropertiesComponent } from
   './components/properties-panel/style-properties-tab/element-style-properties.component';
 import { ElementModelPropertiesComponent, IsInputElementPipe } from
   './components/properties-panel/model-properties-tab/element-model-properties.component';
-import { DynamicSectionHelperGridComponent } from 'editor/src/app/components/unit-view/section/dynamic-section-helper-grid.component';
-import { ElementGridChangeListenerDirective } from 'editor/src/app/components/unit-view/section/element-grid-change-listener.directive';
-
 import { OptionsFieldSetComponent } from
   './components/properties-panel/model-properties-tab/input-groups/options-field-set.component';
 import { SelectPropertiesComponent } from
@@ -129,6 +126,10 @@ import { ReferenceListComponent } from 'editor/src/app/components/reference-list
 import { ElementListComponent } from 'editor/src/app/components/element-list.component';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
+import { RadioWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/radio.dialog.component';
+import { TextWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/text.dialog.component';
+import { LikertWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/likert.dialog.component';
+import { InputWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/input.dialog.component';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -191,7 +192,11 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoIDsPipe,
-    InputAssistancePropertiesComponent
+    InputAssistancePropertiesComponent,
+    RadioWizardDialogComponent,
+    TextWizardDialogComponent,
+    LikertWizardDialogComponent,
+    InputWizardDialogComponent
   ],
   imports: [
     BrowserModule,

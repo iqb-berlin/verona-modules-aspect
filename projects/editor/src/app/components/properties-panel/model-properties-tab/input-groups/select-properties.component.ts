@@ -33,7 +33,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
                     appearance="fill" class="mdInput textsingleline">
       <mat-label>{{'itemsPerRow' | translate }}</mat-label>
       <input matInput type="number" [min]="1" [pattern]="'[1-9]'" #itemsPerRow="ngModel" required
-             [disabled]="!isItemsPerRowSet"
+             [disabled]="combinedProperties.itemsPerRow === null"
              [ngModel]="$any(combinedProperties.itemsPerRow)"
              (input)="itemsPerRow.valid &&
                       updateModel.emit({ property: 'itemsPerRow', value: $any($event.target).value })">
@@ -51,12 +51,11 @@ export class SelectPropertiesComponent {
       value: string | number | boolean | string[] | null
     }>();
 
-  isItemsPerRowSet = false;
-
   setItemsPerRow(event: MatCheckboxChange) {
-    this.isItemsPerRowSet = event.checked;
     if (!event.checked) {
       this.updateModel.emit({ property: 'itemsPerRow', value: null });
+    } else {
+      this.updateModel.emit({ property: 'itemsPerRow', value: 4 });
     }
   }
 }

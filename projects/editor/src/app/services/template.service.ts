@@ -23,6 +23,7 @@ export class TemplateService {
   async applyTemplate(templateName: string) {
     const templateSection: Section = await this.createTemplateSection(templateName);
     this.unitService.getSelectedPage().addSection(templateSection);
+    this.unitService.updateUnitDefinition();
   }
 
   private createTemplateSection(templateName: string): Promise<Section> {

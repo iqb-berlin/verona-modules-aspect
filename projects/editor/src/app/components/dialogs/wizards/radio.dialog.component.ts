@@ -4,22 +4,22 @@ import { Label } from 'common/models/elements/label-interfaces';
 @Component({
   selector: 'aspect-editor-radio-wizard-dialog',
   template: `
-    <div mat-dialog-title>Auswahl-Assistent</div>
+    <div mat-dialog-title>Assistent: MC mit Text</div>
     <div mat-dialog-content>
-      <mat-label class="label1">Frage</mat-label>
+      <h3>Frage</h3>
       <aspect-rich-text-editor class="input1" [(content)]="label1" [showReducedControls]="true">
       </aspect-rich-text-editor>
 
-      <mat-divider class="divider1"></mat-divider>
+      <mat-divider></mat-divider>
 
-      <mat-label class="label2">Satzanfang</mat-label>
-      <mat-form-field class="input2" appearance="fill">
+      <h3>Satzanfang</h3>
+      <mat-form-field appearance="fill">
         <textarea matInput type="text" [(ngModel)]="label2"></textarea>
       </mat-form-field>
 
-      <mat-divider class="divider2"></mat-divider>
+      <mat-divider></mat-divider>
 
-      <mat-label class="label3">Optionen</mat-label>
+      <h3>Optionen</h3>
       <aspect-option-list-panel class="options" [textFieldLabel]="'Neue Option'"
                                 [itemList]="options"
                                 [localMode]="true">
@@ -31,17 +31,9 @@ import { Label } from 'common/models/elements/label-interfaces';
     </div>
   `,
   styles: `
-    .mat-mdc-dialog-content {display: grid; column-gap: 30px;}
-    mat-label {align-self: center; font-size: larger; font-weight: bold;}
-    mat-divider {margin: 10px 0;}
-    .label1 {grid-row: 1; grid-column: 1;}
-    .input1 {grid-row: 1; grid-column: 2; min-height: 200px;}
-    .divider1 {grid-row: 2; grid-column: 1 / 3 ;}
-    .label2 {grid-row: 3; grid-column: 1;}
-    .input2 {grid-row: 3; grid-column: 2;}
-    .divider2 {grid-row: 4; grid-column: 1 / 3 ;}
-    .label3 {grid-row: 5; grid-column: 1;}
-    .options {grid-row: 5; grid-column: 2;}
+    .mat-mdc-dialog-content {display: flex; flex-direction: column;}
+    /*.mat-mdc-dialog-content *:not(h3, mat-divider) {padding-left: 30px;}*/
+    .input1 {min-height: 200px;}
   `
 })
 export class RadioWizardDialogComponent {

@@ -3,37 +3,33 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'aspect-editor-input-wizard-dialog',
   template: `
-    <div mat-dialog-title>Antworteingabe-Assistent</div>
+    <div mat-dialog-title>Assistent: Antwortfeld(er)</div>
     <div mat-dialog-content>
       <h3>Text</h3>
       <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true"
                                [style.min-height.px]="200"></aspect-rich-text-editor>
 
-      <div class="row" [style]="'justify-content: space-around;'">
-        <div class="column">
-          <h3>Anzahl Antwortfelder</h3>
-          <mat-form-field class="align-start">
-            <input matInput type="number" maxlength="1" [(ngModel)]="answerCount">
-          </mat-form-field>
-        </div>
+      <h3>Anzahl Antwortfelder</h3>
+      <mat-form-field class="align-start">
+        <input matInput type="number" min="1" maxlength="1" [(ngModel)]="answerCount">
+      </mat-form-field>
 
-        <div class="column">
-          <h3>Nummerierung</h3>
-          <mat-form-field class="align-start">
-            <mat-select [disabled]="answerCount < 2" [(ngModel)]="numbering">
-              <mat-option [value]="'latin'">a), b), ...</mat-option>
-              <mat-option [value]="'decimal'">1), 2), ...</mat-option>
-              <mat-option [value]="'bullets'">., ., ...</mat-option>
-              <mat-option [value]="'none'">keine</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
+      <h3>Nummerierung</h3>
+      <mat-form-field class="align-start">
+        <mat-select [disabled]="answerCount < 2" [(ngModel)]="numbering">
+          <mat-option [value]="'latin'">a), b), ...</mat-option>
+          <mat-option [value]="'decimal'">1), 2), ...</mat-option>
+          <mat-option [value]="'bullets'">&#x2022;, &#x2022;, ...</mat-option>
+          <mat-option [value]="'none'">keine</mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <h3>Antwortlänge</h3>
-      <mat-checkbox [(ngModel)]="useTextAreas" [style]="'margin-bottom: 20px;'">
-        Mehrzeilige Antworten
-      </mat-checkbox>
+      <mat-radio-group [(ngModel)]="useTextAreas">
+        <mat-radio-button [value]="false">Einzeilig</mat-radio-button>
+        <mat-radio-button [value]="true">Mehrzeilig</mat-radio-button>
+      </mat-radio-group>
+
 
       <div class="row" [style]="'justify-content: space-evenly;'">
         <div class="column">
@@ -42,8 +38,8 @@ import { Component } from '@angular/core';
             <mat-select [(ngModel)]="fieldLength" [disabled]="useTextAreas">
               <mat-option [value]="'large'">lang (<12 Wörter)</mat-option>
               <mat-option [value]="'medium'">mittel (<7 Wörter)</mat-option>
-              <mat-option [value]="'small'">klein (<3 Wörter)</mat-option>
-              <mat-option [value]="'very-small'">sehr klein (< vierstellige Zahl)</mat-option>
+              <mat-option [value]="'small'">kurz (<3 Wörter)</mat-option>
+              <mat-option [value]="'very-small'">sehr kurz (< vierstellige Zahl)</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -68,10 +64,11 @@ import { Component } from '@angular/core';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
+    /*.mat-mdc-dialog-content *:not(h3, mat-divider) {margin-left: 30px;}*/
+    h3 {text-decoration: underline;}
+    mat-form-field {align-self: flex-start;}
     .row {display: flex; flex-direction: row;}
     .column {display: flex; flex-direction: column;}
-    .align-start {align-self: start;}
-    mat-button-toggle-group {align-self: center;}
   `
 })
 export class InputWizardDialogComponent {

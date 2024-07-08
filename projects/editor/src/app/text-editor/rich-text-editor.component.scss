@@ -24,36 +24,26 @@ tiptap-editor {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  box-shadow: 0 2px 2px -2px rgba(34,47,62,.1),0 8px 8px -4px rgba(34,47,62,.07);
+}
+
+.editor-control-panel .input-group {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  margin-right: 20px;
+}
+
+.editor-control-panel .input-group mat-select {
+  margin: 0 10px;
+}
+
+.editor-control-panel .input-group aspect-combo-button {
+  margin: 0 10px;
 }
 
 .editor-control-panel button.active {
   background-color: lightgrey;
-}
-
-:host ::ng-deep .editor-control-panel .dropdown .mat-mdc-form-field-infix {
-  min-height: unset;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-:host ::ng-deep .editor-control-panel .dropdown .mdc-notched-outline__notch {
-  max-width: unset !important;
-}
-
-:host ::ng-deep .editor-control-panel .indent-size-input .mat-mdc-form-field-flex {
-  height: 45px;
-}
-
-:host ::ng-deep .editor-control-panel .indent-size-input .mat-mdc-form-field-infix {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-:host fieldset {
-  height: 55px;
-  box-sizing: content-box !important;
-  border-radius: 3px;
-  padding: 2px 5px 15px 5px;
 }
 
 // ### Override TipTap text styling ###

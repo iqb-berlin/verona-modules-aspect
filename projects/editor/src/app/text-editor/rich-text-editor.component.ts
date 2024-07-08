@@ -47,7 +47,6 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
   @Input() showReducedControls: boolean = false;
-  @Input() showGroupedControls: boolean = true;
   @Output() contentChange = new EventEmitter<string | Record<string, any>>();
 
   selectedFontColor = 'black';

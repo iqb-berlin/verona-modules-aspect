@@ -18,6 +18,11 @@ u>span {
   text-decoration: underline;
 }
 
+/* Overlay size for dropdown panel */
+.cdk-overlay-pane .combo-button-select-overlay {
+  min-width: 150px;
+}
+
 /*Flex Styles*/
 
 .fx-column-start-stretch {

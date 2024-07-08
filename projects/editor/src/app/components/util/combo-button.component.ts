@@ -1,74 +1,43 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 
 @Component({
   selector: 'aspect-combo-button',
   template: `
-    <div class="root-panel" [style.outline]="inputType === 'color' && '1px solid'"
-         [style.outline-color]="selectedValue"
-         [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'">
-      <button class="apply-button" mat-icon-button [matTooltip]="tooltip"
+    <div class="wrapper">
+      <button class="apply-button" mat-button [matTooltip]="tooltip"
+              [style.background-color]="inputType === 'list' && isActive ? 'lightgrey' : 'unset'"
               (click)="applySelection.emit()">
         <mat-icon>{{icon}}</mat-icon>
       </button>
 
-      <ng-container *ngIf="inputType == 'color'">
-        <button class="select-trigger-button" type="button" (click)="input.click()">
-          <svg viewBox="0 0 24 24" width="24px" height="24px" focusable="false" aria-hidden="true">
-            <path d="M7 10l5 5 5-5z"></path>
-          </svg>
-        </button>
-        <input matInput type="color" #input hidden
-               (input)="selectionChanged.emit($any($event.target).value); applySelection.emit()">
-      </ng-container>
+      <input matInput type="color" #colorInput hidden
+             (input)="selectionChanged.emit($any($event.target).value); applySelection.emit()">
 
-      <ng-container *ngIf="inputType == 'list'">
-        <button class="select-trigger-button" type="button" cdkOverlayOrigin #trigger="cdkOverlayOrigin"
-                (click)="isOpen = !isOpen">
-          <svg viewBox="0 0 24 24" width="24px" height="24px" focusable="false" aria-hidden="true">
-            <path d="M7 10l5 5 5-5z"></path>
-          </svg>
-        </button>
-        <ng-template cdkConnectedOverlay
-                     [cdkConnectedOverlayOrigin]="trigger"
-                     [cdkConnectedOverlayOpen]="isOpen"
-                     (overlayOutsideClick)="isOpen = false">
-          <mat-action-list class="list-box">
-            <button *ngFor="let value of availableValues"
-                    mat-list-item (click)="selectValue(value)">{{value}}</button>
-          </mat-action-list>
-        </ng-template>
-      </ng-container>
+      <mat-select panelClass="combo-button-select-overlay"
+                  (click)="onClickSelect($event)">
+        <mat-option *ngFor="let value of availableValues"
+                    (click)="selectValue(value)">{{value}}</mat-option>
+      </mat-select>
     </div>
   `,
   styles: [`
-    .root-panel {
+    .wrapper {
       display: flex;
       flex-direction: row;
-      border: 1px solid;
-      border-radius: 5px;
-      border-color: var(--mdc-outlined-text-field-outline-color);
-    }
-    mat-select {
-      margin-top: 20%;
-    }
-    .list-box {
-      background-color: white;
-    }
-    .select-trigger-button {
-      width: 24px;
-      border: unset;
-      background-color: unset;
-      padding: 0;
-      margin-left: -5px;
-    }
-    .select-trigger-button:hover {
-      background-color: grey;
     }
     .apply-button {
-      height: 42px;
-      padding-top: 9px;
+      min-width: unset;
+    }
+    .apply-button .mat-icon {
+      margin-right: 0;
+    }
+    mat-select {
+      display: flex;
+    }
+    mat-select:hover {
+      background-color: WhiteSmoke;
     }
   `
   ]
@@ -82,10 +51,18 @@ export class ComboButtonComponent {
   @Input() isActive: boolean = false;
   @Output() applySelection = new EventEmitter<void>();
   @Output() selectionChanged = new EventEmitter<string>();
-  isOpen: boolean = false;
+
+  @ViewChild('colorInput') colorInput!: ElementRef<HTMLInputElement>;
 
   selectValue(value: string) {
     this.selectionChanged.emit(value);
-    this.isOpen = false;
+  }
+
+  onClickSelect(event: MouseEvent) {
+    if (this.inputType === 'color') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.colorInput.nativeElement.click();
+    }
   }
 }

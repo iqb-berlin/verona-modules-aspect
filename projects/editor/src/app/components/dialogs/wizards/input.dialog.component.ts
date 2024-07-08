@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div mat-dialog-title>Assistent: Antwortfeld(er)</div>
     <div mat-dialog-content>
-      <h3>Text</h3>
+      <h3>Frage</h3>
       <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true"
                                [style.min-height.px]="200"></aspect-rich-text-editor>
 

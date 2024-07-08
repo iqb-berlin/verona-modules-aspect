@@ -118,8 +118,8 @@ export class TemplateService {
         sectionElements.push(
           this.createElement(
             'text',
-            { gridRow: i + 2, gridColumn: 1 },
-            { text: config.numbering !== 'bullets' ? `${numberingChars[i]})` : '&#x2022;' }
+            { gridRow: i + 2, gridColumn: 1, marginTop: { value: 16, unit: 'px' }},
+            { text: `${numberingChars[i]}` }
           )
         );
       }
@@ -139,12 +139,14 @@ export class TemplateService {
             },
             ...!config.useTextAreas ? {
               showSoftwareKeyboard: true,
-              addInputAssistanceToKeyboard: true
+              addInputAssistanceToKeyboard: true,
+              label: ''
             } : {
               showSoftwareKeyboard: true,
               addInputAssistanceToKeyboard: true,
               hasDynamicRowCount: true,
-              expectedCharactersCount: config.expectedCharsCount * 1.5 || 136
+              expectedCharactersCount: config.expectedCharsCount * 1.5 || 136,
+              label: ''
             }
           }
         )
@@ -160,10 +162,12 @@ export class TemplateService {
 
   private static prepareNumberingChars(answerCount: number,
                                        numbering: 'latin' | 'decimal' | 'bullets' | 'none'): string[] {
-    const latinChars = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+    const latinChars = ['a)', 'b)', 'c)', 'd)', 'e)', 'f)', 'g)', 'h)', 'i)'];
     switch (numbering) {
       case 'latin': return latinChars.slice(0, answerCount);
-      case 'decimal': return Array.from(Array(answerCount).keys()).map(char => String(char + 1));
+      case 'decimal': return Array.from(Array(answerCount).keys()).map(char => `${String(char + 1)})`);
+      case 'bullets': return Array(answerCount).fill('&#x2022;');
+      case 'none': return [];
       default: throw Error(`Unexpected numbering: ${numbering}`);
     }
   }

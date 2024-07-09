@@ -247,9 +247,9 @@ export abstract class TextInputElement extends InputElement implements TextInput
   restrictedToInputAssistanceChars: boolean = false;
   hasArrowKeys: boolean = false;
   hasBackspaceKey: boolean = false;
-  showSoftwareKeyboard: boolean = false;
-  addInputAssistanceToKeyboard: boolean = false;
-  hideNativeKeyboard: boolean = false;
+  showSoftwareKeyboard: boolean = true;
+  addInputAssistanceToKeyboard: boolean = true;
+  hideNativeKeyboard: boolean = true;
 
   protected constructor(element?: TextInputElementProperties) {
     super(element);

@@ -1,6 +1,7 @@
 <div class="editor-control-panel">
 
-  <div class="input-group">
+  <fieldset class="input-group">
+    <legend>Schriftauszeichnung</legend>
     <button mat-icon-button matTooltip="Fett" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('bold')"
             (click)="toggleBold()">
@@ -31,25 +32,29 @@
             (click)="toggleStrike()">
       <mat-icon>strikethrough_s</mat-icon>
     </button>
-  </div>
+  </fieldset>
 
-  <div class="input-group">
-    <mat-select *ngIf="!showReducedControls" matTooltip="Schriftgröße"
-                [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize" >
-      <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
-      <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
-      <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
-      <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
-      <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
-      <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
-      <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
-      <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
-      <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
-      <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
-      <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
-      <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
-      <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
-    </mat-select>
+  <fieldset class="input-group">
+    <legend>Schrift</legend>
+    <mat-form-field *ngIf="!showReducedControls" appearance="outline" class="dropdown">
+      <mat-label>Größe</mat-label>
+      <mat-select panelClass="select-overlay"
+                  [value]="editor.getAttributes('textStyle').fontSize?.toString() || selectedFontSize" >
+        <mat-option (click)="applyFontSize('8px')" value="8px">8px</mat-option>
+        <mat-option (click)="applyFontSize('10px')" value="10px">10px</mat-option>
+        <mat-option (click)="applyFontSize('12px')" value="12px">12px</mat-option>
+        <mat-option (click)="applyFontSize('14px')" value="14px">14px</mat-option>
+        <mat-option (click)="applyFontSize('16px')" value="16px">16px</mat-option>
+        <mat-option (click)="applyFontSize('18px')" value="18px">18px</mat-option>
+        <mat-option (click)="applyFontSize('20px')" value="20px">20px</mat-option>
+        <mat-option (click)="applyFontSize('22px')" value="22px">22px</mat-option>
+        <mat-option (click)="applyFontSize('24px')" value="24px">24px</mat-option>
+        <mat-option (click)="applyFontSize('26px')" value="26px">26px</mat-option>
+        <mat-option (click)="applyFontSize('28px')" value="28px">28px</mat-option>
+        <mat-option (click)="applyFontSize('30px')" value="30px">30px</mat-option>
+        <mat-option (click)="applyFontSize('36px')" value="36px">36px</mat-option>
+      </mat-select>
+    </mat-form-field>
     <aspect-combo-button [inputType]="'color'" [selectedValue]="selectedFontColor"
                          [tooltip]="'Textfarbe'" [icon]="'format_color_text'"
                          (applySelection)="applyFontColor()"
@@ -60,28 +65,37 @@
                          (applySelection)="applyHighlightColor()"
                          (selectionChanged)="selectedHighlightColor = $event">
     </aspect-combo-button>
-  </div>
+  </fieldset>
 
-  <div *ngIf="!showReducedControls" class="input-group" >
-    <mat-select [value]="editor.getAttributes('heading').level?.toString() || ''"
-                (valueChange)="toggleHeading($event)">
-      <mat-option value="1">H1</mat-option>
-      <mat-option value="2">H2</mat-option>
-      <mat-option value="3">H3</mat-option>
-      <mat-option value="4">H4</mat-option>
-      <mat-option value="">Paragraph</mat-option>
-    </mat-select>
-    <mat-select matTooltip="Absatzabstand (gilt nur für neue Absätze)" [matTooltipShowDelay]="300"
-                [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
-                (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
-      <mat-option value="0">0px</mat-option>
-      <mat-option value="10">10px</mat-option>
-      <mat-option value="20">20px</mat-option>
-    </mat-select>
+  <fieldset *ngIf="!showReducedControls" class="input-group" >
+    <legend>Absatz</legend>
+    <mat-form-field appearance="outline" class="dropdown" [style.width.px]="130">
+      <mat-label>Typ</mat-label>
+      <mat-select panelClass="select-overlay"
+                  [value]="editor.getAttributes('heading').level?.toString() || ''"
+                  (valueChange)="toggleHeading($event)">
+        <mat-option value="1">H1</mat-option>
+        <mat-option value="2">H2</mat-option>
+        <mat-option value="3">H3</mat-option>
+        <mat-option value="4">H4</mat-option>
+        <mat-option value="">Paragraph</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="dropdown" [style.width.px]="80">
+      <mat-label>Abstand</mat-label>
+      <mat-select panelClass="select-overlay"
+                  matTooltip="Absatzabstand (gilt nur für neue Absätze)" [matTooltipShowDelay]="300"
+                  [value]="editor.getAttributes('paragraph').margin?.toString() || '0'"
+                  (click)="$any($event).stopPropagation()" (valueChange)="applyParagraphStyle($event)">
+        <mat-option value="0">0px</mat-option>
+        <mat-option value="10">10px</mat-option>
+        <mat-option value="20">20px</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </fieldset>
 
-  </div>
-
-  <div *ngIf="!showReducedControls" class="input-group">
+  <fieldset *ngIf="!showReducedControls" class="input-group">
+    <legend>Listen</legend>
     <aspect-combo-button [inputType]="'list'"
                          [selectedValue]="editor.getAttributes('bulletList').listStyle"
                          [availableValues]="['disc', 'circle', 'square']"
@@ -99,9 +113,10 @@
                          (applySelection)="toggleOrderedList()"
                          (selectionChanged)="applyListStyle('orderedList', $event)">
     </aspect-combo-button>
-  </div>
+  </fieldset>
 
-  <div *ngIf="!showReducedControls" class="input-group">
+  <fieldset *ngIf="!showReducedControls" class="input-group">
+    <legend>Textausrichtung</legend>
     <button mat-icon-button matTooltip="Linksbündig" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive({ textAlign: 'left' })"
             (click)="alignText('left')">
@@ -122,9 +137,10 @@
             (click)="alignText('justify')">
       <mat-icon>format_align_justify</mat-icon>
     </button>
-  </div>
+  </fieldset>
 
-  <div *ngIf="!showReducedControls" class="input-group">
+  <fieldset *ngIf="!showReducedControls" class="input-group">
+    <legend>Einrückung</legend>
     <button mat-icon-button matTooltip="Einrücken" [matTooltipShowDelay]="300"
             (click)="indent()">
       <mat-icon>format_indent_increase</mat-icon>
@@ -141,11 +157,14 @@
             (click)="unhangIndent()">
       <mat-icon>view_headline</mat-icon>
     </button>
-    <input matInput type="text" [(ngModel)]="selectedIndentSize" [matTooltip]="'Einrücktiefe (in px)'"
-           [style.width.px]="20">
-  </div>
+    <mat-form-field appearance="outline" class="textfield">
+      <mat-label>Tiefe</mat-label>
+      <input matInput type="text" [(ngModel)]="selectedIndentSize">
+    </mat-form-field>
+  </fieldset>
 
-  <div *ngIf="!showReducedControls" class="input-group">
+  <fieldset *ngIf="!showReducedControls" class="input-group">
+    <legend>Bild</legend>
     <button mat-icon-button matTooltip="Bild in Zeile einfügen" [matTooltipShowDelay]="300"
             (click)="insertImage()">
       <mat-icon style="transform: scale(1.1);">burst_mode</mat-icon>
@@ -162,9 +181,10 @@
             (click)="insertBlockImage('left')">
       <mat-icon style="transform: scale(1.5);">art_track</mat-icon>
     </button>
-  </div>
+  </fieldset>
 
-  <div class="input-group">
+  <fieldset class="input-group">
+    <legend>Sonderelemente</legend>
     <button *ngIf="!showReducedControls" mat-icon-button
             matTooltip="Tooltip" [matTooltipPosition]="'above'" [matTooltipShowDelay]="300"
             [class.active]="editor.isActive('tooltip')"
@@ -249,7 +269,7 @@
                          (applySelection)="applyAnchorId()"
                          (selectionChanged)="selectedAnchorColor = $event">
     </aspect-combo-button>
-  </div>
+  </fieldset>
 </div>
 <div *ngIf="clozeMode" class="fx-row-space-around-center" >
     <button mat-button matTooltip="Eingabefeld" [matTooltipShowDelay]="300"

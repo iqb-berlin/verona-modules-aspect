@@ -13,10 +13,12 @@ tiptap-editor {
   width: 100%;
   margin: 10px;
   overflow: scroll;
+  border: 1px solid gray;
 }
 
 .editor-control-panel {
   margin-bottom: 15px;
+  padding: 5px;
   font: unset;
   max-width: 1000px;
   margin-left: auto;
@@ -24,6 +26,7 @@ tiptap-editor {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  background: linear-gradient(to top right, #FFF5F8, #FAFAFA);
   box-shadow: 0 2px 2px -2px rgba(34,47,62,.1),0 8px 8px -4px rgba(34,47,62,.07);
 }
 
@@ -31,12 +34,50 @@ tiptap-editor {
   display: flex;
   align-items: center;
   height: 50px;
-  margin-right: 20px;
+  margin-right: 10px;
+  padding: 0.3em 0 0.7em 0;
 }
 
-.editor-control-panel .input-group mat-select {
-  margin: 0 10px;
+
+.editor-control-panel .input-group .dropdown {
+  width: 95px;
+  height: 40px;
+  margin: 0 5px;
 }
+// ### Adjust Material select ###
+:host ::ng-deep .editor-control-panel .input-group .dropdown .mat-mdc-text-field-wrapper {
+  max-height: 100%;
+}
+:host ::ng-deep .editor-control-panel .input-group .dropdown .mat-mdc-form-field-flex {
+  align-self: center;
+}
+:host ::ng-deep .editor-control-panel .input-group .dropdown .mat-mdc-form-field-infix {
+  padding: 0;
+  min-height: 0;
+}
+:host ::ng-deep .editor-control-panel .input-group .dropdown .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+:host ::ng-deep .editor-control-panel .input-group .dropdown .mdc-notched-outline__notch {
+  max-width: unset !important;
+}
+:host ::ng-deep .editor-control-panel .input-group .textfield {
+  height: 45px;
+  width: 65px;
+  margin: 0 5px;
+}
+
+// ### Adjust Material text field ###
+:host ::ng-deep .editor-control-panel .input-group .textfield .mat-mdc-form-field-infix {
+  padding-top: 12px;
+}
+:host ::ng-deep .editor-control-panel .input-group .textfield .mat-mdc-text-field-wrapper {
+  max-height: 100%;
+}
+:host ::ng-deep .editor-control-panel .input-group .textfield .mdc-notched-outline__notch {
+  max-width: unset !important;
+}
+
 
 .editor-control-panel .input-group aspect-combo-button {
   margin: 0 10px;

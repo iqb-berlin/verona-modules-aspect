@@ -15,7 +15,7 @@ import {
       <input matInput type="color" #colorInput hidden
              (input)="selectionChanged.emit($any($event.target).value); applySelection.emit()">
 
-      <mat-select panelClass="combo-button-select-overlay"
+      <mat-select panelClass="select-overlay"
                   (click)="onClickSelect($event)">
         <mat-option *ngFor="let value of availableValues"
                     (click)="selectValue(value)">{{value}}</mat-option>

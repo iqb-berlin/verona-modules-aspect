@@ -19,7 +19,7 @@ u>span {
 }
 
 /* Overlay size for dropdown panel */
-.cdk-overlay-pane .combo-button-select-overlay {
+.cdk-overlay-pane .select-overlay {
   min-width: 150px;
 }
 

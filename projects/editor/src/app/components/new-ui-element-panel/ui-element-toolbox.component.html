@@ -1,11 +1,11 @@
 <div class="fx-column-start-stretch fill no-overflow">
   <mat-tab-group class="fx-flex" mat-stretch-tabs>
-    <mat-tab>
+    <mat-tab *ngIf="unitService.expertMode">
       <ng-template mat-tab-label>
-        <mat-icon>bookmark</mat-icon>
+        <mat-icon [matTooltip]="'Elemente'">bookmark</mat-icon>
       </ng-template>
     <div class="fx-flex no-overflow element-list">
-      <mat-accordion multi >
+      <mat-accordion multi>
         <mat-expansion-panel expanded>
           <mat-expansion-panel-header>
             <mat-panel-description>
@@ -205,31 +205,93 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
-        <mat-icon>bookmarks</mat-icon>
+        <mat-icon [matTooltip]="'Assistenten'">bookmarks</mat-icon>
       </ng-template>
-      <div class="template-list">
-        <button mat-stroked-button (click)="applyTemplate('text')">
-          Stimulus: Text
-        </button>
-        <button mat-stroked-button (click)="applyTemplate('text2')">
-          Markieren
-        </button>
-        <button mat-stroked-button (click)="applyTemplate('input')">
-          Antwortfeld(er)
-        </button>
-        <button mat-stroked-button (click)="applyTemplate('radio')">
-          MC mit Text
-        </button>
-        <button mat-stroked-button (click)="applyTemplate('radio_images')">
-          MC mit Bild
-        </button>
-        <button mat-stroked-button (click)="applyTemplate('likert')">
-          Richtig/Falsch-Aufgaben
-        </button>
-      </div>
+
+      <mat-accordion multi>
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Assistenten
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <button mat-stroked-button (click)="applyTemplate('text')">
+            Stimulus: Text
+          </button>
+          <button mat-stroked-button (click)="applyTemplate('text2')">
+            Markieren
+          </button>
+          <button mat-stroked-button (click)="applyTemplate('input')">
+            Antwortfeld(er)
+          </button>
+          <button mat-stroked-button (click)="applyTemplate('radio')">
+            MC mit Text
+          </button>
+          <button mat-stroked-button (click)="applyTemplate('radio_images')">
+            MC mit Bild
+          </button>
+          <button mat-stroked-button (click)="applyTemplate('likert')">
+            Richtig/Falsch-Aufgaben
+          </button>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Medium
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <button mat-stroked-button (click)="addUIElement('text')"
+                  draggable="true" (dragstart)="startDrag($event, 'text')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{TextElement.icon}}</mat-icon>
+            {{TextElement.title}}
+          </button>
+          <button mat-stroked-button (click)="addUIElement('image')"
+                  draggable="true" (dragstart)="startDrag($event, 'image')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{ImageElement.icon}}</mat-icon>
+            {{ImageElement.title}}
+          </button>
+          <button mat-stroked-button (click)="addUIElement('audio')"
+                  draggable="true" (dragstart)="startDrag($event, 'audio')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{AudioElement.icon}}</mat-icon>
+            {{AudioElement.title}}
+          </button>
+          <button mat-stroked-button (click)="addUIElement('video')"
+                  draggable="true" (dragstart)="startDrag($event, 'video')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{VideoElement.icon}}</mat-icon>
+            {{VideoElement.title}}
+          </button>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel expanded>
+          <mat-expansion-panel-header>
+            <mat-panel-description>
+              Verbund
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <button mat-stroked-button (click)="addUIElement('cloze')"
+                  draggable="true" (dragstart)="startDrag($event,'cloze')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{ClozeElement.icon}}</mat-icon>
+            {{ClozeElement.title}}
+          </button>
+
+          <button mat-stroked-button (click)="addUIElement('table')"
+                  draggable="true" (dragstart)="startDrag($event,'table')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{TableElement.icon}}</mat-icon>
+            {{TableElement.title}}
+          </button>
+        </mat-expansion-panel>
+
+      </mat-accordion>
     </mat-tab>
   </mat-tab-group>
-  <aspect-show-state-variables-button class="button-group"
+  <aspect-show-state-variables-button *ngIf="unitService.expertMode" class="button-group"
                                       [stateVariablesCount]="unitService.unit.stateVariables.length">
   </aspect-show-state-variables-button>
 </div>

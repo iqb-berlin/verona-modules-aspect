@@ -21,7 +21,7 @@
       </aspect-element-model-properties-component>
     </mat-tab>
 
-    <mat-tab *ngIf="combinedProperties.position || combinedProperties.dimensions">
+    <mat-tab *ngIf="unitService.expertMode && (combinedProperties.position || combinedProperties.dimensions)">
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon" [matTooltip]="'Position & Maße'">format_shapes</mat-icon>
       </ng-template>
@@ -32,7 +32,7 @@
       </aspect-position-and-dimension-properties>
     </mat-tab>
 
-    <mat-tab *ngIf="combinedProperties.styling">
+    <mat-tab *ngIf="unitService.expertMode && combinedProperties.styling">
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon" [matTooltip]="'Gestaltung'">palette</mat-icon>
       </ng-template>
@@ -42,13 +42,15 @@
   </mat-tab-group>
 
   <div class="button-group fx-column-start-stretch">
-    <mat-checkbox [style.align-self]="'center'"
+    <mat-checkbox *ngIf="unitService.expertMode"
+                  [style.align-self]="'center'"
                   [indeterminate]="interactionIndeterminate"
                   [checked]="interactionEnabled"
                   (change)="setElementInteractionEnabled($event.checked)">
       {{'propertiesPanel.setElementInteractionEnabled' | translate }}
     </mat-checkbox>
-    <button mat-raised-button [disabled]="selectedElements.length > 1 || selectionService.isCompoundChildSelected"
+    <button *ngIf="unitService.expertMode" mat-raised-button
+            [disabled]="selectedElements.length > 1 || selectionService.isCompoundChildSelected"
             (click)="duplicateElement()">
       {{'propertiesPanel.duplicateElement' | translate }}
     </button>

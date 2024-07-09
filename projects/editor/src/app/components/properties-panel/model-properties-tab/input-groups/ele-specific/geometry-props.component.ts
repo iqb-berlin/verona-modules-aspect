@@ -14,11 +14,13 @@ import { GeometryComponent } from 'common/components/geometry/geometry.component
 import { takeUntil } from 'rxjs/operators';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-geometry-props',
   standalone: true,
   imports: [
+    NgIf,
     NgForOf,
     MatInputModule,
     MatIconModule,
@@ -42,32 +44,31 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
       </button>
     </mat-form-field>
 
-    <mat-checkbox [checked]="$any(combinedProperties.showResetIcon)"
+    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showResetIcon)"
                   (change)="updateModel.emit({ property: 'showResetIcon', value: $event.checked })">
       {{ 'propertiesPanel.showResetIcon' | translate }}
     </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.enableUndoRedo)"
+    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableUndoRedo)"
                   (change)="updateModel.emit({ property: 'enableUndoRedo', value: $event.checked })">
       {{ 'propertiesPanel.enableUndoRedo' | translate }}
     </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.enableShiftDragZoom)"
+    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.enableShiftDragZoom)"
                   (change)="updateModel.emit({ property: 'enableShiftDragZoom', value: $event.checked })">
       {{ 'propertiesPanel.enableShiftDragZoom' | translate }}
     </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.showZoomButtons)"
+    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showZoomButtons)"
                   (change)="updateModel.emit({ property: 'showZoomButtons', value: $event.checked })">
       {{ 'propertiesPanel.showZoomButtons' | translate }}
     </mat-checkbox>
-    <mat-checkbox [checked]="$any(combinedProperties.showFullscreenButton)"
+    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showFullscreenButton)"
                   (change)="updateModel.emit({ property: 'showFullscreenButton', value: $event.checked })">
       {{ 'propertiesPanel.showFullscreenButton' | translate }}
     </mat-checkbox>
-
-    <mat-checkbox [checked]="$any(combinedProperties.showToolbar)"
+    <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.showToolbar)"
                   (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
       {{ 'propertiesPanel.showToolbar' | translate }}
     </mat-checkbox>
-    <mat-form-field matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
+    <mat-form-field *ngIf="unitService.expertMode" matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
                     appearance="fill">
       <mat-label>{{ 'propertiesPanel.customToolbar' | translate }}</mat-label>
       <input matInput [disabled]="!combinedProperties.showToolbar"
@@ -97,7 +98,8 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
   geometryObjects: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   private ngUnsubscribe = new Subject<void>();
 
-  constructor(public selectionService: SelectionService,
+  constructor(public unitService: UnitService,
+              public selectionService: SelectionService,
               public dialogService: DialogService) { }
 
   ngOnInit(): void {

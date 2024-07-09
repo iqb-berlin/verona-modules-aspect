@@ -18,11 +18,13 @@ import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
          [class.centered-horizontal]="element.dimensions.isWidthFixed"
          [class.centered-vertical]="element.dimensions.isHeightFixed"
          [class.temporaryHighlight]="temporaryHighlight"
+         [class.disabled-drag]="!unitService.expertMode"
          tabindex="-1"
          (click)="selectElement($event)" (dblclick)="openEditDialog()"
          cdkDrag [cdkDragData]="{dragType: 'move', element: element}"
          (cdkDragStarted)="startDrag()"
          (cdkDragEnded)="endDrag()"
+         [cdkDragDisabled]="!unitService.expertMode"
          [style.outline]="isSelected ? 'purple solid 1px' : ''"
          [style.z-index]="isSelected ? 2 : 1">
       <div *cdkDragPlaceholder></div>
@@ -38,8 +40,9 @@ import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
     </div>
   `,
   styles: [
-    '.draggable-element {width: 100%; height: 100%}',
-    '.draggable-element:active {cursor: grabbing}',
+    '.draggable-element {width: 100%; height: 100%;}',
+    '.draggable-element.disabled-drag {cursor: unset;}',
+    '.draggable-element:not(.disabled-drag):active {cursor: grabbing}',
     '.temporaryHighlight {z-index: 100}',
     '.centered-horizontal {display: flex; justify-content: center;}',
     '.centered-vertical {display: flex; align-items: center;}',

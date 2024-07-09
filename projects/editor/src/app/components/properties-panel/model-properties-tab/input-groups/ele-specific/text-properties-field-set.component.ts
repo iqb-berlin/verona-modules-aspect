@@ -8,6 +8,7 @@ import { SharedModule } from 'common/shared.module';
 import { TextElement } from 'common/models/elements/text/text';
 import { DialogService } from '../../../../../services/dialog.service';
 import { SelectionService } from '../../../../../services/selection.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-text-props',
@@ -56,7 +57,7 @@ import { SelectionService } from '../../../../../services/selection.service';
                     (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
         {{'propertiesPanel.highlightableOrange' | translate }}
       </mat-checkbox>
-      <mat-checkbox *ngIf="combinedProperties.hasSelectionPopup !== undefined"
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
                     [disabled]="!combinedProperties.highlightableYellow &&
                     !combinedProperties.highlightableTurquoise &&
                     !combinedProperties.highlightableOrange"
@@ -81,7 +82,9 @@ export class TextPropsComponent {
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
 
-  constructor(public dialogService: DialogService, public selectionService: SelectionService) {}
+  constructor(public unitService: UnitService,
+              public dialogService: DialogService,
+              public selectionService: SelectionService) {}
 
   showTextEditDialog(): void {
     const selectedElement = this.selectionService.getSelectedElements()[0];

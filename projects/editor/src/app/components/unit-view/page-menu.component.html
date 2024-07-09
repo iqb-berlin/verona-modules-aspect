@@ -24,7 +24,7 @@
 
 <mat-divider></mat-divider>
 
-<fieldset class="fx-column-start-stretch">
+<fieldset *ngIf="unitService.expertMode" class="fx-column-start-stretch">
   <legend>Seitenbreite</legend>
   <mat-checkbox class="menuItem"
                 [matTooltip]="'Abgewählt wird die verfügbare Bildschirmbreite voll ausgenutzt.'"
@@ -53,7 +53,7 @@
   </mat-form-field>
 </fieldset>
 
-<mat-form-field class="menuItem" appearance="fill" [style.margin-top.px]="16">
+<mat-form-field *ngIf="unitService.expertMode" class="menuItem" appearance="fill" [style.margin-top.px]="16">
   <mat-label>{{'pageProperties.backgroundColor' | translate }}</mat-label>
   <input matInput type="color" #backgroundColor="ngModel"
          [ngModel]="page.backgroundColor"
@@ -66,7 +66,7 @@
               (change)="updateModel(page, 'alwaysVisible', $event.source.checked)">
   Seite dauerhaft sichtbar
 </mat-checkbox>
-<mat-form-field class="menuItem" appearance="fill">
+<mat-form-field *ngIf="unitService.expertMode" class="menuItem" appearance="fill">
   <mat-label>{{'pageProperties.position' | translate }}</mat-label>
   <mat-select [disabled]="!page.alwaysVisible"
               [value]="page.alwaysVisiblePagePosition"
@@ -78,7 +78,7 @@
     </mat-option>
   </mat-select>
 </mat-form-field>
-<mat-form-field class="menuItem" appearance="fill">
+<mat-form-field *ngIf="unitService.expertMode" class="menuItem" appearance="fill">
   <mat-label>{{'pageProperties.alwaysVisibleAspectRatio' | translate }}</mat-label>
   <input matInput type="number" min="0" max="100"
          [disabled]="!page.alwaysVisible"

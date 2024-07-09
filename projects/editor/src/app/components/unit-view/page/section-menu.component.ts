@@ -67,11 +67,11 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
       </mat-action-list>
     </mat-menu>
 
-    <button mat-mini-fab [matTooltip]="'Hintergrundfarbe'" [matTooltipPosition]="'left'"
+    <button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'Hintergrundfarbe'" [matTooltipPosition]="'left'"
             (click)="openColorPicker()">
       <mat-icon>palette</mat-icon>
     </button>
-    <input #colorPicker type="color" [style.display]="'none'"
+    <input *ngIf="unitService.expertMode" #colorPicker type="color" [style.display]="'none'"
            [value]="$any(section.backgroundColor)"
            (change)="updateModel('backgroundColor', $any($event.target).value)">
 
@@ -84,13 +84,13 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
       </svg>
     </button>
 
-    <button mat-mini-fab
+    <button *ngIf="unitService.expertMode" mat-mini-fab
             (click)="showVisibilityRulesDialog()"
             [matTooltip]="'Sichtbarkeit'" [matTooltipPosition]="'left'">
       <mat-icon>disabled_visible</mat-icon>
     </button>
 
-    <button mat-mini-fab [matMenuTriggerFor]="layoutMenu"
+    <button *ngIf="unitService.expertMode" mat-mini-fab [matMenuTriggerFor]="layoutMenu"
             [matTooltip]="'Layout'" [matTooltipPosition]="'left'">
       <mat-icon>space_dashboard</mat-icon>
     </button>
@@ -173,11 +173,12 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
       </div>
     </mat-menu>
 
-    <button mat-mini-fab [matTooltip]="'Abschnitt kopieren'" [matTooltipPosition]="'left'"
+    <button *ngIf="unitService.expertMode" mat-mini-fab
+            [matTooltip]="'Abschnitt kopieren'" [matTooltipPosition]="'left'"
             (click)="copySection()">
       <mat-icon>content_copy</mat-icon>
     </button>
-    <button mat-mini-fab
+    <button *ngIf="unitService.expertMode" mat-mini-fab
             [matTooltip]="'Abschnitt einfügen'" [matTooltipPosition]="'left'"
             (click)="showSectionInsertDialog()">
       <mat-icon>content_paste</mat-icon>
@@ -192,7 +193,7 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
             (click)="this.moveSection('down')">
       <mat-icon>south</mat-icon>
     </button>
-    <button mat-mini-fab [matTooltip]="'Duplizieren'" [matTooltipPosition]="'left'"
+    <button *ngIf="unitService.expertMode" mat-mini-fab [matTooltip]="'Duplizieren'" [matTooltipPosition]="'left'"
             (click)="duplicateSection()">
       <mat-icon>control_point_duplicate</mat-icon>
     </button>

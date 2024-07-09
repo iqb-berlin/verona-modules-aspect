@@ -2,6 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-input-element-properties',
@@ -23,12 +24,12 @@ import { UIElement } from 'common/models/elements/element';
         {{'propertiesPanel.readOnly' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox [checked]="$any(combinedProperties.required)"
+      <mat-checkbox *ngIf="unitService.expertMode" [checked]="$any(combinedProperties.required)"
                     (change)="updateModel.emit({ property: 'required', value: $event.checked })">
         {{'propertiesPanel.requiredField' | translate }}
       </mat-checkbox>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field *ngIf="unitService.expertMode" appearance="fill">
         <mat-label>{{'propertiesPanel.requiredWarnMessage' | translate }}</mat-label>
         <input matInput type="text" [disabled]="!combinedProperties.required"
                [value]="$any(combinedProperties.requiredWarnMessage)"
@@ -41,4 +42,6 @@ export class InputElementPropertiesComponent {
   @Input() combinedProperties!: UIElement;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+
+  constructor(public unitService: UnitService) { }
 }

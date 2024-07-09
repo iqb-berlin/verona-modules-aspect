@@ -2,11 +2,12 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-text-field-element-properties',
   template: `
-    <mat-form-field *ngIf="combinedProperties.appearance !== undefined" appearance="fill">
+    <mat-form-field *ngIf="unitService.expertMode && combinedProperties.appearance !== undefined" appearance="fill">
       <mat-label>{{'propertiesPanel.appearance' | translate }}</mat-label>
       <mat-select [value]="combinedProperties.appearance"
                   (selectionChange)="updateModel.emit({ property: 'appearance', value: $event.value })">
@@ -18,7 +19,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       </mat-select>
     </mat-form-field>
 
-    <ng-container *ngIf="combinedProperties.minLength !== undefined">
+    <ng-container *ngIf="unitService.expertMode && combinedProperties.minLength !== undefined">
       <mat-form-field class="wide-form-field" appearance="fill">
         <mat-label>{{'propertiesPanel.minLength' | translate }}</mat-label>
         <input matInput type="number" #minLength="ngModel" min="0"
@@ -37,7 +38,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       </mat-form-field>
     </ng-container>
 
-    <ng-container *ngIf="combinedProperties.maxLength !== undefined">
+    <ng-container *ngIf="unitService.expertMode && combinedProperties.maxLength !== undefined">
       <mat-form-field class="wide-form-field" appearance="fill">
         <mat-label>{{'propertiesPanel.maxLength' | translate }}</mat-label>
         <input matInput type="number" #maxLength="ngModel" min="0"
@@ -62,7 +63,7 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       </mat-form-field>
     </ng-container>
 
-    <ng-container *ngIf="combinedProperties.pattern !== undefined">
+    <ng-container *ngIf="unitService.expertMode && combinedProperties.pattern !== undefined">
       <mat-form-field class="wide-form-field" appearance="fill"
                       matTooltip="Angabe als regulärer Ausdruck.">
         <mat-label>{{'propertiesPanel.pattern' | translate }}</mat-label>
@@ -78,13 +79,13 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
       </mat-form-field>
     </ng-container>
 
-    <mat-checkbox *ngIf="combinedProperties.clearable !== undefined"
+    <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.clearable !== undefined"
                   [checked]="$any(combinedProperties.clearable)"
                   (change)="updateModel.emit({ property: 'clearable', value: $event.checked })">
       {{'propertiesPanel.clearable' | translate }}
     </mat-checkbox>
 
-    <mat-checkbox *ngIf="combinedProperties.hasKeyboardIcon !== undefined"
+    <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasKeyboardIcon !== undefined"
                   [checked]="$any(combinedProperties.hasKeyboardIcon)"
                   (change)="updateModel.emit({ property: 'hasKeyboardIcon', value: $event.checked })">
       {{'propertiesPanel.hasKeyboardIcon' | translate }}
@@ -99,4 +100,6 @@ export class TextFieldElementPropertiesComponent {
     value: string | number | boolean | string[] | null;
     isInputValid?: boolean | null;
   }>();
+
+  constructor(public unitService: UnitService) { }
 }

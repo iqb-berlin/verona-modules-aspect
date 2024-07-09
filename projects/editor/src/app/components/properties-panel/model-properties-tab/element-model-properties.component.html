@@ -63,7 +63,7 @@
            (input)="updateModel.emit({property: 'alt', value: $any($event.target).value })">
   </mat-form-field>
 
-  <button *ngIf="combinedProperties.player"
+  <button *ngIf="unitService.expertMode && combinedProperties.player"
           [style.align-self]="'center'"
           mat-raised-button
           (click)="elementService.showDefaultEditDialog(selectedElements[0])">
@@ -85,13 +85,13 @@
                              (updateModel)="updateModel.emit($event)">
   </aspect-select-properties>
 
-  <mat-checkbox *ngIf="combinedProperties.resizeEnabled !== undefined"
+  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.resizeEnabled !== undefined"
                 [checked]="$any(combinedProperties.resizeEnabled)"
                 (change)="updateModel.emit({ property: 'resizeEnabled', value: $event.checked })">
     {{'propertiesPanel.resizeEnabled' | translate }}
   </mat-checkbox>
 
-  <mat-checkbox *ngIf="combinedProperties.hasAutoHeight !== undefined"
+  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasAutoHeight !== undefined"
                 [disabled]="$any(combinedProperties.hasDynamicRowCount)"
                 [checked]="$any(combinedProperties.hasAutoHeight)"
                 (change)="updateModel.emit({ property: 'hasAutoHeight', value: $event.checked })">
@@ -122,7 +122,7 @@
            (input)="updateModel.emit({ property: 'expectedCharactersCount', value: $any($event.target).value || 0 })">
   </mat-form-field>
 
-  <aspect-action-properties *ngIf="combinedProperties.action !== undefined"
+  <aspect-action-properties *ngIf="unitService.expertMode && combinedProperties.action !== undefined"
     [actions]="combinedProperties.type === 'button' ? ['unitNav', 'pageNav', 'highlightText', 'stateVariableChange'] :
                                                       ['highlightText', 'removeHighlights',  'stateVariableChange']"
     [combinedProperties]="combinedProperties"
@@ -176,7 +176,8 @@
            (input)="updateModel.emit({ property: 'firstColumnSizeRatio', value: $any($event.target).value || 0 })">
   </mat-form-field>
 
-  <aspect-scale-and-zoom-properties [combinedProperties]="combinedProperties"
+  <aspect-scale-and-zoom-properties *ngIf="unitService.expertMode"
+                                    [combinedProperties]="combinedProperties"
                                     (updateModel)="updateModel.emit($event)">
   </aspect-scale-and-zoom-properties>
 
@@ -186,7 +187,7 @@
     {{'propertiesPanel.verticalOrientation' | translate }}
   </mat-checkbox>
 
-  <mat-checkbox [style.margin-top.px]="20"
+  <mat-checkbox *ngIf="unitService.expertMode" [style.margin-top.px]="20"
                 [checked]="$any(combinedProperties.isRelevantForPresentationComplete)"
                 (change)="updateModel
                 .emit({ property: 'isRelevantForPresentationComplete', value: $event.checked })">

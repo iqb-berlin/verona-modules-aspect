@@ -92,36 +92,36 @@ export class GetValidDropListsPipe implements PipeTransform {
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox *ngIf="combinedProperties.isSortList !== undefined"
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.isSortList !== undefined"
                     [checked]="$any(combinedProperties.isSortList)"
                     (change)="updateModel.emit({ property: 'isSortList', value: $event.checked })">
         {{'propertiesPanel.isSortList' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.onlyOneItem !== undefined"
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.onlyOneItem !== undefined"
                     [checked]="$any(combinedProperties.onlyOneItem)"
                     (change)="updateOnlyOneItem($event.checked)">
         {{'propertiesPanel.onlyOneItem' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.allowReplacement !== undefined"
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.allowReplacement !== undefined"
                     [checked]="$any(combinedProperties.allowReplacement)"
                     (change)="updateAllowReplacement($event.checked)">
         {{'allowReplacement' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.copyOnDrop !== undefined"
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.copyOnDrop !== undefined"
                     [checked]="$any(combinedProperties.copyOnDrop)"
                     (change)="updateModel.emit({ property: 'copyOnDrop', value: $event.checked })">
         {{'propertiesPanel.copyOnDrop' | translate }}
       </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.highlightReceivingDropList !== undefined"
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.highlightReceivingDropList !== undefined"
                     [checked]="$any(combinedProperties.highlightReceivingDropList)"
                     (change)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event.checked })">
         {{'propertiesPanel.highlightReceivingDropList' | translate }}
       </mat-checkbox>
-      <mat-form-field appearance="fill" class="mdInput textsingleline">
+      <mat-form-field *ngIf="unitService.expertMode" appearance="fill" class="mdInput textsingleline">
         <mat-label>{{'propertiesPanel.highlightReceivingDropListColor' | translate }}</mat-label>
         <input matInput type="text"
                [disabled]="!combinedProperties.highlightReceivingDropList"

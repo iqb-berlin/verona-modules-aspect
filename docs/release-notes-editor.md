@@ -2,6 +2,11 @@ Editor
 ======
 ## 2.5.0
 ### Neue Funktionen
+- Assistenten
+  - Mit Assistenten können Elementgruppen vorkonfiguriert als Abschnitt eingefügt werden. Es werden lediglich die nötigsten Einstellungen ermöglicht.
+  - Assistenten in Kombination mit dem eingeschränkten Editier-Modus sollen fehlerhaft konfigurierte Abschnitte verhindern.
+- Expertenmodus
+  - Über die Verona-Schnittstelle (Studio -> Editor) kann der Editor angewiesen werden eingeschränkte Editierrechte zu verwenden. In diesem Modus können viele Elemente und Einstellungen nicht verwendet werden.
 - Neues Element: Tabelle
   - Funktioniert ähnlich wie ein Lückentext: Elemente werden in einem Dialog festgelegt, können dann als Sub-Elemente selektiert und angepasst, aber nicht re-positioniert werden.
   - Das Raster der Tabelle kann ähnlich wie Seitenabschnittsraster angepasst werden, allerdings muss die Rastergröße (Zeilen, Spalten) explizit definiert werden.
@@ -15,6 +20,7 @@ Editor
 - Zeilen-Spalten-Reihenfolge bei Rasterkonfiguration korrigiert ("Zeile zuerst, Spalte später")
 - Seitenabschnitte haben nicht mehr 2 Spalten als Standardwert (bei festen Spaltenbreiten)
 - Text: Farbauswahl-Popup nicht mehr standardmäßig eingeschaltet
+- Eingabefeld, Eingabebereich: Eingabehilfen standardmäßig eingeschaltet
 - Einige Texteigenschaften (z.B. Beschriftung) können in Eingabebereichen definiert. Das sollte die Arbeit mit längeren Texten vereinfachen.
 - Seitenmenu überarbeitet (Gruppierung, keine erscheinenden Eingaben etc.)
 - Elemente können direkt in Raster-Zellen gelegt werden, in denen sich bereits ein Rahmen-Element befindet

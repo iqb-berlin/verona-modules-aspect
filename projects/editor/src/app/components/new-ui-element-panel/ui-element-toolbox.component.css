@@ -6,10 +6,6 @@ button {
   display: inline-block;
 }
 
-.template-list {
-  margin-top: 10px;
-}
-
 .mat-expansion-panel-header {
   font-size: large;
 }
@@ -19,6 +15,11 @@ button {
 
 :host ::ng-deep .mat-expansion-panel-body {
   padding: 0 10px 10px;
+}
+
+:host ::ng-deep .mat-expansion-panel-body button {
+  height: unset;
+  min-height: 36px;
 }
 
 .fill {

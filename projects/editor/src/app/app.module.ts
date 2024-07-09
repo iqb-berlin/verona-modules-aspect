@@ -130,6 +130,8 @@ import { RadioWizardDialogComponent } from 'editor/src/app/components/dialogs/wi
 import { TextWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/text.dialog.component';
 import { LikertWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/likert.dialog.component';
 import { InputWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/input.dialog.component';
+import { RadioImagesWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/radio2.dialog.component';
+import { Text2WizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/text2.dialog.component';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -194,7 +196,9 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     GetValidAudioVideoIDsPipe,
     InputAssistancePropertiesComponent,
     RadioWizardDialogComponent,
+    RadioImagesWizardDialogComponent,
     TextWizardDialogComponent,
+    Text2WizardDialogComponent,
     LikertWizardDialogComponent,
     InputWizardDialogComponent
   ],

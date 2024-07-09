@@ -48,7 +48,7 @@ import { Component } from '@angular/core';
 })
 export class TextWizardDialogComponent {
   text1: string = 'Lorem ipsum dolor sit amet';
-  text2: string = 'Lorem ipsum dolor sit amet';
+  text2: string = 'Platzhalter Quelle';
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;

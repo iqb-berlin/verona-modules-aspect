@@ -19,7 +19,7 @@ export class TextElement extends UIElement implements PositionedUIElement, TextP
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;
-  hasSelectionPopup: boolean = true;
+  hasSelectionPopup: boolean = false;
   columnCount: number = 1;
   position: PositionProperties;
   styling: BasicStyles & {

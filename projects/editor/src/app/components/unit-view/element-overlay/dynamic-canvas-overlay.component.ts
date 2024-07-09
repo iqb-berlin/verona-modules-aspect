@@ -66,7 +66,7 @@ export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {
 
   setCursorFix(): void {
     this.bodyElement.classList.add('inheritCursors');
-    this.bodyElement.style.cursor = 'move';
+    this.bodyElement.style.cursor = 'grabbing';
   }
 
   unsetCursorFix(): void {

@@ -35,6 +35,7 @@
     },
     "useDefineForClassFields": false
   },
+  "exclude": ["./dist/*", "./scripts/*", "./example_data/*", "./docs/*"],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

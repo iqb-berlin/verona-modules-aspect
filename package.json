@@ -23,8 +23,10 @@
   "eslintConfig": {
     "extends": "@iqb/eslint-config",
     "parserOptions": {
+    "ignores": ["**/dist/*.*", "**/scripts/*.*", "**/test-data/*.*", "./dist/*", "./node_modules"],
       "project": "./tsconfig.json"
     },
+    "ignorePatterns": ["**/dist/*.*", "**/scripts/*.*", "**/test-data/*.*", "./dist/**/*", "./node_modules/**/*"],
     "rules": {
       "class-methods-use-this": [
         "error",

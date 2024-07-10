@@ -32,7 +32,7 @@ import { Label } from 'common/models/elements/label-interfaces';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    /*.mat-mdc-dialog-content *:not(h3, mat-divider) {padding-left: 30px;}*/
+    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     .input1 {min-height: 200px;}
   `
 })

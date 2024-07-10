@@ -8,8 +8,10 @@ import { Component } from '@angular/core';
       <h3>Text</h3>
       <aspect-rich-text-editor class="input1" [(content)]="text1"></aspect-rich-text-editor>
 
-      <h3>Tooltip</h3>
-      <mat-checkbox [(ngModel)]="showHelper" [style]="'margin-bottom: 20px;'">
+      <mat-divider></mat-divider>
+
+      <h3>Tooltipp</h3>
+      <mat-checkbox [(ngModel)]="showHelper">
         Anzeigen
       </mat-checkbox>
     </div>
@@ -23,7 +25,7 @@ import { Component } from '@angular/core';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content *:not(h3, mat-divider) {padding-left: 30px;}
+    .mat-mdc-dialog-content *:not(h3, mat-divider) {margin-left: 30px;}
     h3 {text-decoration: underline;}
     .input1 {min-height: 400px;}
   `

@@ -9,10 +9,14 @@ import { Component } from '@angular/core';
       <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true"
                                [style.min-height.px]="200"></aspect-rich-text-editor>
 
+      <mat-divider></mat-divider>
+
       <h3>Anzahl Antwortfelder</h3>
       <mat-form-field class="align-start">
-        <input matInput type="number" min="1" maxlength="1" [(ngModel)]="answerCount">
+        <input matInput type="number" min="1" max="9" [(ngModel)]="answerCount">
       </mat-form-field>
+
+      <mat-divider></mat-divider>
 
       <h3>Nummerierung</h3>
       <mat-form-field class="align-start">
@@ -24,17 +28,18 @@ import { Component } from '@angular/core';
         </mat-select>
       </mat-form-field>
 
-      <h3>Antwortlänge</h3>
-      <mat-radio-group [(ngModel)]="useTextAreas">
-        <mat-radio-button [value]="false">Einzeilig</mat-radio-button>
-        <mat-radio-button [value]="true">Mehrzeilig</mat-radio-button>
-      </mat-radio-group>
+      <mat-divider></mat-divider>
 
+      <h3>Antwortfeldgröße</h3>
+      <div class="row">
+        <mat-radio-group [(ngModel)]="useTextAreas">
+          <mat-radio-button [value]="false">Einzeilig</mat-radio-button>
+          <mat-radio-button [value]="true">Mehrzeilig</mat-radio-button>
+        </mat-radio-group>
 
-      <div class="row" [style]="'justify-content: space-evenly;'">
-        <div class="column">
-          <h3>Länge der Antworten</h3>
+        <ng-container *ngIf="!useTextAreas">
           <mat-form-field [style]="'width: 270px;'">
+            <mat-label>Länge der Antworten</mat-label>
             <mat-select [(ngModel)]="fieldLength" [disabled]="useTextAreas">
               <mat-option [value]="'large'">lang (<12 Wörter)</mat-option>
               <mat-option [value]="'medium'">mittel (<7 Wörter)</mat-option>
@@ -42,17 +47,15 @@ import { Component } from '@angular/core';
               <mat-option [value]="'very-small'">sehr kurz (< vierstellige Zahl)</mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
-
-        <div class="column">
-          <h3>Erwartete Zeichenanzahl</h3>
-          <mat-form-field>
+        </ng-container>
+        <ng-container *ngIf="useTextAreas">
+          <mat-form-field [style]="'width: 270px;'">
+            <mat-label>Erwartete Zeichenanzahl</mat-label>
             <input matInput type="number" maxlength="4"
                    [(ngModel)]="expectedCharsCount" [disabled]="!useTextAreas">
           </mat-form-field>
-        </div>
+        </ng-container>
       </div>
-
     </div>
     <div mat-dialog-actions>
       <button mat-button
@@ -64,11 +67,10 @@ import { Component } from '@angular/core';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    /*.mat-mdc-dialog-content *:not(h3, mat-divider) {margin-left: 30px;}*/
+    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3 {text-decoration: underline;}
     mat-form-field {align-self: flex-start;}
-    .row {display: flex; flex-direction: row;}
-    .column {display: flex; flex-direction: column;}
+    .row {display: flex; flex-direction: row; gap: 25px;}
   `
 })
 export class InputWizardDialogComponent {

@@ -19,10 +19,14 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
                                 [localMode]="true">
       </aspect-option-list-panel>
 
+      <mat-divider></mat-divider>
+
       <h3>Bilder je Zeile</h3>
-      <mat-form-field class="align-start">
-        <input matInput type="number" min="1" maxlength="1" [(ngModel)]="itemsPerRow">
+      <mat-form-field [style.align-self]="'flex-start'">
+        <input matInput type="number" min="1" max="9" [(ngModel)]="itemsPerRow">
       </mat-form-field>
+      <p>4 Bilder pro Zeile: empfohlen für kleine Bilder oder einseitige Aufgaben<br>
+      2 Bilder pro Zeile: empfohlen für zweiseitige Aufgaben oder große Bilder</p>
     </div>
     <div mat-dialog-actions>
       <button mat-button [mat-dialog-close]="{ label1, options, itemsPerRow }">{{'confirm' | translate }}</button>
@@ -31,7 +35,7 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    /*.mat-mdc-dialog-content *:not(h3, mat-divider) {padding-left: 30px;}*/
+    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     .input1 {min-height: 200px;}
   `
 })

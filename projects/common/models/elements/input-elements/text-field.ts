@@ -13,6 +13,7 @@ import { InstantiationEror } from 'common/util/errors';
 
 export class TextFieldElement extends TextInputElement implements TextFieldProperties {
   type: UIElementType = 'text-field';
+  label: string = '';
   appearance: 'fill' | 'outline' = 'outline';
   minLength: number | null = null;
   minLengthWarnMessage: string = 'Eingabe zu kurz';

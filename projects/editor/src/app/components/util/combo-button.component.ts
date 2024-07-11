@@ -1,9 +1,24 @@
 import {
   Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { NgForOf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'aspect-combo-button',
+  standalone: true,
+  imports: [
+    NgForOf,
+    MatButtonModule,
+    MatTooltipModule,
+    MatInputModule,
+    MatSelectModule,
+    MatIconModule
+  ],
   template: `
     <div class="wrapper">
       <button class="apply-button" mat-button [matTooltip]="tooltip"

@@ -112,7 +112,6 @@ import { LikertRowLabelPipe } from './components/properties-panel/likert-row-lab
 import { LabelEditDialogComponent } from './components/dialogs/label-edit-dialog.component';
 import { GeogebraAppDefinitionDialogComponent } from './components/dialogs/geogebra-app-definition-dialog.component';
 import { SizeInputPanelComponent } from './components/util/size-input-panel.component';
-import { ComboButtonComponent } from './components/util/combo-button.component';
 import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
 import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
 import { CheckboxNodeviewComponent } from './text-editor/angular-node-views/checkbox-nodeview.component';
@@ -149,7 +148,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     UnitViewComponent,
     CanvasComponent,
     ElementPropertiesPanelComponent,
-    RichTextEditorComponent,
     ToggleButtonNodeviewComponent,
     TextFieldNodeviewComponent,
     CheckboxNodeviewComponent,
@@ -182,7 +180,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     GetAnchorIdsPipe,
     GetStateVariablePipe,
     ScrollPageIndexPipe,
-    ComboButtonComponent,
     DeleteReferenceDialogComponent,
     VisibilityRuleEditorComponent,
     StateVariablesDialogComponent,
@@ -239,7 +236,8 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ElementListComponent,
     SizeInputPanelComponent,
     MeasurePipe,
-    SectionComponent
+    SectionComponent,
+    RichTextEditorComponent
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService },

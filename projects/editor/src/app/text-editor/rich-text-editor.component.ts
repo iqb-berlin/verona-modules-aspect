@@ -36,9 +36,34 @@ import ToggleButtonComponentExtension from './angular-node-views/toggle-button-c
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
 import CheckboxComponentExtension from './angular-node-views/checkbox-component-extension';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { ComboButtonComponent } from 'editor/src/app/components/util/combo-button.component';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { NgxTiptapModule } from 'ngx-tiptap';
 
 @Component({
   selector: 'aspect-rich-text-editor',
+  standalone: true,
+  imports: [
+    NgIf,
+    MatButtonModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    ComboButtonComponent,
+    FormsModule,
+    MatInputModule,
+    MatMenuModule,
+    NgxTiptapModule
+  ],
   templateUrl: './rich-text-editor.component.html',
   styleUrls: ['./rich-text-editor.component.scss']
 })

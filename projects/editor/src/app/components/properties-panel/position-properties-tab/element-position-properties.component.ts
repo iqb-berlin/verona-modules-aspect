@@ -45,7 +45,7 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
   `
 })
 export class ElementPositionPropertiesComponent {
-  @Input() dimensions!: DimensionProperties | null;
+  @Input() dimensions!: DimensionProperties | null | undefined;
   @Input() positionProperties: PositionProperties | undefined;
   @Input() isZIndexDisabled: boolean = false;
 

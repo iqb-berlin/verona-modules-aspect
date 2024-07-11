@@ -11,7 +11,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class TextFieldElement extends TextInputElement implements PositionedUIElement, TextFieldProperties {
+export class TextFieldElement extends TextInputElement implements TextFieldProperties {
   type: UIElementType = 'text-field';
   appearance: 'fill' | 'outline' = 'outline';
   minLength: number | null = null;

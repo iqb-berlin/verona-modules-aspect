@@ -20,7 +20,7 @@ import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-elements/checkbox';
 
-export class ClozeElement extends CompoundElement implements PositionedUIElement, ClozeProperties {
+export class ClozeElement extends CompoundElement implements ClozeProperties {
   type: UIElementType = 'cloze';
   document: ClozeDocument = { type: 'doc', content: [] };
   columnCount: number = 1;

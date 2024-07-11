@@ -10,7 +10,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class FrameElement extends UIElement implements PositionedUIElement, FrameProperties {
+export class FrameElement extends UIElement implements FrameProperties {
   type: UIElementType = 'frame';
   hasBorderTop: boolean = true;
   hasBorderBottom: boolean = true;

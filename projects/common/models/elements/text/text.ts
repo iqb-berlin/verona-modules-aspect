@@ -13,7 +13,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class TextElement extends UIElement implements PositionedUIElement, TextProperties {
+export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
   text: string = 'Lorem ipsum dolor sit amet';
   highlightableOrange: boolean = false;

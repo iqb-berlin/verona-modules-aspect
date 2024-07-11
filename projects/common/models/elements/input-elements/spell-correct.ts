@@ -11,7 +11,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class SpellCorrectElement extends TextInputElement implements PositionedUIElement, SpellCorrectProperties {
+export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
   type: UIElementType = 'spell-correct';
   position: PositionProperties;
   styling: BasicStyles;

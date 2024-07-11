@@ -11,7 +11,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class SliderElement extends InputElement implements PositionedUIElement, SliderProperties {
+export class SliderElement extends InputElement implements SliderProperties {
   type: UIElementType = 'slider';
   minValue: number = 0;
   maxValue: number = 100;

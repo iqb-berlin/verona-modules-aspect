@@ -10,7 +10,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class AudioElement extends PlayerElement implements PositionedUIElement, AudioProperties {
+export class AudioElement extends PlayerElement implements AudioProperties {
   type: UIElementType = 'audio';
   src: string | null = null;
   position: PositionProperties;

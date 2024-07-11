@@ -12,7 +12,7 @@ import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class GeometryElement extends UIElement implements PositionedUIElement, GeometryProperties {
+export class GeometryElement extends UIElement implements GeometryProperties {
   type: UIElementType = 'geometry';
   appDefinition: string = '';
   trackedVariables: string[] = [];

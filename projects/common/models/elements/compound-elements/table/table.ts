@@ -13,7 +13,7 @@ import { environment } from 'common/environment';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { ElementFactory } from 'common/util/element.factory';
 
-export class TableElement extends CompoundElement implements PositionedUIElement, TableProperties {
+export class TableElement extends CompoundElement implements TableProperties {
   type: UIElementType = 'table';
   gridColumnSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
   gridRowSizes: { value: number; unit: string }[] = [{ value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];

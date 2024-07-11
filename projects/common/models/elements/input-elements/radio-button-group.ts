@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, OptionElement, PositionedUIElement, UIElement, UIElementType
+  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
@@ -12,8 +12,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class RadioButtonGroupElement extends InputElement
-  implements PositionedUIElement, OptionElement, RadioButtonGroupProperties {
+export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {
   type: UIElementType = 'radio';
   options: TextLabel[] = [];
   alignment: 'column' | 'row' = 'column';

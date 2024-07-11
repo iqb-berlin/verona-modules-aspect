@@ -11,7 +11,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class TextAreaElement extends TextInputElement implements PositionedUIElement, TextAreaProperties {
+export class TextAreaElement extends TextInputElement implements TextAreaProperties {
   type: UIElementType = 'text-area';
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;

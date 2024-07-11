@@ -8,7 +8,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import { ClozeChildOverlay } from 'common/components/compound-elements/cloze/cloze-child-overlay.component';
-import { UIElement } from 'common/models/elements/element';
+import { PositionedUIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
@@ -21,7 +21,7 @@ import { TableChildOverlay } from 'common/components/compound-elements/table/tab
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
-  @Input() element!: UIElement;
+  @Input() element!: PositionedUIElement;
   @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;
   isSelected = false;

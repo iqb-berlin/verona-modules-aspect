@@ -14,7 +14,7 @@ import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 import { VariableInfo } from '@iqb/responses';
 
-export class LikertElement extends CompoundElement implements PositionedUIElement, OptionElement, LikertProperties {
+export class LikertElement extends CompoundElement implements OptionElement, LikertProperties {
   type: UIElementType = 'likert';
   rows: LikertRowElement[] = [];
   options: TextImageLabel[] = [];

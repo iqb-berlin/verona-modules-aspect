@@ -12,7 +12,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class DropdownElement extends InputElement implements PositionedUIElement, OptionElement, DropdownProperties {
+export class DropdownElement extends InputElement implements OptionElement, DropdownProperties {
   type: UIElementType = 'dropdown';
   options: TextLabel[] = [];
   allowUnset: boolean = false;

@@ -7,7 +7,7 @@ import {
   ToggleButtonComponent
 } from 'common/components/compound-elements/cloze/cloze-child-elements/toggle-button.component';
 import {
-  BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
+  BasicStyles, DimensionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { TextLabel } from 'common/models/elements/label-interfaces';
 import { environment } from 'common/environment';
@@ -20,6 +20,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   strikeOtherOptions: boolean = false;
   strikeSelectedOption: boolean = false;
   verticalOrientation: boolean = false;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
@@ -32,6 +33,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       this.strikeOtherOptions = element.strikeOtherOptions;
       this.strikeSelectedOption = element.strikeSelectedOption;
       this.verticalOrientation = element.verticalOrientation;
+      this.dimensions = { ...element.dimensions };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -93,6 +95,7 @@ export interface ToggleButtonProperties extends InputElementProperties {
   strikeOtherOptions: boolean;
   strikeSelectedOption: boolean;
   verticalOrientation: boolean;
+  dimensions: DimensionProperties;
   styling: BasicStyles & {
     lineHeight: number;
     selectionColor: string;
@@ -105,6 +108,7 @@ function isValid(blueprint?: ToggleButtonProperties): boolean {
     blueprint.strikeOtherOptions !== undefined &&
     blueprint.strikeSelectedOption !== undefined &&
     blueprint.verticalOrientation !== undefined &&
+    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling.lineHeight !== undefined &&
     blueprint.styling.selectionColor !== undefined;

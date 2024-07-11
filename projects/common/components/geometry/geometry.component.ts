@@ -19,7 +19,7 @@ declare const GGBApplet: any;
     <div class="geogebra-container"
          [style.height.px]="elementModel.height"
          [style.width.px]="elementModel.width"
-         [class.center]="this.elementModel.dimensions.isWidthFixed">
+         [class.center]="this.elementModel.dimensions?.isWidthFixed">
       <button *ngIf="this.elementModel.showResetIcon"
               mat-stroked-button class="reset-button"
               (click)="reset()">
@@ -104,8 +104,8 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   private initApplet(): void {
     const params = {
       id: this.elementModel.id,
-      width: this.elementModel.dimensions.width - 4, // must be smaller than the container, otherwise scroll bars will be displayed
-      height: this.elementModel.dimensions.height - 4,
+      width: (this.elementModel.dimensions?.width || 180) - 4, // must be smaller than the container, otherwise scroll bars will be displayed
+      height: (this.elementModel.dimensions?.height || 60) - 4,
       scale: 1,
       showToolBar: this.elementModel.showToolbar,
       enableShiftDragZoom: this.elementModel.enableShiftDragZoom,

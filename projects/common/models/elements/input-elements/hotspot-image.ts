@@ -28,7 +28,7 @@ export interface Hotspot {
   readOnly: boolean;
 }
 
-export class HotspotImageElement extends InputElement implements PositionedUIElement, HotspotImageProperties {
+export class HotspotImageElement extends InputElement implements HotspotImageProperties {
   type: UIElementType = 'hotspot-image';
   value: Hotspot[] = [];
   src: string | null = null;

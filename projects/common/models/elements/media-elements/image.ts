@@ -11,7 +11,7 @@ import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class ImageElement extends UIElement implements PositionedUIElement, ImageProperties {
+export class ImageElement extends UIElement implements ImageProperties {
   type: UIElementType = 'image';
   src: string | null = null;
   alt: string = 'Bild nicht gefunden';

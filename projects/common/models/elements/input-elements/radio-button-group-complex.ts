@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, OptionElement, PositionedUIElement, UIElement, UIElementType
+  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
@@ -12,8 +12,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class RadioButtonGroupComplexElement extends InputElement
-  implements PositionedUIElement, OptionElement, RadioButtonGroupComplexProperties {
+export class RadioButtonGroupComplexElement extends InputElement implements OptionElement, RadioButtonGroupComplexProperties {
   type: UIElementType = 'radio-group-images';
   options: TextImageLabel[] = [];
   itemsPerRow: number | null = null;

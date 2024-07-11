@@ -10,7 +10,7 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class VideoElement extends PlayerElement implements PositionedUIElement, VideoProperties {
+export class VideoElement extends PlayerElement implements VideoProperties {
   type: UIElementType = 'video';
   src: string | null = null;
   scale: boolean = false;

@@ -135,7 +135,7 @@ export abstract class UnitDefinitionSanitizer {
     });
     const toggleButtons = children.filter(child => child.type === 'toggle-button');
     toggleButtons.forEach(toggleButton => {
-      toggleButton.dimensions.isWidthFixed = !toggleButton.dynamicWidth;
+      if (toggleButton.dimensions) toggleButton.dimensions.isWidthFixed = !toggleButton.dynamicWidth;
     });
     const textInputs = children.filter(child => child.type === 'text-field-simple');
     textInputs.forEach(textInput => {

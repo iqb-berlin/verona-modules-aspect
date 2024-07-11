@@ -51,7 +51,7 @@ export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOpe
 export interface UIElementProperties {
   id: string;
   isRelevantForPresentationComplete: boolean;
-  dimensions: DimensionProperties;
+  dimensions?: DimensionProperties;
   position?: PositionProperties;
   styling?: Stylings;
   player?: PlayerProperties;
@@ -70,7 +70,7 @@ export abstract class UIElement implements UIElementProperties {
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
   position?: PositionProperties;
-  dimensions: DimensionProperties;
+  dimensions?: DimensionProperties;
   styling?: Stylings;
   player?: PlayerProperties;
 
@@ -78,7 +78,7 @@ export abstract class UIElement implements UIElementProperties {
     if (element && isValidUIElementProperties(element)) {
       this.id = element.id;
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
-      this.dimensions = element.dimensions;
+      if (element.dimensions) this.dimensions = { ...element.dimensions };
       if (element.position) this.position = { ...element.position };
       if (element.styling) this.styling = { ...element.styling };
     } else {
@@ -112,7 +112,7 @@ export abstract class UIElement implements UIElementProperties {
   }
 
   setDimensionsProperty(property: string, value: number | null): void {
-    this.dimensions[property] = value;
+    (this.dimensions as DimensionProperties)[property] = value;
   }
 
   setPlayerProperty(property: string, value: UIElementValue): void {
@@ -292,7 +292,27 @@ export interface PlayerElementBlueprint extends UIElementProperties {
 
 function isValidPlayerElementBlueprint(blueprint?: PlayerElementBlueprint): boolean {
   if (!blueprint) return false;
-  return blueprint.player !== undefined;
+  return blueprint.player !== undefined &&
+    blueprint.player.autostart !== undefined &&
+    blueprint.player.autostartDelay !== undefined &&
+    blueprint.player.loop !== undefined &&
+    blueprint.player.startControl !== undefined &&
+    blueprint.player.pauseControl !== undefined &&
+    blueprint.player.progressBar !== undefined &&
+    blueprint.player.interactiveProgressbar !== undefined &&
+    blueprint.player.volumeControl !== undefined &&
+    blueprint.player.defaultVolume !== undefined &&
+    blueprint.player.minVolume !== undefined &&
+    blueprint.player.muteControl !== undefined &&
+    blueprint.player.interactiveMuteControl !== undefined &&
+    blueprint.player.hintLabel !== undefined &&
+    blueprint.player.hintLabelDelay !== undefined &&
+    blueprint.player.activeAfterID !== undefined &&
+    blueprint.player.minRuns !== undefined &&
+    blueprint.player.maxRuns !== undefined &&
+    blueprint.player.showRestRuns !== undefined &&
+    blueprint.player.showRestTime !== undefined &&
+    blueprint.player.playbackTime !== undefined;
 }
 
 export abstract class PlayerElement extends UIElement implements PlayerElementBlueprint {
@@ -327,6 +347,7 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
 
 export interface PositionedUIElement extends UIElement {
   position: PositionProperties;
+  dimensions: DimensionProperties;
 }
 
 export interface PlayerElement extends UIElement {

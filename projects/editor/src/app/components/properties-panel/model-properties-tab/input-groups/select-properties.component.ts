@@ -3,11 +3,12 @@ import {
 } from '@angular/core';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { MatCheckboxChange } from '@angular/material/checkbox';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-select-properties',
   template: `
-    <mat-checkbox *ngIf="combinedProperties.strikeOtherOptions !== undefined"
+    <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.strikeOtherOptions !== undefined"
                   [checked]="$any(combinedProperties.strikeOtherOptions)"
                   (change)="updateModel.emit({ property: 'strikeOtherOptions', value: $event.checked })">
       {{'propertiesPanel.strikeOtherOptions' | translate }}
@@ -50,6 +51,8 @@ export class SelectPropertiesComponent {
       property: string,
       value: string | number | boolean | string[] | null
     }>();
+
+  constructor(public unitService: UnitService) { }
 
   setItemsPerRow(event: MatCheckboxChange) {
     if (!event.checked) {

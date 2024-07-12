@@ -57,7 +57,7 @@
     Text und Elemente editieren
   </button>
 
-  <mat-form-field *ngIf="combinedProperties.alt !== undefined">
+  <mat-form-field *ngIf="unitService.expertMode && combinedProperties.alt !== undefined">
     <mat-label>Alternativtext</mat-label>
     <input matInput type="text" [value]="$any(combinedProperties.alt)"
            (input)="updateModel.emit({property: 'alt', value: $any($event.target).value })">
@@ -152,7 +152,8 @@
                                         (updateModel)="updateModel.emit($event)">
   </aspect-text-field-element-properties>
 
-  <aspect-input-assistance-properties [combinedProperties]="combinedProperties"
+  <aspect-input-assistance-properties *ngIf="unitService.expertMode"
+                                      [combinedProperties]="combinedProperties"
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 

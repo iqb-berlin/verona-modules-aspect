@@ -86,6 +86,16 @@ export class ElementModelPropertiesComponent implements OnDestroy {
     this.updateModel.emit({ property: 'src', value: mediaSrc });
   }
 
+  toggleProperty(property: string, checked:boolean): void {
+    if (!checked) {
+      this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, null);
+    }
+  }
+
+  updateDimensionProperty(property: string, value: any): void {
+    this.elementService.updateElementsDimensionsProperty(this.selectionService.getSelectedElements(), property, value);
+  }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

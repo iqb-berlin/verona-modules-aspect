@@ -187,6 +187,39 @@
     {{'propertiesPanel.verticalOrientation' | translate }}
   </mat-checkbox>
 
+  <ng-container *ngIf="!unitService.expertMode">
+    <mat-divider [style.margin.px]="15"></mat-divider>
+    <mat-checkbox #maxWidthEnabled [checked]="$any(combinedProperties.dimensions).maxWidth !== null"
+                  (change)="toggleProperty('maxWidth', $event.checked)">
+      {{'propertiesPanel.maxWidthEnabled' | translate }}
+    </mat-checkbox>
+    <mat-form-field>
+      <mat-label>
+        {{'propertiesPanel.maxWidth' | translate }}
+      </mat-label>
+      <input matInput type="number" min="0"
+             [disabled]="!maxWidthEnabled.checked"
+             [ngModel]="$any(combinedProperties.dimensions).maxWidth"
+             (ngModelChange)="updateDimensionProperty('maxWidth', $event)">
+    </mat-form-field>
+
+    <ng-container *ngIf="combinedProperties.type === 'drop-list' || combinedProperties.type === 'text-field-simple'">
+      <mat-checkbox #fixedWidth [checked]="$any(combinedProperties.dimensions).isWidthFixed"
+                    (change)="updateDimensionProperty('isWidthFixed', $event.checked)">
+        {{'propertiesPanel.isWidthFixed' | translate }}
+      </mat-checkbox>
+      <mat-form-field appearance="fill">
+        <mat-label>{{'propertiesPanel.width' | translate }}</mat-label>
+        <input matInput type="number" min="0"
+               [disabled]="!fixedWidth.checked"
+               [ngModel]="$any(combinedProperties.dimensions).width"
+               (ngModelChange)="updateDimensionProperty('width', $event)"
+               (change)="$any(combinedProperties.dimensions).width =
+                 $any(combinedProperties.dimensions).width ? $any(combinedProperties.dimensions).width : 0">
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+
   <mat-checkbox *ngIf="unitService.expertMode" [style.margin-top.px]="20"
                 [checked]="$any(combinedProperties.isRelevantForPresentationComplete)"
                 (change)="updateModel

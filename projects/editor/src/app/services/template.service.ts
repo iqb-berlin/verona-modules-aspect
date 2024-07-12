@@ -116,11 +116,12 @@ export class TemplateService {
         case 'droplist':
           this.dialog.open(DroplistWizardDialogComponent, { })
             .afterClosed().subscribe((result: {
-              alignment: 'column' | 'row', text1: string, headingSourceList: string,
+              variant: 'classic' | 'sort', alignment: 'column' | 'row', text1: string, headingSourceList: string,
               options: DragNDropValueObject[], optionLength: 'long' | 'medium' | 'short' | 'very-short',
               headingTargetLists: string, targetLength: 'medium' | 'short' | 'very-short',
-              targetLabels: TextLabel[] }) => {
-              if (result) resolve(this.createDroplistSection(result));
+              targetLabels: TextLabel[], numbering: boolean }) => {
+              if (result.variant === 'classic') resolve(this.createDroplistSection(result));
+              if (result.variant === 'sort') resolve(this.createSortlistSection(result));
             });
           break;
         default:
@@ -500,7 +501,8 @@ export class TemplateService {
   }
 
   private createDroplistSection(config: {
-    alignment: 'column' | 'row', text1: string, headingSourceList: string, options: DragNDropValueObject[],
+    alignment: 'column' | 'row', text1: string,
+    headingSourceList: string, options: DragNDropValueObject[],
     optionLength: 'long' | 'medium' | 'short' | 'very-short', headingTargetLists: string,
     targetLength: 'medium' | 'short' | 'very-short', targetLabels: TextLabel[] })
   {
@@ -663,6 +665,54 @@ export class TemplateService {
         }
       default: throw Error(`Unknown optionLength: ${optionLength}`);
     }
+  }
+
+  private createSortlistSection(config: {
+    text1: string, options: DragNDropValueObject[],
+    optionLength: 'long' | 'medium' | 'short' | 'very-short', numbering: boolean })
+  {
+    const sectionElements: UIElement[] = [
+      this.createElement(
+        'text',
+        {
+          gridRow: 1,
+          gridColumn: 1,
+          gridColumnRange: config.numbering ? 2 : 1,
+          marginBottom: { value: 20, unit: 'px' }
+        },
+        { text: config.text1 }),
+      this.createElement(
+        'drop-list',
+        {
+          gridRow: 2,
+          gridColumn: config.numbering ? 2 : 1,
+          gridRowRange: config.numbering ? config.options.length : 1,
+          marginBottom: { value: 40, unit: 'px' }
+        },
+        {
+          // eslint-disable-next-line no-nested-ternary
+          dimensions: { maxWidth: config.optionLength === 'medium' ? 500 : config.optionLength === 'short' ? 250 : 125 },
+          value: config.options,
+          orientation: 'vertical',
+          isSortList: true,
+          highlightReceivingDropList: true
+        })
+    ];
+    if (config.numbering) {
+      for (let i = 0; i < config.options.length; i++) {
+        sectionElements.push(
+          this.createElement(
+            'text',
+            { gridRow: i + 2, gridColumn: 1 },
+            { text: `${i}.`, lineHeight: 260 })
+        );
+      }
+    }
+    return new Section({
+      elements: sectionElements,
+      ...config.numbering && { autoColumnSize: false },
+      ...config.numbering && { gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }] }
+    } as SectionProperties);
   }
 
   private createElement(elType: UIElementType, coords: Partial<PositionProperties>,

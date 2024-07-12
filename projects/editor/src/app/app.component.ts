@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
     this.veronaApiService.startCommand
       .subscribe((message: StartCommand): void => {
         this.unitService.loadUnitDefinition(message.unitDefinition);
+        if (message.editorConfig.role === 'developer') this.unitService.allowExpertMode = false;
       });
     this.veronaApiService.sendReady();
     registerLocaleData(localeDe);

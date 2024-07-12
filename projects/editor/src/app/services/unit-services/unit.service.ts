@@ -36,7 +36,8 @@ export class UnitService {
   sectionCountUpdated: Subject<void> = new Subject<void>();
   referenceManager: ReferenceManager;
   savedSectionCode: string | undefined;
-  expertMode: boolean = false;
+  allowExpertMode: boolean = true;
+  expertMode: boolean = true;
 
   constructor(private selectionService: SelectionService,
               private veronaApiService: VeronaAPIService,
@@ -47,6 +48,7 @@ export class UnitService {
               private idService: IDService) {
     this.unit = new Unit();
     this.referenceManager = new ReferenceManager(this.unit);
+    this.expertMode = this.allowExpertMode;
   }
 
   loadUnitDefinition(unitDefinition: string): void {

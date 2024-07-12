@@ -99,7 +99,8 @@
             </button>
             <mat-menu #extrasMenu="matMenu" (click)="$event.stopPropagation()">
               <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
-                <mat-checkbox [ngModel]="unitService.expertMode" (change)="setExpertMode($event)">
+                <mat-checkbox [disabled]="!unitService.allowExpertMode"
+                              [ngModel]="unitService.expertMode" (change)="setExpertMode($event)">
                   Expertenmodus aktivieren
                 </mat-checkbox>
               </div>

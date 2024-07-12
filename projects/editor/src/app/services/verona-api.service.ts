@@ -65,7 +65,8 @@ export interface StartCommand extends MessageEvent {
   unitDefinition: string,
   unitDefinitionType: string,
   editorConfig: {
-    directDownloadUrl: string
+    directDownloadUrl: string,
+    role: 'guest' | 'commentator' | 'developer' | 'maintainer' | 'super'; // only developer is non-expert
   }
 }
 

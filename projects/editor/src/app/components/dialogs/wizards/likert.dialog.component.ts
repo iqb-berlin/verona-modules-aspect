@@ -4,7 +4,7 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
 @Component({
   selector: 'aspect-editor-likert-wizard-dialog',
   template: `
-    <div mat-dialog-title>Assistent: Richtig/Falsch-Aufgaben</div>
+    <div mat-dialog-title>Assistent: CMC</div>
     <div mat-dialog-content>
       <h3>Text</h3>
       <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"></aspect-rich-text-editor>
@@ -35,7 +35,7 @@ import { TextImageLabel } from 'common/models/elements/label-interfaces';
       </aspect-option-list-panel>
     </div>
     <div mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ }">{{'confirm' | translate }}</button>
+      <button mat-button [mat-dialog-close]="{ text1, text2, options, rows }">{{'confirm' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </div>
   `,

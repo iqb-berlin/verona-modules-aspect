@@ -79,5 +79,5 @@ export class InputWizardDialogComponent {
   useTextAreas: boolean = false;
   numbering: 'latin' | 'decimal' | 'bullets' | 'none' = 'latin';
   fieldLength: 'very-small' | 'small' | 'medium' | 'large' = 'large';
-  expectedCharsCount: number = 136;
+  expectedCharsCount: number = 90;
 }

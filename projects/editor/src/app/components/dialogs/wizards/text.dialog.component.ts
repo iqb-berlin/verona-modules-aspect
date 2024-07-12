@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content *:not(h3, mat-divider) {margin-left: 30px;}
+    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3 {text-decoration: underline;}
     .input1 {min-height: 400px;}
     .radios {display: flex; flex-direction: row; gap: 10px;}
@@ -47,7 +47,13 @@ import { Component } from '@angular/core';
   `
 })
 export class TextWizardDialogComponent {
-  text1: string = 'Lorem ipsum dolor sit amet';
+  text1: string = '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" ' +
+    'indentsize="20"><span style="font-size: 24px"><strong>Platzhalter Überschrift</strong></span></p>' +
+    '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 20px; margin-top: 0" indent="0" indentsize="20">' +
+    '<span style="font-size: 20px">Platzhalter Autor</span></p><p style="padding-left: 0px; text-indent: 0px;' +
+    ' margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">' +
+    'Platzhalter Text</span></p>';
+
   text2: string = 'Platzhalter Quelle';
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;

@@ -706,18 +706,13 @@ export class TemplateService {
         {
           gridRow: 1,
           gridColumn: 1,
-          gridColumnRange: config.numbering ? 2 : 1,
+          gridColumnRange: 1,
           marginBottom: { value: 20, unit: 'px' }
         },
         { text: config.text1 }),
       this.createElement(
         'drop-list',
-        {
-          gridRow: 2,
-          gridColumn: config.numbering ? 2 : 1,
-          gridRowRange: config.numbering ? config.options.length : 1,
-          marginBottom: { value: 40, unit: 'px' }
-        },
+        { gridRow: 2, gridColumn: 1, marginBottom: { value: 40, unit: 'px' } },
         {
           dimensions: {
             // eslint-disable-next-line no-nested-ternary
@@ -726,23 +721,13 @@ export class TemplateService {
           value: config.options,
           orientation: 'vertical',
           isSortList: true,
-          highlightReceivingDropList: true
+          highlightReceivingDropList: true,
+          showNumbering: config.numbering
         })
     ];
-    if (config.numbering) {
-      for (let i = 0; i < config.options.length; i++) {
-        sectionElements.push(
-          this.createElement(
-            'text',
-            { gridRow: i + 2, gridColumn: 1 },
-            { text: `${i}.`, lineHeight: 260 })
-        );
-      }
-    }
+
     return new Section({
-      elements: sectionElements,
-      ...config.numbering && { autoColumnSize: false },
-      ...config.numbering && { gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }] }
+      elements: sectionElements
     } as SectionProperties);
   }
 

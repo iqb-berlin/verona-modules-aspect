@@ -7,6 +7,7 @@ Allgemein
   - Es werden alle Abschnitte seitenübergreifend durchnummeriert. Einzelne Seitenabschnitte können via Seitenabschnittsmenu davon ausgenommen werden.
 - Audio und Video: Neue Eigenschaft - Hintergrundfarbe
 - Bilder werden beim Anwählen in einem Vollbild-Dialog angezeigt
+- Ablegelisten: Nummerierung zuschaltbar
 
 ### Änderungen
 - Kontrollkästchen: Wenn keine Vorbelegung definiert ist, gilt der Wert als nicht-ausgewählt anstatt nicht-definiert

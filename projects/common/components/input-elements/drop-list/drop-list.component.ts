@@ -37,22 +37,24 @@ import { DragOperatorService } from './drag-operator.service';
          (mouseenter)="dragOpService.isDragActive && dragEnter()"
          (mouseleave)="dragOpService.isDragActive && dragLeave()"
          (click)="elementFormControl.markAsTouched()">
-      <div *ngFor="let item of viewModel; let i = index;"
-           class="drop-list-item" [class.image-item]="item.imgSrc"
-           #listItem
-           aspect-draggable data-aspect-draggable="true"
-           (dragStart)="dragStart($event, item, i, this)"
-           (dragMove)="dragMove($event)"
-           (dragEnd)="dragEnd()"
-           (mouseenter)="dragOpService.isDragActive && listItemDragEnter(i)"
-           [style.color]="elementModel.styling.fontColor"
-           [style.font-size.px]="elementModel.styling.fontSize"
-           [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
-           [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-           [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-           [style.background-color]="elementModel.styling.itemBackgroundColor"
-           [class.read-only]="elementModel.readOnly">
-        <aspect-text-image-panel [label]="item"></aspect-text-image-panel>
+      <div *ngFor="let item of viewModel; let i = index;" class="list-item-wrapper">
+        <div *ngIf="elementModel.showNumbering" class="numbering">{{ i + 1 }}.</div>
+        <div class="drop-list-item" [class.image-item]="item.imgSrc"
+             #listItem
+             aspect-draggable data-aspect-draggable="true"
+             (dragStart)="dragStart($event, item, i, this)"
+             (dragMove)="dragMove($event)"
+             (dragEnd)="dragEnd()"
+             (mouseenter)="dragOpService.isDragActive && listItemDragEnter(i)"
+             [style.color]="elementModel.styling.fontColor"
+             [style.font-size.px]="elementModel.styling.fontSize"
+             [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
+             [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
+             [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+             [style.background-color]="elementModel.styling.itemBackgroundColor"
+             [class.read-only]="elementModel.readOnly">
+          <aspect-text-image-panel [label]="item"></aspect-text-image-panel>
+        </div>
       </div>
     <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                class="error-message">

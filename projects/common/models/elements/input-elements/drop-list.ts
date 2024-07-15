@@ -21,6 +21,7 @@ export class DropListElement extends InputElement implements DropListProperties 
   copyOnDrop: boolean = false;
   allowReplacement: boolean = false;
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
+  showNumbering: boolean = false;
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#006064';
   styling: BasicStyles & {
@@ -49,6 +50,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.copyOnDrop = element.copyOnDrop;
       this.allowReplacement = element.allowReplacement;
       this.orientation = element.orientation;
+      this.showNumbering = element.showNumbering;
       this.highlightReceivingDropList = element.highlightReceivingDropList;
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
       this.styling = { ...element.styling };
@@ -73,6 +75,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       if (element?.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
       if (element?.allowReplacement) this.allowReplacement = element.allowReplacement;
       if (element?.orientation) this.orientation = element.orientation;
+      if (element?.showNumbering) this.showNumbering = element.showNumbering;
       if (element?.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
       if (element?.highlightReceivingDropListColor) {
         this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
@@ -153,6 +156,7 @@ export interface DropListProperties extends InputElementProperties {
   copyOnDrop: boolean;
   allowReplacement: boolean;
   orientation: 'vertical' | 'horizontal' | 'flex';
+  showNumbering: boolean;
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
   styling: BasicStyles & {
@@ -169,6 +173,7 @@ function isValid(blueprint?: DropListProperties): boolean {
     blueprint.copyOnDrop !== undefined &&
     blueprint.allowReplacement !== undefined &&
     blueprint.orientation !== undefined &&
+    blueprint.showNumbering !== undefined &&
     blueprint.highlightReceivingDropList !== undefined &&
     blueprint.highlightReceivingDropListColor !== undefined &&
     blueprint.styling !== undefined &&

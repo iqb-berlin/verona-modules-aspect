@@ -45,6 +45,16 @@
   padding: 0;
 }
 
+.list-item-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.list-item-wrapper > .numbering {
+  align-self: center;
+  padding-right: 5px;
+}
+
 .drop-list-item {
   border-radius: 5px;
   cursor: grab;

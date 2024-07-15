@@ -386,11 +386,11 @@ export class TemplateService {
           { gridRow: 2, gridColumn: 1, marginBottom: { value: 15, unit: 'px' } },
           {
             src: config.src1,
-            dimensions: { maxWidth: 500 },
+            dimensions: { maxWidth: 500 } as DimensionProperties,
             player: {
               maxRuns: config.maxRuns1,
               ...TemplateService.getAudioSettings()
-            }
+            } as PlayerProperties
           }),
         this.createElement(
           'text',
@@ -404,12 +404,12 @@ export class TemplateService {
           'audio',
           { gridRow: 5, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
           {
-            dimensions: { maxWidth: 500 },
+            dimensions: { maxWidth: 500 } as DimensionProperties,
             src: config.src2,
             player: {
               maxRuns: config.maxRuns2,
               ...TemplateService.getAudioSettings()
-            }
+            } as PlayerProperties
           })
       ]
     } as SectionProperties);

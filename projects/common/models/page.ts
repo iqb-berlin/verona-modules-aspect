@@ -57,6 +57,10 @@ export class Page {
     }
   }
 
+  replaceSection(sectionIndex: number, section: Section): void {
+    this.sections.splice(sectionIndex, 1, section);
+  }
+
   deleteSection(sectionIndex: number){
     this.sections.splice(sectionIndex, 1);
   }

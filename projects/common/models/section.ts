@@ -106,6 +106,10 @@ export class Section {
       .filter((gridRow: number | null): gridRow is number => gridRow !== null);
     return Math.max(...x, 0);
   }
+
+  isEmpty(): boolean {
+    return this.elements.length === 0;
+  }
 }
 
 export interface SectionProperties {

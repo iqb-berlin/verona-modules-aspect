@@ -1,11 +1,7 @@
 import { Type } from '@angular/core';
-import {
-  PositionedUIElement,
-  UIElement, UIElementProperties, UIElementType
-} from 'common/models/elements/element';
+import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
-
 import { VariableInfo } from '@iqb/responses';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
@@ -21,7 +17,7 @@ export class TextElement extends UIElement implements TextProperties {
   highlightableYellow: boolean = false;
   hasSelectionPopup: boolean = false;
   columnCount: number = 1;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -38,7 +34,7 @@ export class TextElement extends UIElement implements TextProperties {
       this.highlightableYellow = element.highlightableYellow;
       this.hasSelectionPopup = element.hasSelectionPopup;
       this.columnCount = element.columnCount;
-      this.position = { ...element.position };
+      if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -110,7 +106,7 @@ export interface TextProperties extends UIElementProperties {
   highlightableYellow: boolean;
   hasSelectionPopup: boolean;
   columnCount: number;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -124,7 +120,6 @@ function isValid(blueprint?: TextProperties): boolean {
     blueprint.highlightableYellow !== undefined &&
     blueprint.hasSelectionPopup !== undefined &&
     blueprint.columnCount !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling.lineHeight !== undefined;
 }

@@ -60,8 +60,7 @@ export interface UIElementProperties {
 function isValidUIElementProperties(blueprint?: UIElementProperties): boolean {
   if (!blueprint) return false;
   return blueprint.id !== undefined &&
-    blueprint.isRelevantForPresentationComplete !== undefined &&
-    PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions);
+    blueprint.isRelevantForPresentationComplete !== undefined;
 }
 
 export abstract class UIElement implements UIElementProperties {

@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement, TextInputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
@@ -14,7 +14,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class TextFieldElement extends TextInputElement implements TextFieldProperties {
   type: UIElementType = 'text-field';
   label: string = '';
-  appearance: 'fill' | 'outline' = 'outline';
+  appearance?: 'fill' | 'outline' = 'outline';
   minLength: number | null = null;
   minLengthWarnMessage: string = 'Eingabe zu kurz';
   maxLength: number | null = null;
@@ -24,7 +24,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   patternWarnMessage: string = 'Eingabe entspricht nicht der Vorgabe';
   hasKeyboardIcon: boolean = false;
   clearable: boolean = false;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -35,7 +35,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   constructor(element?: TextFieldProperties) {
     super(element);
     if (element && isValid(element)) {
-      this.appearance = element.appearance;
+      if (element.appearance) this.appearance = element.appearance;
       this.minLength = element.minLength;
       this.minLengthWarnMessage = element.minLengthWarnMessage;
       this.maxLength = element.maxLength;
@@ -45,7 +45,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
       this.patternWarnMessage = element.patternWarnMessage;
       this.clearable = element.clearable;
       this.hasKeyboardIcon = element.hasKeyboardIcon;
-      this.position = { ...element.position };
+      if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -98,7 +98,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
 }
 
 export interface TextFieldProperties extends TextInputElementProperties {
-  appearance: 'fill' | 'outline';
+  appearance?: 'fill' | 'outline';
   minLength: number | null;
   minLengthWarnMessage: string;
   maxLength: number | null;
@@ -108,7 +108,7 @@ export interface TextFieldProperties extends TextInputElementProperties {
   patternWarnMessage: string;
   hasKeyboardIcon: boolean;
   clearable: boolean;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
   };
@@ -116,8 +116,7 @@ export interface TextFieldProperties extends TextInputElementProperties {
 
 function isValid(blueprint?: TextFieldProperties): boolean {
   if (!blueprint) return false;
-  return blueprint.appearance !== undefined &&
-    blueprint.minLength !== undefined &&
+  return blueprint.minLength !== undefined &&
     blueprint.minLengthWarnMessage !== undefined &&
     blueprint.maxLength !== undefined &&
     blueprint.maxLengthWarnMessage !== undefined &&
@@ -126,7 +125,6 @@ function isValid(blueprint?: TextFieldProperties): boolean {
     blueprint.patternWarnMessage !== undefined &&
     blueprint.hasKeyboardIcon !== undefined &&
     blueprint.clearable !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
     blueprint.styling.lineHeight !== undefined;
 }

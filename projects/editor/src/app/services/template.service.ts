@@ -566,7 +566,11 @@ export class TemplateService {
         },
         {
           dimensions: { minHeight: 58 } as DimensionProperties,
-          value: config.options,
+          value: config.options.map(option => ({
+            text: option.text,
+            id: this.unitService.getNewValueID(),
+            originListID: 'id_placeholder'
+          })),
           orientation: config.alignment === 'column' ? 'flex' : 'vertical',
           highlightReceivingDropList: true
         }),
@@ -718,7 +722,11 @@ export class TemplateService {
             // eslint-disable-next-line no-nested-ternary
             maxWidth: config.optionLength === 'medium' ? 500 : config.optionLength === 'short' ? 250 : 125
           } as DimensionProperties,
-          value: config.options,
+          value: config.options.map(option => ({
+            text: option.text,
+            id: this.unitService.getNewValueID(),
+            originListID: 'id_placeholder'
+          })),
           orientation: 'vertical',
           isSortList: true,
           highlightReceivingDropList: true,

@@ -48,7 +48,6 @@ export class UnitService {
               private idService: IDService) {
     this.unit = new Unit();
     this.referenceManager = new ReferenceManager(this.unit);
-    this.expertMode = this.allowExpertMode;
   }
 
   loadUnitDefinition(unitDefinition: string): void {

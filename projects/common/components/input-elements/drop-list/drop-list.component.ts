@@ -38,7 +38,9 @@ import { DragOperatorService } from './drag-operator.service';
          (mouseleave)="dragOpService.isDragActive && dragLeave()"
          (click)="elementFormControl.markAsTouched()">
       <div *ngFor="let item of viewModel; let i = index;" class="list-item-wrapper">
-        <div *ngIf="elementModel.showNumbering" class="numbering">{{ i + 1 }}.</div>
+        <div *ngIf="elementModel.showNumbering" class="numbering">
+          {{ i + (elementModel.startNumberingAtZero ? 0 : 1) }}.
+        </div>
         <div class="drop-list-item" [class.image-item]="item.imgSrc"
              #listItem
              aspect-draggable data-aspect-draggable="true"

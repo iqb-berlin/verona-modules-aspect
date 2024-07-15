@@ -22,6 +22,7 @@ export class DropListElement extends InputElement implements DropListProperties 
   allowReplacement: boolean = false;
   orientation: 'vertical' | 'horizontal' | 'flex' = 'vertical'; // TODO besser floating
   showNumbering: boolean = false;
+  startNumberingAtZero: boolean = false;
   highlightReceivingDropList: boolean = false;
   highlightReceivingDropListColor: string = '#006064';
   styling: BasicStyles & {
@@ -51,6 +52,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.allowReplacement = element.allowReplacement;
       this.orientation = element.orientation;
       this.showNumbering = element.showNumbering;
+      this.startNumberingAtZero = element.startNumberingAtZero;
       this.highlightReceivingDropList = element.highlightReceivingDropList;
       this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
       this.styling = { ...element.styling };
@@ -75,7 +77,8 @@ export class DropListElement extends InputElement implements DropListProperties 
       if (element?.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
       if (element?.allowReplacement) this.allowReplacement = element.allowReplacement;
       if (element?.orientation) this.orientation = element.orientation;
-      if (element?.showNumbering) this.showNumbering = element.showNumbering;
+      if (element?.showNumbering !== undefined) this.showNumbering = element.showNumbering;
+      if (element?.startNumberingAtZero !== undefined) this.startNumberingAtZero = element.startNumberingAtZero;
       if (element?.highlightReceivingDropList) this.highlightReceivingDropList = element.highlightReceivingDropList;
       if (element?.highlightReceivingDropListColor) {
         this.highlightReceivingDropListColor = element.highlightReceivingDropListColor;
@@ -157,6 +160,7 @@ export interface DropListProperties extends InputElementProperties {
   allowReplacement: boolean;
   orientation: 'vertical' | 'horizontal' | 'flex';
   showNumbering: boolean;
+  startNumberingAtZero: boolean;
   highlightReceivingDropList: boolean;
   highlightReceivingDropListColor: string;
   styling: BasicStyles & {
@@ -174,6 +178,7 @@ function isValid(blueprint?: DropListProperties): boolean {
     blueprint.allowReplacement !== undefined &&
     blueprint.orientation !== undefined &&
     blueprint.showNumbering !== undefined &&
+    blueprint.startNumberingAtZero !== undefined &&
     blueprint.highlightReceivingDropList !== undefined &&
     blueprint.highlightReceivingDropListColor !== undefined &&
     blueprint.styling !== undefined &&

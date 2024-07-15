@@ -224,6 +224,7 @@
     "verticalOrientation": "vertikale Ausrichtung",
     "copyOnDrop": "Elemente kopieren",
     "showNumbering": "Nummerierung anzeigen",
+    "startNumberingAtZero": "Nummerierung bei 0 beginnen",
     "hasBorderBottom": "Kante unten",
     "hasBorderTop": "Kante oben",
     "hasBorderLeft": "Kante links",

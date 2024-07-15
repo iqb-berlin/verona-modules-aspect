@@ -122,6 +122,13 @@ export class GetValidDropListsPipe implements PipeTransform {
         {{'propertiesPanel.showNumbering' | translate }}
       </mat-checkbox>
 
+      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.startNumberingAtZero !== undefined"
+                    [disabled]="!$any(combinedProperties.showNumbering)"
+                    [checked]="$any(combinedProperties.startNumberingAtZero)"
+                    (change)="updateModel.emit({ property: 'startNumberingAtZero', value: $event.checked })">
+        {{'propertiesPanel.startNumberingAtZero' | translate }}
+      </mat-checkbox>
+
       <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.highlightReceivingDropList !== undefined"
                     [checked]="$any(combinedProperties.highlightReceivingDropList)"
                     (change)="updateModel.emit({ property: 'highlightReceivingDropList', value: $event.checked })">

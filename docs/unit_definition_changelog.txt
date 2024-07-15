@@ -171,4 +171,4 @@ iqb-aspect-definition@1.0.0
 - new unit prop: enableSectionNumbering, sectionNumberingPosition
 - new Section prop: ignoreNumbering
 - Audio, Video: styling.background-color
-- DropList: new prop: showNumbering
+- DropList: new prop: showNumbering, startNumberingAtZero

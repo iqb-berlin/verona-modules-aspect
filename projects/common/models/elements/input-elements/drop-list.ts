@@ -71,11 +71,11 @@ export class DropListElement extends InputElement implements DropListProperties 
           audioSrc: value.audioSrc
         })) :
         [];
-      if (element?.isSortList) this.isSortList = element.isSortList;
-      if (element?.onlyOneItem) this.onlyOneItem = element.onlyOneItem;
+      if (element?.isSortList !== undefined) this.isSortList = element.isSortList;
+      if (element?.onlyOneItem !== undefined) this.onlyOneItem = element.onlyOneItem;
       if (element?.connectedTo) this.connectedTo = [...element.connectedTo];
-      if (element?.copyOnDrop) this.copyOnDrop = element.copyOnDrop;
-      if (element?.allowReplacement) this.allowReplacement = element.allowReplacement;
+      if (element?.copyOnDrop !== undefined) this.copyOnDrop = element.copyOnDrop;
+      if (element?.allowReplacement !== undefined) this.allowReplacement = element.allowReplacement;
       if (element?.orientation) this.orientation = element.orientation;
       if (element?.showNumbering !== undefined) this.showNumbering = element.showNumbering;
       if (element?.startNumberingAtZero !== undefined) this.startNumberingAtZero = element.startNumberingAtZero;

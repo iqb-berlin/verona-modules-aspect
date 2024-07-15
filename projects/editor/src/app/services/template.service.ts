@@ -4,7 +4,11 @@ import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { RadioWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/radio.dialog.component';
 import { ElementFactory } from 'common/util/element.factory';
-import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
+import {
+  DimensionProperties, PlayerProperties,
+  PositionProperties,
+  PropertyGroupGenerators
+} from 'common/models/elements/property-group-interfaces';
 import { Section, SectionProperties } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
@@ -141,7 +145,9 @@ export class TemplateService {
     });
   }
 
-  private createTextSection(config: { text1: string, text2: string, highlightableOrange: boolean, highlightableTurquoise: boolean, highlightableYellow: boolean }): Section {
+  private createTextSection(config: { text1: string, text2: string,
+    highlightableOrange: boolean, highlightableTurquoise: boolean, highlightableYellow: boolean }): Section
+  {
     return new Section({
       elements: [
         this.createElement(
@@ -166,7 +172,12 @@ export class TemplateService {
     const sectionElements: UIElement[] = [
       this.createElement(
         'text',
-        { gridRow: 1, gridColumn: 1, gridRowRange: 2, marginBottom: { value: 40, unit: 'px' } },
+        {
+          gridRow: 1,
+          gridColumn: 1,
+          gridRowRange: 2,
+          marginBottom: { value: 40, unit: 'px' }
+        },
         {
           text: config.text1
         })
@@ -191,7 +202,10 @@ export class TemplateService {
     } as SectionProperties);
   }
 
-  private createInputSection(config: { text: string, answerCount: number, useTextAreas: boolean, numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large', expectedCharsCount: number }): Section {
+  private createInputSection(config: { text: string, answerCount: number, useTextAreas: boolean,
+    numbering: 'latin' | 'decimal' | 'bullets' | 'none', fieldLength: 'very-small' | 'small' | 'medium' | 'large',
+    expectedCharsCount: number }): Section
+  {
     const useNumbering = config.answerCount > 1 && config.numbering !== 'none';
 
     const sectionElements: UIElement[] = [
@@ -231,7 +245,7 @@ export class TemplateService {
           {
             dimensions: {
               maxWidth: TemplateService.getWidth(config.fieldLength)
-            },
+            } as DimensionProperties,
             ...!config.useTextAreas ? {
               showSoftwareKeyboard: true,
               addInputAssistanceToKeyboard: true,
@@ -307,7 +321,9 @@ export class TemplateService {
     } as SectionProperties);
   }
 
-  private createLikertSection(config: { text1: string, text2: string, options: TextImageLabel[], rows: TextImageLabel[] }): Section {
+  private createLikertSection(config: { text1: string, text2: string, options: TextImageLabel[],
+    rows: TextImageLabel[] }): Section
+  {
     return new Section({
       elements: [
         this.createElement(
@@ -334,7 +350,9 @@ export class TemplateService {
     } as SectionProperties);
   }
 
-  private createAudioSectionA(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number, lang: 'german' | 'english' | 'french' | undefined, text: string }) {
+  private createAudioSectionA(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number,
+    lang: 'german' | 'english' | 'french' | undefined, text: string })
+  {
     return new Section({
       elements: [
         this.createElement(
@@ -345,12 +363,12 @@ export class TemplateService {
           'audio',
           { gridRow: 2, gridColumn: 1, marginBottom: { value: 15, unit: 'px' } },
           {
-            dimensions: { maxWidth: 500 },
+            dimensions: { maxWidth: 500 } as DimensionProperties,
             src: config.src1,
             player: {
               maxRuns: config.maxRuns1,
               ...TemplateService.getAudioSettings()
-            }
+            } as PlayerProperties
           })
       ]
     } as SectionProperties);
@@ -547,7 +565,7 @@ export class TemplateService {
           ...config.alignment === 'row' && { marginLeft: { value: 5, unit: 'px' } }
         },
         {
-          dimensions: { minHeight: 58 },
+          dimensions: { minHeight: 58 } as DimensionProperties,
           value: config.options,
           orientation: config.alignment === 'column' ? 'flex' : 'vertical',
           highlightReceivingDropList: true
@@ -582,7 +600,7 @@ export class TemplateService {
           marginBottom: { value: i === (config.targetLabels.length - 1) ? 40 : 5, unit: 'px' }
         },
         {
-          dimensions: { minHeight: 58 },
+          dimensions: { minHeight: 58 } as DimensionProperties,
           orientation: 'vertical',
           onlyOneItem: true,
           allowReplacement: true,
@@ -701,8 +719,10 @@ export class TemplateService {
           marginBottom: { value: 40, unit: 'px' }
         },
         {
-          // eslint-disable-next-line no-nested-ternary
-          dimensions: { maxWidth: config.optionLength === 'medium' ? 500 : config.optionLength === 'short' ? 250 : 125 },
+          dimensions: {
+            // eslint-disable-next-line no-nested-ternary
+            maxWidth: config.optionLength === 'medium' ? 500 : config.optionLength === 'short' ? 250 : 125
+          } as DimensionProperties,
           value: config.options,
           orientation: 'vertical',
           isSortList: true,
@@ -727,7 +747,7 @@ export class TemplateService {
   }
 
   private createElement(elType: UIElementType, coords: Partial<PositionProperties>,
-                        params?: Record<string, any>): PositionedUIElement {
+                        params?: Partial<UIElement>): PositionedUIElement {
     return ElementFactory.createElement({
       type: elType,
       id: this.idService.getAndRegisterNewID(elType),

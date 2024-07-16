@@ -50,7 +50,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         lineHeight: element?.styling?.lineHeight || 100,
-        selectionColor: element?.styling?.selectionColor || '#c7f3d0'
+        selectionColor: element?.styling?.selectionColor || '#c9e0e0'
       };
     }
   }

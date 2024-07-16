@@ -19,9 +19,9 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   showResetIcon: boolean = true;
   enableUndoRedo: boolean = true;
   showToolbar: boolean = true;
-  enableShiftDragZoom: boolean = true;
-  showZoomButtons: boolean = true;
-  showFullscreenButton: boolean = true;
+  enableShiftDragZoom: boolean = false;
+  showZoomButtons: boolean = false;
+  showFullscreenButton: boolean = false;
   customToolbar: string = '';
   position: PositionProperties;
 

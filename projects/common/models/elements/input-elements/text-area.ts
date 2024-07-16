@@ -15,10 +15,10 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   type: UIElementType = 'text-area';
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
-  hasDynamicRowCount: boolean = false;
+  hasDynamicRowCount: boolean = true;
   hasAutoHeight: boolean = false;
   rowCount: number = 3;
-  expectedCharactersCount: number = 300;
+  expectedCharactersCount: number = 135;
   hasReturnKey: boolean = false;
   hasKeyboardIcon: boolean = false;
   position: PositionProperties;

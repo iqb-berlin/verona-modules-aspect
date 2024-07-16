@@ -14,6 +14,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       {{'propertiesPanel.strikeOtherOptions' | translate }}
     </mat-checkbox>
     <mat-checkbox *ngIf="combinedProperties.strikeSelectedOption !== undefined"
+                  [matTooltip]="'Setzt gleichzeitig die Auswahlfarbe auf transparent'"
                   [checked]="$any(combinedProperties.strikeSelectedOption)"
                   (change)="updateModel.emit({ property: 'strikeSelectedOption', value: $event.checked })">
       {{'propertiesPanel.strikeSelectedOption' | translate }}

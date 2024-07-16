@@ -37,7 +37,7 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
     MatCheckboxModule
   ],
   template: `
-    <div mat-dialog-title>Assistent: DnD einseitig</div>
+    <div mat-dialog-title>Assistent: Drag & Drop einseitig</div>
     <div mat-dialog-content>
 
       <mat-accordion>

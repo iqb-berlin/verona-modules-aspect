@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 
 @Component({
   selector: 'aspect-math-table-properties',
@@ -33,7 +34,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   ],
   template: `
     <div [style.display]="'flex'" [style.flex-direction]="'column'">
-      <mat-form-field>
+      <mat-form-field *ngIf="unitService.expertMode">
         <mat-label>Operation</mat-label>
         <mat-select [value]="combinedProperties.operation"
                     (selectionChange)="updateModel.emit({ property: 'operation', value: $event.value })">
@@ -83,7 +84,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
       </mat-form-field>
 
 
-      <button mat-raised-button color="primary"
+      <button *ngIf="unitService.expertMode" mat-raised-button color="primary"
               [disabled]="combinedProperties.operation !== 'variable'"
               [matMenuTriggerFor]="variableLayoutOptions">
         Variables Layout anpassen
@@ -141,6 +142,8 @@ export class MathTablePropertiesComponent {
     new EventEmitter<{ property: string; value: string | string[] | boolean }>();
 
   @ViewChildren('termInput') termInputs!: QueryList<ElementRef>;
+
+  constructor(public unitService: UnitService) { }
 
   addTerm() {
     (this.combinedProperties.terms as string[]).push('');

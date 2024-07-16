@@ -685,15 +685,18 @@ export class TemplateService {
           case 'medium': return [{ value: 1, unit: 'fr' }, { value: 250, unit: 'px' }, { value: 250, unit: 'px' }];
           case 'short': return [{ value: 250, unit: 'px' }, { value: 1, unit: 'fr' }, { value: 1, unit: 'fr' }];
           case 'very-short':
-            return [{ value: 125, unit: 'px' }, { value: 250, unit: 'px' }, { value: 250, unit: 'px' }];
+            return [{ value: 125, unit: 'px' }, { value: 250, unit: 'px' },
+              { value: 250, unit: 'px' }, { value: 1, unit: 'fr' }];
           default: throw Error(`Unknown targetLength: ${targetLength}`);
         }
       case 'very-short':
         switch (targetLength) {
           case 'medium': return [{ value: 1, unit: 'fr' }, { value: 125, unit: 'px' }, { value: 125, unit: 'px' }];
-          case 'short': return [{ value: 250, unit: 'px' }, { value: 125, unit: 'px' }, { value: 1, unit: 'fr' }];
+          case 'short': return [{ value: 250, unit: 'px' }, { value: 125, unit: 'px' },
+            { value: 125, unit: 'px' }, { value: 1, unit: 'fr' }];
           case 'very-short':
-            return [{ value: 125, unit: 'px' }, { value: 125, unit: 'px' }, { value: 125, unit: 'px' }];
+            return [{ value: 125, unit: 'px' }, { value: 125, unit: 'px' },
+              { value: 125, unit: 'px' }, { value: 1, unit: 'fr' }];
           default: throw Error(`Unknown targetLength: ${targetLength}`);
         }
       default: throw Error(`Unknown optionLength: ${optionLength}`);

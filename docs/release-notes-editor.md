@@ -18,12 +18,21 @@ Editor
 ## Änderungen
 - Neu angelegte Elemente bekommen Rasterkoordinaten (sofern sie nicht direkt in eine Rasterspalte gelegt wurden). Die Element werden in der ersten Spalte zeilenweise angelegt.
 - Zeilen-Spalten-Reihenfolge bei Rasterkonfiguration korrigiert ("Zeile zuerst, Spalte später")
-- Seitenabschnitte haben nicht mehr 2 Spalten als Standardwert (bei festen Spaltenbreiten)
-- Text: Farbauswahl-Popup nicht mehr standardmäßig eingeschaltet
-- Eingabefeld, Eingabebereich: Eingabehilfen standardmäßig eingeschaltet
 - Einige Texteigenschaften (z.B. Beschriftung) können in Eingabebereichen definiert. Das sollte die Arbeit mit längeren Texten vereinfachen.
 - Seitenmenu überarbeitet (Gruppierung, keine erscheinenden Eingaben etc.)
 - Elemente können direkt in Raster-Zellen gelegt werden, in denen sich bereits ein Rahmen-Element befindet
+- Optionsfelder in Lückentexten: Auswahl von 'Gewählte Option durchstreichen' setzt die Selektionsfarbe auf transparent
+- Standardwerte:
+  - Seitenabschnitte haben nicht mehr 2 Spalten als Standardwert (bei festen Spaltenbreiten)
+  - Text: Farbauswahl-Popup nicht mehr standardmäßig eingeschaltet
+  - Eingabefeld, Eingabebereich: Eingabehilfen standardmäßig eingeschaltet
+  - Eingabebereich: dynamische Zeilen und 135 Zeichen eingeschaltet
+  - Lückentext: Abstand unten 35px
+  - Bild, Audio, Video: Abstand unten 15px
+  - Text: Abstand unten 10px
+  - Ablegelisten in Lückentexten: Verdrängen und Hervorhebung eingeschaltet
+  - Optionsfelder in Lückentexten: Selektionsfarbe #c9e0e0
+  - Geometrie: "Bewegen und Zoom", "Zoom-Knöpfe anzeigen" und "Vollbild-Knopf anzeigen" ausgeschaltet
 - Kleinere Oberflächenänderungen (zur Verbesserung von Übersicht und Verständnis):
   - Gruppiering von Element-Eigenschaften, z.B. Eingabehilfeoptionen
   - mehr Hinweise via Tooltip

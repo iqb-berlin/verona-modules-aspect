@@ -29,8 +29,7 @@ import { MatButtonModule } from '@angular/material/button';
     <div mat-dialog-content>
       <h3>Text</h3>
       <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
-                               [placeholder]="'Hier steht die Frage der fünften Teilaufgabe mit ' +
-                                 'Complex-Multiple-Choice (CMC).'">
+                               [placeholder]="'Hier steht die Fragestellung.'">
       </aspect-rich-text-editor>
 
       <mat-divider></mat-divider>

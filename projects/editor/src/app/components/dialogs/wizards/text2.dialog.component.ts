@@ -24,7 +24,7 @@ import { MatButtonModule } from '@angular/material/button';
     <div mat-dialog-content>
       <h3>Text</h3>
       <aspect-rich-text-editor class="input1" [(content)]="text1"
-                               [placeholder]="'[Frage] Markiere eine Stelle im Text, an der du das erkennst.'">
+                               [placeholder]="'Hier steht die Fragestellung.'">
       </aspect-rich-text-editor>
 
       <mat-divider></mat-divider>

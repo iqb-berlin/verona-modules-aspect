@@ -32,7 +32,8 @@ import { FormsModule } from '@angular/forms';
     <div mat-dialog-title>Assistent: GeoGebra</div>
     <div mat-dialog-content>
       <h3>Text</h3>
-      <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"></aspect-rich-text-editor>
+      <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
+                               [placeholder]="'Hier steht die Fragestellung.'"></aspect-rich-text-editor>
 
       <mat-divider></mat-divider>
 
@@ -51,7 +52,7 @@ import { FormsModule } from '@angular/forms';
 
       <h3>Tooltipp</h3>
       <mat-checkbox [(ngModel)]="showHelper">
-        Anzeigen
+        Tooltipp für Zeichenaufgaben
       </mat-checkbox>
 
     </div>
@@ -69,7 +70,7 @@ import { FormsModule } from '@angular/forms';
   `
 })
 export class GeometryWizardDialogComponent {
-  text1: string = 'Lorem ipsum dolor sit amet';
+  text1: string = '';
   geometryAppDefinition: string | undefined;
   text2: string = '';
   showHelper: boolean = true;

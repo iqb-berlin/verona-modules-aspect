@@ -56,7 +56,8 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
           <mat-divider></mat-divider>
 
           <h3>Frage/Instruktion</h3>
-          <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"></aspect-rich-text-editor>
+          <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
+                                   [placeholder]="'Hier steht die Fragestellung.'"></aspect-rich-text-editor>
 
           <mat-divider></mat-divider>
 
@@ -111,7 +112,8 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
             <mat-panel-title>Sortieren</mat-panel-title>
           </mat-expansion-panel-header>
           <h3>Frage/Instruktion</h3>
-          <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"></aspect-rich-text-editor>
+          <aspect-rich-text-editor [(content)]="text1" [style.min-height.px]="300"
+                                   [placeholder]="'Hier steht die Fragestellung.'"></aspect-rich-text-editor>
 
           <mat-divider></mat-divider>
 
@@ -163,11 +165,11 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
 export class DroplistWizardDialogComponent {
   variant: 'classic' | 'sort' | undefined;
   alignment: 'column' | 'row' = 'column';
-  text1: string = 'Fragetext Blabla';
-  headingSourceList: string = 'heagin 1';
+  text1: string = '';
+  headingSourceList: string = '';
   options: DragNDropValueObject[] = [];
   optionLength: 'long' | 'medium' | 'short' | 'very-short' | undefined;
-  headingTargetLists: string = 'heading 2';
+  headingTargetLists: string = '';
   targetLength: 'long' | 'medium' | 'short' | 'very-short' | undefined;
   targetLabels: TextLabel[] = [];
   numbering: boolean = false;

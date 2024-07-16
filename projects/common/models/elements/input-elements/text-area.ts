@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement, TextInputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';

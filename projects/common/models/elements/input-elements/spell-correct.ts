@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement, TextInputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';

@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, OptionElement, PositionedUIElement, UIElement, UIElementType
+  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropdownComponent } from 'common/components/input-elements/dropdown.component';

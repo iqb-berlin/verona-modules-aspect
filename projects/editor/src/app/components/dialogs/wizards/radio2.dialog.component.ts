@@ -1,8 +1,29 @@
 import { Component } from '@angular/core';
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'aspect-editor-radio-images-wizard-dialog',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    RichTextEditorComponent,
+    MatDividerModule,
+    OptionListPanelComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    TranslateModule
+  ],
   template: `
     <div mat-dialog-title>Assistent: MC mit Bild</div>
     <div mat-dialog-content>

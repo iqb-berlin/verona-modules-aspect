@@ -12,7 +12,8 @@ import {
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 
-export class RadioButtonGroupComplexElement extends InputElement implements OptionElement, RadioButtonGroupComplexProperties {
+export class RadioButtonGroupComplexElement extends InputElement
+  implements OptionElement, RadioButtonGroupComplexProperties {
   type: UIElementType = 'radio-group-images';
   options: TextImageLabel[] = [];
   itemsPerRow: number | null = null;

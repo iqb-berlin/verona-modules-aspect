@@ -10,7 +10,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogService } from 'editor/src/app/services/dialog.service';
-import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 
 @Component({
   selector: 'aspect-option-list-panel',

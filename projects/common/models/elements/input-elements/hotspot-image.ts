@@ -1,9 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement,
-  InputElementProperties,
-  PositionedUIElement,
-  UIElementType
+  InputElement, InputElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';

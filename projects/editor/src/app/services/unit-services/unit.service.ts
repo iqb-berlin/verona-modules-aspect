@@ -1,5 +1,4 @@
-import { inject, Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
@@ -16,8 +15,6 @@ import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/util/section-counter';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
 import { HistoryService, UnitUpdateCommand } from 'editor/src/app/services/history.service';
-import { RadioWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/radio.dialog.component';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { DialogService } from '../dialog.service';
 import { VeronaAPIService } from '../verona-api.service';
 import { SelectionService } from '../selection.service';
@@ -236,7 +233,8 @@ export class UnitService {
   }
 
   getSelectedSection() {
-    return this.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedSectionIndex];
+    return this.unit.pages[this.selectionService.selectedPageIndex]
+      .sections[this.selectionService.selectedSectionIndex];
   }
 
   setSectionExpertMode(checked: boolean) {

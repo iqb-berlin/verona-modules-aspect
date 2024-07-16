@@ -68,7 +68,9 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
                   (change)="updateModel.emit({ property: 'showToolbar', value: $event.checked })">
       {{ 'propertiesPanel.showToolbar' | translate }}
     </mat-checkbox>
-    <mat-form-field *ngIf="unitService.expertMode" matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
+    <mat-form-field *ngIf="unitService.expertMode"
+                    [style.width.px]="260"
+                    matTooltip="{{'propertiesPanel.customToolbarHelp' | translate }}"
                     appearance="fill">
       <mat-label>{{ 'propertiesPanel.customToolbar' | translate }}</mat-label>
       <input matInput [disabled]="!combinedProperties.showToolbar"

@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, UIElement, UIElementProperties, UIElementType
+  UIElement, UIElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { FrameComponent } from 'common/components/frame/frame.component';
 import { ElementComponent } from 'common/directives/element-component.directive';

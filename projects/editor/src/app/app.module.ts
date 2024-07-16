@@ -62,16 +62,7 @@ import { UiElementToolboxComponent } from
   './components/new-ui-element-panel/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
 import { CanvasComponent } from 'editor/src/app/components/unit-view/page/canvas.component';
-import { StaticCanvasOverlayComponent } from
-  'editor/src/app/components/unit-view/element-overlay/static-canvas-overlay.component';
-import { DynamicCanvasOverlayComponent } from
-  'editor/src/app/components/unit-view/element-overlay/dynamic-canvas-overlay.component';
 import { EditorTranslateLoader } from './editor-translate-loader';
-import {
-  SectionMenuComponent
-} from 'editor/src/app/components/unit-view/page/section-menu.component';
-import { SectionStaticComponent } from 'editor/src/app/components/unit-view/section/section-static.component';
-import { SectionDynamicComponent } from 'editor/src/app/components/unit-view/section/section-dynamic.component';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
 import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
@@ -83,7 +74,6 @@ import {
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
 import { RichTextEditDialogComponent } from './components/dialogs/rich-text-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from './components/dialogs/drop-list-option-edit-dialog.component';
-
 import { ToggleButtonNodeviewComponent } from './text-editor/angular-node-views/toggle-button-nodeview.component';
 import { TextFieldNodeviewComponent } from './text-editor/angular-node-views/text-field-nodeview.component';
 import { DropListNodeviewComponent } from './text-editor/angular-node-views/drop-list-nodeview.component';
@@ -125,12 +115,6 @@ import { ReferenceListComponent } from 'editor/src/app/components/reference-list
 import { ElementListComponent } from 'editor/src/app/components/element-list.component';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
-import { RadioWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/radio.dialog.component';
-import { TextWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/text.dialog.component';
-import { LikertWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/likert.dialog.component';
-import { InputWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/input.dialog.component';
-import { RadioImagesWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/radio2.dialog.component';
-import { Text2WizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/text2.dialog.component';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -191,13 +175,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
     GetValidAudioVideoIDsPipe,
-    InputAssistancePropertiesComponent,
-    RadioWizardDialogComponent,
-    RadioImagesWizardDialogComponent,
-    TextWizardDialogComponent,
-    Text2WizardDialogComponent,
-    LikertWizardDialogComponent,
-    InputWizardDialogComponent
+    InputAssistancePropertiesComponent
   ],
   imports: [
     BrowserModule,

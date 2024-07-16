@@ -1,7 +1,32 @@
 import { Component } from '@angular/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import { NgIf } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
+import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 
 @Component({
   selector: 'aspect-editor-input-wizard-dialog',
+  standalone: true,
+  imports: [
+    NgIf,
+    TranslateModule,
+    RichTextEditorComponent,
+    MatDialogModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    FormsModule,
+    MatRadioModule,
+    MatButtonModule
+  ],
   template: `
     <div mat-dialog-title>Assistent: Antwortfeld(er)</div>
     <div mat-dialog-content>

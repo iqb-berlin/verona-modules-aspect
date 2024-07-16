@@ -63,7 +63,6 @@ export class TableEditDialogComponent {
       ...extraProps
     });
     delete newEle.position;
-    // @ts-ignore
     delete newEle.dimensions;
     newEle.gridRow = el.row + 1;
     newEle.gridColumn = el.col + 1;

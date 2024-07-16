@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  PlayerElement, PlayerElementBlueprint, PositionedUIElement, UIElementType
+  PlayerElement, PlayerElementBlueprint, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VideoComponent } from 'common/components/media-elements/video.component';

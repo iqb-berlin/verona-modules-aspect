@@ -1,7 +1,24 @@
 import { Component } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'aspect-editor-text2-wizard-dialog',
+  standalone: true,
+  imports: [
+    TranslateModule,
+    MatDialogModule,
+    RichTextEditorComponent,
+    MatDividerModule,
+    MatCheckboxModule,
+    FormsModule,
+    MatButtonModule
+  ],
   template: `
     <div mat-dialog-title>Assistent: Markieren</div>
     <div mat-dialog-content>

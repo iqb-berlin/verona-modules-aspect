@@ -1,8 +1,29 @@
 import { Component } from '@angular/core';
 import { Label } from 'common/models/elements/label-interfaces';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
+import { MatButtonModule } from '@angular/material/button';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'aspect-editor-radio-wizard-dialog',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    OptionListPanelComponent,
+    MatButtonModule,
+    TranslateModule,
+    RichTextEditorComponent
+  ],
   template: `
     <div mat-dialog-title>Assistent: MC mit Text</div>
     <div mat-dialog-content>

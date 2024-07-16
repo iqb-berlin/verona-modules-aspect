@@ -1,8 +1,29 @@
 import { Component } from '@angular/core';
 import { TextImageLabel } from 'common/models/elements/label-interfaces';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
+import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'aspect-editor-likert-wizard-dialog',
+  standalone: true,
+  imports: [
+    MatDialogModule,
+    MatDividerModule,
+    OptionListPanelComponent,
+    RichTextEditorComponent,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    TranslateModule,
+    MatButtonModule
+  ],
   template: `
     <div mat-dialog-title>Assistent: CMC</div>
     <div mat-dialog-content>

@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
-import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
-import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
@@ -15,6 +12,9 @@ import { NgIf } from '@angular/common';
 import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/audio-row.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
+import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
+import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 
 @Component({
   selector: 'aspect-editor-droplist-wizard-dialog',

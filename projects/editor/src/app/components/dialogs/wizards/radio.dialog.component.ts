@@ -36,7 +36,7 @@ import { TranslateModule } from '@ngx-translate/core';
 
       <h3>Satzanfang (optional)</h3>
       <mat-form-field appearance="fill">
-        <textarea matInput type="text" [(ngModel)]="label2"></textarea>
+        <textarea matInput type="text" [(ngModel)]="label2" placeholder="Hier kann ein Satzanfang stehen."></textarea>
       </mat-form-field>
 
       <mat-divider></mat-divider>

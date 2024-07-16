@@ -44,7 +44,7 @@ import { MatButtonModule } from '@angular/material/button';
 
       <h3>Quelle</h3>
       <aspect-rich-text-editor class="text2" [(content)]="text2" [showReducedControls]="true"
-                               [placeholder]="'Platzhalter Quelle'">
+                               [placeholder]="'Hier steht die Quelle.'">
       </aspect-rich-text-editor>
     </div>
     <div mat-dialog-actions>
@@ -66,11 +66,11 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class TextWizardDialogComponent {
   text1: string = '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 0px; margin-top: 0" ' +
-    'indentsize="20"><span style="font-size: 24px"><strong>Platzhalter Überschrift</strong></span></p>' +
+    'indentsize="20"><span style="font-size: 24px"><strong>Hier steht die Überschrift.</strong></span></p>' +
     '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 20px; margin-top: 0" indent="0" indentsize="20">' +
-    '<span style="font-size: 20px">Platzhalter Autor</span></p><p style="padding-left: 0px; text-indent: 0px;' +
+    '<span style="font-size: 20px">Hier steht der/die Autor*in.</span></p><p style="padding-left: 0px; text-indent: 0px;' +
     ' margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">' +
-    'Platzhalter Text</span></p>';
+    'Hier steht der Text.</span></p>';
 
   text2: string = '';
   highlightableOrange: boolean = false;

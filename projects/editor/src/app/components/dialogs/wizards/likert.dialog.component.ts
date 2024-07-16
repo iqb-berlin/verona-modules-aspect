@@ -36,7 +36,7 @@ import { MatButtonModule } from '@angular/material/button';
 
       <h3>Satzanfang (optional)</h3>
       <mat-form-field appearance="fill" [style.width.px]="400">
-        <textarea matInput type="text" [(ngModel)]="text2"></textarea>
+        <textarea matInput type="text" [(ngModel)]="text2" placeholder="Hier kann ein Satzanfang stehen."></textarea>
       </mat-form-field>
 
       <mat-divider></mat-divider>

@@ -254,7 +254,7 @@ export class TemplateService {
               showSoftwareKeyboard: true,
               addInputAssistanceToKeyboard: true,
               hasDynamicRowCount: true,
-              expectedCharactersCount: config.expectedCharsCount * 1.5 || 136,
+              expectedCharactersCount: Math.ceil(config.expectedCharsCount * 1.5) || 136,
               label: ''
             }
           }

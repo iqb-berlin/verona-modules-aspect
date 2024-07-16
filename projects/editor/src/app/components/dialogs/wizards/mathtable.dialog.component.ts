@@ -38,7 +38,7 @@ import { MatDividerModule } from '@angular/material/divider';
         <mat-label>Operation auswählen</mat-label>
         <mat-select required [(ngModel)]="operation">
           <mat-option [value]="'addition'">Addition</mat-option>
-          <mat-option [value]="'subtraction'">Subtraction</mat-option>
+          <mat-option [value]="'subtraction'">Subtraktion</mat-option>
           <mat-option [value]="'multiplication'">Multiplikation mit mehrstelligen Zahlen</mat-option>
         </mat-select>
       </mat-form-field>
@@ -47,11 +47,12 @@ import { MatDividerModule } from '@angular/material/divider';
 
       {{ 'termRows' | translate }}
       <div *ngFor="let term of terms; let i = index;" class="terms">
-        <mat-form-field [style.flex-grow]="1" (input)="changeTerm($any($event.target).value, i)">
+        <mat-form-field *ngIf="operation !== 'multiplication' || i < 2"
+                        [style.flex-grow]="1" (input)="changeTerm($any($event.target).value, i)">
           <mat-label>Term</mat-label>
           <input matInput [value]="term" #termInput>
         </mat-form-field>
-        <button mat-icon-button (click)="removeTerm(i)">
+        <button *ngIf="operation !== 'multiplication' || i < 2" mat-icon-button (click)="removeTerm(i)">
           <mat-icon>clear</mat-icon>
         </button>
       </div>
@@ -64,7 +65,7 @@ import { MatDividerModule } from '@angular/material/divider';
       </button>
     </div>
     <div mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ operation, terms }">
+      <button mat-button [disabled]="!operation" [mat-dialog-close]="{ operation, terms }">
         {{'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -72,7 +73,7 @@ import { MatDividerModule } from '@angular/material/divider';
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
-    .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
+    .mat-mdc-dialog-content > *:not(h3, mat-divider, .add-button) {margin-left: 30px;}
     h3 {text-decoration: underline;}
     .terms {display: flex; flex-direction: row;}
   `

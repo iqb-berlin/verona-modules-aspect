@@ -175,7 +175,7 @@ export class TemplateService {
         {
           gridRow: 1,
           gridColumn: 1,
-          gridRowRange: 2,
+          gridRowRange: config.showHelper ? 2 : 1,
           marginBottom: { value: 40, unit: 'px' }
         },
         {
@@ -189,7 +189,7 @@ export class TemplateService {
           { gridRow: 1, gridColumn: 2 },
           {
             imageSrc: TemplateService.tooltipSrc,
-            tooltipText: 'Drücke kurz auf den Knopf mit dem Stift. Drücke danach auf den Anfang' +
+            tooltipText: 'Drücke kurz auf den Knopf mit dem Stift. Drücke danach auf den Anfang ' +
               'eines Wortes. Halte gedrückt und ziehe im Text so weit, wie du markieren möchtest.',
             tooltipPosition: 'left'
           })
@@ -367,6 +367,7 @@ export class TemplateService {
             src: config.src1,
             player: {
               maxRuns: config.maxRuns1,
+              showRestRuns: config.maxRuns1 > 1,
               ...TemplateService.getAudioSettings()
             } as PlayerProperties
           })
@@ -429,7 +430,8 @@ export class TemplateService {
       muteControl: false,
       interactiveMuteControl: false,
       hintLabel: 'Bitte starten.',
-      hintLabelDelay: 5000
+      hintLabelDelay: 5000,
+      minVolume: 0.2
     };
   }
 
@@ -504,9 +506,10 @@ export class TemplateService {
           text: 'Rechne schriftlich.',
           operation: config.operation,
           terms: config.terms,
-          inputAssistancePreset: 'numbers',
+          inputAssistancePreset: config.operation === 'multiplication' ? 'numbersAndOperators' : 'numbers',
           inputAssistanceFloatingStartPosition: 'endCenter',
-          hasArrowKeys: true
+          hasArrowKeys: true,
+          hideNativeKeyboard: true
         })
     ];
     if (showTooltip) {

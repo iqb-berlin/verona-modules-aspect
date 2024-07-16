@@ -6,7 +6,9 @@ import { Component } from '@angular/core';
     <div mat-dialog-title>Assistent: Markieren</div>
     <div mat-dialog-content>
       <h3>Text</h3>
-      <aspect-rich-text-editor class="input1" [(content)]="text1"></aspect-rich-text-editor>
+      <aspect-rich-text-editor class="input1" [(content)]="text1"
+                               [placeholder]="'[Frage] Markiere eine Stelle im Text, an der du das erkennst.'">
+      </aspect-rich-text-editor>
 
       <mat-divider></mat-divider>
 
@@ -31,6 +33,6 @@ import { Component } from '@angular/core';
   `
 })
 export class Text2WizardDialogComponent {
-  text1: string = '[Frage] Markiere eine Stelle im Text, an der du das erkennst.';
+  text1: string = '';
   showHelper: boolean = true;
 }

@@ -26,7 +26,8 @@ import { Component } from '@angular/core';
       <mat-divider></mat-divider>
 
       <h3>Quelle</h3>
-      <aspect-rich-text-editor class="text2" [(content)]="text2" [showReducedControls]="true">
+      <aspect-rich-text-editor class="text2" [(content)]="text2" [showReducedControls]="true"
+                               [placeholder]="'Platzhalter Quelle'">
       </aspect-rich-text-editor>
     </div>
     <div mat-dialog-actions>
@@ -54,7 +55,7 @@ export class TextWizardDialogComponent {
     ' margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="font-size: 20px">' +
     'Platzhalter Text</span></p>';
 
-  text2: string = 'Platzhalter Quelle';
+  text2: string = '';
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;

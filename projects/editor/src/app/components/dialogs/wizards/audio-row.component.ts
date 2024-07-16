@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
     </button>
     <mat-form-field appearance="outline">
       <mat-label>Maximale Abspielhäufigkeit</mat-label>
-      <input matInput type="number" min="1" [(ngModel)]="maxRuns">
+      <input matInput type="number" min="1" [(ngModel)]="maxRuns" (ngModelChange)="maxRunsChange.emit($event)">
     </mat-form-field>
   `,
   styles: `

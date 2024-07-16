@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
     <div mat-dialog-content>
       <h3>Frage</h3>
       <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true"
+                               [placeholder]="'Hier steht die Fragestellung.'"
                                [style.min-height.px]="200"></aspect-rich-text-editor>
 
       <mat-divider></mat-divider>
@@ -74,7 +75,7 @@ import { Component } from '@angular/core';
   `
 })
 export class InputWizardDialogComponent {
-  text: string = 'Testtext 1';
+  text: string = '';
   answerCount: number = 1;
   useTextAreas: boolean = false;
   numbering: 'latin' | 'decimal' | 'bullets' | 'none' = 'latin';

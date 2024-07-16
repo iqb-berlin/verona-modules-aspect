@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { FileService } from 'common/services/file.service';
+import { TranslateModule } from '@ngx-translate/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { NgIf } from '@angular/common';
+import { FileService } from 'common/services/file.service';
+import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/audio-row.component';
 
 @Component({
@@ -41,6 +41,7 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
           <mat-expansion-panel-header>
             <mat-panel-title>Instruktion und Hörtext in einem Audio</mat-panel-title>
           </mat-expansion-panel-header>
+          <h3>Audio</h3>
           <aspect-editor-wizard-audio [src]="src1" [(maxRuns)]="maxRuns1" (changeMediaSrc)="changeMediaSrc('src1')">
           </aspect-editor-wizard-audio>
         </mat-expansion-panel>
@@ -50,14 +51,17 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
             <mat-panel-title>Instruktion und Hörtext getrennt</mat-panel-title>
           </mat-expansion-panel-header>
 
+          <h3>Instruktionsaudio</h3>
           <aspect-editor-wizard-audio [src]="src1" [(maxRuns)]="maxRuns1" (changeMediaSrc)="changeMediaSrc('src1')">
           </aspect-editor-wizard-audio>
 
+          <h3>Stimulusaudio</h3>
           <aspect-editor-wizard-audio [src]="src2" [(maxRuns)]="maxRuns2" (changeMediaSrc)="changeMediaSrc('src2')">
           </aspect-editor-wizard-audio>
 
-          <mat-form-field>
-            <mat-label>Sprache</mat-label>
+          <h3>Sprache</h3>
+          <mat-form-field [matTooltip]="'Mit dieser Einstellung werden kurze Texte oberhalb des Audios generiert.'">
+            <mat-label>Sprache auswählen</mat-label>
             <mat-select required [(ngModel)]="lang">
               <mat-option [value]="'german'">Deutsch</mat-option>
               <mat-option [value]="'english'">Englisch</mat-option>
@@ -65,7 +69,7 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
             </mat-select>
           </mat-form-field>
 
-          <h3>Situierung, Frage, Operator, Hinweise, o.ä.</h3>
+          <h3>Situierung, Frage, Operator, Hinweise, o.Ä.</h3>
           <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true"></aspect-rich-text-editor>
 
         </mat-expansion-panel>
@@ -85,6 +89,7 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
   styles: `
     .mat-mdc-dialog-content {display: flex;}
     .audio-row {display: flex; flex-direction: row; justify-content: space-around;}
+    :host ::ng-deep .mat-expansion-panel-body > mat-form-field, aspect-rich-text-editor {margin-left: 30px;}
   `
 })
 export class AudioWizardDialogComponent {
@@ -102,8 +107,7 @@ export class AudioWizardDialogComponent {
     'margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="color: black; font-size: 20px">' +
     'Hier steht eventuell ein Hinweis.</span></p>';
 
-  async changeMediaSrc(src: string) {
-    // @ts-ignore
-    this[src] = await FileService.loadAudio();
+  async changeMediaSrc(src: keyof AudioWizardDialogComponent) {
+    (this[src] as string) = await FileService.loadAudio();
   }
 }

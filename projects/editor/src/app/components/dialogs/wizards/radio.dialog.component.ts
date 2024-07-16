@@ -7,7 +7,8 @@ import { Label } from 'common/models/elements/label-interfaces';
     <div mat-dialog-title>Assistent: MC mit Text</div>
     <div mat-dialog-content>
       <h3>Frage</h3>
-      <aspect-rich-text-editor class="input1" [(content)]="label1" [showReducedControls]="true">
+      <aspect-rich-text-editor class="input1" [(content)]="label1" [showReducedControls]="true"
+                               [placeholder]="'Hier steht die Fragestellung.'">
       </aspect-rich-text-editor>
 
       <mat-divider></mat-divider>
@@ -37,7 +38,7 @@ import { Label } from 'common/models/elements/label-interfaces';
   `
 })
 export class RadioWizardDialogComponent {
-  label1: string = 'Hier steht die Frage der Teilaufgabe mit Multiple Choice (MC).';
+  label1: string = '';
   label2: string = '';
   options: Label[] = [];
 }

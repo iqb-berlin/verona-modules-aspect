@@ -53,7 +53,10 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
         height: 200,
         ...element?.dimensions
       });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.position = PropertyGroupGenerators.generatePositionProps({
+        marginBottom: { value: 35, unit: 'px' },
+        ...element?.position
+      });
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         lineHeight: element?.styling?.lineHeight || 150

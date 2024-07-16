@@ -16,6 +16,8 @@ const DropListComponentExtension = (injector: Injector): Node => {
           default: new DropListElement({
             id: 'cloze-child-id-placeholder',
             onlyOneItem: true,
+            allowReplacement: true,
+            highlightReceivingDropList: true,
             dimensions: {
               width: 150,
               height: 30,

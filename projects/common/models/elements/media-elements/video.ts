@@ -38,7 +38,10 @@ export class VideoElement extends PlayerElement implements VideoProperties {
         height: 230,
         ...element?.dimensions
       });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.position = PropertyGroupGenerators.generatePositionProps({
+        marginBottom: { value: 15, unit: 'px' },
+        ...element?.position
+      });
       this.styling = {
         backgroundColor: '#f1f1f1',
         ...element?.styling

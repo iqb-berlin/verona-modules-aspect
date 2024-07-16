@@ -51,7 +51,10 @@ export class ImageElement extends UIElement implements ImageProperties {
         height: 100,
         ...element?.dimensions
       });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.position = PropertyGroupGenerators.generatePositionProps({
+        marginBottom: { value: 15, unit: 'px' },
+        ...element?.position
+      });
     }
   }
 

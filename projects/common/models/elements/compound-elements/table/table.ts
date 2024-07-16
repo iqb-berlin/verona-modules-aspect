@@ -54,7 +54,10 @@ export class TableElement extends CompoundElement implements TableProperties {
         element.elements.map(el => ElementFactory.createElement(el)) as PositionedUIElement[] :
         [];
       if (element?.tableEdgesEnabled !== undefined) this.tableEdgesEnabled = element.tableEdgesEnabled;
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.position = PropertyGroupGenerators.generatePositionProps({
+        marginBottom: { value: 30, unit: 'px' },
+        ...element?.position
+      });
       this.styling = {
         backgroundColor: 'transparent',
         ...PropertyGroupGenerators.generateBorderStylingProps({

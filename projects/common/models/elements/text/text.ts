@@ -50,7 +50,10 @@ export class TextElement extends UIElement implements TextProperties {
         height: 98,
         ...element?.dimensions
       });
-      this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
+      this.position = PropertyGroupGenerators.generatePositionProps({
+        marginBottom: { value: 10, unit: 'px' },
+        ...element?.position
+      });
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
         lineHeight: element?.styling?.lineHeight || 135

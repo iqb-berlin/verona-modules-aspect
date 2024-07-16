@@ -556,7 +556,7 @@ export class TemplateService {
           gridColumnRange: 2,
           marginBottom: { value: 20, unit: 'px' }
         },
-        { text: config.headingSourceList }),
+        { text: config.headingSourceList, styling: { bold: true } }),
       this.createElement(
         'drop-list',
         {
@@ -585,7 +585,7 @@ export class TemplateService {
           gridColumnRange: 2,
           marginBottom: { value: 20, unit: 'px' }
         },
-        { text: config.headingTargetLists })
+        { text: config.headingTargetLists, styling: { bold: true } })
     ];
     const targetListOffset = config.alignment === 'column' ? 5 : 3;
     config.targetLabels.forEach((label: TextLabel, i: number) => {
@@ -615,7 +615,8 @@ export class TemplateService {
         })
       );
     });
-    return new Section({
+
+    const section = new Section({
       elements: sectionElements,
       autoColumnSize: false,
       gridColumnSizes: config.alignment === 'column' ?
@@ -623,6 +624,9 @@ export class TemplateService {
         TemplateService.getDrolistColSizesHorizontal(
           config.optionLength as 'medium' | 'short' | 'very-short', config.targetLength)
     } as SectionProperties);
+
+    this.unitService.connectAllDropLists(section);
+    return section;
   }
 
   private static getDrolistColSizesVertical(optionLength: 'long' | 'medium' | 'short' | 'very-short',

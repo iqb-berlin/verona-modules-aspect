@@ -240,4 +240,15 @@ export class UnitService {
   setSectionExpertMode(checked: boolean) {
     this.expertMode = checked;
   }
+
+  /* May remove existing connections! */
+  connectAllDropLists(sectionParam?: Section) {
+    const section: Section = sectionParam || this.getSelectedSection();
+    const dropLists: DropListElement[] = section.getAllElements('drop-list') as DropListElement[];
+    const dropListIDs = dropLists.map(list => list.id);
+    dropLists.forEach(dropList => {
+      dropList.connectedTo = [...dropListIDs];
+      dropList.connectedTo.splice(dropListIDs.indexOf(dropList.id), 1);
+    });
+  }
 }

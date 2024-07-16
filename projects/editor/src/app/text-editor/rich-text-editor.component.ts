@@ -2,6 +2,16 @@ import {
   Component, EventEmitter, Input, Output,
   AfterViewInit, Injector, OnInit
 } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { NgxTiptapModule } from 'ngx-tiptap';
 import { Editor } from '@tiptap/core';
 import { Underline } from '@tiptap/extension-underline';
 import { Superscript } from '@tiptap/extension-superscript';
@@ -19,12 +29,14 @@ import { ListItem } from '@tiptap/extension-list-item';
 import { Bold } from '@tiptap/extension-bold';
 import { Italic } from '@tiptap/extension-italic';
 import { Strike } from '@tiptap/extension-strike';
+import { Placeholder } from '@tiptap/extension-placeholder';
 import { FileService } from 'common/services/file.service';
 import ButtonComponentExtension from 'editor/src/app/text-editor/angular-node-views/button-component-extension';
 import { BlockImage } from 'editor/src/app/text-editor/extensions/block-image';
 import { InlineImage } from 'editor/src/app/text-editor/extensions/inline-image';
 import { Tooltip } from 'editor/src/app/text-editor/extensions/tooltip';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { ComboButtonComponent } from 'editor/src/app/components/util/combo-button.component';
 import { AnchorId } from './extensions/anchorId';
 import { Indent } from './extensions/indent';
 import { HangingIndent } from './extensions/hanging-indent';
@@ -36,17 +48,6 @@ import ToggleButtonComponentExtension from './angular-node-views/toggle-button-c
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
 import CheckboxComponentExtension from './angular-node-views/checkbox-component-extension';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { ComboButtonComponent } from 'editor/src/app/components/util/combo-button.component';
-import { NgIf } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { NgxTiptapModule } from 'ngx-tiptap';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -72,6 +73,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   @Input() defaultFontSize!: number;
   @Input() clozeMode: boolean = false;
   @Input() showReducedControls: boolean = false;
+  @Input() placeholder: string = '';
   @Output() contentChange = new EventEmitter<string | Record<string, any>>();
 
   selectedFontColor = 'black';
@@ -130,7 +132,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       activeExtensions.push(CheckboxComponentExtension(this.injector));
     }
     this.editor = new Editor({
-      extensions: activeExtensions
+      extensions: [
+        ...activeExtensions,
+        Placeholder.configure({
+          placeholder: this.placeholder
+        })]
     });
   }
 

@@ -1,12 +1,11 @@
 import { Type } from '@angular/core';
 import {
-  PositionedUIElement, UIElement, UIElementProperties, UIElementType
+  UIElement, UIElementProperties, UIElementType
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import {
-  PositionProperties,
-  PropertyGroupGenerators, PropertyGroupValidators
+  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
@@ -24,6 +23,10 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   showFullscreenButton: boolean = false;
   customToolbar: string = '';
   position: PositionProperties;
+  dimensions: {
+    width: number;
+    height: number;
+  };
 
   static title: string = 'Geometrie';
   static icon: string = 'architecture';
@@ -41,6 +44,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.showFullscreenButton = element.showFullscreenButton;
       this.customToolbar = element.customToolbar;
       this.position = { ...element.position };
+      this.dimensions = { ...element.dimensions };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Geometry instantiation', element);
@@ -54,11 +58,11 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       if (element?.showZoomButtons !== undefined) this.showZoomButtons = element.showZoomButtons;
       if (element?.showFullscreenButton !== undefined) this.showFullscreenButton = element.showFullscreenButton;
       if (element?.customToolbar !== undefined) this.customToolbar = element.customToolbar;
-      this.dimensions = PropertyGroupGenerators.generateDimensionProps({
+      this.dimensions = {
         width: 600,
         height: 400,
         ...element?.dimensions
-      });
+      };
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
     }
   }
@@ -118,6 +122,10 @@ export interface GeometryProperties extends UIElementProperties {
   showFullscreenButton: boolean;
   customToolbar: string;
   position: PositionProperties;
+  dimensions: {
+    width: number;
+    height: number;
+  };
 }
 
 function isValid(blueprint?: GeometryProperties): boolean {
@@ -131,5 +139,6 @@ function isValid(blueprint?: GeometryProperties): boolean {
     blueprint.showZoomButtons !== undefined &&
     blueprint.showFullscreenButton !== undefined &&
     blueprint.customToolbar !== undefined &&
+    blueprint.dimensions !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position);
 }

@@ -21,15 +21,15 @@ export interface PositionProperties {
 }
 
 export interface DimensionProperties {
-  [index: string]: number | boolean | null;
+  [index: string]: number | boolean | null | undefined;
   width: number;
   height: number;
-  isWidthFixed: boolean;
-  isHeightFixed: boolean;
-  minWidth: number | null;
-  maxWidth: number | null;
-  minHeight: number | null;
-  maxHeight: number | null;
+  isWidthFixed?: boolean;
+  isHeightFixed?: boolean;
+  minWidth?: number | null;
+  maxWidth?: number | null;
+  minHeight?: number | null;
+  maxHeight?: number | null;
 }
 
 export type Stylings = Partial<FontStyles & BorderStyles & OtherStyles>;

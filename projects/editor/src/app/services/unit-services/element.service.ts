@@ -433,6 +433,9 @@ export class ElementService {
   updateElementsDimensionsProperty(elements: UIElement[], property: string, value: number | null): void {
     elements.forEach(element => {
       element.setDimensionsProperty(property, value);
+      if (element.type === 'geometry') {
+        this.unitService.geometryElementPropertyUpdated.next(element.id);
+      }
     });
     this.unitService.elementPropertyUpdated.next();
     this.unitService.updateUnitDefinition();

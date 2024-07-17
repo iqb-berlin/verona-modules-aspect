@@ -16,24 +16,18 @@ declare const GGBApplet: any;
 @Component({
   selector: 'aspect-geometry',
   template: `
-    <div class="geogebra-container"
-         [style.height.px]="elementModel.height"
-         [style.width.px]="elementModel.width"
-         [class.center]="this.elementModel.dimensions?.isWidthFixed">
-      <button *ngIf="this.elementModel.showResetIcon"
-              mat-stroked-button class="reset-button"
-              (click)="reset()">
-        <mat-icon class="reset-icon">autorenew</mat-icon>{{'geometry_reset' | translate }}
-      </button>
-      <div [id]="elementModel.id" class="geogebra-applet"></div>
-    </div>
+    <button *ngIf="this.elementModel.showResetIcon"
+            mat-stroked-button class="reset-button"
+            (click)="reset()">
+      <mat-icon class="reset-icon">autorenew</mat-icon>{{'geometry_reset' | translate }}
+    </button>
+    <div [id]="elementModel.id" class="geogebra-applet"></div>
     <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
   `,
   styles: [
     ':host {display: block; width: 100%; height: 100%;}',
-    '.geogebra-container {position: relative;}',
-    '.center {margin: auto;}',
-    '.geogebra-container .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
+    ':host {position: relative;}',
+    ':host .reset-icon {width: 1.5rem; height: 1.5rem; font-size: 1.5rem;}',
     '.reset-button {margin-bottom: 3px;}'
   ]
 })

@@ -55,6 +55,7 @@ import { TranslateModule } from '@ngx-translate/core';
   styles: `
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
+    h3 {text-decoration: underline;}
     .input1 {min-height: 200px;}
   `
 })

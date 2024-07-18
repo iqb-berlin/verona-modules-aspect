@@ -88,6 +88,7 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
   `,
   styles: `
     .mat-mdc-dialog-content {display: flex;}
+    h3 {text-decoration: underline;}
     .audio-row {display: flex; flex-direction: row; justify-content: space-around;}
     :host ::ng-deep .mat-expansion-panel-body > mat-form-field, aspect-rich-text-editor {margin-left: 30px;}
   `
@@ -107,7 +108,7 @@ export class AudioWizardDialogComponent {
     'margin-bottom: 0px; margin-top: 0" indent="0" indentsize="20"><span style="color: black; font-size: 20px">' +
     'Hier steht eventuell ein Hinweis.</span></p>';
 
-  async changeMediaSrc(src: keyof AudioWizardDialogComponent) {
-    (this[src] as string) = await FileService.loadAudio();
+  async changeMediaSrc(src: 'src1' | 'src2') {
+    this[src] = await FileService.loadAudio();
   }
 }

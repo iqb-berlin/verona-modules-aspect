@@ -13,6 +13,7 @@ import {
 import { FileService } from 'common/services/file.service';
 import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
+import { DropListProperties } from 'common/models/elements/input-elements/drop-list';
 
 @Component({
   selector: 'aspect-editor-table-edit-dialog',
@@ -57,6 +58,11 @@ export class TableEditDialogComponent {
           muteControl: false,
           showRestTime: false
         });
+    }
+    if (el.elementType === 'drop-list') {
+      (extraProps as DropListProperties).onlyOneItem = true;
+      (extraProps as DropListProperties).allowReplacement = true;
+      (extraProps as DropListProperties).highlightReceivingDropList = true;
     }
     const newEle = ElementFactory.createElement({
       type: el.elementType,

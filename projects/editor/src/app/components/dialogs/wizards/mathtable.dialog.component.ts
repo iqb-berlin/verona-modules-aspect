@@ -45,7 +45,7 @@ import { MatDividerModule } from '@angular/material/divider';
 
       <mat-divider></mat-divider>
 
-      {{ 'termRows' | translate }}
+      <h3>{{ 'termRows' | translate }}</h3>
       <div *ngFor="let term of terms; let i = index;" class="terms">
         <mat-form-field *ngIf="operation !== 'multiplication' || i < 2"
                         [style.flex-grow]="1" (input)="changeTerm($any($event.target).value, i)">

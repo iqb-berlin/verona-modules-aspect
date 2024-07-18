@@ -4,7 +4,7 @@ Editor
 ### Neue Funktionen
 - Assistenten
   - Mit Assistenten können Elementgruppen vorkonfiguriert als Abschnitt eingefügt werden. Es werden lediglich die nötigsten Einstellungen ermöglicht.
-  - Assistenten in Kombination mit dem eingeschränkten Editier-Modus sollen fehlerhaft konfigurierte Abschnitte verhindern.
+  - Assistenten in Kombination mit dem eingeschränkten Editier-Modus sollen fehlerhaft (im Sinne der IQB-Empfehlungen) konfigurierte Abschnitte verhindern.
 - Expertenmodus
   - Über die Verona-Schnittstelle (Studio -> Editor) kann der Editor angewiesen werden eingeschränkte Editierrechte zu verwenden. In diesem Modus können viele Elemente und Einstellungen nicht verwendet werden.
 - Neues Element: Tabelle
@@ -13,12 +13,12 @@ Editor
 - Neue Elementgruppe: "Verbund" mit den Elementen Tabelle und Lückentext
 - Dialog "Seitenabschnitt einfügen" überarbeitet und mit neuen Funktionen erweitert.
   - Es kann nun ein vorher kopierter Abschnitt direkt eingefügt werden, auch wenn er sich nicht mehr in der Zwischenablage befindet. Dies funktioniert nur innerhalb einer Bearbeitungssitzung und nur innerhalb der selben Aufgabe.
-  - Der ausgewählte Abschnitt wird standardmäßig nicht mehr ersetzt (außer er ist leer), sondern der neue Abschnitt an seiner Stelle eingefügt. Der Modus kann ausgewählt werden.
+  - Der ausgewählte Abschnitt wird standardmäßig nicht mehr ersetzt (außer er ist leer), sondern der neue Abschnitt unterhalb eingefügt. Der Modus kann ausgewählt werden.
 
 ## Änderungen
-- Neu angelegte Elemente bekommen Rasterkoordinaten (sofern sie nicht direkt in eine Rasterspalte gelegt wurden). Die Element werden in der ersten Spalte zeilenweise angelegt.
+- Neu angelegte Elemente bekommen Rasterkoordinaten (auch sie nicht direkt in eine Rasterspalte gelegt wurden). Die Element werden in der ersten Spalte zeilenweise angelegt.
 - Zeilen-Spalten-Reihenfolge bei Rasterkonfiguration korrigiert ("Zeile zuerst, Spalte später")
-- Einige Texteigenschaften (z.B. Beschriftung) können in Eingabebereichen definiert. Das sollte die Arbeit mit längeren Texten vereinfachen.
+- Einige Texteigenschaften (z.B. Beschriftung) können in Eingabebereichen definiert werden. Das sollte die Arbeit mit längeren Texten vereinfachen.
 - Seitenmenu überarbeitet (Gruppierung, keine erscheinenden Eingaben etc.)
 - Elemente können direkt in Raster-Zellen gelegt werden, in denen sich bereits ein Rahmen-Element befindet
 - Optionsfelder in Lückentexten: Auswahl von 'Gewählte Option durchstreichen' setzt die Selektionsfarbe auf transparent
@@ -30,25 +30,26 @@ Editor
   - Lückentext: Abstand unten 35px
   - Bild, Audio, Video:
     - Abstand unten 15px
+  - Audio, Video:
     - Minimale Lautstärke: 0,2
     - Aufforderungstext zum Starten: "Bitte starten"
     - Verzögerung Aufforderungstext (ms): 5000
     - Maximale Anzahl der Durchläufe: 1
   - Text: Abstand unten 10px
-  - Ablegelisten in Lückentexten: Verdrängen und Hervorhebung eingeschaltet
+  - Ablegelisten in Lückentexten: Nur-ein-Element, Verdrängen und Hervorhebung eingeschaltet
   - Optionsfelder in Lückentexten: Selektionsfarbe #c9e0e0
   - Geometrie: "Bewegen und Zoom", "Zoom-Knöpfe anzeigen" und "Vollbild-Knopf anzeigen" ausgeschaltet
 - Kleinere Oberflächenänderungen (zur Verbesserung von Übersicht und Verständnis):
   - Gruppiering von Element-Eigenschaften, z.B. Eingabehilfeoptionen
   - mehr Hinweise via Tooltip
-  - Elementlisten (an verschiedenen Stellen) zeigen nur zusätzlich noch Bezeichner und Icons neben der ID
+  - Elementlisten (an verschiedenen Stellen) zeigen zusätzlich noch Bezeichner und Icons neben der ID
   - kleine Verbesserungen von Layout, Schrift, Farbe und Formulierungen
 
 ### Fehlerbehebungen
 - IDs von Elementen auf gelöschten Seiten werden freigegeben
 - Z-Indizes werden bei der Darstellung und Auswahl von Elementen beachtet (Verdeckte Elemente können weiterhin über die Elementliste des Seitenabschnitts gefunden und ausgewählt werden.)
 - Rahmen: Hat jetzt korrekt -1 als z-Index-Standardwert
-- Ablegelisten zeigen die nutzlose Eigenschaft "Beschriftung" nicht mehr an (Es gibt noch mehr Eigenschaften ohne Funktion, diese werden, soweit bekannt, in zukünftigen Veröffentlichungen korrigiert, können auch gern als Fehler gemeldet werden.)
+- Ablegelisten, Optionsfelder in Lückentexten, Eingabefelder in Lückentexten haben die nutzlose Eigenschaft "Beschriftung" nicht mehr.
 - Duplizierte Optionsfelder haben neue Optionsreferenzen (verändert nicht mehr das Original, wenn man an der Kopie Optionen editiert)
 - Ausgewählte Seite und Seitenabschnitt werden bei Laden einer Unit zurückgesetzt. Dadurch sollte es nicht mehr zu Fällen kommen, in denen man auf eine nicht-existente Seite gerät beim Wechseln, Verwerfen o.Ä. von Units im Studio.
 

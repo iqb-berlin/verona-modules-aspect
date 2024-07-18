@@ -4,7 +4,7 @@ Allgemein
 ### Neue Funktion
 - Neues Element: Tabelle
 - Abschnittsnummerierung
-  - Es werden alle Abschnitte seitenübergreifend durchnummeriert. Einzelne Seitenabschnitte können via Seitenabschnittsmenu davon ausgenommen werden.
+  - Es werden alle Abschnitte seitenübergreifend durchnummeriert. Einzelne Seitenabschnitte können via Seitenabschnittsmenu davon ausgenommen werden. Dauerhaft sichtbare Seiten sind grundsätzlich ausgenommen.
 - Audio und Video: Neue Eigenschaft - Hintergrundfarbe
 - Bilder werden beim Anwählen in einem Vollbild-Dialog angezeigt
 - Ablegelisten: Nummerierung zuschaltbar (nicht in Lückentexten)

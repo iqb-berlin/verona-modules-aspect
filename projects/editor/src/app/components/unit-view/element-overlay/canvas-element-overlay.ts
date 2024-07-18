@@ -68,7 +68,6 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
       this.childComponent.instance.childElementSelected
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((selectedElementComponent: TableChildOverlay) => {
-          console.log('CanvasElementOverlay: elementSelected received');
           this.selectionService.selectElement({ elementComponent: selectedElementComponent, multiSelect: false });
           this.selectionService.isCompoundChildSelected = true;
         });

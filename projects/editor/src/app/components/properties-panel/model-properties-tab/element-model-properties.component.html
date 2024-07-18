@@ -209,23 +209,7 @@
     </ng-container>
 
     <ng-container *ngIf="combinedProperties.dimensions">
-      <ng-container *ngIf="combinedProperties.dimensions?.maxWidth !== undefined">
-        <mat-checkbox #maxWidthEnabled [checked]="$any(combinedProperties.dimensions).maxWidth !== null"
-                      (change)="toggleProperty('maxWidth', $event.checked)">
-          {{'propertiesPanel.maxWidthEnabled' | translate }}
-        </mat-checkbox>
-        <mat-form-field>
-          <mat-label>
-            {{'propertiesPanel.maxWidth' | translate }}
-          </mat-label>
-          <input matInput type="number" min="0"
-                 [disabled]="!maxWidthEnabled.checked"
-                 [ngModel]="$any(combinedProperties.dimensions).maxWidth"
-                 (ngModelChange)="updateDimensionProperty('maxWidth', $event)">
-        </mat-form-field>
-      </ng-container>
-
-      <ng-container *ngIf="combinedProperties.type === 'drop-list' || combinedProperties.type === 'text-field-simple'">
+      <ng-container *ngIf="combinedProperties.type === 'drop-list' || combinedProperties.type === 'text-field-simple'; else elseBlock">
         <mat-checkbox #fixedWidth [checked]="$any(combinedProperties.dimensions).isWidthFixed"
                       (change)="updateDimensionProperty('isWidthFixed', $event.checked)">
           {{'propertiesPanel.isWidthFixed' | translate }}
@@ -240,6 +224,24 @@
                    $any(combinedProperties.dimensions).width ? $any(combinedProperties.dimensions).width : 0">
         </mat-form-field>
       </ng-container>
+
+      <ng-template #elseBlock>
+        <ng-container *ngIf="combinedProperties.dimensions?.maxWidth !== undefined">
+          <mat-checkbox #maxWidthEnabled [checked]="$any(combinedProperties.dimensions).maxWidth !== null"
+                        (change)="toggleProperty('maxWidth', $event.checked)">
+            {{'propertiesPanel.maxWidthEnabled' | translate }}
+          </mat-checkbox>
+          <mat-form-field>
+            <mat-label>
+              {{'propertiesPanel.maxWidth' | translate }}
+            </mat-label>
+            <input matInput type="number" min="0"
+                   [disabled]="!maxWidthEnabled.checked"
+                   [ngModel]="$any(combinedProperties.dimensions).maxWidth"
+                   (ngModelChange)="updateDimensionProperty('maxWidth', $event)">
+          </mat-form-field>
+        </ng-container>
+      </ng-template>
     </ng-container>
   </ng-container>
 

@@ -36,6 +36,9 @@ import { NgIf } from '@angular/common';
     :host ::ng-deep aspect-text-field {width: 100%; height: 100%;}
     :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}
     :host ::ng-deep aspect-audio .status-bar {display: none;}
+    :host ::ng-deep aspect-audio .control-bar {background-color: unset;}
+    :host ::ng-deep aspect-audio .control-bar > button {background-color: var(--background-color);}
+    :host ::ng-deep aspect-audio .control-bar button mat-icon {margin: 0;}
     :host ::ng-deep aspect-text > div {display: flex;}
     :host ::ng-deep aspect-text .text-container {align-self: center; margin-left: 8px;}
   `

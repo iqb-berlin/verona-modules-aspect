@@ -223,16 +223,16 @@ export abstract class PropertyGroupGenerators {
         false,
       volumeControl: properties.volumeControl !== undefined ? properties.volumeControl as boolean : true,
       defaultVolume: properties.defaultVolume !== undefined ? properties.defaultVolume as number : 0.8,
-      minVolume: properties.minVolume !== undefined ? properties.minVolume as number : 0,
+      minVolume: properties.minVolume !== undefined ? properties.minVolume as number : 0.2,
       muteControl: properties.muteControl !== undefined ? properties.muteControl as boolean : true,
       interactiveMuteControl: properties.interactiveMuteControl !== undefined ?
         properties.interactiveMuteControl as boolean :
         false,
-      hintLabel: properties.hintLabel !== undefined ? properties.hintLabel as string : '',
-      hintLabelDelay: properties.hintLabelDelay !== undefined ? properties.hintLabelDelay as number : 0,
+      hintLabel: properties.hintLabel !== undefined ? properties.hintLabel as string : 'Bitte starten',
+      hintLabelDelay: properties.hintLabelDelay !== undefined ? properties.hintLabelDelay as number : 5000,
       activeAfterID: properties.activeAfterID !== undefined ? properties.activeAfterID as string : '',
       minRuns: properties.minRuns !== undefined ? properties.minRuns as number : 1,
-      maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : null,
+      maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : 1,
       showRestRuns: properties.showRestRuns !== undefined ? properties.showRestRuns as boolean : false,
       showRestTime: properties.showRestTime !== undefined ? properties.showRestTime as boolean : true,
       playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0

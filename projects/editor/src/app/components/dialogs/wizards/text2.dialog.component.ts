@@ -46,7 +46,7 @@ import { MatButtonModule } from '@angular/material/button';
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3 {text-decoration: underline;}
-    .input1 {min-height: 400px;}
+    .input1 {min-height: 300px;}
   `
 })
 export class Text2WizardDialogComponent {

@@ -1,3 +1,5 @@
+/* Linter is disabled because most methods have very long signatures and folding the methods
+   does not work properly with the wanted format. */
 /* eslint @typescript-eslint/brace-style: OFF */
 
 import { inject, Injectable } from '@angular/core';
@@ -316,7 +318,7 @@ export class TemplateService {
         this.createElement(
           'radio-group-images',
           { gridRow: 2, gridColumn: 1 },
-          { options: config.options, itemsPerRow: config.itemsPerRow })
+          { label: '', options: config.options, itemsPerRow: config.itemsPerRow })
       ]
     } as SectionProperties);
   }
@@ -332,7 +334,7 @@ export class TemplateService {
           { text: config.text1 }),
         this.createElement(
           'likert',
-          { gridRow: 2, gridColumn: 1 },
+          { gridRow: 2, gridColumn: 1, marginBottom: { value: 35, unit: 'px' } },
           {
             options: config.options,
             rows: config.rows.map(row => new LikertRowElement({
@@ -343,6 +345,7 @@ export class TemplateService {
               columnCount: config.options.length
             } as LikertRowProperties)),
             label: config.text2,
+            label2: '',
             stickyHeader: true,
             firstColumnSizeRatio: 3
           })

@@ -70,7 +70,6 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
           <h3>Elemente</h3>
           <aspect-option-list-panel [textFieldLabel]="'Neues Element'"
                                     [itemList]="options"
-                                    [showImageButton]="true"
                                     [localMode]="true">
           </aspect-option-list-panel>
           <mat-form-field [style.width.px]="300">

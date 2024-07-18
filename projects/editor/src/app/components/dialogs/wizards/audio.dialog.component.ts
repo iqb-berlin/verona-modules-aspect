@@ -34,7 +34,7 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
     AudioRowComponent
   ],
   template: `
-    <div mat-dialog-title>Assistent: Stimulus: Text</div>
+    <div mat-dialog-title>Assistent: Stimulus: Audio</div>
     <div mat-dialog-content>
       <mat-accordion>
         <mat-expansion-panel (afterExpand)="variant = 'a'" (closed)="variant = undefined">

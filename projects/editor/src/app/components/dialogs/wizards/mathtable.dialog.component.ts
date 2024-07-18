@@ -31,10 +31,10 @@ import { MatDividerModule } from '@angular/material/divider';
     MatDividerModule
   ],
   template: `
-    <div mat-dialog-title>Assistent: GeoGebra</div>
+    <div mat-dialog-title>Assistent: Rechenkästchen</div>
     <div mat-dialog-content>
       <h3>Rechenart</h3>
-      <mat-form-field>
+      <mat-form-field [style.width.px]="250">
         <mat-label>Operation auswählen</mat-label>
         <mat-select required [(ngModel)]="operation">
           <mat-option [value]="'addition'">Addition</mat-option>
@@ -82,7 +82,7 @@ export class MathTableWizardDialogComponent {
   @ViewChildren('termInput') termInputs!: QueryList<ElementRef>;
 
   operation: 'addition' | 'subtraction' | 'multiplication' | undefined;
-  terms: string[] = ['123', '456'];
+  terms: string[] = [];
 
   addTerm() {
     this.terms.push('');

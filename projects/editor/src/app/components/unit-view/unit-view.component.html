@@ -82,7 +82,8 @@
             <mat-menu #numberingMenu="matMenu" (click)="$event.stopPropagation()">
               <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
                 <h3>Abschnittsnummerierung</h3>
-                <mat-checkbox #numberingInput (change)="setSectionNumbering($event)">
+                <mat-checkbox #numberingInput [checked]="unitService.unit.enableSectionNumbering"
+                              (change)="setSectionNumbering($event)">
                   Nummerierung aktivieren
                 </mat-checkbox>
                 <mat-checkbox [disabled]="!numberingInput.checked" (change)="setSectionNumberingPosition($event)">

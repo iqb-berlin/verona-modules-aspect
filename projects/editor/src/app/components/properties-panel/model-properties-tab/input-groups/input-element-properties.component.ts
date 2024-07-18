@@ -10,7 +10,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
     <fieldset class="fx-column-start-stretch">
       <legend>Eingabeelement</legend>
       <!-- DropList label is unused -->
-      <mat-form-field *ngIf="combinedProperties.type !== 'drop-list'"
+      <mat-form-field *ngIf="combinedProperties.label !== undefined"
                       appearance="fill">
         <mat-label>{{'propertiesPanel.label' | translate }}</mat-label>
         <textarea matInput type="text"

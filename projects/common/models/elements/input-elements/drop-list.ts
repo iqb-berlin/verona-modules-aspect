@@ -97,6 +97,7 @@ export class DropListElement extends InputElement implements DropListProperties 
         itemBackgroundColor: element?.styling?.itemBackgroundColor || '#c9e0e0'
       };
     }
+    delete this.label;
   }
 
   getDuplicate(): DropListElement {

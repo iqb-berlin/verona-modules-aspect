@@ -145,7 +145,7 @@ export type InputElementValue = TextLabel[] | Hotspot[] | MathTableRow[] | Geome
 number[] | number | boolean[] | boolean | null;
 
 export interface InputElementProperties extends UIElementProperties {
-  label: string;
+  label?: string;
   value: InputElementValue;
   required: boolean;
   requiredWarnMessage: string;
@@ -162,7 +162,7 @@ function isValidInputElementProperties(blueprint?: InputElementProperties): bool
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
-  label: string = 'Beschriftung';
+  label?: string = 'Beschriftung';
   value: InputElementValue = null;
   required: boolean = false;
   requiredWarnMessage: string = 'Eingabe erforderlich';
@@ -171,7 +171,7 @@ export abstract class InputElement extends UIElement implements InputElementProp
   protected constructor(element?: InputElementProperties) {
     super(element);
     if (element && isValidInputElementProperties(element)) {
-      this.label = element.label;
+      if (element.label) this.label = element.label;
       this.value = element.value;
       this.required = element.required;
       this.requiredWarnMessage = element.requiredWarnMessage;
@@ -196,8 +196,7 @@ export abstract class InputElement extends UIElement implements InputElementProp
 }
 
 export function isInputElement(el: UIElement): el is InputElement {
-  return el.label !== undefined &&
-    el.value !== undefined &&
+  return el.value !== undefined &&
     el.required !== undefined &&
     el.requiredWarnMessage !== undefined &&
     el.readOnly !== undefined;

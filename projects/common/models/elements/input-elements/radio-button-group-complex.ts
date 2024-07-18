@@ -15,6 +15,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class RadioButtonGroupComplexElement extends InputElement
   implements OptionElement, RadioButtonGroupComplexProperties {
   type: UIElementType = 'radio-group-images';
+  label: string = 'Beschriftung';
   options: TextImageLabel[] = [];
   itemsPerRow: number | null = null;
   position: PositionProperties;
@@ -26,6 +27,7 @@ export class RadioButtonGroupComplexElement extends InputElement
   constructor(element?: RadioButtonGroupComplexProperties) {
     super(element);
     if (element && isValid(element)) {
+      this.label = element.label;
       this.options = [...element.options];
       this.itemsPerRow = element.itemsPerRow;
       this.position = { ...element.position };
@@ -34,6 +36,7 @@ export class RadioButtonGroupComplexElement extends InputElement
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
       }
+      if (element?.label) this.label = element.label;
       if (element?.options) this.options = [...element.options];
       if (element?.itemsPerRow) this.itemsPerRow = element.itemsPerRow;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
@@ -83,6 +86,7 @@ export class RadioButtonGroupComplexElement extends InputElement
 }
 
 export interface RadioButtonGroupComplexProperties extends InputElementProperties {
+  label: string;
   options: TextImageLabel[];
   itemsPerRow: number | null;
   position: PositionProperties;
@@ -91,7 +95,8 @@ export interface RadioButtonGroupComplexProperties extends InputElementPropertie
 
 function isValid(blueprint?: RadioButtonGroupComplexProperties): boolean {
   if (!blueprint) return false;
-  return blueprint.options !== undefined &&
+  return blueprint.label !== undefined &&
+    blueprint.options !== undefined &&
     blueprint.itemsPerRow !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling);

@@ -14,6 +14,7 @@ import { InstantiationEror } from 'common/util/errors';
 
 export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {
   type: UIElementType = 'radio';
+  label: string = 'Beschriftung';
   options: TextLabel[] = [];
   alignment: 'column' | 'row' = 'column';
   strikeOtherOptions: boolean = false;
@@ -28,6 +29,7 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   constructor(element?: RadioButtonGroupProperties) {
     super(element);
     if (element && isValid(element)) {
+      this.label = element.label;
       this.options = [...element.options];
       this.alignment = element.alignment;
       this.strikeOtherOptions = element.strikeOtherOptions;
@@ -37,6 +39,7 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
       }
+      if (element?.label) this.label = element.label;
       if (element?.options) this.options = [...element.options];
       if (element?.alignment) this.alignment = element.alignment;
       if (element?.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;
@@ -88,6 +91,7 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
 }
 
 export interface RadioButtonGroupProperties extends InputElementProperties {
+  label: string;
   options: TextLabel[];
   alignment: 'column' | 'row';
   strikeOtherOptions: boolean;
@@ -99,7 +103,8 @@ export interface RadioButtonGroupProperties extends InputElementProperties {
 
 function isValid(blueprint?: RadioButtonGroupProperties): boolean {
   if (!blueprint) return false;
-  return blueprint.options !== undefined &&
+  return blueprint.label !== undefined &&
+    blueprint.options !== undefined &&
     blueprint.alignment !== undefined &&
     blueprint.strikeOtherOptions !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&

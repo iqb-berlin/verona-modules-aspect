@@ -62,6 +62,7 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
         lineHeight: element?.styling?.lineHeight || 100
       };
     }
+    delete this.label;
   }
 
   getVariableInfos(): VariableInfo[] {

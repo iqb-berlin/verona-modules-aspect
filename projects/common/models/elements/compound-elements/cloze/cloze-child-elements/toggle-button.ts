@@ -53,6 +53,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
         selectionColor: element?.styling?.selectionColor || '#c9e0e0'
       };
     }
+    delete this.label;
   }
 
   setProperty(property: string, value: unknown): void {

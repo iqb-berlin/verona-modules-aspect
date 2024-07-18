@@ -82,7 +82,7 @@ export class MathTableWizardDialogComponent {
   @ViewChildren('termInput') termInputs!: QueryList<ElementRef>;
 
   operation: 'addition' | 'subtraction' | 'multiplication' | undefined;
-  terms: string[] = [];
+  terms: string[] = ['', ''];
 
   addTerm() {
     this.terms.push('');

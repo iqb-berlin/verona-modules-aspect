@@ -108,7 +108,7 @@ export class TemplateService {
             });
           break;
         case 'audio':
-          this.dialog.open(AudioWizardDialogComponent, {})
+          this.dialog.open(AudioWizardDialogComponent, { autoFocus: false })
             .afterClosed().subscribe((result: {
               variant: 'a' | 'b', src1: string, maxRuns1: number, src2: string, maxRuns2: number
               lang: 'german' | 'english' | 'french', text: string }) => {
@@ -131,7 +131,7 @@ export class TemplateService {
             });
           break;
         case 'droplist':
-          this.dialog.open(DroplistWizardDialogComponent, { })
+          this.dialog.open(DroplistWizardDialogComponent, { autoFocus: false })
             .afterClosed().subscribe((result: {
               variant: 'classic' | 'sort', alignment: 'column' | 'row', text1: string, headingSourceList: string,
               options: DragNDropValueObject[], optionLength: 'long' | 'medium' | 'short' | 'very-short',

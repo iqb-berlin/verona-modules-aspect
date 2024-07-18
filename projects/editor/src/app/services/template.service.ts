@@ -50,7 +50,7 @@ export class TemplateService {
     } else {
       selectedPage.addSection(templateSection, selectedSectionIndex + 1);
     }
-
+    this.unitService.updateSectionCounter();
     await this.unitService.updateUnitDefinition();
   }
 

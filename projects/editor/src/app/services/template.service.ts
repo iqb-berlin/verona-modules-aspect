@@ -393,6 +393,7 @@ export class TemplateService {
             dimensions: { maxWidth: 500 } as DimensionProperties,
             player: {
               maxRuns: config.maxRuns1,
+              showRestRuns: config.maxRuns1 > 1,
               ...TemplateService.getAudioSettings()
             } as PlayerProperties
           }),
@@ -412,6 +413,7 @@ export class TemplateService {
             src: config.src2,
             player: {
               maxRuns: config.maxRuns2,
+              showRestRuns: config.maxRuns2 > 1,
               ...TemplateService.getAudioSettings()
             } as PlayerProperties
           })

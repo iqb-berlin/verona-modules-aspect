@@ -21,6 +21,12 @@ export class SelectionService {
     this._selectedElements = new BehaviorSubject([] as UIElement[]);
   }
 
+  reset(): void {
+    this.selectedPageIndex = 0;
+    this.selectedSectionIndex = 0;
+    this.selectedElementComponents = [];
+  }
+
   get selectedElements(): Observable<UIElement[]> {
     return this._selectedElements.asObservable();
   }

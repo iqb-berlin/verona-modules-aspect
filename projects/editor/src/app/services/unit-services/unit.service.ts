@@ -79,6 +79,7 @@ export class UnitService {
   }
 
   private loadUnit(parsedUnitDefinition?: string): void {
+    this.selectionService.reset();
     this.idService.reset();
     this.unit = new Unit(parsedUnitDefinition as unknown as UnitProperties);
     this.idService.registerUnitIds(this.unit);

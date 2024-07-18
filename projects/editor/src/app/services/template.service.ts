@@ -48,7 +48,7 @@ export class TemplateService {
     if (this.unitService.getSelectedSection().isEmpty()) {
       selectedPage.replaceSection(selectedSectionIndex, templateSection);
     } else {
-      selectedPage.addSection(templateSection, selectedSectionIndex);
+      selectedPage.addSection(templateSection, selectedSectionIndex + 1);
     }
 
     await this.unitService.updateUnitDefinition();

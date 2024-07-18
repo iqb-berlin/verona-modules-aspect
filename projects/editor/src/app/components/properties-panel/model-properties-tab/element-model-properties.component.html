@@ -163,7 +163,7 @@
     {{'propertiesPanel.stickyHeader' | translate }}
   </mat-checkbox>
 
-  <mat-checkbox *ngIf="combinedProperties.crossOutChecked !== undefined"
+  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.crossOutChecked !== undefined"
                 [checked]="$any(combinedProperties.crossOutChecked)"
                 (change)="updateModel.emit({ property: 'crossOutChecked', value: $event.checked })">
     {{'propertiesPanel.crossOutChecked' | translate }}

@@ -20,7 +20,7 @@ export class ImageElement extends UIElement implements ImageProperties {
   magnifierSize: number = 100;
   magnifierZoom: number = 1.5;
   magnifierUsed: boolean = false;
-  position: PositionProperties;
+  position?: PositionProperties;
 
   static title: string = 'Bild';
   static icon: string = 'image';
@@ -35,7 +35,7 @@ export class ImageElement extends UIElement implements ImageProperties {
       this.magnifierSize = element.magnifierSize;
       this.magnifierZoom = element.magnifierZoom;
       this.magnifierUsed = element.magnifierUsed;
-      this.position = { ...element.position };
+      if (element.position) this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Image instantiation', element);
@@ -98,7 +98,7 @@ export interface ImageProperties extends UIElementProperties {
   magnifierSize: number;
   magnifierZoom: number;
   magnifierUsed: boolean;
-  position: PositionProperties;
+  position?: PositionProperties;
 }
 
 function isValid(blueprint?: ImageProperties): boolean {
@@ -109,6 +109,5 @@ function isValid(blueprint?: ImageProperties): boolean {
     blueprint.magnifier !== undefined &&
     blueprint.magnifierSize !== undefined &&
     blueprint.magnifierZoom !== undefined &&
-    blueprint.magnifierUsed !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position);
+    blueprint.magnifierUsed !== undefined;
 }

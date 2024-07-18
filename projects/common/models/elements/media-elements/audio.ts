@@ -5,7 +5,7 @@ import {
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { AudioComponent } from 'common/components/media-elements/audio.component';
 import {
-  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
+  PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
@@ -13,7 +13,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class AudioElement extends PlayerElement implements AudioProperties {
   type: UIElementType = 'audio';
   src: string | null = null;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: { backgroundColor: string };
 
   static title: string = 'Audio';
@@ -23,7 +23,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
     super(element);
     if (element && isValid(element)) {
       this.src = element.src;
-      this.position = { ...element.position };
+      if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
@@ -57,13 +57,12 @@ export class AudioElement extends PlayerElement implements AudioProperties {
 
 export interface AudioProperties extends PlayerElementBlueprint {
   src: string | null;
-  position: PositionProperties;
+  position?: PositionProperties;
   styling: { backgroundColor: string };
 }
 
 function isValid(blueprint?: AudioProperties): boolean {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
-    blueprint.styling?.backgroundColor !== undefined &&
-    PropertyGroupValidators.isValidPosition(blueprint.position);
+    blueprint.styling?.backgroundColor !== undefined;
 }

@@ -323,13 +323,15 @@ export class ElementService {
         break;
       case 'audio':
       case 'video':
-        this.dialogService.showPlayerEditDialog(element.id, (element as PlayerElement).player)
-          .subscribe((result: PlayerProperties) => {
-            if (!result) return;
-            Object.keys(result).forEach(
-              key => this.updateElementsPlayerProperty([element], key, result[key] as UIElementValue)
-            );
-          });
+        if (this.unitService.expertMode) {
+          this.dialogService.showPlayerEditDialog(element.id, (element as PlayerElement).player)
+            .subscribe((result: PlayerProperties) => {
+              if (!result) return;
+              Object.keys(result).forEach(
+                key => this.updateElementsPlayerProperty([element], key, result[key] as UIElementValue)
+              );
+            });
+        }
         break;
       case 'table':
         this.dialogService.showTableEditDialog(element as TableElement)

@@ -28,7 +28,12 @@ Editor
   - Eingabefeld, Eingabebereich: Eingabehilfen standardmäßig eingeschaltet
   - Eingabebereich: dynamische Zeilen und 135 Zeichen eingeschaltet
   - Lückentext: Abstand unten 35px
-  - Bild, Audio, Video: Abstand unten 15px
+  - Bild, Audio, Video:
+    - Abstand unten 15px
+    - Minimale Lautstärke: 0,2
+    - Aufforderungstext zum Starten: "Bitte starten"
+    - Verzögerung Aufforderungstext (ms): 5000
+    - Maximale Anzahl der Durchläufe: 1
   - Text: Abstand unten 10px
   - Ablegelisten in Lückentexten: Verdrängen und Hervorhebung eingeschaltet
   - Optionsfelder in Lückentexten: Selektionsfarbe #c9e0e0
@@ -45,6 +50,7 @@ Editor
 - Rahmen: Hat jetzt korrekt -1 als z-Index-Standardwert
 - Ablegelisten zeigen die nutzlose Eigenschaft "Beschriftung" nicht mehr an (Es gibt noch mehr Eigenschaften ohne Funktion, diese werden, soweit bekannt, in zukünftigen Veröffentlichungen korrigiert, können auch gern als Fehler gemeldet werden.)
 - Duplizierte Optionsfelder haben neue Optionsreferenzen (verändert nicht mehr das Original, wenn man an der Kopie Optionen editiert)
+- Ausgewählte Seite und Seitenabschnitt werden bei Laden einer Unit zurückgesetzt. Dadurch sollte es nicht mehr zu Fällen kommen, in denen man auf eine nicht-existente Seite gerät beim Wechseln, Verwerfen o.Ä. von Units im Studio.
 
 ## 2.4.6
 ### Änderungen

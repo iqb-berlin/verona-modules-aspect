@@ -37,7 +37,7 @@ import { NgIf } from '@angular/common';
     :host ::ng-deep aspect-audio .control-bar {height: 100%; margin-top: 0; justify-content: center;}
     :host ::ng-deep aspect-audio .status-bar {display: none;}
     :host ::ng-deep aspect-text > div {display: flex;}
-    :host ::ng-deep aspect-text .text-container {align-self: center;}
+    :host ::ng-deep aspect-text .text-container {align-self: center; margin-left: 8px;}
   `
 })
 export class TableChildOverlay implements OnInit {

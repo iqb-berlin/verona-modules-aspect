@@ -425,7 +425,7 @@ export class TemplateService {
     switch (lang) {
       case 'german': return type === 'instruction' ? 'Instruktion' : 'Hörtext';
       case 'english': return type === 'instruction' ? 'instruction' : 'audio recording';
-      case 'french': return type === 'instruction' ? 'l\'instruction' : 'texte audio';
+      case 'french': return type === 'instruction' ? 'l\'instruction ' : 'texte audio';
       default: throw Error();
     }
   }
@@ -561,7 +561,10 @@ export class TemplateService {
           gridColumnRange: 2,
           marginBottom: { value: 20, unit: 'px' }
         },
-        { text: config.headingSourceList, styling: { bold: true } }),
+        {
+          text: config.alignment === 'column' ? config.headingSourceList : config.headingTargetLists,
+          styling: { bold: true }
+        }),
       this.createElement(
         'drop-list',
         {
@@ -590,7 +593,10 @@ export class TemplateService {
           gridColumnRange: 2,
           marginBottom: { value: 20, unit: 'px' }
         },
-        { text: config.headingTargetLists, styling: { bold: true } })
+        {
+          text: config.alignment === 'column' ? config.headingTargetLists : config.headingSourceList,
+          styling: { bold: true }
+        })
     ];
     const targetListOffset = config.alignment === 'column' ? 5 : 3;
     config.targetLabels.forEach((label: TextLabel, i: number) => {

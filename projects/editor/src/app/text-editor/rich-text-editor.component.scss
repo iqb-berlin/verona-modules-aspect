@@ -6,13 +6,14 @@
 tiptap-editor {
   flex-grow: 1;
   display: flex;
-  overflow: scroll;
+  overflow: auto;
+  min-height: 80px;
 }
 
 :host ::ng-deep div.ProseMirror {
   width: 100%;
   margin: 1px 1px 10px 1px;
-  overflow: scroll;
+  overflow: auto;
   border: 1px solid gray;
   max-width: 1000px;
   padding: 5px;

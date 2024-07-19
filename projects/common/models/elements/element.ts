@@ -170,7 +170,7 @@ export abstract class InputElement extends UIElement implements InputElementProp
   protected constructor(element?: InputElementProperties) {
     super(element);
     if (element && isValidInputElementProperties(element)) {
-      if (element.label) this.label = element.label;
+      if (element.label !== undefined) this.label = element.label;
       this.value = element.value;
       this.required = element.required;
       this.requiredWarnMessage = element.requiredWarnMessage;

@@ -245,9 +245,11 @@ export class TemplateService {
             marginBottom: { value: marginBottom, unit: 'px' }
           },
           {
-            dimensions: {
-              maxWidth: TemplateService.getWidth(config.fieldLength)
-            } as DimensionProperties,
+            ...!config.useTextAreas && {
+              dimensions: {
+                maxWidth: TemplateService.getWidth(config.fieldLength)
+              } as DimensionProperties
+            },
             ...!config.useTextAreas ? {
               showSoftwareKeyboard: true,
               addInputAssistanceToKeyboard: true,

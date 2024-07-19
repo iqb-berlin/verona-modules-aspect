@@ -154,8 +154,7 @@ export interface InputElementProperties extends UIElementProperties {
 
 function isValidInputElementProperties(blueprint?: InputElementProperties): boolean {
   if (!blueprint) return false;
-  return blueprint?.label !== undefined &&
-    blueprint?.value !== undefined &&
+  return blueprint?.value !== undefined &&
     blueprint?.required !== undefined &&
     blueprint?.requiredWarnMessage !== undefined &&
     blueprint?.readOnly !== undefined;

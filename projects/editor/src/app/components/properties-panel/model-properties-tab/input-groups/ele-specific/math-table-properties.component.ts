@@ -46,7 +46,7 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       </mat-form-field>
 
       {{ 'termRows' | translate }}
-      <div *ngFor="let term of $any(combinedProperties).terms; let i = index;"
+      <div *ngFor="let term of $any(combinedProperties).terms; let i = index; trackBy: trackTerm"
            class="term-list">
         <ng-container *ngIf="combinedProperties.operation !== 'multiplication' || i < 2">
           <mat-form-field (input)="changeTerm($any($event.target).value, i)"
@@ -162,5 +162,10 @@ export class MathTablePropertiesComponent {
   removeTerm(index: number) {
     (this.combinedProperties.terms as string[]).splice(index, 1);
     this.updateModel.emit({ property: 'terms', value: this.combinedProperties.terms as string[] });
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  trackTerm(index: number) {
+    return index;
   }
 }

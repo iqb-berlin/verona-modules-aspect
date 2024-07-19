@@ -46,7 +46,7 @@ import { MatDividerModule } from '@angular/material/divider';
       <mat-divider></mat-divider>
 
       <h3>{{ 'termRows' | translate }}</h3>
-      <div *ngFor="let term of terms; let i = index;" class="terms">
+      <div *ngFor="let term of terms; let i = index; trackBy: trackTerm" class="terms">
         <mat-form-field *ngIf="operation !== 'multiplication' || i < 2"
                         [style.flex-grow]="1" (input)="changeTerm($any($event.target).value, i)">
           <mat-label>Term</mat-label>
@@ -98,5 +98,10 @@ export class MathTableWizardDialogComponent {
 
   removeTerm(index: number) {
     this.terms.splice(index, 1);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  trackTerm(index: number) {
+    return index;
   }
 }

@@ -52,6 +52,7 @@ Editor
 - Ablegelisten, Optionsfelder in Lückentexten, Eingabefelder in Lückentexten haben die nutzlose Eigenschaft "Beschriftung" nicht mehr.
 - Duplizierte Optionsfelder haben neue Optionsreferenzen (verändert nicht mehr das Original, wenn man an der Kopie Optionen editiert)
 - Ausgewählte Seite und Seitenabschnitt werden bei Laden einer Unit zurückgesetzt. Dadurch sollte es nicht mehr zu Fällen kommen, in denen man auf eine nicht-existente Seite gerät beim Wechseln, Verwerfen o.Ä. von Units im Studio.
+- Rechenkästchen: Termeingaben ausgehend von leeren Feldern übertragen sich nicht mehr auf das nächste Feld
 
 ## 2.4.6
 ### Änderungen

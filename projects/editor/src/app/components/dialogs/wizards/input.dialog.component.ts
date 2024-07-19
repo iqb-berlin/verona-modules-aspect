@@ -31,9 +31,8 @@ import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-ed
     <div mat-dialog-title>Assistent: Antwortfeld(er)</div>
     <div mat-dialog-content>
       <h3>Frage</h3>
-      <aspect-rich-text-editor [(content)]="text" [showReducedControls]="true"
-                               [placeholder]="'Hier steht die Fragestellung.'"
-                               [style.min-height.px]="200"></aspect-rich-text-editor>
+      <aspect-rich-text-editor [(content)]="text" [placeholder]="'Hier steht die Fragestellung.'"
+                               [style.min-height.px]="280"></aspect-rich-text-editor>
 
       <mat-divider></mat-divider>
 

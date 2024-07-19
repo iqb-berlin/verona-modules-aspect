@@ -28,8 +28,7 @@ import { TranslateModule } from '@ngx-translate/core';
     <div mat-dialog-title>Assistent: MC mit Text</div>
     <div mat-dialog-content>
       <h3>Frage</h3>
-      <aspect-rich-text-editor class="input1" [(content)]="label1" [showReducedControls]="true"
-                               [placeholder]="'Hier steht die Fragestellung.'">
+      <aspect-rich-text-editor class="input1" [(content)]="label1" [placeholder]="'Hier steht die Fragestellung.'">
       </aspect-rich-text-editor>
 
       <mat-divider></mat-divider>
@@ -56,7 +55,7 @@ import { TranslateModule } from '@ngx-translate/core';
     .mat-mdc-dialog-content {display: flex; flex-direction: column;}
     .mat-mdc-dialog-content > *:not(h3, mat-divider) {margin-left: 30px;}
     h3 {text-decoration: underline;}
-    .input1 {min-height: 200px;}
+    .input1 {min-height: 280px;}
   `
 })
 export class RadioWizardDialogComponent {

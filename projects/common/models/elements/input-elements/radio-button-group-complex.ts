@@ -36,7 +36,7 @@ export class RadioButtonGroupComplexElement extends InputElement
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at RadioButtonGroupComplex instantiation', element);
       }
-      if (element?.label) this.label = element.label;
+      if (element?.label !== undefined) this.label = element.label;
       if (element?.options) this.options = [...element.options];
       if (element?.itemsPerRow) this.itemsPerRow = element.itemsPerRow;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({

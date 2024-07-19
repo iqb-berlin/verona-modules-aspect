@@ -72,7 +72,7 @@ import { SectionCounter } from 'common/util/section-counter';
     .section-wrapper .section {flex-grow: 1;}
   `
 })
-export class SectionComponent implements OnInit {
+export class SectionComponent {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() lastSectionIndex!: number;
@@ -87,10 +87,6 @@ export class SectionComponent implements OnInit {
               public unitService: UnitService,
               public elementService: ElementService,
               public sectionService: SectionService) { }
-
-  ngOnInit(): void {
-    this.updateSectionCounter();
-  }
 
   updateSectionCounter(): void {
     this.sectionCounter = undefined;

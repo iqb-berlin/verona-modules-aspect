@@ -41,6 +41,7 @@ export class SectionService {
         page.addSection(section, sectionIndex);
         this.selectionService.selectedSectionIndex =
           Math.max(0, this.selectionService.selectedSectionIndex - 1);
+        this.unitService.updateSectionCounter();
         return { section, sectionIndex };
       },
       rollback: (deletedData: Record<string, unknown>) => {
@@ -53,6 +54,7 @@ export class SectionService {
         page.deleteSection(sectionIndex);
         this.selectionService.selectedSectionIndex =
           Math.max(0, this.selectionService.selectedSectionIndex - 1);
+        this.unitService.updateSectionCounter();
       }
     });
   }
@@ -130,12 +132,14 @@ export class SectionService {
     page.deleteSection(sectionIndex);
     page.addSection(newSection, sectionIndex);
     this.unitService.updateUnitDefinition();
+    this.unitService.updateSectionCounter();
   }
 
   insertSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
     const page = this.unitService.unit.pages[pageIndex];
     page.addSection(newSection, sectionIndex);
     this.unitService.updateUnitDefinition();
+    this.unitService.updateSectionCounter();
   }
 
   /* Move element between sections */

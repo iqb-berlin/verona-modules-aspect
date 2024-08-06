@@ -19,6 +19,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { TranslateService } from '@ngx-translate/core';
+import { NavigationService } from 'player/src/app/services/navigation.service';
 
 @Component({
   selector: 'aspect-unit',
@@ -38,7 +39,8 @@ export class UnitComponent implements OnInit {
               private anchorService: AnchorService,
               private dialog: MatDialog,
               private changeDetectorRef: ChangeDetectorRef,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private navigationService: NavigationService) {
   }
 
   ngOnInit(): void {
@@ -63,6 +65,7 @@ export class UnitComponent implements OnInit {
           ...unit.getAllElements('drop-list'),
           ...unit.getAllElements('drop-list-simple')]
           .map(element => ((element as InputElement).value as DragNDropValueObject[])).flat();
+        this.setStartPage();
       } catch (e: unknown) {
         // eslint-disable-next-line no-console
         console.error(e);
@@ -78,6 +81,14 @@ export class UnitComponent implements OnInit {
       }
     } else {
       LogService.warn('player: message has no unitDefinition');
+    }
+  }
+
+  private setStartPage(): void {
+    if (this.playerConfig.startPage !== undefined) {
+      const startPage = +this.playerConfig.startPage || 0;
+      // delay is needed for scroll and snap scroll pages to work
+      setTimeout(() => this.navigationService.setPage(startPage), 10);
     }
   }
 

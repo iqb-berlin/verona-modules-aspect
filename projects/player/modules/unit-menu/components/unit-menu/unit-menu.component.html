@@ -4,6 +4,14 @@
 </button>
 
 <mat-menu #menu="matMenu">
+  <mat-form-field
+    class="start-page"
+    (click)="$event.stopPropagation()" >
+    <mat-label>{{ 'startPageIndex' | translate }}</mat-label>
+    <input type="text"
+           matInput
+           [formControl]="formControl">
+  </mat-form-field>
   <button mat-menu-item
           (click)="load('separate')">
     <mat-icon>file_upload</mat-icon>

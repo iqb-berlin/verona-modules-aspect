@@ -8,6 +8,7 @@ import {
 } from 'player/modules/verona/models/verona';
 import { Page } from 'common/models/page';
 import { Response } from '@iqb/responses';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'aspect-unit-menu',
@@ -21,6 +22,7 @@ export class UnitMenuComponent {
   @Input() stateVariableCodes!: Response[];
 
   private postTarget: Window = window;
+  formControl = new FormControl('');
 
   private vopStartCommandMessage: VopStartCommand = {
     type: 'vopStartCommand',
@@ -39,7 +41,7 @@ export class UnitMenuComponent {
   };
 
   async load(pagingMode: PagingMode): Promise<void> {
-    await this.loadUnit(await FileService.loadFile(['.json', '.voud']), pagingMode, {});
+    this.loadUnit(await FileService.loadFile(['.json', '.voud']), pagingMode, {});
   }
 
   reloadUnit(): void {
@@ -49,6 +51,7 @@ export class UnitMenuComponent {
         stateVariableCodes: JSON.stringify(this.stateVariableCodes)
       }
     };
+    this.setStartPage();
     this.postMessage(this.vopStartCommandMessage);
   }
 
@@ -57,9 +60,16 @@ export class UnitMenuComponent {
     this.postTarget.postMessage(this.vopPageNavigationCommandMessage, '*');
   }
 
+  private setStartPage(): void {
+    if (this.formControl.value && this.vopStartCommandMessage.playerConfig) {
+      this.vopStartCommandMessage.playerConfig.startPage = this.formControl.value;
+    }
+  }
+
   private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState): void {
     this.vopStartCommandMessage.unitDefinition = unitDefinition;
     this.vopStartCommandMessage.playerConfig = { pagingMode };
+    this.setStartPage();
     this.vopStartCommandMessage.unitState = unitSate;
     this.postMessage(this.vopStartCommandMessage);
   }

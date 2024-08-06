@@ -20,5 +20,6 @@
   "load_buttons": "Unit im 'Buttons'-Modus laden",
   "load_scroll": "Unit im 'Scroll'-Modus laden",
   "load_snap": "Unit im 'Snap'-Modus laden",
-  "reload_unit": "Unit inkl. Zustand erneut laden"
+  "reload_unit": "Unit inkl. Zustand erneut laden",
+  "startPageIndex": "Index der Startseite"
 }

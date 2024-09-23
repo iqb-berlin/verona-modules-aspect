@@ -61,7 +61,7 @@ export class IDService {
     return false;
   }
 
-  getNewID(type: string): string {
+  private getNewID(type: string): string {
     if (!type) {
       throw Error('ID-Service: No type given!');
     }

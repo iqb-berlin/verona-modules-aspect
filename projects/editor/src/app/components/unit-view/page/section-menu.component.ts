@@ -306,12 +306,12 @@ export class SectionMenuComponent implements OnDestroy {
           const duplicateIDs = data.newSection.getAllElements()
             .filter(element => !this.idService.isIdAvailable(element.id));
           duplicateIDs.forEach(element => {
-            element.id = this.idService.getNewID(element.type);
+            element.id = this.idService.getAndRegisterNewID(element.type);
             if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
               (element as DropListElement).value
                 .filter(valueElement => !this.idService.isIdAvailable(valueElement.id))
                 .forEach(valueElement => {
-                  valueElement.id = this.idService.getNewID('value');
+                  valueElement.id = this.idService.getAndRegisterNewID('value');
                 });
             }
           });

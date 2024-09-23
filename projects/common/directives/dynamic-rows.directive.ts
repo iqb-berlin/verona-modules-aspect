@@ -20,9 +20,9 @@ export class DynamicRowsDirective implements AfterViewInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.observer = new ResizeObserver(entries => {
+    this.observer = new ResizeObserver(() => {
       this.zone.run(() => {
-        this.width = (entries[0].contentRect.width);
+        this.width = this.elementRef.nativeElement.offsetWidth;
         this.calculateDynamicRows();
       });
     });
@@ -35,10 +35,11 @@ export class DynamicRowsDirective implements AfterViewInit, OnChanges {
 
   calculateDynamicRows(): void {
     const averageCharWidth = this.fontSize / 2;
+    const expectedWidth = (this.expectedCharactersCount * averageCharWidth);
     if (this.width) {
       this.dynamicRowsChange.emit(
-        Math.ceil((
-          this.expectedCharactersCount * averageCharWidth) /
+        Math.ceil(
+          expectedWidth /
           this.width
         )
       );

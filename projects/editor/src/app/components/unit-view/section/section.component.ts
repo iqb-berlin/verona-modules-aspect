@@ -29,7 +29,9 @@ import { SectionCounter } from 'common/util/section-counter';
                          [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
                          [section]="section" [sectionIndex]="sectionIndex"
                          [lastSectionIndex]="lastSectionIndex"
-                         (selectElementComponent)="selectElementOverlay($event)">
+                         (elementSelected)="selectElement($event)"
+                         (elementHovered)="highlightElement($event)"
+                         (elementHoverEnd)="removeHighlight()">
     </aspect-section-menu>
 
     <div class="section-wrapper"
@@ -82,6 +84,7 @@ export class SectionComponent {
     sectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
 
   sectionCounter: number | undefined;
+  highlightedElementComponent: CanvasElementOverlay | undefined;
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
@@ -97,24 +100,25 @@ export class SectionComponent {
     }
   }
 
-  selectElementOverlay(element: UIElement): void {
-    const elementComponent = this.getElementOverlay(element);
-    if (elementComponent) {
-      this.selectionService.selectElement({ elementComponent: elementComponent, multiSelect: false });
-    } else {
-      throw Error('Element not found. This is a bug!');
-    }
+  selectElement(elementID: string): void {
+    const elementComponent = this.getElementOverlay(elementID);
+    this.selectionService.selectElement({ elementComponent: elementComponent, multiSelect: false });
   }
 
-  private getElementOverlay(element: UIElement): CanvasElementOverlay | null {
-    for (const sectionComponent of this.sectionComponents.toArray()) {
-      for (const elementComponent of sectionComponent.childElementComponents.toArray()) {
-        if (elementComponent.element.id === element.id) {
-          return elementComponent;
-        }
-      }
-    }
-    return null;
+  highlightElement(elementID: string) {
+    const elementComponent = this.getElementOverlay(elementID);
+    this.highlightedElementComponent = elementComponent;
+    elementComponent.highlight();
+  }
+
+  removeHighlight(): void {
+    this.highlightedElementComponent?.removeHighlight();
+  }
+
+  private getElementOverlay(elementID: string): CanvasElementOverlay {
+    return this.sectionComponents.toArray()
+      .map(sectionComp => sectionComp.childElementComponents.toArray())[0]
+      .filter(elComp => elComp.element.id === elementID)[0];
   }
 
   elementDropped(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {

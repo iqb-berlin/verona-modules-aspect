@@ -43,7 +43,7 @@ import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
     '.draggable-element {width: 100%; height: 100%;}',
     '.draggable-element.disabled-drag {cursor: unset;}',
     '.draggable-element:not(.disabled-drag):active {cursor: grabbing}',
-    '.temporaryHighlight {z-index: 100}',
+    '.temporaryHighlight {z-index: 100; background-color: lightblue;}',
     '.centered-horizontal {display: flex; justify-content: center;}',
     '.centered-vertical {display: flex; align-items: center;}',
     ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}'

@@ -55,7 +55,9 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
           Keine Elemente im Abschnitt
         </ng-container>
         <mat-list-item *ngFor="let element of section.elements"
-                       (click)="selectElement(element)">
+                       (mouseover)="onUnitListElHover(element)"
+                       (mouseleave)="onUnitListElLeave()"
+                       (click)="onUnitListElClick(element)">
           <mat-icon matListItemIcon [style.margin-right.px]="10">
             {{ $any(element.constructor).icon }}
           </mat-icon>
@@ -215,7 +217,9 @@ export class SectionMenuComponent implements OnDestroy {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() lastSectionIndex!: number;
-  @Output() selectElementComponent = new EventEmitter<UIElement>();
+  @Output() elementSelected = new EventEmitter<string>();
+  @Output() elementHovered = new EventEmitter<string>();
+  @Output() elementHoverEnd = new EventEmitter();
 
   @ViewChild('colorPicker') colorPicker!: ElementRef;
   private ngUnsubscribe = new Subject<void>();
@@ -234,8 +238,17 @@ export class SectionMenuComponent implements OnDestroy {
     this.sectionService.updateSectionProperty(this.section, property, value);
   }
 
-  selectElement(element: UIElement): void {
-    this.selectElementComponent.emit(element);
+  onUnitListElClick(element: UIElement): void {
+    this.elementHoverEnd.emit();
+    this.elementSelected.emit(element.id);
+  }
+
+  onUnitListElHover(element: UIElement): void {
+    this.elementHovered.emit(element.id);
+  }
+
+  onUnitListElLeave(): void {
+    this.elementHoverEnd.emit();
   }
 
   deleteSection(): void {

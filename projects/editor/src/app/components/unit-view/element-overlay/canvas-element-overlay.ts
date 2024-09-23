@@ -108,15 +108,24 @@ export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
   }
 
   setSelected(newValue: boolean): void {
-    this.temporaryHighlight = true;
-    setTimeout(() => {
-      this.temporaryHighlight = false;
-    }, 2000);
     this.isSelected = newValue;
     // This avoids: "NG0100: Expression has changed after it was checked"
     // The selection service may change the "selected" variable after onInit has run.
     // Therefore we need to run it again after this.
     this.changeDetectorRef.detectChanges();
+  }
+
+  highlight(duration?: number): void {
+    this.temporaryHighlight = true;
+    if (duration) {
+      setTimeout(() => {
+        this.temporaryHighlight = false;
+      }, duration);
+    }
+  }
+
+  removeHighlight(): void {
+    this.temporaryHighlight = false;
   }
 
   selectElement(event?: MouseEvent): void {

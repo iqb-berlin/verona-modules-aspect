@@ -1,5 +1,9 @@
 Allgemein
 =========
+## editor/2.4.10+player/2.4.13
+### Fehlerbehebungen
+- Behebt "Flackern"-Fehler bei Eingabebereichen mit dynamischen Zeilen unter Chromium
+
 ## editor/2.4.9+player/2.4.10
 ### Fehlerbehebungen
 - Optionstabellen und Optionsfelder mit Bildern:

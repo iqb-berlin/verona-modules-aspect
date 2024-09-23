@@ -89,6 +89,9 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   }
 
   dragStart(event: DragStartEvent, item: DragNDropValueObject, index: number, sourceListComponent: DropListComponent) {
+    if (this.dragOpService.isDragActive) { // Prevent pickung up second element while holding another (2 fingers)
+      return;
+    }
     this.dragOpService.startDrag(event.sourceElement, sourceListComponent, index, item, event.dragType);
     this.dragImageRef?.instance.initDragPreview(item, event.sourceElement, event.x, event.y);
     document.body.classList.add('dragging-active'); // add class for cursor while dragging

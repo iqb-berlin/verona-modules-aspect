@@ -1,5 +1,9 @@
 Allgemein
 =========
+## next
+### Fehlerbehebungen
+- Behebt "Flackern"-Fehler von Eingabebereichen mit dynamischen Zeilen unter Chromium
+
 ## editor/2.5.0+player/2.5.0
 ### Neue Funktion
 - Neues Element: Tabelle

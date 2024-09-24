@@ -1,11 +1,21 @@
 import {
-  AfterViewInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, Input, NgZone, OnChanges, Output, SimpleChanges
+  AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
 } from '@angular/core';
 
 @Directive({
   selector: '[dynamicRows]'
 })
-export class DynamicRowsDirective implements AfterViewInit, OnChanges {
+export class DynamicRowsDirective implements OnInit, AfterViewInit, OnChanges {
   @Input() fontSize!: number;
   @Input() expectedCharactersCount!: number;
   @Output() dynamicRowsChange: EventEmitter<number> = new EventEmitter<number>();
@@ -20,9 +30,9 @@ export class DynamicRowsDirective implements AfterViewInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    this.observer = new ResizeObserver(entries => {
+    this.observer = new ResizeObserver(() => {
       this.zone.run(() => {
-        this.width = (entries[0].contentRect.width);
+        this.width = this.elementRef.nativeElement.offsetWidth;
         this.calculateDynamicRows();
       });
     });

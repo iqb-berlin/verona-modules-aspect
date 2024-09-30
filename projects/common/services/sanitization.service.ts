@@ -88,7 +88,7 @@ export class SanitizationService {
     if (!idManager.isIdAvailable(element.id)) {
       console.warn(`Id already in: ${element.id}! Generating a new one...`);
       this.repairLog.push(element.id);
-      element.id = idManager.getNewID((element as UIElement).type || 'value');
+      element.id = idManager.getAndRegisterNewID((element as UIElement).type || 'value');
     }
     idManager.addID(element.id);
 

@@ -16,22 +16,22 @@ describe('IDService', () => {
     idService.reset();
   });
 
-  it('getNewID should fail on empty string param', () => {
-    expect(() => { idService.getNewID(''); }).toThrow(Error('ID-Service: No type given!'));
+  it('getAndRegisterNewID should fail on empty string param', () => {
+    expect(() => { idService.getAndRegisterNewID(''); }).toThrow(Error('ID-Service: No type given!'));
   });
 
-  it('getNewID should return first ID', () => {
-    expect(idService.getNewID('text')).toBe('text_1');
+  it('getAndRegisterNewID should return first ID', () => {
+    expect(idService.getAndRegisterNewID('text')).toBe('text_1');
   });
 
-  it('getNewID should return different IDs - counting up', () => {
-    idService.getNewID('text');
-    expect(idService.getNewID('text')).toBe('text_2');
+  it('getAndRegisterNewID should return different IDs - counting up', () => {
+    idService.getAndRegisterNewID('text');
+    expect(idService.getAndRegisterNewID('text')).toBe('text_2');
   });
 
   it('idService should return next id when one is already taken', () => {
     idService.addID('text_1');
-    expect(idService.getNewID('text')).toBe('text_2');
+    expect(idService.getAndRegisterNewID('text')).toBe('text_2');
   });
 
   it('isIdAvailable should return false when id is already taken', () => {

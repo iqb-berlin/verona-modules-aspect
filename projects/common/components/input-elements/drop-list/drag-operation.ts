@@ -1,6 +1,6 @@
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
-import { DragOperatorService } from 'common/components/input-elements/drop-list/drag-operator.service';
+import { DropLogic } from 'common/components/input-elements/drop-list/drop-logic';
 
 export class DragOperation {
   sourceElement: HTMLElement;
@@ -26,11 +26,11 @@ export class DragOperation {
     this.targetComponent = sourceListComponent;
 
     this.eligibleTargetListsIDs = Object.values(allDropLists)
-      .filter(dropList => (DragOperatorService.isDropAllowed( // TODO performance!
+      .filter(dropList => (DropLogic.isDropAllowed( // TODO performance!
         this.draggedItem,
-        sourceListComponent,
-        allDropLists[dropList.elementModel.id],
-        allDropLists)
+        sourceListComponent.elementModel.id,
+        allDropLists[dropList.elementModel.id].elementModel.id,
+        DropLogic.createDropListMocks(allDropLists))
       ))
       .map(droplist => droplist.elementModel.id);
   }

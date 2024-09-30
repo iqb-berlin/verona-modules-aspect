@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { DragOperation } from 'common/components/input-elements/drop-list/drag-operation';
+import { DropLogic } from 'common/components/input-elements/drop-list/drop-logic';
 
 @Injectable({
   providedIn: 'root'
@@ -108,10 +109,10 @@ export class DragOperatorService {
   handleDrop(): void {
     if (!this.dragOperation) throw new Error('dragOP undefined');
     if (this.dragOperation.sourceComponent && this.dragOperation.targetComponent &&
-      DragOperatorService.isDropAllowed(this.dragOperation.draggedItem,
-        this.dragOperation.sourceComponent,
-        this.dragOperation.targetComponent,
-        this.dropLists)) {
+      DropLogic.isDropAllowed(this.dragOperation.draggedItem,
+        this.dragOperation.sourceComponent.elementModel.id,
+        this.dragOperation.targetComponent.elementModel.id,
+        DropLogic.createDropListMocks(this.dropLists))) {
       if (this.dragOperation.sourceComponent === this.dragOperation.targetComponent) {
         if (!this.dragOperation.targetComponent.elementModel.isSortList) return;
         const item =
@@ -146,10 +147,10 @@ export class DragOperatorService {
   }
 
   addItem(item: DragNDropValueObject, targetList: DropListComponent): void {
-    if (DragOperatorService.isPutBack(item, targetList)) {
+    if (DropLogic.isPutBack(item, DropLogic.createDropListMock(targetList))) {
       return;
     }
-    if (DragOperatorService.isReplace(targetList, this.dropLists)) {
+    if (DropLogic.isReplace(item, DropLogic.createDropListMock(targetList), DropLogic.createDropListMocks(this.dropLists))) {
       const originList = this.dropLists[targetList.elementFormControl.value[0].originListID];
       this.moveItem(targetList.elementFormControl.value[0], targetList, 0, originList);
       originList.updateFormvalue();
@@ -190,61 +191,5 @@ export class DragOperatorService {
       const targetIndex = Array.from((hoveredListItem.parentNode as HTMLElement).children).indexOf(hoveredListItem);
       this.positionSortPlaceholder(targetIndex);
     }
-  }
-
-  static isDropAllowed(draggedItem: DragNDropValueObject | undefined,
-                       sourceList: DropListComponent,
-                       targetList: DropListComponent,
-                       allLists: { [id: string]: DropListComponent },
-                       ignoreConnection: boolean = false): boolean {
-    return DragOperatorService.checkIsSourceList(sourceList, targetList) &&
-      DragOperatorService.checkConnected(sourceList, targetList, ignoreConnection) &&
-      DragOperatorService.checkOnlyOneItem(targetList, allLists) &&
-      DragOperatorService.checkAddForeignItemToCopyList(draggedItem, targetList);
-  }
-
-  /* Only allow drops in other lists, except for sortlists. */
-  private static checkIsSourceList(sourceList: DropListComponent, targetList: DropListComponent): boolean {
-    return (sourceList.elementModel.id === targetList.elementModel.id && sourceList.elementModel.isSortList) ||
-      sourceList.elementModel.id !== targetList.elementModel.id;
-  }
-
-  /* Check list connection, sortlist is an exception since source and target can be the same. */
-  private static checkConnected(sourceList: DropListComponent, targetList: DropListComponent, ignoreConnection: boolean = false): boolean {
-    return ignoreConnection ||
-      (sourceList.elementModel.id === targetList.elementModel.id && sourceList.elementModel.isSortList) ||
-      sourceList.elementModel.connectedTo.includes(targetList.elementModel.id);
-  }
-
-  /* Return false, when drop is not allowed */
-  private static checkOnlyOneItem(targetList: DropListComponent,
-                                  allLists: { [id: string]: DropListComponent }): boolean {
-    return !(targetList.elementModel.onlyOneItem &&
-      targetList.elementFormControl.value.length > 0 &&
-      !DragOperatorService.isReplace(targetList, allLists));
-  }
-
-  /* Don't allow moving item into copy list that not originate from there. */
-  private static checkAddForeignItemToCopyList(draggedItem: DragNDropValueObject | undefined,
-                                               targetList: DropListComponent): boolean {
-    return !(targetList.elementModel.copyOnDrop && draggedItem?.originListID !== targetList.elementModel.id);
-  }
-
-  static isPutBack(draggedItem: DragNDropValueObject | undefined, targetList: DropListComponent): boolean {
-    return targetList.elementModel.copyOnDrop && draggedItem?.originListID === targetList.elementModel.id;
-  }
-
-  static isReplace(targetList: DropListComponent,
-                   allLists: { [id: string]: DropListComponent }): boolean {
-    return targetList.elementModel.onlyOneItem &&
-      targetList.elementFormControl.value.length === 1 &&
-      targetList.elementModel.allowReplacement &&
-      DragOperatorService.isDropAllowed(
-        targetList.elementFormControl.value[0],
-        targetList,
-        allLists[targetList.elementFormControl.value[0].originListID],
-        allLists,
-        true
-      );
   }
 }

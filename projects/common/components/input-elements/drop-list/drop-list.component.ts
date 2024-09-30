@@ -1,8 +1,8 @@
 import {
   Component, Input, OnInit,
   ComponentRef, ElementRef,
-  ChangeDetectorRef, Renderer2,
-  ViewChild, ViewChildren, QueryList
+  ChangeDetectorRef,
+  ViewChildren, QueryList
 } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
@@ -77,7 +77,7 @@ export class DropListComponent extends FormElementComponent implements OnInit {
   isHighlighted = false;
 
   constructor(public dragOpService: DragOperatorService, public elementRef: ElementRef,
-              private renderer2: Renderer2, public cdr: ChangeDetectorRef, private overlay: Overlay) {
+              public cdr: ChangeDetectorRef, private overlay: Overlay) {
     super(elementRef);
   }
 

@@ -10,7 +10,7 @@ import {
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import {
-  CompoundElement, InputElement, PositionedUIElement, UIElement
+  CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
@@ -138,7 +138,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       let initialValue: ResponseValueType;
       switch (childModel.type) {
         case 'image':
-          initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+          initialValue = this.elementModelElementCodeMappingService.mapToElementCodeValue(
             (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type);
           break;
         case 'audio':
@@ -151,11 +151,11 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
         case 'text':
           // initialValue = ElementModelElementCodeMappingService
           //   .mapToElementCodeValue((childModel as TextElement).text, childModel.type);
-          initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+          initialValue = this.elementModelElementCodeMappingService.mapToElementCodeValue(
             this.savedTexts[childModel.id], childModel.type);
           break;
         default:
-          initialValue = ElementModelElementCodeMappingService
+          initialValue = this.elementModelElementCodeMappingService
             .mapToElementCodeValue((childModel as InputElement).value, childModel.type);
       }
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
@@ -228,7 +228,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       .subscribe(value => {
         this.unitStateService.changeElementCodeValue({
           id: value.id,
-          value: ElementModelElementCodeMappingService
+          value: this.elementModelElementCodeMappingService
             .mapToElementCodeValue(value.value, childModel.type)
         });
       });

@@ -45,9 +45,7 @@ export class TextMarkingBarComponent {
   }>();
 
   selectedColor!: string;
-  selectionColors: Record<string, string> = {
-    yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
-  };
+  selectionColors: Record<string, string> = TextElement.selectionColors;
 
   changeMarkingData(selection: { isSelected: boolean, color: string, mode: 'mark' | 'delete' }): void {
     this.selectedColor = selection.isSelected ? selection.color : 'none';

@@ -69,11 +69,11 @@ export class InteractiveGroupElementComponent
     let initialValue;
     switch (this.elementModel.type) {
       case 'image':
-        initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+        initialValue = this.elementModelElementCodeMappingService.mapToElementCodeValue(
           (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type);
         break;
       case 'math-table':
-        initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
+        initialValue = this.elementModelElementCodeMappingService.mapToElementCodeValue(
           [], this.elementModel.type);
         break;
       default:
@@ -124,8 +124,8 @@ export class InteractiveGroupElementComponent
   changeElementCodeValue(value: ValueChangeElement): void {
     this.unitStateService.changeElementCodeValue({
       id: value.id,
-      value: ElementModelElementCodeMappingService
-        .mapToElementCodeValue(value.value, this.elementModel.type)
+      value: this.elementModelElementCodeMappingService
+        .mapToElementCodeValue(value.value, this.elementModel.type, this.elementModel)
     });
   }
 

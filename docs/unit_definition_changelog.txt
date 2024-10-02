@@ -172,3 +172,7 @@ iqb-aspect-definition@1.0.0
 - new Section prop: ignoreNumbering
 - Audio, Video: styling.background-color
 - DropList: new prop: showNumbering, startNumberingAtZero
+
+4.7.0
+- Text
+  - new property: markingMode: 'none' | 'selection' | 'singleClick' | 'rangeClick'

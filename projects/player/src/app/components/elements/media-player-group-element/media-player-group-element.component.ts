@@ -44,7 +44,7 @@ export class MediaPlayerGroupElementComponent extends ElementGroupDirective impl
 
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(this.elementModel.id,
-      ElementModelElementCodeMappingService.mapToElementCodeValue(this.initialValue, this.elementModel.type),
+      this.elementModelElementCodeMappingService.mapToElementCodeValue(this.initialValue, this.elementModel.type),
       this.elementComponent,
       this.pageIndex);
   }
@@ -52,7 +52,7 @@ export class MediaPlayerGroupElementComponent extends ElementGroupDirective impl
   changeElementCodeValue(value: ValueChangeElement): void {
     this.unitStateService.changeElementCodeValue({
       id: value.id,
-      value: ElementModelElementCodeMappingService
+      value: this.elementModelElementCodeMappingService
         .mapToElementCodeValue(value.value, this.elementModel.type)
     });
   }

@@ -271,16 +271,21 @@ export class TextMarkingUtils {
     return nodes;
   }
 
-  private static rgbToHex = (rgb: number[]): string => `#${rgb.map(x => {
+  static rgbToHex = (rgb: number[]): string => `#${rgb.map(x => {
     const hex = x.toString(16);
     return hex.length === 1 ? `0${hex}` : hex;
   }).join('')}`;
 
-  private static hexToRgb = (hex: string): number[] => {
+  static hexToRgbString(hex: string): string {
+    const rgb = TextMarkingUtils.hexToRgb(hex);
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+  }
+
+  private static hexToRgb(hex: string): number[] {
     const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
     if (normal) return normal.slice(1).map(e => parseInt(e, 16));
     const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
     if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
     return [];
-  };
+  }
 }

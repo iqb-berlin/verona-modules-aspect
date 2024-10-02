@@ -12,6 +12,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
   text: string = 'Lorem ipsum dolor sit amet';
+  markingMode: 'none' | 'selection' | 'singleClick' | 'rangeClick' = 'singleClick';
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;
@@ -24,11 +25,15 @@ export class TextElement extends UIElement implements TextProperties {
 
   static title: string = 'Text';
   static icon: string = 'text_snippet';
+  static selectionColors: Record<string, string> = {
+    yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
+  };
 
   constructor(element?: TextProperties) {
     super(element);
     if (element && isValid(element)) {
       this.text = element.text;
+      this.markingMode = element.markingMode;
       this.highlightableOrange = element.highlightableOrange;
       this.highlightableTurquoise = element.highlightableTurquoise;
       this.highlightableYellow = element.highlightableYellow;
@@ -41,6 +46,7 @@ export class TextElement extends UIElement implements TextProperties {
         throw new InstantiationEror('Error at Text instantiation', element);
       }
       if (element?.text !== undefined) this.text = element.text;
+      if (element?.markingMode !== undefined) this.markingMode = element.markingMode;
       if (element?.highlightableOrange !== undefined) this.highlightableOrange = element.highlightableOrange;
       if (element?.highlightableTurquoise !== undefined) this.highlightableTurquoise = element.highlightableTurquoise;
       if (element?.highlightableYellow !== undefined) this.highlightableYellow = element.highlightableYellow;
@@ -65,14 +71,16 @@ export class TextElement extends UIElement implements TextProperties {
     return new TextElement(this);
   }
 
-  private isHighlightable(): boolean {
-    return this.highlightableYellow ||
-        this.highlightableTurquoise ||
-        this.highlightableOrange;
+  private isSelectable(): boolean {
+    return this.markingMode === 'selection' && (
+      this.highlightableYellow ||
+      this.highlightableTurquoise ||
+      this.highlightableOrange
+    );
   }
 
   getVariableInfos(): VariableInfo[] {
-    if (!this.isHighlightable()) return [];
+    if (!this.isSelectable()) return [];
     return [{
       id: this.id,
       type: 'string',
@@ -104,6 +112,7 @@ export class TextElement extends UIElement implements TextProperties {
 
 export interface TextProperties extends UIElementProperties {
   text: string;
+  markingMode: 'none' | 'selection' | 'singleClick' | 'rangeClick';
   highlightableOrange: boolean;
   highlightableTurquoise: boolean;
   highlightableYellow: boolean;
@@ -118,6 +127,7 @@ export interface TextProperties extends UIElementProperties {
 function isValid(blueprint?: TextProperties): boolean {
   if (!blueprint) return false;
   return blueprint.text !== undefined &&
+    blueprint.markingMode !== undefined &&
     blueprint.highlightableOrange !== undefined &&
     blueprint.highlightableTurquoise !== undefined &&
     blueprint.highlightableYellow !== undefined &&

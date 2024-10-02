@@ -3,8 +3,8 @@ import {
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import { ElementComponent } from '../../directives/element-component.directive';
-import { ImageFullscreenDialog, ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 
 @Component({
   selector: 'aspect-text',
@@ -12,9 +12,10 @@ import { ImageFullscreenDialog, ImageFullscreenDirective } from 'common/directiv
     <div [style.width.%]="100"
          [style.height.%]="100">
       <aspect-text-marking-bar
-        *ngIf="elementModel.highlightableYellow ||
-            elementModel.highlightableTurquoise ||
-            elementModel.highlightableOrange"
+        *ngIf="elementModel.markingMode === 'selection' && (
+               elementModel.highlightableYellow ||
+               elementModel.highlightableTurquoise ||
+               elementModel.highlightableOrange)"
         [elementModel]="elementModel"
         (markingDataChanged)="selectedColor=$event.colorName; markingDataChanged.emit($event)">
       </aspect-text-marking-bar>
@@ -77,9 +78,10 @@ export class TextComponent extends ElementComponent implements AfterViewInit, On
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
   startTextSelection(event: PointerEvent): void {
-    if (this.elementModel.highlightableYellow ||
+    if (this.elementModel.markingMode === 'selection' &&
+      (this.elementModel.highlightableYellow ||
       this.elementModel.highlightableTurquoise ||
-      this.elementModel.highlightableOrange) {
+      this.elementModel.highlightableOrange)) {
       this.textSelectionStart.emit(event);
     }
   }

@@ -1,11 +1,14 @@
 <aspect-text
     #elementComponent
+    clickable
+    [elementComponent]="elementComponent"
     [elementModel]="elementModel | cast: TextElement"
     [savedText]="savedText"
     (markingDataChanged)="textMarkingSupport.applyMarkingData($event, elementComponent)"
     (textSelectionStart)="textMarkingSupport.startTextSelection($event, elementComponent)"
     (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-text>
+
 <aspect-floating-marking-bar *ngIf="elementModel.hasSelectionPopup"
     [elementComponent]="elementComponent"
     [isMarkingBarOpen]="textMarkingSupport.isMarkingBarOpen"

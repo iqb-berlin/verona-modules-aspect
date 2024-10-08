@@ -25,7 +25,7 @@ describe('PageLabelDirective', () => {
 
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      declarations: [ TestComponent, PageLabelDirective ]
+      declarations: [TestComponent, PageLabelDirective]
     })
       .createComponent(TestComponent);
     component = fixture.componentInstance;

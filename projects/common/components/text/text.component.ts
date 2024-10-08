@@ -12,7 +12,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
     <div [style.width.%]="100"
          [style.height.%]="100">
       <aspect-text-marking-bar
-        *ngIf="elementModel.markingMode === 'selection' && (
+        *ngIf="elementModel.markingMode === 'default' && (
                elementModel.highlightableYellow ||
                elementModel.highlightableTurquoise ||
                elementModel.highlightableOrange)"
@@ -78,7 +78,7 @@ export class TextComponent extends ElementComponent implements AfterViewInit, On
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
   startTextSelection(event: PointerEvent): void {
-    if (this.elementModel.markingMode === 'selection' &&
+    if (this.elementModel.markingMode === 'default' &&
       (this.elementModel.highlightableYellow ||
       this.elementModel.highlightableTurquoise ||
       this.elementModel.highlightableOrange)) {

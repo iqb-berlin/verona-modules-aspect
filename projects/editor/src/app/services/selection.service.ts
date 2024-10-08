@@ -27,6 +27,11 @@ export class SelectionService {
     this.selectedElementComponents = [];
   }
 
+  updateSelection(pageIndex: number, sectionIndex: number): void {
+    this.selectedPageIndex = pageIndex;
+    this.selectedSectionIndex = sectionIndex;
+  }
+
   get selectedElements(): Observable<UIElement[]> {
     return this._selectedElements.asObservable();
   }

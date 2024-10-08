@@ -1,19 +1,13 @@
 import {
-  Component, Input, OnDestroy, OnInit, QueryList, ViewChildren
+  Component, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { PositionedUIElement, UIElement } from 'common/models/elements/element';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Page } from 'common/models/page';
-import { Section } from 'common/models/section';
-import { UnitService } from '../../../services/unit-services/unit.service';
-import { SelectionService } from '../../../services/selection.service';
-import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
-import { SectionStaticComponent } from 'editor/src/app/components/unit-view/section/section-static.component';
-import { SectionDynamicComponent } from 'editor/src/app/components/unit-view/section/section-dynamic.component';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
 
 @Component({
@@ -24,23 +18,24 @@ import { SectionComponent } from 'editor/src/app/components/unit-view/section/se
       background-color: lightgrey;
       padding: 20px 50px;
       height: 100%;
-      overflow: auto;
-    }
-    .add-section-icon{
-      font-size: 24px;
-      color: white;
-      margin-top: -5px;
     }
     .add-section-button {
-      width: 100%;
       height: 25px;
-      background-color: #BABABA;
+      width: 30%;
+      background-color: var(--button-darker-grey);
       margin-top: 10px;
     }
+    .page-wrapper {
+      margin-bottom: 10px; display: flex; flex-direction: column; align-items: center;
+    }
+    .page-label {
+      display: inline; vertical-align: super; font-size: large;
+    }
   `]
-  })
+})
 export class CanvasComponent implements OnInit, OnDestroy {
-  @Input() page!: Page;
+  @Input() pages!: Page[];
+  @Output() pagesChanged = new EventEmitter();
   @ViewChildren(SectionComponent) sectionComponents!: QueryList<SectionComponent>;
 
   private ngUnsubscribe = new Subject<void>();
@@ -63,9 +58,19 @@ export class CanvasComponent implements OnInit, OnDestroy {
       );
   }
 
-  addSection(): void {
-    this.sectionService.addSection(this.page);
-    this.selectionService.selectedSectionIndex = this.page.sections.length - 1;
+  addSection(pageIndex: number): void {
+    this.sectionService.addSection(this.pages[pageIndex]);
+    this.selectionService.selectedPageIndex = pageIndex;
+    this.selectionService.selectedSectionIndex = this.pages[pageIndex].sections.length - 1;
+  }
+
+  moveSectionToNewpage(pageIndex: number): void {
+    this.unitService.moveSectionToNewpage(pageIndex, this.selectionService.selectedSectionIndex);
+  }
+
+  /* Move page section to page above and delete page. */
+  collapsePage(pageIndex: number): void {
+    this.unitService.collapsePage(pageIndex);
   }
 
   ngOnDestroy(): void {

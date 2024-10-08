@@ -13,9 +13,6 @@
   background-color: lightgray;
   min-width: 0;
   width: 2%;
-}
-
-.drawer-button {
   border: none;
   cursor: pointer;
 }
@@ -34,7 +31,12 @@
   display: inherit;
 }
 
-::ng-deep .mat-drawer-content .mat-mdc-tab-body-wrapper {
+/*Only scroll the inner part and not the side panels*/
+:host ::ng-deep .mat-mdc-tab-body {
+  position: absolute !important;
+  height: 100%;
+}
+:host ::ng-deep .mat-drawer-content .mat-mdc-tab-body-wrapper {
   height: 100%;
 }
 
@@ -43,7 +45,7 @@
   left: 100%;
 }
 
-aspect-page-canvas {
+.fullscreen-page {
   height: 100%;
 }
 
@@ -51,6 +53,7 @@ aspect-page-canvas {
   min-width: 160px;
 }
 
+/* add margin to page settings button */
 :host ::ng-deep .mat-mdc-icon-button .mat-mdc-button-persistent-ripple::before {
   top: 15%;
   left: 15%;
@@ -65,4 +68,15 @@ aspect-page-canvas {
 /* Align menu buttons to right side. */
 :host ::ng-deep .mat-mdc-tab-labels>div:nth-last-child(2) {
   margin-left: auto !important;
+}
+
+:host ::ng-deep .mat-mdc-tab-body-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-page-button {
+  align-self: center;
+  margin-top: 20px;
+  background-color: var(--button-darker-grey);
 }

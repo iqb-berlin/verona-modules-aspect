@@ -1,5 +1,5 @@
 import {
-  Component, Input, OnInit, QueryList, ViewChildren
+  Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren
 } from '@angular/core';
 import { SectionMenuComponent } from 'editor/src/app/components/unit-view/page/section-menu.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -24,10 +24,10 @@ import { SectionCounter } from 'common/util/section-counter';
     SectionMenuComponent, SectionStaticComponent, SectionDynamicComponent
   ],
   template: `
-    <aspect-section-menu [class.hidden]="selectionService.selectedSectionIndex !== sectionIndex"
+    <aspect-section-menu [class.hidden]="!isOnSelectedPage || selectionService.selectedSectionIndex !== sectionIndex"
                          class="section-menu fx-column-start-stretch"
                          [style.left.px]="-45" [style.z-index]="1" [style.position]="'absolute'"
-                         [section]="section" [sectionIndex]="sectionIndex"
+                         [section]="section" [sectionIndex]="sectionIndex" [pageIndex]="pageIndex"
                          [lastSectionIndex]="lastSectionIndex"
                          (elementSelected)="selectElement($event)"
                          (elementHovered)="highlightElement($event)"
@@ -43,23 +43,29 @@ import { SectionCounter } from 'common/util/section-counter';
                              #sectionComponent
                              class="section" id="section-{{sectionIndex}}"
                              [section]="section"
-                             [isSelected]="selectionService.selectedSectionIndex === sectionIndex"
+                             [isSelected]="isOnSelectedPage && selectionService.selectedSectionIndex === sectionIndex"
                              (elementSelected)="selectionService.selectedSectionIndex = sectionIndex"
                              cdkDropList cdkDropListSortingDisabled
-                             [cdkDropListData]="{ sectionIndex: sectionIndex }"
+                             [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex }"
                              (cdkDropListDropped)="elementDropped($event)"
                              (click)="selectionService.selectedSectionIndex = sectionIndex">
       </aspect-section-static>
       <aspect-section-dynamic *ngIf="section.dynamicPositioning"
                               #sectionComponent
                               class="section"
-                              [section]="section" [sectionIndex]="sectionIndex"
-                              [isSelected]="selectionService.selectedSectionIndex === sectionIndex"
-                              (elementSelected)="selectionService.selectedSectionIndex = sectionIndex"
+                              [section]="section" [sectionIndex]="sectionIndex" [pageIndex]="pageIndex"
+                              [isSelected]="isOnSelectedPage &&
+                                            selectionService.selectedSectionIndex === sectionIndex"
+                              (elementSelected)="selectionService.selectedPageIndex = pageIndex;
+                                                 selectionService.selectedSectionIndex = sectionIndex"
                               (transferElement)="moveElementsBetweenSections(selectionService.getSelectedElements(),
-                                                                 $event.previousSectionIndex,
-                                                                 $event.newSectionIndex)"
-                              (click)="selectionService.selectedSectionIndex = sectionIndex">
+                                                                 $event.sourcePageIndex,
+                                                                 $event.sourceSectionIndex,
+                                                                 $event.targetPageIndex,
+                                                                 $event.targetSectionIndex)"
+                              (click)="selectionService.selectedSectionIndex = sectionIndex;
+                                       sectionSelected.emit(sectionIndex)">
+<!--                              (click)="selectionService.updateSelection(sectionIndex)">-->
       </aspect-section-dynamic>
     </div>
   `,
@@ -79,6 +85,9 @@ export class SectionComponent {
   @Input() sectionIndex!: number;
   @Input() lastSectionIndex!: number;
   @Input() alwaysVisiblePage: boolean = false;
+  @Input() isOnSelectedPage: boolean = false;
+  @Input() pageIndex!: number;
+  @Output() sectionSelected = new EventEmitter();
 
   @ViewChildren('sectionComponent')
     sectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
@@ -121,12 +130,15 @@ export class SectionComponent {
       .filter(elComp => elComp.element.id === elementID)[0];
   }
 
-  elementDropped(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates?: number[]; }>): void {
+  elementDropped(event: CdkDragDrop<{ pageIndex: number, sectionIndex: number; gridCoordinates?: number[]; }>): void {
+    console.log('SectionComponent: elementDropped');
     const selectedElements = this.selectionService.getSelectedElements() as PositionedUIElement[];
 
     if (event.previousContainer !== event.container) {
       this.moveElementsBetweenSections(selectedElements,
+        event.previousContainer.data.pageIndex,
         event.previousContainer.data.sectionIndex,
+        event.container.data.pageIndex,
         event.container.data.sectionIndex);
     } else {
       const page = this.unitService.getSelectedPage();
@@ -158,10 +170,12 @@ export class SectionComponent {
     return page.sections.reduce(reduceFct, 0);
   }
 
-  moveElementsBetweenSections(elements: UIElement[], previousSectionIndex: number, newSectionIndex: number): void {
-    const page = this.unitService.getSelectedPage();
-    this.sectionService.transferElements(elements,
-      page.sections[previousSectionIndex],
-      page.sections[newSectionIndex]);
+  moveElementsBetweenSections(elements: UIElement[], sourcePageIndex: number, sourceSectionIndex: number,
+                              targetPageIndex: number, targetSectionIndex: number): void {
+    const sourceSection = this.unitService.unit.pages[sourcePageIndex].sections[sourceSectionIndex];
+    const targetSection = this.unitService.unit.pages[targetPageIndex].sections[targetSectionIndex];
+    this.sectionService.transferElements(elements, sourceSection, targetSection);
+    this.selectionService.selectedPageIndex = targetPageIndex;
+    this.selectionService.selectedSectionIndex = targetSectionIndex;
   }
 }

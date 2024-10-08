@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PageChangeService } from 'common/services/page-change.service';
-import { UnitService } from '../../services/unit-services/unit.service';
-import { SelectionService } from '../../services/selection.service';
 import { HistoryService } from 'editor/src/app/services/history.service';
 import { PageService } from 'editor/src/app/services/unit-services/page.service';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { UnitService } from '../../services/unit-services/unit.service';
+import { SelectionService } from '../../services/selection.service';
 
 @Component({
   selector: 'aspect-unit-view',
@@ -13,6 +13,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 })
 export class UnitViewComponent {
   pagesLoaded = true;
+  showPagesAsList = true;
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
@@ -26,6 +27,8 @@ export class UnitViewComponent {
 
   addPage(): void {
     this.pageService.addPage();
+    this.selectionService.selectedPageIndex = this.unitService.unit.pages.length - 1;
+    this.selectionService.selectedSectionIndex = 0;
   }
 
   /* This is a hack. The tab element gets bugged when changing the underlying array.
@@ -35,6 +38,10 @@ export class UnitViewComponent {
     setTimeout(() => {
       this.pagesLoaded = true;
     });
+  }
+
+  toggleViewMode(): void {
+    this.showPagesAsList = !this.showPagesAsList;
   }
 
   setSectionNumbering(event: MatCheckboxChange) {

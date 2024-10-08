@@ -252,4 +252,26 @@ export class UnitService {
       dropList.connectedTo.splice(dropListIDs.indexOf(dropList.id), 1);
     });
   }
+
+  moveSectionToNewpage(pageIndex: number, sectionIndex: number): void {
+    const sectionsLength = this.unit.pages[pageIndex].sections.length;
+    const sectionsToMove = this.unit.pages[pageIndex].sections
+      .splice(sectionIndex, sectionsLength - sectionIndex);
+
+    const newPage = new Page();
+    sectionsToMove.forEach(section => newPage.addSection(section));
+    newPage.deleteSection(0);
+
+    this.unit.pages.splice(pageIndex + 1, 0, newPage);
+    this.selectionService.selectedPageIndex = pageIndex + 1;
+    this.selectionService.selectedSectionIndex = 0;
+  }
+
+  collapsePage(pageIndex: number): void {
+    const sectionsToMove = this.unit.pages[pageIndex].sections;
+    sectionsToMove.forEach(section => this.unit.pages[pageIndex - 1].addSection(section));
+    this.selectionService.selectedPageIndex = pageIndex - 1;
+    this.selectionService.selectedSectionIndex = this.unit.pages[pageIndex - 1].sections.length - sectionsToMove.length;
+    this.unit.deletePage(pageIndex);
+  }
 }

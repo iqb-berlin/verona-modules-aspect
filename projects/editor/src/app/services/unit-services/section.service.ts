@@ -127,6 +127,24 @@ export class SectionService {
     });
   }
 
+  /* Move section (up and down) from one page to another */
+  transferSection(pageIndex: number, sectionIndex: number, direction: 'up' | 'down'): void {
+    const section = this.unitService.unit.pages[pageIndex].deleteSection(sectionIndex);
+    if (direction === 'up') {
+      this.unitService.unit.pages[pageIndex - 1].addSection(section);
+      this.selectionService.selectedPageIndex = pageIndex - 1;
+      this.selectionService.selectedSectionIndex = this.unitService.unit.pages[pageIndex - 1].sections.length - 1;
+    } else {
+      this.unitService.unit.pages[pageIndex + 1].addSection(section, 0);
+      this.selectionService.selectedPageIndex = pageIndex + 1;
+      this.selectionService.selectedSectionIndex = 0;
+    }
+    // Prevent empty Page
+    if (this.unitService.unit.pages[pageIndex].sections.length === 0) {
+      this.unitService.unit.pages[pageIndex].addSection();
+    }
+  }
+
   replaceSection(pageIndex: number, sectionIndex: number, newSection: Section): void {
     const page = this.unitService.unit.pages[pageIndex];
     page.deleteSection(sectionIndex);

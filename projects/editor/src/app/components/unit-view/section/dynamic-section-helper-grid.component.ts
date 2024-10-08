@@ -23,7 +23,8 @@ import { NgForOf } from '@angular/common';
              [style.grid-row-end]="x + 1"
              [style.grid-column-start]="y + 1"
              [style.grid-column-end]="y + 1"
-             cdkDropList [cdkDropListData]="{ sectionIndex: sectionIndex, gridCoordinates: [x + 1, y + 1] }"
+             cdkDropList [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex,
+                                              gridCoordinates: [x + 1, y + 1] }"
              (cdkDropListDropped)="drop($event)"
              id="list-{{sectionIndex}}-{{x+1}}-{{y+1}}"
              (dragover)="$event.preventDefault()"
@@ -46,7 +47,12 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   @Input() gridRowSizes!: { value: number; unit: string }[];
   @Input() section!: Section;
   @Input() sectionIndex!: number;
-  @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
+  @Input() pageIndex!: number;
+  @Output() transferElement = new EventEmitter<{
+    sourcePageIndex: number,
+    sourceSectionIndex: number,
+    targetPageIndex: number,
+    targetSectionIndex: number }>();
 
   columnCountArray: unknown[] = [];
   rowCountArray: unknown[] = [];
@@ -102,14 +108,18 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
     this.rowCountArray = Array(Math.max(numberOfRows, 1));
   }
 
-  drop(event: CdkDragDrop<{ sectionIndex: number; gridCoordinates: number[]; }>): void {
+  drop(event: CdkDragDrop<{ pageIndex: number, sectionIndex: number; gridCoordinates: number[]; }>): void {
+    console.log('HelperGrid: drop', event);
     const dragItemData: { dragType: string; element: UIElement; } = event.item.data;
 
     // Move element to other section - handled by parent (page-canvas).
-    if (event.previousContainer.data.sectionIndex !== event.container.data.sectionIndex) {
+    if ((event.previousContainer.data.pageIndex !== event.container.data.pageIndex) ||
+        (event.previousContainer.data.sectionIndex !== event.container.data.sectionIndex)) {
       this.transferElement.emit({
-        previousSectionIndex: event.previousContainer.data.sectionIndex,
-        newSectionIndex: event.container.data.sectionIndex
+        sourcePageIndex: event.previousContainer.data.pageIndex,
+        sourceSectionIndex: event.previousContainer.data.sectionIndex,
+        targetPageIndex: event.container.data.pageIndex,
+        targetSectionIndex: event.container.data.sectionIndex
       });
     }
     if (dragItemData.dragType === 'move') {

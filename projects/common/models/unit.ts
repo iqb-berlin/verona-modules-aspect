@@ -45,6 +45,10 @@ export class Unit implements UnitProperties {
     ];
     return this.pages.map(page => page.getVariableInfos(dropLists)).flat();
   }
+
+  deletePage(pageIndex: number): void {
+    this.pages.splice(pageIndex, 1);
+  }
 }
 
 function isValid(blueprint?: UnitProperties): boolean {

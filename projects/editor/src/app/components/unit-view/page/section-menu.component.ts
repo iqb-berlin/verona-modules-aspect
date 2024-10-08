@@ -185,13 +185,15 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
             (click)="showSectionInsertDialog()">
       <mat-icon>content_paste</mat-icon>
     </button>
-    <button *ngIf="sectionIndex !== 0" mat-mini-fab
+    <button *ngIf="sectionIndex !== 0 || pageIndex > 0" mat-mini-fab
             [matTooltip]="'Nach oben verschieben'" [matTooltipPosition]="'left'"
             (click)="this.moveSection('up')">
       <mat-icon>north</mat-icon>
     </button>
-    <button *ngIf="sectionIndex < lastSectionIndex" mat-mini-fab
-            [matTooltip]="'Nach unten verschieben'" [matTooltipPosition]="'left'"
+    <button *ngIf="((sectionIndex < lastSectionIndex) ||
+                   (pageIndex < unitService.unit.pages.length - 1)) &&
+                   !(sectionIndex === lastSectionIndex && unitService.unit.pages[pageIndex].alwaysVisible)"
+            mat-mini-fab [matTooltip]="'Nach unten verschieben'" [matTooltipPosition]="'left'"
             (click)="this.moveSection('down')">
       <mat-icon>south</mat-icon>
     </button>
@@ -217,6 +219,7 @@ export class SectionMenuComponent implements OnDestroy {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() lastSectionIndex!: number;
+  @Input() pageIndex!: number;
   @Output() elementSelected = new EventEmitter<string>();
   @Output() elementHovered = new EventEmitter<string>();
   @Output() elementHoverEnd = new EventEmitter();
@@ -360,7 +363,12 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   moveSection(direction: 'up' | 'down') {
-    this.sectionService.moveSection(this.section, direction);
+    if ((direction === 'up' && this.sectionIndex > 0) ||
+        (direction === 'down' && this.sectionIndex < this.lastSectionIndex)) {
+      this.sectionService.moveSection(this.section, direction);
+    } else {
+      this.sectionService.transferSection(this.pageIndex, this.sectionIndex, direction);
+    }
   }
 
   duplicateSection() {

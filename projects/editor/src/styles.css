@@ -2,6 +2,7 @@ html, body { height: 100%; }
 
 :root {
   --warn: #f44336;
+  --button-darker-grey: #959595;
 }
 
 .mat-expansion-panel-content {font: unset !important;}

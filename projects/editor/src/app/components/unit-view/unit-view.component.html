@@ -15,40 +15,71 @@
       <mat-tab-group *ngIf="pagesLoaded"
                      preserveContent="true"
                      [style.height.%]="100" mat-align-tabs="start" mat-stretch-tabs="false"
-                     [selectedIndex]="selectionService.selectedPageIndex"
+                     [selectedIndex]="showPagesAsList ? 0 : selectionService.selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)"
                      (animationDone)="pageChangeService.pageChanged.emit()">
-        <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
-          <ng-template mat-tab-label>
-            <ng-container *ngIf="page.alwaysVisible">
+        <ng-container *ngIf="!showPagesAsList">
+          <mat-tab *ngFor="let page of unitService.unit.pages; let i = index">
+            <ng-template mat-tab-label>
+              <ng-container *ngIf="page.alwaysVisible">
+                <mat-icon [matTooltip]="'Dauerhaft sichtbare Seite'"
+                          [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
+                  sticky_note_2
+                </mat-icon>
+              </ng-container>
+              <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === false">
+                {{'page' | translate }} {{i + 1}}
+              </ng-container>
+              <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === true">
+                {{'page' | translate }} {{i}}
+              </ng-container>
+
+              <button *ngIf="selectionService.selectedPageIndex == i"
+                      mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu"
+                      [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #pageMenu="matMenu">
+                <div (click)="$event.stopPropagation()">
+                  <aspect-unit-view-page-menu [page]="page" [pageIndex]="i"
+                                              (pageOrderChanged)="refreshTabs()"></aspect-unit-view-page-menu>
+                </div>
+              </mat-menu>
+            </ng-template>
+            <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
+                                [pages]="[unitService.unit.pages[selectionService.selectedPageIndex]]"
+                                (pagesChanged)="refreshTabs()">
+            </aspect-page-canvas>
+          </mat-tab>
+        </ng-container>
+
+        <ng-container *ngIf="showPagesAsList">
+          <mat-tab *ngIf="unitService.unit.pages[0].alwaysVisible">
+            <ng-template mat-tab-label>
               <mat-icon [matTooltip]="'Dauerhaft sichtbare Seite'"
                         [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
                 sticky_note_2
               </mat-icon>
-            </ng-container>
-            <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === false">
-              {{'page' | translate }} {{i + 1}}
-            </ng-container>
-            <ng-container *ngIf="!page.alwaysVisible && unitService.unit.pages[0].alwaysVisible === true">
-              {{'page' | translate }} {{i}}
-            </ng-container>
-
-            <button *ngIf="selectionService.selectedPageIndex == i"
-                    mat-icon-button class="menu-button" [matMenuTriggerFor]="pageMenu"
-                    [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
-              <mat-icon>more_vert</mat-icon>
+            </ng-template>
+            <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch"
+                                [pages]="[unitService.unit.pages[0]]">
+            </aspect-page-canvas>
+          </mat-tab>
+          <mat-tab>
+            <ng-template mat-tab-label>
+              {{unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.length - 1: unitService.unit.pages.length}} Seiten
+            </ng-template>
+            <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch"
+                                [pages]="unitService.unit.pages[0].alwaysVisible ?
+                                           unitService.unit.pages.slice(1) : unitService.unit.pages">
+            </aspect-page-canvas>
+            <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
+              <mat-icon>add</mat-icon>Neue Seite
             </button>
-            <mat-menu #pageMenu="matMenu">
-              <div (click)="$event.stopPropagation()">
-                <aspect-unit-view-page-menu [page]="page" [pageIndex]="i"
-                                            (pageOrderChanged)="refreshTabs()"></aspect-unit-view-page-menu>
-              </div>
-            </mat-menu>
-          </ng-template>
-          <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch" [page]="page"></aspect-page-canvas>
-        </mat-tab>
+          </mat-tab>
+        </ng-container>
 
-        <mat-tab disabled>
+        <mat-tab *ngIf="!showPagesAsList" [disabled]="true">
           <ng-template mat-tab-label>
             <button mat-icon-button [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
               <mat-icon>add</mat-icon>
@@ -74,7 +105,7 @@
 <!--          </ng-template>-->
 <!--        </mat-tab>-->
 
-        <mat-tab disabled class="align-right">
+        <mat-tab [disabled]="true" class="align-right">
           <ng-template mat-tab-label>
             <button mat-icon-button [matMenuTriggerFor]="numberingMenu">
               <mat-icon>format_list_numbered</mat-icon>
@@ -93,7 +124,7 @@
             </mat-menu>
           </ng-template>
         </mat-tab>
-        <mat-tab disabled class="align-right">
+        <mat-tab [disabled]="true" class="align-right">
           <ng-template mat-tab-label>
             <button mat-icon-button [matMenuTriggerFor]="extrasMenu">
               <mat-icon>menu</mat-icon>
@@ -103,6 +134,9 @@
                 <mat-checkbox [disabled]="!unitService.allowExpertMode"
                               [ngModel]="unitService.expertMode" (change)="setExpertMode($event)">
                   Erweiterter Modus
+                </mat-checkbox>
+                <mat-checkbox [checked]="showPagesAsList" (change)="toggleViewMode()">
+                  Seitenansicht untereinander
                 </mat-checkbox>
               </div>
             </mat-menu>

@@ -45,6 +45,7 @@ import {
          [gridColumnSizes]="section.gridColumnSizes"
          [gridRowSizes]="section.gridRowSizes"
          [section]="section"
+         [pageIndex]="pageIndex"
          [sectionIndex]="sectionIndex"
          [style.isolation]="'isolate'"
          (transferElement)="transferElement.emit($event)">
@@ -68,7 +69,7 @@ import {
                                        element.position.gridRow + element.position.gridRowRange :
                                        null"
                                      cdkDropList cdkDropListSortingDisabled
-                                     [cdkDropListData]="{ sectionIndex: sectionIndex }"
+                                     [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex }"
                                      [cdkDropListConnectedTo]="dropListList"
                                      [style.position]="'relative'"
                                      [style.pointer-events]="dragNDropService.isDragInProgress &&
@@ -92,9 +93,14 @@ import {
 export class SectionDynamicComponent {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
+  @Input() pageIndex!: number;
   @Input() dropListList!: string[];
   @Input() isSelected!: boolean;
-  @Output() transferElement = new EventEmitter<{ previousSectionIndex: number, newSectionIndex: number }>();
+  @Output() transferElement = new EventEmitter<{
+    sourcePageIndex: number,
+    sourceSectionIndex: number,
+    targetPageIndex: number,
+    targetSectionIndex: number }>();
   @Output() elementSelected = new EventEmitter();
 
   @ViewChild(DynamicSectionHelperGridComponent) helperGrid!: DynamicSectionHelperGridComponent;

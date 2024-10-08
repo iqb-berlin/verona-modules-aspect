@@ -61,8 +61,8 @@ export class Page {
     this.sections.splice(sectionIndex, 1, section);
   }
 
-  deleteSection(sectionIndex: number){
-    this.sections.splice(sectionIndex, 1);
+  deleteSection(sectionIndex: number): Section {
+    return this.sections.splice(sectionIndex, 1)[0];
   }
 }
 

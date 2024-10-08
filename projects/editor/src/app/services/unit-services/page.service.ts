@@ -16,12 +16,10 @@ export class PageService {
       title: 'Seite hinzugefügt',
       command: () => {
         this.unitService.unit.pages.push(new Page());
-        this.selectionService.selectedPageIndex = this.unitService.unit.pages.length - 1;
         return {};
       },
       rollback: () => {
         this.unitService.unit.pages.splice(this.unitService.unit.pages.length - 1, 1);
-        this.selectionService.selectPreviousPage();
       }
     });
   }

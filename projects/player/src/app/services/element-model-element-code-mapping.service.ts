@@ -13,7 +13,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { ResponseValueType } from '@iqb/responses';
-import { ClickableService } from 'player/src/app/services/clickable.service';
+import { MarkableService } from 'player/src/app/services/markable.service';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
@@ -24,7 +24,7 @@ type MapElementType = UIElementType | 'geometry-variable';
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
-  constructor(private clickableService: ClickableService) {}
+  constructor(private markableService: MarkableService) {}
 
   private static modifyAnchors(text: string): string {
     const regEx = /<aspect-anchor /g;
@@ -111,7 +111,7 @@ export class ElementModelElementCodeMappingService {
         if ((elementModel as TextElement).markingMode === 'default') {
           return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
         }
-        return this.clickableService.getClickedWords(elementModelValue as string);
+        return this.markableService.getMarkables(elementModelValue as string);
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':

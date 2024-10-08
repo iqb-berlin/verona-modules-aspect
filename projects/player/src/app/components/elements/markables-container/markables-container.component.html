@@ -1,0 +1,15 @@
+@for (markable of markables; track markable; let  i = $index) {
+  @if (markable.prefix) {
+    <span>{{markable.prefix}}</span>
+  }
+  @if (markable.word) {
+    <aspect-markable-word [text]="markable.word"
+                      (click)="onClick(markable.id)">
+    </aspect-markable-word>
+  }
+  @if (markable.suffix) {
+    <span>{{markable.suffix}}</span>
+  }
+}
+
+

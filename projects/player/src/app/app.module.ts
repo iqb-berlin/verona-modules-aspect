@@ -17,9 +17,9 @@ import { HasPreviousPagePipe } from 'player/src/app/pipes/has-previous-page.pipe
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import {
-  ClickableContainerComponent
-} from 'player/src/app/components/elements/clickable-container/clickable-container.component';
-import { ClickableDirective } from 'player/src/app/directives/clickable.directive';
+  MarkablesContainerComponent
+} from 'player/src/app/components/elements/markables-container/markables-container.component';
+import { MarkablesDirective } from 'player/src/app/directives/markables.directive';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -117,8 +117,8 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     UnitMenuModule,
     MeasurePipe,
     TableComponent,
-    ClickableContainerComponent,
-    ClickableDirective
+    MarkablesContainerComponent,
+    MarkablesDirective
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService }

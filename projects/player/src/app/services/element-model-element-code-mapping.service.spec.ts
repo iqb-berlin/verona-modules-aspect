@@ -53,7 +53,7 @@ describe('ElementModelElementCodeMappingService', () => {
 
   it('should map the value of a text elementModel to its elementCode value', () => {
     const textElement: TextElement = JSON.parse(JSON.stringify(text_130));
-    textElement.markingMode = 'selection';
+    textElement.markingMode = 'default';
     const textValue =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     expect(service.mapToElementCodeValue(textValue, 'text', textElement))
@@ -378,7 +378,7 @@ describe('ElementModelElementCodeMappingService', () => {
 
   it('should map an elementCode value to text elementModel value (text)', () => {
     const elementModel: TextElement = JSON.parse(JSON.stringify(text_130));
-    elementModel.markingMode = 'selection';
+    elementModel.markingMode = 'default';
     const expectedValue =
       'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     expect(service.mapToElementModelValue(['6-11-#f9f871'], elementModel))

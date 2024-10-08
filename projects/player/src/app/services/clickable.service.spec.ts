@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MarkClickableService } from './mark-clickable.service';
+import { ClickableService } from './clickable.service';
 
-describe('MarkClickableService', () => {
-  let service: MarkClickableService;
+describe('ClickableService', () => {
+  let service: ClickableService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(MarkClickableService);
+    service = TestBed.inject(ClickableService);
   });
 
   it('should be created', () => {

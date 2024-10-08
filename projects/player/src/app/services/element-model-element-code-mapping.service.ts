@@ -13,7 +13,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { ResponseValueType } from '@iqb/responses';
-import { MarkClickableService } from 'player/src/app/services/mark-clickable.service';
+import { ClickableService } from 'player/src/app/services/clickable.service';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
@@ -24,7 +24,7 @@ type MapElementType = UIElementType | 'geometry-variable';
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
 
-  constructor(private markClickableService: MarkClickableService) {}
+  constructor(private clickableService: ClickableService) {}
 
   private static modifyAnchors(text: string): string {
     const regEx = /<aspect-anchor /g;
@@ -47,7 +47,7 @@ export class ElementModelElementCodeMappingService {
             .map((v, i) => ({ ...(elementModel as HotspotImageElement).value[i], value: v })) :
           (elementModel as HotspotImageElement).value;
       case 'text':
-        if ((elementModel as TextElement).markingMode === 'selection') {
+        if ((elementModel as TextElement).markingMode === 'default') {
           return (elementCodeValue !== undefined) ?
             TextMarkingUtils
               .restoreMarkedTextIndices(
@@ -55,12 +55,10 @@ export class ElementModelElementCodeMappingService {
                 ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
             ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
         }
-        if ((elementModel as TextElement).markingMode === 'singleClick' ||
-          (elementModel as TextElement).markingMode === 'rangeClick') {
-          const color = TextMarkingUtils.hexToRgbString(TextElement.selectionColors.orange);
-          return this.markClickableService
-            .transformToClickable(elementCodeValue as string[], color, ElementModelElementCodeMappingService
-              .modifyAnchors((elementModel as TextElement).text));
+        if ((elementModel as TextElement).markingMode === 'word' ||
+          (elementModel as TextElement).markingMode === 'range') {
+          return ElementModelElementCodeMappingService
+            .modifyAnchors((elementModel as TextElement).text);
         }
         return ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
       case 'audio':
@@ -110,10 +108,10 @@ export class ElementModelElementCodeMappingService {
       case 'hotspot-image':
         return (elementModelValue as Hotspot[]).map(hotspot => hotspot.value);
       case 'text':
-        if ((elementModel as TextElement).markingMode === 'selection') {
+        if ((elementModel as TextElement).markingMode === 'default') {
           return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
         }
-        return this.markClickableService.getClickedWords(elementModelValue as string);
+        return this.clickableService.getClickedWords(elementModelValue as string);
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':

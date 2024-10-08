@@ -12,7 +12,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
   text: string = 'Lorem ipsum dolor sit amet';
-  markingMode: 'none' | 'selection' | 'singleClick' | 'rangeClick' = 'singleClick';
+  markingMode: 'none' | 'default' | 'word' | 'range' = 'word';
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;
@@ -72,7 +72,7 @@ export class TextElement extends UIElement implements TextProperties {
   }
 
   private isSelectable(): boolean {
-    return this.markingMode === 'selection' && (
+    return this.markingMode === 'default' && (
       this.highlightableYellow ||
       this.highlightableTurquoise ||
       this.highlightableOrange
@@ -112,7 +112,7 @@ export class TextElement extends UIElement implements TextProperties {
 
 export interface TextProperties extends UIElementProperties {
   text: string;
-  markingMode: 'none' | 'selection' | 'singleClick' | 'rangeClick';
+  markingMode: 'none' | 'default' | 'word' | 'range';
   highlightableOrange: boolean;
   highlightableTurquoise: boolean;
   highlightableYellow: boolean;

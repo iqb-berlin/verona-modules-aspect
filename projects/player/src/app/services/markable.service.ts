@@ -22,10 +22,6 @@ export class MarkableService {
     return `${markable.id}-${markable.id}-${color}`;
   }
 
-  getWordById(id: number): Markable | undefined {
-    return this.markables.find((markable: Markable) => markable.id === id);
-  }
-
   reset(): void {
     this.markables = [];
   }

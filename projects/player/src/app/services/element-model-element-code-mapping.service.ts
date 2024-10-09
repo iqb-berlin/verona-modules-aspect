@@ -47,12 +47,9 @@ export class ElementModelElementCodeMappingService {
             .map((v, i) => ({ ...(elementModel as HotspotImageElement).value[i], value: v })) :
           (elementModel as HotspotImageElement).value;
       case 'text':
-        return (elementCodeValue !== undefined && (elementModel as TextElement).markingMode === 'default') ?
-          TextMarkingUtils
-            .restoreMarkedTextIndices(
-              elementCodeValue as string[],
-              ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
-          ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
+        return (elementCodeValue !== undefined && (elementModel as TextElement).markingMode !== 'none') ?
+          elementCodeValue as string[] :
+          [];
       case 'audio':
         return elementCodeValue !== undefined ?
           elementCodeValue as number :

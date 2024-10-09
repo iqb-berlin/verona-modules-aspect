@@ -71,9 +71,9 @@ export class MarkablesDirective implements AfterViewInit {
 
   private getMarkables(text: string, startIndex: number): Markable[] {
     const markables: Markable[] = [];
-    const wordsWithWhitespace = text?.match(/\s*\S+\s*/g);
+    const wordsWithWhitespace = text?.match(/.+/g);
     wordsWithWhitespace?.forEach((wordWithWhitespace: string, index: number) => {
-      const prefix = wordWithWhitespace.match(/\s(?=[^,]*\S*)/g);
+      const prefix = wordWithWhitespace.match(/\s+(?=[^,]*\S*)/g);
       const word = wordWithWhitespace.match(/\S+/g);
       const suffix = wordWithWhitespace.match(/[^\S]\s*$/g);
       const id = startIndex + index;
@@ -84,6 +84,7 @@ export class MarkablesDirective implements AfterViewInit {
           prefix: prefix ? prefix[0] : '',
           word: word ? word[0] : '',
           suffix: suffix ? suffix[0] : '',
+          isActive: !!(word && word[0].length),
           marked: markedWord ? markedWord.marked : false
         }
       );

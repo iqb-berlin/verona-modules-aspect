@@ -8,5 +8,6 @@ export interface Markable {
   prefix: string;
   word: string;
   suffix: string;
-  marked: boolean
+  isActive: boolean;
+  marked: boolean;
 }

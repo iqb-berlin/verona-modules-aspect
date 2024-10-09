@@ -26,7 +26,7 @@ export class ElementModelElementCodeMappingService {
 
   constructor(private markableService: MarkableService) {}
 
-  private static modifyAnchors(text: string): string {
+  static modifyAnchors(text: string): string {
     const regEx = /<aspect-anchor /g;
     return text.replace(regEx, '<aspect-anchor class="" ');
   }
@@ -47,20 +47,12 @@ export class ElementModelElementCodeMappingService {
             .map((v, i) => ({ ...(elementModel as HotspotImageElement).value[i], value: v })) :
           (elementModel as HotspotImageElement).value;
       case 'text':
-        if ((elementModel as TextElement).markingMode === 'default') {
-          return (elementCodeValue !== undefined) ?
-            TextMarkingUtils
-              .restoreMarkedTextIndices(
-                elementCodeValue as string[],
-                ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
-            ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
-        }
-        if ((elementModel as TextElement).markingMode === 'word' ||
-          (elementModel as TextElement).markingMode === 'range') {
-          return ElementModelElementCodeMappingService
-            .modifyAnchors((elementModel as TextElement).text);
-        }
-        return ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
+        return (elementCodeValue !== undefined && (elementModel as TextElement).markingMode === 'default') ?
+          TextMarkingUtils
+            .restoreMarkedTextIndices(
+              elementCodeValue as string[],
+              ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
+          ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
       case 'audio':
         return elementCodeValue !== undefined ?
           elementCodeValue as number :
@@ -111,7 +103,7 @@ export class ElementModelElementCodeMappingService {
         if ((elementModel as TextElement).markingMode === 'default') {
           return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
         }
-        return this.markableService.getMarkables(elementModelValue as string);
+        return this.markableService.getMarkedMarkables();
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':

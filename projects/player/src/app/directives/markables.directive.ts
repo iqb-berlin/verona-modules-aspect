@@ -14,6 +14,7 @@ import { MarkableService } from 'player/src/app/services/markable.service';
 })
 export class MarkablesDirective implements AfterViewInit {
   @Input() elementComponent!: TextComponent;
+  @Input() savedMarks!: string[];
 
   constructor(
     private markableService: MarkableService,
@@ -71,13 +72,13 @@ export class MarkablesDirective implements AfterViewInit {
 
   private getMarkables(text: string, startIndex: number): Markable[] {
     const markables: Markable[] = [];
-    const wordsWithWhitespace = text?.match(/.+/g);
+    const wordsWithWhitespace = text?.match(/(\s*\S+\s*)|(s+\S*\s*)|(s*\S*\s+)/g);
     wordsWithWhitespace?.forEach((wordWithWhitespace: string, index: number) => {
-      const prefix = wordWithWhitespace.match(/\s+(?=[^,]*\S*)/g);
-      const word = wordWithWhitespace.match(/\S+/g);
-      const suffix = wordWithWhitespace.match(/[^\S]\s*$/g);
+      const prefix = wordWithWhitespace.match(/\s+(?=[^,]*\S*)/);
+      const word = wordWithWhitespace.match(/\S+/);
+      const suffix = wordWithWhitespace.match(/[^\S]\s*$/);
       const id = startIndex + index;
-      const markedWord = this.markableService.getWordById(id);
+      const markedWord = this.getMarkedValueById(id);
       markables.push(
         {
           id: id,
@@ -85,7 +86,7 @@ export class MarkablesDirective implements AfterViewInit {
           word: word ? word[0] : '',
           suffix: suffix ? suffix[0] : '',
           isActive: !!(word && word[0].length),
-          marked: markedWord ? markedWord.marked : false
+          marked: markedWord
         }
       );
     });
@@ -107,5 +108,9 @@ export class MarkablesDirective implements AfterViewInit {
       }
     });
     return nodes;
+  }
+
+  private getMarkedValueById(id: number): boolean {
+    return this.savedMarks.map((mark: string) => mark.split('-')[0]).includes(id.toString());
   }
 }

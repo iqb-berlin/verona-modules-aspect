@@ -31,6 +31,8 @@ import { MediaPlayerService } from 'player/src/app/services/media-player.service
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { TextComponent } from 'common/components/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
+import { TextElement } from 'common/models/elements/text/text';
+import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -58,6 +60,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   savedPlaybackTimes: { [key: string]: number } = {};
   savedTexts: { [key: string]: string } = {};
+  savedMarks: { [key: string]: string[] } = {};
   textMarkingSupports: { [key: string]: TextMarkingSupport } = {};
 
   constructor(
@@ -90,16 +93,22 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     (this.elementModel as TableElement).elements
       .filter(child => child.type === 'text')
       .forEach(element => {
-        this.setTextMarkingSupportForText(element);
+        this.setTextMarkingSupportForText(element as TextElement);
       });
   }
 
-  private setTextMarkingSupportForText(element: UIElement): void {
+  private setTextMarkingSupportForText(element: TextElement): void {
     this.textMarkingSupports[element.id] = new TextMarkingSupport(this.nativeEventService, this.anchorService);
-    this.savedTexts[element.id] = this.elementModelElementCodeMappingService
-      .mapToElementModelValue(
-        this.unitStateService.getElementCodeById(element.id)?.value, element
-      ) as string;
+    this.savedMarks[element.id] = this.elementModelElementCodeMappingService
+      .mapToElementModelValue(this.unitStateService
+        .getElementCodeById(element.id)?.value, element) as string[];
+
+    this.savedTexts[element.id] = (element.markingMode === 'default') ?
+      TextMarkingUtils
+        .restoreMarkedTextIndices(
+          this.savedMarks[element.id],
+          ElementModelElementCodeMappingService.modifyAnchors(element.text)) :
+      ElementModelElementCodeMappingService.modifyAnchors(element.text);
   }
 
   private initAudioTableChildren(): void {
@@ -149,10 +158,8 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
           initialValue = null;
           break;
         case 'text':
-          // initialValue = ElementModelElementCodeMappingService
-          //   .mapToElementCodeValue((childModel as TextElement).text, childModel.type);
           initialValue = this.elementModelElementCodeMappingService.mapToElementCodeValue(
-            this.savedTexts[childModel.id], childModel.type);
+            this.savedTexts[childModel.id], childModel.type, { markingMode: (childModel as TextElement).markingMode });
           break;
         default:
           initialValue = this.elementModelElementCodeMappingService

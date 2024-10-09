@@ -80,7 +80,7 @@ export class ElementModelElementCodeMappingService {
 
   mapToElementCodeValue(elementModelValue: InputElementValue,
                         elementType: MapElementType,
-                        elementModel?: UIElement): ResponseValueType {
+                        options?: Record<string, string>): ResponseValueType {
     switch (elementType) {
       case 'audio':
       case 'video':
@@ -97,7 +97,7 @@ export class ElementModelElementCodeMappingService {
       case 'hotspot-image':
         return (elementModelValue as Hotspot[]).map(hotspot => hotspot.value);
       case 'text':
-        if ((elementModel as TextElement).markingMode === 'default') {
+        if (options && options.markingMode === 'default') {
           return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
         }
         return this.markableService.getMarkedMarkables();

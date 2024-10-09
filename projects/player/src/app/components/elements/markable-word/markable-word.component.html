@@ -1,1 +1,3 @@
-<ng-container>{{text}}</ng-container>
+<span class="prevent-select"
+      [style.background-color]="marked ? selectionColors.yellow : 'transparent'"
+      (click)="toggleMarked()">{{text}}</span>

@@ -22,7 +22,7 @@ export class MarkablesDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const nodes = MarkablesDirective.findNodes(this.elementComponent.textContainerRef.nativeElement.childNodes);
-    const markablesContainers = MarkablesDirective.getMarkablesContainers(nodes);
+    const markablesContainers = this.getMarkablesContainers(nodes);
     this.markableService.markables = markablesContainers
       .flatMap((markablesContainer: MarkablesContainer) => markablesContainer.markables);
     this.createComponents(markablesContainers);
@@ -39,42 +39,52 @@ export class MarkablesDirective implements AfterViewInit {
         hostElement: markableContainerElement
       });
       componentRef.instance.markables = markablesContainer.markables;
+      componentRef.instance.markablesChange.subscribe(() => {
+        this.elementComponent.elementValueChanged.emit(
+          {
+            id: this.elementComponent.elementModel.id,
+            value: this.markableService.markables
+          }
+        );
+      });
       this.applicationRef.attachView(componentRef.hostView);
     });
   }
 
-  private static getMarkablesContainers(nodes: Node[]): MarkablesContainer[] {
+  private getMarkablesContainers(nodes: Node[]): MarkablesContainer[] {
     const markablesContainers: MarkablesContainer[] = [];
     let wordsCount = 0;
     nodes.forEach((node: Node) => {
-      const currentNodes = MarkablesDirective.getMarkablesContainer(node, wordsCount);
+      const currentNodes = this.getMarkablesContainer(node, wordsCount);
       wordsCount += currentNodes.markables.length;
       markablesContainers.push(currentNodes);
     });
     return markablesContainers;
   }
 
-  private static getMarkablesContainer(node: Node, wordsCount: number): MarkablesContainer {
+  private getMarkablesContainer(node: Node, wordsCount: number): MarkablesContainer {
     return {
       node: node,
-      markables: MarkablesDirective.getMarkables(node.textContent || '', wordsCount)
+      markables: this.getMarkables(node.textContent || '', wordsCount)
     };
   }
 
-  private static getMarkables(text: string, startIndex: number): Markable[] {
+  private getMarkables(text: string, startIndex: number): Markable[] {
     const markables: Markable[] = [];
     const wordsWithWhitespace = text?.match(/\s*\S+\s*/g);
     wordsWithWhitespace?.forEach((wordWithWhitespace: string, index: number) => {
       const prefix = wordWithWhitespace.match(/\s(?=[^,]*\S*)/g);
       const word = wordWithWhitespace.match(/\S+/g);
-      const after = wordWithWhitespace.match(/[^\S]\s*$/g);
+      const suffix = wordWithWhitespace.match(/[^\S]\s*$/g);
+      const id = startIndex + index;
+      const markedWord = this.markableService.getWordById(id);
       markables.push(
         {
-          id: startIndex + index,
+          id: id,
           prefix: prefix ? prefix[0] : '',
           word: word ? word[0] : '',
-          suffix: after ? after[0] : '',
-          marked: false
+          suffix: suffix ? suffix[0] : '',
+          marked: markedWord ? markedWord.marked : false
         }
       );
     });

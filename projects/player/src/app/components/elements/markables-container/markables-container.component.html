@@ -4,7 +4,8 @@
   }
   @if (markable.word) {
     <aspect-markable-word [text]="markable.word"
-                      (click)="onClick(markable.id)">
+                          [(marked)]="markable.marked"
+                          (markedChange)="onMarkedChange()">
     </aspect-markable-word>
   }
   @if (markable.suffix) {

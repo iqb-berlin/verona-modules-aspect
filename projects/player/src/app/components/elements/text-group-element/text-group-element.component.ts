@@ -38,9 +38,8 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
 
   ngOnInit(): void {
     this.savedText = this.elementModelElementCodeMappingService
-      .mapToElementModelValue(
-        this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
-      ) as string;
+      .mapToElementModelValue(this.unitStateService
+        .getElementCodeById(this.elementModel.id)?.value, this.elementModel) as string;
   }
 
   ngAfterViewInit(): void {

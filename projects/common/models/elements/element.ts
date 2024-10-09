@@ -21,6 +21,7 @@ import { InstantiationEror } from 'common/util/errors';
 
 import { MathTableRow } from 'common/models/elements/input-elements/math-table';
 import { VariableInfo } from '@iqb/responses';
+import { Markable } from 'player/src/app/models/markable.interface';
 
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
@@ -141,7 +142,7 @@ export abstract class UIElement implements UIElementProperties {
   abstract getDuplicate(): UIElement;
 }
 
-export type InputElementValue = TextLabel[] | Hotspot[] | MathTableRow[] | GeometryValue | string[] | string |
+export type InputElementValue = Markable[] | TextLabel[] | Hotspot[] | MathTableRow[] | GeometryValue | string[] | string |
 number[] | number | boolean[] | boolean | null;
 
 export interface InputElementProperties extends UIElementProperties {

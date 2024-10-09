@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input
 } from '@angular/core';
 import { MarkableWordComponent } from 'player/src/app/components/elements/markable-word/markable-word.component';
 import { Markable } from 'player/src/app/models/markable.interface';
@@ -15,8 +15,9 @@ import { Markable } from 'player/src/app/models/markable.interface';
 })
 export class MarkablesContainerComponent {
   @Input() markables!: Markable[];
+  @Input() markablesChange: EventEmitter<void> = new EventEmitter<void>();
 
-  onClick(id: number): void {
-    console.log('ClickableContainerComponent clicked', id);
+  onMarkedChange() {
+    this.markablesChange.emit();
   }
 }

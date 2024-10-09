@@ -1,4 +1,7 @@
-import { Component, Input } from '@angular/core';
+import {
+  Component, EventEmitter, Input, Output
+} from '@angular/core';
+import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
   selector: 'aspect-markable-word',
@@ -9,4 +12,13 @@ import { Component, Input } from '@angular/core';
 })
 export class MarkableWordComponent {
   @Input() text = '';
+  @Input() marked!: boolean;
+  @Output() markedChange = new EventEmitter<boolean>();
+
+  selectionColors: Record<string, string> = TextElement.selectionColors;
+
+  toggleMarked(): void {
+    this.marked = !this.marked;
+    this.markedChange.emit(this.marked);
+  }
 }

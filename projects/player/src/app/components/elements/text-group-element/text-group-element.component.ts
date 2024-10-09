@@ -54,7 +54,9 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     this.registerAtUnitStateService(
       this.elementModel.id,
       this.elementModelElementCodeMappingService
-        .mapToElementCodeValue(this.savedText, this.elementModel.type, this.elementModel),
+        .mapToElementCodeValue(
+          this.savedText, this.elementModel.type, { markingMode: (this.elementModel as TextElement).markingMode }
+        ),
       this.elementComponent,
       this.pageIndex);
   }
@@ -63,7 +65,8 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     this.unitStateService.changeElementCodeValue({
       id: value.id,
       value: this.elementModelElementCodeMappingService
-        .mapToElementCodeValue(value.value, this.elementModel.type, this.elementModel)
+        .mapToElementCodeValue(
+          value.value, this.elementModel.type, { markingMode: (this.elementModel as TextElement).markingMode })
     });
   }
 

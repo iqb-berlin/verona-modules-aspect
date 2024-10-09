@@ -125,7 +125,7 @@ export class InteractiveGroupElementComponent
     this.unitStateService.changeElementCodeValue({
       id: value.id,
       value: this.elementModelElementCodeMappingService
-        .mapToElementCodeValue(value.value, this.elementModel.type, this.elementModel)
+        .mapToElementCodeValue(value.value, this.elementModel.type)
     });
   }
 

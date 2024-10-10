@@ -51,12 +51,18 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngAfterViewInit(): void {
+    const elementModelValue = (this.elementModel as TextElement).markingMode === 'word' ||
+      (this.elementModel as TextElement).markingMode === 'range' ? this.savedMarks : this.savedText;
     this.registerAtUnitStateService(
       this.elementModel.id,
-      this.elementModelElementCodeMappingService
+      ElementModelElementCodeMappingService
         .mapToElementCodeValue(
-          this.savedText, this.elementModel.type, { markingMode: (this.elementModel as TextElement).markingMode }
-        ),
+          elementModelValue,
+          this.elementModel.type,
+          {
+            markingMode: (this.elementModel as TextElement).markingMode,
+            color: 'yellow'
+          }),
       this.elementComponent,
       this.pageIndex);
   }
@@ -64,9 +70,14 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   changeElementCodeValue(value: ValueChangeElement): void {
     this.unitStateService.changeElementCodeValue({
       id: value.id,
-      value: this.elementModelElementCodeMappingService
+      value: ElementModelElementCodeMappingService
         .mapToElementCodeValue(
-          value.value, this.elementModel.type, { markingMode: (this.elementModel as TextElement).markingMode })
+          value.value,
+          this.elementModel.type,
+          {
+            markingMode: (this.elementModel as TextElement).markingMode,
+            color: 'yellow'
+          })
     });
   }
 

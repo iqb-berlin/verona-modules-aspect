@@ -36,7 +36,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
         .subscribe((inputValue: InputElementValue) => {
           this.unitStateService.changeElementCodeValue({
             id: elementModel.id,
-            value: this.elementModelElementCodeMappingService.mapToElementCodeValue(inputValue, elementModel.type)
+            value: ElementModelElementCodeMappingService.mapToElementCodeValue(inputValue, elementModel.type)
           });
         });
       if (ElementFormGroupDirective.needsValidation(elementModel)) {

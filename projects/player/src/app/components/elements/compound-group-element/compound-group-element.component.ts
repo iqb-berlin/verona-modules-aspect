@@ -147,7 +147,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       let initialValue: ResponseValueType;
       switch (childModel.type) {
         case 'image':
-          initialValue = this.elementModelElementCodeMappingService.mapToElementCodeValue(
+          initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
             (this.elementModel as ImageElement).magnifierUsed, this.elementModel.type);
           break;
         case 'audio':
@@ -158,11 +158,11 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
           initialValue = null;
           break;
         case 'text':
-          initialValue = this.elementModelElementCodeMappingService.mapToElementCodeValue(
+          initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
             this.savedTexts[childModel.id], childModel.type, { markingMode: (childModel as TextElement).markingMode });
           break;
         default:
-          initialValue = this.elementModelElementCodeMappingService
+          initialValue = ElementModelElementCodeMappingService
             .mapToElementCodeValue((childModel as InputElement).value, childModel.type);
       }
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
@@ -235,7 +235,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       .subscribe(value => {
         this.unitStateService.changeElementCodeValue({
           id: value.id,
-          value: this.elementModelElementCodeMappingService
+          value: ElementModelElementCodeMappingService
             .mapToElementCodeValue(value.value, childModel.type)
         });
       });

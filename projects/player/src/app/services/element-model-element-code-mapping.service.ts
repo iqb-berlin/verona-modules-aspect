@@ -13,7 +13,7 @@ import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { ResponseValueType } from '@iqb/responses';
-import { MarkableService } from 'player/src/app/services/markable.service';
+import { Markable } from 'player/src/app/models/markable.interface';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
 
 type MapElementType = UIElementType | 'geometry-variable';
@@ -23,8 +23,6 @@ type MapElementType = UIElementType | 'geometry-variable';
 
 export class ElementModelElementCodeMappingService {
   dragNDropValueObjects: DragNDropValueObject[] = [];
-
-  constructor(private markableService: MarkableService) {}
 
   static modifyAnchors(text: string): string {
     const regEx = /<aspect-anchor /g;
@@ -78,9 +76,9 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
-  mapToElementCodeValue(elementModelValue: InputElementValue,
-                        elementType: MapElementType,
-                        options?: Record<string, string>): ResponseValueType {
+  static mapToElementCodeValue(elementModelValue: InputElementValue,
+                               elementType: MapElementType,
+                               options?: Record<string, string>): ResponseValueType {
     switch (elementType) {
       case 'audio':
       case 'video':
@@ -100,7 +98,11 @@ export class ElementModelElementCodeMappingService {
         if (options && options.markingMode === 'default') {
           return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
         }
-        return this.markableService.getMarkedMarkables();
+        if (options && options.markingMode !== 'none') {
+          return ElementModelElementCodeMappingService
+            .getMarkedMarkables(elementModelValue as Markable[], options.color);
+        }
+        return [];
       case 'radio':
       case 'radio-group-images':
       case 'dropdown':
@@ -110,6 +112,17 @@ export class ElementModelElementCodeMappingService {
       default:
         return elementModelValue as ResponseValueType;
     }
+  }
+
+  private static getMarkedMarkables(markables: Markable[], color: string): string[] {
+    return markables
+      .filter((markable: Markable) => markable.marked)
+      .map((markable: Markable) => ElementModelElementCodeMappingService.mapToTextSelectionFormat(markable, color));
+  }
+
+  private static mapToTextSelectionFormat(markable: Markable, color: string): string {
+    const hexColor = TextElement.selectionColors[color];
+    return `${markable.id}-${markable.id}-${hexColor}`;
   }
 
   private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {

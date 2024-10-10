@@ -9,7 +9,6 @@ import { StateVariableStateService } from 'player/src/app/services/state-variabl
 import { UnitStateService } from '../services/unit-state.service';
 import { MediaPlayerService } from '../services/media-player.service';
 import { ValidationService } from '../services/validation.service';
-import { MarkableService } from 'player/src/app/services/markable.service';
 
 @Directive({
   selector: '[aspectUnitState]'
@@ -23,8 +22,7 @@ export class UnitStateDirective implements OnInit, OnDestroy {
     private mediaPlayerService: MediaPlayerService,
     private veronaSubscriptionService: VeronaSubscriptionService,
     private veronaPostService: VeronaPostService,
-    private validatorService: ValidationService,
-    private markableService: MarkableService
+    private validatorService: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -72,7 +70,6 @@ export class UnitStateDirective implements OnInit, OnDestroy {
     this.stateVariableStateService.reset();
     this.mediaPlayerService.reset();
     this.validatorService.reset();
-    this.markableService.reset();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

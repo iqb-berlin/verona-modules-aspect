@@ -59,13 +59,11 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     if (this.elementModel.markingMode === 'word' || this.elementModel.markingMode === 'range') {
       this.markableSupport.createMarkables(this.savedMarks, this.elementComponent);
     }
-    const elementModelValue = (this.elementModel as TextElement).markingMode === 'word' ||
-      (this.elementModel as TextElement).markingMode === 'range' ? this.savedMarks : this.savedText;
     this.registerAtUnitStateService(
       this.elementModel.id,
       ElementModelElementCodeMappingService
         .mapToElementCodeValue(
-          elementModelValue,
+          this.getElementModelValue(),
           this.elementModel.type,
           {
             markingMode: (this.elementModel as TextElement).markingMode,
@@ -73,6 +71,11 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
           }),
       this.elementComponent,
       this.pageIndex);
+  }
+
+  private getElementModelValue(): string | string[] {
+    return (this.elementModel as TextElement).markingMode === 'word' ||
+    (this.elementModel as TextElement).markingMode === 'range' ? this.savedMarks : this.savedText;
   }
 
   changeElementCodeValue(value: ValueChangeElement): void {

@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, OnInit, ViewChild
+  AfterViewInit, ApplicationRef, Component, OnInit, Renderer2, ViewChild
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -33,6 +33,7 @@ import { TextComponent } from 'common/components/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { TextElement } from 'common/models/elements/text/text';
 import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
+import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -62,6 +63,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   savedTexts: { [key: string]: string } = {};
   savedMarks: { [key: string]: string[] } = {};
   textMarkingSupports: { [key: string]: TextMarkingSupport } = {};
+  markableSupports: { [key: string]: MarkableSupport } = {};
 
   constructor(
     public keyboardService: KeyboardService,
@@ -76,7 +78,9 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     private anchorService: AnchorService,
     public validationService: ValidationService,
     private stateVariableStateService: StateVariableStateService,
-    public mediaPlayerService: MediaPlayerService
+    public mediaPlayerService: MediaPlayerService,
+    private renderer: Renderer2,
+    private applicationRef: ApplicationRef
   ) {
     super();
   }
@@ -99,6 +103,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   private setTextMarkingSupportForText(element: TextElement): void {
     this.textMarkingSupports[element.id] = new TextMarkingSupport(this.nativeEventService, this.anchorService);
+    this.markableSupports[element.id] = new MarkableSupport(this.renderer, this.applicationRef);
     this.savedMarks[element.id] = this.elementModelElementCodeMappingService
       .mapToElementModelValue(this.unitStateService
         .getElementCodeById(element.id)?.value, element) as string[];
@@ -158,8 +163,12 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
           initialValue = null;
           break;
         case 'text':
+          if (childModel.markingMode === 'word' || childModel.markingMode === 'range') {
+            this.markableSupports[childModel.id]
+              .createMarkables(this.savedMarks[childModel.id], child as TextComponent);
+          }
           initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
-            this.textChildModelValue(childModel as TextElement),
+            this.getTextChildModelValue(childModel as TextElement),
             childModel.type,
             {
               markingMode: (childModel as TextElement).markingMode,
@@ -175,7 +184,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     });
   }
 
-  private textChildModelValue(childModel: TextElement): string | string[] {
+  private getTextChildModelValue(childModel: TextElement): string | string[] {
     return childModel.markingMode === 'word' || childModel.markingMode === 'range' ?
       this.savedMarks[childModel.id] :
       this.savedTexts[childModel.id];
@@ -196,7 +205,11 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     if (childModel.type === 'text') {
       this.addMarkingDataChangedSubscription(child as TextComponent, childModel);
       this.addTextSelectionStartSubscription(child as TextComponent, childModel);
-      this.addElementCodeValueSubscription(child as TextComponent, childModel);
+      this.addElementCodeValueSubscription(
+        child as TextComponent,
+        childModel,
+        { markingMode: 'word', color: 'yellow' }
+      );
     }
     if (childModel.type === 'image') {
       this.addElementCodeValueSubscription(child as ImageComponent, childModel);
@@ -239,7 +252,8 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   private addElementCodeValueSubscription(
     child: ImageComponent | AudioComponent | TextComponent,
-    childModel: UIElement
+    childModel: UIElement,
+    options?: Record<string, string>
   ): void {
     child.elementValueChanged
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -247,7 +261,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
         this.unitStateService.changeElementCodeValue({
           id: value.id,
           value: ElementModelElementCodeMappingService
-            .mapToElementCodeValue(value.value, childModel.type)
+            .mapToElementCodeValue(value.value, childModel.type, options)
         });
       });
   }

@@ -6,7 +6,6 @@ import {
 } from 'player/src/app/components/elements/markables-container/markables-container.component';
 import { TextComponent } from 'common/components/text/text.component';
 import { Markable, MarkablesContainer } from 'player/src/app/models/markable.interface';
-import { MarkableService } from 'player/src/app/services/markable.service';
 
 @Directive({
   selector: '[markables]',
@@ -16,15 +15,16 @@ export class MarkablesDirective implements AfterViewInit {
   @Input() elementComponent!: TextComponent;
   @Input() savedMarks!: string[];
 
+  markables: Markable[] = [];
+
   constructor(
-    private markableService: MarkableService,
     private renderer: Renderer2,
     private applicationRef: ApplicationRef) { }
 
   ngAfterViewInit(): void {
     const nodes = MarkablesDirective.findNodes(this.elementComponent.textContainerRef.nativeElement.childNodes);
     const markablesContainers = this.getMarkablesContainers(nodes);
-    this.markableService.markables = markablesContainers
+    this.markables = markablesContainers
       .flatMap((markablesContainer: MarkablesContainer) => markablesContainer.markables);
     this.createComponents(markablesContainers);
   }
@@ -44,7 +44,7 @@ export class MarkablesDirective implements AfterViewInit {
         this.elementComponent.elementValueChanged.emit(
           {
             id: this.elementComponent.elementModel.id,
-            value: this.markableService.markables
+            value: this.markables
           }
         );
       });

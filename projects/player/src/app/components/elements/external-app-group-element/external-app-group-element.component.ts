@@ -33,7 +33,7 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
-      this.elementModelElementCodeMappingService.mapToElementCodeValue(
+      ElementModelElementCodeMappingService.mapToElementCodeValue(
         this.appDefinition,
         this.elementModel.type
       ),
@@ -56,7 +56,7 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
   private changeGeometryVariableValue(variable: GeometryVariable): void {
     this.unitStateService.changeElementCodeValue({
       id: (this.elementModel as GeometryElement).getGeometryVariableId(variable.id),
-      value: this.elementModelElementCodeMappingService
+      value: ElementModelElementCodeMappingService
         .mapToElementCodeValue(variable.value, 'geometry-variable')
     });
   }
@@ -68,7 +68,7 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
   changeElementCodeValue(value: ValueChangeElement): void {
     this.unitStateService.changeElementCodeValue({
       id: value.id,
-      value: this.elementModelElementCodeMappingService
+      value: ElementModelElementCodeMappingService
         .mapToElementCodeValue((value.value as GeometryValue).appDefinition, this.elementModel.type)
     });
     this.changeGeometryVariableValues((value.value as GeometryValue).variables);

@@ -1,8 +1,5 @@
 <aspect-text
     #elementComponent
-    markables
-    [savedMarks]="savedMarks"
-    [elementComponent]="elementComponent"
     [elementModel]="elementModel | cast: TextElement"
     [savedText]="savedText"
     (markingDataChanged)="textMarkingSupport.applyMarkingData($event, elementComponent)"

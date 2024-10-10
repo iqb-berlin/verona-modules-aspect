@@ -1,35 +1,32 @@
-import {
-  AfterViewInit, ApplicationRef, createComponent, Directive, Input, Renderer2
-} from '@angular/core';
+import { ApplicationRef, createComponent, Renderer2 } from '@angular/core';
+import { TextComponent } from 'common/components/text/text.component';
+import { Markable, MarkablesContainer } from 'player/src/app/models/markable.interface';
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/elements/markables-container/markables-container.component';
-import { TextComponent } from 'common/components/text/text.component';
-import { Markable, MarkablesContainer } from 'player/src/app/models/markable.interface';
 
-@Directive({
-  selector: '[markables]',
-  standalone: true
-})
-export class MarkablesDirective implements AfterViewInit {
-  @Input() elementComponent!: TextComponent;
-  @Input() savedMarks!: string[];
-
+export class MarkableSupport {
+  private renderer: Renderer2;
+  private applicationRef: ApplicationRef;
   markables: Markable[] = [];
 
   constructor(
-    private renderer: Renderer2,
-    private applicationRef: ApplicationRef) { }
-
-  ngAfterViewInit(): void {
-    const nodes = MarkablesDirective.findNodes(this.elementComponent.textContainerRef.nativeElement.childNodes);
-    const markablesContainers = this.getMarkablesContainers(nodes);
-    this.markables = markablesContainers
-      .flatMap((markablesContainer: MarkablesContainer) => markablesContainer.markables);
-    this.createComponents(markablesContainers);
+    renderer: Renderer2,
+    applicationRef: ApplicationRef
+  ) {
+    this.renderer = renderer;
+    this.applicationRef = applicationRef;
   }
 
-  createComponents(markablesContainers: MarkablesContainer[]): void {
+  createMarkables(savedMarks: string[], elementComponent: TextComponent): void {
+    const nodes = MarkableSupport.findNodes(elementComponent.textContainerRef.nativeElement.childNodes);
+    const markablesContainers = MarkableSupport.getMarkablesContainers(nodes, savedMarks);
+    this.markables = markablesContainers
+      .flatMap((markablesContainer: MarkablesContainer) => markablesContainer.markables);
+    this.createComponents(markablesContainers, elementComponent);
+  }
+
+  private createComponents(markablesContainers: MarkablesContainer[], elementComponent: TextComponent): void {
     markablesContainers.forEach((markablesContainer: MarkablesContainer) => {
       const node = markablesContainer.node;
       const markableContainerElement = this.renderer.createElement('markable-container');
@@ -41,9 +38,9 @@ export class MarkablesDirective implements AfterViewInit {
       });
       componentRef.instance.markables = markablesContainer.markables;
       componentRef.instance.markablesChange.subscribe(() => {
-        this.elementComponent.elementValueChanged.emit(
+        elementComponent.elementValueChanged.emit(
           {
-            id: this.elementComponent.elementModel.id,
+            id: elementComponent.elementModel.id,
             value: this.markables
           }
         );
@@ -52,25 +49,25 @@ export class MarkablesDirective implements AfterViewInit {
     });
   }
 
-  private getMarkablesContainers(nodes: Node[]): MarkablesContainer[] {
+  private static getMarkablesContainers(nodes: Node[], savedMarks: string[]): MarkablesContainer[] {
     const markablesContainers: MarkablesContainer[] = [];
     let wordsCount = 0;
     nodes.forEach((node: Node) => {
-      const currentNodes = this.getMarkablesContainer(node, wordsCount);
+      const currentNodes = MarkableSupport.getMarkablesContainer(node, wordsCount, savedMarks);
       wordsCount += currentNodes.markables.length;
       markablesContainers.push(currentNodes);
     });
     return markablesContainers;
   }
 
-  private getMarkablesContainer(node: Node, wordsCount: number): MarkablesContainer {
+  private static getMarkablesContainer(node: Node, wordsCount: number, savedMarks: string[]): MarkablesContainer {
     return {
       node: node,
-      markables: this.getMarkables(node.textContent || '', wordsCount)
+      markables: MarkableSupport.getMarkables(node.textContent || '', wordsCount, savedMarks)
     };
   }
 
-  private getMarkables(text: string, startIndex: number): Markable[] {
+  private static getMarkables(text: string, startIndex: number, savedMarks: string[]): Markable[] {
     const markables: Markable[] = [];
     const wordsWithWhitespace = text?.match(/(\s*\S+\s*)|(s+\S*\s*)|(s*\S*\s+)/g);
     wordsWithWhitespace?.forEach((wordWithWhitespace: string, index: number) => {
@@ -78,7 +75,7 @@ export class MarkablesDirective implements AfterViewInit {
       const word = wordWithWhitespace.match(/\S+/);
       const suffix = wordWithWhitespace.match(/[^\S]\s*$/);
       const id = startIndex + index;
-      const markedWord = this.getMarkedValueById(id);
+      const markedWord = MarkableSupport.getMarkedValueById(id, savedMarks);
       markables.push(
         {
           id: id,
@@ -93,7 +90,7 @@ export class MarkablesDirective implements AfterViewInit {
     return markables;
   }
 
-  static findNodes(childList: Node[] | NodeListOf<ChildNode>): Node[] {
+  private static findNodes(childList: Node[] | NodeListOf<ChildNode>): Node[] {
     const nodes: Node[] = [];
     childList.forEach((node: Node) => {
       if (node.nodeType === Node.TEXT_NODE && !nodes.includes(node)) {
@@ -101,7 +98,7 @@ export class MarkablesDirective implements AfterViewInit {
       }
       if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.childNodes.length) {
-          nodes.push(...MarkablesDirective.findNodes(node.childNodes));
+          nodes.push(...MarkableSupport.findNodes(node.childNodes));
         } else if (!nodes.includes(node)) {
           nodes.push(node);
         }
@@ -110,7 +107,7 @@ export class MarkablesDirective implements AfterViewInit {
     return nodes;
   }
 
-  private getMarkedValueById(id: number): boolean {
-    return this.savedMarks.map((mark: string) => mark.split('-')[0]).includes(id.toString());
+  private static getMarkedValueById(id: number, savedMarks: string[]): boolean {
+    return savedMarks.map((mark: string) => mark.split('-')[0]).includes(id.toString());
   }
 }

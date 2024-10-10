@@ -1,8 +1,8 @@
 import {
-  AfterViewInit,
+  AfterViewInit, ApplicationRef,
   Component,
   OnDestroy,
-  OnInit,
+  OnInit, Renderer2,
   ViewChild
 } from '@angular/core';
 import { TextComponent } from 'common/components/text/text.component';
@@ -11,6 +11,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
+import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -24,7 +25,8 @@ import { ElementModelElementCodeMappingService } from '../../../services/element
 export class TextGroupElementComponent extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: TextComponent;
   TextElement!: TextElement;
-  textMarkingSupport:TextMarkingSupport;
+  textMarkingSupport: TextMarkingSupport;
+  markableSupport: MarkableSupport;
   savedText: string = '';
   savedMarks: string[] = [];
 
@@ -32,10 +34,13 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     private nativeEventService: NativeEventService,
     private anchorService: AnchorService,
     private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
-    public unitStateService: UnitStateService
+    public unitStateService: UnitStateService,
+    private renderer: Renderer2,
+    private applicationRef: ApplicationRef
   ) {
     super();
     this.textMarkingSupport = new TextMarkingSupport(nativeEventService, anchorService);
+    this.markableSupport = new MarkableSupport(renderer, applicationRef);
   }
 
   ngOnInit(): void {
@@ -51,6 +56,9 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngAfterViewInit(): void {
+    if (this.elementModel.markingMode === 'word' || this.elementModel.markingMode === 'range') {
+      this.markableSupport.createMarkables(this.savedMarks, this.elementComponent);
+    }
     const elementModelValue = (this.elementModel as TextElement).markingMode === 'word' ||
       (this.elementModel as TextElement).markingMode === 'range' ? this.savedMarks : this.savedText;
     this.registerAtUnitStateService(

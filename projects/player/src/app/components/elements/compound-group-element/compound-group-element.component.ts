@@ -159,7 +159,12 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
           break;
         case 'text':
           initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
-            this.savedTexts[childModel.id], childModel.type, { markingMode: (childModel as TextElement).markingMode });
+            this.textChildModelValue(childModel as TextElement),
+            childModel.type,
+            {
+              markingMode: (childModel as TextElement).markingMode,
+              color: 'yellow'
+            });
           break;
         default:
           initialValue = ElementModelElementCodeMappingService
@@ -168,6 +173,12 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
       this.registerChildEvents(child, childModel);
     });
+  }
+
+  private textChildModelValue(childModel: TextElement): string | string[] {
+    return childModel.markingMode === 'word' || childModel.markingMode === 'range' ?
+      this.savedMarks[childModel.id] :
+      this.savedTexts[childModel.id];
   }
 
   private registerChildEvents(child: ElementComponent, childModel: UIElement): void {

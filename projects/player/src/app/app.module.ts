@@ -19,7 +19,6 @@ import { TableComponent } from 'common/components/compound-elements/table/table.
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/elements/markables-container/markables-container.component';
-import { MarkablesDirective } from 'player/src/app/directives/markables.directive';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -117,8 +116,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     UnitMenuModule,
     MeasurePipe,
     TableComponent,
-    MarkablesContainerComponent,
-    MarkablesDirective
+    MarkablesContainerComponent
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService }

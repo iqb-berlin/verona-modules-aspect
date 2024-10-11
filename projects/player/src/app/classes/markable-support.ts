@@ -10,6 +10,11 @@ export class MarkableSupport {
   private applicationRef: ApplicationRef;
   markables: Markable[] = [];
 
+  static wordsWithWhitespace: RegExp = /(\s*\S+\s*)|(s+\S*\s*)|(s*\S*\s+)/g;
+  static prefix: RegExp = /\W+(?=\w+)/u;
+  static word: RegExp = /\w+/u;
+  static suffix: RegExp = /\W+$/u;
+
   constructor(
     renderer: Renderer2,
     applicationRef: ApplicationRef
@@ -70,11 +75,11 @@ export class MarkableSupport {
 
   private static getMarkables(text: string, startIndex: number, savedMarks: string[]): Markable[] {
     const markables: Markable[] = [];
-    const wordsWithWhitespace = text?.match(/(\s*\S+\s*)|(s+\S*\s*)|(s*\S*\s+)/g);
+    const wordsWithWhitespace = text?.match(MarkableSupport.wordsWithWhitespace);
     wordsWithWhitespace?.forEach((wordWithWhitespace: string, index: number) => {
-      const prefix = wordWithWhitespace.match(/\s+(?=[^,]*\S*)/);
-      const word = wordWithWhitespace.match(/\S+/);
-      const suffix = wordWithWhitespace.match(/[^\S]\s*$/);
+      const prefix = wordWithWhitespace.match(MarkableSupport.prefix);
+      const word = wordWithWhitespace.match(MarkableSupport.word);
+      const suffix = wordWithWhitespace.match(MarkableSupport.suffix);
       const id = startIndex + index;
       const color = MarkableSupport.getColorValueById(id, savedMarks);
       markables.push(

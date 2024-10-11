@@ -76,7 +76,7 @@ export class MarkableSupport {
       const word = wordWithWhitespace.match(/\S+/);
       const suffix = wordWithWhitespace.match(/[^\S]\s*$/);
       const id = startIndex + index;
-      const markedWord = MarkableSupport.getColorValueById(id, savedMarks);
+      const color = MarkableSupport.getColorValueById(id, savedMarks);
       markables.push(
         {
           id: id,
@@ -84,7 +84,7 @@ export class MarkableSupport {
           word: word ? word[0] : '',
           suffix: suffix ? suffix[0] : '',
           isActive: !!(word && word[0].length),
-          color: markedWord
+          color: color
         }
       );
     });
@@ -94,14 +94,12 @@ export class MarkableSupport {
   private static findNodes(childList: Node[] | NodeListOf<ChildNode>): Node[] {
     const nodes: Node[] = [];
     childList.forEach((node: Node) => {
-      if (node.nodeType === Node.TEXT_NODE && !nodes.includes(node)) {
+      if (node.nodeType === Node.TEXT_NODE && !nodes.includes(node) && node.textContent) {
         nodes.push(node);
       }
       if (node.nodeType === Node.ELEMENT_NODE) {
         if (node.childNodes.length) {
           nodes.push(...MarkableSupport.findNodes(node.childNodes));
-        } else if (!nodes.includes(node)) {
-          nodes.push(node);
         }
       }
     });

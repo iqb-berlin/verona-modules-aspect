@@ -47,7 +47,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     this.savedMarks = this.elementModelElementCodeMappingService
       .mapToElementModelValue(this.unitStateService
         .getElementCodeById(this.elementModel.id)?.value, this.elementModel) as string[];
-    this.savedText = ((this.elementModel as TextElement).markingMode === 'default') ?
+    this.savedText = ((this.elementModel as TextElement).markingMode === 'selection') ?
       TextMarkingUtils
         .restoreMarkedTextIndices(
           this.savedMarks,

@@ -108,7 +108,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       .mapToElementModelValue(this.unitStateService
         .getElementCodeById(element.id)?.value, element) as string[];
 
-    this.savedTexts[element.id] = (element.markingMode === 'default') ?
+    this.savedTexts[element.id] = (element.markingMode === 'selection') ?
       TextMarkingUtils
         .restoreMarkedTextIndices(
           this.savedMarks[element.id],

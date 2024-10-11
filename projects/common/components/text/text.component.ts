@@ -13,10 +13,9 @@ import { ElementComponent } from '../../directives/element-component.directive';
     <div [style.width.%]="100"
          [style.height.%]="100">
       <aspect-text-marking-bar
-        *ngIf="elementModel.markingMode !== 'none' && (
-               elementModel.highlightableYellow ||
+        *ngIf="elementModel.highlightableYellow ||
                elementModel.highlightableTurquoise ||
-               elementModel.highlightableOrange)"
+               elementModel.highlightableOrange"
         [elementModel]="elementModel"
         (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">
       </aspect-text-marking-bar>
@@ -79,7 +78,7 @@ export class TextComponent extends ElementComponent implements AfterViewInit, On
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
   startTextSelection(event: PointerEvent): void {
-    if (this.elementModel.markingMode === 'default' &&
+    if (this.elementModel.markingMode === 'selection' &&
       (this.elementModel.highlightableYellow ||
       this.elementModel.highlightableTurquoise ||
       this.elementModel.highlightableOrange)) {

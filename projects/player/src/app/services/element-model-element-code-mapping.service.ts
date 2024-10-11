@@ -5,7 +5,6 @@ import {
   UIElement,
   UIElementType
 } from 'common/models/elements/element';
-import { TextElement } from 'common/models/elements/text/text';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ImageElement } from 'common/models/elements/media-elements/image';
@@ -45,9 +44,8 @@ export class ElementModelElementCodeMappingService {
             .map((v, i) => ({ ...(elementModel as HotspotImageElement).value[i], value: v })) :
           (elementModel as HotspotImageElement).value;
       case 'text':
-        return (elementCodeValue !== undefined && (elementModel as TextElement).markingMode !== 'none') ?
-          elementCodeValue as string[] :
-          [];
+        return (elementCodeValue !== undefined) ?
+          elementCodeValue as string[] : [];
       case 'audio':
         return elementCodeValue !== undefined ?
           elementCodeValue as number :
@@ -95,7 +93,7 @@ export class ElementModelElementCodeMappingService {
       case 'hotspot-image':
         return (elementModelValue as Hotspot[]).map(hotspot => hotspot.value);
       case 'text':
-        if (options && options.markingMode === 'default') {
+        if (options && options.markingMode === 'selection') {
           return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
         }
         if (options && options.markingMode !== 'none') {

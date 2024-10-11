@@ -263,6 +263,10 @@
             (click)="toggleBlockquote()">
       <mat-icon>format_quote</mat-icon>
     </button>
+    <button mat-icon-button matTooltip="Formel" [matTooltipShowDelay]="300"
+            (click)="insertFormula()">
+      <mat-icon>functions</mat-icon>
+    </button>
     <aspect-combo-button *ngIf="!clozeMode && !showReducedControls"
                          [inputType]="'color'" [selectedValue]="selectedAnchorColor"
                          [tooltip]="'Bereich hervorheben'" [icon]="'read_more'"

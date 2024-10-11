@@ -48,6 +48,7 @@ import ToggleButtonComponentExtension from './angular-node-views/toggle-button-c
 import DropListComponentExtension from './angular-node-views/drop-list-component-extension';
 import TextFieldComponentExtension from './angular-node-views/text-field-component-extension';
 import CheckboxComponentExtension from './angular-node-views/checkbox-component-extension';
+import MathFormulaExtension from './angular-node-views/math-formula-extension';
 
 @Component({
   selector: 'aspect-rich-text-editor',
@@ -113,7 +114,8 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
     InlineImage,
     BlockImage,
     Blockquote,
-    Tooltip
+    Tooltip,
+    MathFormulaExtension(this.injector)
   ];
 
   editor: Editor = new Editor({
@@ -130,6 +132,7 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
       activeExtensions.push(TextFieldComponentExtension(this.injector));
       activeExtensions.push(ButtonComponentExtension(this.injector));
       activeExtensions.push(CheckboxComponentExtension(this.injector));
+      activeExtensions.push(MathFormulaExtension(this.injector));
     }
     this.editor = new Editor({
       extensions: [
@@ -359,6 +362,11 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
   insertCheckbox() {
     this.editor.commands.insertContent('<aspect-nodeview-checkbox></aspect-nodeview-checkbox>');
+    this.editor.commands.focus();
+  }
+
+  insertFormula() {
+    this.editor.commands.insertContent('<aspect-nodeview-math-formula></aspect-nodeview-math-formula>');
     this.editor.commands.focus();
   }
 }

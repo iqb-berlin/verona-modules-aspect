@@ -42,51 +42,52 @@ import { DialogService } from '../../../../../services/dialog.service';
                (change)="combinedProperties.columnCount = combinedProperties.columnCount ?
                                                             combinedProperties.columnCount : 0">
       </mat-form-field>
-      <div *ngIf="combinedProperties.highlightableYellow !== undefined ||
-                combinedProperties.highlightableTurquoise !== undefined ||
-                combinedProperties.highlightableOrange !== undefined">
-        {{'propertiesPanel.highlightable' | translate }}</div>
 
-      <mat-form-field *ngIf="combinedProperties.markingMode !== undefined" appearance="fill">
-        <mat-label>{{'propertiesPanel.markingMode' | translate }}</mat-label>
-        <mat-select [value]="combinedProperties.markingMode"
-                    (selectionChange)="updateModel.emit({ property: 'markingMode', value: $event.value })">
-          <mat-option *ngFor="let option of ['none', 'default', 'word', 'range']"
-                      [value]="option">
-            {{ 'propertiesPanel.markingMode-'+option | translate }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <fieldset class="fx-column-start-stretch">
+        <legend>{{'propertiesPanel.marking' | translate }}</legend>
 
+        <mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
+                      [checked]="$any(combinedProperties.highlightableYellow)"
+                      (change)="updateModel.emit({ property: 'highlightableYellow', value: $event.checked })">
+          {{'propertiesPanel.highlightableYellow' | translate }}
+        </mat-checkbox>
+        <mat-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
+                      [checked]="$any(combinedProperties.highlightableTurquoise)"
+                      (change)="updateModel.emit({ property: 'highlightableTurquoise', value: $event.checked })">
+          {{'propertiesPanel.highlightableTurquoise' | translate }}
+        </mat-checkbox>
+        <mat-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
+                      [checked]="$any(combinedProperties.highlightableOrange)"
+                      (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
+          {{'propertiesPanel.highlightableOrange' | translate }}
+        </mat-checkbox>
 
-      <mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
-                    [disabled]="combinedProperties.markingMode === 'none'"
-                    [checked]="$any(combinedProperties.highlightableYellow)"
-                    (change)="updateModel.emit({ property: 'highlightableYellow', value: $event.checked })">
-        {{'propertiesPanel.highlightableYellow' | translate }}
-      </mat-checkbox>
-      <mat-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
-                    [disabled]="combinedProperties.markingMode === 'none'"
-                    [checked]="$any(combinedProperties.highlightableTurquoise)"
-                    (change)="updateModel.emit({ property: 'highlightableTurquoise', value: $event.checked })">
-        {{'propertiesPanel.highlightableTurquoise' | translate }}
-      </mat-checkbox>
-      <mat-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
-                    [disabled]="combinedProperties.markingMode === 'none'"
-                    [checked]="$any(combinedProperties.highlightableOrange)"
-                    (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
-        {{'propertiesPanel.highlightableOrange' | translate }}
-      </mat-checkbox>
-      <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
-                    [disabled]="combinedProperties.markingMode !== 'default' ||
-                    (!combinedProperties.highlightableYellow &&
-                    !combinedProperties.highlightableTurquoise &&
-                    !combinedProperties.highlightableOrange)"
-                    [style.margin-top.px]="5"
-                    [checked]="$any(combinedProperties.hasSelectionPopup)"
-                    (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
-        {{'propertiesPanel.hasSelectionPopup' | translate }}
-      </mat-checkbox>
+        <mat-form-field *ngIf="combinedProperties.markingMode !== undefined"
+                        [style.margin-top.px]="5"
+                        appearance="fill">
+          <mat-label>{{'propertiesPanel.markingMode' | translate }}</mat-label>
+          <mat-select [value]="combinedProperties.markingMode"
+                      [disabled]="!combinedProperties.highlightableYellow &&
+                                  !combinedProperties.highlightableTurquoise &&
+                                  !combinedProperties.highlightableOrange"
+                      (selectionChange)="updateModel.emit({ property: 'markingMode', value: $event.value })">
+            <mat-option *ngFor="let option of ['selection', 'word', 'range']"
+                        [value]="option">
+              {{ 'propertiesPanel.markingMode-'+option | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
+                      [disabled]="combinedProperties.markingMode !== 'selection' ||
+                      (!combinedProperties.highlightableYellow &&
+                      !combinedProperties.highlightableTurquoise &&
+                      !combinedProperties.highlightableOrange)"
+                      [checked]="$any(combinedProperties.hasSelectionPopup)"
+                      (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
+          {{'propertiesPanel.hasSelectionPopup' | translate }}
+        </mat-checkbox>
+      </fieldset>
     </div>
   `,
   styles: [`

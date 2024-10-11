@@ -25,7 +25,8 @@ import { TextElement } from 'common/models/elements/text/text';
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
-      <aspect-text-marking-button [color]="selectionColors.delete"
+      <aspect-text-marking-button *ngIf="elementModel.markingMode === 'default'"
+                                  [color]="selectionColors.delete"
                                   [isMarkingSelected]="selectedColor === selectionColors.delete"
                                   mode="delete"
                                   (selectedMarkingChanged)="changeMarkingData($event)">

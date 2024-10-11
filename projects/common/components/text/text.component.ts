@@ -4,6 +4,7 @@ import {
 import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
+import { BehaviorSubject } from 'rxjs';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
@@ -12,18 +13,18 @@ import { ElementComponent } from '../../directives/element-component.directive';
     <div [style.width.%]="100"
          [style.height.%]="100">
       <aspect-text-marking-bar
-        *ngIf="elementModel.markingMode === 'default' && (
+        *ngIf="elementModel.markingMode !== 'none' && (
                elementModel.highlightableYellow ||
                elementModel.highlightableTurquoise ||
                elementModel.highlightableOrange)"
         [elementModel]="elementModel"
-        (markingDataChanged)="selectedColor=$event.colorName; markingDataChanged.emit($event)">
+        (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">
       </aspect-text-marking-bar>
       <div #textContainerRef class="text-container"
-           [class.orange-selection]="selectedColor === 'orange'"
-           [class.yellow-selection]="selectedColor === 'yellow'"
-           [class.turquoise-selection]="selectedColor === 'turquoise'"
-           [class.delete-selection]="selectedColor === 'delete'"
+           [class.orange-selection]="selectedColor.value === 'orange'"
+           [class.yellow-selection]="selectedColor.value === 'yellow'"
+           [class.turquoise-selection]="selectedColor.value === 'turquoise'"
+           [class.delete-selection]="selectedColor.value === 'delete'"
            [style.background-color]="elementModel.styling.backgroundColor"
            [style.color]="elementModel.styling.fontColor"
            [style.font-size.px]="elementModel.styling.fontSize"
@@ -71,7 +72,7 @@ export class TextComponent extends ElementComponent implements AfterViewInit, On
 
   @ViewChild(ImageFullscreenDirective) imageFullScreenDirective!: ImageFullscreenDirective;
 
-  selectedColor!: string | undefined;
+  selectedColor: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
 
   static textComponents: { [id: string]: TextComponent } = {};
 

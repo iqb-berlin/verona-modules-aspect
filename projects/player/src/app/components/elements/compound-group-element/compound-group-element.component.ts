@@ -171,8 +171,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
             this.getTextChildModelValue(childModel as TextElement),
             childModel.type,
             {
-              markingMode: (childModel as TextElement).markingMode,
-              color: 'yellow'
+              markingMode: (childModel as TextElement).markingMode
             });
           break;
         default:
@@ -208,7 +207,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       this.addElementCodeValueSubscription(
         child as TextComponent,
         childModel,
-        { markingMode: 'word', color: 'yellow' }
+        { markingMode: 'word' }
       );
     }
     if (childModel.type === 'image') {

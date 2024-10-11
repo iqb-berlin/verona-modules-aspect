@@ -100,7 +100,7 @@ export class ElementModelElementCodeMappingService {
         }
         if (options && options.markingMode !== 'none') {
           return ElementModelElementCodeMappingService
-            .getMarkedMarkables(elementModelValue as Markable[], options.color);
+            .getMarkedMarkables(elementModelValue as Markable[]);
         }
         return [];
       case 'radio':
@@ -114,15 +114,15 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
-  private static getMarkedMarkables(markables: Markable[], color: string): string[] {
+  private static getMarkedMarkables(markables: Markable[]): string[] {
     return markables
-      .filter((markable: Markable) => markable.marked)
-      .map((markable: Markable) => ElementModelElementCodeMappingService.mapToTextSelectionFormat(markable, color));
+      .filter((markable: Markable) => !!markable.color)
+      .map((markable: Markable) => ElementModelElementCodeMappingService
+        .mapToTextSelectionFormat(markable, markable.color));
   }
 
-  private static mapToTextSelectionFormat(markable: Markable, color: string): string {
-    const hexColor = TextElement.selectionColors[color];
-    return `${markable.id}-${markable.id}-${hexColor}`;
+  private static mapToTextSelectionFormat(markable: Markable, color: string | null): string {
+    return `${markable.id}-${markable.id}-${color}`;
   }
 
   private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {

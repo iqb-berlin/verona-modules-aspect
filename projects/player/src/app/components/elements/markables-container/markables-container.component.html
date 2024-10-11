@@ -4,13 +4,13 @@
   }
   @if (markable.word) {
     <aspect-markable-word [text]="markable.word"
-                          [(marked)]="markable.marked"
-                          (markedChange)="onMarkedChange()">
+                          [markColor]="selectedColor.value"
+                          [(color)]="markable.color"
+                          (colorChange)="onColorChange()">
     </aspect-markable-word>
   }
   @if (markable.suffix) {
     <span>{{markable.suffix}}</span>
   }
 }
-
 

@@ -9,5 +9,5 @@ export interface Markable {
   word: string;
   suffix: string;
   isActive: boolean;
-  marked: boolean;
+  color: string | null;
 }

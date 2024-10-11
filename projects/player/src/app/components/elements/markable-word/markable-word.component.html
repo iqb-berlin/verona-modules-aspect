@@ -1,3 +1,4 @@
-<span class="prevent-select"
-      [style.background-color]="marked ? selectionColors.yellow : 'transparent'"
+<span class="prevent-select is-active"
+      [class.is-active]="!!(markColor && markColor !== 'none')"
+      [style.background-color]="color ? color : 'transparent'"
       (click)="toggleMarked()">{{text}}</span>

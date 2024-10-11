@@ -66,8 +66,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
           this.getElementModelValue(),
           this.elementModel.type,
           {
-            markingMode: (this.elementModel as TextElement).markingMode,
-            color: 'yellow'
+            markingMode: (this.elementModel as TextElement).markingMode
           }),
       this.elementComponent,
       this.pageIndex);
@@ -86,8 +85,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
           value.value,
           this.elementModel.type,
           {
-            markingMode: (this.elementModel as TextElement).markingMode,
-            color: 'yellow'
+            markingMode: (this.elementModel as TextElement).markingMode
           })
     });
   }

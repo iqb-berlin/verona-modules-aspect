@@ -12,13 +12,21 @@ import { TextElement } from 'common/models/elements/text/text';
 })
 export class MarkableWordComponent {
   @Input() text = '';
-  @Input() marked!: boolean;
-  @Output() markedChange = new EventEmitter<boolean>();
+  @Input() color!: string | null;
+  @Input() markColor!: string | undefined;
+  @Output() colorChange = new EventEmitter<string | null>();
 
   selectionColors: Record<string, string> = TextElement.selectionColors;
 
   toggleMarked(): void {
-    this.marked = !this.marked;
-    this.markedChange.emit(this.marked);
+    if (!this.markColor || this.markColor === 'none') {
+      return;
+    }
+    if (this.color && this.color === TextElement.selectionColors[this.markColor]) {
+      this.color = null;
+    } else {
+      this.color = TextElement.selectionColors[this.markColor];
+    }
+    this.colorChange.emit(this.color);
   }
 }

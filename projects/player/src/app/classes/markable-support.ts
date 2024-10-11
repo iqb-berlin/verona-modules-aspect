@@ -37,6 +37,7 @@ export class MarkableSupport {
         hostElement: markableContainerElement
       });
       componentRef.instance.markables = markablesContainer.markables;
+      componentRef.instance.selectedColor = elementComponent.selectedColor;
       componentRef.instance.markablesChange.subscribe(() => {
         elementComponent.elementValueChanged.emit(
           {
@@ -75,7 +76,7 @@ export class MarkableSupport {
       const word = wordWithWhitespace.match(/\S+/);
       const suffix = wordWithWhitespace.match(/[^\S]\s*$/);
       const id = startIndex + index;
-      const markedWord = MarkableSupport.getMarkedValueById(id, savedMarks);
+      const markedWord = MarkableSupport.getColorValueById(id, savedMarks);
       markables.push(
         {
           id: id,
@@ -83,7 +84,7 @@ export class MarkableSupport {
           word: word ? word[0] : '',
           suffix: suffix ? suffix[0] : '',
           isActive: !!(word && word[0].length),
-          marked: markedWord
+          color: markedWord
         }
       );
     });
@@ -107,7 +108,9 @@ export class MarkableSupport {
     return nodes;
   }
 
-  private static getMarkedValueById(id: number, savedMarks: string[]): boolean {
-    return savedMarks.map((mark: string) => mark.split('-')[0]).includes(id.toString());
+  private static getColorValueById(id: number, savedMarks: string[]): string | null {
+    const savedMarkById = savedMarks.map(savedMark => savedMark.split('-'))
+      .find(mark => mark[0] === id.toString());
+    return savedMarkById ? savedMarkById[2] : null;
   }
 }

@@ -40,6 +40,7 @@ import { ValueChangeElement } from 'common/models/elements/element';
                             [elementModel]="$any(element)">
       </aspect-toggle-button>
       <aspect-button *ngIf="element.type === 'button'" #childComponent
+                     [style.display]="'flex'"
                      [style.pointer-events]="editorMode ? 'none' : 'auto'"
                      [elementModel]="$any(element)">
       </aspect-button>

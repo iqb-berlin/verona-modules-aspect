@@ -16,6 +16,10 @@
     "unitDefinitionIsNewer": "Unit-Version ist neuer als dieser Player. Bitte mit der neuesten Version öffnen.",
     "unitDefinitionIsOutdated": "Unit-Version ist veraltet. Sie kann im neuesten Editor geöffnet und aktualisiert werden."
   },
+  "apply_separate": "'Blätter'-Modus anwenden",
+  "apply_buttons": "'Buttons'-Modus anwenden",
+  "apply_scroll": "'Scroll'-Modus anwenden",
+  "apply_snap": "'Snap'-Modus anwenden",
   "load_separate": "Unit im 'Blätter'-Modus laden",
   "load_buttons": "Unit im 'Buttons'-Modus laden",
   "load_scroll": "Unit im 'Scroll'-Modus laden",

@@ -4,6 +4,7 @@ import {
   PagingMode,
   UnitState,
   VopPageNavigationCommand,
+  VopPlayerConfigChangedNotification,
   VopStartCommand
 } from 'player/modules/verona/models/verona';
 import { Page } from 'common/models/page';
@@ -32,6 +33,14 @@ export class UnitMenuComponent {
       pagingMode: undefined
     },
     unitState: undefined
+  };
+
+  private vopPlayerConfigChangedNotificationMessage: VopPlayerConfigChangedNotification = {
+    type: 'vopPlayerConfigChangedNotification',
+    sessionId: 'dev',
+    playerConfig: {
+      pagingMode: undefined
+    }
   };
 
   private vopPageNavigationCommandMessage: VopPageNavigationCommand = {
@@ -66,6 +75,11 @@ export class UnitMenuComponent {
     }
   }
 
+  changePagingMode(pagingMode: PagingMode): void {
+    this.vopPlayerConfigChangedNotificationMessage.playerConfig.pagingMode = pagingMode;
+    this.postMessage(this.vopPlayerConfigChangedNotificationMessage);
+  }
+
   private loadUnit(unitDefinition: string, pagingMode: PagingMode, unitSate: UnitState): void {
     this.vopStartCommandMessage.unitDefinition = unitDefinition;
     this.vopStartCommandMessage.playerConfig = { pagingMode };
@@ -74,7 +88,7 @@ export class UnitMenuComponent {
     this.postMessage(this.vopStartCommandMessage);
   }
 
-  private postMessage = (message: VopStartCommand | VopPageNavigationCommand): void => {
+  private postMessage(message: VopStartCommand | VopPageNavigationCommand | VopPlayerConfigChangedNotification): void {
     this.postTarget.postMessage(message, '*');
-  };
+  }
 }

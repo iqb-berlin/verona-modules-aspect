@@ -33,6 +33,31 @@
     <span>{{ 'load_snap' | translate }}</span>
   </button>
 
+  @if (scrollPages && scrollPages.length) {
+    <mat-divider></mat-divider>
+    <button mat-menu-item
+            (click)="changePagingMode('separate')">
+      <mat-icon>auto_stories</mat-icon>
+      <span>{{ 'load_separate' | translate }}</span>
+    </button>
+    <button mat-menu-item
+            (click)="changePagingMode('buttons')">
+      <mat-icon>unfold_more</mat-icon>
+      <span>{{ 'load_buttons' | translate }}</span>
+    </button>
+    <button mat-menu-item
+            (click)="changePagingMode('concat-scroll')">
+      <mat-icon>south</mat-icon>
+      <span>{{ 'load_scroll' | translate }}</span>
+    </button>
+    <button mat-menu-item
+            (click)="changePagingMode('concat-scroll-snap')">
+      <mat-icon>vertical_align_bottom</mat-icon>
+      <span>{{ 'load_snap' | translate }}</span>
+    </button>
+  }
+
+
   <ng-container *ngIf="elementCodes && elementCodes.length">
     <mat-divider></mat-divider>
     <button mat-menu-item

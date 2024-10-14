@@ -91,6 +91,7 @@ export class UnitService {
       this.messageService.showFixedReferencePanel(invalidRefs);
       this.updateUnitDefinition();
     }
+    this.updateSectionCounter();
   }
 
   async updateUnitDefinition(command?: UnitUpdateCommand): Promise<void> {

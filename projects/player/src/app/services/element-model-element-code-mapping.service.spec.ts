@@ -376,23 +376,24 @@ describe('ElementModelElementCodeMappingService', () => {
       .toEqual([]);
   });
 
-  it('should not modify the elementCode and return the code', () => {
+  it('should map an elementCode value to text elementModel value (text)', () => {
     const elementModel: TextElement = JSON.parse(JSON.stringify(text_130));
-    elementModel.markingMode = 'selection';
+    const expectedValue =
+      'Lorem <aspect-marked style="background-color: rgb(249, 248, 113);">ipsum</aspect-marked> dolor sit amet';
     expect(service.mapToElementModelValue(['6-11-#f9f871'], elementModel))
-      .toEqual(['6-11-#f9f871']);
+      .toEqual(expectedValue);
   });
 
-  it('should not modify the elementCode and return the empty array', () => {
+  it('should not map but return the text elementModel value (text)', () => {
     const elementModel: TextElement = JSON.parse(JSON.stringify(text_130));
     expect(service.mapToElementModelValue([], elementModel))
-      .toEqual([]);
+      .toEqual(elementModel.text);
   });
 
-  it('should modify the undefined elementCode and return an empty array', () => {
+  it('should not map but return the text elementModel value (text)', () => {
     const elementModel: TextElement = JSON.parse(JSON.stringify(text_130));
     expect(service.mapToElementModelValue(undefined, elementModel))
-      .toEqual([]);
+      .toEqual(elementModel.text);
   });
 
   it('should map an elementCode value to audio elementModel value', () => {

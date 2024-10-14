@@ -4,6 +4,7 @@
   "width": 180,
   "height": 98,
   "text": "Lorem ipsum dolor sit amet",
+  "markingMode": "selection",
   "highlightableOrange": false,
   "highlightableTurquoise": false,
   "highlightableYellow": true,

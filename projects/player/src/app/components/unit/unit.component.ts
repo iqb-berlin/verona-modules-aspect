@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PlayerConfig, VopStartCommand } from 'player/modules/verona/models/verona';
+import { PlayerConfig, VopPlayerConfigChangedNotification, VopStartCommand } from 'player/modules/verona/models/verona';
 import { Unit } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
@@ -51,6 +51,8 @@ export class UnitComponent implements OnInit {
   ngOnInit(): void {
     this.veronaSubscriptionService.vopStartCommand
       .subscribe((message: VopStartCommand) => this.configureUnit(message));
+    this.veronaSubscriptionService.vopPlayerConfigChangedNotification
+      .subscribe((message: VopPlayerConfigChangedNotification) => this.setPlayerConfig(message.playerConfig || {}));
   }
 
   private configureUnit(message: VopStartCommand): void {
@@ -61,12 +63,12 @@ export class UnitComponent implements OnInit {
         const unitDefinition = JSON.parse(message.unitDefinition as string);
         this.checkUnitDefinitionVersion(unitDefinition);
         const unit: Unit = new Unit(unitDefinition);
+        this.pages = unit.pages;
         this.sectionNumbering = {
           enableSectionNumbering: unit.enableSectionNumbering,
           sectionNumberingPosition: unit.sectionNumberingPosition
         };
-        this.pages = unit.pages;
-        this.playerConfig = message.playerConfig || {};
+        this.setPlayerConfig(message.playerConfig || {});
         this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
         this.veronaPostService.sessionID = message.sessionId;
         this.initElementCodes(message, unit);
@@ -91,6 +93,10 @@ export class UnitComponent implements OnInit {
     } else {
       LogService.warn('player: message has no unitDefinition');
     }
+  }
+
+  private setPlayerConfig(playerConfig: PlayerConfig): void {
+    this.playerConfig = playerConfig;
   }
 
   private setStartPage(): void {

@@ -33,8 +33,13 @@ export interface UnitState {
 }
 
 export interface PlayerState {
-  validPages?: Record<string, string>;
+  validPages?: ValidPage[];
   currentPage?: string;
+}
+
+export interface ValidPage {
+  id: string;
+  label?: string;
 }
 
 export interface LogData {
@@ -56,6 +61,12 @@ export interface VopNavigationDeniedNotification {
   type: 'vopNavigationDeniedNotification';
   sessionId: string;
   reason?: Array<'presentationIncomplete' | 'responsesIncomplete'>
+}
+
+export interface VopPlayerConfigChangedNotification {
+  type: 'vopPlayerConfigChangedNotification'
+  sessionId: string;
+  playerConfig: PlayerConfig;
 }
 
 export interface VopPageNavigationCommand {
@@ -121,6 +132,7 @@ export interface VopWindowFocusChangedNotification {
 
 export type VopMessage =
   VopStartCommand |
+  VopPlayerConfigChangedNotification |
   VopNavigationDeniedNotification |
   VopPageNavigationCommand |
   VopReadyNotification |

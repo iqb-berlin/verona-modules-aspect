@@ -5,6 +5,7 @@ import {
   VopMessage,
   VopNavigationDeniedNotification,
   VopPageNavigationCommand,
+  VopPlayerConfigChangedNotification,
   VopStartCommand
 } from '../models/verona';
 
@@ -15,6 +16,7 @@ export class VeronaSubscriptionService {
   private _vopStartCommand = new Subject<VopStartCommand>();
   private _vopNavigationDeniedNotification = new Subject<VopNavigationDeniedNotification>();
   private _vopPageNavigationCommand = new Subject<VopPageNavigationCommand>();
+  private _vopPlayerConfigChangedNotification = new Subject<VopPlayerConfigChangedNotification>();
 
   resourceURL: string | undefined;
 
@@ -28,6 +30,10 @@ export class VeronaSubscriptionService {
       case 'vopStartCommand':
         LogService.debug('player: _vopStartCommand ', messageData);
         this._vopStartCommand.next(messageData);
+        break;
+      case 'vopPlayerConfigChangedNotification':
+        LogService.debug('player: vopPlayerConfigChangedNotification ', messageData);
+        this._vopPlayerConfigChangedNotification.next(messageData);
         break;
       case 'vopNavigationDeniedNotification':
         LogService.info('player: _vopNavigationDeniedNotification ', messageData);
@@ -44,6 +50,10 @@ export class VeronaSubscriptionService {
 
   get vopStartCommand(): Observable<VopStartCommand> {
     return this._vopStartCommand.asObservable();
+  }
+
+  get vopPlayerConfigChangedNotification(): Observable<VopPlayerConfigChangedNotification> {
+    return this._vopPlayerConfigChangedNotification.asObservable();
   }
 
   get vopNavigationDeniedNotification(): Observable<VopNavigationDeniedNotification> {

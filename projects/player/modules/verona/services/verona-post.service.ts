@@ -4,7 +4,7 @@ import {
   LogData,
   NavigationTarget,
   PlayerState,
-  UnitState,
+  UnitState, VopError,
   VopMessage,
   VopMetaData,
   VopStateChangedNotification
@@ -52,6 +52,15 @@ export class VeronaPostService {
     } else {
       LogService.warn('player: no playerMetadata defined');
     }
+  }
+
+  sendVopRuntimeErrorNotification(error: VopError): void {
+    this.sendMessage({
+      type: 'vopRuntimeErrorNotification',
+      sessionId: this.sessionID as string,
+      code: error.code,
+      message: error.message
+    });
   }
 
   sendVopUnitNavigationRequestedNotification(target: NavigationTarget): void {

@@ -57,6 +57,13 @@ export interface VopStartCommand {
   playerConfig?: PlayerConfig;
 }
 
+export interface VopRuntimeErrorNotification {
+  type: 'vopRuntimeErrorNotification';
+  sessionId: string;
+  code: string;
+  message?: string;
+}
+
 export interface VopNavigationDeniedNotification {
   type: 'vopNavigationDeniedNotification';
   sessionId: string;
@@ -78,6 +85,11 @@ export interface VopPageNavigationCommand {
 export interface VopReadyNotification {
   type: 'vopReadyNotification';
   metadata: VopMetaData;
+}
+
+export interface VopError {
+  code: string;
+  message?: string;
 }
 
 export interface VopMetaData {
@@ -133,6 +145,7 @@ export interface VopWindowFocusChangedNotification {
 export type VopMessage =
   VopStartCommand |
   VopPlayerConfigChangedNotification |
+  VopRuntimeErrorNotification |
   VopNavigationDeniedNotification |
   VopPageNavigationCommand |
   VopReadyNotification |

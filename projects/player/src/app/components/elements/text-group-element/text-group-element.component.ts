@@ -10,7 +10,6 @@ import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
-import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
@@ -44,15 +43,11 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngOnInit(): void {
-    this.savedMarks = this.elementModelElementCodeMappingService
-      .mapToElementModelValue(this.unitStateService
-        .getElementCodeById(this.elementModel.id)?.value, this.elementModel) as string[];
-    this.savedText = ((this.elementModel as TextElement).markingMode === 'selection') ?
-      TextMarkingUtils
-        .restoreMarkedTextIndices(
-          this.savedMarks,
-          ElementModelElementCodeMappingService.modifyAnchors((this.elementModel as TextElement).text)) :
-      ElementModelElementCodeMappingService.modifyAnchors((this.elementModel as TextElement).text);
+    this.savedMarks = this.unitStateService.getElementCodeById(this.elementModel.id)?.value as string[] || [];
+    this.savedText = this.elementModelElementCodeMappingService
+      .mapToElementModelValue(
+        this.savedMarks, this.elementModel
+      ) as string;
   }
 
   ngAfterViewInit(): void {

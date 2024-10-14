@@ -32,7 +32,6 @@ import { NativeEventService } from 'player/src/app/services/native-event.service
 import { TextComponent } from 'common/components/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { TextElement } from 'common/models/elements/text/text';
-import { TextMarkingUtils } from 'player/src/app/classes/text-marking-utils';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -104,16 +103,11 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   private setTextMarkingSupportForText(element: TextElement): void {
     this.textMarkingSupports[element.id] = new TextMarkingSupport(this.nativeEventService, this.anchorService);
     this.markableSupports[element.id] = new MarkableSupport(this.renderer, this.applicationRef);
-    this.savedMarks[element.id] = this.elementModelElementCodeMappingService
-      .mapToElementModelValue(this.unitStateService
-        .getElementCodeById(element.id)?.value, element) as string[];
-
-    this.savedTexts[element.id] = (element.markingMode === 'selection') ?
-      TextMarkingUtils
-        .restoreMarkedTextIndices(
-          this.savedMarks[element.id],
-          ElementModelElementCodeMappingService.modifyAnchors(element.text)) :
-      ElementModelElementCodeMappingService.modifyAnchors(element.text);
+    this.savedMarks[element.id] = this.unitStateService.getElementCodeById(element.id)?.value as string[] || [];
+    this.savedTexts[element.id] = this.elementModelElementCodeMappingService
+      .mapToElementModelValue(
+        this.savedMarks[element.id], element
+      ) as string;
   }
 
   private initAudioTableChildren(): void {
@@ -207,7 +201,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       this.addElementCodeValueSubscription(
         child as TextComponent,
         childModel,
-        { markingMode: 'word' }
+        { markingMode: (childModel as TextElement).markingMode }
       );
     }
     if (childModel.type === 'image') {

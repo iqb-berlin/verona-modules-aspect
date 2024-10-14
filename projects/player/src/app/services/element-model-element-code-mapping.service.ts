@@ -6,6 +6,7 @@ import {
   UIElementType
 } from 'common/models/elements/element';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { TextElement } from 'common/models/elements/text/text';
 import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
@@ -44,8 +45,12 @@ export class ElementModelElementCodeMappingService {
             .map((v, i) => ({ ...(elementModel as HotspotImageElement).value[i], value: v })) :
           (elementModel as HotspotImageElement).value;
       case 'text':
-        return (elementCodeValue !== undefined) ?
-          elementCodeValue as string[] : [];
+        return (elementCodeValue !== undefined && (elementModel as TextElement).markingMode === 'selection') ?
+          TextMarkingUtils
+            .restoreMarkedTextIndices(
+              elementCodeValue as string[],
+              ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text)) :
+          ElementModelElementCodeMappingService.modifyAnchors((elementModel as TextElement).text);
       case 'audio':
         return elementCodeValue !== undefined ?
           elementCodeValue as number :
@@ -96,7 +101,7 @@ export class ElementModelElementCodeMappingService {
         if (options && options.markingMode === 'selection') {
           return TextMarkingUtils.getMarkedTextIndices(elementModelValue as string);
         }
-        if (options && options.markingMode !== 'none') {
+        if (options && (options.markingMode === 'word' || options.markingMode === 'range')) {
           return ElementModelElementCodeMappingService
             .getMarkedMarkables(elementModelValue as Markable[]);
         }
@@ -112,7 +117,11 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
-  private static getMarkedMarkables(markables: Markable[]): string[] {
+  private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {
+    return this.dragNDropValueObjects.find(dropListValue => dropListValue.id === id);
+  }
+
+  static getMarkedMarkables(markables: Markable[]): string[] {
     return markables
       .filter((markable: Markable) => !!markable.color)
       .map((markable: Markable) => ElementModelElementCodeMappingService
@@ -121,9 +130,5 @@ export class ElementModelElementCodeMappingService {
 
   private static mapToTextSelectionFormat(markable: Markable, color: string | null): string {
     return `${markable.id}-${markable.id}-${color}`;
-  }
-
-  private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {
-    return this.dragNDropValueObjects.find(dropListValue => dropListValue.id === id);
   }
 }

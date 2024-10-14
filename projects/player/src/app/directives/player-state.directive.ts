@@ -1,7 +1,7 @@
 import {
   Directive, Input, OnChanges, OnDestroy, OnInit, SimpleChanges
 } from '@angular/core';
-import { PlayerState } from 'player/modules/verona/models/verona';
+import { PlayerState, ValidPage } from 'player/modules/verona/models/verona';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
@@ -57,10 +57,14 @@ export class PlayerStateDirective implements OnChanges, OnInit, OnDestroy {
   private sendVopStateChangedNotification(): void {
     const playerState: PlayerState = {
       currentPage: this.currentPageIndex.toString(10),
-      validPages: this.validPages
+      validPages: this.mapValidPagesToArray()
     };
     LogService.debug('player: sendVopStateChangedNotification', playerState);
     this.veronaPostService.sendVopStateChangedNotification({ playerState });
+  }
+
+  private mapValidPagesToArray(): ValidPage[] {
+    return Object.keys(this.validPages).map(key => ({ id: key, label: this.validPages[key] }));
   }
 
   ngOnDestroy(): void {

@@ -30,11 +30,7 @@ button {
   box-sizing: border-box;
 }
 
-.mat-accordion {
-  overflow: auto;
-}
-
-.no-overflow {
+.wrapper {
   overflow: hidden;
 }
 
@@ -43,7 +39,6 @@ button {
 }
 
 mat-tab-group {
-  overflow: auto;
   padding: 0 5px;
 }
 

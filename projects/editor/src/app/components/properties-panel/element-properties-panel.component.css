@@ -1,10 +1,10 @@
 .properties-panel {
+  padding: 0 5px;
   overflow: hidden;
 }
 
-mat-tab-group {
-  overflow: auto;
-  padding: 0 5px;
+:host ::ng-deep .properties-panel .mat-mdc-tab-body {
+  padding-top: 5px;
 }
 
 .panel-title {
@@ -15,7 +15,10 @@ mat-tab-group {
   font-size: medium;
 }
 
-:host ::ng-deep .mat-mdc-tab-body-wrapper {height: 100%}
+:host ::ng-deep .mat-mdc-tab-body-wrapper {
+  height: 100%;
+
+}
 
 :host ::ng-deep .wide-form-field {
   width: 100%;
@@ -35,6 +38,8 @@ mat-tab-group {
 
 .button-group {
   border: 3px groove;
+  border-radius: 3px;
+  margin: 0 -5px;
 }
 
 .no-selection {

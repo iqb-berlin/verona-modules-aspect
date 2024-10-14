@@ -1,10 +1,10 @@
-<div class="fx-column-start-stretch fill no-overflow">
+<div class="fx-column-start-stretch fill wrapper">
   <mat-tab-group class="fx-flex" mat-stretch-tabs>
     <mat-tab *ngIf="unitService.expertMode">
       <ng-template mat-tab-label>
         <mat-icon [matTooltip]="'Elemente'">bookmark</mat-icon>
       </ng-template>
-    <div class="fx-flex no-overflow element-list">
+    <div class="fx-flex element-list">
       <mat-accordion multi>
         <mat-expansion-panel expanded>
           <mat-expansion-panel-header>

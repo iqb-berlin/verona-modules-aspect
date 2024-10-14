@@ -129,7 +129,7 @@
     "highlightableOrange": "Orange",
     "hasSelectionPopup": "Farbauswahl-Popup",
     "allowUnset": "Deselektion erlauben",
-    "readOnly": "Schreibgeschützt",
+    "readOnly": "Schreibschutz",
     "requiredField": "Pflichtfeld",
     "requiredWarnMessage": "Warnmeldung",
     "options": "Optionen",

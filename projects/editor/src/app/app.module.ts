@@ -23,45 +23,48 @@ import { MatRadioModule } from '@angular/material/radio';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
 import { MathEditorModule } from 'common/math-editor.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
-import {
-  StateVariablesDialogComponent
-} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variables-dialog.component';
-import {
-  VisibilityRuleEditorComponent
-} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
-import {
-  ShowStateVariablesButtonComponent
-} from 'editor/src/app/components/new-ui-element-panel/show-state-variables-button.component';
-import {
-  TextFieldElementPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
-import {
-  ScaleAndZoomPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
-import {
-  StateVariableEditorComponent
-} from 'editor/src/app/components/dialogs/state-variables-dialog/state-variable-editor.component';
-import { ActionParamStateVariableComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
-import {
-  VisibilityRulesDialogComponent
-} from 'editor/src/app/components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
+import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
+import {
+  StateVariablesDialogComponent
+} from './components/dialogs/state-variables-dialog/state-variables-dialog.component';
+import {
+  VisibilityRuleEditorComponent
+} from './components/dialogs/visibility-rules-dialog/visibility-rule-editor.component';
+import {
+  ShowStateVariablesButtonComponent
+} from './components/new-ui-element-panel/show-state-variables-button.component';
+import {
+  TextFieldElementPropertiesComponent
+} from './components/properties-panel/model-properties-tab/input-groups/text-field-element-properties.component';
+import {
+  ScaleAndZoomPropertiesComponent
+} from './components/properties-panel/model-properties-tab/input-groups/scale-and-zoom-properties.component';
+import {
+  StateVariableEditorComponent
+} from './components/dialogs/state-variables-dialog/state-variable-editor.component';
+import { ActionParamStateVariableComponent } from
+  './components/properties-panel/model-properties-tab/input-groups/action-param-state-variable.component';
+import {
+  VisibilityRulesDialogComponent
+} from './components/dialogs/visibility-rules-dialog/visibility-rules-dialog.component';
+
 import { InputAssistancePropertiesComponent } from
-  'editor/src/app/components/properties-panel/model-properties-tab/input-groups/input-assistance-properties.component';
+  './components/properties-panel/model-properties-tab/input-groups/input-assistance-properties.component';
 import {
   TooltipPropertiesDialogComponent
-} from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
+} from './components/dialogs/tooltip-properties-dialog.component';
 import {
   ActionPropertiesComponent, GetAnchorIdsPipe, GetStateVariableIdsPipe, GetStateVariablePipe, ScrollPageIndexPipe
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/action-properties.component';
+} from './components/properties-panel/model-properties-tab/input-groups/action-properties.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
   './components/new-ui-element-panel/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { CanvasComponent } from 'editor/src/app/components/unit-view/page/canvas.component';
+import { CanvasComponent } from './components/unit-view/page/canvas.component';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
 import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-confirmation-dialog.component';
@@ -105,16 +108,16 @@ import { SizeInputPanelComponent } from './components/util/size-input-panel.comp
 import { DeleteReferenceDialogComponent } from './components/dialogs/delete-reference-dialog.component';
 import { SanitizationDialogComponent } from './components/dialogs/sanitization-dialog.component';
 import { CheckboxNodeviewComponent } from './text-editor/angular-node-views/checkbox-nodeview.component';
-import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
+import { OptionListPanelComponent } from './components/properties-panel/option-list-panel.component';
 import {
   EleSpecificPropsComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
-import { PageMenu } from 'editor/src/app/components/unit-view/page-menu.component';
-import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
-import { ReferenceListComponent } from 'editor/src/app/components/reference-list.component';
-import { ElementListComponent } from 'editor/src/app/components/element-list.component';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
-import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
+} from './components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
+import { PageMenu } from './components/unit-view/page-menu.component';
+
+import { ReferenceListComponent } from './components/reference-list.component';
+import { ElementListComponent } from './components/element-list.component';
+
+import { SectionComponent } from './components/unit-view/section/section.component';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -219,7 +222,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService },
-    {provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults}
+    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }
   ]
 })
 

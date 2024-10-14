@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PageChangeService } from 'common/services/page-change.service';
-import { HistoryService } from 'editor/src/app/services/history.service';
 import { PageService } from 'editor/src/app/services/unit-services/page.service';
 import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
@@ -18,8 +17,7 @@ export class UnitViewComponent {
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
               public pageService: PageService,
-              public pageChangeService: PageChangeService,
-              public historyService: HistoryService) { }
+              public pageChangeService: PageChangeService) { }
 
   selectPage(newIndex: number): void {
     this.selectionService.selectPage(newIndex);

@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { Section } from 'common/models/section';
 import { UIElementType } from 'common/models/elements/element';
-import { UnitService } from '../../../services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import {

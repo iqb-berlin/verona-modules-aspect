@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ReferenceList } from 'editor/src/app/services/reference-manager';
 import { UIElement } from 'common/models/elements/element';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';

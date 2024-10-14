@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import {
+  Component, EventEmitter, Input, OnDestroy, Output
+} from '@angular/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';

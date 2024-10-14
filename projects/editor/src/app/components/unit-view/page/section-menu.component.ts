@@ -4,16 +4,6 @@ import {
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { MessageService } from 'editor/src/app/services/message.service';
-import { CompoundElement, Measurement, UIElement } from 'common/models/elements/element';
-import { Section } from 'common/models/section';
-import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { IDService } from 'editor/src/app/services/id.service';
-import { VisibilityRule } from 'common/models/visibility-rule';
-import { UnitService } from '../../../services/unit-services/unit.service';
-import { DialogService } from '../../../services/dialog.service';
-import { SelectionService } from '../../../services/selection.service';
-import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -24,7 +14,17 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { Section } from 'common/models/section';
+import { CompoundElement, UIElement } from 'common/models/elements/element';
+import { VisibilityRule } from 'common/models/visibility-rule';
+import { MessageService } from 'editor/src/app/services/message.service';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { IDService } from 'editor/src/app/services/id.service';
+import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
+import { UnitService } from '../../../services/unit-services/unit.service';
+import { DialogService } from '../../../services/dialog.service';
+import { SelectionService } from '../../../services/selection.service';
 
 @Component({
   selector: 'aspect-section-menu',

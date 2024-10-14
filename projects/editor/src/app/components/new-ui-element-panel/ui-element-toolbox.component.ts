@@ -1,8 +1,5 @@
 import { Component } from '@angular/core';
 import { UIElementType } from 'common/models/elements/element';
-import { UnitService } from '../../services/unit-services/unit.service';
-import { SelectionService } from '../../services/selection.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
@@ -23,6 +20,9 @@ import { FrameElement } from 'common/models/elements/frame/frame';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TextElement } from 'common/models/elements/text/text';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { SelectionService } from 'editor/src/app/services/selection.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { TemplateService } from 'editor/src/app/services/template.service';
@@ -45,7 +45,8 @@ export class UiElementToolboxComponent {
   addUIElement(elementType: UIElementType): void {
     this.elementService.addElementToSection(
       elementType,
-      this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedSectionIndex]);
+      this.unitService.unit
+        .pages[this.selectionService.selectedPageIndex].sections[this.selectionService.selectedSectionIndex]);
   }
 
   startDrag($event: DragEvent, elementType: string): void {

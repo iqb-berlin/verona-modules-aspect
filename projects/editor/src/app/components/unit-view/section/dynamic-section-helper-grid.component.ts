@@ -2,11 +2,11 @@ import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import {
   Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
+import { NgForOf } from '@angular/common';
 import { UIElement, UIElementType } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
-import { UnitService } from '../../../services/unit-services/unit.service';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
-import { NgForOf } from '@angular/common';
 
 @Component({
   selector: '[app-dynamic-section-helper-grid]',
@@ -109,7 +109,6 @@ export class DynamicSectionHelperGridComponent implements OnInit, OnChanges {
   }
 
   drop(event: CdkDragDrop<{ pageIndex: number, sectionIndex: number; gridCoordinates: number[]; }>): void {
-    console.log('HelperGrid: drop', event);
     const dragItemData: { dragType: string; element: UIElement; } = event.item.data;
 
     // Move element to other section - handled by parent (page-canvas).

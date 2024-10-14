@@ -35,8 +35,6 @@ export class VeronaAPIService {
     const isStandalone = window === window.parent;
     if (!isStandalone) {
       window.parent.postMessage(message, '*');
-    } else {
-      // console.log(`player: ${message.type}`);
     }
   }
 

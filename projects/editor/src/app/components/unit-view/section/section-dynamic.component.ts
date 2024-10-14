@@ -1,13 +1,12 @@
 import {
   Component, Input, Output, EventEmitter,
-  ViewChildren, QueryList, ViewChild, OnInit
+  ViewChildren, QueryList, ViewChild
 } from '@angular/core';
+import { NgClass, NgForOf, NgIf } from '@angular/common';
+import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Section } from 'common/models/section';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
-import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
-import { NgClass, NgForOf, NgIf } from '@angular/common';
-import { MeasurePipe } from 'common/pipes/measure.pipe';
 import {
   DynamicCanvasOverlayComponent
 } from 'editor/src/app/components/unit-view/element-overlay/dynamic-canvas-overlay.component';
@@ -15,6 +14,7 @@ import { CdkDropList } from '@angular/cdk/drag-drop';
 import {
   ElementGridChangeListenerDirective
 } from 'editor/src/app/components/unit-view/section/element-grid-change-listener.directive';
+import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
 @Component({
   selector: 'aspect-section-dynamic',
@@ -96,12 +96,12 @@ export class SectionDynamicComponent {
   @Input() pageIndex!: number;
   @Input() dropListList!: string[];
   @Input() isSelected!: boolean;
+  @Output() elementSelected = new EventEmitter();
   @Output() transferElement = new EventEmitter<{
     sourcePageIndex: number,
     sourceSectionIndex: number,
     targetPageIndex: number,
     targetSectionIndex: number }>();
-  @Output() elementSelected = new EventEmitter();
 
   @ViewChild(DynamicSectionHelperGridComponent) helperGrid!: DynamicSectionHelperGridComponent;
   @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;

@@ -1,5 +1,5 @@
 import {
-  Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren
+  Component, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
 import { SectionMenuComponent } from 'editor/src/app/components/unit-view/page/section-menu.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
@@ -65,7 +65,6 @@ import { SectionCounter } from 'common/util/section-counter';
                                                                  $event.targetSectionIndex)"
                               (click)="selectionService.selectedSectionIndex = sectionIndex;
                                        sectionSelected.emit(sectionIndex)">
-<!--                              (click)="selectionService.updateSelection(sectionIndex)">-->
       </aspect-section-dynamic>
     </div>
   `,
@@ -131,7 +130,6 @@ export class SectionComponent {
   }
 
   elementDropped(event: CdkDragDrop<{ pageIndex: number, sectionIndex: number; gridCoordinates?: number[]; }>): void {
-    console.log('SectionComponent: elementDropped');
     const selectedElements = this.selectionService.getSelectedElements() as PositionedUIElement[];
 
     if (event.previousContainer !== event.container) {

@@ -26,8 +26,8 @@ export class AppComponent implements OnInit {
   constructor(private unitService: UnitService,
               private translateService: TranslateService,
               private veronaApiService: VeronaAPIService) {
-    translateService.addLangs(['de']);
-    translateService.setDefaultLang('de');
+    this.translateService.addLangs(['de']);
+    this.translateService.setDefaultLang('de');
   }
 
   ngOnInit(): void {

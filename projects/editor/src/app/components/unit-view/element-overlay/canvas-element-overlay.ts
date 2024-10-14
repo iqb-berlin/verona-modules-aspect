@@ -12,12 +12,12 @@ import { PositionedUIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
-import { UnitService } from '../../../services/unit-services/unit.service';
-import { SelectionService } from '../../../services/selection.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
-import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
+import { UnitService } from '../../../services/unit-services/unit.service';
+import { SelectionService } from '../../../services/selection.service';
 
 @Directive()
 export abstract class CanvasElementOverlay implements OnInit, OnDestroy {

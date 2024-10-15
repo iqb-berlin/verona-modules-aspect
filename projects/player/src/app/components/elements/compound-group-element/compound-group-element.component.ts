@@ -39,6 +39,7 @@ import { ValidationService } from '../../../services/validation.service';
 import { KeypadService } from '../../../services/keypad.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
+import { NavigationTarget } from 'player/modules/verona/models/verona';
 
 @Component({
   selector: 'aspect-compound-group-element',
@@ -194,6 +195,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     }
     if (childModel.type === 'button') {
       this.addButtonActionEventListener(child as ButtonComponent);
+      this.addEnabledNavigationListener(child as ButtonComponent);
     }
     if (childModel.type === 'text') {
       this.addMarkingDataChangedSubscription(child as TextComponent, childModel);
@@ -285,6 +287,21 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   }, elementModel: InputElement): void {
     this.detectHardwareKeyboard(elementModel);
     this.checkInputLimitation(event, elementModel);
+  }
+
+  private addEnabledNavigationListener(button: ButtonComponent) {
+    if (button.elementModel.action === 'unitNav') {
+      this.navigationService.enabledNavigationTargets
+        .subscribe(enabledNavigationTargets => {
+          if (enabledNavigationTargets && enabledNavigationTargets
+            .includes(button.elementModel.actionParam as NavigationTarget)) {
+            this.renderer.removeClass(button.domElement, 'hide-navigation');
+            this.renderer.addClass(button.domElement, 'hide-navigation');
+          } else {
+            this.renderer.removeClass(button.domElement, 'hide-navigation');
+          }
+        });
+    }
   }
 
   private addButtonActionEventListener(button: ButtonComponent) {

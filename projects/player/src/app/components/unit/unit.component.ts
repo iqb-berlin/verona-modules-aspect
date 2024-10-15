@@ -97,6 +97,7 @@ export class UnitComponent implements OnInit {
 
   private setPlayerConfig(playerConfig: PlayerConfig): void {
     this.playerConfig = playerConfig;
+    this.navigationService.enabledNavigationTargets.next(playerConfig.enabledNavigationTargets);
   }
 
   private setStartPage(): void {

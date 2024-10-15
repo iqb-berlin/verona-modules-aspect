@@ -61,6 +61,7 @@ import { ExternalAppGroupElementComponent } from
 import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-keys.pipe';
 import { HasNextPagePipe } from './pipes/has-next-page.pipe';
 import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
+import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
 
 @NgModule({
   declarations: [
@@ -116,7 +117,8 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     UnitMenuModule,
     MeasurePipe,
     TableComponent,
-    MarkablesContainerComponent
+    MarkablesContainerComponent,
+    IsEnabledNavigationTargetPipe
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService }

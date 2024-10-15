@@ -39,7 +39,7 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at RadioButtonGroupElement instantiation', element);
       }
-      if (element?.label) this.label = element.label;
+      if (element?.label !== undefined) this.label = element.label;
       if (element?.options) this.options = [...element.options];
       if (element?.alignment) this.alignment = element.alignment;
       if (element?.strikeOtherOptions) this.strikeOtherOptions = element.strikeOtherOptions;

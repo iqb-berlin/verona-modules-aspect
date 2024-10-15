@@ -32,7 +32,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Checkbox instantiation', element);
       }
-      if (element?.label) this.label = element.label;
+      if (element?.label !== undefined) this.label = element.label;
       if (element?.value !== undefined) this.value = element.value;
       if (element?.crossOutChecked !== undefined) this.crossOutChecked = element.crossOutChecked;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({

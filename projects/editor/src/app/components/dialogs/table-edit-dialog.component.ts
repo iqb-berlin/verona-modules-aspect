@@ -35,6 +35,14 @@ import { DropListProperties } from 'common/models/elements/input-elements/drop-l
       <button mat-button [mat-dialog-close]="newTable.elements">{{'save' | translate }}</button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
     </mat-dialog-actions>
+  `,
+  styles: `
+    :host ::ng-deep aspect-table .grid-container {
+      grid-template-columns: unset !important;
+      grid-template-rows: unset !important;
+      grid-auto-columns: 300px !important;
+      grid-auto-rows: 300px !important;
+    }
   `
 })
 export class TableEditDialogComponent {

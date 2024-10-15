@@ -59,7 +59,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       });
       this.styling = {
         ...PropertyGroupGenerators.generateBasicStyleProps(element?.styling),
-        lineHeight: element?.styling?.lineHeight || 150
+        lineHeight: element?.styling?.lineHeight || 180
       };
     }
   }

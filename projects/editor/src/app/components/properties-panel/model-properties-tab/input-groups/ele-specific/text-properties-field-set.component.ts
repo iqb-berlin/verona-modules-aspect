@@ -24,7 +24,7 @@ import { DialogService } from '../../../../../services/dialog.service';
     MatSelectModule
   ],
   template: `
-    <div *ngIf="combinedProperties.text" class="fx-column-start-stretch">
+    <div *ngIf="combinedProperties.text !== undefined" class="fx-column-start-stretch">
       Text
       <div class="text-text"
            [innerHTML]="combinedProperties.text | safeResourceHTML">

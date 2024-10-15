@@ -112,8 +112,8 @@ export class TemplateService {
             .afterClosed().subscribe((result: {
               variant: 'a' | 'b', src1: string, maxRuns1: number, src2: string, maxRuns2: number
               lang: 'german' | 'english' | 'french', text: string }) => {
-              if (result.variant === 'a') resolve(this.createAudioSectionA(result));
-              if (result.variant === 'b') resolve(this.createAudioSectionB(result));
+              if (result?.variant === 'a') resolve(this.createAudioSectionA(result));
+              if (result?.variant === 'b') resolve(this.createAudioSectionB(result));
             });
           break;
         case 'geometry':
@@ -137,8 +137,8 @@ export class TemplateService {
               options: DragNDropValueObject[], optionLength: 'long' | 'medium' | 'short' | 'very-short',
               headingTargetLists: string, targetLength: 'medium' | 'short' | 'very-short',
               targetLabels: TextLabel[], numbering: boolean }) => {
-              if (result.variant === 'classic') resolve(this.createDroplistSection(result));
-              if (result.variant === 'sort') resolve(this.createSortlistSection(result));
+              if (result?.variant === 'classic') resolve(this.createDroplistSection(result));
+              if (result?.variant === 'sort') resolve(this.createSortlistSection(result));
             });
           break;
         default:

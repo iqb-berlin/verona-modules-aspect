@@ -385,44 +385,64 @@ export class TemplateService {
   }
 
   private createAudioSectionB(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number, lang: 'german' | 'english' | 'french', text: string }) {
-    const sectionElements = [
-      this.createElement(
-        'text',
-        { gridRow: 1, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
-        { text: `${TemplateService.getAudioTranslation(config.lang, 'instruction')}:` }),
-      this.createElement(
-        'audio',
-        { gridRow: 2, gridColumn: 1, marginBottom: { value: 15, unit: 'px' } },
-        {
-          src: config.src1,
-          dimensions: { maxWidth: 500 } as DimensionProperties,
-          player: {
-            maxRuns: config.maxRuns1,
-            showRestRuns: config.maxRuns1 > 1,
-            ...TemplateService.getAudioSettings()
-          } as PlayerProperties
-        }),
-      this.createElement(
-        'text',
-        { gridRow: 3, gridColumn: 1, marginBottom: { value: 20, unit: 'px' } },
-        { text: config.text }),
-      this.createElement(
-        'text',
-        { gridRow: 4, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
-        { text: `${TemplateService.getAudioTranslation(config.lang, 'audio')}:` }),
-      this.createElement(
-        'audio',
-        { gridRow: 5, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
-        {
-          dimensions: { maxWidth: 500 } as DimensionProperties,
-          src: config.src2,
-          player: {
-            maxRuns: config.maxRuns2,
-            showRestRuns: config.maxRuns2 > 1,
-            ...TemplateService.getAudioSettings()
-          } as PlayerProperties
-        })
-    ];
+    const sectionElements = [];
+    sectionElements.push(this.createElement(
+      'text',
+      { gridRow: 1, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
+      { text: `${TemplateService.getAudioTranslation(config.lang, 'instruction')}:` }
+    ));
+    const firstAudioElement = this.createElement(
+      'audio',
+      { gridRow: 2, gridColumn: 1, marginBottom: { value: 15, unit: 'px' } },
+      {
+        src: config.src1,
+        dimensions: { maxWidth: 500 } as DimensionProperties,
+        player: {
+          maxRuns: config.maxRuns1,
+          showRestRuns: config.maxRuns1 > 1,
+          ...TemplateService.getAudioSettings()
+        } as PlayerProperties
+      }
+    );
+    const firstAudioID = firstAudioElement.id;
+    sectionElements.push(firstAudioElement);
+
+    sectionElements.push(this.createElement(
+      'audio',
+      { gridRow: 2, gridColumn: 1, marginBottom: { value: 15, unit: 'px' } },
+      {
+        src: config.src1,
+        dimensions: { maxWidth: 500 } as DimensionProperties,
+        player: {
+          maxRuns: config.maxRuns1,
+          showRestRuns: config.maxRuns1 > 1,
+          ...TemplateService.getAudioSettings()
+        } as PlayerProperties
+      }));
+    sectionElements.push(this.createElement(
+      'text',
+      { gridRow: 3, gridColumn: 1, marginBottom: { value: 20, unit: 'px' } },
+      { text: config.text }
+    ));
+    sectionElements.push(this.createElement(
+      'text',
+      { gridRow: 4, gridColumn: 1, marginBottom: { value: 10, unit: 'px' } },
+      { text: `${TemplateService.getAudioTranslation(config.lang, 'audio')}:` }
+    ));
+    sectionElements.push(this.createElement(
+      'audio',
+      { gridRow: 5, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
+      {
+        dimensions: { maxWidth: 500 } as DimensionProperties,
+        src: config.src2,
+        player: {
+          maxRuns: config.maxRuns2,
+          showRestRuns: config.maxRuns2 > 1,
+          activeAfterID: firstAudioID,
+          ...TemplateService.getAudioSettings()
+        } as PlayerProperties
+      }
+    ));
     const section = new Section();
     sectionElements.forEach(el => section.addElement(el));
     return section;

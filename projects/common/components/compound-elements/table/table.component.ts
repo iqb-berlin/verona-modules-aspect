@@ -23,7 +23,7 @@ import { Subject } from 'rxjs';
     MeasurePipe
   ],
   template: `
-    <div [style.display]="'grid'"
+    <div class="grid-container" [style.display]="'grid'"
          [style.grid-template-columns]="elementModel.gridColumnSizes | measure"
          [style.grid-template-rows]="elementModel.gridRowSizes | measure"
          [style.grid-auto-columns]="'auto'"
@@ -70,7 +70,7 @@ import { Subject } from 'rxjs';
                                         [editorMode]="editorMode"
                                         (elementSelected)="childElementSelected.emit($event)">
             </aspect-table-child-overlay>
-            <button *ngIf="editorMode" class="button" mat-mini-fab color="primary"
+            <button *ngIf="editorMode" class="remove-button" mat-mini-fab color="primary"
                     (click)="removeElement(i, j)">
               <mat-icon>remove</mat-icon>
             </button>
@@ -81,9 +81,10 @@ import { Subject } from 'rxjs';
   `,
   styles: [`
     .cell-container {display: flex; min-height: 50px; min-width: 50px;}
-    .element-container {width: 100%; height: 100%; display: flex; flex-direction: column;}
+    .element-container {width: 100%; height: 100%; position: relative;}
     .cell-container > button {align-self: flex-end; justify-self: flex-start;}
     aspect-table-child-overlay {width: 100%; height: 100%;}
+    .remove-button {position: absolute; bottom: 0;}
   `]
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {

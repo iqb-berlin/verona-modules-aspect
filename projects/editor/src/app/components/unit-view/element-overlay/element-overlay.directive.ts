@@ -20,7 +20,7 @@ import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 
 @Directive()
-export abstract class CanvasElementOverlay implements OnInit, OnDestroy {
+export abstract class ElementOverlay implements OnInit, OnDestroy {
   @Input() element!: PositionedUIElement;
   @Output() elementSelected = new EventEmitter();
   @ViewChild('elementContainer', { read: ViewContainerRef, static: true }) private elementContainer!: ViewContainerRef;

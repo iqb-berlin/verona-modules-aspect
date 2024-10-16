@@ -6,7 +6,7 @@ import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
 
 @Component({
-  selector: 'aspect-unit-view',
+  selector: 'aspect-editor-unit-view',
   templateUrl: './unit-view.component.html',
   styleUrls: ['./unit-view.component.css']
 })

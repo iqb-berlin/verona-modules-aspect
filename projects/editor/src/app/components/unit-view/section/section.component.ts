@@ -1,27 +1,27 @@
 import {
   Component, EventEmitter, Input, Output, QueryList, ViewChildren
 } from '@angular/core';
-import { SectionMenuComponent } from 'editor/src/app/components/unit-view/page/section-menu.component';
+import { SectionMenuComponent } from 'editor/src/app/components/unit-view/section/section-menu.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { Section } from 'common/models/section';
 import { PositionedUIElement, UIElement } from 'common/models/elements/element';
-import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
-import { SectionStaticComponent } from 'editor/src/app/components/unit-view/section/section-static.component';
-import { SectionDynamicComponent } from 'editor/src/app/components/unit-view/section/section-dynamic.component';
+import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
+import { StaticSectionComponent } from 'editor/src/app/components/unit-view/section/static-section.component';
+import { DynamicSectionComponent } from 'editor/src/app/components/unit-view/section/dynamic-section.component';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
 import { SectionCounter } from 'common/util/section-counter';
 
 @Component({
-  selector: 'aspect-editor-section',
+  selector: 'aspect-editor-section-view',
   standalone: true,
   imports: [
     NgIf, NgClass,
     CdkDropList,
-    SectionMenuComponent, SectionStaticComponent, SectionDynamicComponent
+    SectionMenuComponent, StaticSectionComponent, DynamicSectionComponent
   ],
   template: `
     <aspect-section-menu [class.hidden]="!isOnSelectedPage || selectionService.selectedSectionIndex !== sectionIndex"
@@ -39,7 +39,7 @@ import { SectionCounter } from 'common/util/section-counter';
       <div *ngIf="unitService.unit.enableSectionNumbering" class="numbering-box">
         <b *ngIf="sectionCounter">{{sectionCounter}}.</b>
       </div>
-      <aspect-section-static *ngIf="!section.dynamicPositioning"
+      <aspect-editor-static-section *ngIf="!section.dynamicPositioning"
                              #sectionComponent
                              class="section" id="section-{{sectionIndex}}"
                              [section]="section"
@@ -49,8 +49,8 @@ import { SectionCounter } from 'common/util/section-counter';
                              [cdkDropListData]="{ pageIndex: pageIndex, sectionIndex: sectionIndex }"
                              (cdkDropListDropped)="elementDropped($event)"
                              (click)="selectionService.selectedSectionIndex = sectionIndex">
-      </aspect-section-static>
-      <aspect-section-dynamic *ngIf="section.dynamicPositioning"
+      </aspect-editor-static-section>
+      <aspect-editor-dynamic-section *ngIf="section.dynamicPositioning"
                               #sectionComponent
                               class="section"
                               [section]="section" [sectionIndex]="sectionIndex" [pageIndex]="pageIndex"
@@ -65,7 +65,7 @@ import { SectionCounter } from 'common/util/section-counter';
                                                                  $event.targetSectionIndex)"
                               (click)="selectionService.selectedSectionIndex = sectionIndex;
                                        sectionSelected.emit(sectionIndex)">
-      </aspect-section-dynamic>
+      </aspect-editor-dynamic-section>
     </div>
   `,
   styles: `
@@ -89,10 +89,10 @@ export class SectionComponent {
   @Output() sectionSelected = new EventEmitter();
 
   @ViewChildren('sectionComponent')
-    sectionComponents!: QueryList<SectionStaticComponent | SectionDynamicComponent>;
+    sectionComponents!: QueryList<StaticSectionComponent | DynamicSectionComponent>;
 
   sectionCounter: number | undefined;
-  highlightedElementComponent: CanvasElementOverlay | undefined;
+  highlightedElementComponent: ElementOverlay | undefined;
 
   constructor(public selectionService: SelectionService,
               public unitService: UnitService,
@@ -123,7 +123,7 @@ export class SectionComponent {
     this.highlightedElementComponent?.removeHighlight();
   }
 
-  private getElementOverlay(elementID: string): CanvasElementOverlay {
+  private getElementOverlay(elementID: string): ElementOverlay {
     return this.sectionComponents.toArray()
       .map(sectionComp => sectionComp.childElementComponents.toArray())[0]
       .filter(elComp => elComp.element.id === elementID)[0];

@@ -6,10 +6,10 @@ import { NgClass, NgForOf, NgIf } from '@angular/common';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Section } from 'common/models/section';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
-import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
+import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import {
-  DynamicCanvasOverlayComponent
-} from 'editor/src/app/components/unit-view/element-overlay/dynamic-canvas-overlay.component';
+  DynamicOverlayComponent
+} from 'editor/src/app/components/unit-view/element-overlay/dynamic-overlay.component';
 import { CdkDropList } from '@angular/cdk/drag-drop';
 import {
   ElementGridChangeListenerDirective
@@ -17,14 +17,14 @@ import {
 import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid.component';
 
 @Component({
-  selector: 'aspect-section-dynamic',
+  selector: 'aspect-editor-dynamic-section',
   standalone: true,
   imports: [
     NgClass,
     NgIf,
     MeasurePipe,
     DynamicSectionHelperGridComponent,
-    DynamicCanvasOverlayComponent,
+    DynamicOverlayComponent,
     NgForOf,
     CdkDropList,
     ElementGridChangeListenerDirective
@@ -52,7 +52,7 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
 
       <!-- Angular content projection is used in the helper grid component, where the following
            is the content.-->
-      <aspect-dynamic-canvas-overlay *ngFor="let element of section.elements"
+      <aspect-editor-dynamic-overlay *ngFor="let element of section.elements"
                                      #elementComponent
                                      [style.z-index]="element.position.zIndex"
                                      [element]="$any(element)"
@@ -83,14 +83,14 @@ import { DynamicSectionHelperGridComponent } from './dynamic-section-helper-grid
                                      [style.align-items]="'baseline'"
                                      (elementSelected)="elementSelected.emit()"
                                      (elementChanged)="helperGrid && helperGrid.refresh()">
-      </aspect-dynamic-canvas-overlay>
+      </aspect-editor-dynamic-overlay>
     </div>
   `,
   styles: `
 
   `
 })
-export class SectionDynamicComponent {
+export class DynamicSectionComponent {
   @Input() section!: Section;
   @Input() sectionIndex!: number;
   @Input() pageIndex!: number;
@@ -104,7 +104,7 @@ export class SectionDynamicComponent {
     targetSectionIndex: number }>();
 
   @ViewChild(DynamicSectionHelperGridComponent) helperGrid!: DynamicSectionHelperGridComponent;
-  @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
+  @ViewChildren('elementComponent') childElementComponents!: QueryList<ElementOverlay>;
 
   constructor(protected dragNDropService: DragNDropService) { }
 }

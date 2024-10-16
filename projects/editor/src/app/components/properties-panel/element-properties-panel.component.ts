@@ -10,7 +10,7 @@ import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { UnitService } from '../../services/unit-services/unit.service';
 import { SelectionService } from '../../services/selection.service';
-import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
+import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 
@@ -55,12 +55,12 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
             ElementPropertiesPanelComponent.createCombinedProperties(this.selectedElements);
 
           this.interactionEnabled = this.selectionService.selectedElementComponents
-            .filter(elementOverlay => elementOverlay instanceof CanvasElementOverlay)
+            .filter(elementOverlay => elementOverlay instanceof ElementOverlay)
             .reduce((accumulator: boolean, elementOverlay: any) => elementOverlay.isInteractionEnabled(), false);
 
           this.interactionIndeterminate = (this.selectionService.selectedElementComponents.length > 1) &&
             this.selectionService.selectedElementComponents
-              .filter(elementOverlay => elementOverlay instanceof CanvasElementOverlay)
+              .filter(elementOverlay => elementOverlay instanceof ElementOverlay)
               .reduce((accumulator: any, elementOverlay: any) => {
                 if (!accumulator) return elementOverlay.isInteractionEnabled();
                 return accumulator !== elementOverlay.isInteractionEnabled();
@@ -117,7 +117,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
 
   setElementInteractionEnabled(isEnabled: boolean): void {
     this.selectionService.selectedElementComponents.forEach(elementOverlay => {
-      if (elementOverlay instanceof CanvasElementOverlay) elementOverlay.setInteractionEnabled(isEnabled);
+      if (elementOverlay instanceof ElementOverlay) elementOverlay.setInteractionEnabled(isEnabled);
     });
   }
 

@@ -11,8 +11,8 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 import { SectionComponent } from 'editor/src/app/components/unit-view/section/section.component';
 
 @Component({
-  selector: 'aspect-page-canvas',
-  templateUrl: './canvas.component.html',
+  selector: 'aspect-editor-page-view',
+  templateUrl: './page-view.component.html',
   styles: [`
     .canvasBackground {
       background-color: lightgrey;
@@ -33,7 +33,7 @@ import { SectionComponent } from 'editor/src/app/components/unit-view/section/se
     }
   `]
 })
-export class CanvasComponent implements OnInit, OnDestroy {
+export class PageViewComponent implements OnInit, OnDestroy {
   @Input() pages!: Page[];
   @Output() pagesChanged = new EventEmitter();
   @ViewChildren(SectionComponent) sectionComponents!: QueryList<SectionComponent>;

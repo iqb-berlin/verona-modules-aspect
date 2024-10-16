@@ -1,11 +1,11 @@
 import {
   Component, Input
 } from '@angular/core';
-import { CanvasElementOverlay } from './canvas-element-overlay';
 import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
+import { ElementOverlay } from './element-overlay.directive';
 
 @Component({
-  selector: 'aspect-dynamic-canvas-overlay',
+  selector: 'aspect-editor-dynamic-overlay',
   standalone: true,
   imports: [
     CdkDrag,
@@ -49,7 +49,7 @@ import { CdkDrag, CdkDragPlaceholder } from '@angular/cdk/drag-drop';
     ':host ::ng-deep .prevent-interaction * {pointer-events: none !important;}'
   ]
 })
-export class DynamicCanvasOverlayComponent extends CanvasElementOverlay {
+export class DynamicOverlayComponent extends ElementOverlay {
   @Input() dynamicPositioning!: boolean;
   bodyElement: HTMLElement = document.body;
 

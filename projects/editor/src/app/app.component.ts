@@ -10,7 +10,7 @@ import { UnitService } from './services/unit-services/unit.service';
   template: `
     <div class="mainView fx-column-start-stretch">
       <aspect-toolbar *ngIf="isStandalone"></aspect-toolbar>
-      <aspect-unit-view class="fx-flex"></aspect-unit-view>
+      <aspect-editor-unit-view class="fx-flex"></aspect-editor-unit-view>
     </div>
   `,
   styles: [`

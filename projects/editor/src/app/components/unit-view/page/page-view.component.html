@@ -35,13 +35,13 @@
            [style.padding.px]="page.margin"
            [style.background-color]="page.backgroundColor">
         <div *ngFor="let section of page.sections; let sectionIndex = index" [style.position]="'relative'">
-          <aspect-editor-section [section]="section"
+          <aspect-editor-section-view [section]="section"
                                  [sectionIndex]="sectionIndex" [lastSectionIndex]="page.sections.length - 1"
                                  [pageIndex]="pageIndex"
                                  [alwaysVisiblePage]="page.alwaysVisible"
                                  [isOnSelectedPage]="selectionService.selectedPageIndex === pageIndex"
                                  (sectionSelected)="selectionService.selectedPageIndex = pageIndex">
-          </aspect-editor-section>
+          </aspect-editor-section-view>
         </div>
       </div>
 

@@ -64,7 +64,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { UiElementToolboxComponent } from
   './components/new-ui-element-panel/ui-element-toolbox.component';
 import { UnitViewComponent } from './components/unit-view/unit-view.component';
-import { CanvasComponent } from './components/unit-view/page/canvas.component';
+import { PageViewComponent } from './components/unit-view/page/page-view.component';
 import { EditorTranslateLoader } from './editor-translate-loader';
 import { RichTextEditorComponent } from './text-editor/rich-text-editor.component';
 import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-confirmation-dialog.component';
@@ -112,7 +112,7 @@ import { OptionListPanelComponent } from './components/properties-panel/option-l
 import {
   EleSpecificPropsComponent
 } from './components/properties-panel/model-properties-tab/input-groups/ele-specific-props.component';
-import { PageMenu } from './components/unit-view/page-menu.component';
+import { PageMenu } from './components/unit-view/page/page-menu.component';
 
 import { ReferenceListComponent } from './components/reference-list.component';
 import { ElementListComponent } from './components/element-list.component';
@@ -133,7 +133,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ToolbarComponent,
     UiElementToolboxComponent,
     UnitViewComponent,
-    CanvasComponent,
+    PageViewComponent,
     ElementPropertiesPanelComponent,
     ToggleButtonNodeviewComponent,
     TextFieldNodeviewComponent,

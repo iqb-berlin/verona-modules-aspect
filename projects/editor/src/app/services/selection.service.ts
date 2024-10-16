@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UIElement } from 'common/models/elements/element';
-import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
+import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import {
   ClozeChildOverlay
 } from 'common/components/compound-elements/cloze/cloze-child-overlay.component';
@@ -14,7 +14,7 @@ export class SelectionService {
   selectedPageIndex: number = 0;
   selectedSectionIndex: number = 0;
   private _selectedElements!: BehaviorSubject<UIElement[]>;
-  selectedElementComponents: (CanvasElementOverlay | ClozeChildOverlay | TableChildOverlay)[] = [];
+  selectedElementComponents: (ElementOverlay | ClozeChildOverlay | TableChildOverlay)[] = [];
   isCompoundChildSelected: boolean = false;
 
   constructor() {
@@ -40,7 +40,7 @@ export class SelectionService {
     return this._selectedElements.value;
   }
 
-  selectElement(event: { elementComponent: CanvasElementOverlay | ClozeChildOverlay | TableChildOverlay; multiSelect: boolean }): void {
+  selectElement(event: { elementComponent: ElementOverlay | ClozeChildOverlay | TableChildOverlay; multiSelect: boolean }): void {
     if (!event.multiSelect) {
       this.clearElementSelection();
     }
@@ -52,7 +52,7 @@ export class SelectionService {
 
   clearElementSelection(): void {
     this.selectedElementComponents
-      .forEach((overlayComponent: CanvasElementOverlay | ClozeChildOverlay | TableChildOverlay) => {
+      .forEach((overlayComponent: ElementOverlay | ClozeChildOverlay | TableChildOverlay) => {
         overlayComponent.setSelected(false);
       });
     this.selectedElementComponents = [];

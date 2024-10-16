@@ -46,10 +46,10 @@
                 </div>
               </mat-menu>
             </ng-template>
-            <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
+            <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
                                 [pages]="[unitService.unit.pages[selectionService.selectedPageIndex]]"
                                 (pagesChanged)="refreshTabs()">
-            </aspect-page-canvas>
+            </aspect-editor-page-view>
           </mat-tab>
         </ng-container>
 
@@ -61,18 +61,18 @@
                 sticky_note_2
               </mat-icon>
             </ng-template>
-            <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch"
+            <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch"
                                 [pages]="[unitService.unit.pages[0]]">
-            </aspect-page-canvas>
+            </aspect-editor-page-view>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
               {{unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.length - 1: unitService.unit.pages.length}} Seiten
             </ng-template>
-            <aspect-page-canvas *ngIf="pagesLoaded" class="fx-column-start-stretch"
+            <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch"
                                 [pages]="unitService.unit.pages[0].alwaysVisible ?
                                            unitService.unit.pages.slice(1) : unitService.unit.pages">
-            </aspect-page-canvas>
+            </aspect-editor-page-view>
             <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
               <mat-icon>add</mat-icon>Neue Seite
             </button>

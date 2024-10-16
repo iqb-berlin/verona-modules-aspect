@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragPlaceholder, CdkDropList } from '@angular/cdk/drag-drop';
 import { UIElement } from 'common/models/elements/element';
-import { CanvasElementOverlay } from './canvas-element-overlay';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { ElementOverlay } from './element-overlay.directive';
 
 @Component({
-  selector: 'aspect-static-canvas-overlay',
+  selector: 'aspect-editor-static-overlay',
   standalone: true,
   imports: [
     NgIf,
@@ -61,7 +61,7 @@ import { MatIconModule } from '@angular/material/icon';
     '.temporaryHighlight {z-index: 100}'
   ]
 })
-export class StaticCanvasOverlayComponent extends CanvasElementOverlay {
+export class StaticOverlayComponent extends ElementOverlay {
   private oldX: number = 0;
   private oldY: number = 0;
 

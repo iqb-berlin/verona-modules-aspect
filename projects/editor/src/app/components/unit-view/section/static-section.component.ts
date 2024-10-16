@@ -4,19 +4,19 @@ import {
 import { Section } from 'common/models/section';
 import { UIElementType } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
-import { CanvasElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/canvas-element-overlay';
+import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import {
-  StaticCanvasOverlayComponent
-} from 'editor/src/app/components/unit-view/element-overlay/static-canvas-overlay.component';
+  StaticOverlayComponent
+} from 'editor/src/app/components/unit-view/element-overlay/static-overlay.component';
 import { NgForOf } from '@angular/common';
 
 @Component({
-  selector: 'aspect-section-static',
+  selector: 'aspect-editor-static-section',
   standalone: true,
   imports: [
     NgForOf,
-    StaticCanvasOverlayComponent
+    StaticOverlayComponent
   ],
   template: `
     <div #sectionElement class="section-wrapper"
@@ -25,23 +25,23 @@ import { NgForOf } from '@angular/common';
          [style.height.px]="section.height"
          [style.background-color]="section.backgroundColor"
          (dragover)="$event.preventDefault()" (drop)="newElementDropped($event)">
-      <aspect-static-canvas-overlay #elementComponent
+      <aspect-editor-static-overlay #elementComponent
                                     *ngFor="let element of section.elements"
                                     [element]="$any(element)"
                                     (elementSelected)="elementSelected.emit($event)">
-      </aspect-static-canvas-overlay>
+      </aspect-editor-static-overlay>
     </div>
   `,
   styles: [
     '.section-wrapper {position: relative; width: 100%; overflow: hidden;}'
   ]
 })
-export class SectionStaticComponent {
+export class StaticSectionComponent {
   @Input() section!: Section;
   @Input() isSelected!: boolean;
   @Output() elementSelected = new EventEmitter<unknown>();
   @ViewChild('sectionElement') sectionElement!: ElementRef;
-  @ViewChildren('elementComponent') childElementComponents!: QueryList<CanvasElementOverlay>;
+  @ViewChildren('elementComponent') childElementComponents!: QueryList<ElementOverlay>;
 
   constructor(public unitService: UnitService, private elementService: ElementService) { }
 

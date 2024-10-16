@@ -4,6 +4,7 @@ import { NativeEventService } from 'player/src/app/services/native-event.service
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
+import { MarkingData } from 'common/models/marking-data';
 
 export class TextMarkingSupport {
   isMarkingBarOpen: boolean = false;
@@ -20,13 +21,13 @@ export class TextMarkingSupport {
   }
 
   applyMarkingData(
-    selection: { active: boolean; mode: 'mark' | 'delete'; color: string; colorName: string | undefined },
+    markingData: MarkingData,
     elementComponent: TextComponent
   ): void {
-    if (selection.active) {
-      this.selectedColor = selection.color;
-      this.selectedMode = selection.mode;
-      this.applyMarkingDataToText(selection.mode, selection.color, elementComponent);
+    if (markingData.active) {
+      this.selectedColor = markingData.color;
+      this.selectedMode = markingData.mode;
+      this.applyMarkingDataToText(markingData.mode, markingData.color, elementComponent);
     } else {
       this.selectedColor = null;
       this.selectedMode = null;

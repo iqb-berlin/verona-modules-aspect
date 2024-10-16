@@ -27,7 +27,7 @@ import { MarkingData } from 'common/models/marking-data';
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
-      <aspect-text-marking-button *ngIf="elementModel.markingMode === 'selection'"
+      <aspect-text-marking-button *ngIf="hasDeleteButton"
                                   [color]="selectionColors.delete"
                                   [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.delete"
                                   mode="delete"
@@ -40,6 +40,7 @@ import { MarkingData } from 'common/models/marking-data';
 })
 export class TextMarkingBarComponent {
   @Input() elementModel!: TextElement | RemoteControlElement;
+  @Input() hasDeleteButton!: boolean;
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
 
   @Input() selectedColor!: string;

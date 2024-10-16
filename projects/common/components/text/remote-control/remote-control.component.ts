@@ -15,16 +15,18 @@ import { RemoteMarkingData } from 'common/models/marking-data';
   template: `
     <aspect-text-marking-bar [elementModel]="elementModel"
                              [selectedColor]="selectedColor || 'none'"
-                             (markingDataChanged)="remoteMarkingDataChanged
-                                                   .emit({ id: elementModel.id, markingData: $event })">
+                             [hasDeleteButton]="hasDeleteButton"
+                             (markingDataChanged)="remoteMarkingDataChanged.emit(
+                                                     { id: elementModel.id, markingData: $event }
+                                                   )">
     </aspect-text-marking-bar>
-    <div>{{selectedColor}}</div>
   `,
   styles: []
 })
 export class RemoteControlComponent extends ElementComponent {
   @Input() elementModel!: RemoteControlElement;
   @Input() selectedColor!: string | undefined;
+  @Input() hasDeleteButton!: boolean;
   @Output() remoteMarkingDataChanged: EventEmitter<RemoteMarkingData> = new EventEmitter<RemoteMarkingData>();
   protected readonly setTimeout = setTimeout;
 }

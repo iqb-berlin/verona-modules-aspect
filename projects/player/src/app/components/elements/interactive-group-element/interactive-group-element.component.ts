@@ -14,9 +14,10 @@ import { MathTableCell, MathTableElement, MathTableRow } from 'common/models/ele
 import { KeypadService } from 'player/src/app/services/keypad.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { DeviceService } from 'player/src/app/services/device.service';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { RemoteControlService } from 'player/src/app/services/remote-control.service';
+import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -47,6 +48,8 @@ export class InteractiveGroupElementComponent
   keyboardDeleteCharactersSubscription!: Subscription;
 
   selectedColor: string | undefined;
+  hasDeleteButton: boolean = false;
+  private ngUnsubscribe: Subject<void> = new Subject();
 
   constructor(
     public unitStateService: UnitStateService,
@@ -61,7 +64,7 @@ export class InteractiveGroupElementComponent
     public remoteControlService: RemoteControlService
   ) {
     super();
-    this.subscribeTomarkingColorChanged();
+    this.subscribeToMarkingColorChanged();
   }
 
   ngOnInit(): void {
@@ -93,11 +96,13 @@ export class InteractiveGroupElementComponent
       this.pageIndex);
   }
 
-  private subscribeTomarkingColorChanged() {
+  private subscribeToMarkingColorChanged() {
     this.remoteControlService.markingColorChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(markingColor => {
         if (markingColor.markingBars.includes(this.elementModel.id)) {
           this.selectedColor = markingColor.color;
+          this.hasDeleteButton = (markingColor.markingMode === 'selection');
         }
       });
   }
@@ -239,6 +244,8 @@ export class InteractiveGroupElementComponent
   }
 
   ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
     this.unsubscribeFromKeypadEvents();
     this.unsubscribeFromKeyboardEvents();
   }

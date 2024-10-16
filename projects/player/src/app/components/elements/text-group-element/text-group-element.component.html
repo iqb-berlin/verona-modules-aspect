@@ -4,6 +4,7 @@
     [savedText]="savedText"
     (markingDataChanged)="textMarkingSupport.applyMarkingData($event, elementComponent)"
     (textSelectionStart)="textMarkingSupport.startTextSelection($event, elementComponent)"
+    (selectedColorChanged)="broadcastMarkingColorChange($event)"
     (elementValueChanged)="changeElementCodeValue($event)">
 </aspect-text>
 

@@ -15,6 +15,8 @@ import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support'
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { RemoteControlService } from 'player/src/app/services/remote-control.service';
 import { MarkingData, RemoteMarkingData } from 'common/models/marking-data';
+import { takeUntil } from 'rxjs/operators';
+import { Subject, take } from 'rxjs';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -32,6 +34,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   markableSupport: MarkableSupport;
   savedText: string = '';
   savedMarks: string[] = [];
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     nativeEventService: NativeEventService,
@@ -71,27 +74,39 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
           }),
       this.elementComponent,
       this.pageIndex);
-    this.elementComponent.selectedColor
-      .subscribe(color => this.remoteControlService
-        .broadcastMarkingColorChange({
-          color: color,
-          id: this.elementModel.id,
-          markingBars: (this.elementModel as TextElement).markingBars
-        }));
+    // timeout is needed to give remote controls on other pages time to initialize
+    setTimeout(() => this.broadcastMarkingColorChange(undefined));
+  }
+
+  broadcastMarkingColorChange(color: string | undefined): void {
+    this.remoteControlService
+      .broadcastMarkingColorChange({
+        color: color,
+        id: this.elementModel.id,
+        markingMode: (this.elementModel as TextElement).markingMode,
+        markingBars: (this.elementModel as TextElement).markingBars
+      });
   }
 
   private subscribeToMarkingDataChanged() {
     this.remoteControlService.remoteMarkingDataChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: RemoteMarkingData) => {
         if ((this.elementModel as TextElement).markingBars.includes(data.id)) {
           this.elementComponent.selectedColor
             .next(TextGroupElementComponent.getSelectedColorValue(data.markingData));
+          this.textMarkingSupport.applyMarkingData(data.markingData, this.elementComponent);
+          this.elementComponent.textSelectionStart
+            .pipe(takeUntil(this.ngUnsubscribe), take(1))
+            .subscribe(pointerEvent => {
+              this.textMarkingSupport.startTextSelection(pointerEvent, this.elementComponent);
+            });
         }
       });
   }
 
   private static getSelectedColorValue(markingData: MarkingData): string | undefined {
-    if (!markingData.active || markingData.mode !== 'mark') return undefined;
+    if (!markingData.active) return undefined;
     return markingData.colorName;
   }
 
@@ -114,6 +129,8 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
     this.textMarkingSupport.destroy();
   }
 }

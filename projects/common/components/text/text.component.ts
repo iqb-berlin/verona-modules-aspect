@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, Output, ViewChild
+  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
@@ -17,6 +17,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
                elementModel.highlightableTurquoise ||
                elementModel.highlightableOrange"
         [selectedColor]="selectedColor.value || 'none'"
+        [hasDeleteButton]="elementModel.markingMode === 'selection'"
         [elementModel]="elementModel"
         (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">
       </aspect-text-marking-bar>
@@ -58,9 +59,10 @@ import { ElementComponent } from '../../directives/element-component.directive';
     '::ng-deep sub {line-height: 0;}'
   ]
 })
-export class TextComponent extends ElementComponent implements AfterViewInit, OnDestroy {
+export class TextComponent extends ElementComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() elementModel!: TextElement;
   @Input() savedText!: string;
+  @Output() selectedColorChanged = new EventEmitter<string | undefined>();
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() textSelectionStart = new EventEmitter<PointerEvent>();
   @Output() markingDataChanged = new EventEmitter<{
@@ -77,6 +79,10 @@ export class TextComponent extends ElementComponent implements AfterViewInit, On
   static textComponents: { [id: string]: TextComponent } = {};
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
+
+  ngOnInit(): void {
+    this.selectedColor.subscribe(color => this.selectedColorChanged.emit(color));
+  }
 
   startTextSelection(event: PointerEvent): void {
     if (this.elementModel.markingMode === 'selection' &&

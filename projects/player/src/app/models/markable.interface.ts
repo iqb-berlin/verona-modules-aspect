@@ -15,5 +15,6 @@ export interface Markable {
 export interface MarkingColor {
   id: string,
   color: string | undefined,
+  markingMode: 'selection' | 'word' | 'range',
   markingBars: string[]
 }

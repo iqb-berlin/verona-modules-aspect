@@ -16,8 +16,6 @@ export class MarkableWordComponent {
   @Input() markColor!: string | undefined;
   @Output() colorChange = new EventEmitter<string | null>();
 
-  selectionColors: Record<string, string> = TextElement.selectionColors;
-
   toggleMarked(): void {
     if (!this.markColor || this.markColor === 'none') {
       return;

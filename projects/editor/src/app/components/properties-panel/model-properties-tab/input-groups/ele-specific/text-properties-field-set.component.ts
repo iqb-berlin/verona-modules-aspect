@@ -1,5 +1,6 @@
+// eslint-disable-next-line max-classes-per-file
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -9,8 +10,33 @@ import { TextElement } from 'common/models/elements/text/text';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import {
+  HighlightPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/highlight-properties.component';
 import { SelectionService } from '../../../../../services/selection.service';
 import { DialogService } from '../../../../../services/dialog.service';
+
+@Pipe({
+  name: 'getValidMarkingBars',
+  standalone: true
+})
+export class GetValidMarkingBarsPipe implements PipeTransform {
+  constructor(private unitService: UnitService) {}
+
+  transform(markingBars: unknown): string[] {
+    return ['own', ...this.unitService.unit.getAllElements('remote-control').map(element => element.id)];
+  }
+}
+
+@Pipe({
+  name: 'hasOwnMarkingBar',
+  standalone: true
+})
+export class HasOwnMarkingBarPipe implements PipeTransform {
+  transform(markingBars: unknown): boolean {
+    return (markingBars as string[]).includes('own');
+  }
+}
 
 @Component({
   selector: 'aspect-text-props',
@@ -21,7 +47,10 @@ import { DialogService } from '../../../../../services/dialog.service';
     MatInputModule,
     MatCheckboxModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    HighlightPropertiesComponent,
+    GetValidMarkingBarsPipe,
+    HasOwnMarkingBarPipe
   ],
   template: `
     <div *ngIf="combinedProperties.text !== undefined" class="fx-column-start-stretch">
@@ -36,7 +65,7 @@ import { DialogService } from '../../../../../services/dialog.service';
       </button>
       <mat-form-field *ngIf="combinedProperties.columnCount != null"
                       appearance="fill" class="mdInput textsingleline">
-        <mat-label>{{'propertiesPanel.columnCount' | translate }}</mat-label>
+        <mat-label>{{ 'propertiesPanel.columnCount' | translate }}</mat-label>
         <input matInput type="number" [value]="$any(combinedProperties.columnCount)"
                (input)="updateModel.emit({ property: 'columnCount', value: $any($event.target).value })"
                (change)="combinedProperties.columnCount = combinedProperties.columnCount ?
@@ -44,36 +73,47 @@ import { DialogService } from '../../../../../services/dialog.service';
       </mat-form-field>
 
       <fieldset class="fx-column-start-stretch">
-        <legend>{{'propertiesPanel.marking' | translate }}</legend>
+        <legend>{{ 'propertiesPanel.marking' | translate }}</legend>
 
-        <mat-checkbox *ngIf="combinedProperties.highlightableYellow !== undefined"
-                      [checked]="$any(combinedProperties.highlightableYellow)"
-                      (change)="updateModel.emit({ property: 'highlightableYellow', value: $event.checked })">
-          {{'propertiesPanel.highlightableYellow' | translate }}
-        </mat-checkbox>
-        <mat-checkbox *ngIf="combinedProperties.highlightableTurquoise !== undefined"
-                      [checked]="$any(combinedProperties.highlightableTurquoise)"
-                      (change)="updateModel.emit({ property: 'highlightableTurquoise', value: $event.checked })">
-          {{'propertiesPanel.highlightableTurquoise' | translate }}
-        </mat-checkbox>
-        <mat-checkbox *ngIf="combinedProperties.highlightableOrange !== undefined"
-                      [checked]="$any(combinedProperties.highlightableOrange)"
-                      (change)="updateModel.emit({ property: 'highlightableOrange', value: $event.checked })">
-          {{'propertiesPanel.highlightableOrange' | translate }}
-        </mat-checkbox>
+        <aspect-highlight-properties [combinedProperties]="combinedProperties"
+                                     [disabled]="!(combinedProperties.markingBars | hasOwnMarkingBar)"
+                                     (updateModel)="updateModel.emit($event)">
+        </aspect-highlight-properties>
+
+        <mat-form-field *ngIf="combinedProperties.markingBars !== undefined"
+                        [style.margin-top.px]="5"
+                        appearance="fill">
+          <mat-label>{{ 'propertiesPanel.markingBars' | translate }}</mat-label>
+          <mat-select multiple
+                      [disabled]="(combinedProperties.markingBars | getValidMarkingBars).length === 1 &&
+                                  !combinedProperties.highlightableYellow &&
+                                  !combinedProperties.highlightableTurquoise &&
+                                  !combinedProperties.highlightableOrange"
+                      [ngModel]="combinedProperties.markingBars"
+                      (ngModelChange)="toggleConnectedMarkingBars($event)">
+            <mat-select-trigger>
+              {{ 'prop' | translate }} ({{ $any(combinedProperties.markingBars).length }})
+            </mat-select-trigger>
+            <mat-option *ngFor="let id of (combinedProperties.markingBars | getValidMarkingBars)" [value]="id">
+              {{ id }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
         <mat-form-field *ngIf="combinedProperties.markingMode !== undefined"
                         [style.margin-top.px]="5"
                         appearance="fill">
-          <mat-label>{{'propertiesPanel.markingMode' | translate }}</mat-label>
+          <mat-label>{{ 'propertiesPanel.markingMode' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.markingMode"
-                      [disabled]="!combinedProperties.highlightableYellow &&
+                      [disabled]="(combinedProperties.markingBars | hasOwnMarkingBar) &&
+                                  (combinedProperties.idList | getValidMarkingBars).length === 1 &&
+                                  !combinedProperties.highlightableYellow &&
                                   !combinedProperties.highlightableTurquoise &&
                                   !combinedProperties.highlightableOrange"
                       (selectionChange)="updateModel.emit({ property: 'markingMode', value: $event.value })">
             <mat-option *ngFor="let option of ['selection', 'word', 'range']"
                         [value]="option">
-              {{ 'propertiesPanel.markingMode-'+option | translate }}
+              {{ 'propertiesPanel.markingMode-' + option | translate }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -85,7 +125,7 @@ import { DialogService } from '../../../../../services/dialog.service';
                       !combinedProperties.highlightableOrange)"
                       [checked]="$any(combinedProperties.hasSelectionPopup)"
                       (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
-          {{'propertiesPanel.hasSelectionPopup' | translate }}
+          {{ 'propertiesPanel.hasSelectionPopup' | translate }}
         </mat-checkbox>
       </fieldset>
     </div>
@@ -102,7 +142,11 @@ import { DialogService } from '../../../../../services/dialog.service';
 export class TextPropsComponent {
   @Input() combinedProperties!: any;
   @Output() updateModel =
-    new EventEmitter<{ property: string; value: string | number | boolean | string[], isInputValid?: boolean | null }>();
+    new EventEmitter<{
+      property: string;
+      value: string | number | boolean | string[],
+      isInputValid?: boolean | null
+    }>();
 
   constructor(public unitService: UnitService,
               public dialogService: DialogService,
@@ -117,6 +161,14 @@ export class TextPropsComponent {
       if (result) {
         this.updateModel.emit({ property: 'text', value: result });
       }
+    });
+  }
+
+  toggleConnectedMarkingBars(markingBars: string[]) {
+    if (!markingBars.length) return;
+    this.updateModel.emit({
+      property: 'markingBars',
+      value: markingBars.length ? markingBars : ['own']
     });
   }
 }

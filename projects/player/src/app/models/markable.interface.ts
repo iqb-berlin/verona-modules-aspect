@@ -11,3 +11,9 @@ export interface Markable {
   isActive: boolean;
   color: string | null;
 }
+
+export interface MarkingColor {
+  id: string,
+  color: string | undefined,
+  markingBars: string[]
+}

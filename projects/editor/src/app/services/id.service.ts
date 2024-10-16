@@ -13,6 +13,7 @@ export class IDService {
   givenIDs: string[] = [];
   private idCounter: Record<string, number> = {
     text: 0,
+    'remote-control': 0,
     button: 0,
     'text-field': 0,
     'text-field-simple': 0,

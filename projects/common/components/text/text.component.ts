@@ -16,6 +16,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
         *ngIf="elementModel.highlightableYellow ||
                elementModel.highlightableTurquoise ||
                elementModel.highlightableOrange"
+        [selectedColor]="selectedColor.value || 'none'"
         [elementModel]="elementModel"
         (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">
       </aspect-text-marking-bar>

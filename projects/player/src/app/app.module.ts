@@ -19,6 +19,8 @@ import { TableComponent } from 'common/components/compound-elements/table/table.
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/elements/markables-container/markables-container.component';
+import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
+import { RemoteControlComponent } from 'common/components/text/remote-control/remote-control.component';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -61,7 +63,6 @@ import { ExternalAppGroupElementComponent } from
 import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-keys.pipe';
 import { HasNextPagePipe } from './pipes/has-next-page.pipe';
 import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
-import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
 
 @NgModule({
   declarations: [
@@ -118,7 +119,8 @@ import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigatio
     MeasurePipe,
     TableComponent,
     MarkablesContainerComponent,
-    IsEnabledNavigationTargetPipe
+    IsEnabledNavigationTargetPipe,
+    RemoteControlComponent
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService }

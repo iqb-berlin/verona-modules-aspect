@@ -34,6 +34,9 @@ import {
 import {
   TablePropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/table-properties.component';
+import {
+  RemoteControlPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/remote-control-properties.component';
 
 @Component({
   selector: 'aspect-ele-specific-props',
@@ -50,7 +53,8 @@ import {
     HotspotPropsComponent,
     SliderPropertiesComponent,
     TextPropsComponent,
-    TablePropertiesComponent
+    TablePropertiesComponent,
+    RemoteControlPropertiesComponent
   ],
   template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
@@ -94,6 +98,10 @@ import {
     <aspect-text-props [combinedProperties]="combinedProperties"
                        (updateModel)="updateModel.emit($event)">
     </aspect-text-props>
+
+    <aspect-remote-control-properties [combinedProperties]="combinedProperties"
+                                      (updateModel)="updateModel.emit($event)">
+    </aspect-remote-control-properties>
 
     <aspect-table-properties *ngIf="combinedProperties.type === 'table'"
                              [combinedProperties]="combinedProperties"

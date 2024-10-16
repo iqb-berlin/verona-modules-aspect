@@ -2,6 +2,8 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
+import { RemoteControlElement } from 'common/models/elements/text/remote-control';
+import { MarkingData } from 'common/models/marking-data';
 
 @Component({
   selector: 'aspect-text-marking-bar',
@@ -9,25 +11,25 @@ import { TextElement } from 'common/models/elements/text/text';
     <div class="marking-bar">
       <aspect-text-marking-button *ngIf="elementModel.highlightableYellow"
                                   [color]="selectionColors.yellow"
-                                  [isMarkingSelected]="selectedColor === selectionColors.yellow"
+                                  [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.yellow"
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button *ngIf="elementModel.highlightableTurquoise"
                                   [color]="selectionColors.turquoise"
-                                  [isMarkingSelected]="selectedColor === selectionColors.turquoise"
+                                  [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.turquoise"
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button *ngIf="elementModel.highlightableOrange"
                                   [color]="selectionColors.orange"
-                                  [isMarkingSelected]="selectedColor === selectionColors.orange"
+                                  [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.orange"
                                   mode="mark"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
       <aspect-text-marking-button *ngIf="elementModel.markingMode === 'selection'"
                                   [color]="selectionColors.delete"
-                                  [isMarkingSelected]="selectedColor === selectionColors.delete"
+                                  [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.delete"
                                   mode="delete"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
@@ -37,26 +39,25 @@ import { TextElement } from 'common/models/elements/text/text';
   ]
 })
 export class TextMarkingBarComponent {
-  @Input() elementModel!: TextElement;
-  @Output() markingDataChanged = new EventEmitter<{
-    active: boolean,
-    mode: 'mark' | 'delete',
-    color: string,
-    colorName: string | undefined
-  }>();
+  @Input() elementModel!: TextElement | RemoteControlElement;
+  @Output() markingDataChanged = new EventEmitter<MarkingData>();
 
-  selectedColor!: string;
+  @Input() selectedColor!: string;
   selectionColors: Record<string, string> = TextElement.selectionColors;
 
   changeMarkingData(selection: { isSelected: boolean, color: string, mode: 'mark' | 'delete' }): void {
-    this.selectedColor = selection.isSelected ? selection.color : 'none';
+    this.selectedColor = selection.isSelected ? this.getColorName(selection.color) : 'none';
     this.markingDataChanged
       .emit({
         active: selection.isSelected,
         mode: selection.mode,
         color: selection.color,
-        colorName: selection.isSelected ?
-          Object.keys(this.selectionColors).find(key => this.selectionColors[key] === selection.color) : 'none'
+        colorName: selection.isSelected ? this.getColorName(selection.color) : 'none'
       });
+  }
+
+  getColorName(color: string): string {
+    return Object.keys(this.selectionColors)
+      .find(key => this.selectionColors[key] === color) || 'none';
   }
 }

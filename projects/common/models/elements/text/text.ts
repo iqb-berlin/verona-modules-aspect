@@ -13,6 +13,7 @@ export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
   text: string = 'Lorem ipsum dolor sit amet';
   markingMode: 'selection' | 'word' | 'range' = 'selection';
+  markingBars: string[] = ['own'];
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;
@@ -34,6 +35,7 @@ export class TextElement extends UIElement implements TextProperties {
     if (element && isValid(element)) {
       this.text = element.text;
       this.markingMode = element.markingMode;
+      this.markingBars = element.markingBars;
       this.highlightableOrange = element.highlightableOrange;
       this.highlightableTurquoise = element.highlightableTurquoise;
       this.highlightableYellow = element.highlightableYellow;
@@ -47,6 +49,7 @@ export class TextElement extends UIElement implements TextProperties {
       }
       if (element?.text !== undefined) this.text = element.text;
       if (element?.markingMode !== undefined) this.markingMode = element.markingMode;
+      if (element?.markingBars !== undefined) this.markingBars = element.markingBars;
       if (element?.highlightableOrange !== undefined) this.highlightableOrange = element.highlightableOrange;
       if (element?.highlightableTurquoise !== undefined) this.highlightableTurquoise = element.highlightableTurquoise;
       if (element?.highlightableYellow !== undefined) this.highlightableYellow = element.highlightableYellow;
@@ -113,6 +116,7 @@ export class TextElement extends UIElement implements TextProperties {
 export interface TextProperties extends UIElementProperties {
   text: string;
   markingMode: 'selection' | 'word' | 'range';
+  markingBars: string[];
   highlightableOrange: boolean;
   highlightableTurquoise: boolean;
   highlightableYellow: boolean;
@@ -128,6 +132,7 @@ function isValid(blueprint?: TextProperties): boolean {
   if (!blueprint) return false;
   return blueprint.text !== undefined &&
     blueprint.markingMode !== undefined &&
+    blueprint.markingBars !== undefined &&
     blueprint.highlightableOrange !== undefined &&
     blueprint.highlightableTurquoise !== undefined &&
     blueprint.highlightableYellow !== undefined &&

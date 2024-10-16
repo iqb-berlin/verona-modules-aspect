@@ -26,7 +26,7 @@ import { Markable } from 'player/src/app/models/markable.interface';
 export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
 | 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
 | 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry'
-| 'math-field' | 'math-table' | 'text-area-math' | 'trigger' | 'table';
+| 'math-field' | 'math-table' | 'text-area-math' | 'trigger' | 'table' | 'remote-control' ;
 
 export interface OptionElement extends UIElement {
   getNewOptionLabel(optionText: string): Label;

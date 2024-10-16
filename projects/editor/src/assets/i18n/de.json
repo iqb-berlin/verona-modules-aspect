@@ -311,6 +311,7 @@
   },
   "toolbox": {
     "text": "Text",
+    "remote-control": "Fernsteuerung",
     "button": "Knopf",
     "frame": "Rahmen",
     "text-field": "Eingabefeld",

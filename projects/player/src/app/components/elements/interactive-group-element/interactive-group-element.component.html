@@ -30,6 +30,13 @@
   detectionType="top"
   (intersecting)="elementComponent.emitEvent()">>
 </aspect-trigger>
+<aspect-remote-control
+  *ngIf="elementModel.type === 'remote-control'"
+  #elementComponent
+  [selectedColor]="selectedColor"
+  [elementModel]="elementModel | cast: RemoteControlElement"
+  (remoteMarkingDataChanged)="remoteControlService.broadcastMarkingData($event)">
+</aspect-remote-control>
 
 <aspect-floating-keypad
   [isKeypadOpen]="isKeypadOpen && keypadService.position === 'floating'">

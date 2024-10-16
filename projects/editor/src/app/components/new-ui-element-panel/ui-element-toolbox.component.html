@@ -192,6 +192,12 @@
             <mat-icon>{{GeometryElement.icon}}</mat-icon>
             {{GeometryElement.title}}
           </button>
+          <button mat-stroked-button (click)="addUIElement('remote-control')"
+                  draggable="true" (dragstart)="startDrag($event,'remote-control')"
+                  (dragend)="endDrag()">
+            <mat-icon>{{RemoteControlElement.icon}}</mat-icon>
+            {{RemoteControlElement.title}}
+          </button>
           <button mat-stroked-button (click)="addUIElement('trigger')"
                   draggable="true" (dragstart)="startDrag($event,'trigger')"
                   (dragend)="endDrag()">

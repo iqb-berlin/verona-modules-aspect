@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { UIElementType } from 'common/models/elements/element';
+import { UnitService } from '../../services/unit-services/unit.service';
+import { SelectionService } from '../../services/selection.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
@@ -20,6 +23,7 @@ import { FrameElement } from 'common/models/elements/frame/frame';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TextElement } from 'common/models/elements/text/text';
+import { RemoteControlElement } from 'common/models/elements/text/remote-control';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
@@ -82,5 +86,6 @@ export class UiElementToolboxComponent {
   protected readonly GeometryElement = GeometryElement;
   protected readonly TriggerElement = TriggerElement;
   protected readonly TextElement = TextElement;
+  protected readonly RemoteControlElement = RemoteControlElement;
   protected readonly TableElement = TableElement;
 }

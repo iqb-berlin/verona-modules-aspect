@@ -3,6 +3,7 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/button/button';
+import { RemoteControlElement } from 'common/models/elements/text/remote-control';
 import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger/trigger';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { UIElement, ValueChangeElement } from 'common/models/elements/element';
@@ -15,6 +16,7 @@ import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { DeviceService } from 'player/src/app/services/device.service';
 import { Subscription } from 'rxjs';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
+import { RemoteControlService } from 'player/src/app/services/remote-control.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -28,6 +30,7 @@ import { NavigationService } from '../../../services/navigation.service';
 export class InteractiveGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
+  RemoteControlElement!: RemoteControlElement;
   ButtonElement!: ButtonElement;
   ImageElement!: ImageElement;
   MathTableElement!: MathTableElement;
@@ -43,6 +46,8 @@ export class InteractiveGroupElementComponent
   keyboardEnterKeySubscription!: Subscription;
   keyboardDeleteCharactersSubscription!: Subscription;
 
+  selectedColor: string | undefined;
+
   constructor(
     public unitStateService: UnitStateService,
     public veronaPostService: VeronaPostService,
@@ -52,9 +57,11 @@ export class InteractiveGroupElementComponent
     private stateVariableStateService: StateVariableStateService,
     public keypadService: KeypadService,
     private keyboardService: KeyboardService,
-    private deviceService: DeviceService
+    private deviceService: DeviceService,
+    public remoteControlService: RemoteControlService
   ) {
     super();
+    this.subscribeTomarkingColorChanged();
   }
 
   ngOnInit(): void {
@@ -84,6 +91,15 @@ export class InteractiveGroupElementComponent
       initialValue,
       this.elementComponent,
       this.pageIndex);
+  }
+
+  private subscribeTomarkingColorChanged() {
+    this.remoteControlService.markingColorChanged
+      .subscribe(markingColor => {
+        if (markingColor.markingBars.includes(this.elementModel.id)) {
+          this.selectedColor = markingColor.color;
+        }
+      });
   }
 
   applyButtonAction(buttonEvent: ButtonEvent): void {

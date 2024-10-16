@@ -1,8 +1,10 @@
 import {
-  AfterViewInit, ApplicationRef,
+  AfterViewInit,
+  ApplicationRef,
   Component,
   OnDestroy,
-  OnInit, Renderer2,
+  OnInit,
+  Renderer2,
   ViewChild
 } from '@angular/core';
 import { TextComponent } from 'common/components/text/text.component';
@@ -11,6 +13,8 @@ import { ValueChangeElement } from 'common/models/elements/element';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
+import { RemoteControlService } from 'player/src/app/services/remote-control.service';
+import { MarkingData, RemoteMarkingData } from 'common/models/marking-data';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -30,16 +34,18 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
   savedMarks: string[] = [];
 
   constructor(
-    private nativeEventService: NativeEventService,
-    private anchorService: AnchorService,
+    nativeEventService: NativeEventService,
+    anchorService: AnchorService,
+    renderer: Renderer2,
+    applicationRef: ApplicationRef,
     private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public unitStateService: UnitStateService,
-    private renderer: Renderer2,
-    private applicationRef: ApplicationRef
+    private remoteControlService: RemoteControlService
   ) {
     super();
     this.textMarkingSupport = new TextMarkingSupport(nativeEventService, anchorService);
     this.markableSupport = new MarkableSupport(renderer, applicationRef);
+    this.subscribeToMarkingDataChanged();
   }
 
   ngOnInit(): void {
@@ -65,6 +71,28 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
           }),
       this.elementComponent,
       this.pageIndex);
+    this.elementComponent.selectedColor
+      .subscribe(color => this.remoteControlService
+        .broadcastMarkingColorChange({
+          color: color,
+          id: this.elementModel.id,
+          markingBars: (this.elementModel as TextElement).markingBars
+        }));
+  }
+
+  private subscribeToMarkingDataChanged() {
+    this.remoteControlService.remoteMarkingDataChanged
+      .subscribe((data: RemoteMarkingData) => {
+        if ((this.elementModel as TextElement).markingBars.includes(data.id)) {
+          this.elementComponent.selectedColor
+            .next(TextGroupElementComponent.getSelectedColorValue(data.markingData));
+        }
+      });
+  }
+
+  private static getSelectedColorValue(markingData: MarkingData): string | undefined {
+    if (!markingData.active || markingData.mode !== 'mark') return undefined;
+    return markingData.colorName;
   }
 
   private getElementModelValue(): string | string[] {

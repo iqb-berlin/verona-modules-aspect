@@ -100,7 +100,7 @@ export class InteractiveGroupElementComponent
     this.markingPanelService.markingColorChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(markingColor => {
-        if (markingColor.markingBars.includes(this.elementModel.id)) {
+        if (markingColor.markingPanels.includes(this.elementModel.id)) {
           this.selectedColor = markingColor.color;
           this.hasDeleteButton = (markingColor.markingMode === 'selection');
         }

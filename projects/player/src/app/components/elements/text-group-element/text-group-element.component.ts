@@ -84,7 +84,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
         color: color,
         id: this.elementModel.id,
         markingMode: (this.elementModel as TextElement).markingMode,
-        markingBars: (this.elementModel as TextElement).markingPanels
+        markingPanels: (this.elementModel as TextElement).markingPanels
       });
   }
 

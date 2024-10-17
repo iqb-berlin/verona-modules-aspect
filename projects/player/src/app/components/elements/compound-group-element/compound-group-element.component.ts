@@ -235,7 +235,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
         color: color,
         id: childModel.id,
         markingMode: childModel.markingMode,
-        markingBars: childModel.markingPanels
+        markingPanels: childModel.markingPanels
       });
   }
 

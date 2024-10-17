@@ -1,7 +1,7 @@
 import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { RemoteControlComponent } from 'common/components/text/remote-control/remote-control.component';
+import { RemoteControlComponent } from 'common/components/text/remote-control.component';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 import {

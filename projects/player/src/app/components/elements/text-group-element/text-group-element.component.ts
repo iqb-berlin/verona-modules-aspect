@@ -48,7 +48,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     super();
     this.textMarkingSupport = new TextMarkingSupport(nativeEventService, anchorService);
     this.markableSupport = new MarkableSupport(renderer, applicationRef);
-    this.subscribeToMarkingDataChanged();
+    this.subscribeToRemoteMarkingDataChanged();
   }
 
   ngOnInit(): void {
@@ -88,7 +88,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
       });
   }
 
-  private subscribeToMarkingDataChanged() {
+  private subscribeToRemoteMarkingDataChanged() {
     this.remoteControlService.remoteMarkingDataChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: RemoteMarkingData) => {
@@ -105,7 +105,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
       });
   }
 
-  private static getSelectedColorValue(markingData: MarkingData): string | undefined {
+  static getSelectedColorValue(markingData: MarkingData): string | undefined {
     if (!markingData.active) return undefined;
     return markingData.colorName;
   }

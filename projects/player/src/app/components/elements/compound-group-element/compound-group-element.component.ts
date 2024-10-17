@@ -18,7 +18,7 @@ import { NavigationService } from 'player/src/app/services/navigation.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { UnitNavParam } from 'common/models/elements/button/button';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { ResponseValueType } from '@iqb/responses';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
@@ -33,13 +33,18 @@ import { TextComponent } from 'common/components/text/text.component';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { TextElement } from 'common/models/elements/text/text';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
+import { NavigationTarget } from 'player/modules/verona/models/verona';
+import { RemoteMarkingData } from 'common/models/marking-data';
+import { RemoteControlService } from 'player/src/app/services/remote-control.service';
+import {
+  TextGroupElementComponent
+} from 'player/src/app/components/elements/text-group-element/text-group-element.component';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
 import { KeypadService } from '../../../services/keypad.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
-import { NavigationTarget } from 'player/modules/verona/models/verona';
 
 @Component({
   selector: 'aspect-compound-group-element',
@@ -80,7 +85,8 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     private stateVariableStateService: StateVariableStateService,
     public mediaPlayerService: MediaPlayerService,
     private renderer: Renderer2,
-    private applicationRef: ApplicationRef
+    private applicationRef: ApplicationRef,
+    private remoteControlService: RemoteControlService
   ) {
     super();
   }
@@ -205,6 +211,10 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
         childModel,
         { markingMode: (childModel as TextElement).markingMode }
       );
+      this.subscribeToRemoteMarkingDataChanged(child as TextComponent, childModel as TextElement);
+      this.subscribeToTextSelectedColorChanged(child as TextComponent, childModel as TextElement);
+      // timeout is needed to give remote controls on other pages time to initialize
+      setTimeout(() => this.broadcastMarkingColorChange(undefined, childModel as TextElement));
     }
     if (childModel.type === 'image') {
       this.addElementCodeValueSubscription(child as ImageComponent, childModel);
@@ -213,6 +223,37 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
       this.addElementCodeValueSubscription(child as AudioComponent, childModel);
       this.addMediaSubscriptions(child as AudioComponent);
     }
+  }
+
+  private subscribeToTextSelectedColorChanged(child: TextComponent, childModel: TextElement) {
+    child.selectedColorChanged.subscribe(color => this.broadcastMarkingColorChange(color, childModel));
+  }
+
+  private broadcastMarkingColorChange(color: string | undefined, childModel: TextElement): void {
+    this.remoteControlService
+      .broadcastMarkingColorChange({
+        color: color,
+        id: childModel.id,
+        markingMode: childModel.markingMode,
+        markingBars: childModel.markingBars
+      });
+  }
+
+  private subscribeToRemoteMarkingDataChanged(child: TextComponent, childModel: TextElement) {
+    this.remoteControlService.remoteMarkingDataChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data: RemoteMarkingData) => {
+        if (childModel.markingBars.includes(data.id)) {
+          child.selectedColor
+            .next(TextGroupElementComponent.getSelectedColorValue(data.markingData));
+          this.textMarkingSupports[childModel.id].applyMarkingData(data.markingData, child);
+          child.textSelectionStart
+            .pipe(takeUntil(this.ngUnsubscribe), take(1))
+            .subscribe(pointerEvent => {
+              this.textMarkingSupports[childModel.id].startTextSelection(pointerEvent, child);
+            });
+        }
+      });
   }
 
   private addTextSelectionStartSubscription(child: TextComponent, childModel: UIElement): void {

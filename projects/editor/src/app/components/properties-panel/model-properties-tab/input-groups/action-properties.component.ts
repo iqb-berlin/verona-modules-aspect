@@ -8,6 +8,7 @@ import { TextComponent } from 'common/components/text/text.component';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { Page } from 'common/models/page';
+import { TextElement } from 'common/models/elements/text/text';
 
 @Component({
   selector: 'aspect-action-properties',
@@ -65,7 +66,7 @@ import { Page } from 'common/models/page';
               </ng-container>
 
               <ng-container *ngIf="combinedProperties.action === 'highlightText'">
-                <mat-option *ngFor="let option of (textComponents | getAnchorIds) "
+                <mat-option *ngFor="let option of anchorIds"
                             [value]="option">
                   {{ option  }}
                 </mat-option>
@@ -90,10 +91,11 @@ export class ActionPropertiesComponent {
     this.updateModel.emit({ property: 'actionParam', value: null });
   }
 
-  textComponents: { [id: string]: TextComponent } = {};
+  anchorIds: string[] = [];
 
   constructor(public unitService: UnitService, public selectionService: SelectionService) {
-    this.textComponents = TextComponent.textComponents;
+    this.anchorIds = (unitService.unit.getAllElements('text') as TextElement[])
+      .flatMap(textElement => textElement.getAnchorIDs());
   }
 }
 
@@ -113,25 +115,6 @@ export class GetStateVariablePipe implements PipeTransform {
   transform(actionParam: unknown, stateVariables: StateVariable[]): StateVariable {
     if (actionParam && typeof actionParam === 'object') return actionParam as StateVariable;
     return { id: stateVariables[0].id, value: '' };
-  }
-}
-
-@Pipe({
-  name: 'getAnchorIds'
-})
-export class GetAnchorIdsPipe implements PipeTransform {
-  // There can be multiple elements with the same data-anchor-id,
-  // since a selected range can include multiple HTMLElements.
-  // The first element is filtered out for display in the properties panel.
-  transform(textComponents: { [id: string]: TextComponent }): string[] {
-    return Object.values(textComponents)
-      .map(textComponent => Array
-        .from(textComponent.textContainerRef.nativeElement.querySelectorAll('aspect-anchor'))
-        .map(anchor => (anchor as Element).getAttribute('data-anchor-id'))
-        .filter((anchorId, index, anchorIds) => anchorIds
-          .indexOf(anchorId) === index) as string[]
-      )
-      .flat();
   }
 }
 

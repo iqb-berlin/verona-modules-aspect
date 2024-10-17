@@ -59,7 +59,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
     '::ng-deep sub {line-height: 0;}'
   ]
 })
-export class TextComponent extends ElementComponent implements OnInit, AfterViewInit, OnDestroy {
+export class TextComponent extends ElementComponent implements OnInit {
   @Input() elementModel!: TextElement;
   @Input() savedText!: string;
   @Output() selectedColorChanged = new EventEmitter<string | undefined>();
@@ -76,8 +76,6 @@ export class TextComponent extends ElementComponent implements OnInit, AfterView
 
   selectedColor: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
 
-  static textComponents: { [id: string]: TextComponent } = {};
-
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
   ngOnInit(): void {
@@ -91,14 +89,6 @@ export class TextComponent extends ElementComponent implements OnInit, AfterView
       this.elementModel.highlightableOrange)) {
       this.textSelectionStart.emit(event);
     }
-  }
-
-  ngAfterViewInit() {
-    TextComponent.textComponents[this.elementModel.id] = this;
-  }
-
-  ngOnDestroy(): void {
-    delete TextComponent.textComponents[this.elementModel.id];
   }
 
   openFullscreenImage(event: MouseEvent) {

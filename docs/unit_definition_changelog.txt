@@ -176,6 +176,6 @@ iqb-aspect-definition@1.0.0
 4.7.0
 - Text
   - new property: markingMode: 'selection' | 'word' | 'range'
-  - new property: markingBars: string[] - default: ['own']
+  - new property: markingBars: string[]
 
 - New Element "RemoteControl"

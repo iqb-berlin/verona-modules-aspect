@@ -13,7 +13,7 @@ export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
   text: string = 'Lorem ipsum dolor sit amet';
   markingMode: 'selection' | 'word' | 'range' = 'selection';
-  markingBars: string[] = ['own'];
+  markingBars: string[] = [];
   highlightableOrange: boolean = false;
   highlightableTurquoise: boolean = false;
   highlightableYellow: boolean = false;

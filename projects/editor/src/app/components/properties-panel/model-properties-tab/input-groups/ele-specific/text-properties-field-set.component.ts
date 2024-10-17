@@ -1,6 +1,5 @@
-// eslint-disable-next-line max-classes-per-file
 import {
-  Component, EventEmitter, Input, Output, Pipe, PipeTransform
+  Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -16,28 +15,6 @@ import {
 import { SelectionService } from '../../../../../services/selection.service';
 import { DialogService } from '../../../../../services/dialog.service';
 
-@Pipe({
-  name: 'getValidMarkingBars',
-  standalone: true
-})
-export class GetValidMarkingBarsPipe implements PipeTransform {
-  constructor(private unitService: UnitService) {}
-
-  transform(markingBars: unknown): string[] {
-    return ['own', ...this.unitService.unit.getAllElements('remote-control').map(element => element.id)];
-  }
-}
-
-@Pipe({
-  name: 'hasOwnMarkingBar',
-  standalone: true
-})
-export class HasOwnMarkingBarPipe implements PipeTransform {
-  transform(markingBars: unknown): boolean {
-    return (markingBars as string[]).includes('own');
-  }
-}
-
 @Component({
   selector: 'aspect-text-props',
   standalone: true,
@@ -48,9 +25,7 @@ export class HasOwnMarkingBarPipe implements PipeTransform {
     MatCheckboxModule,
     MatOptionModule,
     MatSelectModule,
-    HighlightPropertiesComponent,
-    GetValidMarkingBarsPipe,
-    HasOwnMarkingBarPipe
+    HighlightPropertiesComponent
   ],
   template: `
     <div *ngIf="combinedProperties.text !== undefined" class="fx-column-start-stretch">
@@ -76,7 +51,6 @@ export class HasOwnMarkingBarPipe implements PipeTransform {
         <legend>{{ 'propertiesPanel.marking' | translate }}</legend>
 
         <aspect-highlight-properties [combinedProperties]="combinedProperties"
-                                     [disabled]="!(combinedProperties.markingBars | hasOwnMarkingBar)"
                                      (updateModel)="updateModel.emit($event)">
         </aspect-highlight-properties>
 
@@ -85,16 +59,16 @@ export class HasOwnMarkingBarPipe implements PipeTransform {
                         appearance="fill">
           <mat-label>{{ 'propertiesPanel.markingBars' | translate }}</mat-label>
           <mat-select multiple
-                      [disabled]="(combinedProperties.markingBars | getValidMarkingBars).length === 1 &&
+                      [disabled]="markingBarIds.length === 0 &&
                                   !combinedProperties.highlightableYellow &&
                                   !combinedProperties.highlightableTurquoise &&
                                   !combinedProperties.highlightableOrange"
                       [ngModel]="combinedProperties.markingBars"
                       (ngModelChange)="toggleConnectedMarkingBars($event)">
             <mat-select-trigger>
-              {{ 'prop' | translate }} ({{ $any(combinedProperties.markingBars).length }})
+              {{ 'propertiesPanel.markingBars' | translate }} ({{ $any(combinedProperties.markingBars).length }})
             </mat-select-trigger>
-            <mat-option *ngFor="let id of (combinedProperties.markingBars | getValidMarkingBars)" [value]="id">
+            <mat-option *ngFor="let id of markingBarIds" [value]="id">
               {{ id }}
             </mat-option>
           </mat-select>
@@ -105,11 +79,10 @@ export class HasOwnMarkingBarPipe implements PipeTransform {
                         appearance="fill">
           <mat-label>{{ 'propertiesPanel.markingMode' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.markingMode"
-                      [disabled]="(combinedProperties.markingBars | hasOwnMarkingBar) &&
-                                  (combinedProperties.idList | getValidMarkingBars).length === 1 &&
-                                  !combinedProperties.highlightableYellow &&
+                      [disabled]="combinedProperties.markingBars!.length === 0 &&
+                                  (!combinedProperties.highlightableYellow &&
                                   !combinedProperties.highlightableTurquoise &&
-                                  !combinedProperties.highlightableOrange"
+                                  !combinedProperties.highlightableOrange)"
                       (selectionChange)="updateModel.emit({ property: 'markingMode', value: $event.value })">
             <mat-option *ngFor="let option of ['selection', 'word', 'range']"
                         [value]="option">
@@ -119,10 +92,11 @@ export class HasOwnMarkingBarPipe implements PipeTransform {
         </mat-form-field>
 
         <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
-                      [disabled]="combinedProperties.markingMode !== 'selection' ||
-                      (!combinedProperties.highlightableYellow &&
-                      !combinedProperties.highlightableTurquoise &&
-                      !combinedProperties.highlightableOrange)"
+                      [disabled]="combinedProperties.markingMode !== 'selection' &&
+                                  (combinedProperties.markingBars!.length === 0 ||
+                                  (!combinedProperties.highlightableYellow &&
+                                  !combinedProperties.highlightableTurquoise &&
+                                  !combinedProperties.highlightableOrange))"
                       [checked]="$any(combinedProperties.hasSelectionPopup)"
                       (change)="updateModel.emit({ property: 'hasSelectionPopup', value: $event.checked })">
           {{ 'propertiesPanel.hasSelectionPopup' | translate }}
@@ -140,6 +114,7 @@ export class HasOwnMarkingBarPipe implements PipeTransform {
   `]
 })
 export class TextPropsComponent {
+  markingBarIds: string[];
   @Input() combinedProperties!: any;
   @Output() updateModel =
     new EventEmitter<{
@@ -150,7 +125,9 @@ export class TextPropsComponent {
 
   constructor(public unitService: UnitService,
               public dialogService: DialogService,
-              public selectionService: SelectionService) {}
+              public selectionService: SelectionService) {
+    this.markingBarIds = this.unitService.unit.getAllElements('remote-control').map(element => element.id);
+  }
 
   showTextEditDialog(): void {
     const selectedElement = this.selectionService.getSelectedElements()[0];
@@ -165,10 +142,9 @@ export class TextPropsComponent {
   }
 
   toggleConnectedMarkingBars(markingBars: string[]) {
-    if (!markingBars.length) return;
     this.updateModel.emit({
       property: 'markingBars',
-      value: markingBars.length ? markingBars : ['own']
+      value: [...markingBars]
     });
   }
 }

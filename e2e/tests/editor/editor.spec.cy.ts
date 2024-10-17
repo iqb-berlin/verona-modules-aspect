@@ -6,6 +6,7 @@ describe('Basic Unit', () => {
   beforeEach(() => {
     cy.viewport(1300, 800);
     cy.openEditor();
+    cy.switchToTabbedViewMode();
   });
 
   /* Check for any false-positives */
@@ -20,14 +21,14 @@ describe('Basic Unit', () => {
     cy.contains('Sonstige').click();
     cy.contains('Knopf').scrollIntoView().should('be.visible');
     cy.contains('Knopf').click();
-    cy.get('aspect-page-canvas').contains('Knopf').should('exist');
+    cy.get('aspect-editor-page-view').contains('Knopf').should('exist');
   });
 
   it('creates a button element with label text', () => {
-    cy.get('aspect-page-canvas').contains('Knopf').should('not.exist');
+    cy.get('aspect-editor-page-view').contains('Knopf').should('not.exist');
     addElement('Knopf', 'Sonstige');
     cy.contains('div', 'Beschriftung').find('textarea').clear().type('Neue Beschriftung');
-    cy.get('aspect-page-canvas').contains('Neue Beschriftung').should('exist');
+    cy.get('aspect-editor-page-view').contains('Neue Beschriftung').should('exist');
   });
 
   it('creates a new page', () => {

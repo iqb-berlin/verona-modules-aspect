@@ -7,6 +7,7 @@ declare global {
       saveUnit(filepath?: string): Chainable<JQuery<HTMLElement>>;
       openPlayer(): Chainable<JQuery<HTMLElement>>;
       openEditor(): Chainable<JQuery<HTMLElement>>;
+      switchToTabbedViewMode(): Chainable<JQuery<HTMLElement>>;
     }
   }
 }

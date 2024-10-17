@@ -44,6 +44,12 @@ Cypress.Commands.add('openEditor', () => {
   cy.visit('http://localhost:4201/');
 });
 
+Cypress.Commands.add('switchToTabbedViewMode', () => {
+  cy.get('[data-cy="extras-menu"]').click();
+  cy.contains('Seitenansicht untereinander').click();
+  cy.get('body').click();
+});
+
 Cypress.Commands.add('loadUnit', (filename: string) => {
   cy.fixture(filename).as('unit').then(unit => {
     cy.window().then(window => {

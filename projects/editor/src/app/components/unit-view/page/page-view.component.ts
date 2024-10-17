@@ -13,11 +13,12 @@ import { SectionComponent } from 'editor/src/app/components/unit-view/section/se
 @Component({
   selector: 'aspect-editor-page-view',
   templateUrl: './page-view.component.html',
-  styles: [`
+  styles: `
     .canvasBackground {
       background-color: lightgrey;
-      padding: 20px 50px;
-      height: 100%;
+    }
+    .page-wrapper {
+      margin-bottom: 10px; display: flex; flex-direction: column; align-items: center;
     }
     .add-section-button {
       height: 25px;
@@ -25,16 +26,15 @@ import { SectionComponent } from 'editor/src/app/components/unit-view/section/se
       background-color: var(--button-darker-grey);
       margin-top: 10px;
     }
-    .page-wrapper {
-      margin-bottom: 10px; display: flex; flex-direction: column; align-items: center;
-    }
     .page-label {
       display: inline; vertical-align: super; font-size: large;
     }
-  `]
+  `
 })
 export class PageViewComponent implements OnInit, OnDestroy {
-  @Input() pages!: Page[];
+  @Input() page!: Page;
+  @Input() pageIndex!: number;
+  @Input() singlePageMode: boolean = false;
   @Output() pagesChanged = new EventEmitter();
   @ViewChildren(SectionComponent) sectionComponents!: QueryList<SectionComponent>;
 
@@ -59,9 +59,9 @@ export class PageViewComponent implements OnInit, OnDestroy {
   }
 
   addSection(pageIndex: number): void {
-    this.sectionService.addSection(this.pages[pageIndex]);
+    this.sectionService.addSection(this.page);
     this.selectionService.selectedPageIndex = pageIndex;
-    this.selectionService.selectedSectionIndex = this.pages[pageIndex].sections.length - 1;
+    this.selectionService.selectedSectionIndex = this.page.sections.length - 1;
   }
 
   moveSectionToNewpage(pageIndex: number): void {

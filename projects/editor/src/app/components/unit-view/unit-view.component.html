@@ -46,10 +46,13 @@
                 </div>
               </mat-menu>
             </ng-template>
-            <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
-                                [pages]="[unitService.unit.pages[selectionService.selectedPageIndex]]"
-                                (pagesChanged)="refreshTabs()">
-            </aspect-editor-page-view>
+            <div cdkDropListGroup class="page-view-wrapper">
+              <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
+                                         [page]="unitService.unit.pages[selectionService.selectedPageIndex]"
+                                         [pageIndex]="i" [singlePageMode]="true"
+                                         (pagesChanged)="refreshTabs()">
+              </aspect-editor-page-view>
+            </div>
           </mat-tab>
         </ng-container>
 
@@ -62,17 +65,21 @@
               </mat-icon>
             </ng-template>
             <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch"
-                                [pages]="[unitService.unit.pages[0]]">
+                                       [page]="unitService.unit.pages[0]" [pageIndex]="0">
             </aspect-editor-page-view>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
               {{unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.length - 1: unitService.unit.pages.length}} Seiten
             </ng-template>
-            <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch"
-                                [pages]="unitService.unit.pages[0].alwaysVisible ?
-                                           unitService.unit.pages.slice(1) : unitService.unit.pages">
-            </aspect-editor-page-view>
+            <div *ngIf="pagesLoaded" cdkDropListGroup >
+              <aspect-editor-page-view *ngFor="let page of
+                (unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.slice(1) : unitService.unit.pages);
+                let pageIndex = index"
+                                       [page]="page"
+                                       [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)">
+              </aspect-editor-page-view>
+            </div>
             <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
               <mat-icon>add</mat-icon>Neue Seite
             </button>

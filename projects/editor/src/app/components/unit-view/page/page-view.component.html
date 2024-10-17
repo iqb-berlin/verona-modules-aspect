@@ -1,55 +1,52 @@
-<div class="canvasBackground fx-flex"
+<div class="canvasBackground fx-flex page-wrapper"
+     [style.padding]="singlePageMode ? '20px 50px' : '0 50px 20px 50px'"
+     [style.height]="singlePageMode && '100%'"
      (click)="selectionService.clearElementSelection()">
-  <div cdkDropListGroup>
-    <div *ngFor="let page of pages; let pageIndex = index" class="page-wrapper">
-      <div>
-        <ng-container *ngIf="!page.alwaysVisible">
-          <div class="page-label">Seite {{pageIndex + 1}}</div>
-          <button mat-icon-button [disabled]="selectionService.selectedSectionIndex === 0"
-                  [matTooltip]="'Seitenumbruch ab gewähltem Abschnitt'"
-                  [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
-                  (click)="moveSectionToNewpage(pageIndex)">
-            <mat-icon>expand</mat-icon>
-          </button>
-          <button mat-icon-button [disabled]="pageIndex === 0"
-                  [matTooltip]="'Seitenumbruch entfernen'"
-                  [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
-                  (click)="collapsePage(pageIndex)">
-            <mat-icon>compress</mat-icon>
-          </button>
-        </ng-container>
-        <div *ngIf="page.alwaysVisible" class="page-label"><i>dauerhaft sichtbare Seite</i></div>
-        <button mat-icon-button [matMenuTriggerFor]="pageMenu"
-                [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #pageMenu="matMenu">
-          <div (click)="$event.stopPropagation()">
-            <aspect-unit-view-page-menu [page]="page" [pageIndex]="pageIndex"
-                                        (pageOrderChanged)="pagesChanged.emit()"></aspect-unit-view-page-menu>
-          </div>
-        </mat-menu>
-      </div>
-
-      <div [style.width.px]="page.hasMaxWidth ? page.maxWidth : null"
-           [style.padding.px]="page.margin"
-           [style.background-color]="page.backgroundColor">
-        <div *ngFor="let section of page.sections; let sectionIndex = index" [style.position]="'relative'">
-          <aspect-editor-section-view [section]="section"
-                                 [sectionIndex]="sectionIndex" [lastSectionIndex]="page.sections.length - 1"
-                                 [pageIndex]="pageIndex"
-                                 [alwaysVisiblePage]="page.alwaysVisible"
-                                 [isOnSelectedPage]="selectionService.selectedPageIndex === pageIndex"
-                                 (sectionSelected)="selectionService.selectedPageIndex = pageIndex">
-          </aspect-editor-section-view>
-        </div>
-      </div>
-
-      <button mat-fab extended class="add-section-button"
-              (click)="addSection(pageIndex)">
-        <mat-icon class="add-section-icon">add</mat-icon>
-        Neuer Abschnitt
+  <div *ngIf="!singlePageMode">
+    <ng-container *ngIf="!page.alwaysVisible">
+      <div class="page-label">Seite {{pageIndex + (unitService.unit.pages[0].alwaysVisible ? 0 : 1)}}</div>
+      <button mat-icon-button [disabled]="selectionService.selectedSectionIndex === 0"
+              [matTooltip]="'Seitenumbruch ab gewähltem Abschnitt'"
+              [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
+              (click)="moveSectionToNewpage(pageIndex)">
+        <mat-icon>expand</mat-icon>
       </button>
+      <button mat-icon-button [disabled]="pageIndex === 0"
+              [matTooltip]="'Seitenumbruch entfernen'"
+              [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
+              (click)="collapsePage(pageIndex)">
+        <mat-icon>compress</mat-icon>
+      </button>
+    </ng-container>
+    <div *ngIf="page.alwaysVisible" class="page-label"><i>dauerhaft sichtbare Seite</i></div>
+    <button mat-icon-button [matMenuTriggerFor]="pageMenu"
+            [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #pageMenu="matMenu">
+      <div (click)="$event.stopPropagation()">
+        <aspect-unit-view-page-menu [page]="page" [pageIndex]="pageIndex"
+                                    (pageOrderChanged)="pagesChanged.emit()"></aspect-unit-view-page-menu>
+      </div>
+    </mat-menu>
+  </div>
+
+  <div [style.width.px]="page.hasMaxWidth ? page.maxWidth : null"
+       [style.padding.px]="page.margin"
+       [style.background-color]="page.backgroundColor">
+    <div *ngFor="let section of page.sections; let sectionIndex = index" [style.position]="'relative'">
+      <aspect-editor-section-view [section]="section"
+                                  [sectionIndex]="sectionIndex" [lastSectionIndex]="page.sections.length - 1"
+                                  [pageIndex]="pageIndex"
+                                  [alwaysVisiblePage]="page.alwaysVisible"
+                                  [isOnSelectedPage]="selectionService.selectedPageIndex === pageIndex"
+                                  (sectionSelected)="selectionService.selectedPageIndex = pageIndex">
+      </aspect-editor-section-view>
     </div>
   </div>
+  <button mat-fab extended class="add-section-button"
+          (click)="addSection(pageIndex)">
+    <mat-icon class="add-section-icon">add</mat-icon>
+    Neuer Abschnitt
+  </button>
 </div>

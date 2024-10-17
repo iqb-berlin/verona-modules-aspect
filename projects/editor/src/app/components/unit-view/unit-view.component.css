@@ -75,6 +75,10 @@
   flex-direction: column;
 }
 
+.page-view-wrapper {
+  height: 100%;
+}
+
 .add-page-button {
   align-self: center;
   margin-top: 20px;

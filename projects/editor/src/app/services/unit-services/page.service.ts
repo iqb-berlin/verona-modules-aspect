@@ -16,6 +16,7 @@ export class PageService {
       title: 'Seite hinzugefügt',
       command: () => {
         this.unitService.unit.pages.push(new Page());
+        this.unitService.updateSectionCounter();
         return {};
       },
       rollback: () => {

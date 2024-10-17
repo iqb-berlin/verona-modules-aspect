@@ -1,10 +1,11 @@
 import {
-  AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild
+  Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
 import { ValueChangeElement } from 'common/models/elements/element';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import { BehaviorSubject } from 'rxjs';
+import { MarkingData } from 'common/models/marking-data';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({
@@ -65,12 +66,7 @@ export class TextComponent extends ElementComponent implements OnInit {
   @Output() selectedColorChanged = new EventEmitter<string | undefined>();
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
   @Output() textSelectionStart = new EventEmitter<PointerEvent>();
-  @Output() markingDataChanged = new EventEmitter<{
-    active: boolean,
-    mode: 'mark' | 'delete',
-    color: string,
-    colorName: string | undefined
-  }>();
+  @Output() markingDataChanged = new EventEmitter<MarkingData>();
 
   @ViewChild(ImageFullscreenDirective) imageFullScreenDirective!: ImageFullscreenDirective;
 

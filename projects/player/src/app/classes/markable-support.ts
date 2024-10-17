@@ -3,7 +3,7 @@ import { TextComponent } from 'common/components/text/text.component';
 import { Markable, MarkablesContainer } from 'player/src/app/models/markable.interface';
 import {
   MarkablesContainerComponent
-} from 'player/src/app/components/elements/markables-container/markables-container.component';
+} from 'player/src/app/components/markables-container/markables-container.component';
 
 export class MarkableSupport {
   private renderer: Renderer2;

@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input
 } from '@angular/core';
-import { MarkableWordComponent } from 'player/src/app/components/elements/markable-word/markable-word.component';
+import { MarkableWordComponent } from 'player/src/app/components/markable-word/markable-word.component';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { BehaviorSubject } from 'rxjs';
 

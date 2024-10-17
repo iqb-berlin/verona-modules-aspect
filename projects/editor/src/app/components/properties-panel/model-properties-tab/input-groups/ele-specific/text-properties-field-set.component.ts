@@ -54,21 +54,21 @@ import { DialogService } from '../../../../../services/dialog.service';
                                      (updateModel)="updateModel.emit($event)">
         </aspect-highlight-properties>
 
-        <mat-form-field *ngIf="combinedProperties.markingBars !== undefined"
+        <mat-form-field *ngIf="combinedProperties.markingPanels !== undefined"
                         [style.margin-top.px]="5"
                         appearance="fill">
-          <mat-label>{{ 'propertiesPanel.markingBars' | translate }}</mat-label>
+          <mat-label>{{ 'propertiesPanel.markingPanels' | translate }}</mat-label>
           <mat-select multiple
-                      [disabled]="markingBarIds.length === 0 &&
+                      [disabled]="markingPanelIds.length === 0 &&
                                   !combinedProperties.highlightableYellow &&
                                   !combinedProperties.highlightableTurquoise &&
                                   !combinedProperties.highlightableOrange"
-                      [ngModel]="combinedProperties.markingBars"
-                      (ngModelChange)="toggleConnectedMarkingBars($event)">
+                      [ngModel]="combinedProperties.markingPanels"
+                      (ngModelChange)="toggleConnectedMarkingPanels($event)">
             <mat-select-trigger>
-              {{ 'propertiesPanel.markingBars' | translate }} ({{ $any(combinedProperties.markingBars).length }})
+              {{ 'propertiesPanel.markingPanels' | translate }} ({{ $any(combinedProperties.markingPanels).length }})
             </mat-select-trigger>
-            <mat-option *ngFor="let id of markingBarIds" [value]="id">
+            <mat-option *ngFor="let id of markingPanelIds" [value]="id">
               {{ id }}
             </mat-option>
           </mat-select>
@@ -79,7 +79,7 @@ import { DialogService } from '../../../../../services/dialog.service';
                         appearance="fill">
           <mat-label>{{ 'propertiesPanel.markingMode' | translate }}</mat-label>
           <mat-select [value]="combinedProperties.markingMode"
-                      [disabled]="combinedProperties.markingBars!.length === 0 &&
+                      [disabled]="combinedProperties.markingPanels!.length === 0 &&
                                   (!combinedProperties.highlightableYellow &&
                                   !combinedProperties.highlightableTurquoise &&
                                   !combinedProperties.highlightableOrange)"
@@ -92,8 +92,8 @@ import { DialogService } from '../../../../../services/dialog.service';
         </mat-form-field>
 
         <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.hasSelectionPopup !== undefined"
-                      [disabled]="combinedProperties.markingMode !== 'selection' &&
-                                  (combinedProperties.markingBars!.length === 0 ||
+                      [disabled]="combinedProperties.markingMode !== 'selection' ||
+                                  (combinedProperties.markingPanels!.length === 0 &&
                                   (!combinedProperties.highlightableYellow &&
                                   !combinedProperties.highlightableTurquoise &&
                                   !combinedProperties.highlightableOrange))"
@@ -114,7 +114,7 @@ import { DialogService } from '../../../../../services/dialog.service';
   `]
 })
 export class TextPropsComponent {
-  markingBarIds: string[];
+  markingPanelIds: string[];
   @Input() combinedProperties!: any;
   @Output() updateModel =
     new EventEmitter<{
@@ -126,7 +126,7 @@ export class TextPropsComponent {
   constructor(public unitService: UnitService,
               public dialogService: DialogService,
               public selectionService: SelectionService) {
-    this.markingBarIds = this.unitService.unit.getAllElements('remote-control').map(element => element.id);
+    this.markingPanelIds = this.unitService.unit.getAllElements('marking-panel').map(element => element.id);
   }
 
   showTextEditDialog(): void {
@@ -141,10 +141,10 @@ export class TextPropsComponent {
     });
   }
 
-  toggleConnectedMarkingBars(markingBars: string[]) {
+  toggleConnectedMarkingPanels(markingPanels: string[]) {
     this.updateModel.emit({
-      property: 'markingBars',
-      value: [...markingBars]
+      property: 'markingPanels',
+      value: [...markingPanels]
     });
   }
 }

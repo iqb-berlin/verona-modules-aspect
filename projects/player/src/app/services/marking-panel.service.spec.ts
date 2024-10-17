@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RemoteControlService } from './remote-control.service';
+import { MarkingPanelService } from './marking-panel.service';
 
-describe('RemoteControlService', () => {
-  let service: RemoteControlService;
+describe('MarkingPanelService', () => {
+  let service: MarkingPanelService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RemoteControlService);
+    service = TestBed.inject(MarkingPanelService);
   });
 
   it('should be created', () => {

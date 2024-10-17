@@ -20,7 +20,7 @@ import {
   MarkablesContainerComponent
 } from 'player/src/app/components/markables-container/markables-container.component';
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
-import { RemoteControlComponent } from 'common/components/text/remote-control.component';
+import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -120,7 +120,7 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     TableComponent,
     MarkablesContainerComponent,
     IsEnabledNavigationTargetPipe,
-    RemoteControlComponent
+    MarkingPanelComponent
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService }

@@ -30,14 +30,14 @@
   detectionType="top"
   (intersecting)="elementComponent.emitEvent()">>
 </aspect-trigger>
-<aspect-remote-control
-  *ngIf="elementModel.type === 'remote-control'"
+<aspect-marking-panel
+  *ngIf="elementModel.type === 'marking-panel'"
   #elementComponent
   [hasDeleteButton]="hasDeleteButton"
   [selectedColor]="selectedColor"
-  [elementModel]="elementModel | cast: RemoteControlElement"
-  (remoteMarkingDataChanged)="remoteControlService.broadcastMarkingData($event)">
-</aspect-remote-control>
+  [elementModel]="elementModel | cast: MarkingPanelElement"
+  (markingPanelMarkingDataChanged)="markingPanelService.broadcastMarkingData($event)">
+</aspect-marking-panel>
 
 <aspect-floating-keypad
   [isKeypadOpen]="isKeypadOpen && keypadService.position === 'floating'">

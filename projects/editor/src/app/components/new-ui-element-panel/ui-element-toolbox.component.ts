@@ -21,7 +21,7 @@ import { FrameElement } from 'common/models/elements/frame/frame';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TextElement } from 'common/models/elements/text/text';
-import { RemoteControlElement } from 'common/models/elements/text/remote-control';
+import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { TemplateService } from 'editor/src/app/services/template.service';
@@ -83,6 +83,6 @@ export class UiElementToolboxComponent {
   protected readonly GeometryElement = GeometryElement;
   protected readonly TriggerElement = TriggerElement;
   protected readonly TextElement = TextElement;
-  protected readonly RemoteControlElement = RemoteControlElement;
+  protected readonly MarkingPanelElement = MarkingPanelElement;
   protected readonly TableElement = TableElement;
 }

@@ -35,8 +35,8 @@ import {
   TablePropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/table-properties.component';
 import {
-  RemoteControlPropertiesComponent
-} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/remote-control-properties.component';
+  MarkingPanelPropertiesComponent
+} from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/marking-panel-properties.component';
 
 @Component({
   selector: 'aspect-ele-specific-props',
@@ -54,7 +54,7 @@ import {
     SliderPropertiesComponent,
     TextPropsComponent,
     TablePropertiesComponent,
-    RemoteControlPropertiesComponent
+    MarkingPanelPropertiesComponent
   ],
   template: `
     <aspect-math-field-props *ngIf="combinedProperties.type === 'math-field'"
@@ -99,9 +99,9 @@ import {
                        (updateModel)="updateModel.emit($event)">
     </aspect-text-props>
 
-    <aspect-remote-control-properties [combinedProperties]="combinedProperties"
+    <aspect-marking-panel-properties [combinedProperties]="combinedProperties"
                                       (updateModel)="updateModel.emit($event)">
-    </aspect-remote-control-properties>
+    </aspect-marking-panel-properties>
 
     <aspect-table-properties *ngIf="combinedProperties.type === 'table'"
                              [combinedProperties]="combinedProperties"

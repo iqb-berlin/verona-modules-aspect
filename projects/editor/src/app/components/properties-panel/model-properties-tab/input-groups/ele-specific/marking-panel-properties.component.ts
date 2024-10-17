@@ -8,7 +8,7 @@ import {
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/highlight-properties.component';
 
 @Component({
-  selector: 'aspect-remote-control-properties',
+  selector: 'aspect-marking-panel-properties',
   standalone: true,
   imports: [
     NgIf,
@@ -16,7 +16,7 @@ import {
     HighlightPropertiesComponent
   ],
   template: `
-    <div *ngIf="combinedProperties.type === 'remote-control'" class="fx-column-start-stretch">
+    <div *ngIf="combinedProperties.type === 'marking-panel'" class="fx-column-start-stretch">
       Fernsteuerung
       <fieldset class="fx-column-start-stretch">
         <legend>{{'propertiesPanel.marking' | translate }}</legend>
@@ -30,7 +30,7 @@ import {
   styles: [`
   `]
 })
-export class RemoteControlPropertiesComponent {
+export class MarkingPanelPropertiesComponent {
   @Input() combinedProperties!: any;
   @Output() updateModel =
     new EventEmitter<{

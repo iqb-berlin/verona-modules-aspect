@@ -28,12 +28,12 @@ import { MathTableElement } from 'common/models/elements/input-elements/math-tab
 import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
-import { RemoteControlElement } from 'common/models/elements/text/remote-control';
+import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
     text: TextElement,
-    'remote-control': RemoteControlElement,
+    'marking-panel': MarkingPanelElement,
     button: ButtonElement,
     trigger: TriggerElement,
     'text-field': TextFieldElement,

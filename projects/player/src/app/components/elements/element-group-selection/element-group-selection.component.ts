@@ -23,7 +23,7 @@ export class ElementGroupSelectionComponent implements OnInit {
     },
     { name: 'compoundGroup', types: ['cloze', 'likert', 'table'] },
     { name: 'textGroup', types: ['text'] },
-    { name: 'interactiveGroup', types: ['button', 'image', 'math-table', 'trigger', 'remote-control'] },
+    { name: 'interactiveGroup', types: ['button', 'image', 'math-table', 'trigger', 'marking-panel'] },
     { name: 'externalAppGroup', types: ['geometry'] }
   ];
 

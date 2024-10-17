@@ -5,7 +5,7 @@ export interface MarkingData {
   colorName: string | undefined
 }
 
-export interface RemoteMarkingData {
+export interface MarkingPanelMarkingData {
   id: string,
   markingData: MarkingData
 }

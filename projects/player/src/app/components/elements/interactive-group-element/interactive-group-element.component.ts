@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements/button/button';
-import { RemoteControlElement } from 'common/models/elements/text/remote-control';
+import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger/trigger';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { UIElement, ValueChangeElement } from 'common/models/elements/element';
@@ -16,7 +16,7 @@ import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { DeviceService } from 'player/src/app/services/device.service';
 import { Subject, Subscription } from 'rxjs';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
-import { RemoteControlService } from 'player/src/app/services/remote-control.service';
+import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -31,7 +31,7 @@ import { NavigationService } from '../../../services/navigation.service';
 export class InteractiveGroupElementComponent
   extends ElementGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
-  RemoteControlElement!: RemoteControlElement;
+  MarkingPanelElement!: MarkingPanelElement;
   ButtonElement!: ButtonElement;
   ImageElement!: ImageElement;
   MathTableElement!: MathTableElement;
@@ -61,7 +61,7 @@ export class InteractiveGroupElementComponent
     public keypadService: KeypadService,
     private keyboardService: KeyboardService,
     private deviceService: DeviceService,
-    public remoteControlService: RemoteControlService
+    public markingPanelService: MarkingPanelService
   ) {
     super();
     this.subscribeToMarkingColorChanged();
@@ -97,7 +97,7 @@ export class InteractiveGroupElementComponent
   }
 
   private subscribeToMarkingColorChanged() {
-    this.remoteControlService.markingColorChanged
+    this.markingPanelService.markingColorChanged
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(markingColor => {
         if (markingColor.markingBars.includes(this.elementModel.id)) {

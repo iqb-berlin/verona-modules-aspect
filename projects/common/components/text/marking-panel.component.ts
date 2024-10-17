@@ -2,12 +2,12 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { RemoteControlElement } from 'common/models/elements/text/remote-control';
+import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { SharedModule } from 'common/shared.module';
-import { RemoteMarkingData } from 'common/models/marking-data';
+import { MarkingPanelMarkingData } from 'common/models/marking-data';
 
 @Component({
-  selector: 'aspect-remote-control',
+  selector: 'aspect-marking-panel',
   standalone: true,
   imports: [
     SharedModule
@@ -16,17 +16,17 @@ import { RemoteMarkingData } from 'common/models/marking-data';
     <aspect-text-marking-bar [elementModel]="elementModel"
                              [selectedColor]="selectedColor || 'none'"
                              [hasDeleteButton]="hasDeleteButton"
-                             (markingDataChanged)="remoteMarkingDataChanged.emit(
+                             (markingDataChanged)="markingPanelMarkingDataChanged.emit(
                                                      { id: elementModel.id, markingData: $event }
                                                    )">
     </aspect-text-marking-bar>
   `,
   styles: []
 })
-export class RemoteControlComponent extends ElementComponent {
-  @Input() elementModel!: RemoteControlElement;
+export class MarkingPanelComponent extends ElementComponent {
+  @Input() elementModel!: MarkingPanelElement;
   @Input() selectedColor!: string | undefined;
   @Input() hasDeleteButton!: boolean;
-  @Output() remoteMarkingDataChanged: EventEmitter<RemoteMarkingData> = new EventEmitter<RemoteMarkingData>();
+  @Output() markingPanelMarkingDataChanged: EventEmitter<MarkingPanelMarkingData> = new EventEmitter<MarkingPanelMarkingData>();
   protected readonly setTimeout = setTimeout;
 }

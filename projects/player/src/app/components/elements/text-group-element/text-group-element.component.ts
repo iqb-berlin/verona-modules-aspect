@@ -13,8 +13,8 @@ import { ValueChangeElement } from 'common/models/elements/element';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
-import { RemoteControlService } from 'player/src/app/services/remote-control.service';
-import { MarkingData, RemoteMarkingData } from 'common/models/marking-data';
+import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
+import { MarkingData, MarkingPanelMarkingData } from 'common/models/marking-data';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
 import { NativeEventService } from '../../../services/native-event.service';
@@ -43,12 +43,12 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     applicationRef: ApplicationRef,
     private elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public unitStateService: UnitStateService,
-    private remoteControlService: RemoteControlService
+    private markingPanelService: MarkingPanelService
   ) {
     super();
     this.textMarkingSupport = new TextMarkingSupport(nativeEventService, anchorService);
     this.markableSupport = new MarkableSupport(renderer, applicationRef);
-    this.subscribeToRemoteMarkingDataChanged();
+    this.subscribeToMarkingPanelMarkingDataChanged();
   }
 
   ngOnInit(): void {
@@ -74,25 +74,25 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
           }),
       this.elementComponent,
       this.pageIndex);
-    // timeout is needed to give remote controls on other pages time to initialize
+    // timeout is needed to give marking panels on other pages time to initialize
     setTimeout(() => this.broadcastMarkingColorChange(undefined));
   }
 
   broadcastMarkingColorChange(color: string | undefined): void {
-    this.remoteControlService
+    this.markingPanelService
       .broadcastMarkingColorChange({
         color: color,
         id: this.elementModel.id,
         markingMode: (this.elementModel as TextElement).markingMode,
-        markingBars: (this.elementModel as TextElement).markingBars
+        markingBars: (this.elementModel as TextElement).markingPanels
       });
   }
 
-  private subscribeToRemoteMarkingDataChanged() {
-    this.remoteControlService.remoteMarkingDataChanged
+  private subscribeToMarkingPanelMarkingDataChanged() {
+    this.markingPanelService.markingPanelMarkingDataChanged
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((data: RemoteMarkingData) => {
-        if ((this.elementModel as TextElement).markingBars.includes(data.id)) {
+      .subscribe((data: MarkingPanelMarkingData) => {
+        if ((this.elementModel as TextElement).markingPanels.includes(data.id)) {
           this.elementComponent.selectedColor
             .next(TextGroupElementComponent.getSelectedColorValue(data.markingData));
           this.textMarkingSupport.applyMarkingData(data.markingData, this.elementComponent);

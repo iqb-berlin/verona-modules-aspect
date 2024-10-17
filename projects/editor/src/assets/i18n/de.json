@@ -121,7 +121,7 @@
     "highlightable": "Markieren erlauben",
     "marking": "Markierung",
     "markingMode": "Markierungsmodus",
-    "markingBars": "Markierungsleisten",
+    "markingPanels": "Markierungselemente",
     "markingMode-selection": "Auswahl",
     "markingMode-word": "Wort",
     "markingMode-range": "Bereich",
@@ -312,7 +312,7 @@
   },
   "toolbox": {
     "text": "Text",
-    "remote-control": "Fernsteuerung",
+    "marking-panel": "Markierungselement",
     "button": "Knopf",
     "frame": "Rahmen",
     "text-field": "Eingabefeld",

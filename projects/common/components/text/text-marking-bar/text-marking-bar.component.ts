@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
-import { RemoteControlElement } from 'common/models/elements/text/remote-control';
+import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { MarkingData } from 'common/models/marking-data';
 
 @Component({
@@ -39,7 +39,7 @@ import { MarkingData } from 'common/models/marking-data';
   ]
 })
 export class TextMarkingBarComponent {
-  @Input() elementModel!: TextElement | RemoteControlElement;
+  @Input() elementModel!: TextElement | MarkingPanelElement;
   @Input() hasDeleteButton!: boolean;
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
 

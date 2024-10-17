@@ -34,8 +34,8 @@ import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support'
 import { TextElement } from 'common/models/elements/text/text';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
 import { NavigationTarget } from 'player/modules/verona/models/verona';
-import { RemoteMarkingData } from 'common/models/marking-data';
-import { RemoteControlService } from 'player/src/app/services/remote-control.service';
+import { MarkingPanelMarkingData } from 'common/models/marking-data';
+import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import {
   TextGroupElementComponent
 } from 'player/src/app/components/elements/text-group-element/text-group-element.component';
@@ -86,7 +86,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     public mediaPlayerService: MediaPlayerService,
     private renderer: Renderer2,
     private applicationRef: ApplicationRef,
-    private remoteControlService: RemoteControlService
+    private markingPanelService: MarkingPanelService
   ) {
     super();
   }
@@ -211,9 +211,9 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
         childModel,
         { markingMode: (childModel as TextElement).markingMode }
       );
-      this.subscribeToRemoteMarkingDataChanged(child as TextComponent, childModel as TextElement);
+      this.subscribeToMarkingPanelMarkingDataChanged(child as TextComponent, childModel as TextElement);
       this.subscribeToTextSelectedColorChanged(child as TextComponent, childModel as TextElement);
-      // timeout is needed to give remote controls on other pages time to initialize
+      // timeout is needed to give marking panels on other pages time to initialize
       setTimeout(() => this.broadcastMarkingColorChange(undefined, childModel as TextElement));
     }
     if (childModel.type === 'image') {
@@ -230,20 +230,20 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   }
 
   private broadcastMarkingColorChange(color: string | undefined, childModel: TextElement): void {
-    this.remoteControlService
+    this.markingPanelService
       .broadcastMarkingColorChange({
         color: color,
         id: childModel.id,
         markingMode: childModel.markingMode,
-        markingBars: childModel.markingBars
+        markingBars: childModel.markingPanels
       });
   }
 
-  private subscribeToRemoteMarkingDataChanged(child: TextComponent, childModel: TextElement) {
-    this.remoteControlService.remoteMarkingDataChanged
+  private subscribeToMarkingPanelMarkingDataChanged(child: TextComponent, childModel: TextElement) {
+    this.markingPanelService.markingPanelMarkingDataChanged
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((data: RemoteMarkingData) => {
-        if (childModel.markingBars.includes(data.id)) {
+      .subscribe((data: MarkingPanelMarkingData) => {
+        if (childModel.markingPanels.includes(data.id)) {
           child.selectedColor
             .next(TextGroupElementComponent.getSelectedColorValue(data.markingData));
           this.textMarkingSupports[childModel.id].applyMarkingData(data.markingData, child);

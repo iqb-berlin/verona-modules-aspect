@@ -1,7 +1,7 @@
 import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { RemoteControlComponent } from 'common/components/text/remote-control.component';
+import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
 import { environment } from 'common/environment';
 import { InstantiationEror } from 'common/util/errors';
 import {
@@ -9,17 +9,17 @@ import {
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 
-export class RemoteControlElement extends UIElement implements RemoteControlProperties {
-  type: UIElementType = 'remote-control';
+export class MarkingPanelElement extends UIElement implements MarkingPanelProperties {
+  type: UIElementType = 'marking-panel';
   highlightableYellow: boolean = true;
   highlightableTurquoise: boolean = false;
   highlightableOrange: boolean = false;
   position?: PositionProperties;
 
-  static title: string = 'Fernsteuerung';
-  static icon: string = 'settings_remote';
+  static title: string = 'Markierungselement';
+  static icon: string = 'border_color';
 
-  constructor(element?: RemoteControlProperties) {
+  constructor(element?: MarkingPanelProperties) {
     super(element);
     if (element && isValid(element)) {
       this.highlightableOrange = element.highlightableOrange;
@@ -28,7 +28,7 @@ export class RemoteControlElement extends UIElement implements RemoteControlProp
       if (element.position) this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
-        throw new InstantiationEror('Error at RemoteControl instantiation', element);
+        throw new InstantiationEror('Error at MarkingPanel instantiation', element);
       }
       if (element?.highlightableOrange !== undefined) this.highlightableOrange = element.highlightableOrange;
       if (element?.highlightableTurquoise !== undefined) this.highlightableTurquoise = element.highlightableTurquoise;
@@ -44,23 +44,23 @@ export class RemoteControlElement extends UIElement implements RemoteControlProp
     }
   }
 
-  getDuplicate(): RemoteControlElement {
-    return new RemoteControlElement(this);
+  getDuplicate(): MarkingPanelElement {
+    return new MarkingPanelElement(this);
   }
 
   getElementComponent(): Type<ElementComponent> {
-    return RemoteControlComponent;
+    return MarkingPanelComponent;
   }
 }
 
-function isValid(blueprint?: RemoteControlProperties): boolean {
+function isValid(blueprint?: MarkingPanelProperties): boolean {
   if (!blueprint) return false;
   return blueprint.highlightableOrange !== undefined &&
     blueprint.highlightableTurquoise !== undefined &&
     blueprint.highlightableYellow !== undefined;
 }
 
-export interface RemoteControlProperties extends UIElementProperties {
+export interface MarkingPanelProperties extends UIElementProperties {
   highlightableYellow: boolean;
   highlightableTurquoise: boolean;
   highlightableOrange: boolean;

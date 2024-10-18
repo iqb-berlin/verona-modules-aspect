@@ -1,4 +1,6 @@
-import { DoBootstrap, Injector, NgModule } from '@angular/core';
+import {
+  DoBootstrap, ErrorHandler, Injector, NgModule
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -21,6 +23,7 @@ import {
 } from 'player/src/app/components/markables-container/markables-container.component';
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
 import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
+import { ErrorService } from 'player/src/app/services/error.service';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -123,7 +126,8 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     MarkingPanelComponent
   ],
   providers: [
-    { provide: APIService, useExisting: MetaDataService }
+    { provide: APIService, useExisting: MetaDataService },
+    { provide: ErrorHandler, useClass: ErrorService }
   ]
 })
 

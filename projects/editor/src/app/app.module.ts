@@ -1,4 +1,6 @@
-import { DoBootstrap, Injector, NgModule } from '@angular/core';
+import {
+  DoBootstrap, ErrorHandler, Injector, NgModule
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
@@ -118,6 +120,7 @@ import { ReferenceListComponent } from './components/reference-list.component';
 import { ElementListComponent } from './components/element-list.component';
 
 import { SectionComponent } from './components/unit-view/section/section.component';
+import { ErrorService } from './services/error.service';
 
 /** Custom options the configure the tooltip's default show/hide delays. */
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -221,6 +224,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   ],
   providers: [
     { provide: APIService, useExisting: VeronaAPIService },
+    { provide: ErrorHandler, useClass: ErrorService },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults }
   ]
 })

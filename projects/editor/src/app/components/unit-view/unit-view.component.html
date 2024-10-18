@@ -15,7 +15,7 @@
       <mat-tab-group *ngIf="pagesLoaded"
                      preserveContent="true"
                      [style.height.%]="100" mat-align-tabs="start" mat-stretch-tabs="false"
-                     [selectedIndex]="selectionService.selectedPageIndex"
+                     [selectedIndex]="showPagesAsList ? 0 : selectionService.selectedPageIndex"
                      (selectedIndexChange)="selectPage($event)"
                      (animationDone)="pageChangeService.pageChanged.emit()">
         <ng-container *ngIf="!showPagesAsList">

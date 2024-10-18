@@ -1,6 +1,12 @@
 Allgemein
 =========
-## next
+## 2.6.0
+### Neue Funktion
+- Neue Markierfunktionalität
+  - Die Wörter eines Text können durch Mausklick oder Berührung einzel markiert oder unmarkiert werden
+- Neues Element: Markierungselement
+  - Kann als zusätzliche oder alternative Farbauswahlleiste zur Markierung verwendet werden
+
 ### Fehlerbehebungen
 - Behebt "Flackern"-Fehler von Eingabebereichen mit dynamischen Zeilen unter Chromium
 

@@ -1,5 +1,10 @@
 Player
 ======
+## 2.6.0
+### Neue Funktionen
+- Unterstützt Verona API 6.0
+
+
 ## 2.5.0
 - Unterstützung neuer Funktionen; siehe Allgemein
 

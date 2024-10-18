@@ -25,7 +25,7 @@ export class ExternalResourceService {
         this.isGeoGebraScriptInitialized.next(true);
       };
       script.onerror = (message: string) => {
-        throw new AspectError('geogebra-not-loaded', message);
+        throw new AspectError('geogebra-not-loading', message);
       };
       renderer.appendChild(document.head, script);
     }

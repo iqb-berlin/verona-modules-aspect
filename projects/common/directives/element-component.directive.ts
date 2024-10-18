@@ -1,10 +1,9 @@
 import {
   AfterContentChecked,
-  Directive, ElementRef, Renderer2
+  Directive, ElementRef
 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { UIElement } from 'common/models/elements/element';
-import { ExternalResourceService } from 'common/services/external-resource.service';
+import { AspectError } from 'common/classes/aspect-error';
 
 @Directive()
 export abstract class ElementComponent implements AfterContentChecked {
@@ -19,5 +18,10 @@ export abstract class ElementComponent implements AfterContentChecked {
 
   ngAfterContentChecked(): void {
     this.project = this.elementRef.nativeElement.closest('aspect-element-group-selection') ? 'player' : 'editor';
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  throwError(code: string, message: string) {
+    throw new AspectError(code, message);
   }
 }

@@ -1,12 +1,12 @@
 import {
   Directive, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
-import { ElementComponent } from './element-component.directive';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { ElementComponent } from './element-component.directive';
 
 @Directive()
 export abstract class MediaPlayerElementComponent extends ElementComponent implements OnInit, OnDestroy {
@@ -19,7 +19,7 @@ export abstract class MediaPlayerElementComponent extends ElementComponent imple
 
   abstract elementModel: AudioElement | VideoElement;
   active: boolean = true;
-  isLoaded: Subject<boolean> = new Subject<boolean>();
+  isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   dependencyDissolved!: boolean;
   private ngUnsubscribe = new Subject<void>();
 

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { VideoElement } from 'common/models/elements/media-elements/video';
-import { AspectError } from 'common/classes/aspect-error';
 import { MediaPlayerElementComponent } from '../../directives/media-player-element-component.directive';
 
 @Component({
@@ -27,12 +26,14 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                disablepictureinpicture="true"
                (contextmenu)="$event.preventDefault()"
                (loadedmetadata)="isLoaded.next(true)"
-               (error)="onError($event)"
+               (error)="throwError('video-not-loading', $event.message)"
                (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
                (pause)="mediaPlayStatusChanged.emit(null)">
         </video>
       </aspect-media-player-control-bar>
-      <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
+      <aspect-spinner [isLoaded]="isLoaded"
+                      (timeOut)="throwError('video-timeout', 'Failed to load video in time')">
+      </aspect-spinner>
     </div>
   `,
   styles: [
@@ -43,9 +44,4 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
 })
 export class VideoComponent extends MediaPlayerElementComponent {
   @Input() elementModel!: VideoElement;
-
-  // eslint-disable-next-line class-methods-use-this
-  onError(event: ErrorEvent) {
-    throw new AspectError('video-not-loaded', event.message);
-  }
 }

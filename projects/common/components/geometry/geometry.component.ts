@@ -19,10 +19,13 @@ declare const GGBApplet: any;
     <button *ngIf="this.elementModel.showResetIcon"
             mat-stroked-button class="reset-button"
             (click)="reset()">
-      <mat-icon class="reset-icon">autorenew</mat-icon>{{'geometry_reset' | translate }}
+      <mat-icon class="reset-icon">autorenew</mat-icon>
+      {{ 'geometry_reset' | translate }}
     </button>
     <div [id]="elementModel.id" class="geogebra-applet"></div>
-    <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
+    <aspect-spinner [isLoaded]="isLoaded"
+                    (timeOut)="throwError('geometry-timeout', 'Failed to load geometry in time')">
+    </aspect-spinner>
   `,
   styles: [
     ':host {display: block; width: 100%; height: 100%;}',

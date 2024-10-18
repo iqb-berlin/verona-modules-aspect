@@ -7,6 +7,7 @@ import {
 import { takeUntil } from 'rxjs/operators';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
 import { ValueChangeElement } from 'common/models/elements/element';
+import { AspectError } from 'common/classes/aspect-error';
 
 @Component({
   selector: 'aspect-media-player-control-bar',
@@ -213,6 +214,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       } else {
         this.duration = 0;
         this.runCounter = 0;
+        throw new AspectError('media-duration-error', 'Media duration is not available');
       }
     }
   }

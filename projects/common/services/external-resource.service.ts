@@ -1,6 +1,7 @@
 import { Injectable, Renderer2 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { APIService } from 'common/shared.module';
+import { AspectError } from 'common/classes/aspect-error';
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,14 @@ export class ExternalResourceService {
   initializeGeoGebra(renderer: Renderer2): void {
     if (!this.geoGebraInitStarted) {
       this.geoGebraInitStarted = true;
-      console.log('Initializing geogebra scripts');
       const script = renderer.createElement('script');
       script.type = 'text/javascript';
       script.src = `${this.resourceUrl}/GeoGebra/GeoGebra/deployggb.js`;
       script.onload = () => {
         this.isGeoGebraScriptInitialized.next(true);
+      };
+      script.onerror = (message: string) => {
+        throw new AspectError('geogebra-not-loaded', message);
       };
       renderer.appendChild(document.head, script);
     }

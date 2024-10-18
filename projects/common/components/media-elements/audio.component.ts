@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
+import { AspectError } from 'common/classes/aspect-error';
 import { MediaPlayerElementComponent } from '../../directives/media-player-element-component.directive';
 
 @Component({
   selector: 'aspect-audio',
   template: `
-    <aspect-media-player-control-bar [player]="player" *ngIf="elementModel.src"
+    <aspect-media-player-control-bar *ngIf="elementModel.src"
+                                     [player]="player"
                                      [project]="project"
                                      [id]="elementModel.id"
                                      [savedPlaybackTime]="savedPlaybackTime"
@@ -16,11 +18,12 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                                      (mediaValidStatusChanged)="mediaValidStatusChanged.emit($event)"
                                      (elementValueChanged)="elementValueChanged.emit($event)">
       <audio #player
-             (loadedmetadata)="isLoaded.next(true)"
-             (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
-             (pause)="mediaPlayStatusChanged.emit(null)"
              [style.width.%]="100"
-             [src]="elementModel.src | safeResourceUrl">
+             [src]="elementModel.src | safeResourceUrl"
+             (loadedmetadata)="isLoaded.next(true)"
+             (error)="onError($event)"
+             (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
+             (pause)="mediaPlayStatusChanged.emit(null)">
       </audio>
     </aspect-media-player-control-bar>
     <aspect-spinner [isLoaded]="isLoaded"></aspect-spinner>
@@ -31,4 +34,9 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
 })
 export class AudioComponent extends MediaPlayerElementComponent {
   @Input() elementModel!: AudioElement;
+
+  // eslint-disable-next-line class-methods-use-this
+  onError(event: ErrorEvent) {
+    throw new AspectError('audio-not-loaded', event.message);
+  }
 }

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { VideoElement } from 'common/models/elements/media-elements/video';
+import { AspectError } from 'common/classes/aspect-error';
 import { MediaPlayerElementComponent } from '../../directives/media-player-element-component.directive';
 
 @Component({
@@ -8,7 +9,8 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
     <div [class]="elementModel.scale ? 'fit-video' : 'max-size-video'"
          [style.width.%]="100"
          [style.height.%]="100">
-      <aspect-media-player-control-bar class="correct-position" *ngIf="elementModel.src"
+      <aspect-media-player-control-bar *ngIf="elementModel.src"
+                                       class="correct-position"
                                        [player]="player"
                                        [project]="project"
                                        [active]="active"
@@ -25,6 +27,7 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
                disablepictureinpicture="true"
                (contextmenu)="$event.preventDefault()"
                (loadedmetadata)="isLoaded.next(true)"
+               (error)="onError($event)"
                (playing)="mediaPlayStatusChanged.emit(this.elementModel.id)"
                (pause)="mediaPlayStatusChanged.emit(null)">
         </video>
@@ -40,4 +43,9 @@ import { MediaPlayerElementComponent } from '../../directives/media-player-eleme
 })
 export class VideoComponent extends MediaPlayerElementComponent {
   @Input() elementModel!: VideoElement;
+
+  // eslint-disable-next-line class-methods-use-this
+  onError(event: ErrorEvent) {
+    throw new AspectError('video-not-loaded', event.message);
+  }
 }

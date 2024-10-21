@@ -58,7 +58,6 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
 
   setProperty(property: string, value: unknown): void {
     super.setProperty(property, value);
-    if (property === 'strikeSelectedOption') this.styling.selectionColor = 'transparent';
   }
 
   getVariableInfos(): VariableInfo[] {

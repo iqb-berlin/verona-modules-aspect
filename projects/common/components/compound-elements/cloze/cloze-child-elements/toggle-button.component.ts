@@ -40,9 +40,10 @@ import { ToggleButtonElement } from 'common/models/elements/compound-elements/cl
                          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
                          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
                          [style.background-color]="elementFormControl.value !== null &&
-                                                 elementFormControl.value === i ?
-                                                 elementModel.styling.selectionColor :
-                                                 elementModel.styling.backgroundColor"
+                                                   elementFormControl.value === i &&
+                                                   !elementModel.strikeSelectedOption ?
+                                                     elementModel.styling.selectionColor :
+                                                     elementModel.styling.backgroundColor"
                          [style.line-height.%]="elementModel.styling.lineHeight">
         <div [innerHTML]="option.text | safeResourceHTML"></div>
       </mat-button-toggle>

@@ -464,7 +464,7 @@ export class TemplateService {
     switch (lang) {
       case 'german': return type === 'instruction' ? 'Instruktion' : 'Hörtext';
       case 'english': return type === 'instruction' ? 'instruction' : 'audio recording';
-      case 'french': return type === 'instruction' ? 'l\'instruction ' : 'texte audio ';
+      case 'french': return type === 'instruction' ? 'l’instruction ' : 'texte audio ';
       default: throw Error();
     }
   }

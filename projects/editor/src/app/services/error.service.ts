@@ -12,5 +12,7 @@ export class ErrorService implements ErrorHandler {
     } else {
       // all other errors
     }
+    // eslint-disable-next-line no-console
+    console.error(error.message);
   }
 }

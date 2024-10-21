@@ -14,7 +14,8 @@ export class ErrorService implements ErrorHandler {
     } else {
       this.veronaPostService.sendVopRuntimeErrorNotification({ code: 'runtime-error', message: error.message });
       // eslint-disable-next-line no-console
-      console.error(error.message);
     }
+    // eslint-disable-next-line no-console
+    console.error(error.message);
   }
 }

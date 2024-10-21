@@ -100,6 +100,8 @@
                        [scrollPageIndex]="i"
                        [page]="page"
                        [sectionNumbering]="sectionNumbering"
+                       [showUnitNavNext]="showUnitNavNext"
+                       [isPresentedPagesComplete]="isPresentedPagesComplete"
                        (isVisibleIndexChange)="setIsVisibleIndexPages($event)">
           </aspect-page>
           <aspect-page-nav-button *ngIf="scrollPageMode==='buttons' && (i | hasNextPage : isVisibleIndexPages.value)"
@@ -137,6 +139,8 @@
                    [page]="page"
                    [isLastPage]="last"
                    [sectionNumbering]="sectionNumbering"
+                   [showUnitNavNext]="showUnitNavNext"
+                   [isPresentedPagesComplete]="isPresentedPagesComplete"
                    (isVisibleIndexChange)="setIsVisibleIndexPages($event)"
                    (selectedIndexChange)="setSelectedIndex($event)">
       </aspect-page>

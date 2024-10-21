@@ -1,19 +1,22 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { ButtonElement } from 'common/models/elements/button/button';
+import { UnitNavParam } from 'common/models/elements/button/button';
 import { NavigationTarget } from 'player/modules/verona/models/verona';
+import { StateVariable } from 'common/models/state-variable';
 
 @Pipe({
   standalone: true,
   name: 'isEnabledNavigationTarget'
 })
 export class IsEnabledNavigationTargetPipe implements PipeTransform {
-  transform(elementModel: ButtonElement, enabledNavigationTargets: NavigationTarget[] | undefined): boolean {
+  transform(action: string | null,
+            param: UnitNavParam | number | string | StateVariable | null,
+            enabledNavigationTargets: NavigationTarget[] | undefined): boolean {
     if (!enabledNavigationTargets) {
       return true;
     }
-    if (elementModel.action === 'unitNav') {
+    if (action === 'unitNav') {
       return enabledNavigationTargets
-        .includes(elementModel.actionParam as NavigationTarget);
+        .includes(param as NavigationTarget);
     }
     return true;
   }

@@ -77,7 +77,8 @@
                 (unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.slice(1) : unitService.unit.pages);
                 let pageIndex = index"
                                        [page]="page"
-                                       [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)">
+                                       [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)"
+                                       [isLastPage]="pageIndex == unitService.unit.pages.length - 1">
               </aspect-editor-page-view>
             </div>
             <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
@@ -115,7 +116,7 @@
         <mat-tab [disabled]="true" class="align-right">
           <ng-template mat-tab-label>
             <button mat-icon-button [matMenuTriggerFor]="numberingMenu">
-              <mat-icon>format_list_numbered</mat-icon>
+              <mat-icon>settings</mat-icon>
             </button>
             <mat-menu #numberingMenu="matMenu" (click)="$event.stopPropagation()">
               <div [style.padding]="'0 20px 10px'" (click)="$event.stopPropagation()">
@@ -126,6 +127,10 @@
                 </mat-checkbox>
                 <mat-checkbox [disabled]="!numberingInput.checked" (change)="setSectionNumberingPosition($event)">
                   vertikale Ausrichtung
+                </mat-checkbox>
+                <h3>Navigation</h3>
+                <mat-checkbox [matTooltip]="'Wird am Ende der letzten Seite angezeigt'" (change)="setUnitNavNext($event)">
+                  Navigationsknopf zur nächsten Unit anfügen
                 </mat-checkbox>
               </div>
             </mat-menu>

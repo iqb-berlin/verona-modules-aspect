@@ -1,5 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { PlayerConfig, VopPlayerConfigChangedNotification, VopStartCommand } from 'player/modules/verona/models/verona';
+import {
+  PlayerConfig,
+  Progress,
+  VopPlayerConfigChangedNotification,
+  VopStartCommand
+} from 'player/modules/verona/models/verona';
 import { Unit } from 'common/models/unit';
 import { LogService } from 'player/modules/logging/services/log.service';
 import { InputElement } from 'common/models/elements/element';
@@ -21,6 +26,7 @@ import { StateVariableStateService } from 'player/src/app/services/state-variabl
 import { TranslateService } from '@ngx-translate/core';
 import { SectionCounter } from 'common/util/section-counter';
 import { NavigationService } from 'player/src/app/services/navigation.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'aspect-unit',
@@ -30,10 +36,13 @@ import { NavigationService } from 'player/src/app/services/navigation.service';
 export class UnitComponent implements OnInit {
   pages: Page[] = [];
   playerConfig: PlayerConfig = {};
+  showUnitNavNext: boolean = false;
   sectionNumbering: { enableSectionNumbering: boolean, sectionNumberingPosition: 'left' | 'above' } = {
     enableSectionNumbering: false,
     sectionNumberingPosition: 'left'
   };
+
+  presentationProgressStatus: BehaviorSubject<Progress> = new BehaviorSubject<Progress>('none');
 
   constructor(public unitStateService: UnitStateService,
               public stateVariableStateService: StateVariableStateService,
@@ -68,6 +77,7 @@ export class UnitComponent implements OnInit {
           enableSectionNumbering: unit.enableSectionNumbering,
           sectionNumberingPosition: unit.sectionNumberingPosition
         };
+        this.showUnitNavNext = unit.showUnitNavNext;
         this.setPlayerConfig(message.playerConfig || {});
         this.metaDataService.resourceURL = this.playerConfig.directDownloadUrl;
         this.veronaPostService.sessionID = message.sessionId;
@@ -135,6 +145,7 @@ export class UnitComponent implements OnInit {
   }
 
   private reset(): void {
+    this.presentationProgressStatus.next('none');
     this.pages = [];
     this.playerConfig = {};
     this.anchorService.reset();

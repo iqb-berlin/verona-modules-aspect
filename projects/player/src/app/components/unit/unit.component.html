@@ -1,6 +1,7 @@
 <ng-content></ng-content>
 <aspect-player-layout *ngIf="pages?.length"
                       aspectUnitState
+                      [presentationProgressStatus]="presentationProgressStatus"
                       aspectPlayerState
                       [isVisibleIndexPages]="pagesLayout.isVisibleIndexPages"
                       [currentPageIndex]="pagesLayout.selectedIndex">
@@ -12,6 +13,8 @@
                        [alwaysVisiblePagePosition]="(pages | alwaysVisiblePage)?.alwaysVisiblePagePosition || 'left'"
                        [scrollPages]="pages | scrollPages"
                        [hasScrollPages]="(pages | scrollPages).length > 0"
-                       [scrollPageMode]="playerConfig.pagingMode || 'separate'">
+                       [scrollPageMode]="playerConfig.pagingMode || 'separate'"
+                       [showUnitNavNext]="showUnitNavNext"
+                       [isPresentedPagesComplete]="presentationProgressStatus.value === 'complete'">
   </aspect-pages-layout>
 </aspect-player-layout>

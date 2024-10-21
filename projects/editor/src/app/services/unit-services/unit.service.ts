@@ -230,6 +230,11 @@ export class UnitService {
     this.updateSectionCounter();
   }
 
+  setUnitNavNext(isEnabled: boolean) {
+    this.unit.showUnitNavNext = isEnabled;
+    this.updateUnitDefinition();
+  }
+
   getSelectedPage() {
     return this.unit.pages[this.selectionService.selectedPageIndex];
   }

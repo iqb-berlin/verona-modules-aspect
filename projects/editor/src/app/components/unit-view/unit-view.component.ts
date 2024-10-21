@@ -53,4 +53,8 @@ export class UnitViewComponent {
   setExpertMode(event: MatCheckboxChange) {
     this.unitService.setSectionExpertMode(event.checked);
   }
+
+  setUnitNavNext(event: MatCheckboxChange) {
+    this.unitService.setUnitNavNext(event.checked);
+  }
 }

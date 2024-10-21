@@ -43,6 +43,7 @@
                                   (sectionSelected)="selectionService.selectedPageIndex = pageIndex">
       </aspect-editor-section-view>
     </div>
+    <aspect-unit-nav-next *ngIf="isLastPage && unitService.unit.showUnitNavNext"></aspect-unit-nav-next>
   </div>
   <button mat-fab extended class="add-section-button"
           (click)="addSection(pageIndex)">

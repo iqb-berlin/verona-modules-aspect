@@ -35,6 +35,7 @@ export class PageViewComponent implements OnInit, OnDestroy {
   @Input() page!: Page;
   @Input() pageIndex!: number;
   @Input() singlePageMode: boolean = false;
+  @Input() isLastPage: boolean = false;
   @Output() pagesChanged = new EventEmitter();
   @ViewChildren(SectionComponent) sectionComponents!: QueryList<SectionComponent>;
 

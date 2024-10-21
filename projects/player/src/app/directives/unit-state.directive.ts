@@ -1,5 +1,5 @@
-import { Directive, OnDestroy, OnInit } from '@angular/core';
-import { debounceTime, merge, Subject } from 'rxjs';
+import { Directive, Input, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, debounceTime, merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Progress, UnitState } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -15,6 +15,7 @@ import { ValidationService } from '../services/validation.service';
 })
 export class UnitStateDirective implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
+  @Input() presentationProgressStatus!: BehaviorSubject<Progress>;
 
   constructor(
     private unitStateService: UnitStateService,
@@ -40,11 +41,16 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   private get presentationProgress(): Progress {
+    if (this.presentationProgressStatus.value === 'complete') return 'complete';
     if (this.mediaPlayerService.areMediaElementsRegistered()) {
       const mediaStatus = this.mediaPlayerService.mediaStatus;
-      return mediaStatus === this.unitStateService.presentedPagesProgress ? mediaStatus : 'some';
+      this.presentationProgressStatus
+        .next(mediaStatus === this.unitStateService.presentedPagesProgress ? mediaStatus : 'some');
+    } else {
+      this.presentationProgressStatus
+        .next(this.unitStateService.presentedPagesProgress);
     }
-    return this.unitStateService.presentedPagesProgress;
+    return this.presentationProgressStatus.value;
   }
 
   private sendVopStateChangedNotification(): void {

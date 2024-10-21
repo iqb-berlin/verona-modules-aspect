@@ -15,6 +15,11 @@
     [sectionNumbering]="sectionNumbering"
     (isVisibleIndexChange)="setIsVisibleIndexSections($event)">
   </aspect-section>
+  <aspect-unit-nav-next *ngIf="isLastPage && showUnitNavNext && isPresentedPagesComplete && ('unitNav' |
+                        isEnabledNavigationTarget: 'next':
+                        navigationService.enabledNavigationTargets.value)"
+                        (navigate)="veronaPostService.sendVopUnitNavigationRequestedNotification('next')">
+  </aspect-unit-nav-next>
 </div>
 <div aspectInViewDetection
      detectionType="bottom"

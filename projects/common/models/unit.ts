@@ -15,6 +15,7 @@ export class Unit implements UnitProperties {
   pages: Page[];
   enableSectionNumbering: boolean = false;
   sectionNumberingPosition: 'left' | 'above' = 'left';
+  showUnitNavNext: boolean = false;
 
   constructor(unit?: UnitProperties) {
     if (unit && isValid(unit)) {
@@ -23,6 +24,7 @@ export class Unit implements UnitProperties {
       this.pages = unit.pages.map(page => new Page(page));
       this.enableSectionNumbering = unit.enableSectionNumbering;
       this.sectionNumberingPosition = unit.sectionNumberingPosition;
+      this.showUnitNavNext = unit.showUnitNavNext;
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at unit instantiation');
@@ -32,6 +34,7 @@ export class Unit implements UnitProperties {
       this.pages = unit?.pages.map(page => new Page(page)) || [new Page()];
       if (unit?.enableSectionNumbering !== undefined) this.enableSectionNumbering = unit.enableSectionNumbering;
       if (unit?.sectionNumberingPosition !== undefined) this.sectionNumberingPosition = unit.sectionNumberingPosition;
+      if (unit?.showUnitNavNext !== undefined) this.showUnitNavNext = unit.showUnitNavNext;
     }
   }
 
@@ -58,7 +61,8 @@ function isValid(blueprint?: UnitProperties): boolean {
     blueprint.type !== undefined &&
     blueprint.pages !== undefined &&
     blueprint.enableSectionNumbering !== undefined &&
-    blueprint.sectionNumberingPosition !== undefined;
+    blueprint.sectionNumberingPosition !== undefined &&
+    blueprint.showUnitNavNext !== undefined;
 }
 
 export interface UnitProperties {
@@ -68,4 +72,5 @@ export interface UnitProperties {
   pages: Page[];
   enableSectionNumbering: boolean;
   sectionNumberingPosition: 'left' | 'above';
+  showUnitNavNext: boolean;
 }

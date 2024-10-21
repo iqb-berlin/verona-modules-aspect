@@ -1,8 +1,9 @@
 <aspect-button
     *ngIf="elementModel.type === 'button'"
     #elementComponent
-    [class.hide-navigation]="!(elementModel | cast: ButtonElement |
-                            isEnabledNavigationTarget: navigationService.enabledNavigationTargets.value)"
+    [class.hide-navigation]="!((elementModel | cast: ButtonElement).action |
+                            isEnabledNavigationTarget: (elementModel | cast: ButtonElement).actionParam:
+                            navigationService.enabledNavigationTargets.value)"
     [elementModel]="elementModel | cast: ButtonElement"
     (buttonActionEvent)="applyButtonAction($event)">
 </aspect-button>

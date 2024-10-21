@@ -24,6 +24,7 @@ import {
 import { IsEnabledNavigationTargetPipe } from 'common/pipes/is-enabled-navigation-target.pipe';
 import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
 import { ErrorService } from 'player/src/app/services/error.service';
+import { UnitNavNextComponent } from 'common/components/unit-nav-next.component';
 import { AppComponent } from './app.component';
 import { PageComponent } from './components/page/page.component';
 import { SectionComponent } from './components/section/section.component';
@@ -123,7 +124,8 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     TableComponent,
     MarkablesContainerComponent,
     IsEnabledNavigationTargetPipe,
-    MarkingPanelComponent
+    MarkingPanelComponent,
+    UnitNavNextComponent
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService },

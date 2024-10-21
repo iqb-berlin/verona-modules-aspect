@@ -157,7 +157,7 @@
                                       (updateModel)="updateModel.emit($event)">
   </aspect-input-assistance-properties>
 
-  <mat-checkbox *ngIf="combinedProperties.stickyHeader !== undefined"
+  <mat-checkbox *ngIf="unitService.expertMode && combinedProperties.stickyHeader !== undefined"
                 [checked]="$any(combinedProperties.stickyHeader)"
                 (change)="updateModel.emit({ property: 'stickyHeader', value: $event.checked })">
     {{'propertiesPanel.stickyHeader' | translate }}

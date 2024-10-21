@@ -111,7 +111,7 @@ export class TemplateService {
           this.dialog.open(AudioWizardDialogComponent, { autoFocus: false })
             .afterClosed().subscribe((result: {
               variant: 'a' | 'b', src1: string, maxRuns1: number, src2: string, maxRuns2: number
-              lang: 'german' | 'english' | 'french', text: string }) => {
+              lang: 'german' | 'english' | 'french', text: string, text2: string }) => {
               if (result?.variant === 'a') resolve(this.createAudioSectionA(result));
               if (result?.variant === 'b') resolve(this.createAudioSectionB(result));
             });
@@ -359,7 +359,7 @@ export class TemplateService {
   }
 
   private createAudioSectionA(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number,
-    lang: 'german' | 'english' | 'french' | undefined, text: string })
+    lang: 'german' | 'english' | 'french' | undefined, text: string, text2: string })
   {
     const sectionElements = [
       this.createElement(
@@ -377,14 +377,19 @@ export class TemplateService {
             showRestRuns: config.maxRuns1 > 1,
             ...TemplateService.getAudioSettings()
           } as PlayerProperties
-        })
+        }),
+      this.createElement(
+        'text',
+        { gridRow: 3, gridColumn: 1 },
+        { text: config.text2, styling: { fontSize: 14, lineHeight: 100 } }
+      )
     ];
     const section = new Section();
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
 
-  private createAudioSectionB(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number, lang: 'german' | 'english' | 'french', text: string }) {
+  private createAudioSectionB(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number, lang: 'german' | 'english' | 'french', text: string, text2: string }) {
     const sectionElements = [];
     sectionElements.push(this.createElement(
       'text',
@@ -443,6 +448,13 @@ export class TemplateService {
         } as PlayerProperties
       }
     ));
+
+    sectionElements.push(this.createElement(
+      'text',
+      { gridRow: 6, gridColumn: 1 },
+      { text: config.text2, styling: { fontSize: 14, lineHeight: 100 } }
+    ));
+
     const section = new Section();
     sectionElements.forEach(el => section.addElement(el));
     return section;

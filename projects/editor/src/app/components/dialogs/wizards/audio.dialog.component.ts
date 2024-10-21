@@ -44,6 +44,10 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
           <h3>Audio</h3>
           <aspect-editor-wizard-audio [src]="src1" [(maxRuns)]="maxRuns1" (changeMediaSrc)="changeMediaSrc('src1')">
           </aspect-editor-wizard-audio>
+          <h3>Quelle</h3>
+          <aspect-rich-text-editor class="text2" [(content)]="text2" [showReducedControls]="true"
+                                   [placeholder]="'Hier steht die Quelle.'">
+          </aspect-rich-text-editor>
         </mat-expansion-panel>
 
         <mat-expansion-panel (afterExpand)="variant = 'b'" (closed)="variant = undefined">
@@ -58,6 +62,11 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
           <h3>Stimulusaudio</h3>
           <aspect-editor-wizard-audio [src]="src2" [(maxRuns)]="maxRuns2" (changeMediaSrc)="changeMediaSrc('src2')">
           </aspect-editor-wizard-audio>
+
+          <h3>Quelle</h3>
+          <aspect-rich-text-editor class="text2" [(content)]="text2" [showReducedControls]="true"
+                                   [placeholder]="'Hier steht die Quelle.'">
+          </aspect-rich-text-editor>
 
           <h3>Sprache</h3>
           <mat-form-field [matTooltip]="'Mit dieser Einstellung werden kurze Texte oberhalb des Audios generiert.'">
@@ -100,6 +109,7 @@ export class AudioWizardDialogComponent {
   src2: string | undefined;
   maxRuns2: number = 2;
   lang: 'german' | 'english' | 'french' | undefined;
+  text2: string = '';
   text: string = '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 10px; margin-top: 0"' +
     ' indentsize="20"><span style="color: black; font-size: 20px">Hier steht die Situierung.</span></p>' +
     '<p style="padding-left: 0px; text-indent: 0px; margin-bottom: 10px; margin-top: 0" indent="0" ' +

@@ -10,12 +10,12 @@ describe('Droplist element', { testIsolation: false }, () => {
     addList('Zielliste', [], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true });
 
     // connect lists to target
-    cy.get('aspect-dynamic-canvas-overlay').eq(1).click();
+    cy.get('aspect-editor-dynamic-overlay').eq(1).click();
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_4', true);
-    cy.get('aspect-dynamic-canvas-overlay').eq(3).click();
+    cy.get('aspect-editor-dynamic-overlay').eq(3).click();
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_3', true);
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_4', true);
-    cy.get('aspect-dynamic-canvas-overlay').eq(5).click();
+    cy.get('aspect-editor-dynamic-overlay').eq(5).click();
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_4', true);
 
     cy.saveUnit('e2e/downloads/droplist-replace.json');

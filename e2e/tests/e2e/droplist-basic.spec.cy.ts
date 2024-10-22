@@ -8,7 +8,7 @@ describe('Droplist element', { testIsolation: false }, () => {
     addList('Verbunden');
     addList('Nicht verbunden');
     // connect first list to second
-    cy.get('aspect-dynamic-canvas-overlay').eq(1).click();
+    cy.get('aspect-editor-dynamic-overlay').eq(1).click();
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_2', true);
 
     cy.saveUnit('e2e/downloads/droplist-basic.json');

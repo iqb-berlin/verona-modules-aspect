@@ -15,7 +15,7 @@ describe('Droplist element', { testIsolation: false }, () => {
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_1', true);
 
     // connect first list to second
-    cy.get('aspect-dynamic-canvas-overlay').eq(1).click(); // select (extract to method?)
+    cy.get('aspect-editor-dynamic-overlay').eq(1).click(); // select (extract to method?)
     selectFromDropdown('Verbundene Ablegelisten', 'drop-list_2', true);
 
     cy.saveUnit('e2e/downloads/droplist-sortlist.json');

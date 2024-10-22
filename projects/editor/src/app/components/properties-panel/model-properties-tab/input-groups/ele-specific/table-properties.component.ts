@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,6 +8,11 @@ import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-inp
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { MessageService } from 'editor/src/app/services/message.service';
+import { takeUntil } from 'rxjs/operators';
+import { TableComponent } from 'common/components/compound-elements/table/table.component';
+import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'aspect-table-properties',
@@ -30,11 +35,11 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
     <fieldset>
       <legend>{{'section-menu.rows' | translate }}</legend>
       <mat-form-field appearance="outline">
-        <mat-label>{{'section-menu.rowCount' | translate }}</mat-label>
-        <input matInput type="number"
+        <mat-label>{{ 'section-menu.rowCount' | translate }}</mat-label>
+        <input matInput type="number" [min]="maxRowIndex"
                [value]="$any(combinedProperties.gridRowSizes).length"
                (click)="$any($event).stopPropagation()"
-               (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0)">
+               (change)="modifySizeArray('gridRowSizes', $any($event).target.value || 0, $event)">
       </mat-form-field>
       <ng-container *ngFor="let size of $any(combinedProperties.gridRowSizes); let i = index">
         <aspect-size-input-panel [label]="('section-menu.height' | translate) + ' ' + (i + 1)"
@@ -48,11 +53,11 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
     <fieldset>
       <legend>{{'section-menu.columns' | translate }}</legend>
       <mat-form-field appearance="outline">
-        <mat-label>{{'section-menu.columnCount' | translate }}</mat-label>
-        <input matInput type="number"
+        <mat-label>{{ 'section-menu.columnCount' | translate }}</mat-label>
+        <input matInput type="number" [min]="maxColIndex"
                [value]="$any(combinedProperties.gridColumnSizes).length"
                (click)="$any($event).stopPropagation()"
-               (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0)">
+               (change)="modifySizeArray('gridColumnSizes', $any($event).target.value || 0, $event)">
       </mat-form-field>
       <ng-container *ngFor="let size of $any(combinedProperties.gridColumnSizes); let i = index">
         <aspect-size-input-panel [label]="('section-menu.width' | translate) + ' ' + (i + 1)"
@@ -71,15 +76,46 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
   styles:
     ':host {display: flex; flex-direction: column;}'
 })
-export class TablePropertiesComponent {
+export class TablePropertiesComponent implements OnInit, OnDestroy {
   @Input() combinedProperties!: UIElement;
   @Output() updateModel =
     new EventEmitter<{ property: string; value: boolean | { value: number; unit: string }[] | null }>();
 
-  constructor(public elementService: ElementService) { }
+  private ngUnsubscribe = new Subject<void>();
+
+  maxRowIndex!: number;
+  maxColIndex!: number;
+
+  constructor(public elementService: ElementService,
+              private messageService: MessageService,
+              private unitService: UnitService) { }
+
+  ngOnInit(): void {
+    this.unitService.tablePropUpdated
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        () => {
+          // Wait for updated properties
+          setTimeout(() => this.calculateMaxIndices());
+        }
+      );
+    this.calculateMaxIndices();
+  }
+
+  calculateMaxIndices(): void {
+    this.maxRowIndex =
+      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridRow));
+    this.maxColIndex =
+      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridColumn));
+  }
 
   /* Add or remove elements to size array. Default value 1fr. */
-  modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number): void {
+  modifySizeArray(property: 'gridColumnSizes' | 'gridRowSizes', newLength: number, event?: Event): void {
+    if (!(event?.target as HTMLInputElement).checkValidity()) {
+      (event as any).target.value = (this.combinedProperties[property] as unknown[]).length;
+      this.messageService.showError(`${property === 'gridColumnSizes' ? 'Spalte' : 'Zeile'} enthält Elemente`);
+      return;
+    }
     const sizeArray: { value: number; unit: string }[] = property === 'gridColumnSizes' ?
       (this.combinedProperties.gridColumnSizes as { value: number; unit: string }[]) :
       (this.combinedProperties.gridRowSizes as { value: number; unit: string }[]);
@@ -103,4 +139,14 @@ export class TablePropertiesComponent {
     sizeArray[index] = newValue;
     this.updateModel.emit({ property, value: [...sizeArray] });
   }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+}
+
+interface TableElement extends UIElement {
+  gridRow: number;
+  gridColumn: number;
 }

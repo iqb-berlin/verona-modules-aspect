@@ -28,7 +28,7 @@ import { DialogService } from '../../../../../services/dialog.service';
     HighlightPropertiesComponent
   ],
   template: `
-    <div *ngIf="combinedProperties.text !== undefined" class="fx-column-start-stretch">
+    <div class="fx-column-start-stretch">
       Text
       <div class="text-text"
            [innerHTML]="combinedProperties.text | safeResourceHTML">
@@ -114,7 +114,7 @@ import { DialogService } from '../../../../../services/dialog.service';
   `]
 })
 export class TextPropsComponent {
-  markingPanelIds: string[];
+  markingPanelIds: string[] = [];
   @Input() combinedProperties!: any;
   @Output() updateModel =
     new EventEmitter<{
@@ -126,7 +126,8 @@ export class TextPropsComponent {
   constructor(public unitService: UnitService,
               public dialogService: DialogService,
               public selectionService: SelectionService) {
-    this.markingPanelIds = this.unitService.unit.getAllElements('marking-panel').map(element => element.id);
+    this.markingPanelIds = this.unitService.unit.getAllElements('marking-panel')
+      .map(element => element.id);
   }
 
   showTextEditDialog(): void {

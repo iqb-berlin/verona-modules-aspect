@@ -95,7 +95,8 @@ import {
                               (updateModel)="updateModel.emit($event)">
     </aspect-slider-properties>
 
-    <aspect-text-props [combinedProperties]="combinedProperties"
+    <aspect-text-props *ngIf="combinedProperties.text !== undefined"
+                       [combinedProperties]="combinedProperties"
                        (updateModel)="updateModel.emit($event)">
     </aspect-text-props>
 

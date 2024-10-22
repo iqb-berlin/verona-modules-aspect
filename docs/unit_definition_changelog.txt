@@ -186,8 +186,9 @@ iqb-aspect-definition@1.0.0
  - new property: fileName: string;
 
 - DragNDropValueObject
-- LikertRowElement
  - new property: imgFileName: string;
  - new property: audioFileName: string;
+- LikertRowElement
+ - new property: imgFileName: string;
 
 - New Element "MarkingPanel"

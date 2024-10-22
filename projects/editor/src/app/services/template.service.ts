@@ -110,8 +110,8 @@ export class TemplateService {
         case 'audio':
           this.dialog.open(AudioWizardDialogComponent, { autoFocus: false })
             .afterClosed().subscribe((result: {
-              variant: 'a' | 'b', src1: string, maxRuns1: number, src2: string, maxRuns2: number
-              lang: 'german' | 'english' | 'french', text: string, text2: string }) => {
+              variant: 'a' | 'b', src1: string, fileName1: string, maxRuns1: number, src2: string, fileName2: string,
+              maxRuns2: number, lang: 'german' | 'english' | 'french', text: string, text2: string }) => {
               if (result?.variant === 'a') resolve(this.createAudioSectionA(result));
               if (result?.variant === 'b') resolve(this.createAudioSectionB(result));
             });
@@ -119,7 +119,7 @@ export class TemplateService {
         case 'geometry':
           this.dialog.open(GeometryWizardDialogComponent, {})
             .afterClosed().subscribe((result: {
-              text1: string, geometryAppDefinition: string, text2: string, showHelper: boolean }) => {
+              text1: string, geometryAppDefinition: string, geometryFileName: string, text2: string, showHelper: boolean }) => {
               if (result) resolve(this.createGeometrySection(result));
             });
           break;
@@ -358,7 +358,7 @@ export class TemplateService {
     return section;
   }
 
-  private createAudioSectionA(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number,
+  private createAudioSectionA(config: { src1: string, fileName1: string, maxRuns1: number,
     lang: 'german' | 'english' | 'french' | undefined, text: string, text2: string })
   {
     const sectionElements = [
@@ -372,6 +372,7 @@ export class TemplateService {
         {
           dimensions: { maxWidth: 500 } as DimensionProperties,
           src: config.src1,
+          fileName: config.fileName1,
           player: {
             maxRuns: config.maxRuns1,
             showRestRuns: config.maxRuns1 > 1,
@@ -389,7 +390,8 @@ export class TemplateService {
     return section;
   }
 
-  private createAudioSectionB(config: { src1: string, maxRuns1: number, src2: string, maxRuns2: number, lang: 'german' | 'english' | 'french', text: string, text2: string }) {
+  private createAudioSectionB(config: { src1: string, fileName1: string, maxRuns1: number, src2: string,
+    fileName2: string, maxRuns2: number, lang: 'german' | 'english' | 'french', text: string, text2: string }) {
     const sectionElements = [];
     sectionElements.push(this.createElement(
       'text',
@@ -401,6 +403,7 @@ export class TemplateService {
       { gridRow: 2, gridColumn: 1, marginBottom: { value: 15, unit: 'px' } },
       {
         src: config.src1,
+        fileName: config.fileName1,
         dimensions: { maxWidth: 500 } as DimensionProperties,
         player: {
           maxRuns: config.maxRuns1,
@@ -412,18 +415,6 @@ export class TemplateService {
     const firstAudioID = firstAudioElement.id;
     sectionElements.push(firstAudioElement);
 
-    sectionElements.push(this.createElement(
-      'audio',
-      { gridRow: 2, gridColumn: 1, marginBottom: { value: 15, unit: 'px' } },
-      {
-        src: config.src1,
-        dimensions: { maxWidth: 500 } as DimensionProperties,
-        player: {
-          maxRuns: config.maxRuns1,
-          showRestRuns: config.maxRuns1 > 1,
-          ...TemplateService.getAudioSettings()
-        } as PlayerProperties
-      }));
     sectionElements.push(this.createElement(
       'text',
       { gridRow: 3, gridColumn: 1, marginBottom: { value: 20, unit: 'px' } },
@@ -440,6 +431,7 @@ export class TemplateService {
       {
         dimensions: { maxWidth: 500 } as DimensionProperties,
         src: config.src2,
+        fileName: config.fileName2,
         player: {
           maxRuns: config.maxRuns2,
           showRestRuns: config.maxRuns2 > 1,
@@ -479,7 +471,7 @@ export class TemplateService {
     };
   }
 
-  private createGeometrySection(config: { text1: string, geometryAppDefinition: string, text2: string, showHelper: boolean }) {
+  private createGeometrySection(config: { text1: string, geometryAppDefinition: string, geometryFileName: string, text2: string, showHelper: boolean }) {
     const sectionElements: PositionedUIElement[] = [
       this.createElement(
         'text',
@@ -490,6 +482,7 @@ export class TemplateService {
         { gridRow: 2, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
         {
           appDefinition: config.geometryAppDefinition,
+          fileName: config.geometryFileName,
           enableShiftDragZoom: false,
           showZoomButtons: false,
           showFullscreenButton: false

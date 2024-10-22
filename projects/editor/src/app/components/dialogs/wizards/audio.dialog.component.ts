@@ -89,7 +89,7 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
               [disabled]="variant == undefined ||
                           (variant === 'a' && src1 == undefined) ||
                           (variant === 'b' && (lang === undefined || src1 == undefined || src2 == undefined))"
-              [mat-dialog-close]="{ variant, src1, maxRuns1, src2, maxRuns2, lang, text }">
+              [mat-dialog-close]="{ variant, src1, fileName1, maxRuns1, src2, fileName2, maxRuns2, lang, text }">
         {{ 'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
@@ -105,8 +105,10 @@ import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/aud
 export class AudioWizardDialogComponent {
   variant: 'a' | 'b' | undefined;
   src1: string | undefined;
+  fileName1: string | undefined;
   maxRuns1: number = 1;
   src2: string | undefined;
+  fileName2: string | undefined;
   maxRuns2: number = 2;
   lang: 'german' | 'english' | 'french' | undefined;
   text2: string = '';
@@ -121,7 +123,7 @@ export class AudioWizardDialogComponent {
   async changeMediaSrc(src: 'src1' | 'src2') {
     await FileService.loadAudio().then(file => {
       this[src] = file.content;
-      // TODO FileName
+      this[src === 'src1' ? 'fileName1' : 'fileName2'] = file.name;
     });
   }
 }

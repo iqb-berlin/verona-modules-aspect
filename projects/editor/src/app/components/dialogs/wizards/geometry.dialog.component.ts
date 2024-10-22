@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FileService } from 'common/services/file.service';
+import { FileInformation, FileService } from 'common/services/file.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 
@@ -57,7 +57,7 @@ import { FormsModule } from '@angular/forms';
 
     </div>
     <div mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="{ text1, geometryAppDefinition, text2, showHelper }">
+      <button mat-button [mat-dialog-close]="{ text1, geometryAppDefinition, geometryFileName, text2, showHelper }">
         {{'confirm' | translate }}
       </button>
       <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
@@ -72,13 +72,14 @@ import { FormsModule } from '@angular/forms';
 export class GeometryWizardDialogComponent {
   text1: string = '';
   geometryAppDefinition: string | undefined;
+  geometryFileName: string | undefined;
   text2: string = '';
   showHelper: boolean = true;
 
   async changeSrc() {
-    await FileService.loadFile(['.ggb'], true).then(file => {
+    await FileService.loadFile(['.ggb'], true).then((file: FileInformation) => {
       this.geometryAppDefinition = file.content;
-      // TODO: FileName
+      this.geometryFileName = file.name;
     });
   }
 }

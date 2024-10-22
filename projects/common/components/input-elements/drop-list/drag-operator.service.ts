@@ -188,7 +188,9 @@ export class DragOperatorService {
   private checkHoveredListItem(el: Element | null): void {
     const hoveredListItem = el?.closest('.drop-list-item');
     if (hoveredListItem) {
-      const targetIndex = Array.from((hoveredListItem.parentNode as HTMLElement).children).indexOf(hoveredListItem);
+      const targetIndex =
+        Array.from(((hoveredListItem.parentNode as HTMLElement).parentNode as HTMLElement).children)
+          .indexOf((hoveredListItem.parentNode as HTMLElement));
       this.positionSortPlaceholder(targetIndex);
     }
   }

@@ -26,10 +26,6 @@ import { NgIf } from '@angular/common';
     <div class="wrapper"
          [style.border]="isSelected ? 'purple solid 1px' : ''"
          (click)="elementSelected.emit(this); $event.stopPropagation();">
-      <div class="element-title">
-        <ng-container *ngIf="editorMode">{{$any(element.constructor).title}}</ng-container>
-        <ng-container *ngIf="editorMode && element.id !== 'id-placeholder'"> - {{element.id}}</ng-container>
-      </div>
       <ng-template #elementContainer></ng-template>
     </div>
   `,
@@ -41,9 +37,9 @@ import { NgIf } from '@angular/common';
     :host ::ng-deep aspect-audio .control-bar {background-color: unset;}
     :host ::ng-deep aspect-audio .control-bar > button {background-color: var(--background-color);}
     :host ::ng-deep aspect-audio .control-bar button mat-icon {margin: 0;}
-    :host ::ng-deep aspect-text > div {display: flex;}
-    :host ::ng-deep aspect-text .text-container {align-self: center; margin-left: 8px;}
-    .element-title {position: absolute; z-index: 1; background-color: white;}
+    :host ::ng-deep aspect-text .text-container {
+      height: 100%; display: flex; flex-direction: column; justify-content: center;
+    }
   `
 })
 export class TableChildOverlay implements OnInit {

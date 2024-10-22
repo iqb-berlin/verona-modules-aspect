@@ -61,6 +61,14 @@ import { Subject } from 'rxjs';
             </mat-menu>
           </ng-container>
           <div *ngIf="elementGrid[i][j] !== undefined" class="element-container">
+            <div class="element-title">
+              <ng-container *ngIf="editorMode">
+                {{$any($any(elementGrid[i][j]).constructor).title}}
+              </ng-container>
+              <ng-container *ngIf="editorMode && $any(elementGrid[i][j]).id !== 'id-placeholder'">
+                - {{$any(elementGrid[i][j]).id}}
+              </ng-container>
+            </div>
             <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"
                                         [parentForm]="parentForm"
                                         [savedTexts]="savedTexts"
@@ -85,6 +93,7 @@ import { Subject } from 'rxjs';
     .cell-container > button {align-self: flex-end; justify-self: flex-start;}
     aspect-table-child-overlay {width: 100%; height: 100%;}
     .remove-button {position: absolute; bottom: 0;}
+    .element-title {position: absolute; z-index: 1; background-color: white;}
   `]
 })
 export class TableComponent extends CompoundElementComponent implements OnInit {

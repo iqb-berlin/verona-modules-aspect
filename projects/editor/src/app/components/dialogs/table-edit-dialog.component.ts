@@ -55,9 +55,17 @@ export class TableEditDialogComponent {
 
   async addElement(el: { elementType: UIElementType, row: number, col: number }): Promise<void> {
     const extraProps: Partial<UIElementProperties> = {};
-    if (el.elementType === 'image') (extraProps as ImageProperties).src = await FileService.loadImage();
+    if (el.elementType === 'image') {
+      await FileService.loadImage().then(image => {
+        (extraProps as ImageProperties).src = image.content;
+        (extraProps as ImageProperties).fileName = image.name;
+      });
+    }
     if (el.elementType === 'audio') {
-      (extraProps as AudioProperties).src = await FileService.loadAudio();
+      await FileService.loadAudio().then(audio => {
+        (extraProps as AudioProperties).src = audio.content;
+        (extraProps as AudioProperties).fileName = audio.name;
+      });
       (extraProps as AudioProperties).player =
         PropertyGroupGenerators.generatePlayerProps({
           progressBar: false,

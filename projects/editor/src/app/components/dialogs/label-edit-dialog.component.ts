@@ -54,6 +54,9 @@ export class LabelEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { label: TextImageLabel }) { }
 
   async loadImage(): Promise<void> {
-    this.newLabel.imgSrc = await FileService.loadImage();
+    await FileService.loadImage().then(image => {
+      this.newLabel.imgSrc = image.content;
+      this.newLabel.imgFileName = image.name;
+    });
   }
 }

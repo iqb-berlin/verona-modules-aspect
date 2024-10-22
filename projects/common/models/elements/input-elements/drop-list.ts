@@ -38,11 +38,13 @@ export class DropListElement extends InputElement implements DropListProperties 
       this.value = element.value.map((value, index) => ({
         text: value.text,
         imgSrc: value.imgSrc,
+        imgFileName: value.imgFileName,
         imgPosition: value.imgPosition,
         id: value.id,
         originListID: this.id,
         originListIndex: index,
-        audioSrc: value.audioSrc
+        audioSrc: value.audioSrc,
+        audioFileName: value.audioFileName
       }
       ));
       this.isSortList = element.isSortList;
@@ -64,11 +66,13 @@ export class DropListElement extends InputElement implements DropListProperties 
         this.value = element.value.map((value, index) => ({
           text: value.text,
           imgSrc: value.imgSrc,
+          imgFileName: value.imgFileName,
           imgPosition: value.imgPosition,
           id: value.id,
           originListID: this.id,
           originListIndex: index,
-          audioSrc: value.audioSrc
+          audioSrc: value.audioSrc,
+          audioFileName: value.audioFileName
         })) :
         [];
       if (element?.isSortList !== undefined) this.isSortList = element.isSortList;

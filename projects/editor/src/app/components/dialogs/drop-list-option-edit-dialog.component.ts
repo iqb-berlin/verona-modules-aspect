@@ -98,10 +98,14 @@ export class DropListOptionEditDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: { value: DragNDropValueObject }) { }
 
   async loadImage(): Promise<void> {
-    this.newLabel.imgSrc = await FileService.loadImage();
+    const image = await FileService.loadImage();
+    this.newLabel.imgSrc = image.content;
+    this.newLabel.imgFileName = image.name;
   }
 
   async loadAudio() {
-    this.newLabel.audioSrc = await FileService.loadAudio();
+    const audio = await FileService.loadAudio();
+    this.newLabel.audioSrc = audio.content;
+    this.newLabel.audioFileName = audio.name;
   }
 }

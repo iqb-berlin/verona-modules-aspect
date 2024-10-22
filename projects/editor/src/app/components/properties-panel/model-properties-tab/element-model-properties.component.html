@@ -7,6 +7,10 @@
     <input matInput type="text" disabled *ngIf="selectedElements.length > 1" [value]="'Muss eindeutig sein'">
   </mat-form-field>
 
+  <div class="file-name" *ngIf="combinedProperties.fileName !== undefined">
+    <div class="file-name-label">Dateiname</div>
+    {{ combinedProperties.fileName }}</div>
+
   <aspect-input-element-properties *ngIf="combinedProperties | isInputElement"
                                    [combinedProperties]="combinedProperties"
                                    (updateModel)="updateModel.emit($event)">

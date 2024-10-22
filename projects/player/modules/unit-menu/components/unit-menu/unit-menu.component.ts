@@ -50,7 +50,9 @@ export class UnitMenuComponent {
   };
 
   async load(pagingMode: PagingMode): Promise<void> {
-    this.loadUnit(await FileService.loadFile(['.json', '.voud']), pagingMode, {});
+    await FileService.loadFile(['.json', '.voud']).then(unitDefinition => {
+      this.loadUnit(unitDefinition.content, pagingMode, {});
+    });
   }
 
   reloadUnit(): void {

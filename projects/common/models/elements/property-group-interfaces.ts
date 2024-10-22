@@ -88,6 +88,7 @@ export interface PlayerProperties {
   showRestRuns: boolean;
   showRestTime: boolean;
   playbackTime: number;
+  fileName: string;
 }
 
 export abstract class PropertyGroupValidators {
@@ -235,7 +236,8 @@ export abstract class PropertyGroupGenerators {
       maxRuns: properties.maxRuns !== undefined ? properties.maxRuns as number | null : 1,
       showRestRuns: properties.showRestRuns !== undefined ? properties.showRestRuns as boolean : false,
       showRestTime: properties.showRestTime !== undefined ? properties.showRestTime as boolean : true,
-      playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0
+      playbackTime: properties.playbackTime !== undefined ? properties.playbackTime as number : 0,
+      fileName: properties.fileName !== undefined ? properties.fileName as string : ''
     };
   }
 

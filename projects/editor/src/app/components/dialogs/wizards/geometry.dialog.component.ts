@@ -76,6 +76,9 @@ export class GeometryWizardDialogComponent {
   showHelper: boolean = true;
 
   async changeSrc() {
-    this.geometryAppDefinition = await FileService.loadFile(['.ggb'], true);
+    await FileService.loadFile(['.ggb'], true).then(file => {
+      this.geometryAppDefinition = file.content;
+      // TODO: FileName
+    });
   }
 }

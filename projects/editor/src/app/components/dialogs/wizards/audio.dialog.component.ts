@@ -119,6 +119,9 @@ export class AudioWizardDialogComponent {
     'Hier steht eventuell ein Hinweis.</span></p>';
 
   async changeMediaSrc(src: 'src1' | 'src2') {
-    this[src] = await FileService.loadAudio();
+    await FileService.loadAudio().then(file => {
+      this[src] = file.content;
+      // TODO FileName
+    });
   }
 }

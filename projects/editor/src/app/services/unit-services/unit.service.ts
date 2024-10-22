@@ -151,7 +151,8 @@ export class UnitService {
   }
 
   async loadUnitFromFile(): Promise<void> {
-    this.loadUnitDefinition(await FileService.loadFile(['.json', '.voud']));
+    const unitFile = await FileService.loadFile(['.json']);
+    this.loadUnitDefinition(unitFile.content);
   }
 
   getNewValueID(): string {

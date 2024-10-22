@@ -128,8 +128,11 @@ export class GeometryPropsComponent implements OnInit, OnDestroy {
   }
 
   async showGeogebraAppDefDialog() {
-    const appDefinition = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
-    if (appDefinition) this.updateModel.emit({ property: 'appDefinition', value: appDefinition });
+    const geogebraInfo = await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
+    if (geogebraInfo.content) {
+      this.updateModel.emit({ property: 'appDefinition', value: geogebraInfo.content });
+      this.updateModel.emit({ property: 'fileName', value: geogebraInfo.name });
+    }
   }
 
   setGeometryVariables(variables: string[]) {

@@ -178,4 +178,16 @@ iqb-aspect-definition@1.0.0
   - new property: markingMode: 'selection' | 'word' | 'range'
   - new property: markingPanels: string[]
 
+- Image
+- Hotspot-Image
+- Audio
+- Video
+- Geometry
+ - new property: fileName: string;
+
+- DragNDropValueObject
+- LikertRowElement
+ - new property: imgFileName: string;
+ - new property: audioFileName: string;
+
 - New Element "MarkingPanel"

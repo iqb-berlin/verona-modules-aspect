@@ -48,7 +48,7 @@ export class GeogebraAppDefinitionDialogComponent {
 
   validateBase64(pastedBase64: string | undefined): void {
     if (pastedBase64 && btoa(atob(pastedBase64)) === pastedBase64) {
-      this.dialogRef.close(pastedBase64);
+      this.dialogRef.close({ fileName: '', content: pastedBase64 });
     } else {
       this.statusMessage = {
         text: 'Fehler beim Lesen der eingefügten GeoGebra-Definition',
@@ -58,6 +58,8 @@ export class GeogebraAppDefinitionDialogComponent {
   }
 
   async loadGeogebraFile(): Promise<void> {
-    this.dialogRef.close(await FileService.loadFile(['.ggb'], true));
+    await FileService.loadFile(['.ggb'], true).then(file => {
+      this.dialogRef.close(file);
+    });
   }
 }

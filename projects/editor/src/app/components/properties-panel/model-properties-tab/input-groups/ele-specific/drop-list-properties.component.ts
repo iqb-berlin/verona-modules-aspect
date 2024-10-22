@@ -180,7 +180,9 @@ export class DropListPropertiesComponent {
         {
           text: value,
           imgSrc: null,
+          imgFileName: '',
           audioSrc: null,
+          audioFileName: '',
           imgPosition: 'above',
           id: this.unitService.getNewValueID(),
           originListID: 'id_placeholder',

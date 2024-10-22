@@ -4,6 +4,7 @@ export interface TextLabel {
 
 export interface TextImageLabel extends TextLabel {
   imgSrc: string | null;
+  imgFileName: string;
   imgPosition: 'above' | 'below' | 'left' | 'right';
 }
 
@@ -12,6 +13,7 @@ export interface DragNDropValueObject extends TextImageLabel {
   originListID: string;
   originListIndex: number;
   audioSrc: string | null;
+  audioFileName: string;
 }
 
 export type Label = TextLabel | TextImageLabel | DragNDropValueObject;

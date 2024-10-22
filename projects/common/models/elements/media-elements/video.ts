@@ -13,6 +13,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class VideoElement extends PlayerElement implements VideoProperties {
   type: UIElementType = 'video';
   src: string | null = null;
+  fileName: string = '';
   scale: boolean = false;
   position: PositionProperties;
   styling: { backgroundColor: string };
@@ -24,6 +25,7 @@ export class VideoElement extends PlayerElement implements VideoProperties {
     super(element);
     if (element && isValid(element)) {
       this.src = element.src;
+      this.fileName = element.fileName;
       this.scale = element.scale;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
@@ -32,6 +34,7 @@ export class VideoElement extends PlayerElement implements VideoProperties {
         throw new InstantiationEror('Error at Video instantiation', element);
       }
       if (element?.src !== undefined) this.src = element.src;
+      if (element?.fileName !== undefined) this.fileName = element.fileName;
       if (element?.scale !== undefined) this.scale = element.scale;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         width: 280,
@@ -60,6 +63,7 @@ export class VideoElement extends PlayerElement implements VideoProperties {
 
 export interface VideoProperties extends PlayerElementBlueprint {
   src: string | null;
+  fileName: string;
   scale: boolean;
   position: PositionProperties;
   styling: { backgroundColor: string };
@@ -68,6 +72,7 @@ export interface VideoProperties extends PlayerElementBlueprint {
 function isValid(blueprint?: VideoProperties): boolean {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
+    blueprint.fileName !== undefined &&
     blueprint.scale !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     blueprint.styling?.backgroundColor !== undefined;

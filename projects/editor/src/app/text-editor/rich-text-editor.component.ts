@@ -315,23 +315,23 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
   }
 
   async insertImage(): Promise<void> {
-    const mediaSrc = await FileService.loadImage();
-    this.editor.commands.insertInlineImage({ src: mediaSrc });
+    const media = await FileService.loadImage();
+    this.editor.commands.insertInlineImage({ src: media.content });
   }
 
   async insertBlockImage(alignment: 'none' | 'right' | 'left'): Promise<void> {
-    const mediaSrc = await FileService.loadImage();
+    const media = await FileService.loadImage();
     switch (alignment) {
       case 'left': {
-        this.editor.commands.insertBlockImage({ src: mediaSrc, style: 'float: left; margin-right: 10px;' });
+        this.editor.commands.insertBlockImage({ src: media.content, style: 'float: left; margin-right: 10px;' });
         break;
       }
       case 'right': {
-        this.editor.commands.insertBlockImage({ src: mediaSrc, style: 'float: right; margin-left: 10px' });
+        this.editor.commands.insertBlockImage({ src: media.content, style: 'float: right; margin-left: 10px' });
         break;
       }
       default: {
-        this.editor.commands.insertBlockImage({ src: mediaSrc });
+        this.editor.commands.insertBlockImage({ src: media.content });
       }
     }
   }

@@ -95,6 +95,9 @@ export class LikertRowEditDialogComponent {
   });
 
   async loadImage(): Promise<void> {
-    this.newLikertRow.rowLabel.imgSrc = await FileService.loadImage();
+    await FileService.loadImage().then(image => {
+      this.newLikertRow.rowLabel.imgSrc = image.content;
+      this.newLikertRow.rowLabel.imgFileName = image.name;
+    });
   }
 }

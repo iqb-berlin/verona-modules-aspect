@@ -69,21 +69,22 @@ export class ElementModelPropertiesComponent implements OnDestroy {
   }
 
   async changeMediaSrc(elementType: string) {
-    let mediaSrc = '';
+    let media = { name: '', content: '' };
     switch (elementType) {
       case 'hotspot-image':
       case 'image':
-        mediaSrc = await FileService.loadImage();
+        media = await FileService.loadImage();
         break;
       case 'audio':
-        mediaSrc = await FileService.loadAudio();
+        media = await FileService.loadAudio();
         break;
       case 'video':
-        mediaSrc = await FileService.loadVideo();
+        media = await FileService.loadVideo();
         break;
       // no default
     }
-    this.updateModel.emit({ property: 'src', value: mediaSrc });
+    this.updateModel.emit({ property: 'src', value: media.content });
+    this.updateModel.emit({ property: 'fileName', value: media.name });
   }
 
   toggleProperty(property: string, checked:boolean): void {

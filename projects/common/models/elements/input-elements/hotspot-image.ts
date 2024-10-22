@@ -29,6 +29,7 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   type: UIElementType = 'hotspot-image';
   value: Hotspot[] = [];
   src: string | null = null;
+  fileName: string = '';
   position: PositionProperties;
 
   static title: string = 'Bildbereiche';
@@ -39,6 +40,7 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
     if (element && isValid(element)) {
       this.value = element.value;
       this.src = element.src;
+      this.fileName = element.fileName;
       this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
@@ -46,6 +48,7 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
       }
       if (element?.value) this.value = element.value;
       if (element?.src) this.src = element.src;
+      if (element?.fileName) this.fileName = element.fileName;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 100,
         ...element?.dimensions
@@ -87,6 +90,7 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
 export interface HotspotImageProperties extends InputElementProperties {
   value: Hotspot[];
   src: string | null;
+  fileName: string;
   position: PositionProperties;
 }
 
@@ -94,5 +98,6 @@ function isValid(blueprint?: HotspotImageProperties): boolean {
   if (!blueprint) return false;
   return blueprint.value !== undefined &&
     blueprint.src !== undefined &&
+    blueprint.fileName !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position);
 }

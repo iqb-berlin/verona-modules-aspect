@@ -13,6 +13,7 @@ import { InstantiationEror } from 'common/util/errors';
 export class AudioElement extends PlayerElement implements AudioProperties {
   type: UIElementType = 'audio';
   src: string | null = null;
+  fileName: string = '';
   position?: PositionProperties;
   styling: { backgroundColor: string };
 
@@ -23,6 +24,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
     super(element);
     if (element && isValid(element)) {
       this.src = element.src;
+      this.fileName = element.fileName;
       if (element.position) this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -30,6 +32,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
         throw new InstantiationEror('Error at Audio instantiation', element);
       }
       if (element?.src !== undefined) this.src = element.src;
+      if (element?.fileName !== undefined) this.fileName = element.fileName;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         width: 250,
         height: 90,
@@ -57,6 +60,7 @@ export class AudioElement extends PlayerElement implements AudioProperties {
 
 export interface AudioProperties extends PlayerElementBlueprint {
   src: string | null;
+  fileName: string;
   position?: PositionProperties;
   styling: { backgroundColor: string };
 }
@@ -64,5 +68,6 @@ export interface AudioProperties extends PlayerElementBlueprint {
 function isValid(blueprint?: AudioProperties): boolean {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
+    blueprint.fileName !== undefined &&
     blueprint.styling?.backgroundColor !== undefined;
 }

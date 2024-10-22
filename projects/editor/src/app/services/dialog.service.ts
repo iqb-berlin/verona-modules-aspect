@@ -38,6 +38,7 @@ import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-li
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
 import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
+import { FileInformation } from 'common/services/file.service';
 
 @Injectable({
   providedIn: 'root'
@@ -159,7 +160,7 @@ export class DialogService {
     return dialogRef.afterClosed();
   }
 
-  showGeogebraAppDefinitionDialog(): Observable<string> {
+  showGeogebraAppDefinitionDialog(): Observable<FileInformation> {
     const dialogRef = this.dialog.open(GeogebraAppDefinitionDialogComponent, {
       data: { },
       autoFocus: false

@@ -22,6 +22,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   showZoomButtons: boolean = false;
   showFullscreenButton: boolean = false;
   customToolbar: string = '';
+  fileName: string = '';
   position: PositionProperties;
   dimensions: {
     width: number;
@@ -43,6 +44,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       this.showZoomButtons = element.showZoomButtons;
       this.showFullscreenButton = element.showFullscreenButton;
       this.customToolbar = element.customToolbar;
+      this.fileName = element.fileName;
       this.position = { ...element.position };
       this.dimensions = { ...element.dimensions };
     } else {
@@ -58,6 +60,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       if (element?.showZoomButtons !== undefined) this.showZoomButtons = element.showZoomButtons;
       if (element?.showFullscreenButton !== undefined) this.showFullscreenButton = element.showFullscreenButton;
       if (element?.customToolbar !== undefined) this.customToolbar = element.customToolbar;
+      if (element?.fileName !== undefined) this.fileName = element.fileName;
       this.dimensions = {
         width: 600,
         height: 400,
@@ -121,6 +124,7 @@ export interface GeometryProperties extends UIElementProperties {
   showZoomButtons: boolean;
   showFullscreenButton: boolean;
   customToolbar: string;
+  fileName: string;
   position: PositionProperties;
   dimensions: {
     width: number;

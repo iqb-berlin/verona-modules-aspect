@@ -20,6 +20,7 @@ export class ImageElement extends UIElement implements ImageProperties {
   magnifierSize: number = 100;
   magnifierZoom: number = 1.5;
   magnifierUsed: boolean = false;
+  fileName: string = '';
   position?: PositionProperties;
 
   static title: string = 'Bild';
@@ -35,6 +36,7 @@ export class ImageElement extends UIElement implements ImageProperties {
       this.magnifierSize = element.magnifierSize;
       this.magnifierZoom = element.magnifierZoom;
       this.magnifierUsed = element.magnifierUsed;
+      this.fileName = element.fileName;
       if (element.position) this.position = { ...element.position };
     } else {
       if (environment.strictInstantiation) {
@@ -47,6 +49,7 @@ export class ImageElement extends UIElement implements ImageProperties {
       if (element?.magnifierSize !== undefined) this.magnifierSize = element.magnifierSize;
       if (element?.magnifierZoom !== undefined) this.magnifierZoom = element.magnifierZoom;
       if (element?.magnifierUsed !== undefined) this.magnifierUsed = element.magnifierUsed;
+      if (element?.fileName !== undefined) this.fileName = element.fileName;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 100,
         ...element?.dimensions
@@ -98,6 +101,7 @@ export interface ImageProperties extends UIElementProperties {
   magnifierSize: number;
   magnifierZoom: number;
   magnifierUsed: boolean;
+  fileName: string;
   position?: PositionProperties;
 }
 
@@ -109,5 +113,6 @@ function isValid(blueprint?: ImageProperties): boolean {
     blueprint.magnifier !== undefined &&
     blueprint.magnifierSize !== undefined &&
     blueprint.magnifierZoom !== undefined &&
-    blueprint.magnifierUsed !== undefined;
+    blueprint.magnifierUsed !== undefined &&
+    blueprint.fileName !== undefined;
 }

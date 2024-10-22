@@ -3,18 +3,26 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
-  UIElement, CompoundElement, InputElement, PlayerElement, PositionedUIElement,
-  UIElementProperties, UIElementType, UIElementValue
+  CompoundElement,
+  InputElement,
+  PlayerElement,
+  PositionedUIElement,
+  UIElement,
+  UIElementProperties,
+  UIElementType,
+  UIElementValue
 } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { GeometryProperties } from 'common/models/elements/geometry/geometry';
 import { firstValueFrom } from 'rxjs';
-import { FileService } from 'common/services/file.service';
+import { FileInformation, FileService } from 'common/services/file.service';
 import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { VideoProperties } from 'common/models/elements/media-elements/video';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
 import {
-  PlayerProperties, PositionProperties, PropertyGroupGenerators
+  PlayerProperties,
+  PositionProperties,
+  PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { ElementFactory } from 'common/util/element.factory';
 import { ReferenceManager } from 'editor/src/app/services/reference-manager';
@@ -72,21 +80,33 @@ export class ElementService {
 
     switch (elementType) {
       case 'geometry':
-        (newElementProperties as GeometryProperties).appDefinition =
-          await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog());
+        await firstValueFrom(this.dialogService.showGeogebraAppDefinitionDialog())
+          .then(geogebraInfo => {
+            (newElementProperties as GeometryProperties).appDefinition = geogebraInfo.content;
+            (newElementProperties as GeometryProperties).fileName = geogebraInfo.name;
+          });
         if (!(newElementProperties as GeometryProperties).appDefinition) {
           return Promise.reject('dialogCanceled');
         }
         break;
       case 'audio':
-        (newElementProperties as AudioProperties).src = await FileService.loadAudio();
+        await FileService.loadAudio().then(audio => {
+          (newElementProperties as AudioProperties).src = audio.content;
+          (newElementProperties as AudioProperties).fileName = audio.name;
+        });
         break;
       case 'video':
-        (newElementProperties as VideoProperties).src = await FileService.loadVideo();
+        await FileService.loadVideo().then(video => {
+          (newElementProperties as VideoProperties).src = video.content;
+          (newElementProperties as VideoProperties).fileName = video.name;
+        });
         break;
       case 'image':
       case 'hotspot-image':
-        (newElementProperties as ImageProperties).src = await FileService.loadImage();
+        await FileService.loadImage().then(image => {
+          (newElementProperties as ImageProperties).src = image.content;
+          (newElementProperties as ImageProperties).fileName = image.name;
+        });
         break;
       case 'frame':
         newElementProperties.position = {

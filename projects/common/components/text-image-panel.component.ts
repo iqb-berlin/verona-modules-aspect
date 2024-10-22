@@ -44,6 +44,7 @@ import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/lab
     .row-reverse {flex-direction: row-reverse;}
     .text {
       display: flex;
+      flex-direction: column;
       align-items: center;
       color: inherit;
       font-family: inherit;

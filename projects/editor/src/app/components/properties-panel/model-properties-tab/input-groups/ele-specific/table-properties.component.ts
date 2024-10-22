@@ -104,9 +104,9 @@ export class TablePropertiesComponent implements OnInit, OnDestroy {
 
   calculateMaxIndices(): void {
     this.maxRowIndex =
-      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridRow));
+      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridRow), 1);
     this.maxColIndex =
-      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridColumn));
+      Math.max(...(this.combinedProperties.elements as TableElement[]).map(el => el.gridColumn), 1);
   }
 
   /* Add or remove elements to size array. Default value 1fr. */

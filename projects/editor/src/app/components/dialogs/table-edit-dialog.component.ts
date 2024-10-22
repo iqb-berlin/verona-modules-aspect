@@ -41,7 +41,7 @@ import { DropListProperties } from 'common/models/elements/input-elements/drop-l
       grid-template-columns: unset !important;
       grid-template-rows: unset !important;
       grid-auto-columns: 300px !important;
-      grid-auto-rows: 300px !important;
+      grid-auto-rows: 250px !important;
     }
   `
 })

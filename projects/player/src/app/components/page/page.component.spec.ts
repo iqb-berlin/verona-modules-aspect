@@ -2,7 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Page } from 'common/models/page';
 import {
-  Component, Directive, EventEmitter, Input, Output
+  Component, Directive, EventEmitter, Input, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { Section } from 'common/models/section';
 import { Subject } from 'rxjs';
@@ -16,6 +16,7 @@ describe('PageComponent', () => {
   class SectionComponent {
     @Input() section!: Section;
     @Input() pageIndex!: number;
+    @Input() sectionNumbering!: boolean;
   }
 
   @Directive({ selector: '[aspectSectionVisibilityHandling]' })
@@ -32,13 +33,21 @@ describe('PageComponent', () => {
     @Output() intersecting = new EventEmitter();
   }
 
+  @Pipe({ name: 'isEnabledNavigationTarget' })
+  class MockIsEnabledNavigationTargetPipe implements PipeTransform {
+    transform(): boolean {
+      return true;
+    }
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
         PageComponent,
         SectionComponent,
         SectionVisibilityHandling,
-        InViewDetection
+        InViewDetection,
+        MockIsEnabledNavigationTargetPipe
       ]
     })
       .compileComponents();

@@ -1,5 +1,15 @@
 Editor
 ======
+## 2.6.0
+
+### Neue Funktionen
+- Text: Neue Markierfunktionalität
+  - Die Wörter in einem Text können durch Mausklick oder Berührung einzeln markiert oder unmarkiert werden
+- Neues Element: Markierungselement
+  - Kann als zusätzliche oder alternative Farbauswahlleiste zur Markierung verwendet werden
+- Bild-, Audio-, Video- und Geogebra-Elemente zeigen im Eigenschaftsfenster den ursprünglichen Dateinamen an, aus denen ihr Inhalt kopiert wurde.  
+
+
 ## 2.5.0
 ### Neue Funktionen
 - Assistenten

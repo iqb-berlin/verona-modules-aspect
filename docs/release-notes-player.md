@@ -3,8 +3,11 @@ Player
 ## 2.6.0
 ### Neue Funktionen
 - Unterstützt Verona API 6.0
-- Sendet Fehlermeldungen an den Host, wenn Mediaelemente nicht geladen werden können
-- Ermöglicht dem Host das Ausblenden von Buttons zur Unitnavigation 
+  - Sendet Fehlermeldungen an den Host, 
+    - wenn Mediaelemente nicht geladen werden können
+    - wenn die Dauer von Audio- und Video-Elementen nicht ermittelt werden kann
+    - wenn die Ladezeit 20 Sekunden überschreitet
+  - Ermöglicht dem Host das Ausblenden von Buttons zur Unitnavigation 
 
 ## 2.5.0
 - Unterstützung neuer Funktionen; siehe Allgemein

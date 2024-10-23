@@ -8,8 +8,8 @@
   </mat-form-field>
 
   <div class="file-name" *ngIf="combinedProperties.fileName !== undefined">
-    <div class="file-name-label">Ursprünglicher Dateiname</div>
-    {{ combinedProperties.fileName }}</div>
+    <div class="file-name-label">{{'originalFileName' | translate}}</div>
+    {{ combinedProperties.fileName || ('unknown' | translate)}}</div>
 
   <aspect-input-element-properties *ngIf="combinedProperties | isInputElement"
                                    [combinedProperties]="combinedProperties"

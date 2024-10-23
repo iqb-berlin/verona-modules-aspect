@@ -16,7 +16,7 @@ Editor
 - Tabelle:
   - Tabellendialog benutzt feste Maße für die Vorschautabelle (300px Spaltenbreite, 250px Zeilenhöhe)
   - Reduktion von Zeilen-oder Spaltenanzahl wird unterbunden, wenn dadurch Elemente verschwinden würden. Elemente müssen erst manuell gelöscht werden. Eine entsprechende Warnung wird angezeigt.
-- Assisten "Stimulus: Audio":
+- Assistent "Stimulus: Audio":
   - Variante mit 2 Audios setzt "Abspielbar nach" des zweiten Audios auf das erste Audio
   - mit einem Textfeld für die Quelle erweitert
   - automatisch ersteller Text auf französisch verwendet Apostroph statt Hochkomma

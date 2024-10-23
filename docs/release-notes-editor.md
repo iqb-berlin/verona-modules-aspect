@@ -1,13 +1,33 @@
 Editor
 ======
 ## 2.6.0
-
 ### Neue Funktionen
-- Text: Neue Markierfunktionalität
-  - Die Wörter in einem Text können durch Mausklick oder Berührung einzeln markiert oder unmarkiert werden
-- Neues Element: Markierungselement
-  - Kann als zusätzliche oder alternative Farbauswahlleiste zur Markierung verwendet werden
-- Bild-, Audio-, Video- und Geogebra-Elemente zeigen im Eigenschaftsfenster den ursprünglichen Dateinamen an, aus denen ihr Inhalt kopiert wurde.  
+- Alternativer Ansichtsmodus:
+  - kann über das Optionsmenu in der oberen linken Ecke eingestellt werden
+  - alle Seiten werden untereinander anzeigt
+  - Funktion um Seiten am gewählten Abschnitt einzufügen
+  - Funktion um Seite zu entfernen und enthaltene Abschnitte in die vorhergehende zu integrieren
+- Bild-, Audio-, Video- und Geogebra-Elemente zeigen im Eigenschaftsfenster den ursprünglichen Dateinamen an, aus denen ihr Inhalt kopiert wurde.
+- Elemente werden hervorgehoben bei Berührung in der Elementliste des Abschnitts
+- in Texte und andere Elemente mit erweiterten Textoptionen (RichText) können Formeln eingefügt werden. Akzeptiert Latex-Notation.
+
+### Änderungen
+- Lückentext: Standardwert für Zeilenhöhe auf 180 gesetzt (vorher 150)
+- Tabelle:
+  - Tabellendialog benutzt feste Maße für die Vorschautabelle (300px Spaltenbreite, 250px Zeilenhöhe)
+  - Reduktion von Zeilen-oder Spaltenanzahl wird unterbunden, wenn dadurch Elemente verschwinden würden. Elemente müssen erst manuell gelöscht werden. Eine entsprechende Warnung wird angezeigt.
+- Assisten "Stimulus: Audio":
+  - Variante mit 2 Audios setzt "Abspielbar nach" des zweiten Audios auf das erste Audio
+  - mit einem Textfeld für die Quelle erweitert
+  - automatisch ersteller Text auf französisch verwendet Apostroph statt Hochkomma
+- Optionentabelle: "Haftende Kopfzeile" wird im einfachen Modus ausgeblendet
+
+### Fehlerbehebungen
+- IDs werden beim Einfügen kopierter Abschnitte registriert
+- Abschnittsnummerierung wird korrekt eingelesen beim Laden einer Unit
+- Leer gelassene Felder in Assistenten produzieren keine Standardwerte mehr (z.B. Beschriftung)
+- Eigenschaften für Texte ohne Inhalt werden angezeigt
+- Elemente Tabellendialog fließen nicht mehr über Zellenberenzung
 
 
 ## 2.5.0

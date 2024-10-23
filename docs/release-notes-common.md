@@ -1,8 +1,27 @@
 Allgemein
 =========
-## 2.6.0
+## editor/2.6.0+player/2.6.0
+### Neue Funktionen
+- Text: Neue Markierfunktionalität
+  - Die Wörter in einem Text können durch Mausklick oder Berührung einzeln markiert oder unmarkiert werden
+- Neues Element: Markierungselement
+  - Kann als zusätzliche oder alternative Farbauswahlleiste zur Markierung verwendet werden
+- Neue Option: "Navigationsknopf zur nächsten Unit anfügen"
+  - Wenn ausgewählt wird ein kurzer Text ("Hier geht’s weiter") und ein Knopf zur Unit-Navigation ans Ende der letzten Seite angefügt. Dieser ist nur zu sehen, wenn alle Elemente gesehen wurden (presentation-complete)
+
+### Änderungen
+- Lückentext - Optionsfelder: "Gewählte Option durchstreichen" setzt nicht länger die Auswahlfarbe auf transparent. Stattdessen wird die Farbe in diesem Fall ignoriert. Editor-Tooltip entsprechend angepasst.
+- Tabelle:
+  - Tabellenzellen haben keine interne Mindestbreite von 50px mehr. Das sollte Fehler beheben bei denen Zellinhalte in vorhergehende Spalten überfließen, wenn sehr schmale Spaltenbreiten verwendet werden.
+
 ### Fehlerbehebungen
-- Behebt "Flackern"-Fehler von Eingabebereichen mit dynamischen Zeilen unter Chromium
+- Behebt "Flackern"-Fehler von Eingabebereichen mit dynamischen Zeilen unter Chromium-basierten Browsern
+- Ablegeliste:
+  - Aufnehmen weiterer Elemente während eines aktiven Drags wird verhindert
+  - Rekursives Verdrängen sorgt nicht mehr für eine Endlosschleife
+  - Sortierlisten bei Berührungssteuerung (Touchscreen) repariert
+- Optionentabelle: Absätze im Beschriftungstext werden korrekt untereinander dargestellt
+
 
 ## editor/2.5.0+player/2.5.0
 ### Neue Funktion

@@ -8,7 +8,9 @@ describe('DropLogic', () => {
     originListID: 'droplist_1',
     originListIndex: 0,
     imgSrc: null,
+    imgFileName: '',
     audioSrc: null,
+    audioFileName: '',
     imgPosition: 'above'
   };
 

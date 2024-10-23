@@ -239,7 +239,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'a',
         id: 'value_1',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -248,7 +250,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'b',
         id: 'value_2',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -257,7 +261,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'c',
         id: 'value_3',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -266,7 +272,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'd',
         id: 'value_4',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -275,7 +283,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -287,7 +297,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -303,7 +315,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'a',
         id: 'value_1',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 0
@@ -312,7 +326,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'b',
         id: 'value_2',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 1
@@ -321,7 +337,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'c',
         id: 'value_3',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 2
@@ -330,7 +348,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'd',
         id: 'value_4',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 3
@@ -339,7 +359,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 4
@@ -351,7 +373,9 @@ describe('ElementModelElementCodeMappingService', () => {
         text: 'e',
         id: 'value_5',
         imgSrc: null,
+        imgFileName: '',
         audioSrc: null,
+        audioFileName: '',
         imgPosition: 'above',
         originListID: 'id',
         originListIndex: 4

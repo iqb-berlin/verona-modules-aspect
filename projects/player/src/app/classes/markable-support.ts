@@ -9,6 +9,8 @@ export class MarkableSupport {
   private renderer: Renderer2;
   private applicationRef: ApplicationRef;
 
+  // word \s*\p{L}+\s*
+
   static wordsWithWhitespace: RegExp = /(\W*\w+\W*)|(W+\w*\W*)|(W*\w*\W+)/gu;
   static prefix: RegExp = /\W+(?=\w+)/u;
   static word: RegExp = /\w+/u;

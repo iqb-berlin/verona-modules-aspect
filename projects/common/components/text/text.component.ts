@@ -80,9 +80,10 @@ export class TextComponent extends ElementComponent implements OnInit {
 
   startTextSelection(event: PointerEvent): void {
     if (this.elementModel.markingMode === 'selection' &&
+      (this.elementModel.markingPanels.length ||
       (this.elementModel.highlightableYellow ||
       this.elementModel.highlightableTurquoise ||
-      this.elementModel.highlightableOrange)) {
+      this.elementModel.highlightableOrange))) {
       this.textSelectionStart.emit(event);
     }
   }

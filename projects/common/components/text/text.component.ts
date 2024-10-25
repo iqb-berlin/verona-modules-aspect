@@ -17,6 +17,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
         *ngIf="elementModel.highlightableYellow ||
                elementModel.highlightableTurquoise ||
                elementModel.highlightableOrange"
+        [sticky]="true"
         [selectedColor]="selectedColor.value || 'none'"
         [hasDeleteButton]="elementModel.markingMode === 'selection'"
         [elementModel]="elementModel"

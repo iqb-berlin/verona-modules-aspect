@@ -75,11 +75,11 @@ export class TextElement extends UIElement implements TextProperties {
   }
 
   private isSelectable(): boolean {
-    return this.markingMode === 'selection' && (
-      this.highlightableYellow ||
-      this.highlightableTurquoise ||
-      this.highlightableOrange
-    );
+    return this.markingPanels.length > 0 ||
+        (this.highlightableYellow ||
+        this.highlightableTurquoise ||
+        this.highlightableOrange
+        );
   }
 
   getVariableInfos(): VariableInfo[] {

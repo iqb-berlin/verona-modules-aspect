@@ -7,8 +7,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
   template: `
     <div class="unit-nav-next">
       Hier geht’s weiter
-      <input type="image" src="assets/next-unit-button.svg" alt="Navigationsknopf zu nächster Unit"
-             (click)="navigate.emit()">
+      <span class="svg-container" (click)="navigate.emit()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 100 100">
+          <circle cx="50%" cy="50%" r="50" fill="#b3fe5b"/>
+          <path d="M 45 35 L 60 50 L 45 65" stroke="black" stroke-width="5" fill="none" />
+        </svg>
+      </span>
     </div>
   `,
   styles: `
@@ -16,11 +20,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
       font-size: 20px;
       float: right;
     }
-    .unit-nav-next input {
+    .unit-nav-next .svg-container {
       vertical-align: middle;
       margin: 5px;
     }
-    .unit-nav-next input:hover {
+    .unit-nav-next .svg-container:hover {
       filter: brightness(90%);
     }
   `

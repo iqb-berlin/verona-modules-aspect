@@ -9,12 +9,11 @@ export class MarkableSupport {
   private renderer: Renderer2;
   private applicationRef: ApplicationRef;
 
-  // word \s*\p{L}+\s*
-
-  static wordsWithWhitespace: RegExp = /(\W*\w+\W*)|(W+\w*\W*)|(W*\w*\W+)/gu;
-  static prefix: RegExp = /\W+(?=\w+)/u;
-  static word: RegExp = /\w+/u;
-  static suffix: RegExp = /\W+$/u;
+  // eslint-disable-next-line max-len
+  private static wordsWithWhitespace: RegExp = /[^(\p{L}|\d)]*(\p{L}|\d)+[^(\p{L}|\d)]*|[^(\p{L}|\d)]+(\p{L}|\d)*[^(\p{L}|\d)]*|[^(\p{L}|\d)]*(\p{L}|\d)*[^(\p{L}|\d)]+/gu;
+  private static prefix: RegExp = /[^(\p{L}|\d)]+(?=(\p{L}|\d)+)/u;
+  private static word: RegExp = /(\p{L}|\d)+/u;
+  private static suffix: RegExp = /[^(\p{L}|\d)]+$/u;
 
   constructor(
     renderer: Renderer2,

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ResponseValueType } from '@iqb/responses';
 import {
   InputElement,
   UIElement
@@ -9,10 +10,9 @@ import { VideoElement } from 'common/models/elements/media-elements/video';
 import { ImageElement } from 'common/models/elements/media-elements/image';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
-import { ResponseValueType } from '@iqb/responses';
+import { DragNDropValueObject, InputElementValue, UIElementType } from 'common/interfaces';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { TextMarkingUtils } from '../classes/text-marking-utils';
-import { DragNDropValueObject, InputElementValue, UIElementType } from 'common/interfaces';
 
 type MapElementType = UIElementType | 'geometry-variable';
 @Injectable({

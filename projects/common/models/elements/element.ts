@@ -29,7 +29,7 @@ export abstract class UIElement implements UIElementProperties {
   dimensions?: DimensionProperties;
   styling?: Stylings;
   player?: PlayerProperties;
-  idService?: AbstractIDService; // TODO replacer for stringify
+  idService?: AbstractIDService;
 
   constructor(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService) {
     this.idService = idService;

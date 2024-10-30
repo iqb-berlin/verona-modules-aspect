@@ -1,13 +1,14 @@
-import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import {
   PositionProperties,
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class MarkingPanelElement extends UIElement implements MarkingPanelProperties {
   type: UIElementType = 'marking-panel';
@@ -19,8 +20,8 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   static title: string = 'Markierungselement';
   static icon: string = 'border_color';
 
-  constructor(element?: MarkingPanelProperties) {
-    super(element);
+  constructor(element: { type: string } & MarkingPanelProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.highlightableOrange = element.highlightableOrange;
       this.highlightableTurquoise = element.highlightableTurquoise;

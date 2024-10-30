@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
 import { VariableInfo } from '@iqb/responses';
@@ -7,7 +7,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
@@ -30,8 +31,8 @@ export class TextElement extends UIElement implements TextProperties {
     yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
   };
 
-  constructor(element?: TextProperties) {
-    super(element);
+  constructor(element: { type: string } & TextProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.text = element.text;
       this.markingMode = element.markingMode;

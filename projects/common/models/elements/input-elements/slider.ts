@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SliderComponent } from 'common/components/input-elements/slider.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class SliderElement extends InputElement implements SliderProperties {
   type: UIElementType = 'slider';
@@ -26,8 +27,8 @@ export class SliderElement extends InputElement implements SliderProperties {
   static title: string = 'Schieberegler';
   static icon: string = 'linear_scale';
 
-  constructor(element?: SliderProperties) {
-    super(element);
+  constructor(element: { type: string } & SliderProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.minValue = element.minValue;
       this.maxValue = element.maxValue;

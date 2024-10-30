@@ -3,7 +3,7 @@ import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { ValueChangeElement } from 'common/models/elements/element';
+import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-math-table',

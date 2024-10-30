@@ -4,11 +4,12 @@ import {
 import { MediaPlayerElementComponent } from 'common/directives/media-player-element-component.directive';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
-import { UIElement, ValueChangeElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { MediaPlayerService } from '../../../services/media-player.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
+import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-media-player-group-element',

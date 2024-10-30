@@ -3,7 +3,7 @@
   <div class="panel-title fx-column-start-stretch">
     <ng-container *ngIf="combinedProperties.type">
       {{'toolbox.' + combinedProperties.type | translate}}
-      <span>{{combinedProperties.id}}</span>
+      <span>{{combinedProperties.alias}}</span>
     </ng-container>
     <ng-container *ngIf="!combinedProperties.type">
       <i>Mehrfachauswahl</i>

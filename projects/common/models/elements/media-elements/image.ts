@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  UIElement, UIElementProperties, UIElementType
+  UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
@@ -9,7 +9,8 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class ImageElement extends UIElement implements ImageProperties {
   type: UIElementType = 'image';
@@ -26,8 +27,8 @@ export class ImageElement extends UIElement implements ImageProperties {
   static title: string = 'Bild';
   static icon: string = 'image';
 
-  constructor(element?: ImageProperties) {
-    super(element);
+  constructor(element: { type: string } & ImageProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.src = element.src;
       this.alt = element.alt;

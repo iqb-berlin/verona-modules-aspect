@@ -3,10 +3,11 @@ import {
   Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 } from '@angular/core';
 import { NgForOf } from '@angular/common';
-import { UIElement, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { UIElementType } from 'common/interfaces';
 
 @Component({
   selector: '[app-dynamic-section-helper-grid]',

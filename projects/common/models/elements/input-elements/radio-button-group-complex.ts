@@ -1,16 +1,22 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
+  InputElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import {
+  AbstractIDService,
+  InputElementProperties,
+  OptionElement,
+  TextImageLabel,
+  UIElementType
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class RadioButtonGroupComplexElement extends InputElement
   implements OptionElement, RadioButtonGroupComplexProperties {
@@ -24,8 +30,8 @@ export class RadioButtonGroupComplexElement extends InputElement
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
 
-  constructor(element?: RadioButtonGroupComplexProperties) {
-    super(element);
+  constructor(element: { type: string } & RadioButtonGroupComplexProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.label = element.label;
       this.options = [...element.options];

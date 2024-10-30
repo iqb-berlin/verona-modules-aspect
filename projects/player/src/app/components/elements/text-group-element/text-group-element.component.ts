@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { TextComponent } from 'common/components/text/text.component';
 import { TextElement } from 'common/models/elements/text/text';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
@@ -21,6 +20,7 @@ import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
+import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-text-group-element',

@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, HostListener, Input, Output
 } from '@angular/core';
-import { ValueChangeElement } from 'common/models/elements/element';
+import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-image-magnifier',

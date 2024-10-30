@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { TextLabel } from 'common/models/elements/label-interfaces';
+import { TextLabel } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-likert-row-edit-dialog',
@@ -14,7 +14,7 @@ import { TextLabel } from 'common/models/elements/label-interfaces';
 
         <mat-form-field [style.margin-top.px]="15">
           <mat-label>{{'id' | translate }}</mat-label>
-          <input matInput type="text" [(ngModel)]="newLikertRow.id">
+          <input matInput type="text" [(ngModel)]="newLikertRow.alias">
         </mat-form-field>
 
         <mat-checkbox [(ngModel)]="newLikertRow.readOnly">

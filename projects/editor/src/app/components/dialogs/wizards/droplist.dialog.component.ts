@@ -12,9 +12,9 @@ import { NgIf } from '@angular/common';
 import { AudioRowComponent } from 'editor/src/app/components/dialogs/wizards/audio-row.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { DragNDropValueObject, TextLabel } from 'common/models/elements/label-interfaces';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
+import { DragNDropValueObject, TextLabel } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-editor-droplist-wizard-dialog',

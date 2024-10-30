@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -9,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import { TextImageLabel } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-editor-radio-images-wizard-dialog',

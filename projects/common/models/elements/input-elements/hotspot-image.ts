@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
@@ -9,7 +9,8 @@ import {
   PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export interface Hotspot {
   top: number;
@@ -35,8 +36,8 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   static title: string = 'Bildbereiche';
   static icon: string = 'ads_click';
 
-  constructor(element?: HotspotImageProperties) {
-    super(element);
+  constructor(element: { type: string } & HotspotImageProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.value = element.value;
       this.src = element.src;

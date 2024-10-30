@@ -4,10 +4,11 @@ import {
 } from '@angular/forms';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { InputElementValue } from 'common/interfaces';
 import { VopNavigationDeniedNotification } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
 import { LogService } from 'player/modules/logging/services/log.service';
-import { InputElement, InputElementValue } from 'common/models/elements/element';
+import { InputElement } from 'common/models/elements/element';
 import { SliderElement } from 'common/models/elements/input-elements/slider';
 import { hotspotImageRequiredValidator } from 'player/src/app/validators/hotspot-image-required.validator';
 import { ValidationService } from '../services/validation.service';

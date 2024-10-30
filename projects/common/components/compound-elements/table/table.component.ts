@@ -7,11 +7,12 @@ import {
 } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SharedModule } from 'common/shared.module';
-import { PositionedUIElement, UIElement, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { TableChildOverlay } from 'common/components/compound-elements/table/table-child-overlay.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MeasurePipe } from 'common/pipes/measure.pipe';
 import { Subject } from 'rxjs';
+import { PositionedUIElement, UIElementType } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-table',

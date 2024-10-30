@@ -1,7 +1,7 @@
 import {
   Component, Input
 } from '@angular/core';
-import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';
+import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-text-image-panel',

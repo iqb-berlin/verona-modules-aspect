@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class CheckboxElement extends InputElement implements CheckboxProperties {
   type: UIElementType = 'checkbox';
@@ -21,8 +22,8 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';
 
-  constructor(element?: CheckboxProperties) {
-    super(element);
+  constructor(element: { type: string } & CheckboxProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.label = element.label;
       this.value = element.value;

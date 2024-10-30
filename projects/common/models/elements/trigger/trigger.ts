@@ -1,12 +1,13 @@
 import { Type } from '@angular/core';
 import {
-  UIElement, UIElementProperties, UIElementType
+  UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { TriggerComponent } from 'common/components/trigger/trigger.component';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TriggerElement extends UIElement implements TriggerProperties {
   type: UIElementType = 'trigger';
@@ -16,8 +17,8 @@ export class TriggerElement extends UIElement implements TriggerProperties {
   static title: string = 'Auslöser';
   static icon: string = 'bolt';
 
-  constructor(element?: TriggerProperties) {
-    super(element);
+  constructor(element: { type: string } & TriggerProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.action = element.action;
       this.actionParam = element.actionParam;

@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SpellCorrectComponent } from 'common/components/input-elements/spell-correct.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class SpellCorrectElement extends TextInputElement implements SpellCorrectProperties {
   type: UIElementType = 'spell-correct';
@@ -19,8 +20,8 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';
 
-  constructor(element?: SpellCorrectProperties) {
-    super(element);
+  constructor(element: { type: string } & SpellCorrectProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.position = { ...element.position };
       this.styling = { ...element.styling };

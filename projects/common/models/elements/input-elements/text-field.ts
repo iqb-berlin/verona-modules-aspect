@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextFieldComponent } from 'common/components/input-elements/text-field.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextFieldElement extends TextInputElement implements TextFieldProperties {
   type: UIElementType = 'text-field';
@@ -32,8 +33,8 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   static title: string = 'Eingabefeld';
   static icon: string = 'edit';
 
-  constructor(element?: TextFieldProperties) {
-    super(element);
+  constructor(element: { type: string } & TextFieldProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       if (element.appearance) this.appearance = element.appearance;
       this.minLength = element.minLength;

@@ -8,7 +8,7 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/models/elements/element';
+import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-external-app-group-element',

@@ -2,7 +2,6 @@ import {
   Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
 import { Section } from 'common/models/section';
-import { UIElementType } from 'common/models/elements/element';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
@@ -10,6 +9,7 @@ import {
   StaticOverlayComponent
 } from 'editor/src/app/components/unit-view/element-overlay/static-overlay.component';
 import { NgForOf } from '@angular/common';
+import { UIElementType } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-editor-static-section',

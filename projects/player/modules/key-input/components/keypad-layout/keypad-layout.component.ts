@@ -1,7 +1,7 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { InputAssistancePreset } from 'common/models/elements/element';
+import { InputAssistancePreset } from 'common/interfaces';
 import { KeyInputRestrictionDirective } from '../../directives/key-input-restriction.directive';
 import { KeyInputLayout } from '../../configs/key-layout';
 

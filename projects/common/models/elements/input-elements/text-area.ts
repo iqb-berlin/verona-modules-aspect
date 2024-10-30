@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextAreaElement extends TextInputElement implements TextAreaProperties {
   type: UIElementType = 'text-area';
@@ -30,8 +31,8 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   static title: string = 'Eingabebereich';
   static icon: string = 'edit_note';
 
-  constructor(element?: TextAreaProperties) {
-    super(element);
+  constructor(element: { type: string } & TextAreaProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.appearance = element.appearance;
       this.resizeEnabled = element.resizeEnabled;

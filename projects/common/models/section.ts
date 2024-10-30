@@ -1,16 +1,14 @@
 import {
   CompoundElement,
-  PositionedUIElement,
-  UIElement,
-  UIElementValue,
-  Measurement
+  UIElement
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/util/element.factory';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { AbstractIDService, Measurement, PositionedUIElement, UIElementValue } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class Section {
   [index: string]: unknown;
@@ -29,7 +27,7 @@ export class Section {
   visibilityRules: VisibilityRule[] = [];
   ignoreNumbering: boolean = false;
 
-  constructor(section?: SectionProperties) {
+  constructor(section?: SectionProperties, idService?: AbstractIDService) {
     if (section && isValid(section)) {
       this.height = section.height;
       this.backgroundColor = section.backgroundColor;
@@ -44,7 +42,7 @@ export class Section {
       this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
       this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
       this.elements = section.elements
-        .map(element => ElementFactory.createElement(element)) as PositionedUIElement[];
+        .map(element => ElementFactory.createElement(element, idService)) as PositionedUIElement[];
       this.ignoreNumbering = section.ignoreNumbering;
     } else {
       if (environment.strictInstantiation) {
@@ -63,7 +61,7 @@ export class Section {
       if (section?.logicalConnectiveOfRules !== undefined) this.logicalConnectiveOfRules = section.logicalConnectiveOfRules;
       if (section?.visibilityRules !== undefined) this.visibilityRules = section.visibilityRules.map(rule => ({ ...rule }));
       this.elements = section?.elements !== undefined ?
-        section.elements.map(element => ElementFactory.createElement(element)) as PositionedUIElement[] :
+        section.elements.map(element => ElementFactory.createElement(element, idService)) as PositionedUIElement[] :
         [];
       if (section?.ignoreNumbering !== undefined) this.ignoreNumbering = section.ignoreNumbering;
     }

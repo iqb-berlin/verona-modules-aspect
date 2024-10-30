@@ -1,6 +1,5 @@
 import {
-  InputElement, InputElementProperties,
-  UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import {
   BasicStyles,
@@ -12,7 +11,8 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { VariableInfo } from '@iqb/responses';
 import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math.component';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextAreaMathElement extends InputElement implements TextAreaMathProperties {
   type: UIElementType = 'text-area-math';
@@ -27,8 +27,8 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   static title: string = 'Formelbereich';
   static icon: string = 'calculate';
 
-  constructor(element?: TextAreaMathProperties) {
-    super(element);
+  constructor(element: { type: string } & TextAreaMathProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;

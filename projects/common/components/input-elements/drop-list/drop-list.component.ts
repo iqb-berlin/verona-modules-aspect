@@ -7,11 +7,11 @@ import {
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { DragEvent, DragStartEvent } from 'common/components/input-elements/drop-list/draggable.directive';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { DragImageComponent } from './drag-image.component';
 import { DragOperatorService } from './drag-operator.service';
+import { DragNDropValueObject } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-drop-list',

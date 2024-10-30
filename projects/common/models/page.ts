@@ -2,8 +2,9 @@ import { Section } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { AbstractIDService } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class Page {
   [index: string]: unknown;
@@ -16,7 +17,7 @@ export class Page {
   alwaysVisiblePagePosition: 'left' | 'right' | 'top' | 'bottom' = 'left';
   alwaysVisibleAspectRatio: number = 50;
 
-  constructor(page?: PageProperties) {
+  constructor(page?: PageProperties, idService?: AbstractIDService) {
     if (page && isValid(page)) {
       this.hasMaxWidth = page.hasMaxWidth;
       this.maxWidth = page.maxWidth;
@@ -25,7 +26,7 @@ export class Page {
       this.alwaysVisible = page.alwaysVisible;
       this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
       this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
-      this.sections = page.sections.map(section => new Section(section));
+      this.sections = page.sections.map(section => new Section(section, idService));
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at Page instantiation');
@@ -37,7 +38,8 @@ export class Page {
       if (page?.alwaysVisible !== undefined) this.alwaysVisible = page.alwaysVisible;
       if (page?.alwaysVisiblePagePosition !== undefined) this.alwaysVisiblePagePosition = page.alwaysVisiblePagePosition;
       if (page?.alwaysVisibleAspectRatio !== undefined) this.alwaysVisibleAspectRatio = page.alwaysVisibleAspectRatio;
-      this.sections = page?.sections.map(section => new Section(section)) || [new Section()];
+      this.sections = page?.sections
+        .map(section => new Section(section, idService)) || [new Section(undefined, idService)];
     }
   }
 

@@ -8,9 +8,8 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { Label, TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
-import { OptionElement } from 'common/models/elements/element';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { Label, OptionElement, TextImageLabel, TextLabel } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-options-field-set',
@@ -110,12 +109,13 @@ export class OptionsFieldSetComponent {
   }
 
   addLikertRow(rowLabelText: string): void {
-    const newRow = new LikertRowElement({
-      id: this.idService.getAndRegisterNewID('likert-row'),
+    const newRow = this.elementService.createLikertRowElement({
+      ...this.idService.getAndRegisterNewIDs('likert-row'),
       rowLabel: {
         text: rowLabelText,
         imgSrc: null,
-        imgPosition: 'above'
+        imgPosition: 'above',
+        imgFileName: ''
       },
       columnCount: (this.combinedProperties.options as unknown[]).length
     } as LikertRowProperties);
@@ -125,7 +125,7 @@ export class OptionsFieldSetComponent {
 
   addLikertRowImage(): void {
     const newRow = new LikertRowElement({
-      id: this.idService.getAndRegisterNewID('likert-row'),
+      ...this.idService.getAndRegisterNewIDs('likert-row'),
       rowLabel: {
         text: '',
         imgSrc: null,
@@ -151,11 +151,11 @@ export class OptionsFieldSetComponent {
     this.dialogService.showLikertRowEditDialog(row, columns)
       .subscribe((result: LikertRowElement) => {
         if (result) {
-          if (result.id !== row.id) {
+          if (result.alias !== row.alias) {
             this.elementService.updateElementsProperty(
               [row],
-              'id',
-              result.id
+              'alias',
+              result.alias
             );
           }
           if (result.rowLabel !== row.rowLabel) {

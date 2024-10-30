@@ -6,8 +6,8 @@ import {
 import { CastPipe } from 'player/src/app/pipes/cast.pipe';
 import { Subject } from 'rxjs';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { MediaPlayerGroupElementComponent } from './media-player-group-element.component';
+import { ValueChangeElement } from 'common/interfaces';
 
 describe('MediaPlayerGroupElementComponent', () => {
   let component: MediaPlayerGroupElementComponent;

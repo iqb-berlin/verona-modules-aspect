@@ -1,5 +1,5 @@
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
+import { DragNDropValueObject } from 'common/interfaces';
 
 export class DropLogic {
   static createDropListMock(dropListComp: DropListComponent): DropListMock {

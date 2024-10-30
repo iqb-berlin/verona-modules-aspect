@@ -1,16 +1,16 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
+  InputElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropdownComponent } from 'common/components/input-elements/dropdown.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { TextLabel } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, OptionElement, TextLabel, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class DropdownElement extends InputElement implements OptionElement, DropdownProperties {
   type: UIElementType = 'dropdown';
@@ -22,8 +22,8 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
   static title: string = 'Klappliste';
   static icon: string = 'menu_open';
 
-  constructor(element?: DropdownProperties) {
-    super(element);
+  constructor(element: { type: string } & DropdownProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.options = element.options;
       this.allowUnset = element.allowUnset;

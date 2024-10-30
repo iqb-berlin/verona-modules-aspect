@@ -1,15 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 
-
-import { TextImageLabel } from 'common/models/elements/label-interfaces';
+import { TextImageLabel } from 'common/interfaces';
 
 @Pipe({
   name: 'LikertRowLabel'
 })
 export class LikertRowLabelPipe implements PipeTransform {
   // eslint-disable-next-line class-methods-use-this
-  transform(rows: LikertRowElement[]): TextImageLabel[] {
-    return rows.map(row => row.rowLabel);
+  transform(rows: LikertRowElement[]): (TextImageLabel & { alias: string })[] {
+    return rows.map(row => ({ ...row.rowLabel, alias: row.alias }));
   }
 }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
@@ -9,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
+import { TextImageLabel } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-editor-likert-wizard-dialog',

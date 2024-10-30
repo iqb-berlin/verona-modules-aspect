@@ -1,9 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-import {
-  InputAssistancePreset,
-  KeyInputElementProperties,
-  Measurement
-} from 'common/models/elements/element';
+import { InputAssistancePreset, KeyInputElementProperties, Measurement } from 'common/interfaces';
 
 export interface PositionProperties {
   [index: string]: unknown;
@@ -104,7 +100,7 @@ export abstract class PropertyGroupValidators {
       blueprint.maxHeight !== undefined;
   }
 
-  static isValidPosition(blueprint: PositionProperties): boolean {
+  static isValidPosition(blueprint?: PositionProperties): boolean {
     if (!blueprint) return false;
     return blueprint.xPosition !== undefined &&
       blueprint.yPosition !== undefined &&
@@ -129,7 +125,7 @@ export abstract class PropertyGroupValidators {
       blueprint.hasArrowKeys !== undefined;
   }
 
-  static isValidBasicStyles(blueprint: BasicStyles): boolean {
+  static isValidBasicStyles(blueprint?: BasicStyles): boolean {
     if (!blueprint) return false;
     return blueprint.backgroundColor !== undefined &&
       PropertyGroupValidators.isValidFontStyles(blueprint);
@@ -145,7 +141,7 @@ export abstract class PropertyGroupValidators {
       blueprint.underline !== undefined;
   }
 
-  static isValidBorderStyles(blueprint: BorderStyles): boolean {
+  static isValidBorderStyles(blueprint?: BorderStyles): boolean {
     if (!blueprint) return false;
     return blueprint.borderWidth !== undefined &&
       blueprint.borderColor !== undefined &&

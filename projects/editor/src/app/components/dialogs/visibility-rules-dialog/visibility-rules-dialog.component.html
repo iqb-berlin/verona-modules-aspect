@@ -34,30 +34,20 @@
     <aspect-visibility-rule-editor [controlIds]="controlIds"
                                    [(visibilityRule)]="visibilityRules[i]">
     </aspect-visibility-rule-editor>
-    <button mat-icon-button
-            matSuffix
-            color="warn"
-            (click)="deleteVisibilityRule(i)">
+    <button mat-icon-button matSuffix color="warn" (click)="deleteVisibilityRule(i)">
       <mat-icon>delete</mat-icon>
     </button>
   </div>
-  <button *ngIf="controlIds.length"
-          mat-button
-          class="add-button"
-          (click)="addVisibilityRule()">
+  <button *ngIf="controlIds.length" mat-button class="add-button" (click)="addVisibilityRule()">
     <mat-icon class="add-icon">add</mat-icon>
   </button>
 </div>
 <div mat-dialog-actions>
-  <button *ngIf="controlIds.length"
-          mat-button
+  <button *ngIf="controlIds.length" mat-button
           [mat-dialog-close]="{
             visibilityRules, logicalConnectiveOfRules, visibilityDelay, animatedVisibility, enableReHide
           }">
     {{'save' | translate}}
   </button>
-  <button mat-button
-          mat-dialog-close>
-    {{'cancel' | translate}}
-  </button>
+  <button mat-button mat-dialog-close>{{'cancel' | translate}}</button>
 </div>

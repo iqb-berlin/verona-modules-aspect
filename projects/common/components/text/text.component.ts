@@ -2,11 +2,11 @@ import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import { BehaviorSubject } from 'rxjs';
 import { MarkingData } from 'common/models/marking-data';
 import { ElementComponent } from '../../directives/element-component.directive';
+import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-text',

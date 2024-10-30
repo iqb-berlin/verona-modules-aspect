@@ -1,21 +1,24 @@
 import {
-  InputAssistancePreset,
-  KeyInputElementProperties,
-  UIElement,
-  UIElementProperties,
-  UIElementType
+  UIElement
 } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import {
   BasicStyles,
   PropertyGroupGenerators,
   PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
+import {
+  AbstractIDService,
+  InputAssistancePreset,
+  KeyInputElementProperties,
+  UIElementProperties,
+  UIElementType
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class MathTableElement extends UIElement implements MathTableProperties, KeyInputElementProperties {
   type: UIElementType = 'math-table';
@@ -50,8 +53,8 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   static title: string = 'Rechenkästchen';
   static icon: string = 'apps';
 
-  constructor(element?: MathTableProperties) {
-    super(element);
+  constructor(element: { type: string } & MathTableProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.operation = element.operation;
       this.terms = [...element.terms];

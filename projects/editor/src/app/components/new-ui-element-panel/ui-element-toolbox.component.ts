@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UIElementType } from 'common/models/elements/element';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ImageElement } from 'common/models/elements/media-elements/image';
@@ -27,6 +26,7 @@ import { TableElement } from 'common/models/elements/compound-elements/table/tab
 import { TemplateService } from 'editor/src/app/services/template.service';
 import { SelectionService } from '../../services/selection.service';
 import { UnitService } from '../../services/unit-services/unit.service';
+import { UIElementType } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-ui-element-toolbox',

@@ -1,4 +1,4 @@
-import { UIElementType } from 'common/models/elements/element';
+import { UIElementType } from 'common/interfaces';
 
 export type ElementGroupName =
   'textInputGroup' | 'mediaPlayerGroup' | 'inputGroup' | 'compoundGroup' |

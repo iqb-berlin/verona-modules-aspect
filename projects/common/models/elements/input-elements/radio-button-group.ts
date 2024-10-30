@@ -1,16 +1,16 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
+  InputElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { TextLabel } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, OptionElement, TextLabel, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {
   type: UIElementType = 'radio';
@@ -26,8 +26,8 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   static title: string = 'Optionsfelder';
   static icon: string = 'radio_button_checked';
 
-  constructor(element?: RadioButtonGroupProperties) {
-    super(element);
+  constructor(element: { type: string } & RadioButtonGroupProperties, idService?: AbstractIDService) {
+    super(element, idService);
     if (element && isValid(element)) {
       this.label = element.label;
       this.options = [...element.options];

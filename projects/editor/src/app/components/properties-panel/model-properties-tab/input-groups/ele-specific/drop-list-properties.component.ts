@@ -6,10 +6,8 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
-import { MessageService } from 'editor/src/app/services/message.service';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
 import { IDService } from 'editor/src/app/services/id.service';
-import { DragNDropValueObject, TextImageLabel } from 'common/models/elements/label-interfaces';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -19,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
 
 @Pipe({
   name: 'getValidDropLists',
@@ -27,10 +27,10 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
 export class GetValidDropListsPipe implements PipeTransform {
   constructor(private unitService: UnitService) {}
 
-  transform(idList: string[] | undefined): string[] {
+  transform(idList: string[] | undefined): { id: string, alias: string }[] {
     if (!idList) return [];
     return this.unitService.getAllDropListElementIDs()
-      .filter(dropListID => !idList.includes(dropListID));
+      .filter(dropListIDPair => !idList.includes(dropListIDPair.id));
   }
 }
 
@@ -74,8 +74,8 @@ export class GetValidDropListsPipe implements PipeTransform {
                   (click)="toggleSelectAll()">
             Alle Auswählen
           </button>
-          <mat-option *ngFor="let id of (combinedProperties.idList | getValidDropLists)" [value]="id">
-            {{id}}
+          <mat-option *ngFor="let idPair of (combinedProperties.idList | getValidDropLists)" [value]="idPair.id">
+            {{idPair.alias}}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -157,10 +157,9 @@ export class DropListPropertiesComponent {
   @ViewChild('selectConnectedLists') selectConnected!: MatSelect;
 
   constructor(public unitService: UnitService,
+              private elementService: ElementService,
               private dialogService: DialogService,
-              private idManager: IDService,
-              private messageService: MessageService,
-              private translateService: TranslateService) { }
+              private idService: IDService) { }
 
   updateAllowReplacement(value: boolean) {
     if (value) this.updateOnlyOneItem(true);
@@ -184,7 +183,7 @@ export class DropListPropertiesComponent {
           audioSrc: null,
           audioFileName: '',
           imgPosition: 'above',
-          id: this.unitService.getNewValueID(),
+          ...this.idService.getAndRegisterNewIDs('value'),
           originListID: 'id_placeholder',
           originListIndex: 0
         }
@@ -202,15 +201,10 @@ export class DropListPropertiesComponent {
   async editOption(optionIndex: number): Promise<void> {
     const dropListValues: DragNDropValueObject[] = this.combinedProperties.value as DragNDropValueObject[];
 
-    await this.dialogService.showDropListOptionEditDialog(dropListValues[optionIndex])
+    this.dialogService.showDropListOptionEditDialog(dropListValues[optionIndex])
       .subscribe((result: DragNDropValueObject) => {
         if (result) {
-          if (result.id !== dropListValues[optionIndex].id && !this.idManager.isIdAvailable(result.id)) {
-            this.messageService.showError(this.translateService.instant('idTaken'));
-            return;
-          }
-          dropListValues[optionIndex] = result;
-          this.updateModel.emit({ property: 'value', value: dropListValues });
+          this.elementService.updateDropListValueObject(optionIndex, result);
         }
       });
   }

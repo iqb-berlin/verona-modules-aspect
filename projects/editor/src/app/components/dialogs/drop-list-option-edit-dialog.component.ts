@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FileService } from 'common/services/file.service';
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { DragNDropValueObject } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-drop-list-option-edit-dialog',
@@ -15,7 +15,7 @@ import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{'id' | translate }}</mat-label>
-          <input matInput type="text" [(ngModel)]="newLabel.id">
+          <input matInput type="text" [(ngModel)]="newLabel.alias">
         </mat-form-field>
 
         <div class="media-panels">

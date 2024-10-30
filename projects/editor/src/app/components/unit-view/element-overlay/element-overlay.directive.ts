@@ -8,7 +8,6 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { CompoundElementComponent } from 'common/directives/compound-element.directive';
 import { ClozeComponent } from 'common/components/compound-elements/cloze/cloze.component';
 import { ClozeChildOverlay } from 'common/components/compound-elements/cloze/cloze-child-overlay.component';
-import { PositionedUIElement } from 'common/models/elements/element';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
 import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
@@ -18,6 +17,7 @@ import { ElementService } from 'editor/src/app/services/unit-services/element.se
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
+import { PositionedUIElement } from 'common/interfaces';
 
 @Directive()
 export abstract class ElementOverlay implements OnInit, OnDestroy {

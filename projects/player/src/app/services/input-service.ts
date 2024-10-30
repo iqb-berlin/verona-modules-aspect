@@ -1,7 +1,7 @@
-import { InputAssistancePreset } from 'common/models/elements/element';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
+import { InputAssistancePreset } from 'common/interfaces';
 
 @Injectable({
   providedIn: 'root'

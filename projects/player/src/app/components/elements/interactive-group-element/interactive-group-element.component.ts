@@ -6,7 +6,7 @@ import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger/trigger';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { UIElement, ValueChangeElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
@@ -22,6 +22,7 @@ import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { NavigationService } from '../../../services/navigation.service';
+import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-interactive-group-element',

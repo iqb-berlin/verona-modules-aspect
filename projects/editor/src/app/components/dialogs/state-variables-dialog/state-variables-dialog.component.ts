@@ -28,8 +28,7 @@ export class StateVariablesDialogComponent {
   }
 
   addStateVariable() {
-    const id = this.idService.getAndRegisterNewID('state-variable');
-    this.stateVariables.push({ id, value: '' });
+    this.stateVariables.push({ value: '', ...this.idService.getAndRegisterNewIDs('state-variable') });
   }
 
   deleteStateVariable(index: number) {

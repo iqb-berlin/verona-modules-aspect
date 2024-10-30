@@ -17,8 +17,9 @@ import { MatInputModule } from '@angular/material/input';
 import { Section } from 'common/models/section';
 import { CompoundElement, UIElement } from 'common/models/elements/element';
 import { VisibilityRule } from 'common/models/visibility-rule';
-import { MessageService } from 'editor/src/app/services/message.service';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { DragNDropValueObject } from 'common/interfaces';
+import { MessageService } from 'editor/src/app/services/message.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { SizeInputPanelComponent } from 'editor/src/app/components/util/size-input-panel.component';
@@ -306,18 +307,11 @@ export class SectionMenuComponent implements OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((data: { newSection: Section, replaceSection: boolean }) => {
         if (data.newSection) {
-          const duplicateIDs = data.newSection.getAllElements()
-            .filter(element => !this.idService.isIdAvailable(element.id));
-          duplicateIDs.forEach(element => {
-            element.id = this.idService.getAndRegisterNewID(element.type);
-            if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
-              (element as DropListElement).value
-                .filter(valueElement => !this.idService.isIdAvailable(valueElement.id))
-                .forEach(valueElement => {
-                  valueElement.id = this.idService.getAndRegisterNewID('value');
-                });
-            }
-          });
+          this.fixElementIDs(data.newSection.getAllElements());
+          this.fixValueIDs(data.newSection.getAllElements()
+            .filter(el => el.type === 'drop-list')
+            .map(el => (el as DropListElement).value)
+            .flat());
           if (data.replaceSection) {
             this.sectionService.replaceSection(
               this.selectionService.selectedPageIndex, this.sectionIndex, data.newSection);
@@ -326,6 +320,33 @@ export class SectionMenuComponent implements OnDestroy {
               this.selectionService.selectedPageIndex, this.sectionIndex, data.newSection);
           }
         }
+      });
+  }
+
+  private fixElementIDs(elements: UIElement[]): void {
+    elements
+      .filter(element => !this.idService.isIDAvailable(element.id, element.type))
+      .forEach(el => {
+        el.id = this.idService.getAndRegisterNewID(el.type);
+      });
+
+    elements
+      .filter(element => !this.idService.isAliasAvailable(element.alias, element.type))
+      .forEach(el => {
+        el.alias = this.idService.getAndRegisterNewID(el.type, true);
+      });
+  }
+
+  private fixValueIDs(values: DragNDropValueObject[]): void {
+    values
+      .filter(value => !this.idService.isIDAvailable(value.id, 'value'))
+      .forEach(val => {
+        val.id = this.idService.getAndRegisterNewID('value');
+      });
+    values
+      .filter(value => !this.idService.isAliasAvailable(value.alias, 'value'))
+      .forEach(val => {
+        val.alias = this.idService.getAndRegisterNewID('value', true);
       });
   }
 
@@ -350,12 +371,12 @@ export class SectionMenuComponent implements OnDestroy {
       });
   }
 
-  private getControlIds(): string[] {
+  private getControlIds(): { id: string, alias: string }[] {
     return this.unitService.unit.getAllElements()
       .filter(element => !(element instanceof CompoundElement))
-      .map(element => element.id)
+      .map(element => ({ id: element.id, alias: element.alias }))
       .concat(this.unitService.unit.stateVariables
-        .map(element => element.id));
+        .map(element => ({ id: element.id, alias: element.alias })));
   }
 
   ignoreNumbering() {

@@ -114,7 +114,7 @@ export class GetStateVariableIdsPipe implements PipeTransform {
 export class GetStateVariablePipe implements PipeTransform {
   transform(actionParam: unknown, stateVariables: StateVariable[]): StateVariable {
     if (actionParam && typeof actionParam === 'object') return actionParam as StateVariable;
-    return { id: stateVariables[0].id, value: '' };
+    return { id: stateVariables[0].id, alias: stateVariables[0].alias, value: '' };
   }
 }
 

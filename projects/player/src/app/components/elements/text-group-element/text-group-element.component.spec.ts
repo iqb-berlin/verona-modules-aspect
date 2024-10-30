@@ -7,8 +7,8 @@ import {
   FloatingMarkingBarComponent
 } from 'player/src/app/components/floating-marking-bar/floating-marking-bar.component';
 import { TextElement } from 'common/models/elements/text/text';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { TextGroupElementComponent } from './text-group-element.component';
+import { ValueChangeElement } from 'common/interfaces';
 
 describe('TextGroupElementComponent', () => {
   let component: TextGroupElementComponent;

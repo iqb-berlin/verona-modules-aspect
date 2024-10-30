@@ -2,7 +2,7 @@ import {
   ComponentRef, Directive, EmbeddedViewRef, Input, OnDestroy, ViewContainerRef
 } from '@angular/core';
 import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
-import { TooltipPosition } from 'common/models/elements/element';
+import { TooltipPosition } from 'common/interfaces';
 
 @Directive()
 export abstract class BaseTooltipDirective implements OnDestroy {

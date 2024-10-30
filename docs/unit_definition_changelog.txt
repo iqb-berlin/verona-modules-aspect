@@ -194,3 +194,4 @@ iqb-aspect-definition@1.0.0
  - new property: imgFileName: string;
 
 - New Element "MarkingPanel"
+- all elements: new property "alias"

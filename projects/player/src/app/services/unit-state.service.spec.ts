@@ -14,15 +14,23 @@ describe('UnitStateService', () => {
   });
 
   it('should get element by id', () => {
-    const element1: Response = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: Response = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
+    const element1: Response & { alias: string } = {
+      id: 'element_1', alias: 'element_1_alias', status: 'DISPLAYED', value: 'TEST1'
+    };
+    const element2: Response & { alias: string } = {
+      id: 'element_2', alias: 'element_2_alias', status: 'DISPLAYED', value: 'TEST2'
+    };
     service.elementCodes = [element1, element2];
     expect(service.getElementCodeById('element_1')).toEqual(element1);
   });
 
   it('should return undefined for a not registered element id', () => {
-    const element1: Response = { id: 'element_1', status: 'DISPLAYED', value: 'TEST1' };
-    const element2: Response = { id: 'element_2', status: 'DISPLAYED', value: 'TEST2' };
+    const element1: Response & { alias: string } = {
+      id: 'element_1', alias: 'element_1_alias', status: 'DISPLAYED', value: 'TEST1'
+    };
+    const element2: Response & { alias: string } = {
+      id: 'element_2', alias: 'element_2_alias', status: 'DISPLAYED', value: 'TEST2'
+    };
     service.elementCodes = [element1, element2];
     expect(service.getElementCodeById('element_3')).toBeUndefined();
   });
@@ -30,12 +38,16 @@ describe('UnitStateService', () => {
   it('should register an element', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element', 'TEST', element, 1);
-    expect(service.elementCodes).toEqual([{ id: 'element', status: 'NOT_REACHED', value: 'TEST' }]);
+    service.registerElementCode('element', 'elementAlias', 'TEST', element, 1);
+    expect(service.elementCodes).toEqual([{
+      id: 'element', alias: 'elementAlias', status: 'NOT_REACHED', value: 'TEST'
+    }]);
   });
 
   it('elementCode of an element should change', done => {
-    service.elementCodes = [{ id: 'element_1', status: 'NOT_REACHED', value: 'TEST1' }];
+    service.elementCodes = [{
+      id: 'element_1', alias: 'elementAlias', status: 'NOT_REACHED', value: 'TEST1'
+    }];
     service.elementCodeChanged
       .subscribe(code => {
         expect(code.status).toEqual('DISPLAYED');
@@ -45,7 +57,9 @@ describe('UnitStateService', () => {
   });
 
   it('elementCode of an element should change', done => {
-    service.elementCodes = [{ id: 'element_1', status: 'NOT_REACHED', value: 'TEST1' }];
+    service.elementCodes = [{
+      id: 'element_1', alias: 'elementAlias', status: 'NOT_REACHED', value: 'TEST1'
+    }];
     service.elementCodeChanged
       .subscribe(code => {
         expect(code.status).toEqual('VALUE_CHANGED');
@@ -63,14 +77,14 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be none', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element', 'TEST', element, 1);
+    service.registerElementCode('element', 'alias', 'TEST', element, 1);
     expect(service.presentedPagesProgress).toEqual('none');
   });
 
   it('presentedPagesProgress should be complete', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element', 'TEST', element, 1);
+    service.registerElementCode('element', 'alias', 'TEST', element, 1);
     service.changeElementCodeStatus({ id: 'element', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('complete');
   });
@@ -78,8 +92,8 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be none', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element_1', 'TEST1', element, 1);
-    service.registerElementCode('element_2', 'TEST2', element, 1);
+    service.registerElementCode('element_1', 'alias1', 'TEST1', element, 1);
+    service.registerElementCode('element_2', 'alias2', 'TEST2', element, 1);
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('none');
   });
@@ -87,8 +101,8 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be some', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element_1', 'TEST1', element, 1);
-    service.registerElementCode('element_2', 'TEST2', element, 2);
+    service.registerElementCode('element_1', 'alias1', 'TEST1', element, 1);
+    service.registerElementCode('element_2', 'alias2', 'TEST2', element, 2);
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('some');
   });
@@ -96,8 +110,8 @@ describe('UnitStateService', () => {
   it('presentedPagesProgress should be complete', () => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element_1', 'TEST1', element, 1);
-    service.registerElementCode('element_2', 'TEST2', element, 2);
+    service.registerElementCode('element_1', 'alias1', 'TEST1', element, 1);
+    service.registerElementCode('element_2', 'alias2', 'TEST2', element, 2);
     service.changeElementCodeStatus({ id: 'element_1', status: 'DISPLAYED' });
     service.changeElementCodeStatus({ id: 'element_2', status: 'DISPLAYED' });
     expect(service.presentedPagesProgress).toEqual('complete');
@@ -106,7 +120,7 @@ describe('UnitStateService', () => {
   it('presented page with index 1 should be added', done => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element_1', 'TEST1', element, 1);
+    service.registerElementCode('element_1', 'alias', 'TEST1', element, 1);
     service.pagePresented
       .subscribe(index => {
         expect(index).toEqual(1);
@@ -118,7 +132,7 @@ describe('UnitStateService', () => {
   it('presented page with index 1 should be added', done => {
     service.elementCodes = [];
     const element = document.createElement('div');
-    service.registerElementCode('element_1', 'TEST1', element, 1);
+    service.registerElementCode('element_1', 'alias', 'TEST1', element, 1);
     service.pagePresented
       .subscribe(index => {
         expect(index).toEqual(1);

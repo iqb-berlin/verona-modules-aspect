@@ -96,7 +96,10 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       .subscribe(() => {
         this.destroyTimerStateVariable();
       });
-    this.stateVariableStateService.registerElementCode(this.timerStateVariable.id, this.timerStateVariable.value);
+    this.stateVariableStateService.registerElementCode(
+      this.timerStateVariable.id,
+      this.timerStateVariable.id,
+      this.timerStateVariable.value);
     this.timerStateVariable.run();
   }
 

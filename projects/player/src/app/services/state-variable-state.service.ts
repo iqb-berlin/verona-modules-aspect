@@ -7,14 +7,17 @@ import { ResponseValueType } from '@iqb/responses';
 })
 export class StateVariableStateService extends ElementCodeService {
   registerElementCode(elementId: string,
+                      elementAlias: string,
                       elementValue: ResponseValueType): void {
-    this.addElementCode(elementId, elementValue);
+    this.addElementCode(elementId, elementAlias, elementValue); // id and alias are the same
   }
 
-  private addElementCode(id: string, value: ResponseValueType): void {
+  private addElementCode(id: string, alias: string, value: ResponseValueType): void {
     const unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
-      this.addInitialElementCode({ id, value, status: 'UNSET' });
+      this.addInitialElementCode({
+        id, alias, value, status: 'UNSET'
+      });
     }
   }
 }

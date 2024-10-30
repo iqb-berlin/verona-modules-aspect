@@ -75,6 +75,10 @@ export class GeometryElement extends UIElement implements GeometryProperties {
     return `${this.id}_${variableName}`;
   }
 
+  getGeometryVariableAlias(variableName: string): string {
+    return `${this.alias}_${variableName}`;
+  }
+
   getVariableInfoOfGeometryVariable(variableName: string): VariableInfo {
     return {
       id: this.getGeometryVariableId(variableName),

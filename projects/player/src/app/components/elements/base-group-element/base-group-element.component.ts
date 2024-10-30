@@ -27,6 +27,11 @@ export class BaseGroupElementComponent extends ElementGroupDirective implements 
   }
 
   ngAfterViewInit(): void {
-    this.registerAtUnitStateService(this.elementModel.id, null, this.baseElementComponent, this.pageIndex);
+    this.registerAtUnitStateService(
+      this.elementModel.id,
+      this.elementModel.alias,
+      null,
+      this.baseElementComponent,
+      this.pageIndex);
   }
 }

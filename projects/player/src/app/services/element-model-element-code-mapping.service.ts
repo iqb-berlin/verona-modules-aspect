@@ -35,7 +35,7 @@ export class ElementModelElementCodeMappingService {
           [];
       case 'drop-list':
         return (elementCodeValue !== undefined) ?
-          (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectById(id)) as DragNDropValueObject[] :
+          (elementCodeValue as string[]).map(id => this.getDragNDropValueObjectByAlias(id)) as DragNDropValueObject[] :
           (elementModel as InputElement).value;
       case 'hotspot-image':
         return (elementCodeValue !== undefined) ?
@@ -92,7 +92,7 @@ export class ElementModelElementCodeMappingService {
       case 'math-table':
         return JSON.stringify(elementModelValue);
       case 'drop-list':
-        return (elementModelValue as DragNDropValueObject[]).map(object => object.id);
+        return (elementModelValue as DragNDropValueObject[]).map(object => object.alias);
       case 'hotspot-image':
         return (elementModelValue as Hotspot[]).map(hotspot => hotspot.value);
       case 'text':
@@ -115,8 +115,8 @@ export class ElementModelElementCodeMappingService {
     }
   }
 
-  private getDragNDropValueObjectById(id: string): DragNDropValueObject | undefined {
-    return this.dragNDropValueObjects.find(dropListValue => dropListValue.id === id);
+  private getDragNDropValueObjectByAlias(alias: string): DragNDropValueObject | undefined {
+    return this.dragNDropValueObjects.find(dropListValue => dropListValue.alias === alias);
   }
 
   static getMarkedMarkables(markables: Markable[]): string[] {

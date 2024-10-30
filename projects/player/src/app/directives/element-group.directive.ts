@@ -11,12 +11,12 @@ export abstract class ElementGroupDirective {
   abstract unitStateService: UnitStateService;
 
   registerAtUnitStateService(
-    id: string, value: ResponseValueType, elementComponent: ElementComponent, pageIndex: number
+    id: string, alias: string, value: ResponseValueType, elementComponent: ElementComponent, pageIndex: number
   ): void {
     const elementModel = elementComponent.elementModel;
     const relevantPageIndex = elementModel.isRelevantForPresentationComplete ? pageIndex : null;
     this.unitStateService.registerElementCode(
-      id, value, elementComponent.domElement, relevantPageIndex
+      id, alias, value, elementComponent.domElement, relevantPageIndex
     );
   }
 }

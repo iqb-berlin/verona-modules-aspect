@@ -135,13 +135,19 @@ export class UnitComponent implements OnInit {
   }
 
   private initElementCodes(message: VopStartCommand, unitDefinition: Unit): void {
-    this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
-      JSON.parse(message.unitState.dataParts.elementCodes) : [];
-    this.stateVariableStateService.elementCodes = message.unitState?.dataParts?.stateVariableCodes ?
-      JSON.parse(message.unitState.dataParts.stateVariableCodes) : [];
+    this.unitStateService
+      .setElementCodes(message.unitState?.dataParts?.elementCodes ?
+        JSON.parse(message.unitState.dataParts.elementCodes) : [],
+      unitDefinition.getAllElements().map(element => ({ id: element.id, alias: element.alias })));
+
+    this.stateVariableStateService
+      .setElementCodes(message.unitState?.dataParts?.stateVariableCodes ?
+        JSON.parse(message.unitState.dataParts.stateVariableCodes) : [],
+      unitDefinition.stateVariables.map(stateVariable => ({ id: stateVariable.id, alias: stateVariable.alias })));
+
     unitDefinition.stateVariables
       .map(stateVariable => this.stateVariableStateService
-        .registerElementCode(stateVariable.id, stateVariable.value));
+        .registerElementCode(stateVariable.id, stateVariable.alias, stateVariable.value));
   }
 
   private reset(): void {

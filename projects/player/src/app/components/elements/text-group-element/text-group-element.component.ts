@@ -16,11 +16,11 @@ import { MarkingPanelService } from 'player/src/app/services/marking-panel.servi
 import { MarkingData, MarkingPanelMarkingData } from 'common/models/marking-data';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
+import { ValueChangeElement } from 'common/interfaces';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
-import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-text-group-element',
@@ -65,6 +65,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     }
     this.registerAtUnitStateService(
       this.elementModel.id,
+      this.elementModel.alias,
       ElementModelElementCodeMappingService
         .mapToElementCodeValue(
           this.getElementModelValue(),

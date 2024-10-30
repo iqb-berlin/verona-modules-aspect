@@ -18,11 +18,11 @@ import { Subject, Subscription } from 'rxjs';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { takeUntil } from 'rxjs/operators';
+import { ValueChangeElement } from 'common/interfaces';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { NavigationService } from '../../../services/navigation.service';
-import { ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-interactive-group-element',
@@ -92,6 +92,7 @@ export class InteractiveGroupElementComponent
     }
     this.registerAtUnitStateService(
       this.elementModel.id,
+      this.elementModel.alias,
       initialValue,
       this.elementComponent,
       this.pageIndex);

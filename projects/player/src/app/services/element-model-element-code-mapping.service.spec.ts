@@ -48,7 +48,7 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map the value of a drop-list elementModel to its elementCode value', () => {
     const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(dragNDropValueObjects, 'drop-list'))
-      .toEqual(['value_1', 'value_2', 'value_3']);
+      .toEqual(['alias_1', 'alias_2', 'alias_3']);
   });
 
   it('should map the value of a text elementModel to its elementCode value', () => {
@@ -401,7 +401,7 @@ describe('ElementModelElementCodeMappingService', () => {
     service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
     const expectedValue = JSON.parse(JSON.stringify(dragNDropValues_02_130)).default;
-    expect(service.mapToElementModelValue(['value_1', 'value_2'], elementModel))
+    expect(service.mapToElementModelValue(['alias_1', 'alias_2'], elementModel))
       .toEqual(expectedValue);
   });
 

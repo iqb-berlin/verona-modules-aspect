@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
-import { Unit } from 'common/models/unit';
 import { VariableInfo } from '@iqb/responses';
 
 @Injectable({
@@ -46,14 +45,14 @@ export class VeronaAPIService {
     });
   }
 
-  sendChanged(unit: Unit): void {
+  sendChanged(unitDefinition: string, unitDefinitionType: string, variableInfos: VariableInfo[]): void {
     this.send({
       type: 'voeDefinitionChangedNotification',
       sessionId: this.sessionID as string,
       timeStamp: String(Date.now()),
-      unitDefinition: JSON.stringify(unit),
-      unitDefinitionType: `${unit.type}@${unit.version}`,
-      variables: unit.getVariableInfos()
+      unitDefinition: unitDefinition,
+      unitDefinitionType: unitDefinitionType,
+      variables: variableInfos
     });
   }
 }

@@ -87,11 +87,23 @@ export class UnitService {
   }
 
   updateUnitDefinition(): void {
-    this.veronaApiService.sendChanged(this.unit);
+    this.veronaApiService.sendChanged(
+      UnitService.createUnitDefinition(this.unit),
+      `${this.unit.type}@${this.unit.version}`,
+      this.unit.getVariableInfos());
+  }
+
+  private static createUnitDefinition(unit: Unit): string {
+    return JSON.stringify(unit, (key, value) => {
+      if (key === 'idService') {
+        return undefined;
+      }
+      return value;
+    });
   }
 
   saveUnit(): void {
-    FileService.saveUnitToFile(JSON.stringify(this.unit));
+    FileService.saveUnitToFile(UnitService.createUnitDefinition(this.unit));
   }
 
   async loadUnitFromFile(): Promise<void> {

@@ -8,7 +8,8 @@ import { MarkingData } from 'common/models/marking-data';
 @Component({
   selector: 'aspect-text-marking-bar',
   template: `
-    <div class="marking-bar">
+    <div class="marking-bar"
+         [class.sticky]="sticky">
       <aspect-text-marking-button *ngIf="elementModel.highlightableYellow"
                                   [color]="selectionColors.yellow"
                                   [isMarkingSelected]="selectionColors[selectedColor] === selectionColors.yellow"
@@ -35,11 +36,13 @@ import { MarkingData } from 'common/models/marking-data';
       </aspect-text-marking-button>
     </div>`,
   styles: [
-    '.marking-bar {position: sticky; top: 0; margin-bottom: 13px;}'
+    '.sticky {position: sticky; top: 0;}',
+    '.marking-bar {margin-bottom: 13px;}'
   ]
 })
 export class TextMarkingBarComponent {
   @Input() elementModel!: TextElement | MarkingPanelElement;
+  @Input() sticky!: boolean;
   @Input() hasDeleteButton!: boolean;
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
 

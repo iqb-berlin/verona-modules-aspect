@@ -1,16 +1,17 @@
 @for (markable of markables; track markable; let  i = $index) {
   @if (markable.prefix) {
-    <span>{{markable.prefix}}</span>
+    <span class="prevent-select">{{markable.prefix}}</span>
   }
   @if (markable.word) {
-    <aspect-markable-word [text]="markable.word"
+    <aspect-markable-word class="prevent-select"
+                          [text]="markable.word"
                           [markColor]="selectedColor.value"
                           [(color)]="markable.color"
                           (colorChange)="onColorChange()">
     </aspect-markable-word>
   }
   @if (markable.suffix) {
-    <span>{{markable.suffix}}</span>
+    <span class="prevent-select">{{markable.suffix}}</span>
   }
 }
 

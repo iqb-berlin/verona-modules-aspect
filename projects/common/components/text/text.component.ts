@@ -17,6 +17,7 @@ import { ValueChangeElement } from 'common/interfaces';
         *ngIf="elementModel.highlightableYellow ||
                elementModel.highlightableTurquoise ||
                elementModel.highlightableOrange"
+        [sticky]="true"
         [selectedColor]="selectedColor.value || 'none'"
         [hasDeleteButton]="elementModel.markingMode === 'selection'"
         [elementModel]="elementModel"
@@ -80,9 +81,10 @@ export class TextComponent extends ElementComponent implements OnInit {
 
   startTextSelection(event: PointerEvent): void {
     if (this.elementModel.markingMode === 'selection' &&
+      (this.elementModel.markingPanels.length ||
       (this.elementModel.highlightableYellow ||
       this.elementModel.highlightableTurquoise ||
-      this.elementModel.highlightableOrange)) {
+      this.elementModel.highlightableOrange))) {
       this.textSelectionStart.emit(event);
     }
   }

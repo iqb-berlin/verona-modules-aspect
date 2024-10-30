@@ -4,6 +4,7 @@ import { DragNDropValueObject } from 'common/interfaces';
 describe('DropLogic', () => {
   const dragItemPreset: DragNDropValueObject = {
     id: 'testID',
+    alias: 'testAlias',
     text: 'bla',
     originListID: 'droplist_1',
     originListIndex: 0,

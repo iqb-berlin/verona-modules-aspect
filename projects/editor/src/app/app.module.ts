@@ -74,7 +74,7 @@ import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-c
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
 import {
-  GetValidAudioVideoIDsPipe,
+  GetValidAudioVideoAliasAndIDsPipe,
   PlayerEditDialogComponent
 } from './components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
@@ -179,7 +179,7 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     VisibilityRulesDialogComponent,
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
-    GetValidAudioVideoIDsPipe,
+    GetValidAudioVideoAliasAndIDsPipe,
     InputAssistancePropertiesComponent
   ],
   imports: [

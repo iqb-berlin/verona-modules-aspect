@@ -106,12 +106,12 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
               <mat-label>{{ 'player.activeAfterID' | translate }}</mat-label>
               <mat-select [ngModel]="newPlayerConfig.activeAfterID"
                           (ngModelChange)="newPlayerConfig.activeAfterID = $event">
-                <mat-option *ngFor="let id of (data.elementID | getValidAudioVideoIDs)"
-                            [value]="id">
-                  {{id}}
+                <mat-option *ngFor="let mediaElement of (data.elementID | getValidAudioVideoAliasAndIDs)"
+                            [value]="mediaElement.id">
+                  {{mediaElement.alias}}
                 </mat-option>
               </mat-select>
-            </mat-form-field>
+            </mat-form-field>mediaElement
 
             <mat-form-field appearance="fill">
               <mat-label>{{ 'player.minRuns' | translate }}</mat-label>
@@ -136,10 +136,10 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
       </mat-tab-group>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <button mat-button [mat-dialog-close]="newPlayerConfig">{{'save' | translate }}</button>
-      <button mat-button mat-dialog-close>{{'cancel' | translate }}</button>
+      <button mat-button [mat-dialog-close]="newPlayerConfig">{{ 'save' | translate }}</button>
+      <button mat-button mat-dialog-close>{{ 'cancel' | translate }}</button>
     </mat-dialog-actions>
-    `,
+  `,
   styles: [`
     mat-tab-group {
       height: 100%;
@@ -158,15 +158,15 @@ export class PlayerEditDialogComponent {
 }
 
 @Pipe({
-  name: 'getValidAudioVideoIDs'
+  name: 'getValidAudioVideoAliasAndIDs'
 })
-export class GetValidAudioVideoIDsPipe implements PipeTransform {
+export class GetValidAudioVideoAliasAndIDsPipe implements PipeTransform {
   constructor(private unitService: UnitService) {}
 
-  transform(ignoreID: string): string[] {
-    const allAudioVideoIDs: string[] = [
-      ...this.unitService.unit.getAllElements('audio').map(audio => audio.id),
-      ...this.unitService.unit.getAllElements('video').map(video => video.id)];
-    return allAudioVideoIDs.filter(elementID => elementID !== ignoreID);
+  transform(ignoreID: string): { id: string, alias: string }[] {
+    const allAudioVideoAliasAndIDs = [
+      ...this.unitService.unit.getAllElements('audio').map(audio => ({ id: audio.id, alias: audio.alias })),
+      ...this.unitService.unit.getAllElements('video').map(video => ({ id: video.id, alias: video.alias }))];
+    return allAudioVideoAliasAndIDs.filter(element => element.id !== ignoreID);
   }
 }

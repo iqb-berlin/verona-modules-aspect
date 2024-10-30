@@ -20,8 +20,8 @@ export class VideoElement extends PlayerElement implements VideoProperties {
   static title: string = 'Video';
   static icon: string = 'ondemand_video';
 
-  constructor(element: { type: string } & Partial<VideoProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<VideoProperties>, idService?: AbstractIDService) {
+    super({ type: 'video', ...element }, idService);
     if (isVideoProperties(element)) {
       this.src = element.src;
       this.fileName = element.fileName;
@@ -68,7 +68,7 @@ export interface VideoProperties extends PlayerElementBlueprint {
   styling: { backgroundColor: string };
 }
 
-function isVideoProperties(blueprint: Partial<VideoProperties>): blueprint is VideoProperties {
+function isVideoProperties(blueprint?: Partial<VideoProperties>): blueprint is VideoProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
     blueprint.fileName !== undefined &&

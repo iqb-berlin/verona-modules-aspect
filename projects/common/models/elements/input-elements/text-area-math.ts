@@ -27,9 +27,9 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   static title: string = 'Formelbereich';
   static icon: string = 'calculate';
 
-  constructor(element: { type: string } & TextAreaMathProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TextAreaMathProperties>, idService?: AbstractIDService) {
+    super({ type: 'text-area-math', ...element }, idService);
+    if (isTextAreaMathProperties(element)) {
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
       this.position = { ...element.position };
@@ -82,11 +82,11 @@ export interface TextAreaMathProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: TextAreaMathProperties): boolean {
+function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
   return blueprint.rowCount !== undefined &&
     blueprint.hasAutoHeight !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

@@ -26,8 +26,8 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     selectionColor: string;
   };
 
-  constructor(element: { type: UIElementType } & Partial<ToggleButtonProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<ToggleButtonProperties>, idService?: AbstractIDService) {
+    super({ type: 'toggle-button', ...element }, idService);
     if (isToggleButtonProperties(element)) {
       this.options = [...element.options];
       this.strikeOtherOptions = element.strikeOtherOptions;
@@ -107,7 +107,7 @@ export interface ToggleButtonProperties extends InputElementProperties {
   };
 }
 
-function isToggleButtonProperties(blueprint: Partial<ToggleButtonProperties>): blueprint is ToggleButtonProperties {
+function isToggleButtonProperties(blueprint?: Partial<ToggleButtonProperties>): blueprint is ToggleButtonProperties {
   if (!blueprint) return false;
   return blueprint.options !== undefined &&
     blueprint.strikeOtherOptions !== undefined &&

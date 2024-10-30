@@ -27,9 +27,9 @@ export class ImageElement extends UIElement implements ImageProperties {
   static title: string = 'Bild';
   static icon: string = 'image';
 
-  constructor(element: { type: string } & ImageProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<ImageProperties>, idService?: AbstractIDService) {
+    super({ type: 'image', ...element }, idService);
+    if (isImageProperties(element)) {
       this.src = element.src;
       this.alt = element.alt;
       this.scale = element.scale;
@@ -106,7 +106,7 @@ export interface ImageProperties extends UIElementProperties {
   position?: PositionProperties;
 }
 
-function isValid(blueprint?: ImageProperties): boolean {
+function isImageProperties(blueprint?: Partial<ImageProperties>): blueprint is ImageProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
     blueprint.alt !== undefined &&

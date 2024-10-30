@@ -27,8 +27,8 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   static title: string = 'Knopf';
   static icon: string = 'smart_button';
 
-  constructor(element: { type: string } & Partial<ButtonProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<ButtonProperties>, idService?: AbstractIDService) {
+    super({ type: 'button', ...element }, idService);
     if (isButtonProperties(element)) {
       this.label = element.label;
       this.imageSrc = element.imageSrc;
@@ -82,7 +82,7 @@ export interface ButtonProperties extends UIElementProperties {
   labelAlignment: 'super' | 'sub' | 'baseline';
 }
 
-function isButtonProperties(blueprint: Partial<ButtonProperties>): blueprint is ButtonProperties {
+function isButtonProperties(blueprint?: Partial<ButtonProperties>): blueprint is ButtonProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
   blueprint.imageSrc !== undefined &&

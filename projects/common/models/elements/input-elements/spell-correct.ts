@@ -20,9 +20,9 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   static title: string = 'Wort korrigieren';
   static icon: string = 'format_strikethrough';
 
-  constructor(element: { type: string } & SpellCorrectProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<SpellCorrectProperties>, idService?: AbstractIDService) {
+    super({ type: 'spell-correct', ...element }, idService);
+    if (isSpellCorrectProperties(element)) {
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -67,7 +67,7 @@ export interface SpellCorrectProperties extends TextInputElementProperties {
   styling: BasicStyles;
 }
 
-function isValid(blueprint?: SpellCorrectProperties): boolean {
+function isSpellCorrectProperties(blueprint?: Partial<SpellCorrectProperties>): blueprint is SpellCorrectProperties {
   if (!blueprint) return false;
   return PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling);

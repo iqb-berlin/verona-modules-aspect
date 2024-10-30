@@ -23,8 +23,8 @@ export class FrameElement extends UIElement implements FrameProperties {
   static title: string = 'Rahmen';
   static icon: string = 'crop_square';
 
-  constructor(element: { type: string } & Partial<FrameProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<FrameProperties>, idService?: AbstractIDService) {
+    super({ type: 'frame', ...element }, idService);
     if (isFrameProperties(element)) {
       this.hasBorderTop = element.hasBorderTop;
       this.hasBorderBottom = element.hasBorderBottom;
@@ -72,7 +72,8 @@ export interface FrameProperties extends UIElementProperties {
   styling: BorderStyles & { backgroundColor: string; };
 }
 
-function isFrameProperties(blueprint: Partial<FrameProperties>): blueprint is FrameProperties {
+function isFrameProperties(blueprint?: Partial<FrameProperties>): blueprint is FrameProperties {
+  if (!blueprint) return false;
   return blueprint.hasBorderTop !== undefined &&
     blueprint.hasBorderBottom !== undefined &&
     blueprint.hasBorderLeft !== undefined &&

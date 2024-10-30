@@ -40,8 +40,8 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   static title: string = 'Optionentabelle';
   static icon: string = 'margin';
 
-  constructor(element: { type: string } & Partial<LikertProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<LikertProperties>, idService?: AbstractIDService) {
+    super({ type: 'likert', ...element }, idService);
     if (isLikertProperties(element)) {
       this.options = [...element.options];
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
@@ -148,7 +148,7 @@ export interface LikertProperties extends UIElementProperties {
   };
 }
 
-function isLikertProperties(blueprint: Partial<LikertProperties>): blueprint is LikertProperties {
+function isLikertProperties(blueprint?: Partial<LikertProperties>): blueprint is LikertProperties {
   if (!blueprint) return false;
   return blueprint.rows !== undefined &&
     blueprint.options !== undefined &&

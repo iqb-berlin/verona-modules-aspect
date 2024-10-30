@@ -31,8 +31,8 @@ export class TableElement extends CompoundElement implements TableProperties {
   static title: string = 'Tabelle';
   static icon: string = 'table_view';
 
-  constructor(element: { type: string } & Partial<TableProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<TableProperties>, idService?: AbstractIDService) {
+    super({ type: 'table', ...element }, idService);
     if (isTableProperties(element)) {
       this.gridColumnSizes = element.gridColumnSizes;
       this.gridRowSizes = element.gridRowSizes;
@@ -62,7 +62,7 @@ export class TableElement extends CompoundElement implements TableProperties {
       if (element?.tableEdgesEnabled !== undefined) this.tableEdgesEnabled = element.tableEdgesEnabled;
       this.position = PropertyGroupGenerators.generatePositionProps({
         marginBottom: { value: 30, unit: 'px' },
-        ...element.position
+        ...element?.position
       });
       this.styling = {
         backgroundColor: 'transparent',

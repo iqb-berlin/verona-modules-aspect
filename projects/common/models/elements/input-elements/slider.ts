@@ -27,9 +27,9 @@ export class SliderElement extends InputElement implements SliderProperties {
   static title: string = 'Schieberegler';
   static icon: string = 'linear_scale';
 
-  constructor(element: { type: string } & SliderProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<SliderProperties>, idService?: AbstractIDService) {
+    super({ type: 'slider', ...element }, idService);
+    if (isSliderProperties(element)) {
       this.minValue = element.minValue;
       this.maxValue = element.maxValue;
       this.showValues = element.showValues;
@@ -95,7 +95,7 @@ export interface SliderProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: SliderProperties): boolean {
+function isSliderProperties(blueprint?: Partial<SliderProperties>): blueprint is SliderProperties {
   if (!blueprint) return false;
   return blueprint.minValue !== undefined &&
     blueprint.maxValue !== undefined &&
@@ -104,5 +104,5 @@ function isValid(blueprint?: SliderProperties): boolean {
     blueprint.thumbLabel !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

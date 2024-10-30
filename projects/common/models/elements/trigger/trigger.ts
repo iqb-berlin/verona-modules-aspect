@@ -17,9 +17,9 @@ export class TriggerElement extends UIElement implements TriggerProperties {
   static title: string = 'Auslöser';
   static icon: string = 'bolt';
 
-  constructor(element: { type: string } & TriggerProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TriggerProperties>, idService?: AbstractIDService) {
+    super({ type: 'trigger', ...element }, idService);
+    if (isTriggerProperties(element)) {
       this.action = element.action;
       this.actionParam = element.actionParam;
     } else {
@@ -45,7 +45,7 @@ export interface TriggerProperties extends UIElementProperties {
   actionParam: null | string | StateVariable ;
 }
 
-function isValid(blueprint?: TriggerProperties): boolean {
+function isTriggerProperties(blueprint?: Partial<TriggerProperties>): blueprint is TriggerProperties {
   if (!blueprint) return false;
   return blueprint.action !== undefined &&
     blueprint.actionParam !== undefined;

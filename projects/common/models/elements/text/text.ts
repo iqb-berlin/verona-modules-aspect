@@ -31,9 +31,9 @@ export class TextElement extends UIElement implements TextProperties {
     yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
   };
 
-  constructor(element: { type: string } & TextProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TextProperties>, idService?: AbstractIDService) {
+    super({ type: 'text', ...element }, idService);
+    if (isTextProperties(element)) {
       this.text = element.text;
       this.markingMode = element.markingMode;
       this.markingPanels = element.markingPanels;
@@ -129,7 +129,7 @@ export interface TextProperties extends UIElementProperties {
   };
 }
 
-function isValid(blueprint?: TextProperties): boolean {
+function isTextProperties(blueprint?: Partial<TextProperties>): blueprint is TextProperties {
   if (!blueprint) return false;
   return blueprint.text !== undefined &&
     blueprint.markingMode !== undefined &&
@@ -140,5 +140,5 @@ function isValid(blueprint?: TextProperties): boolean {
     blueprint.hasSelectionPopup !== undefined &&
     blueprint.columnCount !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

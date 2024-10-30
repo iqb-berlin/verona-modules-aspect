@@ -36,8 +36,8 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
 
   static validChildElements = ['TextField', 'DropList', 'ToggleButton', 'Button', 'Checkbox'];
 
-  constructor(element: { type: string } & Partial<ClozeProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<ClozeProperties>, idService?: AbstractIDService) {
+    super({ type: 'cloze', ...element }, idService);
     if (isClozeProperties(element)) {
       this.columnCount = element.columnCount;
       this.document = structuredClone(element.document);
@@ -166,7 +166,7 @@ export interface ClozeProperties extends UIElementProperties {
   };
 }
 
-function isClozeProperties(blueprint: Partial<ClozeProperties>): blueprint is ClozeProperties {
+function isClozeProperties(blueprint?: Partial<ClozeProperties>): blueprint is ClozeProperties {
   if (!blueprint) return false;
   return blueprint.document !== undefined &&
     blueprint.columnCount !== undefined &&

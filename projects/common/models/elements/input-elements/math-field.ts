@@ -23,9 +23,9 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   static title: string = 'Formelfeld';
   static icon: string = 'calculate';
 
-  constructor(element: { type: string } & MathFieldProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<MathFieldProperties>, idService?: AbstractIDService) {
+    super({ type: 'math-field', ...element }, idService);
+    if (isMathFieldProperties(element)) {
       this.enableModeSwitch = element.enableModeSwitch;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
@@ -73,10 +73,10 @@ export interface MathFieldProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: MathFieldProperties): boolean {
+function isMathFieldProperties(blueprint?: Partial<MathFieldProperties>): blueprint is MathFieldProperties {
   if (!blueprint) return false;
   return blueprint.enableModeSwitch !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

@@ -28,8 +28,8 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     lineHeight: number;
   };
 
-  constructor(element: { type: UIElementType } & Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
+    super({ type: 'text-field-simple', ...element }, idService);
     if (isTextFieldSimpleProperties(element)) {
       this.minLength = element.minLength;
       this.minLengthWarnMessage = element.minLengthWarnMessage;
@@ -103,8 +103,9 @@ export interface TextFieldSimpleProperties extends TextInputElementProperties {
   };
 }
 
-function isTextFieldSimpleProperties(blueprint: Partial<TextFieldSimpleProperties>)
+function isTextFieldSimpleProperties(blueprint?: Partial<TextFieldSimpleProperties>)
   : blueprint is TextFieldSimpleProperties {
+  if (!blueprint) return false;
   return blueprint.minLength !== undefined &&
     blueprint.minLengthWarnMessage !== undefined &&
     blueprint.maxLength !== undefined &&

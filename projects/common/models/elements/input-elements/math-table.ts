@@ -53,9 +53,9 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   static title: string = 'Rechenkästchen';
   static icon: string = 'apps';
 
-  constructor(element: { type: string } & MathTableProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<MathTableProperties>, idService?: AbstractIDService) {
+    super({ type: 'math-table', ...element }, idService);
+    if (isMathTableProperties(element)) {
       this.operation = element.operation;
       this.terms = [...element.terms];
       this.result = element.result;
@@ -134,7 +134,7 @@ export interface MathTableProperties extends UIElementProperties, KeyInputElemen
   };
 }
 
-function isValid(blueprint?: MathTableProperties): boolean {
+function isMathTableProperties(blueprint?: Partial<MathTableProperties>): blueprint is MathTableProperties {
   if (!blueprint) return false;
   return blueprint.operation !== undefined &&
          blueprint.terms !== undefined &&

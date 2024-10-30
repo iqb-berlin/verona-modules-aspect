@@ -33,8 +33,8 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   static title: string = 'Geometrie';
   static icon: string = 'architecture';
 
-  constructor(element: { type: string } & Partial<GeometryProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<GeometryProperties>, idService?: AbstractIDService) {
+    super({ type: 'geometry', ...element }, idService);
     if (isGeometryProperties(element)) {
       this.appDefinition = element.appDefinition;
       this.trackedVariables = [...element.trackedVariables];
@@ -133,7 +133,7 @@ export interface GeometryProperties extends UIElementProperties {
   };
 }
 
-function isGeometryProperties(blueprint: Partial<GeometryProperties>): blueprint is GeometryProperties {
+function isGeometryProperties(blueprint?: Partial<GeometryProperties>): blueprint is GeometryProperties {
   if (!blueprint) return false;
   return blueprint.appDefinition !== undefined &&
     blueprint.trackedVariables !== undefined &&

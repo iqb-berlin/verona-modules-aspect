@@ -115,11 +115,11 @@ export abstract class PropertyGroupValidators {
       blueprint.zIndex !== undefined;
   }
 
-  static isValidKeyInputElementProperties(blueprint: KeyInputElementProperties): boolean {
+  static isValidKeyInputElementProperties(blueprint?: Partial<KeyInputElementProperties>): boolean {
     if (!blueprint) return false;
     return blueprint.inputAssistancePreset !== undefined &&
       blueprint.inputAssistancePosition !== undefined &&
-      blueprint.inputAssistanceFloatingStartPosition &&
+      blueprint.inputAssistanceFloatingStartPosition !== undefined &&
       blueprint.showSoftwareKeyboard !== undefined &&
       blueprint.hideNativeKeyboard !== undefined &&
       blueprint.hasArrowKeys !== undefined;

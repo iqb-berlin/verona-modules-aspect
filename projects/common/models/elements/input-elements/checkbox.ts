@@ -22,9 +22,9 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';
 
-  constructor(element: { type: string } & CheckboxProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<CheckboxProperties>, idService?: AbstractIDService) {
+    super({ type: 'checkbox', ...element }, idService);
+    if (isCheckboxProperties(element)) {
       this.label = element.label;
       this.value = element.value;
       this.crossOutChecked = element.crossOutChecked;
@@ -81,7 +81,7 @@ export interface CheckboxProperties extends InputElementProperties {
   styling: BasicStyles;
 }
 
-function isValid(blueprint?: CheckboxProperties): boolean {
+function isCheckboxProperties(blueprint?: Partial<CheckboxProperties>): blueprint is CheckboxProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
     blueprint.crossOutChecked !== undefined &&

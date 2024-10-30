@@ -33,9 +33,9 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   static title: string = 'Eingabefeld';
   static icon: string = 'edit';
 
-  constructor(element: { type: string } & TextFieldProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TextFieldProperties>, idService?: AbstractIDService) {
+    super({ type: 'text-field', ...element }, idService);
+    if (isTextFieldProperties(element)) {
       if (element.appearance) this.appearance = element.appearance;
       this.minLength = element.minLength;
       this.minLengthWarnMessage = element.minLengthWarnMessage;
@@ -115,7 +115,7 @@ export interface TextFieldProperties extends TextInputElementProperties {
   };
 }
 
-function isValid(blueprint?: TextFieldProperties): boolean {
+function isTextFieldProperties(blueprint?: Partial<TextFieldProperties>): blueprint is TextFieldProperties {
   if (!blueprint) return false;
   return blueprint.minLength !== undefined &&
     blueprint.minLengthWarnMessage !== undefined &&
@@ -127,5 +127,5 @@ function isValid(blueprint?: TextFieldProperties): boolean {
     blueprint.hasKeyboardIcon !== undefined &&
     blueprint.clearable !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

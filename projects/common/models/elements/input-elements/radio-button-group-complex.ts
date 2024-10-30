@@ -30,9 +30,9 @@ export class RadioButtonGroupComplexElement extends InputElement
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
 
-  constructor(element: { type: string } & RadioButtonGroupComplexProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<RadioButtonGroupComplexProperties>, idService?: AbstractIDService) {
+    super({ type: 'radio-group-images', ...element }, idService);
+    if (isRadioButtonGroupComplexProperties(element)) {
       this.label = element.label;
       this.options = [...element.options];
       this.itemsPerRow = element.itemsPerRow;
@@ -99,7 +99,8 @@ export interface RadioButtonGroupComplexProperties extends InputElementPropertie
   styling: BasicStyles;
 }
 
-function isValid(blueprint?: RadioButtonGroupComplexProperties): boolean {
+function isRadioButtonGroupComplexProperties(blueprint?: Partial<RadioButtonGroupComplexProperties>)
+  : blueprint is RadioButtonGroupComplexProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
     blueprint.options !== undefined &&

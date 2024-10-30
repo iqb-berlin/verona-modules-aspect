@@ -20,9 +20,9 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   static title: string = 'Markierungselement';
   static icon: string = 'border_color';
 
-  constructor(element: { type: string } & MarkingPanelProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<MarkingPanelProperties>, idService?: AbstractIDService) {
+    super({ type: 'marking-panel', ...element }, idService);
+    if (isMarkingPanelProperties(element)) {
       this.highlightableOrange = element.highlightableOrange;
       this.highlightableTurquoise = element.highlightableTurquoise;
       this.highlightableYellow = element.highlightableYellow;
@@ -54,7 +54,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   }
 }
 
-function isValid(blueprint?: MarkingPanelProperties): boolean {
+function isMarkingPanelProperties(blueprint?: Partial<MarkingPanelProperties>): blueprint is MarkingPanelProperties {
   if (!blueprint) return false;
   return blueprint.highlightableOrange !== undefined &&
     blueprint.highlightableTurquoise !== undefined &&

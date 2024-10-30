@@ -21,9 +21,9 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   firstColumnSizeRatio: number = 5;
   verticalButtonAlignment: 'auto' | 'center' = 'center';
 
-  constructor(element: { type: string } & LikertRowProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<LikertRowProperties>, idService?: AbstractIDService) {
+    super({ type: 'likert-row', ...element }, idService);
+    if (isLikertRowProperties(element)) {
       this.rowLabel = element.rowLabel;
       this.columnCount = element.columnCount;
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
@@ -80,7 +80,7 @@ export interface LikertRowProperties extends InputElementProperties {
   verticalButtonAlignment: 'auto' | 'center';
 }
 
-function isValid(blueprint?: LikertRowProperties): boolean {
+function isLikertRowProperties(blueprint?: Partial<LikertRowProperties>): blueprint is LikertRowProperties {
   if (!blueprint) return false;
   return blueprint.rowLabel !== undefined &&
     blueprint.columnCount !== undefined &&

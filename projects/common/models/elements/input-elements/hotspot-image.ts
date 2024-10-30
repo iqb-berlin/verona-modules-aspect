@@ -36,9 +36,9 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   static title: string = 'Bildbereiche';
   static icon: string = 'ads_click';
 
-  constructor(element: { type: string } & HotspotImageProperties, idService?: AbstractIDService) {
-    super(element, idService);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<HotspotImageProperties>, idService?: AbstractIDService) {
+    super({ type: 'hotspot-image', ...element }, idService);
+    if (isHotspotImageProperties(element)) {
       this.value = element.value;
       this.src = element.src;
       this.fileName = element.fileName;
@@ -95,7 +95,7 @@ export interface HotspotImageProperties extends InputElementProperties {
   position: PositionProperties;
 }
 
-function isValid(blueprint?: HotspotImageProperties): boolean {
+function isHotspotImageProperties(blueprint?: Partial<HotspotImageProperties>): blueprint is HotspotImageProperties {
   if (!blueprint) return false;
   return blueprint.value !== undefined &&
     blueprint.src !== undefined &&

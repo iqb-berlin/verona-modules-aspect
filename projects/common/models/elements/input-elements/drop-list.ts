@@ -38,8 +38,8 @@ export class DropListElement extends InputElement implements DropListProperties 
   static title: string = 'Ablegeliste';
   static icon: string = 'drag_indicator';
 
-  constructor(element: { type: string } & Partial<DropListProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<DropListProperties>, idService?: AbstractIDService) {
+    super({ type: 'drop-list', ...element }, idService);
     if (isDropListProperties(element)) {
       this.value = element.value.map((value, index) => ({
         text: value.text,
@@ -211,7 +211,8 @@ export interface DropListProperties extends InputElementProperties {
   };
 }
 
-function isDropListProperties(blueprint: Partial<DropListProperties>): blueprint is DropListProperties {
+function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
+  if (!blueprint) return false;
   return blueprint.value !== undefined &&
     blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&

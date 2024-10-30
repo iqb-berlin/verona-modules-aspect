@@ -19,8 +19,8 @@ export class AudioElement extends PlayerElement implements AudioProperties {
   static title: string = 'Audio';
   static icon: string = 'volume_up';
 
-  constructor(element: { type: string } & Partial<AudioProperties>, idService?: AbstractIDService) {
-    super(element, idService);
+  constructor(element?: Partial<AudioProperties>, idService?: AbstractIDService) {
+    super({ type: 'audio', ...element }, idService);
     if (isAudioProperties(element)) {
       this.src = element.src;
       this.fileName = element.fileName;
@@ -64,7 +64,7 @@ export interface AudioProperties extends PlayerElementBlueprint {
   styling: { backgroundColor: string };
 }
 
-function isAudioProperties(blueprint: Partial<AudioProperties>): blueprint is AudioProperties {
+function isAudioProperties(blueprint?: Partial<AudioProperties>): blueprint is AudioProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
     blueprint.fileName !== undefined &&

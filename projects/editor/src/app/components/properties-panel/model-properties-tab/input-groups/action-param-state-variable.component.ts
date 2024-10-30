@@ -8,18 +8,18 @@ import { StateVariable } from 'common/models/state-variable';
   template: `
     <div class="fx-column-start-stretch">
       <mat-form-field>
-        <mat-label>{{'stateVariableId' | translate}}</mat-label>
+        <mat-label>{{ 'stateVariableId' | translate }}</mat-label>
         <mat-select [(ngModel)]="stateVariable.id"
                     (ngModelChange)="stateVariableChange.emit(stateVariable)">
-          <mat-option *ngFor="let id of stateVariableIds"
-                      [value]="id">
-            {{id}}
+          <mat-option *ngFor="let variable of stateVariables"
+                      [value]="variable.id">
+            {{ variable.alias }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field>
-        <mat-label>{{'stateVariableValue' | translate}}</mat-label>
+        <mat-label>{{ 'stateVariableValue' | translate }}</mat-label>
         <input matInput
                [(ngModel)]="stateVariable.value"
                (ngModelChange)="stateVariableChange.emit(stateVariable)">
@@ -29,6 +29,6 @@ import { StateVariable } from 'common/models/state-variable';
 })
 export class ActionParamStateVariableComponent {
   @Input() stateVariable!: StateVariable;
-  @Input() stateVariableIds!: string[];
+  @Input() stateVariables!: StateVariable[];
   @Output() stateVariableChange = new EventEmitter<StateVariable>();
 }

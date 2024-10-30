@@ -60,7 +60,7 @@ import {
   TooltipPropertiesDialogComponent
 } from './components/dialogs/tooltip-properties-dialog.component';
 import {
-  ActionPropertiesComponent, GetStateVariableIdsPipe, GetStateVariablePipe, ScrollPageIndexPipe
+  ActionPropertiesComponent, GetStateVariablePipe, ScrollPageIndexPipe
 } from './components/properties-panel/model-properties-tab/input-groups/action-properties.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -176,7 +176,6 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ShowStateVariablesButtonComponent,
     StateVariableEditorComponent,
     ActionParamStateVariableComponent,
-    GetStateVariableIdsPipe,
     VisibilityRulesDialogComponent,
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,

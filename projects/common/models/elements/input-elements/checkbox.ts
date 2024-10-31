@@ -51,6 +51,7 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'boolean',
       format: '',
       multiple: false,

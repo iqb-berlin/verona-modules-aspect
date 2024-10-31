@@ -53,6 +53,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: 'math-ml',
       multiple: false,

@@ -70,6 +70,7 @@ export class ImageElement extends UIElement implements ImageProperties {
     if (!this.magnifier) return [];
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'boolean',
       format: '',
       multiple: false,

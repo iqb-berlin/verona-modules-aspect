@@ -49,6 +49,7 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: 'latex',
       multiple: false,

@@ -65,6 +65,7 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'boolean',
       format: '',
       multiple: true,

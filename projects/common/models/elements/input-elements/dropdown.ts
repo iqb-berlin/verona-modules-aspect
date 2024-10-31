@@ -54,6 +54,7 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'integer',
       format: '',
       multiple: false,

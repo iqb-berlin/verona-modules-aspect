@@ -147,6 +147,7 @@ export class DropListElement extends InputElement implements DropListProperties 
   getVariableInfos(options: DropListElement[]): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: '',
       multiple: true,

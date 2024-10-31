@@ -42,6 +42,7 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: '',
       multiple: false,

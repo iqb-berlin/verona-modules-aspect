@@ -78,6 +78,7 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: '',
       multiple: false,

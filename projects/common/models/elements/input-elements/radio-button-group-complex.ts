@@ -63,6 +63,7 @@ export class RadioButtonGroupComplexElement extends InputElement
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'integer',
       format: '',
       multiple: false,

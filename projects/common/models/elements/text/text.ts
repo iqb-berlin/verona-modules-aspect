@@ -87,6 +87,7 @@ export class TextElement extends UIElement implements TextProperties {
     if (!this.isSelectable()) return [];
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: 'text-selection',
       multiple: true,

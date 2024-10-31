@@ -97,6 +97,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: 'math-table',
       multiple: false,

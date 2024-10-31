@@ -57,6 +57,7 @@ export class SliderElement extends InputElement implements SliderProperties {
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'integer',
       format: '',
       multiple: false,

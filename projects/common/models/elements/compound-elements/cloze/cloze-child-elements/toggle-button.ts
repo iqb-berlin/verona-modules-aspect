@@ -63,6 +63,7 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'integer',
       format: '',
       multiple: false,

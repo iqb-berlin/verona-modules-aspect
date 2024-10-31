@@ -71,6 +71,7 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: '',
       multiple: false,

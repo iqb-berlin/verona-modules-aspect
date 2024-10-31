@@ -82,6 +82,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   getVariableInfoOfGeometryVariable(variableName: string): VariableInfo {
     return {
       id: this.getGeometryVariableId(variableName),
+      alias: this.alias,
       type: 'string',
       format: 'ggb-variable',
       multiple: false,
@@ -98,6 +99,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
       .getVariableInfoOfGeometryVariable(variable));
     answerSchemes.push({
       id: this.id,
+      alias: this.alias,
       type: 'string',
       format: 'ggb-file',
       multiple: false,

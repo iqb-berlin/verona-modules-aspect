@@ -286,6 +286,7 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,
+      alias: this.alias,
       type: 'number',
       format: '',
       multiple: false,

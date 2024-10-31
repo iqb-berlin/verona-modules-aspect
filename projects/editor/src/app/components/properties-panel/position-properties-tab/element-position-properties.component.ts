@@ -1,11 +1,11 @@
 import {
   Component, Input
 } from '@angular/core';
-import { PositionedUIElement } from 'common/models/elements/element';
 import { DimensionProperties, PositionProperties } from 'common/models/elements/property-group-interfaces';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
+import { PositionedUIElement } from 'common/interfaces';
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-position-and-dimension-properties',

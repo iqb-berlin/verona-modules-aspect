@@ -1,6 +1,5 @@
 import {
-  UIElement, CompoundElement, PositionedUIElement,
-  UIElementProperties, UIElementType, UIElementValue
+  UIElement, CompoundElement
 } from 'common/models/elements/element';
 import {
   BorderStyles, PositionProperties,
@@ -8,10 +7,17 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
-import { InstantiationEror } from 'common/util/errors';
 import { environment } from 'common/environment';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { ElementFactory } from 'common/util/element.factory';
+import {
+  AbstractIDService,
+  PositionedUIElement,
+  UIElementProperties,
+  UIElementType,
+  UIElementValue
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TableElement extends CompoundElement implements TableProperties {
   type: UIElementType = 'table';
@@ -25,9 +31,9 @@ export class TableElement extends CompoundElement implements TableProperties {
   static title: string = 'Tabelle';
   static icon: string = 'table_view';
 
-  constructor(element?: TableProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TableProperties>, idService?: AbstractIDService) {
+    super({ type: 'table', ...element }, idService);
+    if (isTableProperties(element)) {
       this.gridColumnSizes = element.gridColumnSizes;
       this.gridRowSizes = element.gridRowSizes;
       this.elements = element.elements
@@ -87,7 +93,7 @@ export class TableElement extends CompoundElement implements TableProperties {
   }
 }
 
-export interface TableProperties extends UIElementProperties {
+interface TableProperties extends UIElementProperties {
   gridColumnSizes: { value: number; unit: string }[];
   gridRowSizes: { value: number; unit: string }[];
   elements: UIElement[];
@@ -96,13 +102,13 @@ export interface TableProperties extends UIElementProperties {
   styling: { backgroundColor: string } & BorderStyles;
 }
 
-function isValid(blueprint?: TableProperties): boolean {
+function isTableProperties(blueprint?: Partial<TableProperties>): blueprint is TableProperties {
   if (!blueprint) return false;
   return blueprint.gridColumnSizes !== undefined &&
     blueprint.gridRowSizes !== undefined &&
     blueprint.elements !== undefined &&
     blueprint.tableEdgesEnabled !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
-    blueprint.styling.backgroundColor !== undefined &&
+    blueprint.styling?.backgroundColor !== undefined &&
     PropertyGroupValidators.isValidBorderStyles(blueprint.styling);
 }

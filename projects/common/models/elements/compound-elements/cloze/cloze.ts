@@ -1,6 +1,5 @@
 import {
-  CompoundElement, InputElement, PositionedUIElement,
-  UIElement, UIElementProperties, UIElementType, UIElementValue
+  CompoundElement, InputElement, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -17,8 +16,11 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { CheckboxElement, CheckboxProperties } from 'common/models/elements/input-elements/checkbox';
+import {
+  AbstractIDService, UIElementProperties, UIElementType, UIElementValue
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class ClozeElement extends CompoundElement implements ClozeProperties {
   type: UIElementType = 'cloze';
@@ -34,9 +36,9 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
 
   static validChildElements = ['TextField', 'DropList', 'ToggleButton', 'Button', 'Checkbox'];
 
-  constructor(element?: ClozeProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<ClozeProperties>, idService?: AbstractIDService) {
+    super({ type: 'cloze', ...element }, idService);
+    if (isClozeProperties(element)) {
       this.columnCount = element.columnCount;
       this.document = structuredClone(element.document);
       this.instantiateChildElements();
@@ -164,13 +166,13 @@ export interface ClozeProperties extends UIElementProperties {
   };
 }
 
-function isValid(blueprint?: ClozeProperties): boolean {
+function isClozeProperties(blueprint?: Partial<ClozeProperties>): blueprint is ClozeProperties {
   if (!blueprint) return false;
   return blueprint.document !== undefined &&
     blueprint.columnCount !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }
 
 export interface ClozeDocument {

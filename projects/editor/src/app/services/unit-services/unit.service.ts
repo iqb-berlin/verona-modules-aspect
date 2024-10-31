@@ -3,10 +3,7 @@ import { Subject } from 'rxjs';
 import { FileService } from 'common/services/file.service';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { Unit, UnitProperties } from 'common/models/unit';
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
-import {
-  CompoundElement, UIElement
-} from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { StateVariable } from 'common/models/state-variable';
 import { VersionManager } from 'common/services/version-manager';
@@ -14,7 +11,6 @@ import { Page } from 'common/models/page';
 import { Section } from 'common/models/section';
 import { SectionCounter } from 'common/util/section-counter';
 import { ReferenceList, ReferenceManager } from 'editor/src/app/services/reference-manager';
-import { HistoryService, UnitUpdateCommand } from 'editor/src/app/services/history.service';
 import { DialogService } from '../dialog.service';
 import { VeronaAPIService } from '../verona-api.service';
 import { SelectionService } from '../selection.service';
@@ -40,10 +36,8 @@ export class UnitService {
               private veronaApiService: VeronaAPIService,
               private messageService: MessageService,
               private dialogService: DialogService,
-              private historyService: HistoryService,
-
               private idService: IDService) {
-    this.unit = new Unit();
+    this.unit = new Unit(undefined, this.idService);
     this.referenceManager = new ReferenceManager(this.unit);
   }
 
@@ -72,17 +66,15 @@ export class UnitService {
         if (e instanceof Error) this.dialogService.showUnitDefErrorDialog(e.message);
       }
     } else {
-      this.idService.reset();
-      this.unit = new Unit();
+      this.unit = new Unit(undefined, this.idService);
       this.referenceManager = new ReferenceManager(this.unit);
     }
   }
 
   private loadUnit(parsedUnitDefinition?: string): void {
-    this.selectionService.reset();
     this.idService.reset();
-    this.unit = new Unit(parsedUnitDefinition as unknown as UnitProperties);
-    this.idService.registerUnitIds(this.unit);
+    this.selectionService.reset();
+    this.unit = new Unit(parsedUnitDefinition as unknown as UnitProperties, this.idService);
     this.referenceManager = new ReferenceManager(this.unit);
 
     const invalidRefs = this.referenceManager.getAllInvalidRefs();
@@ -94,60 +86,24 @@ export class UnitService {
     this.updateSectionCounter();
   }
 
-  async updateUnitDefinition(command?: UnitUpdateCommand): Promise<void> {
-    if (command) {
-      const deletedData = await command.command();
-      if (deletedData instanceof Promise) {
-        deletedData.then((deletedData) => {
-          this.historyService.addCommand(command, deletedData);
-        });
-      } else {
-        this.historyService.addCommand(command, deletedData);
-      }
-    }
-    this.veronaApiService.sendChanged(this.unit);
+  updateUnitDefinition(): void {
+    this.veronaApiService.sendChanged(
+      UnitService.createUnitDefinition(this.unit),
+      `${this.unit.type}@${this.unit.version}`,
+      this.unit.getVariableInfos());
   }
 
-  rollback(): void {
-    this.historyService.rollback();
-    this.veronaApiService.sendChanged(this.unit);
-  }
-
-  registerIDs(elements: UIElement[]): void {
-    elements.forEach(element => {
-      if (['drop-list', 'drop-list-simple'].includes((element as UIElement).type as string)) {
-        (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
+  private static createUnitDefinition(unit: Unit): string {
+    return JSON.stringify(unit, (key, value) => {
+      if (key === 'idService') {
+        return undefined;
       }
-      if (['likert', 'cloze'].includes((element as UIElement).type as string)) {
-        element.getChildElements().forEach(el => {
-          this.idService.addID(el.id);
-          if ((element as UIElement).type === 'drop-list') {
-            (element as DropListElement).value.forEach(value => this.idService.addID(value.id));
-          }
-        });
-      }
-      this.idService.addID(element.id);
-    });
-  }
-
-  unregisterIDs(elements: UIElement[]): void {
-    elements.forEach(element => {
-      if (element.type === 'drop-list') {
-        ((element as DropListElement).value as DragNDropValueObject[]).forEach((value: DragNDropValueObject) => {
-          this.idService.unregisterID(value.id);
-        });
-      }
-      if (element instanceof CompoundElement) {
-        element.getChildElements().forEach((childElement: UIElement) => {
-          this.idService.unregisterID(childElement.id);
-        });
-      }
-      this.idService.unregisterID(element.id);
+      return value;
     });
   }
 
   saveUnit(): void {
-    FileService.saveUnitToFile(JSON.stringify(this.unit));
+    FileService.saveUnitToFile(UnitService.createUnitDefinition(this.unit));
   }
 
   async loadUnitFromFile(): Promise<void> {
@@ -155,16 +111,10 @@ export class UnitService {
     this.loadUnitDefinition(unitFile.content);
   }
 
-  getNewValueID(): string {
-    return this.idService.getAndRegisterNewID('value');
-  }
-
   /* Used by props panel to show available dropLists to connect */
-  getAllDropListElementIDs(): string[] {
-    const allDropLists = [
-      ...this.unit.getAllElements('drop-list'),
-      ...this.unit.getAllElements('drop-list-simple')];
-    return allDropLists.map(dropList => dropList.id);
+  getAllDropListElementIDs(): { id: string, alias: string }[] {
+    const allDropLists = this.unit.getAllElements('drop-list');
+    return allDropLists.map(dropList => ({ id: dropList.id, alias: dropList.alias }));
   }
 
   updateStateVariables(stateVariables: StateVariable[]): void {

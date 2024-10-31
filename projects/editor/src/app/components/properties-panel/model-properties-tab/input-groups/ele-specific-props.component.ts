@@ -6,7 +6,6 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
 import {
   MathFieldPropsComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/math-field-props.component';
-import { UIElementValue } from 'common/models/elements/element';
 import {
   MathTablePropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/math-table-properties.component';
@@ -37,6 +36,7 @@ import {
 import {
   MarkingPanelPropertiesComponent
 } from 'editor/src/app/components/properties-panel/model-properties-tab/input-groups/ele-specific/marking-panel-properties.component';
+import { UIElementValue } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-ele-specific-props',

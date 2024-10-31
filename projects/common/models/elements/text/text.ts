@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextComponent } from 'common/components/text/text.component';
 import { VariableInfo } from '@iqb/responses';
@@ -7,7 +7,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextElement extends UIElement implements TextProperties {
   type: UIElementType = 'text';
@@ -30,9 +31,9 @@ export class TextElement extends UIElement implements TextProperties {
     yellow: '#f9f871', turquoise: '#9de8eb', orange: '#ffa06a', delete: 'lightgrey'
   };
 
-  constructor(element?: TextProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TextProperties>, idService?: AbstractIDService) {
+    super({ type: 'text', ...element }, idService);
+    if (isTextProperties(element)) {
       this.text = element.text;
       this.markingMode = element.markingMode;
       this.markingPanels = element.markingPanels;
@@ -128,7 +129,7 @@ export interface TextProperties extends UIElementProperties {
   };
 }
 
-function isValid(blueprint?: TextProperties): boolean {
+function isTextProperties(blueprint?: Partial<TextProperties>): blueprint is TextProperties {
   if (!blueprint) return false;
   return blueprint.text !== undefined &&
     blueprint.markingMode !== undefined &&
@@ -139,5 +140,5 @@ function isValid(blueprint?: TextProperties): boolean {
     blueprint.hasSelectionPopup !== undefined &&
     blueprint.columnCount !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

@@ -141,6 +141,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
+      this.elementModel.alias,
       null,
       this.elementComponent,
       this.pageIndex
@@ -179,7 +180,12 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
           initialValue = ElementModelElementCodeMappingService
             .mapToElementCodeValue((childModel as InputElement).value, childModel.type);
       }
-      this.registerAtUnitStateService(childModel.id, initialValue, child, this.pageIndex);
+      this.registerAtUnitStateService(
+        childModel.id,
+        childModel.alias,
+        initialValue,
+        child,
+        this.pageIndex);
       this.registerChildEvents(child, childModel);
     });
   }

@@ -5,7 +5,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AudioElement } from 'common/models/elements/media-elements/audio';
 import { VideoElement } from 'common/models/elements/media-elements/video';
-import { ValueChangeElement } from 'common/models/elements/element';
+import { ValueChangeElement } from 'common/interfaces';
 import { ElementComponent } from './element-component.directive';
 
 @Directive()

@@ -20,11 +20,13 @@ export class StateVariableEditorComponent {
 
   constructor(private idService: IDService) { }
 
-  checkId(id: string): void {
-    if (id !== this.stateVariable.id) {
-      this.error = !this.idService.validateAndAddNewID(id, this.stateVariable.id);
+  checkId(alias: string): void {
+    if (alias !== this.stateVariable.alias) {
+      this.error = !this.idService.isAliasAvailable(alias, 'state-variable');
       if (!this.error) {
-        this.stateVariable.id = id;
+        this.idService.unregister(this.stateVariable.alias, 'state-variable', false, true);
+        this.idService.register(alias, 'state-variable', false, true);
+        this.stateVariable.alias = alias;
         this.stateVariableChange.emit(this.stateVariable);
       }
     } else {

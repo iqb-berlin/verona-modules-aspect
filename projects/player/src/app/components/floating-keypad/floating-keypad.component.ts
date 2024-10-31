@@ -2,7 +2,7 @@ import {
   Component, Input, OnChanges, SimpleChanges
 } from '@angular/core';
 import { ConnectedPosition, Overlay, RepositionScrollStrategy } from '@angular/cdk/overlay';
-import { UIElementType } from 'common/models/elements/element';
+import { UIElementType } from 'common/interfaces';
 import { KeypadService } from '../../services/keypad.service';
 
 @Component({

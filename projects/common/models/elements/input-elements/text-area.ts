@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { TextAreaComponent } from 'common/components/input-elements/text-area.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextAreaElement extends TextInputElement implements TextAreaProperties {
   type: UIElementType = 'text-area';
@@ -30,9 +31,9 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   static title: string = 'Eingabebereich';
   static icon: string = 'edit_note';
 
-  constructor(element?: TextAreaProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TextAreaProperties>, idService?: AbstractIDService) {
+    super({ type: 'text-area', ...element }, idService);
+    if (isTextAreaProperties(element)) {
       this.appearance = element.appearance;
       this.resizeEnabled = element.resizeEnabled;
       this.rowCount = element.rowCount;
@@ -105,7 +106,7 @@ export interface TextAreaProperties extends TextInputElementProperties {
   };
 }
 
-function isValid(blueprint?: TextAreaProperties): boolean {
+function isTextAreaProperties(blueprint?: Partial<TextAreaProperties>): blueprint is TextAreaProperties {
   if (!blueprint) return false;
   return blueprint.appearance !== undefined &&
   blueprint.resizeEnabled !== undefined &&
@@ -117,5 +118,5 @@ function isValid(blueprint?: TextAreaProperties): boolean {
   blueprint.hasKeyboardIcon !== undefined &&
   PropertyGroupValidators.isValidPosition(blueprint.position) &&
   PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-  blueprint.styling.lineHeight !== undefined;
+  blueprint.styling?.lineHeight !== undefined;
 }

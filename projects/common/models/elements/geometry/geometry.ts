@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  UIElement, UIElementProperties, UIElementType
+  UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
@@ -9,7 +9,8 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class GeometryElement extends UIElement implements GeometryProperties {
   type: UIElementType = 'geometry';
@@ -32,9 +33,9 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   static title: string = 'Geometrie';
   static icon: string = 'architecture';
 
-  constructor(element?: GeometryProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<GeometryProperties>, idService?: AbstractIDService) {
+    super({ type: 'geometry', ...element }, idService);
+    if (isGeometryProperties(element)) {
       this.appDefinition = element.appDefinition;
       this.trackedVariables = [...element.trackedVariables];
       this.showResetIcon = element.showResetIcon;
@@ -72,6 +73,10 @@ export class GeometryElement extends UIElement implements GeometryProperties {
 
   getGeometryVariableId(variableName: string): string {
     return `${this.id}_${variableName}`;
+  }
+
+  getGeometryVariableAlias(variableName: string): string {
+    return `${this.alias}_${variableName}`;
   }
 
   getVariableInfoOfGeometryVariable(variableName: string): VariableInfo {
@@ -132,7 +137,7 @@ export interface GeometryProperties extends UIElementProperties {
   };
 }
 
-function isValid(blueprint?: GeometryProperties): boolean {
+function isGeometryProperties(blueprint?: Partial<GeometryProperties>): blueprint is GeometryProperties {
   if (!blueprint) return false;
   return blueprint.appDefinition !== undefined &&
     blueprint.trackedVariables !== undefined &&

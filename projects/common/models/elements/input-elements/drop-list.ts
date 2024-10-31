@@ -1,16 +1,22 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, UIElementType, UIElementValue
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import {
+  AbstractIDService,
+  DragNDropValueObject,
+  InputElementProperties,
+  UIElementType,
+  UIElementValue
+} from 'common/interfaces';
+import { IDError, InstantiationEror } from 'common/errors';
 
 export class DropListElement extends InputElement implements DropListProperties {
   type: UIElementType = 'drop-list';
@@ -32,15 +38,16 @@ export class DropListElement extends InputElement implements DropListProperties 
   static title: string = 'Ablegeliste';
   static icon: string = 'drag_indicator';
 
-  constructor(element?: DropListProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<DropListProperties>, idService?: AbstractIDService) {
+    super({ type: 'drop-list', ...element }, idService);
+    if (isDropListProperties(element)) {
       this.value = element.value.map((value, index) => ({
         text: value.text,
         imgSrc: value.imgSrc,
         imgFileName: value.imgFileName,
         imgPosition: value.imgPosition,
         id: value.id,
+        alias: value.alias,
         originListID: this.id,
         originListIndex: index,
         audioSrc: value.audioSrc,
@@ -69,6 +76,7 @@ export class DropListElement extends InputElement implements DropListProperties 
           imgFileName: value.imgFileName,
           imgPosition: value.imgPosition,
           id: value.id,
+          alias: value.alias,
           originListID: this.id,
           originListIndex: index,
           audioSrc: value.audioSrc,
@@ -108,18 +116,32 @@ export class DropListElement extends InputElement implements DropListProperties 
     return new DropListElement(this);
   }
 
-  /* Set originListID and originListIndex if applicable. */
   setProperty(property: string, value: UIElementValue): void {
     super.setProperty(property, value);
-    if (property === 'value' || property === 'id') {
-      this.value.forEach((dndValue: DragNDropValueObject, index) => { // foreach to keep the array ref intact
-        this.value[index] = {
-          ...dndValue,
-          originListID: this.id,
-          originListIndex: this.value.indexOf(dndValue)
-        };
-      });
+    if (property === 'value') {
+      this.fixOriginIDs();
     }
+  }
+
+  updateValueObject(valueIndex: number, value: DragNDropValueObject): void {
+    if (value.alias !== this.value[valueIndex].alias) {
+      if (!this.idService?.isAliasAvailable(value.alias, 'value')) {
+        throw new IDError('ID ist bereits vergeben');
+      }
+      this.idService?.changeAlias(this.value[valueIndex].alias, value.alias, 'value');
+    }
+    this.value[valueIndex] = value;
+    this.fixOriginIDs();
+  }
+
+  private fixOriginIDs(): void {
+    this.value.forEach((dndValue: DragNDropValueObject, index) => {
+      this.value[index] = {
+        ...dndValue,
+        originListID: this.id,
+        originListIndex: this.value.indexOf(dndValue)
+      };
+    });
   }
 
   getVariableInfos(options: DropListElement[]): VariableInfo[] {
@@ -154,6 +176,22 @@ export class DropListElement extends InputElement implements DropListProperties 
   getElementComponent(): Type<ElementComponent> {
     return DropListComponent;
   }
+
+  registerIDs(): void {
+    super.registerIDs();
+    this.value.forEach(val => {
+      this.idService?.register(val.id, 'value', true, false);
+      this.idService?.register(val.alias, 'value', false, true);
+    });
+  }
+
+  unregisterIDs(): void {
+    super.unregisterIDs();
+    this.value.forEach(val => {
+      this.idService?.unregister(val.id, 'value', true, false);
+      this.idService?.unregister(val.alias, 'value', false, true);
+    });
+  }
 }
 
 export interface DropListProperties extends InputElementProperties {
@@ -173,7 +211,7 @@ export interface DropListProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: DropListProperties): boolean {
+function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
   if (!blueprint) return false;
   return blueprint.value !== undefined &&
     blueprint.isSortList !== undefined &&

@@ -1,4 +1,4 @@
-import { UIElement, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
 import { ButtonElement } from 'common/models/elements/button/button';
@@ -29,6 +29,7 @@ import { TextAreaMathElement } from 'common/models/elements/input-elements/text-
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
+import { AbstractIDService, UIElementType } from 'common/interfaces';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -61,7 +62,8 @@ export abstract class ElementFactory {
     table: TableElement
   };
 
-  static createElement(element: { type: UIElementType } & Partial<UIElement>): UIElement {
-    return new ElementFactory.ELEMENT_CLASSES[element.type](element);
+  static createElement(element: { type: UIElementType } & Partial<UIElement>, idService?: AbstractIDService)
+    : UIElement {
+    return new ElementFactory.ELEMENT_CLASSES[element.type](element, idService);
   }
 }

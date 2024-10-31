@@ -2,7 +2,6 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Label } from 'common/models/elements/label-interfaces';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from 'common/shared.module';
@@ -10,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogService } from 'editor/src/app/services/dialog.service';
+import { Label } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-option-list-panel',
@@ -58,7 +58,7 @@ import { DialogService } from 'editor/src/app/services/dialog.service';
         <div *ngFor="let item of itemList; let i = index" cdkDrag
              class="option-draggable fx-row-start-stretch">
           <div class="item-box" [style.align-self]="'center'">
-            <div *ngIf="$any(item).id" class="item-id">{{ $any(item).id }}</div>
+            <div *ngIf="$any(item).alias" class="item-id">{{ $any(item).alias }}</div>
             <div [innerHTML]="item.text | safeResourceHTML"></div>
           </div>
           <img [src]="$any(item).imgSrc"

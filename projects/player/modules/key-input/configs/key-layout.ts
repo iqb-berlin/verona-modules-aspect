@@ -1,4 +1,4 @@
-import { InputAssistancePreset } from 'common/models/elements/element';
+import { InputAssistancePreset } from 'common/interfaces';
 
 export interface KeyInputLayout {
   default: string[][],

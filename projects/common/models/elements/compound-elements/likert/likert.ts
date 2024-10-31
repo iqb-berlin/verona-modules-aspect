@@ -1,7 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  CompoundElement, UIElement,
-  PositionedUIElement, UIElementValue, OptionElement, UIElementProperties, UIElementType
+  CompoundElement, UIElement
 } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -9,10 +8,17 @@ import { LikertComponent } from 'common/components/compound-elements/likert/like
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
-import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { VariableInfo } from '@iqb/responses';
+import {
+  AbstractIDService,
+  OptionElement,
+  PositionedUIElement, TextImageLabel,
+  UIElementProperties,
+  UIElementType,
+  UIElementValue
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class LikertElement extends CompoundElement implements OptionElement, LikertProperties {
   type: UIElementType = 'likert';
@@ -34,9 +40,9 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   static title: string = 'Optionentabelle';
   static icon: string = 'margin';
 
-  constructor(element?: LikertProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<LikertProperties>, idService?: AbstractIDService) {
+    super({ type: 'likert', ...element }, idService);
+    if (isLikertProperties(element)) {
       this.options = [...element.options];
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
       this.rows = element.rows.map(row => new LikertRowElement(row));
@@ -142,7 +148,7 @@ export interface LikertProperties extends UIElementProperties {
   };
 }
 
-function isValid(blueprint?: LikertProperties): boolean {
+function isLikertProperties(blueprint?: Partial<LikertProperties>): blueprint is LikertProperties {
   if (!blueprint) return false;
   return blueprint.rows !== undefined &&
     blueprint.options !== undefined &&
@@ -152,9 +158,9 @@ function isValid(blueprint?: LikertProperties): boolean {
     blueprint.stickyHeader !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined &&
-    blueprint.styling.lineColoring !== undefined &&
-    blueprint.styling.lineColoringColor !== undefined &&
-    blueprint.styling.firstLineColoring !== undefined &&
-    blueprint.styling.firstLineColoringColor !== undefined;
+    blueprint.styling?.lineHeight !== undefined &&
+    blueprint.styling?.lineColoring !== undefined &&
+    blueprint.styling?.lineColoringColor !== undefined &&
+    blueprint.styling?.firstLineColoring !== undefined &&
+    blueprint.styling?.firstLineColoringColor !== undefined;
 }

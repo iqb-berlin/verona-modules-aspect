@@ -14,8 +14,7 @@ import {
 import { Section, SectionProperties } from 'common/models/section';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { IDService } from 'editor/src/app/services/id.service';
-import { DragNDropValueObject, TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
-import { PositionedUIElement, UIElement, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { TextWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/text.dialog.component';
 import { LikertWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/likert.dialog.component';
 import { InputWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/input.dialog.component';
@@ -27,6 +26,7 @@ import { GeometryWizardDialogComponent } from 'editor/src/app/components/dialogs
 import { DroplistWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/droplist.dialog.component';
 import { MathTableWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/mathtable.dialog.component';
 import { SelectionService } from 'editor/src/app/services/selection.service';
+import { DragNDropValueObject, PositionedUIElement, TextImageLabel, TextLabel, UIElementType } from 'common/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -341,7 +341,7 @@ export class TemplateService {
         {
           options: config.options,
           rows: config.rows.map(row => new LikertRowElement({
-            id: this.idService.getAndRegisterNewID('likert-row'),
+            ...this.idService.getAndRegisterNewIDs('likert-row'),
             rowLabel: {
               ...row
             },
@@ -613,7 +613,7 @@ export class TemplateService {
           dimensions: { minHeight: 58 } as DimensionProperties,
           value: config.options.map(option => ({
             text: option.text,
-            id: this.unitService.getNewValueID(),
+            ...this.idService.getAndRegisterNewIDs('value'),
             originListID: 'id_placeholder'
           })),
           orientation: config.alignment === 'column' ? 'flex' : 'vertical',
@@ -778,7 +778,7 @@ export class TemplateService {
           } as DimensionProperties,
           value: config.options.map(option => ({
             text: option.text,
-            id: this.unitService.getNewValueID(),
+            ...this.idService.getAndRegisterNewIDs('value'),
             originListID: 'id_placeholder'
           })),
           orientation: 'vertical',
@@ -797,7 +797,7 @@ export class TemplateService {
                         params?: Partial<UIElement>): PositionedUIElement {
     return ElementFactory.createElement({
       type: elType,
-      id: this.idService.getAndRegisterNewID(elType),
+      ...this.idService.getAndRegisterNewIDs(elType),
       position: PropertyGroupGenerators.generatePositionProps(coords),
       ...params
     }) as PositionedUIElement;

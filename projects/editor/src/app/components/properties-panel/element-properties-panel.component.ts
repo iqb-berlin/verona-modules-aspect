@@ -8,11 +8,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'editor/src/app/services/message.service';
 import { UIElement } from 'common/models/elements/element';
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-import { UnitService } from '../../services/unit-services/unit.service';
-import { SelectionService } from '../../services/selection.service';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
+import { UIElementValue } from 'common/interfaces';
+import { SelectionService } from '../../services/selection.service';
+import { UnitService } from '../../services/unit-services/unit.service';
 
 export type CombinedProperties = UIElement & { idList?: string[] };
 
@@ -105,9 +106,7 @@ export class ElementPropertiesPanelComponent implements OnInit, OnDestroy {
     return undefined;
   }
 
-  updateModel(property: string,
-              value: unknown,
-              isInputValid: boolean | null = true): void {
+  updateModel(property: string, value: UIElementValue, isInputValid: boolean | null = true): void {
     if (isInputValid) {
       this.elementService.updateElementsProperty(this.selectedElements, property, value);
     } else {

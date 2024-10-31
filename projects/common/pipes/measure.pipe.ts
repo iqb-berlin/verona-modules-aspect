@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Measurement } from 'common/models/elements/element';
+import { Measurement } from 'common/interfaces';
 
 @Pipe({
   name: 'measure',

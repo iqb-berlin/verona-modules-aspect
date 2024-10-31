@@ -1,14 +1,13 @@
 import { Type } from '@angular/core';
-import {
-  PlayerElement, PlayerElementBlueprint, UIElementType
-} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VideoComponent } from 'common/components/media-elements/video.component';
 import {
   PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, PlayerElementBlueprint, UIElementType } from 'common/interfaces';
+import { PlayerElement } from 'common/models/elements/element';
+import { InstantiationEror } from 'common/errors';
 
 export class VideoElement extends PlayerElement implements VideoProperties {
   type: UIElementType = 'video';
@@ -21,9 +20,9 @@ export class VideoElement extends PlayerElement implements VideoProperties {
   static title: string = 'Video';
   static icon: string = 'ondemand_video';
 
-  constructor(element?: VideoProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<VideoProperties>, idService?: AbstractIDService) {
+    super({ type: 'video', ...element }, idService);
+    if (isVideoProperties(element)) {
       this.src = element.src;
       this.fileName = element.fileName;
       this.scale = element.scale;
@@ -69,7 +68,7 @@ export interface VideoProperties extends PlayerElementBlueprint {
   styling: { backgroundColor: string };
 }
 
-function isValid(blueprint?: VideoProperties): boolean {
+function isVideoProperties(blueprint?: Partial<VideoProperties>): blueprint is VideoProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
     blueprint.fileName !== undefined &&

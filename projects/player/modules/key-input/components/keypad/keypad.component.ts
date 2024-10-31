@@ -1,8 +1,8 @@
 import {
   Component, EventEmitter, Input, OnInit, Output
 } from '@angular/core';
-import { InputAssistancePreset } from 'common/models/elements/element';
 import { KeyInputLayout, KeyLayout } from 'player/modules/key-input/configs/key-layout';
+import { InputAssistancePreset } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-keypad',

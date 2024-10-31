@@ -29,7 +29,7 @@ import { RadioButtonGroupComplexElement } from 'common/models/elements/input-ele
 import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
 import { ToggleButtonElement } from 'common/models/elements/compound-elements/cloze/cloze-child-elements/toggle-button';
 import { Hotspot, HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
+import { DragNDropValueObject } from 'common/interfaces';
 import { ElementModelElementCodeMappingService } from './element-model-element-code-mapping.service';
 
 describe('ElementModelElementCodeMappingService', () => {
@@ -48,7 +48,7 @@ describe('ElementModelElementCodeMappingService', () => {
   it('should map the value of a drop-list elementModel to its elementCode value', () => {
     const dragNDropValueObjects: DragNDropValueObject[] = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     expect(ElementModelElementCodeMappingService.mapToElementCodeValue(dragNDropValueObjects, 'drop-list'))
-      .toEqual(['value_1', 'value_2', 'value_3']);
+      .toEqual(['alias_1', 'alias_2', 'alias_3']);
   });
 
   it('should map the value of a text elementModel to its elementCode value', () => {
@@ -238,6 +238,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'a',
         id: 'value_1',
+        alias: 'value_1',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -249,6 +250,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'b',
         id: 'value_2',
+        alias: 'value_2',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -260,6 +262,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'c',
         id: 'value_3',
+        alias: 'value_3',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -271,6 +274,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'd',
         id: 'value_4',
+        alias: 'value_4',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -282,6 +286,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'e',
         id: 'value_5',
+        alias: 'value_5',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -296,6 +301,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'e',
         id: 'value_5',
+        alias: 'value_5',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -314,6 +320,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'a',
         id: 'value_1',
+        alias: 'value_1',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -325,6 +332,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'b',
         id: 'value_2',
+        alias: 'value_2',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -336,6 +344,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'c',
         id: 'value_3',
+        alias: 'value_3',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -347,6 +356,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'd',
         id: 'value_4',
+        alias: 'value_4',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -358,6 +368,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'e',
         id: 'value_5',
+        alias: 'value_5',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -372,6 +383,7 @@ describe('ElementModelElementCodeMappingService', () => {
       {
         text: 'e',
         id: 'value_5',
+        alias: 'value_5',
         imgSrc: null,
         imgFileName: '',
         audioSrc: null,
@@ -389,7 +401,7 @@ describe('ElementModelElementCodeMappingService', () => {
     service.dragNDropValueObjects = JSON.parse(JSON.stringify(dragNDropValues_01_130)).default;
     const elementModel: DropListElement = JSON.parse(JSON.stringify(dropList_130));
     const expectedValue = JSON.parse(JSON.stringify(dragNDropValues_02_130)).default;
-    expect(service.mapToElementModelValue(['value_1', 'value_2'], elementModel))
+    expect(service.mapToElementModelValue(['alias_1', 'alias_2'], elementModel))
       .toEqual(expectedValue);
   });
 

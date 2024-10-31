@@ -2,7 +2,7 @@ import {
   Component, EventEmitter, Input, Output
 } from '@angular/core';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { ValueChangeElement } from 'common/models/elements/element';
+import { ValueChangeElement } from 'common/interfaces';
 import { ElementComponent } from '../../directives/element-component.directive';
 
 @Component({

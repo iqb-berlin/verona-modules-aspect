@@ -1,6 +1,5 @@
 import {
-  InputElement, InputElementProperties,
-  UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import {
   BasicStyles,
@@ -12,7 +11,8 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { VariableInfo } from '@iqb/responses';
 import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math.component';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextAreaMathElement extends InputElement implements TextAreaMathProperties {
   type: UIElementType = 'text-area-math';
@@ -27,9 +27,9 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   static title: string = 'Formelbereich';
   static icon: string = 'calculate';
 
-  constructor(element?: TextAreaMathProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TextAreaMathProperties>, idService?: AbstractIDService) {
+    super({ type: 'text-area-math', ...element }, idService);
+    if (isTextAreaMathProperties(element)) {
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
       this.position = { ...element.position };
@@ -82,11 +82,11 @@ export interface TextAreaMathProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: TextAreaMathProperties): boolean {
+function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
   return blueprint.rowCount !== undefined &&
     blueprint.hasAutoHeight !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

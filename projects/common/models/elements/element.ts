@@ -1,82 +1,45 @@
 // eslint-disable-next-line max-classes-per-file
-import { ElementComponent } from 'common/directives/element-component.directive';
 import { Type } from '@angular/core';
-import { ClozeDocument } from 'common/models/elements/compound-elements/cloze/cloze';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
-
-import { Label, TextLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
-import {
-  DimensionProperties,
-  PlayerProperties,
-  PositionProperties,
-  PropertyGroupGenerators,
-  PropertyGroupValidators,
-  Stylings
-} from 'common/models/elements/property-group-interfaces';
-import { VisibilityRule } from 'common/models/visibility-rule';
-import { StateVariable } from 'common/models/state-variable';
-import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
-
-import { MathTableRow } from 'common/models/elements/input-elements/math-table';
 import { VariableInfo } from '@iqb/responses';
-import { Markable } from 'player/src/app/models/markable.interface';
+import { ElementComponent } from 'common/directives/element-component.directive';
+import {
+  DimensionProperties, PlayerProperties, PositionProperties, PropertyGroupGenerators, Stylings
+} from 'common/models/elements/property-group-interfaces';
+import { environment } from 'common/environment';
+import {
+  AbstractIDService,
+  InputAssistancePreset, InputElementProperties, InputElementValue,
+  KeyInputElementProperties, PlayerElementBlueprint, TextInputElementProperties,
+  UIElementProperties, UIElementType, UIElementValue
+} from 'common/interfaces';
+import { IDError, InstantiationEror } from 'common/errors';
 
-export type UIElementType = 'text' | 'button' | 'text-field' | 'text-field-simple' | 'text-area' | 'checkbox'
-| 'dropdown' | 'radio' | 'image' | 'audio' | 'video' | 'likert' | 'likert-row' | 'radio-group-images' | 'hotspot-image'
-| 'drop-list' | 'cloze' | 'spell-correct' | 'slider' | 'frame' | 'toggle-button' | 'geometry'
-| 'math-field' | 'math-table' | 'text-area-math' | 'trigger' | 'table' | 'marking-panel';
-
-export interface OptionElement extends UIElement {
-  getNewOptionLabel(optionText: string): Label;
-}
-
-export interface Measurement {
-  value: number;
-  unit: string
-}
-
-export interface ValueChangeElement {
-  id: string;
-  value: InputElementValue;
-}
-
-export type UIElementValue = string | number | boolean | undefined | UIElementType | InputElementValue |
-TextLabel | TextLabel[] | ClozeDocument | LikertRowElement[] | Hotspot[] | StateVariable |
-PositionProperties | PlayerProperties | Measurement | Measurement[] | VisibilityRule[];
-
-export type InputAssistancePreset = null | 'french' | 'numbers' | 'numbersAndOperators' | 'numbersAndBasicOperators'
-| 'comparisonOperators' | 'squareDashDot' | 'placeValue' | 'space' | 'comma' | 'custom';
-
-export interface UIElementProperties {
-  id: string;
-  isRelevantForPresentationComplete: boolean;
-  dimensions?: DimensionProperties;
-  position?: PositionProperties;
-  styling?: Stylings;
-  player?: PlayerProperties;
-}
-
-function isValidUIElementProperties(blueprint?: UIElementProperties): boolean {
-  if (!blueprint) return false;
+function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
   return blueprint.id !== undefined &&
     blueprint.isRelevantForPresentationComplete !== undefined;
 }
 
 export abstract class UIElement implements UIElementProperties {
   [index: string]: unknown;
-  id: string = 'id-placeholder';
+  id: string;
+  alias: string;
   isRelevantForPresentationComplete: boolean = true;
   abstract type: UIElementType;
   position?: PositionProperties;
   dimensions?: DimensionProperties;
   styling?: Stylings;
   player?: PlayerProperties;
+  idService?: AbstractIDService;
 
-  constructor(element?: UIElementProperties) {
-    if (element && isValidUIElementProperties(element)) {
+  constructor(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService) {
+    this.idService = idService;
+    if (isUIElementProperties(element)) {
       this.id = element.id;
+      this.alias = element.alias || element.id;
+      if (idService) {
+        // Only register after the child constructior has run. ID-registration needs the type and possibly values.
+        setTimeout(() => this.registerIDs());
+      }
       this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       if (element.dimensions) this.dimensions = { ...element.dimensions };
       if (element.position) this.position = { ...element.position };
@@ -85,7 +48,8 @@ export abstract class UIElement implements UIElementProperties {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
-      if (element?.id) this.id = element.id;
+      this.id = element.id || idService?.getAndRegisterNewID(element.type) || 'id-placeholder';
+      this.alias = element.alias || idService?.getAndRegisterNewID(element.type, true) || 'alias-placeholder';
       if (element?.isRelevantForPresentationComplete !== undefined) {
         this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       }
@@ -98,9 +62,22 @@ export abstract class UIElement implements UIElementProperties {
     if (Array.isArray(this[property])) { // keep array reference intact
       (this[property] as UIElementValue[])
         .splice(0, (this[property] as UIElementValue[]).length, ...(value as UIElementValue[]));
-    } else {
-      this[property] = value;
+      return;
     }
+    if (property === 'alias') {
+      if (!this.idService?.isAliasAvailable(value as string, this.type)) { // prohibit existing IDs
+        throw new IDError('ID ist bereits vergeben');
+      }
+      if ((value as string).length > 20) {
+        throw new IDError('ID länger als 20 Zeichen');
+      }
+      if ((value as string).includes(' ')) {
+        throw new IDError('ID enthält unerlaubtes Leerzeichen');
+      }
+      this.idService.unregister(this.alias, this.type, false, true);
+      this.idService.register(value as string, this.type, false, true);
+    }
+    this[property] = value;
   }
 
   setStyleProperty(property: string, value: UIElementValue): void {
@@ -140,20 +117,19 @@ export abstract class UIElement implements UIElementProperties {
   }
 
   abstract getDuplicate(): UIElement;
+
+  registerIDs(): void {
+    this.idService?.register(this.id, this.type, true, false);
+    this.idService?.register(this.alias, this.type, false, true);
+  }
+
+  unregisterIDs(): void {
+    this.idService?.unregister(this.id, this.type, true, false);
+    this.idService?.unregister(this.alias, this.type, false, true);
+  }
 }
 
-export type InputElementValue = Markable[] | TextLabel[] | Hotspot[] | MathTableRow[] | GeometryValue | string[] | string |
-number[] | number | boolean[] | boolean | null;
-
-export interface InputElementProperties extends UIElementProperties {
-  label?: string;
-  value: InputElementValue;
-  required: boolean;
-  requiredWarnMessage: string;
-  readOnly: boolean;
-}
-
-function isValidInputElementProperties(blueprint?: InputElementProperties): boolean {
+function isInputElementProperties(blueprint: Partial<InputElementProperties>): blueprint is InputElementProperties {
   if (!blueprint) return false;
   return blueprint?.value !== undefined &&
     blueprint?.required !== undefined &&
@@ -168,9 +144,9 @@ export abstract class InputElement extends UIElement implements InputElementProp
   requiredWarnMessage: string = 'Eingabe erforderlich';
   readOnly: boolean = false;
 
-  protected constructor(element?: InputElementProperties) {
-    super(element);
-    if (element && isValidInputElementProperties(element)) {
+  protected constructor(element: { type: string } & Partial<InputElementProperties>, idService?: AbstractIDService) {
+    super(element, idService);
+    if (isInputElementProperties(element)) {
       if (element.label !== undefined) this.label = element.label;
       this.value = element.value;
       this.required = element.required;
@@ -202,24 +178,7 @@ export function isInputElement(el: UIElement): el is InputElement {
     el.readOnly !== undefined;
 }
 
-export interface KeyInputElementProperties {
-  inputAssistancePreset: InputAssistancePreset;
-  inputAssistancePosition: 'floating' | 'right';
-  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter';
-  showSoftwareKeyboard: boolean;
-  addInputAssistanceToKeyboard: boolean;
-  hideNativeKeyboard: boolean;
-  hasArrowKeys: boolean;
-}
-
-export interface TextInputElementProperties extends KeyInputElementProperties, InputElementProperties {
-  inputAssistanceCustomKeys: string;
-  restrictedToInputAssistanceChars: boolean;
-  hasBackspaceKey: boolean;
-}
-
-function isValidKeyInputProperties(blueprint?: KeyInputElementProperties): boolean {
-  if (!blueprint) return false;
+function isValidKeyInputProperties(blueprint: Partial<KeyInputElementProperties>): boolean {
   return blueprint.inputAssistancePreset !== undefined &&
     blueprint.inputAssistancePosition !== undefined &&
     blueprint.inputAssistanceFloatingStartPosition !== undefined &&
@@ -229,8 +188,8 @@ function isValidKeyInputProperties(blueprint?: KeyInputElementProperties): boole
     blueprint.hasArrowKeys !== undefined;
 }
 
-function isValidTextInputElementProperties(blueprint?: TextInputElementProperties): boolean {
-  if (!blueprint) return false;
+function isTextInputElementProperties(blueprint: Partial<TextInputElementProperties>)
+  : blueprint is TextInputElementProperties {
   return blueprint.restrictedToInputAssistanceChars !== undefined &&
     blueprint.inputAssistanceCustomKeys !== undefined &&
     blueprint.hasBackspaceKey !== undefined &&
@@ -249,9 +208,9 @@ export abstract class TextInputElement extends InputElement implements TextInput
   addInputAssistanceToKeyboard: boolean = true;
   hideNativeKeyboard: boolean = true;
 
-  protected constructor(element?: TextInputElementProperties) {
-    super(element);
-    if (element && isValidTextInputElementProperties(element)) {
+  protected constructor(element: { type: string } & Partial<TextInputElementProperties>, idService?: AbstractIDService) {
+    super(element, idService);
+    if (isTextInputElementProperties(element)) {
       this.inputAssistancePreset = element.inputAssistancePreset;
       this.inputAssistanceCustomKeys = element.inputAssistanceCustomKeys;
       this.inputAssistancePosition = element.inputAssistancePosition;
@@ -284,11 +243,7 @@ export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
 }
 
-export interface PlayerElementBlueprint extends UIElementProperties {
-  player: PlayerProperties;
-}
-
-function isValidPlayerElementBlueprint(blueprint?: PlayerElementBlueprint): boolean {
+function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): blueprint is PlayerElementBlueprint {
   if (!blueprint) return false;
   return blueprint.player !== undefined &&
     blueprint.player.autostart !== undefined &&
@@ -316,9 +271,9 @@ function isValidPlayerElementBlueprint(blueprint?: PlayerElementBlueprint): bool
 export abstract class PlayerElement extends UIElement implements PlayerElementBlueprint {
   player: PlayerProperties;
 
-  protected constructor(element?: PlayerElementBlueprint) {
-    super(element);
-    if (element && isValidPlayerElementBlueprint(element)) {
+  protected constructor(element: { type: string } & Partial<PlayerElementBlueprint>, idService?: AbstractIDService) {
+    super(element, idService);
+    if (isPlayerElementBlueprint(element)) {
       this.player = element.player;
     } else {
       if (environment.strictInstantiation) {
@@ -341,25 +296,4 @@ export abstract class PlayerElement extends UIElement implements PlayerElementBl
       valuesComplete: false
     }];
   }
-}
-
-export interface PositionedUIElement extends UIElement {
-  position: PositionProperties;
-  dimensions: DimensionProperties;
-}
-
-export interface PlayerElement extends UIElement {
-  player: PlayerProperties;
-}
-
-export type TooltipPosition = 'left' | 'right' | 'above' | 'below';
-
-export interface GeometryValue {
-  appDefinition: string;
-  variables: GeometryVariable[];
-}
-
-export interface GeometryVariable {
-  id: string;
-  value: string;
 }

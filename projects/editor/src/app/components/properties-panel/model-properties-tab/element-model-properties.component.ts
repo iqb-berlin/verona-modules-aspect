@@ -1,27 +1,18 @@
 // eslint-disable-next-line max-classes-per-file
 import {
-  Component, ComponentRef, EventEmitter,
-  Input, OnDestroy, OnInit, Output, Pipe, PipeTransform
+  Component, EventEmitter,
+  Input, OnDestroy, Output, Pipe, PipeTransform
 } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import {
-  InputElement, InputElementValue, isInputElement, UIElement, UIElementValue
-} from 'common/models/elements/element';
-import { LikertRowElement } from 'common/models/elements/compound-elements/likert/likert-row';
+import { Subject } from 'rxjs';
+import { InputElement, isInputElement, UIElement } from 'common/models/elements/element';
 import { FileService } from 'common/services/file.service';
+import { UIElementValue } from 'common/interfaces';
 import { CombinedProperties } from 'editor/src/app/components/properties-panel/element-properties-panel.component';
-import {
-  BehaviorSubject, firstValueFrom, of, Subject, switchMap
-} from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { TextImageLabel, TextLabel } from 'common/models/elements/label-interfaces';
-import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
-import { StateVariable } from 'common/models/state-variable';
-import { GeometryComponent } from 'common/components/geometry/geometry.component';
+import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { UnitService } from '../../../services/unit-services/unit.service';
 import { SelectionService } from '../../../services/selection.service';
 import { DialogService } from '../../../services/dialog.service';
-import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 
 @Component({
   selector: 'aspect-element-model-properties-component',
@@ -33,7 +24,6 @@ export class ElementModelPropertiesComponent implements OnDestroy {
   @Input() selectedElements: UIElement[] = [];
   @Output() updateModel = new EventEmitter<{
     property: string;
-    // value: InputElementValue | TextImageLabel[] | LikertRowElement[] | TextLabel[] | Hotspot[] | StateVariable
     value: UIElementValue
     isInputValid?: boolean | null
   }>();

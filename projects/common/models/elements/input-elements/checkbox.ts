@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { CheckboxComponent } from 'common/components/input-elements/checkbox.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class CheckboxElement extends InputElement implements CheckboxProperties {
   type: UIElementType = 'checkbox';
@@ -21,9 +22,9 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
   static title: string = 'Kontrollkästchen';
   static icon: string = 'check_box';
 
-  constructor(element?: CheckboxProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<CheckboxProperties>, idService?: AbstractIDService) {
+    super({ type: 'checkbox', ...element }, idService);
+    if (isCheckboxProperties(element)) {
       this.label = element.label;
       this.value = element.value;
       this.crossOutChecked = element.crossOutChecked;
@@ -80,7 +81,7 @@ export interface CheckboxProperties extends InputElementProperties {
   styling: BasicStyles;
 }
 
-function isValid(blueprint?: CheckboxProperties): boolean {
+function isCheckboxProperties(blueprint?: Partial<CheckboxProperties>): blueprint is CheckboxProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
     blueprint.crossOutChecked !== undefined &&

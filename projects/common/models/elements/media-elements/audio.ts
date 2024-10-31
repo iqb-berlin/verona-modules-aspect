@@ -1,14 +1,13 @@
 import { Type } from '@angular/core';
-import {
-  PlayerElement, PlayerElementBlueprint, UIElementType
-} from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { AudioComponent } from 'common/components/media-elements/audio.component';
 import {
   PositionProperties, PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, PlayerElementBlueprint, UIElementType } from 'common/interfaces';
+import { PlayerElement } from 'common/models/elements/element';
+import { InstantiationEror } from 'common/errors';
 
 export class AudioElement extends PlayerElement implements AudioProperties {
   type: UIElementType = 'audio';
@@ -20,9 +19,9 @@ export class AudioElement extends PlayerElement implements AudioProperties {
   static title: string = 'Audio';
   static icon: string = 'volume_up';
 
-  constructor(element?: AudioProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<AudioProperties>, idService?: AbstractIDService) {
+    super({ type: 'audio', ...element }, idService);
+    if (isAudioProperties(element)) {
       this.src = element.src;
       this.fileName = element.fileName;
       if (element.position) this.position = { ...element.position };
@@ -65,7 +64,7 @@ export interface AudioProperties extends PlayerElementBlueprint {
   styling: { backgroundColor: string };
 }
 
-function isValid(blueprint?: AudioProperties): boolean {
+function isAudioProperties(blueprint?: Partial<AudioProperties>): blueprint is AudioProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
     blueprint.fileName !== undefined &&

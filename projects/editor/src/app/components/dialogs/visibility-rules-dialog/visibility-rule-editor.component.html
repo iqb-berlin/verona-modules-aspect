@@ -3,9 +3,8 @@
     <mat-label>{{'section.controlId' | translate}}</mat-label>
     <mat-select [(ngModel)]="visibilityRule.id"
                 (ngModelChange)="visibilityRuleChange.emit(visibilityRule)">
-      <mat-option *ngFor="let id of controlIds"
-                  [value]="id">
-        {{id}}
+      <mat-option *ngFor="let idPair of controlIds" [value]="idPair.id">
+        {{idPair.alias}}
       </mat-option>
     </mat-select>
   </mat-form-field>

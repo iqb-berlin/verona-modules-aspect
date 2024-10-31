@@ -4,18 +4,13 @@ import { SelectionService } from 'editor/src/app/services/selection.service';
 import { IDService } from 'editor/src/app/services/id.service';
 import {
   CompoundElement,
-  InputElement,
-  PlayerElement,
-  PositionedUIElement,
-  UIElement,
-  UIElementProperties,
-  UIElementType,
-  UIElementValue
+  InputElement, PlayerElement,
+  UIElement
 } from 'common/models/elements/element';
 import { Section } from 'common/models/section';
 import { GeometryProperties } from 'common/models/elements/geometry/geometry';
 import { firstValueFrom } from 'rxjs';
-import { FileInformation, FileService } from 'common/services/file.service';
+import { FileService } from 'common/services/file.service';
 import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { VideoProperties } from 'common/models/elements/media-elements/video';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
@@ -31,8 +26,16 @@ import { MessageService } from 'editor/src/app/services/message.service';
 import { TextElement } from 'common/models/elements/text/text';
 import { ClozeDocument, ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
+import {
+  DragNDropValueObject,
+  PositionedUIElement,
+  UIElementProperties,
+  UIElementType,
+  UIElementValue
+} from 'common/interfaces';
+import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
 
 @Injectable({
   providedIn: 'root'
@@ -48,29 +51,18 @@ export class ElementService {
   async addElementToSection(elementType: UIElementType, sectionParam?: Section,
                             coordinates?: { x: number, y: number }): Promise<void> {
     const section = sectionParam || this.unitService.getSelectedSection();
-    this.unitService.updateUnitDefinition({
-      title: `Element hinzugefügt (${elementType})`,
-      command: async () => {
-        let newElementProperties: Partial<UIElementProperties> = {};
-        try {
-          newElementProperties = await this.prepareElementProps(elementType, section, coordinates);
-        } catch (e) {
-          if (e === 'dialogCanceled') return {};
-        }
-        const newElementID = this.idService.getAndRegisterNewID(elementType);
-        section.addElement(ElementFactory.createElement({
-          type: elementType,
-          position: PropertyGroupGenerators.generatePositionProps(newElementProperties.position),
-          ...newElementProperties,
-          id: newElementID
-        }) as PositionedUIElement);
-        return { newElementID };
-      },
-      rollback: (deletedData: Record<string, unknown>) => {
-        this.idService.unregisterID(deletedData.newElementID as string);
-        section.deleteElement(deletedData.newElementID as string);
-      }
-    });
+    let newElementProperties: Partial<UIElementProperties> = {};
+    try {
+      newElementProperties = await this.prepareElementProps(elementType, section, coordinates);
+    } catch (e) {
+      if (e === 'dialogCanceled') return;
+    }
+    section.addElement(ElementFactory.createElement({
+      type: elementType,
+      position: PropertyGroupGenerators.generatePositionProps(newElementProperties.position),
+      ...newElementProperties
+    }, this.idService) as PositionedUIElement);
+    this.unitService.updateUnitDefinition();
   }
 
   private async prepareElementProps(elementType: UIElementType,
@@ -136,31 +128,20 @@ export class ElementService {
     return newElementProperties;
   }
 
+  createLikertRowElement(props: LikertRowProperties): LikertRowElement {
+    return new LikertRowElement(props, this.idService);
+  }
+
   async deleteElements(elements: UIElement[]): Promise<void> {
-    this.unitService.updateUnitDefinition({
-      title: elements.length > 1 ? 'Elemente gelöscht' : `Element ${elements[0].id} gelöscht`,
-      command: async () => {
-        if (await this.unitService.prepareDelete('elements', elements)) {
-          this.unitService.unregisterIDs(elements);
-          const elementSections = this.findElementsInSections(elements);
-          elementSections.forEach(x => {
-            this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[x.sectionIndex]
-              .deleteElement(x.element.id);
-          });
-          return { elementSections };
-        }
-        return {};
-      },
-      rollback: (deletedData: Record<string, unknown>) => {
-        this.unitService.registerIDs(elements);
-        (deletedData.elementSections as { sectionIndex: number, element: UIElement }[]).forEach(x => {
-          this.unitService.unit
-            .pages[this.selectionService.selectedPageIndex]
-            .sections[x.sectionIndex]
-            .addElement(x.element as PositionedUIElement); // TODO order check
-        });
-      }
-    });
+    if (await this.unitService.prepareDelete('elements', elements)) {
+      elements.forEach(el => el.unregisterIDs());
+      const elementSections = this.findElementsInSections(elements);
+      elementSections.forEach(x => {
+        this.unitService.unit.pages[this.selectionService.selectedPageIndex].sections[x.sectionIndex]
+          .deleteElement(x.element.id);
+      });
+      this.unitService.updateUnitDefinition();
+    }
   }
 
   private findElementsInSections(elements: UIElement[]): { sectionIndex: number, element: UIElement }[] {
@@ -175,13 +156,11 @@ export class ElementService {
     return elementSections;
   }
 
-  updateElementsProperty(elements: UIElement[], property: string, value: unknown): void {
+  updateElementsProperty(elements: UIElement[], property: string, value: UIElementValue): void {
     // console.log('updateElementsProperty ', elements, property, value);
     elements.forEach(element => {
-      if (property === 'id') {
-        if (this.idService.validateAndAddNewID(value as string, element.id)) {
-          element.setProperty('id', value);
-        }
+      if (property === 'alias') {
+        element.setProperty('alias', value);
       } else if (element.type === 'text' && property === 'text') {
         this.handleTextElementChange(element as TextElement, value as string);
       } else if (property === 'document') {
@@ -195,7 +174,13 @@ export class ElementService {
         if (element.type === 'table') this.unitService.tablePropUpdated.next(element.id);
       }
     });
+    this.unitService.elementPropertyUpdated.next();
+    this.unitService.updateUnitDefinition();
+  }
 
+  updateDropListValueObject(valueIndex: number, value: DragNDropValueObject): void {
+    const selectedElements = this.selectionService.getSelectedElements() as DropListElement[];
+    selectedElements.forEach(el => el.updateValueObject(valueIndex, value));
     this.unitService.elementPropertyUpdated.next();
     this.unitService.updateUnitDefinition();
   }
@@ -240,7 +225,7 @@ export class ElementService {
     element.setProperty('document', value);
     ClozeElement.getDocumentChildElements(value as ClozeDocument).forEach(clozeChild => {
       if (clozeChild.id === 'cloze-child-id-placeholder') {
-        clozeChild.id = this.idService.getAndRegisterNewID(clozeChild.type);
+        Object.assign(clozeChild, this.idService.getAndRegisterNewIDs(clozeChild.type));
         delete clozeChild.position;
       }
     });
@@ -358,7 +343,7 @@ export class ElementService {
           .subscribe((result: UIElement[]) => {
             if (result) {
               result.forEach(el => {
-                if (el.id === 'id-placeholder') el.id = this.idService.getAndRegisterNewID(el.type);
+                if (el.id === 'id-placeholder') Object.assign(el, this.idService.getAndRegisterNewIDs(el.type));
               });
               this.updateElementsProperty([element], 'elements', result);
             }
@@ -407,13 +392,13 @@ export class ElementService {
       newElement.position.gridColumn = null;
     }
 
-    newElement.id = this.idService.getAndRegisterNewID(newElement.type);
+    Object.assign(newElement, this.idService.getAndRegisterNewIDs(newElement.type));
     if (newElement instanceof CompoundElement) {
       newElement.getChildElements().forEach((child: UIElement) => {
-        child.id = this.idService.getAndRegisterNewID(child.type);
+        Object.assign(child, this.idService.getAndRegisterNewIDs(child.type));
         if (child.type === 'drop-list') {
           (child.value as DragNDropValueObject[]).forEach(valueObject => {
-            valueObject.id = this.idService.getAndRegisterNewID('value');
+            Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
           });
         }
       });
@@ -422,7 +407,7 @@ export class ElementService {
     // Special care with DropLists as they are no CompoundElement yet still have children with IDs
     if (newElement.type === 'drop-list') {
       (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
-        valueObject.id = this.idService.getAndRegisterNewID('value');
+        Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
       });
     }
     return newElement;

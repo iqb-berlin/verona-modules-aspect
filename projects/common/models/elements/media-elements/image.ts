@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  UIElement, UIElementProperties, UIElementType
+  UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
@@ -9,7 +9,8 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class ImageElement extends UIElement implements ImageProperties {
   type: UIElementType = 'image';
@@ -26,9 +27,9 @@ export class ImageElement extends UIElement implements ImageProperties {
   static title: string = 'Bild';
   static icon: string = 'image';
 
-  constructor(element?: ImageProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<ImageProperties>, idService?: AbstractIDService) {
+    super({ type: 'image', ...element }, idService);
+    if (isImageProperties(element)) {
       this.src = element.src;
       this.alt = element.alt;
       this.scale = element.scale;
@@ -105,7 +106,7 @@ export interface ImageProperties extends UIElementProperties {
   position?: PositionProperties;
 }
 
-function isValid(blueprint?: ImageProperties): boolean {
+function isImageProperties(blueprint?: Partial<ImageProperties>): blueprint is ImageProperties {
   if (!blueprint) return false;
   return blueprint.src !== undefined &&
     blueprint.alt !== undefined &&

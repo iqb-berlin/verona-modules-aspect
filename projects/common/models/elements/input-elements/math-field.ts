@@ -1,5 +1,5 @@
 import {
-  InputElement, InputElementProperties, UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class MathFieldElement extends InputElement implements MathFieldProperties {
   type: UIElementType = 'math-field';
@@ -22,9 +23,9 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
   static title: string = 'Formelfeld';
   static icon: string = 'calculate';
 
-  constructor(element?: MathFieldProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<MathFieldProperties>, idService?: AbstractIDService) {
+    super({ type: 'math-field', ...element }, idService);
+    if (isMathFieldProperties(element)) {
       this.enableModeSwitch = element.enableModeSwitch;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
@@ -72,10 +73,10 @@ export interface MathFieldProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: MathFieldProperties): boolean {
+function isMathFieldProperties(blueprint?: Partial<MathFieldProperties>): blueprint is MathFieldProperties {
   if (!blueprint) return false;
   return blueprint.enableModeSwitch !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

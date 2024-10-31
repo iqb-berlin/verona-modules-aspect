@@ -1,7 +1,5 @@
 import { Type } from '@angular/core';
-import {
-  TooltipPosition, UIElement, UIElementProperties, UIElementType
-} from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { ButtonComponent } from 'common/components/button/button.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
@@ -9,7 +7,10 @@ import {
 } from 'common/models/elements/property-group-interfaces';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import {
+  AbstractIDService, TooltipPosition, UIElementProperties, UIElementType
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class ButtonElement extends UIElement implements ButtonProperties {
   type: UIElementType = 'button';
@@ -26,9 +27,9 @@ export class ButtonElement extends UIElement implements ButtonProperties {
   static title: string = 'Knopf';
   static icon: string = 'smart_button';
 
-  constructor(element?: ButtonProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<ButtonProperties>, idService?: AbstractIDService) {
+    super({ type: 'button', ...element }, idService);
+    if (isButtonProperties(element)) {
       this.label = element.label;
       this.imageSrc = element.imageSrc;
       this.asLink = element.asLink;
@@ -81,7 +82,7 @@ export interface ButtonProperties extends UIElementProperties {
   labelAlignment: 'super' | 'sub' | 'baseline';
 }
 
-function isValid(blueprint?: ButtonProperties): boolean {
+function isButtonProperties(blueprint?: Partial<ButtonProperties>): blueprint is ButtonProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
   blueprint.imageSrc !== undefined &&

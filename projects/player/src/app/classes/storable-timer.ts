@@ -1,6 +1,6 @@
 import { EventEmitter } from '@angular/core';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { Storable } from 'player/src/app/classes/storable';
+import { ValueChangeElement } from 'common/interfaces';
 
 export class StorableTimer extends Storable {
   duration: number;

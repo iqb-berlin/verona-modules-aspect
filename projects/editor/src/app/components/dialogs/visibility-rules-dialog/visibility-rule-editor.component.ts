@@ -8,7 +8,7 @@ import { VisibilityRule, VisibilityRuleOperators } from 'common/models/visibilit
   templateUrl: './visibility-rule-editor.component.html'
 })
 export class VisibilityRuleEditorComponent {
-  @Input() controlIds!: string[];
+  @Input() controlIds!: { id: string, alias: string }[];
   @Input() visibilityRule!: VisibilityRule;
 
   @Output() visibilityRuleChange = new EventEmitter<VisibilityRule>();

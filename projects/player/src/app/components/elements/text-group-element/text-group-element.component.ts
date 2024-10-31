@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { TextComponent } from 'common/components/text/text.component';
 import { TextElement } from 'common/models/elements/text/text';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { TextMarkingSupport } from 'player/src/app/classes/text-marking-support';
 import { MarkableSupport } from 'player/src/app/classes/markable-support';
@@ -17,6 +16,7 @@ import { MarkingPanelService } from 'player/src/app/services/marking-panel.servi
 import { MarkingData, MarkingPanelMarkingData } from 'common/models/marking-data';
 import { takeUntil } from 'rxjs/operators';
 import { Subject, take } from 'rxjs';
+import { ValueChangeElement } from 'common/interfaces';
 import { NativeEventService } from '../../../services/native-event.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
@@ -65,6 +65,7 @@ export class TextGroupElementComponent extends ElementGroupDirective implements 
     }
     this.registerAtUnitStateService(
       this.elementModel.id,
+      this.elementModel.alias,
       ElementModelElementCodeMappingService
         .mapToElementCodeValue(
           this.getElementModelValue(),

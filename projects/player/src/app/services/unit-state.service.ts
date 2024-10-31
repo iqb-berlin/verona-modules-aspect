@@ -42,6 +42,7 @@ export class UnitStateService extends ElementCodeService {
   }
 
   registerElementCode(elementId: string,
+                      elementAlias: string,
                       elementValue: ResponseValueType,
                       domElement: Element | null = null,
                       pageIndex: number | null = null): void {
@@ -50,7 +51,7 @@ export class UnitStateService extends ElementCodeService {
     } else {
       this.ignoredPageIndexElementIds.push(elementId);
     }
-    this.addElementCode(elementId, elementValue, domElement);
+    this.addElementCode(elementId, elementAlias, elementValue, domElement);
   }
 
   changeElementCodeStatus(elementStatus: StatusChangeElement): void {
@@ -125,12 +126,14 @@ export class UnitStateService extends ElementCodeService {
     }
   }
 
-  private addElementCode(id: string, value: ResponseValueType, domElement: Element | null): void {
+  private addElementCode(id: string, alias: string, value: ResponseValueType, domElement: Element | null): void {
     let unitStateElementCode = this.getElementCodeById(id);
     if (!unitStateElementCode) {
       // when reloading a unit, elementCodes are already pushed
       const status = domElement ? 'NOT_REACHED' : 'UNSET';
-      unitStateElementCode = { id, value, status };
+      unitStateElementCode = {
+        id, alias, value, status
+      };
       this.addInitialElementCode(unitStateElementCode);
     } else if (Object.keys(this.elementIdPageIndexMap)
       .length === this.elementCodes.length - this.ignoredPageIndexElementIds.length) {

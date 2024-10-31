@@ -6,7 +6,7 @@ import { ButtonElement, ButtonEvent, UnitNavParam } from 'common/models/elements
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { TriggerActionEvent, TriggerElement } from 'common/models/elements/trigger/trigger';
 import { ImageElement } from 'common/models/elements/media-elements/image';
-import { UIElement, ValueChangeElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { VeronaPostService } from 'player/modules/verona/services/verona-post.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
@@ -18,6 +18,7 @@ import { Subject, Subscription } from 'rxjs';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 import { takeUntil } from 'rxjs/operators';
+import { ValueChangeElement } from 'common/interfaces';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementGroupDirective } from '../../../directives/element-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -91,6 +92,7 @@ export class InteractiveGroupElementComponent
     }
     this.registerAtUnitStateService(
       this.elementModel.id,
+      this.elementModel.alias,
       initialValue,
       this.elementComponent,
       this.pageIndex);

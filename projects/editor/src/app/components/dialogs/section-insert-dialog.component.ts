@@ -69,7 +69,7 @@ export class SectionInsertDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { isSelectedSectionEmpty: boolean },
               private unitService: UnitService,
-              private idManager: IDService,
+              private idService: IDService,
               private translateService: TranslateService) { }
 
   ngOnInit(): void {
@@ -107,7 +107,7 @@ export class SectionInsertDialogComponent implements OnInit {
   }
 
   private findElementsWithDuplicateID(elements: UIElement[]): UIElement[] {
-    return elements.filter(element => !this.idManager.isIdAvailable(element.id));
+    return elements.filter(element => !this.idService.isAliasAvailable(element.id, element.type));
   }
 
   ngOnDestroy(): void {

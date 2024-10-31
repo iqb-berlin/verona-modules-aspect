@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UIElementType } from 'common/models/elements/element';
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { ClozeElement } from 'common/models/elements/compound-elements/cloze/cloze';
 import { ImageElement } from 'common/models/elements/media-elements/image';
@@ -25,6 +24,7 @@ import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
 import { DragNDropService } from 'editor/src/app/services/drag-n-drop.service';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { TemplateService } from 'editor/src/app/services/template.service';
+import { UIElementType } from 'common/interfaces';
 import { SelectionService } from '../../services/selection.service';
 import { UnitService } from '../../services/unit-services/unit.service';
 

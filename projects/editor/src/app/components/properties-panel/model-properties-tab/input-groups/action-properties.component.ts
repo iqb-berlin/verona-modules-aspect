@@ -4,7 +4,6 @@ import {
 } from '@angular/core';
 import { UIElement } from 'common/models/elements/element';
 import { StateVariable } from 'common/models/state-variable';
-import { TextComponent } from 'common/components/text/text.component';
 import { UnitService } from 'editor/src/app/services/unit-services/unit.service';
 import { SelectionService } from 'editor/src/app/services/selection.service';
 import { Page } from 'common/models/page';
@@ -33,7 +32,7 @@ import { TextElement } from 'common/models/elements/text/text';
           <ng-container *ngIf="combinedProperties.action === 'stateVariableChange'">
             <aspect-action-param-state-variable
               *ngIf="unitService.unit.stateVariables.length"
-              [stateVariableIds]="unitService.unit.stateVariables | getStateVariableIds"
+              [stateVariables]="unitService.unit.stateVariables"
               [stateVariable]="combinedProperties.actionParam | getStateVariable : unitService.unit.stateVariables"
               (stateVariableChange)="updateModel.emit({ property: 'actionParam', value: $event })">
             </aspect-action-param-state-variable>
@@ -100,21 +99,12 @@ export class ActionPropertiesComponent {
 }
 
 @Pipe({
-  name: 'getStateVariableIds'
-})
-export class GetStateVariableIdsPipe implements PipeTransform {
-  transform(stateVariables: StateVariable[]): string[] {
-    return stateVariables.map(stateVariable => stateVariable.id);
-  }
-}
-
-@Pipe({
   name: 'getStateVariable'
 })
 export class GetStateVariablePipe implements PipeTransform {
   transform(actionParam: unknown, stateVariables: StateVariable[]): StateVariable {
     if (actionParam && typeof actionParam === 'object') return actionParam as StateVariable;
-    return { id: stateVariables[0].id, value: '' };
+    return { id: stateVariables[0].id, alias: stateVariables[0].alias, value: '' };
   }
 }
 

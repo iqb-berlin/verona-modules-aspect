@@ -1,15 +1,15 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import {
   LikertRadioButtonGroupComponent
 } from 'common/components/compound-elements/likert/likert-radio-button-group.component';
-import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { VariableInfo, VariableValue } from '@iqb/responses';
+import { AbstractIDService, InputElementProperties, TextImageLabel, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {
   type: UIElementType = 'likert-row';
@@ -21,9 +21,9 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
   firstColumnSizeRatio: number = 5;
   verticalButtonAlignment: 'auto' | 'center' = 'center';
 
-  constructor(element?: LikertRowProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<LikertRowProperties>, idService?: AbstractIDService) {
+    super({ type: 'likert-row', ...element }, idService);
+    if (isLikertRowProperties(element)) {
       this.rowLabel = element.rowLabel;
       this.columnCount = element.columnCount;
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
@@ -80,7 +80,7 @@ export interface LikertRowProperties extends InputElementProperties {
   verticalButtonAlignment: 'auto' | 'center';
 }
 
-function isValid(blueprint?: LikertRowProperties): boolean {
+function isLikertRowProperties(blueprint?: Partial<LikertRowProperties>): blueprint is LikertRowProperties {
   if (!blueprint) return false;
   return blueprint.rowLabel !== undefined &&
     blueprint.columnCount !== undefined &&

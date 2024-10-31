@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Label } from 'common/models/elements/label-interfaces';
 import { MatDialogModule } from '@angular/material/dialog';
 import { RichTextEditorComponent } from 'editor/src/app/text-editor/rich-text-editor.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -9,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { OptionListPanelComponent } from 'editor/src/app/components/properties-panel/option-list-panel.component';
 import { MatButtonModule } from '@angular/material/button';
 import { TranslateModule } from '@ngx-translate/core';
+import { Label } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-editor-radio-wizard-dialog',

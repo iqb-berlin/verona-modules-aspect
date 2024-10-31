@@ -60,7 +60,7 @@ import {
   TooltipPropertiesDialogComponent
 } from './components/dialogs/tooltip-properties-dialog.component';
 import {
-  ActionPropertiesComponent, GetStateVariableIdsPipe, GetStateVariablePipe, ScrollPageIndexPipe
+  ActionPropertiesComponent, GetStateVariablePipe, ScrollPageIndexPipe
 } from './components/properties-panel/model-properties-tab/input-groups/action-properties.component';
 import { AppComponent } from './app.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
@@ -74,7 +74,7 @@ import { DeleteConfirmationDialogComponent } from './components/dialogs/delete-c
 import { TextEditDialogComponent } from './components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from './components/dialogs/text-edit-multiline-dialog.component';
 import {
-  GetValidAudioVideoIDsPipe,
+  GetValidAudioVideoAliasAndIDsPipe,
   PlayerEditDialogComponent
 } from './components/dialogs/player-edit-dialog.component';
 import { LikertRowEditDialogComponent } from './components/dialogs/likert-row-edit-dialog.component';
@@ -176,11 +176,10 @@ export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
     ShowStateVariablesButtonComponent,
     StateVariableEditorComponent,
     ActionParamStateVariableComponent,
-    GetStateVariableIdsPipe,
     VisibilityRulesDialogComponent,
     SanitizationDialogComponent,
     TooltipPropertiesDialogComponent,
-    GetValidAudioVideoIDsPipe,
+    GetValidAudioVideoAliasAndIDsPipe,
     InputAssistancePropertiesComponent
   ],
   imports: [

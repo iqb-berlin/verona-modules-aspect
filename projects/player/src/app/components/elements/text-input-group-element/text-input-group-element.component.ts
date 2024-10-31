@@ -47,6 +47,7 @@ export class TextInputGroupElementComponent
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
+      this.elementModel.alias,
       ElementModelElementCodeMappingService
         .mapToElementCodeValue((this.elementModel as InputElement).value, this.elementModel.type),
       this.elementComponent,

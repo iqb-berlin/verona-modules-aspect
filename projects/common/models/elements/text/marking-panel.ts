@@ -1,13 +1,14 @@
-import { UIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { MarkingPanelComponent } from 'common/components/text/marking-panel.component';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import {
   PositionProperties,
   PropertyGroupGenerators
 } from 'common/models/elements/property-group-interfaces';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class MarkingPanelElement extends UIElement implements MarkingPanelProperties {
   type: UIElementType = 'marking-panel';
@@ -19,9 +20,9 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   static title: string = 'Markierungselement';
   static icon: string = 'border_color';
 
-  constructor(element?: MarkingPanelProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<MarkingPanelProperties>, idService?: AbstractIDService) {
+    super({ type: 'marking-panel', ...element }, idService);
+    if (isMarkingPanelProperties(element)) {
       this.highlightableOrange = element.highlightableOrange;
       this.highlightableTurquoise = element.highlightableTurquoise;
       this.highlightableYellow = element.highlightableYellow;
@@ -53,7 +54,7 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
   }
 }
 
-function isValid(blueprint?: MarkingPanelProperties): boolean {
+function isMarkingPanelProperties(blueprint?: Partial<MarkingPanelProperties>): blueprint is MarkingPanelProperties {
   if (!blueprint) return false;
   return blueprint.highlightableOrange !== undefined &&
     blueprint.highlightableTurquoise !== undefined &&

@@ -1,5 +1,5 @@
 import {
-  InputElement, InputElementProperties, UIElement, UIElementType
+  InputElement, UIElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -9,10 +9,10 @@ import {
 import {
   BasicStyles, DimensionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
-import { TextLabel } from 'common/models/elements/label-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { VariableInfo, VariableValue } from '@iqb/responses';
+import { AbstractIDService, InputElementProperties, TextLabel, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class ToggleButtonElement extends InputElement implements ToggleButtonProperties {
   type: UIElementType = 'toggle-button';
@@ -26,9 +26,9 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
     selectionColor: string;
   };
 
-  constructor(element?: ToggleButtonProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<ToggleButtonProperties>, idService?: AbstractIDService) {
+    super({ type: 'toggle-button', ...element }, idService);
+    if (isToggleButtonProperties(element)) {
       this.options = [...element.options];
       this.strikeOtherOptions = element.strikeOtherOptions;
       this.strikeSelectedOption = element.strikeSelectedOption;
@@ -107,7 +107,7 @@ export interface ToggleButtonProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: ToggleButtonProperties): boolean {
+function isToggleButtonProperties(blueprint?: Partial<ToggleButtonProperties>): blueprint is ToggleButtonProperties {
   if (!blueprint) return false;
   return blueprint.options !== undefined &&
     blueprint.strikeOtherOptions !== undefined &&
@@ -115,6 +115,6 @@ function isValid(blueprint?: ToggleButtonProperties): boolean {
     blueprint.verticalOrientation !== undefined &&
     PropertyGroupValidators.isValidDimensionProps(blueprint.dimensions) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined &&
-    blueprint.styling.selectionColor !== undefined;
+    blueprint.styling?.lineHeight !== undefined &&
+    blueprint.styling?.selectionColor !== undefined;
 }

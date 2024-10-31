@@ -8,8 +8,8 @@ import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { ExternalResourceService } from 'common/services/external-resource.service';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { PageChangeService } from 'common/services/page-change.service';
+import { ValueChangeElement } from 'common/interfaces';
 
 declare const GGBApplet: any;
 

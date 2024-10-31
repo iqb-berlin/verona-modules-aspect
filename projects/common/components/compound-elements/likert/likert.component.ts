@@ -5,8 +5,8 @@ import { CompoundElementComponent } from 'common/directives/compound-element.dir
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { LikertElement } from 'common/models/elements/compound-elements/likert/likert';
 import { LikertRadioButtonGroupComponent } from './likert-radio-button-group.component';
-import { Measurement } from 'common/models/elements/element';
 import { BasicStyles } from 'common/models/elements/property-group-interfaces';
+import { Measurement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-likert',

@@ -1,5 +1,5 @@
 import {
-  TextInputElement, TextInputElementProperties, UIElementType
+  TextInputElement
 } from 'common/models/elements/element';
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -10,8 +10,9 @@ import {
   BasicStyles, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
 import { VariableInfo } from '@iqb/responses';
+import { AbstractIDService, TextInputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class TextFieldSimpleElement extends TextInputElement implements TextFieldSimpleProperties {
   type: UIElementType = 'text-field-simple';
@@ -27,9 +28,9 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
     lineHeight: number;
   };
 
-  constructor(element?: TextFieldSimpleProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<TextFieldSimpleProperties>, idService?: AbstractIDService) {
+    super({ type: 'text-field-simple', ...element }, idService);
+    if (isTextFieldSimpleProperties(element)) {
       this.minLength = element.minLength;
       this.minLengthWarnMessage = element.minLengthWarnMessage;
       this.maxLength = element.maxLength;
@@ -102,7 +103,8 @@ export interface TextFieldSimpleProperties extends TextInputElementProperties {
   };
 }
 
-function isValid(blueprint?: TextFieldSimpleProperties): boolean {
+function isTextFieldSimpleProperties(blueprint?: Partial<TextFieldSimpleProperties>)
+  : blueprint is TextFieldSimpleProperties {
   if (!blueprint) return false;
   return blueprint.minLength !== undefined &&
     blueprint.minLengthWarnMessage !== undefined &&
@@ -113,5 +115,5 @@ function isValid(blueprint?: TextFieldSimpleProperties): boolean {
     blueprint.patternWarnMessage !== undefined &&
     blueprint.clearable !== undefined &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

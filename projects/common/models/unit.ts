@@ -4,9 +4,10 @@ import { VariableInfo } from '@iqb/responses';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
-import { InstantiationEror } from 'common/util/errors';
 import { ArrayUtils } from 'common/util/array';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
+import { AbstractIDService } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class Unit implements UnitProperties {
   type = 'aspect-unit-definition';
@@ -17,11 +18,11 @@ export class Unit implements UnitProperties {
   sectionNumberingPosition: 'left' | 'above' = 'left';
   showUnitNavNext: boolean = false;
 
-  constructor(unit?: UnitProperties) {
+  constructor(unit?: UnitProperties, idService?: AbstractIDService) {
     if (unit && isValid(unit)) {
       this.version = unit.version;
       this.stateVariables = unit.stateVariables;
-      this.pages = unit.pages.map(page => new Page(page));
+      this.pages = unit.pages.map(page => new Page(page, idService));
       this.enableSectionNumbering = unit.enableSectionNumbering;
       this.sectionNumberingPosition = unit.sectionNumberingPosition;
       this.showUnitNavNext = unit.showUnitNavNext;
@@ -31,7 +32,7 @@ export class Unit implements UnitProperties {
       }
       this.version = VersionManager.getCurrentVersion();
       if (unit?.stateVariables !== undefined) this.stateVariables = unit.stateVariables;
-      this.pages = unit?.pages.map(page => new Page(page)) || [new Page()];
+      this.pages = unit?.pages.map(page => new Page(page, idService)) || [new Page(undefined, idService)];
       if (unit?.enableSectionNumbering !== undefined) this.enableSectionNumbering = unit.enableSectionNumbering;
       if (unit?.sectionNumberingPosition !== undefined) this.sectionNumberingPosition = unit.sectionNumberingPosition;
       if (unit?.showUnitNavNext !== undefined) this.showUnitNavNext = unit.showUnitNavNext;

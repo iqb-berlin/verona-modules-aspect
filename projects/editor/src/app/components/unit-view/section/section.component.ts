@@ -7,13 +7,14 @@ import { UnitService } from 'editor/src/app/services/unit-services/unit.service'
 import { ElementService } from 'editor/src/app/services/unit-services/element.service';
 import { SectionService } from 'editor/src/app/services/unit-services/section.service';
 import { Section } from 'common/models/section';
-import { PositionedUIElement, UIElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
 import { ElementOverlay } from 'editor/src/app/components/unit-view/element-overlay/element-overlay.directive';
 import { StaticSectionComponent } from 'editor/src/app/components/unit-view/section/static-section.component';
 import { DynamicSectionComponent } from 'editor/src/app/components/unit-view/section/dynamic-section.component';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgClass, NgIf } from '@angular/common';
 import { SectionCounter } from 'common/util/section-counter';
+import { PositionedUIElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-editor-section-view',

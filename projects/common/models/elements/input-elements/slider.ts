@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, UIElementType
+  InputElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { SliderComponent } from 'common/components/input-elements/slider.component';
@@ -9,7 +9,8 @@ import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class SliderElement extends InputElement implements SliderProperties {
   type: UIElementType = 'slider';
@@ -26,9 +27,9 @@ export class SliderElement extends InputElement implements SliderProperties {
   static title: string = 'Schieberegler';
   static icon: string = 'linear_scale';
 
-  constructor(element?: SliderProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<SliderProperties>, idService?: AbstractIDService) {
+    super({ type: 'slider', ...element }, idService);
+    if (isSliderProperties(element)) {
       this.minValue = element.minValue;
       this.maxValue = element.maxValue;
       this.showValues = element.showValues;
@@ -94,7 +95,7 @@ export interface SliderProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: SliderProperties): boolean {
+function isSliderProperties(blueprint?: Partial<SliderProperties>): blueprint is SliderProperties {
   if (!blueprint) return false;
   return blueprint.minValue !== undefined &&
     blueprint.maxValue !== undefined &&
@@ -103,5 +104,5 @@ function isValid(blueprint?: SliderProperties): boolean {
     blueprint.thumbLabel !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

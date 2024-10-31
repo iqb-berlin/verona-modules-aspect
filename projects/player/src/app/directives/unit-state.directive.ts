@@ -1,5 +1,9 @@
-import { Directive, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, debounceTime, merge, Subject } from 'rxjs';
+import {
+  Directive, Input, OnDestroy, OnInit
+} from '@angular/core';
+import {
+  BehaviorSubject, debounceTime, merge, Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Progress, UnitState } from 'player/modules/verona/models/verona';
 import { VeronaSubscriptionService } from 'player/modules/verona/services/verona-subscription.service';
@@ -54,14 +58,14 @@ export class UnitStateDirective implements OnInit, OnDestroy {
   }
 
   private sendVopStateChangedNotification(): void {
-    LogService.debug('player: this.unitStateService.elementCodes',
-      this.unitStateService.elementCodes);
-    LogService.debug('player: this.stateVariableStateService.elementCodes',
-      this.stateVariableStateService.elementCodes);
+    LogService.debug('player: this.unitStateService.getResponses',
+      this.unitStateService.getResponses());
+    LogService.debug('player: this.stateVariableStateService.getResponses',
+      this.stateVariableStateService.getResponses());
     const unitState: UnitState = {
       dataParts: {
-        stateVariableCodes: JSON.stringify(this.stateVariableStateService.elementCodes),
-        elementCodes: JSON.stringify(this.unitStateService.elementCodes)
+        stateVariableCodes: JSON.stringify(this.stateVariableStateService.getResponses()),
+        elementCodes: JSON.stringify(this.unitStateService.getResponses())
       },
       presentationProgress: this.presentationProgress,
       responseProgress: this.validatorService.responseProgress,

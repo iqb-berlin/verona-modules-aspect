@@ -11,7 +11,6 @@ import {
 } from 'editor/src/app/components/dialogs/geogebra-app-definition-dialog.component';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
 import { PlayerProperties } from 'common/models/elements/property-group-interfaces';
-import { DragNDropValueObject, Label, TextImageLabel } from 'common/models/elements/label-interfaces';
 import { Hotspot } from 'common/models/elements/input-elements/hotspot-image';
 import {
   StateVariablesDialogComponent
@@ -27,7 +26,13 @@ import { SanitizationDialogComponent } from 'editor/src/app/components/dialogs/s
 import {
   TooltipPropertiesDialogComponent
 } from 'editor/src/app/components/dialogs/tooltip-properties-dialog.component';
-import { TooltipPosition, UIElement } from 'common/models/elements/element';
+import { UIElement } from 'common/models/elements/element';
+import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
+import { TableElement } from 'common/models/elements/compound-elements/table/table';
+import { FileInformation } from 'common/services/file.service';
+import {
+  DragNDropValueObject, Label, TextImageLabel, TooltipPosition
+} from 'common/interfaces';
 import { DeleteConfirmationDialogComponent } from '../components/dialogs/delete-confirmation-dialog.component';
 import { TextEditDialogComponent } from '../components/dialogs/text-edit-dialog.component';
 import { TextEditMultilineDialogComponent } from '../components/dialogs/text-edit-multiline-dialog.component';
@@ -36,9 +41,6 @@ import { PlayerEditDialogComponent } from '../components/dialogs/player-edit-dia
 import { LikertRowEditDialogComponent } from '../components/dialogs/likert-row-edit-dialog.component';
 import { DropListOptionEditDialogComponent } from '../components/dialogs/drop-list-option-edit-dialog.component';
 import { DeleteReferenceDialogComponent } from '../components/dialogs/delete-reference-dialog.component';
-import { TableEditDialogComponent } from 'editor/src/app/components/dialogs/table-edit-dialog.component';
-import { TableElement } from 'common/models/elements/compound-elements/table/table';
-import { FileInformation } from 'common/services/file.service';
 
 @Injectable({
   providedIn: 'root'
@@ -178,7 +180,7 @@ export class DialogService {
 
   showVisibilityRulesDialog(visibilityRules: VisibilityRule[],
                             logicalConnectiveOfRules: 'disjunction' | 'conjunction',
-                            controlIds: string[],
+                            controlIds: { id: string, alias: string }[],
                             visibilityDelay: number,
                             animatedVisibility: boolean,
                             enableReHide: boolean

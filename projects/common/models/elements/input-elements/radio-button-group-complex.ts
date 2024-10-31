@@ -1,16 +1,22 @@
 import { Type } from '@angular/core';
 import {
-  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
+  InputElement, UIElement
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioGroupImagesComponent } from 'common/components/input-elements/radio-group-images.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { TextImageLabel } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import {
+  AbstractIDService,
+  InputElementProperties,
+  OptionElement,
+  TextImageLabel,
+  UIElementType
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class RadioButtonGroupComplexElement extends InputElement
   implements OptionElement, RadioButtonGroupComplexProperties {
@@ -24,9 +30,9 @@ export class RadioButtonGroupComplexElement extends InputElement
   static title: string = 'Optionsfelder (mit Bild)';
   static icon: string = 'radio_button_checked';
 
-  constructor(element?: RadioButtonGroupComplexProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<RadioButtonGroupComplexProperties>, idService?: AbstractIDService) {
+    super({ type: 'radio-group-images', ...element }, idService);
+    if (isRadioButtonGroupComplexProperties(element)) {
       this.label = element.label;
       this.options = [...element.options];
       this.itemsPerRow = element.itemsPerRow;
@@ -93,7 +99,8 @@ export interface RadioButtonGroupComplexProperties extends InputElementPropertie
   styling: BasicStyles;
 }
 
-function isValid(blueprint?: RadioButtonGroupComplexProperties): boolean {
+function isRadioButtonGroupComplexProperties(blueprint?: Partial<RadioButtonGroupComplexProperties>)
+  : blueprint is RadioButtonGroupComplexProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
     blueprint.options !== undefined &&

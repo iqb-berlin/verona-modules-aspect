@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 import {
-  UIElement, UIElementProperties, UIElementType
+  UIElement
 } from 'common/models/elements/element';
 import { FrameComponent } from 'common/components/frame/frame.component';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -8,7 +8,8 @@ import {
   BorderStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class FrameElement extends UIElement implements FrameProperties {
   type: UIElementType = 'frame';
@@ -22,9 +23,9 @@ export class FrameElement extends UIElement implements FrameProperties {
   static title: string = 'Rahmen';
   static icon: string = 'crop_square';
 
-  constructor(element?: FrameProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<FrameProperties>, idService?: AbstractIDService) {
+    super({ type: 'frame', ...element }, idService);
+    if (isFrameProperties(element)) {
       this.hasBorderTop = element.hasBorderTop;
       this.hasBorderBottom = element.hasBorderBottom;
       this.hasBorderLeft = element.hasBorderLeft;
@@ -71,7 +72,7 @@ export interface FrameProperties extends UIElementProperties {
   styling: BorderStyles & { backgroundColor: string; };
 }
 
-function isValid(blueprint?: FrameProperties): boolean {
+function isFrameProperties(blueprint?: Partial<FrameProperties>): blueprint is FrameProperties {
   if (!blueprint) return false;
   return blueprint.hasBorderTop !== undefined &&
     blueprint.hasBorderBottom !== undefined &&
@@ -79,5 +80,5 @@ function isValid(blueprint?: FrameProperties): boolean {
     blueprint.hasBorderRight !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBorderStyles(blueprint.styling) &&
-    blueprint.styling.backgroundColor !== undefined;
+    blueprint.styling?.backgroundColor !== undefined;
 }

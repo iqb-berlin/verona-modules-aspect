@@ -6,11 +6,11 @@ import { Section } from 'common/models/section';
 import { takeUntil } from 'rxjs/operators';
 import { UnitStateService } from 'player/src/app/services/unit-state.service';
 import { StorableTimer } from 'player/src/app/classes/storable-timer';
-import { ValueChangeElement } from 'common/models/elements/element';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { Response } from '@iqb/responses';
 import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface';
+import { ValueChangeElement } from 'common/interfaces';
 
 @Directive({
   selector: '[aspectSectionVisibilityHandling]'
@@ -96,7 +96,10 @@ export class SectionVisibilityHandlingDirective implements OnInit, OnDestroy {
       .subscribe(() => {
         this.destroyTimerStateVariable();
       });
-    this.stateVariableStateService.registerElementCode(this.timerStateVariable.id, this.timerStateVariable.value);
+    this.stateVariableStateService.registerElementCode(
+      this.timerStateVariable.id,
+      this.timerStateVariable.id,
+      this.timerStateVariable.value);
     this.timerStateVariable.run();
   }
 

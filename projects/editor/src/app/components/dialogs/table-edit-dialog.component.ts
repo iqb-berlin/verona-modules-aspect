@@ -5,15 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MatButtonModule } from '@angular/material/button';
 import { TableComponent } from 'common/components/compound-elements/table/table.component';
 import { ElementFactory } from 'common/util/element.factory';
-import { PositionedUIElement, UIElementProperties, UIElementType } from 'common/models/elements/element';
-import {
-  PositionProperties,
-  PropertyGroupGenerators
-} from 'common/models/elements/property-group-interfaces';
+import { PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { FileService } from 'common/services/file.service';
 import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { DropListProperties } from 'common/models/elements/input-elements/drop-list';
+import { UIElementProperties, UIElementType } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-editor-table-edit-dialog',

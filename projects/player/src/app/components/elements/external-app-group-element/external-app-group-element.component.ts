@@ -8,7 +8,7 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { GeometryElement } from 'common/models/elements/geometry/geometry';
 import { GeometryComponent } from 'common/components/geometry/geometry.component';
-import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/models/elements/element';
+import { GeometryValue, GeometryVariable, ValueChangeElement } from 'common/interfaces';
 
 @Component({
   selector: 'aspect-external-app-group-element',
@@ -33,6 +33,7 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
   ngAfterViewInit(): void {
     this.registerAtUnitStateService(
       this.elementModel.id,
+      this.elementModel.alias,
       ElementModelElementCodeMappingService.mapToElementCodeValue(
         this.appDefinition,
         this.elementModel.type
@@ -49,7 +50,9 @@ export class ExternalAppGroupElementComponent extends ElementGroupDirective impl
 
   private registerGeometryVariable(variableName: string): void {
     this.unitStateService.registerElementCode(
-      (this.elementModel as GeometryElement).getGeometryVariableId(variableName), null
+      (this.elementModel as GeometryElement).getGeometryVariableId(variableName),
+      (this.elementModel as GeometryElement).getGeometryVariableAlias(variableName),
+      null
     );
   }
 

@@ -17,9 +17,7 @@ import {
 } from 'player/src/app/services/element-model-element-code-mapping.service';
 import { MetaDataService } from 'player/src/app/services/meta-data.service';
 import { AnchorService } from 'player/src/app/services/anchor.service';
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { VersionManager } from 'common/services/version-manager';
-import { InstantiationEror } from 'common/util/errors';
 import { MatDialog } from '@angular/material/dialog';
 import { UnitDefErrorDialogComponent } from 'common/components/unit-def-error-dialog.component';
 import { StateVariableStateService } from 'player/src/app/services/state-variable-state.service';
@@ -27,6 +25,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { SectionCounter } from 'common/util/section-counter';
 import { NavigationService } from 'player/src/app/services/navigation.service';
 import { BehaviorSubject } from 'rxjs';
+import { DragNDropValueObject } from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 @Component({
   selector: 'aspect-unit',
@@ -135,13 +135,19 @@ export class UnitComponent implements OnInit {
   }
 
   private initElementCodes(message: VopStartCommand, unitDefinition: Unit): void {
-    this.unitStateService.elementCodes = message.unitState?.dataParts?.elementCodes ?
-      JSON.parse(message.unitState.dataParts.elementCodes) : [];
-    this.stateVariableStateService.elementCodes = message.unitState?.dataParts?.stateVariableCodes ?
-      JSON.parse(message.unitState.dataParts.stateVariableCodes) : [];
+    this.unitStateService
+      .setElementCodes(message.unitState?.dataParts?.elementCodes ?
+        JSON.parse(message.unitState.dataParts.elementCodes) : [],
+      unitDefinition.getAllElements().map(element => ({ id: element.id, alias: element.alias })));
+
+    this.stateVariableStateService
+      .setElementCodes(message.unitState?.dataParts?.stateVariableCodes ?
+        JSON.parse(message.unitState.dataParts.stateVariableCodes) : [],
+      unitDefinition.stateVariables.map(stateVariable => ({ id: stateVariable.id, alias: stateVariable.alias })));
+
     unitDefinition.stateVariables
       .map(stateVariable => this.stateVariableStateService
-        .registerElementCode(stateVariable.id, stateVariable.value));
+        .registerElementCode(stateVariable.id, stateVariable.alias, stateVariable.value));
   }
 
   private reset(): void {

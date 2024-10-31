@@ -1,51 +1,38 @@
-import { IDService } from 'editor/src/app/services/id.service';
-import { TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { TranslateModule } from '@ngx-translate/core';
+import { IdRegistry } from 'editor/src/app/services/id-registry';
 
 describe('IDService', () => {
-  let idService: IDService;
+  const idRegistry: IdRegistry = new IdRegistry();
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        MatSnackBarModule,
-        TranslateModule.forRoot()]
-    });
-    idService = TestBed.inject(IDService);
-    idService.reset();
-  });
-
-  it('getAndRegisterNewID should fail on empty string param', () => {
-    expect(() => { idService.getAndRegisterNewID(''); }).toThrow(Error('ID-Service: No type given!'));
+    idRegistry.reset();
   });
 
   it('getAndRegisterNewID should return first ID', () => {
-    expect(idService.getAndRegisterNewID('text')).toBe('text_1');
+    expect(idRegistry.getAndRegisterNewID('text')).toBe('text_1');
   });
 
   it('getAndRegisterNewID should return different IDs - counting up', () => {
-    idService.getAndRegisterNewID('text');
-    expect(idService.getAndRegisterNewID('text')).toBe('text_2');
+    idRegistry.getAndRegisterNewID('text');
+    expect(idRegistry.getAndRegisterNewID('text')).toBe('text_2');
   });
 
   it('idService should return next id when one is already taken', () => {
-    idService.addID('text_1');
-    expect(idService.getAndRegisterNewID('text')).toBe('text_2');
+    idRegistry.registerID('text_1', 'text');
+    expect(idRegistry.getAndRegisterNewID('text')).toBe('text_2');
   });
 
   it('isIdAvailable should return false when id is already taken', () => {
-    expect(idService.isIdAvailable('text_1')).toBe(true);
-    idService.addID('text_1');
-    expect(idService.isIdAvailable('text_1')).toBe(false);
-    expect(idService.isIdAvailable('text_2')).toBe(true);
+    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(true);
+    idRegistry.registerID('text_1', 'text');
+    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(false);
+    expect(idRegistry.isIdAvailable('text_2', 'text')).toBe(true);
   });
 
   it('isIdAvailable should return true when ID is returned (freed up)', () => {
-    expect(idService.isIdAvailable('text_1')).toBe(true);
-    idService.addID('text_1');
-    expect(idService.isIdAvailable('text_1')).toBe(false);
-    idService.unregisterID('text_1');
-    expect(idService.isIdAvailable('text_1')).toBe(true);
+    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(true);
+    idRegistry.registerID('text_1', 'text');
+    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(false);
+    idRegistry.unregisterID('text_1', 'text');
+    expect(idRegistry.isIdAvailable('text_1', 'text')).toBe(true);
   });
 });

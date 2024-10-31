@@ -1,6 +1,6 @@
-import { DragNDropValueObject } from 'common/models/elements/label-interfaces';
 import { DropListComponent } from 'common/components/input-elements/drop-list/drop-list.component';
 import { DropLogic } from 'common/components/input-elements/drop-list/drop-logic';
+import { DragNDropValueObject } from 'common/interfaces';
 
 export class DragOperation {
   sourceElement: HTMLElement;

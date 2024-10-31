@@ -1,16 +1,16 @@
 import { Type } from '@angular/core';
-import {
-  InputElement, InputElementProperties, OptionElement, UIElement, UIElementType
-} from 'common/models/elements/element';
+import { InputElement, UIElement } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { RadioButtonGroupComponent } from 'common/components/input-elements/radio-button-group.component';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { TextLabel } from 'common/models/elements/label-interfaces';
 import {
   BasicStyles, PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
 } from 'common/models/elements/property-group-interfaces';
 import { environment } from 'common/environment';
-import { InstantiationEror } from 'common/util/errors';
+import {
+  AbstractIDService, InputElementProperties, OptionElement, TextLabel, UIElementType
+} from 'common/interfaces';
+import { InstantiationEror } from 'common/errors';
 
 export class RadioButtonGroupElement extends InputElement implements OptionElement, RadioButtonGroupProperties {
   type: UIElementType = 'radio';
@@ -26,9 +26,9 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
   static title: string = 'Optionsfelder';
   static icon: string = 'radio_button_checked';
 
-  constructor(element?: RadioButtonGroupProperties) {
-    super(element);
-    if (element && isValid(element)) {
+  constructor(element?: Partial<RadioButtonGroupProperties>, idService?: AbstractIDService) {
+    super({ type: 'radio', ...element }, idService);
+    if (isRadioButtonGroupProperties(element)) {
       this.label = element.label;
       this.options = [...element.options];
       this.alignment = element.alignment;
@@ -101,7 +101,8 @@ export interface RadioButtonGroupProperties extends InputElementProperties {
   };
 }
 
-function isValid(blueprint?: RadioButtonGroupProperties): boolean {
+function isRadioButtonGroupProperties(blueprint?: Partial<RadioButtonGroupProperties>)
+  : blueprint is RadioButtonGroupProperties {
   if (!blueprint) return false;
   return blueprint.label !== undefined &&
     blueprint.options !== undefined &&
@@ -109,5 +110,5 @@ function isValid(blueprint?: RadioButtonGroupProperties): boolean {
     blueprint.strikeOtherOptions !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
-    blueprint.styling.lineHeight !== undefined;
+    blueprint.styling?.lineHeight !== undefined;
 }

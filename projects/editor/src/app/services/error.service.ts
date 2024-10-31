@@ -1,18 +1,21 @@
-import { ErrorHandler, Injectable } from '@angular/core';
-import { AspectError } from 'common/classes/aspect-error';
+import { ErrorHandler, Injectable, NgZone } from '@angular/core';
+import { IDError } from 'common/errors';
+import { MessageService } from 'editor/src/app/services/message.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorService implements ErrorHandler {
-  // eslint-disable-next-line class-methods-use-this
-  handleError(error: AspectError): void {
-    if (error.name === AspectError.name) {
-      // handle app specific errors
+  constructor(private messageService: MessageService, private _zone: NgZone) { }
+
+  handleError(error: Error): void {
+    if (error instanceof IDError) {
+      this._zone.run(() => {
+        this.messageService.showError(error.message);
+      });
     } else {
-      // all other errors
+      // eslint-disable-next-line no-console
+      console.error(error);
     }
-    // eslint-disable-next-line no-console
-    console.error(error.message);
   }
 }

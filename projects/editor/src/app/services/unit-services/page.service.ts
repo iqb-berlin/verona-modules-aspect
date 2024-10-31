@@ -18,9 +18,9 @@ export class PageService {
   }
 
   async deletePage(pageIndex: number): Promise<void> {
-    const selectedPage = this.unitService.unit.pages[this.selectionService.selectedPageIndex];
-    if (await this.unitService.prepareDelete('page', selectedPage)) {
-      selectedPage.getAllElements().forEach(el => el.unregisterIDs());
+    const pageToBeDeleted = this.unitService.unit.pages[pageIndex];
+    if (await this.unitService.prepareDelete('page', pageToBeDeleted, pageIndex)) {
+      pageToBeDeleted.getAllElements().forEach(el => el.unregisterIDs());
       this.unitService.unit.pages.splice(pageIndex, 1);
       this.selectionService.selectPreviousPage();
       this.unitService.updateSectionCounter();

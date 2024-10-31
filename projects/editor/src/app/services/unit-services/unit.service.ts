@@ -123,7 +123,9 @@ export class UnitService {
   }
 
   /* Check references and confirm */
-  prepareDelete(deletedObjectType: 'page' | 'section' | 'elements', object: Page | Section | UIElement[]): Promise<boolean> {
+  prepareDelete(deletedObjectType: 'page' | 'section' | 'elements',
+                object: Page | Section | UIElement[],
+                pageIndex?: number): Promise<boolean> {
     return new Promise((resolve) => {
       let refs: ReferenceList[] = [];
       let dialogText: string = '';
@@ -136,7 +138,8 @@ export class UnitService {
             this.selectionService.selectedPageIndex
           );
           refs = refs.concat(pageNavButtonRefs);
-          dialogText = `Seite ${this.selectionService.selectedPageIndex + 1} löschen?`;
+          if (pageIndex === undefined) throw Error();
+          dialogText = `Seite ${pageIndex + 1} löschen?`;
           break;
         case 'section':
           refs = this.referenceManager.getSectionElementsReferences([object as Section]);

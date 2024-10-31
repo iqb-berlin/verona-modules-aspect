@@ -80,7 +80,7 @@ export class PageMenu implements OnDestroy {
   }
 
   deletePage(): void {
-    this.pageService.deletePage(this.selectionService.selectedPageIndex);
+    this.pageService.deletePage(this.pageIndex);
   }
 
   updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {

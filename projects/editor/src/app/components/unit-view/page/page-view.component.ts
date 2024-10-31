@@ -14,6 +14,9 @@ import { SectionComponent } from 'editor/src/app/components/unit-view/section/se
   selector: 'aspect-editor-page-view',
   templateUrl: './page-view.component.html',
   styles: `
+    :host {
+      display: flex;
+    }
     .canvasBackground {
       background-color: lightgrey;
     }

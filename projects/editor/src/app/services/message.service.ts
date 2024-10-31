@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { NgForOf, NgIf } from '@angular/common';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,12 @@ export class MessageService {
 
   showError(text: string, duration: number = 3000): void {
     this._snackBar.open(text, undefined, { duration: duration, panelClass: 'snackbar-error' });
+  }
+
+  showErrorPrompt(error: Error): void {
+    this._snackBar.openFromComponent(UnexpectedErrorSnackbarComponent, {
+      data: error
+    });
   }
 
   showPrompt(text: string): void {
@@ -141,4 +148,62 @@ export class ReferenceListSnackbarComponent {
 export class FixedReferencesSnackbarComponent {
   constructor(public snackBarRef: MatSnackBarRef<FixedReferencesSnackbarComponent>,
               @Optional()@Inject(MAT_SNACK_BAR_DATA) public data: UIElement[]) { }
+}
+
+@Component({
+  selector: 'aspect-unexpected-error-snackbar',
+  standalone: true,
+  imports: [
+    NgIf,
+    MatSnackBarModule,
+    MatButtonModule
+  ],
+  template: `
+    <h2>Unerwarteter Fehler</h2>
+    <button *ngIf="!areDetailsShown" (click)="showDetails()">
+      Details ansehen
+    </button>
+    <ng-container *ngIf="areDetailsShown">
+      <button (click)="copyDetailsToClipboard()">
+        Details in die Zwischenablage kopieren
+      </button>
+      <h3>{{ data.message }}</h3>
+      <div [style]="'max-height: 300px; overflow: scroll'">{{ data.stack }}</div>
+    </ng-container>
+    <span matSnackBarActions>
+      <button mat-stroked-button matSnackBarAction (click)="snackBarRef.dismiss()">
+        Schließen
+      </button>
+    </span>
+  `,
+  styles: [`
+    :host {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .mat-mdc-snack-bar-actions {
+      margin-top: 20px;
+    }
+    .mat-mdc-snack-bar-actions button {
+      color: var(--mat-snack-bar-button-color) !important;
+      --mat-mdc-button-persistent-ripple-color: currentColor !important;
+      background-color: white;
+    }
+    `
+  ]
+})
+export class UnexpectedErrorSnackbarComponent {
+  areDetailsShown = false;
+  constructor(public snackBarRef: MatSnackBarRef<UnexpectedErrorSnackbarComponent>,
+              @Optional()@Inject(MAT_SNACK_BAR_DATA) public data: Error,
+              private clipboard: Clipboard) { }
+
+  showDetails(): void {
+    this.areDetailsShown = true;
+  }
+
+  copyDetailsToClipboard(): void {
+    this.clipboard.copy(JSON.stringify(this.data.message + this.data.stack));
+  }
 }

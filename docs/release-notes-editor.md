@@ -10,6 +10,7 @@ Editor
 - Bild-, Audio-, Video- und Geogebra-Elemente zeigen im Eigenschaftsfenster den ursprünglichen Dateinamen an, aus denen ihr Inhalt kopiert wurde.
 - Elemente werden hervorgehoben bei Berührung in der Elementliste des Abschnitts
 - in Texte und andere Elemente mit erweiterten Textoptionen (RichText) können Formeln eingefügt werden. Akzeptiert Latex-Notation.
+- Unerwartete Fehler erscheinen als Meldung. Die Meldung enthält Details zur Fehlerursache, die  kopiert und zum Anreichern von Bug-Reports verwendet werden können.
 
 ### Änderungen
 - Lückentext: Standardwert für Zeilenhöhe auf 180 gesetzt (vorher 150)

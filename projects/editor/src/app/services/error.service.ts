@@ -14,6 +14,7 @@ export class ErrorService implements ErrorHandler {
         this.messageService.showError(error.message);
       });
     } else {
+      this.messageService.showErrorPrompt(error);
       // eslint-disable-next-line no-console
       console.error(error);
     }

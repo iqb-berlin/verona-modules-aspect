@@ -3,7 +3,7 @@ Editor
 ## 2.6.0
 ### Neue Funktionen
 - Alternativer Ansichtsmodus:
-  - kann über das Optionsmenu in der oberen linken Ecke eingestellt werden
+  - kann über das Optionsmenu in der oberen rechten Ecke eingestellt werden
   - alle Seiten werden untereinander anzeigt
   - Funktion um Seiten am gewählten Abschnitt einzufügen
   - Funktion um Seite zu entfernen und enthaltene Abschnitte in die vorhergehende zu integrieren

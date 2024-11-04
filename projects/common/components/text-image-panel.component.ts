@@ -21,7 +21,6 @@ import { DragNDropValueObject, TextImageLabel } from 'common/interfaces';
       <img *ngIf="label.imgSrc"
            [style.object-fit]="'scale-down'"
            [style.max-width.%]="100"
-           imageFullscreen [imgSrc]="label.imgSrc | safeResourceUrl"
            [src]="label.imgSrc | safeResourceUrl" alt="Image Placeholder">
       <div *ngIf="label.text !== ''" class="text" [innerHTML]="label.text | safeResourceHTML"></div>
     </div>

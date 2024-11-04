@@ -2,7 +2,6 @@ import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
-import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import { BehaviorSubject } from 'rxjs';
 import { MarkingData } from 'common/models/marking-data';
 import { ValueChangeElement } from 'common/interfaces';
@@ -37,12 +36,10 @@ import { ElementComponent } from '../../directives/element-component.directive';
            [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
            [style.column-count]="elementModel.columnCount"
            tooltipEventTooltip
-           (click)="openFullscreenImage($event)"
            [innerHTML]="savedText || elementModel.text | safeResourceHTML"
            (contextmenu)="$event.preventDefault()"
            (pointerdown)="startTextSelection($event)">
       </div>
-      <ng-container imageFullscreen></ng-container>
     </div>
   `,
   styles: [
@@ -69,8 +66,6 @@ export class TextComponent extends ElementComponent implements OnInit {
   @Output() textSelectionStart = new EventEmitter<PointerEvent>();
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
 
-  @ViewChild(ImageFullscreenDirective) imageFullScreenDirective!: ImageFullscreenDirective;
-
   selectedColor: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
@@ -86,13 +81,6 @@ export class TextComponent extends ElementComponent implements OnInit {
       this.elementModel.highlightableTurquoise ||
       this.elementModel.highlightableOrange))) {
       this.textSelectionStart.emit(event);
-    }
-  }
-
-  openFullscreenImage(event: MouseEvent) {
-    const targetElement = event.target as HTMLImageElement;
-    if (targetElement.nodeName === 'IMG') {
-      this.imageFullScreenDirective.openFullScreenDialog(targetElement.src, targetElement.alt);
     }
   }
 }

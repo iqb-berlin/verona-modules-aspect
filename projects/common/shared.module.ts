@@ -31,6 +31,7 @@ import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
 import { PointerEventTooltipDirective } from 'common/components/tooltip/pointer-event-tooltip.directive';
 import { ClozeChildErrorMessage } from 'common/components/compound-elements/cloze/cloze-child-error-message';
 import { TriggerComponent } from 'common/components/trigger/trigger.component';
+import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -87,7 +88,6 @@ import { MathTableComponent } from './components/input-elements/math-table.compo
 import { TextAreaMathComponent } from './components/input-elements/text-area-math.component';
 import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
-import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
 
 @NgModule({
   imports: [

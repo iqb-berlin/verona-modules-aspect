@@ -45,7 +45,7 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     if (isLikertProperties(element)) {
       this.options = [...element.options];
       this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-      this.rows = element.rows.map(row => new LikertRowElement(row));
+      this.rows = element.rows.map(row => new LikertRowElement(row, idService));
       this.label = element.label;
       this.label2 = element.label2;
       this.stickyHeader = element.stickyHeader;
@@ -57,7 +57,7 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
       }
       if (element?.options !== undefined) this.options = element.options;
       if (element?.firstColumnSizeRatio !== undefined) this.firstColumnSizeRatio = element.firstColumnSizeRatio;
-      if (element?.rows !== undefined) this.rows = element.rows.map(row => new LikertRowElement(row));
+      if (element?.rows !== undefined) this.rows = element.rows.map(row => new LikertRowElement(row, idService));
       if (element?.label !== undefined) this.label = element.label;
       if (element?.label2 !== undefined) this.label2 = element.label2;
       if (element?.stickyHeader !== undefined) this.stickyHeader = element.stickyHeader;

@@ -124,7 +124,7 @@ export class OptionsFieldSetComponent {
   }
 
   addLikertRowImage(): void {
-    const newRow = new LikertRowElement({
+    const newRow = this.elementService.createLikertRowElement({
       ...this.idService.getAndRegisterNewIDs('likert-row'),
       rowLabel: {
         text: '',

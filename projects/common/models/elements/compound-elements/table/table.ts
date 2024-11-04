@@ -38,7 +38,7 @@ export class TableElement extends CompoundElement implements TableProperties {
       this.gridRowSizes = element.gridRowSizes;
       this.elements = element.elements
         .map(el => {
-          const newElement = ElementFactory.createElement(el);
+          const newElement = ElementFactory.createElement(el, idService);
           newElement.gridRow = el.gridRow; // add custom table element params
           newElement.gridColumn = el.gridColumn;
           if (el.type === 'text-field') {
@@ -57,7 +57,7 @@ export class TableElement extends CompoundElement implements TableProperties {
       if (element?.gridColumnSizes !== undefined) this.gridColumnSizes = element.gridColumnSizes;
       if (element?.gridRowSizes !== undefined) this.gridRowSizes = element.gridRowSizes;
       this.elements = element?.elements !== undefined ?
-        element.elements.map(el => ElementFactory.createElement(el)) as PositionedUIElement[] :
+        element.elements.map(el => ElementFactory.createElement(el, idService)) as PositionedUIElement[] :
         [];
       if (element?.tableEdgesEnabled !== undefined) this.tableEdgesEnabled = element.tableEdgesEnabled;
       this.position = PropertyGroupGenerators.generatePositionProps({

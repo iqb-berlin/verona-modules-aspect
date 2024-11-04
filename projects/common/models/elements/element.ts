@@ -241,6 +241,20 @@ export abstract class TextInputElement extends InputElement implements TextInput
 
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
+
+  registerIDs(): void {
+    super.registerIDs();
+    this.getChildElements().forEach(el => {
+      el.registerIDs();
+    });
+  }
+
+  unregisterIDs(): void {
+    super.unregisterIDs();
+    this.getChildElements().forEach(el => {
+      el.unregisterIDs();
+    });
+  }
 }
 
 function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): blueprint is PlayerElementBlueprint {

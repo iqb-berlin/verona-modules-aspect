@@ -5,7 +5,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-    <div class="unit-nav-next">
+    <div class="unit-nav-next fx-row-end-center">
       Hier geht’s weiter
       <span class="svg-container" (click)="navigate.emit()">
         <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 100 100">
@@ -18,7 +18,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styles: `
     .unit-nav-next {
       font-size: 20px;
-      float: right;
     }
     .unit-nav-next .svg-container {
       vertical-align: middle;

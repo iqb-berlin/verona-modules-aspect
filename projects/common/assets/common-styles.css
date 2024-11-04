@@ -81,6 +81,13 @@ blockquote p {
   justify-content: flex-end;
 }
 
+.fx-row-end-center {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
 .fx-column-start-stretch {
   display: flex;
   align-items: stretch;

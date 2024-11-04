@@ -13,12 +13,13 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 })
 export class ImageFullscreenDirective {
   @Input() imgSrc!: SafeResourceUrl;
+  @Input() allowFullscreen!: boolean;
   @Input() alt!: string;
 
   readonly dialog = inject(MatDialog);
 
   @HostListener('click') onClick() {
-    this.openFullScreenDialog(this.imgSrc, this.alt);
+    if (this.allowFullscreen) this.openFullScreenDialog(this.imgSrc, this.alt);
   }
 
   openFullScreenDialog(src: SafeResourceUrl, alt: string): void {

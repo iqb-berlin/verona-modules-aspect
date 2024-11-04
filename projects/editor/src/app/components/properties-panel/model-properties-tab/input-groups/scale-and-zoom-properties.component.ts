@@ -19,6 +19,12 @@ import { UIElement } from 'common/models/elements/element';
         {{'propertiesPanel.magnifier' | translate }}
       </mat-checkbox>
 
+      <mat-checkbox *ngIf="combinedProperties.allowFullscreen !== undefined"
+                    [checked]="$any(combinedProperties.allowFullscreen)"
+                    (change)="updateModel.emit({ property: 'allowFullscreen', value: $event.checked })">
+        {{'propertiesPanel.allowFullscreen' | translate }}
+      </mat-checkbox>
+
       <mat-form-field appearance="fill" *ngIf="combinedProperties.magnifierSize !== undefined">
         <mat-label>{{'propertiesPanel.magnifierSize' | translate }} in px</mat-label>
         <input matInput type="number" #magnifierSize="ngModel" min="0"

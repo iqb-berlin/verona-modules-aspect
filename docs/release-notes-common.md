@@ -2,6 +2,8 @@ Allgemein
 =========
 ## editor/2.6.0+player/2.6.0
 ### Neue Funktionen
+- Bild: Neue Eigenschaft
+  - Vollbildansicht erlauben
 - Text: Neue Markierfunktionalität
   - Die Wörter in einem Text können durch Mausklick oder Berührung einzeln markiert oder unmarkiert werden
 - Neues Element: Markierungselement
@@ -10,6 +12,7 @@ Allgemein
   - Wenn ausgewählt wird ein kurzer Text ("Hier geht’s weiter") und ein Knopf zur Unit-Navigation ans Ende der letzten Seite angefügt. Dieser ist nur zu sehen, wenn alle Elemente gesehen wurden (presentation-complete)
 
 ### Änderungen
+- Erlaubt die Anzeige von Bildern im Vollbild-Dialog nur noch für explizite Bildelmente
 - Lückentext - Optionsfelder: "Gewählte Option durchstreichen" setzt nicht länger die Auswahlfarbe auf transparent. Stattdessen wird die Farbe in diesem Fall ignoriert. Editor-Tooltip entsprechend angepasst.
 - Tabelle:
   - Tabellenzellen haben keine interne Mindestbreite von 50px mehr. Das sollte Fehler beheben bei denen Zellinhalte in vorhergehende Spalten überfließen, wenn sehr schmale Spaltenbreiten verwendet werden.

@@ -187,6 +187,9 @@ iqb-aspect-definition@1.0.0
 - Geometry
  - new property: fileName: string;
 
+- Image
+  - new property: allowFullscreen: boolean
+
 - DragNDropValueObject
  - new property: imgFileName: string;
  - new property: audioFileName: string;

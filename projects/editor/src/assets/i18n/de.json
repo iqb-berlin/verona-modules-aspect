@@ -203,6 +203,7 @@
     "firstLineColoring": "Färbung erster Zeile",
     "firstLineColoringColor": "Farbe erster Zeile",
     "scale": "Skalieren",
+    "allowFullscreen": "Vollbildansicht erlauben",
     "magnifier": "Lupe",
     "magnifierSize": "Größe der Lupe",
     "magnifierZoom": "Vergrößerungsfaktor",

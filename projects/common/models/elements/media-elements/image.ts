@@ -4,9 +4,7 @@ import {
 } from 'common/models/elements/element';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { ImageComponent } from 'common/components/media-elements/image.component';
-import {
-  PositionProperties, PropertyGroupGenerators, PropertyGroupValidators
-} from 'common/models/elements/property-group-interfaces';
+import { PositionProperties, PropertyGroupGenerators } from 'common/models/elements/property-group-interfaces';
 import { VariableInfo, VariableValue } from '@iqb/responses';
 import { environment } from 'common/environment';
 import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
@@ -17,6 +15,7 @@ export class ImageElement extends UIElement implements ImageProperties {
   src: string | null = null;
   alt: string = 'Bild nicht gefunden';
   scale: boolean = false;
+  allowFullscreen: boolean = false;
   magnifier: boolean = false;
   magnifierSize: number = 100;
   magnifierZoom: number = 1.5;
@@ -33,6 +32,7 @@ export class ImageElement extends UIElement implements ImageProperties {
       this.src = element.src;
       this.alt = element.alt;
       this.scale = element.scale;
+      this.allowFullscreen = element.allowFullscreen;
       this.magnifier = element.magnifier;
       this.magnifierSize = element.magnifierSize;
       this.magnifierZoom = element.magnifierZoom;
@@ -46,6 +46,7 @@ export class ImageElement extends UIElement implements ImageProperties {
       if (element?.src !== undefined) this.src = element.src;
       if (element?.alt !== undefined) this.alt = element.alt;
       if (element?.scale !== undefined) this.scale = element.scale;
+      if (element?.allowFullscreen !== undefined) this.allowFullscreen = element.allowFullscreen;
       if (element?.magnifier !== undefined) this.magnifier = element.magnifier;
       if (element?.magnifierSize !== undefined) this.magnifierSize = element.magnifierSize;
       if (element?.magnifierZoom !== undefined) this.magnifierZoom = element.magnifierZoom;
@@ -99,6 +100,7 @@ export interface ImageProperties extends UIElementProperties {
   src: string | null;
   alt: string;
   scale: boolean;
+  allowFullscreen: boolean
   magnifier: boolean;
   magnifierSize: number;
   magnifierZoom: number;
@@ -112,6 +114,7 @@ function isImageProperties(blueprint?: Partial<ImageProperties>): blueprint is I
   return blueprint.src !== undefined &&
     blueprint.alt !== undefined &&
     blueprint.scale !== undefined &&
+    blueprint.allowFullscreen !== undefined &&
     blueprint.magnifier !== undefined &&
     blueprint.magnifierSize !== undefined &&
     blueprint.magnifierZoom !== undefined &&

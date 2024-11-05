@@ -41,7 +41,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     if (isClozeProperties(element)) {
       this.columnCount = element.columnCount;
       this.document = structuredClone(element.document);
-      this.instantiateChildElements();
+      this.instantiateChildElements(idService);
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -50,7 +50,7 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       }
       if (element?.columnCount !== undefined) this.columnCount = element.columnCount;
       this.document = structuredClone(element?.document) || ClozeElement.getDefaultDocument();
-      this.instantiateChildElements();
+      this.instantiateChildElements(idService);
       this.dimensions = PropertyGroupGenerators.generateDimensionProps({
         height: 200,
         ...element?.dimensions
@@ -102,10 +102,11 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
       }, []);
   }
 
-  instantiateChildElements() {
-    ClozeElement.getCustomNodes(this.document.content).forEach((customNode: CustomDocumentNode) => {
-      customNode.attrs.model = ClozeElement.createChildElement(customNode.attrs.model);
-    });
+  instantiateChildElements(idService?: AbstractIDService) {
+    ClozeElement.getCustomNodes(this.document.content)
+      .forEach((customNode: CustomDocumentNode) => {
+        customNode.attrs.model = ClozeElement.createChildElement(customNode.attrs.model, idService);
+      });
   }
 
   static getDefaultDocument(): ClozeDocument {
@@ -146,23 +147,24 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     return ClozeElement.getCustomNodes(doc.content).map(el => el.attrs.model);
   }
 
-  private static createChildElement(elementModel: Partial<UIElement>): InputElement | ButtonElement {
+  private static createChildElement(elementModel: Partial<UIElement>, idService?: AbstractIDService)
+    : InputElement | ButtonElement {
     let newElement: InputElement | ButtonElement;
     switch (elementModel.type) {
       case 'text-field-simple':
-        newElement = new TextFieldSimpleElement(elementModel as unknown as TextFieldSimpleProperties);
+        newElement = new TextFieldSimpleElement(elementModel as unknown as TextFieldSimpleProperties, idService);
         break;
       case 'drop-list':
-        newElement = new DropListElement(elementModel as unknown as DropListProperties);
+        newElement = new DropListElement(elementModel as unknown as DropListProperties, idService);
         break;
       case 'toggle-button':
-        newElement = new ToggleButtonElement(elementModel as unknown as ToggleButtonProperties);
+        newElement = new ToggleButtonElement(elementModel as unknown as ToggleButtonProperties, idService);
         break;
       case 'button':
-        newElement = new ButtonElement(elementModel as unknown as ButtonProperties);
+        newElement = new ButtonElement(elementModel as unknown as ButtonProperties, idService);
         break;
       case 'checkbox':
-        newElement = new CheckboxElement(elementModel as unknown as CheckboxProperties);
+        newElement = new CheckboxElement(elementModel as unknown as CheckboxProperties, idService);
         break;
       default:
         throw new Error(`ElementType ${elementModel.type} not found!`);

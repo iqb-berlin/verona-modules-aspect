@@ -29,6 +29,7 @@ Editor
 - Leer gelassene Felder in Assistenten produzieren keine Standardwerte mehr (z.B. Beschriftung)
 - Eigenschaften für Texte ohne Inhalt werden angezeigt
 - Elemente Tabellendialog fließen nicht mehr über Zellenberenzung
+- IDs gelöschter Lückentextelemente werden wieder freigegeben
 
 
 ## 2.5.0

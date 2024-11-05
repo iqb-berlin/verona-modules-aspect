@@ -68,6 +68,9 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
 
   setProperty(property: string, value: UIElementValue): void {
     if (property === 'document') {
+      const deletedElements = this.getRemovedClozeElements(value as ClozeDocument);
+      deletedElements.forEach(el => el.unregisterIDs());
+
       this.document = value as ClozeDocument;
 
       // Instantiate new elements

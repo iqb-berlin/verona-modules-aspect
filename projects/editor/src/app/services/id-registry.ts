@@ -14,6 +14,7 @@ export class IdRegistry {
   }
 
   registerID(id: string, idType: IDTypes): void {
+    if (this.registeredIDs[idType]?.includes(id)) throw new Error(`ID already registered: ${id}`);
     (this.registeredIDs[idType] ??= []).push(id);
   }
 

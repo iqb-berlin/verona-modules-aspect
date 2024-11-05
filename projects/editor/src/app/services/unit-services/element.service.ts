@@ -159,9 +159,7 @@ export class ElementService {
   updateElementsProperty(elements: UIElement[], property: string, value: UIElementValue): void {
     // console.log('updateElementsProperty ', elements, property, value);
     elements.forEach(element => {
-      if (property === 'alias') {
-        element.setProperty('alias', value);
-      } else if (element.type === 'text' && property === 'text') {
+      if (element.type === 'text' && property === 'text') {
         this.handleTextElementChange(element as TextElement, value as string);
       } else if (property === 'document') {
         this.handleClozeDocumentChange(element as ClozeElement, value as ClozeDocument);

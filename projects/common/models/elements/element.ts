@@ -120,13 +120,13 @@ export abstract class UIElement implements UIElementProperties {
   abstract getDuplicate(): UIElement;
 
   registerIDs(): void {
-    if (!this.idService) throw new Error('IDService not available');
+    if (!this.idService) throw new Error(`IDService not available: ${this.type} ${this.id}`);
     this.idService.register(this.id, this.type, true, false);
     this.idService.register(this.alias, this.type, false, true);
   }
 
   unregisterIDs(): void {
-    if (!this.idService) throw new Error('IDService not available');
+    if (!this.idService) throw new Error(`IDService not available: ${this.type} ${this.id}`);
     this.idService.unregister(this.id, this.type, true, false);
     this.idService.unregister(this.alias, this.type, false, true);
   }

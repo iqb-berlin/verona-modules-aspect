@@ -202,31 +202,21 @@ export class ElementService {
   }
 
   private handleClozeDocumentChange(element: ClozeElement, newValue: ClozeDocument): void {
-    const deletedElements = ElementService.getRemovedClozeElements(element, newValue);
+    const deletedElements = element.getRemovedClozeElements(newValue);
     const refs = this.unitService.referenceManager.getElementsReferences(deletedElements);
     if (refs.length > 0) {
       this.dialogService.showDeleteReferenceDialog(refs)
         .subscribe((result: boolean) => {
           if (result) {
             ReferenceManager.deleteReferences(refs);
-            this.applyClozeDocumentChange(element, newValue);
+            element.setProperty('document', newValue);
           } else {
             this.messageService.showReferencePanel(refs);
           }
         });
     } else {
-      this.applyClozeDocumentChange(element, newValue);
+      element.setProperty('document', newValue);
     }
-  }
-
-  private applyClozeDocumentChange(element: ClozeElement, value: ClozeDocument): void {
-    element.setProperty('document', value);
-    ClozeElement.getDocumentChildElements(value as ClozeDocument).forEach(clozeChild => {
-      if (clozeChild.id === 'cloze-child-id-placeholder') {
-        Object.assign(clozeChild, this.idService.getAndRegisterNewIDs(clozeChild.type));
-        delete clozeChild.position;
-      }
-    });
   }
 
   alignElements(elements: PositionedUIElement[], alignmentDirection: 'left' | 'right' | 'top' | 'bottom'): void {
@@ -414,12 +404,6 @@ export class ElementService {
   static getRemovedTextAnchorIDs(element: TextElement, newValue: string): string[] {
     return TextElement.getAnchorIDs(element.text)
       .filter(el => !TextElement.getAnchorIDs(newValue).includes(el));
-  }
-
-  static getRemovedClozeElements(cloze: ClozeElement, newClozeDoc: ClozeDocument): UIElement[] {
-    const newElements = ClozeElement.getDocumentChildElements(newClozeDoc);
-    return cloze.getChildElements()
-      .filter(element => !newElements.includes(element));
   }
 
   updateSelectedElementsPositionProperty(property: string, value: UIElementValue): void {

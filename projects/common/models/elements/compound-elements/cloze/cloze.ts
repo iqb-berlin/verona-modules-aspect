@@ -69,10 +69,25 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
   setProperty(property: string, value: UIElementValue): void {
     if (property === 'document') {
       this.document = value as ClozeDocument;
-      this.instantiateChildElements();
+
+      // Instantiate new elements
+      const newElements: CustomDocumentNode[] = ClozeElement.getCustomNodes((value as ClozeDocument).content)
+        .filter((customNode: CustomDocumentNode) => customNode.attrs.model.id === 'cloze-child-id-placeholder');
+      newElements.forEach((node: CustomDocumentNode) => {
+        // Remove ID and Alias, so it can be created by the Element constructor
+        node.attrs.model = ClozeElement.createChildElement(
+          { ...node.attrs.model, id: undefined, alias: undefined }, this.idService
+        );
+      });
     } else {
       super.setProperty(property, value);
     }
+  }
+
+  getRemovedClozeElements(newClozeDoc: ClozeDocument): UIElement[] {
+    const newElements = ClozeElement.getDocumentChildElements(newClozeDoc);
+    return this.getChildElements()
+      .filter(element => !newElements.includes(element));
   }
 
   static getCustomNodes(content: (ClozeDocumentWrapperNode | ClozeDocumentContentNode)[]): CustomDocumentNode[] {

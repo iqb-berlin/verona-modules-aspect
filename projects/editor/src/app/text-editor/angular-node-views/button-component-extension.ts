@@ -15,6 +15,7 @@ const ButtonComponentExtension = (injector: Injector): Node => {
         model: {
           default: new ButtonElement({
             id: 'cloze-child-id-placeholder',
+            alias: 'cloze-child-alias-placeholder',
             dimensions: {
               height: 30
             },

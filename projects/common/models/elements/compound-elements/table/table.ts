@@ -91,6 +91,10 @@ export class TableElement extends CompoundElement implements TableProperties {
   getChildElements(): UIElement[] {
     return this.elements;
   }
+
+  getDuplicate(): TableElement {
+    return new TableElement({ ...this }, this.idService);
+  }
 }
 
 interface TableProperties extends UIElementProperties {

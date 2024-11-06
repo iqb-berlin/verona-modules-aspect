@@ -103,6 +103,7 @@ export class UnitService {
   }
 
   saveUnit(): void {
+    console.log(this.idService);
     FileService.saveUnitToFile(UnitService.createUnitDefinition(this.unit));
   }
 

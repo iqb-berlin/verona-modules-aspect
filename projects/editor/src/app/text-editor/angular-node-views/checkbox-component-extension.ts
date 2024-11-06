@@ -15,6 +15,7 @@ const CheckboxComponentExtension = (injector: Injector): Node => {
         model: {
           default: new CheckboxElement({
             id: 'cloze-child-id-placeholder',
+            alias: 'cloze-child-alias-placeholder',
             crossOutChecked: true,
             dimensions: {
               height: 30

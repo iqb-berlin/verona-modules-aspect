@@ -15,6 +15,7 @@ const DropListComponentExtension = (injector: Injector): Node => {
         model: {
           default: new DropListElement({
             id: 'cloze-child-id-placeholder',
+            alias: 'cloze-child-alias-placeholder',
             onlyOneItem: true,
             allowReplacement: true,
             highlightReceivingDropList: true,

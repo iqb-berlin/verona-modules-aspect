@@ -48,8 +48,12 @@ export abstract class UIElement implements UIElementProperties {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
-      this.id = element.id || idService?.getAndRegisterNewID(element.type) || 'id-placeholder';
-      this.alias = element.alias || idService?.getAndRegisterNewID(element.type, true) || 'alias-placeholder';
+      this.id = element.id ??
+        idService?.getAndRegisterNewID(element.type) ??
+        (() => { throw new Error(`No ID or IDService given: ${this.type}`); })();
+      this.alias = element.alias ??
+        idService?.getAndRegisterNewID(element.type, true) ??
+        (() => { throw new Error(`No Alias or IDService given: ${this.type}`); })();
       if (element?.isRelevantForPresentationComplete !== undefined) {
         this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       }
@@ -117,11 +121,14 @@ export abstract class UIElement implements UIElementProperties {
     };
   }
 
+  /* ID and alias are removed, so they can be re-assigned by the element constructor. */
   getDuplicate(): UIElement {
-    return new (this.constructor as { new (...args: unknown[]): UIElement })(this, this.idService);
+    return new (this.constructor as { new (...args: unknown[]): UIElement })(
+      { ...this, id: undefined, alias: undefined }, this.idService);
   }
 
   registerIDs(): void {
+    console.log('Element registerIDs', this.id);
     if (!this.idService) throw new Error(`IDService not available: ${this.type} ${this.id}`);
     this.idService.register(this.id, this.type, true, false);
     this.idService.register(this.alias, this.type, false, true);
@@ -246,6 +253,13 @@ export abstract class TextInputElement extends InputElement implements TextInput
 
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
+
+  abstract getDuplicate(): CompoundElement;
+  // getDuplicate(): CompoundElement {
+  //   const childElements = this.getChildElements().map(child => child.getDuplicate());
+  //   const dupe = new (this.constructor as { new (...args: unknown[]): CompoundElement })(this, this.idService);
+  //   return dupe;
+  // }
 
   registerIDs(): void {
     super.registerIDs();

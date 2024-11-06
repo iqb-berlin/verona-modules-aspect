@@ -17,6 +17,7 @@ const TextFieldComponentExtension = (injector: Injector): Node => {
         model: {
           default: new TextFieldSimpleElement({
             id: 'cloze-child-id-placeholder',
+            alias: 'cloze-child-alias-placeholder',
             dimensions: {
               width: 150,
               height: 30,

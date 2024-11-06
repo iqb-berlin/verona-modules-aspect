@@ -87,6 +87,23 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     }
   }
 
+  getDuplicate(): ClozeElement {
+    const newDoc = ClozeElement.getCustomNodes(this.document.content).map(node => ({
+      ...node,
+      attrs: {
+        ...node.attrs,
+        model: {
+          ...node.attrs.model,
+          id: undefined,
+          alias: undefined
+        }
+      }
+    }));
+    return new ClozeElement({
+      ...this, document: newDoc, id: undefined, alias: undefined
+    }, this.idService);
+  }
+
   getRemovedClozeElements(newClozeDoc: ClozeDocument): UIElement[] {
     const newElements = ClozeElement.getDocumentChildElements(newClozeDoc);
     return this.getChildElements()

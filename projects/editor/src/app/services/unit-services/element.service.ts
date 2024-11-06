@@ -377,24 +377,25 @@ export class ElementService {
       newElement.position.gridColumn = null;
     }
 
-    Object.assign(newElement, this.idService.getAndRegisterNewIDs(newElement.type));
-    if (newElement instanceof CompoundElement) {
-      newElement.getChildElements().forEach((child: UIElement) => {
-        Object.assign(child, this.idService.getAndRegisterNewIDs(child.type));
-        if (child.type === 'drop-list') {
-          (child.value as DragNDropValueObject[]).forEach(valueObject => {
-            Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
-          });
-        }
-      });
-    }
+    // Object.assign(newElement, this.idService.getAndRegisterNewIDs(newElement.type));
+
+    // if (newElement instanceof CompoundElement) {
+    //   newElement.getChildElements().forEach((child: UIElement) => {
+    //     Object.assign(child, this.idService.getAndRegisterNewIDs(child.type));
+    //     if (child.type === 'drop-list') {
+    //       (child.value as DragNDropValueObject[]).forEach(valueObject => {
+    //         Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
+    //       });
+    //     }
+    //   });
+    // }
 
     // Special care with DropLists as they are no CompoundElement yet still have children with IDs
-    if (newElement.type === 'drop-list') {
-      (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
-        Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
-      });
-    }
+    // if (newElement.type === 'drop-list') {
+    //   (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
+    //     Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
+    //   });
+    // }
     return newElement;
   }
 

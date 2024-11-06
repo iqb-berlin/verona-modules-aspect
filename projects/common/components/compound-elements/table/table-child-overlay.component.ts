@@ -38,7 +38,7 @@ import { NgIf } from '@angular/common';
     :host ::ng-deep aspect-audio .control-bar > button {background-color: var(--background-color);}
     :host ::ng-deep aspect-audio .control-bar button mat-icon {margin: 0;}
     :host ::ng-deep aspect-text .text-container {
-      height: 100%; display: flex; flex-direction: column; justify-content: center;
+      height: 100%; display: flex; flex-direction: column; justify-content: center; padding-left: 8px; padding-right: 8px;
     }
   `
 })

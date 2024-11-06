@@ -112,10 +112,6 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
   getElementComponent(): Type<ElementComponent> {
     return MathTableComponent;
   }
-
-  getDuplicate(): MathTableElement {
-    return new MathTableElement(this);
-  }
 }
 
 export interface MathTableProperties extends UIElementProperties, KeyInputElementProperties {

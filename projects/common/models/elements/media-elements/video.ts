@@ -54,10 +54,6 @@ export class VideoElement extends PlayerElement implements VideoProperties {
   getElementComponent(): Type<ElementComponent> {
     return VideoComponent;
   }
-
-  getDuplicate(): VideoElement {
-    return new VideoElement(this);
-  }
 }
 
 export interface VideoProperties extends PlayerElementBlueprint {

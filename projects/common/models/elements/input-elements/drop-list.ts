@@ -112,10 +112,6 @@ export class DropListElement extends InputElement implements DropListProperties 
     delete this.label;
   }
 
-  getDuplicate(): DropListElement {
-    return new DropListElement(this);
-  }
-
   setProperty(property: string, value: UIElementValue): void {
     super.setProperty(property, value);
     if (property === 'value') {

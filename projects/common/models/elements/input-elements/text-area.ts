@@ -86,10 +86,6 @@ export class TextAreaElement extends TextInputElement implements TextAreaPropert
   getElementComponent(): Type<ElementComponent> {
     return TextAreaComponent;
   }
-
-  getDuplicate(): TextAreaElement {
-    return new TextAreaElement(this);
-  }
 }
 
 export interface TextAreaProperties extends TextInputElementProperties {

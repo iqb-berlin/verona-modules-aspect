@@ -90,10 +90,6 @@ export class ImageElement extends UIElement implements ImageProperties {
       { value: 'false', label: 'Lupe nicht benutzt' }
     ];
   }
-
-  getDuplicate(): ImageElement {
-    return new ImageElement(this);
-  }
 }
 
 export interface ImageProperties extends UIElementProperties {

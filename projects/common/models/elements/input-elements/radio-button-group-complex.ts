@@ -56,10 +56,6 @@ export class RadioButtonGroupComplexElement extends InputElement
     }
   }
 
-  getDuplicate(): RadioButtonGroupComplexElement {
-    return new RadioButtonGroupComplexElement(this);
-  }
-
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,

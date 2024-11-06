@@ -47,10 +47,6 @@ export class DropdownElement extends InputElement implements OptionElement, Drop
     }
   }
 
-  getDuplicate(): DropdownElement {
-    return new DropdownElement(this);
-  }
-
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,

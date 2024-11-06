@@ -48,10 +48,6 @@ export class AudioElement extends PlayerElement implements AudioProperties {
     }
   }
 
-  getDuplicate(): AudioElement {
-    return new AudioElement(this);
-  }
-
   getElementComponent(): Type<ElementComponent> {
     return AudioComponent;
   }

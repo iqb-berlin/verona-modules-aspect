@@ -90,10 +90,6 @@ export class ToggleButtonElement extends InputElement implements ToggleButtonPro
   getNewOptionLabel(optionText: string): TextLabel {
     return UIElement.createOptionLabel(optionText) as TextLabel;
   }
-
-  getDuplicate(): ToggleButtonElement {
-    return new ToggleButtonElement(this);
-  }
 }
 
 export interface ToggleButtonProperties extends InputElementProperties {

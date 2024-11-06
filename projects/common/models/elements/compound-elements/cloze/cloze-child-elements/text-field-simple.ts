@@ -84,10 +84,6 @@ export class TextFieldSimpleElement extends TextInputElement implements TextFiel
   getElementComponent(): Type<ElementComponent> {
     return TextFieldSimpleComponent;
   }
-
-  getDuplicate(): TextFieldSimpleElement {
-    return new TextFieldSimpleElement(this);
-  }
 }
 
 export interface TextFieldSimpleProperties extends TextInputElementProperties {

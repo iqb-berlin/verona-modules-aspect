@@ -58,10 +58,6 @@ export class HotspotImageElement extends InputElement implements HotspotImagePro
     }
   }
 
-  getDuplicate(): HotspotImageElement {
-    return new HotspotImageElement(this);
-  }
-
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,

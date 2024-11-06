@@ -115,10 +115,6 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   getElementComponent(): Type<ElementComponent> {
     return GeometryComponent;
   }
-
-  getDuplicate(): GeometryElement {
-    return new GeometryElement(this);
-  }
 }
 
 export interface GeometryProperties extends UIElementProperties {

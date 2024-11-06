@@ -92,10 +92,6 @@ export class TextFieldElement extends TextInputElement implements TextFieldPrope
   getElementComponent(): Type<ElementComponent> {
     return TextFieldComponent;
   }
-
-  getDuplicate(): TextFieldElement {
-    return new TextFieldElement(this);
-  }
 }
 
 export interface TextFieldProperties extends TextInputElementProperties {

@@ -71,10 +71,6 @@ export class TextElement extends UIElement implements TextProperties {
     }
   }
 
-  getDuplicate(): TextElement {
-    return new TextElement(this);
-  }
-
   private isSelectable(): boolean {
     return this.markingPanels.length > 0 ||
         (this.highlightableYellow ||

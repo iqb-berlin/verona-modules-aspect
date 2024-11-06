@@ -122,10 +122,6 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     return this.rows;
   }
 
-  getDuplicate(): LikertElement {
-    return new LikertElement(this);
-  }
-
   getVariableInfos(): VariableInfo[] {
     return this.rows.map(row => row.getVariableInfoOfRow(this.options));
   }

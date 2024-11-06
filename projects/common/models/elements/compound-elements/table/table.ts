@@ -88,10 +88,6 @@ export class TableElement extends CompoundElement implements TableProperties {
     return TableComponent;
   }
 
-  getDuplicate(): UIElement {
-    return new TableElement(this);
-  }
-
   getChildElements(): UIElement[] {
     return this.elements;
   }

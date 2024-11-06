@@ -78,10 +78,6 @@ export class SliderElement extends InputElement implements SliderProperties {
   getElementComponent(): Type<ElementComponent> {
     return SliderComponent;
   }
-
-  getDuplicate(): SliderElement {
-    return new SliderElement(this);
-  }
 }
 
 export interface SliderProperties extends InputElementProperties {

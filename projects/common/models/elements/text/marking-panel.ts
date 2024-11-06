@@ -45,10 +45,6 @@ export class MarkingPanelElement extends UIElement implements MarkingPanelProper
     }
   }
 
-  getDuplicate(): MarkingPanelElement {
-    return new MarkingPanelElement(this);
-  }
-
   getElementComponent(): Type<ElementComponent> {
     return MarkingPanelComponent;
   }

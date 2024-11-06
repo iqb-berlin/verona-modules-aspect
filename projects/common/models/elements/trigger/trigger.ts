@@ -31,10 +31,6 @@ export class TriggerElement extends UIElement implements TriggerProperties {
     }
   }
 
-  getDuplicate(): TriggerElement {
-    return new TriggerElement(this);
-  }
-
   getElementComponent(): Type<ElementComponent> {
     return TriggerComponent;
   }

@@ -61,10 +61,6 @@ export class ButtonElement extends UIElement implements ButtonProperties {
     }
   }
 
-  getDuplicate(): ButtonElement {
-    return new ButtonElement(this);
-  }
-
   getElementComponent(): Type<ElementComponent> {
     return ButtonComponent;
   }

@@ -138,10 +138,6 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     return ClozeComponent;
   }
 
-  getDuplicate(): ClozeElement {
-    return new ClozeElement(this);
-  }
-
   getChildElements(): UIElement[] {
     return ClozeElement.getCustomNodes(this.document.content).map(el => el.attrs.model);
   }

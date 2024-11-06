@@ -57,10 +57,6 @@ export class SpellCorrectElement extends TextInputElement implements SpellCorrec
   getElementComponent(): Type<ElementComponent> {
     return SpellCorrectComponent;
   }
-
-  getDuplicate(): SpellCorrectElement {
-    return new SpellCorrectElement(this);
-  }
 }
 
 export interface SpellCorrectProperties extends TextInputElementProperties {

@@ -117,7 +117,9 @@ export abstract class UIElement implements UIElementProperties {
     };
   }
 
-  abstract getDuplicate(): UIElement;
+  getDuplicate(): UIElement {
+    return new (this.constructor as { new (...args: unknown[]): UIElement })(this, this.idService);
+  }
 
   registerIDs(): void {
     if (!this.idService) throw new Error(`IDService not available: ${this.type} ${this.id}`);

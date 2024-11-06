@@ -42,10 +42,6 @@ export class MathFieldElement extends InputElement implements MathFieldPropertie
     }
   }
 
-  getDuplicate(): MathFieldElement {
-    return new MathFieldElement(this);
-  }
-
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,

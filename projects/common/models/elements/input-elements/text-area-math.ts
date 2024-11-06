@@ -68,10 +68,6 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   getElementComponent(): Type<ElementComponent> {
     return TextAreaMathComponent;
   }
-
-  getDuplicate(): TextAreaMathElement {
-    return new TextAreaMathElement(this);
-  }
 }
 
 export interface TextAreaMathProperties extends InputElementProperties {

@@ -57,10 +57,6 @@ export class FrameElement extends UIElement implements FrameProperties {
   getElementComponent(): Type<ElementComponent> {
     return FrameComponent;
   }
-
-  getDuplicate(): FrameElement {
-    return new FrameElement(this);
-  }
 }
 
 export interface FrameProperties extends UIElementProperties {

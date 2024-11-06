@@ -44,10 +44,6 @@ export class CheckboxElement extends InputElement implements CheckboxProperties 
     }
   }
 
-  getDuplicate(): CheckboxElement {
-    return new CheckboxElement(this);
-  }
-
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,

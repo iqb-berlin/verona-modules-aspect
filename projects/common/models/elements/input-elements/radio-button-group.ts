@@ -55,10 +55,6 @@ export class RadioButtonGroupElement extends InputElement implements OptionEleme
     }
   }
 
-  getDuplicate(): RadioButtonGroupElement {
-    return new RadioButtonGroupElement(this);
-  }
-
   getVariableInfos(): VariableInfo[] {
     return [{
       id: this.id,

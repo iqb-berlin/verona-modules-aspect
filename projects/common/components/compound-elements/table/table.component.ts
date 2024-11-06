@@ -66,8 +66,8 @@ import { PositionedUIElement, UIElementType } from 'common/interfaces';
               <ng-container *ngIf="editorMode">
                 {{$any($any(elementGrid[i][j]).constructor).title}}
               </ng-container>
-              <ng-container *ngIf="editorMode && $any(elementGrid[i][j]).id !== 'id-placeholder'">
-                - {{$any(elementGrid[i][j]).id}}
+              <ng-container *ngIf="editorMode && $any(elementGrid[i][j]).alias !== 'alias-placeholder'">
+                - {{$any(elementGrid[i][j]).alias}}
               </ng-container>
             </div>
             <aspect-table-child-overlay [element]="$any(elementGrid[i][j])"

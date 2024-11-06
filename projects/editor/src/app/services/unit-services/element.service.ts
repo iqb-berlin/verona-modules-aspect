@@ -330,9 +330,6 @@ export class ElementService {
         this.dialogService.showTableEditDialog(element as TableElement)
           .subscribe((result: UIElement[]) => {
             if (result) {
-              result.forEach(el => {
-                if (el.id === 'id-placeholder') Object.assign(el, this.idService.getAndRegisterNewIDs(el.type));
-              });
               this.updateElementsProperty([element], 'elements', result);
             }
           });

@@ -76,8 +76,12 @@ export class TableElement extends CompoundElement implements TableProperties {
   }
 
   setProperty(property: string, value: UIElementValue): void {
-    // Don't preserve original array, so Component gets updated
-    this[property] = value;
+    if (property === 'gridColumnSizes' || property === 'gridRowSizes') {
+      // Don't preserve original array, so Component gets updated
+      this[property] = value as { value: number; unit: string }[];
+    } else {
+      super.setProperty(property, value);
+    }
   }
 
   getElementComponent(): Type<ElementComponent> {

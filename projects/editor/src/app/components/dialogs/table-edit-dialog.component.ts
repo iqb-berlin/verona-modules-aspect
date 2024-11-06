@@ -11,6 +11,7 @@ import { AudioProperties } from 'common/models/elements/media-elements/audio';
 import { ImageProperties } from 'common/models/elements/media-elements/image';
 import { DropListProperties } from 'common/models/elements/input-elements/drop-list';
 import { UIElementProperties, UIElementType } from 'common/interfaces';
+import { IDService } from 'editor/src/app/services/id.service';
 
 @Component({
   selector: 'aspect-editor-table-edit-dialog',
@@ -46,8 +47,8 @@ export class TableEditDialogComponent {
   @ViewChild(TableComponent) tableComp!: TableComponent;
   newTable: TableElement;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { table: TableElement }) {
-    this.newTable = new TableElement(data.table);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { table: TableElement }, private idService: IDService) {
+    this.newTable = data.table;
   }
 
   async addElement(el: { elementType: UIElementType, row: number, col: number }): Promise<void> {
@@ -80,7 +81,7 @@ export class TableEditDialogComponent {
     const newEle = ElementFactory.createElement({
       type: el.elementType,
       ...extraProps
-    });
+    }, this.idService);
     delete newEle.position;
     delete newEle.dimensions;
     newEle.gridRow = el.row + 1;
@@ -95,6 +96,7 @@ export class TableEditDialogComponent {
   removeElement(coords: { row: number, col: number }): void {
     const index = this.newTable.elements
       .findIndex(el => el.gridRow === (coords.row + 1) && el.gridColumn === (coords.col + 1));
+    this.newTable.elements[index].unregisterIDs();
     this.newTable.elements.splice(index, 1);
   }
 }

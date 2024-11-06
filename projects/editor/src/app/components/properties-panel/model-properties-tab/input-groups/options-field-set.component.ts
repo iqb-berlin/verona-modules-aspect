@@ -188,6 +188,7 @@ export class OptionsFieldSetComponent {
 
   removeLikertRow(index: number): void {
     const valueList = this.combinedProperties.rows as LikertRowElement[];
+    valueList[index].unregisterIDs();
     valueList.splice(index, 1);
     this.updateModel.emit({ property: 'rows', value: valueList });
   }

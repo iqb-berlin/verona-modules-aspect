@@ -211,6 +211,8 @@ export class DropListPropertiesComponent {
 
   removeOption(optionIndex: number): void {
     const valueList = this.combinedProperties.value as DragNDropValueObject[];
+    this.idService.unregister(valueList[optionIndex].id, 'value', true, false);
+    this.idService.unregister(valueList[optionIndex].alias, 'value', false, true);
     valueList.splice(optionIndex, 1);
     this.updateModel.emit({ property: 'value', value: valueList });
   }

@@ -113,11 +113,9 @@ export class Section {
   }
 
   getDuplicate(): Section {
-    const sectionElements = this.elements.map(el => el.getDuplicate());
-    // sectionElements.forEach(el => el.)
     return new Section({
       ...this,
-      elements: sectionElements
+      elements: this.elements.map(el => el.getBlueprint())
     }, this.idService);
   }
 }

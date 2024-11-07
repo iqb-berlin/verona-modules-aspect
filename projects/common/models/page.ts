@@ -72,7 +72,6 @@ export class Page {
 
   duplicateSection(sectionIndex: number): void {
     const newSection = this.sections[sectionIndex].getDuplicate();
-    console.log('duplicateSection', newSection);
     this.addSection(newSection, sectionIndex + 1);
   }
 }

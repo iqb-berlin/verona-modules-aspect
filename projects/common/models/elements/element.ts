@@ -13,6 +13,7 @@ import {
   UIElementProperties, UIElementType, UIElementValue
 } from 'common/interfaces';
 import { IDError, InstantiationEror } from 'common/errors';
+import {ClozeProperties} from "common/models/elements/compound-elements/cloze/cloze";
 
 function isUIElementProperties(blueprint: Partial<UIElementProperties>): blueprint is UIElementProperties {
   return blueprint.id !== undefined &&
@@ -121,14 +122,18 @@ export abstract class UIElement implements UIElementProperties {
     };
   }
 
+  // /* ID and alias are removed, so they can be re-assigned by the element constructor. */
+  // getDuplicate(): UIElement {
+  //   return new (this.constructor as { new (...args: unknown[]): UIElement })(
+  //     { ...this, id: undefined, alias: undefined }, this.idService);
+  // }
+
   /* ID and alias are removed, so they can be re-assigned by the element constructor. */
-  getDuplicate(): UIElement {
-    return new (this.constructor as { new (...args: unknown[]): UIElement })(
-      { ...this, id: undefined, alias: undefined }, this.idService);
+  getBlueprint(): UIElementProperties {
+    return { ...this, id: undefined, alias: undefined };
   }
 
   registerIDs(): void {
-    console.log('Element registerIDs', this.id);
     if (!this.idService) throw new Error(`IDService not available: ${this.type} ${this.id}`);
     this.idService.register(this.id, this.type, true, false);
     this.idService.register(this.alias, this.type, false, true);
@@ -254,7 +259,7 @@ export abstract class TextInputElement extends InputElement implements TextInput
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
 
-  abstract getDuplicate(): CompoundElement;
+  abstract getBlueprint(): UIElementProperties;
   // getDuplicate(): CompoundElement {
   //   const childElements = this.getChildElements().map(child => child.getDuplicate());
   //   const dupe = new (this.constructor as { new (...args: unknown[]): CompoundElement })(this, this.idService);

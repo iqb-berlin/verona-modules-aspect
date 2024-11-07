@@ -365,10 +365,10 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* - Also changes position of the element to not cover copied element.
-     - Also changes and registers all copied IDs. */
+  /* - Also changes position of the element to not cover copied element. */
   duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
-    const newElement = element.getDuplicate();
+    // const newElement = element.getDuplicate();
+    const newElement = ElementFactory.createElement({ ...element.getBlueprint() }, this.idService);
 
     if (newElement.position && adjustPosition) {
       newElement.position.xPosition += 10;

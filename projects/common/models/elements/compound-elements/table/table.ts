@@ -92,8 +92,8 @@ export class TableElement extends CompoundElement implements TableProperties {
     return this.elements;
   }
 
-  getDuplicate(): TableElement {
-    return new TableElement({ ...this }, this.idService);
+  getBlueprint(): TableElement {
+    return { ...this, elements: this.elements.map(el => el.getBlueprint()), id: undefined, alias: undefined };
   }
 }
 

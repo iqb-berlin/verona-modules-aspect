@@ -12,7 +12,7 @@ import { environment } from 'common/environment';
 import {
   AbstractIDService,
   DragNDropValueObject,
-  InputElementProperties,
+  InputElementProperties, UIElementProperties,
   UIElementType,
   UIElementValue
 } from 'common/interfaces';
@@ -41,6 +41,7 @@ export class DropListElement extends InputElement implements DropListProperties 
   constructor(element?: Partial<DropListProperties>, idService?: AbstractIDService) {
     super({ type: 'drop-list', ...element }, idService);
     if (isDropListProperties(element)) {
+      console.log('a');
       this.value = element.value.map((value, index) => ({
         text: value.text,
         imgSrc: value.imgSrc,
@@ -69,14 +70,15 @@ export class DropListElement extends InputElement implements DropListProperties 
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at DropList instantiation', element);
       }
+      console.log('b')
       this.value = element?.value !== undefined ?
         this.value = element.value.map((value, index) => ({
           text: value.text,
           imgSrc: value.imgSrc,
           imgFileName: value.imgFileName,
           imgPosition: value.imgPosition,
-          id: value.id,
-          alias: value.alias,
+          id: value.id ?? idService?.getAndRegisterNewID('value'),
+          alias: value.alias ?? idService?.getAndRegisterNewID('value', true),
           originListID: this.id,
           originListIndex: index,
           audioSrc: value.audioSrc,
@@ -172,6 +174,10 @@ export class DropListElement extends InputElement implements DropListProperties 
 
   getElementComponent(): Type<ElementComponent> {
     return DropListComponent;
+  }
+
+  getBlueprint(): DropListProperties {
+    return { ...this, id: undefined, alias: undefined, value: this.value.map(val => ({ ...val, id: undefined, alias: undefined })) };
   }
 
   registerIDs(): void {

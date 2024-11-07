@@ -126,8 +126,8 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
     return this.rows.map(row => row.getVariableInfoOfRow(this.options));
   }
 
-  getDuplicate(): LikertElement {
-    return new LikertElement({ ...this }, this.idService);
+  getBlueprint(): LikertElement {
+    return { ...this, rows: this.rows.map(el => el.getBlueprint()), id: undefined, alias: undefined };
   }
 }
 

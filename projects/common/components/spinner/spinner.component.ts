@@ -35,15 +35,20 @@ export class SpinnerComponent implements OnInit, OnDestroy {
       });
   }
 
+  clearTimeOut(): void {
+    clearTimeout(this.timeOutId);
+    this.timeOutId = 0;
+  }
+
   sendTimeOut(): void {
     if (!this.isLoaded.value) {
       this.timeOut.emit(this.timeOutDuration);
     }
-    clearTimeout(this.timeOutId);
+    this.clearTimeOut();
   }
 
   ngOnDestroy(): void {
-    if (this.timeOutId) clearTimeout(this.timeOutId);
+    if (this.timeOutId) this.clearTimeOut();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

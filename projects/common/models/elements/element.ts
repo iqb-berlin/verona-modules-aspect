@@ -48,8 +48,12 @@ export abstract class UIElement implements UIElementProperties {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at UIElement instantiation', element);
       }
-      this.id = element.id || idService?.getAndRegisterNewID(element.type) || 'id-placeholder';
-      this.alias = element.alias || idService?.getAndRegisterNewID(element.type, true) || 'alias-placeholder';
+      this.id = element.id ??
+        idService?.getAndRegisterNewID(element.type) ??
+        (() => { throw new Error(`No ID or IDService given: ${this.type}`); })();
+      this.alias = element.alias ??
+        idService?.getAndRegisterNewID(element.type, true) ??
+        (() => { throw new Error(`No Alias or IDService given: ${this.type}`); })();
       if (element?.isRelevantForPresentationComplete !== undefined) {
         this.isRelevantForPresentationComplete = element.isRelevantForPresentationComplete;
       }
@@ -117,8 +121,9 @@ export abstract class UIElement implements UIElementProperties {
     };
   }
 
-  getDuplicate(): UIElement {
-    return new (this.constructor as { new (...args: unknown[]): UIElement })(this, this.idService);
+  /* ID and alias are removed, so they can be re-assigned by the element constructor. */
+  getBlueprint(): UIElementProperties {
+    return { ...this, id: undefined, alias: undefined };
   }
 
   registerIDs(): void {
@@ -246,6 +251,8 @@ export abstract class TextInputElement extends InputElement implements TextInput
 
 export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
+
+  abstract getBlueprint(): UIElementProperties;
 
   registerIDs(): void {
     super.registerIDs();

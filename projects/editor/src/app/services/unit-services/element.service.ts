@@ -365,35 +365,14 @@ export class ElementService {
     this.unitService.updateUnitDefinition();
   }
 
-  /* - Also changes position of the element to not cover copied element.
-     - Also changes and registers all copied IDs. */
+  /* - Also changes position of the element to not cover copied element. */
   duplicateElement(element: UIElement, adjustPosition: boolean = false): UIElement {
-    const newElement = element.getDuplicate();
-
+    const newElement = ElementFactory.createElement({ ...element.getBlueprint() }, this.idService);
     if (newElement.position && adjustPosition) {
       newElement.position.xPosition += 10;
       newElement.position.yPosition += 10;
       newElement.position.gridRow = null;
       newElement.position.gridColumn = null;
-    }
-
-    Object.assign(newElement, this.idService.getAndRegisterNewIDs(newElement.type));
-    if (newElement instanceof CompoundElement) {
-      newElement.getChildElements().forEach((child: UIElement) => {
-        Object.assign(child, this.idService.getAndRegisterNewIDs(child.type));
-        if (child.type === 'drop-list') {
-          (child.value as DragNDropValueObject[]).forEach(valueObject => {
-            Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
-          });
-        }
-      });
-    }
-
-    // Special care with DropLists as they are no CompoundElement yet still have children with IDs
-    if (newElement.type === 'drop-list') {
-      (newElement.value as DragNDropValueObject[]).forEach(valueObject => {
-        Object.assign(valueObject, this.idService.getAndRegisterNewIDs('value'));
-      });
     }
     return newElement;
   }

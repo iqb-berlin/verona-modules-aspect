@@ -27,7 +27,10 @@ export class Section {
   visibilityRules: VisibilityRule[] = [];
   ignoreNumbering: boolean = false;
 
+  idService?: AbstractIDService;
+
   constructor(section?: SectionProperties, idService?: AbstractIDService) {
+    this.idService = idService;
     if (section && isValid(section)) {
       this.height = section.height;
       this.backgroundColor = section.backgroundColor;
@@ -107,6 +110,13 @@ export class Section {
 
   isEmpty(): boolean {
     return this.elements.length === 0;
+  }
+
+  getDuplicate(): Section {
+    return new Section({
+      ...this,
+      elements: this.elements.map(el => el.getBlueprint())
+    }, this.idService);
   }
 }
 

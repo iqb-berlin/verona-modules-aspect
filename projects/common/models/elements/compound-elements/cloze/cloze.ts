@@ -87,6 +87,21 @@ export class ClozeElement extends CompoundElement implements ClozeProperties {
     }
   }
 
+  getBlueprint(): ClozeProperties {
+    const newDoc = structuredClone(this.document);
+    ClozeElement.getCustomNodes(newDoc.content).forEach((node: CustomDocumentNode) => {
+      node.attrs.model.id = undefined as unknown as string;
+      node.attrs.model.alias = undefined as unknown as string;
+      if (node.attrs.model.type === 'drop-list') {
+        node.attrs.model.value = (node.attrs.model as DropListElement).value
+          .map(val => ({ ...val, id: undefined, alias: undefined }));
+      }
+    });
+    return {
+      ...this, document: newDoc, id: undefined, alias: undefined
+    };
+  }
+
   getRemovedClozeElements(newClozeDoc: ClozeDocument): UIElement[] {
     const newElements = ClozeElement.getDocumentChildElements(newClozeDoc);
     return this.getChildElements()

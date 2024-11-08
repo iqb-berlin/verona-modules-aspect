@@ -125,6 +125,10 @@ export class LikertElement extends CompoundElement implements OptionElement, Lik
   getVariableInfos(): VariableInfo[] {
     return this.rows.map(row => row.getVariableInfoOfRow(this.options));
   }
+
+  getBlueprint(): LikertElement {
+    return { ...this, rows: this.rows.map(el => el.getBlueprint()), id: undefined, alias: undefined };
+  }
 }
 
 export interface LikertProperties extends UIElementProperties {

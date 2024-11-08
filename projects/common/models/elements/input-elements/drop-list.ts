@@ -12,7 +12,7 @@ import { environment } from 'common/environment';
 import {
   AbstractIDService,
   DragNDropValueObject,
-  InputElementProperties,
+  InputElementProperties, UIElementProperties,
   UIElementType,
   UIElementValue
 } from 'common/interfaces';
@@ -75,8 +75,8 @@ export class DropListElement extends InputElement implements DropListProperties 
           imgSrc: value.imgSrc,
           imgFileName: value.imgFileName,
           imgPosition: value.imgPosition,
-          id: value.id,
-          alias: value.alias,
+          id: value.id ?? idService?.getAndRegisterNewID('value'),
+          alias: value.alias ?? idService?.getAndRegisterNewID('value', true),
           originListID: this.id,
           originListIndex: index,
           audioSrc: value.audioSrc,
@@ -174,6 +174,15 @@ export class DropListElement extends InputElement implements DropListProperties 
     return DropListComponent;
   }
 
+  getBlueprint(): DropListProperties {
+    return {
+      ...this,
+      id: undefined,
+      alias: undefined,
+      value: this.value.map(val => ({ ...val, id: undefined, alias: undefined }))
+    };
+  }
+
   registerIDs(): void {
     super.registerIDs();
     this.value.forEach(val => {
@@ -210,6 +219,7 @@ export interface DropListProperties extends InputElementProperties {
 
 function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
   if (!blueprint) return false;
+  if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].id === undefined) return false;
   return blueprint.value !== undefined &&
     blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&

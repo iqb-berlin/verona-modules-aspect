@@ -393,6 +393,6 @@ export class SectionMenuComponent implements OnDestroy {
   }
 
   duplicateSection() {
-    this.sectionService.duplicateSection(this.section, this.sectionIndex);
+    this.sectionService.duplicateSection(this.sectionIndex);
   }
 }

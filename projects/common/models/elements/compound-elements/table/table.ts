@@ -91,6 +91,10 @@ export class TableElement extends CompoundElement implements TableProperties {
   getChildElements(): UIElement[] {
     return this.elements;
   }
+
+  getBlueprint(): TableElement {
+    return { ...this, elements: this.elements.map(el => el.getBlueprint()), id: undefined, alias: undefined };
+  }
 }
 
 interface TableProperties extends UIElementProperties {

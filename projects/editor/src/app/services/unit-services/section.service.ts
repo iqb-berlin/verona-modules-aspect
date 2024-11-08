@@ -44,13 +44,9 @@ export class SectionService {
     this.unitService.updateUnitDefinition();
   }
 
-  duplicateSection(section: Section, sectionIndex: number): void {
+  duplicateSection(sectionIndex: number): void {
     const page = this.unitService.getSelectedPage();
-    const newSection: Section = new Section({
-      ...section,
-      elements: section.elements.map(element => this.elementService.duplicateElement(element) as PositionedUIElement)
-    });
-    page.addSection(newSection, sectionIndex + 1);
+    page.duplicateSection(sectionIndex);
     this.selectionService.selectedSectionIndex += 1;
     this.unitService.updateSectionCounter();
     this.unitService.updateUnitDefinition();

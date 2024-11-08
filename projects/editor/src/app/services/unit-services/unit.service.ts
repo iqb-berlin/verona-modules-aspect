@@ -225,6 +225,7 @@ export class UnitService {
     this.unit.pages.splice(pageIndex + 1, 0, newPage);
     this.selectionService.selectedPageIndex = pageIndex + 1;
     this.selectionService.selectedSectionIndex = 0;
+    this.updateUnitDefinition();
   }
 
   collapsePage(pageIndex: number): void {
@@ -233,5 +234,6 @@ export class UnitService {
     this.selectionService.selectedPageIndex = pageIndex - 1;
     this.selectionService.selectedSectionIndex = this.unit.pages[pageIndex - 1].sections.length - sectionsToMove.length;
     this.unit.deletePage(pageIndex);
+    this.updateUnitDefinition();
   }
 }

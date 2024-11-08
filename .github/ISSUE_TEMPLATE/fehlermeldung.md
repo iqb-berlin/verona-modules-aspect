@@ -21,7 +21,7 @@ Schritte zum Nachstellen des Verhaltens:
 Welches Verhalten wurde erwartet und was wurde stattdessen festgestellt
 
 **Screenshots, Links, erschienene Fehlermeldungen**
-Wenn relevant, Screenshots und/oder Aufgabenverlinkungen. Bei Links auf Aufgaben im Studio bitte darauf achten, dass diese für uns sichtbar sind.
+Wenn relevant, Screenshots und/oder Aufgabenverlinkungen. Bei Links auf Aufgaben im Studio bitte darauf achten, dass diese für uns sichtbar sind. Außerdem wäre es gut, wenn die Aufgaben sich auf das Darstellen des Problems beschränken und nicht voll mit anderen Dingen sind und wir erst die Stelle suchen müssen, die Probleme macht.
 
 **Versionen**
 - Verwendete Player-  und Editorversion

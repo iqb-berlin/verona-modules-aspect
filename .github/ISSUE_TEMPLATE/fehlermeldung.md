@@ -20,13 +20,13 @@ Schritte zum Nachstellen des Verhaltens:
 **Erwartetes Verhalten**
 Welches Verhalten wurde erwartet und was wurde stattdessen festgestellt
 
-**Screenshots und/oder Links**
-If applicable, add screenshots to help explain your problem.
+**Screenshots, Links, erschienene Fehlermeldungen**
+Wenn relevant, Screenshots und/oder Aufgabenverlinkungen. Bei Links auf Aufgaben im Studio bitte darauf achten, dass diese für uns sichtbar sind.
 
 **Versionen**
- - Betriebssystem: [z.B. iOS] (nur wichtig bei Mobilgeräten)
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+- Verwendete Player-  und Editorversion
+- Betriebssystem: [z.B. iOS] (nur wichtig bei Mobilgeräten)
+- Browser [e.g. chrome, safari] mit Version
 
 **Weitere Information**
 Add any other context about the problem here.

@@ -11,13 +11,13 @@ export class IDService {
 
   getAndRegisterNewIDs(idType: IDTypes): { id: string, alias: string } {
     return {
-      id: this.idRegistry.getAndRegisterNewID(idType),
+      id: this.idRegistry.getAndRegisterNewID(idType, true),
       alias: this.aliasRegistry.getAndRegisterNewID(idType)
     };
   }
 
   getAndRegisterNewID(idType: IDTypes, isAlias: boolean = false): string {
-    return isAlias ? this.aliasRegistry.getAndRegisterNewID(idType) : this.idRegistry.getAndRegisterNewID(idType);
+    return isAlias ? this.aliasRegistry.getAndRegisterNewID(idType) : this.idRegistry.getAndRegisterNewID(idType, true);
   }
 
   isIDAvailable(id: string, idType: IDTypes): boolean {

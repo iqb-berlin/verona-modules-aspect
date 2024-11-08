@@ -3,8 +3,8 @@ import { IDTypes } from 'common/interfaces';
 export class IdRegistry {
   registeredIDs: { [key in IDTypes]?: string[] } = {};
 
-  getAndRegisterNewID(idType: IDTypes): string {
-    const id = this.getNextFreeID(idType);
+  getAndRegisterNewID(idType: IDTypes, unique: boolean = false): string {
+    const id = unique ? this.getNewUniqueID(idType) : this.getNewID(idType);
     this.registerID(id, idType);
     return id;
   }
@@ -29,12 +29,23 @@ export class IdRegistry {
     this.registeredIDs = {};
   }
 
-  private getNextFreeID(idType: IDTypes): string {
+  private getNewID(idType: IDTypes): string {
     let suffix = 1;
     let id = `${idType}_${suffix}`;
     while (!this.isIdAvailable(id, idType)) {
       suffix += 1;
       id = `${idType}_${suffix}`;
+    }
+    return id;
+  }
+
+  private getNewUniqueID(idType: IDTypes): string {
+    const suffix1 = Date.now();
+    let suffix2 = 1;
+    let id = `${idType}_${suffix1}_${suffix2}`;
+    while (!this.isIdAvailable(id, idType)) {
+      suffix2 += 1;
+      id = `${idType}_${suffix1}_${suffix2}`;
     }
     return id;
   }

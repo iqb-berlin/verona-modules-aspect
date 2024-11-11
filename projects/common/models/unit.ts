@@ -31,7 +31,14 @@ export class Unit implements UnitProperties {
         throw new InstantiationEror('Error at unit instantiation');
       }
       this.version = VersionManager.getCurrentVersion();
-      if (unit?.stateVariables !== undefined) this.stateVariables = unit.stateVariables;
+      if (unit?.stateVariables !== undefined) {
+        this.stateVariables =
+          unit.stateVariables.map(variable => ({
+            id: variable.id,
+            alias: variable.alias ?? variable.id,
+            value: variable.value
+          }));
+      }
       this.pages = unit?.pages.map(page => new Page(page, idService)) || [new Page(undefined, idService)];
       if (unit?.enableSectionNumbering !== undefined) this.enableSectionNumbering = unit.enableSectionNumbering;
       if (unit?.sectionNumberingPosition !== undefined) this.sectionNumberingPosition = unit.sectionNumberingPosition;

@@ -20,7 +20,6 @@ import { LikertWizardDialogComponent } from 'editor/src/app/components/dialogs/w
 import { InputWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/input.dialog.component';
 import { RadioImagesWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/radio2.dialog.component';
 import { Text2WizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/text2.dialog.component';
-import { LikertRowElement, LikertRowProperties } from 'common/models/elements/compound-elements/likert/likert-row';
 import { AudioWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/audio.dialog.component';
 import { GeometryWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/geometry.dialog.component';
 import { DroplistWizardDialogComponent } from 'editor/src/app/components/dialogs/wizards/droplist.dialog.component';
@@ -340,13 +339,12 @@ export class TemplateService {
         { gridRow: 2, gridColumn: 1, marginBottom: { value: 35, unit: 'px' } },
         {
           options: config.options,
-          rows: config.rows.map(row => new LikertRowElement({
-            ...this.idService.getAndRegisterNewIDs('likert-row'),
+          rows: config.rows.map(row => ({
             rowLabel: {
               ...row
             },
             columnCount: config.options.length
-          } as LikertRowProperties)),
+          })),
           label: config.text2,
           label2: '',
           stickyHeader: true,
@@ -613,7 +611,6 @@ export class TemplateService {
           dimensions: { minHeight: 58 } as DimensionProperties,
           value: config.options.map(option => ({
             text: option.text,
-            ...this.idService.getAndRegisterNewIDs('value'),
             originListID: 'id_placeholder'
           })),
           orientation: config.alignment === 'column' ? 'flex' : 'vertical',
@@ -778,7 +775,6 @@ export class TemplateService {
           } as DimensionProperties,
           value: config.options.map(option => ({
             text: option.text,
-            ...this.idService.getAndRegisterNewIDs('value'),
             originListID: 'id_placeholder'
           })),
           orientation: 'vertical',
@@ -797,9 +793,8 @@ export class TemplateService {
                         params?: Partial<UIElement>): PositionedUIElement {
     return ElementFactory.createElement({
       type: elType,
-      ...this.idService.getAndRegisterNewIDs(elType),
       position: PropertyGroupGenerators.generatePositionProps(coords),
       ...params
-    }) as PositionedUIElement;
+    }, this.idService) as PositionedUIElement;
   }
 }

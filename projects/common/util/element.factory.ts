@@ -29,7 +29,7 @@ import { TextAreaMathElement } from 'common/models/elements/input-elements/text-
 import { TriggerElement } from 'common/models/elements/trigger/trigger';
 import { TableElement } from 'common/models/elements/compound-elements/table/table';
 import { MarkingPanelElement } from 'common/models/elements/text/marking-panel';
-import { AbstractIDService, UIElementType } from 'common/interfaces';
+import { AbstractIDService, UIElementProperties, UIElementType } from 'common/interfaces';
 
 export abstract class ElementFactory {
   static ELEMENT_CLASSES: Record<string, Type<UIElement>> = {
@@ -62,7 +62,7 @@ export abstract class ElementFactory {
     table: TableElement
   };
 
-  static createElement(element: { type: UIElementType } & Partial<UIElement>, idService?: AbstractIDService)
+  static createElement(element: { type: UIElementType } & Partial<UIElementProperties>, idService?: AbstractIDService)
     : UIElement {
     return new ElementFactory.ELEMENT_CLASSES[element.type](element, idService);
   }

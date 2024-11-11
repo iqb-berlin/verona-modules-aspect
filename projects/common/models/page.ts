@@ -1,4 +1,4 @@
-import { Section } from 'common/models/section';
+import { Section, SectionProperties } from 'common/models/section';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { environment } from 'common/environment';
@@ -77,7 +77,7 @@ export class Page {
 }
 
 export interface PageProperties {
-  sections: Section[];
+  sections: SectionProperties[];
   hasMaxWidth: boolean;
   maxWidth: number;
   margin: number;

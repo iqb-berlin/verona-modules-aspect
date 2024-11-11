@@ -1,4 +1,4 @@
-import { Page } from 'common/models/page';
+import { Page, PageProperties } from 'common/models/page';
 import { UIElement } from 'common/models/elements/element';
 import { VariableInfo } from '@iqb/responses';
 import { StateVariable } from 'common/models/state-variable';
@@ -70,7 +70,7 @@ export interface UnitProperties {
   type: string;
   version: string;
   stateVariables: StateVariable[];
-  pages: Page[];
+  pages: PageProperties[];
   enableSectionNumbering: boolean;
   sectionNumberingPosition: 'left' | 'above';
   showUnitNavNext: boolean;

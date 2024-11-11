@@ -7,7 +7,13 @@ import { VisibilityRule } from 'common/models/visibility-rule';
 import { ElementFactory } from 'common/util/element.factory';
 import { environment } from 'common/environment';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
-import { AbstractIDService, Measurement, PositionedUIElement, UIElementValue } from 'common/interfaces';
+import {
+  AbstractIDService,
+  Measurement,
+  PositionedUIElement,
+  UIElementProperties,
+  UIElementValue
+} from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
 export class Section {
@@ -121,7 +127,7 @@ export class Section {
 }
 
 export interface SectionProperties {
-  elements: PositionedUIElement[];
+  elements: UIElementProperties[];
   height: number;
   backgroundColor: string;
   dynamicPositioning: boolean;

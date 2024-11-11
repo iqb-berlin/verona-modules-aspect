@@ -57,6 +57,11 @@ export class Unit implements UnitProperties {
 
 function isValid(blueprint?: UnitProperties): boolean {
   if (!blueprint) return false;
+  if (blueprint.stateVariables !== undefined &&
+      blueprint.stateVariables.length > 0 &&
+      blueprint.stateVariables[0].alias === undefined) {
+    return false;
+  }
   return blueprint.version === VersionManager.getCurrentVersion() &&
     blueprint.stateVariables !== undefined &&
     blueprint.type !== undefined &&

@@ -84,7 +84,7 @@ export class ReferenceManager {
     if (refs.length > 0) {
       return [{
         element: {
-          id: `Seite ${pageIndex + 1}`,
+          alias: `Seite ${pageIndex + 1}`,
           type: 'page'
         },
         refs: refs
@@ -196,7 +196,7 @@ export class ReferenceManager {
   static deleteReferences(refs: ReferenceList[]): void {
     refs.filter(ref => ref.element.type === 'drop-list').forEach(ref => {
       (ref.refs as DropListElement[]).forEach((dropList: DropListElement) => {
-        dropList.connectedTo = dropList.connectedTo.filter(dropListID => dropListID !== ref.element.id);
+        dropList.connectedTo = dropList.connectedTo.filter(dropListID => dropListID !== (ref.element as UIElement).id);
       });
     });
     refs.filter(ref => ref.element.type === 'audio').forEach(ref => {
@@ -214,7 +214,7 @@ export class ReferenceManager {
 
 export interface ReferenceList {
   element: UIElement | {
-    id: string;
+    alias: string;
     type: 'page'
   };
   refs: UIElement[];

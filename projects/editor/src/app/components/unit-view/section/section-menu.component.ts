@@ -63,7 +63,7 @@ import { SelectionService } from '../../../services/selection.service';
             {{ $any(element.constructor).icon }}
           </mat-icon>
           <div matListItemTitle>
-            <i>{{ element.id }}</i>
+            <i>{{ element.alias }}</i>
           </div>
 
         </mat-list-item>

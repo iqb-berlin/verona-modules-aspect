@@ -19,7 +19,7 @@ import { NgForOf } from '@angular/common';
           {{ $any(element.constructor).icon }}
         </mat-icon>
         <div matListItemTitle>
-          {{ $any(element.constructor).title }}: <i>{{ element.id }}</i>
+          {{ $any(element.constructor).title }}: <i>{{ element.alias }}</i>
         </div>
       </mat-list-item>
     </mat-list>

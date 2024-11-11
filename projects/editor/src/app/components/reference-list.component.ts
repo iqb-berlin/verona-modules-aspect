@@ -20,7 +20,7 @@ import { ElementListComponent } from 'editor/src/app/components/element-list.com
   template: `
     <ng-container *ngFor="let refGroup of refs ? refs : data">
       <span>
-        <b>{{ refGroup.element.id }}</b> wird referenziert von:
+        <b>{{ refGroup.element.alias }}</b> wird referenziert von:
       </span>
       <aspect-element-list [elements]="refGroup.refs"></aspect-element-list>
     </ng-container>

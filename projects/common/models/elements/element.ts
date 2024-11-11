@@ -253,20 +253,6 @@ export abstract class CompoundElement extends UIElement {
   abstract getChildElements(): UIElement[];
 
   abstract getBlueprint(): UIElementProperties;
-
-  registerIDs(): void {
-    super.registerIDs();
-    this.getChildElements().forEach(el => {
-      el.registerIDs();
-    });
-  }
-
-  unregisterIDs(): void {
-    super.unregisterIDs();
-    this.getChildElements().forEach(el => {
-      el.unregisterIDs();
-    });
-  }
 }
 
 function isPlayerElementBlueprint(blueprint: Partial<PlayerElementBlueprint>): blueprint is PlayerElementBlueprint {

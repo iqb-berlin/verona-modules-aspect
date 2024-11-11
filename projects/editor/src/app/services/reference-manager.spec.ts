@@ -42,7 +42,7 @@ describe('ReferenceManager', () => {
   });
 
   it('should find no refs for single element', () => {
-    const refMan = new ReferenceManager(new Unit(singleElement as unknown as UnitProperties));
+    const refMan = new ReferenceManager(new Unit(singleElement as UnitProperties));
     const element = {
       type: 'drop-list',
       id: 'drop-list_1',
@@ -54,11 +54,12 @@ describe('ReferenceManager', () => {
       .toEqual([]);
   });
 
-  it('should find refs when deleting element', () => {
-    const refMan = new ReferenceManager(new Unit(elementRef as unknown as UnitProperties));
+  it('should find refs when deleting element (connected droplist)', () => {
+    const refMan = new ReferenceManager(new Unit(elementRef as UnitProperties));
     const element = {
       type: 'drop-list',
-      id: 'drop-list_1',
+      id: 'drop-list_1731317829457_1',
+      alias: 'drop-list_1',
       label: 'Beschriftung',
       value: [],
       connectedTo: []
@@ -71,21 +72,23 @@ describe('ReferenceManager', () => {
     expect(refMan.getElementsReferences([element])[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'drop-list',
-        id: 'drop-list_2'
+        alias: 'drop-list_2'
       }));
   });
 
   it('should find 2 refs when deleting 2 elements', () => {
-    const refMan = new ReferenceManager(new Unit(elementRef2 as unknown as UnitProperties));
+    const refMan = new ReferenceManager(new Unit(elementRef2 as UnitProperties));
     const element1 = {
       type: 'drop-list',
-      id: 'drop-list_1',
+      id: 'drop-list_1731317829457_1',
+      alias: 'drop-list_1',
       value: [],
       connectedTo: []
     } as unknown as DropListElement;
     const element2 = {
       type: 'audio',
-      id: 'audio_1'
+      id: 'audio_1731318487080_1',
+      alias: 'audio_1'
     } as AudioElement;
 
     const refs = refMan.getElementsReferences([element1, element2]);
@@ -97,18 +100,18 @@ describe('ReferenceManager', () => {
     expect(refs[1].element)
       .toEqual(jasmine.objectContaining({
         type: 'audio',
-        id: 'audio_1'
+        alias: 'audio_1'
       }));
     expect(refs[1].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'audio',
-        id: 'audio_2'
+        alias: 'audio_2'
       }));
   });
 
   it('should find ref when deleting section', () => {
-    const refMan = new ReferenceManager(new Unit(section1 as unknown as UnitProperties));
-    const section = JSON.parse(JSON.stringify(section1)).pages[0].sections[0] as unknown as Section;
+    const refMan = new ReferenceManager(new Unit(section1 as UnitProperties));
+    const section = JSON.parse(JSON.stringify(section1)).pages[0].sections[0] as Section;
     const refs = refMan.getSectionElementsReferences([section]);
 
     expect(refs.length)
@@ -116,13 +119,14 @@ describe('ReferenceManager', () => {
     expect(refs[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'drop-list',
-        id: 'drop-list_3'
+        id: 'drop-list_1731318755523_1',
+        alias: 'drop-list_2'
       }));
   });
 
   it('should find refs when deleting section but ignore refs within same section', () => {
-    const refMan = new ReferenceManager(new Unit(section2 as unknown as UnitProperties));
-    const section = JSON.parse(JSON.stringify(section2)).pages[0].sections[0] as unknown as Section;
+    const refMan = new ReferenceManager(new Unit(section2 as UnitProperties));
+    const section = JSON.parse(JSON.stringify(section2)).pages[0].sections[0] as Section;
     const refs = refMan.getSectionElementsReferences([section]);
 
     expect(refs.length)
@@ -130,13 +134,13 @@ describe('ReferenceManager', () => {
     expect(refs[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'drop-list',
-        id: 'drop-list_3'
+        alias: 'drop-list_3'
       }));
   });
 
   it('should ignore refs within same page', () => {
-    const refMan = new ReferenceManager(new Unit(pageRefs as unknown as UnitProperties));
-    const page = new Page(JSON.parse(JSON.stringify(pageRefs)).pages[0] as unknown as PageProperties);
+    const refMan = new ReferenceManager(new Unit(pageRefs as UnitProperties));
+    const page = new Page(JSON.parse(JSON.stringify(pageRefs)).pages[0] as PageProperties);
     const refs = refMan.getPageElementsReferences(page);
 
     expect(refs.length)
@@ -144,14 +148,14 @@ describe('ReferenceManager', () => {
     expect(refs[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'drop-list',
-        id: 'drop-list_3'
+        alias: 'drop-list_3'
       }));
   });
 
   it('should find cloze refs but ignore refs within same cloze', () => {
-    const refMan = new ReferenceManager(new Unit(cloze as unknown as UnitProperties));
+    const refMan = new ReferenceManager(new Unit(cloze as UnitProperties));
     const clozeElement = new ClozeElement(
-      JSON.parse(JSON.stringify(cloze)).pages[0].sections[0].elements[0] as unknown as ClozeProperties);
+      JSON.parse(JSON.stringify(cloze)).pages[0].sections[0].elements[0] as ClozeProperties);
     const refs = refMan.getElementsReferences([clozeElement]);
 
     expect(refs.length)
@@ -159,12 +163,12 @@ describe('ReferenceManager', () => {
     expect(refs[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'drop-list',
-        id: 'drop-list_3'
+        alias: 'drop-list_3'
       }));
   });
 
   it('should find page refs via buttons', () => {
-    const refMan = new ReferenceManager(new Unit(pageNav as unknown as UnitProperties));
+    const refMan = new ReferenceManager(new Unit(pageNav as UnitProperties));
     const refs = refMan.getButtonReferencesForPage(0);
 
     expect(refs.length)
@@ -174,7 +178,7 @@ describe('ReferenceManager', () => {
     expect(refs[0].refs[0])
       .toEqual(jasmine.objectContaining({
         type: 'button',
-        id: 'button_2'
+        alias: 'button_1'
       }));
   });
 });

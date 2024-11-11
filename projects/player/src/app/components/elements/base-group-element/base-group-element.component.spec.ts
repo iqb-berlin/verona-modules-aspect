@@ -29,7 +29,7 @@ describe('BaseGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BaseGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new FrameElement();
+    component.elementModel = new FrameElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
   });
 

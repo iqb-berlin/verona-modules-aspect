@@ -36,7 +36,7 @@ describe('TextInputGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TextInputGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new TextFieldElement();
+    component.elementModel = new TextFieldElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
   });
 

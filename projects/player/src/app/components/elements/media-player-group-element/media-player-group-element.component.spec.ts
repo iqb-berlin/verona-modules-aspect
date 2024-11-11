@@ -37,7 +37,7 @@ describe('MediaPlayerGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(MediaPlayerGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new AudioElement();
+    component.elementModel = new AudioElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
   });
 

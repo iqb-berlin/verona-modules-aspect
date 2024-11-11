@@ -88,108 +88,108 @@ describe('ElementGroupSelectionComponent', () => {
   });
 
   it('should create', () => {
-    component.elementModel = new CheckboxElement();
+    component.elementModel = new CheckboxElement({ id: 'id', alias: 'alias' });
     expect(component).toBeTruthy();
   });
 
   it('should select textGroup', () => {
-    component.elementModel = new TextElement();
+    component.elementModel = new TextElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('textGroup');
   });
 
   it('should select inputGroup', () => {
-    component.elementModel = new CheckboxElement();
+    component.elementModel = new CheckboxElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('inputGroup');
   });
 
   it('should select inputGroup', () => {
-    component.elementModel = new RadioButtonGroupElement();
+    component.elementModel = new RadioButtonGroupElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('inputGroup');
   });
 
   it('should select inputGroup', () => {
-    component.elementModel = new DropdownElement();
+    component.elementModel = new DropdownElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('inputGroup');
   });
 
   it('should select inputGroup', () => {
-    component.elementModel = new DropListElement();
+    component.elementModel = new DropListElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('inputGroup');
   });
 
   it('should select inputGroup', () => {
-    component.elementModel = new SliderElement();
+    component.elementModel = new SliderElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('inputGroup');
   });
 
   it('should select inputGroup', () => {
-    component.elementModel = new RadioButtonGroupElement();
+    component.elementModel = new RadioButtonGroupElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('inputGroup');
   });
 
   it('should select textInputGroup', () => {
-    component.elementModel = new TextFieldElement();
+    component.elementModel = new TextFieldElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('textInputGroup');
   });
 
   it('should select textInputGroup', () => {
-    component.elementModel = new TextAreaElement();
+    component.elementModel = new TextAreaElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('textInputGroup');
   });
 
   it('should select textInputGroup', () => {
-    component.elementModel = new SpellCorrectElement();
+    component.elementModel = new SpellCorrectElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('textInputGroup');
   });
 
   it('should select mediaPlayerGroup', () => {
-    component.elementModel = new AudioElement();
+    component.elementModel = new AudioElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('mediaPlayerGroup');
   });
 
   it('should select mediaPlayerGroup', () => {
-    component.elementModel = new VideoElement();
+    component.elementModel = new VideoElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('mediaPlayerGroup');
   });
 
   it('should select compoundGroup', () => {
-    component.elementModel = new LikertElement();
+    component.elementModel = new LikertElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('compoundGroup');
   });
 
   it('should select mediaPlayerGroup', () => {
-    component.elementModel = new ClozeElement();
+    component.elementModel = new ClozeElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('compoundGroup');
   });
 
   it('should select no group (undefined)', () => {
-    component.elementModel = new FrameElement();
+    component.elementModel = new FrameElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual(undefined);
   });
 
   it('should select interactiveGroup', () => {
-    component.elementModel = new ImageElement();
+    component.elementModel = new ImageElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('interactiveGroup');
   });
 
   it('should select interactiveGroup', () => {
-    component.elementModel = new ButtonElement();
+    component.elementModel = new ButtonElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
     expect(component.selectedGroup).toEqual('interactiveGroup');
   });

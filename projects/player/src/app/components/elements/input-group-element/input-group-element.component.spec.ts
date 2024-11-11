@@ -34,7 +34,7 @@ describe('InputGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InputGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new RadioButtonGroupElement();
+    component.elementModel = new RadioButtonGroupElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
   });
 

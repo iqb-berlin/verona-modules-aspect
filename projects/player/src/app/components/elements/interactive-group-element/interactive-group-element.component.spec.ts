@@ -46,7 +46,7 @@ describe('InteractiveGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(InteractiveGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new ButtonElement();
+    component.elementModel = new ButtonElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
   });
 

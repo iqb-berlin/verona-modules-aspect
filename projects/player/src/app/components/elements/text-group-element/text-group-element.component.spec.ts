@@ -43,7 +43,7 @@ describe('TextGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TextGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new TextElement();
+    component.elementModel = new TextElement({ id: 'id', alias: 'alias' });
   });
 
   it('should create', () => {

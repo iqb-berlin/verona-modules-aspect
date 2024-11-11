@@ -30,7 +30,7 @@ describe('ExternalAppGroupElementComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ExternalAppGroupElementComponent);
     component = fixture.componentInstance;
-    component.elementModel = new GeometryElement();
+    component.elementModel = new GeometryElement({ id: 'id', alias: 'alias' });
     fixture.detectChanges();
   });
 

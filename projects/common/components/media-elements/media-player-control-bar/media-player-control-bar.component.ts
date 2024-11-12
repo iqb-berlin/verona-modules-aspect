@@ -214,7 +214,7 @@ export class MediaPlayerControlBarComponent implements OnInit, OnChanges, OnDest
       } else {
         this.duration = 0;
         this.runCounter = 0;
-        throw new AspectError('-duration-error', 'Media duration is not available');
+        throw new AspectError('duration-error', 'Media duration is not available');
       }
     }
   }

@@ -12,7 +12,7 @@ import { environment } from 'common/environment';
 import {
   AbstractIDService,
   DragNDropValueObject,
-  InputElementProperties, UIElementProperties,
+  InputElementProperties,
   UIElementType,
   UIElementValue
 } from 'common/interfaces';
@@ -161,7 +161,7 @@ export class DropListElement extends InputElement implements DropListProperties 
       return [this, ...valueDropLists]
         .map(dropList => dropList.value as DragNDropValueObject[])
         .flat()
-        .map(option => ({ value: option.id, label: InputElement.stripHTML(option.text) }));
+        .map(option => ({ value: option.alias, label: InputElement.stripHTML(option.text) }));
     }
     return [];
   }

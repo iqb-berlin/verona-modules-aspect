@@ -17,6 +17,8 @@
 </div>
 
 <button mat-menu-item class="delete-button"
+        [disabled]="(unitService.unit.pages.length < 2) ||
+                    (unitService.unit.pages.length == 2 && unitService.unit.pages[0].alwaysVisible)"
         [matTooltip]="'Seite löschen'"
         (click)="deletePage()">
   <mat-icon>delete</mat-icon>

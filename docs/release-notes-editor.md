@@ -30,6 +30,7 @@ Editor
 - Eigenschaften für Texte ohne Inhalt werden angezeigt
 - Elemente Tabellendialog fließen nicht mehr über Zellenberenzung
 - IDs gelöschter Lückentextelemente werden wieder freigegeben
+- Löschen einer Seite, wenn keine weitere existiert wird unterbunden ebenso wie das Löschen der einzigen nicht dauerhaften Seite
 
 
 ## 2.5.0

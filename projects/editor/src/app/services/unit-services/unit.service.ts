@@ -83,6 +83,10 @@ export class UnitService {
       this.messageService.showFixedReferencePanel(invalidRefs);
       this.updateUnitDefinition();
     }
+    // The unit constructor updated the version. Therefore the unit has changed and notifies the  host.
+    if ((parsedUnitDefinition as unknown as UnitProperties).version !== VersionManager.getCurrentVersion()) {
+      this.updateUnitDefinition();
+    }
     this.updateSectionCounter();
   }
 

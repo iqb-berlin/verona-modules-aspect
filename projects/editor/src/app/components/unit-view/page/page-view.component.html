@@ -24,10 +24,9 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #pageMenu="matMenu">
-      <div (click)="$event.stopPropagation()">
-        <aspect-unit-view-page-menu [page]="page" [pageIndex]="pageIndex"
-                                    (pageOrderChanged)="pagesChanged.emit()"></aspect-unit-view-page-menu>
-      </div>
+      <aspect-unit-view-page-menu [page]="page" [pageIndex]="pageIndex"
+                                  (pageOrderChanged)="pagesChanged.emit()"></aspect-unit-view-page-menu>
+
     </mat-menu>
   </div>
 

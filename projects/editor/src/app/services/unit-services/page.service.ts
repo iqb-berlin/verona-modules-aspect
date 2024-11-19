@@ -34,6 +34,8 @@ export class PageService {
       this.unitService.unit.pages,
       direction === 'left' ? 'up' : 'down'
     );
+    this.selectionService.selectPage(direction === 'left' ?
+      this.selectionService.selectedPageIndex - 1 : this.selectionService.selectedPageIndex + 1);
     this.unitService.updateSectionCounter();
     this.unitService.updateUnitDefinition();
   }

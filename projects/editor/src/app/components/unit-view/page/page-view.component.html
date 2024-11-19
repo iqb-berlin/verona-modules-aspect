@@ -20,7 +20,8 @@
     </ng-container>
     <div *ngIf="page.alwaysVisible" class="page-label"><i>dauerhaft sichtbare Seite</i></div>
     <button mat-icon-button [matMenuTriggerFor]="pageMenu"
-            [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400">
+            [matTooltip]="'Seiteneinstellungen'" [matTooltipPosition]="'above'" [matTooltipShowDelay]="400"
+            (click)="selectionService.selectPage(pageIndex)">
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #pageMenu="matMenu">

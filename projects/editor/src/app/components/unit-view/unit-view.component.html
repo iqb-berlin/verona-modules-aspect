@@ -44,13 +44,15 @@
                                             (pageOrderChanged)="refreshTabs()"></aspect-unit-view-page-menu>
               </mat-menu>
             </ng-template>
-            <div cdkDropListGroup class="page-view-wrapper">
-              <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
-                                         [page]="unitService.unit.pages[selectionService.selectedPageIndex]"
-                                         [pageIndex]="i" [singlePageMode]="true"
-                                         (pagesChanged)="refreshTabs()">
-              </aspect-editor-page-view>
-            </div>
+            <ng-template matTabContent>
+              <div cdkDropListGroup class="page-view-wrapper">
+                <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
+                                           [page]="unitService.unit.pages[selectionService.selectedPageIndex]"
+                                           [pageIndex]="i" [singlePageMode]="true"
+                                           (pagesChanged)="refreshTabs()">
+                </aspect-editor-page-view>
+              </div>
+            </ng-template>
           </mat-tab>
         </ng-container>
 
@@ -62,28 +64,32 @@
                 sticky_note_2
               </mat-icon>
             </ng-template>
-            <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch"
-                                     [page]="unitService.unit.pages[0]" [pageIndex]="0"
-                                     (pagesChanged)="refreshTabs()">
-            </aspect-editor-page-view>
+            <ng-template matTabContent>
+              <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch"
+                                       [page]="unitService.unit.pages[0]" [pageIndex]="0"
+                                       (pagesChanged)="refreshTabs()">
+              </aspect-editor-page-view>
+            </ng-template>
           </mat-tab>
           <mat-tab>
             <ng-template mat-tab-label>
               {{unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.length - 1: unitService.unit.pages.length}} Seiten
             </ng-template>
-            <div *ngIf="pagesLoaded" cdkDropListGroup >
-              <aspect-editor-page-view *ngFor="let page of
-                (unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.slice(1) : unitService.unit.pages);
-                let pageIndex = index"
-                                       [page]="page"
-                                       [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)"
-                                       [isLastPage]="pageIndex == unitService.unit.pages.length - 1"
-                                       (alwaysVisiblePageModified)="refreshTabs()">
-              </aspect-editor-page-view>
-            </div>
-            <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
-              <mat-icon>add</mat-icon>Neue Seite
-            </button>
+            <ng-template matTabContent>
+              <div *ngIf="pagesLoaded" cdkDropListGroup >
+                <aspect-editor-page-view *ngFor="let page of
+                  (unitService.unit.pages[0].alwaysVisible ? unitService.unit.pages.slice(1) : unitService.unit.pages);
+                  let pageIndex = index"
+                                         [page]="page"
+                                         [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)"
+                                         [isLastPage]="pageIndex == unitService.unit.pages.length - 1"
+                                         (alwaysVisiblePageModified)="refreshTabs()">
+                </aspect-editor-page-view>
+              </div>
+              <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">
+                <mat-icon>add</mat-icon>Neue Seite
+              </button>
+            </ng-template>
           </mat-tab>
         </ng-container>
 

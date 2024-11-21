@@ -63,7 +63,8 @@
               </mat-icon>
             </ng-template>
             <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch"
-                                       [page]="unitService.unit.pages[0]" [pageIndex]="0">
+                                     [page]="unitService.unit.pages[0]" [pageIndex]="0"
+                                     (pagesChanged)="refreshTabs()">
             </aspect-editor-page-view>
           </mat-tab>
           <mat-tab>
@@ -76,7 +77,8 @@
                 let pageIndex = index"
                                        [page]="page"
                                        [pageIndex]="pageIndex + (unitService.unit.pages[0].alwaysVisible ? 1 : 0)"
-                                       [isLastPage]="pageIndex == unitService.unit.pages.length - 1">
+                                       [isLastPage]="pageIndex == unitService.unit.pages.length - 1"
+                                       (alwaysVisiblePageModified)="refreshTabs()">
               </aspect-editor-page-view>
             </div>
             <button mat-fab extended class="add-page-button" [matTooltip]="'Weitere Seite anlegen'" (click)="addPage()">

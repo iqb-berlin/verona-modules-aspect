@@ -40,6 +40,7 @@ export class PageViewComponent implements OnInit, OnDestroy {
   @Input() singlePageMode: boolean = false;
   @Input() isLastPage: boolean = false;
   @Output() pagesChanged = new EventEmitter();
+  @Output() alwaysVisiblePageModified = new EventEmitter();
   @ViewChildren(SectionComponent) sectionComponents!: QueryList<SectionComponent>;
 
   private ngUnsubscribe = new Subject<void>();

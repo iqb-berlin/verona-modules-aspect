@@ -26,6 +26,7 @@
     </button>
     <mat-menu #pageMenu="matMenu">
       <aspect-unit-view-page-menu [page]="page" [pageIndex]="pageIndex"
+                                  (alwaysVisiblePageModified)="alwaysVisiblePageModified.emit()"
                                   (pageOrderChanged)="pagesChanged.emit()"></aspect-unit-view-page-menu>
 
     </mat-menu>

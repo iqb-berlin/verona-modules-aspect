@@ -67,6 +67,7 @@ export class PageMenu implements OnDestroy {
   @Input() page!: Page;
   @Input() pageIndex!: number;
   @Output() pageOrderChanged = new EventEmitter<void>();
+  @Output() alwaysVisiblePageModified = new EventEmitter();
   private ngUnsubscribe = new Subject<void>();
 
   constructor(public unitService: UnitService,
@@ -85,11 +86,14 @@ export class PageMenu implements OnDestroy {
 
   updateModel(page: Page, property: string, value: number | boolean, isInputValid: boolean | null = true): void {
     if (isInputValid && value != null) {
-      if (property === 'alwaysVisible' && value === true) {
-        this.movePageToFront(page);
-        page.alwaysVisible = true;
-        this.selectionService.selectedPageIndex = 0;
+      if (property === 'alwaysVisible') {
+        if (value === true) {
+          this.movePageToFront(page);
+          page.alwaysVisible = true;
+          this.selectionService.selectedPageIndex = 0;
+        }
         this.unitService.updateSectionCounter();
+        this.alwaysVisiblePageModified.emit();
         this.pageOrderChanged.emit();
       }
       page[property] = value;

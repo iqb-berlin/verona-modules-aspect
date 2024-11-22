@@ -37,7 +37,22 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
               {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
             </mat-option>
           </ng-container>
-          <ng-container *ngIf="combinedProperties.type === 'math-table'">
+          <ng-container *ngIf="combinedProperties.type === 'math-table' &&
+                               ['addition', 'subtraction'].includes($any(combinedProperties.operation))">
+            <mat-option *ngFor="let option of [null, 'numbers']"
+                        [value]="option">
+              {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+            </mat-option>
+          </ng-container>
+          <ng-container *ngIf="combinedProperties.type === 'math-table' &&
+                               combinedProperties.operation === 'multiplication'">
+            <mat-option *ngFor="let option of [null, 'numbers', 'numbersAndBasicOperators']"
+                        [value]="option">
+              {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}
+            </mat-option>
+          </ng-container>
+          <ng-container *ngIf="combinedProperties.type === 'math-table' &&
+                               combinedProperties.operation === 'variable'">
             <mat-option *ngFor="let option of [null, 'numbers', 'numbersAndBasicOperators', 'numbersAndOperators']"
                         [value]="option">
               {{ option === null ? ('propertiesPanel.none' | translate) : ('propertiesPanel.' + option | translate) }}

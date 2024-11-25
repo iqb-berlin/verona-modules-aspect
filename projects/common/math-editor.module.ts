@@ -1,15 +1,14 @@
 // eslint-disable-next-line max-classes-per-file
 import {
   NgModule, CUSTOM_ELEMENTS_SCHEMA,
-  Component, AfterViewInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges
+  Component, AfterViewInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, Output, EventEmitter
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MathfieldElement, VirtualKeyboardDefinition } from 'mathlive';
-import { VirtualKeyboardLayer } from 'mathlive/dist/public/options';
+import { MathfieldElement } from 'mathlive';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
-  selector: 'aspect-mathlive-math-field',
+  selector: 'aspect-math-input',
   template: `
     <mat-button-toggle-group *ngIf="enableModeSwitch"
                              [value]="mathFieldElement.mode"
@@ -17,15 +16,36 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
       <mat-button-toggle value="math">Formel</mat-button-toggle>
       <mat-button-toggle value="text">Text</mat-button-toggle>
     </mat-button-toggle-group>
-    <div #mathfield [class.read-only]="readonly">
+    <div #inputRef
+         (input)="onInput()"
+         [class.full-width]="fullWidth"
+         [class.inline-block]="!fullWidth"
+         [class.read-only]="readonly"
+         (focusin)="onFocusIn($event)"
+         (focusout)="onFocusOut($event)">
     </div>
   `,
   styles: [`
     mat-button-toggle-group {
       height: auto;
     }
+    :host ::ng-deep .full-width math-field {
+      display: block;
+    }
+
+    .inline-block{
+      display: inline-block;
+    }
+
+    :host ::ng-deep  math-field::part(virtual-keyboard-toggle) {
+      display: none;
+    }
+    :host ::ng-deep math-field::part(menu-toggle) {
+      display: none;
+    }
     :host ::ng-deep .read-only math-field {
-      outline: unset; border: unset;
+      outline: unset;
+      border: unset;
     }
     :host ::ng-deep .mat-button-toggle-label-content {
       line-height: unset;
@@ -34,130 +54,31 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
 })
 export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() value!: string;
+  @Input() fullWidth: boolean = true;
   @Input() readonly: boolean = false;
   @Input() enableModeSwitch: boolean = false;
-  @ViewChild('mathfield') mathfieldRef!: ElementRef;
+  @Output() valueChange: EventEmitter<string> = new EventEmitter();
+  @Output() focusIn: EventEmitter<FocusEvent> = new EventEmitter();
+  @Output() focusOut: EventEmitter<FocusEvent> = new EventEmitter();
+  @ViewChild('inputRef') inputRef!: ElementRef;
+  @ViewChild('container') container!: ElementRef;
+
+  protected readonly window = window;
 
   mathFieldElement: MathfieldElement = new MathfieldElement({
-    virtualKeyboardMode: 'onfocus',
-    customVirtualKeyboardLayers: MathInputComponent.setupKeyboadLayer(),
-    customVirtualKeyboards: MathInputComponent.setupKeyboard(),
-    virtualKeyboards: 'aspect-keyboard roman greek',
-    keypressSound: null,
-    plonkSound: null,
-    decimalSeparator: ',',
-    smartFence: false
-    // defaultMode: 'math'
+    mathVirtualKeyboardPolicy: 'manual'
   });
+
+  constructor(public elementRef: ElementRef) { }
 
   ngAfterViewInit(): void {
     this.setupMathfield();
   }
 
-  setupMathfield(): void {
-    this.mathfieldRef.nativeElement.appendChild(this.mathFieldElement);
+  private setupMathfield(): void {
+    this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;
     this.mathFieldElement.readOnly = this.readonly;
-  }
-
-  static setupKeyboard(): Record<string, VirtualKeyboardDefinition> {
-    return {
-      'aspect-keyboard': {
-        label: 'Formel', // Label displayed in the Virtual Keyboard Switcher
-        tooltip: 'Zahlen & Formeln', // Tooltip when hovering over the label
-        layer: 'aspect-keyboard-layer'
-      }
-    };
-  }
-
-  static setupKeyboadLayer(): Record<string, string | Partial<VirtualKeyboardLayer>> {
-    return {
-      'aspect-keyboard-layer': {
-        styles: '',
-        rows: [
-          [
-            { label: '7', key: '7' },
-            { label: '8', key: '8' },
-            { label: '9', key: '9' },
-            { class: 'separator w5' },
-            { latex: '+' },
-            { class: 'separator w5' },
-            { latex: '<' },
-            { latex: '>' },
-            { latex: '\\ne' },
-            { class: 'separator w5' },
-            { latex: '€' },
-            { class: 'separator w5' },
-            { label: '<span><i>x</i>&thinsp;²</span>', insert: '$$#@^{2}$$' },
-            { latex: '$$#@^{#?}' },
-            { latex: '$$#@_{#?}' }
-          ],
-          [
-            { label: '4', latex: '4' },
-            { label: '5', key: '5' },
-            { label: '6', key: '6' },
-            { class: 'separator w5' },
-            { latex: '-' },
-            { class: 'separator w5' },
-            { latex: '\\le' },
-            { latex: '\\ge' },
-            { latex: '\\approx' },
-            { class: 'separator w5' },
-            { latex: '\\%' },
-            { class: 'separator w5' },
-            { class: 'small', latex: '\\frac{#0}{#0}' },
-            { latex: '\\sqrt{#0}', insert: '$$\\sqrt{#0}$$' },
-            { class: 'separator' }
-          ],
-          [
-            { label: '1', key: '1' },
-            { label: '2', key: '2' },
-            { label: '3', key: '3' },
-            { class: 'separator w5' },
-            { latex: '\\times' },
-            { class: 'separator w5' },
-            { latex: '(' },
-            { latex: ')' },
-            { latex: '\\Rightarrow' },
-            { class: 'separator w5' },
-            { latex: '°' },
-            { class: 'separator w5' },
-            { latex: '\\overline' },
-            { class: 'separator' },
-            { class: 'separator' }
-          ],
-          [
-            { label: '0', key: '0' },
-            { latex: ',' },
-            { latex: '=' },
-            { class: 'separator w5' },
-            { latex: '\\div' },
-            { class: 'separator w5' },
-            { latex: '[' },
-            { latex: ']' },
-            { latex: '\\Leftrightarrow' },
-            { class: 'separator w5' },
-            { latex: '\\mid' },
-            { class: 'separator w5' },
-            {
-              class: 'action',
-              label: "<svg><use xlink:href='#svg-arrow-left' /></svg>",
-              command: ['performWithFeedback', 'moveToPreviousChar']
-            },
-            {
-              class: 'action',
-              label: "<svg><use xlink:href='#svg-arrow-right' /></svg>",
-              command: ['performWithFeedback', 'moveToNextChar']
-            },
-            {
-              class: 'action font-glyph bottom right',
-              label: '&#x232b;',
-              command: ['performWithFeedback', 'deleteBackward']
-            }
-          ]
-        ]
-      }
-    };
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -166,14 +87,32 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  setFocus(offset?: number): void {
+    this.mathFieldElement.focus();
+  }
+
   setParseMode(event: MatButtonToggleChange) {
     // TODO Keyboard moving up and down on focus loss may be avoided by using useSharedVirtualKeyboard
     this.mathFieldElement.mode = event.value;
-    (this.mathfieldRef.nativeElement.childNodes[0] as HTMLElement).focus();
+    (this.inputRef.nativeElement.childNodes[0] as HTMLElement).focus();
   }
 
   getMathMLValue(): string {
     return this.mathFieldElement.getValue('math-ml');
+  }
+
+  onInput() {
+    this.valueChange.emit(this.mathFieldElement.getValue());
+  }
+
+  onFocusIn(event: FocusEvent) {
+    this.focusIn.emit(event);
+    window.mathVirtualKeyboard.show();
+  }
+
+  onFocusOut(event: FocusEvent) {
+    window.mathVirtualKeyboard.hide();
+    this.focusOut.emit(event);
   }
 }
 

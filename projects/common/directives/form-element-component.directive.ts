@@ -12,4 +12,8 @@ export abstract class FormElementComponent extends ElementComponent implements O
       this.parentForm.controls[this.elementModel.id] as UntypedFormControl :
       new UntypedFormControl(this.elementModel.value);
   }
+
+  setElementValue(value: unknown, option?: unknown): void {
+    this.elementFormControl.setValue(value);
+  }
 }

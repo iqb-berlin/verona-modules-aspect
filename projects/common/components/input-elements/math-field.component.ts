@@ -17,12 +17,12 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
        [style.background-color]="elementModel.styling.backgroundColor">
       <label>{{elementModel.label}}</label><br>
-      <aspect-mathlive-math-field [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
+      <aspect-math-input [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
                                   [readonly]="elementModel.readOnly"
                                   [enableModeSwitch]="elementModel.enableModeSwitch"
                                   (input)="elementFormControl.setValue($any($event.target).value)"
                                   (focusout)="elementFormControl.markAsTouched()">
-      </aspect-mathlive-math-field>
+      </aspect-math-input>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">
         {{elementFormControl.errors | errorTransform: elementModel}}

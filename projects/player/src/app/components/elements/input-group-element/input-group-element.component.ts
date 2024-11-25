@@ -12,7 +12,6 @@ import { DropdownElement } from 'common/models/elements/input-elements/dropdown'
 import { InputElement } from 'common/models/elements/element';
 import { HotspotImageElement } from 'common/models/elements/input-elements/hotspot-image';
 import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
-import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
 import { ValidationService } from '../../../services/validation.service';
 import { ElementFormGroupDirective } from '../../../directives/element-form-group.directive';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
@@ -33,7 +32,6 @@ export class InputGroupElementComponent extends ElementFormGroupDirective implem
   DropdownElement!: DropdownElement;
   HotspotImageElement!: HotspotImageElement;
   MathFieldElement!: MathFieldElement;
-  TextAreaMathElement!: TextAreaMathElement;
 
   constructor(
     public unitStateService: UnitStateService,

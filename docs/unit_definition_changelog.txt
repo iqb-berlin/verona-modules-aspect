@@ -198,3 +198,12 @@ iqb-aspect-definition@1.0.0
 
 - New Element "MarkingPanel"
 - all elements: new property "alias"
+
+- TextAreaMath
+  - new property: inputAssistancePreset
+  - new property: inputAssistancePosition
+  - new property: inputAssistanceFloatingStartPosition
+  - new property: showSoftwareKeyboard
+  - new property: hideNativeKeyboard
+  - new property: addInputAssistanceToKeyboard
+  - new property: hasArrowKeys

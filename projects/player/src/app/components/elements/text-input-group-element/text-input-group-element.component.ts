@@ -6,6 +6,7 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
+import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
 import { InputElement } from 'common/models/elements/element';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
 import { DeviceService } from '../../../services/device.service';
@@ -27,6 +28,7 @@ export class TextInputGroupElementComponent
   TextAreaElement!: TextAreaElement;
   TextFieldElement!: TextFieldElement;
   SpellCorrectElement!: SpellCorrectElement;
+  TextAreaMathElement!: TextAreaMathElement;
 
   constructor(
     public keyboardService: KeyboardService,

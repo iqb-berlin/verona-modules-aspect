@@ -29,6 +29,7 @@ export class ElementModelElementCodeMappingService {
 
   mapToElementModelValue(elementCodeValue: ResponseValueType | undefined, elementModel: UIElement): InputElementValue {
     switch (elementModel.type) {
+      case 'text-area-math':
       case 'math-table':
         return (elementCodeValue !== undefined) ?
           JSON.parse(elementCodeValue as string) :
@@ -89,6 +90,7 @@ export class ElementModelElementCodeMappingService {
         return elementModelValue as string;
       case 'image':
         return elementModelValue as boolean;
+      case 'text-area-math':
       case 'math-table':
         return JSON.stringify(elementModelValue);
       case 'drop-list':

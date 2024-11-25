@@ -8,11 +8,13 @@ import { DeviceService } from 'player/src/app/services/device.service';
 import { KeypadService } from 'player/src/app/services/keypad.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
+import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
+import { RangeSelectionService } from 'common/services/range-selection-service';
 
 @Directive()
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
   isKeypadOpen: boolean = false;
-  inputElement!: HTMLTextAreaElement | HTMLInputElement;
+  inputElement!: HTMLTextAreaElement | HTMLInputElement | HTMLElement;
 
   keypadEnterKeySubscription!: Subscription;
   keypadDeleteCharactersSubscription!: Subscription;
@@ -32,7 +34,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   async toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                       elementComponent: TextInputComponentType): Promise<void> {
+                       elementComponent: TextInputComponentType | TextAreaMathComponent): Promise<void> {
     const promises: Promise<boolean>[] = [];
     if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
       promises.push(this.keyboardService
@@ -42,22 +44,23 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
       promises.push(this.keypadService.toggleAsync(focusedTextInput, elementComponent));
     }
     if (promises.length) {
-      await Promise.all(promises).then(() => {
-        if (this.keyboardService.isOpen) {
-          this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
-        } else {
-          this.unsubscribeFromKeyboardEvents();
-        }
-        if (this.keypadService.isOpen) {
-          this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
-        } else {
-          this.unsubscribeFromKeypadEvents();
-        }
-        this.isKeypadOpen = this.keypadService.isOpen;
-        if (this.keyboardService.isOpen || this.keypadService.isOpen) {
-          this.setInputElement(focusedTextInput.inputElement);
-        }
-      });
+      await Promise.all(promises)
+        .then(() => {
+          if (this.keyboardService.isOpen) {
+            this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
+          } else {
+            this.unsubscribeFromKeyboardEvents();
+          }
+          if (this.keypadService.isOpen) {
+            this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
+          } else {
+            this.unsubscribeFromKeypadEvents();
+          }
+          this.isKeypadOpen = this.keypadService.isOpen;
+          if (this.keyboardService.isOpen || this.keypadService.isOpen) {
+            this.inputElement = this.getInputElement(focusedTextInput.inputElement);
+          }
+        });
     }
   }
 
@@ -108,15 +111,20 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     if (this.keyboardDeleteCharactersSubscription) this.keyboardDeleteCharactersSubscription.unsubscribe();
   }
 
-  private setInputElement(inputElement: HTMLElement): void {
-    this.inputElement = this.elementModel.type === 'text-area' ?
-      inputElement as HTMLTextAreaElement :
-      inputElement as HTMLInputElement;
+  private getInputElement(inputElement: HTMLElement): HTMLTextAreaElement | HTMLInputElement | HTMLElement {
+    switch (this.elementModel.type) {
+      case 'text-area':
+        return inputElement as HTMLTextAreaElement;
+      case 'text-area-math':
+        return inputElement as HTMLElement;
+      default:
+        return inputElement as HTMLInputElement;
+    }
   }
 
   private select(direction: string): void {
     let lastBreak = 0;
-    const inputValueKeys = this.inputElement.value.split('');
+    const inputValueKeys = this.getInputElementValue().split('');
     const lineBreaks = inputValueKeys
       .reduce(
         (previousValue: number[][],
@@ -132,17 +140,16 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
           }
           return previousValue;
         }, []);
-    const selectionStart = this.inputElement.selectionStart || 0;
-    const selectionEnd = this.inputElement.selectionEnd || 0;
-    let newSelection = selectionStart;
-
+    const selectionStart = this.getSelection().start;
+    const selectionEnd = this.getSelection().end;
+    let newSelection: number;
     switch (direction) {
       case 'ArrowLeft': {
-        newSelection -= 1;
+        newSelection = selectionStart === selectionEnd ? selectionStart - 1 : selectionStart;
         break;
       }
       case 'ArrowRight': {
-        newSelection += 1;
+        newSelection = selectionStart === selectionEnd ? selectionEnd + 1 : selectionEnd;
         break;
       }
       case 'ArrowUp': {
@@ -170,15 +177,15 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
         newSelection = selectionStart;
       }
     }
-    this.inputElement.setSelectionRange(newSelection, newSelection);
+    this.setSelection(newSelection, newSelection);
   }
 
   private enterKey(key: string, elementModel: UIElement, elementComponent: ElementComponent): void {
     if (!(elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
-      this.inputElement.value.length === elementModel.maxLength)) {
-      const selectionStart = this.inputElement.selectionStart || 0;
-      const selectionEnd = this.inputElement.selectionEnd || 0;
+      this.getInputElementValue().length === elementModel.maxLength)) {
+      const selectionStart = this.getSelection().start;
+      const selectionEnd = this.getSelection().end;
       const newSelection = selectionStart ? selectionStart + 1 : 1;
       this.insert({
         selectionStart, selectionEnd, newSelection, key
@@ -187,17 +194,17 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private deleteCharacters(backspace: boolean, elementComponent: ElementComponent): void {
-    let selectionStart = this.inputElement.selectionStart || 0;
-    let selectionEnd = this.inputElement.selectionEnd || 0;
-    if (backspace && selectionEnd > 0) {
-      if (selectionStart === selectionEnd) {
+    let selectionStart = this.getSelection().start;
+    let selectionEnd = this.getSelection().end;
+    if (backspace) {
+      if (selectionStart === selectionEnd && selectionEnd > 0) {
         selectionStart -= 1;
       }
       this.insert({
         selectionStart, selectionEnd, newSelection: selectionStart, key: ''
-      }, elementComponent);
+      }, elementComponent, (backspace && selectionEnd === 0) || undefined);
     }
-    if (!backspace && selectionEnd <= this.inputElement.value.length) {
+    if (!backspace && selectionEnd <= this.getInputElementValue().length) {
       if (selectionStart === selectionEnd) {
         selectionEnd += 1;
       }
@@ -207,17 +214,53 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     }
   }
 
+  private getSelection(): { start: number; end: number } {
+    if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
+      return { start: this.inputElement.selectionStart || 0, end: this.inputElement.selectionEnd || 0 };
+    }
+    return this.getSelectionRange();
+  }
+
+  private getSelectionRange(): { start: number; end: number } {
+    const range = RangeSelectionService.getRange();
+    if (!range) return { start: 0, end: 0 };
+    return RangeSelectionService.getSelectionRange(range, this.inputElement);
+  }
+
+  private getInputElementValue(): string {
+    if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
+      return this.inputElement.value;
+    }
+    return this.inputElement.textContent || '';
+  }
+
   private insert(keyAtPosition: {
     selectionStart: number;
     selectionEnd: number;
     newSelection: number;
     key: string
-  }, elementComponent: ElementComponent): void {
-    const startText = this.inputElement.value.substring(0, keyAtPosition.selectionStart);
-    const endText = this.inputElement.value.substring(keyAtPosition.selectionEnd);
-    (elementComponent as FormElementComponent).elementFormControl
-      .setValue(startText + keyAtPosition.key + endText);
-    this.inputElement.setSelectionRange(keyAtPosition.newSelection, keyAtPosition.newSelection);
+  }, elementComponent: ElementComponent, backSpaceAtFirstPosition?: boolean): void {
+    const startText = this.getStartText(keyAtPosition.selectionStart);
+    const endText = this.getEndText(keyAtPosition.selectionEnd);
+    (elementComponent as FormElementComponent)
+      .setElementValue(startText + keyAtPosition.key + endText, backSpaceAtFirstPosition || undefined);
+    this.setSelection(keyAtPosition.newSelection, keyAtPosition.newSelection, backSpaceAtFirstPosition || undefined);
+  }
+
+  private getStartText(startPosition: number): string {
+    return this.getInputElementValue().substring(0, startPosition);
+  }
+
+  private getEndText(endPosition: number): string {
+    return this.getInputElementValue().substring(endPosition);
+  }
+
+  setSelection(start: number, end: number, backSpaceAtFirstPosition?: boolean): void {
+    if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
+      this.inputElement.setSelectionRange(start, end);
+    } else if (!backSpaceAtFirstPosition) {
+      setTimeout(() => RangeSelectionService.setSelectionRange(this.inputElement, start, end));
+    }
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
+import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
 import { InputService } from './input-service';
 
 @Injectable({
@@ -10,7 +11,7 @@ export class KeyboardService extends InputService {
   addInputAssistanceToKeyboard: boolean = false;
 
   async toggleAsync(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                    elementComponent: TextInputComponentType | MathTableComponent,
+                    elementComponent: TextInputComponentType | MathTableComponent | TextAreaMathComponent,
                     isMobileWithoutHardwareKeyboard: boolean): Promise<boolean> {
     this.willToggle.emit(this.isOpen);
     return new Promise(resolve => {
@@ -22,7 +23,7 @@ export class KeyboardService extends InputService {
   }
 
   private toggle(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                 elementComponent: TextInputComponentType | MathTableComponent,
+                 elementComponent: TextInputComponentType | MathTableComponent | TextAreaMathComponent,
                  isMobileWithoutHardwareKeyboard: boolean): boolean {
     if (focusedTextInput.focused && isMobileWithoutHardwareKeyboard) {
       this.open(focusedTextInput.inputElement, elementComponent);
@@ -32,7 +33,8 @@ export class KeyboardService extends InputService {
     return this.isOpen;
   }
 
-  open(inputElement: HTMLElement, elementComponent: TextInputComponentType | MathTableComponent): void {
+  open(inputElement: HTMLElement,
+       elementComponent: TextInputComponentType | MathTableComponent | TextAreaMathComponent): void {
     this.addInputAssistanceToKeyboard = elementComponent.elementModel.addInputAssistanceToKeyboard;
     this.preset = elementComponent.elementModel.inputAssistancePreset;
     this.setCurrentKeyInputElement(inputElement, elementComponent);

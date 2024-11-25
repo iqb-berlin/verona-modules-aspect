@@ -9,16 +9,29 @@ import {
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VariableInfo } from '@iqb/responses';
-import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math.component';
+import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
 import { environment } from 'common/environment';
-import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import {
+  AbstractIDService,
+  InputAssistancePreset,
+  InputElementProperties,
+  KeyInputElementProperties,
+  UIElementType
+} from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
 export class TextAreaMathElement extends InputElement implements TextAreaMathProperties {
   type: UIElementType = 'text-area-math';
-  value = '';
+  value: TextAreaMath[] = [];
   rowCount: number = 2;
   hasAutoHeight: boolean = false;
+  inputAssistancePreset: InputAssistancePreset = null;
+  inputAssistancePosition: 'floating' | 'right' = 'floating';
+  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
+  showSoftwareKeyboard: boolean = false;
+  addInputAssistanceToKeyboard: boolean = false;
+  hideNativeKeyboard: boolean = false;
+  hasArrowKeys: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -32,15 +45,23 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     if (isTextAreaMathProperties(element)) {
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
+      this.inputAssistancePreset = element.inputAssistancePreset;
+      this.inputAssistancePosition = element.inputAssistancePosition;
+      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
+      this.showSoftwareKeyboard = element.showSoftwareKeyboard;
+      this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
+      this.hideNativeKeyboard = element.hideNativeKeyboard;
+      this.hasArrowKeys = element.hasArrowKeys;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextAreaMath instantiation', element);
       }
-      if (element?.value !== undefined) this.value = element?.value as string;
+      if (element?.value !== undefined) this.value = element?.value as TextAreaMath[] || [];
       if (element?.rowCount !== undefined) this.rowCount = element.rowCount;
       if (element?.hasAutoHeight !== undefined) this.hasAutoHeight = element.hasAutoHeight;
+      Object.assign(this, PropertyGroupGenerators.generateKeyInputProps(element));
       this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = {
@@ -70,7 +91,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   }
 }
 
-export interface TextAreaMathProperties extends InputElementProperties {
+export interface TextAreaMathProperties extends InputElementProperties, KeyInputElementProperties {
   rowCount: number;
   hasAutoHeight: boolean;
   position: PositionProperties;
@@ -79,11 +100,17 @@ export interface TextAreaMathProperties extends InputElementProperties {
   };
 }
 
+export interface TextAreaMath {
+  type: 'text' | 'math';
+  value: string
+}
+
 function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
   return blueprint.rowCount !== undefined &&
     blueprint.hasAutoHeight !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&
     blueprint.styling?.lineHeight !== undefined;
 }

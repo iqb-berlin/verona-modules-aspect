@@ -40,9 +40,4 @@
                      [parentForm]="form"
                      [elementModel]="elementModel | cast: MathFieldElement">
   </aspect-math-field>
-  <aspect-text-area-math *ngIf="elementModel.type === 'text-area-math'"
-                         #elementComponent
-                         [parentForm]="form"
-                         [elementModel]="elementModel | cast: TextAreaMathElement">
-  </aspect-text-area-math>
 </form>

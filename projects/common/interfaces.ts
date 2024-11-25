@@ -11,7 +11,8 @@ import {
 import { VisibilityRule } from 'common/models/visibility-rule';
 import { UIElement } from 'common/models/elements/element';
 import { MathTableRow } from 'common/models/elements/input-elements/math-table';
-import { Markable } from 'player/src/app/models/markable.interface'; // TODO
+import { Markable } from 'player/src/app/models/markable.interface';
+import { TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
 
 export type UIElementType =
   'text'
@@ -88,6 +89,7 @@ export type InputElementValue =
   | TextLabel[]
   | Hotspot[]
   | MathTableRow[]
+  | TextAreaMath[]
   | GeometryValue
   | string[]
   | string

@@ -89,7 +89,6 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   detectHardwareKeyboard(elementModel: UIElement): void {
-    console.log('detectHardwareKeyboard', elementModel);
     if (elementModel.showSoftwareKeyboard) {
       this.deviceService.hasHardwareKeyboard = true;
       this.keyboardService.close();

@@ -8,6 +8,6 @@ export abstract class TextInputComponent extends FormElementComponent implements
   @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
   @Output() onKeyDown = new EventEmitter<{
     keyboardEvent: KeyboardEvent;
-    inputElement: HTMLInputElement | HTMLTextAreaElement
+    inputElement: HTMLInputElement | HTMLTextAreaElement | HTMLElement;
   }>();
 }

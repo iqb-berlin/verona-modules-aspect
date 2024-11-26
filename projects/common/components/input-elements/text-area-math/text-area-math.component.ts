@@ -2,16 +2,17 @@ import {
   Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
 import { TextAreaMathElement, TextAreaMath } from 'common/models/elements/input-elements/text-area-math';
-import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import {
   AreaSegmentComponent
 } from 'common/components/input-elements/text-area-math/area-segment.component';
 import { BehaviorSubject } from 'rxjs';
 import { RangeSelectionService } from 'common/services/range-selection-service';
+import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
   selector: 'aspect-text-area-math',
   template: `
+    <label class="label">{{elementModel.label}}</label><br>
     <button class="insert-formula-button"
             mat-button
             cdkOverlayOrigin #trigger="cdkOverlayOrigin"
@@ -42,9 +43,9 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
           [selectedFocus]="selectedFocus"
           (valueChanged)="onValueChanged($event)"
           [index]="i"
+          (onKeyDown)="onKeyDown.emit($event)"
           (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
           (focusOut)="focusChanged.emit({ inputElement: $event, focused: false })"
-          (onKeyDown)="onKeyDown.emit($event)"
           (remove)="removeSegment($event)">
         </aspect-text-area-math-segment>
       }
@@ -54,22 +55,16 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
     </mat-error>
   `,
   styles: [
+    '.label {font-size: 20px; line-height: 135%;}',
     '.alignment-fix {padding: 15px 0; display: inline-block; width: 0;}',
-    '.text-area {border: 1px solid black; border-radius: 3px; padding: 5px;}',
-    ':host {display: flex; flex-direction: column; height: 100%;}',
+    '.text-area {border: 1px solid black; border-radius: 3px; padding: 3px;}',
     '.insert-formula-button {font-size: large; width: 160px; background-color: #ddd; padding: 15px 10px; height: 55px;}'
   ]
 })
-export class TextAreaMathComponent extends FormElementComponent implements OnInit {
+export class TextAreaMathComponent extends TextInputComponent implements OnInit {
   @Input() elementModel!: TextAreaMathElement;
   @Output() mathInputFocusIn: EventEmitter<FocusEvent> = new EventEmitter();
   @Output() mathInputFocusOut: EventEmitter<FocusEvent> = new EventEmitter();
-  @Output() focusChanged = new EventEmitter<{ inputElement: HTMLElement; focused: boolean }>();
-  @Output() onKeyDown = new EventEmitter<{
-    keyboardEvent: KeyboardEvent;
-    inputElement: HTMLElement;
-  }>();
-
   @ViewChildren(AreaSegmentComponent) segmentComponents!: QueryList<AreaSegmentComponent>;
   @ViewChild('textArea') textArea!: ElementRef;
 

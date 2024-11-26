@@ -51,24 +51,21 @@ export class RangeSelectionService {
       if (node.nodeType === Node.TEXT_NODE) {
         const textLength = node.textContent?.length || 0;
 
-        // Prüfen, ob Startpunkt im aktuellen Textknoten liegt
         if (start >= charCount && start <= charCount + textLength) {
           range.setStart(node, start - charCount);
         }
 
-        // Prüfen, ob Endpunkt im aktuellen Textknoten liegt
         if (end >= charCount && end <= charCount + textLength) {
           range.setEnd(node, end - charCount);
-          return true; // Fertig, wenn beide Punkte gesetzt sind
+          return true;
         }
 
         charCount += textLength;
       } else {
-        // Rekursive Durchsuchung von Kindknoten
         const childNodes = node.childNodes;
         for (let i = 0; i < childNodes.length; i++) {
           if (setRangeOffsets(childNodes[i])) {
-            return true; // Fertig, wenn beide Punkte gesetzt sind
+            return true;
           }
         }
       }

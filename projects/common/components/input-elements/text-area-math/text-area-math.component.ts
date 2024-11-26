@@ -33,7 +33,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
          [style.font-size.px]="elementModel.styling.fontSize"
          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
-         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''">
+         [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
+         (click)="selectLastSegment()">
       <span class="alignment-fix">&nbsp;</span>
       @for (segment of segments; track segment; let i = $index) {
         <aspect-text-area-math-segment
@@ -46,7 +47,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
           (onKeyDown)="onKeyDown.emit($event)"
           (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
           (focusOut)="focusChanged.emit({ inputElement: $event, focused: false })"
-          (remove)="removeSegment($event)">
+          (remove)="removeSegment($event)"
+          (click)="$event.preventDefault(); $event.stopPropagation()">
         </aspect-text-area-math-segment>
       }
     </div>
@@ -74,13 +76,27 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
   ngOnInit(): void {
     super.ngOnInit();
     if (this.parentForm) this.segments = this.elementFormControl.value;
-    if (this.segments.length === 0) {
-      this.segments.push({ type: 'text', value: '' });
-      super.setElementValue(this.segments);
-    }
+  }
+
+  private addStartSegment() {
+    this.segments.push({
+      type: 'text',
+      value: ''
+    });
+    super.setElementValue(this.segments);
   }
 
   addFormula() {
+    if (this.segments.length === 0) {
+      this.addStartSegment();
+      // wait for rendering of segments
+      setTimeout(() => this.addNewSegments());
+    } else {
+      this.addNewSegments();
+    }
+  }
+
+  private addNewSegments() {
     this.segments = this.elementFormControl.value;
     this.updateFocus(this.selectedFocus.value);
     const range = RangeSelectionService.getRange();
@@ -106,6 +122,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
       this.addSegments(true, false, segmentIndex, '', '');
     }
     super.setElementValue(this.segments);
+    // wait for rendering of segments and keyboard animation
     setTimeout(() => this.updateFocus(newSegmentIndex), 250);
   }
 
@@ -164,5 +181,13 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
 
   private updateFocus(index: number, offset?: number): void {
     this.segmentComponents.toArray()[index].setFocus(offset);
+  }
+
+  selectLastSegment() {
+    if (this.segments.length === 0) {
+      this.addStartSegment();
+    }
+    // wait for rendering of segments
+    setTimeout(() => this.updateFocus(this.segments.length - 1));
   }
 }

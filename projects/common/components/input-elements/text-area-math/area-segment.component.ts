@@ -10,11 +10,11 @@ import { BehaviorSubject } from 'rxjs';
   template: `
     @if (type === 'math') {
       <aspect-math-input #inputComponent
-                                  [fullWidth]="false"
-                                  [value]="value"
-                                  (focusIn)="onFocusIn($event)"
-                                  (focusOut)="focusOut.emit($event)"
-                                  (valueChange)="valueChanged.emit({ index: index, value: $event})">
+                         [fullWidth]="false"
+                         [value]="value"
+                         (focusIn)="onFocusIn($event)"
+                         (focusOut)="focusOut.emit($event)"
+                         (valueChange)="valueChanged.emit({ index: index, value: $event})">
       </aspect-math-input>
     } @else {
       <aspect-area-input #inputComponent

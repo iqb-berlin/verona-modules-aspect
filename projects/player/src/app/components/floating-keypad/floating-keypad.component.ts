@@ -56,7 +56,7 @@ export class FloatingKeypadComponent implements OnChanges {
             ...position,
             offsetY: this.getOffsetY(this.keypadService.elementComponent.elementModel.type, index > 0)
           }));
-      } else {
+      } else if (startPosition === 'endCenter') {
         this.overlayPositions = [...FloatingKeypadComponent.overlayPositionsConfig[startPosition]];
       }
     }

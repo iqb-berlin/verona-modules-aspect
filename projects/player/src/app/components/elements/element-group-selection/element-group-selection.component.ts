@@ -13,13 +13,13 @@ export class ElementGroupSelectionComponent implements OnInit {
   @Input() pageIndex!: number;
 
   groups: ElementGroupInterface[] = [
-    { name: 'textInputGroup', types: ['text-field', 'text-area', 'spell-correct', 'text-area-math'] },
+    { name: 'textInputGroup', types: ['text-field', 'text-area', 'spell-correct', 'text-area-math', 'math-field'] },
     { name: 'mediaPlayerGroup', types: ['audio', 'video'] },
     {
       name: 'inputGroup',
       types: [
         'checkbox', 'slider', 'drop-list', 'radio', 'radio-group-images',
-        'dropdown', 'hotspot-image', 'math-field'
+        'dropdown', 'hotspot-image'
       ]
     },
     { name: 'compoundGroup', types: ['cloze', 'likert', 'table'] },

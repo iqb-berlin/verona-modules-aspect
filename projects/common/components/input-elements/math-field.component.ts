@@ -3,8 +3,8 @@ import {
   Component, Input, Pipe, PipeTransform
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { FormElementComponent } from 'common/directives/form-element-component.directive';
 import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
+import { TextInputComponent } from 'common/directives/text-input-component.directive';
 
 @Component({
   selector: 'aspect-math-field',
@@ -18,10 +18,12 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
        [style.background-color]="elementModel.styling.backgroundColor">
       <label>{{elementModel.label}}</label><br>
       <aspect-math-input [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
-                                  [readonly]="elementModel.readOnly"
-                                  [enableModeSwitch]="elementModel.enableModeSwitch"
-                                  (input)="elementFormControl.setValue($any($event.target).value)"
-                                  (focusout)="elementFormControl.markAsTouched()">
+                         [readonly]="elementModel.readOnly"
+                         [enableModeSwitch]="elementModel.enableModeSwitch"
+                         (input)="elementFormControl.setValue($any($event.target).value)"
+                         (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
+                         (focusOut)="elementFormControl.markAsTouched();
+                                     focusChanged.emit({ inputElement: $event, focused: true })">
       </aspect-math-input>
       <mat-error *ngIf="elementFormControl.errors && elementFormControl.touched"
                  class="error-message">
@@ -31,7 +33,7 @@ import { MathFieldElement } from 'common/models/elements/input-elements/math-fie
   `,
   styles: ['.error-message {font-size: 75%; margin-top: 15px; margin-left: 10px;}']
 })
-export class MathFieldComponent extends FormElementComponent {
+export class MathFieldComponent extends TextInputComponent {
   @Input() elementModel!: MathFieldElement;
 }
 

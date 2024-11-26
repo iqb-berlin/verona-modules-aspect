@@ -12,7 +12,8 @@ import { BehaviorSubject } from 'rxjs';
       <aspect-math-input #inputComponent
                                   [fullWidth]="false"
                                   [value]="value"
-                                  (focusIn)="selectedFocus.next(this.index)"
+                                  (focusIn)="onFocusIn($event)"
+                                  (focusOut)="focusOut.emit($event)"
                                   (valueChange)="valueChanged.emit({ index: index, value: $event})">
       </aspect-math-input>
     } @else {
@@ -50,9 +51,6 @@ export class AreaSegmentComponent {
   @ViewChild('inputComponent') inputComponent!: AreaTextInputComponent | MathInputComponent;
 
   setFocus(offset?: number) {
-    // if (document.activeElement instanceof HTMLElement) {
-    //   document.activeElement.blur();
-    // }
     this.inputComponent.setFocus(offset);
   }
 

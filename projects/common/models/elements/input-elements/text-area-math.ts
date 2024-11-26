@@ -1,6 +1,4 @@
-import {
-  InputElement
-} from 'common/models/elements/element';
+import { TextInputElement } from 'common/models/elements/element';
 import {
   BasicStyles,
   PositionProperties,
@@ -13,25 +11,16 @@ import { TextAreaMathComponent } from 'common/components/input-elements/text-are
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
-  InputAssistancePreset,
-  InputElementProperties,
-  KeyInputElementProperties,
+  KeyInputElementProperties, TextInputElementProperties,
   UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
-export class TextAreaMathElement extends InputElement implements TextAreaMathProperties {
+export class TextAreaMathElement extends TextInputElement implements TextAreaMathProperties {
   type: UIElementType = 'text-area-math';
   value: TextAreaMath[] = [];
   rowCount: number = 2;
   hasAutoHeight: boolean = false;
-  inputAssistancePreset: InputAssistancePreset = null;
-  inputAssistancePosition: 'floating' | 'right' = 'floating';
-  inputAssistanceFloatingStartPosition: 'startBottom' | 'endCenter' = 'startBottom';
-  showSoftwareKeyboard: boolean = false;
-  addInputAssistanceToKeyboard: boolean = false;
-  hideNativeKeyboard: boolean = false;
-  hasArrowKeys: boolean = false;
   position: PositionProperties;
   styling: BasicStyles & {
     lineHeight: number;
@@ -45,13 +34,6 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     if (isTextAreaMathProperties(element)) {
       this.rowCount = element.rowCount;
       this.hasAutoHeight = element.hasAutoHeight;
-      this.inputAssistancePreset = element.inputAssistancePreset;
-      this.inputAssistancePosition = element.inputAssistancePosition;
-      this.inputAssistanceFloatingStartPosition = element.inputAssistanceFloatingStartPosition;
-      this.showSoftwareKeyboard = element.showSoftwareKeyboard;
-      this.addInputAssistanceToKeyboard = element.addInputAssistanceToKeyboard;
-      this.hideNativeKeyboard = element.hideNativeKeyboard;
-      this.hasArrowKeys = element.hasArrowKeys;
       this.position = { ...element.position };
       this.styling = { ...element.styling };
     } else {
@@ -91,7 +73,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   }
 }
 
-export interface TextAreaMathProperties extends InputElementProperties, KeyInputElementProperties {
+export interface TextAreaMathProperties extends TextInputElementProperties, KeyInputElementProperties {
   rowCount: number;
   hasAutoHeight: boolean;
   position: PositionProperties;

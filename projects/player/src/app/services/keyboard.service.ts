@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
 import { MathTableComponent } from 'common/components/input-elements/math-table.component';
 import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
-import { InputService } from './input-service';
+import { ScrollToInputService } from 'player/src/app/services/scroll-to-input.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class KeyboardService extends InputService {
+export class KeyboardService extends ScrollToInputService {
   addInputAssistanceToKeyboard: boolean = false;
 
   async toggleAsync(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
@@ -37,28 +37,8 @@ export class KeyboardService extends InputService {
        elementComponent: TextInputComponentType | MathTableComponent | TextAreaMathComponent): void {
     this.addInputAssistanceToKeyboard = elementComponent.elementModel.addInputAssistanceToKeyboard;
     this.preset = elementComponent.elementModel.inputAssistancePreset;
+    this.keyboardHeight = this.addInputAssistanceToKeyboard ? 380 : 280;
     this.setCurrentKeyInputElement(inputElement, elementComponent);
     this.isOpen = true;
-  }
-
-  scrollElement(): void {
-    if (this.isOpen && this.isElementHiddenByKeyboard()) {
-      const scrollPositionTarget = this.isViewHighEnoughToCenterElement() ? 'center' : 'start';
-      this.elementComponent.domElement.scrollIntoView({ block: scrollPositionTarget });
-    }
-  }
-
-  private isViewHighEnoughToCenterElement(): boolean {
-    return window.innerHeight - this.getKeyboardHeight() >
-      this.elementComponent.domElement.getBoundingClientRect().height;
-  }
-
-  private isElementHiddenByKeyboard(): boolean {
-    return window.innerHeight - this.elementComponent.domElement.getBoundingClientRect().bottom <
-      this.getKeyboardHeight();
-  }
-
-  private getKeyboardHeight(): number {
-    return this.addInputAssistanceToKeyboard ? 380 : 280;
   }
 }

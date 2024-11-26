@@ -67,6 +67,9 @@ import { ExternalAppGroupElementComponent } from
 import { InputAssistanceCustomKeysPipe } from './pipes/input-assistance-custom-keys.pipe';
 import { HasNextPagePipe } from './pipes/has-next-page.pipe';
 import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
+import {
+  MathKeyboardContainerComponent
+} from 'player/src/app/components/math-keyboard-container/math-keyboard-container.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +128,8 @@ import { IsValidPagePipe } from './pipes/is-valid-page.pipe';
     MarkablesContainerComponent,
     IsEnabledNavigationTargetPipe,
     MarkingPanelComponent,
-    UnitNavNextComponent
+    UnitNavNextComponent,
+    MathKeyboardContainerComponent
   ],
   providers: [
     { provide: APIService, useExisting: MetaDataService },

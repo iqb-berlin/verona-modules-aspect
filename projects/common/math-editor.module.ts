@@ -21,8 +21,8 @@ import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/
          [class.full-width]="fullWidth"
          [class.inline-block]="!fullWidth"
          [class.read-only]="readonly"
-         (focusin)="onFocusIn($event)"
-         (focusout)="onFocusOut($event)">
+         (focusin)="onFocusIn()"
+         (focusout)="onFocusOut()">
     </div>
   `,
   styles: [`
@@ -58,8 +58,8 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   @Input() readonly: boolean = false;
   @Input() enableModeSwitch: boolean = false;
   @Output() valueChange: EventEmitter<string> = new EventEmitter();
-  @Output() focusIn: EventEmitter<FocusEvent> = new EventEmitter();
-  @Output() focusOut: EventEmitter<FocusEvent> = new EventEmitter();
+  @Output() focusIn: EventEmitter<MathfieldElement> = new EventEmitter();
+  @Output() focusOut: EventEmitter<MathfieldElement> = new EventEmitter();
   @ViewChild('inputRef') inputRef!: ElementRef;
   @ViewChild('container') container!: ElementRef;
 
@@ -79,6 +79,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;
     this.mathFieldElement.readOnly = this.readonly;
+    setTimeout(() => { this.mathFieldElement.menuItems = []; }); // Disable context menu
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -105,14 +106,14 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     this.valueChange.emit(this.mathFieldElement.getValue());
   }
 
-  onFocusIn(event: FocusEvent) {
-    this.focusIn.emit(event);
+  onFocusIn() {
+    this.focusIn.emit(this.mathFieldElement);
     window.mathVirtualKeyboard.show();
   }
 
-  onFocusOut(event: FocusEvent) {
+  onFocusOut() {
+    this.focusOut.emit(this.mathFieldElement);
     window.mathVirtualKeyboard.hide();
-    this.focusOut.emit(event);
   }
 }
 

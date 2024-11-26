@@ -35,9 +35,4 @@
                    [parentForm]="form"
                    [elementModel]="elementModel | cast: DropdownElement">
   </aspect-dropdown>
-  <aspect-math-field *ngIf="elementModel.type === 'math-field'"
-                     #elementComponent
-                     [parentForm]="form"
-                     [elementModel]="elementModel | cast: MathFieldElement">
-  </aspect-math-field>
 </form>

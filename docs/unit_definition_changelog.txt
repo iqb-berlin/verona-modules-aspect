@@ -200,10 +200,13 @@ iqb-aspect-definition@1.0.0
 - all elements: new property "alias"
 
 - TextAreaMath
-  - new property: inputAssistancePreset
-  - new property: inputAssistancePosition
-  - new property: inputAssistanceFloatingStartPosition
-  - new property: showSoftwareKeyboard
-  - new property: hideNativeKeyboard
-  - new property: addInputAssistanceToKeyboard
-  - new property: hasArrowKeys
+  - new property:inputAssistancePreset
+  - new property:inputAssistanceCustomKeys
+  - new property:inputAssistancePosition
+  - new property:inputAssistanceFloatingStartPosition;
+  - new property:restrictedToInputAssistanceChars
+  - new property:hasArrowKeys
+  - new property:hasBackspaceKey
+  - new property:showSoftwareKeyboard
+  - new property:addInputAssistanceToKeyboard
+  - new property:hideNativeKeyboard

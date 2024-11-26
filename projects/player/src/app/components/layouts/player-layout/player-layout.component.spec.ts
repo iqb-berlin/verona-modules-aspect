@@ -6,11 +6,13 @@ import { Component, Directive, Input } from '@angular/core';
 import { Page } from 'common/models/page';
 import { APIService } from 'common/shared.module';
 import { PagingMode } from 'player/modules/verona/models/verona';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { PlayerLayoutComponent } from './player-layout.component';
 
 describe('PlayerLayoutComponent', () => {
   let component: PlayerLayoutComponent;
   let fixture: ComponentFixture<PlayerLayoutComponent>;
+
   @Directive({ selector: '[aspectPlayerState]' })
   class PlayerStateStubDirective {
     @Input() validPages!: Record<string, string>;
@@ -33,6 +35,9 @@ describe('PlayerLayoutComponent', () => {
     @Input() alwaysVisiblePagePosition!: 'top' | 'bottom' | 'left' | 'right';
   }
 
+  @Component({ selector: 'aspect-math-keyboard-container', template: '' })
+  class MockMathKeyboardContainerComponent {}
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
@@ -40,9 +45,15 @@ describe('PlayerLayoutComponent', () => {
         PagesLayoutStubComponent,
         AlwaysVisiblePagePipe,
         ScrollPagesPipe,
-        PlayerStateStubDirective
+        PlayerStateStubDirective,
+        MockMathKeyboardContainerComponent
       ],
-      providers: [{ provide: APIService, useClass: ApiStubService }]
+      imports: [
+        BrowserAnimationsModule
+      ],
+      providers: [
+        provideAnimations(),
+        { provide: APIService, useClass: ApiStubService }]
     })
       .compileComponents();
   });

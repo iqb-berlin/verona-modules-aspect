@@ -45,6 +45,7 @@ import { ValidationService } from '../../../services/validation.service';
 import { KeypadService } from '../../../services/keypad.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
+import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 
 @Component({
   selector: 'aspect-compound-group-element',
@@ -74,6 +75,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
     public keyboardService: KeyboardService,
     public deviceService: DeviceService,
     public keypadService: KeypadService,
+    public mathKeyboardService: MathKeyboardService,
     public unitStateService: UnitStateService,
     public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public veronaSubscriptionService: VeronaSubscriptionService,
@@ -330,7 +332,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   private onKeyDown(event: {
     keyboardEvent: KeyboardEvent;
-    inputElement: HTMLInputElement | HTMLTextAreaElement
+    inputElement: HTMLInputElement | HTMLTextAreaElement | HTMLElement
   }, elementModel: InputElement): void {
     this.detectHardwareKeyboard(elementModel);
     this.checkInputLimitation(event, elementModel);

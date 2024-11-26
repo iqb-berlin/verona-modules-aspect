@@ -39,6 +39,8 @@ export class PlayerLayoutComponent implements OnDestroy {
   private isKeyboardToggling: number = 0;
   private ngUnsubscribe = new Subject<void>();
 
+  protected readonly window = window;
+
   constructor(
     public keypadService: KeypadService,
     public keyboardService: KeyboardService

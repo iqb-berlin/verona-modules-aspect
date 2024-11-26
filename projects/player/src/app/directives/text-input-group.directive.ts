@@ -8,8 +8,10 @@ import { DeviceService } from 'player/src/app/services/device.service';
 import { KeypadService } from 'player/src/app/services/keypad.service';
 import { KeyboardService } from 'player/src/app/services/keyboard.service';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
-import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
 import { RangeSelectionService } from 'common/services/range-selection-service';
+import { MathfieldElement } from 'mathlive';
+import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
+import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
 
 @Directive()
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
@@ -25,6 +27,7 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   abstract deviceService: DeviceService;
   abstract keypadService: KeypadService;
   abstract keyboardService: KeyboardService;
+  abstract mathKeyboardService: MathKeyboardService;
 
   private shallOpenKeypad(elementModel: InputElement): boolean {
     return !!elementModel.inputAssistancePreset &&
@@ -34,50 +37,59 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   async toggleKeyInput(focusedTextInput: { inputElement: HTMLElement; focused: boolean },
-                       elementComponent: TextInputComponentType | TextAreaMathComponent): Promise<void> {
+                       elementComponent: TextInputComponentType | MathFieldComponent): Promise<void> {
+    const isMathInput = focusedTextInput.inputElement instanceof MathfieldElement;
     const promises: Promise<boolean>[] = [];
-    if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
-      promises.push(this.keyboardService
-        .toggleAsync(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard));
-    }
-    if (this.shallOpenKeypad(elementComponent.elementModel)) {
-      promises.push(this.keypadService.toggleAsync(focusedTextInput, elementComponent));
-    }
-    if (promises.length) {
-      await Promise.all(promises)
-        .then(() => {
-          if (this.keyboardService.isOpen) {
-            this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
-          } else {
-            this.unsubscribeFromKeyboardEvents();
-          }
-          if (this.keypadService.isOpen) {
-            this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
-          } else {
-            this.unsubscribeFromKeypadEvents();
-          }
-          this.isKeypadOpen = this.keypadService.isOpen;
-          if (this.keyboardService.isOpen || this.keypadService.isOpen) {
-            this.inputElement = this.getInputElement(focusedTextInput.inputElement);
-          }
-        });
+    if (isMathInput) {
+      this.mathKeyboardService
+        .toggle(focusedTextInput as { inputElement: MathfieldElement; focused: boolean },
+          elementComponent);
+    } else if (!(elementComponent instanceof MathFieldComponent)) {
+      if (elementComponent.elementModel.showSoftwareKeyboard && !elementComponent.elementModel.readOnly) {
+        promises.push(this.keyboardService
+          .toggleAsync(focusedTextInput, elementComponent, this.deviceService.isMobileWithoutHardwareKeyboard));
+      }
+      if (this.shallOpenKeypad(elementComponent.elementModel)) {
+        promises.push(this.keypadService.toggleAsync(focusedTextInput, elementComponent));
+      }
+      if (promises.length) {
+        await Promise.all(promises)
+          .then(() => {
+            if (this.keyboardService.isOpen) {
+              this.subscribeForKeyboardEvents(elementComponent.elementModel, elementComponent);
+            } else {
+              this.unsubscribeFromKeyboardEvents();
+            }
+            if (this.keypadService.isOpen) {
+              this.subscribeForKeypadEvents(elementComponent.elementModel, elementComponent);
+            } else {
+              this.unsubscribeFromKeypadEvents();
+            }
+            this.isKeypadOpen = this.keypadService.isOpen;
+            if (this.keyboardService.isOpen || this.keypadService.isOpen) {
+              this.inputElement = this.getInputElement(focusedTextInput.inputElement);
+            }
+          });
+      }
     }
   }
 
   // eslint-disable-next-line class-methods-use-this
   checkInputLimitation(event: {
     keyboardEvent: KeyboardEvent;
-    inputElement: HTMLInputElement | HTMLTextAreaElement
+    inputElement: HTMLInputElement | HTMLTextAreaElement | HTMLElement;
   }, elementModel: UIElement): void {
+    const inputValue = TextInputGroupDirective.getValueOfInput(event.inputElement);
     if (elementModel.maxLength &&
       elementModel.isLimitedToMaxLength &&
-      event.inputElement.value.length === elementModel.maxLength &&
+      inputValue.length === elementModel.maxLength &&
       !['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'ArrowDown', 'ArrowUp'].includes(event.keyboardEvent.key)) {
       event.keyboardEvent.preventDefault();
     }
   }
 
   detectHardwareKeyboard(elementModel: UIElement): void {
+    console.log('detectHardwareKeyboard', elementModel);
     if (elementModel.showSoftwareKeyboard) {
       this.deviceService.hasHardwareKeyboard = true;
       this.keyboardService.close();
@@ -228,10 +240,14 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
   }
 
   private getInputElementValue(): string {
-    if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
-      return this.inputElement.value;
+    return TextInputGroupDirective.getValueOfInput(this.inputElement);
+  }
+
+  private static getValueOfInput(inputElement: HTMLElement | HTMLInputElement | HTMLTextAreaElement): string {
+    if (inputElement instanceof HTMLInputElement || inputElement instanceof HTMLTextAreaElement) {
+      return inputElement.value;
     }
-    return this.inputElement.textContent || '';
+    return inputElement.textContent || '';
   }
 
   private insert(keyAtPosition: {

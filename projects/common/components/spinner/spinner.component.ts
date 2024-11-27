@@ -23,15 +23,13 @@ export class SpinnerComponent implements OnInit, OnDestroy {
   constructor(private changeDetectionRef: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.timeOutId = window.setTimeout(() => this.sendTimeOut(), this.timeOutDuration);
     this.isLoaded
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(isLoaded => {
-        if (isLoaded) {
-          if (this.timeOutId) clearTimeout(this.timeOutId);
-          this.isLoading = false;
-          this.changeDetectionRef.detectChanges();
-        }
+        if (this.timeOutId) clearTimeout(this.timeOutId);
+        if (!isLoaded) this.timeOutId = window.setTimeout(() => this.sendTimeOut(), this.timeOutDuration);
+        this.isLoading = !isLoaded;
+        this.changeDetectionRef.detectChanges();
       });
   }
 

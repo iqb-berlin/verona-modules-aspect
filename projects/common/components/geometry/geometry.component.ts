@@ -23,7 +23,7 @@ declare const GGBApplet: any;
       {{ 'geometry_reset' | translate }}
     </button>
     <div [id]="elementModel.id" class="geogebra-applet"></div>
-    <aspect-spinner [isLoaded]="isLoaded"
+    <aspect-spinner *ngIf="isGeoGebraLoaded" [isLoaded]="isLoaded"
                     (timeOut)="throwError('geometry-timeout', 'Failed to load geometry in time')">
     </aspect-spinner>
   `,
@@ -40,6 +40,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   @Output() elementValueChanged = new EventEmitter<ValueChangeElement>();
 
   isLoaded: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  isGeoGebraLoaded: boolean = false;
   geoGebraAPI!: any;
 
   private ngUnsubscribe = new Subject<void>();
@@ -83,6 +84,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
       this.externalResourceService.isGeoGebraLoaded()
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((isGeoGebraLoaded: boolean) => {
+          this.isGeoGebraLoaded = isGeoGebraLoaded;
           if (isGeoGebraLoaded) this.initApplet();
         });
     }

@@ -1,5 +1,14 @@
 Allgemein
 =========
+## editor/2.7.0+player/2.7.0
+## Verbesserungen
+- Formeleingabe
+  - Update der Bibliothek zur Eingabe von Formeln
+  - Formeln können inline (ohne Dialog) eingegeben werden
+  - Das Eingabefeld wird beim Öffnen der Tastatur zur Formeleingabe nach oben verschoben
+  - Zur Texteingabe vor und hinter Formeln kann die IQB-Tastatur ausgewählt werden
+
+
 ## editor/2.6.0+player/2.6.0
 ### Neue Funktionen
 - Bild: Neue Eigenschaft

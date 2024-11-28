@@ -199,6 +199,7 @@ iqb-aspect-definition@1.0.0
 - New Element "MarkingPanel"
 - all elements: new property "alias"
 
+4.8.0
 - TextAreaMath
   - new property:inputAssistancePreset
   - new property:inputAssistanceCustomKeys

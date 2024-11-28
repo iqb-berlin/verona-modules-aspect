@@ -6,6 +6,7 @@ import { delay, of, Subscription } from 'rxjs';
 })
 export class AnchorService {
   private activeAnchors: { [id: string]: Subscription } = {};
+  private duration = 60000;
 
   toggleAnchor(anchorId: string): void {
     if (this.activeAnchors[anchorId]) {
@@ -22,7 +23,7 @@ export class AnchorService {
   private addAnchor(anchorId: string): void {
     this.activeAnchors[anchorId] = of(true)
       .pipe(
-        delay(15000))
+        delay(this.duration))
       .subscribe(() => {
         this.removeAnchor(anchorId);
       });

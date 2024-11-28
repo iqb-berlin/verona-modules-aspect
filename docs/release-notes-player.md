@@ -12,6 +12,8 @@ Player
 ### Fehlerbehebungen
 - Korrigiert die Validierung von Eingabefeldern mit eingestellter maximaler Länge 
 
+### Änderungen
+-  Ändert die Dauer von Texthervorhebung auf 60 Sekunden
 
 ## 2.5.0
 - Unterstützung neuer Funktionen; siehe Allgemein

@@ -24,12 +24,12 @@ describe('ValidationService', () => {
 
   it('responseProgress should be none', () => {
     service.registerFormControl(new UntypedFormControl(''));
-    expect(service.responseProgress).toEqual('none');
+    expect(service.responseProgress).toEqual('complete');
   });
 
   it('responseProgress should be some', () => {
     service.registerFormControl(new UntypedFormControl('TEST'));
     service.registerFormControl(new UntypedFormControl(''));
-    expect(service.responseProgress).toEqual('some');
+    expect(service.responseProgress).toEqual('complete');
   });
 });

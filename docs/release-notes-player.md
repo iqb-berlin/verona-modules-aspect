@@ -9,6 +9,10 @@ Player
     - wenn die Ladezeit 20 Sekunden überschreitet
   - Ermöglicht dem Host das Ausblenden von Buttons zur Unitnavigation 
 
+### Fehlerbehebungen
+- Korrigiert die Validierung von Eingabefeldern mit eingestellter maximaler Länge 
+
+
 ## 2.5.0
 - Unterstützung neuer Funktionen; siehe Allgemein
 

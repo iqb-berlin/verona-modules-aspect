@@ -62,6 +62,7 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
 
   private static getValidators = (elementModel: InputElement) => {
     const validators: ValidatorFn[] = [];
+    let requiredAdded = false;
     if (elementModel.required) {
       switch (elementModel.type) {
         case 'hotspot-image':
@@ -71,20 +72,24 @@ export abstract class ElementFormGroupDirective extends ElementGroupDirective im
           validators.push(Validators.requiredTrue);
           break;
         case 'slider':
+          requiredAdded = true;
           validators.push(Validators.required);
           validators.push(Validators.min((elementModel as SliderElement).minValue + 1));
           break;
         default:
+          requiredAdded = true;
           validators.push(Validators.required);
       }
     }
     if (elementModel.minLength) {
+      if (!requiredAdded) validators.push(Validators.required);
       validators.push(Validators.minLength(<number> elementModel.minLength));
     }
     if (elementModel.maxLength) {
       validators.push(Validators.maxLength(<number> elementModel.maxLength));
     }
     if (elementModel.pattern) {
+      if (!requiredAdded) validators.push(Validators.required);
       validators.push(Validators.pattern(<string> elementModel.pattern));
     }
     return validators;

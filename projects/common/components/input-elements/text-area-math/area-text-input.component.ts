@@ -22,6 +22,7 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
       padding: 0 14px;
       outline: none;
       white-space: pre-line;
+      vertical-align: text-bottom;
     }
   `],
   standalone: true

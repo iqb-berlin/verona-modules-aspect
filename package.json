@@ -100,7 +100,7 @@
     "@tiptap/extension-text-style": "^2.4.0",
     "@tiptap/extension-underline": "^2.4.0",
     "katex": "^0.16.11",
-    "mathlive": "^0.101.1",
+    "mathlive": "^0.101.2",
     "ngx-tiptap": "^10.1.0",
     "ngx-translate-testing": "^7.0.0",
     "prosemirror-state": "^1.4.3",

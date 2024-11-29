@@ -16,7 +16,9 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
        [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
        [style.background-color]="elementModel.styling.backgroundColor">
-      <label>{{elementModel.label}}</label><br>
+       @if (elementModel.label) {
+         <label>{{elementModel.label}}</label><br>
+       }
       <aspect-math-input [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
                          [readonly]="elementModel.readOnly"
                          [enableModeSwitch]="elementModel.enableModeSwitch"

@@ -12,7 +12,9 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
 @Component({
   selector: 'aspect-text-area-math',
   template: `
-    <label class="label">{{elementModel.label}}</label><br>
+    @if (elementModel.label) {
+      <label class="label">{{elementModel.label}}</label><br>
+    }
     <button class="insert-formula-button"
             mat-button
             cdkOverlayOrigin #trigger="cdkOverlayOrigin"

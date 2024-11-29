@@ -72,10 +72,10 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   constructor(public elementRef: ElementRef) { }
 
   ngAfterViewInit(): void {
-    this.setupMathfield();
+    this.setupMathField();
   }
 
-  private setupMathfield(): void {
+  private setupMathField(): void {
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;
     this.mathFieldElement.readOnly = this.readonly;
@@ -96,10 +96,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     // TODO Keyboard moving up and down on focus loss may be avoided by using useSharedVirtualKeyboard
     this.mathFieldElement.mode = event.value;
     (this.inputRef.nativeElement.childNodes[0] as HTMLElement).focus();
-  }
-
-  getMathMLValue(): string {
-    return this.mathFieldElement.getValue('math-ml');
   }
 
   onInput() {

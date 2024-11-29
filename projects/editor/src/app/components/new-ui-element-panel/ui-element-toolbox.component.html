@@ -69,12 +69,12 @@
             <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('math-field')"
                     draggable="true" (dragstart)="startDrag($event,'math-field')"
                     (dragend)="endDrag()">
-              {{'toolbox.math-field' | translate }}
+              {{'toolbox.field' | translate }}
             </button>
             <button *ngIf="hoverFormulaButton" mat-raised-button (click)="addUIElement('text-area-math')"
                     draggable="true" (dragstart)="startDrag($event,'text-area-math')"
                     (dragend)="endDrag()">
-              {{'toolbox.math-area' | translate }}
+              {{'toolbox.area' | translate }}
             </button>
           </div>
           <button mat-stroked-button (click)="addUIElement('math-table')"

@@ -340,8 +340,10 @@
     "geometry": "Geometrie",
     "hotspot-image": "Bildbereiche",
     "formula": "Formel",
-    "math-field": "Feld",
-    "math-area": "Bereich",
+    "math-field": "Formelfeld",
+    "field": "Feld",
+    "area": "Bereich",
+    "text-area-math": "Formelbereich",
     "math-table": "Rechenkästchen",
     "trigger": "Auslöser"
   },

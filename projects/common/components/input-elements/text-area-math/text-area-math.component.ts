@@ -22,11 +22,10 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       Formel einfügen
     </button>
     <div #textArea class="text-area"
-         [style.min-height.px]="(elementModel.styling.fontSize * (elementModel.styling.lineHeight / 100)) *
-                                elementModel.rowCount"
-         [style.height.px]="!elementModel.hasAutoHeight &&
-                            (elementModel.styling.fontSize * (elementModel.styling.lineHeight / 100))
-                             * elementModel.rowCount"
+         [style.min-height.px]="elementModel.rowCount | areaRowHeight :
+                                elementModel.styling.fontSize : elementModel.styling.lineHeight"
+         [style.height.px]="!elementModel.hasAutoHeight && (elementModel.rowCount | areaRowHeight :
+                            elementModel.styling.fontSize : elementModel.styling.lineHeight)"
          [style.overflow-y]="!elementModel.hasAutoHeight && 'auto'"
          [style.background-color]="elementModel.styling.backgroundColor"
          [style.line-height.%]="elementModel.styling.lineHeight"
@@ -60,8 +59,8 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
   `,
   styles: [
     '.label {font-size: 20px; line-height: 135%;}',
-    '.alignment-fix {padding: 15px 0; display: inline-block; width: 0;}',
-    '.text-area {border: 1px solid black; border-radius: 3px; padding: 3px 3px 7px 3px;}',
+    '.alignment-fix {padding: 14px 0; display: inline-block; width: 0;}',
+    '.text-area {border: 1px solid black; border-radius: 3px; padding: 10px 5px; }',
     '.insert-formula-button {font-size: large; width: 160px; background-color: #ddd; padding: 15px 10px; height: 55px;}'
   ]
 })

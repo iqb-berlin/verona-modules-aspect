@@ -77,6 +77,7 @@ export type IDTypes = UIElementType | 'value' | 'state-variable';
 
 export interface AbstractIDService {
   getAndRegisterNewID: (idType: IDTypes, alias?: boolean) => string;
+  getNewID: (idType: IDTypes, alias?: boolean) => string;
   register: (id: string, idType: IDTypes, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
   unregister: (id: string, idType: IDTypes, useIDRegistry: boolean, useAliasRegistry: boolean) => void;
   isAliasAvailable: (id: string, idType: IDTypes) => boolean;

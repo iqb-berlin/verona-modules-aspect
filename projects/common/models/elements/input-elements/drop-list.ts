@@ -75,8 +75,8 @@ export class DropListElement extends InputElement implements DropListProperties 
           imgSrc: value.imgSrc,
           imgFileName: value.imgFileName,
           imgPosition: value.imgPosition,
-          id: value.id ?? idService?.getAndRegisterNewID('value'),
-          alias: value.alias ?? idService?.getAndRegisterNewID('value', true),
+          id: value.id ?? idService?.getNewID('value'),
+          alias: (value.alias || value.id) ?? idService?.getNewID('value', true),
           originListID: this.id,
           originListIndex: index,
           audioSrc: value.audioSrc,
@@ -220,6 +220,7 @@ export interface DropListProperties extends InputElementProperties {
 function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
   if (!blueprint) return false;
   if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].id === undefined) return false;
+  if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].alias === undefined) return false;
   return blueprint.value !== undefined &&
     blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&

@@ -16,6 +16,10 @@ export class IDService {
     };
   }
 
+  getNewID(idType: IDTypes, isAlias: boolean = false): string {
+    return isAlias ? this.aliasRegistry.getNewID(idType) : this.idRegistry.getNewID(idType, true);
+  }
+
   getAndRegisterNewID(idType: IDTypes, isAlias: boolean = false): string {
     return isAlias ? this.aliasRegistry.getAndRegisterNewID(idType) : this.idRegistry.getAndRegisterNewID(idType, true);
   }

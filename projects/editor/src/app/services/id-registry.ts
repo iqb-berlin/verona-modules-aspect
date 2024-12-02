@@ -4,7 +4,7 @@ export class IdRegistry {
   registeredIDs: { [key in IDTypes]?: string[] } = {};
 
   getAndRegisterNewID(idType: IDTypes, unique: boolean = false): string {
-    const id = unique ? this.getNewUniqueID(idType) : this.getNewID(idType);
+    const id = unique ? this.generateNewUniqueID(idType) : this.generateNewID(idType);
     this.registerID(id, idType);
     return id;
   }
@@ -13,8 +13,14 @@ export class IdRegistry {
     return !this.registeredIDs[idType]?.includes(id);
   }
 
+  getNewID(idType: IDTypes, unique: boolean = false): string {
+    return unique ? this.generateNewUniqueID(idType) : this.generateNewID(idType);
+  }
+
   registerID(id: string, idType: IDTypes): void {
-    if (this.registeredIDs[idType]?.includes(id)) throw new Error(`ID already registered: ${id}`);
+    if (this.registeredIDs[idType]?.includes(id)) {
+      throw new Error(`ID already registered: ${id} ${idType}`);
+    }
     (this.registeredIDs[idType] ??= []).push(id);
   }
 
@@ -29,7 +35,7 @@ export class IdRegistry {
     this.registeredIDs = {};
   }
 
-  private getNewID(idType: IDTypes): string {
+  private generateNewID(idType: IDTypes): string {
     let suffix = 1;
     let id = `${idType}_${suffix}`;
     while (!this.isIdAvailable(id, idType)) {
@@ -39,7 +45,7 @@ export class IdRegistry {
     return id;
   }
 
-  private getNewUniqueID(idType: IDTypes): string {
+  private generateNewUniqueID(idType: IDTypes): string {
     const suffix1 = Date.now();
     let suffix2 = 1;
     let id = `${idType}_${suffix1}_${suffix2}`;

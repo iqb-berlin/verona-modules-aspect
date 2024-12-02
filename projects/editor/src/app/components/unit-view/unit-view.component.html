@@ -47,7 +47,7 @@
             <ng-template matTabContent>
               <div cdkDropListGroup class="page-view-wrapper">
                 <aspect-editor-page-view *ngIf="pagesLoaded" class="fx-column-start-stretch fullscreen-page"
-                                           [page]="unitService.unit.pages[selectionService.selectedPageIndex]"
+                                           [page]="page"
                                            [pageIndex]="i" [singlePageMode]="true"
                                            (pagesChanged)="refreshTabs()">
                 </aspect-editor-page-view>

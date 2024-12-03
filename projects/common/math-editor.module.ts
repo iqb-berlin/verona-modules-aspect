@@ -96,7 +96,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   setParseMode(event: MatButtonToggleChange) {
-    // TODO Keyboard moving up and down on focus loss may be avoided by using useSharedVirtualKeyboard
     this.mathFieldElement.mode = event.value;
     (this.inputRef.nativeElement.childNodes[0] as HTMLElement).focus();
   }

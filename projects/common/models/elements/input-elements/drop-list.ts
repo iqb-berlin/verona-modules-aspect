@@ -54,6 +54,7 @@ export class DropListElement extends InputElement implements DropListProperties 
         audioFileName: value.audioFileName
       }
       ));
+      this.registerValueIDs();
       this.isSortList = element.isSortList;
       this.onlyOneItem = element.onlyOneItem;
       this.connectedTo = [...element.connectedTo];
@@ -183,8 +184,7 @@ export class DropListElement extends InputElement implements DropListProperties 
     };
   }
 
-  registerIDs(): void {
-    super.registerIDs();
+  private registerValueIDs(): void {
     this.value.forEach(val => {
       this.idService?.register(val.id, 'value', true, false);
       this.idService?.register(val.alias, 'value', false, true);
@@ -220,6 +220,7 @@ export interface DropListProperties extends InputElementProperties {
 function isDropListProperties(blueprint?: Partial<DropListProperties>): blueprint is DropListProperties {
   if (!blueprint) return false;
   if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].id === undefined) return false;
+  if (blueprint.value && blueprint.value.length > 0 && blueprint.value[0].alias === undefined) return false;
   return blueprint.value !== undefined &&
     blueprint.isSortList !== undefined &&
     blueprint.onlyOneItem !== undefined &&

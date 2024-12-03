@@ -76,6 +76,8 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   private setupMathField(): void {
+    // MathfieldElement.fontsDirectory = null;
+    MathfieldElement.soundsDirectory = null;
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;
     this.mathFieldElement.readOnly = this.readonly;
@@ -88,6 +90,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  // eslint-disable-next-line
   setFocus(offset?: number): void {
     this.mathFieldElement.focus();
   }

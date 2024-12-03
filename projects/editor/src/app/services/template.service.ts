@@ -149,7 +149,7 @@ export class TemplateService {
   private createTextSection(config: { text1: string, text2: string,
     highlightableOrange: boolean, highlightableTurquoise: boolean, highlightableYellow: boolean }): Section
   {
-    const section = new Section();
+    const section = new Section(undefined, this.idService);
     section.addElement(this.createElement(
       'text',
       { gridRow: 1, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
@@ -197,7 +197,7 @@ export class TemplateService {
     const section = new Section({
       ...config.showHelper && { autoColumnSize: false },
       ...config.showHelper && { gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 45, unit: 'px' }] }
-    } as SectionProperties);
+    } as SectionProperties, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -267,7 +267,7 @@ export class TemplateService {
     const section = new Section({
       ...useNumbering && { autoColumnSize: false },
       ...useNumbering && { gridColumnSizes: [{ value: 25, unit: 'px' }, { value: 1, unit: 'fr' }] }
-    } as SectionProperties);
+    } as SectionProperties, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -305,7 +305,7 @@ export class TemplateService {
         { gridRow: 2, gridColumn: 1, marginBottom: { value: 30, unit: 'px' } },
         { label: config.label2, options: config.options })
     ];
-    const section = new Section();
+    const section = new Section(undefined, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -321,7 +321,7 @@ export class TemplateService {
         { gridRow: 2, gridColumn: 1 },
         { label: '', options: config.options, itemsPerRow: config.itemsPerRow })
     ];
-    const section = new Section();
+    const section = new Section(undefined, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -351,7 +351,7 @@ export class TemplateService {
           firstColumnSizeRatio: 3
         })
     ];
-    const section = new Section();
+    const section = new Section(undefined, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -383,7 +383,7 @@ export class TemplateService {
         { text: config.text2, styling: { fontSize: 14, lineHeight: 100 } }
       )
     ];
-    const section = new Section();
+    const section = new Section(undefined, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -445,7 +445,7 @@ export class TemplateService {
       { text: config.text2, styling: { fontSize: 14, lineHeight: 100 } }
     ));
 
-    const section = new Section();
+    const section = new Section(undefined, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -513,7 +513,7 @@ export class TemplateService {
     const section = new Section({
       ...config.showHelper && { autoColumnSize: false },
       ...config.showHelper && { gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 45, unit: 'px' }] }
-    } as SectionProperties);
+    } as SectionProperties, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -564,7 +564,7 @@ export class TemplateService {
     const section = new Section({
       ...showTooltip && { autoColumnSize: false },
       ...showTooltip && { gridColumnSizes: [{ value: 1, unit: 'fr' }, { value: 45, unit: 'px' }] }
-    } as SectionProperties);
+    } as SectionProperties, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }
@@ -664,7 +664,7 @@ export class TemplateService {
         TemplateService.getDrolistColSizesVertical(config.optionLength, config.targetLength) :
         TemplateService.getDrolistColSizesHorizontal(
           config.optionLength as 'medium' | 'short' | 'very-short', config.targetLength)
-    } as SectionProperties);
+    } as SectionProperties, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     this.unitService.connectAllDropLists(section);
     return section;
@@ -784,7 +784,7 @@ export class TemplateService {
         })
     ];
 
-    const section = new Section();
+    const section = new Section(undefined, this.idService);
     sectionElements.forEach(el => section.addElement(el));
     return section;
   }

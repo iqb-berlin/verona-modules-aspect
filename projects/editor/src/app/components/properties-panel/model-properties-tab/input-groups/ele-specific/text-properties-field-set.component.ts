@@ -68,8 +68,8 @@ import { DialogService } from '../../../../../services/dialog.service';
             <mat-select-trigger>
               {{ 'propertiesPanel.markingPanels' | translate }} ({{ $any(combinedProperties.markingPanels).length }})
             </mat-select-trigger>
-            <mat-option *ngFor="let id of markingPanelIDs" [value]="id">
-              {{ id }}
+            <mat-option *ngFor="let idPair of markingPanelIDs" [value]="idPair[0]">
+              {{ idPair[1] }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -114,7 +114,7 @@ import { DialogService } from '../../../../../services/dialog.service';
   `]
 })
 export class TextPropsComponent {
-  markingPanelIDs: string[] = [];
+  markingPanelIDs: [string, string][];
   @Input() combinedProperties!: any;
   @Output() updateModel =
     new EventEmitter<{
@@ -127,7 +127,7 @@ export class TextPropsComponent {
               public dialogService: DialogService,
               public selectionService: SelectionService) {
     this.markingPanelIDs = this.unitService.unit.getAllElements('marking-panel')
-      .map(element => element.alias);
+      .map(element => [element.id, element.alias]);
   }
 
   showTextEditDialog(): void {

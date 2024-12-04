@@ -66,7 +66,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   protected readonly window = window;
 
   mathFieldElement: MathfieldElement = new MathfieldElement({
-    mathVirtualKeyboardPolicy: 'manual'
+    mathVirtualKeyboardPolicy: 'sandboxed'
   });
 
   constructor(public elementRef: ElementRef) { }
@@ -76,7 +76,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   private setupMathField(): void {
-    // MathfieldElement.fontsDirectory = null;
     MathfieldElement.soundsDirectory = null;
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;

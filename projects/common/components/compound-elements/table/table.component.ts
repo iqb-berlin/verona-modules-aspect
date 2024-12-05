@@ -89,7 +89,7 @@ import { PositionedUIElement, UIElementType } from 'common/interfaces';
     </div>
   `,
   styles: [`
-    .cell-container {display: flex; min-height: 30px;}
+    .cell-container {display: flex; min-height: 50px;}
     .element-container {width: 100%; height: 100%; position: relative;}
     .cell-container > button {align-self: flex-end; justify-self: flex-start;}
     aspect-table-child-overlay {width: 100%; height: 100%;}

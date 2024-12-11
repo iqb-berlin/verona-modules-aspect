@@ -1,5 +1,9 @@
 Allgemein
 =========
+## editor/2.6.2+player/2.6.2
+### Fehlerbehebungen
+- Korrigiert die Alias-Benennung von GeoGebra-Variablen
+
 ## editor/2.6.1+player/2.6.1
 ### Änderungen
 - Tabelle: Mindesthöhe von Zellen auf 50px (in 2.6.0 30px)

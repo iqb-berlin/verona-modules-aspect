@@ -82,7 +82,7 @@ export class GeometryElement extends UIElement implements GeometryProperties {
   getVariableInfoOfGeometryVariable(variableName: string): VariableInfo {
     return {
       id: this.getGeometryVariableId(variableName),
-      alias: this.alias,
+      alias: this.getGeometryVariableAlias(variableName),
       type: 'string',
       format: 'ggb-variable',
       multiple: false,

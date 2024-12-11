@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MathfieldElement } from 'mathlive';
+import { MathfieldElement } from '@iqb/mathlive';
 import { ScrollToInputService } from 'player/src/app/services/scroll-to-input.service';
 import { TextInputComponentType } from 'player/src/app/models/text-input-component.type';
 import { MathFieldComponent } from 'common/components/input-elements/math-field.component';

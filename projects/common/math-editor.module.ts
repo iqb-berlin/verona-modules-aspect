@@ -4,7 +4,7 @@ import {
   Component, AfterViewInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, Output, EventEmitter
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MathfieldElement } from 'mathlive';
+import { MathfieldElement } from '@iqb/mathlive';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 
 @Component({
@@ -66,7 +66,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   protected readonly window = window;
 
   mathFieldElement: MathfieldElement = new MathfieldElement({
-    mathVirtualKeyboardPolicy: 'sandboxed'
+    mathVirtualKeyboardPolicy: 'manual'
   });
 
   constructor(public elementRef: ElementRef) { }
@@ -76,7 +76,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   private setupMathField(): void {
-    MathfieldElement.soundsDirectory = null;
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;
     this.mathFieldElement.readOnly = this.readonly;

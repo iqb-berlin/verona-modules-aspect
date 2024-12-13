@@ -24,7 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
-import { MathEditorModule } from 'common/math-editor.module';
+import { MathEditorModule } from 'common/math-editor/math-editor.module';
 import { DynamicRowsDirective } from 'common/directives/dynamic-rows.directive';
 import { TooltipEventTooltipDirective } from 'common/components/tooltip/tooltip-event-tooltip.directive';
 import { TooltipComponent } from 'common/components/tooltip/tooltip.component';

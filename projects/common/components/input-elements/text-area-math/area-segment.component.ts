@@ -1,9 +1,10 @@
 import {
   Component, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
-import { MathEditorModule, MathInputComponent } from 'common/math-editor.module';
+import { MathEditorModule } from 'common/math-editor/math-editor.module';
 import { AreaTextInputComponent } from 'common/components/input-elements/text-area-math/area-text-input.component';
 import { BehaviorSubject } from 'rxjs';
+import { MathInputComponent } from 'common/math-editor/math-input.component';
 
 @Component({
   selector: 'aspect-text-area-math-segment',

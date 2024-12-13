@@ -1,5 +1,9 @@
 Editor
 ======
+## 2.6.3
+### Fehlerbehebungen
+- Korrigiert beim Upgrade von Aufgaben das initiale Setzen des Alias von Drag-and-Drop-Optionen
+
 ## 2.6.0
 ### Neue Funktionen
 - Alternativer Ansichtsmodus:

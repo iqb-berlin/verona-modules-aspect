@@ -1,11 +1,17 @@
-// eslint-disable-next-line max-classes-per-file
 import {
-  NgModule, CUSTOM_ELEMENTS_SCHEMA,
-  Component, AfterViewInit, ViewChild, ElementRef, Input, OnChanges, SimpleChanges, Output, EventEmitter
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MathfieldElement } from '@iqb/mathlive';
-import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.config';
 
 @Component({
   selector: 'aspect-math-input',
@@ -61,15 +67,16 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   @Output() focusIn: EventEmitter<MathfieldElement> = new EventEmitter();
   @Output() focusOut: EventEmitter<MathfieldElement> = new EventEmitter();
   @ViewChild('inputRef') inputRef!: ElementRef;
-  @ViewChild('container') container!: ElementRef;
 
   protected readonly window = window;
+  private mathKeyboardLayout = IQB_MATH_KEYBOARD_LAYOUTS;
 
   mathFieldElement: MathfieldElement = new MathfieldElement({
     mathVirtualKeyboardPolicy: 'manual'
   });
 
-  constructor(public elementRef: ElementRef) { }
+  constructor(public elementRef: ElementRef) {
+  }
 
   ngAfterViewInit(): void {
     this.setupMathField();
@@ -79,7 +86,9 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     this.inputRef.nativeElement.appendChild(this.mathFieldElement);
     this.mathFieldElement.value = this.value;
     this.mathFieldElement.readOnly = this.readonly;
-    setTimeout(() => { this.mathFieldElement.menuItems = []; }); // Disable context menu
+    setTimeout(() => {
+      this.mathFieldElement.menuItems = [];
+    }); // Disable context menu
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -104,7 +113,24 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   onFocusIn() {
     this.focusIn.emit(this.mathFieldElement);
+    // TODO Reset Shift key
+    this.resetKeyboardLayout();
     window.mathVirtualKeyboard.show();
+  }
+
+  private resetKeyboardLayout() {
+    window.mathVirtualKeyboard.layouts = ['default'];
+    // Start with first tab of keyboard
+    setTimeout(() => this.setKeyboardLayout());
+  }
+
+  private setKeyboardLayout(): void {
+    window.mathVirtualKeyboard.layouts = [
+      this.mathKeyboardLayout.iqbNumeric,
+      this.mathKeyboardLayout.iqbSymbols,
+      this.mathKeyboardLayout.iqbText,
+      this.mathKeyboardLayout.iqbGreek
+    ];
   }
 
   onFocusOut() {
@@ -112,18 +138,3 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     window.mathVirtualKeyboard.hide();
   }
 }
-
-@NgModule({
-  declarations: [
-    MathInputComponent
-  ],
-  imports: [
-    CommonModule,
-    MatButtonToggleModule
-  ],
-  exports: [
-    MathInputComponent
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
-export class MathEditorModule {}

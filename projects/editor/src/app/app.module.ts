@@ -23,7 +23,7 @@ import { SectionInsertDialogComponent } from 'editor/src/app/components/dialogs/
 import { VeronaAPIService } from 'editor/src/app/services/verona-api.service';
 import { MatRadioModule } from '@angular/material/radio';
 import { HotspotEditDialogComponent } from 'editor/src/app/components/dialogs/hotspot-edit-dialog.component';
-import { MathEditorModule } from 'common/math-editor.module';
+import { MathEditorModule } from 'common/math-editor/math-editor.module';
 import { CdkConnectedOverlay, CdkOverlayOrigin } from '@angular/cdk/overlay';
 import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { MeasurePipe } from 'common/pipes/measure.pipe';

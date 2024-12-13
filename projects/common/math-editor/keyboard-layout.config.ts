@@ -9,22 +9,24 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
       [
         {
           label: '<',
-          latex: '<',
-          class: 'hide-shift',
-          shift: { latex: '\\le', label: '≤' }
+          latex: '<'
         },
         {
           label: '>',
-          latex: '>',
-          class: 'hide-shift',
-          shift: { latex: '\\ge', label: '≥' }
+          latex: '>'
         },
         '[separator-5]',
-        '[7]',
-        '[8]',
-        '[9]',
         {
-          label: '[/]',
+          latex: '7'
+        },
+        {
+          latex: '8'
+        },
+        {
+          latex: '9'
+        },
+        {
+          label: '÷',
           latex: '\\colon'
         },
         '[separator-5]',
@@ -44,7 +46,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '#@^#?'
         },
         {
-          latex: '\\pi',
+          latex: '\\pi'
           // shift: '\\sin',
           // variants: [
           //   '\\prod',
@@ -60,26 +62,29 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
       [
         {
           label: '≤',
-          latex: '\\le',
-          class: 'hide-shift',
-          //shift: { latex: '\\le', label: '≤' }
+          latex: '\\le'
         },
         {
           label: '≥',
-          latex: '\\ge',
-          class: 'hide-shift',
-          //shift: { latex: '\\ge', label: '≥' }
+          latex: '\\ge'
         },
         '[separator-5]',
-        '[4]',
-        '[5]',
-        '[6]',
-        '[*]',
+        {
+          latex: '4'
+        },
+        {
+          latex: '5'
+        },
+        {
+          latex: '6'
+        },
+        {
+          label: '×',
+          latex: '\\cdot'
+        },
         '[separator-5]',
         {
-          class: 'hide-shift',
-          latex: '#@^2}',
-          shift: '#@^{\\prime}}'
+          latex: '#@^2}'
         },
         // {
         //   latex: '#@^{#0}}',
@@ -87,23 +92,32 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         //   shift: '#@_{#?}'
         // },
         {
-          class: 'hide-shift',
-          latex: '\\sqrt{#0}',
-          //shift: { latex: '\\sqrt[#0]{#?}}' }
+          latex: '\\sqrt{#0}'
         },
         {
-          class: 'hide-shift',
           latex: '\\sqrt[#0]{#?}}'
         }
       ],
       [
-        '[(]',
-        '[)]',
+        {
+          latex: '('
+        },
+        {
+          latex: ')'
+        },
         '[separator-5]',
-        '[1]',
-        '[2]',
-        '[3]',
-        '[-]',
+        {
+          latex: '1'
+        },
+        {
+          latex: '2'
+        },
+        {
+          latex: '3'
+        },
+        {
+          latex: '-'
+        },
         '[separator-5]',
         // {
         //   latex: '\\int^{\\infty}_{0}\\!#?\\,\\mathrm{d}x',
@@ -128,7 +142,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         //   shift: '\\exists'
         // },
         {
-          latex: '\\overline{#@}',
+          latex: '\\overline{#@}'
           // shift: '\\underline{#@}',
           // variants: [
           //   '\\overbrace{#@}',
@@ -153,15 +167,26 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         { label: '≠', latex: '\\ne' },
         // { label: '[shift]', width: 2.0 },
         '[separator-5]',
-        '[0]',
-        '[.]',
+        {
+          latex: '0'
+        },
+        {
+          latex: ','
+        },
         '[separator-10]',
         //'[=]',
         '[+]',
         '[separator-15]',
-        '[left]',
-        '[right]',
-        // { label: '[action]', width: 1.0 }
+        {
+          class: 'action',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
+          command: 'performWithFeedback(moveToPreviousChar)'
+        },
+        {
+          class: 'action',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
+          command: 'performWithFeedback(moveToNextChar)'
+        }
       ]
     ]
   },
@@ -492,13 +517,12 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
             // },
             {
               label: ',',
-              shift: ';',
-              class: 'hide-shift'
+              shift: ';'
             },
             {
               command: 'performWithFeedback(insertDecimalSeparator)',
               shift: ':',
-              class: 'big-op hide-shift',
+              class: 'big-op',
               label: '.'
             },
             {
@@ -519,7 +543,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
             //   label: '.'
             // },
             {
-              class: 'action hide-shift',
+              class: 'action',
               label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
               command: 'performWithFeedback(moveToPreviousChar)',
               // shift: {
@@ -528,7 +552,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               // }
             },
             {
-              class: 'action hide-shift',
+              class: 'action',
               label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
               command: 'performWithFeedback(moveToNextChar)',
               // shift: {
@@ -560,70 +584,70 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
       [
         {
           label: '<i>&#x03c6;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\varphi',
           aside: 'phi var.',
           shift: '\\Phi'
         },
         {
           label: '<i>&#x03c2;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\varsigma',
           aside: 'sigma var.',
           shift: '\\Sigma'
         },
         {
           label: '<i>&#x03f5;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\epsilon',
           aside: 'epsilon',
           shift: '\\char"0190'
         },
         {
           label: '<i>&rho;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\rho',
           aside: 'rho',
           shift: '\\char"3A1'
         },
         {
           label: '<i>&tau;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\tau',
           aside: 'tau',
           shift: '\\char"3A4'
         },
         {
           label: '<i>&upsilon;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\upsilon',
           aside: 'upsilon',
           shift: '\\Upsilon'
         },
         {
           label: '<i>&theta;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\theta',
           aside: 'theta',
           shift: '\\Theta'
         },
         {
           label: '<i>&iota;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\iota',
           aside: 'iota',
           shift: '\\char"399'
         },
         {
           label: '<i>&omicron;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\omicron',
           aside: 'omicron',
           shift: '\\char"39F'
         },
         {
           label: '<i>&pi;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\pi',
           aside: 'pi',
           shift: '\\Pi'
@@ -633,63 +657,63 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         '[separator-5]',
         {
           label: '<i>&alpha;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\alpha',
           aside: 'alpha',
           shift: '\\char"391'
         },
         {
           label: '<i>&sigma;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\sigma',
           aside: 'sigma',
           shift: '\\Sigma'
         },
         {
           label: '<i>&delta;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\delta',
           aside: 'delta',
           shift: '\\Delta'
         },
         {
           latex: '\\phi',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\phi',
           aside: 'phi',
           shift: '\\Phi'
         },
         {
           label: '<i>&gamma;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\gamma',
           aside: 'gamma',
           shift: '\\Gamma'
         },
         {
           label: '<i>&eta;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\eta',
           aside: 'eta',
           shift: '\\char"397'
         },
         {
           label: '<i>&xi;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\xi',
           aside: 'xi',
           shift: '\\Xi'
         },
         {
           label: '<i>&kappa;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\kappa',
           aside: 'kappa',
           shift: '\\Kappa'
         },
         {
           label: '<i>&lambda;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\lambda',
           aside: 'lambda',
           shift: '\\Lambda'
@@ -700,49 +724,49 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         '[shift]',
         {
           label: '<i>&zeta;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\zeta',
           aside: 'zeta',
           shift: '\\char"396'
         },
         {
           label: '<i>&chi;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\chi',
           aside: 'chi',
           shift: '\\char"3A7'
         },
         {
           label: '<i>&psi;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\psi',
           aside: 'zeta',
           shift: '\\Psi'
         },
         {
           label: '<i>&omega;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\omega',
           aside: 'omega',
           shift: '\\Omega'
         },
         {
           label: '<i>&beta;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\beta',
           aside: 'beta',
           shift: '\\char"392'
         },
         {
           label: '<i>&nu;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\nu',
           aside: 'nu',
           shift: '\\char"39D'
         },
         {
           label: '<i>&mu;</i>',
-          class: 'MLK__tex hide-shift',
+          class: 'MLK__tex',
           insert: '\\mu',
           aside: 'mu',
           shift: '\\char"39C'
@@ -784,7 +808,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         },
 
         {
-          class: 'action hide-shift',
+          class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
           command: 'performWithFeedback(moveToPreviousChar)',
           // shift: {
@@ -793,7 +817,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           // }
         },
         {
-          class: 'action hide-shift',
+          class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
           command: 'performWithFeedback(moveToNextChar)',
           // shift: {
@@ -831,9 +855,9 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         '\\cup',
         {
           latex: '\\overrightarrow{#@}',
-          shift: '\\overleftarrow{#@}'},
+          shift: '\\overleftarrow{#@}' },
         {
-          class: 'small hide-shift',
+          class: 'small',
           latex: '\\lim_{#?}',
           shift: '\\lim_{x\\to\\infty}'
         },
@@ -848,9 +872,9 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           // ],
           // latex: '+',
           // label: '+',
-          class: 'small hide-shift',
+          class: 'small',
           latex: '\\sum',
-          insert: '\\sum',
+          insert: '\\sum'
         }
       ],
       [
@@ -878,14 +902,14 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           shift: '\\underline{#@}'
         },
         {
-          class: 'hide-shift small',
+          class: 'small',
           latex: '\\int',
           shift: '\\iint'
         },
         // { latex: '\\pi', shift: '\\tau', variants: ['\\tau'] }
         {
           latex: '\\int^{\\infty}_{0}\\!#?\\,\\mathrm{d}x',
-          class: 'small hide-shift',
+          class: 'small'
           // shift: '\\int',
           // variants: [
           //   { latex: '\\int_{#?}^{#?}', class: 'small' },
@@ -940,7 +964,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           //latex: '-',
           //label: '&#x2212;',
           latex: '\\pm',
-          class: 'big-op hide-shift'
+          class: 'big-op'
         }
       ],
       [
@@ -1005,7 +1029,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         // },
         '[separator-10]',
         {
-          class: 'action hide-shift',
+          class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
           command: 'performWithFeedback(moveToPreviousChar)',
           // shift: {
@@ -1014,7 +1038,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           // }
         },
         {
-          class: 'action hide-shift',
+          class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
           command: 'performWithFeedback(moveToNextChar)',
           // shift: {
@@ -1025,7 +1049,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         {
           label: '[backspace]',
           width: 1.0,
-          class: 'action hide-shift'
+          class: 'action'
         },
         // { label: '[action]', width: 1.0 }
       ]

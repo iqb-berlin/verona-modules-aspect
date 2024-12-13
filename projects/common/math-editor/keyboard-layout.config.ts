@@ -99,7 +99,12 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\overline{#@}'
         },
         { latex: '#@\\degree' },
-        { label: '[backspace]', width: 1.0 }
+        {
+          class: 'action bottom right',
+          width: 1.0,
+          command: 'performWithFeedback(deleteBackward)',
+          label: '<svg class=svg-glyph><use xlink:href=#svg-delete-backward /></svg>'
+        }
       ],
       [
         { label: '=', latex: '=' },
@@ -572,7 +577,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           aside: 'mu',
           shift: '\\char"39C'
         },
-
         '[backspace]'
       ],
       [

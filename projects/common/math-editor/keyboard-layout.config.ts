@@ -37,7 +37,9 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         //   latex: '\\imaginaryI',
         //   variants: ['\\Re', '\\Im', '\\imaginaryJ', '\\Vert #0 \\Vert']
         // },
-        { latex: '\\frac{#@}{#?}' },
+        {
+          latex: '\\frac{#@}{#?}'
+        },
         {
           latex: '#@^#?'
         },
@@ -235,8 +237,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               class: 'hide-shift',
               shift: {
                 label: 'Q'
-              },
-              variants: 'q'
+              }
             },
             {
               label: 'w',
@@ -249,18 +250,15 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               label: 'e',
               class: 'hide-shift',
               shift: {
-                label: 'E',
-                variants: 'E'
-              },
-              variants: 'e'
+                label: 'E'
+              }
             },
             {
               label: 'r',
               class: 'hide-shift',
               shift: {
                 label: 'R'
-              },
-              variants: 'r'
+              }
             },
             {
               label: 't',
@@ -274,43 +272,35 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               class: 'hide-shift',
               shift: {
                 label: 'Z'
-              },
-              variants: 'z'
+              }
             },
             {
               label: 'u',
               class: 'hide-shift',
               shift: {
-                label: 'U',
-                variants: 'U'
-              },
-              variants: 'u'
+                label: 'U'
+              }
             },
             {
               label: 'i',
               class: 'hide-shift',
               shift: {
-                label: 'I',
-                variants: 'I'
-              },
-              variants: 'i'
+                label: 'I'
+              }
             },
             {
               label: 'o',
               class: 'hide-shift',
               shift: {
-                label: 'O',
-                variants: 'O'
-              },
-              variants: 'o'
+                label: 'O'
+              }
             },
             {
               label: 'p',
               class: 'hide-shift',
               shift: {
                 label: 'P'
-              },
-              variants: 'p'
+              }
             }
           ],
           [
@@ -322,10 +312,8 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               label: 'a',
               class: 'hide-shift',
               shift: {
-                label: 'A',
-                variants: 'A'
-              },
-              variants: 'a'
+                label: 'A'
+              }
             },
             {
               label: 's',
@@ -339,8 +327,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               class: 'hide-shift',
               shift: {
                 label: 'D'
-              },
-              variants: 'd'
+              }
             },
             {
               label: 'f',
@@ -354,24 +341,21 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               class: 'hide-shift',
               shift: {
                 label: 'G'
-              },
-              variants: 'g'
+              }
             },
             {
               label: 'h',
               class: 'hide-shift',
               shift: {
                 label: 'H'
-              },
-              variants: 'h'
+              }
             },
             {
               label: 'j',
               class: 'hide-shift',
               shift: {
                 label: 'J'
-              },
-              variants: 'j'
+              }
             },
             {
               label: 'k',
@@ -385,8 +369,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               class: 'hide-shift',
               shift: {
                 label: 'L'
-              },
-              variants: 'l'
+              }
             },
             {
               class: 'separator',
@@ -403,10 +386,8 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               label: 'y',
               class: 'hide-shift',
               shift: {
-                label: 'Y',
-                variants: 'Y'
-              },
-              variants: 'y'
+                label: 'Y'
+              }
             },
             {
               label: 'x',
@@ -420,8 +401,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               class: 'hide-shift',
               shift: {
                 label: 'C'
-              },
-              variants: 'c'
+              }
             },
             {
               label: 'v',
@@ -435,16 +415,14 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               class: 'hide-shift',
               shift: {
                 label: 'B'
-              },
-              variants: 'b'
+              }
             },
             {
               label: 'n',
               class: 'hide-shift',
               shift: {
                 label: 'N'
-              },
-              variants: 'n'
+              }
             },
             {
               label: 'm',
@@ -515,11 +493,9 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
             {
               label: ',',
               shift: ';',
-              variants: '.',
               class: 'hide-shift'
             },
             {
-              variants: '.',
               command: 'performWithFeedback(insertDecimalSeparator)',
               shift: ':',
               class: 'big-op hide-shift',
@@ -837,11 +813,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         {
           latex: '\\sin',
           shift: '\\sin^{-1}',
-          variants: [
-            { class: 'small', latex: '\\sinh' },
-            { class: 'small', latex: '\\sin^{-1}' },
-            { class: 'small', latex: '\\arsinh' }
-          ]
         },
         '\\ln',
         {
@@ -850,48 +821,21 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         },
         {
           latex: '\\rightarrow',
-          shift: '\\Rightarrow',
-          variants: [
-            { latex: '\\implies', aside: 'implies' },
-
-            { latex: '\\to', aside: 'to' },
-            '\\dashv',
-            { latex: '\\roundimplies', aside: 'round implies' }
-          ]
+          shift: '\\Rightarrow'
         },
         {
           latex: '\\exists',
-          variants: ['\\nexists'],
           shift: '\\nexists'
         },
-        { latex: '\\in', shift: '\\notin', variants: ['\\notin', '\\owns'] },
+        { latex: '\\in', shift: '\\notin' },
         '\\cup',
         {
           latex: '\\overrightarrow{#@}',
-          shift: '\\overleftarrow{#@}',
-          variants: [
-            '\\overleftarrow{#@}',
-            '\\bar{#@}',
-            '\\vec{#@}',
-            '\\hat{#@}',
-            '\\check{#@}',
-            '\\dot{#@}',
-            '\\ddot{#@}',
-            '\\mathring{#@}',
-            '\\breve{#@}',
-            '\\acute{#@}',
-            '\\tilde{#@}',
-            '\\grave{#@}'
-          ]
-        },
+          shift: '\\overleftarrow{#@}'},
         {
           class: 'small hide-shift',
           latex: '\\lim_{#?}',
-          shift: '\\lim_{x\\to\\infty}',
-          variants: [
-            { class: 'small', latex: '\\liminf_{#?}' },
-            { class: 'small', latex: '\\limsup_{#?}' }
-          ]
+          shift: '\\lim_{x\\to\\infty}'
         },
         // '\\exponentialE'
         {
@@ -912,91 +856,31 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
       [
         {
           latex: '\\cos',
-          shift: '\\cos^{-1}',
-          variants: [
-            { class: 'small', latex: '\\cosh' },
-            { class: 'small', latex: '\\cos^{-1}' },
-            { class: 'small', latex: '\\arcosh' }
-          ]
+          shift: '\\cos^{-1}'
         },
         {
           latex: '\\log',
-          shift: '\\log_{10}',
-          variants: ['\\log_{#0}', '\\log_{10}']
+          shift: '\\log_{10}'
         },
         '\\left\\vert#0\\right\\vert',
         {
           latex: '\\larr',
-          shift: '\\lArr',
-          variants: [
-            { latex: '\\impliedby', aside: 'implied by' },
-            { latex: '\\gets', aside: 'gets' },
-            '\\lArr',
-            '\\vdash',
-            { latex: '\\models', aside: 'models' }
-          ]
+          shift: '\\lArr'
         },
         {
           latex: '\\forall',
-          shift: '\\lnot',
-          variants: [
-            { latex: '\\land', aside: 'and' },
-            { latex: '\\lor', aside: 'or' },
-            { latex: '\\oplus', aside: 'xor' },
-            { latex: '\\lnot', aside: 'not' },
-
-            { latex: '\\downarrow', aside: 'nor' },
-            { latex: '\\uparrow', aside: 'nand' },
-
-            { latex: '\\curlywedge', aside: 'nor' },
-            { latex: '\\bar\\curlywedge', aside: 'nand' }
-
-            // {latex:'\\barwedge', aside:'bar wedge'},
-            // {latex:'\\curlyvee', aside:'curly vee'},
-            // {latex:'\\veebar', aside:'vee bar'},
-          ]
+          shift: '\\lnot'
         },
         { latex: '\\ni', shift: '\\not\\owns' },
         '\\cap',
         {
           latex: '\\overline{#@}',
-          shift: '\\underline{#@}',
-          variants: [
-            '\\overbrace{#@}',
-            '\\overlinesegment{#@}',
-            '\\overleftrightarrow{#@}',
-            '\\overrightarrow{#@}',
-            '\\overleftarrow{#@}',
-            '\\overgroup{#@}',
-            '\\underbrace{#@}',
-            '\\underlinesegment{#@}',
-            '\\underleftrightarrow{#@}',
-            '\\underrightarrow{#@}',
-            '\\underleftarrow{#@}',
-            '\\undergroup{#@}'
-          ]
+          shift: '\\underline{#@}'
         },
         {
           class: 'hide-shift small',
           latex: '\\int',
-          shift: '\\iint',
-          variants: [
-            { latex: '\\int_{#?}^{#?}', class: 'small' },
-            { latex: '\\int', class: 'small' },
-            { latex: '\\smallint', class: 'small' },
-            { latex: '\\iint', class: 'small' },
-            { latex: '\\iiint', class: 'small' },
-            { latex: '\\oint', class: 'small' },
-
-            '\\intop',
-            '\\iiint',
-            '\\oiint',
-            '\\oiiint',
-            '\\intclockwise',
-            '\\varointclockwise',
-            '\\ointctrclockwise',
-            '\\intctrclockwise'
-          ]
+          shift: '\\iint'
         },
         // { latex: '\\pi', shift: '\\tau', variants: ['\\tau'] }
         {
@@ -1020,78 +904,33 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
       [
         {
           latex: '\\tan',
-          shift: '\\tan^{-1}',
-          variants: [
-            { class: 'small', latex: '\\tanh' },
-            { class: 'small', latex: '\\tan^{-1}' },
-            { class: 'small', latex: '\\artanh' },
-            { class: 'small', latex: '\\arctan' },
-            { class: 'small', latex: '\\arctg' },
-            { class: 'small', latex: '\\tg' }
-          ]
+          shift: '\\tan^{-1}'
         },
         {
           latex: '\\exp',
-          insert: '\\exp\\left(#0\\right)',
-          variants: ['\\exponentialE^{#0}']
+          insert: '\\exp\\left(#0\\right)'
         },
         '\\left\\Vert#0\\right\\Vert',
         {
           latex: '\\lrArr',
-          shift: '\\leftrightarrow',
-          variants: [
-            { latex: '\\iff', aside: 'if and only if' },
-            '\\leftrightarrow',
-            '\\leftrightarrows',
-            '\\Leftrightarrow',
-            { latex: '^\\biconditional', aside: 'biconditional' }
-          ]
+          shift: '\\leftrightarrow'
         },
         { latex: '\\vert', shift: '!' },
         {
           latex: '#@^{\\complement}',
-          aside: 'complement',
-          variants: [
-            { latex: '\\setminus', aside: 'set minus' },
-            { latex: '\\smallsetminus', aside: 'small set minus' }
-          ]
+          aside: 'complement'
         },
         {
           latex: '\\subset',
-          shift: '\\subseteq',
-          variants: [
-            '\\subset',
-            '\\subseteq',
-            '\\subsetneq',
-            '\\varsubsetneq',
-            '\\subsetneqq',
-            '\\nsubset',
-            '\\nsubseteq',
-
-            '\\supset',
-            '\\supseteq',
-            '\\supsetneq',
-            '\\supsetneqq',
-            '\\nsupset',
-            '\\nsupseteq'
-          ]
+          shift: '\\subseteq'
         },
         {
           latex: '#@^{\\prime}',
-          shift: '#@^{\\doubleprime}',
-          variants: ['#@^{\\doubleprime}', '#@\\degree']
+          shift: '#@^{\\doubleprime}'
         },
         {
           latex: '\\mathrm{d}',
-          shift: '\\partial',
-
-          variants: [
-            '\\mathrm{d}x',
-            { latex: '\\dfrac{\\mathrm{d}}{\\mathrm{d} x}', class: 'small' },
-            { latex: '\\frac{\\partial}{\\partial x}', class: 'small' },
-
-            '\\partial'
-          ]
+          shift: '\\partial'
         },
         // {
         //   latex: '\\infty',
@@ -1111,7 +950,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\exponentialE',
           shift: '\\imaginaryI'
         },
-        { latex: '\\pi', shift: '\\tau', variants: ['\\tau'] },
+        { latex: '\\pi', shift: '\\tau' },
         {
           latex: '\\infty',
           shift: '\\Colon'

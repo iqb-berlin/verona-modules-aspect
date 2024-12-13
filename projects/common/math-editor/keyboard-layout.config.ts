@@ -30,15 +30,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\colon'
         },
         '[separator-5]',
-        // {
-        //   latex: '\\exponentialE',
-        //   shift: '\\ln',
-        //   variants: ['\\exp', '\\times 10^{#?}', '\\ln', '\\log_{10}', '\\log']
-        // },
-        // {
-        //   latex: '\\imaginaryI',
-        //   variants: ['\\Re', '\\Im', '\\imaginaryJ', '\\Vert #0 \\Vert']
-        // },
         {
           latex: '\\frac{#@}{#?}'
         },
@@ -47,16 +38,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         },
         {
           latex: '\\pi'
-          // shift: '\\sin',
-          // variants: [
-          //   '\\prod',
-          //   { latex: '\\theta', aside: 'theta' },
-          //   { latex: '\\rho', aside: 'rho' },
-          //   { latex: '\\tau', aside: 'tau' },
-          //   '\\sin',
-          //   '\\cos',
-          //   '\\tan'
-          // ]
         }
       ],
       [
@@ -86,11 +67,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         {
           latex: '#@^2}'
         },
-        // {
-        //   latex: '#@^{#0}}',
-        //   class: 'hide-shift',
-        //   shift: '#@_{#?}'
-        // },
         {
           latex: '\\sqrt{#0}'
         },
@@ -119,45 +95,8 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '-'
         },
         '[separator-5]',
-        // {
-        //   latex: '\\int^{\\infty}_{0}\\!#?\\,\\mathrm{d}x',
-        //   class: 'small hide-shift',
-        //   shift: '\\int',
-        //   variants: [
-        //     { latex: '\\int_{#?}^{#?}', class: 'small' },
-        //     { latex: '\\int', class: 'small' },
-        //     { latex: '\\iint', class: 'small' },
-        //     { latex: '\\iiint', class: 'small' },
-        //     { latex: '\\oint', class: 'small' },
-        //     '\\mathrm{d}x',
-        //     { latex: '\\dfrac{\\mathrm{d}}{\\mathrm{d} x}', class: 'small' },
-        //     { latex: '\\frac{\\partial}{\\partial x}', class: 'small' },
-        //
-        //     '\\partial'
-        //   ]
-        // },
-        // {
-        //   class: 'hide-shift',
-        //   latex: '\\forall',
-        //   shift: '\\exists'
-        // },
         {
           latex: '\\overline{#@}'
-          // shift: '\\underline{#@}',
-          // variants: [
-          //   '\\overbrace{#@}',
-          //   '\\overlinesegment{#@}',
-          //   '\\overleftrightarrow{#@}',
-          //   '\\overrightarrow{#@}',
-          //   '\\overleftarrow{#@}',
-          //   '\\overgroup{#@}',
-          //   '\\underbrace{#@}',
-          //   '\\underlinesegment{#@}',
-          //   '\\underleftrightarrow{#@}',
-          //   '\\underrightarrow{#@}',
-          //   '\\underleftarrow{#@}',
-          //   '\\undergroup{#@}'
-          // ]
         },
         { latex: '#@\\degree' },
         { label: '[backspace]', width: 1.0 }
@@ -165,7 +104,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
       [
         { label: '=', latex: '=' },
         { label: '≠', latex: '\\ne' },
-        // { label: '[shift]', width: 2.0 },
         '[separator-5]',
         {
           latex: '0'
@@ -174,7 +112,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: ','
         },
         '[separator-10]',
-        //'[=]',
         '[+]',
         '[separator-15]',
         {
@@ -197,65 +134,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
     layers: [
       {
         rows: [
-          // [
-          //   {
-          //     label: '1',
-          //     variants: '1'
-          //   },
-          //   {
-          //     label: '2',
-          //     variants: '2'
-          //   },
-          //   {
-          //     label: '3',
-          //     variants: '3'
-          //   },
-          //   {
-          //     label: '4',
-          //     variants: '4'
-          //   },
-          //   {
-          //     label: '5',
-          //     // shift: {
-          //     //   latex: '\\frac{#@}{#?}'
-          //     // },
-          //     variants: '5'
-          //   },
-          //   {
-          //     label: '6',
-          //     // shift: {
-          //     //   latex: '#@^#?'
-          //     // },
-          //     variants: '6'
-          //   },
-          //   {
-          //     label: '7',
-          //     variants: '7'
-          //   },
-          //   {
-          //     label: '8',
-          //     shift: {
-          //       latex: '\\times'
-          //     },
-          //     variants: '8'
-          //   },
-          //   {
-          //     label: '9',
-          //     shift: {
-          //       label: '(',
-          //       latex: '('
-          //     },
-          //     variants: '9'
-          //   },
-          //   {
-          //     label: '0',
-          //     shift: {
-          //       label: ')',
-          //       latex: ')'
-          //     },
-          //     variants: '0'
-          //   }
-          // ],
           [
             {
               label: 'q',
@@ -469,52 +347,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
             }
           ],
           [
-            // {
-            //   variants: [
-            //     '\\pm',
-            //     '\\ominus'
-            //   ],
-            //   latex: '-',
-            //   label: '&#x2212;',
-            //   shift: '\\pm',
-            //   class: 'big-op hide-shift'
-            // },
-            // {
-            //   variants: [
-            //     {
-            //       latex: '\\sum_{#0}^{#0}',
-            //       class: 'small'
-            //     },
-            //     '\\oplus'
-            //   ],
-            //   latex: '+',
-            //   label: '+',
-            //   class: 'big-op hide-shift',
-            //   shift: {
-            //     latex: '\\sum',
-            //     insert: '\\sum',
-            //     class: 'small'
-            //   }
-            // },
-            // {
-            //   variants: [
-            //     '\\neq',
-            //     '\\equiv',
-            //     '\\varpropto',
-            //     '\\thickapprox',
-            //     '\\lt',
-            //     '\\gt',
-            //     '\\le',
-            //     '\\ge'
-            //   ],
-            //   latex: '=',
-            //   label: '=',
-            //   shift: {
-            //     label: '≠',
-            //     latex: '\\ne'
-            //   },
-            //   class: 'big-op hide-shift'
-            // },
             {
               label: ',',
               shift: ';'
@@ -529,47 +361,16 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
               label: ' ',
               width: 5
             },
-            // {
-            //   label: ',',
-            //   shift: ';',
-            //   variants: '.',
-            //   class: 'hide-shift'
-            // },
-            // {
-            //   variants: '.',
-            //   command: 'performWithFeedback(insertDecimalSeparator)',
-            //   shift: ',',
-            //   class: 'big-op hide-shift',
-            //   label: '.'
-            // },
             {
               class: 'action',
               label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
-              command: 'performWithFeedback(moveToPreviousChar)',
-              // shift: {
-              //   label: '<svg class=svg-glyph><use xlink:href=#svg-angle-double-left /></svg>',
-              //   command: 'performWithFeedback(extendSelectionBackward)'
-              // }
+              command: 'performWithFeedback(moveToPreviousChar)'
             },
             {
               class: 'action',
               label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
-              command: 'performWithFeedback(moveToNextChar)',
-              // shift: {
-              //   label: '<svg class=svg-glyph><use xlink:href=#svg-angle-double-right /></svg>',
-              //   command: 'performWithFeedback(extendSelectionForward)'
-              // }
+              command: 'performWithFeedback(moveToNextChar)'
             }
-            // {
-            //   class: 'action hide-shift',
-            //   command: 'performWithFeedback(commit)',
-            //   shift: {
-            //     label: '<svg class=svg-glyph><use xlink:href=#circle-plus /></svg>',
-            //     command: 'performWithFeedback(addRowAfter)'
-            //   },
-            //   width: 1.5,
-            //   label: '<svg class=svg-glyph><use xlink:href=#svg-commit /></svg>'
-            // }
           ]
         ],
         id: 'ML__layer_rotn9'
@@ -810,21 +611,13 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         {
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
-          command: 'performWithFeedback(moveToPreviousChar)',
-          // shift: {
-          //   label: '<svg class=svg-glyph><use xlink:href=#svg-angle-double-left /></svg>',
-          //   command: 'performWithFeedback(extendSelectionBackward)'
-          // }
+          command: 'performWithFeedback(moveToPreviousChar)'
         },
         {
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
-          command: 'performWithFeedback(moveToNextChar)',
-          // shift: {
-          //   label: '<svg class=svg-glyph><use xlink:href=#svg-angle-double-right /></svg>',
-          //   command: 'performWithFeedback(extendSelectionForward)'
-          // }
-        },
+          command: 'performWithFeedback(moveToNextChar)'
+        }
       ]
     ]
   },
@@ -836,7 +629,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
       [
         {
           latex: '\\sin',
-          shift: '\\sin^{-1}',
+          shift: '\\sin^{-1}'
         },
         '\\ln',
         {
@@ -855,23 +648,14 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         '\\cup',
         {
           latex: '\\overrightarrow{#@}',
-          shift: '\\overleftarrow{#@}' },
+          shift: '\\overleftarrow{#@}'
+        },
         {
           class: 'small',
           latex: '\\lim_{#?}',
           shift: '\\lim_{x\\to\\infty}'
         },
-        // '\\exponentialE'
         {
-          // variants: [
-          //   {
-          //     latex: '\\sum_{#0}^{#0}',
-          //     class: 'small'
-          //   },
-          //   '\\oplus'
-          // ],
-          // latex: '+',
-          // label: '+',
           class: 'small',
           latex: '\\sum',
           insert: '\\sum'
@@ -906,24 +690,10 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\int',
           shift: '\\iint'
         },
-        // { latex: '\\pi', shift: '\\tau', variants: ['\\tau'] }
         {
           latex: '\\int^{\\infty}_{0}\\!#?\\,\\mathrm{d}x',
           class: 'small'
-          // shift: '\\int',
-          // variants: [
-          //   { latex: '\\int_{#?}^{#?}', class: 'small' },
-          //   { latex: '\\int', class: 'small' },
-          //   { latex: '\\iint', class: 'small' },
-          //   { latex: '\\iiint', class: 'small' },
-          //   { latex: '\\oint', class: 'small' },
-          //   '\\mathrm{d}x',
-          //   { latex: '\\dfrac{\\mathrm{d}}{\\mathrm{d} x}', class: 'small' },
-          //   { latex: '\\frac{\\partial}{\\partial x}', class: 'small' },
-          //
-          //   '\\partial'
-          // ]
-        },
+        }
       ],
       [
         {
@@ -956,13 +726,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\mathrm{d}',
           shift: '\\partial'
         },
-        // {
-        //   latex: '\\infty',
-        //   variants: ['\\aleph_0', '\\aleph_1', '\\omega', '\\mathfrak{m}']
-        // }
         {
-          //latex: '-',
-          //label: '&#x2212;',
           latex: '\\pm',
           class: 'big-op'
         }
@@ -979,79 +743,22 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\infty',
           shift: '\\Colon'
         },
-
-
-
-
-
-
-        // {
-        //   class: 'box',
-        //   latex: ',',
-        //   shift: ';',
-        //   variants: [';', '?']
-        // },
-        // {
-        //   class: 'box',
-        //   latex: '\\colon',
-        //   shift: '\\Colon',
-        //   variants: [
-        //     { latex: '\\Colon', aside: 'such that', class: 'box' },
-        //     { latex: ':', aside: 'ratio', class: 'box' },
-        //     { latex: '\\vdots', aside: '', class: 'box' },
-        //     { latex: '\\ddots', aside: '', class: 'box' },
-        //     { latex: '\\ldotp', aside: 'low dot', class: 'box' },
-        //     { latex: '\\cdotp', aside: 'center dot', class: 'box' },
-        //     { latex: '\\ldots', aside: 'low ellipsis', class: 'box' },
-        //     { latex: '\\cdots', aside: 'center ellipsis', class: 'box' },
-        //     { latex: '\\therefore', aside: 'therefore', class: 'box' },
-        //     { latex: '\\because', aside: 'because', class: 'box' }
-        //   ]
-        // },
-        // {
-        //   class: 'box',
-        //   latex: '\\cdot',
-        //   aside: 'centered dot',
-        //   shift: '\\ast',
-        //   variants: [
-        //     '\\circ',
-        //     '\\bigcirc',
-        //     '\\bullet',
-        //     '\\odot',
-        //     '\\oslash',
-        //     '\\circledcirc',
-        //     '\\ast',
-        //     '\\star',
-        //     '\\times',
-        //     '\\doteq',
-        //     '\\doteqdot'
-        //   ]
-        // },
         '[separator-10]',
         {
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-left /></svg>',
-          command: 'performWithFeedback(moveToPreviousChar)',
-          // shift: {
-          //   label: '<svg class=svg-glyph><use xlink:href=#svg-angle-double-left /></svg>',
-          //   command: 'performWithFeedback(extendSelectionBackward)'
-          // }
+          command: 'performWithFeedback(moveToPreviousChar)'
         },
         {
           class: 'action',
           label: '<svg class=svg-glyph><use xlink:href=#svg-arrow-right /></svg>',
-          command: 'performWithFeedback(moveToNextChar)',
-          // shift: {
-          //   label: '<svg class=svg-glyph><use xlink:href=#svg-angle-double-right /></svg>',
-          //   command: 'performWithFeedback(extendSelectionForward)'
-          // }
+          command: 'performWithFeedback(moveToNextChar)'
         },
         {
           label: '[backspace]',
           width: 1.0,
           class: 'action'
-        },
-        // { label: '[action]', width: 1.0 }
+        }
       ]
     ]
   }

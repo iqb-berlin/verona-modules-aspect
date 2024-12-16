@@ -69,7 +69,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   @ViewChild('inputRef') inputRef!: ElementRef;
 
   protected readonly window = window;
-  private mathKeyboardLayout = IQB_MATH_KEYBOARD_LAYOUTS;
+  private readonly mathKeyboardLayout = IQB_MATH_KEYBOARD_LAYOUTS;
 
   mathFieldElement: MathfieldElement = new MathfieldElement({
     mathVirtualKeyboardPolicy: 'manual'
@@ -80,6 +80,7 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   ngAfterViewInit(): void {
     this.setupMathField();
+    MathInputComponent.setupMathKeyboard();
   }
 
   private setupMathField(): void {
@@ -89,6 +90,12 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     setTimeout(() => {
       this.mathFieldElement.menuItems = [];
     }); // Disable context menu
+  }
+
+  private static setupMathKeyboard(): void {
+    window.mathVirtualKeyboard.addEventListener('virtual-keyboard-layer-change', () => {
+      window.mathVirtualKeyboard.shiftPressCount = 0;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -113,15 +120,8 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   onFocusIn() {
     this.focusIn.emit(this.mathFieldElement);
-    // TODO Reset Shift key
-    this.resetKeyboardLayout();
-    window.mathVirtualKeyboard.show();
-  }
-
-  private resetKeyboardLayout() {
-    window.mathVirtualKeyboard.layouts = ['default'];
-    // Start with first tab of keyboard
-    setTimeout(() => this.setKeyboardLayout());
+    this.setKeyboardLayout();
+    window.mathVirtualKeyboard.show({ firstLayer: true, resetShift: true });
   }
 
   private setKeyboardLayout(): void {

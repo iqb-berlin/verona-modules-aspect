@@ -21,7 +21,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
       [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
       [appearance]="$any(elementModel.appearance)">
-      <mat-label *ngIf="elementModel.label">{{elementModel.label}}</mat-label>
+      <mat-label>{{elementModel.label}}</mat-label>
       <mat-icon *ngIf="!elementFormControl.touched && elementModel.hasKeyboardIcon"
                 class="keyboard-icon"
                 [style.top.px]="elementModel.styling.fontSize/2">

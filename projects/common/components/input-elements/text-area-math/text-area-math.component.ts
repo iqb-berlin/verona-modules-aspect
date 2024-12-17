@@ -35,7 +35,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
          [style.font-weight]="elementModel.styling.bold ? 'bold' : ''"
          [style.font-style]="elementModel.styling.italic ? 'italic' : ''"
          [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
-         (click)="selectLastSegment()">
+         (pointerdown)="selectLastSegment()">
       <span class="alignment-fix">&nbsp;</span>
       @for (segment of segments; track segment; let i = $index) {
         <aspect-text-area-math-segment
@@ -49,7 +49,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
           (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
           (focusOut)="focusChanged.emit({ inputElement: $event, focused: false })"
           (remove)="removeSegment($event)"
-          (click)="$event.preventDefault(); $event.stopPropagation()">
+          (pointerdown)="$event.stopPropagation();">
         </aspect-text-area-math-segment>
       }
     </div>

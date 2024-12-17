@@ -159,7 +159,7 @@ function isInputElementProperties(blueprint: Partial<InputElementProperties>): b
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
-  label?: string = 'Beschriftung';
+  label?: string = '';
   value: InputElementValue = null;
   required: boolean = false;
   requiredWarnMessage: string = 'Eingabe erforderlich';

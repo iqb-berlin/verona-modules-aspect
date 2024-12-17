@@ -68,7 +68,7 @@ export class ImageElement extends UIElement implements ImageProperties {
   }
 
   getVariableInfos(): VariableInfo[] {
-    if (!this.magnifier) return [];
+    if (!this.magnifier) return super.getVariableInfos();
     return [{
       id: this.id,
       alias: this.alias,

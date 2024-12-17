@@ -18,7 +18,8 @@ import { TextElement } from 'common/models/elements/text/text';
           <mat-form-field *ngIf="combinedProperties.action !== undefined" appearance="fill">
             <mat-label>{{'propertiesPanel.action' | translate }}</mat-label>
             <mat-select [value]="combinedProperties.action"
-                        (selectionChange)="resetActionParam(); updateModel.emit({ property: 'action', value: $event.value })">
+                        (selectionChange)="resetActionParam();
+                                           updateModel.emit({ property: 'action', value: $event.value })">
               <mat-option [value]="null">
                 {{ 'propertiesPanel.none' | translate }}
               </mat-option>
@@ -39,7 +40,8 @@ import { TextElement } from 'common/models/elements/text/text';
             <p *ngIf="!unitService.unit.stateVariables.length">{{'propertiesPanel.addStateVariables' | translate}}</p>
           </ng-container>
 
-          <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange' && combinedProperties.action !== 'removeHighlights'"
+          <mat-form-field *ngIf="combinedProperties.action !== 'stateVariableChange' &&
+                                 combinedProperties.action !== 'removeHighlights'"
                           appearance="fill">
             <mat-label>{{'propertiesPanel.actionParam' | translate }}</mat-label>
             <mat-select [disabled]="combinedProperties.action === null"
@@ -50,7 +52,8 @@ import { TextElement } from 'common/models/elements/text/text';
 
               <ng-container *ngIf="combinedProperties.action === 'pageNav'">
                 <ng-container *ngFor="let page of (unitService.unit.pages | scrollPages); index as i">
-                  <mat-option *ngIf="(unitService.unit.pages | scrollPageIndex: selectionService.selectedPageIndex) !== i"
+                  <mat-option *ngIf="(unitService.unit.pages |
+                                      scrollPageIndex: selectionService.selectedPageIndex) !== i"
                               [value]="i">
                     {{'page' | translate}} {{i + 1}}
                   </mat-option>
@@ -104,7 +107,7 @@ export class ActionPropertiesComponent {
 export class GetStateVariablePipe implements PipeTransform {
   transform(actionParam: unknown, stateVariables: StateVariable[]): StateVariable {
     if (actionParam && typeof actionParam === 'object') return actionParam as StateVariable;
-    return { id: stateVariables[0].id, alias: stateVariables[0].alias, value: '' };
+    return new StateVariable(stateVariables[0].id, stateVariables[0].alias, '');
   }
 }
 

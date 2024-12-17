@@ -14,7 +14,6 @@ import { InstantiationEror } from 'common/errors';
 
 export class TextAreaElement extends TextInputElement implements TextAreaProperties {
   type: UIElementType = 'text-area';
-  label: string = '';
   appearance: 'fill' | 'outline' = 'outline';
   resizeEnabled: boolean = false;
   hasDynamicRowCount: boolean = true;

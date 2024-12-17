@@ -13,7 +13,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
   selector: 'aspect-text-area-math',
   template: `
     @if (elementModel.label) {
-      <label class="label">{{elementModel.label}}</label><br>
+      <label class="label">{{elementModel.label}}</label>
     }
     <button class="insert-formula-button"
             mat-button
@@ -58,7 +58,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
     </mat-error>
   `,
   styles: [
-    '.label {font-size: 20px; line-height: 135%;}',
+    '.label {font-size: 20px; line-height: 135%; display: block; margin-bottom: 15px;}',
     '.alignment-fix {padding: 14px 0; display: inline-block; width: 0;}',
     '.text-area {border: 1px solid black; border-radius: 3px; padding: 10px 5px; }',
     '.insert-formula-button {font-size: large; width: 160px; background-color: #ddd; padding: 15px 10px; height: 55px;}'

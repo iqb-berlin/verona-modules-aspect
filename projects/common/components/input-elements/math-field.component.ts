@@ -17,7 +17,7 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
        [style.text-decoration]="elementModel.styling.underline ? 'underline' : ''"
        [style.background-color]="elementModel.styling.backgroundColor">
        @if (elementModel.label) {
-         <label>{{elementModel.label}}</label><br>
+         <label class="math-label">{{elementModel.label}}</label>
        }
       <aspect-math-input [value]="$any(elementModel.value) | getValue: elementFormControl.value : parentForm"
                          [readonly]="elementModel.readOnly"
@@ -33,7 +33,10 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       </mat-error>
   </div>
   `,
-  styles: ['.error-message {font-size: 75%; margin-top: 15px; margin-left: 10px;}']
+  styles: [
+    '.error-message {font-size: 75%; margin-top: 15px; margin-left: 10px;}',
+    '.math-label {display: block; margin-bottom: 15px; }'
+  ]
 })
 export class MathFieldComponent extends TextInputComponent {
   @Input() elementModel!: MathFieldElement;

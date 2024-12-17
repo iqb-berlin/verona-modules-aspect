@@ -80,7 +80,7 @@ export class TextElement extends UIElement implements TextProperties {
   }
 
   getVariableInfos(): VariableInfo[] {
-    if (!this.isSelectable()) return [];
+    if (!this.isSelectable()) return super.getVariableInfos();
     return [{
       id: this.id,
       alias: this.alias,

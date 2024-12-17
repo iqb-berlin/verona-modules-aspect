@@ -4,7 +4,6 @@ import { VariableInfo } from '@iqb/responses';
 import { StateVariable } from 'common/models/state-variable';
 import { environment } from 'common/environment';
 import { VersionManager } from 'common/services/version-manager';
-import { ArrayUtils } from 'common/util/array';
 import { DropListElement } from 'common/models/elements/input-elements/drop-list';
 import { AbstractIDService } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
@@ -21,8 +20,10 @@ export class Unit implements UnitProperties {
   constructor(unit?: UnitProperties, idService?: AbstractIDService) {
     if (unit && isValid(unit)) {
       this.version = unit.version;
-      this.stateVariables = unit.stateVariables;
-      this.pages = unit.pages.map(page => new Page(page, idService));
+      this.stateVariables = unit.stateVariables
+        .map(variable => new StateVariable(variable.id, variable.alias ?? variable.id, variable.value));
+      this.pages = unit.pages
+        .map(page => new Page(page, idService));
       this.enableSectionNumbering = unit.enableSectionNumbering;
       this.sectionNumberingPosition = unit.sectionNumberingPosition;
       this.showUnitNavNext = unit.showUnitNavNext;
@@ -32,14 +33,11 @@ export class Unit implements UnitProperties {
       }
       this.version = VersionManager.getCurrentVersion();
       if (unit?.stateVariables !== undefined) {
-        this.stateVariables =
-          unit.stateVariables.map(variable => ({
-            id: variable.id,
-            alias: variable.alias ?? variable.id,
-            value: variable.value
-          }));
+        this.stateVariables = unit.stateVariables
+          .map(variable => new StateVariable(variable.id, variable.alias ?? variable.id, variable.value));
       }
-      this.pages = unit?.pages.map(page => new Page(page, idService)) || [new Page(undefined, idService)];
+      this.pages = unit?.pages
+        .map(page => new Page(page, idService)) || [new Page(undefined, idService)];
       if (unit?.enableSectionNumbering !== undefined) this.enableSectionNumbering = unit.enableSectionNumbering;
       if (unit?.sectionNumberingPosition !== undefined) this.sectionNumberingPosition = unit.sectionNumberingPosition;
       if (unit?.showUnitNavNext !== undefined) this.showUnitNavNext = unit.showUnitNavNext;
@@ -54,7 +52,10 @@ export class Unit implements UnitProperties {
     const dropLists: DropListElement[] = [
       ...this.getAllElements('drop-list') as DropListElement[]
     ];
-    return this.pages.map(page => page.getVariableInfos(dropLists)).flat();
+    return [
+      ...this.stateVariables.map(v => v.getVariableInfo()),
+      ...this.pages.map(page => page.getVariableInfos(dropLists)).flat()
+    ];
   }
 
   deletePage(pageIndex: number): void {

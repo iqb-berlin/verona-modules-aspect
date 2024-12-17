@@ -57,8 +57,8 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
-      format: 'math-ml',
+      type: 'json',
+      format: 'math-text-mix',
       multiple: false,
       nullable: false,
       values: [],

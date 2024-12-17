@@ -4,7 +4,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
+  OnChanges, OnDestroy,
   Output,
   SimpleChanges,
   ViewChild
@@ -58,7 +58,7 @@ import { IQB_MATH_KEYBOARD_LAYOUTS } from 'common/math-editor/keyboard-layout.co
     }`
   ]
 })
-export class MathInputComponent implements AfterViewInit, OnChanges {
+export class MathInputComponent implements AfterViewInit, OnChanges, OnDestroy {
   @Input() value!: string;
   @Input() fullWidth: boolean = true;
   @Input() readonly: boolean = false;
@@ -75,11 +75,11 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
     mathVirtualKeyboardPolicy: 'manual'
   });
 
-  constructor(public elementRef: ElementRef) {
-  }
+  constructor(public elementRef: ElementRef) {}
 
   ngAfterViewInit(): void {
     this.setupMathField();
+    this.setKeyboardLayout();
     MathInputComponent.setupMathKeyboard();
   }
 
@@ -93,9 +93,11 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   }
 
   private static setupMathKeyboard(): void {
-    window.mathVirtualKeyboard.addEventListener('virtual-keyboard-layer-change', () => {
-      window.mathVirtualKeyboard.shiftPressCount = 0;
-    });
+    window.mathVirtualKeyboard.addEventListener('virtual-keyboard-layer-change', () => MathInputComponent.resetShift());
+  }
+
+  private static resetShift(): void {
+    window.mathVirtualKeyboard.shiftPressCount = 0;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -120,7 +122,6 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
 
   onFocusIn() {
     this.focusIn.emit(this.mathFieldElement);
-    this.setKeyboardLayout();
     window.mathVirtualKeyboard.show({ firstLayer: true, resetShift: true });
   }
 
@@ -136,5 +137,11 @@ export class MathInputComponent implements AfterViewInit, OnChanges {
   onFocusOut() {
     this.focusOut.emit(this.mathFieldElement);
     window.mathVirtualKeyboard.hide();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  ngOnDestroy(): void {
+    window.mathVirtualKeyboard
+      .removeEventListener('virtual-keyboard-layer-change', () => MathInputComponent.resetShift());
   }
 }

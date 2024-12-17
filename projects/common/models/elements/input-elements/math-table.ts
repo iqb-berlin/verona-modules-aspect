@@ -98,7 +98,7 @@ export class MathTableElement extends UIElement implements MathTableProperties, 
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
+      type: 'json',
       format: 'math-table',
       multiple: false,
       nullable: false,

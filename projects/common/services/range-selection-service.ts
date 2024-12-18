@@ -36,6 +36,14 @@ export class RangeSelectionService {
     return { start, end };
   }
 
+  static setRange(element: HTMLElement) {
+    const range = document.createRange();
+    range.selectNode(element);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+  }
+
   static setSelectionRange(
     inputElement: HTMLElement,
     start: number,

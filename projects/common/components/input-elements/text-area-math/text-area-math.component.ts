@@ -91,15 +91,20 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
     if (this.segments.length === 0) {
       this.addStartSegment();
       // wait for rendering of segments
-      setTimeout(() => this.addNewSegments());
+      setTimeout(() => this.addNewSegments(false));
     } else {
-      this.addNewSegments();
+      this.addNewSegments(true);
     }
   }
 
-  private addNewSegments() {
+  private addNewSegments(withFocusUpdate: boolean) {
     this.segments = this.elementFormControl.value;
-    this.updateFocus(this.selectedFocus.value);
+    if (withFocusUpdate) {
+      this.updateFocus(this.selectedFocus.value);
+    } else {
+      RangeSelectionService
+        .setRange(this.segmentComponents.toArray()[this.selectedFocus.value].inputComponent.inputRef.nativeElement);
+    }
     const range = RangeSelectionService.getRange();
     if (!range) return;
 

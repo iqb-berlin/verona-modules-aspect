@@ -8,7 +8,11 @@ import {
 } from 'common/components/compound-elements/likert/likert-radio-button-group.component';
 import { environment } from 'common/environment';
 import { VariableInfo, VariableValue } from '@iqb/responses';
-import { AbstractIDService, InputElementProperties, TextImageLabel, UIElementType } from 'common/interfaces';
+import {
+  AbstractIDService,
+  InputElementProperties,
+  TextImageLabel, UIElementType
+} from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
 export class LikertRowElement extends InputElement implements LikertRowProperties {
@@ -39,6 +43,11 @@ export class LikertRowElement extends InputElement implements LikertRowPropertie
         this.verticalButtonAlignment = element.verticalButtonAlignment;
       }
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getVariableInfos(options?: unknown): VariableInfo[] {
+    return [];
   }
 
   getVariableInfoOfRow(options: TextImageLabel[]): VariableInfo {

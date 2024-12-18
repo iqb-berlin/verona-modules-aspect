@@ -34,10 +34,10 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\frac{#@}{#?}'
         },
         {
-          latex: '#@^#?'
+          latex: '#@^2}'
         },
         {
-          latex: '\\pi'
+          latex: '#@^#?'
         }
       ],
       [
@@ -64,9 +64,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           latex: '\\cdot'
         },
         '[separator-5]',
-        {
-          latex: '#@^2}'
-        },
+        { latex: '#@\\degree' },
         {
           latex: '\\sqrt{#0}'
         },
@@ -98,7 +96,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         {
           latex: '\\overline{#@}'
         },
-        { latex: '#@\\degree' },
+        '\\left\\vert#0\\right\\vert',
         {
           class: 'action bottom right',
           width: 1.0,
@@ -111,12 +109,15 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
         { label: '≠', latex: '\\ne' },
         '[separator-5]',
         {
+          label: '‐',
+          latex: '-'
+        },
+        {
           latex: '0'
         },
         {
           latex: ','
         },
-        '[separator-10]',
         '[+]',
         '[separator-15]',
         {
@@ -695,7 +696,7 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
           shift: '\\iint'
         },
         {
-          latex: '\\int^{\\infty}_{0}\\!#?\\,\\mathrm{d}x',
+          latex: '\\int^{{#?}}_{#?}\\!#?\\,\\mathrm{d}x',
           class: 'small'
         }
       ],

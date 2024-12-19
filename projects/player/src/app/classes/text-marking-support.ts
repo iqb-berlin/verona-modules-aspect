@@ -5,6 +5,7 @@ import { AnchorService } from 'player/src/app/services/anchor.service';
 import { Subject } from 'rxjs';
 import { TextComponent } from 'common/components/text/text.component';
 import { MarkingData } from 'common/models/marking-data';
+import { RangeSelectionService } from 'common/services/range-selection-service';
 
 export class TextMarkingSupport {
   isMarkingBarOpen: boolean = false;
@@ -74,7 +75,7 @@ export class TextMarkingSupport {
   ): void {
     const selection = window.getSelection();
     if (selection && TextMarkingUtils.isSelectionValid(selection) && selection.rangeCount > 0) {
-      if (!TextMarkingUtils
+      if (!RangeSelectionService
         .isRangeInside(
           selection.getRangeAt(0), elementComponent.textContainerRef.nativeElement
         ) || (isControlKeyPressed)) {

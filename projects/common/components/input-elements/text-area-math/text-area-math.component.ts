@@ -99,7 +99,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
 
   private getSelectedInputRange(): Range {
     const range = RangeSelectionService.getRange();
-    if (!range) {
+    if (!range || !RangeSelectionService.isRangeInside(range, this.textArea.nativeElement)) {
       RangeSelectionService
         .setRange(this.segmentComponents.toArray()[this.selectedFocus.value].inputComponent.inputRef.nativeElement);
     }

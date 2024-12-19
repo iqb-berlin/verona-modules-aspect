@@ -25,10 +25,23 @@ export class MarkableSupport {
 
   createMarkables(savedMarks: string[], elementComponent: TextComponent): void {
     const nodes = MarkableSupport.getNodes(elementComponent.textContainerRef.nativeElement.childNodes);
-    const markablesContainers = MarkableSupport.getMarkablesContainers(nodes, savedMarks);
+    const markablesContainers = MarkableSupport
+      .getMarkablesContainers(nodes, MarkableSupport.expandSavedMarks(savedMarks));
     const markables = markablesContainers
       .flatMap((markablesContainer: MarkablesContainer) => markablesContainer.markables);
     this.createComponents(markablesContainers, elementComponent, markables);
+  }
+
+  private static expandSavedMarks(savedMarks: string[]): string[] {
+    return savedMarks.flatMap(range => {
+      const [start, end, color] = range.split('-');
+      const startIndex = parseInt(start, 10);
+      const endIndex = parseInt(end, 10);
+      return Array.from({ length: endIndex - startIndex + 1 }, (_, i) => {
+        const currentIdx = startIndex + i;
+        return `${currentIdx}-${currentIdx}-${color}`;
+      });
+    });
   }
 
   private createComponents(markablesContainers: MarkablesContainer[],

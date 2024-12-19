@@ -101,7 +101,7 @@ export class ElementModelElementCodeMappingService {
         }
         if (options && (options.markingMode === 'word' || options.markingMode === 'range')) {
           return ElementModelElementCodeMappingService
-            .getMarkedMarkables(elementModelValue as Markable[]);
+            .getMarkedMarkablesInSelectionFormat(elementModelValue as Markable[]);
         }
         return [];
       case 'radio':
@@ -119,14 +119,22 @@ export class ElementModelElementCodeMappingService {
     return this.dragNDropValueObjects.find(dropListValue => dropListValue.alias === alias);
   }
 
-  static getMarkedMarkables(markables: Markable[]): string[] {
+  static getMarkedMarkablesInSelectionFormat(markables: Markable[]): string[] {
     return markables
       .filter((markable: Markable) => !!markable.color)
-      .map((markable: Markable) => ElementModelElementCodeMappingService
-        .mapToTextSelectionFormat(markable, markable.color));
-  }
-
-  private static mapToTextSelectionFormat(markable: Markable, color: string | null): string {
-    return `${markable.id}-${markable.id}-${color}`;
+      .reduce((acc: [number, number, (string | null)][], markable: Markable) => {
+        const [start, end, color] = [markable.id, markable.id, markable.color];
+        const lastEntry = acc[acc.length - 1];
+        if (lastEntry) {
+          const [lastStart, lastEnd, lastColor] = lastEntry;
+          if (lastColor === color && +lastEnd + 1 === +start) {
+            acc[acc.length - 1] = [lastStart, end, color];
+            return acc;
+          }
+        }
+        acc.push([start, end, color]);
+        return acc;
+      }, [])
+      .map(e => `${e[0]}-${e[1]}-${e[2]}`);
   }
 }

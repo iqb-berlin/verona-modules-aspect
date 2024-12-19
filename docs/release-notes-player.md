@@ -1,5 +1,9 @@
 Player
 ======
+## 2.6.4
+### Fehlerbehebungen
+- Fasst aufeinanderfolgende markierte Wörter in den Antwortdaten von Texten zu Bereichen zusammen  
+
 ## 2.6.0
 ### Neue Funktionen
 - Unterstützt Verona API 6.0

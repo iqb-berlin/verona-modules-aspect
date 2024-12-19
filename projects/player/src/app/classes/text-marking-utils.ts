@@ -1,6 +1,7 @@
 import { TextComponent } from 'common/components/text/text.component';
 import { Injectable } from '@angular/core';
 import { LogService } from 'player/modules/logging/services/log.service';
+import { RangeSelectionService } from 'common/services/range-selection-service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class TextMarkingUtils {
     if (selection && TextMarkingUtils.isSelectionValid(selection) && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const element = textComponent.textContainerRef.nativeElement;
-      if (TextMarkingUtils.isRangeInside(range, element)) {
+      if (RangeSelectionService.isRangeInside(range, element)) {
         TextMarkingUtils.applyRange(range, selection, mode === 'delete', color);
         textComponent.elementValueChanged.emit({
           id: textComponent.elementModel.id,
@@ -32,11 +33,6 @@ export class TextMarkingUtils {
   }
 
   static isSelectionValid = (selection: Selection): boolean => selection.toString().length > 0;
-
-  static isRangeInside(range: Range, element: HTMLElement): boolean {
-    return (TextMarkingUtils.isDescendantOf(range.startContainer, element) &&
-      TextMarkingUtils.isDescendantOf(range.endContainer, element));
-  }
 
   static getMarkedTextIndices = (htmlText: string): string[] => {
     const markingStartPattern =
@@ -82,16 +78,6 @@ export class TextMarkingUtils {
       });
     }
     return newHtmlText;
-  }
-
-  static isDescendantOf(node: Node | null, element: HTMLElement): boolean {
-    if (!node || node === document) {
-      return false;
-    }
-    if (node.parentElement === element) {
-      return true;
-    }
-    return TextMarkingUtils.isDescendantOf(node.parentNode, element);
   }
 
   private static getMarkingColor = (tag: string): string => {

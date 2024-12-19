@@ -7,6 +7,21 @@ export class RangeSelectionService {
     return null;
   }
 
+  static isRangeInside(range: Range, element: HTMLElement): boolean {
+    return (RangeSelectionService.isDescendantOf(range.startContainer, element) &&
+      RangeSelectionService.isDescendantOf(range.endContainer, element));
+  }
+
+  static isDescendantOf(node: Node | null, element: HTMLElement): boolean {
+    if (!node || node === document) {
+      return false;
+    }
+    if (node.parentElement === element) {
+      return true;
+    }
+    return RangeSelectionService.isDescendantOf(node.parentNode, element);
+  }
+
   static getSelectionRange(range: Range, inputElement: HTMLElement): { start: number; end: number } {
     let start = 0;
     let end = 0;

@@ -108,7 +108,18 @@ export abstract class UIElement implements UIElementProperties {
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
   getVariableInfos(options?: unknown): VariableInfo[] {
-    return [];
+    return [{
+      id: this.id,
+      alias: this.alias,
+      type: 'no-value',
+      format: '',
+      multiple: false,
+      nullable: false,
+      values: [],
+      valuePositionLabels: [],
+      page: '',
+      valuesComplete: false
+    }];
   }
 
   abstract getElementComponent(): Type<ElementComponent>;
@@ -148,7 +159,7 @@ function isInputElementProperties(blueprint: Partial<InputElementProperties>): b
 }
 
 export abstract class InputElement extends UIElement implements InputElementProperties {
-  label?: string = 'Beschriftung';
+  label?: string = '';
   value: InputElementValue = null;
   required: boolean = false;
   requiredWarnMessage: string = 'Eingabe erforderlich';

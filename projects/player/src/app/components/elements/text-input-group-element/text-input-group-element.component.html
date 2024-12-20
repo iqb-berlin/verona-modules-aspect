@@ -24,6 +24,21 @@
     (onKeyDown)="detectHardwareKeyboard(elementModel); checkInputLimitation($event, elementModel)"
     (focusChanged)="toggleKeyInput($event, elementComponent)">
   </aspect-spell-correct>
+  <aspect-text-area-math
+    *ngIf="elementModel.type === 'text-area-math'"
+    #elementComponent
+    [parentForm]="form"
+    [elementModel]="elementModel | cast: TextAreaMathElement"
+    (onKeyDown)="detectHardwareKeyboard(elementModel)"
+    (focusChanged)="toggleKeyInput($event, elementComponent)">
+  </aspect-text-area-math>
+  <aspect-math-field
+    *ngIf="elementModel.type === 'math-field'"
+    #elementComponent
+    [parentForm]="form"
+    [elementModel]="elementModel | cast: MathFieldElement"
+    (focusChanged)="toggleKeyInput($event, elementComponent)">
+  </aspect-math-field>
 </form>
 
 <aspect-floating-keypad

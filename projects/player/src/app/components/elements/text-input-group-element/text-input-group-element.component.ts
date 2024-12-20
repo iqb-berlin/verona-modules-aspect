@@ -6,8 +6,11 @@ import { ElementComponent } from 'common/directives/element-component.directive'
 import { TextAreaElement } from 'common/models/elements/input-elements/text-area';
 import { TextFieldElement } from 'common/models/elements/input-elements/text-field';
 import { SpellCorrectElement } from 'common/models/elements/input-elements/spell-correct';
+import { TextAreaMathElement } from 'common/models/elements/input-elements/text-area-math';
+import { MathFieldElement } from 'common/models/elements/input-elements/math-field';
 import { InputElement } from 'common/models/elements/element';
 import { TextInputGroupDirective } from 'player/src/app/directives/text-input-group.directive';
+import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 import { DeviceService } from '../../../services/device.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { ValidationService } from '../../../services/validation.service';
@@ -27,10 +30,13 @@ export class TextInputGroupElementComponent
   TextAreaElement!: TextAreaElement;
   TextFieldElement!: TextFieldElement;
   SpellCorrectElement!: SpellCorrectElement;
+  TextAreaMathElement!: TextAreaMathElement;
+  MathFieldElement!: MathFieldElement;
 
   constructor(
     public keyboardService: KeyboardService,
     public keypadService: KeypadService,
+    public mathKeyboardService: MathKeyboardService,
     public unitStateService: UnitStateService,
     public elementModelElementCodeMappingService: ElementModelElementCodeMappingService,
     public veronaSubscriptionService: VeronaSubscriptionService,

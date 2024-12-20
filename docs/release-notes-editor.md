@@ -1,5 +1,10 @@
 Editor
 ======
+## 2.7.0
+## Neue Funktionen
+- Elemente, die keine auswertbaren Werte annehmen können, erscheinen nun in der Liste der Variablen für die Kodierung mit dem type "no-value". 
+  Dies gilt auch für Zustandsvariablen.  
+
 ## 2.6.3
 ### Fehlerbehebungen
 - Korrigiert beim Upgrade von Aufgaben das initiale Setzen des Alias von Drag-and-Drop-Optionen

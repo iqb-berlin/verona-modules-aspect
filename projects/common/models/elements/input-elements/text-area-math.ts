@@ -1,6 +1,4 @@
-import {
-  InputElement
-} from 'common/models/elements/element';
+import { TextInputElement } from 'common/models/elements/element';
 import {
   BasicStyles,
   PositionProperties,
@@ -9,14 +7,18 @@ import {
 import { Type } from '@angular/core';
 import { ElementComponent } from 'common/directives/element-component.directive';
 import { VariableInfo } from '@iqb/responses';
-import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math.component';
+import { TextAreaMathComponent } from 'common/components/input-elements/text-area-math/text-area-math.component';
 import { environment } from 'common/environment';
-import { AbstractIDService, InputElementProperties, UIElementType } from 'common/interfaces';
+import {
+  AbstractIDService,
+  TextInputElementProperties,
+  UIElementType
+} from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
 
-export class TextAreaMathElement extends InputElement implements TextAreaMathProperties {
+export class TextAreaMathElement extends TextInputElement implements TextAreaMathProperties {
   type: UIElementType = 'text-area-math';
-  value = '';
+  value: TextAreaMath[] = [];
   rowCount: number = 2;
   hasAutoHeight: boolean = false;
   position: PositionProperties;
@@ -38,7 +40,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
       if (environment.strictInstantiation) {
         throw new InstantiationEror('Error at TextAreaMath instantiation', element);
       }
-      if (element?.value !== undefined) this.value = element?.value as string;
+      if (element?.value !== undefined) this.value = element?.value as TextAreaMath[] || [];
       if (element?.rowCount !== undefined) this.rowCount = element.rowCount;
       if (element?.hasAutoHeight !== undefined) this.hasAutoHeight = element.hasAutoHeight;
       this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
@@ -54,8 +56,8 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
     return [{
       id: this.id,
       alias: this.alias,
-      type: 'string',
-      format: 'math-ml',
+      type: 'json',
+      format: 'math-text-mix',
       multiple: false,
       nullable: false,
       values: [],
@@ -70,7 +72,7 @@ export class TextAreaMathElement extends InputElement implements TextAreaMathPro
   }
 }
 
-export interface TextAreaMathProperties extends InputElementProperties {
+export interface TextAreaMathProperties extends TextInputElementProperties {
   rowCount: number;
   hasAutoHeight: boolean;
   position: PositionProperties;
@@ -79,11 +81,17 @@ export interface TextAreaMathProperties extends InputElementProperties {
   };
 }
 
+export interface TextAreaMath {
+  type: 'text' | 'math';
+  value: string
+}
+
 function isTextAreaMathProperties(blueprint?: Partial<TextAreaMathProperties>): blueprint is TextAreaMathProperties {
   if (!blueprint) return false;
   return blueprint.rowCount !== undefined &&
     blueprint.hasAutoHeight !== undefined &&
     PropertyGroupValidators.isValidPosition(blueprint.position) &&
     PropertyGroupValidators.isValidBasicStyles(blueprint.styling) &&
+    PropertyGroupValidators.isValidKeyInputElementProperties(blueprint) &&
     blueprint.styling?.lineHeight !== undefined;
 }

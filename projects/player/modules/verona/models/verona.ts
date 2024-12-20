@@ -5,7 +5,8 @@ export type Progress = 'none' | 'some' | 'complete';
 export type PagingMode = 'separate' | 'buttons' | 'concat-scroll' | 'concat-scroll-snap';
 export enum ElementCodeStatusValue {
   UNSET = 0, NOT_REACHED = 1, DISPLAYED = 2, VALUE_CHANGED = 3, INVALID = 4,
-  DERIVE_ERROR = 5, CODING_COMPLETE = 6, NO_CODING = 7, CODING_INCOMPLETE = 8, CODING_ERROR = 9
+  DERIVE_ERROR = 5, CODING_COMPLETE = 6, NO_CODING = 7, CODING_INCOMPLETE = 8,
+  CODING_ERROR = 9, PARTLY_DISPLAYED = 10, DERIVE_PENDING = 11
 }
 
 export interface StatusChangeElement {

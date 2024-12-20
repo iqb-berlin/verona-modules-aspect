@@ -39,6 +39,8 @@ export class PlayerLayoutComponent implements OnDestroy {
   private isKeyboardToggling: number = 0;
   private ngUnsubscribe = new Subject<void>();
 
+  protected readonly window = window;
+
   constructor(
     public keypadService: KeypadService,
     public keyboardService: KeyboardService
@@ -64,7 +66,7 @@ export class PlayerLayoutComponent implements OnDestroy {
   }
 
   setIsKeypadToggling(): void {
-    this.isKeypadToggling = setTimeout(() => {
+    this.isKeypadToggling = window.setTimeout(() => {
       clearTimeout(this.isKeypadToggling);
       this.isKeypadToggling = 0;
       this.isKeypadAnimationDisabled = false;
@@ -72,7 +74,7 @@ export class PlayerLayoutComponent implements OnDestroy {
   }
 
   setIsKeyboardToggling(): void {
-    this.isKeyboardToggling = setTimeout(() => {
+    this.isKeyboardToggling = window.setTimeout(() => {
       clearTimeout(this.isKeyboardToggling);
       this.isKeyboardToggling = 0;
       this.isKeyboardAnimationDisabled = false;

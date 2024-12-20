@@ -1,9 +1,9 @@
 {
   "name": "verona-modules-aspect",
   "config": {
-    "player_version": "2.6.4",
-    "editor_version": "2.6.4",
-    "unit_definition_version": "4.7.0"
+    "player_version": "2.7.0",
+    "editor_version": "2.7.0",
+    "unit_definition_version": "4.8.0"
   },
   "scripts": {
     "ng": "ng",
@@ -70,7 +70,7 @@
     "@angular/platform-browser": "^17.3.9",
     "@angular/platform-browser-dynamic": "^17.3.9",
     "@angular/router": "^17.3.9",
-    "@iqb/responses": "^3.1.5",
+    "@iqb/responses": "^3.3.2",
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@tiptap/core": "^2.4.0",
@@ -99,7 +99,7 @@
     "@tiptap/extension-text-style": "^2.4.0",
     "@tiptap/extension-underline": "^2.4.0",
     "katex": "^0.16.11",
-    "mathlive": "^0.84.0",
+    "@iqb/mathlive": "^0.4.1",
     "ngx-tiptap": "^10.1.0",
     "ngx-translate-testing": "^7.0.0",
     "prosemirror-state": "^1.4.3",

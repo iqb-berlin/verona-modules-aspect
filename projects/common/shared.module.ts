@@ -24,7 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { HotspotImageComponent } from 'common/components/input-elements/hotspot-image.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ScrollPagesPipe } from 'common/pipes/scroll-pages.pipe';
-import { MathEditorModule } from 'common/math-editor.module';
+import { MathEditorModule } from 'common/math-editor/math-editor.module';
 import { DynamicRowsDirective } from 'common/directives/dynamic-rows.directive';
 import { TooltipEventTooltipDirective } from 'common/components/tooltip/tooltip-event-tooltip.directive';
 import { TooltipComponent } from 'common/components/tooltip/tooltip.component';
@@ -32,6 +32,10 @@ import { PointerEventTooltipDirective } from 'common/components/tooltip/pointer-
 import { ClozeChildErrorMessage } from 'common/components/compound-elements/cloze/cloze-child-error-message';
 import { TriggerComponent } from 'common/components/trigger/trigger.component';
 import { ImageFullscreenDirective } from 'common/directives/image-fullscreen.directive';
+import {
+  AreaSegmentComponent
+} from 'common/components/input-elements/text-area-math/area-segment.component';
+import { AreaRowHeightPipe } from 'common/components/input-elements/text-area-math/area-row-height.pipe';
 import { TextComponent } from './components/text/text.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextFieldComponent } from './components/input-elements/text-field.component';
@@ -80,12 +84,11 @@ import { MathDegreesPipe } from './pipes/math-degrees.pipe';
 import { ArrayIncludesPipe } from './pipes/array-includes.pipe';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { GetValuePipe, MathFieldComponent } from './components/input-elements/math-field.component';
-import { MeasurePipe } from './pipes/measure.pipe';
 import { TextImagePanelComponent } from './components/text-image-panel.component';
 import { UnitDefErrorDialogComponent } from './components/unit-def-error-dialog.component';
 import { MathTableComponent } from './components/input-elements/math-table.component';
 
-import { TextAreaMathComponent } from './components/input-elements/text-area-math.component';
+import { TextAreaMathComponent } from './components/input-elements/text-area-math/text-area-math.component';
 import { DragImageComponent } from './components/input-elements/drop-list/drag-image.component';
 import { DraggableDirective } from './components/input-elements/drop-list/draggable.directive';
 
@@ -114,7 +117,9 @@ import { DraggableDirective } from './components/input-elements/drop-list/dragga
     CdkConnectedOverlay,
     CdkOverlayOrigin,
     DraggableDirective,
-    ImageFullscreenDirective
+    ImageFullscreenDirective,
+    AreaSegmentComponent,
+    AreaRowHeightPipe
   ],
   declarations: [
     ButtonComponent,

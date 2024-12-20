@@ -40,10 +40,10 @@ import { CombinedProperties } from 'editor/src/app/components/properties-panel/e
 
     <ng-container *ngIf="combinedProperties.type === 'math-field'">
       <mat-label>{{'preset' | translate }}</mat-label><br>
-      <aspect-mathlive-math-field [value]="$any(combinedProperties).value"
+      <aspect-math-input [value]="$any(combinedProperties).value"
                                   [enableModeSwitch]="true"
                                   (input)="updateModel.emit({property: 'value', value: $any($event.target).value })">
-      </aspect-mathlive-math-field>
+      </aspect-math-input>
     </ng-container>
   `
 })

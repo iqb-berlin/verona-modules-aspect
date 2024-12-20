@@ -12,6 +12,7 @@ export class AnchorService {
     if (this.activeAnchors[anchorId]) {
       this.removeAnchor(anchorId);
     } else {
+      this.reset();
       this.showAnchor(anchorId);
     }
   }

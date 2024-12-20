@@ -4,6 +4,9 @@ Player
 ### Neue Funktionen
 - Beim Seitenwechsel werden aktive Buttons zum Markieren von Texten zurückgesetzt 
 
+## Änderungen
+- Beim Hervorheben von Textabschnitten durch Buttons werden andere Hervorhebungen zurückgesetzt 
+
 ### Fehlerbehebungen
 - Fasst aufeinanderfolgende markierte Wörter in den Antwortdaten von Texten zu Bereichen zusammen
 

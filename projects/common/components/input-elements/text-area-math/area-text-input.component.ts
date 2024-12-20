@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild
+  Component, ElementRef, EventEmitter, Input, Output, ViewChild
 } from '@angular/core';
 import { RangeSelectionService } from 'common/services/range-selection-service';
 
@@ -7,7 +7,6 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
   selector: 'aspect-area-input',
   template: `
     <span #inputRef class="input"
-          [style.display]="displayType"
           [contentEditable]="true"
           [textContent]="value"
           (focusin)="onFocusIn(inputRef)"
@@ -19,6 +18,7 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
   `,
   styles: [`
     .input {
+      display: inline-block;
       padding: 0 14px;
       outline: none;
       white-space: pre-line;
@@ -27,9 +27,8 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
   `],
   standalone: true
 })
-export class AreaTextInputComponent implements OnInit {
+export class AreaTextInputComponent {
   removePressed: boolean = false;
-  displayType: string = 'inline-block';
 
   @Input() value!: string;
   @Output() valueChanged: EventEmitter<string> = new EventEmitter();
@@ -42,10 +41,6 @@ export class AreaTextInputComponent implements OnInit {
   }>();
 
   @ViewChild('inputRef') inputRef!: ElementRef;
-
-  ngOnInit(): void {
-    this.setDisplayType(this.value);
-  }
 
   setFocus(offset?: number) {
     if (offset) {
@@ -63,12 +58,6 @@ export class AreaTextInputComponent implements OnInit {
 
   onInput() {
     this.valueChanged.emit(this.inputRef.nativeElement.textContent);
-    this.setDisplayType(this.inputRef.nativeElement.textContent);
-  }
-
-  private setDisplayType(value: string) {
-    // Fix cursor in empty input in chromium
-    this.displayType = value ? 'inline' : 'inline-block';
   }
 
   keyDown(event: KeyboardEvent) {

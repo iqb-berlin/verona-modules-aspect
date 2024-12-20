@@ -11,7 +11,7 @@ import { TextAreaMathComponent } from 'common/components/input-elements/text-are
 import { environment } from 'common/environment';
 import {
   AbstractIDService,
-  KeyInputElementProperties, TextInputElementProperties,
+  TextInputElementProperties,
   UIElementType
 } from 'common/interfaces';
 import { InstantiationEror } from 'common/errors';
@@ -43,7 +43,6 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
       if (element?.value !== undefined) this.value = element?.value as TextAreaMath[] || [];
       if (element?.rowCount !== undefined) this.rowCount = element.rowCount;
       if (element?.hasAutoHeight !== undefined) this.hasAutoHeight = element.hasAutoHeight;
-      Object.assign(this, PropertyGroupGenerators.generateKeyInputProps(element));
       this.dimensions = PropertyGroupGenerators.generateDimensionProps(element?.dimensions);
       this.position = PropertyGroupGenerators.generatePositionProps(element?.position);
       this.styling = {
@@ -73,7 +72,7 @@ export class TextAreaMathElement extends TextInputElement implements TextAreaMat
   }
 }
 
-export interface TextAreaMathProperties extends TextInputElementProperties, KeyInputElementProperties {
+export interface TextAreaMathProperties extends TextInputElementProperties {
   rowCount: number;
   hasAutoHeight: boolean;
   position: PositionProperties;

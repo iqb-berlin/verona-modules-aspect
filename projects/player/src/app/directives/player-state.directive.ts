@@ -8,6 +8,7 @@ import { IsVisibleIndex } from 'player/src/app/models/is-visible-index.interface
 import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { NavigationService } from 'player/src/app/services/navigation.service';
 
 @Directive({
   selector: '[aspectPlayerState]'
@@ -20,7 +21,8 @@ export class PlayerStateDirective implements OnChanges, OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   constructor(
     private translateService: TranslateService,
-    private veronaPostService: VeronaPostService
+    private veronaPostService: VeronaPostService,
+    private navigationService: NavigationService
   ) {}
 
   ngOnInit(): void {
@@ -37,6 +39,7 @@ export class PlayerStateDirective implements OnChanges, OnInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.currentPageIndex) {
+      this.navigationService.currentPageIndexChanged.emit(this.currentPageIndex);
       this.sendVopStateChangedNotification();
     }
   }

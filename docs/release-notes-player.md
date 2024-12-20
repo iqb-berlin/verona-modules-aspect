@@ -1,8 +1,11 @@
 Player
 ======
 ## 2.6.4
+### Neue Funktionen
+- Beim Seitenwechsel werden aktive Buttons zum Markieren von Texten zurückgesetzt 
+
 ### Fehlerbehebungen
-- Fasst aufeinanderfolgende markierte Wörter in den Antwortdaten von Texten zu Bereichen zusammen  
+- Fasst aufeinanderfolgende markierte Wörter in den Antwortdaten von Texten zu Bereichen zusammen
 
 ## 2.6.0
 ### Neue Funktionen

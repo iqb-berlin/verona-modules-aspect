@@ -74,6 +74,21 @@ export class InteractiveGroupElementComponent
         this.unitStateService.getElementCodeById(this.elementModel.id)?.value, this.elementModel
       ) as MathTableRow[];
     }
+    if (this.elementModel.type === 'marking-panel') {
+      this.navigationService.currentPageIndexChanged
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => {
+          this.markingPanelService.broadcastMarkingData({
+            id: this.elementModel.id,
+            markingData: {
+              active: false,
+              mode: 'mark',
+              color: '',
+              colorName: ''
+            }
+          });
+        });
+    }
   }
 
   ngAfterViewInit(): void {

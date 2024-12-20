@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { NavigationTarget } from 'player/modules/verona/models/verona';
-import { B } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class NavigationService {
   enabledNavigationTargets: BehaviorSubject<NavigationTarget[] | undefined> =
     new BehaviorSubject<NavigationTarget[] | undefined>(undefined);
+
+  currentPageIndexChanged: EventEmitter<number> = new EventEmitter<number>();
 
   private _pageIndex = new Subject<number>();
 

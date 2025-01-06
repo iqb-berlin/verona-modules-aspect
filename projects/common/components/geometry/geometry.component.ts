@@ -75,7 +75,7 @@ export class GeometryComponent extends ElementComponent implements AfterViewInit
   }
 
   ngAfterViewInit(): void {
-    this.loadApplet();
+    setTimeout(() => this.loadApplet());
   }
 
   private loadApplet(): void {

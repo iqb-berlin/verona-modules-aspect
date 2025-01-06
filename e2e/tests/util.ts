@@ -57,15 +57,19 @@ export function addPostMessageStub() {
 }
 
 export function assertValueChanged(id: string, value: any): void {
+  const regex = new RegExp(
+    `\\{"id":"${id}","status":"VALUE_CHANGED","value":${value}\\}`
+  );
+
   cy.get('@postMessage')
     .should('be.calledWithMatch',
       Cypress.sinon.match.has('unitState',
         Cypress.sinon.match.has(
           'dataParts', Cypress.sinon.match.has('elementCodes',
-            Cypress.sinon.match(
-              `{"id":"${id}","value":${value},"status":"VALUE_CHANGED"}`))
+            Cypress.sinon.match(regex))
         )));
 
+}
   // alternative without 'has'
   // -------------------------
   // cy.get('@postMessage')
@@ -78,7 +82,6 @@ export function assertValueChanged(id: string, value: any): void {
   //         })
   //       })
   //     }));
-}
 
 export function addTextElement(text: string): void {
   addElement('Text');

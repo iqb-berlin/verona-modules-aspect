@@ -18,7 +18,7 @@ import { DragOperatorService } from './drag-operator.service';
   template: `
     <span *ngIf="clozeContext" [style.width.px]="0">&nbsp;</span>
     <!-- TODO testen, ob touchstart keine Probleme macht -->
-    <div class="drop-list" id="{{elementModel.id}}" #droplist
+    <div class="drop-list" id="{{elementModel.alias}}" #droplist
          [class.cloze-context]="clozeContext"
          [class.hovered]="!elementModel.isSortList && isHovered"
          [class.isHighlighted]="isHighlighted"

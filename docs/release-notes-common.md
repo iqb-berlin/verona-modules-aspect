@@ -1,5 +1,12 @@
 Allgemein
 =========
+## editor/2.7.1+player/2.7.1
+### Fehlerbehebungen
+- Behebt Fehler beim erneuten Laden von Aufgaben mit mehreren Geogebra-Elementen
+
+### Änderungen
+- Entfernt Tooltips von der Tastatur zur Formeleingabe
+
 ## editor/2.7.0+player/2.7.0
 ## Verbesserungen
 - Formeleingabe

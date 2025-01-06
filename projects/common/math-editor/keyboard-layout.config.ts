@@ -4,7 +4,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
   iqbNumeric: {
     label: '123',
     labelClass: 'MLK__tex-math',
-    tooltip: 'keyboard.tooltip.numeric',
     rows: [
       [
         {
@@ -136,7 +135,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
   iqbText: {
     label: 'abc',
     labelClass: 'MLK__tex-math',
-    tooltip: 'keyboard.tooltip.alphabetic',
     layers: [
       {
         rows: [
@@ -386,7 +384,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
   iqbGreek: {
     label: '&alpha;&beta;&gamma;',
     labelClass: 'MLK__tex-math',
-    tooltip: 'keyboard.tooltip.greek',
     rows: [
       [
         {
@@ -629,7 +626,6 @@ export const IQB_MATH_KEYBOARD_LAYOUTS: Record<string, VirtualKeyboardLayout> = 
   iqbSymbols: {
     label: '&infin;≠∈',
     labelClass: 'MLK__tex',
-    tooltip: 'keyboard.tooltip.symbols',
     rows: [
       [
         {

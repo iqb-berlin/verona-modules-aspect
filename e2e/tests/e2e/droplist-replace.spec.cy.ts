@@ -1,22 +1,17 @@
-import { addList, dragTo } from './droplist-util';
-import { selectFromDropdown } from '../util';
+import { addList, connectLists, dragTo } from './droplist-util';
 
 describe('Droplist element', { testIsolation: false }, () => {
   it('creates several droplists with only-one and replacement', () => {
     cy.openEditor();
-    addList('Startliste 1', ['AAA'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true });
-    addList('Startliste 2', ['BBB'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true });
-    addList('Startliste 3', ['CCC'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true });
-    addList('Zielliste', [], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true });
+    addList('Startliste 1', ['AAA'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste1');
+    addList('Startliste 2', ['BBB'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste2');
+    addList('Startliste 3', ['CCC'], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Startliste3');
+    addList('Zielliste', [], { highlightReceivingDropList: true, onlyOneItem: true, allowReplacement: true }, 'Zielliste');
 
-    // connect lists to target
-    cy.get('aspect-editor-dynamic-overlay').eq(1).click();
-    selectFromDropdown('Verbundene Ablegelisten', 'drop-list_4', true);
-    cy.get('aspect-editor-dynamic-overlay').eq(3).click();
-    selectFromDropdown('Verbundene Ablegelisten', 'drop-list_3', true);
-    selectFromDropdown('Verbundene Ablegelisten', 'drop-list_4', true);
-    cy.get('aspect-editor-dynamic-overlay').eq(5).click();
-    selectFromDropdown('Verbundene Ablegelisten', 'drop-list_4', true);
+    connectLists('Startliste1', 'Zielliste');
+    connectLists('Startliste2', 'Startliste3');
+    connectLists('Startliste2', 'Zielliste');
+    connectLists('Startliste3', 'Zielliste');
 
     cy.saveUnit('e2e/downloads/droplist-replace.json');
   });
@@ -26,19 +21,19 @@ describe('Droplist element', { testIsolation: false }, () => {
   it('replaces items without backward connection, recursively', () => {
     cy.openPlayer();
     cy.loadUnit('../downloads/droplist-replace.json');
-    dragTo('drop-list_3', 'CCC', 'drop-list_4');
-    dragTo('drop-list_2', 'BBB', 'drop-list_3');
-    cy.get('#drop-list_1').children().should('have.length', 1);
-    cy.get('#drop-list_2').children().should('have.length', 0);
-    cy.get('#drop-list_3').children().should('have.length', 1);
-    cy.get('#drop-list_4').children().should('have.length', 1);
-    dragTo('drop-list_1', 'AAA', 'drop-list_4');
-    cy.get('#drop-list_1').children().should('have.length', 0);
-    cy.get('#drop-list_2').children().should('have.length', 1);
-    cy.get('#drop-list_3').children().should('have.length', 1);
-    cy.get('#drop-list_4').children().should('have.length', 1);
-    cy.get('#drop-list_2').contains('BBB');
-    cy.get('#drop-list_3').contains('CCC');
-    cy.get('#drop-list_4').contains('AAA');
+    dragTo('Startliste3', 'CCC', 'Zielliste');
+    dragTo('Startliste2', 'BBB', 'Startliste3');
+    cy.get('#Startliste1').children().should('have.length', 1);
+    cy.get('#Startliste2').children().should('have.length', 0);
+    cy.get('#Startliste3').children().should('have.length', 1);
+    cy.get('#Zielliste').children().should('have.length', 1);
+    dragTo('Startliste1', 'AAA', 'Zielliste');
+    cy.get('#Startliste1').children().should('have.length', 0);
+    cy.get('#Startliste2').children().should('have.length', 1);
+    cy.get('#Startliste3').children().should('have.length', 1);
+    cy.get('#Zielliste').children().should('have.length', 1);
+    cy.get('#Startliste2').contains('BBB');
+    cy.get('#Startliste3').contains('CCC');
+    cy.get('#Zielliste').contains('AAA');
   });
 });

@@ -6,11 +6,35 @@ export function navigateToPage(pageIndex: number) {
   cy.contains(`Seite ${pageIndex}`).click();
 }
 
-export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {
+export function addElement(element: string, expansionPanel?: string, id?: string): void {
+  // Check if expansion panel is already open; this is important for non-isolated tests
+  if (expansionPanel) {
+    cy.contains('mat-expansion-panel', expansionPanel).then(expansionPanelElement => {
+      if (!expansionPanelElement.hasClass('mat-expanded')) {
+        cy.contains(expansionPanel).click();
+      }
+    });
+  }
+  cy.contains(element).click();
+  if (id !== undefined) {
+    setID(id);
+  }
+}
+
+export function addTextElement(text: string): void {
+  addElement('Text');
   cy.get('aspect-element-model-properties-component')
-    .contains('mat-form-field', dropdownName).find('mat-select').click();
-  cy.get('.cdk-overlay-container').contains(optionName).click({ force: true });
-  if (closeOverlay) cy.get('body').click();
+    .contains('edit').click();
+  cy.get('.ProseMirror p').clear();
+  cy.get('.ProseMirror p').type(text);
+  cy.contains('Speichern').click();
+}
+
+export function setID(id: string): void {
+  cy.get('aspect-element-model-properties-component')
+    .contains('mat-form-field', 'ID').find('input')
+    .clear()
+    .type(id);
 }
 
 export function addOption(optionName: string): void {
@@ -35,16 +59,11 @@ export function setCheckbox(labelText: string): void {
     .click();
 }
 
-export function addElement(element: string, expansionPanel?: string): void {
-  // Check if expansion panel is already open; this is important for non-isolated tests
-  if (expansionPanel) {
-    cy.contains('mat-expansion-panel', expansionPanel).then(expansionPanelElement => {
-      if (!expansionPanelElement.hasClass('mat-expanded')) {
-        cy.contains(expansionPanel).click();
-      }
-    });
-  }
-  cy.contains(element).click();
+export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {
+  cy.get('aspect-element-model-properties-component')
+    .contains('mat-form-field', dropdownName).find('mat-select').click();
+  cy.get('.cdk-overlay-container').contains(optionName).click({ force: true });
+  if (closeOverlay) cy.get('body').click();
 }
 
 export function addPostMessageStub() {
@@ -83,11 +102,4 @@ export function assertValueChanged(id: string, value: any): void {
   //       })
   //     }));
 
-export function addTextElement(text: string): void {
-  addElement('Text');
-  cy.get('aspect-element-model-properties-component')
-    .contains('edit').click();
-  cy.get('.ProseMirror p').clear();
-  cy.get('.ProseMirror p').type(text);
-  cy.contains('Speichern').click();
-}
+

@@ -1,9 +1,9 @@
-import { addElement, addTextElement, setCheckbox } from '../util';
+import { addElement, addTextElement, selectFromDropdown, setCheckbox } from '../util';
 
-/* Adds text element as label for the droplist */
-export function addList(title: string, options: string[] = [], settings?: Record<string, boolean>): void {
+/* Also adds text element as label before the droplist */
+export function addList(title: string, options: string[] = [], settings?: Record<string, boolean>, id?: string): void {
   addTextElement(title);
-  addElement('Ablegeliste', '(Zu)Ordnung');
+  addElement('Ablegeliste', '(Zu)Ordnung', id);
   options.forEach(option => addOption(option));
   if (settings?.highlightReceivingDropList) setCheckbox('Potentielle Ablagen hervorheben');
   if (settings?.sortList) setCheckbox('Sortierliste');
@@ -17,6 +17,11 @@ export function addOption(optionName: string): void {
     .find('textarea')
     .clear()
     .type(`${optionName}{enter}`);
+}
+
+export function connectLists(sourceList: string, targetList: string): void {
+  cy.get(`aspect-editor-dynamic-overlay:has(#${sourceList})`).click();
+  selectFromDropdown('Verbundene Ablegelisten', targetList, true);
 }
 
 export function dragTo(list: string, item: string, targetList: string): void {

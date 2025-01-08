@@ -1,3 +1,42 @@
 .is-active {
   cursor: pointer;
 }
+
+@mixin selectionAnimation($animation) {
+  animation: $animation 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+}
+
+@keyframes yellowColorChange {
+  80% { background: #f9f871; }
+}
+
+@keyframes turquoiseColorChange {
+  80% { background: #9de8eb; }
+}
+
+@keyframes orangeColorChange {
+  80% { background: #ffa06a; }
+}
+
+@keyframes deleteColorChange {
+  80% { background: lightgrey; }
+}
+
+.is-selected-yellow {
+  @include selectionAnimation(yellowColorChange);
+}
+
+.is-selected-turquoise {
+  @include selectionAnimation(turquoiseColorChange);
+}
+
+.is-selected-orange {
+  @include selectionAnimation(orangeColorChange);
+}
+
+.is-selected-delete {
+  @include selectionAnimation(deleteColorChange);
+}

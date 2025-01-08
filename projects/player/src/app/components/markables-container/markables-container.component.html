@@ -4,6 +4,8 @@
   }
   @if (markable.word) {
     <aspect-markable-word class="prevent-select"
+                          [id]="markable.id"
+                          [markingRange]="markingRange"
                           [text]="markable.word"
                           [markColor]="selectedColor.value"
                           [(color)]="markable.color"

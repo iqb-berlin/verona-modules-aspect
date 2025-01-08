@@ -119,7 +119,7 @@ export class InteractiveGroupElementComponent
       .subscribe(markingColor => {
         if (markingColor.markingPanels.includes(this.elementModel.id)) {
           this.selectedColor = markingColor.color;
-          this.hasDeleteButton = (markingColor.markingMode === 'selection');
+          this.hasDeleteButton = (markingColor.markingMode !== 'word');
         }
       });
   }

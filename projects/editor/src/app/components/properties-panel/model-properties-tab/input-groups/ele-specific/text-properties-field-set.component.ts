@@ -84,7 +84,7 @@ import { DialogService } from '../../../../../services/dialog.service';
                                   !combinedProperties.highlightableTurquoise &&
                                   !combinedProperties.highlightableOrange)"
                       (selectionChange)="updateModel.emit({ property: 'markingMode', value: $event.value })">
-            <mat-option *ngFor="let option of ['selection', 'word']"
+            <mat-option *ngFor="let option of ['selection', 'word', 'range']"
                         [value]="option">
               {{ 'propertiesPanel.markingMode-' + option | translate }}
             </mat-option>

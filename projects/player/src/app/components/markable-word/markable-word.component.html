@@ -1,3 +1,15 @@
 <span [class.is-active]="!!(markColor && markColor !== 'none')"
-      [style.background-color]="color ? color : 'transparent'"
-      (click)="toggleMarked()">{{text}}</span>
+      [class.is-selected-yellow]="markColor === 'yellow' &&
+                                  markingRange?.value?.first === id &&
+                                  markingRange?.value?.second === null"
+      [class.is-selected-turquoise]="markColor === 'turquoise' &&
+                                     markingRange?.value?.first === id &&
+                                     markingRange?.value?.second === null"
+      [class.is-selected-orange]="markColor === 'orange' &&
+                                  markingRange?.value?.first === id &&
+                                  markingRange?.value?.second === null"
+      [class.is-selected-delete]="markColor === 'delete' &&
+                                  markingRange?.value?.first === id &&
+                                  markingRange?.value?.second === null"
+      [style.background-color]="color ? color : null"
+      (click)="onWordClick()">{{text}}</span>

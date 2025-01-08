@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
 import { BehaviorSubject } from 'rxjs';
-import { MarkingData } from 'common/models/marking-data';
+import { MarkingRange, MarkingData } from 'common/models/marking-data';
 import { ValueChangeElement } from 'common/interfaces';
 import { ElementComponent } from '../../directives/element-component.directive';
 
@@ -18,7 +18,7 @@ import { ElementComponent } from '../../directives/element-component.directive';
                elementModel.highlightableOrange"
         [sticky]="true"
         [selectedColor]="selectedColor.value || 'none'"
-        [hasDeleteButton]="elementModel.markingMode === 'selection'"
+        [hasDeleteButton]="elementModel.markingMode !== 'word'"
         [elementModel]="elementModel"
         (markingDataChanged)="selectedColor.next($event.colorName); markingDataChanged.emit($event)">
       </aspect-text-marking-bar>
@@ -66,11 +66,14 @@ export class TextComponent extends ElementComponent implements OnInit {
   @Output() textSelectionStart = new EventEmitter<PointerEvent>();
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
 
+  markingRange!: BehaviorSubject<MarkingRange | null> | null;
   selectedColor: BehaviorSubject<string | undefined> = new BehaviorSubject<string | undefined>(undefined);
 
   @ViewChild('textContainerRef') textContainerRef!: ElementRef;
 
   ngOnInit(): void {
+    this.markingRange = this.elementModel.markingMode === 'range' ?
+      new BehaviorSubject<MarkingRange | null>(null) : null;
     this.selectedColor.subscribe(color => this.selectedColorChanged.emit(color));
   }
 

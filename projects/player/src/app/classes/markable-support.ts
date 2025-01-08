@@ -65,6 +65,7 @@ export class MarkableSupport {
     });
     componentRef.instance.markables = markablesContainer.markables;
     componentRef.instance.selectedColor = elementComponent.selectedColor;
+    componentRef.instance.markingRange = elementComponent.markingRange;
     componentRef.instance.markablesChange.subscribe(() => {
       elementComponent.elementValueChanged.emit(
         {

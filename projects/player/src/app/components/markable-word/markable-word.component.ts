@@ -1,7 +1,12 @@
 import {
-  Component, EventEmitter, Input, Output
+  Component, EventEmitter, Input, OnDestroy, OnInit, Output
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
+import { BehaviorSubject, Subject } from 'rxjs';
+
+import { MarkingRange } from 'common/models/marking-data';
+import { NativeEventService } from 'player/src/app/services/native-event.service';
+import { first, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'aspect-markable-word',
@@ -10,21 +15,116 @@ import { TextElement } from 'common/models/elements/text/text';
   templateUrl: './markable-word.component.html',
   styleUrl: './markable-word.component.scss'
 })
-export class MarkableWordComponent {
+export class MarkableWordComponent implements OnInit, OnDestroy {
+  @Input() id!: number;
   @Input() text = '';
+  @Input() markingRange!: BehaviorSubject<MarkingRange | null> | null;
   @Input() color!: string | null;
   @Input() markColor!: string | undefined;
   @Output() colorChange = new EventEmitter<string | null>();
 
-  toggleMarked(): void {
+  private ngUnsubscribe = new Subject<void>();
+
+  constructor(private nativeEventService: NativeEventService) {}
+
+  ngOnInit(): void {
+    if (this.markingRange) {
+      this.markingRange.subscribe(() => this.applyRangeColor());
+    }
+  }
+
+  onWordClick(): void {
     if (!this.markColor || this.markColor === 'none') {
       return;
     }
-    if (this.color && this.color === TextElement.selectionColors[this.markColor]) {
-      this.color = null;
+    if (!this.markingRange) {
+      this.toggleMarked(this.markColor);
     } else {
-      this.color = TextElement.selectionColors[this.markColor];
+      this.toggleRange(this.markColor);
     }
+  }
+
+  private applyRangeColor(): void {
+    if (!this.markColor || this.markColor === 'none') {
+      return;
+    }
+    const range = this.getRange();
+    if (range && this.id >= range.start && this.id <= range.end) {
+      this.toggleRangedMarked(this.markColor);
+    }
+  }
+
+  private getRange(): { start: number, end: number } | null {
+    if (this.markingRange?.value) {
+      const firstWord = this.markingRange.value.first;
+      const secondWord = this.markingRange.value.second;
+      if (firstWord !== null && secondWord !== null) {
+        return {
+          start: Math.min(firstWord, secondWord),
+          end: Math.max(firstWord, secondWord)
+        };
+      }
+    }
+    return null;
+  }
+
+  private toggleRange(markColor: string): void {
+    const actualValue = this.markingRange?.value as MarkingRange | null;
+    if (actualValue === null) {
+      if (this.color && this.color === TextElement.selectionColors[markColor]) {
+        this.unmark();
+        this.markingRange?.next(null);
+      } else {
+        this.subscribeForPointerUp();
+        this.markingRange?.next({ first: this.id, second: null });
+      }
+    } else {
+      this.markingRange?.next({ ...actualValue, second: this.id });
+    }
+  }
+
+  private subscribeForPointerUp(): void {
+    this.nativeEventService.pointerUp
+      .pipe(takeUntil(this.ngUnsubscribe), first())
+      .subscribe(() => this.cleanMarking());
+  }
+
+  private cleanMarking(): void {
+    setTimeout(() => {
+      if (this.markingRange?.value) {
+        this.markingRange.next(null);
+      }
+    });
+  }
+
+  private toggleRangedMarked(markColor: string): void {
+    if (this.markColor === 'delete') {
+      this.unmark();
+    } else {
+      this.mark(markColor);
+    }
+  }
+
+  private toggleMarked(markColor: string): void {
+    if (this.color && this.color === TextElement.selectionColors[markColor]) {
+      this.unmark();
+    } else {
+      this.mark(markColor);
+    }
+  }
+
+  private mark(markColor: string): void {
+    this.color = TextElement.selectionColors[markColor];
     this.colorChange.emit(this.color);
+  }
+
+  private unmark(): void {
+    this.color = null;
+    this.colorChange.emit(this.color);
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

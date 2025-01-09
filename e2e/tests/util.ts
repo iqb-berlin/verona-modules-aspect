@@ -62,7 +62,7 @@ export function setCheckbox(labelText: string): void {
 export function selectFromDropdown(dropdownName: string, optionName: string, closeOverlay: boolean = false) {
   cy.get('aspect-element-model-properties-component')
     .contains('mat-form-field', dropdownName).find('mat-select').click();
-  cy.get('.cdk-overlay-container').contains(optionName).click({ force: true });
+  cy.get('.cdk-overlay-container').contains('span', new RegExp(`^ ${optionName} $`)).click({ force: true });
   if (closeOverlay) cy.get('body').click();
 }
 

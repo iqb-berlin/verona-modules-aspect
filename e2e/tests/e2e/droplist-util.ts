@@ -1,4 +1,6 @@
-import { addElement, addTextElement, selectFromDropdown, setCheckbox } from '../util';
+import {
+  addElement, addTextElement, selectFromDropdown, setCheckbox
+} from '../util';
 
 /* Also adds text element as label before the droplist */
 export function addList(title: string, options: string[] = [], settings?: Record<string, boolean>, id?: string): void {
@@ -9,6 +11,7 @@ export function addList(title: string, options: string[] = [], settings?: Record
   if (settings?.sortList) setCheckbox('Sortierliste');
   if (settings?.onlyOneItem) setCheckbox('Nur ein Element');
   if (settings?.allowReplacement) setCheckbox('Verdrängen erlauben');
+  if (settings?.copyElement) setCheckbox('Elemente kopieren');
 }
 
 export function addOption(optionName: string): void {

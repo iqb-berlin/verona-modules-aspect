@@ -234,7 +234,9 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   }
 
   private subscribeToTextSelectedColorChanged(child: TextComponent, childModel: TextElement) {
-    child.selectedColorChanged.subscribe(color => this.broadcastMarkingColorChange(color, childModel));
+    child.selectedColorChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(color => this.broadcastMarkingColorChange(color, childModel));
   }
 
   private broadcastMarkingColorChange(color: string | undefined, childModel: TextElement): void {
@@ -341,6 +343,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
   private addEnabledNavigationListener(button: ButtonComponent) {
     if (button.elementModel.action === 'unitNav') {
       this.navigationService.enabledNavigationTargets
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(enabledNavigationTargets => {
           if (enabledNavigationTargets && enabledNavigationTargets
             .includes(button.elementModel.actionParam as NavigationTarget)) {

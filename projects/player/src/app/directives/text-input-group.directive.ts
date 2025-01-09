@@ -12,6 +12,7 @@ import { RangeSelectionService } from 'common/services/range-selection-service';
 import { MathfieldElement } from '@iqb/mathlive';
 import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 import { MathFieldComponent } from 'common/components/input-elements/math-field.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Directive()
 export abstract class TextInputGroupDirective extends ElementFormGroupDirective implements OnDestroy {
@@ -97,10 +98,13 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
 
   private subscribeForKeypadEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
     this.keypadEnterKeySubscription = this.keypadService.enterKey
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keypadDeleteCharactersSubscription = this.keypadService.deleteCharacters
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
     this.keypadSelectSubscription = this.keypadService.select
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.select(key));
   }
 
@@ -112,8 +116,10 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
 
   private subscribeForKeyboardEvents(elementModel: UIElement, elementComponent: ElementComponent): void {
     this.keyboardEnterKeySubscription = this.keyboardService.enterKey
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(key => this.enterKey(key, elementModel, elementComponent));
     this.keyboardDeleteCharactersSubscription = this.keyboardService.deleteCharacters
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(isBackspace => this.deleteCharacters(isBackspace, elementComponent));
   }
 

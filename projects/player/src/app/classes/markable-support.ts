@@ -63,6 +63,7 @@ export class MarkableSupport {
       environmentInjector,
       hostElement: markableContainerElement
     });
+    componentRef.instance.allMarkables = markables;
     componentRef.instance.markables = markablesContainer.markables;
     componentRef.instance.selectedColor = elementComponent.selectedColor;
     componentRef.instance.markingRange = elementComponent.markingRange;

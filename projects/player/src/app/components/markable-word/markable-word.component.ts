@@ -3,7 +3,6 @@ import {
 } from '@angular/core';
 import { TextElement } from 'common/models/elements/text/text';
 import { BehaviorSubject, Subject } from 'rxjs';
-
 import { MarkingRange } from 'common/models/marking-data';
 import { NativeEventService } from 'player/src/app/services/native-event.service';
 import { first, takeUntil } from 'rxjs/operators';
@@ -17,7 +16,7 @@ import { first, takeUntil } from 'rxjs/operators';
 })
 export class MarkableWordComponent implements OnInit, OnDestroy {
   @Input() id!: number;
-  @Input() text = '';
+  @Input() text!: string;
   @Input() markingRange!: BehaviorSubject<MarkingRange | null> | null;
   @Input() color!: string | null;
   @Input() markColor!: string | undefined;

@@ -4,15 +4,16 @@ import {
 import { MarkableWordComponent } from 'player/src/app/components/markable-word/markable-word.component';
 import { Markable } from 'player/src/app/models/markable.interface';
 import { BehaviorSubject } from 'rxjs';
-import { JsonPipe } from '@angular/common';
-
 import { MarkingRange } from 'common/models/marking-data';
+import { MarkableDelimiterComponent } from 'player/src/app/components/markable-delimiter/markable-delimiter.component';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'aspect-markables-container',
   standalone: true,
   imports: [
     MarkableWordComponent,
+    MarkableDelimiterComponent,
     JsonPipe
   ],
   templateUrl: './markables-container.component.html',
@@ -23,6 +24,7 @@ export class MarkablesContainerComponent {
   @Input() markables!: Markable[];
   @Input() markingRange!: BehaviorSubject<MarkingRange | null> | null;
   @Input() markablesChange: EventEmitter<void> = new EventEmitter<void>();
+  @Input() allMarkables!: Markable[];
 
   onColorChange() {
     this.markablesChange.emit();

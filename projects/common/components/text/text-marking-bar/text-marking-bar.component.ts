@@ -34,10 +34,13 @@ import { MarkingData } from 'common/models/marking-data';
                                   mode="delete"
                                   (selectedMarkingChanged)="changeMarkingData($event)">
       </aspect-text-marking-button>
+      <span *ngIf="showHint"
+            class="hint">{{'markingHint' | translate}}</span>
     </div>`,
   styles: [
-    '.sticky {position: sticky; top: 0;}',
-    '.marking-bar {margin-bottom: 13px;}'
+    '.sticky {position: sticky; top: 0; }',
+    '.marking-bar {margin-bottom: 13px;}',
+    '.hint {font-size: 16px; margin-left: 15px; color: #f44336; position: absolute; margin-top: 10px;}'
   ]
 })
 export class TextMarkingBarComponent {
@@ -45,7 +48,7 @@ export class TextMarkingBarComponent {
   @Input() sticky!: boolean;
   @Input() hasDeleteButton!: boolean;
   @Output() markingDataChanged = new EventEmitter<MarkingData>();
-
+  @Input() showHint!: boolean;
   @Input() selectedColor!: string;
   selectionColors: Record<string, string> = TextElement.selectionColors;
 

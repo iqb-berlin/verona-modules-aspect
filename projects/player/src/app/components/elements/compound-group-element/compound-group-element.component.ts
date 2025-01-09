@@ -1,5 +1,5 @@
 import {
-  AfterViewInit, ApplicationRef, Component, OnInit, Renderer2, ViewChild
+  AfterViewInit, ApplicationRef, Component, OnDestroy, OnInit, Renderer2, ViewChild
 } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 import { ElementComponent } from 'common/directives/element-component.directive';
@@ -39,20 +39,20 @@ import { MarkingPanelService } from 'player/src/app/services/marking-panel.servi
 import {
   TextGroupElementComponent
 } from 'player/src/app/components/elements/text-group-element/text-group-element.component';
+import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 import { UnitStateService } from '../../../services/unit-state.service';
 import { ElementModelElementCodeMappingService } from '../../../services/element-model-element-code-mapping.service';
 import { ValidationService } from '../../../services/validation.service';
 import { KeypadService } from '../../../services/keypad.service';
 import { KeyboardService } from '../../../services/keyboard.service';
 import { DeviceService } from '../../../services/device.service';
-import { MathKeyboardService } from 'player/src/app/services/math-keyboard.service';
 
 @Component({
   selector: 'aspect-compound-group-element',
   templateUrl: './compound-group-element.component.html',
   styleUrls: ['./compound-group-element.component.scss']
 })
-export class CompoundGroupElementComponent extends TextInputGroupDirective implements OnInit, AfterViewInit {
+export class CompoundGroupElementComponent extends TextInputGroupDirective implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('elementComponent') elementComponent!: ElementComponent;
   ClozeElement!: ClozeElement;
   LikertElement!: LikertElement;
@@ -111,7 +111,9 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
 
   private setTextMarkingSupportForText(element: TextElement): void {
     this.textMarkingSupports[element.id] = new TextMarkingSupport(this.nativeEventService, this.anchorService);
-    this.markableSupports[element.id] = new MarkableSupport(this.renderer, this.applicationRef);
+    this.markableSupports[element.id] = new MarkableSupport(
+      this.renderer, this.applicationRef, this.markingPanelService
+    );
     this.savedMarks[element.id] = this.unitStateService.getElementCodeById(element.id)?.value as string[] || [];
     this.savedTexts[element.id] = this.elementModelElementCodeMappingService
       .mapToElementModelValue(
@@ -170,6 +172,7 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
           if (childModel.markingMode === 'word' || childModel.markingMode === 'range') {
             this.markableSupports[childModel.id]
               .createMarkables(this.savedMarks[childModel.id], child as TextComponent);
+            this.markableSupports[childModel.id].registerRangeClicks(child as TextComponent);
           }
           initialValue = ElementModelElementCodeMappingService.mapToElementCodeValue(
             this.getTextChildModelValue(childModel as TextElement),
@@ -380,5 +383,10 @@ export class CompoundGroupElementComponent extends TextInputGroupDirective imple
           default:
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    Object.keys(this.markableSupports).forEach(key => this.markableSupports[key].reset());
+    super.ngOnDestroy();
   }
 }

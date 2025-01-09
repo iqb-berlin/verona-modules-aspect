@@ -16,9 +16,9 @@ import { MarkingPanelMarkingData } from 'common/models/marking-data';
     <aspect-text-marking-bar [elementModel]="elementModel"
                              [selectedColor]="selectedColor || 'none'"
                              [hasDeleteButton]="hasDeleteButton"
-                             (markingDataChanged)="markingPanelMarkingDataChanged.emit(
-                                                     { id: elementModel.id, markingData: $event }
-                                                   )">
+                             [showHint]="showHint"
+                             (markingDataChanged)="markingPanelMarkingDataChanged.emit({ id: elementModel.id,
+                                                                                         markingData: $event })">
     </aspect-text-marking-bar>
   `,
   styles: []
@@ -27,6 +27,6 @@ export class MarkingPanelComponent extends ElementComponent {
   @Input() elementModel!: MarkingPanelElement;
   @Input() selectedColor!: string | undefined;
   @Input() hasDeleteButton!: boolean;
-  @Output() markingPanelMarkingDataChanged: EventEmitter<MarkingPanelMarkingData> = new EventEmitter<MarkingPanelMarkingData>();
-  protected readonly setTimeout = setTimeout;
+  @Input() showHint!: boolean;
+  @Output() markingPanelMarkingDataChanged: EventEmitter<MarkingPanelMarkingData> = new EventEmitter();
 }

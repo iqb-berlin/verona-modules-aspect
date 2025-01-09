@@ -28,7 +28,9 @@ export class MarkableWordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.markingRange) {
-      this.markingRange.subscribe(() => this.applyRangeColor());
+      this.markingRange
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(() => this.applyRangeColor());
     }
   }
 

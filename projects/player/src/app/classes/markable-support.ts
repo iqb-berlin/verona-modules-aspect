@@ -4,10 +4,16 @@ import { Markable, MarkablesContainer } from 'player/src/app/models/markable.int
 import {
   MarkablesContainerComponent
 } from 'player/src/app/components/markables-container/markables-container.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { MarkingRange } from 'common/models/marking-data';
+import { MarkingPanelService } from 'player/src/app/services/marking-panel.service';
 
 export class MarkableSupport {
   private renderer: Renderer2;
   private applicationRef: ApplicationRef;
+  private markingPanelService: MarkingPanelService;
+  private ngUnsubscribe = new Subject<void>();
 
   // eslint-disable-next-line max-len
   private static wordsWithWhitespace: RegExp = /[^(\p{L}|\d)]*(\p{L}|\d)+[^(\p{L}|\d)]*|[^(\p{L}|\d)]+(\p{L}|\d)*[^(\p{L}|\d)]*|[^(\p{L}|\d)]*(\p{L}|\d)*[^(\p{L}|\d)]+/gu;
@@ -17,10 +23,25 @@ export class MarkableSupport {
 
   constructor(
     renderer: Renderer2,
-    applicationRef: ApplicationRef
+    applicationRef: ApplicationRef,
+    markingPanelService: MarkingPanelService
   ) {
     this.renderer = renderer;
     this.applicationRef = applicationRef;
+    this.markingPanelService = markingPanelService;
+  }
+
+  registerRangeClicks(elementComponent: TextComponent): void {
+    elementComponent.markingRange?.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((markingRange: MarkingRange | null) => {
+        this.markingPanelService.broadcastRangeClicks(
+          {
+            id: elementComponent.elementModel.id,
+            markingPanels: elementComponent.elementModel.markingPanels,
+            markingRange: markingRange
+          }
+        );
+      });
   }
 
   createMarkables(savedMarks: string[], elementComponent: TextComponent): void {
@@ -67,14 +88,16 @@ export class MarkableSupport {
     componentRef.instance.markables = markablesContainer.markables;
     componentRef.instance.selectedColor = elementComponent.selectedColor;
     componentRef.instance.markingRange = elementComponent.markingRange;
-    componentRef.instance.markablesChange.subscribe(() => {
-      elementComponent.elementValueChanged.emit(
-        {
-          id: elementComponent.elementModel.id,
-          value: markables
-        }
-      );
-    });
+    componentRef.instance.markablesChange
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        elementComponent.elementValueChanged.emit(
+          {
+            id: elementComponent.elementModel.id,
+            value: markables
+          }
+        );
+      });
     this.applicationRef.attachView(componentRef.hostView);
   }
 
@@ -130,5 +153,10 @@ export class MarkableSupport {
   private static getColorValueById(id: number, savedMarks: string[]): string | null {
     return savedMarks.map(savedMark => savedMark.split('-'))
       .find(mark => mark[0] === id.toString())?.[2] || null;
+  }
+
+  reset(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

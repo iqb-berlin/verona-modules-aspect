@@ -1,12 +1,17 @@
 Allgemein
 =========
+## editor/2.8.0+player/2.8.0
+### Neue Funktionen
+- Text: Neue Markierfunktionalität
+- In einem Text können durch zwei Mausklicks oder zwei Berührung Bereiche von Wörtern markiert werden
+
 ## editor/2.7.2+player/2.7.2
 ### Fehlerbehebungen
 - Ablegeliste:
   - Behebt Fehler beim Ablegen von Optionen auf Touch-Geräten (Problem in Version 2.7.1)
 - Formel (Bereich):
   - Unterbindet auf Touch-Geräten, wenn eingestellt, das Öffnen der Software-Tastatur des Betriebssystems
-  - Korrigiert Umbrüche in Text-Bereiche vor und hinter Formeln
+  - Korrigiert Umbrüche in Text-Bereichen vor und hinter Formeln
   - Stellt sicher, dass Formeltastatur und IQB-Tastatur nicht gleichzeitig geöffnet werden können
   - Behebt Aktualisierungsfehler beim Speichern von Formeln
 

@@ -50,6 +50,7 @@ export class InteractiveGroupElementComponent
 
   selectedColor: string | undefined;
   hasDeleteButton: boolean = false;
+  showHint: boolean = false;
   private ngUnsubscribe: Subject<void> = new Subject();
 
   constructor(
@@ -66,6 +67,7 @@ export class InteractiveGroupElementComponent
   ) {
     super();
     this.subscribeToMarkingColorChanged();
+    this.subscribeToMarkingRangeChanged();
   }
 
   ngOnInit(): void {
@@ -121,6 +123,15 @@ export class InteractiveGroupElementComponent
           this.selectedColor = markingColor.color;
           this.hasDeleteButton = (markingColor.markingMode !== 'word');
         }
+      });
+  }
+
+  private subscribeToMarkingRangeChanged() {
+    this.markingPanelService.markingRangeChanged
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(markingRangeData => {
+        this.showHint = markingRangeData.markingPanels.includes(this.elementModel.id) &&
+          !!markingRangeData.markingRange && markingRangeData.markingRange.second === null;
       });
   }
 

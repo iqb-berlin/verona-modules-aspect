@@ -40,11 +40,13 @@ import { TextInputComponent } from 'common/directives/text-input-component.direc
       @for (segment of segments; track segment; let i = $index) {
         <aspect-text-area-math-segment
           [style.display]="'inline'"
+          [index]="i"
           [type]="segment.type"
           [value]="segment.value"
           [selectedFocus]="selectedFocus"
+          [showSoftwareKeyboard]="elementModel.showSoftwareKeyboard"
+          [hideNativeKeyboard]="elementModel.hideNativeKeyboard"
           (valueChanged)="onValueChanged($event)"
-          [index]="i"
           (onKeyDown)="onKeyDown.emit($event)"
           (focusIn)="focusChanged.emit({ inputElement: $event, focused: true })"
           (focusOut)="focusChanged.emit({ inputElement: $event, focused: false })"

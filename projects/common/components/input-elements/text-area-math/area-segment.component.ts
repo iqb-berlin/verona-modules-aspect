@@ -19,6 +19,8 @@ import { MathInputComponent } from 'common/math-editor/math-input.component';
       </aspect-math-input>
     } @else {
       <aspect-area-input #inputComponent
+                         [showSoftwareKeyboard]="showSoftwareKeyboard"
+                         [hideNativeKeyboard]="hideNativeKeyboard"
                          [value]="value"
                          (focusIn)="onFocusIn($event)"
                          (focusOut)="onFocusOut($event)"
@@ -36,6 +38,8 @@ import { MathInputComponent } from 'common/math-editor/math-input.component';
   styles: []
 })
 export class AreaSegmentComponent {
+  @Input() showSoftwareKeyboard!: boolean;
+  @Input() hideNativeKeyboard!: boolean;
   @Input() type!: 'text' | 'math';
   @Input() value!: string;
   @Input() index!: number;

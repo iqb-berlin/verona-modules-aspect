@@ -276,11 +276,14 @@ export abstract class TextInputGroupDirective extends ElementFormGroupDirective 
     return this.getInputElementValue().substring(endPosition);
   }
 
-  setSelection(start: number, end: number, backSpaceAtFirstPosition?: boolean): void {
+  private setSelection(start: number, end: number, backSpaceAtFirstPosition?: boolean): void {
     if (this.inputElement instanceof HTMLInputElement || this.inputElement instanceof HTMLTextAreaElement) {
       this.inputElement.setSelectionRange(start, end);
     } else if (!backSpaceAtFirstPosition) {
-      setTimeout(() => RangeSelectionService.setSelectionRange(this.inputElement, start, end));
+      setTimeout(() => {
+        RangeSelectionService.setSelectionRange(this.inputElement, start, end);
+        this.inputElement.dispatchEvent(new Event('input'));
+      });
     }
   }
 

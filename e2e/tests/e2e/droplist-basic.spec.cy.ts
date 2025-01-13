@@ -19,31 +19,31 @@ describe('Droplist element', { testIsolation: false }, () => {
     cy.loadUnit('../downloads/droplist-basic.json');
 
     dragTo('Startliste', 'AAA', 'Nichtverbunden');
-    cy.get('#Nichtverbunden').children()
+    cy.getByAlias('Nichtverbunden').children()
       .should('have.length', 0);
   });
 
   it('drags to connected list', () => {
     dragTo('Startliste', 'AAA', 'Verbunden');
-    cy.get('#Startliste').children()
+    cy.getByAlias('Startliste').children()
       .should('have.length', 2);
-    cy.get('#Verbunden').children()
+    cy.getByAlias('Verbunden').children()
       .should('have.length', 1);
   });
 
   it('highlights lists', () => {
-    cy.get('#Startliste').find('.drop-list-item').first()
+    cy.getByAlias('Startliste').find('.drop-list-item').first()
       .trigger('mousedown', { button: 0 });
-    cy.get('#Verbunden').should('have.class', 'isHighlighted');
-    cy.get('#Nichtverbunden').should('not.have.class', 'isHighlighted');
+    cy.getByAlias('Verbunden').should('have.class', 'isHighlighted');
+    cy.getByAlias('Nichtverbunden').should('not.have.class', 'isHighlighted');
     cy.get('.drag-preview')
       .trigger('mouseup', { force: true });
 
     // second list has no highlighting activated
-    cy.get('#Verbunden').find('.drop-list-item').first()
+    cy.getByAlias('Verbunden').find('.drop-list-item').first()
       .trigger('mousedown', { button: 0 });
-    cy.get('#Startliste').should('not.have.class', 'isHighlighted');
-    cy.get('#Nichtverbunden').should('not.have.class', 'isHighlighted');
+    cy.getByAlias('Startliste').should('not.have.class', 'isHighlighted');
+    cy.getByAlias('Nichtverbunden').should('not.have.class', 'isHighlighted');
     cy.get('.drag-preview')
       .trigger('mouseup', { force: true });
   });

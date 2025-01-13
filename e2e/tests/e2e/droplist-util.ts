@@ -44,3 +44,40 @@ export function dragTo(list: string, item: string, targetList: string): void {
   cy.get('.drag-preview')
     .trigger('mouseup', { force: true });
 }
+
+export function dragToByTouch(list: string, item: string, targetList: string): void {
+  cy.getByAlias(targetList)
+    .then(($targetEl) => {
+      const targetRect = $targetEl[0].getBoundingClientRect();
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      cy.getByAlias(list)
+        .get(`.drop-list-item:contains("${item}")`)
+        .then(($startEl) => {
+          const startRect = $startEl[0].getBoundingClientRect();
+          const startX = startRect.left + startRect.width / 2;
+          const startY = startRect.top + startRect.height / 2;
+
+          cy.wrap($startEl).trigger('touchstart', {
+            touches: [{ clientX: startX, clientY: startY }]
+          });
+
+          cy.wrap($startEl).trigger('touchmove', {
+            force: true, // this needed, probably because of the Material overlay that is created when dragging
+            touches: [{ clientX: startX, clientY: startY }]
+          });
+
+          cy.wrap($startEl).trigger('touchmove', {
+            force: true,
+            touches: [{ clientX: targetX + 55, clientY: targetY }]
+          });
+
+          cy.wrap($startEl).trigger('touchend', {
+            force: true,
+            touches: [],
+            changedTouches: [{ clientX: targetX, clientY: targetY }]
+          });
+        });
+    });
+}

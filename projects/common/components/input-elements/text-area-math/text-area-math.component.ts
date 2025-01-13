@@ -78,7 +78,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
 
   ngOnInit(): void {
     super.ngOnInit();
-    if (this.parentForm) this.segments = this.elementFormControl.value;
+    if (this.parentForm) this.segments = [...this.elementFormControl.value];
   }
 
   private addStartSegment() {
@@ -86,7 +86,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
       type: 'text',
       value: ''
     });
-    super.setElementValue(this.segments);
+    super.setElementValue([...this.segments]);
   }
 
   addFormula() {
@@ -109,7 +109,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
   }
 
   private addNewSegments() {
-    this.segments = this.elementFormControl.value;
+    this.segments = [...this.elementFormControl.value];
     const range = this.getSelectedInputRange();
     const segmentIndex = this.selectedFocus.value;
     let newSegmentIndex = segmentIndex + 1;
@@ -130,7 +130,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
       newSegmentIndex += 1;
       this.addSegments(true, false, segmentIndex, '', '');
     }
-    super.setElementValue(this.segments);
+    super.setElementValue([...this.segments]);
     // wait for rendering of segments and keyboard animation
     setTimeout(() => this.updateFocus(newSegmentIndex), 250);
   }
@@ -160,7 +160,7 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
       const offset = segments[index - 1].value.length;
       segments.splice(index, 1);
       this.segments = segments;
-      super.setElementValue(this.segments);
+      super.setElementValue([...this.segments]);
       // wait for rendering of segments
       setTimeout(() => this.updateFocus(index - 1, offset));
     }
@@ -177,7 +177,9 @@ export class TextAreaMathComponent extends TextInputComponent implements OnInit 
 
   private setSegmentValue(value: { index: number; value: string }) {
     this.segments[value.index].value = value.value;
-    this.updateFormControl(this.segments);
+    const elementFormControlValue = [...this.elementFormControl.value];
+    elementFormControlValue[value.index].value = value.value;
+    this.updateFormControl([...elementFormControlValue]);
   }
 
   setElementValue(value: string, remove?: boolean): void {
